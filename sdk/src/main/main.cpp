@@ -12,7 +12,7 @@
 
 #include "AppTools.h"
 #include "main.h"
-
+#include "setup.h"
 
 using namespace mhydasdk::base;
 using namespace mhydasdk::core;
@@ -143,6 +143,10 @@ void MHYDASApp::printMHYDASInfos()
   std::cout << "                       M H Y D A S                        " << std::endl;
   std::cout << "      Distributed hydrological model for agrosystems      " << std::endl;
   std::cout << std::endl;
+  #ifdef SVN_REV
+  std::cout << "                      revision " << SVN_REVISION.mb_str(wxConvUTF8) << std::endl;
+  std::cout << std::endl;
+  #endif
   std::cout << "               LISAH-INRA, Montpellier, France            " << std::endl;
   std::cout << "==========================================================" << std::endl;
   std::cout << std::endl;
