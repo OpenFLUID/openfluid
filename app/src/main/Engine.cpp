@@ -101,12 +101,12 @@ bool Engine::run()
   // run
   do
   {
-
+    /*
     std::cout.width(8);
     std::cout << "t" << mp_SimStatus->getCurrentStep();
     std::cout.width(20);
     std::cout << mp_SimStatus->getCurrentTime().asString().mb_str(wxConvUTF8) << std::endl;
-
+    */
 
   } while (mp_SimStatus->switchToNextStep());
 
