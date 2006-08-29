@@ -196,6 +196,12 @@ echo "const wxString MHYDAS_PLUGINS_SUBDIR = wxT(\"$PLUGSUBDIR\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
+if [ -x /usr/bin/svnversion ]; then
+  echo "#define SVN_REV" >> $SETUPH
+  echo "const wxString SVN_REVISION = wxT(\"`svnversion -n ../src`\");" >> $SETUPH
+  echo "" >> $SETUPH
+fi
+
 echo "#endif" >> $SETUPH
 
 echo "" >> $SETUPH
