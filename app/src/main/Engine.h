@@ -13,7 +13,7 @@
 #include "sdk-core.h"
 #include "sdk-base.h"
 
-#include "HydroModule.h"
+#include "Module.h"
 #include "IOMan.h"
 
 
@@ -24,7 +24,8 @@
 class Engine
 {
   private:
-     HydroModule *mp_HydroModule;
+     Module *mp_HydroModule;
+     FunctionsList m_HydroFunctions;
 
      mhydasdk::core::CoreRepository* mp_CoreData;
 
@@ -61,7 +62,7 @@ class Engine
 
     bool saveResults();
 
-    HydroModule *getHydroModule() { return mp_HydroModule; };
+    Module *getHydroModule() { return mp_HydroModule; };
 
     EngineConfig getConfig() const { return m_Config; };
 

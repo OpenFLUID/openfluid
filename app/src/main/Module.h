@@ -14,6 +14,11 @@
 #include "sdk-core.h"
 #include "sdk-base.h"
 
+#include <wx/list.h>
+
+
+WX_DECLARE_LIST(mhydasdk::base::Function*, FunctionsList);
+
 
 /**
 
@@ -23,20 +28,27 @@ class Module : public mhydasdk::base::ComputationBlock
 
   protected:
 
+    FunctionsList m_Functions;
+
   public:
     /**
       Constructor
     */
-    Module(mhydasdk::core::CoreRepository* CoreData);
+    Module(mhydasdk::core::CoreRepository* CoreData, FunctionsList Functions);
 
     /**
       Destructor
     */
-    virtual ~Module();
+    ~Module();
 
-    virtual bool loadData()=0;
+    bool checkConsistency();
 
-    virtual bool saveResults()=0;
+    bool initialize();
+
+    bool run(mhydasdk::base::SimulationStatus* SimStatus);
+
+    bool finalize();
+
 
 
 };
