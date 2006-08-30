@@ -198,7 +198,7 @@ echo "" >> $SETUPH
 
 if [ -x /usr/bin/svnversion ]; then
   echo "#define SVN_REV" >> $SETUPH
-  echo "const wxString SVN_REVISION = wxT(\"`svn info ../src | grep "Révision :" | cut -d" " -f3 `\");" >> $SETUPH
+  echo "const wxString SVN_REVISION = wxT(\"`svn info --revision HEAD | grep "Révision :" | cut -d" " -f3 `\");" >> $SETUPH
   echo "" >> $SETUPH
 fi
 
