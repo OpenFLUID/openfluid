@@ -16,6 +16,7 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::Runtime
   mp_RunEnv = RunEnv;
 
   mp_HydroModule = NULL;
+  m_HydroFunctions.Clear();
 
   mp_IOMan = new IOManager(mp_RunEnv);
 
@@ -43,6 +44,8 @@ bool Engine::processConfig()
 
 bool Engine::plugFunctions()
 {
+
+  mp_HydroModule = new Module(mp_CoreData,m_HydroFunctions);
 
   return true;
 }
@@ -78,6 +81,12 @@ bool Engine::checkConsistency()
     return false;
   }
 
+  if (mp_HydroModule == NULL /*|| !mp_HydroModule->checkConsistency()*/)
+  {
+    mhydasdk::base::LastError::Message = wxT("Hydrology module consistency error.");
+    return false;
+  }
+
   return true;
 }
 
@@ -97,23 +106,25 @@ bool Engine::run()
 
   // initialization of functions
 
+  mp_HydroModule->initialize();
 
   // run
   do
   {
-    /*
+
     std::cout.width(8);
     std::cout << "t" << mp_SimStatus->getCurrentStep();
     std::cout.width(20);
     std::cout << mp_SimStatus->getCurrentTime().asString().mb_str(wxConvUTF8) << std::endl;
-    */
+
+    mp_HydroModule->run(mp_SimStatus);
 
   } while (mp_SimStatus->switchToNextStep());
 
 
 
   // finalization of functions
-
+  mp_HydroModule->finalize();
 
   return true;
 }

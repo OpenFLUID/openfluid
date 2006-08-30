@@ -13,7 +13,6 @@ CCLIBS=-L$(BASELIBDIR) -L$(BINDIR) -L. -ltinyxml -lsdk-base -lsdk-core -Wl,-rpat
 
 OBJ= $(OBJDIR)/AppTools.o \
      $(OBJDIR)/Module.o \
-     $(OBJDIR)/HydroModule.o \
      $(OBJDIR)/Engine.o \
      $(OBJDIR)/PluginManager.o \
      $(OBJDIR)/IOMan.o \
