@@ -34,16 +34,6 @@
 			<Option link="0" />
 			<Option target="default" />
 		</Unit>
-		<Unit filename="../src/main/HydroModule.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="default" />
-		</Unit>
-		<Unit filename="../src/main/HydroModule.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="default" />
-		</Unit>
 		<Unit filename="../src/main/IOMan.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="default" />
