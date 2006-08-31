@@ -4,7 +4,7 @@ include ./makeopts.inc
 
 
 
-all: sdk main
+all: sdk main stdplugs
 
 .PHONY: sdk
 
@@ -23,17 +23,25 @@ main: sdk
 	@(cd main && $(MAKE))
 
 
+stdplugs: sdk
+	@echo ""
+	@echo "==== Compiling plugins ===="
+	@(cd stdplugs && $(MAKE))
+
+
 clean:
 	@(cd main && $(MAKE) clean)
+	@(cd stdplugs && $(MAKE) clean)
 	@(cd sdk/xml && $(MAKE) clean)
 	@(cd sdk/base && $(MAKE) clean)
 	@(cd sdk/core && $(MAKE) clean)
 
+
 doc:
-	@(cd main && $(MAKE) doc)
-	@(cd sdk/xml && $(MAKE) doc)
 	@(cd sdk/base && $(MAKE) doc)
 	@(cd sdk/core && $(MAKE) doc)
+	@(cd main && $(MAKE) doc)
+	@(cd stdplugs && $(MAKE) doc)
 
 
 purge: clean
