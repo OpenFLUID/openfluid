@@ -9,15 +9,16 @@ BINDIR=$(BASEBINDIR)/plugs
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/stdplugs
 
-CCFLAGS=-I ../sdk -I ../sdk/base $(WXFLAGS)
-CCLIBS=-L.. -L. -L$(BASEBINDIR) -lsdk-base -lsdk-core $(WXLIBS)
+CCFLAGS=-I ../sdk $(WXFLAGS)
+CCLIBS= -L.. -L. -L$(BASEBINDIR) -lsdk-base -lsdk-core $(WXLIBS)
 
 #CCFLAGS=-DBUILDINGDLL -fPIC -I .. $(WXFLAGS)
 #LDFLAGS=-Wl,-soname,$(LIBNAME).$(DYNLIBEXT)
  #-Wl,--out-implib,$(LIBDIR)/$(LIBNAME).a
 #CCLIBS=-L $(BASELIBDIR) $(WXLIBS)
 
-MSEYTOUXOBJ=
+MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o \
+            $(OBJDIR)/MSeytouxPlug.o
 
 MSEYTOUXNAME=mseytoux
 
@@ -27,7 +28,7 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(MSEYTOUXOBJ)
-#	$(CPP) $(OBJ) $(CCLIBS) $(CCFLAGS) -o $(BINDIR)/$(MSEYTOUXNAME).$(DYNLIBEXT)
+	$(CPP) $(MSEYTOUXOBJ) $(CCLIBS) $(CCFLAGS) -o $(BINDIR)/$(MSEYTOUXNAME).$(DYNLIBEXT) -shared
 
 
 prechecks:

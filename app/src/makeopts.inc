@@ -24,7 +24,7 @@ WXFLAGS = -I/usr/lib/wx/include/gtk2-unicode-release-2.6 -I/usr/include/wx-2.6 -
 # common compile options
 CCCLIBS =
 # common compile flags
-CCCFLAGS = -g -finput-charset=iso-8859-1
+CCCFLAGS = -g3 -finput-charset=iso-8859-1
 
 # main executable file
 EXEFILE = mhydas-mpp
