@@ -24,7 +24,7 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(OBJ)
-	$(CPP) $(OBJ) $(CCLIBS) $(CCFLAGS) -o $(BINDIR)/$(EXEFILE) -shared
+	$(CPP) $(OBJ) $(CCLIBS) $(CCFLAGS) -o $(BINDIR)/$(EXEFILE)
 
 prechecks:
 	@mkdir -p $(OBJDIR)

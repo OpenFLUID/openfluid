@@ -4,10 +4,3 @@
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
-
-
-#include "Plugin.h"
-
-
-
-

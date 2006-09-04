@@ -83,7 +83,7 @@ echo "# common compile options" >> $OPTFILE
 echo "CCCLIBS =" >> $OPTFILE
 
 echo "# common compile flags" >> $OPTFILE 
-echo "CCCFLAGS = -g -finput-charset=iso-8859-1" >> $OPTFILE
+echo "CCCFLAGS = -g3 -finput-charset=iso-8859-1" >> $OPTFILE
 
 echo "" >> $OPTFILE
 

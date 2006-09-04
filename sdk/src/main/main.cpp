@@ -18,6 +18,8 @@ using namespace mhydasdk::base;
 using namespace mhydasdk::core;
 
 
+wxString LastError::Message;
+
 // =====================================================================
 // =====================================================================
 
@@ -217,8 +219,14 @@ bool MHYDASApp::OnInit()
 
   m_OKToRun = true;
 
+  std::cerr << "ici 1" << std::endl;
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
+
+  std::cerr << "ici 3" << std::endl;
+
   mp_PlugMan = new PluginManager(mp_RunEnv);
+
+  std::cerr << "ici 2" << std::endl;
 
   LastError::Message = wxT("");
 

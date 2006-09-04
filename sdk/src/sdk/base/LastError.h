@@ -34,4 +34,4 @@ class LastError
 
 
 
-#endif // LASTERROR_H_INCLUDED
+#endif
