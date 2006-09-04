@@ -11,7 +11,7 @@
 
 namespace mhydasdk { namespace base {
 
-wxString LastError::Message;
+//wxString LastError::Message;
 
 
 } } // namespace mhydasdk::base

@@ -151,7 +151,7 @@ class Plugin : public wxObject
     /**
       Constructor
     */
-    Plugin();
+    Plugin() { };
 
     /**
       Virtual destructor
