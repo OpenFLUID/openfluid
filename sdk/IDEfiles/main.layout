@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="" />
-	<File name="../src/main/makefile" open="1" top="1" tabpos="5">
-		<Cursor position="25" topLine="0" />
+	<ActiveTarget name="default" />
+	<File name="../src/main/AppTools.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1737" topLine="60" />
+	</File>
+	<File name="../src/main/AppTools.h" open="1" top="0" tabpos="3">
+		<Cursor position="255" topLine="0" />
+	</File>
+	<File name="../src/main/PluginManager.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="2488" topLine="61" />
+	</File>
+	<File name="../src/main/PluginManager.h" open="1" top="0" tabpos="4">
+		<Cursor position="229" topLine="0" />
+	</File>
+	<File name="../src/main/main.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="../src/main/main.h" open="1" top="1" tabpos="11">
+		<Cursor position="1059" topLine="3" />
+	</File>
+	<File name="../src/main/makefile" open="1" top="0" tabpos="6">
+		<Cursor position="624" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

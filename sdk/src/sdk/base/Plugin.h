@@ -60,6 +60,7 @@ namespace mhydasdk { namespace base {
 */
 enum FunctionTypeList
 {
+  FUNC_UNKNOWN,
   FUNC_SU_PRODUCTION,
   FUNC_SU_TRANSFER,
   FUNC_RS_TRANSFER,
@@ -73,6 +74,7 @@ enum FunctionTypeList
 */
 enum ModuleTypeList
 {
+  MOD_UNKNOWN,
   MOD_HYDROLOGY
 };
 
@@ -130,8 +132,6 @@ struct Signature
   wxString AuthorEmail;
 };
 
-
-
 // =====================================================================
 // =====================================================================
 
@@ -146,29 +146,30 @@ class Plugin : public wxObject
 
   protected:
 
+     mhydasdk::base::Signature* mp_Signature;
 
   public:
     /**
       Constructor
     */
-    Plugin() { };
+    Plugin() { mp_Signature = NULL; };
 
     /**
       Virtual destructor
     */
-    virtual ~Plugin();
+    virtual ~Plugin() { };
 
     /**
       Returns the plugin signature
       \return \link Signature Signature \endlink
     */
-    virtual Signature getSignature()=0;
+    mhydasdk::base::Signature* getSignature() { return mp_Signature; };
 
     /**
       Returns the plugin function
       \return Function
     */
-    virtual Function *getFunction()=0;
+    virtual mhydasdk::base::Function *getFunction()=0;
 
 
 };
