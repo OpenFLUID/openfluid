@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="MHYDAS-MPP">
-		<Project filename="main.cbp" />
+		<Project filename="main.cbp" active="1" />
 		<Project filename="sdk-base.cbp" />
 		<Project filename="sdk-core.cbp" />
-		<Project filename="stdplugs.cbp" active="1" />
+		<Project filename="stdplugs.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

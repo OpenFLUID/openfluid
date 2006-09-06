@@ -97,9 +97,9 @@ fi
 echo "" >> $OPTFILE
 
 if [ "$OSTYPE" = "msys" ]; then
-  PLUGINEXT=dll
+  PLUGINEXT=dllmpi
 else
-  PLUGINEXT=so
+  PLUGINEXT=sompi
 fi
 echo "# plugins extension" >> $OPTFILE 
 echo "PLUGINEXT = $PLUGINEXT" >> $OPTFILE  

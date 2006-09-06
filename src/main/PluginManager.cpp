@@ -10,6 +10,7 @@
 #include "setup.h"
 
 #include "PluginManager.h"
+#include "AppTools.h"
 
 
 // =====================================================================
@@ -43,32 +44,26 @@ mhydasdk::base::Plugin *PluginManager::getPlugin(wxString PluginFilename)
   // library loading
   if (PlugLib->Load(PluginFile))
   {
+    //std::cerr << "plug" << std::endl;
 
     // checks if the handle proc exists
     if (PlugLib->HasSymbol(wxT("GetMHYDASPlugin")))
     {
-
+      //std::cerr << "symbol" << std::endl;
     	// hooks the handle proc
     	mhydasdk::base::GetPluginProc PlugProc = (mhydasdk::base::GetPluginProc)PlugLib->GetSymbol(wxT("GetMHYDASPlugin"));
+
+      //std::cerr << "symbol 2" << std::endl;
 
       if (PlugProc != NULL)
       {
         Plug = PlugProc();
+        // std::cerr << "proc" << std::endl;
       }
 
       // unloads the library
       PlugLib->Unload();
 
-
-      /*if (PlugProc == NULL)
-      {
-        PlugLib->Unload();
-      }
-      else
-      {
-        Plugin* Plug = PlugProc();
-      }
-      */
     }
   }
 
@@ -82,6 +77,19 @@ mhydasdk::base::Plugin *PluginManager::getPlugin(wxString PluginFilename)
 ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 {
   ArrayOfPluginsSignatures Signatures;
+
+  wxArrayString PluginFiles = GetFilesByExt(mp_RunEnv->getAppDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR,MHYDAS_PLUGINS_EXT);
+
+  mhydasdk::base::Plugin* CurrentPlug;
+
+  for (int i=0;i<PluginFiles.GetCount();i++)
+  {
+    //std::cerr << "ici " << i << std::endl;
+    CurrentPlug = getPlugin(PluginFiles[i]);
+    //std::cerr << "la " << i << std::endl;
+    if (CurrentPlug != NULL) Signatures.Add(CurrentPlug->getSignature());
+    //std::cerr << "fini " << i << std::endl;
+  }
 
   return Signatures;
 }
@@ -102,8 +110,8 @@ mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginNa
 
   if (Plug != NULL)
   {
-    if ((Plug->getSignature().ModuleType = ReqModType) &&
-        (Plug->getSignature().FunctionType = ReqFuncType))
+    if ((Plug->getSignature()->ModuleType = ReqModType) &&
+        (Plug->getSignature()->FunctionType = ReqFuncType))
     {
       Func = Plug->getFunction();
     }

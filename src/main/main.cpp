@@ -183,12 +183,12 @@ void MHYDASApp::printPluginsList()
 {
   ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList();
 
-  std::cout << "Available plugins:" << std::endl;
+  std::cout << "Available pluggable functions:" << std::endl;
 
 
   if (Signatures.GetCount() > 0)
   {
-
+    for (int i=0;i<Signatures.GetCount();i++) std::cout << "  - " << Signatures[i]->Name.mb_str(wxConvUTF8) << std::endl;
   }
   else
   {
@@ -219,14 +219,9 @@ bool MHYDASApp::OnInit()
 
   m_OKToRun = true;
 
-  std::cerr << "ici 1" << std::endl;
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
 
-  std::cerr << "ici 3" << std::endl;
-
   mp_PlugMan = new PluginManager(mp_RunEnv);
-
-  std::cerr << "ici 2" << std::endl;
 
   LastError::Message = wxT("");
 
