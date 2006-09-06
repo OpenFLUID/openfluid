@@ -26,7 +26,7 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_OPTION, _T("i"), _T("inputdir"), _T("set dataset input directory") },
   {wxCMD_LINE_OPTION, _T("o"), _T("outputdir"), _T("set results output directory")},
   {wxCMD_LINE_SWITCH, _T("a"), _T("autooutdir"), _T("automatic results output directory")},
-  {wxCMD_LINE_SWITCH, _T("p"), _T("pluginslist"), _T("list available plugins (do not run the model)")},
+  {wxCMD_LINE_SWITCH, _T("p"), _T("pluginslist"), _T("list available pluggable functions (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("enable verbose display")},
   {wxCMD_LINE_SWITCH, _T("h"), _T("help"), _T("show this help message"),wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
   {wxCMD_LINE_NONE}

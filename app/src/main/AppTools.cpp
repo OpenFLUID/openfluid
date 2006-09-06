@@ -6,6 +6,7 @@
 */
 
 #include <wx/filename.h>
+#include <wx/dir.h>
 
 #include "AppTools.h"
 
@@ -70,4 +71,33 @@ wxString GetExecutablePath()
 
 // =====================================================================
 // =====================================================================
+
+
+wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath)
+{
+
+
+  bool Continue;
+  wxArrayString FileList;
+
+  wxDir DirManager(DirToExplore);
+
+  if (DirManager.IsOpened())
+  {
+    // listage des plugins présents
+
+    wxString FoundFile;
+
+    Continue = DirManager.GetFirst(&FoundFile,wxT("*.")+Ext);
+    while (Continue)
+    {
+      if (WithPath) FileList.Add(DirToExplore+wxFILE_SEP_PATH+FoundFile);
+      else FileList.Add(FoundFile);
+      Continue = DirManager.GetNext(&FoundFile);
+    }
+  }
+
+  return FileList;
+
+}
 
