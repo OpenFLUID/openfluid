@@ -22,14 +22,21 @@ MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o \
 
 MSEYTOUXNAME=mseytoux
 
+HAYAMISUOBJ=$(OBJDIR)/HayamiSUFunc.o \
+            $(OBJDIR)/HayamiSUPlug.o
+
+HAYAMISUNAME=hayamiSU
+
+
+
 
 $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
-all: prechecks $(MSEYTOUXOBJ)
+all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ)
 	$(CPP) -shared $(MSEYTOUXOBJ) $(CCLIBS) -o $(BINDIR)/$(MSEYTOUXNAME).$(PLUGINEXT)
-
+	$(CPP) -shared $(HAYAMISUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMISUNAME).$(PLUGINEXT)
 
 prechecks:
 	@mkdir -p $(OBJDIR)
