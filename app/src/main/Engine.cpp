@@ -113,11 +113,11 @@ bool Engine::run()
   {
 
     std::cout.width(8);
-    std::cout << "t" << mp_SimStatus->getCurrentStep();
+    std::cout << "t+" << mp_SimStatus->getCurrentStep();
     std::cout.width(20);
     std::cout << mp_SimStatus->getCurrentTime().asString().mb_str(wxConvUTF8) << std::endl;
 
-    mp_HydroModule->run(mp_SimStatus);
+    mp_HydroModule->runStep(mp_SimStatus);
 
   } while (mp_SimStatus->switchToNextStep());
 

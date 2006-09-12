@@ -45,7 +45,7 @@ class Module : public mhydasdk::base::ComputationBlock
 
     bool initialize();
 
-    bool run(mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
 
     bool finalize();
 

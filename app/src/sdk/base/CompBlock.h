@@ -45,7 +45,7 @@ class ComputationBlock
 
     virtual bool checkConsistency()=0;
 
-    virtual bool run(SimulationStatus* SimStatus)=0;
+    virtual bool runStep(SimulationStatus* SimStatus)=0;
 
     virtual bool finalize()=0;
 
