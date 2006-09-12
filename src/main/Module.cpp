@@ -84,11 +84,11 @@ bool Module::initialize()
 // =====================================================================
 
 
-bool Module::run(mhydasdk::base::SimulationStatus* SimStatus)
+bool Module::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(run(SimStatus),IsOK);
+  PARSE_FUNCTION_LIST(runStep(SimStatus),IsOK);
 
   return IsOK;
 
