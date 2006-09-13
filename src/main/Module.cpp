@@ -34,6 +34,7 @@ Module::Module(mhydasdk::core::CoreRepository* CoreData, FunctionsList Functions
       : mhydasdk::base::ComputationBlock(CoreData)
 {
   m_Functions = Functions;
+
 }
 
 // =====================================================================

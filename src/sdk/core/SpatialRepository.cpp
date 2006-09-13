@@ -67,7 +67,6 @@ bool SpatialRepository::addSU(SurfaceUnit *SU)
 
   if (m_SUsCollection.find(SU->getID()) != m_SUsCollection.end())
   {
-     std::cerr << "found!" << std::endl;
      return false;
   }
   else m_SUsCollection[SU->getID()] = SU;

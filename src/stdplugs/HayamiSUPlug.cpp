@@ -31,7 +31,7 @@ HayamiSUPlug::HayamiSUPlug()
   mp_Signature->AuthorEmail = wxT("");
   mp_Signature->ID = wxT("hayamiSU");
   mp_Signature->ModuleType = mhydasdk::base::MOD_HYDROLOGY;
-  mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_TRANSFER;
+  // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_TRANSFER;
   mp_Signature->Name = wxT("Diffusive wave transfert on SU (Hayami method)");
 
 
@@ -51,7 +51,7 @@ HayamiSUPlug::~HayamiSUPlug()
 
 
 
-mhydasdk::base::Function* HayamiSUPlug::getFunction()
+mhydasdk::base::Function* HayamiSUPlug::getFunction(mhydasdk::core::CoreRepository* CoreData)
 {
   return NULL;
 }

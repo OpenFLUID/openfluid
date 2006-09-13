@@ -10,6 +10,7 @@
 #define __PLUGINMANAGER_H__
 
 #include "sdk-base.h"
+#include "sdk-core.h"
 
 
 WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
@@ -49,9 +50,14 @@ class PluginManager
       Returns function, matching module and function types
     */
     mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,
+                                                    mhydasdk::base::ModuleTypeList ReqModType,
+                                                    mhydasdk::core::CoreRepository* CoreData);
+
+/*
+    mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,
                                           mhydasdk::base::ModuleTypeList ReqModType,
                                           mhydasdk::base::FunctionTypeList ReqFuncType);
-
+*/
 
 };
 

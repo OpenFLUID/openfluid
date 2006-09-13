@@ -15,6 +15,7 @@
 
 #include "Module.h"
 #include "IOMan.h"
+#include "PluginManager.h"
 
 
 
@@ -32,6 +33,8 @@ class Engine
      mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
 
      mhydasdk::base::SimulationStatus* mp_SimStatus;
+
+     PluginManager* mp_PlugMan;
 
      IOManager* mp_IOMan;
 
@@ -52,7 +55,8 @@ class Engine
     /**
       Constructor
     */
-    Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv);
+    Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
+           PluginManager* PlugMan);
 
     /**
       Destructor
@@ -61,9 +65,9 @@ class Engine
 
     bool buildModel();
 
-    bool checkConsistency();
-
     bool loadData();
+
+    bool checkConsistencyAndInitialize();
 
     bool run();
 

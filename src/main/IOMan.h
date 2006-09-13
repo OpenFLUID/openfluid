@@ -11,6 +11,8 @@
 #include "sdk-base.h"
 #include "sdk-core.h"
 
+#include <wx/list.h>
+
 struct FunctionConfig
 {
   wxString Name;
@@ -19,11 +21,15 @@ struct FunctionConfig
 
 };
 
+
+WX_DECLARE_LIST(FunctionConfig, FunctionConfigsList);
+
+
 struct EngineConfig
 {
   int DeltaT;
 
-  FunctionConfig HydroSuProdFunc;
+  FunctionConfigsList HydroModuleConfig;
 
 };
 
