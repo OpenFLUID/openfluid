@@ -24,7 +24,7 @@ typedef int hoid_t;
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
 */
-WX_DECLARE_STRING_HASH_MAP(std::vector<double>, SimulatedVarsMap);
+WX_DECLARE_STRING_HASH_MAP(std::vector<double>*, SimulatedVarsMap);
 
 
 
@@ -41,7 +41,8 @@ class HydroObject
 		hoid_t m_ID;
 		int m_ProcessOrder;
 
-    SimulatedVarsMap m_SimVars;
+    SimulatedVarsMap* mp_SimVars;
+
 
 	public:
 		/**
@@ -69,6 +70,7 @@ class HydroObject
 
     void setProcessOrder(const int ProcessOrder);
 
+    SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
 
 };
 

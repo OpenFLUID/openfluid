@@ -36,13 +36,13 @@ WX_DECLARE_HASH_MAP(int, ReachSegment*, wxIntegerHash, wxIntegerEqual, RSMap);
 class SpatialRepository
 {
 	private:
-		SUMap m_SUsCollection;
-		RSMap m_RSsCollection;
-		GUMap m_GUsCollection;
+		SUMap* mp_SUsCollection;
+		RSMap* mp_RSsCollection;
+		GUMap* mp_GUsCollection;
 
-    vector<vector<SurfaceUnit*>*> m_SUsProcessOrders;
-    vector<vector<ReachSegment*>*> m_RSsProcessOrders;
-    vector<vector<GroundwaterUnit*>*> m_GUsProcessOrders;
+    vector<vector<SurfaceUnit*>*>* mp_SUsProcessOrders;
+    vector<vector<ReachSegment*>*>* mp_RSsProcessOrders;
+    vector<vector<GroundwaterUnit*>*>* mp_GUsProcessOrders;
 
 
 	public:
@@ -74,7 +74,7 @@ class SpatialRepository
 		  Renvoie la liste des définitions de SHUs sous la forme d'un vecteur de SHUs
 		  \return le vecteur de SHUs
 		*/
-		SUMap getSUsCollection();
+		SUMap* getSUsCollection();
 
 
 		/**
@@ -95,7 +95,7 @@ class SpatialRepository
 		  Renvoie la liste des définitions de biefs sous la forme d'un vecteur de biefs
 		  \return le vecteur de biefs
 		*/
-		RSMap getRSsCollection();
+		RSMap* getRSsCollection();
 
 
 		/**
@@ -115,7 +115,7 @@ class SpatialRepository
 		  Renvoie la liste des définitions de AHUs sous la forme d'un vecteur de AHUs
 		  \return le vecteur de AHUs
 		*/
-		GUMap getGUsCollection();
+		GUMap* getGUsCollection();
 
 
     bool buildObjectLinkedTopologyFromIDs();
