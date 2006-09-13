@@ -62,7 +62,7 @@ mhydasdk::base::Plugin *PluginManager::getPlugin(wxString PluginFilename)
       }
 
       // unloads the library
-      PlugLib->Unload();
+      //PlugLib->Unload();
 
     }
   }
@@ -100,6 +100,30 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 // =====================================================================
 
 mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginName,
+                                                               mhydasdk::base::ModuleTypeList ReqModType,
+                                                               mhydasdk::core::CoreRepository* CoreData)
+{
+  mhydasdk::base::Function *Func = NULL;
+
+
+  mhydasdk::base::Plugin *Plug = getPlugin(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
+
+
+  if (Plug != NULL)
+  {
+    if (Plug->getSignature()->ModuleType == ReqModType)
+    {
+      Func = Plug->getFunction(CoreData);
+    }
+  }
+
+
+  return Func;
+}
+
+
+/*
+mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginName,
                                                      mhydasdk::base::ModuleTypeList ReqModType,
                                                      mhydasdk::base::FunctionTypeList ReqFuncType)
 {
@@ -110,8 +134,8 @@ mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginNa
 
   if (Plug != NULL)
   {
-    if ((Plug->getSignature()->ModuleType = ReqModType) &&
-        (Plug->getSignature()->FunctionType = ReqFuncType))
+    if ((Plug->getSignature()->ModuleType == ReqModType) &&
+        (Plug->getSignature()->FunctionType == ReqFuncType))
     {
       Func = Plug->getFunction();
     }
@@ -121,4 +145,4 @@ mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginNa
   return Func;
 }
 
-
+*/

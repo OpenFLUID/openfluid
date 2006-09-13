@@ -71,9 +71,9 @@ bool MHYDASApp::checkConsistency()
 
   bool ExecStatus;
 
-  std::cout << "* Checking consistency... ";
+  std::cout << "* Checking consistency and initializing... ";
 
-  ExecStatus = mp_Engine->checkConsistency();
+  ExecStatus = mp_Engine->checkConsistencyAndInitialize();
 
   printlnExecStatus(ExecStatus);
 
@@ -270,7 +270,7 @@ int MHYDASApp::OnRun()
   if (m_OKToRun)
   {
     mp_CoreData = new CoreRepository();
-    mp_Engine = new Engine(mp_CoreData,mp_RunEnv);
+    mp_Engine = new Engine(mp_CoreData,mp_RunEnv,mp_PlugMan);
 
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);

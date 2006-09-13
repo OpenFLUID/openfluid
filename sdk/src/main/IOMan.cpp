@@ -10,6 +10,11 @@
 #include "setup.h"
 #include "xml/tinyxml.h"
 
+
+#include <wx/listimpl.cpp>
+WX_DEFINE_LIST(FunctionConfigsList);
+
+
 IOManager::IOManager(mhydasdk::base::RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
@@ -37,17 +42,21 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
   TiXmlDocument LoadDoc;
   TiXmlElement* Child;
+  TiXmlElement* Child2;
 
   wxString Str;
   double DoubleValue;
   int IntValue;
 
+  FunctionConfig* FConf;
 
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_CONFFILE).mb_str(wxConvUTF8)))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
 
+
+    // run params
     Child = DocHandle.FirstChild("mhydas").FirstChild("config").FirstChild("runparams").FirstChild("param").Element();
 
 
@@ -61,6 +70,57 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 		  }
 
 	  }
+
+
+    // ======= model structure ===========
+
+
+    // hydromodule
+    Child = DocHandle.FirstChild("mhydas").FirstChild("config").FirstChild("modules").FirstChild("hydromodule").FirstChild("function").Element();
+
+
+    for(Child;Child;Child=Child->NextSiblingElement())
+	  {
+
+		  if (Child->Attribute("name") != NULL  &&
+		      Child->Attribute("file") != NULL )
+		  {
+
+
+        // function name and file
+        FConf = new FunctionConfig();
+        FConf->Name = wxString(Child->Attribute("name"),wxConvUTF8);
+        FConf->File = wxString(Child->Attribute("file"),wxConvUTF8);
+
+
+        if ((FConf->Name.Length() > 0) && (FConf->File.Length() > 0))
+        {
+
+          FConf->Params.clear();
+
+          // function params parsing
+          TiXmlHandle Child2Handle(Child);
+          Child2 = Child2Handle.FirstChild("param").Element();
+
+          for(Child2;Child2;Child2=Child2->NextSiblingElement())
+	        {
+      		  if (Child2->Attribute("name") != NULL && Child2->Attribute("value",&DoubleValue) != NULL)
+	      	  {
+              FConf->Params[wxString(Child2->Attribute("name"),wxConvUTF8)] = DoubleValue;
+
+		        }
+
+	        }
+
+	        Config->HydroModuleConfig.Append(FConf);
+
+        }
+        else delete FConf;
+
+		  }
+
+	  }
+
 
 
   }

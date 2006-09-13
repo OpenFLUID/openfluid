@@ -9,5 +9,43 @@
 #define __MSEYTOUXFUNC_H__
 
 
+#include "sdk-base.h"
+#include "sdk-core.h"
+
+/**
+
+*/
+class MorelSeytouxFunc : public mhydasdk::base::Function
+{
+  private:
+
+
+  public:
+    /**
+      Constructor
+    */
+    MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData);
+
+    /**
+      Destructor
+    */
+    ~MorelSeytouxFunc();
+
+
+    bool initParams(mhydasdk::core::ParamsMap Params);
+
+    bool initialize();
+
+    bool checkConsistency();
+
+    bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
+
+    bool finalize();
+
+
+};
+
+
+
 
 #endif

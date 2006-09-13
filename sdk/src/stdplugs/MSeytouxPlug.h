@@ -34,7 +34,7 @@ class MorelSeytouxPlug : public mhydasdk::base::Plugin
 
     ~MorelSeytouxPlug();
 
-    mhydasdk::base::Function *getFunction();
+    mhydasdk::base::Function *getFunction(mhydasdk::core::CoreRepository* CoreData);
 
 
 };
