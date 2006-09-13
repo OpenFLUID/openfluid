@@ -31,14 +31,14 @@ namespace mhydasdk { namespace core {
 
 SpatialRepository::SpatialRepository()
 {
-  m_SUsCollection.clear();
-	m_RSsCollection.clear();
-	m_GUsCollection.clear();
+  mp_SUsCollection = new SUMap();
+	mp_RSsCollection = new RSMap();
+	mp_GUsCollection = new GUMap();
 
 
-  m_SUsProcessOrders.clear();
-  m_RSsProcessOrders.clear();
-  m_GUsProcessOrders.clear();
+  mp_SUsProcessOrders = new vector<vector<SurfaceUnit*>*>();
+  mp_RSsProcessOrders = new vector<vector<ReachSegment*>*>();
+  mp_GUsProcessOrders = new vector<vector<GroundwaterUnit*>*>();
 
 }
 
@@ -65,11 +65,11 @@ SpatialRepository::~SpatialRepository()
 bool SpatialRepository::addSU(SurfaceUnit *SU)
 {
 
-  if (m_SUsCollection.find(SU->getID()) != m_SUsCollection.end())
+  if (mp_SUsCollection->find(SU->getID()) != mp_SUsCollection->end())
   {
      return false;
   }
-  else m_SUsCollection[SU->getID()] = SU;
+  else mp_SUsCollection->insert(SUMap::value_type(SU->getID(),SU));
 
   return true;
 }
@@ -84,7 +84,7 @@ SurfaceUnit* SpatialRepository::getSUByID(int ID)
 {
   SurfaceUnit* Unit = NULL;
 
-  if (m_SUsCollection.find(ID) != m_SUsCollection.end()) Unit = m_SUsCollection[ID];
+  if (mp_SUsCollection->find(ID) != mp_SUsCollection->end()) Unit = mp_SUsCollection->find(ID)->second;
 
   return Unit;
 
@@ -97,17 +97,17 @@ SurfaceUnit* SpatialRepository::getSUByID(int ID)
 
 
 
-SUMap SpatialRepository::getSUsCollection()
+SUMap* SpatialRepository::getSUsCollection()
 {
-  return m_SUsCollection;
+  return mp_SUsCollection;
 }
 
 
 
 bool SpatialRepository::addRS(ReachSegment *RS)
 {
-  if (m_RSsCollection.find(RS->getID()) != m_RSsCollection.end()) return false;
-  else m_RSsCollection[RS->getID()] = RS;
+  if (mp_RSsCollection->find(RS->getID()) != mp_RSsCollection->end()) return false;
+  else mp_RSsCollection->insert(RSMap::value_type(RS->getID(),RS));
 
   return true;
 }
@@ -121,7 +121,7 @@ ReachSegment* SpatialRepository::getRSByID(int ID)
 {
   ReachSegment* Reach = NULL;
 
-  if (m_RSsCollection.find(ID) != m_RSsCollection.end()) Reach = m_RSsCollection[ID];
+  if (mp_RSsCollection->find(ID) != mp_RSsCollection->end()) Reach = mp_RSsCollection->find(ID)->second;
 
   return Reach;
 
@@ -132,9 +132,9 @@ ReachSegment* SpatialRepository::getRSByID(int ID)
 // =====================================================================
 
 
-RSMap SpatialRepository::getRSsCollection()
+RSMap* SpatialRepository::getRSsCollection()
 {
-  return m_RSsCollection;
+  return mp_RSsCollection;
 }
 
 
@@ -144,8 +144,8 @@ RSMap SpatialRepository::getRSsCollection()
 
 bool SpatialRepository::addGU(GroundwaterUnit *GU)
 {
-  if (m_GUsCollection.find(GU->getID()) != m_GUsCollection.end()) return false;
-  else m_GUsCollection[GU->getID()] = GU;
+  if (mp_GUsCollection->find(GU->getID()) != mp_GUsCollection->end()) return false;
+  else mp_GUsCollection->insert(GUMap::value_type(GU->getID(),GU));
 
   return true;
 
@@ -158,7 +158,7 @@ GroundwaterUnit* SpatialRepository::getGUByID(int ID)
 {
   GroundwaterUnit* Unit = NULL;
 
-  if (m_GUsCollection.find(ID) != m_GUsCollection.end()) Unit = m_GUsCollection[ID];
+  if (mp_GUsCollection->find(ID) != mp_GUsCollection->end()) Unit = mp_GUsCollection->find(ID)->second;
 
   return Unit;
 
@@ -168,9 +168,9 @@ GroundwaterUnit* SpatialRepository::getGUByID(int ID)
 // =====================================================================
 // =====================================================================
 
-GUMap SpatialRepository::getGUsCollection()
+GUMap* SpatialRepository::getGUsCollection()
 {
-  return m_GUsCollection;
+  return mp_GUsCollection;
 }
 
 
@@ -181,8 +181,8 @@ GUMap SpatialRepository::getGUsCollection()
 
 bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 {
-  if (m_SUsCollection.size() != 0 && m_RSsCollection.size() != 0
-      && m_GUsCollection.size() != 0)
+  if (mp_SUsCollection->size() != 0 && mp_RSsCollection->size() != 0
+      && mp_GUsCollection->size() != 0)
   {
 
     GroundwaterUnit* LinkedGU;
@@ -195,7 +195,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 
     SUMap::iterator SUit;
 
-    for(SUit = m_SUsCollection.begin(); SUit != m_SUsCollection.end(); ++SUit )
+    for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit )
     {
 
       //std::cerr << SUit->second->getID() << std::endl;
@@ -230,7 +230,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 
     RSMap::iterator RSit;
 
-    for(RSit = m_RSsCollection.begin(); RSit != m_RSsCollection.end(); ++RSit )
+    for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit )
     {
 
        // groundwater link
@@ -253,7 +253,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 
     GUMap::iterator GUit;
 
-    for(GUit = m_GUsCollection.begin(); GUit != m_GUsCollection.end(); ++GUit )
+    for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
     {
 
       // groundwater link only if exchange
@@ -282,8 +282,8 @@ bool SpatialRepository::buildProcessOrders()
 
 
 
-  if ((m_SUsCollection.size() != 0) && (m_RSsCollection.size() !=0)
-      && (m_GUsCollection.size() !=0))
+  if ((mp_SUsCollection->size() != 0) && (mp_RSsCollection->size() !=0)
+      && (mp_GUsCollection->size() !=0))
   {
 
     int MaxOrder, i;
@@ -294,20 +294,20 @@ bool SpatialRepository::buildProcessOrders()
     SUMap::iterator SUit;
 
     // searching for highest process order
-    for(SUit = m_SUsCollection.begin(); SUit != m_SUsCollection.end(); ++SUit )
+    for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit )
     {
       if (SUit->second->getProcessOrder() > MaxOrder)
       MaxOrder = SUit->second->getProcessOrder();
     }
 
     // creating process order classes
-    for (i=0; i<MaxOrder; i++)  m_SUsProcessOrders.push_back(new vector<SurfaceUnit*>());
+    for (i=0; i<MaxOrder; i++)  mp_SUsProcessOrders->push_back(new vector<SurfaceUnit*>());
 
 
     // adding SU in its process order class
-    for(SUit = m_SUsCollection.begin(); SUit != m_SUsCollection.end(); ++SUit)
+    for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit)
     {
-      m_SUsProcessOrders.at(SUit->second->getProcessOrder()-1)->push_back(SUit->second);
+      mp_SUsProcessOrders->at(SUit->second->getProcessOrder()-1)->push_back(SUit->second);
     }
 
 
@@ -318,20 +318,20 @@ bool SpatialRepository::buildProcessOrders()
     RSMap::iterator RSit;
 
     // searching for highest process order
-    for(RSit = m_RSsCollection.begin(); RSit != m_RSsCollection.end(); ++RSit )
+    for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit )
     {
       if (RSit->second->getProcessOrder() > MaxOrder)
       MaxOrder = RSit->second->getProcessOrder();
     }
 
     // creating process order classes
-    for (i=0; i<MaxOrder; i++)  m_RSsProcessOrders.push_back(new vector<ReachSegment*>());
+    for (i=0; i<MaxOrder; i++)  mp_RSsProcessOrders->push_back(new vector<ReachSegment*>());
 
 
     // adding RS in its process order class
-    for(RSit = m_RSsCollection.begin(); RSit != m_RSsCollection.end(); ++RSit)
+    for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit)
     {
-      m_RSsProcessOrders.at(RSit->second->getProcessOrder()-1)->push_back(RSit->second);
+      mp_RSsProcessOrders->at(RSit->second->getProcessOrder()-1)->push_back(RSit->second);
     }
 
 
@@ -343,20 +343,20 @@ bool SpatialRepository::buildProcessOrders()
     GUMap::iterator GUit;
 
     // searching for highest process order
-    for(GUit = m_GUsCollection.begin(); GUit != m_GUsCollection.end(); ++GUit )
+    for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
     {
       if (GUit->second->getProcessOrder() > MaxOrder)
       MaxOrder = GUit->second->getProcessOrder();
     }
 
     // creating process order classes
-    for (i=0; i<MaxOrder; i++)  m_GUsProcessOrders.push_back(new vector<GroundwaterUnit*>());
+    for (i=0; i<MaxOrder; i++)  mp_GUsProcessOrders->push_back(new vector<GroundwaterUnit*>());
 
 
     // adding GU in its process order class
-    for(GUit = m_GUsCollection.begin(); GUit != m_GUsCollection.end(); ++GUit)
+    for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit)
     {
-      m_GUsProcessOrders.at(GUit->second->getProcessOrder()-1)->push_back(GUit->second);
+      mp_GUsProcessOrders->at(GUit->second->getProcessOrder()-1)->push_back(GUit->second);
     }
 
 
