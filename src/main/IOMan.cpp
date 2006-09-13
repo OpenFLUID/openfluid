@@ -381,7 +381,7 @@ bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
     {
       if (!loadRainFile(RainData,RIFit->first,RIFit->second))
       {
-        //mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
+        mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
         return false;
       }
     }
@@ -390,4 +390,63 @@ bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
   return true;
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
+{
+  if (Data == NULL) return false;
+
+  long SUID;
+  long RainID;
+
+  int i;
+
+  mhydasdk::base::ColumnFileParser DistriFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RAINDISTRIFILE),wxT("%"));
+
+  if (!DistriFileParser.parseFile() ||
+      DistriFileParser.getColsCount() != MHYDAS_RAINDISTRIFILE_COLNBR ||
+      DistriFileParser.getColsCount() < 1)
+  {
+    mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(" file parsing error.");
+    return false;
+  }
+  else
+  {
+    mhydasdk::core::SurfaceUnit *CurrentSU;
+    mhydasdk::core::ChronDataSource *CurrentRainGauge;
+
+    for (i=0;i<DistriFileParser.getLinesCount();i++)
+    {
+
+      if (DistriFileParser.getLongValue(i,0,&SUID) && DistriFileParser.getLongValue(i,1,&RainID))
+      {
+        CurrentSU = Data->getSpatialData()->getSUByID(SUID);
+        CurrentRainGauge = Data->getRainEvent()->getRainSourceByID(RainID);
+        if ((CurrentSU != NULL) && (CurrentRainGauge != NULL))
+        {
+          CurrentSU->setRainSource(CurrentRainGauge);
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("Matching error between SU and rain source.");
+          return false;
+        }
+      }
+      else
+      {
+        mhydasdk::base::LastError::Message = wxT("Rain distribution contents error (") + MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(").");
+        return false;
+      }
+    }
+
+  }
+  return true;
+}
+
+
+
 
