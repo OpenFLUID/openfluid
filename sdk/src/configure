@@ -15,7 +15,7 @@ PLUGSUBDIR=plugs
 MDEF_INDIR=MHYDAS.IN
 MDEF_OUTDIR=MHYDAS.OUT
 
-MDEF_CONFFILE=config.xml
+MDEF_CONFFILE=model.xml
 MDEF_INDATAFILE=inputdata.xml
 MDEF_OUTRESFILE=outputres.xml
 
@@ -24,6 +24,7 @@ MDEF_RSDEFSFILE=RSdefs.dat
 MDEF_GUDEFSFILE=GUdefs.dat
 
 MDEF_RAINEVTFILE=rainevent.xml
+MDEF_RAINDISTRIFILE=raindistri.dat
 
 
 
@@ -178,11 +179,13 @@ echo "const wxString MHYDAS_DEFAULT_SUDEFSFILE = wxT(\"$MDEF_SUDEFSFILE\");" >> 
 echo "const wxString MHYDAS_DEFAULT_RSDEFSFILE = wxT(\"$MDEF_RSDEFSFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_GUDEFSFILE = wxT(\"$MDEF_GUDEFSFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINEVTFILE = wxT(\"$MDEF_RAINEVTFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_RAINDISTRIFILE = wxT(\"$MDEF_RAINDISTRIFILE\");" >> $SETUPH
 
 echo "// File formats" >> $SETUPH
 echo "const unsigned int MHYDAS_SUDEFSFILE_COLNBR = 8;" >> $SETUPH
 echo "const unsigned int MHYDAS_RSDEFSFILE_COLNBR = 10;" >> $SETUPH
 echo "const unsigned int MHYDAS_GUDEFSFILE_COLNBR = 4;" >> $SETUPH
+echo "const unsigned int MHYDAS_RAINDISTRIFILE_COLNBR = 2;" >> $SETUPH
 
 echo "" >> $SETUPH
 
