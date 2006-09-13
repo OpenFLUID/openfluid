@@ -37,8 +37,15 @@ class Engine
 
      EngineConfig m_Config;
 
+     /**
+       Processes the config file, check the list of plugins to load,
+       loads them, registers params to pass and builds the processing list of each module.
+     */
      bool processConfig();
 
+     /**
+       plugs the processing list into each module.
+     */
      bool plugFunctions();
 
   public:

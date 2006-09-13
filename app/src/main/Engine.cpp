@@ -33,6 +33,13 @@ Engine::~Engine()
 
 bool Engine::processConfig()
 {
+  /** \internal
+
+    uses the PluginManager to
+      - load and parametrize functions
+      - build the processing list of each module
+  */
+
 
   return true;
 }
@@ -56,6 +63,15 @@ bool Engine::plugFunctions()
 
 bool Engine::buildModel()
 {
+  /** \internal
+
+    builds the model from the config file, calling:
+    - loadModelConfig() from mp_IOMan
+    - processConfig()
+    - plugFunctions
+
+  */
+
   return (mp_IOMan->loadModelConfig(&m_Config) && processConfig() && plugFunctions());
 }
 
@@ -66,7 +82,8 @@ bool Engine::buildModel()
 bool Engine::loadData()
 {
   return (mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData()) &&
-          mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent()));
+          mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent()) &&
+          mp_IOMan->loadRainDistribution(mp_CoreData));
 }
 
 
@@ -75,6 +92,8 @@ bool Engine::loadData()
 
 bool Engine::checkConsistency()
 {
+
+  // builds topology by linking objects
   if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
   {
     mhydasdk::base::LastError::Message = wxT("Topology rebuild error.");

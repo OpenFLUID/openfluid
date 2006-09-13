@@ -73,6 +73,15 @@ class IOManager
     */
     bool loadRainEvent(mhydasdk::core::RainEvent *RainData);
 
+
+    /**
+      Loads rain distribution and distributes rain
+      \param[out] Rain event data structure to populate
+    */
+    bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
+
+
+
 };
 
 
