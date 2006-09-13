@@ -163,9 +163,9 @@ void MHYDASApp::printDataInfos()
 {
   std::cout << std::endl;
   std::cout << "Spatial objects: " << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getSUsCollection().size() << " Surface Units" << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getRSsCollection().size() << " Reach Segments" << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getGUsCollection().size() << " Groundwater Units" << std::endl;
+            << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
+            << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
+            << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
   std::cout << "Rain source(s): " << mp_CoreData->getRainEvent()->getRainSourceCollection().size() << std::endl;
   std::cout << "Simulation period: " << std::endl
             << "   from " << mp_CoreData->getRainEvent()->getEventStartingTime().asString().mb_str(wxConvUTF8) << std::endl
@@ -270,6 +270,7 @@ int MHYDASApp::OnRun()
   if (m_OKToRun)
   {
     mp_CoreData = new CoreRepository();
+
     mp_Engine = new Engine(mp_CoreData,mp_RunEnv,mp_PlugMan);
 
 

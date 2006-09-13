@@ -21,8 +21,8 @@ HydroObject::HydroObject()
 {
   m_ID = -1;
   m_ProcessOrder = 0;
+  mp_SimVars = new SimulatedVarsMap();
 
-  m_SimVars.clear();
 
 }
 
@@ -33,6 +33,8 @@ HydroObject::HydroObject()
 
 HydroObject::HydroObject(hoid_t ID, int ProcessOrder)
 {
+
+  mp_SimVars = new SimulatedVarsMap();
   m_ID = ID;
   m_ProcessOrder = ProcessOrder;
 }
