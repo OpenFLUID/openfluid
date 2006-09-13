@@ -34,7 +34,7 @@ class HayamiSUPlug : public mhydasdk::base::Plugin
 
     ~HayamiSUPlug();
 
-    mhydasdk::base::Function *getFunction();
+    mhydasdk::base::Function *getFunction(mhydasdk::core::CoreRepository* CoreData);
 
 
 };

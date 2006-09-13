@@ -22,6 +22,8 @@ HydroObject::HydroObject()
   m_ID = -1;
   m_ProcessOrder = 0;
 
+  m_SimVars.clear();
+
 }
 
 

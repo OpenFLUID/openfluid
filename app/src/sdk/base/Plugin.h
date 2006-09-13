@@ -94,7 +94,7 @@ struct Signature
   /**
     Plugin function type
   */
-  FunctionTypeList FunctionType;
+  // FunctionTypeList FunctionType;
 
   /**
     Plugin module type
@@ -169,7 +169,7 @@ class Plugin : public wxObject
       Returns the plugin function
       \return Function
     */
-    virtual mhydasdk::base::Function *getFunction()=0;
+    virtual mhydasdk::base::Function *getFunction(mhydasdk::core::CoreRepository* CoreData)=0;
 
 
 };

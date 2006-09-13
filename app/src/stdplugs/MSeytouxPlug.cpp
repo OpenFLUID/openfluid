@@ -31,7 +31,7 @@ MorelSeytouxPlug::MorelSeytouxPlug()
   mp_Signature->AuthorEmail = wxT("");
   mp_Signature->ID = wxT("mseytoux");
   mp_Signature->ModuleType = mhydasdk::base::MOD_HYDROLOGY;
-  mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_PRODUCTION;
+  // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_PRODUCTION;
   mp_Signature->Name = wxT("Morel-Seytoux production");
 
 
@@ -51,9 +51,9 @@ MorelSeytouxPlug::~MorelSeytouxPlug()
 
 
 
-mhydasdk::base::Function* MorelSeytouxPlug::getFunction()
+mhydasdk::base::Function* MorelSeytouxPlug::getFunction(mhydasdk::core::CoreRepository* CoreData)
 {
-  return NULL;
+  return new MorelSeytouxFunc(CoreData);
 }
 
 

@@ -28,6 +28,29 @@ Function::~Function()
 
 
 
+
+// =====================================================================
+// =====================================================================
+
+bool Function::addSpatialSimulationVar(wxString Name, mhydasdk::core::SUMap SUsCollection)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+bool Function::checkSpatialSimulationVar(wxString Name, mhydasdk::core::SUMap SUsCollection)
+{
+
+
+}
+
+
+
 } } // namespace mhydasdk::plugs
 
 
