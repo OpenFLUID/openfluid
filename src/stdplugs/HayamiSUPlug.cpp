@@ -53,7 +53,7 @@ HayamiSUPlug::~HayamiSUPlug()
 
 mhydasdk::base::Function* HayamiSUPlug::getFunction(mhydasdk::core::CoreRepository* CoreData)
 {
-  return NULL;
+  return new HayamiSUFunc(CoreData);
 }
 
 
