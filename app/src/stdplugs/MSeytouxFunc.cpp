@@ -46,21 +46,10 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 bool MorelSeytouxFunc::initialize()
 {
 
-  // std::cerr << "Momo initialize()" << std::endl;
-
   bool IsOK =  true;
 
   IsOK = mhydasdk::base::Function::initialize();
 
-//  std::cerr << "" << std::endl;
-
-  /*
-  std::cerr << "ajout " << addSpatialSimulationVar(wxT("runoff"),mp_CoreData->getSpatialData()->getSUsCollection()) << std::endl;
-
-  std::cerr << "check " << checkSpatialSimulationVar(wxT("runoff"),mp_CoreData->getSpatialData()->getSUsCollection()) << std::endl;
-
-  std::cerr << "check " << checkSpatialSimulationVar(wxT("infiltration"),mp_CoreData->getSpatialData()->getSUsCollection()) << std::endl;
- */
   return IsOK;
 }
 
