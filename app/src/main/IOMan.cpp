@@ -7,6 +7,7 @@
 
 
 #include "IOMan.h"
+#include "ColTextParser.h"
 #include "setup.h"
 #include "xml/tinyxml.h"
 
@@ -186,9 +187,9 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (SUsFileExists)
   {
-    mhydasdk::base::ColumnFileParser SUsFileParser(SUsFilename,wxT("%"));
+    ColumnTextParser SUsFileParser(wxT("%"));
 
-    if (!SUsFileParser.parseFile() ||
+    if (!SUsFileParser.loadFromFile(SUsFilename) ||
         SUsFileParser.getColsCount() != MHYDAS_SUDEFSFILE_COLNBR ||
         SUsFileParser.getColsCount() < 1)
     {
@@ -242,9 +243,9 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (RSsFileExists)
   {
-    mhydasdk::base::ColumnFileParser RSsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSDEFSFILE),wxT("%"));
+    ColumnTextParser RSsFileParser(wxT("%"));
 
-    if (!RSsFileParser.parseFile() ||
+    if (!RSsFileParser.loadFromFile(RSsFilename) ||
         RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
         RSsFileParser.getColsCount() < 1)
     {
@@ -296,9 +297,9 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (GUsFileExists)
   {
-    mhydasdk::base::ColumnFileParser GUsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUDEFSFILE),wxT("%"));
+    ColumnTextParser GUsFileParser(wxT("%"));
 
-    if (!GUsFileParser.parseFile() ||
+    if (!GUsFileParser.loadFromFile(GUsFilename) ||
         GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
         GUsFileParser.getColsCount() < 1)
     {
@@ -392,7 +393,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
 
 bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename)
 {
-  mhydasdk::base::ColumnFileParser FileParser(mp_RunEnv->getInputFullPath(Filename),wxT("%"));
+  ColumnTextParser FileParser(wxT("%"));
   bool IsOK;
 
   IsOK = true;
@@ -402,7 +403,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
   mhydasdk::core::TimeSerie *Serie;
 
-  if (FileParser.parseFile() && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
+  if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
 
     Serie = new mhydasdk::core::TimeSerie("mm/h");
@@ -490,9 +491,9 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
 
   int i;
 
-  mhydasdk::base::ColumnFileParser DistriFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RAINDISTRIFILE),wxT("%"));
+  ColumnTextParser DistriFileParser(wxT("%"));
 
-  if (!DistriFileParser.parseFile() ||
+  if (!DistriFileParser.loadFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RAINDISTRIFILE)) ||
       DistriFileParser.getColsCount() != MHYDAS_RAINDISTRIFILE_COLNBR ||
       DistriFileParser.getColsCount() < 1)
   {

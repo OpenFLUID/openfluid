@@ -6,7 +6,7 @@
 */
 
 
-#include "ColFileParser.h"
+#include "ColTextParser.h"
 #include <wx/tokenzr.h>
 
 #include <iostream>
@@ -16,18 +16,14 @@
 // =====================================================================
 
 
-namespace mhydasdk { namespace base {
 
-
-
-ColumnFileParser::ColumnFileParser(wxString FileName, wxString CommentLineSymbol, wxString Delimiter)
+ColumnTextParser::ColumnTextParser(wxString CommentLineSymbol, wxString Delimiter)
 {
 
-  m_FileName = FileName;
   m_Delimiter = Delimiter;
   m_CommentSymbol = CommentLineSymbol;
 
-  m_FileContents = NULL;
+  mp_Contents = NULL;
 
   m_LinesCount = 0;
   m_ColsCount = 0;
@@ -41,7 +37,7 @@ ColumnFileParser::ColumnFileParser(wxString FileName, wxString CommentLineSymbol
 
 
 
-ColumnFileParser::~ColumnFileParser()
+ColumnTextParser::~ColumnTextParser()
 {
 
 }
@@ -52,7 +48,7 @@ ColumnFileParser::~ColumnFileParser()
 
 
 
-wxArrayString* ColumnFileParser::tokenizeLine(wxString Line)
+wxArrayString* ColumnTextParser::tokenizeLine(wxString Line)
 {
   wxArrayString *NewLine = new wxArrayString();
 
@@ -74,24 +70,24 @@ wxArrayString* ColumnFileParser::tokenizeLine(wxString Line)
 
 
 
-bool ColumnFileParser::checkContents()
+bool ColumnTextParser::checkContents()
 {
   int LineColCount;
-  int LineCount = m_FileContents->GetCount();
+  int LineCount = mp_Contents->GetCount();
 
   if (LineCount == 0) return true;
 
   // checks that all lines have the same size
   // i.e. same columns number
-  LineColCount = ((wxArrayString*)(m_FileContents->Item(0)))->GetCount();
+  LineColCount = ((wxArrayString*)(mp_Contents->Item(0)))->GetCount();
 
   for (int i=1;i<LineCount;i++)
   {
-    if (((wxArrayString*)(m_FileContents->Item(i)))->GetCount() != LineColCount)
+    if (((wxArrayString*)(mp_Contents->Item(i)))->GetCount() != LineColCount)
       return false;
   }
 
-  m_LinesCount = m_FileContents->GetCount();
+  m_LinesCount = mp_Contents->GetCount();
   m_ColsCount = LineColCount;
 
   return true;
@@ -102,7 +98,7 @@ bool ColumnFileParser::checkContents()
 // =====================================================================
 
 
-bool ColumnFileParser::isCommentLineStr(wxString LineStr)
+bool ColumnTextParser::isCommentLineStr(wxString LineStr)
 {
 
   if (m_CommentSymbol.Length() > 0)
@@ -122,7 +118,7 @@ bool ColumnFileParser::isCommentLineStr(wxString LineStr)
 // =====================================================================
 
 
-bool ColumnFileParser::isEmptyLineStr(wxString LineStr)
+bool ColumnTextParser::isEmptyLineStr(wxString LineStr)
 {
 
   LineStr = LineStr.Trim(true).Trim(false);
@@ -139,7 +135,7 @@ bool ColumnFileParser::isEmptyLineStr(wxString LineStr)
 
 
 
-bool ColumnFileParser::parseFile()
+bool ColumnTextParser::loadFromFile(wxString Filename)
 {
 
   bool IsOK = true;
@@ -147,14 +143,14 @@ bool ColumnFileParser::parseFile()
   wxString StrLine;
   wxTextFile *ColumnFile;
 
-  if (m_FileContents != NULL) delete m_FileContents;
-  m_FileContents = new ArrayFileContents();
+  if (mp_Contents != NULL) delete mp_Contents;
+  mp_Contents = new ArrayContents();
 
   m_LinesCount = 0;
   m_ColsCount = 0;
 
 
-  ColumnFile = new wxTextFile(m_FileName);
+  ColumnFile = new wxTextFile(Filename);
 
   // check if file exists and opens it
   if (!ColumnFile->Exists()) return false;
@@ -173,7 +169,7 @@ bool ColumnFileParser::parseFile()
   while (!ColumnFile->Eof())
   {
     // adds the line if it is not a comment line nor empty
-    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) m_FileContents->Add(tokenizeLine(StrLine));
+    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
 
     StrLine = ColumnFile->GetNextLine();
   }
@@ -188,17 +184,24 @@ bool ColumnFileParser::parseFile()
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
-
-
-wxArrayString* ColumnFileParser::getValues(int Line)
+bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
 {
-  if (Line < m_FileContents->GetCount())
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+wxArrayString* ColumnTextParser::getValues(int Line)
+{
+  if (Line < mp_Contents->GetCount())
   {
-    return ((wxArrayString*)(m_FileContents->Item(Line)));
+    return ((wxArrayString*)(mp_Contents->Item(Line)));
   }
   else
   {
@@ -213,7 +216,7 @@ wxArrayString* ColumnFileParser::getValues(int Line)
 // =====================================================================
 
 
-wxString ColumnFileParser::getValue(int Line, int Column)
+wxString ColumnTextParser::getValue(int Line, int Column)
 {
   wxArrayString* LineString = getValues(Line);
 
@@ -234,7 +237,7 @@ wxString ColumnFileParser::getValue(int Line, int Column)
 // =====================================================================
 
 
-bool ColumnFileParser::getStringValue(int Line, int Column, wxString *Value)
+bool ColumnTextParser::getStringValue(int Line, int Column, wxString *Value)
 {
   wxString StrValue = getValue(Line,Column);
 
@@ -251,7 +254,7 @@ bool ColumnFileParser::getStringValue(int Line, int Column, wxString *Value)
 // =====================================================================
 
 
-bool ColumnFileParser::getLongValue(int Line, int Column, long* Value)
+bool ColumnTextParser::getLongValue(int Line, int Column, long* Value)
 {
   wxString StrValue = getValue(Line,Column);
 
@@ -269,7 +272,7 @@ bool ColumnFileParser::getLongValue(int Line, int Column, long* Value)
 // =====================================================================
 
 
-bool ColumnFileParser::getDoubleValue(int Line, int Column, double* Value)
+bool ColumnTextParser::getDoubleValue(int Line, int Column, double* Value)
 {
 
   wxString StrValue = getValue(Line,Column);
@@ -283,6 +286,4 @@ bool ColumnFileParser::getDoubleValue(int Line, int Column, double* Value)
 }
 
 
-
-} } // namespace mhydasdk::base
 
