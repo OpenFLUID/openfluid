@@ -6,6 +6,7 @@
 		<Option pch_mode="2" />
 		<Option default_target="" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="" />
 		<Build>
 			<Target title="default">
 				<Option output="main" />
@@ -19,6 +20,16 @@
 			<Option target="default" />
 		</Unit>
 		<Unit filename="../src/main/AppTools.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="../src/main/ColTextParser.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="../src/main/ColTextParser.h">
 			<Option compilerVar="CPP" />
 			<Option compile="0" />
 			<Option link="0" />

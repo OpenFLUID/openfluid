@@ -12,26 +12,22 @@
 #include <wx/wx.h>
 #include <wx/textfile.h>
 
-namespace mhydasdk { namespace base {
-
-
-WX_DEFINE_ARRAY(wxArrayString*, ArrayFileContents);
+WX_DEFINE_ARRAY(wxArrayString*, ArrayContents);
 
 /**
   Class for column file management and handling
 */
-class ColumnFileParser
+class ColumnTextParser
 {
 
   protected:
 
   private:
 
-    wxString m_FileName;
     wxString m_Delimiter;
     wxString m_CommentSymbol;
 
-    ArrayFileContents *m_FileContents;
+    ArrayContents* mp_Contents;
 
     wxArrayString* tokenizeLine(wxString Line);
 
@@ -51,17 +47,16 @@ class ColumnFileParser
     /**
       Constructor
     */
-    ColumnFileParser(wxString FileName,  wxString CommentLineSymbol = wxT(""), wxString Delimiter = wxT(" \t\r\n"));
+    ColumnTextParser(wxString CommentLineSymbol = wxT(""), wxString Delimiter = wxT(" \t\r\n"));
 
     /**
       Destructor
     */
-    ~ColumnFileParser();
+    ~ColumnTextParser();
 
-    /**
-      Loads and checks file
-    */
-    bool parseFile();
+    bool loadFromFile(wxString Filename);
+
+    bool setFromString(wxString Contents, int ColumnsNbr);
 
     /**
       Returns the value at a specified row-column, as a string
@@ -93,9 +88,6 @@ class ColumnFileParser
 
 };
 
-
-
-} } // namespace mhydasdk::base
 
 
 #endif

@@ -15,6 +15,7 @@ OBJ= $(OBJDIR)/AppTools.o \
      $(OBJDIR)/Module.o \
      $(OBJDIR)/Engine.o \
      $(OBJDIR)/PluginManager.o \
+     $(OBJDIR)/ColTextParser.o \
      $(OBJDIR)/IOMan.o \
      $(OBJDIR)/main.o
 
