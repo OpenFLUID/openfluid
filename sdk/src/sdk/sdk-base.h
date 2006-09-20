@@ -26,7 +26,6 @@
 #include "base/CompBlock.h"
 #include "base/Function.h"
 #include "base/Plugin.h"
-#include "base/ColFileParser.h"
 #include "base/LastError.h"
 
 
@@ -38,7 +37,6 @@ class DLLEXPORT ColumnFileParser;
 class DLLEXPORT RuntimeEnvironment;
 class DLLEXPORT SimulationStatus;
 class DLLEXPORT ComputationBlock;
-class DLLEXPORT ColumnFileParser;
 class DLLEXPORT Function;
 class DLLEXPORT Plugin;
 

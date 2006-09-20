@@ -6,6 +6,7 @@
 		<Option pch_mode="2" />
 		<Option default_target="" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="" />
 		<Build>
 			<Target title="default">
 				<Option output="sdk-core" />

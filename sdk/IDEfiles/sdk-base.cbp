@@ -6,6 +6,7 @@
 		<Option pch_mode="2" />
 		<Option default_target="" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="" />
 		<Build>
 			<Target title="default">
 				<Option output="sdk-base" />
@@ -14,16 +15,6 @@
 				<Option projectResourceIncludeDirsRelation="0" />
 			</Target>
 		</Build>
-		<Unit filename="../src/sdk/base/ColFileParser.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="default" />
-		</Unit>
-		<Unit filename="../src/sdk/base/ColFileParser.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="default" />
-		</Unit>
 		<Unit filename="../src/sdk/base/CompBlock.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="default" />

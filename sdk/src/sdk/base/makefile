@@ -23,7 +23,6 @@ OBJ=$(OBJDIR)/RuntimeEnv.o \
     $(OBJDIR)/Function.o \
     $(OBJDIR)/Plugin.o \
     $(OBJDIR)/LastError.o \
-    $(OBJDIR)/ColFileParser.o
 
 
 $(OBJDIR)/%.o : %.cpp %.h
