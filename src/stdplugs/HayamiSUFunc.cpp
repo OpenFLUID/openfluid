@@ -36,7 +36,7 @@ HayamiSUFunc::~HayamiSUFunc()
 bool HayamiSUFunc::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-  // std::cout << "Momo initParams()" << std::endl;
+  // std::cout << "Yaya initParams()" << std::endl;
   return true;
 }
 
@@ -63,7 +63,7 @@ bool HayamiSUFunc::initialize()
 bool HayamiSUFunc::checkConsistency()
 {
 
-  //std::cout << "Momo checkConsistency()" << std::endl;
+  //std::cout << "Yaya checkConsistency()" << std::endl;
 
   return true;
 }
@@ -76,7 +76,7 @@ bool HayamiSUFunc::checkConsistency()
 bool HayamiSUFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
 
-  // std::cout << "coucou c'est Momo run " << mp_CoreData->getSpatialData()->getSUsCollection()->size();
+  // std::cout << "coucou c'est Yaya run " << mp_CoreData->getSpatialData()->getSUsCollection()->size();
   return true;
 }
 
@@ -87,7 +87,7 @@ bool HayamiSUFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 bool HayamiSUFunc::finalize()
 {
-  std::cout << "HayamiSU finalize()" << std::endl;
+  // std::cout << "HayamiSU finalize()" << std::endl;
   return true;
 }
 

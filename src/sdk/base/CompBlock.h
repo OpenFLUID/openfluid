@@ -40,7 +40,6 @@ class ComputationBlock
     */
     ~ComputationBlock();
 
-
     virtual bool initialize()=0;
 
     virtual bool checkConsistency()=0;
