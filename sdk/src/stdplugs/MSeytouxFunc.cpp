@@ -85,7 +85,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 bool MorelSeytouxFunc::finalize()
 {
-  std::cout << "Momo finalize()" << std::endl;
+  // std::cout << "Momo finalize()" << std::endl;
   return true;
 }
 

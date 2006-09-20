@@ -12,7 +12,7 @@
   \code
   extern "C"
   {
-    DLLIMPORT Plugin* GetM2k5Plugin(wxString SelfPath);
+    DLLIMPORT Plugin* GetMhydasPlugin(wxString SelfPath);
   };
   \endcode
   returning an instance of the plugin class, inherited from the class defined here.
