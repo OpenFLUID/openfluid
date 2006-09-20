@@ -149,7 +149,7 @@ bool Engine::loadData()
 // =====================================================================
 // =====================================================================
 
-bool Engine::checkConsistencyAndInitialize()
+bool Engine::prepareDataAndCheckConsistency()
 {
 
   // builds topology by linking objects
@@ -159,19 +159,20 @@ bool Engine::checkConsistencyAndInitialize()
     return false;
   }
 
+
+  if (mp_HydroModule == NULL || !mp_HydroModule->prepareData())
+  {
+    mhydasdk::base::LastError::Message = wxT("Hydrology module data preparation error.");
+    return false;
+  }
+
+
   if (mp_HydroModule == NULL || !mp_HydroModule->checkConsistency())
   {
     mhydasdk::base::LastError::Message = wxT("Hydrology module consistency error.");
     return false;
   }
 
-  // initialization of functions
-
-  if (!mp_HydroModule->initialize())
-  {
-    mhydasdk::base::LastError::Message = wxT("Hydro module initialization error.");
-    return false;
-  }
 
 
   return true;
@@ -191,6 +192,15 @@ bool Engine::run()
                                                       mp_CoreData->getRainEvent()->getEventEndingTime(),
                                                       m_Config.DeltaT);
 
+
+  // initialization of functions
+  if (!mp_HydroModule->initializeRun())
+  {
+    mhydasdk::base::LastError::Message = wxT("Hydro module initialization error.");
+    return false;
+  }
+
+
   // run
   do
   {
@@ -209,7 +219,7 @@ bool Engine::run()
 
 
   // finalization of functions
-  mp_HydroModule->finalize();
+  mp_HydroModule->finalizeRun();
 
   return true;
 }

@@ -52,6 +52,23 @@ Module::~Module()
 // =====================================================================
 // =====================================================================
 
+bool Module::prepareData()
+{
+  bool IsOK = true;
+
+  if (m_Functions.GetCount() == 0) IsOK = false;
+  else
+  {
+    PARSE_FUNCTION_LIST(prepareData(),IsOK);
+  }
+
+  return IsOK;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool Module::checkConsistency()
 {
@@ -71,11 +88,11 @@ bool Module::checkConsistency()
 // =====================================================================
 
 
-bool Module::initialize()
+bool Module::initializeRun()
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(initialize(),IsOK);
+  PARSE_FUNCTION_LIST(initializeRun(),IsOK);
 
   return IsOK;
 }
@@ -100,11 +117,11 @@ bool Module::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool Module::finalize()
+bool Module::finalizeRun()
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(finalize(),IsOK);
+  PARSE_FUNCTION_LIST(finalizeRun(),IsOK);
 
   return IsOK;
 

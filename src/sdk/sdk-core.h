@@ -39,8 +39,6 @@
 
 namespace mhydasdk { namespace core {
 
-WX_DECLARE_STRING_HASH_MAP(double,ParamsMap);
-
 class DLLEXPORT DateTime;
 class DLLEXPORT TimeSerieItem;
 class DLLEXPORT TimeSerie;

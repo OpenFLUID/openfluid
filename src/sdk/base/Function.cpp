@@ -13,27 +13,44 @@
 // =====================================================================
 // =====================================================================
 
-#define CHECK_SIMULATION_VAR(name,collection,hashtype) \
-    hashtype::iterator it;\
-    for(it = collection->begin(); it != collection->end(); ++it )\
+
+#define CHECK_VAR(name,objects,objshashtype,vars,status) \
+    objshashtype::iterator it;\
+    it = objects->begin(); \
+    while (status && (it != objects->end()))\
     {\
-      if (it->second->getSimulatedVars()->find(name) == it->second->getSimulatedVars()->end())\
-      return false;\
+      status = (!(it->second->vars->find(name) == it->second->vars->end())); \
+      ++it; \
     }\
-    return true;
 
 
-#define ADD_SIMULATION_VAR(name,collection,hashtype) \
-    if (checkSpatialSimulationVar(name,collection)) return false; \
-    else \
-    { \
-      hashtype::iterator it; \
-      for(it = collection->begin(); it != collection->end(); ++it ) \
+#define CREATE_VAR(name,objects,objshashtype,vars,varshashtype,status) \
+    objshashtype::iterator it;\
+    it = objects->begin(); \
+    while (status && (it != objects->end()))\
+    {\
+      status = (it->second->vars->find(name) == it->second->vars->end()); \
+      ++it; \
+    }\
+    if (status) \
+    {\
+      for(it = objects->begin(); it != objects->end(); ++it ) \
       { \
-        it->second->getSimulatedVars()->insert(mhydasdk::core::SimulatedVarsMap::value_type(name,new std::vector<double>)); \
+        it->second->vars->insert(varshashtype::value_type(name,new std::vector<double>)); \
       } \
-    } \
-    return true;
+    }
+
+#define UPDATE_VAR(name,objects,objshashtype,vars,varshashtype,status) \
+    objshashtype::iterator it;\
+    it = objects->begin(); \
+    while (status && (it != objects->end()))\
+    {\
+      if (it->second->vars->find(name) == it->second->vars->end()) \
+      {\
+        it->second->vars->insert(varshashtype::value_type(name,new std::vector<double>)); \
+      }\
+      ++it; \
+    }\
 
 
 // =====================================================================
@@ -50,20 +67,29 @@ Function::Function(mhydasdk::core::CoreRepository* CoreData)
         : ComputationBlock(CoreData)
 {
 
+  m_SUVarsToCreate.Clear();
+  m_SUVarsToUpdate.Clear();
   m_SUVarsToCheck.Clear();
-  m_SUVarsToAdd.Clear();
+  m_SUInicondsToCheck.Clear();
+  m_SUPropsToCheck.Clear();
 
+  m_RSVarsToCreate.Clear();
+  m_SUVarsToUpdate.Clear();
   m_RSVarsToCheck.Clear();
-  m_RSVarsToAdd.Clear();
+  m_RSInicondsToCheck.Clear();
+  m_RSPropsToCheck.Clear();
 
+  m_GUVarsToCreate.Clear();
+  m_GUVarsToUpdate.Clear();
   m_GUVarsToCheck.Clear();
-  m_GUVarsToAdd.Clear();
-
+  m_GUInicondsToCheck.Clear();
+  m_GUPropsToCheck.Clear();
 
 }
 
 // =====================================================================
 // =====================================================================
+
 
 Function::~Function()
 {
@@ -71,128 +97,199 @@ Function::~Function()
 }
 
 
-
-
-// =====================================================================
-// =====================================================================
-
-bool Function::addSpatialSimulationVar(wxString Name, mhydasdk::core::SUMap* SUsCollection)
-{
-  ADD_SIMULATION_VAR(Name,SUsCollection,mhydasdk::core::SUMap)
-}
-
-
 // =====================================================================
 // =====================================================================
 
 
-bool Function::addSpatialSimulationVar(wxString Name, mhydasdk::core::RSMap* RSsCollection)
-{
-  ADD_SIMULATION_VAR(Name,RSsCollection,mhydasdk::core::RSMap)
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool Function::addSpatialSimulationVar(wxString Name, mhydasdk::core::GUMap* GUsCollection)
-{
-  ADD_SIMULATION_VAR(Name,GUsCollection,mhydasdk::core::GUMap)
-}
-
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool Function::checkSpatialSimulationVar(wxString Name, mhydasdk::core::SUMap* SUsCollection)
-{
-  CHECK_SIMULATION_VAR(Name,SUsCollection,mhydasdk::core::SUMap)
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool Function::checkSpatialSimulationVar(wxString Name, mhydasdk::core::RSMap* RSsCollection)
-{
-
-  CHECK_SIMULATION_VAR(Name,RSsCollection,mhydasdk::core::RSMap)
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-bool Function::checkSpatialSimulationVar(wxString Name, mhydasdk::core::GUMap* GUsCollection)
-{
-  CHECK_SIMULATION_VAR(Name,GUsCollection,mhydasdk::core::GUMap)
-}
-
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-
-bool Function::initialize()
+bool Function::prepareData()
 {
   int i;
+  bool IsOK = true;
 
-  // check SUs vars
-  for (i=0;i<m_SUVarsToCheck.GetCount();i++)
+  // ============ simulated vars to create ===============
+
+  // create SUs vars
+  i = 0;
+  while (IsOK && i<m_SUVarsToCreate.GetCount())
   {
-    if (!checkSpatialSimulationVar(m_SUVarsToCheck[i],mp_CoreData->getSpatialData()->getSUsCollection())) return false;
-  }
-
-  // add SUs vars
-  for (i=0;i<m_SUVarsToAdd.GetCount();i++)
-  {
-    if (!addSpatialSimulationVar(m_SUVarsToAdd[i],mp_CoreData->getSpatialData()->getSUsCollection())) return false;
-  }
-
-
-  // check RSs vars
-  for (i=0;i<m_RSVarsToCheck.GetCount();i++)
-  {
-    if (!checkSpatialSimulationVar(m_RSVarsToCheck[i],mp_CoreData->getSpatialData()->getRSsCollection())) return false;
-  }
-
-  // add RSs vars
-  for (i=0;i<m_RSVarsToAdd.GetCount();i++)
-  {
-    if (!addSpatialSimulationVar(m_RSVarsToAdd[i],mp_CoreData->getSpatialData()->getRSsCollection())) return false;
+    CREATE_VAR(m_SUVarsToCreate[i],
+               mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+               getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+    i++;
   }
 
 
-
-  // check GUs vars
-  for (i=0;i<m_GUVarsToCheck.GetCount();i++)
+  // create RSs vars
+  i = 0;
+  while (IsOK && i<m_RSVarsToCreate.GetCount())
   {
-    if (!checkSpatialSimulationVar(m_GUVarsToCheck[i],mp_CoreData->getSpatialData()->getGUsCollection())) return false;
-  }
-
-  // add GUs vars
-  for (i=0;i<m_GUVarsToAdd.GetCount();i++)
-  {
-    if (!addSpatialSimulationVar(m_GUVarsToAdd[i],mp_CoreData->getSpatialData()->getGUsCollection())) return false;
+    CREATE_VAR(m_RSVarsToCreate[i],
+               mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+               getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+    i++;
   }
 
 
-  return true;
+  // create GUs vars
+  i = 0;
+  while (IsOK && i<m_GUVarsToCreate.GetCount())
+  {
+    CREATE_VAR(m_GUVarsToCreate[i],
+               mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+               getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+    i++;
+  }
+
+
+  // ============ simulated vars to update ===============
+
+  // update SUs vars
+  i = 0;
+  while (IsOK && i<m_SUVarsToUpdate.GetCount())
+  {
+    UPDATE_VAR(m_SUVarsToUpdate[i],
+               mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+               getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+    i++;
+  }
+
+
+  // update RSs vars
+  i = 0;
+  while (IsOK && i<m_RSVarsToUpdate.GetCount())
+  {
+    UPDATE_VAR(m_RSVarsToUpdate[i],
+               mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+               getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+    i++;
+  }
+
+
+  // update GUs vars
+  i = 0;
+  while (IsOK && i<m_GUVarsToUpdate.GetCount())
+  {
+    UPDATE_VAR(m_GUVarsToUpdate[i],
+               mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+               getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+    i++;
+  }
+
+
+  return IsOK;
 }
 
+
+
+
+// =====================================================================
+// =====================================================================
+
+bool Function::checkConsistency()
+{
+  int i;
+  bool IsOK = true;
+
+
+  // ============= Simulated vars =============
+
+  // check SUs vars
+  i = 0;
+  while (IsOK && i<m_SUVarsToCheck.GetCount())
+  {
+    CHECK_VAR(m_SUVarsToCheck[i],
+              mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+              getSimulatedVars(),IsOK);
+    i++;
+  }
+
+  // check RSs vars
+  i = 0;
+  while (IsOK && i<m_RSVarsToCheck.GetCount())
+  {
+    CHECK_VAR(m_RSVarsToCheck[i],
+              mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+              getSimulatedVars(),IsOK);
+    i++;
+  }
+
+  // check GUs vars
+  i = 0;
+  while (IsOK && i<m_GUVarsToCheck.GetCount())
+  {
+    CHECK_VAR(m_GUVarsToCheck[i],
+              mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+              getSimulatedVars(),IsOK);
+    i++;
+  }
+
+
+  // ============= Simulated properties =============
+
+  // check SUs vars
+  i = 0;
+  while (IsOK && i<m_SUPropsToCheck.GetCount())
+  {
+    CHECK_VAR(m_SUPropsToCheck[i],
+              mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+              getProperties(),IsOK);
+    i++;
+  }
+
+  // check RSs vars
+  i = 0;
+  while (IsOK && i<m_RSPropsToCheck.GetCount())
+  {
+    CHECK_VAR(m_RSPropsToCheck[i],
+              mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+              getProperties(),IsOK);
+    i++;
+  }
+
+  // check GUs vars
+  i = 0;
+  while (IsOK && i<m_GUPropsToCheck.GetCount())
+  {
+    CHECK_VAR(m_GUPropsToCheck[i],
+              mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+              getProperties(),IsOK);
+    i++;
+  }
+
+  // ============= initial conditions =============
+
+  // check SUs vars
+  i = 0;
+  while (IsOK && i<m_SUInicondsToCheck.GetCount())
+  {
+    CHECK_VAR(m_SUInicondsToCheck[i],
+              mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+              getIniConditions(),IsOK);
+    i++;
+  }
+
+  // check RSs vars
+  i = 0;
+  while (IsOK && i<m_RSInicondsToCheck.GetCount())
+  {
+    CHECK_VAR(m_RSInicondsToCheck[i],
+              mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+              getIniConditions(),IsOK);
+    i++;
+  }
+
+  // check GUs vars
+  i = 0;
+  while (IsOK && i<m_GUInicondsToCheck.GetCount())
+  {
+    CHECK_VAR(m_GUInicondsToCheck[i],
+              mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+              getIniConditions(),IsOK);
+    i++;
+  }
+
+  return IsOK;
+}
 
 
 

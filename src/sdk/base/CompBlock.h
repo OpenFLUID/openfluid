@@ -40,13 +40,16 @@ class ComputationBlock
     */
     ~ComputationBlock();
 
-    virtual bool initialize()=0;
+
+    virtual bool prepareData()=0;
 
     virtual bool checkConsistency()=0;
 
+    virtual bool initializeRun()=0;
+
     virtual bool runStep(SimulationStatus* SimStatus)=0;
 
-    virtual bool finalize()=0;
+    virtual bool finalizeRun()=0;
 
 };
 

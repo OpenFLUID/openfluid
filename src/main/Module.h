@@ -41,13 +41,15 @@ class Module : public mhydasdk::base::ComputationBlock
     */
     ~Module();
 
+    bool prepareData();
+
     bool checkConsistency();
 
-    bool initialize();
+    bool initializeRun();
 
     bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
 
-    bool finalize();
+    bool finalizeRun();
 
 
 
