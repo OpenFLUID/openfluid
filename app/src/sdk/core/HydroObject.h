@@ -13,10 +13,13 @@
 #include <wx/hashmap.h>
 
 
+
 namespace mhydasdk { namespace core {
 
 
 typedef int hoid_t;
+
+
 
 /**
   Hash table for calculated variables during simulation.
@@ -26,6 +29,10 @@ typedef int hoid_t;
 */
 WX_DECLARE_STRING_HASH_MAP(std::vector<double>*, SimulatedVarsMap);
 
+/**
+  Hash table for parameters (distributed properties, distributed initial conditions, global parameters, ...)
+*/
+WX_DECLARE_STRING_HASH_MAP(double,ParamsMap);
 
 
 /**
@@ -42,6 +49,11 @@ class HydroObject
 		int m_ProcessOrder;
 
     SimulatedVarsMap* mp_SimVars;
+
+    ParamsMap* mp_Properties;
+
+    ParamsMap* mp_IniConditions;
+
 
 
 	public:
@@ -71,6 +83,11 @@ class HydroObject
     void setProcessOrder(const int ProcessOrder);
 
     SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
+
+    ParamsMap* getProperties() { return mp_Properties; };
+
+    ParamsMap* getIniConditions() { return mp_IniConditions; };
+
 
 };
 

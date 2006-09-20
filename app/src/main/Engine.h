@@ -67,7 +67,7 @@ class Engine
 
     bool loadData();
 
-    bool checkConsistencyAndInitialize();
+    bool prepareDataAndCheckConsistency();
 
     bool run();
 
