@@ -181,33 +181,32 @@ GUMap* SpatialRepository::getGUsCollection()
 
 bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 {
-  if (mp_SUsCollection->size() != 0 && mp_RSsCollection->size() != 0
-      && mp_GUsCollection->size() != 0)
+
+  GroundwaterUnit* LinkedGU;
+  ReachSegment* LinkedRS;
+  SurfaceUnit* LinkedSU;
+
+  // =========== SHUs ============
+
+  //std::cout << "rebuilding SHUs topology" << std::endl;
+
+  SUMap::iterator SUit;
+
+  for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit )
   {
 
-    GroundwaterUnit* LinkedGU;
-    ReachSegment* LinkedRS;
-    SurfaceUnit* LinkedSU;
-
-    // =========== SHUs ============
-
-    //std::cout << "rebuilding SHUs topology" << std::endl;
-
-    SUMap::iterator SUit;
-
-    for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit )
+    // groundwater link
+    if (SUit->second->getGUExchangeID() > 0)
     {
-
-      //std::cerr << SUit->second->getID() << std::endl;
-        //wxString key = it->first, value = it->second;
-        // do something useful with key and value
-
-      // groundwater link
       LinkedGU = getGUByID(SUit->second->getGUExchangeID());
       if (LinkedGU == NULL) return false;
       else SUit->second->setGUExchange(LinkedGU);
+    }
 
-      // flow object link
+    // flow object link
+    if (SUit->second->getFlowID() > 0)
+    {
+
       if (SUit->second->getFlowCode() == SU)
       {
         LinkedSU = getSUByID(SUit->second->getFlowID());
@@ -223,52 +222,55 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
       }
 
       if (SUit->second->getFlowCode() == UnknownFlowCode) return false;
-
     }
 
-    // =========== rézo hydro ============
+  }
 
-    RSMap::iterator RSit;
+  // =========== rézo hydro ============
 
-    for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit )
+  RSMap::iterator RSit;
+
+  for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit )
+  {
+
+    // groundwater link
+    if (RSit->second->getGUExchangeID() > 0)
     {
-
-       // groundwater link
       LinkedGU = getGUByID(RSit->second->getGUExchangeID());
       if (LinkedGU == NULL) return false;
       else RSit->second->setGUExchange(LinkedGU);
-
-      // low reach link
-      if (RSit->second->getLowReachID() > 0)
-      {
-        LinkedRS = getRSByID(RSit->second->getLowReachID());
-        if (LinkedRS == NULL) return false;
-        else RSit->second->setLowReach(LinkedRS);
-      }
-
-
     }
 
-    // =========== AHUs ============
-
-    GUMap::iterator GUit;
-
-    for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
+    // low reach link
+    if (RSit->second->getLowReachID() > 0)
     {
-
-      // groundwater link only if exchange
-      if (GUit->second->getGUExchangeID() > 0)
-      {
-        LinkedGU = getGUByID(GUit->second->getGUExchangeID());
-        if (LinkedGU == NULL) return false;
-        else GUit->second->setGUExchange(LinkedGU);
-      }
-
+      LinkedRS = getRSByID(RSit->second->getLowReachID());
+      if (LinkedRS == NULL) return false;
+      else RSit->second->setLowReach(LinkedRS);
     }
 
-    return true;
+
   }
-  else return false;
+
+  // =========== AHUs ============
+
+  GUMap::iterator GUit;
+
+  for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
+  {
+
+    // groundwater link only if exchange
+    if (GUit->second->getGUExchangeID() > 0)
+    {
+      LinkedGU = getGUByID(GUit->second->getGUExchangeID());
+      if (LinkedGU == NULL) return false;
+      else GUit->second->setGUExchange(LinkedGU);
+    }
+
+  }
+
+  return true;
+
 }
 
 // =====================================================================
@@ -282,88 +284,81 @@ bool SpatialRepository::buildProcessOrders()
 
 
 
-  if ((mp_SUsCollection->size() != 0) && (mp_RSsCollection->size() !=0)
-      && (mp_GUsCollection->size() !=0))
-  {
-
-    int MaxOrder, i;
+  int MaxOrder, i;
 
     // =============== SUs =============
-    MaxOrder = -1;
+  MaxOrder = -1;
 
-    SUMap::iterator SUit;
+  SUMap::iterator SUit;
 
-    // searching for highest process order
-    for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit )
-    {
-      if (SUit->second->getProcessOrder() > MaxOrder)
-      MaxOrder = SUit->second->getProcessOrder();
-    }
-
-    // creating process order classes
-    for (i=0; i<MaxOrder; i++)  mp_SUsProcessOrders->push_back(new vector<SurfaceUnit*>());
-
-
-    // adding SU in its process order class
-    for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit)
-    {
-      mp_SUsProcessOrders->at(SUit->second->getProcessOrder()-1)->push_back(SUit->second);
-    }
-
-
-    // =============== Reaches =================
-
-    MaxOrder = -1;
-
-    RSMap::iterator RSit;
-
-    // searching for highest process order
-    for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit )
-    {
-      if (RSit->second->getProcessOrder() > MaxOrder)
-      MaxOrder = RSit->second->getProcessOrder();
-    }
-
-    // creating process order classes
-    for (i=0; i<MaxOrder; i++)  mp_RSsProcessOrders->push_back(new vector<ReachSegment*>());
-
-
-    // adding RS in its process order class
-    for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit)
-    {
-      mp_RSsProcessOrders->at(RSit->second->getProcessOrder()-1)->push_back(RSit->second);
-    }
-
-
-
-    // =============== GUs =======================
-
-    MaxOrder = -1;
-
-    GUMap::iterator GUit;
-
-    // searching for highest process order
-    for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
-    {
-      if (GUit->second->getProcessOrder() > MaxOrder)
-      MaxOrder = GUit->second->getProcessOrder();
-    }
-
-    // creating process order classes
-    for (i=0; i<MaxOrder; i++)  mp_GUsProcessOrders->push_back(new vector<GroundwaterUnit*>());
-
-
-    // adding GU in its process order class
-    for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit)
-    {
-      mp_GUsProcessOrders->at(GUit->second->getProcessOrder()-1)->push_back(GUit->second);
-    }
-
-
-    return true;
-
+  // searching for highest process order
+  for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit )
+  {
+    if (SUit->second->getProcessOrder() > MaxOrder)
+    MaxOrder = SUit->second->getProcessOrder();
   }
-  else return false;
+
+  // creating process order classes
+  for (i=0; i<MaxOrder; i++)  mp_SUsProcessOrders->push_back(new vector<SurfaceUnit*>());
+
+
+  // adding SU in its process order class
+  for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit)
+  {
+    mp_SUsProcessOrders->at(SUit->second->getProcessOrder()-1)->push_back(SUit->second);
+  }
+
+
+  // =============== Reaches =================
+
+  MaxOrder = -1;
+
+  RSMap::iterator RSit;
+
+  // searching for highest process order
+  for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit )
+  {
+    if (RSit->second->getProcessOrder() > MaxOrder)
+    MaxOrder = RSit->second->getProcessOrder();
+  }
+
+  // creating process order classes
+  for (i=0; i<MaxOrder; i++)  mp_RSsProcessOrders->push_back(new vector<ReachSegment*>());
+
+
+  // adding RS in its process order class
+  for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit)
+  {
+    mp_RSsProcessOrders->at(RSit->second->getProcessOrder()-1)->push_back(RSit->second);
+  }
+
+
+
+  // =============== GUs =======================
+
+  MaxOrder = -1;
+
+  GUMap::iterator GUit;
+
+  // searching for highest process order
+  for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
+  {
+    if (GUit->second->getProcessOrder() > MaxOrder)
+    MaxOrder = GUit->second->getProcessOrder();
+  }
+
+  // creating process order classes
+  for (i=0; i<MaxOrder; i++)  mp_GUsProcessOrders->push_back(new vector<GroundwaterUnit*>());
+
+
+  // adding GU in its process order class
+  for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit)
+  {
+    mp_GUsProcessOrders->at(GUit->second->getProcessOrder()-1)->push_back(GUit->second);
+  }
+
+
+  return true;
 
 }
 

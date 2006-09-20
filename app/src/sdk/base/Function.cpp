@@ -78,28 +78,7 @@ Function::~Function()
 
 bool Function::addSpatialSimulationVar(wxString Name, mhydasdk::core::SUMap* SUsCollection)
 {
-  /*
-
-  if (checkSpatialSimulationVar(Name,SUsCollection)) return false;
-  else
-  {
-    mhydasdk::core::SUMap::iterator SUit;
-
-    mhydasdk::core::SimulatedVarsMap VarsMap;
-
-    for(SUit = SUsCollection->begin(); SUit != SUsCollection->end(); ++SUit )
-    {
-
-      SUit->second->getSimulatedVars()->insert(mhydasdk::core::SimulatedVarsMap::value_type(Name,new std::vector<double>));
-
-    }
-
-  }
-  return true;
-
-  */
   ADD_SIMULATION_VAR(Name,SUsCollection,mhydasdk::core::SUMap)
-
 }
 
 
@@ -132,19 +111,6 @@ bool Function::addSpatialSimulationVar(wxString Name, mhydasdk::core::GUMap* GUs
 
 bool Function::checkSpatialSimulationVar(wxString Name, mhydasdk::core::SUMap* SUsCollection)
 {
-
-/*
-  mhydasdk::core::SUMap::iterator SUit;
-
-  for(SUit = SUsCollection->begin(); SUit != SUsCollection->end(); ++SUit )
-  {
-    if (SUit->second->getSimulatedVars()->find(Name) == SUit->second->getSimulatedVars()->end())
-      return false;
-  }
-
-  return true;
-  */
-
   CHECK_SIMULATION_VAR(Name,SUsCollection,mhydasdk::core::SUMap)
 }
 
@@ -222,7 +188,6 @@ bool Function::initialize()
   {
     if (!addSpatialSimulationVar(m_GUVarsToAdd[i],mp_CoreData->getSpatialData()->getGUsCollection())) return false;
   }
-
 
 
   return true;

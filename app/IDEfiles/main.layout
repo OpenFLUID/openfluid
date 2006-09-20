@@ -7,7 +7,7 @@
 	<File name="../src/main/AppTools.h" open="0" top="0" tabpos="3">
 		<Cursor position="255" topLine="0" />
 	</File>
-	<File name="../src/main/Engine.cpp" open="1" top="1" tabpos="4">
+	<File name="../src/main/Engine.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="959" topLine="150" />
 	</File>
 	<File name="../src/main/Engine.h" open="0" top="0" tabpos="9">
@@ -19,7 +19,7 @@
 	<File name="../src/main/PluginManager.h" open="0" top="0" tabpos="4">
 		<Cursor position="229" topLine="0" />
 	</File>
-	<File name="../src/main/main.cpp" open="1" top="0" tabpos="3">
+	<File name="../src/main/main.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="4958" topLine="143" />
 	</File>
 	<File name="../src/main/main.h" open="0" top="0" tabpos="7">

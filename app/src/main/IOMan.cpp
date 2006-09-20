@@ -163,149 +163,174 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   int i;
 
+  wxString SUsFilename = mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUDEFSFILE);
+  bool SUsFileExists = wxFileExists(SUsFilename);
+
+  wxString RSsFilename = mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSDEFSFILE);
+  bool RSsFileExists = wxFileExists(RSsFilename);
+
+  wxString GUsFilename = mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUDEFSFILE);
+  bool GUsFileExists = wxFileExists(GUsFilename);
+
+
+  // no available object
+  if (!(SUsFileExists || RSsFileExists || GUsFileExists))
+  {
+    mhydasdk::base::LastError::Message = wxT("No spatial object file.");
+    return false;
+  }
+
 
   // ============ SUs =================
 
-  mhydasdk::base::ColumnFileParser SUsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUDEFSFILE),wxT("%"));
 
-  if (!SUsFileParser.parseFile() ||
-      SUsFileParser.getColsCount() != MHYDAS_SUDEFSFILE_COLNBR ||
-      SUsFileParser.getColsCount() < 1)
+  if (SUsFileExists)
   {
-    mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error.");
-    return false;
-  }
+    mhydasdk::base::ColumnFileParser SUsFileParser(SUsFilename,wxT("%"));
 
-  else
-  {
-
-    double Area, Slope, FlowDist;
-    wxString FlowCode;
-    long FlowID;
-
-    for (i=0;i<SUsFileParser.getLinesCount();i++)
+    if (!SUsFileParser.parseFile() ||
+        SUsFileParser.getColsCount() != MHYDAS_SUDEFSFILE_COLNBR ||
+        SUsFileParser.getColsCount() < 1)
     {
 
-      if (SUsFileParser.getLongValue(i,0,&ID) && SUsFileParser.getDoubleValue(i,1,&Area) &&
-          SUsFileParser.getDoubleValue(i,2,&Slope) && SUsFileParser.getStringValue(i,3,&FlowCode) &&
-          SUsFileParser.getLongValue(i,4,&FlowID) && SUsFileParser.getDoubleValue(i,5,&FlowDist) &&
-          SUsFileParser.getLongValue(i,6,&GUExch) && SUsFileParser.getLongValue(i,7,&ProcessOrder))
+      std::cerr << SUsFileParser.getColsCount() << std::endl;
+      mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error.");
+      return false;
+    }
+    else
+    {
+
+      double Area, Slope, FlowDist;
+      wxString FlowCode;
+      long FlowID;
+
+      for (i=0;i<SUsFileParser.getLinesCount();i++)
       {
 
-        if (!SpatialData->addSU(new mhydasdk::core::SurfaceUnit((mhydasdk::core::hoid_t)ID,
-                                                                (mhydasdk::core::hoid_t)ProcessOrder,
-                                                                Area,
-                                                                Slope,
-                                                                getSUFlowCode(FlowCode),
-                                                                (mhydasdk::core::hoid_t)FlowID,
-                                                                FlowDist,
-                                                                (mhydasdk::core::hoid_t)GUExch)))
+        if (SUsFileParser.getLongValue(i,0,&ID) && SUsFileParser.getDoubleValue(i,1,&Area) &&
+            SUsFileParser.getDoubleValue(i,2,&Slope) && SUsFileParser.getStringValue(i,3,&FlowCode) &&
+            SUsFileParser.getLongValue(i,4,&FlowID) && SUsFileParser.getDoubleValue(i,5,&FlowDist) &&
+            SUsFileParser.getLongValue(i,6,&GUExch) && SUsFileParser.getLongValue(i,7,&ProcessOrder))
         {
-          mhydasdk::base::LastError::Message = wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+
+          if (!SpatialData->addSU(new mhydasdk::core::SurfaceUnit((mhydasdk::core::hoid_t)ID,
+                                                                  (mhydasdk::core::hoid_t)ProcessOrder,
+                                                                  Area,
+                                                                  Slope,
+                                                                  getSUFlowCode(FlowCode),
+                                                                  (mhydasdk::core::hoid_t)FlowID,
+                                                                  FlowDist,
+                                                                  (mhydasdk::core::hoid_t)GUExch)))
+          {
+            mhydasdk::base::LastError::Message = wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+            return false;
+          }
+
+        }
+
+        else
+        {
+          mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file format error.");
           return false;
         }
 
       }
-      else
-      {
-        mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file format error.");
-        return false;
-      }
-
     }
   }
-
 
   // ============ RSs =================
 
-  mhydasdk::base::ColumnFileParser RSsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSDEFSFILE),wxT("%"));
-
-  if (!RSsFileParser.parseFile() ||
-      RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
-      RSsFileParser.getColsCount() < 1)
+  if (RSsFileExists)
   {
-    mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file parsing error.");
-    return false;
-  }
-  else
-  {
-    long int UpNode, DownNode, LowRSID;
-    double Length, Width, Height, Slope;
+    mhydasdk::base::ColumnFileParser RSsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSDEFSFILE),wxT("%"));
 
-    for (i=0;i<RSsFileParser.getLinesCount();i++)
+    if (!RSsFileParser.parseFile() ||
+        RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
+        RSsFileParser.getColsCount() < 1)
     {
+      mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file parsing error.");
+      return false;
+    }
+    else
+    {
+      long int UpNode, DownNode, LowRSID;
+      double Length, Width, Height, Slope;
 
-      if (RSsFileParser.getLongValue(i,0,&ID) && RSsFileParser.getLongValue(i,1,&UpNode) &&
-          RSsFileParser.getLongValue(i,2,&DownNode) && RSsFileParser.getLongValue(i,3,&LowRSID) &&
-          RSsFileParser.getDoubleValue(i,4,&Length) && RSsFileParser.getDoubleValue(i,5,&Width) &&
-          RSsFileParser.getDoubleValue(i,6,&Height) && RSsFileParser.getDoubleValue(i,7,&Slope) &&
-          RSsFileParser.getLongValue(i,8,&GUExch) && RSsFileParser.getLongValue(i,9,&ProcessOrder))
+      for (i=0;i<RSsFileParser.getLinesCount();i++)
       {
 
-
-        if (!SpatialData->addRS(new mhydasdk::core::ReachSegment((mhydasdk::core::hoid_t)ID,
-                                                                 (mhydasdk::core::hoid_t)ProcessOrder,
-                                                                 (mhydasdk::core::nodeid_t)UpNode,
-                                                                 (mhydasdk::core::nodeid_t)DownNode,
-                                                                 (mhydasdk::core::hoid_t)LowRSID,
-                                                                 Slope,
-                                                                 Length,
-                                                                 Width,
-                                                                 Height,
-                                                                 (mhydasdk::core::hoid_t)GUExch)))
+        if (RSsFileParser.getLongValue(i,0,&ID) && RSsFileParser.getLongValue(i,1,&UpNode) &&
+            RSsFileParser.getLongValue(i,2,&DownNode) && RSsFileParser.getLongValue(i,3,&LowRSID) &&
+            RSsFileParser.getDoubleValue(i,4,&Length) && RSsFileParser.getDoubleValue(i,5,&Width) &&
+            RSsFileParser.getDoubleValue(i,6,&Height) && RSsFileParser.getDoubleValue(i,7,&Slope) &&
+            RSsFileParser.getLongValue(i,8,&GUExch) && RSsFileParser.getLongValue(i,9,&ProcessOrder))
         {
-          mhydasdk::base::LastError::Message = wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+
+
+          if (!SpatialData->addRS(new mhydasdk::core::ReachSegment((mhydasdk::core::hoid_t)ID,
+                                                                   (mhydasdk::core::hoid_t)ProcessOrder,
+                                                                   (mhydasdk::core::nodeid_t)UpNode,
+                                                                   (mhydasdk::core::nodeid_t)DownNode,
+                                                                   (mhydasdk::core::hoid_t)LowRSID,
+                                                                   Slope,
+                                                                   Length,
+                                                                   Width,
+                                                                   Height,
+                                                                   (mhydasdk::core::hoid_t)GUExch)))
+          {
+            mhydasdk::base::LastError::Message = wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+            return false;
+          }
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file format error.");
           return false;
         }
       }
-      else
-      {
-        mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file format error.");
-        return false;
-      }
-
     }
-
-
   }
 
 
   // ============ GUs =================
 
-  mhydasdk::base::ColumnFileParser GUsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUDEFSFILE),wxT("%"));
-
-  if (!GUsFileParser.parseFile() ||
-      GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
-      GUsFileParser.getColsCount() < 1)
+  if (GUsFileExists)
   {
-    mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error.");
-    return false;
-  }
-  else
-  {
+    mhydasdk::base::ColumnFileParser GUsFileParser(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUDEFSFILE),wxT("%"));
 
-    double SubstrLevel;
-
-    for (i=0;i<GUsFileParser.getLinesCount();i++)
+    if (!GUsFileParser.parseFile() ||
+        GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
+        GUsFileParser.getColsCount() < 1)
+    {
+      mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error.");
+      return false;
+    }
+    else
     {
 
-      if (GUsFileParser.getLongValue(i,0,&ID) && GUsFileParser.getDoubleValue(i,1,&SubstrLevel) &&
-          GUsFileParser.getLongValue(i,2,&GUExch) && GUsFileParser.getLongValue(i,3,&ProcessOrder))
+      double SubstrLevel;
+
+      for (i=0;i<GUsFileParser.getLinesCount();i++)
       {
 
-        if (!SpatialData->addGU(new mhydasdk::core::GroundwaterUnit((mhydasdk::core::hoid_t)ID,
-                                                                    (mhydasdk::core::hoid_t)ProcessOrder,
-                                                                    (mhydasdk::core::hoid_t)GUExch,
-                                                                    SubstrLevel)))
+        if (GUsFileParser.getLongValue(i,0,&ID) && GUsFileParser.getDoubleValue(i,1,&SubstrLevel) &&
+            GUsFileParser.getLongValue(i,2,&GUExch) && GUsFileParser.getLongValue(i,3,&ProcessOrder))
         {
-          mhydasdk::base::LastError::Message = wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+
+          if (!SpatialData->addGU(new mhydasdk::core::GroundwaterUnit((mhydasdk::core::hoid_t)ID,
+                                                                      (mhydasdk::core::hoid_t)ProcessOrder,
+                                                                      (mhydasdk::core::hoid_t)GUExch,
+                                                                      SubstrLevel)))
+          {
+            mhydasdk::base::LastError::Message = wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+            return false;
+          }
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file format error.");
           return false;
         }
-      }
-      else
-      {
-        mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file format error.");
-        return false;
       }
     }
   }
