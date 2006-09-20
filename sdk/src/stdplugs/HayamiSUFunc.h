@@ -33,13 +33,13 @@ class HayamiSUFunc : public mhydasdk::base::Function
 
     bool initParams(mhydasdk::core::ParamsMap Params);
 
-    bool initialize();
+    bool initializeRun();
 
     bool checkConsistency();
 
     bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
 
-    bool finalize();
+    bool finalizeRun();
 
 
 };

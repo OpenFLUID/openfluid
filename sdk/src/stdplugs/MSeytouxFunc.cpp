@@ -11,11 +11,8 @@
 MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
                 : Function(CoreData)
 {
-
-  m_SUVarsToAdd.Add(wxT("runoff"));
-  m_SUVarsToAdd.Add(wxT("infiltration"));
-
-
+  SU_VARIABLE_TO_CREATE("runoff");
+  SU_VARIABLE_TO_CREATE("infiltration");
 }
 
 // =====================================================================
@@ -43,12 +40,11 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::initialize()
+bool MorelSeytouxFunc::initializeRun()
 {
 
   bool IsOK =  true;
 
-  IsOK = mhydasdk::base::Function::initialize();
 
   return IsOK;
 }
@@ -60,10 +56,9 @@ bool MorelSeytouxFunc::initialize()
 
 bool MorelSeytouxFunc::checkConsistency()
 {
+  // std::cout << "Momo checkConsistency()" << std::endl;
 
-  //std::cout << "Momo checkConsistency()" << std::endl;
-
-  return true;
+  return Function::checkConsistency();
 }
 
 
@@ -83,7 +78,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::finalize()
+bool MorelSeytouxFunc::finalizeRun()
 {
   // std::cout << "Momo finalize()" << std::endl;
   return true;

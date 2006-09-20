@@ -14,9 +14,8 @@
 HayamiSUFunc::HayamiSUFunc(mhydasdk::core::CoreRepository *CoreData)
                 : Function(CoreData)
 {
-
-  m_SUVarsToCheck.Add(wxT("runoff"));
-  m_SUVarsToAdd.Add(wxT("qoutput"));
+  SU_VARIABLE_TO_CREATE("qoutput");
+  SU_VARIABLE_TO_CHECK("runoff");
 
 }
 
@@ -27,7 +26,6 @@ HayamiSUFunc::~HayamiSUFunc()
 {
 
 }
-
 
 
 // =====================================================================
@@ -45,12 +43,10 @@ bool HayamiSUFunc::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 
 
-bool HayamiSUFunc::initialize()
+bool HayamiSUFunc::initializeRun()
 {
 
   bool IsOK =  true;
-
-  IsOK = mhydasdk::base::Function::initialize();
 
   return IsOK;
 }
@@ -62,10 +58,9 @@ bool HayamiSUFunc::initialize()
 
 bool HayamiSUFunc::checkConsistency()
 {
+  // std::cout << "Yaya checkConsistency()" << std::endl;
 
-  //std::cout << "Yaya checkConsistency()" << std::endl;
-
-  return true;
+  return Function::checkConsistency();
 }
 
 
@@ -85,7 +80,7 @@ bool HayamiSUFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool HayamiSUFunc::finalize()
+bool HayamiSUFunc::finalizeRun()
 {
   // std::cout << "HayamiSU finalize()" << std::endl;
   return true;

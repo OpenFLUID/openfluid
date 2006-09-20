@@ -21,8 +21,10 @@ HydroObject::HydroObject()
 {
   m_ID = -1;
   m_ProcessOrder = 0;
-  mp_SimVars = new SimulatedVarsMap();
 
+  mp_SimVars = new SimulatedVarsMap();
+  mp_Properties = new ParamsMap();
+  mp_IniConditions = new ParamsMap();
 
 }
 

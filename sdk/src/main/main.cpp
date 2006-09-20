@@ -71,9 +71,9 @@ bool MHYDASApp::checkConsistency()
 
   bool ExecStatus;
 
-  std::cout << "* Checking consistency and initializing... ";
+  std::cout << "* Preparing data and checking consistency... ";
 
-  ExecStatus = mp_Engine->checkConsistencyAndInitialize();
+  ExecStatus = mp_Engine->prepareDataAndCheckConsistency();
 
   printlnExecStatus(ExecStatus);
 
