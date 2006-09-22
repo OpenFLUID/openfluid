@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../src/stdplugs/HayamiSUFunc.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1658" topLine="0" />
+	<File name="../src/stdplugs/HayamiSUFunc.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1254" topLine="43" />
 	</File>
-	<File name="../src/stdplugs/HayamiSUFunc.h" open="1" top="0" tabpos="2">
-		<Cursor position="446" topLine="5" />
+	<File name="../src/stdplugs/HayamiSUFunc.h" open="0" top="0" tabpos="0">
+		<Cursor position="664" topLine="0" />
 	</File>
-	<File name="../src/stdplugs/HayamiSUPlug.cpp" open="1" top="1" tabpos="5">
-		<Cursor position="1260" topLine="15" />
+	<File name="../src/stdplugs/MSeytouxFunc.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1338" topLine="0" />
 	</File>
-	<File name="../src/stdplugs/MSeytouxFunc.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1286" topLine="56" />
-	</File>
-	<File name="../src/stdplugs/MSeytouxFunc.h" open="1" top="0" tabpos="4">
-		<Cursor position="692" topLine="16" />
+	<File name="../src/stdplugs/MSeytouxFunc.h" open="0" top="0" tabpos="0">
+		<Cursor position="420" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
