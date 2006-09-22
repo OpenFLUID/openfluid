@@ -50,6 +50,10 @@ class IOManager
 
     bool loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename);
 
+    bool loadOuputConfig();
+
+    bool prepareOutputDir();
+
   public:
     /**
       Constructor
@@ -86,6 +90,8 @@ class IOManager
     */
     bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
 
+
+    bool saveResults(mhydasdk::core::CoreRepository *Data);
 
 
 };

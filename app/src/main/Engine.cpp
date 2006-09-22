@@ -231,7 +231,7 @@ bool Engine::run()
 
 bool Engine::saveResults()
 {
-  return true;
+  return mp_IOMan->saveResults(mp_CoreData);
 }
 
 // =====================================================================

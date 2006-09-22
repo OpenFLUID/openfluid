@@ -6,6 +6,8 @@
 */
 
 
+#include <wx/filefn.h>
+
 #include "IOMan.h"
 #include "ColTextParser.h"
 #include "setup.h"
@@ -534,5 +536,46 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
 }
 
 
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::loadOuputConfig()
+{
+
+  return true;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::prepareOutputDir()
+{
+  bool IsOK = true;
+
+  if (!wxDirExists(mp_RunEnv->getOutputDir())) IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
+
+  return IsOK;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
+{
+  bool IsOK = true;
+
+  IsOK = loadOuputConfig();
+
+  if (IsOK && prepareOutputDir())
+  {
+
+
+  }
+
+  return IsOK;
+}
 
 
