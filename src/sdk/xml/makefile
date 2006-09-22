@@ -16,7 +16,7 @@ OBJ = $(OBJDIR)/tinystr.o $(OBJDIR)/tinyxmlparser.o \
 
 			
 $(OBJDIR)/%.o : %.cpp
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CPP) $(CCFLAGS) -c $< -o $@
 
 			
 all: prechecks $(OBJ)

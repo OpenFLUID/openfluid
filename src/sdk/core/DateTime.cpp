@@ -9,6 +9,7 @@
 #include "DateTime.h"
 #include <iostream>
 
+#include <wx/datetime.h>
 
 namespace mhydasdk { namespace core {
 
@@ -148,40 +149,23 @@ rawtime_t DateTime::getRawTime()
 
 wxString  DateTime::asString()
 {
-  char TimeStr[20];
 
-  strcpy(TimeStr,"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
-
-  sprintf(TimeStr,"%d-%d-%d %d:%d:%d", m_Year,m_Month,m_Day,m_Hour,m_Min,m_Sec);
-
-  return wxString(TimeStr,wxConvUTF8);
+  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
+                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%Y-%m-%d %H:%M:%S"));
 }
 
 
 wxString  DateTime::getDateAsString()
 {
-  char TimeStr[10];
-
-  strcpy(TimeStr,"\0\0\0\0\0\0\0\0\0\0");
-
-  sprintf(TimeStr,"%d-%d-%d", m_Year,m_Month,m_Day);
-
-  return wxString(TimeStr,wxConvUTF8);
-
-
+  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
+                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%Y-%m-%d"));
 }
 
 
 wxString  DateTime::getTimeAsString()
 {
-  char TimeStr[10];
-
-  strcpy(TimeStr,"\0\0\0\0\0\0\0\0\0\0");
-
-  sprintf(TimeStr,"%d:%d:%d", m_Hour,m_Min,m_Sec);
-
-  return wxString(TimeStr,wxConvUTF8);
-
+  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
+                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%H:%M:%S"));
 
 }
 

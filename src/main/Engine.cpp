@@ -204,11 +204,11 @@ bool Engine::run()
   // run
   do
   {
-    std::cout << "t+";
-    std::cout.width(5);
+
+    std::cout << " t=";
     std::cout << mp_SimStatus->getCurrentStep();
-    std::cout.width(20);
-    std::cout << mp_SimStatus->getCurrentTime().asString().mb_str(wxConvUTF8);
+    std::cout << "\t";
+    std::cout << _C(mp_SimStatus->getCurrentTime().asString());
 
     mp_HydroModule->runStep(mp_SimStatus);
 

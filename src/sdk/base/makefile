@@ -30,7 +30,7 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(OBJ)
-		$(CC) -shared $(LDFLAGS) -o $(BINDIR)/$(LIBNAME).$(DYNLIBEXT) $(OBJ)
+		$(CPP) -shared $(LDFLAGS) -o $(BINDIR)/$(LIBNAME).$(DYNLIBEXT) $(OBJ)
 
 prechecks:
 	@mkdir -p $(OBJDIR)
