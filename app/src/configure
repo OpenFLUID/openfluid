@@ -75,7 +75,7 @@ echo "" >> $OPTFILE
 echo "# compile options for wxWidgets library" >> $OPTFILE
 VARTOWRITE=`wx-config --libs base`
 echo "WXLIBS = $VARTOWRITE" >> $OPTFILE
-VARTOWRITE=`wx-config --cxxflags`
+VARTOWRITE=`wx-config --cxxflags base`
 echo "WXFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE
