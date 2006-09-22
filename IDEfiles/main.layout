@@ -7,11 +7,29 @@
 	<File name="../src/main/AppTools.h" open="0" top="0" tabpos="3">
 		<Cursor position="255" topLine="0" />
 	</File>
-	<File name="../src/main/Engine.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="959" topLine="150" />
+	<File name="../src/main/ColTextParser.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="2593" topLine="84" />
+	</File>
+	<File name="../src/main/ColTextParser.h" open="1" top="0" tabpos="1">
+		<Cursor position="712" topLine="3" />
+	</File>
+	<File name="../src/main/Engine.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="3536" topLine="144" />
 	</File>
 	<File name="../src/main/Engine.h" open="0" top="0" tabpos="9">
-		<Cursor position="1189" topLine="51" />
+		<Cursor position="1263" topLine="46" />
+	</File>
+	<File name="../src/main/IOMan.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="9129" topLine="265" />
+	</File>
+	<File name="../src/main/IOMan.h" open="1" top="0" tabpos="5">
+		<Cursor position="0" topLine="18" />
+	</File>
+	<File name="../src/main/Module.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1580" topLine="38" />
+	</File>
+	<File name="../src/main/Module.h" open="0" top="0" tabpos="0">
+		<Cursor position="615" topLine="15" />
 	</File>
 	<File name="../src/main/PluginManager.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="2488" topLine="61" />
@@ -19,13 +37,13 @@
 	<File name="../src/main/PluginManager.h" open="0" top="0" tabpos="4">
 		<Cursor position="229" topLine="0" />
 	</File>
-	<File name="../src/main/main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="4958" topLine="143" />
+	<File name="../src/main/main.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="1458" topLine="43" />
 	</File>
 	<File name="../src/main/main.h" open="0" top="0" tabpos="7">
 		<Cursor position="1059" topLine="3" />
 	</File>
 	<File name="../src/main/makefile" open="0" top="0" tabpos="6">
-		<Cursor position="624" topLine="0" />
+		<Cursor position="423" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
