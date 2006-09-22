@@ -8,6 +8,8 @@
 
 #include "Engine.h"
 
+#include <iomanip>
+
 
 Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
                PluginManager* PlugMan)
@@ -202,21 +204,34 @@ bool Engine::run()
 
 
   // run
+
+  std::cout << std::endl;
+  std::cout << std::setw(10) << "Time step";
+  std::cout << std::setw(18) << "Real time";
+  std::cout << std::setw(17) << "Status";
+  std::cout << std::endl;
+  std::cout << std::endl;
+
   do
   {
 
-    std::cout << " t=";
-    std::cout << mp_SimStatus->getCurrentStep();
-    std::cout << "\t";
-    std::cout << _C(mp_SimStatus->getCurrentTime().asString());
+    std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
+    std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
 
-    mp_HydroModule->runStep(mp_SimStatus);
+    if (mp_HydroModule->runStep(mp_SimStatus))
+    {
+      std::cout << std::setw(11) << "[OK]";
+    }
+    else
+    {
+      std::cout << std::setw(9) << "[Error]";
+    }
 
     std::cout << std::endl;
 
   } while (mp_SimStatus->switchToNextStep());
 
-
+  std::cout << std::endl;
 
   // finalization of functions
   mp_HydroModule->finalizeRun();
