@@ -168,8 +168,8 @@ void MHYDASApp::printDataInfos()
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
   std::cout << "Rain source(s): " << mp_CoreData->getRainEvent()->getRainSourceCollection().size() << std::endl;
   std::cout << "Simulation period: " << std::endl
-            << "   from " << mp_CoreData->getRainEvent()->getEventStartingTime().asString().mb_str(wxConvUTF8) << std::endl
-            << "   to " << mp_CoreData->getRainEvent()->getEventEndingTime().asString().mb_str(wxConvUTF8) << std::endl
+            << "   from " << _C(mp_CoreData->getRainEvent()->getEventStartingTime().asString()) << std::endl
+            << "   to " << _C(mp_CoreData->getRainEvent()->getEventEndingTime().asString()) << std::endl
             << "   time step: " << mp_Engine->getConfig().DeltaT << "s" << std::endl;
   std::cout << std::endl;
 
