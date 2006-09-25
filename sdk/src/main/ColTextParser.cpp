@@ -7,6 +7,8 @@
 
 
 #include "ColTextParser.h"
+#include "sdk-base.h"
+
 #include <wx/tokenzr.h>
 
 #include <iostream>
@@ -189,7 +191,53 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
 
 bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
 {
-  return false;
+  /** \internal
+
+    The string is tokenized.
+    The number of tokens must be modulo number of columns
+
+  */
+
+
+  bool IsOK = true;
+
+  wxStringTokenizer Tkz(Contents, m_Delimiter);
+
+  if ((Tkz.CountTokens() % ColumnsNbr) == 0)
+  {
+
+    if (mp_Contents != NULL) delete mp_Contents;
+    mp_Contents = new ArrayContents();
+
+    wxArrayString* LineStr = new wxArrayString();
+
+    while (Tkz.HasMoreTokens() && IsOK)
+    {
+      LineStr->Add(Tkz.GetNextToken());
+
+      if (LineStr->Count() == ColumnsNbr)
+      {
+        mp_Contents->Add(LineStr);
+
+        if (Tkz.CountTokens() > 0) LineStr = new wxArrayString();
+      }
+    }
+
+    // more tokens processed but not a complete line. not good!
+    if (LineStr->Count() != 0 && LineStr->Count() != ColumnsNbr)
+    {
+      //std::cerr << "icciii" << std::endl;
+      IsOK = false;
+    }
+  }
+  else
+  {
+//    std::cerr << _C(Contents) << std::endl;
+    //std::cerr << "iciiiii 2 " << Tkz.CountTokens() << std::endl;
+    IsOK = false;
+  }
+
+  return IsOK && checkContents();
 }
 
 // =====================================================================
@@ -285,5 +333,28 @@ bool ColumnTextParser::getDoubleValue(int Line, int Column, double* Value)
   return false;
 }
 
+
+
+// =====================================================================
+// =====================================================================
+
+void ColumnTextParser::coutContents()
+{
+  std::cout << "" << std::endl;
+  int i,j;
+
+  for (i=0;i<m_LinesCount;i++)
+  {
+    for (j=0;j<m_ColsCount;j++)
+    {
+      std::cout << _C(getValue(i,j)) << "\t";
+
+    }
+    cout.flush();
+    std::cerr << std::endl;
+
+  }
+  std::cout << "" << std::endl;
+}
 
 

@@ -241,9 +241,9 @@ bool MHYDASApp::OnInit()
 
   if (Parser.Found(wxT("v"))) wxLog::SetVerbose(true);
 
-  if (Parser.Found(wxT("p")))
+  if (Parser.Found(wxT("f")) || Parser.Found(wxT("d")))
   {
-    printPluginsList();
+    if (Parser.Found(wxT("f"))) printPluginsList();
 
     m_OKToRun = false;
   }

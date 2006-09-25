@@ -23,6 +23,14 @@ MDEF_SUDEFSFILE=SUdefs.dat
 MDEF_RSDEFSFILE=RSdefs.dat
 MDEF_GUDEFSFILE=GUdefs.dat
 
+MDEF_SUPROPSFILE=SUprops.xml
+MDEF_RSPROPSFILE=RSprops.xml
+MDEF_GUPROPSFILE=GUprops.xml
+
+MDEF_SUINIFILE=SUini.xml
+MDEF_RSINIFILE=RSini.xml
+MDEF_GUINIFILE=GUini.xml
+
 MDEF_RAINEVTFILE=rainevent.xml
 MDEF_RAINDISTRIFILE=raindistri.dat
 
@@ -84,7 +92,7 @@ echo "# common compile options" >> $OPTFILE
 echo "CCCLIBS =" >> $OPTFILE
 
 echo "# common compile flags" >> $OPTFILE 
-echo "CCCFLAGS = -g3 -finput-charset=iso-8859-1" >> $OPTFILE
+echo "CCCFLAGS = -pg" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
@@ -178,8 +186,16 @@ echo "const wxString MHYDAS_DEFAULT_OUTRESFILE = wxT(\"$MDEF_OUTRESFILE\");" >> 
 echo "const wxString MHYDAS_DEFAULT_SUDEFSFILE = wxT(\"$MDEF_SUDEFSFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RSDEFSFILE = wxT(\"$MDEF_RSDEFSFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_GUDEFSFILE = wxT(\"$MDEF_GUDEFSFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_SUPROPSFILE = wxT(\"$MDEF_SUPROPSFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_RSPROPSFILE = wxT(\"$MDEF_RSPROPSFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_GUPROPSFILE = wxT(\"$MDEF_GUPROPSFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_SUINIFILE = wxT(\"$MDEF_SUINIFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_RSINIFILE = wxT(\"$MDEF_RSINIFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_GUINIFILE = wxT(\"$MDEF_GUINIFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINEVTFILE = wxT(\"$MDEF_RAINEVTFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINDISTRIFILE = wxT(\"$MDEF_RAINDISTRIFILE\");" >> $SETUPH
+
+echo "" >> $SETUPH
 
 echo "// File formats" >> $SETUPH
 echo "const unsigned int MHYDAS_SUDEFSFILE_COLNBR = 8;" >> $SETUPH

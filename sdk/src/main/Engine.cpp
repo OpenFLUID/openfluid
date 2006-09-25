@@ -8,6 +8,7 @@
 
 #include "Engine.h"
 
+#include <iostream>
 #include <iomanip>
 
 
@@ -143,6 +144,8 @@ bool Engine::buildModel()
 bool Engine::loadData()
 {
   return (mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData()) &&
+          mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData()) &&
+          mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData()) &&
           mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent()) &&
           mp_IOMan->loadRainDistribution(mp_CoreData));
 }
