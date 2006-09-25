@@ -85,6 +85,7 @@ class ColumnTextParser
 
     int getColsCount() const { return m_ColsCount;};
 
+    void coutContents();
 
 };
 

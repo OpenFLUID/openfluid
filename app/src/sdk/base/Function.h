@@ -22,7 +22,7 @@
 #define SU_VARIABLE_TO_UPDATE(name) m_SUVarsToUpdate.Add(wxT(name))
 #define SU_VARIABLE_TO_CHECK(name) m_SUVarsToCheck.Add(wxT(name))
 #define SU_PROPERTY_TO_CHECK(name) m_SUPropsToCheck.Add(wxT(name))
-#define SU_INICOND_TO_CHECK(name) m_SUInicondsToAdd.Add(wxT(name))
+#define SU_INICOND_TO_CHECK(name) m_SUInicondsToCheck.Add(wxT(name))
 
 #define RS_VARIABLE_TO_CREATE(name) m_RSVarsToCreate.Add(wxT(name))
 #define RS_VARIABLE_TO_UPDATE(name) m_RSVarsToUpdate.Add(wxT(name))
