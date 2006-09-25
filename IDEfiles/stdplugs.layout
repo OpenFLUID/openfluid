@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../src/stdplugs/HayamiSUFunc.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1254" topLine="43" />
+	<File name="../src/stdplugs/MSeytouxFunc.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1833" topLine="45" />
 	</File>
-	<File name="../src/stdplugs/HayamiSUFunc.h" open="0" top="0" tabpos="0">
-		<Cursor position="664" topLine="0" />
+	<File name="../src/stdplugs/MSeytouxFunc.h" open="1" top="0" tabpos="2">
+		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="../src/stdplugs/MSeytouxFunc.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1338" topLine="0" />
-	</File>
-	<File name="../src/stdplugs/MSeytouxFunc.h" open="0" top="0" tabpos="0">
-		<Cursor position="420" topLine="0" />
+	<File name="../src/stdplugs/makefile" open="0" top="0" tabpos="0">
+		<Cursor position="196" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

@@ -54,6 +54,9 @@ class IOManager
 
     bool prepareOutputDir();
 
+    bool extractColumnOrderAndDataFromFile(wxString Filename, wxString SpecTag,
+                                           wxArrayString* ColOrder, wxString* Data);
+
   public:
     /**
       Constructor
@@ -93,6 +96,10 @@ class IOManager
 
     bool saveResults(mhydasdk::core::CoreRepository *Data);
 
+
+    bool loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *SpatialData);
+
+    bool loadHydroObjectsInitialConditions(mhydasdk::core::SpatialRepository *SpatialData);
 
 };
 

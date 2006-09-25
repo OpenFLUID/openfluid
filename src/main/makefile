@@ -7,7 +7,7 @@ OBJDIR=$(BASEOBJDIR)/main
 BINDIR=$(BASEBINDIR)
 DOCDIR=$(BASEDOCDIR)/main
 
-CCFLAGS=-I ../sdk -I ../sdk/base $(WXFLAGS)
+CCFLAGS=$(CCCFLAGS) -I ../sdk -I ../sdk/base $(WXFLAGS)
 CCLIBS=-L$(BASELIBDIR) -L$(BINDIR) -L. -ltinyxml -lsdk-base -lsdk-core -Wl,-rpath,. $(WXLIBS)
 
 

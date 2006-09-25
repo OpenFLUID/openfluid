@@ -7,6 +7,9 @@
 
 
 #include <wx/filefn.h>
+#include <wx/tokenzr.h>
+
+#include <iostream>
 
 #include "IOMan.h"
 #include "ColTextParser.h"
@@ -577,5 +580,199 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
 
   return IsOK;
 }
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool IOManager::extractColumnOrderAndDataFromFile(wxString Filename, wxString SpecTag,
+                                                  wxArrayString* ColOrder, wxString* Data)
+{
+
+  bool IsOK = true;
+
+  if (wxFileExists(Filename))
+  {
+    TiXmlDocument Doc;
+    TiXmlElement* Child;
+
+    if (Doc.LoadFile(_C(Filename)))
+    {
+
+      TiXmlHandle DocHandle(&Doc);
+      Child = DocHandle.FirstChild("mhydas").FirstChild(_C(SpecTag)).FirstChild("columns").Element();
+
+      // columns
+      if (Child != NULL)
+      {
+        if (Child->Attribute("order") != NULL)
+        {
+          wxStringTokenizer Tkz(_U(Child->Attribute("order")), wxT(";"));
+
+          while (Tkz.HasMoreTokens())
+          {
+            ColOrder->Add(Tkz.GetNextToken());
+          }
+
+          // data
+          if (ColOrder->GetCount() > 0)
+          {
+            Child = DocHandle.FirstChild("mhydas").FirstChild(_C(SpecTag)).FirstChild("data").Element();
+
+            if (Child != NULL)
+            {
+              Data->Clear();
+              Data->Append(_U(Child->GetText()));
+            }
+            else IsOK = false;
+          }
+          else IsOK = false;
+        }
+        else IsOK = false;
+      }
+      else IsOK = false;
+    }
+  }
+
+  return IsOK;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *SpatialData)
+{
+  wxArrayString Columns;
+  wxString Data;
+  int i, j;
+  bool IsOK = true;
+  long ID;
+  double Value;
+
+  /*
+
+    essayer de trouver une macro du type
+    LOAD_DISTRIBUTED_PARAMS_FILE(file,HOstr,HO,getparamsfunc,columns,data)
+
+  */
+
+
+  // ============== SUs =========================
+  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUPROPSFILE),
+                                        wxT("SUprops"),&Columns,&Data))
+  {
+
+    ColumnTextParser SUProps(wxT("%"));
+
+    if (SUProps.setFromString(Data,Columns.Count()+1))
+    {
+      mhydasdk::core::SurfaceUnit* SU;
+
+      i = 0;
+
+      while (i<SUProps.getLinesCount() && IsOK)
+      {
+        IsOK = SUProps.getLongValue(i,0,&ID);
+        SU = SpatialData->getSUByID((int)ID);
+        if (IsOK && SU != NULL)
+        {
+          for (j=1;j<SUProps.getColsCount();j++)
+          {
+            if (SUProps.getDoubleValue(i,j,&Value))
+            {
+              SU->getProperties()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+            }
+          }
+        }
+        else return false;
+        i++;
+      }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("SU distributed properties data error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("SU distributed properties file error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(").");
+    return false;
+  }
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialRepository *SpatialData)
+{
+  wxArrayString Columns;
+  wxString Data;
+  int i, j;
+  bool IsOK = true;
+  long ID;
+  double Value;
+
+
+  // ============== SUs =========================
+  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUINIFILE),
+                                        wxT("SUini"),&Columns,&Data))
+  {
+
+    ColumnTextParser SUIni(wxT("%"));
+
+    if (SUIni.setFromString(Data,Columns.Count()+1))
+    {
+      mhydasdk::core::SurfaceUnit* SU;
+
+      i = 0;
+
+      while (i<SUIni.getLinesCount() && IsOK)
+      {
+        IsOK = SUIni.getLongValue(i,0,&ID);
+        SU = SpatialData->getSUByID((int)ID);
+        if (IsOK && SU != NULL)
+        {
+          for (j=1;j<SUIni.getColsCount();j++)
+          {
+            if (SUIni.getDoubleValue(i,j,&Value))
+            {
+              SU->getIniConditions()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+            }
+          }
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions format error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
+          return false;
+        }
+        i++;
+      }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions data error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions file error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
+    return false;
+  }
+
+
+  return true;
+}
+
+
 
 
