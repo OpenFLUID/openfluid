@@ -12,6 +12,7 @@
 #include <iomanip>
 
 
+
 Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
                PluginManager* PlugMan)
 {
@@ -198,6 +199,7 @@ bool Engine::prepareDataAndCheckConsistency()
 bool Engine::run()
 {
 
+
   // inits
 
   mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
@@ -215,31 +217,47 @@ bool Engine::run()
 
   // run
 
+  /*
   std::cout << std::endl;
   std::cout << std::setw(10) << "Time step";
   std::cout << std::setw(18) << "Real time";
   std::cout << std::setw(17) << "Status";
   std::cout << std::endl;
   std::cout << std::endl;
+*/
 
   do
   {
-
-    std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-    std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
+    // printf("  %d",mp_SimStatus->getCurrentStep());
+    //printf("  %s",_C(mp_SimStatus->getCurrentTime().asString()));
+//    std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
+//    std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());*/
 
     if (mp_HydroModule->runStep(mp_SimStatus))
     {
-      std::cout << std::setw(11) << "[OK]";
+
+/*      printf("  [OK]");
+      printf("  %f",mp_CoreData->getSpatialData()->getSUByID(1)->getRainSource()->getTimeSerie()->getItemsCollection()->at(mp_SimStatus->getCurrentStep())->getValue());
+      printf("  %f",mp_CoreData->getSpatialData()->getSUByID(1)->getSimulatedVars()->find(wxT("infiltration"))->second->at(mp_SimStatus->getCurrentStep()));
+      printf("  %f",mp_CoreData->getSpatialData()->getSUByID(1)->getSimulatedVars()->find(wxT("runoff"))->second->at(mp_SimStatus->getCurrentStep()));
+      printf("  %f\n",mp_CoreData->getSpatialData()->getSUByID(1)->getSimulatedVars()->find(wxT("qoutput"))->second->at(mp_SimStatus->getCurrentStep()));
+      */
+/*      std::cout << std::setw(11) << "[OK]";*/
+/*
+      std::cout << std::setw(11) << mp_CoreData->getSpatialData()->getSUByID(1)->getRainSource()->getTimeSerie()->getItemsCollection()->at(mp_SimStatus->getCurrentStep())->getValue();
+      std::cout << std::setw(11) << mp_CoreData->getSpatialData()->getSUByID(1)->getSimulatedVars()->find(wxT("infiltration"))->second->at(mp_SimStatus->getCurrentStep());
+      std::cout << std::setw(11) << mp_CoreData->getSpatialData()->getSUByID(1)->getSimulatedVars()->find(wxT("runoff"))->second->at(mp_SimStatus->getCurrentStep());
+      std::cout << std::setw(11) << mp_CoreData->getSpatialData()->getSUByID(1)->getSimulatedVars()->find(wxT("qoutput"))->second->at(mp_SimStatus->getCurrentStep());*/
     }
     else
     {
       std::cout << std::setw(9) << "[Error]";
     }
 
-    std::cout << std::endl;
+    // std::cout << std::endl;
 
   } while (mp_SimStatus->switchToNextStep());
+  std::cout << std::setw(9) << "[OK]";
 
   std::cout << std::endl;
 

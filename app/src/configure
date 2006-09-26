@@ -92,7 +92,7 @@ echo "# common compile options" >> $OPTFILE
 echo "CCCLIBS =" >> $OPTFILE
 
 echo "# common compile flags" >> $OPTFILE 
-echo "CCCFLAGS = -pg" >> $OPTFILE
+echo "CCCFLAGS = -pg -O3" >> $OPTFILE
 
 echo "" >> $OPTFILE
 

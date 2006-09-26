@@ -302,8 +302,8 @@ int MHYDASApp::OnRun()
   wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
   wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
-  std::cout << "Effective run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss %lms")).mb_str(wxConvUTF8) << std::endl;
-  std::cout << "Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss %lms")).mb_str(wxConvUTF8) << std::endl;
+  std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
+  std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
 
   return true;
 
