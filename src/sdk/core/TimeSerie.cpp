@@ -52,7 +52,7 @@ struct SortByDate
                 int Seconds1 = (Time1->getHour()*3600)+(Time1->getMinute()*60)+(Time1->getSecond());
                 int Seconds2 = (Time2->getHour()*3600)+(Time2->getMinute()*60)+(Time2->getSecond());
 
-                ReturnValue = Seconds1 <= Seconds2;
+                ReturnValue = (Seconds1 <= Seconds2);
               }
             }
           }

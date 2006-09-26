@@ -164,6 +164,13 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
+  if (!mp_CoreData->getSpatialData()->buildProcessOrders())
+  {
+    mhydasdk::base::LastError::Message = wxT("Process orders build error.");
+    return false;
+  }
+
+
 
   if (mp_HydroModule == NULL || !mp_HydroModule->prepareData())
   {
