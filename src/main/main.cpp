@@ -36,6 +36,7 @@ bool MHYDASApp::buildModel()
   bool ExecStatus;
 
   std::cout << "* Building model... ";
+  std::cout.flush();
 
   ExecStatus = mp_Engine->buildModel();
 
@@ -52,7 +53,7 @@ bool MHYDASApp::loadData()
 {
   bool ExecStatus;
 
-  std::cout << "* Loading input data... ";
+  std::cout << "* Loading data... ";
   std::cout.flush();
 
   ExecStatus = mp_Engine->loadData();
@@ -72,6 +73,7 @@ bool MHYDASApp::checkConsistency()
   bool ExecStatus;
 
   std::cout << "* Preparing data and checking consistency... ";
+  std::cout.flush();
 
   ExecStatus = mp_Engine->prepareDataAndCheckConsistency();
 
@@ -92,6 +94,7 @@ bool MHYDASApp::runSimulation()
   printDataInfos();
 
   std::cout << "**** Starting simulation ****" << endl;
+  std::cout.flush();
 
   m_EffectiveStartTime = wxDateTime::Now();
 
@@ -101,6 +104,7 @@ bool MHYDASApp::runSimulation()
 
   if (ExecStatus) std::cout << "**** Simulation done ****" << endl << endl;
   else  std::cout << "**** Simulation aborted ****" << endl << endl;
+  std::cout.flush();
 
   return ExecStatus;
 }
@@ -115,6 +119,7 @@ bool MHYDASApp::saveResults()
   bool ExecStatus;
 
   std::cout << "* Saving results... ";
+  std::cout.flush();
 
   ExecStatus = mp_Engine->saveResults();
 
@@ -131,6 +136,7 @@ void MHYDASApp::printlnExecStatus(bool Status)
 {
   if (Status) std::cout << "[OK]" << std::endl;
   else std::cout << "[Error]" << std::endl;
+  std::cout.flush();
 }
 
 
@@ -152,6 +158,7 @@ void MHYDASApp::printMHYDASInfos()
   std::cout << "               LISAH-INRA, Montpellier, France            " << std::endl;
   std::cout << "==========================================================" << std::endl;
   std::cout << std::endl;
+  std::cout.flush();
 }
 
 
@@ -172,6 +179,7 @@ void MHYDASApp::printDataInfos()
             << "   to " << _C(mp_CoreData->getRainEvent()->getEventEndingTime().asString()) << std::endl
             << "   time step: " << mp_Engine->getConfig().DeltaT << "s" << std::endl;
   std::cout << std::endl;
+  std::cout.flush();
 
 }
 
@@ -194,6 +202,7 @@ void MHYDASApp::printPluginsList()
   {
     std::cout << "  (none)" << std::endl;
   }
+  std::cout.flush();
 
 }
 
@@ -204,6 +213,7 @@ bool MHYDASApp::stopAppReturn()
 {
   std::cout << std::endl << "Oooops! " << LastError::Message.mb_str(wxConvUTF8) << std::endl;
   std::cout << "Aborting MHYDAS application." << std::endl;
+  std::cout.flush();
 
   return false;
 }
@@ -304,6 +314,7 @@ int MHYDASApp::OnRun()
 
   std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
   std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
+  std::cout.flush();
 
   return true;
 

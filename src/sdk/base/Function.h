@@ -36,6 +36,34 @@
 #define GU_PROPERTY_TO_CHECK(name) m_GUPropsToCheck.Add(wxT(name))
 #define GU_INICOND_TO_CHECK(name) m_GUInicondsToAdd.Add(wxT(name))
 
+#define GET_SU_RAINVALUE(suobj,step) suobj->getRainSource()->getTimeSerie()->getItemsCollection()->at(step)->getValue()
+
+#define BEGIN_SU_ORDERED_LOOP(suobj) \
+  list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
+  list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList(); \
+  for(_M_SUiter=_M_SUsList->begin(); _M_SUiter != _M_SUsList->end(); _M_SUiter++) \
+  { \
+    suobj = *_M_SUiter; \
+
+
+#define BEGIN_RS_ORDERED_LOOP(rsobj) \
+  list<mhydasdk::core::ReachSegment*>::iterator _M_RSiter; \
+  list<mhydasdk::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList(); \
+  for(_M_RSiter=_M_RSsList->begin(); _M_RSiter != _M_RSsList->end(); _M_RSiter++) \
+  { \
+    rsobj = *_M_RSiter; \
+
+#define BEGIN_GU_ORDERED_LOOP(guobj) \
+  list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUiter; \
+  list<mhydasdk::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); \
+  for(_M_GUiter=_M_GUsList->begin(); _M_GUiter != _M_GUsList->end(); _M_GUiter++) \
+  { \
+    guobj = *_M_GUiter; \
+
+#define APPEND_SIMVAR_VALUE(hobj,name,value) (hobj->getSimulatedVars()->find(wxT(name))->second)->push_back(value)
+
+#define END_LOOP }
+
 
 // =====================================================================
 // =====================================================================
