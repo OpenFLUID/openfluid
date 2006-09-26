@@ -269,6 +269,9 @@ int MHYDASApp::OnRun()
 
   if (m_OKToRun)
   {
+
+    m_TotalStartTime = wxDateTime::Now();
+
     mp_CoreData = new CoreRepository();
 
     mp_Engine = new Engine(mp_CoreData,mp_RunEnv,mp_PlugMan);
@@ -290,13 +293,17 @@ int MHYDASApp::OnRun()
 
     // sauvegarde des résultats
     if (!saveResults()) return stopAppReturn();
+
+    m_TotalEndTime = wxDateTime::Now();
   }
 
   std::cout << std::endl;
 
-  wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveEndTime);
+  wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
+  wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
   std::cout << "Effective run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss %lms")).mb_str(wxConvUTF8) << std::endl;
+  std::cout << "Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss %lms")).mb_str(wxConvUTF8) << std::endl;
 
   return true;
 

@@ -53,6 +53,8 @@ class MHYDASApp : public wxAppConsole
 
     PluginManager *mp_PlugMan;
 
+    wxDateTime m_TotalStartTime;
+    wxDateTime m_TotalEndTime;
     wxDateTime m_EffectiveStartTime;
     wxDateTime m_EffectiveEndTime;
 

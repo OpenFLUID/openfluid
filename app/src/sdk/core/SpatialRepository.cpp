@@ -18,6 +18,7 @@
 
 
 #include "SpatialRepository.h"
+#include "HydroObject.h"
 
 #include <iostream>
 
@@ -29,6 +30,15 @@ namespace mhydasdk { namespace core {
 
 
 
+struct SortByProcessOrder
+{
+  bool operator ()(HydroObject* HO1, HydroObject* HO2) const
+  {
+    return (HO1->getProcessOrder() <= HO2->getProcessOrder());
+  }
+
+};
+
 SpatialRepository::SpatialRepository()
 {
   mp_SUsCollection = new SUMap();
@@ -39,6 +49,10 @@ SpatialRepository::SpatialRepository()
   mp_SUsProcessOrders = new vector<vector<SurfaceUnit*>*>();
   mp_RSsProcessOrders = new vector<vector<ReachSegment*>*>();
   mp_GUsProcessOrders = new vector<vector<GroundwaterUnit*>*>();
+
+  mp_SUsOrderedList = new list<SurfaceUnit*>;
+  mp_RSsOrderedList = new list<ReachSegment*>;
+  mp_GUsOrderedList = new list<GroundwaterUnit*>;
 
 }
 
@@ -308,6 +322,22 @@ bool SpatialRepository::buildProcessOrders()
     mp_SUsProcessOrders->at(SUit->second->getProcessOrder()-1)->push_back(SUit->second);
   }
 
+  // creating ordered list
+  for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit)
+  {
+    mp_SUsOrderedList->push_back(SUit->second);
+  }
+  mp_SUsOrderedList->sort(SortByProcessOrder());
+
+
+  /*list<SurfaceUnit*>::iterator iter;
+  for(iter=mp_SUsOrderedList->begin(); iter != mp_SUsOrderedList->end(); iter++)
+  {
+    SurfaceUnit* SU = *iter;
+    std::cout << SU->getProcessOrder() << " " << SU->getID() << std::endl;
+  }*/
+
+
 
   // =============== Reaches =================
 
@@ -331,6 +361,14 @@ bool SpatialRepository::buildProcessOrders()
   {
     mp_RSsProcessOrders->at(RSit->second->getProcessOrder()-1)->push_back(RSit->second);
   }
+
+  // creating ordered list
+  for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit)
+  {
+    mp_RSsOrderedList->push_back(RSit->second);
+  }
+  mp_RSsOrderedList->sort(SortByProcessOrder());
+
 
 
 
@@ -356,6 +394,14 @@ bool SpatialRepository::buildProcessOrders()
   {
     mp_GUsProcessOrders->at(GUit->second->getProcessOrder()-1)->push_back(GUit->second);
   }
+
+  // creating ordered list
+  for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit)
+  {
+    mp_GUsOrderedList->push_back(GUit->second);
+  }
+  mp_GUsOrderedList->sort(SortByProcessOrder());
+
 
 
   return true;

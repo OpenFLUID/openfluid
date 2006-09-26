@@ -73,6 +73,8 @@ bool MorelSeytouxFunc::checkConsistency()
 bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
 
+
+
   // std::cout << "coucou c'est Momo run " << mp_CoreData->getSpatialData()->getSUsCollection()->size();
   return true;
 }
