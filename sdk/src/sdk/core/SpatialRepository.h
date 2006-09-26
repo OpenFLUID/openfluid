@@ -10,6 +10,7 @@
 
 
 #include <vector>
+#include <list>
 #include <wx/hashmap.h>
 
 #include "SurfaceUnit.h"
@@ -44,6 +45,9 @@ class SpatialRepository
     vector<vector<ReachSegment*>*>* mp_RSsProcessOrders;
     vector<vector<GroundwaterUnit*>*>* mp_GUsProcessOrders;
 
+    list<SurfaceUnit*>* mp_SUsOrderedList;
+    list<ReachSegment*>* mp_RSsOrderedList;
+    list<GroundwaterUnit*>* mp_GUsOrderedList;
 
 	public:
 
@@ -76,6 +80,8 @@ class SpatialRepository
 		*/
 		SUMap* getSUsCollection();
 
+    list<SurfaceUnit*>* getSUsOrderedList() { return mp_SUsOrderedList; };
+
 
 		/**
 		  Ajoute un bief à l'ensemble des bief constituant le réseau hydro
@@ -97,6 +103,7 @@ class SpatialRepository
 		*/
 		RSMap* getRSsCollection();
 
+    list<ReachSegment*>* getRSsOrderedList() { return mp_RSsOrderedList; };
 
 		/**
 		  Ajoute une AHU bief à l'ensemble des AHUs
@@ -117,11 +124,15 @@ class SpatialRepository
 		*/
 		GUMap* getGUsCollection();
 
+    list<GroundwaterUnit*>* getGUsOrderedList() { return mp_GUsOrderedList; };
+
 
     bool buildObjectLinkedTopologyFromIDs();
 
 
 		/**
+      !! commentaire à revoir !!
+
       Regroupe les objets hydrologiques définissant l'espace étudié par classe d'ordre de traitement.
       Cette méthode crée 3 vecteurs (un pour chaque type d'objet).
       Chacun de ces vecteurs contient un ensemble de vecteurs indexés par le numéro d'ordre de traitement [0,ordre-1].
