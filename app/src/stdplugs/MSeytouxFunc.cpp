@@ -75,17 +75,21 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
   double Value;
 
-  list<mhydasdk::core::SurfaceUnit*>::iterator iter;
+  mhydasdk::core::SurfaceUnit* SU;
+
+  /*list<mhydasdk::core::SurfaceUnit*>::iterator iter;
   list<mhydasdk::core::SurfaceUnit*>* SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
   for(iter=SUsList->begin(); iter != SUsList->end(); iter++)
   {
-    mhydasdk::core::SurfaceUnit* SU = *iter;
-
-    Value = (SU->getRainSource()->getTimeSerie()->getItemsCollection()->at(SimStatus->getCurrentStep())->getValue());
-    (SU->getSimulatedVars()->find(wxT("runoff"))->second)->push_back(Value * 0.6);
+    SU = *iter;*/
+  BEGIN_SU_ORDERED_LOOP(SU)
+    Value = GET_SU_RAINVALUE(SU,SimStatus->getCurrentStep());
+    //Value = (SU->getRainSource()->getTimeSerie()->getItemsCollection()->at(SimStatus->getCurrentStep())->getValue());
+    //(SU->getSimulatedVars()->find(wxT("runoff"))->second)->push_back(Value * 0.6);
+    APPEND_SIMVAR_VALUE(SU,"runoff",Value * 0.6);
     (SU->getSimulatedVars()->find(wxT("infiltration"))->second)->push_back(Value * 0.4);
-
-  }
+  END_LOOP
+  //}
 
   // std::cout << "coucou c'est Momo run " << mp_CoreData->getSpatialData()->getSUsCollection()->size();
   return true;
