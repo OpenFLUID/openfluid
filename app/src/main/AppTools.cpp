@@ -7,6 +7,7 @@
 
 #include <wx/filename.h>
 #include <wx/dir.h>
+#include <wx/tokenzr.h>
 
 #include "AppTools.h"
 
@@ -101,3 +102,21 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+wxArrayString SplitString(const wxString StrToSplit, const wxString SepString)
+{
+  // using wxStringTokenizer class
+
+  wxArrayString SplitParts;
+  wxStringTokenizer Tokenizer(StrToSplit,SepString);
+
+  while (Tokenizer.HasMoreTokens())
+  {
+    SplitParts.Add(Tokenizer.GetNextToken());
+  }
+
+  return SplitParts;
+}

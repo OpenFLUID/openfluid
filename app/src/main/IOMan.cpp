@@ -14,12 +14,19 @@
 #include "IOMan.h"
 #include "ColTextParser.h"
 #include "setup.h"
+#include "AppTools.h"
 #include "xml/tinyxml.h"
+
+
+// =====================================================================
+// =====================================================================
 
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(FunctionConfigsList);
 
+/*#include <wx/arrimpl.cpp>
+WX_DEFINE_OBJARRAY(ArrayOfAutoOutfileDefs);*/
 
 
 // =====================================================================
@@ -545,50 +552,6 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
 }
 
 
-
-// =====================================================================
-// =====================================================================
-
-bool IOManager::loadOuputConfig()
-{
-
-  return true;
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-bool IOManager::prepareOutputDir()
-{
-  bool IsOK = true;
-
-  if (!wxDirExists(mp_RunEnv->getOutputDir())) IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
-
-  return IsOK;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
-{
-  bool IsOK = true;
-
-  IsOK = loadOuputConfig();
-
-  if (IsOK && prepareOutputDir())
-  {
-
-
-  }
-
-  return IsOK;
-}
-
-
-
 // =====================================================================
 // =====================================================================
 
@@ -991,5 +954,372 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
 }
 
 
+// =====================================================================
+// =====================================================================
+
+bool IOManager::loadOutputConfig()
+{
+
+  TiXmlDocument LoadDoc;
+  TiXmlElement* Child;
+  TiXmlElement* Child2;
+
+  wxString Str;
+  int i;
+  long LongValue;
+
+  m_AutoOutFiles.ColSeparator = wxT("\t");
+  m_AutoOutFiles.CommentChar = wxT("%");
+  m_AutoOutFiles.DTFormat = wxT("%Y%m%dT%H%M%S");
+
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_OUTPUTCONFFILE).mb_str(wxConvUTF8)))
+  {
+
+    TiXmlHandle DocHandle(&LoadDoc);
+
+
+    // auto output files
+    Child = DocHandle.FirstChild("mhydas").FirstChild("output").FirstChild("autooutfiles").Element();
+
+    if (Child != NULL)
+    {
+      // processing column separator attribute
+      if (Child->Attribute("colsep") != NULL)
+      {
+        Str = _U(Child->Attribute("colsep"));
+        if (Str.Length() > 0) m_AutoOutFiles.ColSeparator = Str;
+      }
+
+      // processing comment char attribute
+      if (Child->Attribute("commentchar") != NULL)
+      {
+        Str = _U(Child->Attribute("commentchar"));
+        if (Str.Length() > 0) m_AutoOutFiles.CommentChar = Str;
+      }
+
+      // processing datetime format attribute
+      if (Child->Attribute("dtformat") != NULL)
+      {
+        Str = _U(Child->Attribute("dtformat"));
+        if (Str.Length() > 0)
+        {
+          if (Str == wxT("6cols")) Str = wxT("%Y\t%m\t%d\t%H\t%M\t%S");
+          if (Str == wxT("iso")) Str = wxT("%Y%m%dT%H%M%S");
+          m_AutoOutFiles.DTFormat = Str;
+        }
+      }
+
+      Child = DocHandle.FirstChild("mhydas").FirstChild("output").FirstChild("autooutfiles").FirstChild().Element();
+
+      AutoOutfileDef* CurrentDef;
+
+      for(Child;Child;Child=Child->NextSiblingElement())
+   	  {
+        CurrentDef = new AutoOutfileDef;
+
+        // processing suffix file attribute
+        if (Child->Attribute("filesuffix") != NULL)
+        {
+          CurrentDef->FileSuffix = _U(Child->Attribute("filesuffix"));
+        }
+        else CurrentDef->FileSuffix = wxT("");
+
+        // processing objects selection attribute
+        if (Child->Attribute("selection") != NULL)
+        {
+          Str = _U(Child->Attribute("selection"));
+          if (Str != wxT("*") && Str.Length() > 0)
+          {
+            wxArrayString StrArray = SplitString(Str,wxT(";"));
+            for (i=0;i<StrArray.Count();i++)
+            {
+              if (StrArray[i].ToLong(&LongValue)) CurrentDef->SelectedObjectIDs.push_back((int)LongValue);
+              else
+              {
+                mhydasdk::base::LastError::Message = wxT("Output config file format error: objects selection ID (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+                return false;
+
+              }
+            }
+
+          }
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("Output config file format error: missing objects selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+          return false;
+        }
+
+
+        // processing simulated vars columns attribute
+        if (Child->Attribute("columns") != NULL)
+        {
+          Str = _U(Child->Attribute("columns"));
+          if (Str != wxT("*") && Str.Length() > 0) CurrentDef->Columns = SplitString(Str,wxT(";"));
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("Output config file format error: missing column description (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+          return false;
+        }
+
+
+        // processing object type adn adds current def to def list
+        Str = _U(Child->Value());
+        if ((Str == wxT("SUout")) || (Str == wxT("RSout")) || (Str == wxT("GUout")))
+        {
+          CurrentDef->ObjectsKind = Str;
+          m_AutoOutFiles.Defs.push_back(CurrentDef);
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("Output config file format error: unknown object type (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+          return false;
+        }
+   	  }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("Output config file format error (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("Output config file not found (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+    return false;
+  }
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::prepareOutputDir()
+{
+  bool IsOK = true;
+
+  if (!wxDirExists(mp_RunEnv->getOutputDir())) IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
+
+  return IsOK;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
+                                   wxString ColSeparator, wxString CommentChar,
+                                   AutoOutfileDef* Def, wxArrayString DTStrings)
+{
+
+  wxString FileContents;
+  wxString Filename;
+  vector<mhydasdk::core::HydroObject*> HOSet;
+  vector<double>* Values;
+  wxString ColsStr;
+  int i,j,k;
+
+
+  if (Def->SelectedObjectIDs.size() > 0)
+  {
+
+    // creating selection list for SUs
+    if (Def->ObjectsKind == wxT("SUout"))
+    {
+      for (i=0;i<Def->SelectedObjectIDs.size();i++)
+      {
+        HOSet.push_back(SpatialData->getSUByID(Def->SelectedObjectIDs[i]));
+      }
+    }
+
+
+    // creating selection list for RSs
+    if (Def->ObjectsKind == wxT("RSout"))
+    {
+      for (i=0;i<Def->SelectedObjectIDs.size();i++)
+      {
+        HOSet.push_back(SpatialData->getRSByID(Def->SelectedObjectIDs[i]));
+      }
+    }
+
+
+    // creating selection list for GUs
+    if (Def->ObjectsKind == wxT("GUout"))
+    {
+      for (i=0;i<Def->SelectedObjectIDs.size();i++)
+      {
+        HOSet.push_back(SpatialData->getGUByID(Def->SelectedObjectIDs[i]));
+      }
+    }
+
+
+
+  }
+  else
+  {
+
+    // creating full list for SUs
+    if (Def->ObjectsKind == wxT("SUout"))
+    {
+      mhydasdk::core::SUMap::iterator SUit;
+
+      for(SUit = SpatialData->getSUsCollection()->begin(); SUit != SpatialData->getSUsCollection()->end(); ++SUit)
+      {
+        HOSet.push_back(SUit->second);
+      }
+
+    }
+
+    // creating full list for RSs
+    if (Def->ObjectsKind == wxT("RSout"))
+    {
+      mhydasdk::core::RSMap::iterator RSit;
+
+      for(RSit = SpatialData->getRSsCollection()->begin(); RSit != SpatialData->getRSsCollection()->end(); ++RSit)
+      {
+        HOSet.push_back(RSit->second);
+      }
+
+    }
+
+    // creating full list for GUs
+    if (Def->ObjectsKind == wxT("GUout"))
+    {
+      mhydasdk::core::GUMap::iterator GUit;
+
+      for(GUit = SpatialData->getGUsCollection()->begin(); GUit != SpatialData->getGUsCollection()->end(); ++GUit)
+      {
+        HOSet.push_back(GUit->second);
+      }
+
+    }
+
+
+
+  }
+
+
+  // creating column list if empty (*)
+  if (Def->Columns.Count() == 0 && HOSet[0] != NULL)
+  {
+    mhydasdk::core::SimulatedVarsMap::iterator Simit;
+
+    for(Simit = HOSet[0]->getSimulatedVars()->begin(); Simit != HOSet[0]->getSimulatedVars()->end(); ++Simit)
+    {
+      Def->Columns.Add(Simit->first);
+    }
+
+  }
+
+  // building columns string for file headers
+  ColsStr.Clear();
+  for (i=0;i<Def->Columns.Count();i++)
+  {
+    ColsStr << Def->Columns[i];
+    if (i != (Def->Columns.Count()-1)) ColsStr << ColSeparator;
+  }
+
+
+  for (i=0;i<HOSet.size();i++)
+  {
+
+    if (HOSet[i] != NULL)
+    {
+      Filename = wxT("SU");
+      if (Def->ObjectsKind == wxT("RSout")) Filename = wxT("RS");
+      if (Def->ObjectsKind == wxT("GUout")) Filename = wxT("GU");
+
+
+      Filename = Filename + wxString::Format(wxT("%d"),HOSet[i]->getID());
+
+      if (Def->FileSuffix.Length() > 0) Filename = Filename + wxT("_") + Def->FileSuffix;
+
+
+      Filename = Filename + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+
+      FileContents.Clear();
+
+      // file header
+      FileContents << CommentChar << wxT(" file: ") << Filename << wxT("\n");
+      FileContents << CommentChar << wxT(" object ID: ") << HOSet[i]->getID() << wxT("\n");
+      FileContents << CommentChar << wxT(" columns order (after date and time): ") << ColsStr << wxT("\n");
+
+      for (j=0;j<10;j++) FileContents << CommentChar;
+      FileContents << wxT("\n");
+
+      // file contents
+
+      for (j=0;j<DTStrings.Count();j++)
+      {
+        FileContents << DTStrings[j];
+        for (k=0;k<Def->Columns.Count();k++)
+        {
+          if (HOSet[i]->getSimulatedVars()->find(Def->Columns[k]) != HOSet[i]->getSimulatedVars()->end())
+            Values = HOSet[i]->getSimulatedVars()->find(Def->Columns[k])->second;
+          if (Values != NULL) FileContents << ColSeparator << Values->at(j);
+        }
+        FileContents << wxT("\n");
+      }
+
+
+
+      wxFile RFile(mp_RunEnv->getOutputFullPath(Filename),wxFile::write);
+
+      RFile.Write(FileContents);
+
+      RFile.Close();
+    }
+  }
+
+
+
+  return true;
+}
+
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
+{
+  bool IsOK = true;
+
+  if (prepareOutputDir())
+  {
+    int i;
+    wxString Filename;
+    AutoOutfileDef* CurrentDef;
+
+    wxArrayString DTStrings;
+    mhydasdk::core::TimeSerie* TSerie = Data->getRainEvent()->getRainSourceCollection().begin()->second->getTimeSerie();
+
+    // preparing and formatting datetime column(s)
+    for (i=0;i<TSerie->getItemsCollection()->size();i++)
+    {
+      DTStrings.Add(TSerie->getItemsCollection()->at(i)->getDateTime().asString(m_AutoOutFiles.DTFormat));
+    }
+
+
+    // saving data matching each definition
+    for (i=0;i<m_AutoOutFiles.Defs.size();i++)
+    {
+      CurrentDef = m_AutoOutFiles.Defs[i];
+
+      saveResultsFromDef(Data->getSpatialData(),
+                         m_AutoOutFiles.ColSeparator,m_AutoOutFiles.CommentChar,
+                         CurrentDef,DTStrings);
+
+    }
+
+  }
+
+  return IsOK;
+}
 
 

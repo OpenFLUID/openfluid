@@ -148,7 +148,8 @@ bool Engine::loadData()
           mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData()) &&
           mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData()) &&
           mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent()) &&
-          mp_IOMan->loadRainDistribution(mp_CoreData));
+          mp_IOMan->loadRainDistribution(mp_CoreData) &&
+          mp_IOMan->loadOutputConfig());
 }
 
 
