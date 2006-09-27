@@ -20,8 +20,8 @@ namespace mhydasdk { namespace core {
 typedef unsigned long long rawtime_t;
 
 /**
-  Thanks To Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968).
-  and http://www.decimaltime.hynes.net/index.html
+  Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968).
+  http://www.decimaltime.hynes.net/index.html
 
 */
 class DateTime
@@ -101,11 +101,20 @@ class DateTime
     */
     rawtime_t getRawTime();
 
+
     /**
       Returns date-time as string, using format YYYT-MM-DD hh:mm:ss
       \return a string
     */
     wxString asString();
+
+    /**
+      Returns date-time as string, using strftime() format string
+      \param[in] strftime()-like format string
+      \return a string
+    */
+    wxString asString(wxString Format);
+
 
     /**
       Returns date as string, using format YYYT-MM-DD

@@ -17,7 +17,7 @@ MDEF_OUTDIR=MHYDAS.OUT
 
 MDEF_CONFFILE=model.xml
 MDEF_INDATAFILE=inputdata.xml
-MDEF_OUTRESFILE=outputres.xml
+MDEF_OUTPUTCONFFILE=output.xml
 
 MDEF_SUDEFSFILE=SUdefs.dat
 MDEF_RSDEFSFILE=RSdefs.dat
@@ -34,6 +34,7 @@ MDEF_GUINIFILE=GUini.xml
 MDEF_RAINEVTFILE=rainevent.xml
 MDEF_RAINDISTRIFILE=raindistri.dat
 
+MDEF_OUTPUTFILES_EXT=out
 
 
 ############################
@@ -182,7 +183,7 @@ echo "" >> $SETUPH
 echo "// Default files" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_CONFFILE = wxT(\"$MDEF_CONFFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_INDATAFILE = wxT(\"$MDEF_INDATAFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_OUTRESFILE = wxT(\"$MDEF_OUTRESFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_OUTPUTCONFFILE = wxT(\"$MDEF_OUTPUTCONFFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_SUDEFSFILE = wxT(\"$MDEF_SUDEFSFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RSDEFSFILE = wxT(\"$MDEF_RSDEFSFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_GUDEFSFILE = wxT(\"$MDEF_GUDEFSFILE\");" >> $SETUPH
@@ -194,6 +195,11 @@ echo "const wxString MHYDAS_DEFAULT_RSINIFILE = wxT(\"$MDEF_RSINIFILE\");" >> $S
 echo "const wxString MHYDAS_DEFAULT_GUINIFILE = wxT(\"$MDEF_GUINIFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINEVTFILE = wxT(\"$MDEF_RAINEVTFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINDISTRIFILE = wxT(\"$MDEF_RAINDISTRIFILE\");" >> $SETUPH
+
+echo "" >> $SETUPH
+
+echo "// Default file extensions" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_OUPUTFILES_EXT = wxT(\"$MDEF_OUTPUTFILES_EXT\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
