@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="default" />
-	<File name="../src/sdk/base/Function.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="0" topLine="19" />
+	<File name="../src/sdk/base/Function.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="6003" topLine="204" />
 	</File>
-	<File name="../src/sdk/base/Function.h" open="1" top="0" tabpos="7">
-		<Cursor position="730" topLine="21" />
-	</File>
-	<File name="../src/sdk/base/Plugin.h" open="1" top="0" tabpos="6">
-		<Cursor position="0" topLine="75" />
-	</File>
-	<File name="../src/sdk/base/makefile" open="0" top="0" tabpos="0">
-		<Cursor position="201" topLine="0" />
+	<File name="../src/sdk/base/Function.h" open="1" top="0" tabpos="1">
+		<Cursor position="1462" topLine="31" />
 	</File>
 </CodeBlocks_layout_file>

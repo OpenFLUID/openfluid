@@ -21,6 +21,12 @@
 WX_DEFINE_LIST(FunctionConfigsList);
 
 
+
+// =====================================================================
+// =====================================================================
+
+
+
 IOManager::IOManager(mhydasdk::base::RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
@@ -660,8 +666,12 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
 
   */
 
-
   // ============== SUs =========================
+
+  Columns.Clear();
+  Data.Clear();
+
+  // extracts column order
   if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUPROPSFILE),
                                         wxT("SUprops"),&Columns,&Data))
   {
@@ -674,6 +684,7 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
 
       i = 0;
 
+      // parses file and loads it in the properties hash table, ordered by columns
       while (i<SUProps.getLinesCount() && IsOK)
       {
         IsOK = SUProps.getLongValue(i,0,&ID);
@@ -704,6 +715,103 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
     return false;
   }
 
+  // ============== RSs =========================
+
+  Columns.Clear();
+  Data.Clear();
+
+
+  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSPROPSFILE),
+                                        wxT("RSprops"),&Columns,&Data))
+  {
+
+    ColumnTextParser RSProps(wxT("%"));
+
+    if (RSProps.setFromString(Data,Columns.Count()+1))
+    {
+      mhydasdk::core::ReachSegment* RS;
+
+      i = 0;
+
+      while (i<RSProps.getLinesCount() && IsOK)
+      {
+        IsOK = RSProps.getLongValue(i,0,&ID);
+        RS = SpatialData->getRSByID((int)ID);
+        if (IsOK && RS != NULL)
+        {
+          for (j=1;j<RSProps.getColsCount();j++)
+          {
+            if (RSProps.getDoubleValue(i,j,&Value))
+            {
+              RS->getProperties()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+            }
+          }
+        }
+        else return false;
+        i++;
+      }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("RS distributed properties data error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("RS distributed properties file error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(").");
+    return false;
+  }
+
+
+  // ============== GUs =========================
+
+  Columns.Clear();
+  Data.Clear();
+
+  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUPROPSFILE),
+                                        wxT("GUprops"),&Columns,&Data))
+  {
+
+    ColumnTextParser GUProps(wxT("%"));
+
+    if (GUProps.setFromString(Data,Columns.Count()+1))
+    {
+      mhydasdk::core::GroundwaterUnit* GU;
+
+      i = 0;
+
+      while (i<GUProps.getLinesCount() && IsOK)
+      {
+        IsOK = GUProps.getLongValue(i,0,&ID);
+        GU = SpatialData->getGUByID((int)ID);
+        if (IsOK && GU != NULL)
+        {
+          for (j=1;j<GUProps.getColsCount();j++)
+          {
+            if (GUProps.getDoubleValue(i,j,&Value))
+            {
+              GU->getProperties()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+            }
+          }
+        }
+        else return false;
+        i++;
+      }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("GU distributed properties data error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("GU distributed properties file error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(").");
+    return false;
+  }
+
+
   return true;
 }
 
@@ -723,6 +831,10 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
 
 
   // ============== SUs =========================
+
+  Columns.Clear();
+  Data.Clear();
+
   if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUINIFILE),
                                         wxT("SUini"),&Columns,&Data))
   {
@@ -768,6 +880,111 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
     mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions file error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
     return false;
   }
+
+
+  // ============== RSs =========================
+
+  Columns.Clear();
+  Data.Clear();
+
+  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSINIFILE),
+                                        wxT("RSini"),&Columns,&Data))
+  {
+
+    ColumnTextParser RSIni(wxT("%"));
+
+    if (RSIni.setFromString(Data,Columns.Count()+1))
+    {
+      mhydasdk::core::ReachSegment* RS;
+
+      i = 0;
+
+      while (i<RSIni.getLinesCount() && IsOK)
+      {
+        IsOK = RSIni.getLongValue(i,0,&ID);
+        RS = SpatialData->getRSByID((int)ID);
+        if (IsOK && RS != NULL)
+        {
+          for (j=1;j<RSIni.getColsCount();j++)
+          {
+            if (RSIni.getDoubleValue(i,j,&Value))
+            {
+              RS->getIniConditions()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+            }
+          }
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("RS distributed initial conditions format error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(").");
+          return false;
+        }
+        i++;
+      }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("RS distributed initial conditions data error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("RS distributed initial conditions file error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(").");
+    return false;
+  }
+
+
+  // ============== GUs =========================
+
+  Columns.Clear();
+  Data.Clear();
+
+  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUINIFILE),
+                                        wxT("GUini"),&Columns,&Data))
+  {
+
+    ColumnTextParser GUIni(wxT("%"));
+
+    if (GUIni.setFromString(Data,Columns.Count()+1))
+    {
+      mhydasdk::core::GroundwaterUnit* GU;
+
+      i = 0;
+
+      while (i<GUIni.getLinesCount() && IsOK)
+      {
+        IsOK = GUIni.getLongValue(i,0,&ID);
+        GU = SpatialData->getGUByID((int)ID);
+        if (IsOK && GU != NULL)
+        {
+          for (j=1;j<GUIni.getColsCount();j++)
+          {
+            if (GUIni.getDoubleValue(i,j,&Value))
+            {
+              GU->getIniConditions()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+            }
+          }
+        }
+        else
+        {
+          mhydasdk::base::LastError::Message = wxT("GU distributed initial conditions format error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(").");
+          return false;
+        }
+        i++;
+      }
+    }
+    else
+    {
+      mhydasdk::base::LastError::Message = wxT("GU distributed initial conditions data error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(").");
+      return false;
+    }
+  }
+  else
+  {
+    mhydasdk::base::LastError::Message = wxT("GU distributed initial conditions file error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(").");
+    return false;
+  }
+
 
 
   return true;
