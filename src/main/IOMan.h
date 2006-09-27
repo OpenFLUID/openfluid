@@ -12,6 +12,12 @@
 #include "sdk-core.h"
 
 #include <wx/list.h>
+//#include <wx/dynarray.h>
+#include <vector>
+
+// =====================================================================
+// =====================================================================
+
 
 struct FunctionConfig
 {
@@ -34,7 +40,41 @@ struct EngineConfig
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainEventFilesMap);
+
+
+// =====================================================================
+// =====================================================================
+
+
+struct AutoOutfileDef
+{
+  wxString ObjectsKind;
+  vector<mhydasdk::core::hoid_t> SelectedObjectIDs;
+  wxString FileSuffix;
+  wxArrayString Columns;
+
+};
+
+//WX_DEFINE_ARRAY(AutoOutfileDef*, ArrayOfAutoOutfileDefs);
+
+struct AutoOutfiles
+{
+  wxString ColSeparator; // = wxT("\t");
+  wxString DTFormat; // = wxT("%Y%m%dT%H%M%S");
+  wxString CommentChar; // = wxT("%");
+
+  vector<AutoOutfileDef*> Defs;
+};
+
+// =====================================================================
+// =====================================================================
+
+
 
 /**
   File inputs/outputs management class
@@ -46,16 +86,23 @@ class IOManager
 
     mhydasdk::core::SUFlowCode getSUFlowCode(wxString Code);
 
+    AutoOutfiles m_AutoOutFiles;
+
+
     RainEventFilesMap buildRainEventFileMap();
 
     bool loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename);
-
-    bool loadOuputConfig();
 
     bool prepareOutputDir();
 
     bool extractColumnOrderAndDataFromFile(wxString Filename, wxString SpecTag,
                                            wxArrayString* ColOrder, wxString* Data);
+
+
+    bool saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
+                            wxString ColSeparator, wxString CommentChar,
+                            AutoOutfileDef* Def, wxArrayString DTStrings);
+
 
   public:
     /**
@@ -73,6 +120,13 @@ class IOManager
       \param[out] Configuration definition to populate
     */
     bool loadModelConfig(EngineConfig* Config);
+
+
+    /**
+      Loads output files configuration
+    */
+    bool loadOutputConfig();
+
 
     /**
       Loads spatial hydro objects definition and topology

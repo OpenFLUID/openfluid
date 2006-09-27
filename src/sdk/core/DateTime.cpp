@@ -155,11 +155,31 @@ wxString  DateTime::asString()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+wxString  DateTime::asString(wxString Format)
+{
+
+  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
+                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(Format);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 wxString  DateTime::getDateAsString()
 {
   return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
                     (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%Y-%m-%d"));
 }
+
+
+
+// =====================================================================
+// =====================================================================
 
 
 wxString  DateTime::getTimeAsString()
