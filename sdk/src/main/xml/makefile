@@ -5,7 +5,7 @@ include ../../makeopts.inc
 
 CCFLAGS = -Wall -Wno-unknown-pragmas -Wno-format -O3
 
-OBJDIR = $(BASEOBJDIR)/sdk/xml
+OBJDIR = $(BASEOBJDIR)/main/xml
 LIBDIR = $(BASELIBDIR)
 
 LIB = $(LIBDIR)/libtinyxml.a
