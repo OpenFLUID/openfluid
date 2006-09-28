@@ -41,14 +41,34 @@ class ComputationBlock
     virtual ~ComputationBlock() { };
 
 
+    /**
+      Pure virtual method, must be overloaded.
+      Place data preparing processes here in overloads
+    */
     virtual bool prepareData()=0;
 
+    /**
+      Pure virtual method, must be overloaded.
+      Place consistency checking here in overloads
+    */
     virtual bool checkConsistency()=0;
 
+    /**
+      Pure virtual method, must be overloaded.
+      Place pre-simulation initialization here in overloads
+    */
     virtual bool initializeRun()=0;
 
+    /**
+      Pure virtual method, must be overloaded.
+      Place simulation process that must be done here in overloads
+    */
     virtual bool runStep(SimulationStatus* SimStatus)=0;
 
+    /**
+      Pure virtual method, must be overloaded.
+      Place post-simulation finalization here in overloads
+    */
     virtual bool finalizeRun()=0;
 
 };

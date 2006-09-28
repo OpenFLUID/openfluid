@@ -1,6 +1,6 @@
 /**
   \file SpatialRepository.h
-  \brief header de la classe de gestion des données spatiales
+  \brief header of management class for spatial objects and data
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -30,7 +30,7 @@ WX_DECLARE_HASH_MAP(int, ReachSegment*, wxIntegerHash, wxIntegerEqual, RSMap);
 
 
 /**
-  Classe de gestion de l'ensemble des données spatiales
+  Management class for spatial objects and data
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -62,68 +62,73 @@ class SpatialRepository
 		~SpatialRepository();
 
 		/**
-		  Ajoute une SHU à l'ensemble des SHUs
-		  \param SHU l'unité à ajouter
+		  Adds a Surface Unit to the SUs collection
+		  \param SU the surface unit to add
 		*/
 		bool addSU(SurfaceUnit *SU);
 
 		/**
-		  Retourne la SHU correspondant à l'ID passé en paramètre
-		  \param ID l'ID recherché
-		  \return la SHU recherchée, NULL si non trouvée
+		  Returns SU object corresponding to the ID
+		  \param ID searched ID
+		  \return found SU, NULL otherwise
 		*/
 		SurfaceUnit* getSUByID(int ID);
 
 		/**
-		  Renvoie la liste des définitions de SHUs sous la forme d'un vecteur de SHUs
-		  \return le vecteur de SHUs
+
 		*/
 		SUMap* getSUsCollection();
 
+    /**
+
+    */
     list<SurfaceUnit*>* getSUsOrderedList() { return mp_SUsOrderedList; };
 
-
 		/**
-		  Ajoute un bief à l'ensemble des bief constituant le réseau hydro
-		  \param ReachUnit le bief à ajouter
+		  Adds a Reach Segment to the RSs collection
+		  \param RS the reach segment to add
 		*/
 		bool addRS(ReachSegment* RS);
 
 
 		/**
-		  Retourne le bief correspondant à l'ID passé en paramètre
-		  \param ID l'ID recherché
-		  \return le bief recherché, NULL si non trouvé
+		  Returns RS object corresponding to the ID
+		  \param ID searched ID
+		  \return found RU, NULL otherwise
 		*/
 		ReachSegment* getRSByID(int ID);
 
 		/**
-		  Renvoie la liste des définitions de biefs sous la forme d'un vecteur de biefs
-		  \return le vecteur de biefs
+
 		*/
 		RSMap* getRSsCollection();
 
+    /**
+
+    */
     list<ReachSegment*>* getRSsOrderedList() { return mp_RSsOrderedList; };
 
 		/**
-		  Ajoute une AHU bief à l'ensemble des AHUs
-		  \param AHU l' AHU à ajouter
+		  Adds a groundwater Unit to the GUs collection
+		  \param GU the groundwater unit to add
 		*/
 		bool addGU(GroundwaterUnit* GU);
 
 		/**
-		  Retourne l'AHU correspondante à l'ID passé en paramètre
-		  \param ID l'ID recherché
-		  \return l'AHU recherché, NULL si non trouvé
+		  Returns GU object corresponding to the ID
+		  \param ID searched ID
+		  \return found GU, NULL otherwise
 		*/
 		GroundwaterUnit* getGUByID(int ID);
 
 		/**
-		  Renvoie la liste des définitions de AHUs sous la forme d'un vecteur de AHUs
-		  \return le vecteur de AHUs
+
 		*/
 		GUMap* getGUsCollection();
 
+    /**
+
+    */
     list<GroundwaterUnit*>* getGUsOrderedList() { return mp_GUsOrderedList; };
 
 
@@ -131,6 +136,9 @@ class SpatialRepository
 
 
 		/**
+
+      Builds ordered lists for each kind of objects (SU,RS,GU)
+
       !! commentaire à revoir !!
 
       Regroupe les objets hydrologiques définissant l'espace étudié par classe d'ordre de traitement.

@@ -121,15 +121,15 @@ class Function : public ComputationBlock
     virtual bool initParams(mhydasdk::core::ParamsMap Params)=0;
 
     /**
-      adds needed data.
-      may be overloaded and called if you want to add more preparation instructions
+      Adds needed data.
+      May be overloaded and called if you want to add more preparation instructions.
     */
     bool prepareData();
 
 
     /**
-      checks needed data.
-      may be overloaded and called if you want to add more preparation instructions
+      Checks needed data.
+      May be overloaded and called if you want to add more consistency checking instructions.
     */
     bool checkConsistency();
 
