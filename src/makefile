@@ -12,7 +12,6 @@ all: sdk main stdplugs
 sdk:
 	@echo ""
 	@echo "==== Compiling SDK ===="
-	@(cd sdk/xml && $(MAKE))
 	@(cd sdk/core && $(MAKE))
 	@(cd sdk/base && $(MAKE))
 
@@ -32,7 +31,6 @@ stdplugs: sdk
 clean:
 	@(cd main && $(MAKE) clean)
 	@(cd stdplugs && $(MAKE) clean)
-	@(cd sdk/xml && $(MAKE) clean)
 	@(cd sdk/core && $(MAKE) clean)
 	@(cd sdk/base && $(MAKE) clean)
 
