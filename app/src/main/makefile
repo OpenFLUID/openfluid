@@ -24,16 +24,20 @@ $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
-all: prechecks $(OBJ)
+all: prechecks xml $(OBJ)
 	$(CPP) $(OBJ) $(CCLIBS) $(CCFLAGS) -o $(BINDIR)/$(EXEFILE)
+
+xml: prechecks
+	@(cd xml && $(MAKE))
 
 prechecks:
 	@mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)/xml
 	@mkdir -p $(BINDIR)
 
 
 clean:
-	@rm -f $(OBJDIR)/*
+	@rm -f -R $(OBJDIR)/*
 
 
 doc:
