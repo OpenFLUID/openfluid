@@ -19,16 +19,16 @@
 	<File name="../src/main/Engine.h" open="0" top="0" tabpos="6">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="../src/main/IOMan.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="33270" topLine="1140" />
+	<File name="../src/main/IOMan.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="31957" topLine="1095" />
 	</File>
 	<File name="../src/main/IOMan.h" open="1" top="0" tabpos="2">
 		<Cursor position="2252" topLine="87" />
 	</File>
-	<File name="../src/main/Module.cpp" open="0" top="0" tabpos="0">
+	<File name="../src/main/Module.cpp" open="1" top="0" tabpos="12">
 		<Cursor position="1580" topLine="38" />
 	</File>
-	<File name="../src/main/Module.h" open="0" top="0" tabpos="0">
+	<File name="../src/main/Module.h" open="1" top="0" tabpos="11">
 		<Cursor position="615" topLine="15" />
 	</File>
 	<File name="../src/main/PluginManager.cpp" open="0" top="0" tabpos="9">

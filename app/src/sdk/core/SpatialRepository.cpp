@@ -1,6 +1,6 @@
 /**
   \file SpatialRepository.cpp
-  \brief implémentation de la classe de gestion des données spatiales
+  \brief implements management class for spatial objects and data
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
