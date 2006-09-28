@@ -10,6 +10,7 @@
 
 
 #include <wx/wx.h>
+#include "sdk-base.h"
 
 
 namespace mhydasdk { namespace base {

@@ -13,8 +13,8 @@ sdk:
 	@echo ""
 	@echo "==== Compiling SDK ===="
 	@(cd sdk/xml && $(MAKE))
-	@(cd sdk/base && $(MAKE))
 	@(cd sdk/core && $(MAKE))
+	@(cd sdk/base && $(MAKE))
 
 
 main: sdk
@@ -33,8 +33,8 @@ clean:
 	@(cd main && $(MAKE) clean)
 	@(cd stdplugs && $(MAKE) clean)
 	@(cd sdk/xml && $(MAKE) clean)
-	@(cd sdk/base && $(MAKE) clean)
 	@(cd sdk/core && $(MAKE) clean)
+	@(cd sdk/base && $(MAKE) clean)
 
 
 doc:

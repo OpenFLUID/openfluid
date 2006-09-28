@@ -38,7 +38,7 @@ class ComputationBlock
     /**
       Destructor
     */
-    ~ComputationBlock();
+    virtual ~ComputationBlock() { };
 
 
     virtual bool prepareData()=0;

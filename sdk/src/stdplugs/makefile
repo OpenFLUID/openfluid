@@ -9,13 +9,14 @@ BINDIR=$(BASEBINDIR)/plugs
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/stdplugs
 
-CCFLAGS=$(CCCFLAGS) -DBUILDINGDLL -fPIC -I ../sdk $(WXFLAGS)
+CCFLAGS=$(CCCFLAGS) $(DYNLIBCCFLAGS) -I ../sdk $(WXFLAGS) #-DBUILDINGDLL -fPIC
 CCLIBS= -L$(BASEBINDIR) -lsdk-base -lsdk-core $(WXLIBS) -Wl,-rpath,. -Wl,-rpath,..
 
-#CCFLAGS=-DBUILDINGDLL -fPIC -I .. $(WXFLAGS)
-#LDFLAGS=-Wl,-soname,$(LIBNAME).$(PLUGINEXT)
- #-Wl,--out-implib,$(LIBDIR)/$(LIBNAME).a
-#CCLIBS=-L $(BASELIBDIR) $(WXLIBS)
+LDFLAGS=
+ifeq ($(OSTYPE),msys)
+  LDFLAGS=-Wl,--enable-runtime-pseudo-reloc
+endif
+
 
 MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o \
             $(OBJDIR)/MSeytouxPlug.o
@@ -35,8 +36,8 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ)
-	$(CPP) -shared $(MSEYTOUXOBJ) $(CCLIBS) -o $(BINDIR)/$(MSEYTOUXNAME).$(PLUGINEXT)
-	$(CPP) -shared $(HAYAMISUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMISUNAME).$(PLUGINEXT)
+	$(CPP) $(MSEYTOUXOBJ) $(CCLIBS) -o $(BINDIR)/$(MSEYTOUXNAME).$(PLUGINEXT) -shared $(LDFLAGS)
+	$(CPP) $(HAYAMISUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMISUNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 
 prechecks:
 	@mkdir -p $(OBJDIR)
