@@ -1101,7 +1101,12 @@ bool IOManager::prepareOutputDir()
 {
   bool IsOK = true;
 
-  if (!wxDirExists(mp_RunEnv->getOutputDir())) IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
+  if (!wxDirExists(mp_RunEnv->getOutputDir()))
+  #ifdef __WXMSW__
+  IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
+  #else
+  IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
+  #endif
 
   return IsOK;
 }

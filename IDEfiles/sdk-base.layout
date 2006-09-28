@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="default" />
-	<File name="../src/sdk/base/Function.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="6003" topLine="204" />
-	</File>
-	<File name="../src/sdk/base/Function.h" open="1" top="0" tabpos="1">
-		<Cursor position="1462" topLine="31" />
+	<File name="../src/sdk/base/Function.h" open="1" top="0" tabpos="3">
+		<Cursor position="1598" topLine="9" />
 	</File>
 </CodeBlocks_layout_file>
