@@ -46,11 +46,15 @@ class TimeSerieItem
     TimeSerieItem(int Year, int Month, int Day, int Hour, int Minute, int Second, float Value);
 
 
+    /**
+      Returns date and time as a DateTime object
+      \return a DateTime object
+    */
     DateTime getDateTime() const {return m_DateTime;};
 
 
     /**
-      Retourne l'année (sur 4 chiffres)
+      Returns year (4 digits)
       \return an unsigned char
     */
     int getYear() const;
@@ -86,7 +90,7 @@ class TimeSerieItem
     int getSecond() const;
 
     /**
-      Retourne number of seconds since 1-1-0000
+      Returns number of seconds since 1-1-0000
       \return a rawtime_t
     */
     rawtime_t getRawTime();
