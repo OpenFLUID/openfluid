@@ -10,12 +10,19 @@ BINDIR=$(BASEBINDIR)
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/sdk/base
 
-CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL -fPIC $(WXFLAGS) -I .. -I.
-LDFLAGS=-Wl,-soname,$(LIBNAME).$(DYNLIBEXT)
- #-Wl,--out-implib,$(LIBDIR)/$(LIBNAME).a
-CCLIBS=-L $(BASELIBDIR) $(WXLIBS)
-
 LIBNAME=libsdk-base
+
+CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL $(DYNLIBCCFLAGS) $(WXFLAGS) -I.. -I.
+CCLIBS=-L$(BASEBINDIR) $(WXLIBS) -lsdk-core
+
+LDFLAGS=-Wl,-soname,$(LIBNAME).$(DYNLIBEXT)
+ifeq ($(OSTYPE),msys)
+  LDFLAGS=-Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc #-Wl,--out-implib,$(LIBDIR)/$(LIBNAME).$(STALIBEXT)
+endif
+
+
+
+
 
 OBJ=$(OBJDIR)/RuntimeEnv.o \
     $(OBJDIR)/SimStatus.o \
@@ -30,7 +37,7 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(OBJ)
-		$(CPP) -shared $(LDFLAGS) -o $(BINDIR)/$(LIBNAME).$(DYNLIBEXT) $(OBJ)
+	$(CPP) -o $(BINDIR)/$(LIBNAME).$(DYNLIBEXT) $(OBJ) -shared $(LDFLAGS) $(CCLIBS)
 
 prechecks:
 	@mkdir -p $(OBJDIR)

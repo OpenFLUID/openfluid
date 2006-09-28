@@ -112,7 +112,7 @@ class Function : public ComputationBlock
     /**
       Destructor
     */
-    virtual ~Function();
+    virtual ~Function() { };
 
     /**
       initializes of global parameters of the function, given as a hash map

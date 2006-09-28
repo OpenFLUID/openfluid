@@ -21,13 +21,6 @@ ComputationBlock::ComputationBlock(mhydasdk::core::CoreRepository* CoreData)
   mp_CoreData = CoreData;
 }
 
-// =====================================================================
-// =====================================================================
-
-ComputationBlock::~ComputationBlock()
-{
-
-}
 
 
 } } // namespace mhydasdk::base
