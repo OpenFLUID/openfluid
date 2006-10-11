@@ -58,7 +58,7 @@ class HydroObject
 
 	public:
 		/**
-		  Constructeur par défaut
+		  Default constructor
 		*/
 		HydroObject();
 

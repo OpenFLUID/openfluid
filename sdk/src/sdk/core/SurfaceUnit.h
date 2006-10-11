@@ -21,15 +21,15 @@ namespace mhydasdk { namespace core {
 
 
 /**
-  \brief Enumération des types possibles d'écoulement en sortie d'une unité de surface
+  \brief Enumerates possible flow types from a surface unit
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
 enum SUFlowCode
 {
-  SU,
-  RLat,
-  RSrc,
+  SUFlow,
+  RLatFlow,
+  RSrcFlow,
   UnknownFlowCode
 };
 
@@ -44,34 +44,34 @@ class SurfaceUnit : public HydroObject
 {
 
 
-	private:
+  private:
 
 
-	protected:
+  protected:
     double m_UsrArea;
     double m_UsrSlope;
-		SUFlowCode m_FlowCode;
-		hoid_t m_FlowID;
-		HydroObject *mp_FlowObject;
-		double m_FlowDistance;
-		hoid_t m_GUExchangeID;
-		GroundwaterUnit *mp_GUExchange;
-		ChronDataSource *mp_RainSource;
+    SUFlowCode m_FlowCode;
+    hoid_t m_FlowID;
+    HydroObject *mp_FlowObject;
+    double m_FlowDistance;
+    hoid_t m_GUExchangeID;
+    GroundwaterUnit *mp_GUExchange;
+    ChronDataSource *mp_RainSource;
 
-	public:
+  public:
 
-	  /**
-	    Default constructor
-	  */
-	  SurfaceUnit();
+	/**
+	  Default constructor
+	*/
+    SurfaceUnit();
 
-	  /**
-	    Constructor
-	  */
-		SurfaceUnit(hoid_t ID, int ProcessOrder,
-		            double UsrArea, double UsrSlope,
-		            SUFlowCode FlowCode, hoid_t FlowID, double FlowDistance, hoid_t GUExchangeID);
-		~SurfaceUnit();
+    /**
+      Constructor
+    */
+    SurfaceUnit(hoid_t ID, int ProcessOrder,
+	            double UsrArea, double UsrSlope,
+	            SUFlowCode FlowCode, hoid_t FlowID, double FlowDistance, hoid_t GUExchangeID);
+    ~SurfaceUnit();
 
 
     ChronDataSource* getRainSource();
@@ -80,13 +80,13 @@ class SurfaceUnit : public HydroObject
 
     double getUsrSlope() const;
 
-		SUFlowCode getFlowCode() const;
+    SUFlowCode getFlowCode() const;
 
-		hoid_t getFlowID() const;
+    hoid_t getFlowID() const;
 
-		double getFlowDistance() const;
+    double getFlowDistance() const;
 
-		hoid_t getGUExchangeID() const;
+    hoid_t getGUExchangeID() const;
 
     void setRainSource(ChronDataSource* RainSource);
 
@@ -94,13 +94,13 @@ class SurfaceUnit : public HydroObject
 
     void setUsrSlope(double Slope);
 
-		void setFlowCode(SUFlowCode Code);
+    void setFlowCode(SUFlowCode Code);
 
-		void setFlowID(hoid_t ID);
+    void setFlowID(hoid_t ID);
 
-		void setFlowDistance(double Distance);
+    void setFlowDistance(double Distance);
 
-		void setGUExchangeID(hoid_t ID);
+    void setGUExchangeID(hoid_t ID);
 
     void setGUExchange(GroundwaterUnit *GHU);
 

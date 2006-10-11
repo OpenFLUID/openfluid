@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="default" />
-	<File name="../src/sdk/base/CompBlock.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="291" topLine="0" />
-	</File>
-	<File name="../src/sdk/base/CompBlock.h" open="1" top="0" tabpos="5">
-		<Cursor position="1312" topLine="25" />
-	</File>
-	<File name="../src/sdk/base/Function.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="3166" topLine="113" />
-	</File>
-	<File name="../src/sdk/base/Function.h" open="1" top="0" tabpos="7">
-		<Cursor position="4102" topLine="27" />
-	</File>
-	<File name="../src/sdk/base/Plugin.h" open="1" top="0" tabpos="6">
-		<Cursor position="0" topLine="123" />
-	</File>
-	<File name="../src/sdk/base/RuntimeEnv.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="172" topLine="0" />
-	</File>
-	<File name="../src/sdk/base/RuntimeEnv.h" open="1" top="0" tabpos="2">
-		<Cursor position="261" topLine="9" />
-	</File>
-	<File name="../src/sdk/sdk-base.h" open="1" top="0" tabpos="1">
-		<Cursor position="1691" topLine="33" />
-	</File>
 </CodeBlocks_layout_file>

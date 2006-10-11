@@ -9,7 +9,6 @@
 #define __HAYAMISUPLUG_H__
 
 
-
 #include "sdk-core.h"
 #include "sdk-base.h"
 
