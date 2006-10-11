@@ -99,9 +99,9 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
     for(Child;Child;Child=Child->NextSiblingElement())
 	  {
 
-		  if (Child->Attribute("name") != NULL  &&
-		      Child->Attribute("file") != NULL )
-		  {
+      if (Child->Attribute("name") != NULL  &&
+          Child->Attribute("file") != NULL )
+      {
 
 
         // function name and file
@@ -120,23 +120,23 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
           Child2 = Child2Handle.FirstChild("param").Element();
 
           for(Child2;Child2;Child2=Child2->NextSiblingElement())
-	        {
-      		  if (Child2->Attribute("name") != NULL && Child2->Attribute("value",&DoubleValue) != NULL)
-	      	  {
+          {
+            if (Child2->Attribute("name") != NULL && Child2->Attribute("value",&DoubleValue) != NULL)
+            {
               FConf->Params[wxString(Child2->Attribute("name"),wxConvUTF8)] = DoubleValue;
 
-		        }
+            }
 
-	        }
+          }
 
-	        Config->HydroModuleConfig.Append(FConf);
+          Config->HydroModuleConfig.Append(FConf);
 
         }
         else delete FConf;
 
-		  }
+      }
 
-	  }
+    }
 
 
 
@@ -158,8 +158,8 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
 mhydasdk::core::SUFlowCode IOManager::getSUFlowCode(wxString Code)
 {
-  if (Code == wxT("S")) return mhydasdk::core::SU;
-  if (Code == wxT("R")) return mhydasdk::core::RLat;
+  if (Code == wxT("S")) return mhydasdk::core::SUFlow;
+  if (Code == wxT("R")) return mhydasdk::core::RLatFlow;
 
   return mhydasdk::core::UnknownFlowCode;
 }
@@ -404,13 +404,13 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
     TiXmlElement* Child = DocHandle.FirstChild("mhydas").FirstChild("rainevent").FirstChild("rainsource").Element();
 
 
-   	for(Child; Child; Child=Child->NextSiblingElement())
-	  {
-		  if (Child->Attribute("ID",&ID) != NULL && Child->Attribute("file") != NULL)
-		  {
-		    RIFMap[ID] = wxString(Child->Attribute("file"),wxConvUTF8);
-		  }
-	  }
+     for(Child; Child; Child=Child->NextSiblingElement())
+    {
+      if (Child->Attribute("ID",&ID) != NULL && Child->Attribute("file") != NULL)
+      {
+        RIFMap[ID] = wxString(Child->Attribute("file"),wxConvUTF8);
+      }
+    }
 
 
   }
@@ -1041,7 +1041,7 @@ bool IOManager::loadOutputConfig()
       AutoOutfileDef* CurrentDef;
 
       for(Child;Child;Child=Child->NextSiblingElement())
-   	  {
+       {
         CurrentDef = new AutoOutfileDef;
 
         // processing suffix file attribute
@@ -1103,7 +1103,7 @@ bool IOManager::loadOutputConfig()
           mhydasdk::base::LastError::Message = wxT("Output config file format error: unknown object type (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
           return false;
         }
-   	  }
+       }
     }
     else
     {

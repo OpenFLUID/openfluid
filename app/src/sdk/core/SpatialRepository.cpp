@@ -42,8 +42,8 @@ struct SortByProcessOrder
 SpatialRepository::SpatialRepository()
 {
   mp_SUsCollection = new SUMap();
-	mp_RSsCollection = new RSMap();
-	mp_GUsCollection = new GUMap();
+  mp_RSsCollection = new RSMap();
+  mp_GUsCollection = new GUMap();
 
 
   mp_SUsProcessOrders = new vector<vector<SurfaceUnit*>*>();
