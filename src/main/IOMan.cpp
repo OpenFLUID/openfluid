@@ -57,7 +57,7 @@ IOManager::~IOManager()
 bool IOManager::loadModelConfig(EngineConfig* Config)
 {
 
-  // à terminer
+  // Ã  terminer
 
   TiXmlDocument LoadDoc;
   TiXmlElement* Child;
@@ -75,24 +75,22 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
     TiXmlHandle DocHandle(&LoadDoc);
 
 
-    // run params
+    // =========== run params ===========
     Child = DocHandle.FirstChild("mhydas").FirstChild("config").FirstChild("runparams").FirstChild("param").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
+    {
+      if (Child->Attribute("name") != NULL && wxString(Child->Attribute("name"),wxConvUTF8) == wxT("deltat") &&
+		  Child->Attribute("value",&IntValue) != NULL)
 	  {
-
-		  if (Child->Attribute("name") != NULL && wxString(Child->Attribute("name"),wxConvUTF8) == wxT("deltat") &&
-		      Child->Attribute("value",&IntValue) != NULL)
-		  {
         Config->DeltaT = IntValue;
-		  }
-
 	  }
+
+    }
 
 
     // ======= model structure ===========
-
 
     // hydromodule
     Child = DocHandle.FirstChild("mhydas").FirstChild("config").FirstChild("modules").FirstChild("hydromodule").FirstChild("function").Element();
@@ -174,6 +172,15 @@ mhydasdk::core::SUFlowCode IOManager::getSUFlowCode(wxString Code)
 bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 {
 
+  /** \internal
+
+    the load process is quite same for each kind of objects:
+      - for each file line, each column is parsed and checked.
+      - if everithing's OK, it builds the new spatial object and adds it to the collection
+
+  */
+
+
   if (SpatialData == NULL) return false;
 
   long ID;
@@ -207,6 +214,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
   {
     ColumnTextParser SUsFileParser(wxT("%"));
 
+    //  checks that files has the right column number
     if (!SUsFileParser.loadFromFile(SUsFilename) ||
         SUsFileParser.getColsCount() != MHYDAS_SUDEFSFILE_COLNBR ||
         SUsFileParser.getColsCount() < 1)
@@ -225,12 +233,14 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
       for (i=0;i<SUsFileParser.getLinesCount();i++)
       {
+        // for each line, each column is parsed and checked
 
         if (SUsFileParser.getLongValue(i,0,&ID) && SUsFileParser.getDoubleValue(i,1,&Area) &&
             SUsFileParser.getDoubleValue(i,2,&Slope) && SUsFileParser.getStringValue(i,3,&FlowCode) &&
             SUsFileParser.getLongValue(i,4,&FlowID) && SUsFileParser.getDoubleValue(i,5,&FlowDist) &&
             SUsFileParser.getLongValue(i,6,&GUExch) && SUsFileParser.getLongValue(i,7,&ProcessOrder))
         {
+          // if everithing's OK, builds the new spatial object and adds it to the collection
 
           if (!SpatialData->addSU(new mhydasdk::core::SurfaceUnit((mhydasdk::core::hoid_t)ID,
                                                                   (mhydasdk::core::hoid_t)ProcessOrder,
@@ -256,6 +266,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
       }
     }
   }
+
 
   // ============ RSs =================
 
@@ -367,6 +378,14 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
 RainEventFilesMap IOManager::buildRainEventFileMap()
 {
+  /** \internal
+
+    the rain event description is in an XML file.
+    the XML file is parsed and for each rain source,
+    an (ID,file) pair is added to the map
+
+  */
+
   RainEventFilesMap RIFMap;
   TiXmlDocument LoadDoc;
 
@@ -411,6 +430,14 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
 
 bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename)
 {
+  /** \internal
+
+    rain data file is a 9 columns text file (YYYY MM DD hh mm ss Value)
+    for each file line, each column is parsed and checked.
+    if everithing's OK, it builds a new time serie value, added to the serie
+
+  */
+
   ColumnTextParser FileParser(wxT("%"));
   bool IsOK;
 

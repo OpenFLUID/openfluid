@@ -1,6 +1,6 @@
 /**
-  \file
-  \brief implements ...
+  \file PluginManager.cpp
+  \brief implements the plugins management class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -44,21 +44,15 @@ mhydasdk::base::Plugin *PluginManager::getPlugin(wxString PluginFilename)
   // library loading
   if (PlugLib->Load(PluginFile))
   {
-    //std::cerr << "plug" << std::endl;
-
     // checks if the handle proc exists
     if (PlugLib->HasSymbol(wxT("GetMHYDASPlugin")))
     {
-      //std::cerr << "symbol" << std::endl;
     	// hooks the handle proc
     	mhydasdk::base::GetPluginProc PlugProc = (mhydasdk::base::GetPluginProc)PlugLib->GetSymbol(wxT("GetMHYDASPlugin"));
-
-      //std::cerr << "symbol 2" << std::endl;
 
       if (PlugProc != NULL)
       {
         Plug = PlugProc();
-        // std::cerr << "proc" << std::endl;
       }
 
       // unloads the library
@@ -84,11 +78,8 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 
   for (int i=0;i<PluginFiles.GetCount();i++)
   {
-    //std::cerr << "ici " << i << std::endl;
     CurrentPlug = getPlugin(PluginFiles[i]);
-    //std::cerr << "la " << i << std::endl;
     if (CurrentPlug != NULL) Signatures.Add(CurrentPlug->getSignature());
-    //std::cerr << "fini " << i << std::endl;
   }
 
   return Signatures;

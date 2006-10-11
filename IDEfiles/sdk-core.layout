@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="default" />
-	<File name="../src/sdk/core/SpatialRepository.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="99" topLine="0" />
-	</File>
-	<File name="../src/sdk/core/SpatialRepository.h" open="1" top="1" tabpos="3">
-		<Cursor position="34" topLine="75" />
-	</File>
-	<File name="../src/sdk/core/TimeSerie.h" open="1" top="0" tabpos="1">
-		<Cursor position="0" topLine="24" />
-	</File>
-	<File name="../src/sdk/core/TimeSerieItem.h" open="1" top="0" tabpos="2">
-		<Cursor position="1573" topLine="73" />
-	</File>
 </CodeBlocks_layout_file>

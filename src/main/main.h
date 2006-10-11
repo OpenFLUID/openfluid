@@ -1,6 +1,6 @@
 /**
   \file main.h
-  \brief header of ...
+  \brief header of main
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -69,18 +69,45 @@ class MHYDASApp : public wxAppConsole
     bool stopAppReturn();
 
   public:
+
+    /**
+      Initialization. Automatically called
+    */
     virtual bool OnInit();
+
+    /**
+      Run. Automatically called
+    */
     virtual int OnRun();
+
+    /**
+      Exit. Automatically called
+    */
     virtual int OnExit();
 
+    /**
+      Builds the model.
+    */
     bool buildModel();
 
+    /**
+      Loads input data and output config.
+    */
     bool loadData();
 
+    /**
+      Check global consistency
+    */
     bool checkConsistency();
 
+    /**
+      Runs simulation
+    */
     bool runSimulation();
 
+    /**
+      Saves results
+    */
     bool saveResults();
 
 };
@@ -90,6 +117,6 @@ class MHYDASApp : public wxAppConsole
 // =====================================================================
 // =====================================================================
 
-
-
 DECLARE_APP(MHYDASApp)
+
+

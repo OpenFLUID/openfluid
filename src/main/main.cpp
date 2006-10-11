@@ -1,6 +1,6 @@
 /**
   \file main.cpp
-  \brief implements ...
+  \brief implements main
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -28,7 +28,6 @@ IMPLEMENT_APP_CONSOLE(MHYDASApp);
 
 // =====================================================================
 // =====================================================================
-
 
 
 bool MHYDASApp::buildModel()
@@ -227,6 +226,8 @@ bool MHYDASApp::OnInit()
 {
   wxString TmpStr;
 
+  // =========== initialization ===========
+
   m_OKToRun = true;
 
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
@@ -239,7 +240,8 @@ bool MHYDASApp::OnInit()
 
   printMHYDASInfos();
 
-  // parsing command line
+
+  // =========== command line parsing ===========
 
   wxCmdLineParser Parser(CmdLineDesc,argc,argv);
 
@@ -289,19 +291,19 @@ int MHYDASApp::OnRun()
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);
 
-    // chargement, vérification et montage du modèle
+    // chargement, vï¿½rification et montage du modï¿½le
     if (!buildModel()) return stopAppReturn();
 
-    // chargement et vérification du jeu de données d'entrée
+    // chargement et vï¿½rification du jeu de donnï¿½es d'entrï¿½e
     if (!loadData()) return stopAppReturn();
 
-    // vérification de la cohérence de l'ensemble
+    // vï¿½rification de la cohï¿½rence de l'ensemble
     if (!checkConsistency()) return stopAppReturn();
 
     // simulation
     if (!runSimulation()) return stopAppReturn();
 
-    // sauvegarde des résultats
+    // sauvegarde des rÃ©sultats
     if (!saveResults()) return stopAppReturn();
 
     m_TotalEndTime = wxDateTime::Now();
@@ -312,9 +314,9 @@ int MHYDASApp::OnRun()
   wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
   wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
+
   std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
   std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
-  std::cout.flush();
 
   return true;
 

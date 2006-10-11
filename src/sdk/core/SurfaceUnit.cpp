@@ -20,10 +20,10 @@ SurfaceUnit::SurfaceUnit()
 {
   m_UsrArea = -1;
   m_UsrSlope = -1;
-	m_FlowCode = UnknownFlowCode;
-	m_FlowID = -1;
-	m_FlowDistance = -1;
-	m_GUExchangeID = -1;
+  m_FlowCode = UnknownFlowCode;
+  m_FlowID = -1;
+  m_FlowDistance = -1;
+  m_GUExchangeID = -1;
 
   mp_FlowObject = NULL;
 	mp_GUExchange = NULL;

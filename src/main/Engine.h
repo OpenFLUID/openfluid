@@ -20,7 +20,7 @@
 
 
 /**
-
+  Computation engine class
 */
 class Engine
 {
@@ -38,6 +38,9 @@ class Engine
 
      IOManager* mp_IOMan;
 
+     /**
+
+     */
      EngineConfig m_Config;
 
      /**

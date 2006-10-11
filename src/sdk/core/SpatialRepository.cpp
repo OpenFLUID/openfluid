@@ -9,10 +9,10 @@
 
 /*
 
-  attention, méthodes:
+  attention, mï¿½thodes:
   - buildObjectLinkedTopologyFromIDs();
   - buildProcessOrders()
-  à peaufiner!
+  ï¿½ peaufiner!
 
 */
 
@@ -221,14 +221,14 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     if (SUit->second->getFlowID() > 0)
     {
 
-      if (SUit->second->getFlowCode() == SU)
+      if (SUit->second->getFlowCode() == SUFlow)
       {
         LinkedSU = getSUByID(SUit->second->getFlowID());
         if (LinkedSU == NULL) return false;
         else SUit->second->setFlowObject(LinkedSU);
       }
 
-      if (SUit->second->getFlowCode() == RLat || SUit->second->getFlowCode() == RSrc)
+      if (SUit->second->getFlowCode() == RLatFlow || SUit->second->getFlowCode() == RSrcFlow)
       {
         LinkedRS = getRSByID(SUit->second->getFlowID());
         if (LinkedRS == NULL) return false;
@@ -240,7 +240,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 
   }
 
-  // =========== rézo hydro ============
+  // =========== hydro network ============
 
   RSMap::iterator RSit;
 
@@ -294,7 +294,8 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 bool SpatialRepository::buildProcessOrders()
 {
 
-  // à revoir en utilisant le polymorphisme pour traiter ceci au niveau HydroObject
+  // Ã  revoir en utilisant le polymorphisme pour traiter ceci au niveau HydroObject
+  // Ã  revoir pour ne garder que les listes
 
 
 
