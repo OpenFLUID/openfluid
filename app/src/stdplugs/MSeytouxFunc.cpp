@@ -15,6 +15,10 @@ MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
   SU_VARIABLE_TO_CREATE("infiltration");
 
   SU_PROPERTY_TO_CHECK("ks");
+  SU_PROPERTY_TO_CHECK("thetares");
+  SU_PROPERTY_TO_CHECK("thetasat");  
+  SU_PROPERTY_TO_CHECK("betaMS");  
+  SU_PROPERTY_TO_CHECK("hc");  
   SU_INICOND_TO_CHECK("thetaisurf");
 }
 

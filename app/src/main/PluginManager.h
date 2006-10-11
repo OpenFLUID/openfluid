@@ -1,6 +1,6 @@
 /**
-  \file
-  \brief header of ...
+  \file PluginManager.h
+  \brief header of the plugins management class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -16,7 +16,7 @@
 WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
 
 /**
-
+  Management class for plugins
 */
 class PluginManager
 {
@@ -25,8 +25,6 @@ class PluginManager
     mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
 
     mhydasdk::base::Plugin *getPlugin(wxString PluginFilename);
-
-
 
 
   public:

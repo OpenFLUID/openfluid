@@ -36,10 +36,10 @@ WX_DECLARE_HASH_MAP(int, ReachSegment*, wxIntegerHash, wxIntegerEqual, RSMap);
 */
 class SpatialRepository
 {
-	private:
-		SUMap* mp_SUsCollection;
-		RSMap* mp_RSsCollection;
-		GUMap* mp_GUsCollection;
+  private:
+    SUMap* mp_SUsCollection;
+    RSMap* mp_RSsCollection;
+    GUMap* mp_GUsCollection;
 
     vector<vector<SurfaceUnit*>*>* mp_SUsProcessOrders;
     vector<vector<ReachSegment*>*>* mp_RSsProcessOrders;
@@ -49,82 +49,82 @@ class SpatialRepository
     list<ReachSegment*>* mp_RSsOrderedList;
     list<GroundwaterUnit*>* mp_GUsOrderedList;
 
-	public:
+  public:
 
-		/**
-		  Constructeur
-		*/
-		SpatialRepository();
+    /**
+      Constructeur
+    */
+    SpatialRepository();
 
-		/**
-		  Destructeur
-		*/
-		~SpatialRepository();
+    /**
+    Destructeur
+  */
+    ~SpatialRepository();
 
-		/**
-		  Adds a Surface Unit to the SUs collection
-		  \param SU the surface unit to add
-		*/
-		bool addSU(SurfaceUnit *SU);
+    /**
+      Adds a Surface Unit to the SUs collection
+      \param SU the surface unit to add
+    */
+    bool addSU(SurfaceUnit *SU);
 
-		/**
-		  Returns SU object corresponding to the ID
-		  \param ID searched ID
-		  \return found SU, NULL otherwise
-		*/
-		SurfaceUnit* getSUByID(int ID);
+    /**
+      Returns SU object corresponding to the ID
+      \param ID searched ID
+      \return found SU, NULL otherwise
+    */
+    SurfaceUnit* getSUByID(int ID);
 
-		/**
+    /**
 
-		*/
-		SUMap* getSUsCollection();
+    */
+    SUMap* getSUsCollection();
 
     /**
 
     */
     list<SurfaceUnit*>* getSUsOrderedList() { return mp_SUsOrderedList; };
 
-		/**
-		  Adds a Reach Segment to the RSs collection
-		  \param RS the reach segment to add
-		*/
-		bool addRS(ReachSegment* RS);
+    /**
+      Adds a Reach Segment to the RSs collection
+      \param RS the reach segment to add
+    */
+    bool addRS(ReachSegment* RS);
 
 
-		/**
-		  Returns RS object corresponding to the ID
-		  \param ID searched ID
-		  \return found RU, NULL otherwise
-		*/
-		ReachSegment* getRSByID(int ID);
+    /**
+      Returns RS object corresponding to the ID
+      \param ID searched ID
+      \return found RU, NULL otherwise
+    */
+    ReachSegment* getRSByID(int ID);
 
-		/**
+    /**
 
-		*/
-		RSMap* getRSsCollection();
+    */
+    RSMap* getRSsCollection();
 
     /**
 
     */
     list<ReachSegment*>* getRSsOrderedList() { return mp_RSsOrderedList; };
 
-		/**
-		  Adds a groundwater Unit to the GUs collection
-		  \param GU the groundwater unit to add
-		*/
-		bool addGU(GroundwaterUnit* GU);
+    /**
+      Adds a groundwater Unit to the GUs collection
+      \param GU the groundwater unit to add
+    */
+    bool addGU(GroundwaterUnit* GU);
 
-		/**
-		  Returns GU object corresponding to the ID
-		  \param ID searched ID
-		  \return found GU, NULL otherwise
-		*/
-		GroundwaterUnit* getGUByID(int ID);
+    /**
+      Returns GU object corresponding to the ID
+      \param ID searched ID
+      \return found GU, NULL otherwise
+    */
+    GroundwaterUnit* getGUByID(int ID);
 
-		/**
+    /**
 
-		*/
-		GUMap* getGUsCollection();
+    */
+    GUMap* getGUsCollection();
 
     /**
 
@@ -135,18 +135,18 @@ class SpatialRepository
     bool buildObjectLinkedTopologyFromIDs();
 
 
-		/**
+    /**
 
       Builds ordered lists for each kind of objects (SU,RS,GU)
 
-      !! commentaire à revoir !!
+      !! commentaire ï¿½ revoir !!
 
-      Regroupe les objets hydrologiques définissant l'espace étudié par classe d'ordre de traitement.
-      Cette méthode crée 3 vecteurs (un pour chaque type d'objet).
-      Chacun de ces vecteurs contient un ensemble de vecteurs indexés par le numéro d'ordre de traitement [0,ordre-1].
-      Ainsi l'ensemble des objets hydrologiques indexés [2] ont un ordre de traitement de 3.
-		  \return true si la constitution par classe a bien fonctionné
-		*/
+      Regroupe les objets hydrologiques dï¿½finissant l'espace ï¿½tudiï¿½ par classe d'ordre de traitement.
+      Cette mï¿½thode crï¿½e 3 vecteurs (un pour chaque type d'objet).
+      Chacun de ces vecteurs contient un ensemble de vecteurs indexï¿½s par le numï¿½ro d'ordre de traitement [0,ordre-1].
+      Ainsi l'ensemble des objets hydrologiques indexï¿½s [2] ont un ordre de traitement de 3.
+      \return true si la constitution par classe a bien fonctionnï¿½
+    */
     bool buildProcessOrders();
 
 

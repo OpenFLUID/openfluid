@@ -19,18 +19,23 @@
 // =====================================================================
 
 
+/**
+  Structure storing the config of a function, read from the xml model file
+*/
 struct FunctionConfig
 {
-  wxString Name;
-  wxString File;
-  mhydasdk::core::ParamsMap Params;
+  wxString Name;  // Name of the function
+  wxString File;  // Plug-in file
+  mhydasdk::core::ParamsMap Params;  // Function parameters set
 
 };
 
 
 WX_DECLARE_LIST(FunctionConfig, FunctionConfigsList);
 
-
+/**
+  Structure storing the full engine configuration, including global parameters
+*/
 struct EngineConfig
 {
   int DeltaT;
@@ -44,6 +49,9 @@ struct EngineConfig
 // =====================================================================
 
 
+/**
+  Hash map type indexing rain files of the rain event
+*/
 WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainEventFilesMap);
 
 
@@ -51,6 +59,9 @@ WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainEventFilesM
 // =====================================================================
 
 
+/**
+  Structure storing definition for automatic results saving files
+*/
 struct AutoOutfileDef
 {
   wxString ObjectsKind;
