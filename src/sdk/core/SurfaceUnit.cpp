@@ -20,14 +20,15 @@ SurfaceUnit::SurfaceUnit()
 {
   m_UsrArea = -1;
   m_UsrSlope = -1;
-  m_FlowCode = UnknownFlowCode;
-  m_FlowID = -1;
-  m_FlowDistance = -1;
+  m_DownstreamCode = UnknownDownstreamCode;
+  m_DownstreamID = -1;
+  m_DownstreamDistance = -1;
   m_GUExchangeID = -1;
 
-  mp_FlowObject = NULL;
+  mp_DownstreamObject = NULL;
 	mp_GUExchange = NULL;
   mp_RainSource = NULL;
+  mp_UpstreamSUs = new std::list<SurfaceUnit*>(); 
 
 }
 
@@ -38,21 +39,22 @@ SurfaceUnit::SurfaceUnit()
 
 SurfaceUnit::SurfaceUnit(hoid_t ID, int ProcessOrder,
 		         double UsrArea, double UsrSlope,
-		         SUFlowCode FlowCode, int FlowID, double FlowDistance, hoid_t GUExchangeID)
+		         SUDownstreamCode DSCode, int DownstreamID, double DSDistance, hoid_t GUExchangeID)
            : HydroObject(ID, ProcessOrder)
 {
 
 
   m_UsrArea = UsrArea;
   m_UsrSlope = UsrSlope;
-	m_FlowCode = FlowCode;
-	m_FlowID = FlowID;
-	m_FlowDistance = FlowDistance;
+	m_DownstreamCode = DSCode;
+	m_DownstreamID = DownstreamID;
+	m_DownstreamDistance = DSDistance;
 	m_GUExchangeID = GUExchangeID;
 
-  mp_FlowObject = NULL;
+  mp_DownstreamObject = NULL;
 	mp_GUExchange = NULL;
 	mp_RainSource = NULL;
+  mp_UpstreamSUs = new std::list<SurfaceUnit*>();   
 
 }
 
@@ -102,9 +104,9 @@ double SurfaceUnit::getUsrSlope() const
 // =====================================================================
 
 
-SUFlowCode SurfaceUnit::getFlowCode() const
+SUDownstreamCode SurfaceUnit::getDownstreamCode() const
 {
-  return m_FlowCode;
+  return m_DownstreamCode;
 }
 
 
@@ -112,9 +114,9 @@ SUFlowCode SurfaceUnit::getFlowCode() const
 // =====================================================================
 
 
-hoid_t SurfaceUnit::getFlowID() const
+hoid_t SurfaceUnit::getDownstreamID() const
 {
-  return m_FlowID;
+  return m_DownstreamID;
 }
 
 
@@ -122,9 +124,9 @@ hoid_t SurfaceUnit::getFlowID() const
 // =====================================================================
 
 
-double SurfaceUnit::getFlowDistance() const
+double SurfaceUnit::getDownstreamDistance() const
 {
-  return m_FlowDistance;
+  return m_DownstreamDistance;
 }
 
 
@@ -173,9 +175,9 @@ void SurfaceUnit::setUsrSlope(double Slope)
 // =====================================================================
 
 
-void SurfaceUnit::setFlowCode(SUFlowCode Code)
+void SurfaceUnit::setDownstreamCode(SUDownstreamCode Code)
 {
-  m_FlowCode = Code;
+  m_DownstreamCode = Code;
 }
 
 
@@ -183,9 +185,9 @@ void SurfaceUnit::setFlowCode(SUFlowCode Code)
 // =====================================================================
 
 
-void SurfaceUnit::setFlowID(hoid_t ID)
+void SurfaceUnit::setDownstreamID(hoid_t ID)
 {
-  m_FlowID = ID;
+  m_DownstreamID = ID;
 }
 
 
@@ -193,9 +195,9 @@ void SurfaceUnit::setFlowID(hoid_t ID)
 // =====================================================================
 
 
-void SurfaceUnit::setFlowDistance(double Distance)
+void SurfaceUnit::setDownstreamDistance(double Distance)
 {
-  m_FlowDistance = Distance;
+  m_DownstreamDistance = Distance;
 }
 
 
@@ -224,9 +226,9 @@ void SurfaceUnit::setGUExchange(GroundwaterUnit *GU)
 // =====================================================================
 
 
-void SurfaceUnit::setFlowObject(HydroObject *HObject)
+void SurfaceUnit::setDownstreamObject(HydroObject *HObject)
 {
-  mp_FlowObject = HObject;
+  mp_DownstreamObject = HObject;
 }
 
 

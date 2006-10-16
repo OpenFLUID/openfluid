@@ -95,7 +95,7 @@ class IOManager
   private:
     mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
 
-    mhydasdk::core::SUFlowCode getSUFlowCode(wxString Code);
+    mhydasdk::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
 
     AutoOutfiles m_AutoOutFiles;
 
