@@ -8,9 +8,11 @@
 #ifndef __REACH_H__
 #define __REACH_H__
 
+#include <list>
 
 #include "HydroObject.h"
 #include "GroundwaterUnit.h"
+#include "SurfaceUnit.h"
 
 
 namespace mhydasdk { namespace core {
@@ -31,8 +33,11 @@ class ReachSegment : public HydroObject
 
     nodeid_t m_UpstreamNode;
     nodeid_t m_DownstreamNode;
-    hoid_t m_LowReachID;
-    ReachSegment *mp_LowReach;
+    hoid_t m_DownstreamReachID;
+    ReachSegment *mp_DownstreamReach;
+    std::list<ReachSegment*>* mp_UpstreamReaches;
+    std::list<SurfaceUnit*>* mp_UpstreamSUs;    
+    
     double m_UsrSlope;
     double m_UsrLength;
     double m_UsrWidth;
@@ -63,7 +68,7 @@ class ReachSegment : public HydroObject
 
     nodeid_t getDownstreamNode() const;
 
-    hoid_t getLowReachID() const;
+    hoid_t getDownstreamReachID() const;
 
     double getUsrSlope() const;
 
@@ -77,13 +82,17 @@ class ReachSegment : public HydroObject
 
     GroundwaterUnit *getGUExchange() const;
 
-    ReachSegment *getLowReach() const;
+    ReachSegment *getDownstreamReach() const;
+    
+    std::list<ReachSegment*>* getUpstreamReaches() { return mp_UpstreamReaches; };
+    
+    std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };
 
     void setUpstreamNode(nodeid_t Node);
 
     void setDownstreamNode(nodeid_t Node);
 
-    void setLowReachID(hoid_t ID);
+    void setDownstreamReachID(hoid_t ID);
 
     void setUsrSlope(double Slope);
 
@@ -97,7 +106,7 @@ class ReachSegment : public HydroObject
 
     void setGUExchange(GroundwaterUnit *GU);
 
-    void setLowReach(ReachSegment *RS);
+    void setDownstreamReach(ReachSegment *RS);
 
 
 };

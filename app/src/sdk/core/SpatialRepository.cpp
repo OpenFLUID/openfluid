@@ -9,10 +9,10 @@
 
 /*
 
-  attention, m�thodes:
+  attention, methodes:
   - buildObjectLinkedTopologyFromIDs();
   - buildProcessOrders()
-  � peaufiner!
+  à peaufiner!
 
 */
 
@@ -213,29 +213,47 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     if (SUit->second->getGUExchangeID() > 0)
     {
       LinkedGU = getGUByID(SUit->second->getGUExchangeID());
-      if (LinkedGU == NULL) return false;
+      if (LinkedGU == NULL) return false;      
       else SUit->second->setGUExchange(LinkedGU);
     }
 
-    // flow object link
-    if (SUit->second->getFlowID() > 0)
+    // downstream object link
+    if (SUit->second->getDownstreamID() > 0)
     {
 
-      if (SUit->second->getFlowCode() == SUFlow)
+      if (SUit->second->getDownstreamCode() == SUDownstream)
       {
-        LinkedSU = getSUByID(SUit->second->getFlowID());
-        if (LinkedSU == NULL) return false;
-        else SUit->second->setFlowObject(LinkedSU);
+        // downstream SU        
+        LinkedSU = getSUByID(SUit->second->getDownstreamID());
+        if (LinkedSU == NULL) return false;        
+        else
+        {
+          // set downstream SU link
+          SUit->second->setDownstreamObject(LinkedSU);
+        
+          // adds current SU to donwstream SU's upstream SUs list
+          LinkedSU->getUpstreamSUs()->push_back(SUit->second);
+//          std::cerr << "added upstream SU " << SUit->second->getID() << " to SU " << LinkedSU->getID() << std::endl;
+        }  
+        
       }
 
-      if (SUit->second->getFlowCode() == RLatFlow || SUit->second->getFlowCode() == RSrcFlow)
+      if (SUit->second->getDownstreamCode() == RLatDownstream || SUit->second->getDownstreamCode() == RSrcDownstream)
       {
-        LinkedRS = getRSByID(SUit->second->getFlowID());
+        LinkedRS = getRSByID(SUit->second->getDownstreamID());
         if (LinkedRS == NULL) return false;
-        else SUit->second->setFlowObject(LinkedRS);
+        else
+        {
+          // set downstream reach link
+          SUit->second->setDownstreamObject(LinkedRS);
+          
+          // adds current SU to donwstream SU's upstream SUs list
+          LinkedRS->getUpstreamSUs()->push_back(SUit->second);
+//          std::cerr << "added upstream SU " << SUit->second->getID() << " to RS " << LinkedRS->getID() << std::endl;
+        }  
       }
 
-      if (SUit->second->getFlowCode() == UnknownFlowCode) return false;
+      if (SUit->second->getDownstreamCode() == UnknownDownstreamCode) return false;
     }
 
   }
@@ -255,12 +273,20 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
       else RSit->second->setGUExchange(LinkedGU);
     }
 
-    // low reach link
-    if (RSit->second->getLowReachID() > 0)
+    // downstream reach link
+    if (RSit->second->getDownstreamReachID() > 0)
     {
-      LinkedRS = getRSByID(RSit->second->getLowReachID());
+      LinkedRS = getRSByID(RSit->second->getDownstreamReachID());
       if (LinkedRS == NULL) return false;
-      else RSit->second->setLowReach(LinkedRS);
+      else
+      {
+        // set downstream reach link
+        RSit->second->setDownstreamReach(LinkedRS);
+        
+        // adds current reach to donwstream reach's upstream reaches list
+        LinkedRS->getUpstreamReaches()->push_back(RSit->second);        
+  //      std::cerr << "added upstream RS " << RSit->second->getID() << " to RS " << LinkedRS->getID() << std::endl;        
+      }  
     }
 
 
@@ -410,6 +436,14 @@ bool SpatialRepository::buildProcessOrders()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+bool SpatialRepository::checkHydroNetworkStructure()
+{
+
+    
+}
 
 
 } } // namespace mhydasdk::core

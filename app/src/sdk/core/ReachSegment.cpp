@@ -21,14 +21,16 @@ ReachSegment::ReachSegment()
 {
   m_UpstreamNode = -1;
   m_DownstreamNode = -1;
-  m_LowReachID = -1;
+  m_DownstreamReachID = -1;
   m_UsrSlope = 0;
   m_UsrLength = 0;
   m_UsrWidth = 0;
   m_UsrHeight = 0;
   m_GUExchangeID = -1;
   mp_GUExchange = NULL;
-  mp_LowReach = NULL;
+  mp_DownstreamReach = NULL;
+  mp_UpstreamReaches = new std::list<ReachSegment*>;  
+  mp_UpstreamSUs = new std::list<SurfaceUnit*>;    
 }
 
 
@@ -37,14 +39,14 @@ ReachSegment::ReachSegment()
 
 
 ReachSegment::ReachSegment(int ID, int ProcessOrder,
-                     nodeid_t UpstreamNode, nodeid_t DownstreamNode, hoid_t LowReachID,
+                     nodeid_t UpstreamNode, nodeid_t DownstreamNode, hoid_t DownstreamReachID,
                      double UsrSlope, double UsrLength, double UsrWidth, double UsrHeight,
                      hoid_t GUExchangeID)
          : HydroObject(ID, ProcessOrder)
 {
   m_UpstreamNode = UpstreamNode;
   m_DownstreamNode = DownstreamNode;
-  m_LowReachID = LowReachID;
+  m_DownstreamReachID = DownstreamReachID;
   m_UsrSlope = UsrSlope;
   m_UsrLength = UsrLength;
   m_UsrWidth = UsrWidth;
@@ -52,7 +54,9 @@ ReachSegment::ReachSegment(int ID, int ProcessOrder,
 	m_GUExchangeID = GUExchangeID;
 
   mp_GUExchange = NULL;
-  mp_LowReach = NULL;
+  mp_DownstreamReach = NULL;
+  mp_UpstreamReaches = new std::list<ReachSegment*>;
+  mp_UpstreamSUs = new std::list<SurfaceUnit*>;      
 
 }
 
@@ -85,9 +89,9 @@ nodeid_t ReachSegment::getDownstreamNode() const
 // =====================================================================
 // =====================================================================
 
-hoid_t ReachSegment::getLowReachID() const
+hoid_t ReachSegment::getDownstreamReachID() const
 {
-  return m_LowReachID;
+  return m_DownstreamReachID;
 }
 
 
@@ -156,9 +160,9 @@ GroundwaterUnit *ReachSegment::getGUExchange() const
 // =====================================================================
 
 
-ReachSegment *ReachSegment::getLowReach() const
+ReachSegment *ReachSegment::getDownstreamReach() const
 {
-  return mp_LowReach;
+  return mp_DownstreamReach;
 
 }
 
@@ -187,9 +191,9 @@ void ReachSegment::setDownstreamNode(nodeid_t Node)
 // =====================================================================
 
 
-void ReachSegment::setLowReachID(hoid_t ID)
+void ReachSegment::setDownstreamReachID(hoid_t ID)
 {
-  m_LowReachID = ID;
+  m_DownstreamReachID = ID;
 }
 
 
@@ -257,9 +261,9 @@ void ReachSegment::setGUExchange(GroundwaterUnit *GU)
 // =====================================================================
 
 
-void ReachSegment::setLowReach(ReachSegment *RS)
+void ReachSegment::setDownstreamReach(ReachSegment *RS)
 {
-  mp_LowReach = RS;
+  mp_DownstreamReach = RS;
 
 }
 
