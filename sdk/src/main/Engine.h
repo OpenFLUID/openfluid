@@ -34,6 +34,13 @@ class Engine
 
      mhydasdk::base::SimulationStatus* mp_SimStatus;
 
+     /**
+       Plugin manager 
+     */
+     
+     /**
+       IOManager
+     */     
      PluginManager* mp_PlugMan;
 
      IOManager* mp_IOMan;

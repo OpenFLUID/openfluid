@@ -156,12 +156,12 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 // =====================================================================
 // =====================================================================
 
-mhydasdk::core::SUFlowCode IOManager::getSUFlowCode(wxString Code)
+mhydasdk::core::SUDownstreamCode IOManager::getSUDownstreamCode(wxString Code)
 {
-  if (Code == wxT("S")) return mhydasdk::core::SUFlow;
-  if (Code == wxT("R")) return mhydasdk::core::RLatFlow;
+  if (Code == wxT("S")) return mhydasdk::core::SUDownstream;
+  if (Code == wxT("R")) return mhydasdk::core::RLatDownstream;
 
-  return mhydasdk::core::UnknownFlowCode;
+  return mhydasdk::core::UnknownDownstreamCode;
 }
 
 
@@ -246,7 +246,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                   (mhydasdk::core::hoid_t)ProcessOrder,
                                                                   Area,
                                                                   Slope,
-                                                                  getSUFlowCode(FlowCode),
+                                                                  getSUDownstreamCode(FlowCode),
                                                                   (mhydasdk::core::hoid_t)FlowID,
                                                                   FlowDist,
                                                                   (mhydasdk::core::hoid_t)GUExch)))

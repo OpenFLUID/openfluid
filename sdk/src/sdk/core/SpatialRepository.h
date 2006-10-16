@@ -150,6 +150,9 @@ class SpatialRepository
     bool buildProcessOrders();
 
 
+    bool checkHydroNetworkStructure();
+
+
 };
 
 

@@ -9,10 +9,10 @@
 #define __SURFACEUNIT_H__
 
 
+#include <list>
 #include "HydroObject.h"
 #include "GroundwaterUnit.h"
 #include "ChronDataSource.h"
-
 
 
 
@@ -25,12 +25,12 @@ namespace mhydasdk { namespace core {
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
-enum SUFlowCode
+enum SUDownstreamCode
 {
-  SUFlow,
-  RLatFlow,
-  RSrcFlow,
-  UnknownFlowCode
+  SUDownstream,
+  RLatDownstream,
+  RSrcDownstream,
+  UnknownDownstreamCode
 };
 
 
@@ -50,13 +50,14 @@ class SurfaceUnit : public HydroObject
   protected:
     double m_UsrArea;
     double m_UsrSlope;
-    SUFlowCode m_FlowCode;
-    hoid_t m_FlowID;
-    HydroObject *mp_FlowObject;
-    double m_FlowDistance;
+    SUDownstreamCode m_DownstreamCode;
+    hoid_t m_DownstreamID;
+    HydroObject *mp_DownstreamObject;
+    double m_DownstreamDistance;
     hoid_t m_GUExchangeID;
     GroundwaterUnit *mp_GUExchange;
     ChronDataSource *mp_RainSource;
+    std::list<SurfaceUnit*>* mp_UpstreamSUs;
 
   public:
 
@@ -70,7 +71,7 @@ class SurfaceUnit : public HydroObject
     */
     SurfaceUnit(hoid_t ID, int ProcessOrder,
 	            double UsrArea, double UsrSlope,
-	            SUFlowCode FlowCode, hoid_t FlowID, double FlowDistance, hoid_t GUExchangeID);
+	            SUDownstreamCode DSCode, hoid_t DownstreamID, double DSDistance, hoid_t GUExchangeID);
     ~SurfaceUnit();
 
 
@@ -80,13 +81,15 @@ class SurfaceUnit : public HydroObject
 
     double getUsrSlope() const;
 
-    SUFlowCode getFlowCode() const;
+    SUDownstreamCode getDownstreamCode() const;
 
-    hoid_t getFlowID() const;
+    hoid_t getDownstreamID() const;
 
-    double getFlowDistance() const;
+    double getDownstreamDistance() const;
 
     hoid_t getGUExchangeID() const;
+
+    std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };     
 
     void setRainSource(ChronDataSource* RainSource);
 
@@ -94,17 +97,17 @@ class SurfaceUnit : public HydroObject
 
     void setUsrSlope(double Slope);
 
-    void setFlowCode(SUFlowCode Code);
+    void setDownstreamCode(SUDownstreamCode Code);
 
-    void setFlowID(hoid_t ID);
+    void setDownstreamID(hoid_t ID);
 
-    void setFlowDistance(double Distance);
+    void setDownstreamDistance(double Distance);
 
     void setGUExchangeID(hoid_t ID);
 
     void setGUExchange(GroundwaterUnit *GHU);
 
-    void setFlowObject(HydroObject *HObject);
+    void setDownstreamObject(HydroObject *HObject);
 
 
 };
