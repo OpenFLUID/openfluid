@@ -288,8 +288,6 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
   //      std::cerr << "added upstream RS " << RSit->second->getID() << " to RS " << LinkedRS->getID() << std::endl;        
       }  
     }
-
-
   }
 
   // =========== AHUs ============

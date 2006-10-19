@@ -10,7 +10,7 @@ SETUPH=sdk/setup.h
 
 EXEFILEROOT=mhydas-mpp
 
-
+USE_SI_INTERNALS=1
 
 PLUGSUBDIR=plugs
 
@@ -234,10 +234,18 @@ echo "const wxString MHYDAS_PLUGINS_SUBDIR = wxT(\"$PLUGSUBDIR\");" >> $SETUPH
 echo "" >> $SETUPH
 
 if [ -x /usr/bin/svnversion ]; then
+  echo "// Subversion revision version" >> $SETUPH
   echo "#define SVN_REV" >> $SETUPH
   echo "const wxString SVN_REVISION = wxT(\"`svn info --revision HEAD | grep "Révision :" | cut -d" " -f3 `\");" >> $SETUPH
   echo "" >> $SETUPH
 fi
+
+if [ $USE_SI_INTERNALS -eq 1 ]; then
+  echo "// Use SI units for internal storages" >> $SETUPH
+  echo "#define USE_SI_INTERNALS" >> $SETUPH
+  echo "" >> $SETUPH
+fi
+
 
 echo "#endif" >> $SETUPH
 

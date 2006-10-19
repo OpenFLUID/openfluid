@@ -14,6 +14,7 @@
 #include "IOMan.h"
 #include "ColTextParser.h"
 #include "setup.h"
+#include "SIFactors.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
 
@@ -451,7 +452,12 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
   if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
 
+    #ifdef USE_SI_INTERNALS
+    Serie = new mhydasdk::core::TimeSerie("m/s");
+    #else
     Serie = new mhydasdk::core::TimeSerie("mm/h");
+    #endif
+        
 
     int i = 0;
 
@@ -462,6 +468,11 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
           FileParser.getLongValue(i,4,&Min) && FileParser.getLongValue(i,5,&Sec) &&
           FileParser.getDoubleValue(i,6,&Value))
       {
+
+        #ifdef USE_SI_INTERNALS
+        Value = Value * SIFACT_MMH_TO_MS;
+        #else
+        #endif
         Serie->addValue(new mhydasdk::core::TimeSerieItem(Year,Month,Day,Hour,Min,Sec,Value));
 
       }

@@ -181,7 +181,7 @@ int TimeSerie::computeTimeStep()
       if ((m_Serie->at(i)->getRawTime() - m_Serie->at(i-1)->getRawTime()) != TimeStepToTry)
       {
       /*
-        std::cerr << "ça chie entre les lignes " << i-1 << " et " << i << "; Time step de " << TimeStepToTry << std::endl;
+        std::cerr << "ï¿½a chie entre les lignes " << i-1 << " et " << i << "; Time step de " << TimeStepToTry << std::endl;
 //        std::cerr << m_Serie->at(i-1)->getRawTime() << " et " << m_Serie->at(i)->getRawTime() << std::endl;
 //        std::cerr << m_Serie->at(i-1)->getTimeAsString() << " et " << m_Serie->at(i)->getTimeAsString() << std::endl;
         std::cerr << "DateTime() " << m_Serie->at(i-1)->getDateTime().getRawTime() << " et " << m_Serie->at(i)->getDateTime().getRawTime() << std::endl;
@@ -237,6 +237,21 @@ bool TimeSerie::isMatching(rawtime_t RawBeginTime, rawtime_t RawEndTime, int Tim
          (m_Serie->back()->getRawTime() == RawEndTime) &&
          (computeTimeStep() == TimeStep);
 
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool TimeSerie::multiplyValuesByFactor(float Factor)
+{
+  
+  int Count = m_Serie->size();
+  
+  for (int i=0; i<Count;i++)
+  {
+    m_Serie->at(i)->setValue(m_Serie->at(i)->getValue()*Factor);
+  }
 }
 
 
