@@ -65,11 +65,15 @@
 #define END_LOOP }
 
 
+
 // =====================================================================
 // =====================================================================
 
 
 namespace mhydasdk { namespace base {
+
+
+WX_DECLARE_HASH_MAP(int, float, wxIntegerHash, wxIntegerEqual, IDValueMap);
 
 
 /**

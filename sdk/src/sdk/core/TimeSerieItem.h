@@ -35,13 +35,13 @@ class TimeSerieItem
   public:
 
     /**
-      Constructeur par défaut
+      Default constructor
     */
     TimeSerieItem();
 
 
     /**
-      Constructeur
+      Constructor
     */
     TimeSerieItem(int Year, int Month, int Day, int Hour, int Minute, int Second, float Value);
 
