@@ -93,6 +93,13 @@ class TimeSerie
       \param[in] TimeStep the time step
     */
     bool isMatching(rawtime_t RawBeginTime, rawtime_t RawEndTime, int TimeStep);
+    
+    
+    /**
+      multiply all values of the serie by the passed factor 
+      \param[in] Factor the factor
+    */ 
+    bool multiplyValuesByFactor(float Factor);
 
 };
 

@@ -19,6 +19,15 @@ class MorelSeytouxFunc : public mhydasdk::base::Function
 {
   private:
 
+    /** 
+      Resolution step
+    */  
+    float m_ResError;
+    
+    /**
+      Theta star on each SU
+    */
+    mhydasdk::base::IDValueMap m_SUThetaStar;
 
   public:
     /**

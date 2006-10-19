@@ -166,6 +166,7 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
+  // builds process orders lists
   if (!mp_CoreData->getSpatialData()->buildProcessOrders())
   {
     mhydasdk::base::LastError::Message = wxT("Process orders build error.");
@@ -173,7 +174,18 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
+  // integrates rain on time step (converts from intensity to water height)
+  mhydasdk::core::RainSourceMap RainSrcColl = mp_CoreData->getRainEvent()->getRainSourceCollection();
+  mhydasdk::core::RainSourceMap::iterator RainSrcit;
+  mhydasdk::core::ChronDataSource *Source;
+  for(RainSrcit = RainSrcColl.begin(); RainSrcit != RainSrcColl.end(); ++RainSrcit )
+  {
+    Source = RainSrcit->second;
+    Source->getTimeSerie()->multiplyValuesByFactor(m_Config.DeltaT);
+  }
 
+
+  // prepares data for each module
   if (mp_HydroModule == NULL || !mp_HydroModule->prepareData())
   {
     mhydasdk::base::LastError::Message = wxT("Hydrology module data preparation error.");
@@ -181,6 +193,7 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
+  // chacks intensity for each module
   if (mp_HydroModule == NULL || !mp_HydroModule->checkConsistency())
   {
     mhydasdk::base::LastError::Message = wxT("Hydrology module consistency error.");

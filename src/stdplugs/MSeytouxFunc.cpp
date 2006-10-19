@@ -19,7 +19,12 @@ MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
   SU_PROPERTY_TO_CHECK("thetasat");  
   SU_PROPERTY_TO_CHECK("betaMS");  
   SU_PROPERTY_TO_CHECK("hc");  
+
   SU_INICOND_TO_CHECK("thetaisurf");
+  
+  
+  m_ResError = 0.00005;
+  
 }
 
 // =====================================================================
@@ -40,6 +45,9 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 
   //std::cerr << "MorelSeytouxFunc::initParams " << Params.size() << std::endl;
   // std::cout << "Momo initParams()" << std::endl;
+  
+ 
+  
   return true;
 }
 
@@ -52,6 +60,23 @@ bool MorelSeytouxFunc::initializeRun()
 {
 
   bool IsOK =  true;
+
+
+  float ThetaR, ThetaS, ThetaI;
+  mhydasdk::core::SurfaceUnit* SU;
+
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+    ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
+    ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;
+    ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;
+    
+    // Computing ThetaStar
+    m_SUThetaStar[SU->getID()] = (ThetaI - ThetaR) / (ThetaS - ThetaR); 
+//    std::cerr << "SU: " << SU->getID() << " -> " << m_SUThetaStar[SU->getID()] << "  -  " << SU->getIniConditions()->find(wxT("thetaisurf"))->second << std::endl;
+
+  END_LOOP
+
 
 
   return IsOK;
@@ -99,7 +124,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 bool MorelSeytouxFunc::finalizeRun()
 {
-  // std::cout << "Momo finalize()" << std::endl;
+  // std::cout << "Momo finalizeRun()" << std::endl;
   return true;
 }
 
