@@ -6,6 +6,7 @@
 */
 
 #include "MSeytouxFunc.h"
+#include "math.h"
 #include <iostream>
 
 MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
@@ -62,7 +63,7 @@ bool MorelSeytouxFunc::initializeRun()
   bool IsOK =  true;
 
 
-  float ThetaR, ThetaS, ThetaI;
+  float ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
   mhydasdk::core::SurfaceUnit* SU;
 
   BEGIN_SU_ORDERED_LOOP(SU)
@@ -70,10 +71,17 @@ bool MorelSeytouxFunc::initializeRun()
     ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
     ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;
     ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;
+    Hc = SU->getProperties()->find(wxT("hc"))->second;
     
     // Computing ThetaStar
-    m_SUThetaStar[SU->getID()] = (ThetaI - ThetaR) / (ThetaS - ThetaR); 
-//    std::cerr << "SU: " << SU->getID() << " -> " << m_SUThetaStar[SU->getID()] << "  -  " << SU->getIniConditions()->find(wxT("thetaisurf"))->second << std::endl;
+    ThetaStar = (ThetaI - ThetaR) / (ThetaS - ThetaR);
+    m_SUThetaStar[SU->getID()] = ThetaStar; 
+
+    // Computing Sf
+    m_SUSf[SU->getID()] = Hc * (1 - (1 * pow(ThetaStar,6))) * (ThetaS - ThetaI);
+
+    //std::cerr << "SU: " << SU->getID() << " -> " << m_SUThetaStar[SU->getID()] << "  -  " << SU->getIniConditions()->find(wxT("thetaisurf"))->second << std::endl;
+
 
   END_LOOP
 
@@ -107,13 +115,22 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   mhydasdk::core::SurfaceUnit* SU;
 
   BEGIN_SU_ORDERED_LOOP(SU)
+    // adding upstream units output (step n-1) to rain
+
+    if (SimStatus->getCurrentStep() > 0)
+    {
+      
+    }
+  
+    //
+  
     Value = GET_SU_RAINVALUE(SU,SimStatus->getCurrentStep());
     APPEND_SIMVAR_VALUE(SU,"runoff",Value * 0.6);
     APPEND_SIMVAR_VALUE(SU,"infiltration",Value * 0.4);
   END_LOOP
 
 
-  // std::cout << "coucou c'est Momo run " << mp_CoreData->getSpatialData()->getSUsCollection()->size();
+
   return true;
 }
 

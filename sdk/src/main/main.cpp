@@ -201,8 +201,122 @@ void MHYDASApp::printPluginsList()
   {
     std::cout << "  (none)" << std::endl;
   }
+  std::cout << std::endl;
   std::cout.flush();
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams, wxString Suffix, bool IsXMLFormat)
+{
+  wxArrayString CurrentStr;  
+    
+
+  for (int i=0;i<VarsPropsParams.GetCount();i++)
+  {
+    CurrentStr = SplitString(VarsPropsParams[i],wxT(";"));
+    if (CurrentStr.GetCount() == 5)
+    {
+      std::cout << Suffix.mb_str(wxConvUTF8);
+      if (IsXMLFormat)
+      {
+        std::cout << "<varpropparam";
+        std::cout << " type=\"" << CurrentStr[0].mb_str(wxConvUTF8) << "\"";
+        std::cout << " distribution=\"" << CurrentStr[1].mb_str(wxConvUTF8) << "\"";        
+        std::cout << " ID=\"" << CurrentStr[2].mb_str(wxConvUTF8) << "\"";                
+        std::cout << " description=\"" << CurrentStr[3].mb_str(wxConvUTF8) << "\"";
+        std::cout << " unit=\"" << CurrentStr[4].mb_str(wxConvUTF8) << "\"";        
+        std::cout << "/>" << std::endl;
+      }
+      else
+      {
+        std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": " << CurrentStr[0].mb_str(wxConvUTF8) << " ";
+        if (CurrentStr[1] == wxT("global")) std::cout << "globally distributed ";
+        else std::cout << "distributed on " << CurrentStr[1].mb_str(wxConvUTF8) << "s ";
+        std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")." << std::endl;        
+      }   
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void MHYDASApp::printPluginsReport(bool IsXMLFormat)
+{
+
+  ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList(); 
+
+  // insertion du début du fichier XML
+  if (IsXMLFormat)
+  {
+    std::cout << "<?xml version=\"1.0\" standalone=\"yes\"?>" << std::endl;
+    std::cout << "<mhydas>" << std::endl;   
+    std::cout << "  <funcsreport>" << std::endl;   
+  }
+  
+  if (Signatures.GetCount() > 0)
+  {
+    for (int i=0;i<Signatures.GetCount();i++)
+    {
+      if (IsXMLFormat)
+      {
+        std::cout << "    <funcdef ID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
+                  << "\" name=\"" << Signatures[i]->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
+        std::cout << "      <description>" << Signatures[i]->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
+        std::cout << "      <version major=\"" << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) 
+                  << "\" minor=\"" << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << "\"/>" << std::endl;
+        std::cout << "      <author name=\"" << Signatures[i]->Author.mb_str(wxConvUTF8) 
+                  << "\" email=\"" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << "\"/>" << std::endl;
+
+        std::cout << "      <handleddata>" << std::endl;                  
+        printPluginsVarsPropsParamsReport(Signatures[i]->HandledVarsPropsParams,wxT("        "),IsXMLFormat);
+        std::cout << "      </handleddata>" << std::endl;                  
+                 
+      }
+      else
+      {
+        std::cout << "* " << Signatures[i]->ID.mb_str(wxConvUTF8) << std::endl;           
+        std::cout << "   - Name: " << Signatures[i]->Name.mb_str(wxConvUTF8) << std::endl;        
+        std::cout << "   - Description: " << Signatures[i]->Description.mb_str(wxConvUTF8) << std::endl;                
+        std::cout << "   - Version: " << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) << "." << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << std::endl;                        
+        std::cout << "   - Author: " << Signatures[i]->Author.mb_str(wxConvUTF8) << " (" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << ")" << std::endl;                                
+        std::cout << "   - Handled data" << std::endl;                  
+        printPluginsVarsPropsParamsReport(Signatures[i]->HandledVarsPropsParams,wxT("     . "),IsXMLFormat);
+        
+      }
+
+      if (IsXMLFormat)
+      {
+        std::cout << "    </funcdef> " << std::endl;
+      }  
+      else
+      {
+        if (i != Signatures.GetCount()-1)
+          std::cout << "================================================================================" << std::endl;
+      }        
+    }
+     
+  }
+  else
+  {
+
+  }
+
+  // insertion de la fin du fichier XML
+  if (IsXMLFormat)
+  {
+    std::cout << "  </funcsreport>" << std::endl;   
+    std::cout << "</mhydas>" << std::endl;   
+  }
+
+  std::cout.flush();
+
+  
 }
 
 // =====================================================================
@@ -212,6 +326,7 @@ bool MHYDASApp::stopAppReturn()
 {
   std::cout << std::endl << "Oooops! " << LastError::Message.mb_str(wxConvUTF8) << std::endl;
   std::cout << "Aborting MHYDAS application." << std::endl;
+  std::cout << std::endl;
   std::cout.flush();
 
   return false;
@@ -238,7 +353,6 @@ bool MHYDASApp::OnInit()
 
   wxLog::SetTimestamp(NULL);
 
-  printMHYDASInfos();
 
 
   // =========== command line parsing ===========
@@ -253,14 +367,23 @@ bool MHYDASApp::OnInit()
 
   if (Parser.Found(wxT("v"))) wxLog::SetVerbose(true);
 
-  if (Parser.Found(wxT("f")) || Parser.Found(wxT("d")))
+  if (Parser.Found(wxT("f")) || Parser.Found(wxT("r")) || Parser.Found(wxT("x")))
   {
-    if (Parser.Found(wxT("f"))) printPluginsList();
+    if (Parser.Found(wxT("f")))
+    {
+      printMHYDASInfos();
+      printPluginsList();
+    }  
+
+    if (Parser.Found(wxT("r"))) printPluginsReport(false);
+    if (Parser.Found(wxT("x"))) printPluginsReport(true);
 
     m_OKToRun = false;
   }
   else
   {
+    printMHYDASInfos();
+    
     if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(TmpStr);
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
     if (Parser.Found(wxT("g"))) mp_RunEnv->setDateTimeOutputDir();
@@ -291,13 +414,13 @@ int MHYDASApp::OnRun()
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);
 
-    // chargement, v�rification et montage du mod�le
+    // chargement, verification et montage du modele
     if (!buildModel()) return stopAppReturn();
 
-    // chargement et v�rification du jeu de donn�es d'entr�e
+    // chargement et verification du jeu de donnees d'entree
     if (!loadData()) return stopAppReturn();
 
-    // v�rification de la coh�rence de l'ensemble
+    // verification de la coherence de l'ensemble
     if (!checkConsistency()) return stopAppReturn();
 
     // simulation
@@ -307,16 +430,18 @@ int MHYDASApp::OnRun()
     if (!saveResults()) return stopAppReturn();
 
     m_TotalEndTime = wxDateTime::Now();
+
+    std::cout << std::endl;
+
+    wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
+    wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
+
+
+    std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
+    std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
+    std::cout << std::endl;
   }
 
-  std::cout << std::endl;
-
-  wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
-  wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
-
-
-  std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
-  std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
 
   return true;
 
@@ -329,10 +454,11 @@ int MHYDASApp::OnRun()
 
 int MHYDASApp::OnExit()
 {
-  std::cout << std::endl;
+
 }
 
 
 // =====================================================================
 // =====================================================================
+
 

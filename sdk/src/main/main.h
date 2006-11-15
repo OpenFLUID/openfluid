@@ -28,7 +28,8 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_OPTION, _T("o"), _T("outputdir"), _T("set results output directory")},
   {wxCMD_LINE_SWITCH, _T("a"), _T("auto-outdir"), _T("automatic results output directory")},
   {wxCMD_LINE_SWITCH, _T("f"), _T("functions-list"), _T("list available functions (do not run the model)")},
-  {wxCMD_LINE_SWITCH, _T("d"), _T("detailed-function-list"), _T("list available functions, with details (do not run the model)")},
+  {wxCMD_LINE_SWITCH, _T("r"), _T("functions-report"), _T("print a report of available functions, with details (do not run the model)")},
+  {wxCMD_LINE_SWITCH, _T("x"), _T("xml-functions-report"), _T("print a report of available functions in xml format, with details (do not run the model)")},  
   {wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("enable verbose display")},
   {wxCMD_LINE_SWITCH, _T("h"), _T("help"), _T("show this help message"),wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
   {wxCMD_LINE_NONE}
@@ -65,6 +66,10 @@ class MHYDASApp : public wxAppConsole
     void printDataInfos();
 
     void printPluginsList();
+
+    void printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams, wxString Suffix, bool IsXMLFormat);
+
+    void printPluginsReport(bool IsXMLFormat);
 
     bool stopAppReturn();
 
