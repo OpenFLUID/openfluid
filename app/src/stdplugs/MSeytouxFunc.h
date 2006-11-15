@@ -28,6 +28,11 @@ class MorelSeytouxFunc : public mhydasdk::base::Function
       Theta star on each SU
     */
     mhydasdk::base::IDValueMap m_SUThetaStar;
+    
+    /**
+      Sf on each SU
+    */
+    mhydasdk::base::IDValueMap m_SUSf;
 
   public:
     /**

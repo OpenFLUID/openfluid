@@ -173,7 +173,7 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
-
+  /*
   // integrates rain on time step (converts from intensity to water height)
   mhydasdk::core::RainSourceMap RainSrcColl = mp_CoreData->getRainEvent()->getRainSourceCollection();
   mhydasdk::core::RainSourceMap::iterator RainSrcit;
@@ -183,7 +183,7 @@ bool Engine::prepareDataAndCheckConsistency()
     Source = RainSrcit->second;
     Source->getTimeSerie()->multiplyValuesByFactor(m_Config.DeltaT);
   }
-
+  */
 
   // prepares data for each module
   if (mp_HydroModule == NULL || !mp_HydroModule->prepareData())

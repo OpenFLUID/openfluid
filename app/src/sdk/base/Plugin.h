@@ -84,6 +84,8 @@ enum ModuleTypeList
 // =====================================================================
 // =====================================================================
 
+
+
 /**
   Structure encapsulating the plugin signature,
   returned from the plugin to the host app for registering
@@ -111,7 +113,12 @@ struct Signature
   */
   wxString Name;
 
-    /**
+  /**
+    Plugin Description
+  */
+  wxString Description;
+
+  /**
     Major version number
   */
   wxString MajorVersion;
@@ -130,6 +137,10 @@ struct Signature
     Author's email
   */
   wxString AuthorEmail;
+  
+
+  wxArrayString HandledVarsPropsParams;
+
 };
 
 // =====================================================================
