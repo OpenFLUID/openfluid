@@ -452,12 +452,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
   if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
 
-    #ifdef USE_SI_INTERNALS
-    Serie = new mhydasdk::core::TimeSerie("m/s");
-    #else
-    Serie = new mhydasdk::core::TimeSerie("mm/h");
-    #endif
-        
+    Serie = new mhydasdk::core::TimeSerie("m/s");        
 
     int i = 0;
 
@@ -469,9 +464,8 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
           FileParser.getDoubleValue(i,6,&Value))
       {
 
-        #ifdef USE_SI_INTERNALS
+        #ifdef INPUT_RAIN_MMH
         Value = Value * SIFACT_MMH_TO_MS;
-        #else
         #endif
         Serie->addValue(new mhydasdk::core::TimeSerieItem(Year,Month,Day,Hour,Min,Sec,Value));
 

@@ -101,7 +101,7 @@ bool MHYDASApp::runSimulation()
 
   m_EffectiveEndTime = wxDateTime::Now();
 
-  if (ExecStatus) std::cout << "**** Simulation done ****" << endl << endl;
+  if (ExecStatus) std::cout << "**** Simulation completed ****" << endl << endl;
   else  std::cout << "**** Simulation aborted ****" << endl << endl;
   std::cout.flush();
 
@@ -167,16 +167,17 @@ void MHYDASApp::printMHYDASInfos()
 
 void MHYDASApp::printDataInfos()
 {
+  int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT; 
+  
   std::cout << std::endl;
   std::cout << "Spatial objects: " << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
   std::cout << "Rain source(s): " << mp_CoreData->getRainEvent()->getRainSourceCollection().size() << std::endl;
-  std::cout << "Simulation period: " << std::endl
-            << "   from " << _C(mp_CoreData->getRainEvent()->getEventStartingTime().asString()) << std::endl
-            << "   to " << _C(mp_CoreData->getRainEvent()->getEventEndingTime().asString()) << std::endl
-            << "   time step: " << mp_Engine->getConfig().DeltaT << "s" << std::endl;
+  std::cout << "Simulation from " << _C(mp_CoreData->getRainEvent()->getEventStartingTime().asString())
+            << " to " << _C(mp_CoreData->getRainEvent()->getEventEndingTime().asString()) << std::endl
+            << "         -> " <<  (TimeStepsNbr+1) << " time steps of " << mp_Engine->getConfig().DeltaT << " seconds" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
 

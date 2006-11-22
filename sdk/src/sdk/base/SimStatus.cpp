@@ -24,6 +24,12 @@ SimulationStatus::SimulationStatus(mhydasdk::core::DateTime StartTime,
 
   m_CurrentStep = 0;
   m_CurrentTime = m_StartTime;
+  
+  m_IsFirstStep = true;
+    
+  m_IsLastStep = false;    
+  
+  
 }
 
 // =====================================================================
@@ -42,7 +48,12 @@ bool SimulationStatus::switchToNextStep()
   if (NextTime.getRawTime() <=  m_EndTime.getRawTime())
   {
     m_CurrentStep++;
+
     m_CurrentTime = mhydasdk::core::DateTime(m_CurrentTime.getRawTime() + m_TimeStep);
+   
+    m_IsFirstStep =  (m_CurrentStep == 0);
+    m_IsLastStep = (NextTime.getRawTime() ==  m_EndTime.getRawTime());    
+    
     return true;
   }
   else return false;
