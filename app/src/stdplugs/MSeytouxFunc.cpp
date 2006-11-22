@@ -178,7 +178,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     
     // ajout des apports des unités amont (sorties des unités amont à t-1)
     // adding upstream units output (step n-1) to rain    
-    if (m_UseUpstreamOutput[SU->getID()] && CurrentStep > 0)
+    if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
       OutputsSum = 0;      
       UpSUsList = SU->getUpstreamSUs();
