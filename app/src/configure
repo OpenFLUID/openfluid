@@ -10,7 +10,7 @@ SETUPH=sdk/setup.h
 
 EXEFILEROOT=mhydas-mpp
 
-USE_SI_INTERNALS=1
+INPUT_RAIN_MMH=1
 
 PLUGSUBDIR=plugs
 
@@ -38,6 +38,9 @@ MDEF_RAINDISTRIFILE=raindistri.dat
 
 MDEF_OUTPUTFILES_EXT=out
 
+MACHTYPE=i486-pc-linux-gnu
+
+OSTYPE=linux-gnu
 
 ############################
 ############################
@@ -46,8 +49,8 @@ MDEF_OUTPUTFILES_EXT=out
 
 # ------------ option file for makefiles -------------
 
-
 OPTFILE=makeopts.inc
+
 
 if [ "$OSTYPE" = "msys" ]; then
   EXEFILE=$EXEFILEROOT.exe
@@ -69,7 +72,7 @@ echo "" >> $OPTFILE
 echo "" >> $OPTFILE
 
 echo "# platform" >> $OPTFILE
-echo "PLATFORM = $MACHTYPE" >> $OPTFILE
+echo "PLATFORM = $MACHTYPE"  >> $OPTFILE
 
 echo "" >> $OPTFILE
 
@@ -240,9 +243,9 @@ if [ -x /usr/bin/svnversion ]; then
   echo "" >> $SETUPH
 fi
 
-if [ $USE_SI_INTERNALS -eq 1 ]; then
-  echo "// Use SI units for internal storages" >> $SETUPH
-  echo "#define USE_SI_INTERNALS" >> $SETUPH
+if [ $INPUT_RAIN_MMH -eq 1 ]; then
+  echo "// Input rain inn mm/h" >> $SETUPH
+  echo "#define INPUT_RAIN_MMH" >> $SETUPH
   echo "" >> $SETUPH
 fi
 

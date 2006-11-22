@@ -7,7 +7,9 @@
 
 #include "MSeytouxFunc.h"
 #include "math.h"
+#include "setup.h"
 #include <iostream>
+#include <stdio.h>
 
 MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
                 : Function(CoreData)
@@ -24,7 +26,7 @@ MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
   SU_INICOND_TO_CHECK("thetaisurf");
   
   
-  m_ResError = 0.00005;
+  m_ResStep = 0.000005;
   
 }
 
@@ -80,8 +82,27 @@ bool MorelSeytouxFunc::initializeRun()
     // Computing Sf
     m_SUSf[SU->getID()] = Hc * (1 - (1 * pow(ThetaStar,6))) * (ThetaS - ThetaI);
 
-    //std::cerr << "SU: " << SU->getID() << " -> " << m_SUThetaStar[SU->getID()] << "  -  " << SU->getIniConditions()->find(wxT("thetaisurf"))->second << std::endl;
+    // initializing saturation state
+    m_SUSatState[SU->getID()] = 0;
 
+    // sets whether the upstream output should be use or not.
+    // à revoir
+    m_UseUpstreamOutput[SU->getID()] = SIMVAR_EXISTS(SU,"qoutput");
+    
+    m_CurrentUpstreamInput[SU->getID()] = 0;
+    
+    m_RainSum[SU->getID()] = 0;
+    
+    m_PondingSum[SU->getID()] = 0;
+    
+    m_PreviousDeltaW[SU->getID()] = 0;
+    
+    m_DeltaW1[SU->getID()] = 0;
+    m_DeltaW2[SU->getID()] = 0;
+    m_DeltaT1[SU->getID()] = 0;
+    m_DeltaT2[SU->getID()] = 0;
+    
+    
 
   END_LOOP
 
@@ -97,7 +118,6 @@ bool MorelSeytouxFunc::initializeRun()
 
 bool MorelSeytouxFunc::checkConsistency()
 {
-  // std::cout << "Momo checkConsistency()" << std::endl;
 
   return Function::checkConsistency();
 }
@@ -111,22 +131,165 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
 
   double Value;
+  int i;
+  
+  float OutputsSum;
+  float RainIntensity; //r
+  float EfficientRainIntensity; // re
+  float CurrentPondingTime; // tp
+  float CurrentPondingSum;  // wp
+  float EfficientPondingRainIntensity; // rpe
+  float CurrentRunoff;
+  float CurrentInfiltration; 
+
+  int ID;
+  float CurrentRain;
+  int CurrentStep;
+  int TimeStep;
+  float Ks;
+
+  float Beta;
+  double DeltaWi;
+  bool Criteria;
+  float ExtraTime;
+  double InfiltrationCapacity;
+  float Area;
+
 
   mhydasdk::core::SurfaceUnit* SU;
+  mhydasdk::core::SurfaceUnit* UpSU;
 
+  list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
+  list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
+
+  TimeStep = SimStatus->getTimeStep();
+  CurrentStep = SimStatus->getCurrentStep();
+ 
   BEGIN_SU_ORDERED_LOOP(SU)
-    // adding upstream units output (step n-1) to rain
 
-    if (SimStatus->getCurrentStep() > 0)
+    ID = SU->getID();
+    Ks = SU->getProperties()->find(wxT("ks"))->second;
+    Beta = SU->getProperties()->find(wxT("betaMS"))->second;
+    Area = SU->getUsrArea();
+    
+    CurrentRunoff = 0;
+    CurrentInfiltration = 0;
+
+    
+    // ajout des apports des unités amont (sorties des unités amont à t-1)
+    // adding upstream units output (step n-1) to rain    
+    if (m_UseUpstreamOutput[SU->getID()] && CurrentStep > 0)
     {
+      OutputsSum = 0;      
+      UpSUsList = SU->getUpstreamSUs();
       
+      for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
+      {                
+        UpSU = *UpSUiter;
+        OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;
+      }
+      m_CurrentUpstreamInput[ID] = OutputsSum;
+    } 
+
+    // transformation de la pluie de m/s en m/pas de temps
+    CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;
+
+
+    // calcul de l'intensité de pluie
+    RainIntensity = (CurrentRain / TimeStep);   
+
+    // calcul de la pluie efficace
+    EfficientRainIntensity =  RainIntensity / Ks;
+
+    if (Ks == 0)
+    {
+      // si ks == 0 alors tout ruisselle
+      CurrentRunoff = CurrentRain + m_CurrentUpstreamInput[ID];
+      CurrentInfiltration = 0;
     }
+    else
+    {
+      // ks est > 0
+      
+      if (m_SUSatState[ID] == 0)
+      {
+        // calcul du temps de saturation
+        m_RainSum[ID] = m_RainSum[ID] + CurrentRain + m_CurrentUpstreamInput[ID];
+        if (EfficientRainIntensity > 1)
+        {
+          m_PondingTime[ID] = (CurrentStep-1) * TimeStep + (1/(RainIntensity)) * ((m_SUSf[ID] / (EfficientRainIntensity -1)-m_RainSum[ID]));        
   
-    //
-  
-    Value = GET_SU_RAINVALUE(SU,SimStatus->getCurrentStep());
-    APPEND_SIMVAR_VALUE(SU,"runoff",Value * 0.6);
-    APPEND_SIMVAR_VALUE(SU,"infiltration",Value * 0.4);
+          if (m_PondingTime[ID] <= (CurrentStep * TimeStep))
+          {
+            
+            if (m_PondingTime[ID] > ((CurrentStep-1) * TimeStep))
+            {
+              m_PondingRainIntensity[ID] = RainIntensity;
+              m_PondingStep[ID] = CurrentStep;
+              m_PondingSum[ID] = m_RainSum[ID] + (m_PondingTime[ID]-((CurrentStep-1)*TimeStep))*RainIntensity;
+              m_SUSatState[ID] = 2; 
+            }
+            else
+            {
+              m_PondingTime[ID] = (CurrentStep-1) * TimeStep;
+              m_PondingStep[ID] = CurrentStep - 1;
+              m_PondingRainIntensity[ID] = (1+(m_SUSf[ID]/m_RainSum[ID])) * Ks; 
+              m_PondingSum[ID] = m_RainSum[ID];
+              m_SUSatState[ID] = 3;             
+            }          
+          }
+        }
+      }
+
+      //if (m_SUSatState[ID] > 0)             
+      else
+      {
+        EfficientPondingRainIntensity = m_PondingRainIntensity[ID] / Ks;     
+        ExtraTime = (CurrentStep * TimeStep) - m_PondingTime[ID];   
+        Criteria = true;
+        DeltaWi = 0;
+        
+        // calcul de termes pour optimisation des calculs
+        CurrentPondingSum = m_PondingSum[ID];
+        CurrentPondingTime = m_PondingTime[ID];
+        float PSBEKs = CurrentPondingSum * (Beta * EfficientPondingRainIntensity -1) / Ks;
+        float BetaOnKs = Beta / Ks;
+        float EPRIPS = EfficientPondingRainIntensity * CurrentPondingSum;
+       
+        
+        m_DeltaT1[ID] = (m_DeltaW1[ID] * BetaOnKs) - (PSBEKs) * log((EPRIPS + m_DeltaW1[ID]) / (EPRIPS));
+        m_DeltaW2[ID] = m_DeltaW1[ID] + m_ResStep;
+        
+        while (Criteria)
+        {        
+          m_DeltaT2[ID] = (m_DeltaW2[ID] * BetaOnKs) - (PSBEKs) * log((EPRIPS + m_DeltaW2[ID]) / (EPRIPS));                                      
+          if (ExtraTime <= m_DeltaT2[ID] && ExtraTime > m_DeltaT1[ID])
+          {          
+            DeltaWi = m_DeltaW2[ID] - 0.5 * m_ResStep; 
+            m_DeltaW1[ID] = m_DeltaW2[ID] - 2 * m_ResStep;
+            Criteria = false; 
+          }
+          m_DeltaW2[ID] = m_DeltaW2[ID] + m_ResStep;
+          m_DeltaT1[ID] = m_DeltaT2[ID];        
+        }      
+        
+        
+        // calcul de la capacité d'infiltration        
+        InfiltrationCapacity = (DeltaWi - m_PreviousDeltaW[ID]) / TimeStep;
+        m_PreviousDeltaW[ID] = DeltaWi;                
+          
+        if (RainIntensity > InfiltrationCapacity)
+        { 
+          CurrentRunoff = (RainIntensity - InfiltrationCapacity) * TimeStep;
+        }  
+        
+      }
+    
+      CurrentInfiltration = (m_CurrentUpstreamInput[ID] + CurrentRain) - CurrentRunoff;
+    }   
+
+    APPEND_SIMVAR_VALUE(SU,"runoff",CurrentRunoff);
+    APPEND_SIMVAR_VALUE(SU,"infiltration",CurrentInfiltration);
   END_LOOP
 
 

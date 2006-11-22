@@ -36,7 +36,7 @@
 #define GU_PROPERTY_TO_CHECK(name) m_GUPropsToCheck.Add(wxT(name))
 #define GU_INICOND_TO_CHECK(name) m_GUInicondsToAdd.Add(wxT(name))
 
-#define GET_SU_RAINVALUE(suobj,step) suobj->getRainSource()->getTimeSerie()->getItemsCollection()->at(step)->getValue()
+#define GET_SU_RAINVALUE(suobj,step) (suobj->getRainSource()->getTimeSerie()->getItemsCollection()->at(step)->getValue())
 
 #define BEGIN_SU_ORDERED_LOOP(suobj) \
   list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
@@ -62,6 +62,10 @@
 
 #define APPEND_SIMVAR_VALUE(hobj,name,value) (hobj->getSimulatedVars()->find(wxT(name))->second)->push_back(value)
 
+#define GET_SIMVAR_VALUE(hobj,name,step) (hobj->getSimulatedVars()->find(wxT(name))->second)->at(step)
+
+#define SIMVAR_EXISTS(hobj,name) (hobj->getSimulatedVars()->find(wxT(name)) != hobj->getSimulatedVars()->end())
+
 #define END_LOOP }
 
 
@@ -73,8 +77,11 @@
 namespace mhydasdk { namespace base {
 
 
-WX_DECLARE_HASH_MAP(int, float, wxIntegerHash, wxIntegerEqual, IDValueMap);
+WX_DECLARE_HASH_MAP(int, float, wxIntegerHash, wxIntegerEqual, IDFloatValueMap);
 
+WX_DECLARE_HASH_MAP(int, int, wxIntegerHash, wxIntegerEqual, IDIntValueMap);
+
+WX_DECLARE_HASH_MAP(int, bool, wxIntegerHash, wxIntegerEqual, IDBoolValueMap);
 
 /**
 

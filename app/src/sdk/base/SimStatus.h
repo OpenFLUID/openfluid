@@ -25,8 +25,12 @@ class SimulationStatus
     int m_TimeStep;
 
     unsigned int m_CurrentStep;
+
     mhydasdk::core::DateTime m_CurrentTime;
 
+    bool m_IsFirstStep;
+    
+    bool m_IsLastStep;    
 
   public:
     /**
@@ -49,6 +53,11 @@ class SimulationStatus
 
     mhydasdk::core::DateTime getCurrentTime() const { return m_CurrentTime; };
 
+    bool isFirstStep() const { return m_IsFirstStep; };
+
+    bool isLastStep() const { return m_IsLastStep; };
+    
+    int getTimeStep() const { return m_TimeStep; };    
 
 };
 

@@ -22,17 +22,59 @@ class MorelSeytouxFunc : public mhydasdk::base::Function
     /** 
       Resolution step
     */  
-    float m_ResError;
+    float m_ResStep;
     
     /**
       Theta star on each SU
     */
-    mhydasdk::base::IDValueMap m_SUThetaStar;
+    mhydasdk::base::IDFloatValueMap m_SUThetaStar;
     
     /**
       Sf on each SU
     */
-    mhydasdk::base::IDValueMap m_SUSf;
+    mhydasdk::base::IDFloatValueMap m_SUSf;
+
+    /**
+      Saturation state on each SU
+    */
+    mhydasdk::base::IDIntValueMap m_SUSatState;
+
+    /**
+      Use of upstream output as input on each SU
+    */
+    mhydasdk::base::IDBoolValueMap m_UseUpstreamOutput;
+
+    /**
+      Current upstream input value for each SU
+    */
+    mhydasdk::base::IDFloatValueMap m_CurrentUpstreamInput;
+    
+    /**
+      Rain sum for each SU
+    */
+    mhydasdk::base::IDFloatValueMap m_RainSum;    
+
+    /**
+      Previous DeltaW for each SU
+    */
+    mhydasdk::base::IDFloatValueMap m_PreviousDeltaW;    
+
+    mhydasdk::base::IDFloatValueMap m_PondingTime; // tp
+
+    mhydasdk::base::IDFloatValueMap m_PondingSum;  // wp
+
+    mhydasdk::base::IDIntValueMap m_PondingStep; // ip
+
+    mhydasdk::base::IDFloatValueMap m_PondingRainIntensity; // rp
+
+
+    mhydasdk::base::IDFloatValueMap m_DeltaW1;
+    mhydasdk::base::IDFloatValueMap m_DeltaW2;
+    mhydasdk::base::IDFloatValueMap m_DeltaT1;
+    mhydasdk::base::IDFloatValueMap m_DeltaT2;
+
+
+
 
   public:
     /**
