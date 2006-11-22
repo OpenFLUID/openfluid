@@ -10,7 +10,7 @@ LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/stdplugs
 
 CCFLAGS=$(CCCFLAGS) $(DYNLIBCCFLAGS) -I ../sdk $(WXFLAGS) #-DBUILDINGDLL -fPIC
-CCLIBS= -L$(BASEBINDIR) -lsdk-base -lsdk-core $(WXLIBS) -Wl,-rpath,. -Wl,-rpath,..
+CCLIBS= -L$(BASEBINDIR) -l$(SDKLIBSROOT)-base -l$(SDKLIBSROOT)-core $(WXLIBS) -Wl,-rpath,. -Wl,-rpath,..
 
 LDFLAGS=
 ifeq ($(OSTYPE),msys)

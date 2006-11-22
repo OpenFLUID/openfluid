@@ -8,7 +8,7 @@ BINDIR=$(BASEBINDIR)
 DOCDIR=$(BASEDOCDIR)/main
 
 CCFLAGS=$(CCCFLAGS) -I ../sdk -I ../sdk/base $(WXFLAGS)
-CCLIBS=-L$(BASELIBDIR) -L$(BINDIR) -ltinyxml -lsdk-base -lsdk-core -Wl,-rpath,. $(WXLIBS)
+CCLIBS=-L$(BASELIBDIR) -L$(BINDIR) -ltinyxml -l$(SDKLIBSROOT)-base -l$(SDKLIBSROOT)-core -Wl,-rpath,. $(WXLIBS)
 
 
 OBJ= $(OBJDIR)/AppTools.o \
