@@ -85,7 +85,8 @@ bool HayamiSUFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 //    Value = (SU->getRainSource()->getTimeSerie()->getItemsCollection()->at(SimStatus->getCurrentStep())->getValue());
     //((vector<double>*)(SU->getSimulatedVars()->find(wxT("runoff"))->second))->push_back(Value);
-    (SU->getSimulatedVars()->find(wxT("qoutput"))->second)->push_back(Value);
+//    (SU->getSimulatedVars()->find(wxT("qoutput"))->second)->push_back(Value);
+    (SU->getSimulatedVars()->find(wxT("qoutput"))->second)->push_back(0);
 
   }
 
