@@ -10,6 +10,8 @@ SETUPH=sdk/setup.h
 
 EXEFILEROOT=mhydas-mpp
 
+SDKLIBSROOT=mhydasdk
+
 INPUT_RAIN_MMH=1
 
 PLUGSUBDIR=plugs
@@ -130,6 +132,11 @@ echo "" >> $OPTFILE
 
 echo "# plugins extension" >> $OPTFILE 
 echo "PLUGINEXT = $PLUGINEXT" >> $OPTFILE  
+
+echo "" >> $OPTFILE
+
+echo "# sdk libs files root" >> $OPTFILE
+echo "SDKLIBSROOT = $SDKLIBSROOT" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
