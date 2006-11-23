@@ -45,3 +45,22 @@ doc:
 purge: clean
 	@rm -f $(BASEBINDIR)/*
 
+
+packages: all
+	@echo ""
+	@echo "==== Preparing packages ===="
+	@mkdir -p $(BASEPACKDIR)
+	@rm -f -R $(BASEPACKDIR)/*
+	@mkdir -p $(BASEPACKDIR)/to_pack/$(PLUGSUBDIR)
+	@cp -R -f $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/to_pack/$(PLUGSUBDIR)
+	@cp -f $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/to_pack/
+	@cp -f $(BASEBINDIR)/lib* $(BASEPACKDIR)/to_pack/
+	@echo ""
+	@echo "==== Building tgz package ===="
+	@(cd $(BASEPACKDIR)/to_pack/ && tar cvzf $(BASEPACKDIR)/$(BINPACKNAMEROOT).tgz *)
+	
+	
+
+
+
+
