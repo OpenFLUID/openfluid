@@ -145,17 +145,40 @@ void MHYDASApp::printlnExecStatus(bool Status)
 
 void MHYDASApp::printMHYDASInfos()
 {
+  
+  int Width = 60;
+  wxString VersionInfo = wxT("V ");
+  wxString Whites = wxT("");
+
+  VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION;
+
+  
+  if (BUILD_VERSION != wxT(""))
+  {
+    
+    VersionInfo = VersionInfo + wxT(" (") + BUILD_VERSION;
+     
+    #ifdef SVN_REV
+    VersionInfo = VersionInfo + wxT(", rev ") + SVN_REVISION;
+    #endif
+    VersionInfo = VersionInfo + wxT(")");
+  }
+  
+  // on centre le bizness avec des blancs
+  for (int i=0;i<((Width-VersionInfo.Length())/2);i++) Whites = Whites + wxT(" ");
+  
+  VersionInfo = Whites + VersionInfo;
+  
+  
   std::cout << std::endl;
-  std::cout << "==========================================================" << std::endl;
-  std::cout << "                       M H Y D A S                        " << std::endl;
-  std::cout << "      Distributed hydrological model for agrosystems      " << std::endl;
+  std::cout << "===========================================================" << std::endl;
+  std::cout << "                       M H Y D A S                         " << std::endl;
+  std::cout << "      Distributed hydrological model for agrosystems       " << std::endl;
   std::cout << std::endl;
-  #ifdef SVN_REV
-  std::cout << "                      revision " << SVN_REVISION.mb_str(wxConvUTF8) << std::endl;
-  std::cout << std::endl;
-  #endif
-  std::cout << "               LISAH-INRA, Montpellier, France            " << std::endl;
-  std::cout << "==========================================================" << std::endl;
+  std::cout << VersionInfo.mb_str(wxConvUTF8) << std::endl;
+  std::cout << std::endl;  
+  std::cout << "               LISAH-INRA, Montpellier, France             " << std::endl;
+  std::cout << "===========================================================" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
 }
