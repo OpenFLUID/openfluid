@@ -147,7 +147,7 @@ void MHYDASApp::printMHYDASInfos()
 {
   
   int Width = 60;
-  wxString VersionInfo = wxT("V ");
+  wxString VersionInfo = wxT("v ");
   wxString Whites = wxT("");
 
   VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION;
@@ -156,7 +156,7 @@ void MHYDASApp::printMHYDASInfos()
   if (BUILD_VERSION != wxT(""))
   {
     
-    VersionInfo = VersionInfo + wxT(" (") + BUILD_VERSION;
+    VersionInfo = VersionInfo + wxT(" (") + BUILD_VERSION + wxT(" build");
      
     #ifdef SVN_REV
     VersionInfo = VersionInfo + wxT(", rev ") + SVN_REVISION;

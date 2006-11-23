@@ -5,12 +5,12 @@
 include ../makeopts.inc
 
 OBJDIR=$(BASEOBJDIR)/stdplugs
-BINDIR=$(BASEBINDIR)/plugs
+BINDIR=$(BASEBINDIR)/$(PLUGSUBDIR)
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/stdplugs
 
 CCFLAGS=$(CCCFLAGS) $(DYNLIBCCFLAGS) -I ../sdk $(WXFLAGS) #-DBUILDINGDLL -fPIC
-CCLIBS= -L$(BASEBINDIR) -l$(SDKLIBSROOT)-base -l$(SDKLIBSROOT)-core $(WXLIBS) -Wl,-rpath,. -Wl,-rpath,..
+CCLIBS= -L$(BASEBINDIR) -l$(SDKLIBBASE) -l$(SDKLIBCORE) $(WXLIBS) -Wl,-rpath,. -Wl,-rpath,..
 
 LDFLAGS=
 ifeq ($(OSTYPE),msys)

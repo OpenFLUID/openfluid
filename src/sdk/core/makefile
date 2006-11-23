@@ -1,7 +1,7 @@
 # sdk-core makefile
 
 
-# en cours, � revoir
+# en cours, a revoir
 
 include ../../makeopts.inc
 
@@ -10,7 +10,7 @@ BINDIR=$(BASEBINDIR)
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/sdk/core
 
-LIBNAME=lib$(SDKLIBSROOT)-core
+LIBNAME=lib$(SDKLIBCORE)
 
 CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL $(DYNLIBCCFLAGS) $(WXFLAGS) -I .. -I.
 CCLIBS=$(WXLIBS)
