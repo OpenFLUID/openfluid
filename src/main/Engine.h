@@ -25,8 +25,8 @@
 class Engine
 {
   private:
-     Module *mp_HydroModule;
-     FunctionsList m_HydroFunctions;
+     Module *mp_Module;
+     FunctionsList m_Functions;
 
      mhydasdk::core::CoreRepository* mp_CoreData;
 
@@ -83,7 +83,7 @@ class Engine
 
     bool saveResults();
 
-    Module *getHydroModule() { return mp_HydroModule; };
+    Module *getModule() { return mp_Module; };
 
     EngineConfig getConfig() const { return m_Config; };
 

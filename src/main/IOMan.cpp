@@ -77,16 +77,16 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
 
     // =========== run params ===========
-    Child = DocHandle.FirstChild("mhydas").FirstChild("config").FirstChild("runparams").FirstChild("param").Element();
+    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("runparams").FirstChild("param").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
     {
       if (Child->Attribute("name") != NULL && wxString(Child->Attribute("name"),wxConvUTF8) == wxT("deltat") &&
 		  Child->Attribute("value",&IntValue) != NULL)
-	  {
+	    {
         Config->DeltaT = IntValue;
-	  }
+	    }
 
     }
 
@@ -94,20 +94,19 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
     // ======= model structure ===========
 
     // hydromodule
-    Child = DocHandle.FirstChild("mhydas").FirstChild("config").FirstChild("modules").FirstChild("hydromodule").FirstChild("function").Element();
+    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("module").FirstChild("function").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
 	  {
-
-      if (Child->Attribute("name") != NULL  &&
+      if (Child->Attribute("ID") != NULL  &&
           Child->Attribute("file") != NULL )
       {
 
 
         // function name and file
         FConf = new FunctionConfig();
-        FConf->Name = wxString(Child->Attribute("name"),wxConvUTF8);
+        FConf->Name = wxString(Child->Attribute("ID"),wxConvUTF8);
         FConf->File = wxString(Child->Attribute("file"),wxConvUTF8);
 
 
@@ -130,12 +129,18 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
           }
 
-          Config->HydroModuleConfig.Append(FConf);
+          Config->ModuleConfig.Append(FConf);
 
         }
         else delete FConf;
 
       }
+      else
+      {
+        mhydasdk::base::LastError::Message = wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error. Incorrect function definition.");
+        return false;
+      }  
+       
 
     }
 
