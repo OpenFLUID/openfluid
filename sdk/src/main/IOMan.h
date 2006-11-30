@@ -40,7 +40,7 @@ struct EngineConfig
 {
   int DeltaT;
 
-  FunctionConfigsList HydroModuleConfig;
+  FunctionConfigsList ModuleConfig;
 
 };
 
