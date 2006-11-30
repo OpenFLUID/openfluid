@@ -22,8 +22,8 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::Runtime
   mp_PlugMan = PlugMan;
 
 
-  mp_HydroModule = NULL;
-  m_HydroFunctions.Clear();
+  mp_Module = NULL;
+  m_Functions.Clear();
 
   mp_IOMan = new IOManager(mp_RunEnv);
 
@@ -48,10 +48,10 @@ bool Engine::processConfig()
   */
 
 
-  FunctionConfigsList::Node *FuncNode = m_Config.HydroModuleConfig.GetFirst();
+  FunctionConfigsList::Node *FuncNode = m_Config.ModuleConfig.GetFirst();
   FunctionConfig *FConf;
 
-  m_HydroFunctions.clear();
+  m_Functions.clear();
 
 
   // start display test
@@ -85,7 +85,7 @@ bool Engine::processConfig()
     {
        if (FuncToAdd->initParams(FConf->Params))
        {
-         m_HydroFunctions.Append((mhydasdk::base::Function**)FuncToAdd);
+         m_Functions.Append((mhydasdk::base::Function**)FuncToAdd);
        }
        else
        {
@@ -115,7 +115,7 @@ bool Engine::processConfig()
 bool Engine::plugFunctions()
 {
 
-  mp_HydroModule = new Module(mp_CoreData,m_HydroFunctions);
+  mp_Module = new Module(mp_CoreData,m_Functions);
 
   return true;
 }
@@ -185,18 +185,18 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   */
 
-  // prepares data for each module
-  if (mp_HydroModule == NULL || !mp_HydroModule->prepareData())
+  // prepares data for module
+  if (mp_Module == NULL || !mp_Module->prepareData())
   {
-    mhydasdk::base::LastError::Message = wxT("Hydrology module data preparation error.");
+    mhydasdk::base::LastError::Message = wxT("Module data preparation error.");
     return false;
   }
 
 
-  // chacks intensity for each module
-  if (mp_HydroModule == NULL || !mp_HydroModule->checkConsistency())
+  // chacks conssitency for module
+  if (mp_Module == NULL || !mp_Module->checkConsistency())
   {
-    mhydasdk::base::LastError::Message = wxT("Hydrology module consistency error.");
+    mhydasdk::base::LastError::Message = wxT("Module consistency error.");
     return false;
   }
 
@@ -221,9 +221,9 @@ bool Engine::run()
                                                       m_Config.DeltaT);
 
   // initialization of functions
-  if (!mp_HydroModule->initializeRun())
+  if (!mp_Module->initializeRun())
   {
-    mhydasdk::base::LastError::Message = wxT("Hydro module initialization error.");
+    mhydasdk::base::LastError::Message = wxT("Module initialization error.");
     return false;
   }
 
@@ -244,7 +244,7 @@ bool Engine::run()
     std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
     std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
 
-    if (mp_HydroModule->runStep(mp_SimStatus))
+    if (mp_Module->runStep(mp_SimStatus))
     {
       
       std::cout << std::setw(11) << "[OK]";
@@ -265,7 +265,7 @@ bool Engine::run()
   std::cout << std::endl;
 
   // finalization of functions
-  mp_HydroModule->finalizeRun();
+  mp_Module->finalizeRun();
 
   return true;
 }
