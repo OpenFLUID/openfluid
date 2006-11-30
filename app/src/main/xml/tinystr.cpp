@@ -23,7 +23,12 @@ distribution.
 */
 
 /*
- * THIS FILE WAS ALTERED BY Tyge Løvset, 7. April 2005.
+ * THIS FILE WAS ALTERED BY Tyge Lï¿½vset, 7. April 2005.
+ */
+
+
+/*
+ * THIS FILE WAS ALTERED BY Jean-Christophe Fabre, 30. November 2007.
  */
 
 
@@ -35,7 +40,7 @@ distribution.
 const TiXmlString::size_type TiXmlString::npos = static_cast< size_type >(-1);
 
 // Null rep.
-TiXmlString::Rep TiXmlString::nullrep_ = { 0, 0, '\0' };
+TiXmlString::Rep TiXmlString::nullrep_ = { 0, 0, {'\0'} };
 
 
 void TiXmlString::reserve (size_type cap)
