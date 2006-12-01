@@ -1,35 +1,39 @@
 /**
-  \file
-  \brief header of ...
+  \file HayamiSUFunc.h
+  \brief header of HayamiSUFunction
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
 
+
 #ifndef __HAYAMISUFUNC_H__
 #define __HAYAMISUFUNC_H__
 
-#include "sdk-base.h"
+
 #include "sdk-core.h"
+#include "sdk-base.h"
+
+// =====================================================================
+// =====================================================================
 
 /**
 
 */
-class HayamiSUFunc : public mhydasdk::base::Function
+class HayamiSUFunction : public mhydasdk::base::Function
 {
   private:
 
-
   public:
+
     /**
       Constructor
     */
-    HayamiSUFunc(mhydasdk::core::CoreRepository *CoreData);
+    HayamiSUFunction(mhydasdk::core::CoreRepository *CoreData);
 
     /**
       Destructor
     */
-    ~HayamiSUFunc();
-
+    ~HayamiSUFunction();
 
     bool initParams(mhydasdk::core::ParamsMap Params);
 
@@ -41,13 +45,9 @@ class HayamiSUFunc : public mhydasdk::base::Function
 
     bool finalizeRun();
 
-
 };
 
 
-
-
-#endif
-
+#endif  // __HAYAMISUFUNC_H__
 
 

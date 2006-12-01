@@ -60,17 +60,14 @@ namespace mhydasdk { namespace base {
 */
 enum FunctionTypeList
 {
-  FUNC_UNKNOWN,
-  FUNC_SU_PRODUCTION,
-  FUNC_SU_TRANSFER,
-  FUNC_RS_TRANSFER,
-  FUNC_RSGU_EXCHANGE,
-  FUNC_SUGU_EXCHANGE
+  UNKNOWN,
+  SIMULATION
 };
 
 
 /**
   Plugin modules list
+  \deprecated
 */
 enum ModuleTypeList
 {
@@ -96,12 +93,12 @@ struct Signature
   /**
     Plugin function type
   */
-  // FunctionTypeList FunctionType;
+  FunctionTypeList FunctionType;
 
   /**
     Plugin module type
   */
-  ModuleTypeList ModuleType;
+  // ModuleTypeList ModuleType;
 
   /**
     Plugin identity
