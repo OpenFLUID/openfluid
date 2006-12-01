@@ -79,7 +79,7 @@ bool Engine::processConfig()
   {
     FConf = (FunctionConfig*)(FuncNode->GetData());
 
-    FuncToAdd = mp_PlugMan->getFunctionFromPlugin(FConf->File,mhydasdk::base::MOD_HYDROLOGY,mp_CoreData);
+    FuncToAdd = mp_PlugMan->getFunctionFromPlugin(FConf->File,mhydasdk::base::SIMULATION,mp_CoreData);
 
     if (FuncToAdd != NULL)
     {

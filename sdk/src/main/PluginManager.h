@@ -48,7 +48,7 @@ class PluginManager
       Returns function, matching module and function types
     */
     mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,
-                                                    mhydasdk::base::ModuleTypeList ReqModType,
+                                                    mhydasdk::base::FunctionTypeList ReqFuncType,
                                                     mhydasdk::core::CoreRepository* CoreData);
 
 /*

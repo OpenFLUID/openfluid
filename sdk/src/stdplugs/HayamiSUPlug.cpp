@@ -1,15 +1,13 @@
 /**
-  \file
-  \brief implements ...
+  \file HayamiSUPlug.h
+  \brief implementation of HayamiSUPlug
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
 
 
-
 #include "HayamiSUFunc.h"
 #include "HayamiSUPlug.h"
-
 
 
 mhydasdk::base::Plugin* GetMHYDASPlugin()
@@ -23,22 +21,23 @@ mhydasdk::base::Plugin* GetMHYDASPlugin()
 
 
 HayamiSUPlug::HayamiSUPlug()
-              : mhydasdk::base::Plugin()
+          : mhydasdk::base::Plugin()
 {
   mp_Signature = new mhydasdk::base::Signature();
 
-  mp_Signature->Author = wxT("Jean-Christophe Fabre");
-  mp_Signature->AuthorEmail = wxT("");
-  mp_Signature->ID = wxT("hayamiSU");
-  mp_Signature->ModuleType = mhydasdk::base::MOD_HYDROLOGY;
-  // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_TRANSFER;
-  mp_Signature->Name = wxT("Diffusive wave transfert on SU (Hayami method)");
-
+  mp_Signature->Author = wxT("Jean-Christophe FABRE");
+  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
+  mp_Signature->ID = wxT("hayamisu");
+  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
+  mp_Signature->Name = wxT("");
+  mp_Signature->Description = wxT("");
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 HayamiSUPlug::~HayamiSUPlug()
 {
@@ -50,15 +49,9 @@ HayamiSUPlug::~HayamiSUPlug()
 // =====================================================================
 
 
-
 mhydasdk::base::Function* HayamiSUPlug::getFunction(mhydasdk::core::CoreRepository* CoreData)
 {
-  return new HayamiSUFunc(CoreData);
+  return new HayamiSUFunction(CoreData);
 }
-
-
-// =====================================================================
-// =====================================================================
-
 
 

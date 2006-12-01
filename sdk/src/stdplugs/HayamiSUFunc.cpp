@@ -1,28 +1,26 @@
 /**
-  \file
-  \brief implements ...
+  \file HayamiSUFunc.h
+  \brief header of HayamiSUFunction
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
 
 
 #include "HayamiSUFunc.h"
-#include <iostream>
 
 
-
-HayamiSUFunc::HayamiSUFunc(mhydasdk::core::CoreRepository *CoreData)
+HayamiSUFunction::HayamiSUFunction(mhydasdk::core::CoreRepository *CoreData)
                 : Function(CoreData)
 {
-  SU_VARIABLE_TO_CREATE("qoutput");
-  SU_VARIABLE_TO_CHECK("runoff");
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-HayamiSUFunc::~HayamiSUFunc()
+
+HayamiSUFunction::~HayamiSUFunction()
 {
 
 }
@@ -31,10 +29,10 @@ HayamiSUFunc::~HayamiSUFunc()
 // =====================================================================
 // =====================================================================
 
-bool HayamiSUFunc::initParams(mhydasdk::core::ParamsMap Params)
+
+bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-  // std::cout << "Yaya initParams()" << std::endl;
   return true;
 }
 
@@ -43,12 +41,10 @@ bool HayamiSUFunc::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 
 
-bool HayamiSUFunc::initializeRun()
+bool HayamiSUFunction::initializeRun()
 {
 
-  bool IsOK =  true;
-
-  return IsOK;
+  return true;
 }
 
 
@@ -56,9 +52,8 @@ bool HayamiSUFunc::initializeRun()
 // =====================================================================
 
 
-bool HayamiSUFunc::checkConsistency()
+bool HayamiSUFunction::checkConsistency()
 {
-  // std::cout << "Yaya checkConsistency()" << std::endl;
 
   return Function::checkConsistency();
 }
@@ -68,29 +63,9 @@ bool HayamiSUFunc::checkConsistency()
 // =====================================================================
 
 
-bool HayamiSUFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
-  double Value;
 
-  list<mhydasdk::core::SurfaceUnit*>::iterator iter;
-  list<mhydasdk::core::SurfaceUnit*>* SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
-  for(iter=SUsList->begin(); iter != SUsList->end(); iter++)
-  {
-    mhydasdk::core::SurfaceUnit* SU = *iter;
-
-    if (SimStatus->getCurrentStep() > 5)
-    {
-      Value = SU->getSimulatedVars()->find(wxT("runoff"))->second->at(SimStatus->getCurrentStep()-5);
-    } else Value = 0;
-
-  //  Value = (SU->getRainSource()->getTimeSerie()->getItemsCollection()->at(SimStatus->getCurrentStep())->getValue());
-    //((vector<double>*)(SU->getSimulatedVars()->find(wxT("runoff"))->second))->push_back(Value);
-    (SU->getSimulatedVars()->find(wxT("qoutput"))->second)->push_back(Value);
-//    (SU->getSimulatedVars()->find(wxT("qoutput"))->second)->push_back(0);
-
-  }
-
-  // std::cout << "coucou c'est Yaya run " << mp_CoreData->getSpatialData()->getSUsCollection()->size();
   return true;
 }
 
@@ -99,9 +74,10 @@ bool HayamiSUFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool HayamiSUFunc::finalizeRun()
+bool HayamiSUFunction::finalizeRun()
 {
-  // std::cout << "HayamiSU finalize()" << std::endl;
+
   return true;
 }
+
 

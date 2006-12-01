@@ -91,7 +91,7 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 // =====================================================================
 
 mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginName,
-                                                               mhydasdk::base::ModuleTypeList ReqModType,
+                                                               mhydasdk::base::FunctionTypeList ReqFuncType,
                                                                mhydasdk::core::CoreRepository* CoreData)
 {
   mhydasdk::base::Function *Func = NULL;
@@ -102,7 +102,7 @@ mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginNa
 
   if (Plug != NULL)
   {
-    if (Plug->getSignature()->ModuleType == ReqModType)
+    if (Plug->getSignature()->FunctionType == ReqFuncType)
     {
       Func = Plug->getFunction(CoreData);
     }
