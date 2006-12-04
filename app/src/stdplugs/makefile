@@ -24,7 +24,8 @@ MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o \
 MSEYTOUXNAME=mseytoux
 
 HAYAMISUOBJ=$(OBJDIR)/HayamiSUFunc.o \
-            $(OBJDIR)/HayamiSUPlug.o
+            $(OBJDIR)/HayamiSUPlug.o \
+            $(OBJDIR)/HayamiTools.o
 
 HAYAMISUNAME=hayamiSU
 

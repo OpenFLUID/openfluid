@@ -79,6 +79,7 @@ bool Engine::processConfig()
   {
     FConf = (FunctionConfig*)(FuncNode->GetData());
 
+
     FuncToAdd = mp_PlugMan->getFunctionFromPlugin(FConf->File,mhydasdk::base::SIMULATION,mp_CoreData);
 
     if (FuncToAdd != NULL)
@@ -221,7 +222,7 @@ bool Engine::run()
                                                       m_Config.DeltaT);
 
   // initialization of functions
-  if (!mp_Module->initializeRun())
+  if (!mp_Module->initializeRun(mp_SimStatus))
   {
     mhydasdk::base::LastError::Message = wxT("Module initialization error.");
     return false;
@@ -265,7 +266,7 @@ bool Engine::run()
   std::cout << std::endl;
 
   // finalization of functions
-  mp_Module->finalizeRun();
+  mp_Module->finalizeRun(mp_SimStatus);
 
   return true;
 }

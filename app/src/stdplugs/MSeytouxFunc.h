@@ -90,13 +90,13 @@ class MorelSeytouxFunc : public mhydasdk::base::Function
 
     bool initParams(mhydasdk::core::ParamsMap Params);
 
-    bool initializeRun();
+    bool initializeRun(mhydasdk::base::SimulationStatus* SimStatus);
 
     bool checkConsistency();
 
     bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun();
+    bool finalizeRun(mhydasdk::base::SimulationStatus* SimStatus);
 
 
 };

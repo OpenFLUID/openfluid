@@ -46,10 +46,7 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-  //std::cerr << "MorelSeytouxFunc::initParams " << Params.size() << std::endl;
-  // std::cout << "Momo initParams()" << std::endl;
-  
- 
+  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];      
   
   return true;
 }
@@ -59,7 +56,7 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::initializeRun()
+bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationStatus* SimStatus)
 {
 
   bool IsOK =  true;
@@ -67,7 +64,9 @@ bool MorelSeytouxFunc::initializeRun()
 
   float ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
   mhydasdk::core::SurfaceUnit* SU;
+  
 
+  DECLARE_SU_ORDERED_LOOP
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
@@ -85,8 +84,8 @@ bool MorelSeytouxFunc::initializeRun()
     // initializing saturation state
     m_SUSatState[SU->getID()] = 0;
 
-    // sets whether the upstream output should be use or not.
-    // à revoir
+    // sets whether the upstream output should be used or not.
+    // a� revoir
     m_UseUpstreamOutput[SU->getID()] = SIMVAR_EXISTS(SU,"qoutput");
     
     m_CurrentUpstreamInput[SU->getID()] = 0;
@@ -165,6 +164,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();
  
+  DECLARE_SU_ORDERED_LOOP
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ID = SU->getID();
@@ -176,7 +176,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     CurrentInfiltration = 0;
 
     
-    // ajout des apports des unités amont (sorties des unités amont à t-1)
+    // ajout des apports des unites amont (sorties des unités amont à t-1)
     // adding upstream units output (step n-1) to rain    
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
@@ -195,7 +195,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;
 
 
-    // calcul de l'intensité de pluie
+    // calcul de l'intensite de pluie
     RainIntensity = (CurrentRain / TimeStep);   
 
     // calcul de la pluie efficace
@@ -302,7 +302,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::finalizeRun()
+bool MorelSeytouxFunc::finalizeRun(mhydasdk::base::SimulationStatus* SimStatus)
 {
   // std::cout << "Momo finalizeRun()" << std::endl;
   return true;
