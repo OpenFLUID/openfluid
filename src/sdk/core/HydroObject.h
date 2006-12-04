@@ -19,7 +19,7 @@ namespace mhydasdk { namespace core {
 
 typedef int hoid_t;
 
-
+typedef std::vector<double> VectorOfDouble;
 
 /**
   Hash table for calculated variables during simulation.
@@ -27,7 +27,7 @@ typedef int hoid_t;
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
 */
-WX_DECLARE_STRING_HASH_MAP(std::vector<double>*, SimulatedVarsMap);
+WX_DECLARE_STRING_HASH_MAP(VectorOfDouble*, SimulatedVarsMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, global parameters, ...)

@@ -34,7 +34,6 @@ Module::Module(mhydasdk::core::CoreRepository* CoreData, FunctionsList Functions
       : mhydasdk::base::ComputationBlock(CoreData)
 {
   m_Functions = Functions;
-
 }
 
 // =====================================================================
@@ -88,11 +87,11 @@ bool Module::checkConsistency()
 // =====================================================================
 
 
-bool Module::initializeRun()
+bool Module::initializeRun(mhydasdk::base::SimulationStatus* SimStatus)
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(initializeRun(),IsOK);
+  PARSE_FUNCTION_LIST(initializeRun(SimStatus),IsOK);
 
   return IsOK;
 }
@@ -117,11 +116,11 @@ bool Module::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool Module::finalizeRun()
+bool Module::finalizeRun(mhydasdk::base::SimulationStatus* SimStatus)
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(finalizeRun(),IsOK);
+  PARSE_FUNCTION_LIST(finalizeRun(SimStatus),IsOK);
 
   return IsOK;
 

@@ -12,6 +12,7 @@
 #include "PluginManager.h"
 #include "AppTools.h"
 
+#include <iostream>
 
 // =====================================================================
 // =====================================================================
@@ -52,7 +53,7 @@ mhydasdk::base::Plugin *PluginManager::getPlugin(wxString PluginFilename)
 
       if (PlugProc != NULL)
       {
-        Plug = PlugProc();
+        Plug = PlugProc();       
       }
 
       // unloads the library
@@ -96,15 +97,13 @@ mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginNa
 {
   mhydasdk::base::Function *Func = NULL;
 
-
   mhydasdk::base::Plugin *Plug = getPlugin(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
-
 
   if (Plug != NULL)
   {
     if (Plug->getSignature()->FunctionType == ReqFuncType)
     {
-      Func = Plug->getFunction(CoreData);
+      Func = Plug->getFunction(CoreData);      
     }
   }
 
