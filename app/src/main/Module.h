@@ -45,11 +45,11 @@ class Module : public mhydasdk::base::ComputationBlock
 
     bool checkConsistency();
 
-    bool initializeRun(mhydasdk::base::SimulationStatus* SimStatus);
+    bool initializeRun(mhydasdk::base::SimulationInfo* SimInfo);
 
     bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(mhydasdk::base::SimulationStatus* SimStatus);
+    bool finalizeRun(mhydasdk::base::SimulationInfo* SimInfo);
 
 
 

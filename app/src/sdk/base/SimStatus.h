@@ -14,15 +14,42 @@
 
 namespace mhydasdk { namespace base {
 
-/**
 
+/**
+  Class ...
+
+  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
-class SimulationStatus
+class SimulationInfo 
 {
-  private:
+  protected:
     mhydasdk::core::DateTime m_StartTime;
     mhydasdk::core::DateTime m_EndTime;
     int m_TimeStep;
+  
+  public:
+    
+    /**
+      Constructor
+    */
+    SimulationInfo(mhydasdk::core::DateTime StartTime,
+                   mhydasdk::core::DateTime EndTime,
+                   int TimeStep);
+
+    /**
+      Destructor
+    */
+    ~SimulationInfo();    
+  
+    int getTimeStep() const { return m_TimeStep; };
+};
+
+/**
+
+*/
+class SimulationStatus : public SimulationInfo
+{
+  private:
 
     unsigned int m_CurrentStep;
 
@@ -56,8 +83,7 @@ class SimulationStatus
     bool isFirstStep() const { return m_IsFirstStep; };
 
     bool isLastStep() const { return m_IsLastStep; };
-    
-    int getTimeStep() const { return m_TimeStep; };    
+            
 
 };
 

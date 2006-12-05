@@ -56,7 +56,7 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationStatus* SimStatus)
+bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
 
   bool IsOK =  true;
@@ -302,7 +302,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::finalizeRun(mhydasdk::base::SimulationStatus* SimStatus)
+bool MorelSeytouxFunc::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
   // std::cout << "Momo finalizeRun()" << std::endl;
   return true;

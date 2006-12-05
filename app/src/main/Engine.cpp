@@ -222,7 +222,7 @@ bool Engine::run()
                                                       m_Config.DeltaT);
 
   // initialization of functions
-  if (!mp_Module->initializeRun(mp_SimStatus))
+  if (!mp_Module->initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus))
   {
     mhydasdk::base::LastError::Message = wxT("Module initialization error.");
     return false;
@@ -266,7 +266,7 @@ bool Engine::run()
   std::cout << std::endl;
 
   // finalization of functions
-  mp_Module->finalizeRun(mp_SimStatus);
+  mp_Module->finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus);
 
   return true;
 }
