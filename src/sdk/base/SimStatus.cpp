@@ -12,15 +12,41 @@
 namespace mhydasdk { namespace base {
 
 
-SimulationStatus::SimulationStatus(mhydasdk::core::DateTime StartTime,
-                                   mhydasdk::core::DateTime EndTime,
-                                   int TimeStep)
+SimulationInfo::SimulationInfo(mhydasdk::core::DateTime StartTime,
+                               mhydasdk::core::DateTime EndTime,
+                               int TimeStep)
 
 {
   m_StartTime = StartTime;
   m_EndTime = EndTime;
 
   m_TimeStep = TimeStep;
+
+  
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+SimulationInfo::~SimulationInfo()
+{
+
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+SimulationStatus::SimulationStatus(mhydasdk::core::DateTime StartTime,
+                                   mhydasdk::core::DateTime EndTime,
+                                   int TimeStep)
+                : SimulationInfo(StartTime,EndTime,TimeStep)                   
+
+{
 
   m_CurrentStep = 0;
   m_CurrentTime = m_StartTime;
@@ -39,6 +65,10 @@ SimulationStatus::~SimulationStatus()
 {
 
 }
+
+// =====================================================================
+// =====================================================================
+
 
 
 bool SimulationStatus::switchToNextStep()

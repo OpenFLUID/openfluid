@@ -57,7 +57,7 @@ class ComputationBlock
       Pure virtual method, must be overloaded.
       Place pre-simulation initialization here in overloads
     */
-    virtual bool initializeRun(SimulationStatus* SimStatus)=0;
+    virtual bool initializeRun(SimulationInfo* SimInfo)=0;
 
     /**
       Pure virtual method, must be overloaded.
@@ -69,7 +69,7 @@ class ComputationBlock
       Pure virtual method, must be overloaded.
       Place post-simulation finalization here in overloads
     */
-    virtual bool finalizeRun(SimulationStatus* SimStatus)=0;
+    virtual bool finalizeRun(SimulationInfo* SimInfo)=0;
 
 };
 
