@@ -21,6 +21,8 @@
 
 WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernelMap);
 
+WX_DECLARE_HASH_MAP(int, mhydasdk::core::VectorOfDouble*, wxIntegerHash, wxIntegerEqual, IDInputMap);
+
 
 /**
 
@@ -40,6 +42,11 @@ class HayamiSUFunction : public mhydasdk::base::Function
     float m_MeanManning;        
 
     IDKernelMap m_SUKernel;
+    
+    IDInputMap m_Input;
+    
+    mhydasdk::base::IDFloatValueMap m_CurrentInputSum;
+        
 
   public:
 
