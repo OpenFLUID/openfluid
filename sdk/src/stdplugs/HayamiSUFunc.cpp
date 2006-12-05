@@ -62,7 +62,7 @@ bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 
 
-bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
 
   int ID;
@@ -82,10 +82,8 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationStatus* SimStatus
   BEGIN_SU_ORDERED_LOOP(SU)
     Cel = m_MeanCelerity * (m_MeanManning / SU->getProperties()->find(wxT("nmanning"))->second) * (sqrt((SU->getUsrSlope() / m_MeanSlope)));
     Sigma = m_MeanSigma * (SU->getProperties()->find(wxT("nmanning"))->second / m_MeanManning) * (m_MeanSlope / SU->getUsrSlope());      
-    m_SUKernel[SU->getID()] = ComputeHayamiKernel(Cel, Sigma,SU->getDownstreamDistance(),m_MaxSteps,SimStatus->getTimeStep());    
+    m_SUKernel[SU->getID()] = ComputeHayamiKernel(Cel, Sigma,SU->getDownstreamDistance(),m_MaxSteps,SimInfo->getTimeStep());    
   END_LOOP
-
-
 
   return true;
 }
@@ -139,7 +137,7 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool HayamiSUFunction::finalizeRun(mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiSUFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
 
   return true;

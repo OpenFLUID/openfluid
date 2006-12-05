@@ -87,11 +87,11 @@ bool Module::checkConsistency()
 // =====================================================================
 
 
-bool Module::initializeRun(mhydasdk::base::SimulationStatus* SimStatus)
+bool Module::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(initializeRun(SimStatus),IsOK);
+  PARSE_FUNCTION_LIST(initializeRun(SimInfo),IsOK);
 
   return IsOK;
 }
@@ -116,11 +116,11 @@ bool Module::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool Module::finalizeRun(mhydasdk::base::SimulationStatus* SimStatus)
+bool Module::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(finalizeRun(SimStatus),IsOK);
+  PARSE_FUNCTION_LIST(finalizeRun(SimInfo),IsOK);
 
   return IsOK;
 
