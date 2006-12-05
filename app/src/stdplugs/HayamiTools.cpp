@@ -9,6 +9,7 @@
 #include "HayamiTools.h"
 #include <math.h>
 
+#include <iostream>
 
 // =====================================================================
 // =====================================================================
@@ -24,8 +25,6 @@ t_HayamiKernel ComputeHayamiKernel(float Celerity, float Sigma, float Length, in
   int i;
   
   t_HayamiKernel ZeKernel;
-
-
   
   ZeKernel.resize(MaxSteps,0);
   
@@ -40,21 +39,28 @@ t_HayamiKernel ComputeHayamiKernel(float Celerity, float Sigma, float Length, in
   {
     for (i=0;i<MaxSteps;i++)
     {
-      T = (i-0.5) * TimeStep;
+      T = ((i+1)-0.5) * TimeStep;
       Value2 = exp(Zed * (2 - (T/Theta) - (Theta/T)));
       Value3 = pow(T,1.5);
-      ZeKernel[i] = ((Value1 * Value2 / Value3));
+      ZeKernel[i] = Value1 * Value2 / Value3;
     }    
   }
   else
   {
-    ZeKernel[0] = 0.5 * TimeStep;
-    ZeKernel[1] = 0.5 * TimeStep;    
+    ZeKernel[0] = 0.5 / TimeStep;
+    ZeKernel[1] = 0.5 / TimeStep;    
   }
      
   
   Volume = 0;
-  for (i=0;i<ZeKernel.size();i++) Volume = Volume + (ZeKernel[i] * TimeStep);
+  
+  
+  for (i=0;i<ZeKernel.size();i++)
+  {
+    Volume = Volume + (ZeKernel[i] * TimeStep);
+//    std::cerr << ZeKernel[i] << std::endl;
+  }  
+//  std::cerr << "Volume: " << Volume << std::endl;
 
   for (i=0;i<ZeKernel.size();i++) ZeKernel[i] = ZeKernel[i] * (1/Volume);
   
@@ -75,15 +81,16 @@ float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core
   
   
   ZeEnd = MaxSteps;
+ 
   if (CurrentStep < ZeEnd) ZeEnd = CurrentStep;
   
   QOutput = 0;
   
   for (int i=0;i<ZeEnd;i++)
   {
+    //std::cerr << Kernel[i] << std::endl;
     QOutput = QOutput + (Kernel[i] * QInput->at(CurrentStep - i) * TimeStep); 
-  }
-  
+  } 
   
   return QOutput;  
 }

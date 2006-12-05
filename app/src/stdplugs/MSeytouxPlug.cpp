@@ -32,7 +32,7 @@ MorelSeytouxPlug::MorelSeytouxPlug()
   mp_Signature->ID = wxT("mseytoux");
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_PRODUCTION;
-  mp_Signature->Name = wxT("Morel-Seytoux production");
+  mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
   mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
 
   mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;runoff;Runoff on the surface of the unit;m/s"));
