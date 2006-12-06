@@ -199,6 +199,8 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
   GroundwaterUnit* LinkedGU;
   ReachSegment* LinkedRS;
   SurfaceUnit* LinkedSU;
+  
+  SUDownstreamCode SUDownCode;
 
   // =========== SHUs ============
 
@@ -238,7 +240,8 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
         
       }
 
-      if (SUit->second->getDownstreamCode() == RLatDownstream || SUit->second->getDownstreamCode() == RSrcDownstream)
+      SUDownCode = SUit->second->getDownstreamCode();
+      if ( SUDownCode == RLatDownstream || SUDownCode == RSrcDownstream)
       {
         LinkedRS = getRSByID(SUit->second->getDownstreamID());
         if (LinkedRS == NULL) return false;
@@ -248,7 +251,8 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
           SUit->second->setDownstreamObject(LinkedRS);
           
           // adds current SU to donwstream SU's upstream SUs list
-          LinkedRS->getUpstreamSUs()->push_back(SUit->second);
+          if (SUDownCode == RSrcDownstream)  LinkedRS->getSrcUpstreamSUs()->push_back(SUit->second);
+          if (SUDownCode == RLatDownstream)  LinkedRS->getLatUpstreamSUs()->push_back(SUit->second);          
 //          std::cerr << "added upstream SU " << SUit->second->getID() << " to RS " << LinkedRS->getID() << std::endl;
         }  
       }

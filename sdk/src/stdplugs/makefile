@@ -29,6 +29,11 @@ HAYAMISUOBJ=$(OBJDIR)/HayamiSUFunc.o \
 
 HAYAMISUNAME=hayamiSU
 
+HAYAMIRSOBJ=$(OBJDIR)/HayamiRSFunc.o \
+            $(OBJDIR)/HayamiRSPlug.o \
+            $(OBJDIR)/HayamiTools.o
+
+HAYAMIRSNAME=hayamiRS
 
 
 
@@ -36,9 +41,10 @@ $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
-all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ)
+all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ) $(HAYAMIRSOBJ)
 	$(CPP) $(MSEYTOUXOBJ) $(CCLIBS) -o $(BINDIR)/$(MSEYTOUXNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 	$(CPP) $(HAYAMISUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMISUNAME).$(PLUGINEXT) -shared $(LDFLAGS)
+	$(CPP) $(HAYAMIRSOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMIRSNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 
 prechecks:
 	@mkdir -p $(OBJDIR)

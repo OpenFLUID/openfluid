@@ -1,32 +1,26 @@
 /**
-  \file HayamiSUFunc.h
-  \brief header of HayamiSUFunction
+  \file HayamiRSFunc.h
+  \brief header of HayamiRSFunction
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
 
 
-#ifndef __HAYAMISUFUNC_H__
-#define __HAYAMISUFUNC_H__
+#ifndef __HAYAMIRSFUNC_H__
+#define __HAYAMIRSFUNC_H__
 
 
 #include "sdk-core.h"
 #include "sdk-base.h"
-
 #include "HayamiTools.h"
 
 // =====================================================================
 // =====================================================================
 
-
-
-
-
-
 /**
 
 */
-class HayamiSUFunction : public mhydasdk::base::Function
+class HayamiRSFunction : public mhydasdk::base::Function
 {
   private:
 
@@ -40,7 +34,9 @@ class HayamiSUFunction : public mhydasdk::base::Function
     
     float m_MeanManning;        
 
-    IDKernelMap m_SUKernel;
+    IDKernelMap m_RSKernel;
+    
+    bool m_UseUpSUOutput;
     
     mhydasdk::base::IDVectOfDoubleMap m_Input;
     
@@ -52,12 +48,12 @@ class HayamiSUFunction : public mhydasdk::base::Function
     /**
       Constructor
     */
-    HayamiSUFunction(mhydasdk::core::CoreRepository *CoreData);
+    HayamiRSFunction(mhydasdk::core::CoreRepository *CoreData);
 
     /**
       Destructor
     */
-    ~HayamiSUFunction();
+    ~HayamiRSFunction();
 
     bool initParams(mhydasdk::core::ParamsMap Params);
 
@@ -72,6 +68,6 @@ class HayamiSUFunction : public mhydasdk::base::Function
 };
 
 
-#endif  // __HAYAMISUFUNC_H__
+#endif  // __HAYAMIRSFUNC_H__
 
 

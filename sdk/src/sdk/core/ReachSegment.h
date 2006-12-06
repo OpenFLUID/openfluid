@@ -36,7 +36,8 @@ class ReachSegment : public HydroObject
     hoid_t m_DownstreamReachID;
     ReachSegment *mp_DownstreamReach;
     std::list<ReachSegment*>* mp_UpstreamReaches;
-    std::list<SurfaceUnit*>* mp_UpstreamSUs;    
+    std::list<SurfaceUnit*>* mp_SrcUpstreamSUs;    
+    std::list<SurfaceUnit*>* mp_LatUpstreamSUs;    
     
     double m_UsrSlope;
     double m_UsrLength;
@@ -86,7 +87,9 @@ class ReachSegment : public HydroObject
     
     std::list<ReachSegment*>* getUpstreamReaches() { return mp_UpstreamReaches; };
     
-    std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };
+    std::list<SurfaceUnit*>* getSrcUpstreamSUs() { return mp_SrcUpstreamSUs; };
+    
+    std::list<SurfaceUnit*>* getLatUpstreamSUs() { return mp_LatUpstreamSUs; };    
 
     void setUpstreamNode(nodeid_t Node);
 

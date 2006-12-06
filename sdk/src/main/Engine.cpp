@@ -244,6 +244,7 @@ bool Engine::run()
 
     std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
     std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
+    std::cout.flush();
 
     if (mp_Module->runStep(mp_SimStatus))
     {
