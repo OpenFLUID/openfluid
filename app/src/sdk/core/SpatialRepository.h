@@ -141,9 +141,9 @@ class SpatialRepository
 
       !! commentaire � revoir !!
 
-      Regroupe les objets hydrologiques d�finissant l'espace �tudi� par classe d'ordre de traitement.
+      Regroupe les objets hydrologiques definissant l'espace etudie par classe d'ordre de traitement.
       Cette m�thode cr�e 3 vecteurs (un pour chaque type d'objet).
-      Chacun de ces vecteurs contient un ensemble de vecteurs index�s par le num�ro d'ordre de traitement [0,ordre-1].
+      Chacun de ces vecteurs contient un ensemble de vecteurs indexes par le num�ro d'ordre de traitement [0,ordre-1].
       Ainsi l'ensemble des objets hydrologiques index�s [2] ont un ordre de traitement de 3.
       \return true si la constitution par classe a bien fonctionn�
     */

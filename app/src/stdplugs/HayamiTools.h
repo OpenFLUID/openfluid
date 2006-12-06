@@ -14,6 +14,7 @@
 
 typedef std::vector<float> t_HayamiKernel;
 
+WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernelMap);
 
 /**
   Computes the Hayami Kernel

@@ -176,7 +176,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     CurrentInfiltration = 0;
 
     
-    // ajout des apports des unites amont (sorties des unités amont à t-1)
+    // ajout des apports des unites amont (sorties des unites amont a� t-1)
     // adding upstream units output (step n-1) to rain    
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
@@ -186,11 +186,10 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
       {                
         UpSU = *UpSUiter;
-        OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;
+        OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;        
       }
       m_CurrentUpstreamInput[ID] = OutputsSum;
     } 
-
     // transformation de la pluie de m/s en m/pas de temps
     CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;
 
@@ -274,7 +273,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
         }      
         
         
-        // calcul de la capacité d'infiltration        
+        // calcul de la capacite d'infiltration        
         InfiltrationCapacity = (DeltaWi - m_PreviousDeltaW[ID]) / TimeStep;
         m_PreviousDeltaW[ID] = DeltaWi;                
           

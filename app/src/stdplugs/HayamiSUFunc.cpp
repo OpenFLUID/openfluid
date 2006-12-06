@@ -25,7 +25,7 @@ HayamiSUFunction::HayamiSUFunction(mhydasdk::core::CoreRepository *CoreData)
 
 
   m_MaxSteps = 100;    
-  m_MeanCelerity = 0,045;    
+  m_MeanCelerity = 0.045;    
   m_MeanSigma = 500;
   m_MeanSlope = 0;    
   m_MeanManning = 0;        
@@ -112,8 +112,6 @@ bool HayamiSUFunction::checkConsistency()
 
 bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
-//  std::cerr << "HayamiSU";
-//  std::cerr.flush();
 
   int ID;
   int CurrentStep;
