@@ -97,6 +97,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 bool HayamiRSFunction::checkConsistency()
 {
+  // On verifie s'il existe des SU pour récupérer leur débit
   m_UseUpSUOutput = false; 
   if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
   {
