@@ -154,6 +154,13 @@ class Function : public ComputationBlock
     bool checkConsistency();
 
 
+    bool MHYDAS_GetSimVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value);
+
+    bool MHYDAS_GetHydroObjectProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value);
+    
+    bool MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value);
+    
+
 };
 
 

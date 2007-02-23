@@ -69,10 +69,17 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   DECLARE_SU_ORDERED_LOOP
   BEGIN_SU_ORDERED_LOOP(SU)
 
-    ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
-    ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;
-    ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;
-    Hc = SU->getProperties()->find(wxT("hc"))->second;
+
+    //ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
+    MHYDAS_GetHydroObjectProperty(SU,wxT("thetares"),&ThetaR);
+    //ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;    
+    MHYDAS_GetHydroObjectProperty(SU,wxT("thetasat"),&ThetaS);
+    //ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;  
+    MHYDAS_GetHydroObjectIniCondition(SU,wxT("thetaisurf"),&ThetaI);
+    //Hc = SU->getProperties()->find(wxT("hc"))->second;    
+    MHYDAS_GetHydroObjectProperty(SU,wxT("hc"),&Hc);
+    
+            
     
     // Computing ThetaStar
     ThetaStar = (ThetaI - ThetaR) / (ThetaS - ThetaR);
@@ -154,6 +161,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   double InfiltrationCapacity;
   float Area;
 
+  float TmpValue;
 
   mhydasdk::core::SurfaceUnit* SU;
   mhydasdk::core::SurfaceUnit* UpSU;
@@ -168,8 +176,10 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ID = SU->getID();
-    Ks = SU->getProperties()->find(wxT("ks"))->second;
-    Beta = SU->getProperties()->find(wxT("betaMS"))->second;
+    //Ks = SU->getProperties()->find(wxT("ks"))->second;
+    MHYDAS_GetHydroObjectProperty(SU,wxT("ks"),&Ks);
+    //Beta = SU->getProperties()->find(wxT("betaMS"))->second;
+    MHYDAS_GetHydroObjectProperty(SU,wxT("betaMS"),&Beta);    
     Area = SU->getUsrArea();
     
     CurrentRunoff = 0;
@@ -186,7 +196,9 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
       {                
         UpSU = *UpSUiter;
-        OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;        
+        //OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;
+        MHYDAS_GetSimVarValue(UpSU,wxT("qoutput"),CurrentStep-1,&TmpValue);
+        OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
       }
       m_CurrentUpstreamInput[ID] = OutputsSum;
     } 
