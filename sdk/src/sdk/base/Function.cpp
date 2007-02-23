@@ -282,6 +282,55 @@ bool Function::checkConsistency()
   return IsOK;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool Function::MHYDAS_GetSimVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value)
+{
+  if (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()))  
+  {
+    *Value = (HO->getSimulatedVars()->find(VarName)->second)->at(Step);
+    return true;
+  }
+  else return false;  
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+bool Function::MHYDAS_GetHydroObjectProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value)
+{
+  // attention, la vérif de l'existence de la prop bouffe beaucoup de temps
+  
+  if (HO != NULL && (HO->getProperties()->find(PropName) != HO->getProperties()->end()))  
+  {
+    *Value = (HO->getProperties()->find(PropName)->second);
+    return true;
+  }
+  else return false;  
+}
+
+// =====================================================================
+// =====================================================================
+
+    
+bool Function::MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value)
+{
+  if (HO != NULL && (HO->getIniConditions()->find(IniCondName) != HO->getIniConditions()->end()))  
+  {
+    *Value = (HO->getIniConditions()->find(IniCondName)->second);
+    return true;
+  }
+  else return false;  
+  
+}
+
+
+
+
+
 
 
 } } // namespace mhydasdk::base

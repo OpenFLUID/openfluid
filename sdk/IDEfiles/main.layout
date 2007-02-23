@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="default" />
-	<File name="../src/main/AppTools.cpp" open="1" top="0" tabpos="12">
+	<File name="../src/main/AppTools.cpp" open="1" top="0" tabpos="11">
 		<Cursor position="776" topLine="30" />
 	</File>
-	<File name="../src/main/AppTools.h" open="1" top="1" tabpos="11">
+	<File name="../src/main/AppTools.h" open="1" top="0" tabpos="10">
 		<Cursor position="867" topLine="0" />
 	</File>
 	<File name="../src/main/ColTextParser.cpp" open="0" top="0" tabpos="2">
@@ -13,10 +13,10 @@
 	<File name="../src/main/ColTextParser.h" open="0" top="0" tabpos="1">
 		<Cursor position="1773" topLine="51" />
 	</File>
-	<File name="../src/main/Engine.cpp" open="1" top="0" tabpos="10">
+	<File name="../src/main/Engine.cpp" open="1" top="0" tabpos="9">
 		<Cursor position="4765" topLine="0" />
 	</File>
-	<File name="../src/main/Engine.h" open="1" top="0" tabpos="9">
+	<File name="../src/main/Engine.h" open="1" top="0" tabpos="8">
 		<Cursor position="645" topLine="9" />
 	</File>
 	<File name="../src/main/IOMan.cpp" open="1" top="0" tabpos="1">
@@ -31,16 +31,16 @@
 	<File name="../src/main/Module.h" open="1" top="0" tabpos="3">
 		<Cursor position="615" topLine="15" />
 	</File>
-	<File name="../src/main/PluginManager.cpp" open="1" top="0" tabpos="5">
+	<File name="../src/main/PluginManager.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="138" topLine="0" />
 	</File>
-	<File name="../src/main/PluginManager.h" open="1" top="0" tabpos="6">
+	<File name="../src/main/PluginManager.h" open="1" top="0" tabpos="5">
 		<Cursor position="527" topLine="0" />
 	</File>
-	<File name="../src/main/main.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="660" topLine="219" />
+	<File name="../src/main/main.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="6598" topLine="219" />
 	</File>
-	<File name="../src/main/main.h" open="1" top="0" tabpos="8">
+	<File name="../src/main/main.h" open="1" top="0" tabpos="7">
 		<Cursor position="2520" topLine="77" />
 	</File>
 	<File name="../src/main/makefile" open="0" top="0" tabpos="6">
