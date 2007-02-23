@@ -13,6 +13,7 @@
 #include "RainEvent.h"
 
 
+
 namespace mhydasdk { namespace core {
 
 
@@ -25,6 +26,7 @@ class CoreRepository
 
     SpatialRepository *mp_SpatialData;
     RainEvent *mp_RainEvent;
+//    ProcessedRainEvent *mp_PcssRainEvent;
 
   public:
     /**
@@ -53,8 +55,13 @@ class CoreRepository
     void setRainEvent(RainEvent* Event) { mp_RainEvent = Event; };
 
     RainEvent* getRainEvent() const { return mp_RainEvent; };
-
-
+    
+    /*
+    bool ProcessRainEvent(int TimeStep);
+    
+    ProcessedRainEvent* getProcessedRainEvent() const { return mp_PcssRainEvent; };
+*/
+   
 
 };
 

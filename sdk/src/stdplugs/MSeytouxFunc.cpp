@@ -202,8 +202,10 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       }
       m_CurrentUpstreamInput[ID] = OutputsSum;
     } 
-    // transformation de la pluie de m/s en m/pas de temps
-    CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;
+    // transformation de la pluie de m/s en m/pas de temps    
+    // CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;    
+    MHYDAS_GetSurfaceUnitRainValue(SU,CurrentStep,&CurrentRain);
+    CurrentRain = CurrentRain * TimeStep;
 
 
     // calcul de l'intensite de pluie

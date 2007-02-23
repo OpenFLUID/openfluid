@@ -223,6 +223,34 @@ DateTime RainEvent::getEventEndingTime()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+bool RainEvent::ProcessRainSources(int TimeStep)
+{
+  
+
+//  if (m_TimeStepConstraint && (m_ConstrainedTimeStep == TimeStep))
+//  {
+  
+    RainSourceMap::iterator it;
+    ChronDataSource *CDS;
+       
+    // pour tout les pluvios
+    for (it = m_RainSrcCollection.begin(); it != m_RainSrcCollection.end(); ++it )
+    {
+      CDS = it->second;         
+      
+      CDS->Process();
+    
+    }
+
+    return true;
+//  }
+//  else return false;
+      
+}
+
 
 } } // namespace mhydasdk::core
 

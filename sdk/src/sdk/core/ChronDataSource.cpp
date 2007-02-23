@@ -20,6 +20,8 @@ ChronDataSource::ChronDataSource(cdsid_t ID)
 {
   m_ID = ID;
   m_Name = "";
+  mp_ProcessedRain = NULL;
+  m_TimeSerie = NULL;
 
 }
 
@@ -78,6 +80,24 @@ std::string ChronDataSource::getIDName() const
   return std::string(Buf, Length)+" ("+m_Name+")";
 }
 
+
+// =====================================================================
+// =====================================================================
+
+void ChronDataSource::Process()
+{
+
+  int Count = m_TimeSerie->getItemsCollection()->size();
+  
+  mp_ProcessedRain = new float[Count];
+  
+  for (int i=0; i<Count; i++)
+  {
+    mp_ProcessedRain[i] = m_TimeSerie->getItemsCollection()->at(i)->getValue();
+  }  
+
+  
+}
 
 
 } } // namespace mhydasdk::core
