@@ -116,6 +116,9 @@ class RainEvent
     */
     DateTime getEventEndingTime();
 
+
+    bool ProcessRainSources(int TimeStep);
+
 };
 
 

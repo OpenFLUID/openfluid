@@ -38,6 +38,7 @@ class ChronDataSource
     std::string m_Name;
     TimeSerie* m_TimeSerie;
 
+    float *mp_ProcessedRain;
 
   public:
 		/**
@@ -88,6 +89,10 @@ class ChronDataSource
       \return a temporal Serie
 		*/
     TimeSerie *getTimeSerie();
+
+    void Process();
+
+    float* getProcessedRain() { return mp_ProcessedRain; };
 
 };
 

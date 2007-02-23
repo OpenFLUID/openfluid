@@ -159,8 +159,8 @@ class Function : public ComputationBlock
     bool MHYDAS_GetHydroObjectProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value);
     
     bool MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value);
-    
-
+  
+    bool MHYDAS_GetSurfaceUnitRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value); 
 };
 
 

@@ -327,9 +327,18 @@ bool Function::MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO
   
 }
 
+// =====================================================================
+// =====================================================================
 
+bool Function::MHYDAS_GetSurfaceUnitRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value)
+{
 
+  float* TmpValues = SU->getRainSource()->getProcessedRain();
+  *Value = TmpValues[Step];
+  
+  return true;
 
+}
 
 
 

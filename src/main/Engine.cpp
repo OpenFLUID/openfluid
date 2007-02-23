@@ -174,6 +174,14 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
+  // process RainEVent
+  if (!mp_CoreData->getRainEvent()->ProcessRainSources(m_Config.DeltaT))
+  {
+    mhydasdk::base::LastError::Message = wxT("Rain sources process error.");
+    return false;
+  }
+  
+
   /*
   // integrates rain on time step (converts from intensity to water height)
   mhydasdk::core::RainSourceMap RainSrcColl = mp_CoreData->getRainEvent()->getRainSourceCollection();
