@@ -22,7 +22,7 @@ SimulationInfo::SimulationInfo(mhydasdk::core::DateTime StartTime,
 
   m_TimeStep = TimeStep;
 
-  
+  m_StepsCount = ((EndTime.getRawTime() - StartTime.getRawTime()) / TimeStep) + 1;  
   
 }
 

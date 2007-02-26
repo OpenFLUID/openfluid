@@ -447,6 +447,59 @@ bool SpatialRepository::checkHydroNetworkStructure()
     
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool SpatialRepository::reserveSimulationVars(int StepsNbr)
+{
+  
+  SUMap::iterator SUit;
+  RSMap::iterator RSit;
+  GUMap::iterator GUit;
+  
+  mhydasdk::core::SimulatedVarsMap *VarsMap;
+  SimulatedVarsMap::iterator Vit;
+
+
+  // pour les SU
+  for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit)
+  {
+    VarsMap = SUit->second->getSimulatedVars();
+    
+    for (Vit = VarsMap->begin();Vit != VarsMap->end();++Vit)
+    {
+      Vit->second->reserve(StepsNbr);
+    }
+  }
+  
+  // pour les RS
+  for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit)
+  {
+    VarsMap = RSit->second->getSimulatedVars();
+    
+    for (Vit = VarsMap->begin();Vit != VarsMap->end();++Vit)
+    {
+      Vit->second->reserve(StepsNbr);
+    }
+  }
+
+  // pour les GU
+  for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit)
+  {
+    VarsMap = GUit->second->getSimulatedVars();
+    
+    for (Vit = VarsMap->begin();Vit != VarsMap->end();++Vit)
+    {
+      Vit->second->reserve(StepsNbr);
+    }
+  }
+
+
+  
+    
+}
+
 
 } } // namespace mhydasdk::core
 

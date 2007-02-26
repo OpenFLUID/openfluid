@@ -26,6 +26,8 @@ class SimulationInfo
     mhydasdk::core::DateTime m_StartTime;
     mhydasdk::core::DateTime m_EndTime;
     int m_TimeStep;
+    
+    unsigned int m_StepsCount;
   
   public:
     
@@ -42,6 +44,13 @@ class SimulationInfo
     ~SimulationInfo();    
   
     int getTimeStep() const { return m_TimeStep; };
+    
+    unsigned int getStepsCount() const { return m_StepsCount; };
+    
+    mhydasdk::core::DateTime getStartTime() const { return m_StartTime; };
+    mhydasdk::core::DateTime getEndTime() const { return m_EndTime; };
+    
+    
 };
 
 /**
