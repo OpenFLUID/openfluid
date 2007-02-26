@@ -286,12 +286,19 @@ bool Function::checkConsistency()
 // =====================================================================
 
 
-bool Function::MHYDAS_GetSimVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value)
+bool Function::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value)
 {
-  if (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()))  
+  if (HO != NULL)  
   {
-    *Value = (HO->getSimulatedVars()->find(VarName)->second)->at(Step);
-    return true;
+    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    it = HO->getSimulatedVars()->find(VarName);
+    
+    if (it != HO->getSimulatedVars()->end())
+    {    
+      *Value = (it->second)->at(Step);
+      return true;
+    }
+    else return false;  
   }
   else return false;  
   
@@ -300,14 +307,22 @@ bool Function::MHYDAS_GetSimVarValue(mhydasdk::core::HydroObject *HO, wxString V
 // =====================================================================
 // =====================================================================
 
-bool Function::MHYDAS_GetHydroObjectProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value)
+bool Function::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value)
 {
   // attention, la vérif de l'existence de la prop bouffe beaucoup de temps
   
-  if (HO != NULL && (HO->getProperties()->find(PropName) != HO->getProperties()->end()))  
+  if (HO != NULL)  
   {
-    *Value = (HO->getProperties()->find(PropName)->second);
-    return true;
+    mhydasdk::core::ParamsMap::iterator it; 
+    it = HO->getProperties()->find(PropName);
+    
+    if (it != HO->getProperties()->end())
+    {
+      *Value = it->second;
+      return true;  
+    }
+    else return false;
+    
   }
   else return false;  
 }
@@ -316,12 +331,20 @@ bool Function::MHYDAS_GetHydroObjectProperty(mhydasdk::core::HydroObject *HO, wx
 // =====================================================================
 
     
-bool Function::MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value)
+bool Function::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value)
 {
-  if (HO != NULL && (HO->getIniConditions()->find(IniCondName) != HO->getIniConditions()->end()))  
+  if (HO != NULL)  
   {
-    *Value = (HO->getIniConditions()->find(IniCondName)->second);
-    return true;
+    mhydasdk::core::ParamsMap::iterator it; 
+    it = HO->getIniConditions()->find(IniCondName);
+    
+    if (it != HO->getIniConditions()->end())
+    {
+      *Value = it->second;
+      return true;  
+    }
+    else return false;
+    
   }
   else return false;  
   
@@ -330,15 +353,75 @@ bool Function::MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO
 // =====================================================================
 // =====================================================================
 
-bool Function::MHYDAS_GetSurfaceUnitRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value)
+bool Function::MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value)
 {
 
   float* TmpValues = SU->getRainSource()->getProcessedRain();
   *Value = TmpValues[Step];
   
   return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Function::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+{
+  return (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end());  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+    
+bool Function::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, float Value)
+{
+  if (HO != NULL)  
+  {
+    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    it = HO->getSimulatedVars()->find(VarName);
+    
+    if (it != HO->getSimulatedVars()->end())
+    {    
+      it->second->push_back(Value);
+      return true;
+    }
+    else return false;  
+  }
+  else return false;  
 
 }
+
+// =====================================================================
+// =====================================================================
+
+
+    
+bool Function::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float Value)
+{
+  if (HO != NULL)  
+  {
+    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    it = HO->getSimulatedVars()->find(VarName);
+    
+    if (it != HO->getSimulatedVars()->end())
+    {    
+      //mhydasdk::core::VectorOfDouble ValuesVect = it->second->;
+      //ValuesVect[Step] = Value;
+      return true;
+    }
+    else return false;  
+  }
+  else return false;  
+  
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 

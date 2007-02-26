@@ -139,7 +139,7 @@ class SpatialRepository
 
       Builds ordered lists for each kind of objects (SU,RS,GU)
 
-      !! commentaire ï¿½ revoir !!
+      !! commentaire à revoir !!
 
       Regroupe les objets hydrologiques definissant l'espace etudie par classe d'ordre de traitement.
       Cette mï¿½thode crï¿½e 3 vecteurs (un pour chaque type d'objet).
@@ -151,7 +151,10 @@ class SpatialRepository
 
 
     bool checkHydroNetworkStructure();
-
+    
+    
+    bool reserveSimulationVars(int StepsNbr);
+        
 
 };
 

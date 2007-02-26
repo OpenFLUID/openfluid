@@ -37,6 +37,9 @@ Engine::~Engine()
 
 }
 
+// =====================================================================
+// =====================================================================
+
 
 bool Engine::processConfig()
 {
@@ -197,18 +200,28 @@ bool Engine::prepareDataAndCheckConsistency()
   // prepares data for module
   if (mp_Module == NULL || !mp_Module->prepareData())
   {
-    mhydasdk::base::LastError::Message = wxT("Module data preparation error.");
+    mhydasdk::base::LastError::Message = wxT("Data preparation error.");
     return false;
   }
 
 
-  // chacks conssitency for module
+  // checks consistency for module
   if (mp_Module == NULL || !mp_Module->checkConsistency())
   {
-    mhydasdk::base::LastError::Message = wxT("Module consistency error.");
+    mhydasdk::base::LastError::Message = wxT("Consistency error.");
     return false;
   }
 
+
+  // inits the simulation infos and status
+
+  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
+                                                      mp_CoreData->getRainEvent()->getEventEndingTime(),
+                                                      m_Config.DeltaT);
+
+
+  // préparation des données de simulation
+  mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
 
 
   return true;
@@ -222,13 +235,8 @@ bool Engine::prepareDataAndCheckConsistency()
 bool Engine::run()
 {
 
-
-  // inits
-
-  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
-                                                      mp_CoreData->getRainEvent()->getEventEndingTime(),
-                                                      m_Config.DeltaT);
-
+                                                      
+                                                      
   // initialization of functions
   if (!mp_Module->initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus))
   {
@@ -267,7 +275,6 @@ bool Engine::run()
 
     std::cout << std::endl;
     cout.flush();
-
 
   } while (mp_SimStatus->switchToNextStep());
 

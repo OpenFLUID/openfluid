@@ -190,7 +190,7 @@ void MHYDASApp::printMHYDASInfos()
 
 void MHYDASApp::printDataInfos()
 {
-  int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT; 
+  // int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT; 
   
   std::cout << std::endl;
   std::cout << "Spatial objects: " << std::endl
@@ -198,9 +198,9 @@ void MHYDASApp::printDataInfos()
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
   std::cout << "Rain source(s): " << mp_CoreData->getRainEvent()->getRainSourceCollection().size() << std::endl;
-  std::cout << "Simulation from " << _C(mp_CoreData->getRainEvent()->getEventStartingTime().asString())
-            << " to " << _C(mp_CoreData->getRainEvent()->getEventEndingTime().asString()) << std::endl
-            << "         -> " <<  (TimeStepsNbr+1) << " time steps of " << mp_Engine->getConfig().DeltaT << " seconds" << std::endl;
+  std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().asString())
+            << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().asString()) << std::endl
+            << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
 
