@@ -71,13 +71,13 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 
     //ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
-    MHYDAS_GetHydroObjectProperty(SU,wxT("thetares"),&ThetaR);
+    MHYDAS_GetDistributedProperty(SU,wxT("thetares"),&ThetaR);
     //ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;    
-    MHYDAS_GetHydroObjectProperty(SU,wxT("thetasat"),&ThetaS);
+    MHYDAS_GetDistributedProperty(SU,wxT("thetasat"),&ThetaS);
     //ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;  
-    MHYDAS_GetHydroObjectIniCondition(SU,wxT("thetaisurf"),&ThetaI);
+    MHYDAS_GetDistributedIniCondition(SU,wxT("thetaisurf"),&ThetaI);
     //Hc = SU->getProperties()->find(wxT("hc"))->second;    
-    MHYDAS_GetHydroObjectProperty(SU,wxT("hc"),&Hc);
+    MHYDAS_GetDistributedProperty(SU,wxT("hc"),&Hc);
     
             
     
@@ -177,9 +177,9 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     ID = SU->getID();
     //Ks = SU->getProperties()->find(wxT("ks"))->second;
-    MHYDAS_GetHydroObjectProperty(SU,wxT("ks"),&Ks);
+    MHYDAS_GetDistributedProperty(SU,wxT("ks"),&Ks);
     //Beta = SU->getProperties()->find(wxT("betaMS"))->second;
-    MHYDAS_GetHydroObjectProperty(SU,wxT("betaMS"),&Beta);    
+    MHYDAS_GetDistributedProperty(SU,wxT("betaMS"),&Beta);    
     Area = SU->getUsrArea();
     
     CurrentRunoff = 0;
@@ -197,14 +197,14 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       {                
         UpSU = *UpSUiter;
         //OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;
-        MHYDAS_GetSimVarValue(UpSU,wxT("qoutput"),CurrentStep-1,&TmpValue);
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep-1,&TmpValue);
         OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
       }
       m_CurrentUpstreamInput[ID] = OutputsSum;
     } 
     // transformation de la pluie de m/s en m/pas de temps    
     // CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;    
-    MHYDAS_GetSurfaceUnitRainValue(SU,CurrentStep,&CurrentRain);
+    MHYDAS_GetDistributedRainValue(SU,CurrentStep,&CurrentRain);
     CurrentRain = CurrentRain * TimeStep;
 
 

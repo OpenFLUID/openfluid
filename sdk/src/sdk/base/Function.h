@@ -36,7 +36,7 @@
 #define GU_PROPERTY_TO_CHECK(name) m_GUPropsToCheck.Add(wxT(name))
 #define GU_INICOND_TO_CHECK(name) m_GUInicondsToAdd.Add(wxT(name))
 
-#define GET_SU_RAINVALUE(suobj,step) (suobj->getRainSource()->getTimeSerie()->getItemsCollection()->at(step)->getValue())
+// #define GET_SU_RAINVALUE(suobj,step) (suobj->getRainSource()->getTimeSerie()->getItemsCollection()->at(step)->getValue())
 
 #define DECLARE_SU_ORDERED_LOOP \
   list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
@@ -154,13 +154,20 @@ class Function : public ComputationBlock
     bool checkConsistency();
 
 
-    bool MHYDAS_GetSimVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value);
+    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value);
 
-    bool MHYDAS_GetHydroObjectProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value);
+    bool MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value);
     
-    bool MHYDAS_GetHydroObjectIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value);
+    bool MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value);
   
-    bool MHYDAS_GetSurfaceUnitRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value); 
+    bool MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value); 
+    
+    bool MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
+    
+    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, float Value);
+    
+    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float Value);
+    
 };
 
 
