@@ -93,7 +93,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
     // sets whether the upstream output should be used or not.
     // a  revoir
-    m_UseUpstreamOutput[SU->getID()] = SIMVAR_EXISTS(SU,"qoutput");
+    m_UseUpstreamOutput[SU->getID()] = MHYDAS_IsDistributedVarExists(SU,wxT("qoutput"));
     
     m_CurrentUpstreamInput[SU->getID()] = 0;
     
@@ -301,8 +301,10 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       CurrentInfiltration = (m_CurrentUpstreamInput[ID] + CurrentRain) - CurrentRunoff;
     }   
 
-    APPEND_SIMVAR_VALUE(SU,"runoff",CurrentRunoff);
-    APPEND_SIMVAR_VALUE(SU,"infiltration",CurrentInfiltration);
+    //APPEND_SIMVAR_VALUE(SU,"runoff",CurrentRunoff);
+    MHYDAS_AppendDistributedVarValue(SU, wxT("runoff"), CurrentRunoff);
+    //APPEND_SIMVAR_VALUE(SU,"infiltration",CurrentInfiltration);
+    MHYDAS_AppendDistributedVarValue(SU, wxT("infiltration"), CurrentInfiltration);
   END_LOOP
 
 
