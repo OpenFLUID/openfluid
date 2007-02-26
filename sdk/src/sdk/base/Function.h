@@ -67,11 +67,11 @@
   { \
     guobj = *_M_GUiter; \
 
-#define APPEND_SIMVAR_VALUE(hobj,name,value) (hobj->getSimulatedVars()->find(wxT(name))->second)->push_back(value)
+//#define APPEND_SIMVAR_VALUE(hobj,name,value) (hobj->getSimulatedVars()->find(wxT(name))->second)->push_back(value)
 
-#define GET_SIMVAR_VALUE(hobj,name,step) (hobj->getSimulatedVars()->find(wxT(name))->second)->at(step)
+//#define GET_SIMVAR_VALUE(hobj,name,step) (hobj->getSimulatedVars()->find(wxT(name))->second)->at(step)
 
-#define SIMVAR_EXISTS(hobj,name) (hobj->getSimulatedVars()->find(wxT(name)) != hobj->getSimulatedVars()->end())
+//#define SIMVAR_EXISTS(hobj,name) (hobj->getSimulatedVars()->find(wxT(name)) != hobj->getSimulatedVars()->end())
 
 #define END_LOOP }
 

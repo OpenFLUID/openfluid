@@ -62,7 +62,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   mhydasdk::core::ReachSegment* RS;
   float Cel, Sigma;
   int ID;
-
+  float TmpValue;
   DECLARE_RS_ORDERED_LOOP;
  
  
@@ -73,15 +73,20 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
     m_CurrentInputSum[ID] = 0;
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
-    m_MeanManning = m_MeanManning + RS->getProperties()->find(wxT("nmanning"))->second;    
+    MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
+    m_MeanManning = m_MeanManning + TmpValue;
+    //m_MeanManning = m_MeanManning + RS->getProperties()->find(wxT("nmanning"))->second;    
   END_LOOP
 
   m_MeanSlope = m_MeanSlope / mp_CoreData->getSpatialData()->getRSsCollection()->size();
   m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getRSsCollection()->size(); 
 
   BEGIN_RS_ORDERED_LOOP(RS)
-    Cel = m_MeanCelerity * (m_MeanManning / RS->getProperties()->find(wxT("nmanning"))->second) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
-    Sigma = m_MeanSigma * (RS->getProperties()->find(wxT("nmanning"))->second / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());      
+    MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
+//    Cel = m_MeanCelerity * (m_MeanManning / RS->getProperties()->find(wxT("nmanning"))->second) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
+//    Sigma = m_MeanSigma * (RS->getProperties()->find(wxT("nmanning"))->second / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());      
+    Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
+    Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());      
     m_RSKernel[RS->getID()] = ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep());        
   END_LOOP
 
@@ -124,6 +129,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   float UpRSsOutputsSum;  
   float QOutput;
   float QInput;
+  float TmpValue;
 
   
   mhydasdk::core::ReachSegment* RS;
@@ -153,10 +159,11 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     {      
       UpSUsList = RS->getSrcUpstreamSUs();
       
-      for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
+      for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
       {                
         UpSU = *UpSUiter;
-        UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep) / UpSU->getUsrArea();
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
+        UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue / UpSU->getUsrArea();
       }  
     }
   
@@ -168,11 +175,12 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     {      
       UpSUsList = RS->getLatUpstreamSUs();
       
-      for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
+      for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
       {                
         UpSU = *UpSUiter;
         //std::cerr << GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep) << std::endl;
-        UpLatSUsOutputsSum = UpLatSUsOutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep) / UpSU->getUsrArea();                
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
+        UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue / UpSU->getUsrArea();                
         
       }  
     }
@@ -189,7 +197,8 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     {                
       UpRS = *UpRSiter;
         //std::cerr << GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep) << std::endl;
-      UpRSsOutputsSum = UpRSsOutputsSum + GET_SIMVAR_VALUE(UpRS,"qoutput",CurrentStep);                
+      MHYDAS_GetDistributedVarValue(UpRS,wxT("qoutput"),CurrentStep,&TmpValue);
+      UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;                
     }    
     
     
@@ -208,7 +217,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     QOutput = QOutput + UpLatSUsOutputsSum;
         
-    APPEND_SIMVAR_VALUE(RS,"qoutput",QOutput);
+    MHYDAS_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
 
   END_LOOP
 
