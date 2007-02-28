@@ -11,7 +11,7 @@
 #define __COMPBLOCK_H__
 
 
-#include "sdk-core.h"
+#include "mhydasdk-core.h"
 #include "SimStatus.h"
 
 

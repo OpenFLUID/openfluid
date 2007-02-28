@@ -10,7 +10,7 @@
 #define __HAYAMITOOLS_H__
 
 #include <vector>
-#include "sdk-core.h"
+#include "mhydasdk-core.h"
 
 typedef std::vector<float> t_HayamiKernel;
 

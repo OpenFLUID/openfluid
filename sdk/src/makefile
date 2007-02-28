@@ -46,6 +46,29 @@ purge: clean
 	@rm -f $(BASEBINDIR)/*
 
 
+clean-installed-sdk:
+	@echo ""
+	@echo "==== Removing installed SDK ===="
+	@rm -f -R /usr/include/mhydasdk
+	@rm -f /usr/lib/mhydasdk*
+
+
+install-sdk: sdk clean-installed-sdk
+	@echo ""
+	@echo "==== Installing SDK ===="
+	@echo "Installing header files"
+	@mkdir -p /usr/include/mhydasdk/core
+	@mkdir -p /usr/include/mhydasdk/base
+	@cp sdk/mhydasdk-*.h /usr/include/mhydasdk/
+	@cp sdk/core/*.h /usr/include/mhydasdk/core/
+	@cp sdk/base/*.h /usr/include/mhydasdk/base/
+	@echo "Installing libraries"
+	@cp $(BASELIBDIR)/lib$(SDKLIBBASE).$(DYNLIBEXT) /usr/lib
+	@cp $(BASELIBDIR)/lib$(SDKLIBCORE).$(DYNLIBEXT) /usr/lib
+	@chmod 644 /usr/lib/lib$(SDKLIBBASE).$(DYNLIBEXT)
+	@chmod 644 /usr/lib/lib$(SDKLIBCORE).$(DYNLIBEXT)
+
+
 packages: all
 	@echo ""
 	@echo "==== Preparing packages ===="

@@ -10,7 +10,7 @@
 #define __SIMSTATUS_H__
 
 
-#include "sdk-core.h"
+#include "mhydasdk-core.h"
 
 namespace mhydasdk { namespace base {
 

@@ -10,8 +10,8 @@
 #include <wx/cmdline.h>
 #include <wx/datetime.h>
 
-#include "sdk-base.h"
-#include "sdk-core.h"
+#include "mhydasdk-base.h"
+#include "mhydasdk-core.h"
 
 
 #include "Engine.h"

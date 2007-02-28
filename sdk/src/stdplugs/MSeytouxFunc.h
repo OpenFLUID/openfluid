@@ -9,8 +9,8 @@
 #define __MSEYTOUXFUNC_H__
 
 
-#include "sdk-base.h"
-#include "sdk-core.h"
+#include "mhydasdk-base.h"
+#include "mhydasdk-core.h"
 
 /**
 
