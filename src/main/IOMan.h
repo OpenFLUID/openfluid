@@ -8,8 +8,8 @@
 #ifndef __IOMAN_H__
 #define __IOMAN_H__
 
-#include "sdk-base.h"
-#include "sdk-core.h"
+#include "mhydasdk-base.h"
+#include "mhydasdk-core.h"
 
 #include <wx/list.h>
 //#include <wx/dynarray.h>
