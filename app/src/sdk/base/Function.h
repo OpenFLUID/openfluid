@@ -11,7 +11,7 @@
 
 
 #include "CompBlock.h"
-#include "sdk-core.h"
+#include "mhydasdk-core.h"
 
 
 

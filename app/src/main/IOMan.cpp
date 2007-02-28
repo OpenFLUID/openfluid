@@ -14,7 +14,6 @@
 #include "IOMan.h"
 #include "ColTextParser.h"
 #include "setup.h"
-#include "SIFactors.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
 

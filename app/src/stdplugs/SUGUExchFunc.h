@@ -10,8 +10,8 @@
 #define __SUGUEXCHFUNC_H__
 
 
-#include "sdk-core.h"
-#include "sdk-base.h"
+#include "mhydasdk-core.h"
+#include "mhydasdk-base.h"
 
 // =====================================================================
 // =====================================================================
