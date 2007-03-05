@@ -11,6 +11,7 @@
 
 #include "mhydasdk-base.h"
 #include "mhydasdk-core.h"
+#include "RuntimeEnv.h"
 
 
 WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
@@ -22,7 +23,7 @@ class PluginManager
 {
   private:
 
-    mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+    RuntimeEnvironment* mp_RunEnv;
 
     mhydasdk::base::Plugin *getPlugin(wxString PluginFilename);
 
@@ -31,7 +32,7 @@ class PluginManager
     /**
       Constructor
     */
-    PluginManager(mhydasdk::base::RuntimeEnvironment* RunEnv);
+    PluginManager(RuntimeEnvironment* RunEnv);
 
     /**
       Destructor

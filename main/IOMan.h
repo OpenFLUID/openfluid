@@ -10,6 +10,7 @@
 
 #include "mhydasdk-base.h"
 #include "mhydasdk-core.h"
+#include "RuntimeEnv.h"
 
 #include <wx/list.h>
 //#include <wx/dynarray.h>
@@ -93,7 +94,7 @@ struct AutoOutfiles
 class IOManager
 {
   private:
-    mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+    RuntimeEnvironment* mp_RunEnv;
 
     mhydasdk::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
 
@@ -119,7 +120,7 @@ class IOManager
     /**
       Constructor
     */
-    IOManager(mhydasdk::base::RuntimeEnvironment* RunEnv);
+    IOManager(RuntimeEnvironment* RunEnv);
 
     /**
       Destructor

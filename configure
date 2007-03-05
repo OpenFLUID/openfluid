@@ -10,11 +10,11 @@ RELEASE_CCCFLAGS=-O3
 NIGHTLY_CCCFLAGS=
 DEVEL_CCCFLAGS=-g3
 
-SETUPH=sdk/setup.h
+SETUPH=main/setup.h
 
 EXEFILEROOT=mhydas-mpp
 
-SDKLIBSROOT=mhydasdk
+SDKCONFIGTOOL=mhydasdk-config
 
 PLUGSUBDIR=plugs
 
@@ -113,7 +113,7 @@ esac
 
 
 SVNREV=x
-if [ -x /usr/bin/svnversion ]; then
+if [ -x /usr/bin/svn ]; then
   SVNREV=`svn info --revision HEAD | grep "vision :" | cut -d" " -f3 `  
 fi
 
@@ -176,12 +176,12 @@ echo "F77 = $F77" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
-echo "# compile options for GEOS library" >> $OPTFILE
+echo "# compile options for mhydas sdk" >> $OPTFILE
 VARTOWRITE=
-#VARTOWRITE=`geos-config --libs`
-echo "GEOSLIBS = $VARTOWRITE" >> $OPTFILE
-#VARTOWRITE=`geos-config --cflags`
-echo "GEOSFLAGS = $VARTOWRITE" >> $OPTFILE
+VARTOWRITE=`mhydasdk-config --libs`
+echo "MHYDASDKLIBS = $VARTOWRITE" >> $OPTFILE
+VARTOWRITE=`mhydasdk-config --cflags`
+echo "MHYDASDKFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
@@ -216,11 +216,6 @@ echo "" >> $OPTFILE
 echo "# plugins extension" >> $OPTFILE 
 echo "PLUGINEXT = $PLUGINEXT" >> $OPTFILE  
 
-echo "" >> $OPTFILE
-
-echo "# sdk libs files names" >> $OPTFILE
-echo "SDKLIBBASE = $SDKLIBSROOT-base" >> $OPTFILE
-echo "SDKLIBCORE = $SDKLIBSROOT-core" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
@@ -236,7 +231,7 @@ echo "" >> $OPTFILE
 
 # détermination du chemin absolu de la racine du projet située ../..
 ORIGPATH=`pwd`
-ABSPATH=$ORIGPATH/../..
+ABSPATH=$ORIGPATH/..
 cd $ABSPATH
 ABSPATH=`pwd`
 cd $ORIGPATH

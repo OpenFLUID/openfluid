@@ -6,12 +6,15 @@ include ../makeopts.inc
 OBJDIR=$(BASEOBJDIR)/main
 BINDIR=$(BASEBINDIR)
 DOCDIR=$(BASEDOCDIR)/main
+LIBDIR=$(BASELIBDIR)
 
-CCFLAGS=$(CCCFLAGS) -I ../sdk $(WXFLAGS)
-CCLIBS=-L$(BASELIBDIR) -L$(BINDIR) -ltinyxml -l$(SDKLIBBASE) -l$(SDKLIBCORE) -Wl,-rpath,. $(WXLIBS)
+CCFLAGS=$(CCCFLAGS) $(MHYDASDKFLAGS) $(WXFLAGS)
+#CCLIBS=-L$(BASELIBDIR) -L$(BINDIR) -ltinyxml -l$(SDKLIBBASE) -l$(SDKLIBCORE) -Wl,-rpath,. $(WXLIBS)
+CCLIBS=$(MHYDASDKLIBS) -L$(BASELIBDIR) -ltinyxml $(WXLIBS)
 
 
 OBJ= $(OBJDIR)/AppTools.o \
+     $(OBJDIR)/RuntimeEnv.o \
      $(OBJDIR)/Module.o \
      $(OBJDIR)/Engine.o \
      $(OBJDIR)/PluginManager.o \
@@ -29,6 +32,7 @@ all: prechecks xml $(OBJ)
 
 xml: prechecks
 	@(cd xml && $(MAKE))
+	
 
 prechecks:
 	@mkdir -p $(OBJDIR)

@@ -7,7 +7,7 @@
 
 #include "MSeytouxFunc.h"
 #include "math.h"
-#include "setup.h"
+//#include "setup.h"
 #include <iostream>
 #include <stdio.h>
 
@@ -92,7 +92,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
     m_SUSatState[SU->getID()] = 0;
 
     // sets whether the upstream output should be used or not.
-    // a  revoir
+    // a revoir
     m_UseUpstreamOutput[SU->getID()] = MHYDAS_IsDistributedVarExists(SU,wxT("qoutput"));
     
     m_CurrentUpstreamInput[SU->getID()] = 0;
@@ -186,7 +186,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     CurrentInfiltration = 0;
 
     
-    // ajout des apports des unites amont (sorties des unites amont a  t-1)
+    // ajout des apports des unites amont (sorties des unites amont a t-1)
     // adding upstream units output (step n-1) to rain    
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {

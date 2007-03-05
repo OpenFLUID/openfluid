@@ -16,6 +16,7 @@
 #include "Module.h"
 #include "IOMan.h"
 #include "PluginManager.h"
+#include "RuntimeEnv.h"
 
 
 
@@ -30,7 +31,7 @@ class Engine
 
      mhydasdk::core::CoreRepository* mp_CoreData;
 
-     mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+     RuntimeEnvironment* mp_RunEnv;
 
      mhydasdk::base::SimulationStatus* mp_SimStatus;
 
@@ -65,7 +66,7 @@ class Engine
     /**
       Constructor
     */
-    Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
+    Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* RunEnv,
            PluginManager* PlugMan);
 
     /**

@@ -18,7 +18,7 @@
 // =====================================================================
 
 
-PluginManager::PluginManager(mhydasdk::base::RuntimeEnvironment* RunEnv)
+PluginManager::PluginManager(RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
 }

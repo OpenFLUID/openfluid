@@ -34,7 +34,7 @@ WX_DEFINE_OBJARRAY(ArrayOfAutoOutfileDefs);*/
 
 
 
-IOManager::IOManager(mhydasdk::base::RuntimeEnvironment* RunEnv)
+IOManager::IOManager(RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
 }

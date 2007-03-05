@@ -46,7 +46,7 @@ class MHYDASApp : public wxAppConsole
 
     bool m_OKToRun;
 
-    mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+    RuntimeEnvironment* mp_RunEnv;
 
     mhydasdk::core::CoreRepository* mp_CoreData;
 

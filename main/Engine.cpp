@@ -13,7 +13,7 @@
 
 
 
-Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
+Engine::Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* RunEnv,
                PluginManager* PlugMan)
 {
 
@@ -220,7 +220,7 @@ bool Engine::prepareDataAndCheckConsistency()
                                                       m_Config.DeltaT);
 
 
-  // préparation des données de simulation
+  // prï¿½paration des donnï¿½es de simulation
   mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
 
 
