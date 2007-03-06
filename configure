@@ -2,57 +2,6 @@
 
 ############################
 
-CC=gcc
-CPP=g++
-F77=
-
-RELEASE_CCCFLAGS=-O3
-NIGHTLY_CCCFLAGS=
-DEVEL_CCCFLAGS=-g3
-
-SETUPH=main/setup.h
-
-EXEFILEROOT=mhydas-mpp
-
-SDKCONFIGTOOL=mhydasdk-config
-
-PLUGSUBDIR=plugs
-
-
-MAJORVER=0
-MINORVER=`date +%y.%m`
-
-INPUT_RAIN_MMH=1
-
-MDEF_INDIR=MHYDAS.IN
-MDEF_OUTDIR=MHYDAS.OUT
-
-MDEF_CONFFILE=model.xml
-MDEF_INDATAFILE=inputdata.xml
-MDEF_OUTPUTCONFFILE=output.xml
-
-MDEF_SUDEFSFILE=SUdefs.dat
-MDEF_RSDEFSFILE=RSdefs.dat
-MDEF_GUDEFSFILE=GUdefs.dat
-
-MDEF_SUPROPSFILE=SUprops.xml
-MDEF_RSPROPSFILE=RSprops.xml
-MDEF_GUPROPSFILE=GUprops.xml
-
-MDEF_SUINIFILE=SUini.xml
-MDEF_RSINIFILE=RSini.xml
-MDEF_GUINIFILE=GUini.xml
-
-MDEF_RAINEVTFILE=rainevent.xml
-MDEF_RAINDISTRIFILE=raindistri.dat
-
-MDEF_OUTPUTFILES_EXT=out
-
-
-############################
-############################
-
-
 usage_info() {
   echo "MHYDAS configure script usage:\n"
   echo "  ./configure [OPTION]\n"
@@ -67,12 +16,6 @@ if [ "$1" != "--release" ] && [ "$1" != "--devel" ] && [ "$1" != "--nightly" ]; 
   usage_info
   exit 1
 fi
-
-
-OPTFILE=makeopts.inc
-
-rm -f $OPTFILE
-rm -f $SETUPH
 
 
 SHELLCMD=/bin/bash
@@ -103,6 +46,20 @@ if [ -z "$MACHTYPE" ]; then
     exit 1
   fi
 fi
+
+
+. ./configure.in.common
+
+
+############################
+
+
+
+
+OPTFILE=makeopts.inc
+
+rm -f $OPTFILE
+rm -f $SETUPH
 
 
 BUILDVER=
