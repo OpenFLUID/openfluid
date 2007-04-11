@@ -291,6 +291,9 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       {
         std::cout << "    <funcdef ID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
                   << "\" name=\"" << Signatures[i]->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
+        std::cout << "      <domain>" << Signatures[i]->Domain.mb_str(wxConvUTF8) << "</domain>" << std::endl;
+        std::cout << "      <process>" << Signatures[i]->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
+        std::cout << "      <method>" << Signatures[i]->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
         std::cout << "      <description>" << Signatures[i]->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
         std::cout << "      <version major=\"" << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) 
                   << "\" minor=\"" << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << "\"/>" << std::endl;
@@ -306,6 +309,9 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       {
         std::cout << "* " << Signatures[i]->ID.mb_str(wxConvUTF8) << std::endl;           
         std::cout << "   - Name: " << Signatures[i]->Name.mb_str(wxConvUTF8) << std::endl;        
+        std::cout << "   - Domain: " << Signatures[i]->Domain.mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Process: " << Signatures[i]->Process.mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Method: " << Signatures[i]->Method.mb_str(wxConvUTF8) << std::endl;                
         std::cout << "   - Description: " << Signatures[i]->Description.mb_str(wxConvUTF8) << std::endl;                
         std::cout << "   - Version: " << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) << "." << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << std::endl;                        
         std::cout << "   - Author: " << Signatures[i]->Author.mb_str(wxConvUTF8) << " (" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << ")" << std::endl;                                
