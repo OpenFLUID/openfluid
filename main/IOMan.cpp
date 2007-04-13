@@ -76,7 +76,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
 
     // =========== run params ===========
-    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("runparams").FirstChild("param").Element();
+    Child = DocHandle.FirstChild("mhydas").FirstChild("runparams").FirstChild("param").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
@@ -93,7 +93,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
     // ======= model structure ===========
 
     // hydromodule
-    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("module").FirstChild("function").Element();
+    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("function").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
