@@ -45,8 +45,8 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 
 bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 {
-
-  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];      
+//  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];
+  MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);      
   
   return true;
 }

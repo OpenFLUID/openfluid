@@ -45,10 +45,12 @@ HayamiRSFunction::~HayamiRSFunction()
 
 bool HayamiRSFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
-  if (Params.find(wxT("maxsteps")) != Params.end()) m_MaxSteps = (int)(Params[wxT("maxsteps")]);
-  if (Params.find(wxT("meancel")) != Params.end()) m_MeanCelerity = Params[wxT("meancel")];      
-  if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
-
+  //if (Params.find(wxT("maxsteps")) != Params.end()) m_MaxSteps = (int)(Params[wxT("maxsteps")]);
+  MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
+  //if (Params.find(wxT("meancel")) != Params.end()) m_MeanCelerity = Params[wxT("meancel")];      
+  MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
+  // if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
+  MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
   return true;
 }
 
@@ -102,7 +104,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 bool HayamiRSFunction::checkConsistency()
 {
-  // On verifie s'il existe des SU pour récupérer leur débit
+  // On verifie s'il existe des SU pour rï¿½cupï¿½rer leur dï¿½bit
   m_UseUpSUOutput = false; 
   if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
   {
@@ -152,7 +154,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     QOutput = 0;
     
-    // 1.a calcul du débit provenant des SU sources qui se jettent dans les noeuds sources    
+    // 1.a calcul du dï¿½bit provenant des SU sources qui se jettent dans les noeuds sources    
     
     UpSrcSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
@@ -168,7 +170,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     }
   
 
-    // 1.b calcul du débit provenant des SU latérales
+    // 1.b calcul du dï¿½bit provenant des SU latï¿½rales
 
     UpLatSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
@@ -187,7 +189,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     //std::cerr << CurrentStep << "," << ID << " -> " << UpSrcSUsOutputsSum << " " << UpLatSUsOutputsSum << std::endl;
 
-    // 2.a calcul des débits provenant des RS amont
+    // 2.a calcul des dï¿½bits provenant des RS amont
     
     UpRSsOutputsSum = 0;
 

@@ -50,9 +50,12 @@ HayamiSUFunction::~HayamiSUFunction()
 bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-  if (Params.find(wxT("maxsteps")) != Params.end()) m_MaxSteps = (int)(Params[wxT("maxsteps")]);
-  if (Params.find(wxT("meancel")) != Params.end()) m_MeanCelerity = Params[wxT("meancel")];      
-  if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
+  //if (Params.find(wxT("maxsteps")) != Params.end()) m_MaxSteps = (int)(Params[wxT("maxsteps")]);
+  MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
+  //if (Params.find(wxT("meancel")) != Params.end()) m_MeanCelerity = Params[wxT("meancel")];      
+  MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
+  // if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
+  MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
 
   return true;
 }
