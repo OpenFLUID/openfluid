@@ -7,6 +7,7 @@
 
 
 #include "Engine.h"
+#include "AppTools.h"
 
 #include <iostream>
 #include <iomanip>
@@ -49,6 +50,8 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* Run
   m_Functions.Clear();
 
   mp_IOMan = new IOManager(mp_RunEnv);
+
+  m_Config.SimulationID = wxT("");
 
 }
 
@@ -334,9 +337,15 @@ bool Engine::run()
 // =====================================================================
 
 
-bool Engine::saveResults()
+bool Engine::saveResults(ExtraSimInfos ExSI)
 {
-  return mp_IOMan->saveResults(mp_CoreData);
+ 
+  
+  if (m_Config.SimulationID != wxT("")) ExSI.SimID = m_Config.SimulationID;
+  else ExSI.SimID = GenerateSimulationID();  
+  
+  
+  return (mp_IOMan->saveResults(mp_CoreData,ExSI) && mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
 }
 
 // =====================================================================

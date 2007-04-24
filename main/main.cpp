@@ -120,12 +120,13 @@ bool MHYDASApp::saveResults()
   std::cout << "* Saving results... ";
   std::cout.flush();
 
-  ExecStatus = mp_Engine->saveResults();
+  ExecStatus = mp_Engine->saveResults(m_ExSI);
 
   printlnExecStatus(ExecStatus);
 
   return ExecStatus;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -436,6 +437,7 @@ int MHYDASApp::OnRun()
   {
 
     m_TotalStartTime = wxDateTime::Now();
+    m_ExSI.StartTime = m_TotalStartTime;
 
     mp_CoreData = new CoreRepository();
 
@@ -444,26 +446,31 @@ int MHYDASApp::OnRun()
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);
 
-    // chargement, verification et montage du modele
+    // model load and check
     if (!buildModel()) return stopAppReturn();
 
-    // chargement et verification du jeu de donnees d'entree
+    // input data load and check
     if (!loadData()) return stopAppReturn();
 
-    // verification de la coherence de l'ensemble
+    // global consistency check
     if (!checkConsistency()) return stopAppReturn();
 
     // simulation
     if (!runSimulation()) return stopAppReturn();
 
-    // sauvegarde des résultats
+    wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
+    m_ExSI.RunTime = EffSimTime;
+    
+
+    // saving results 
     if (!saveResults()) return stopAppReturn();
+
+    
 
     m_TotalEndTime = wxDateTime::Now();
 
     std::cout << std::endl;
 
-    wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
     wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
 

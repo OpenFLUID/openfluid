@@ -45,3 +45,6 @@ MDEF_RAINEVTFILE=rainevent.xml
 MDEF_RAINDISTRIFILE=raindistri.dat
 
 MDEF_OUTPUTFILES_EXT=out
+
+MDEF_SIMINFOFILE=siminfo.out
+

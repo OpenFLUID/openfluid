@@ -34,6 +34,7 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 */
 wxArrayString SplitString(const wxString StrToSplit, const wxString SepString);
 
+wxString GenerateSimulationID();
 
 
 

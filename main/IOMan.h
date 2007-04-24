@@ -12,6 +12,7 @@
 #include "mhydasdk-core.h"
 #include "RuntimeEnv.h"
 
+
 #include <wx/list.h>
 //#include <wx/dynarray.h>
 #include <vector>
@@ -40,6 +41,8 @@ WX_DECLARE_LIST(FunctionConfig, FunctionConfigsList);
 struct EngineConfig
 {
   int DeltaT;
+  
+  wxString SimulationID;
 
   FunctionConfigsList FuncConfigs;
 
@@ -113,7 +116,10 @@ class IOManager
 
     bool saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
                             wxString ColSeparator, wxString CommentChar,
-                            AutoOutfileDef* Def, wxArrayString DTStrings);
+                            AutoOutfileDef* Def, wxArrayString DTStrings,
+                            ExtraSimInfos ExSI);
+
+
 
 
   public:
@@ -160,8 +166,9 @@ class IOManager
     bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
 
 
-    bool saveResults(mhydasdk::core::CoreRepository *Data);
+    bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
 
+    bool saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo);    
 
     bool loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *SpatialData);
 

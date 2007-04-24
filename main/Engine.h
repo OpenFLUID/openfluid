@@ -22,6 +22,10 @@
 #include <wx/list.h>
 WX_DECLARE_LIST(mhydasdk::base::Function*, FunctionsList);
 
+// =====================================================================
+// =====================================================================
+
+
 
 /**
   Computation engine class
@@ -80,7 +84,7 @@ class Engine
 
     bool run();
 
-    bool saveResults();
+    bool saveResults(ExtraSimInfos ExSI);
 
     EngineConfig getConfig() const { return m_Config; };
 

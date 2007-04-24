@@ -48,6 +48,8 @@ class MHYDASApp : public wxAppConsole
 
     RuntimeEnvironment* mp_RunEnv;
 
+    ExtraSimInfos m_ExSI;
+
     mhydasdk::core::CoreRepository* mp_CoreData;
 
     Engine *mp_Engine;
@@ -101,7 +103,7 @@ class MHYDASApp : public wxAppConsole
     bool loadData();
 
     /**
-      Check global consistency
+      Checks global consistency
     */
     bool checkConsistency();
 

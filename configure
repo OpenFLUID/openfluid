@@ -287,6 +287,7 @@ echo "const wxString MHYDAS_DEFAULT_RSINIFILE = wxT(\"$MDEF_RSINIFILE\");" >> $S
 echo "const wxString MHYDAS_DEFAULT_GUINIFILE = wxT(\"$MDEF_GUINIFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINEVTFILE = wxT(\"$MDEF_RAINEVTFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_RAINDISTRIFILE = wxT(\"$MDEF_RAINDISTRIFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_SIMINFOFILE = wxT(\"$MDEF_SIMINFOFILE\");" >> $SETUPH
 
 echo "" >> $SETUPH
 

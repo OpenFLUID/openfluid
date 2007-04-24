@@ -10,7 +10,26 @@
 
 
 #include <wx/wx.h>
+#include <wx/datetime.h>
 #include "mhydasdk-base.h"
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+   Extra simulation info for post-simulation reporting 
+ */
+struct ExtraSimInfos
+{
+  wxDateTime StartTime;
+  wxTimeSpan RunTime; 
+  wxString SimID;
+};
+
+
+// =====================================================================
+// =====================================================================
 
 
 
