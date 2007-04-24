@@ -16,6 +16,7 @@ HayamiRSFunction::HayamiRSFunction(mhydasdk::core::CoreRepository *CoreData)
 {
   RS_VARIABLE_TO_CREATE("qoutput");
 
+    
   RS_PROPERTY_TO_CHECK("nmanning");
 
 

@@ -29,8 +29,12 @@ HayamiRSPlug::HayamiRSPlug()
   mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
   mp_Signature->ID = wxT("hayamirs");
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
-  mp_Signature->Name = wxT("");
+  mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
   mp_Signature->Description = wxT("");
+
+  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;RS;qoutput;-;-"));
+  
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;RS;nmanning;-;-"));
 
 }
 

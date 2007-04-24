@@ -29,7 +29,7 @@ HayamiSUPlug::HayamiSUPlug()
   mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
   mp_Signature->ID = wxT("hayamisu");
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
-  mp_Signature->Name = wxT("Hayami transfer on surface units");
+  mp_Signature->Name = wxT("Hayami hydrological transfer on surface units");
   mp_Signature->Description = wxT("");
 
   mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;qoutput;Output volume at the outlet of the unit;m3/s"));

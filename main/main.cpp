@@ -260,7 +260,7 @@ void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams,
         std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": " << CurrentStr[0].mb_str(wxConvUTF8) << " ";
         if (CurrentStr[1] == wxT("global")) std::cout << "globally distributed ";
         else std::cout << "distributed on " << CurrentStr[1].mb_str(wxConvUTF8) << "s ";
-        std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")." << std::endl;        
+        std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")" << std::endl;        
       }   
     }
   }

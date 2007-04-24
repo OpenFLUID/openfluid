@@ -39,6 +39,11 @@ MorelSeytouxPlug::MorelSeytouxPlug()
   mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;infiltration;Infiltration through the surface of the unit;m/s"));
 
   mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;ks;Hydraulic conductivity when saturated;m/s"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetares;-;-"));  
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetasat;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;betaMS;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;hc;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("inic;SU;thetaisurf;-;-"));        
 
 }
 
