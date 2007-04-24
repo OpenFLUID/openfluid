@@ -15,7 +15,6 @@ CCLIBS=$(MHYDASDKLIBS) -L$(BASELIBDIR) -ltinyxml $(WXLIBS)
 
 OBJ= $(OBJDIR)/AppTools.o \
      $(OBJDIR)/RuntimeEnv.o \
-     $(OBJDIR)/Module.o \
      $(OBJDIR)/Engine.o \
      $(OBJDIR)/PluginManager.o \
      $(OBJDIR)/ColTextParser.o \

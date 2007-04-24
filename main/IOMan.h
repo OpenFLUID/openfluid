@@ -41,7 +41,7 @@ struct EngineConfig
 {
   int DeltaT;
 
-  FunctionConfigsList ModuleConfig;
+  FunctionConfigsList FuncConfigs;
 
 };
 

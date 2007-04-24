@@ -92,7 +92,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
     // ======= model structure ===========
 
-    // hydromodule
+
     Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("function").Element();
 
 
@@ -128,7 +128,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
           }
 
-          Config->ModuleConfig.Append(FConf);
+          Config->FuncConfigs.Append(FConf);
 
         }
         else delete FConf;
@@ -225,7 +225,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         SUsFileParser.getColsCount() < 1)
     {
 
-      std::cerr << SUsFileParser.getColsCount() << std::endl;
+//      std::cerr << SUsFileParser.getColsCount() << std::endl;
       mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error.");
       return false;
     }
@@ -453,8 +453,11 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
   mhydasdk::core::TimeSerie *Serie;
 
-  if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
+  if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) 
+  && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
+
+//    std::cerr << FileParser.getLinesCount() << std::endl;
 
     Serie = new mhydasdk::core::TimeSerie("m/s");        
 
@@ -489,7 +492,10 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
       mhydasdk::core::ChronDataSource* Source = new mhydasdk::core::ChronDataSource(ID);
       Source->setTimeSerie(Serie);
       IsOK = RainData->addRainSource(Source);
-      if (!IsOK) mhydasdk::base::LastError::Message = wxT("Error adding rain source (ID #") + wxString::Format(wxT("%d"),ID) + wxT(").");
+      if (!IsOK)
+      {
+        mhydasdk::base::LastError::Message = wxT("Error adding rain source (ID #") + wxString::Format(wxT("%d"),ID) + wxT(").");
+      }         
     }
 
   }
@@ -521,7 +527,7 @@ bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
     {
       if (!loadRainFile(RainData,RIFit->first,RIFit->second))
       {
-        mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
+//        mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
         return false;
       }
     }

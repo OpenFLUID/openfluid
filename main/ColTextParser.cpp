@@ -166,7 +166,8 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
   ColumnFile->GuessType();
 
   // parse and loads file contents
-  StrLine = ColumnFile->GetFirstLine();
+
+/*  StrLine = ColumnFile->GetFirstLine();
 
   while (!ColumnFile->Eof())
   {
@@ -175,6 +176,17 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
 
     StrLine = ColumnFile->GetNextLine();
   }
+*/
+
+//  std::cerr << Filename.mb_str(wxConvUTF8) << std::endl;
+
+  for (StrLine=ColumnFile->GetFirstLine();!ColumnFile->Eof();StrLine = ColumnFile->GetNextLine())
+  {
+//    if (isCommentLineStr(StrLine)) std::cerr << "comment" << std::endl;
+//    if (isEmptyLineStr(StrLine)) std::cerr << "vide" << std::endl;    
+    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
+  }
+
 
   ColumnFile->Close();
 
@@ -213,10 +225,13 @@ bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
 
     while (Tkz.HasMoreTokens() && IsOK)
     {
+      // add to the current line
       LineStr->Add(Tkz.GetNextToken());
 
       if (LineStr->Count() == ColumnsNbr)
       {
+        
+        // if current line has ColumnsNbr columns, it is added to the contents
         mp_Contents->Add(LineStr);
 
         if (Tkz.CountTokens() > 0) LineStr = new wxArrayString();

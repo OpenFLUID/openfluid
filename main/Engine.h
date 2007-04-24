@@ -13,11 +13,14 @@
 #include "mhydasdk-core.h"
 #include "mhydasdk-base.h"
 
-#include "Module.h"
+
 #include "IOMan.h"
 #include "PluginManager.h"
 #include "RuntimeEnv.h"
 
+
+#include <wx/list.h>
+WX_DECLARE_LIST(mhydasdk::base::Function*, FunctionsList);
 
 
 /**
@@ -26,7 +29,7 @@
 class Engine
 {
   private:
-     Module *mp_Module;
+
      FunctionsList m_Functions;
 
      mhydasdk::core::CoreRepository* mp_CoreData;
@@ -53,14 +56,9 @@ class Engine
 
      /**
        Processes the config file, check the list of plugins to load,
-       loads them, registers params to pass and builds the processing list of each module.
+       loads them, registers params to pass and builds the processing list.
      */
      bool processConfig();
-
-     /**
-       plugs the processing list into each module.
-     */
-     bool plugFunctions();
 
   public:
     /**
@@ -83,8 +81,6 @@ class Engine
     bool run();
 
     bool saveResults();
-
-    Module *getModule() { return mp_Module; };
 
     EngineConfig getConfig() const { return m_Config; };
 
