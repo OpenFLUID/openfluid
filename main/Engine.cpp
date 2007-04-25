@@ -340,11 +340,6 @@ bool Engine::run()
 bool Engine::saveResults(ExtraSimInfos ExSI)
 {
  
-  
-  if (m_Config.SimulationID != wxT("")) ExSI.SimID = m_Config.SimulationID;
-  else ExSI.SimID = GenerateSimulationID();  
-  
-  
   return (mp_IOMan->saveResults(mp_CoreData,ExSI) && mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
 }
 

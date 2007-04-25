@@ -41,6 +41,12 @@ bool MHYDASApp::buildModel()
 
   printlnExecStatus(ExecStatus);
 
+  if (ExecStatus)
+  {
+    if (mp_Engine->getConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getConfig().SimulationID;
+    else m_ExSI.SimID = GenerateSimulationID();
+  }  
+
   return ExecStatus;
 }
 
@@ -194,6 +200,8 @@ void MHYDASApp::printDataInfos()
   // int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT; 
   
   std::cout << std::endl;
+  std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
+  std::cout << std::endl;  
   std::cout << "Spatial objects: " << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
