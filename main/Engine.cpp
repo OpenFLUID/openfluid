@@ -33,6 +33,17 @@ WX_DEFINE_LIST(FunctionsList);
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
+#define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
+    _M_FuncNode = m_Functions.GetFirst(); \
+    while (_M_FuncNode && statevar) \
+    { \
+      mhydasdk::base::Function* CurrentFunction = (mhydasdk::base::Function*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2; \
+      _M_FuncNode = _M_FuncNode->GetNext(); \
+    }
+
+
+
 // =====================================================================
 // =====================================================================
 
@@ -223,7 +234,7 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
-
+/*
   // prepare data
  
   PARSE_FUNCTION_LIST(prepareData(),IsOK);
@@ -244,7 +255,18 @@ bool Engine::prepareDataAndCheckConsistency()
     mhydasdk::base::LastError::Message = wxT("Consistency error.");
     return false;    
   }
+*/  
+
+  // checks consistency
   
+  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+  if (!IsOK)
+  {
+    mhydasdk::base::LastError::Message = wxT("Consistency error.");
+    return false;    
+  }
+
+
 
 
   // inits the simulation infos and status
