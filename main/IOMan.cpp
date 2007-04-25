@@ -1156,11 +1156,15 @@ bool IOManager::prepareOutputDir()
   bool IsOK = true;
 
   if (!wxDirExists(mp_RunEnv->getOutputDir()))
-  #ifdef __WXMSW__
-  IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
-  #else
-  IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
-  #endif
+  {
+    #ifdef __WXMSW__
+    wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
+    #else
+    wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
+    #endif
+    IsOK = wxDirExists(mp_RunEnv->getOutputDir());
+    
+  }  
 
   return IsOK;
 }
@@ -1351,6 +1355,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
 {
   bool IsOK = true;
 
+
   if (prepareOutputDir())
   {
     int i;
@@ -1359,6 +1364,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
 
     wxArrayString DTStrings;
     mhydasdk::core::TimeSerie* TSerie = Data->getRainEvent()->getRainSourceCollection().begin()->second->getTimeSerie();
+
 
     // preparing and formatting datetime column(s)
     for (i=0;i<TSerie->getItemsCollection()->size();i++)
@@ -1414,6 +1420,8 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
   SimInfoFile.Write(FileContents);
   SimInfoFile.Close();
+
+  return true;
    
 }
 
