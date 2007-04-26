@@ -12,11 +12,37 @@
 
 #include "HayamiTools.h"
 
+// =====================================================================
+// =====================================================================
 
-
-HayamiSUFunction::HayamiSUFunction(mhydasdk::core::CoreRepository *CoreData)
-                : Function(CoreData)
+mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
 {
+  return new HayamiSUFunction();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+HayamiSUFunction::HayamiSUFunction()
+                : PluggableFunction()
+{
+
+  mp_Signature->Author = wxT("Jean-Christophe FABRE");
+  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
+  mp_Signature->ID = wxT("hayamisu");
+  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
+  mp_Signature->Name = wxT("Hayami hydrological transfer on surface units");
+  mp_Signature->Description = wxT("");
+
+  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;qoutput;Output volume at the outlet of the unit;m3/s"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("rvar;SU;runoff;Runoff on the surface of the unit;m/s"));
+
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;nmanning;;"));
+
+
   SU_VARIABLE_TO_CREATE("qoutput");
   
   SU_VARIABLE_TO_CHECK("runoff");
@@ -110,8 +136,7 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 bool HayamiSUFunction::checkConsistency()
 {
-
-  return Function::checkConsistency();
+  return  PluggableFunction::checkConsistency();  
 }
 
 

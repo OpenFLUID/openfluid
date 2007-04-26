@@ -15,7 +15,7 @@
 /**
 
 */
-class MorelSeytouxFunc : public mhydasdk::base::Function
+class MorelSeytouxFunc : public mhydasdk::base::PluggableFunction
 {
   private:
 
@@ -80,7 +80,7 @@ class MorelSeytouxFunc : public mhydasdk::base::Function
     /**
       Constructor
     */
-    MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData);
+    MorelSeytouxFunc();
 
     /**
       Destructor
@@ -99,6 +99,11 @@ class MorelSeytouxFunc : public mhydasdk::base::Function
     bool finalizeRun(mhydasdk::base::SimulationInfo* SimInfo);
 
 
+};
+
+extern "C"
+{
+  DLLIMPORT mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction();
 };
 
 

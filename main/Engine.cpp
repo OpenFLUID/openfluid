@@ -28,7 +28,7 @@ WX_DEFINE_LIST(FunctionsList);
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
-      mhydasdk::base::Function* CurrentFunction = (mhydasdk::base::Function*)_M_FuncNode->GetData(); \
+      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
       if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod; \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
@@ -37,7 +37,7 @@ WX_DEFINE_LIST(FunctionsList);
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
-      mhydasdk::base::Function* CurrentFunction = (mhydasdk::base::Function*)_M_FuncNode->GetData(); \
+      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
       if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2; \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
@@ -112,7 +112,7 @@ bool Engine::processConfig()
 */
   // end display test
 
-  mhydasdk::base::Function* FuncToAdd;
+  mhydasdk::base::PluggableFunction* FuncToAdd;
 
   while (FuncNode)
   {
@@ -262,7 +262,7 @@ bool Engine::prepareDataAndCheckConsistency()
   PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
   if (!IsOK)
   {
-    mhydasdk::base::LastError::Message = wxT("Consistency error.");
+    //mhydasdk::base::LastError::Message = wxT("Consistency error.");
     return false;    
   }
 

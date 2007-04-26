@@ -11,11 +11,38 @@
 
 #include <iostream>
 
-HayamiRSFunction::HayamiRSFunction(mhydasdk::core::CoreRepository *CoreData)
-                : Function(CoreData)
-{
-  RS_VARIABLE_TO_CREATE("qoutput");
+// =====================================================================
+// =====================================================================
 
+mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
+{
+  return new HayamiRSFunction();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+HayamiRSFunction::HayamiRSFunction()
+                : PluggableFunction()
+{
+
+  mp_Signature->Author = wxT("Jean-Christophe FABRE");
+  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
+  mp_Signature->ID = wxT("hayamirs");
+  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
+  mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
+  mp_Signature->Description = wxT("");
+
+  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;RS;qoutput;-;-"));
+  
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;RS;nmanning;-;-"));
+
+
+
+  RS_VARIABLE_TO_CREATE("qoutput");
     
   RS_PROPERTY_TO_CHECK("nmanning");
 
@@ -113,7 +140,7 @@ bool HayamiRSFunction::checkConsistency()
     m_UseUpSUOutput = true;
   } 
 
-  return Function::checkConsistency();
+  return PluggableFunction::checkConsistency();
 }
 
 

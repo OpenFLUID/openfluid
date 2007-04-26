@@ -14,6 +14,7 @@
 #include "RuntimeEnv.h"
 
 
+
 WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
 
 /**
@@ -25,7 +26,7 @@ class PluginManager
 
     RuntimeEnvironment* mp_RunEnv;
 
-    mhydasdk::base::Plugin *getPlugin(wxString PluginFilename);
+    mhydasdk::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);
 
 
   public:
@@ -48,9 +49,9 @@ class PluginManager
     /**
       Returns function and function types
     */
-    mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,
-                                                    mhydasdk::base::FunctionTypeList ReqFuncType,
-                                                    mhydasdk::core::CoreRepository* CoreData);
+    mhydasdk::base::PluggableFunction *getFunctionFromPlugin(wxString PluginName,
+                                                             mhydasdk::base::FunctionTypeList ReqFuncType,
+                                                             mhydasdk::core::CoreRepository* CoreData);
 
 /*
     mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,

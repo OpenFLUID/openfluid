@@ -35,25 +35,25 @@ PluginManager::~PluginManager()
 // =====================================================================
 // =====================================================================
 
-mhydasdk::base::Plugin *PluginManager::getPlugin(wxString PluginFilename)
+mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString PluginFilename)
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
   wxString PluginFile =  mp_RunEnv->getAppDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR + wxFILE_SEP_PATH + PluginFilename;
 
-  mhydasdk::base::Plugin* Plug = NULL;
+  mhydasdk::base::PluggableFunction* Plug = NULL;
 
   // library loading
   if (PlugLib->Load(PluginFile))
   {
     // checks if the handle proc exists
-    if (PlugLib->HasSymbol(wxT("GetMHYDASPlugin")))
+    if (PlugLib->HasSymbol(wxT("GetMHYDASPluggableFunction")))
     {
     	// hooks the handle proc
-    	mhydasdk::base::GetPluginProc PlugProc = (mhydasdk::base::GetPluginProc)PlugLib->GetSymbol(wxT("GetMHYDASPlugin"));
+    	mhydasdk::base::GetPluggableFunctionProc PlugProc = (mhydasdk::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT("GetMHYDASPluggableFunction"));
 
       if (PlugProc != NULL)
       {
-        Plug = PlugProc();       
+        Plug = PlugProc();            
       }
 
       // unloads the library
@@ -75,11 +75,11 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 
   wxArrayString PluginFiles = GetFilesByExt(mp_RunEnv->getAppDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR,MHYDAS_PLUGINS_EXT);
 
-  mhydasdk::base::Plugin* CurrentPlug;
+  mhydasdk::base::PluggableFunction* CurrentPlug;
 
   for (int i=0;i<PluginFiles.GetCount();i++)
   {
-    CurrentPlug = getPlugin(PluginFiles[i]);
+    CurrentPlug = getPluggableFunction(PluginFiles[i]);
     if (CurrentPlug != NULL) Signatures.Add(CurrentPlug->getSignature());
   }
 
@@ -91,24 +91,24 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 // =====================================================================
 // =====================================================================
 
-mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginName,
+mhydasdk::base::PluggableFunction *PluginManager::getFunctionFromPlugin(wxString PluginName,
                                                                mhydasdk::base::FunctionTypeList ReqFuncType,
                                                                mhydasdk::core::CoreRepository* CoreData)
 {
-  mhydasdk::base::Function *Func = NULL;
 
-  mhydasdk::base::Plugin *Plug = getPlugin(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
+  mhydasdk::base::PluggableFunction *Plug = getPluggableFunction(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
 
   if (Plug != NULL)
   {
     if (Plug->getSignature()->FunctionType == ReqFuncType)
     {
-      Func = Plug->getFunction(CoreData);      
+      Plug->setDataRepository(CoreData);
+      return Plug;      
     }
   }
 
 
-  return Func;
+  return Plug;
 }
 
 

@@ -11,9 +11,49 @@
 #include <iostream>
 #include <stdio.h>
 
-MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
-                : Function(CoreData)
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
 {
+  return new MorelSeytouxFunc();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+MorelSeytouxFunc::MorelSeytouxFunc()
+                : PluggableFunction()
+{
+
+  mp_Signature->Author = wxT("Jean-Christophe Fabre");
+  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
+  mp_Signature->ID = wxT("mseytoux");
+  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
+  // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_PRODUCTION;
+  mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
+  mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
+
+  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;runoff;Runoff on the surface of the unit;m/s"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;infiltration;Infiltration through the surface of the unit;m/s"));
+
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;ks;Hydraulic conductivity when saturated;m/s"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetares;-;-"));  
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetasat;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;betaMS;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;hc;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("inic;SU;thetaisurf;-;-"));        
+
+
+
   SU_VARIABLE_TO_CREATE("runoff");
   SU_VARIABLE_TO_CREATE("infiltration");
 
@@ -125,7 +165,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 bool MorelSeytouxFunc::checkConsistency()
 {
 
-  return Function::checkConsistency();
+  return PluggableFunction::checkConsistency();
 }
 
 
