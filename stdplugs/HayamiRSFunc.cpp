@@ -36,6 +36,7 @@ HayamiRSFunction::HayamiRSFunction()
   mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
   mp_Signature->Description = wxT("");
 
+/*
   mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;RS;qoutput;-;-"));
   
   mp_Signature->HandledVarsPropsParams.Add(wxT("prop;RS;nmanning;-;-"));
@@ -45,7 +46,10 @@ HayamiRSFunction::HayamiRSFunction()
   RS_VARIABLE_TO_CREATE("qoutput");
     
   RS_PROPERTY_TO_CHECK("nmanning");
+*/
 
+  DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
+  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("-"),wxT("-"));
 
 
   m_MaxSteps = 100;    
@@ -136,7 +140,7 @@ bool HayamiRSFunction::checkConsistency()
   m_UseUpSUOutput = false; 
   if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
   {
-    SU_VARIABLE_TO_CHECK("qoutput");
+    DECLARE_SU_USED_VAR("qoutput");
     m_UseUpSUOutput = true;
   } 
 
