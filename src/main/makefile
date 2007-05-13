@@ -1,7 +1,7 @@
 # main program makefile
 
 
-include ../makeopts.inc
+include ../../makeopts.inc
 
 OBJDIR=$(BASEOBJDIR)/main
 BINDIR=$(BASEBINDIR)

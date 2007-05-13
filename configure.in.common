@@ -8,7 +8,7 @@ RELEASE_CCCFLAGS=-O3
 NIGHTLY_CCCFLAGS=
 DEVEL_CCCFLAGS=-g3
 
-SETUPH=main/setup.h
+SETUPH=setup.h
 
 EXEFILEROOT=mhydas-mpp
 
@@ -16,9 +16,12 @@ SDKCONFIGTOOL=mhydasdk-config
 
 PLUGSUBDIR=plugs
 
+APPNAME=mhydas
+
 
 MAJORVER=0
-MINORVER=`date +%-y.%m`
+#MINORVER=`date +%-y.%m`
+MINORVER=7
 
 INPUT_RAIN_MMH=1
 

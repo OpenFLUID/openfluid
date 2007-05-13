@@ -49,6 +49,7 @@ fi
 
 
 . ./configure.in.common
+. ./configure.in.$OSTYPE
 
 
 ############################
@@ -57,6 +58,8 @@ fi
 
 
 OPTFILE=makeopts.inc
+
+SETUPH=src/main/$SETUPH
 
 rm -f $OPTFILE
 rm -f $SETUPH
@@ -266,6 +269,13 @@ echo "#include <wx/string.h>" >> $SETUPH
 
 echo "" >> $SETUPH
 
+echo "// App Name" >> $SETUPH
+echo "const wxString MHYDAS_APPNAME = wxT(\"$APPNAME\");" >> $SETUPH
+
+echo "" >> $SETUPH
+
+
+
 echo "// Default directories" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_INDIR = wxT(\"$MDEF_INDIR\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_OUTDIR = wxT(\"$MDEF_OUTDIR\");" >> $SETUPH
@@ -309,9 +319,9 @@ echo "const wxString MHYDAS_PLUGINS_EXT = wxT(\"$PLUGINEXT\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
-echo "// Plugins subdir" >> $SETUPH
+echo "// Plugins dirs" >> $SETUPH
 echo "const wxString MHYDAS_PLUGINS_SUBDIR = wxT(\"$PLUGSUBDIR\");" >> $SETUPH
-
+echo "const wxString MHYDAS_PLUGINS_STDSYSDIR = wxT(\"$STDSYSDIR/$APPNAME/$PLUGSUBDIR\");" >> $SETUPH
 echo "" >> $SETUPH
 
 

@@ -44,6 +44,8 @@ class RuntimeEnvironment
     wxString m_InputDir;
     wxString m_AppDir;
 
+    wxArrayString m_PlugsDirs;
+
   public:
 
     /**
@@ -76,6 +78,8 @@ class RuntimeEnvironment
     wxString getInputFullPath(wxString Filename) const { return m_InputDir + wxFILE_SEP_PATH + Filename; };
 
     wxString getOutputFullPath(wxString Filename) const { return m_OutputDir + wxFILE_SEP_PATH + Filename; };
+    
+    wxString getPluginFullPath(wxString Filename);
 
 };
 

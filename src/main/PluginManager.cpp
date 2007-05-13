@@ -38,7 +38,7 @@ PluginManager::~PluginManager()
 mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString PluginFilename)
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
-  wxString PluginFile =  mp_RunEnv->getAppDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR + wxFILE_SEP_PATH + PluginFilename;
+  wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
 
   mhydasdk::base::PluggableFunction* Plug = NULL;
 

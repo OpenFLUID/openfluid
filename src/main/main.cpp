@@ -384,6 +384,8 @@ bool MHYDASApp::OnInit()
 
   m_OKToRun = true;
 
+  SetAppName(MHYDAS_APPNAME);
+
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
 
   mp_PlugMan = new PluginManager(mp_RunEnv);

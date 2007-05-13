@@ -2,7 +2,7 @@
 
 
 
-include ../makeopts.inc
+include ../../makeopts.inc
 
 OBJDIR=$(BASEOBJDIR)/stdplugs
 BINDIR=$(BASEBINDIR)/$(PLUGSUBDIR)
