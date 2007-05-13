@@ -14,23 +14,23 @@ all: main stdplugs
 main:
 	@echo ""
 	@echo "==== Compiling main program ===="
-	@(cd main && $(MAKE))
+	@(cd src/main && $(MAKE))
 
 
 stdplugs:
 	@echo ""
 	@echo "==== Compiling plugins ===="
-	@(cd stdplugs && $(MAKE))
+	@(cd src/stdplugs && $(MAKE))
 
 
 clean:
-	@(cd main && $(MAKE) clean)
-	@(cd stdplugs && $(MAKE) clean)
+	@(cd src/main && $(MAKE) clean)
+	@(cd src/stdplugs && $(MAKE) clean)
 
 
 doc:
-	@(cd main && $(MAKE) doc)
-	@(cd stdplugs && $(MAKE) doc)
+	@(cd src/main && $(MAKE) doc)
+	@(cd src/stdplugs && $(MAKE) doc)
 
 
 purge: clean

@@ -18,7 +18,7 @@ PLUGSUBDIR=plugs
 
 
 MAJORVER=0
-MINORVER=`date +%y.%m`
+MINORVER=`date +%-y.%m`
 
 INPUT_RAIN_MMH=1
 
