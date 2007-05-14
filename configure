@@ -228,6 +228,10 @@ echo "BUILDVER = $BUILDVER" >> $OPTFILE
 echo "# svn revision value" >> $OPTFILE
 echo "SVNREV = $SVNREV" >> $OPTFILE
 
+echo "# version" >> $OPTFILE
+echo "MAJORVER = $MAJORVER" >> $OPTFILE
+echo "MINORVER = $MINORVER" >> $OPTFILE
+
 
 echo "# package name root" >> $OPTFILE
 if [ "$BUILDVER" = "nightly" ]; then
@@ -244,7 +248,24 @@ if [ -z $BUILDVER ]; then
 fi
 
 
+echo "# Packages infos" >> $OPTFILE
 
+
+echo "PACKMAINTAINER=$PACKMAINTAINER" >> $OPTFILE
+echo "PACKDEPENDS=$PACKDEPENDS" >> $OPTFILE
+echo "PACKSECTION=$PACKSECTION" >> $OPTFILE
+echo "PACKPRIORITY=$PACKPRIORITY" >> $OPTFILE
+echo "PACKARCH=$PACKARCH" >> $OPTFILE
+echo "PACKDESC=$PACKDESC" >> $OPTFILE
+
+echo "PACKROOT = $PACKROOT" >> $OPTFILE
+
+PACKNAME=$PACKROOT\_$MAJORVER.$MINORVER\_$PACKARCH
+
+echo "PACKNAME = $PACKNAME" >> $OPTFILE
+
+echo "APPNAME = $APPNAME" >> $OPTFILE
+echo "STDSYSDIR = $STDSYSDIR" >> $OPTFILE
 
 echo "configuration file for compilation generated ($OPTFILE)"
 
