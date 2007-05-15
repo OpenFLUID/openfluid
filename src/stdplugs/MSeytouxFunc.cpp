@@ -73,7 +73,10 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   DECLARE_SU_REQUIRED_PROPERTY("hc",wxT("-"),wxT("-"));
 
 //  SU_INICOND_TO_CHECK("thetaisurf");
-  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));  
+  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));
+  
+
+  DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT("-"));
   
   m_ResStep = 0.000005;
   

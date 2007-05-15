@@ -52,7 +52,7 @@ deb-packages: all
 	@cp resources/doc/* $(BASEPACKDIR)/debian/$(PACKNAME)/usr/share/doc/$(PACKROOT)
 	@cp resources/debian/* $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/copyright
-	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)" > $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
+	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(PACKNAME))
 
 

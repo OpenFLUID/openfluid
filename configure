@@ -74,7 +74,7 @@ esac
 
 SVNREV=x
 if [ -x /usr/bin/svn ]; then
-  SVNREV=`svn info --revision HEAD | grep "vision :" | cut -d" " -f3 `  
+  SVNREV=`svn info | grep "vision :" | cut -d" " -f3 `  
 fi
 
 
