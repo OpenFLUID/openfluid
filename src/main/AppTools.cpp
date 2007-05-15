@@ -8,6 +8,9 @@
 #include <wx/filename.h>
 #include <wx/dir.h>
 #include <wx/tokenzr.h>
+#include <wx/datetime.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "AppTools.h"
 
@@ -85,7 +88,7 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 
   if (DirManager.IsOpened())
   {
-    // listage des plugins présents
+    // listage des plugins prï¿½sents
 
     wxString FoundFile;
 
@@ -119,4 +122,30 @@ wxArrayString SplitString(const wxString StrToSplit, const wxString SepString)
   }
 
   return SplitParts;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+wxString GenerateSimulationID()
+{
+  wxString BaseStr = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZ");  
+
+  wxString IDStr = wxT("");
+
+  IDStr = wxDateTime::Now().Format(wxT("%Y%m%d")) + wxT("-");
+  
+  srand(time(NULL));
+  
+  
+  for (int i=0;i<6;i++)
+  {
+    IDStr << BaseStr[rand() % 26]; 
+  }
+
+  
+  
+  return IDStr;
+  
 }

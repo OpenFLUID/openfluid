@@ -7,24 +7,76 @@
 
 #include "MSeytouxFunc.h"
 #include "math.h"
-#include "setup.h"
+//#include "setup.h"
 #include <iostream>
 #include <stdio.h>
 
-MorelSeytouxFunc::MorelSeytouxFunc(mhydasdk::core::CoreRepository *CoreData)
-                : Function(CoreData)
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
 {
-  SU_VARIABLE_TO_CREATE("runoff");
-  SU_VARIABLE_TO_CREATE("infiltration");
+  return new MorelSeytouxFunc();
+}
 
-  SU_PROPERTY_TO_CHECK("ks");
-  SU_PROPERTY_TO_CHECK("thetares");
-  SU_PROPERTY_TO_CHECK("thetasat");  
-  SU_PROPERTY_TO_CHECK("betaMS");  
-  SU_PROPERTY_TO_CHECK("hc");  
 
-  SU_INICOND_TO_CHECK("thetaisurf");
+// =====================================================================
+// =====================================================================
+
+
+
+
+MorelSeytouxFunc::MorelSeytouxFunc()
+                : PluggableFunction()
+{
+
+  mp_Signature->Author = wxT("Jean-Christophe Fabre");
+  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
+  mp_Signature->ID = wxT("mseytoux");
+  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
+  // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_PRODUCTION;
+  mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
+  mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
+
+//  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;runoff;Runoff on the surface of the unit;m/s"));
+//  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;infiltration;Infiltration through the surface of the unit;m/s"));
+/*
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;ks;Hydraulic conductivity when saturated;m/s"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetares;-;-"));  
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetasat;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;betaMS;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;hc;-;-"));
+  mp_Signature->HandledVarsPropsParams.Add(wxT("inic;SU;thetaisurf;-;-"));        
+*/
+
+
+//  SU_VARIABLE_TO_CREATE("runoff");
+  DECLARE_SU_PRODUCED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));
+
+//  SU_VARIABLE_TO_CREATE("infiltration");
+  DECLARE_SU_PRODUCED_VAR("infiltration",wxT("Infiltration through the surface of the unit"),wxT("m/s"));
+
+//  SU_PROPERTY_TO_CHECK("ks");
+  DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("Hydraulic conductivity when saturated"),wxT("m/s"));
+
+//  SU_PROPERTY_TO_CHECK("thetares");
+  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT("-"),wxT("-"));  
+//  SU_PROPERTY_TO_CHECK("thetasat");  
+  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT("-"),wxT("-"));  
+//  SU_PROPERTY_TO_CHECK("betaMS");  
+  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT("-"),wxT("-"));  
+//   SU_PROPERTY_TO_CHECK("hc");  
+  DECLARE_SU_REQUIRED_PROPERTY("hc",wxT("-"),wxT("-"));
+
+//  SU_INICOND_TO_CHECK("thetaisurf");
+  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));
   
+
+  DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT("-"));
   
   m_ResStep = 0.000005;
   
@@ -45,8 +97,8 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 
 bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 {
-
-  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];      
+//  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];
+  MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);      
   
   return true;
 }
@@ -69,10 +121,17 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   DECLARE_SU_ORDERED_LOOP
   BEGIN_SU_ORDERED_LOOP(SU)
 
-    ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
-    ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;
-    ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;
-    Hc = SU->getProperties()->find(wxT("hc"))->second;
+
+    //ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
+    MHYDAS_GetDistributedProperty(SU,wxT("thetares"),&ThetaR);
+    //ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;    
+    MHYDAS_GetDistributedProperty(SU,wxT("thetasat"),&ThetaS);
+    //ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;  
+    MHYDAS_GetDistributedIniCondition(SU,wxT("thetaisurf"),&ThetaI);
+    //Hc = SU->getProperties()->find(wxT("hc"))->second;    
+    MHYDAS_GetDistributedProperty(SU,wxT("hc"),&Hc);
+    
+            
     
     // Computing ThetaStar
     ThetaStar = (ThetaI - ThetaR) / (ThetaS - ThetaR);
@@ -85,8 +144,8 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
     m_SUSatState[SU->getID()] = 0;
 
     // sets whether the upstream output should be used or not.
-    // a  revoir
-    m_UseUpstreamOutput[SU->getID()] = SIMVAR_EXISTS(SU,"qoutput");
+    // a revoir
+    m_UseUpstreamOutput[SU->getID()] = MHYDAS_IsDistributedVarExists(SU,wxT("qoutput"));
     
     m_CurrentUpstreamInput[SU->getID()] = 0;
     
@@ -118,7 +177,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 bool MorelSeytouxFunc::checkConsistency()
 {
 
-  return Function::checkConsistency();
+  return PluggableFunction::checkConsistency();
 }
 
 
@@ -154,6 +213,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   double InfiltrationCapacity;
   float Area;
 
+  float TmpValue;
 
   mhydasdk::core::SurfaceUnit* SU;
   mhydasdk::core::SurfaceUnit* UpSU;
@@ -168,15 +228,17 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ID = SU->getID();
-    Ks = SU->getProperties()->find(wxT("ks"))->second;
-    Beta = SU->getProperties()->find(wxT("betaMS"))->second;
+    //Ks = SU->getProperties()->find(wxT("ks"))->second;
+    MHYDAS_GetDistributedProperty(SU,wxT("ks"),&Ks);
+    //Beta = SU->getProperties()->find(wxT("betaMS"))->second;
+    MHYDAS_GetDistributedProperty(SU,wxT("betaMS"),&Beta);    
     Area = SU->getUsrArea();
     
     CurrentRunoff = 0;
     CurrentInfiltration = 0;
 
     
-    // ajout des apports des unites amont (sorties des unites amont a  t-1)
+    // ajout des apports des unites amont (sorties des unites amont a t-1)
     // adding upstream units output (step n-1) to rain    
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
@@ -186,12 +248,16 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
       {                
         UpSU = *UpSUiter;
-        OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;        
+        //OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep-1,&TmpValue);
+        OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
       }
       m_CurrentUpstreamInput[ID] = OutputsSum;
     } 
-    // transformation de la pluie de m/s en m/pas de temps
-    CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;
+    // transformation de la pluie de m/s en m/pas de temps    
+    // CurrentRain = GET_SU_RAINVALUE(SU,CurrentStep) * TimeStep;    
+    MHYDAS_GetDistributedRainValue(SU,CurrentStep,&CurrentRain);
+    CurrentRain = CurrentRain * TimeStep;
 
 
     // calcul de l'intensite de pluie
@@ -287,8 +353,10 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       CurrentInfiltration = (m_CurrentUpstreamInput[ID] + CurrentRain) - CurrentRunoff;
     }   
 
-    APPEND_SIMVAR_VALUE(SU,"runoff",CurrentRunoff);
-    APPEND_SIMVAR_VALUE(SU,"infiltration",CurrentInfiltration);
+    //APPEND_SIMVAR_VALUE(SU,"runoff",CurrentRunoff);
+    MHYDAS_AppendDistributedVarValue(SU, wxT("runoff"), CurrentRunoff);
+    //APPEND_SIMVAR_VALUE(SU,"infiltration",CurrentInfiltration);
+    MHYDAS_AppendDistributedVarValue(SU, wxT("infiltration"), CurrentInfiltration);
   END_LOOP
 
 

@@ -10,8 +10,8 @@
 #include <wx/cmdline.h>
 #include <wx/datetime.h>
 
-#include "sdk-base.h"
-#include "sdk-core.h"
+#include "mhydasdk-base.h"
+#include "mhydasdk-core.h"
 
 
 #include "Engine.h"
@@ -46,7 +46,9 @@ class MHYDASApp : public wxAppConsole
 
     bool m_OKToRun;
 
-    mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+    RuntimeEnvironment* mp_RunEnv;
+
+    ExtraSimInfos m_ExSI;
 
     mhydasdk::core::CoreRepository* mp_CoreData;
 
@@ -101,7 +103,7 @@ class MHYDASApp : public wxAppConsole
     bool loadData();
 
     /**
-      Check global consistency
+      Checks global consistency
     */
     bool checkConsistency();
 

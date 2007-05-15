@@ -10,12 +10,20 @@
 #define __ENGINE_H__
 
 
-#include "sdk-core.h"
-#include "sdk-base.h"
+#include "mhydasdk-core.h"
+#include "mhydasdk-base.h"
 
-#include "Module.h"
+
 #include "IOMan.h"
 #include "PluginManager.h"
+#include "RuntimeEnv.h"
+
+
+#include <wx/list.h>
+WX_DECLARE_LIST(mhydasdk::base::Function*, FunctionsList);
+
+// =====================================================================
+// =====================================================================
 
 
 
@@ -25,12 +33,12 @@
 class Engine
 {
   private:
-     Module *mp_Module;
+
      FunctionsList m_Functions;
 
      mhydasdk::core::CoreRepository* mp_CoreData;
 
-     mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+     RuntimeEnvironment* mp_RunEnv;
 
      mhydasdk::base::SimulationStatus* mp_SimStatus;
 
@@ -52,20 +60,15 @@ class Engine
 
      /**
        Processes the config file, check the list of plugins to load,
-       loads them, registers params to pass and builds the processing list of each module.
+       loads them, registers params to pass and builds the processing list.
      */
      bool processConfig();
-
-     /**
-       plugs the processing list into each module.
-     */
-     bool plugFunctions();
 
   public:
     /**
       Constructor
     */
-    Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
+    Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* RunEnv,
            PluginManager* PlugMan);
 
     /**
@@ -81,12 +84,11 @@ class Engine
 
     bool run();
 
-    bool saveResults();
-
-    Module *getModule() { return mp_Module; };
+    bool saveResults(ExtraSimInfos ExSI);
 
     EngineConfig getConfig() const { return m_Config; };
 
+    mhydasdk::base::SimulationInfo *getSimulationInfo() { return (mhydasdk::base::SimulationInfo*)mp_SimStatus; };
 
 };
 

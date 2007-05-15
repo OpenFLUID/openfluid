@@ -10,8 +10,8 @@
 #define __HAYAMIRSFUNC_H__
 
 
-#include "sdk-core.h"
-#include "sdk-base.h"
+#include "mhydasdk-core.h"
+#include "mhydasdk-base.h"
 #include "HayamiTools.h"
 
 // =====================================================================
@@ -20,7 +20,7 @@
 /**
 
 */
-class HayamiRSFunction : public mhydasdk::base::Function
+class HayamiRSFunction : public mhydasdk::base::PluggableFunction
 {
   private:
 
@@ -48,7 +48,7 @@ class HayamiRSFunction : public mhydasdk::base::Function
     /**
       Constructor
     */
-    HayamiRSFunction(mhydasdk::core::CoreRepository *CoreData);
+    HayamiRSFunction();
 
     /**
       Destructor
@@ -66,6 +66,16 @@ class HayamiRSFunction : public mhydasdk::base::Function
     bool finalizeRun(mhydasdk::base::SimulationInfo* SimInfo);
 
 };
+
+// =====================================================================
+// =====================================================================
+
+extern "C"
+{
+  DLLIMPORT mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction();
+};
+
+
 
 
 #endif  // __HAYAMIRSFUNC_H__

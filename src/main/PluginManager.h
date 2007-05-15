@@ -9,8 +9,10 @@
 #ifndef __PLUGINMANAGER_H__
 #define __PLUGINMANAGER_H__
 
-#include "sdk-base.h"
-#include "sdk-core.h"
+#include "mhydasdk-base.h"
+#include "mhydasdk-core.h"
+#include "RuntimeEnv.h"
+
 
 
 WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
@@ -22,16 +24,16 @@ class PluginManager
 {
   private:
 
-    mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+    RuntimeEnvironment* mp_RunEnv;
 
-    mhydasdk::base::Plugin *getPlugin(wxString PluginFilename);
+    mhydasdk::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);
 
 
   public:
     /**
       Constructor
     */
-    PluginManager(mhydasdk::base::RuntimeEnvironment* RunEnv);
+    PluginManager(RuntimeEnvironment* RunEnv);
 
     /**
       Destructor
@@ -45,11 +47,11 @@ class PluginManager
 
 
     /**
-      Returns function, matching module and function types
+      Returns function and function types
     */
-    mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,
-                                                    mhydasdk::base::FunctionTypeList ReqFuncType,
-                                                    mhydasdk::core::CoreRepository* CoreData);
+    mhydasdk::base::PluggableFunction *getFunctionFromPlugin(wxString PluginName,
+                                                             mhydasdk::base::FunctionTypeList ReqFuncType,
+                                                             mhydasdk::core::CoreRepository* CoreData);
 
 /*
     mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,

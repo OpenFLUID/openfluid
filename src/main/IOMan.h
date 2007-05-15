@@ -8,8 +8,10 @@
 #ifndef __IOMAN_H__
 #define __IOMAN_H__
 
-#include "sdk-base.h"
-#include "sdk-core.h"
+#include "mhydasdk-base.h"
+#include "mhydasdk-core.h"
+#include "RuntimeEnv.h"
+
 
 #include <wx/list.h>
 //#include <wx/dynarray.h>
@@ -39,8 +41,10 @@ WX_DECLARE_LIST(FunctionConfig, FunctionConfigsList);
 struct EngineConfig
 {
   int DeltaT;
+  
+  wxString SimulationID;
 
-  FunctionConfigsList ModuleConfig;
+  FunctionConfigsList FuncConfigs;
 
 };
 
@@ -93,7 +97,7 @@ struct AutoOutfiles
 class IOManager
 {
   private:
-    mhydasdk::base::RuntimeEnvironment* mp_RunEnv;
+    RuntimeEnvironment* mp_RunEnv;
 
     mhydasdk::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
 
@@ -112,14 +116,17 @@ class IOManager
 
     bool saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
                             wxString ColSeparator, wxString CommentChar,
-                            AutoOutfileDef* Def, wxArrayString DTStrings);
+                            AutoOutfileDef* Def, wxArrayString DTStrings,
+                            ExtraSimInfos ExSI);
+
+
 
 
   public:
     /**
       Constructor
     */
-    IOManager(mhydasdk::base::RuntimeEnvironment* RunEnv);
+    IOManager(RuntimeEnvironment* RunEnv);
 
     /**
       Destructor
@@ -159,8 +166,9 @@ class IOManager
     bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
 
 
-    bool saveResults(mhydasdk::core::CoreRepository *Data);
+    bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
 
+    bool saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo);    
 
     bool loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *SpatialData);
 

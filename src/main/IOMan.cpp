@@ -14,7 +14,6 @@
 #include "IOMan.h"
 #include "ColTextParser.h"
 #include "setup.h"
-#include "SIFactors.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
 
@@ -35,7 +34,7 @@ WX_DEFINE_OBJARRAY(ArrayOfAutoOutfileDefs);*/
 
 
 
-IOManager::IOManager(mhydasdk::base::RuntimeEnvironment* RunEnv)
+IOManager::IOManager(RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
 }
@@ -67,6 +66,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
   wxString Str;
   double DoubleValue;
   int IntValue;
+  
 
   FunctionConfig* FConf;
 
@@ -77,24 +77,35 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
 
     // =========== run params ===========
-    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("runparams").FirstChild("param").Element();
+    Child = DocHandle.FirstChild("mhydas").FirstChild("runparams").FirstChild("param").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
     {
+
+      // process of "deltat" attribute
       if (Child->Attribute("name") != NULL && wxString(Child->Attribute("name"),wxConvUTF8) == wxT("deltat") &&
 		  Child->Attribute("value",&IntValue) != NULL)
 	    {
         Config->DeltaT = IntValue;
 	    }
 
+      // process of "simID" attribute
+      if (Child->Attribute("name") != NULL && wxString(Child->Attribute("name"),wxConvUTF8) == wxT("simID") &&
+      Child->Attribute("value") != NULL)
+      {
+        Config->SimulationID = wxString(Child->Attribute("value"),wxConvUTF8);
+      }
+
+
+
     }
 
 
     // ======= model structure ===========
 
-    // hydromodule
-    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("module").FirstChild("function").Element();
+
+    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("function").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
@@ -129,7 +140,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
           }
 
-          Config->ModuleConfig.Append(FConf);
+          Config->FuncConfigs.Append(FConf);
 
         }
         else delete FConf;
@@ -226,7 +237,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         SUsFileParser.getColsCount() < 1)
     {
 
-      std::cerr << SUsFileParser.getColsCount() << std::endl;
+//      std::cerr << SUsFileParser.getColsCount() << std::endl;
       mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error.");
       return false;
     }
@@ -454,8 +465,11 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
   mhydasdk::core::TimeSerie *Serie;
 
-  if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
+  if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) 
+  && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
+
+//    std::cerr << FileParser.getLinesCount() << std::endl;
 
     Serie = new mhydasdk::core::TimeSerie("m/s");        
 
@@ -490,7 +504,10 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
       mhydasdk::core::ChronDataSource* Source = new mhydasdk::core::ChronDataSource(ID);
       Source->setTimeSerie(Serie);
       IsOK = RainData->addRainSource(Source);
-      if (!IsOK) mhydasdk::base::LastError::Message = wxT("Error adding rain source (ID #") + wxString::Format(wxT("%d"),ID) + wxT(").");
+      if (!IsOK)
+      {
+        mhydasdk::base::LastError::Message = wxT("Error adding rain source (ID #") + wxString::Format(wxT("%d"),ID) + wxT(").");
+      }         
     }
 
   }
@@ -522,7 +539,7 @@ bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
     {
       if (!loadRainFile(RainData,RIFit->first,RIFit->second))
       {
-        mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
+//        mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
         return false;
       }
     }
@@ -1139,11 +1156,15 @@ bool IOManager::prepareOutputDir()
   bool IsOK = true;
 
   if (!wxDirExists(mp_RunEnv->getOutputDir()))
-  #ifdef __WXMSW__
-  IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
-  #else
-  IsOK = wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
-  #endif
+  {
+    #ifdef __WXMSW__
+    wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
+    #else
+    wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
+    #endif
+    IsOK = wxDirExists(mp_RunEnv->getOutputDir());
+    
+  }  
 
   return IsOK;
 }
@@ -1153,7 +1174,8 @@ bool IOManager::prepareOutputDir()
 
 bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
                                    wxString ColSeparator, wxString CommentChar,
-                                   AutoOutfileDef* Def, wxArrayString DTStrings)
+                                   AutoOutfileDef* Def, wxArrayString DTStrings,
+                                   ExtraSimInfos ExSI)
 {
 
   wxString FileContents;
@@ -1284,6 +1306,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
       FileContents.Clear();
 
       // file header
+      FileContents << CommentChar << wxT(" simulation ID: ") << ExSI.SimID << wxT("\n");
       FileContents << CommentChar << wxT(" file: ") << Filename << wxT("\n");
       FileContents << CommentChar << wxT(" object ID: ") << HOSet[i]->getID() << wxT("\n");
       FileContents << CommentChar << wxT(" columns order (after date and time): ") << ColsStr << wxT("\n");
@@ -1328,9 +1351,10 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
 
 
-bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
+bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI)
 {
   bool IsOK = true;
+
 
   if (prepareOutputDir())
   {
@@ -1340,6 +1364,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
 
     wxArrayString DTStrings;
     mhydasdk::core::TimeSerie* TSerie = Data->getRainEvent()->getRainSourceCollection().begin()->second->getTimeSerie();
+
 
     // preparing and formatting datetime column(s)
     for (i=0;i<TSerie->getItemsCollection()->size();i++)
@@ -1355,13 +1380,49 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data)
 
       saveResultsFromDef(Data->getSpatialData(),
                          m_AutoOutFiles.ColSeparator,m_AutoOutFiles.CommentChar,
-                         CurrentDef,DTStrings);
+                         CurrentDef,DTStrings,ExSI);
 
     }
 
   }
 
   return IsOK;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo)
+{
+  
+  wxString FileContents = wxT("");
+
+  FileContents << wxT("Simulation report") << wxT("\n");
+  FileContents << wxT("=================") << wxT("\n");
+  FileContents << wxT("\n");
+  FileContents << wxT("Simulation ID: ") << ExSI.SimID << wxT("\n");
+  FileContents << wxT("Date: ") << ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S")) << wxT("\n");
+  FileContents << wxT("Computer: ") << wxGetHostName() << wxT("\n");
+  FileContents << wxT("User: ") << wxGetUserId() << wxT(" (") << wxGetUserName() << wxT(")") << wxT("\n");      
+  FileContents << wxT("\n");
+  FileContents << wxT("Input data set: ") << mp_RunEnv->getInputDir() << wxT("\n");  
+  FileContents << wxT("Output data set: ") << mp_RunEnv->getOutputDir()  << wxT("\n");  
+  FileContents << wxT("\n");  
+  FileContents << wxT("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << wxT("\n");  
+  FileContents << wxT("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << wxT("\n");
+  FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");    
+  FileContents << wxT("Rain gauges: ") << CoreData->getRainEvent()->getRainSourceCollection().size() << wxT("\n");  
+  FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
+  FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
+  FileContents << wxT("\n");
+  
+        
+  wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
+  SimInfoFile.Write(FileContents);
+  SimInfoFile.Close();
+
+  return true;
+   
 }
 
 

@@ -1,6 +1,6 @@
 # tinyxml makefile
 
-include ../../makeopts.inc
+include ../../../makeopts.inc
 
 
 CCFLAGS = -Wall -Wno-unknown-pragmas -Wno-format -O3

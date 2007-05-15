@@ -41,6 +41,12 @@ bool MHYDASApp::buildModel()
 
   printlnExecStatus(ExecStatus);
 
+  if (ExecStatus)
+  {
+    if (mp_Engine->getConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getConfig().SimulationID;
+    else m_ExSI.SimID = GenerateSimulationID();
+  }  
+
   return ExecStatus;
 }
 
@@ -120,12 +126,13 @@ bool MHYDASApp::saveResults()
   std::cout << "* Saving results... ";
   std::cout.flush();
 
-  ExecStatus = mp_Engine->saveResults();
+  ExecStatus = mp_Engine->saveResults(m_ExSI);
 
   printlnExecStatus(ExecStatus);
 
   return ExecStatus;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -190,17 +197,19 @@ void MHYDASApp::printMHYDASInfos()
 
 void MHYDASApp::printDataInfos()
 {
-  int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT; 
+  // int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT; 
   
   std::cout << std::endl;
+  std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
+  std::cout << std::endl;  
   std::cout << "Spatial objects: " << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
   std::cout << "Rain source(s): " << mp_CoreData->getRainEvent()->getRainSourceCollection().size() << std::endl;
-  std::cout << "Simulation from " << _C(mp_CoreData->getRainEvent()->getEventStartingTime().asString())
-            << " to " << _C(mp_CoreData->getRainEvent()->getEventEndingTime().asString()) << std::endl
-            << "         -> " <<  (TimeStepsNbr+1) << " time steps of " << mp_Engine->getConfig().DeltaT << " seconds" << std::endl;
+  std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().asString())
+            << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().asString()) << std::endl
+            << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
 
@@ -260,7 +269,7 @@ void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams,
         std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": " << CurrentStr[0].mb_str(wxConvUTF8) << " ";
         if (CurrentStr[1] == wxT("global")) std::cout << "globally distributed ";
         else std::cout << "distributed on " << CurrentStr[1].mb_str(wxConvUTF8) << "s ";
-        std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")." << std::endl;        
+        std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")" << std::endl;        
       }   
     }
   }
@@ -291,6 +300,9 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       {
         std::cout << "    <funcdef ID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
                   << "\" name=\"" << Signatures[i]->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
+        std::cout << "      <domain>" << Signatures[i]->Domain.mb_str(wxConvUTF8) << "</domain>" << std::endl;
+        std::cout << "      <process>" << Signatures[i]->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
+        std::cout << "      <method>" << Signatures[i]->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
         std::cout << "      <description>" << Signatures[i]->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
         std::cout << "      <version major=\"" << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) 
                   << "\" minor=\"" << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << "\"/>" << std::endl;
@@ -306,6 +318,9 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       {
         std::cout << "* " << Signatures[i]->ID.mb_str(wxConvUTF8) << std::endl;           
         std::cout << "   - Name: " << Signatures[i]->Name.mb_str(wxConvUTF8) << std::endl;        
+        std::cout << "   - Domain: " << Signatures[i]->Domain.mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Process: " << Signatures[i]->Process.mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Method: " << Signatures[i]->Method.mb_str(wxConvUTF8) << std::endl;                
         std::cout << "   - Description: " << Signatures[i]->Description.mb_str(wxConvUTF8) << std::endl;                
         std::cout << "   - Version: " << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) << "." << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << std::endl;                        
         std::cout << "   - Author: " << Signatures[i]->Author.mb_str(wxConvUTF8) << " (" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << ")" << std::endl;                                
@@ -369,6 +384,8 @@ bool MHYDASApp::OnInit()
 
   m_OKToRun = true;
 
+  SetAppName(MHYDAS_APPNAME);
+
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
 
   mp_PlugMan = new PluginManager(mp_RunEnv);
@@ -410,7 +427,7 @@ bool MHYDASApp::OnInit()
     
     if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(TmpStr);
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
-    if (Parser.Found(wxT("g"))) mp_RunEnv->setDateTimeOutputDir();
+    if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
 
     wxLogVerbose(wxT("Input dir: ")+mp_RunEnv->getInputDir());
     wxLogVerbose(wxT("Output dir: ")+mp_RunEnv->getOutputDir());
@@ -430,6 +447,7 @@ int MHYDASApp::OnRun()
   {
 
     m_TotalStartTime = wxDateTime::Now();
+    m_ExSI.StartTime = m_TotalStartTime;
 
     mp_CoreData = new CoreRepository();
 
@@ -438,26 +456,31 @@ int MHYDASApp::OnRun()
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);
 
-    // chargement, verification et montage du modele
+    // model load and check
     if (!buildModel()) return stopAppReturn();
 
-    // chargement et verification du jeu de donnees d'entree
+    // input data load and check
     if (!loadData()) return stopAppReturn();
 
-    // verification de la coherence de l'ensemble
+    // global consistency check
     if (!checkConsistency()) return stopAppReturn();
 
     // simulation
     if (!runSimulation()) return stopAppReturn();
 
-    // sauvegarde des résultats
+    wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
+    m_ExSI.RunTime = EffSimTime;
+    
+
+    // saving results 
     if (!saveResults()) return stopAppReturn();
+
+    
 
     m_TotalEndTime = wxDateTime::Now();
 
     std::cout << std::endl;
 
-    wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
     wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
 

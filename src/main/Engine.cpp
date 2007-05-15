@@ -7,13 +7,49 @@
 
 
 #include "Engine.h"
+#include "AppTools.h"
 
 #include <iostream>
 #include <iomanip>
 
 
+#include <wx/listimpl.cpp>
+WX_DEFINE_LIST(FunctionsList);
 
-Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::RuntimeEnvironment* RunEnv,
+
+// =====================================================================
+// =====================================================================
+
+#define DECLARE_FUNCTION_PARSER \
+    FunctionsList::Node *_M_FuncNode = NULL;
+
+
+#define PARSE_FUNCTION_LIST(calledmethod,statevar) \
+    _M_FuncNode = m_Functions.GetFirst(); \
+    while (_M_FuncNode && statevar) \
+    { \
+      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod; \
+      _M_FuncNode = _M_FuncNode->GetNext(); \
+    }
+
+#define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
+    _M_FuncNode = m_Functions.GetFirst(); \
+    while (_M_FuncNode && statevar) \
+    { \
+      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2; \
+      _M_FuncNode = _M_FuncNode->GetNext(); \
+    }
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+Engine::Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* RunEnv,
                PluginManager* PlugMan)
 {
 
@@ -22,10 +58,11 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::Runtime
   mp_PlugMan = PlugMan;
 
 
-  mp_Module = NULL;
   m_Functions.Clear();
 
   mp_IOMan = new IOManager(mp_RunEnv);
+
+  m_Config.SimulationID = wxT("");
 
 }
 
@@ -37,6 +74,9 @@ Engine::~Engine()
 
 }
 
+// =====================================================================
+// =====================================================================
+
 
 bool Engine::processConfig()
 {
@@ -44,11 +84,10 @@ bool Engine::processConfig()
 
     uses the PluginManager to
       - load and parametrize functions
-      - build the processing list of each module
   */
 
 
-  FunctionConfigsList::Node *FuncNode = m_Config.ModuleConfig.GetFirst();
+  FunctionConfigsList::Node *FuncNode = m_Config.FuncConfigs.GetFirst();
   FunctionConfig *FConf;
 
   m_Functions.clear();
@@ -73,7 +112,7 @@ bool Engine::processConfig()
 */
   // end display test
 
-  mhydasdk::base::Function* FuncToAdd;
+  mhydasdk::base::PluggableFunction* FuncToAdd;
 
   while (FuncNode)
   {
@@ -109,18 +148,6 @@ bool Engine::processConfig()
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-bool Engine::plugFunctions()
-{
-
-  mp_Module = new Module(mp_CoreData,m_Functions);
-
-  return true;
-}
-
 
 // =====================================================================
 // =====================================================================
@@ -136,7 +163,7 @@ bool Engine::buildModel()
 
   */
 
-  return (mp_IOMan->loadModelConfig(&m_Config) && processConfig() && plugFunctions());
+  return (mp_IOMan->loadModelConfig(&m_Config) && processConfig());
 }
 
 
@@ -160,6 +187,9 @@ bool Engine::loadData()
 bool Engine::prepareDataAndCheckConsistency()
 {
 
+  bool IsOK = true;
+  DECLARE_FUNCTION_PARSER;
+
   // builds topology by linking objects
   if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
   {
@@ -174,6 +204,14 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
+  // process RainEVent
+  if (!mp_CoreData->getRainEvent()->ProcessRainSources(m_Config.DeltaT))
+  {
+    mhydasdk::base::LastError::Message = wxT("Rain sources process error.");
+    return false;
+  }
+  
+
   /*
   // integrates rain on time step (converts from intensity to water height)
   mhydasdk::core::RainSourceMap RainSrcColl = mp_CoreData->getRainEvent()->getRainSourceCollection();
@@ -186,21 +224,60 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   */
 
-  // prepares data for module
-  if (mp_Module == NULL || !mp_Module->prepareData())
+
+  // check simulation functions count
+  
+  if (m_Functions.GetCount() == 0) 
   {
-    mhydasdk::base::LastError::Message = wxT("Module data preparation error.");
+    mhydasdk::base::LastError::Message = wxT("No simulation function.");
     return false;
   }
 
 
-  // chacks conssitency for module
-  if (mp_Module == NULL || !mp_Module->checkConsistency())
+/*
+  // prepare data
+ 
+  PARSE_FUNCTION_LIST(prepareData(),IsOK);
+  if (!IsOK)
   {
-    mhydasdk::base::LastError::Message = wxT("Module consistency error.");
-    return false;
+    mhydasdk::base::LastError::Message = wxT("Data preparation error.");
+    return false;    
+  }
+  
+  
+
+
+  // checks consistency
+  
+  PARSE_FUNCTION_LIST(checkConsistency(),IsOK);
+  if (!IsOK)
+  {
+    mhydasdk::base::LastError::Message = wxT("Consistency error.");
+    return false;    
+  }
+*/  
+
+  // checks consistency
+  
+  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+  if (!IsOK)
+  {
+    //mhydasdk::base::LastError::Message = wxT("Consistency error.");
+    return false;    
   }
 
+
+
+
+  // inits the simulation infos and status
+
+  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
+                                                      mp_CoreData->getRainEvent()->getEventEndingTime(),
+                                                      m_Config.DeltaT);
+
+
+  // pr�paration des donn�es de simulation
+  mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
 
 
   return true;
@@ -213,18 +290,22 @@ bool Engine::prepareDataAndCheckConsistency()
 
 bool Engine::run()
 {
-
-
-  // inits
-
-  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
-                                                      mp_CoreData->getRainEvent()->getEventEndingTime(),
-                                                      m_Config.DeltaT);
-
+  bool IsOK = true;
+  DECLARE_FUNCTION_PARSER;
+                                                      
+                                                      
   // initialization of functions
-  if (!mp_Module->initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus))
+/*  if (!mp_Module->initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus))
   {
     mhydasdk::base::LastError::Message = wxT("Module initialization error.");
+    return false;
+  }
+*/
+
+  PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
+  if (!IsOK)
+  {
+    mhydasdk::base::LastError::Message = wxT("Function initialization error.");
     return false;
   }
 
@@ -246,7 +327,8 @@ bool Engine::run()
     std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
     std::cout.flush();
 
-    if (mp_Module->runStep(mp_SimStatus))
+    PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
+    if (IsOK)
     {
       
       std::cout << std::setw(11) << "[OK]";
@@ -260,16 +342,16 @@ bool Engine::run()
     std::cout << std::endl;
     cout.flush();
 
-
   } while (mp_SimStatus->switchToNextStep());
 
 
   std::cout << std::endl;
 
   // finalization of functions
-  mp_Module->finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus);
+  //mp_Module->finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus);
+  PARSE_FUNCTION_LIST(finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK)  
 
-  return true;
+  return IsOK;
 }
 
 
@@ -277,9 +359,10 @@ bool Engine::run()
 // =====================================================================
 
 
-bool Engine::saveResults()
+bool Engine::saveResults(ExtraSimInfos ExSI)
 {
-  return mp_IOMan->saveResults(mp_CoreData);
+ 
+  return (mp_IOMan->saveResults(mp_CoreData,ExSI) && mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
 }
 
 // =====================================================================
