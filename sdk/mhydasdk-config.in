@@ -1,0 +1,31 @@
+
+
+
+############################
+############################
+
+
+usage_info() {
+  echo "MHYDAS SDK config usage:\n"
+  echo "  mhydasdk-config [ARG]\n"
+  echo " available options:"
+  echo "      --libs      returns libraries linker options" 
+  echo "      --cflags    returns libraries compilation flags (C)"
+
+}
+
+
+if [ "$1" != "--libs" ] && [ "$1" != "--cflags" ]; then
+  usage_info
+  exit 1
+fi
+
+
+if [ "$1" = "--libs" ]; then
+  echo "-L$SDKLIBSPATH -l$SDKLIBCOREROOT -l$SDKLIBBASEROOT"
+fi
+
+if [ "$1" = "--cflags" ]; then
+  echo "-I$SDKINCPATH"
+fi
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+SUDOBIN=
+
+INSTSDKLIBSPATH=/usr/local/lib
+INSTSDKINCPATH=/usr/local/include/mhydasdk
+INSTSDKBINPATH=/usr/local/bin
+
+
+PACKARCH=`uname -m`

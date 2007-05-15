@@ -1,0 +1,33 @@
+#!/bin/sh
+
+CC=gcc
+CPP=g++
+F77=
+
+RELEASE_CCCFLAGS=-O3
+DEVEL_CCCFLAGS=-g3
+
+
+SDKLIBSROOT=mhydasdk
+
+
+MHYDASDKCONFIGFILE=mhydasdk-config
+
+
+MAJORVER=0
+#MINORVER=`date +%-y.%m`
+MINORVER=7
+
+PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
+PACKDEPENDS="libwxbase2.6-dev (>= 2.6)"
+PACKSECTION="science"
+PACKPRIORITY="optional"
+LIBPACKDESC="MHYDAS core and base libraries\\\n These libraries ares used by the mhydas program. There are also needed for pluggable function development."
+DEVPACKDESC="MHYDAS core and base headers"
+
+LIBPACKROOT=$SDKLIBSROOT-libs
+DEVPACKROOT=$SDKLIBSROOT-dev
+
+
+
+
