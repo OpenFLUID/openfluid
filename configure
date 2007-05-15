@@ -74,7 +74,7 @@ esac
 
 SVNREV=x
 if [ -x /usr/bin/svn ]; then
-  SVNREV=`svn info | grep "vision :" | cut -d" " -f3 `  
+  SVNREV=`svn info -r HEAD | grep "vision :" | cut -d" " -f3 `  
 fi
 
 
@@ -260,7 +260,7 @@ echo "PACKDESC=$PACKDESC" >> $OPTFILE
 
 echo "PACKROOT = $PACKROOT" >> $OPTFILE
 
-PACKNAME=$PACKROOT\_$MAJORVER.$MINORVER\_$PACKARCH
+PACKNAME=$PACKROOT\_$MAJORVER.$MINORVER-$SVNREV\_$PACKARCH
 
 echo "PACKNAME = $PACKNAME" >> $OPTFILE
 
