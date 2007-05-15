@@ -51,7 +51,11 @@ HayamiRSFunction::HayamiRSFunction()
   DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
   DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("-"),wxT("-"));
 
+  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("-"));
+  DECLARE_FUNCTION_PARAM("meancel",wxT("-"),wxT("-"));  
+  DECLARE_FUNCTION_PARAM("meansigma",wxT("-"),wxT("-"));  
 
+  // default values
   m_MaxSteps = 100;    
   m_MeanCelerity = 0.49;    
   m_MeanSigma = 500;

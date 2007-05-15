@@ -55,6 +55,12 @@ HayamiSUFunction::HayamiSUFunction()
   DECLARE_SU_REQUIRED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));
   DECLARE_SU_REQUIRED_PROPERTY("nmanning",wxT("-"),wxT("-"));
 
+  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("-"));
+  DECLARE_FUNCTION_PARAM("meancel",wxT("-"),wxT("-"));  
+  DECLARE_FUNCTION_PARAM("meansigma",wxT("-"),wxT("-"));  
+
+
+  // default values
   m_MaxSteps = 100;    
   m_MeanCelerity = 0.045;    
   m_MeanSigma = 500;
