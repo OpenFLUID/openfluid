@@ -19,6 +19,7 @@
 namespace mhydasdk { namespace core {
 
 
+class GroundwaterUnit;
 
 /**
   \brief Enumerates possible flow types from a surface unit
@@ -36,7 +37,7 @@ enum SUDownstreamCode
 
 
 /**
-  \brief Class definition for Surface HYdrological Units (SHUs)
+  \brief Class definition for Surface Units (SUs)
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */

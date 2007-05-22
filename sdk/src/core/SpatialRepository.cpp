@@ -202,7 +202,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
   
   SUDownstreamCode SUDownCode;
 
-  // =========== SHUs ============
+  // =========== SUs ============
 
   //std::cout << "rebuilding SHUs topology" << std::endl;
 
@@ -216,7 +216,11 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     {
       LinkedGU = getGUByID(SUit->second->getGUExchangeID());
       if (LinkedGU == NULL) return false;      
-      else SUit->second->setGUExchange(LinkedGU);
+      else 
+      {       
+        SUit->second->setGUExchange(LinkedGU);
+        LinkedGU->getSUsExchange()->push_back(SUit->second);
+      }  
     }
 
     // downstream object link
@@ -294,10 +298,13 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     }
   }
 
-  // =========== AHUs ============
+  // =========== GUs ============
 
   GUMap::iterator GUit;
-
+  SurfaceUnit* SU;
+  list<SurfaceUnit*>::iterator SUiter;
+  float UsrAreaSum;
+  
   for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
   {
 
@@ -308,8 +315,22 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
       if (LinkedGU == NULL) return false;
       else GUit->second->setGUExchange(LinkedGU);
     }
+    
+    // compute UsrArea
 
+    list<SurfaceUnit*>* SUsList = GUit->second->getSUsExchange();
+    UsrAreaSum = 0;
+
+   
+    for(SUiter=SUsList->begin(); SUiter != SUsList->end(); SUiter++)
+    { 
+      SU = *SUiter;
+      UsrAreaSum = UsrAreaSum + SU->getUsrArea();
+    }    
+    GUit->second->setUsrArea(UsrAreaSum);
+    
   }
+
 
   return true;
 

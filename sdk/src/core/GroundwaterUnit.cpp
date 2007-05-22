@@ -10,6 +10,7 @@
 
 
 
+
 namespace mhydasdk { namespace core {
 
 
@@ -21,6 +22,8 @@ GroundwaterUnit::GroundwaterUnit()
 	m_SubstratumLevel = -1;
 
   mp_GUExchange = NULL;
+  mp_SUsExchange = new std::list<SurfaceUnit*>(); 
+  
 }
 
 
@@ -28,11 +31,16 @@ GroundwaterUnit::GroundwaterUnit(hoid_t ID,int ProcessOrder,
                                 hoid_t GUExchangeID, double SubstratumLevel)
            : HydroObject(ID, ProcessOrder)
 {
+  
+  m_UsrArea = -1;
 
+  mp_GUExchange = NULL;
+  mp_SUsExchange = new std::list<SurfaceUnit*>(); 
+
+    
   m_GUExchangeID = GUExchangeID;
 	m_SubstratumLevel = SubstratumLevel;
 
-  mp_GUExchange = NULL;
 }
 
 GroundwaterUnit::~GroundwaterUnit()

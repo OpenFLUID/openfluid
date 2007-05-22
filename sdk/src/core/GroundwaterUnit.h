@@ -8,12 +8,13 @@
 #ifndef __GROUNDWATERUNIT_H__
 #define __GROUNDWATERUNIT_H__
 
-
+#include <list>
 #include "HydroObject.h"
+#include "SurfaceUnit.h"
 
 namespace mhydasdk { namespace core {
 
-
+class SurfaceUnit;
 
 /**
   \brief Definition class for Groundwater Hydrological Units
@@ -28,6 +29,8 @@ class GroundwaterUnit : public HydroObject
     hoid_t m_GUExchangeID;
 		GroundwaterUnit *mp_GUExchange;
 		double m_SubstratumLevel;
+    std::list<SurfaceUnit*>* mp_SUsExchange;
+    
 
   public:
 	  /**
@@ -51,7 +54,7 @@ class GroundwaterUnit : public HydroObject
       \return a double
     */
     double getUsrArea() const;
-
+    
     hoid_t getGUExchangeID() const;
 
     /**
@@ -63,6 +66,10 @@ class GroundwaterUnit : public HydroObject
     void setGUExchange(GroundwaterUnit *GU);
 
 		void setSubstratumLevel(double Level);
+    
+    void setUsrArea(double Area) { m_UsrArea = Area; };
+
+    std::list<SurfaceUnit*>* getSUsExchange() { return mp_SUsExchange; };     
 
 };
 

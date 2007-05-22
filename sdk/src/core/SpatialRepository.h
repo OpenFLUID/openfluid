@@ -139,13 +139,13 @@ class SpatialRepository
 
       Builds ordered lists for each kind of objects (SU,RS,GU)
 
-      !! commentaire à revoir !!
+      !! commentaire a revoir !!
 
       Regroupe les objets hydrologiques definissant l'espace etudie par classe d'ordre de traitement.
-      Cette mï¿½thode crï¿½e 3 vecteurs (un pour chaque type d'objet).
-      Chacun de ces vecteurs contient un ensemble de vecteurs indexes par le numï¿½ro d'ordre de traitement [0,ordre-1].
-      Ainsi l'ensemble des objets hydrologiques indexï¿½s [2] ont un ordre de traitement de 3.
-      \return true si la constitution par classe a bien fonctionnï¿½
+      Cette methode cree 3 vecteurs (un pour chaque type d'objet).
+      Chacun de ces vecteurs contient un ensemble de vecteurs indexes par le numero d'ordre de traitement [0,ordre-1].
+      Ainsi l'ensemble des objets hydrologiques indexes [2] ont un ordre de traitement de 3.
+      \return true si la constitution par classe a bien fonctionne
     */
     bool buildProcessOrders();
 

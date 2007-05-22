@@ -41,8 +41,10 @@ clean:
 
 
 doc:
-	@(cd src/base && $(MAKE) doc)
-	@(cd src/core && $(MAKE) doc)
+	@mkdir -p $(BASEDOCDIR)
+	@doxygen
+#	@(cd src/base && $(MAKE) doc)
+#	@(cd src/core && $(MAKE) doc)
 
 
 purge: clean
@@ -78,7 +80,7 @@ install-sdk: sdk clean-installed-sdk mhydasdk-conf-file
 deb-packages: all mhydasdk-conf-file
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
-	@rm -f -R $(BASEPACKDIR)/*
+	@rm -f -R $(BASEPACKDIR)/debian/*
 	@echo "==== Building packages (debian based distro) ===="
 	@echo "Building library package"
 	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
@@ -93,7 +95,6 @@ deb-packages: all mhydasdk-conf-file
 	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(LIBPACKNAME))
 	@echo "Building development package"
-	@mkdir -p $(BASEPACKDIR)
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKBINPATH)
@@ -107,7 +108,7 @@ deb-packages: all mhydasdk-conf-file
 	@cp resources/debian/common/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
 	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(DEVPACKNAME))
 
 
