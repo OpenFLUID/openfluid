@@ -72,12 +72,21 @@ mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString 
 ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 {
   ArrayOfPluginsSignatures Signatures;
-
-  wxArrayString PluginFiles = GetFilesByExt(mp_RunEnv->getAppDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR,MHYDAS_PLUGINS_EXT);
+  wxArrayString PluginsPaths = mp_RunEnv->getPluginsPaths();
+  wxArrayString PluginFiles;
+  wxArrayString TmpFiles;
+  int i,j;
+  
+  for (i=0;i<PluginsPaths.GetCount();i++)
+  {
+    TmpFiles = GetFilesByExt(PluginsPaths[i],MHYDAS_PLUGINS_EXT);    
+    for (j=0;j<TmpFiles.GetCount();j++) PluginFiles.Add(TmpFiles[j]);
+  }
+  
 
   mhydasdk::base::PluggableFunction* CurrentPlug;
 
-  for (int i=0;i<PluginFiles.GetCount();i++)
+  for (i=0;i<PluginFiles.GetCount();i++)
   {
     CurrentPlug = getPluggableFunction(PluginFiles[i]);
     if (CurrentPlug != NULL) Signatures.Add(CurrentPlug->getSignature());

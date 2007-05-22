@@ -34,13 +34,13 @@ doc:
 
 
 purge: clean
-	@rm -f $(BASEBINDIR)/*
+	@rm -f $(BASEBINDIR)
 
 
 deb-packages: all
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
-	@rm -f -R $(BASEPACKDIR)/*
+	@rm -f -R $(BASEPACKDIR)
 	@echo "==== Building packages (debian based distro) ===="
 	@echo "Building package"
 	@mkdir -p $(BASEPACKDIR)/debian/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)

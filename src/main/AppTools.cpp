@@ -84,21 +84,25 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
   bool Continue;
   wxArrayString FileList;
 
-  wxDir DirManager(DirToExplore);
-
-  if (DirManager.IsOpened())
+  if (wxDirExists(DirToExplore))
   {
-    // listage des plugins pr�sents
 
-    wxString FoundFile;
+    wxDir DirManager(DirToExplore);
 
-    Continue = DirManager.GetFirst(&FoundFile,wxT("*.")+Ext);
-    while (Continue)
+    if (DirManager.IsOpened())
     {
-      if (WithPath) FileList.Add(DirToExplore+wxFILE_SEP_PATH+FoundFile);
-      else FileList.Add(FoundFile);
-      Continue = DirManager.GetNext(&FoundFile);
-    }
+      // listage des plugins presents
+
+      wxString FoundFile;
+
+      Continue = DirManager.GetFirst(&FoundFile,wxT("*.")+Ext);
+      while (Continue)
+      {
+        if (WithPath) FileList.Add(DirToExplore+wxFILE_SEP_PATH+FoundFile);
+        else FileList.Add(FoundFile);
+        Continue = DirManager.GetNext(&FoundFile);
+      }
+    }  
   }
 
   return FileList;
