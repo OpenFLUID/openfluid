@@ -81,6 +81,8 @@ class RuntimeEnvironment
     
     wxString getPluginFullPath(wxString Filename);
 
+    wxArrayString getPluginsPaths() const { return m_PlugsDirs; };
+
 };
 
 

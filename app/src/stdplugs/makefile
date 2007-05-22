@@ -78,7 +78,7 @@ prechecks:
 
 
 clean:
-	@rm -f $(OBJDIR)/*
+	@rm -f $(OBJDIR)
 
 
 doc:
