@@ -191,7 +191,8 @@ echo "" >> $OPTFILE
 
 # détermination du chemin absolu de la racine du projet située ../..
 ORIGPATH=`pwd`
-ABSPATH=$ORIGPATH/..
+#ABSPATH=$ORIGPATH/..
+ABSPATH=$ORIGPATH
 cd $ABSPATH
 ABSPATH=`pwd`
 cd $ORIGPATH
