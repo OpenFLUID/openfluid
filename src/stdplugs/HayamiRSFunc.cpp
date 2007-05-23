@@ -49,6 +49,7 @@ HayamiRSFunction::HayamiRSFunction()
 */
 
   DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
+  DECLARE_RS_PRODUCED_VAR("waterheight",wxT("Water height at the outlet of the ditch"),wxT("m"));
   DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("-"),wxT("-"));
 
   DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("-"));
@@ -61,7 +62,7 @@ HayamiRSFunction::HayamiRSFunction()
   m_MeanSigma = 500;
   m_MeanSlope = 0;    
   m_MeanManning = 0;        
-
+  m_CalibrationStep = 0.01;
 }
 
 
@@ -87,6 +88,7 @@ bool HayamiRSFunction::initParams(mhydasdk::core::ParamsMap Params)
   MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
   // if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
   MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
+  MHYDAS_GetFunctionParam(Params,wxT("calibstep"),&m_CalibrationStep);
   return true;
 }
 
@@ -108,6 +110,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
     ID = RS->getID();  
     
     m_Input[ID] = new mhydasdk::core::VectorOfDouble();
+    m_HeightDischarge[ID] = new mhydasdk::core::VectorOfDouble();
     m_CurrentInputSum[ID] = 0;
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -128,8 +131,33 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
     m_RSKernel[RS->getID()] = ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep());        
   END_LOOP
 
+  
+  // calcul de la relation hauteur débit
+  
+  float HydrauRadius, Speed, Q, Section, CurrentHeight;
+  int i, StepsNbr;
+  
+  BEGIN_RS_ORDERED_LOOP(RS)
 
-
+    MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);    
+    
+    StepsNbr = int(ceil(RS->getUsrHeight() / m_CalibrationStep));
+    for (i=0;i<StepsNbr;i++)
+    {
+      CurrentHeight = i * m_CalibrationStep;
+      
+      Section = RS->getUsrWidth() * CurrentHeight;
+      HydrauRadius = Section / (2 *CurrentHeight + RS->getUsrWidth());
+      Speed = (1/TmpValue) * pow(HydrauRadius,2/3) * sqrt(RS->getUsrSlope());   
+      Q = Speed * Section;
+    
+      m_HeightDischarge[RS->getID()]->push_back(Q);    
+    }
+        
+    
+  END_LOOP
+  
+  
   return true;
 }
 
@@ -190,7 +218,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     QOutput = 0;
     
-    // 1.a calcul du d�bit provenant des SU sources qui se jettent dans les noeuds sources    
+    // 1.a calcul du debit provenant des SU sources qui se jettent dans les noeuds sources    
     
     UpSrcSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
@@ -206,7 +234,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     }
   
 
-    // 1.b calcul du d�bit provenant des SU lat�rales
+    // 1.b calcul du debit provenant des SU laterales
 
     UpLatSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
@@ -216,16 +244,15 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
       {                
         UpSU = *UpSUiter;
-        //std::cerr << GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep) << std::endl;
+        
         MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
         UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue / UpSU->getUsrArea();                
         
       }  
     }
 
-    //std::cerr << CurrentStep << "," << ID << " -> " << UpSrcSUsOutputsSum << " " << UpLatSUsOutputsSum << std::endl;
 
-    // 2.a calcul des d�bits provenant des RS amont
+    // 2.a calcul des debits provenant des RS amont
     
     UpRSsOutputsSum = 0;
 
@@ -234,7 +261,6 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     for(UpRSiter=UpRSsList->begin(); UpRSiter != UpRSsList->end(); UpRSiter++) \
     {                
       UpRS = *UpRSiter;
-        //std::cerr << GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep) << std::endl;
       MHYDAS_GetDistributedVarValue(UpRS,wxT("qoutput"),CurrentStep,&TmpValue);
       UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;                
     }    
@@ -257,6 +283,12 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
         
     MHYDAS_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
 
+    //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl; 
+    computeWaterHeightFromDischarge(ID,QOutput,&TmpValue);
+    
+    MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);
+
+
   END_LOOP
 
   return true;
@@ -273,4 +305,45 @@ bool HayamiRSFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
   return true;
 }
 
+// =====================================================================
+// =====================================================================
 
+bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, float *Height)
+{
+  
+  if (Discharge < 0) return false;
+  if (Discharge == 0) Height = 0;
+  else
+  {
+   
+    int i;
+    float Q1, Q2, H1, H2;
+    
+    mhydasdk::core::VectorOfDouble* HeightDischarge = m_HeightDischarge[ID]; 
+
+   
+    // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché
+    i = 1;  
+   
+    while (HeightDischarge->at(i) < Discharge)
+    {
+      i++;
+      if (i == HeightDischarge->size()) return false;
+            
+    }
+
+        
+    Q1 = HeightDischarge->at(i-1);
+    Q2 = HeightDischarge->at(i);
+
+    H1 = (i-1) * m_CalibrationStep;
+    H2 = i * m_CalibrationStep; 
+
+    *Height = H1 + ((Discharge-Q1) * (H2-H1) / (Q2-Q1));
+    
+      
+  }
+  
+  return true;
+  
+}

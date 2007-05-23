@@ -21,41 +21,22 @@ ifeq ($(OSTYPE),msys)
 endif
 
 
-#MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o \
-#            $(OBJDIR)/MSeytouxPlug.o
 MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o
-
 MSEYTOUXNAME=mseytoux
 
 
 HAYAMISUOBJ=$(OBJDIR)/HayamiSUFunc.o \
             $(OBJDIR)/HayamiTools.o
-#            $(OBJDIR)/HayamiSUPlug.o \            
 HAYAMISUNAME=hayamiSU
 
 
 HAYAMIRSOBJ=$(OBJDIR)/HayamiRSFunc.o \
             $(OBJDIR)/HayamiTools.o
-#            $(OBJDIR)/HayamiRSPlug.o \
-
 HAYAMIRSNAME=hayamiRS
 
 
-RSGUEXCHOBJ=$(OBJDIR)/RSGUExchFunc.o \
-            $(OBJDIR)/RSGUExchPlug.o
-RSGUEXCHNAME=RSGUexch
-
-
-SUGUEXCHOBJ=$(OBJDIR)/SUGUExchFunc.o \
-            $(OBJDIR)/SUGUExchPlug.o
-SUGUEXCHNAME=SUGUexch
-
-
-GUGUEXCHOBJ=$(OBJDIR)/GUGUExchFunc.o \
-            $(OBJDIR)/GUGUExchPlug.o
-GUGUEXCHNAME=GUGUexch
-
-
+TRANSFERGUOBJ=$(OBJDIR)/TransferGUFunc.o
+TRANSFERGUNAME=transferGU
 
 
 
@@ -63,13 +44,11 @@ $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
-all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ) $(HAYAMIRSOBJ) #$(RSGUEXCHOBJ) $(SUGUEXCHOBJ) $(GUGUEXCHOBJ)
+all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ) $(HAYAMIRSOBJ) $(TRANSFERGUOBJ)
 	$(CPP) $(MSEYTOUXOBJ) $(CCLIBS) -o $(BINDIR)/$(MSEYTOUXNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 	$(CPP) $(HAYAMISUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMISUNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 	$(CPP) $(HAYAMIRSOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMIRSNAME).$(PLUGINEXT) -shared $(LDFLAGS)
-#	$(CPP) $(RSGUEXCHOBJ) $(CCLIBS) -o $(BINDIR)/$(RSGUEXCHNAME).$(PLUGINEXT) -shared $(LDFLAGS)	
-#	$(CPP) $(SUGUEXCHOBJ) $(CCLIBS) -o $(BINDIR)/$(SUGUEXCHNAME).$(PLUGINEXT) -shared $(LDFLAGS)	
-#	$(CPP) $(GUGUEXCHOBJ) $(CCLIBS) -o $(BINDIR)/$(GUGUEXCHNAME).$(PLUGINEXT) -shared $(LDFLAGS)			
+	$(CPP) $(TRANSFERGUOBJ) $(CCLIBS) -o $(BINDIR)/$(TRANSFERGUNAME).$(PLUGINEXT) -shared $(LDFLAGS)	
 
 
 prechecks:
@@ -78,7 +57,7 @@ prechecks:
 
 
 clean:
-	@rm -f $(OBJDIR)
+	@rm -f $(OBJDIR)/*
 
 
 doc:

@@ -34,6 +34,11 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     
     float m_MeanManning;        
 
+    /**
+      Calibration step for height-discharge relation (meters) 
+    */ 
+    float m_CalibrationStep;
+
     IDKernelMap m_RSKernel;
     
     bool m_UseUpSUOutput;
@@ -41,7 +46,11 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     mhydasdk::base::IDVectOfDoubleMap m_Input;
     
     mhydasdk::base::IDFloatValueMap m_CurrentInputSum;
+
+    mhydasdk::base::IDVectOfDoubleMap m_HeightDischarge;
         
+    bool computeWaterHeightFromDischarge(int ID, float Discharge, float *Height);
+
 
   public:
 

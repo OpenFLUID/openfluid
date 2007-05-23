@@ -465,6 +465,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
   mhydasdk::core::TimeSerie *Serie;
 
+
   if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) 
   && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
