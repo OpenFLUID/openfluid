@@ -38,13 +38,12 @@ mhydasdk-conf-file:
 clean:
 	@(cd src/core && $(MAKE) clean)
 	@(cd src/base && $(MAKE) clean)
+	@rm -R -f $(BASEDOCDIR)
 
 
 doc:
 	@mkdir -p $(BASEDOCDIR)
 	@doxygen
-#	@(cd src/base && $(MAKE) doc)
-#	@(cd src/core && $(MAKE) doc)
 
 
 purge: clean
@@ -77,7 +76,7 @@ install-sdk: sdk clean-installed-sdk mhydasdk-conf-file
 	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
 
 
-deb-packages: all mhydasdk-conf-file
+deb-packages: all mhydasdk-conf-file doc
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
 	@rm -f -R $(BASEPACKDIR)/debian/*
@@ -98,13 +97,14 @@ deb-packages: all mhydasdk-conf-file
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKBINPATH)
-	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
 	@cp src/mhydasdk-*.h $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/
 	@cp src/core/*.h $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
+	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
 	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/copyright
