@@ -137,6 +137,7 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   END_LOOP
 
 
+
   return true;
 }
 
@@ -175,8 +176,9 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ID = SU->getID();
+
     MHYDAS_GetDistributedVarValue(SU,wxT("runoff"),CurrentStep,&TmpValue);
-    //QInput = GET_SIMVAR_VALUE(SU,"runoff",CurrentStep) * SU->getUsrArea() / TimeStep;
+
     QInput = TmpValue * SU->getUsrArea() / TimeStep;
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
     m_Input[ID]->push_back(QInput);
@@ -187,7 +189,6 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       QOutput = DoHayamiPropagation(m_SUKernel[ID], CurrentStep, m_Input[ID], m_MaxSteps, TimeStep);
     }  
         
-    //APPEND_SIMVAR_VALUE(SU,"qoutput",QOutput);
     MHYDAS_AppendDistributedVarValue(SU,wxT("qoutput"),QOutput);
 
   END_LOOP
