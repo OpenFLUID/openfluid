@@ -49,18 +49,19 @@ WX_DEFINE_LIST(FunctionsList);
 
 
 
-Engine::Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* RunEnv,
-               PluginManager* PlugMan)
+Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::ExecutionMessages* ExecMsgs,
+               RuntimeEnvironment* RunEnv, PluginManager* PlugMan)
 {
 
   mp_CoreData = CoreData;
+  mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
   mp_PlugMan = PlugMan;
 
 
   m_Functions.Clear();
 
-  mp_IOMan = new IOManager(mp_RunEnv);
+  mp_IOMan = new IOManager(mp_ExecMsgs,mp_RunEnv);
 
   m_Config.SimulationID = wxT("");
 
@@ -125,18 +126,18 @@ bool Engine::processConfig()
     {
        if (FuncToAdd->initParams(FConf->Params))
        {
-         m_Functions.Append((mhydasdk::base::Function**)FuncToAdd);
+         m_Functions.Append((mhydasdk::base::PluggableFunction**)FuncToAdd);
        }
        else
        {
-         mhydasdk::base::LastError::Message = wxT("Error initializing params function.");
+         mp_ExecMsgs->setError(wxT("Engine"),wxT("Initializing params function error."));
          return false;
        }
 
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("Error loading function from plugin.");
+      mp_ExecMsgs->setError(wxT("Engine"),wxT("Loading function from plugin error."));
       return false;
     }
 
@@ -193,21 +194,21 @@ bool Engine::prepareDataAndCheckConsistency()
   // builds topology by linking objects
   if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
   {
-    mhydasdk::base::LastError::Message = wxT("Topology rebuild error.");
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Topology rebuild error"));
     return false;
   }
 
   // builds process orders lists
   if (!mp_CoreData->getSpatialData()->buildProcessOrders())
   {
-    mhydasdk::base::LastError::Message = wxT("Process orders build error.");
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Process orders build error"));
     return false;
   }
 
   // process RainEVent
   if (!mp_CoreData->getRainEvent()->ProcessRainSources(m_Config.DeltaT))
   {
-    mhydasdk::base::LastError::Message = wxT("Rain sources process error.");
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Rain sources process error"));
     return false;
   }
   
@@ -229,40 +230,17 @@ bool Engine::prepareDataAndCheckConsistency()
   
   if (m_Functions.GetCount() == 0) 
   {
-    mhydasdk::base::LastError::Message = wxT("No simulation function.");
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("No simulation function"));
     return false;
   }
 
 
-/*
-  // prepare data
- 
-  PARSE_FUNCTION_LIST(prepareData(),IsOK);
-  if (!IsOK)
-  {
-    mhydasdk::base::LastError::Message = wxT("Data preparation error.");
-    return false;    
-  }
-  
-  
-
-
-  // checks consistency
-  
-  PARSE_FUNCTION_LIST(checkConsistency(),IsOK);
-  if (!IsOK)
-  {
-    mhydasdk::base::LastError::Message = wxT("Consistency error.");
-    return false;    
-  }
-*/  
 
   // checks consistency
   
   PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
   if (!IsOK)
-  {
-    //mhydasdk::base::LastError::Message = wxT("Consistency error.");
+  {       
     return false;    
   }
 
@@ -276,7 +254,7 @@ bool Engine::prepareDataAndCheckConsistency()
                                                       m_Config.DeltaT);
 
 
-  // pr�paration des donn�es de simulation
+  // preparation des donnees de simulation
   mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
 
 
@@ -297,7 +275,6 @@ bool Engine::run()
   // initialization of functions
 /*  if (!mp_Module->initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus))
   {
-    mhydasdk::base::LastError::Message = wxT("Module initialization error.");
     return false;
   }
 */
@@ -305,7 +282,6 @@ bool Engine::run()
   PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
   if (!IsOK)
   {
-    mhydasdk::base::LastError::Message = wxT("Function initialization error.");
     return false;
   }
 
@@ -327,8 +303,10 @@ bool Engine::run()
     std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
     std::cout.flush();
 
+    mp_ExecMsgs->resetWarningFlag();
+
     PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
-    if (IsOK)
+/*    if (IsOK)
     {
       
       std::cout << std::setw(11) << "[OK]";
@@ -337,6 +315,21 @@ bool Engine::run()
     else
     {
       std::cout << std::setw(9) << "[Error]";
+    }
+*/
+
+    if (mp_ExecMsgs->getErrorFlag())
+    {
+      
+      std::cout << std::setw(13) << "[Error]";
+      std::cout << std::endl;
+      return false;
+      
+    }
+    else
+    {
+      if (mp_ExecMsgs->getWarningFlag()) std::cout << std::setw(13) << "[Warning]";
+      else std::cout << std::setw(13) << "[OK]";
     }
 
     std::cout << std::endl;

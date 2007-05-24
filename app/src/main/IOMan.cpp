@@ -34,8 +34,9 @@ WX_DEFINE_OBJARRAY(ArrayOfAutoOutfileDefs);*/
 
 
 
-IOManager::IOManager(RuntimeEnvironment* RunEnv)
+IOManager::IOManager(mhydasdk::base::ExecutionMessages* ExecMsgs,RuntimeEnvironment* RunEnv)
 {
+  mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
 }
 
@@ -148,7 +149,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
       }
       else
       {
-        mhydasdk::base::LastError::Message = wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error. Incorrect function definition.");
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error. Incorrect function definition."));
         return false;
       }  
        
@@ -160,7 +161,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error.");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error."));
     return false;
   }
 
@@ -219,7 +220,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
   // no available object
   if (!(SUsFileExists || RSsFileExists || GUsFileExists))
   {
-    mhydasdk::base::LastError::Message = wxT("No spatial object file.");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("No spatial object file"));
     return false;
   }
 
@@ -238,7 +239,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
     {
 
 //      std::cerr << SUsFileParser.getColsCount() << std::endl;
-      mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error.");
+      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error"));
       return false;
     }
     else
@@ -267,8 +268,8 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                   (mhydasdk::core::hoid_t)FlowID,
                                                                   FlowDist,
                                                                   (mhydasdk::core::hoid_t)GUExch)))
-          {
-            mhydasdk::base::LastError::Message = wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+          {            
+            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
           }
 
@@ -276,7 +277,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
         else
         {
-          mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file format error.");
+          mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file format error"));
           return false;
         }
 
@@ -295,7 +296,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
         RSsFileParser.getColsCount() < 1)
     {
-      mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file parsing error.");
+      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file parsing error"));
       return false;
     }
     else
@@ -325,13 +326,14 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                    Height,
                                                                    (mhydasdk::core::hoid_t)GUExch)))
           {
-            mhydasdk::base::LastError::Message = wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+            //mhydasdk::base::LastError::Message = wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
           }
         }
         else
         {
-          mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file format error.");
+          mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file format error"));
           return false;
         }
       }
@@ -349,7 +351,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
         GUsFileParser.getColsCount() < 1)
     {
-      mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error.");
+      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error."));      
       return false;
     }
     else
@@ -369,13 +371,14 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                       (mhydasdk::core::hoid_t)GUExch,
                                                                       SubstrLevel)))
           {
-            mhydasdk::base::LastError::Message = wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
+            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use."));
+            
             return false;
           }
         }
         else
         {
-          mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file format error.");
+          mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file format error."));
           return false;
         }
       }
@@ -433,7 +436,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("Rain event file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error.");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain event file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error"));
   }
   return RIFMap;
 
@@ -494,7 +497,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
       else
       {
         IsOK = false;
-        mhydasdk::base::LastError::Message = wxT("Rain file content error (") + Filename + wxT(").");
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain file content error (") + Filename + wxT(")"));
       }
 
       i++;
@@ -507,7 +510,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
       IsOK = RainData->addRainSource(Source);
       if (!IsOK)
       {
-        mhydasdk::base::LastError::Message = wxT("Error adding rain source (ID #") + wxString::Format(wxT("%d"),ID) + wxT(").");
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding rain source (ID #") + wxString::Format(wxT("%d"),ID) + wxT(")"));
       }         
     }
 
@@ -515,7 +518,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
   else
   {
     IsOK = false;
-    mhydasdk::base::LastError::Message = wxT("Rain file format error (") + Filename + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain file format error (") + Filename + wxT(")"));
   }
 
 
@@ -540,7 +543,7 @@ bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
     {
       if (!loadRainFile(RainData,RIFit->first,RIFit->second))
       {
-//        mhydasdk::base::LastError::Message = wxT("Error loading ") + RIFit->second + wxT(" rain file.");
+//        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error loading ") + RIFit->second + wxT(" rain file.");
         return false;
       }
     }
@@ -570,7 +573,7 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
       DistriFileParser.getColsCount() != MHYDAS_RAINDISTRIFILE_COLNBR ||
       DistriFileParser.getColsCount() < 1)
   {
-    mhydasdk::base::LastError::Message = MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(" file parsing error.");
+    mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(" file parsing error"));
     return false;
   }
   else
@@ -591,13 +594,13 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("Matching error between SU and rain source.");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Matching error between SU and rain source"));
           return false;
         }
       }
       else
       {
-        mhydasdk::base::LastError::Message = wxT("Rain distribution contents error (") + MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(").");
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain distribution contents error (") + MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(")"));
         return false;
       }
     }
@@ -723,13 +726,13 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("SU distributed properties data error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed properties data error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("SU distributed properties file error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed properties file error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(")"));
     return false;
   }
 
@@ -771,13 +774,13 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("RS distributed properties data error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed properties data error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("RS distributed properties file error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed properties file error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(")"));
     return false;
   }
 
@@ -819,13 +822,13 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("GU distributed properties data error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed properties data error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("GU distributed properties file error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed properties file error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(")"));
     return false;
   }
 
@@ -881,7 +884,7 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions format error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed initial conditions format error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(")"));
           return false;
         }
         i++;
@@ -889,13 +892,13 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions data error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed initial conditions data error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("SU distributed initial conditions file error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed initial conditions file error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(")"));
     return false;
   }
 
@@ -933,7 +936,7 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("RS distributed initial conditions format error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(").");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed initial conditions format error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(")"));
           return false;
         }
         i++;
@@ -941,13 +944,13 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("RS distributed initial conditions data error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed initial conditions data error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("RS distributed initial conditions file error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed initial conditions file error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(")"));
     return false;
   }
 
@@ -985,7 +988,7 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("GU distributed initial conditions format error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(").");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed initial conditions format error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(")"));
           return false;
         }
         i++;
@@ -993,13 +996,13 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("GU distributed initial conditions data error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed initial conditions data error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("GU distributed initial conditions file error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed initial conditions file error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(")"));
     return false;
   }
 
@@ -1091,7 +1094,7 @@ bool IOManager::loadOutputConfig()
               if (StrArray[i].ToLong(&LongValue)) CurrentDef->SelectedObjectIDs.push_back((int)LongValue);
               else
               {
-                mhydasdk::base::LastError::Message = wxT("Output config file format error: objects selection ID (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+                mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: objects selection ID (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
                 return false;
 
               }
@@ -1101,7 +1104,7 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("Output config file format error: missing objects selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing objects selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
 
@@ -1114,7 +1117,7 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("Output config file format error: missing column description (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing column description (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
 
@@ -1128,20 +1131,20 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mhydasdk::base::LastError::Message = wxT("Output config file format error: unknown object type (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: unknown object type (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
        }
     }
     else
     {
-      mhydasdk::base::LastError::Message = wxT("Output config file format error (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mhydasdk::base::LastError::Message = wxT("Output config file not found (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(").");
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file not found (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
     return false;
   }
 

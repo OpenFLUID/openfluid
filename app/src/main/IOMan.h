@@ -97,6 +97,8 @@ struct AutoOutfiles
 class IOManager
 {
   private:
+    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
+    
     RuntimeEnvironment* mp_RunEnv;
 
     mhydasdk::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
@@ -126,7 +128,7 @@ class IOManager
     /**
       Constructor
     */
-    IOManager(RuntimeEnvironment* RunEnv);
+    IOManager(mhydasdk::base::ExecutionMessages* ExecMsgs,RuntimeEnvironment* RunEnv);
 
     /**
       Destructor
