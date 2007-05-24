@@ -18,7 +18,6 @@ using namespace mhydasdk::base;
 using namespace mhydasdk::core;
 
 
-wxString LastError::Message;
 
 // =====================================================================
 // =====================================================================
@@ -363,7 +362,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 
 bool MHYDASApp::stopAppReturn()
 {
-  std::cout << std::endl << "Oooops! " << LastError::Message.mb_str(wxConvUTF8) << std::endl;
+  std::cout << std::endl << "[Error] " << mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8) << std::endl;
   std::cout << "Aborting MHYDAS application." << std::endl;
   std::cout << std::endl;
   std::cout.flush();
@@ -387,10 +386,10 @@ bool MHYDASApp::OnInit()
   SetAppName(MHYDAS_APPNAME);
 
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
+  
+  mp_ExecMsgs = new ExecutionMessages();
 
-  mp_PlugMan = new PluginManager(mp_RunEnv);
-
-  LastError::Message = wxT("");
+  mp_PlugMan = new PluginManager(mp_ExecMsgs,mp_RunEnv);
 
   wxLog::SetTimestamp(NULL);
 
@@ -451,7 +450,7 @@ int MHYDASApp::OnRun()
 
     mp_CoreData = new CoreRepository();
 
-    mp_Engine = new Engine(mp_CoreData,mp_RunEnv,mp_PlugMan);
+    mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
 
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);

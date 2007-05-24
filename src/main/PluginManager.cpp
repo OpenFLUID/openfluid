@@ -18,9 +18,10 @@
 // =====================================================================
 
 
-PluginManager::PluginManager(RuntimeEnvironment* RunEnv)
+PluginManager::PluginManager(mhydasdk::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
+  mp_ExecMsgs = ExecMsgs;
 }
 
 // =====================================================================
@@ -112,6 +113,7 @@ mhydasdk::base::PluggableFunction *PluginManager::getFunctionFromPlugin(wxString
     if (Plug->getSignature()->FunctionType == ReqFuncType)
     {
       Plug->setDataRepository(CoreData);
+      Plug->setExecutionMessages(mp_ExecMsgs);
       return Plug;      
     }
   }

@@ -47,6 +47,8 @@ class MHYDASApp : public wxAppConsole
     bool m_OKToRun;
 
     RuntimeEnvironment* mp_RunEnv;
+    
+    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
     ExtraSimInfos m_ExSI;
 
@@ -62,7 +64,7 @@ class MHYDASApp : public wxAppConsole
     wxDateTime m_EffectiveEndTime;
 
     void printlnExecStatus(bool Status);
-
+    
     void printMHYDASInfos();
 
     void printDataInfos();

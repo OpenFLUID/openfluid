@@ -25,6 +25,7 @@ class PluginManager
   private:
 
     RuntimeEnvironment* mp_RunEnv;
+    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
     mhydasdk::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);
 
@@ -33,7 +34,7 @@ class PluginManager
     /**
       Constructor
     */
-    PluginManager(RuntimeEnvironment* RunEnv);
+    PluginManager(mhydasdk::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv);
 
     /**
       Destructor

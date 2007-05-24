@@ -20,7 +20,7 @@
 
 
 #include <wx/list.h>
-WX_DECLARE_LIST(mhydasdk::base::Function*, FunctionsList);
+WX_DECLARE_LIST(mhydasdk::base::PluggableFunction*, FunctionsList);
 
 // =====================================================================
 // =====================================================================
@@ -39,6 +39,7 @@ class Engine
      mhydasdk::core::CoreRepository* mp_CoreData;
 
      RuntimeEnvironment* mp_RunEnv;
+     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
      mhydasdk::base::SimulationStatus* mp_SimStatus;
 
@@ -68,7 +69,7 @@ class Engine
     /**
       Constructor
     */
-    Engine(mhydasdk::core::CoreRepository* CoreData, RuntimeEnvironment* RunEnv,
+    Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv,
            PluginManager* PlugMan);
 
     /**
