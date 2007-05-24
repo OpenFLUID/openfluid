@@ -53,8 +53,8 @@
 
 #include "base/SimStatus.h"
 #include "base/PlugFunction.h"
-#include "base/LastError.h"
 #include "base/SIFactors.h"
+#include "base/ExecMsgs.h"
 
 
 
@@ -63,9 +63,9 @@ namespace mhydasdk { namespace base
 
 class DLLEXPORT ColumnFileParser;
 class DLLEXPORT SimulationStatus;
-class DLLEXPORT ComputationBlock;
-class DLLEXPORT Function;
-class DLLEXPORT Plugin;
+class DLLEXPORT ExecutionMessages;
+class DLLEXPORT PluggableFunction;
+
 
 } } // namespace mhydasdk::base
 

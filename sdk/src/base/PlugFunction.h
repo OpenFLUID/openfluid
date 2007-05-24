@@ -27,6 +27,7 @@
 #include <wx/wx.h>
 #include "mhydasdk-core.h"
 #include "SimStatus.h"
+#include "ExecMsgs.h"
 
 
 // =====================================================================
@@ -309,6 +310,8 @@ class PluggableFunction : public wxObject
     mhydasdk::core::ParamsMap m_ParamsMap;
 
     mhydasdk::core::CoreRepository* mp_CoreData;
+    
+    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
     wxArrayString m_SUVarsToCheck;
     wxArrayString m_SUVarsToCreate;
@@ -367,6 +370,8 @@ class PluggableFunction : public wxObject
 
 
     bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; };
+    
+    bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
     /**
       initializes of global parameters of the function, given as a hash map

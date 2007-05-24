@@ -25,10 +25,7 @@ endif
 
 OBJ=$(OBJDIR)/SimStatus.o \
     $(OBJDIR)/PlugFunction.o \
-#    $(OBJDIR)/CompBlock.o \
-#    $(OBJDIR)/Function.o \
-#    $(OBJDIR)/Plugin.o \
-    $(OBJDIR)/LastError.o \
+    $(OBJDIR)/ExecMsgs.o    
 
 
 $(OBJDIR)/%.o : %.cpp %.h
