@@ -1400,9 +1400,12 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 {
   
   wxString FileContents = wxT("");
-
-  FileContents << wxT("Simulation report") << wxT("\n");
-  FileContents << wxT("=================") << wxT("\n");
+  
+  FileContents << wxT("************************************************************") << wxT("\n");
+  FileContents << wxT("*                                                          *\n");
+  FileContents << wxT("*                     Simulation report                    *") << wxT("\n");
+  FileContents << wxT("*                                                          *\n");  
+  FileContents << wxT("************************************************************") << wxT("\n");
   FileContents << wxT("\n");
   FileContents << wxT("Simulation ID: ") << ExSI.SimID << wxT("\n");
   FileContents << wxT("Date: ") << ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S")) << wxT("\n");
@@ -1419,8 +1422,23 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
   FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
   FileContents << wxT("\n");
+  FileContents << wxT("------------------------------------------------------------") << wxT("\n");  
+  FileContents << wxT("\n");
   
-        
+  // warnings
+  if (mp_ExecMsgs->getWarningMsgs().Count() > 0)
+  {
+    for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
+    {
+      FileContents << wxT("WARNING: ") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT("\n");
+    }
+  }
+  else FileContents << wxT("NO WARNING");  
+  FileContents << wxT("\n");
+  FileContents << wxT("------------------------------------------------------------") << wxT("\n");
+  FileContents << wxT("\n");  
+          
+  // write file to disk
   wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
   SimInfoFile.Write(FileContents);
   SimInfoFile.Close();

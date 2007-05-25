@@ -280,7 +280,7 @@ bool Engine::run()
 */
 
   PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
-  if (!IsOK)
+  if (mp_ExecMsgs->isErrorFlag())
   {
     return false;
   }
@@ -318,18 +318,18 @@ bool Engine::run()
     }
 */
 
-    if (mp_ExecMsgs->getErrorFlag())
+    if (mp_ExecMsgs->isErrorFlag())
     {
       
-      std::cout << std::setw(13) << "[Error]";
-      std::cout << std::endl;
+      std::cout << std::setw(12) << "[Error]";
+      std::cout << std::endl << std::endl;      
       return false;
       
     }
     else
     {
-      if (mp_ExecMsgs->getWarningFlag()) std::cout << std::setw(13) << "[Warning]";
-      else std::cout << std::setw(13) << "[OK]";
+      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+      else std::cout << std::setw(12) << "[OK]";
     }
 
     std::cout << std::endl;

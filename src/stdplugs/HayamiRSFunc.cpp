@@ -168,7 +168,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 bool HayamiRSFunction::checkConsistency()
 {
-  // On verifie s'il existe des SU pour r�cup�rer leur d�bit
+  // On verifie s'il existe des SU pour recuperer leur debit
   m_UseUpSUOutput = false; 
   if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
   {
@@ -284,10 +284,10 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     MHYDAS_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
 
     //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl; 
-    computeWaterHeightFromDischarge(ID,QOutput,&TmpValue);
+    if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) 
+      mp_ExecMsgs->addWarning(wxT("hyamirs"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
     
     MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);
-
 
   END_LOOP
 
