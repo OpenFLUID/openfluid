@@ -52,9 +52,9 @@ class ExecutionMessages
     
     void resetWarningFlag() { m_WarningFlag = false; };
     
-    bool getWarningFlag() const { return m_WarningFlag; };
+    bool isWarningFlag() const { return m_WarningFlag; };
     
-    bool getErrorFlag() const { return m_ErrorFlag; };
+    bool isErrorFlag() const { return m_ErrorFlag; };
 
     wxString getErrorMsg() const { return m_ErrorMsg; };
     

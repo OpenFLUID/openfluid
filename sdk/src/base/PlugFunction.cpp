@@ -70,6 +70,8 @@ PluggableFunction::PluggableFunction()
 
   mp_CoreData = NULL;
 
+  mp_ExecMsgs = NULL;
+
   mp_Signature = new mhydasdk::base::Signature();
 
   m_SUVarsToCreate.Clear();
@@ -112,7 +114,9 @@ bool PluggableFunction::prepareData()
                mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
                getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("cannot create SU variable ") + m_SUVarsToCreate[i-1] + wxT(", it is previously produced"));
   }
+
 
 
   // create RSs vars
@@ -123,7 +127,10 @@ bool PluggableFunction::prepareData()
                mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
                getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("cannot create RS variable ") + m_RSVarsToCreate[i-1] + wxT(", it is previously produced"));
   }
+
+
 
 
   // create GUs vars
@@ -134,7 +141,9 @@ bool PluggableFunction::prepareData()
                mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
                getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("cannot create GU variable ") + m_GUVarsToCreate[i-1] + wxT(", it is previously produced"));
   }
+
 
 
   // ============ simulated vars to update ===============
@@ -197,8 +206,12 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
               getSimulatedVars(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested SU variable ") + m_SUVarsToCheck[i-1] + wxT(" is not previously produced"));    
   }
-
+  
+  
+  
+  
   // check RSs vars
   i = 0;
   while (IsOK && i<m_RSVarsToCheck.GetCount())
@@ -207,7 +220,10 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
               getSimulatedVars(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested RS variable ") + m_RSVarsToCheck[i-1] + wxT(" is not previously produced"));
   }
+
+
 
   // check GUs vars
   i = 0;
@@ -217,12 +233,13 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
               getSimulatedVars(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested GU variable ") + m_GUVarsToCheck[i-1] + wxT(" is not previously produced"));    
   }
-
+ 
 
   // ============= Simulated properties =============
 
-  // check SUs vars
+  // check SUs props
   i = 0;
   while (IsOK && i<m_SUPropsToCheck.GetCount())
   {
@@ -230,9 +247,12 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
               getProperties(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested SU property ") + m_SUPropsToCheck[i-1] + wxT(" not found"));    
   }
 
-  // check RSs vars
+
+
+  // check RSs props
   i = 0;
   while (IsOK && i<m_RSPropsToCheck.GetCount())
   {
@@ -240,9 +260,12 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
               getProperties(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested RS property ") + m_RSPropsToCheck[i-1] + wxT(" not found"));    
   }
 
-  // check GUs vars
+
+
+  // check GUs props
   i = 0;
   while (IsOK && i<m_GUPropsToCheck.GetCount())
   {
@@ -250,11 +273,14 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
               getProperties(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested GU property ") + m_GUPropsToCheck[i-1] + wxT(" not found"));
   }
+
+
 
   // ============= initial conditions =============
 
-  // check SUs vars
+  // check SUs iniconds
   i = 0;
   while (IsOK && i<m_SUInicondsToCheck.GetCount())
   {
@@ -262,9 +288,12 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
               getIniConditions(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested SU initial condition ") + m_SUInicondsToCheck[i-1] + wxT(" not found"));    
   }
 
-  // check RSs vars
+
+
+  // check RSs iniconds
   i = 0;
   while (IsOK && i<m_RSInicondsToCheck.GetCount())
   {
@@ -272,9 +301,13 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
               getIniConditions(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested RS initial condition ") + m_RSInicondsToCheck[i-1] + wxT(" not found"));
+
   }
 
-  // check GUs vars
+
+
+  // check GUs iniconds
   i = 0;
   while (IsOK && i<m_GUInicondsToCheck.GetCount())
   {
@@ -282,7 +315,10 @@ bool PluggableFunction::checkConsistency()
               mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
               getIniConditions(),IsOK);
     i++;
+    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested GU initial condition ") + m_GUInicondsToCheck[i-1] + wxT(" not found"));
   }
+
+
 
   return IsOK;
 }
@@ -314,7 +350,7 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
 
 bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value)
 {
-  // attention, la v�rif de l'existence de la prop bouffe beaucoup de temps
+  // attention, la verif de l'existence de la prop bouffe beaucoup de temps
   
   if (HO != NULL)  
   {
