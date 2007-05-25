@@ -36,6 +36,8 @@ wxArrayString SplitString(const wxString StrToSplit, const wxString SepString);
 
 wxString GenerateSimulationID();
 
+wxString FormatExecutionMessage(wxString Message);
+
 
 
 #endif

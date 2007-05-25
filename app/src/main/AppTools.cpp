@@ -153,3 +153,29 @@ wxString GenerateSimulationID()
   return IDStr;
   
 }
+
+
+// =====================================================================
+// =====================================================================
+
+wxString FormatExecutionMessage(wxString Message)
+{
+  wxString Formatted = wxT("");
+  
+  wxArrayString Parts;
+   
+  Parts = SplitString(Message,wxT(";"));
+
+  Formatted = Parts[2] + wxT(" (message sent by ") + Parts[0];
+  
+  if (Parts[1] != wxT("-1"))
+  {
+    Formatted = Formatted + wxT(", at step ") + Parts[1];   
+  }
+  
+  Formatted = Formatted + wxT(")");
+  
+  return Formatted;
+  
+}
+

@@ -141,8 +141,9 @@ bool TransferGUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
    WL = (Volume/(GU->getUsrArea()))*(ThetaS - ThetaI);
    MHYDAS_AppendDistributedVarValue(GU,wxT("waterlevel"),GU->getUsrArea());
    
-   /*mp_ExecMsgs->setError(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("erreur pour test"));
-   if (SimStatus->getCurrentStep() % 10 == 0) mp_ExecMsgs->addWarning(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("pour test"));*/
+   //mp_ExecMsgs->setError(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("erreur pour test"));
+   // if (GU->getID() == 1 && SimStatus->getCurrentStep() % 10 == 0) mp_ExecMsgs->addWarning(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("pour test"));
+   //if ((GU->getID() == 1) && (SimStatus->getCurrentStep()==162)) mp_ExecMsgs->setError(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("erreur pour test"));
 
   END_LOOP
 

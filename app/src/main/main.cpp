@@ -36,11 +36,11 @@ bool MHYDASApp::buildModel()
   std::cout << "* Building model... ";
   std::cout.flush();
 
-  ExecStatus = mp_Engine->buildModel();
+  mp_Engine->buildModel();
 
-  printlnExecStatus(ExecStatus);
+  printlnExecStatus();
 
-  if (ExecStatus)
+  if (!mp_ExecMsgs->isErrorFlag())
   {
     if (mp_Engine->getConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getConfig().SimulationID;
     else m_ExSI.SimID = GenerateSimulationID();
@@ -62,7 +62,7 @@ bool MHYDASApp::loadData()
 
   ExecStatus = mp_Engine->loadData();
 
-  printlnExecStatus(ExecStatus);
+  printlnExecStatus();
 
   return ExecStatus;
 }
@@ -81,7 +81,7 @@ bool MHYDASApp::checkConsistency()
 
   ExecStatus = mp_Engine->prepareDataAndCheckConsistency();
 
-  printlnExecStatus(ExecStatus);
+  printlnExecStatus();
 
   return ExecStatus;
 }
@@ -106,8 +106,8 @@ bool MHYDASApp::runSimulation()
 
   m_EffectiveEndTime = wxDateTime::Now();
 
-  if (ExecStatus) std::cout << "**** Simulation completed ****" << endl << endl;
-  else  std::cout << "**** Simulation aborted ****" << endl << endl;
+  if (!mp_ExecMsgs->isErrorFlag()) std::cout << "**** Simulation completed ****" << endl << endl;
+  else  std::cout << "**** Simulation aborted ****" << endl;
   std::cout.flush();
 
   return ExecStatus;
@@ -127,7 +127,7 @@ bool MHYDASApp::saveResults()
 
   ExecStatus = mp_Engine->saveResults(m_ExSI);
 
-  printlnExecStatus(ExecStatus);
+  printlnExecStatus();
 
   return ExecStatus;
 }
@@ -137,13 +137,28 @@ bool MHYDASApp::saveResults()
 // =====================================================================
 
 
-void MHYDASApp::printlnExecStatus(bool Status)
+void MHYDASApp::printlnExecStatus()
 {
-  if (Status) std::cout << "[OK]" << std::endl;
+  if (!mp_ExecMsgs->isErrorFlag())
+  {
+    if (mp_ExecMsgs->isWarningFlag()) std::cout << "[Warning]" << std::endl;
+    else std::cout << "[OK]" << std::endl;
+  }
   else std::cout << "[Error]" << std::endl;
+    
   std::cout.flush();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void MHYDASApp::printlnExecMessagesStats()
+{
+  if (mp_ExecMsgs->isErrorFlag()) std::cout << "1 error, ";
+  else  std::cout << "no error, ";
+  std::cout << mp_ExecMsgs->getWarningMsgs().Count() << " warning(s)" << std::endl; 
+}
 
 // =====================================================================
 // =====================================================================
@@ -361,9 +376,17 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 // =====================================================================
 
 bool MHYDASApp::stopAppReturn()
-{
-  std::cout << std::endl << "[Error] " << mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8) << std::endl;
-  std::cout << "Aborting MHYDAS application." << std::endl;
+{  
+  std::cout << std::endl;
+  printlnExecMessagesStats();
+
+  std::cout << "ERROR: " << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()).mb_str(wxConvUTF8) << std::endl;
+
+  for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
+  {
+    std::cout << "WARNING: " << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)).mb_str(wxConvUTF8) << std::endl;
+  }  
+    
   std::cout << std::endl;
   std::cout.flush();
 
@@ -455,34 +478,44 @@ int MHYDASApp::OnRun()
 
     mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);
 
-    // model load and check
-    if (!buildModel()) return stopAppReturn();
-
+    // model load and check    
+    buildModel();
+    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
+    mp_ExecMsgs->resetWarningFlag();
+        
     // input data load and check
-    if (!loadData()) return stopAppReturn();
-
+    loadData();
+    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
+    mp_ExecMsgs->resetWarningFlag();
+        
     // global consistency check
-    if (!checkConsistency()) return stopAppReturn();
-
+    checkConsistency();
+    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
+    mp_ExecMsgs->resetWarningFlag();
+        
     // simulation
-    if (!runSimulation()) return stopAppReturn();
-
+    runSimulation();
+    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
+    mp_ExecMsgs->resetWarningFlag();
+        
     wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
     m_ExSI.RunTime = EffSimTime;
     
 
     // saving results 
-    if (!saveResults()) return stopAppReturn();
-
-    
-
+    saveResults();
+    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
+    mp_ExecMsgs->resetWarningFlag();
+        
     m_TotalEndTime = wxDateTime::Now();
 
     std::cout << std::endl;
 
     wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
-
+    printlnExecMessagesStats();
+    std::cout << std::endl;
+    
     std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
     std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
     std::cout << std::endl;

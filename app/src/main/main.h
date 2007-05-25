@@ -63,7 +63,9 @@ class MHYDASApp : public wxAppConsole
     wxDateTime m_EffectiveStartTime;
     wxDateTime m_EffectiveEndTime;
 
-    void printlnExecStatus(bool Status);
+    void printlnExecStatus();
+    
+    void printlnExecMessagesStats();
     
     void printMHYDASInfos();
 
