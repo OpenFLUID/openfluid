@@ -390,7 +390,7 @@ class PluggableFunction : public wxObject
       Checks needed data.
       May be overloaded and called if you want to add more consistency checking instructions.
     */
-    bool checkConsistency();
+    virtual bool checkConsistency();
     
     /**
       Pure virtual method, must be overloaded.

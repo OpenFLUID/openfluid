@@ -101,6 +101,7 @@ PluggableFunction::PluggableFunction()
 
 bool PluggableFunction::prepareData()
 {
+
   int i;
   bool IsOK = true;
 
@@ -192,6 +193,7 @@ bool PluggableFunction::prepareData()
 
 bool PluggableFunction::checkConsistency()
 {
+
   int i;
   bool IsOK = true;
 
