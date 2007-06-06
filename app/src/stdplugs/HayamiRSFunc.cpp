@@ -19,10 +19,8 @@ mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
   return new HayamiRSFunction();
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 
 HayamiRSFunction::HayamiRSFunction()
@@ -169,10 +167,11 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 bool HayamiRSFunction::checkConsistency()
 {
   // On verifie s'il existe des SU pour recuperer leur debit
-  m_UseUpSUOutput = false; 
+   
+  m_UseUpSUOutput = false;   
   if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
   {
-    DECLARE_SU_USED_VAR("qoutput");
+    DECLARE_SU_USED_VAR("qoutput");    
     m_UseUpSUOutput = true;
   } 
 
@@ -229,7 +228,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       {                
         UpSU = *UpSUiter;
         MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
-        UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue / UpSU->getUsrArea();
+        UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue; // / UpSU->getUsrArea();
       }  
     }
   
@@ -245,8 +244,8 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       {                
         UpSU = *UpSUiter;
         
-        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
-        UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue / UpSU->getUsrArea();                
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);        
+        UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue;// / UpSU->getUsrArea();                
         
       }  
     }
@@ -265,11 +264,13 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;                
     }    
     
+
+//    std::cerr << UpSrcSUsOutputsSum << " / " << UpLatSUsOutputsSum << " / " << UpRSsOutputsSum << std::endl;
     
     // 2.b propagation via Hayami
         
        
-    QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum;
+    QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum + UpLatSUsOutputsSum; 
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
     m_Input[ID]->push_back(QInput);
     
@@ -280,6 +281,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     }  
 
     QOutput = QOutput + UpLatSUsOutputsSum;
+
         
     MHYDAS_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
 

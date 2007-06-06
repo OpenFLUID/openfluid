@@ -38,7 +38,7 @@ WX_DEFINE_LIST(FunctionsList);
     while (_M_FuncNode && statevar) \
     { \
       mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2; \
+      if (CurrentFunction != NULL) statevar = (statevar && (CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2)); \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
@@ -137,7 +137,7 @@ bool Engine::processConfig()
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("Engine"),wxT("Loading function from plugin error."));
+      mp_ExecMsgs->setError(wxT("Engine"),wxT("Loading function from plugin ") + FConf->File + wxT(" error."));
       return false;
     }
 
@@ -237,7 +237,7 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
   // checks consistency
-  
+    
   PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
   if (!IsOK)
   {       

@@ -147,8 +147,10 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 
 
+
 bool HayamiSUFunction::checkConsistency()
 {
+
   bool IsOK = PluggableFunction::checkConsistency();
   
   return IsOK;  
@@ -192,6 +194,8 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       QOutput = DoHayamiPropagation(m_SUKernel[ID], CurrentStep, m_Input[ID], m_MaxSteps, TimeStep);
     }  
         
+//    std::cerr << "Hayamisu " << QOutput << std::endl;
+
     MHYDAS_AppendDistributedVarValue(SU,wxT("qoutput"),QOutput);
 
   END_LOOP

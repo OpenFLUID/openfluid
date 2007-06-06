@@ -176,7 +176,6 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 bool MorelSeytouxFunc::checkConsistency()
 {
-
   return PluggableFunction::checkConsistency();
 }
 
