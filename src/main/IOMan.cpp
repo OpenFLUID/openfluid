@@ -1281,12 +1281,29 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
   }
 
+  
+  
+  
+
+
+  // checking if requested variables exist and
   // building columns string for file headers
   ColsStr.Clear();
   for (i=0;i<Def->Columns.Count();i++)
   {
-    ColsStr << Def->Columns[i];
-    if (i != (Def->Columns.Count()-1)) ColsStr << ColSeparator;
+    if (HOSet[0]->getSimulatedVars()->find(Def->Columns[i]) != HOSet[0]->getSimulatedVars()->end())
+    {    
+      ColsStr << Def->Columns[i];
+      if (i != (Def->Columns.Count()-1)) ColsStr << ColSeparator;
+    }
+    else
+    {
+      wxString ObjKind = wxT("SU");
+      if (Def->ObjectsKind == wxT("RSout")) ObjKind = wxT("RS");
+      if (Def->ObjectsKind == wxT("GUout")) ObjKind = wxT("GU");
+      mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("requested ")+ObjKind+wxT(" variable ")+Def->Columns[i]+wxT(" does not exists and cannot be saved"));
+      Def->Columns.RemoveAt(i);
+    }  
   }
 
 

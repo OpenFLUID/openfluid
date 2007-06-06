@@ -213,17 +213,6 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   
 
-  /*
-  // integrates rain on time step (converts from intensity to water height)
-  mhydasdk::core::RainSourceMap RainSrcColl = mp_CoreData->getRainEvent()->getRainSourceCollection();
-  mhydasdk::core::RainSourceMap::iterator RainSrcit;
-  mhydasdk::core::ChronDataSource *Source;
-  for(RainSrcit = RainSrcColl.begin(); RainSrcit != RainSrcColl.end(); ++RainSrcit )
-  {
-    Source = RainSrcit->second;
-    Source->getTimeSerie()->multiplyValuesByFactor(m_Config.DeltaT);
-  }
-  */
 
 
   // check simulation functions count
@@ -354,7 +343,7 @@ bool Engine::run()
 
 bool Engine::saveResults(ExtraSimInfos ExSI)
 {
- 
+  mp_ExecMsgs->resetWarningFlag();
   return (mp_IOMan->saveResults(mp_CoreData,ExSI) && mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
 }
 
