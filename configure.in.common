@@ -10,14 +10,13 @@ DEVEL_CCCFLAGS=-g3
 
 SETUPH=setup.h
 
-EXEFILEROOT=mhydas-mpp
 
 SDKCONFIGTOOL=mhydasdk-config
 
 PLUGSUBDIR=plugs
 
 APPNAME=mhydas
-
+EXEFILEROOT=mhydas
 
 MAJORVER=0
 #MINORVER=`date +%-y.%m`

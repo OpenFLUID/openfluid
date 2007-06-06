@@ -198,7 +198,7 @@ void MHYDASApp::printMHYDASInfos()
   std::cout << std::endl;
   std::cout << VersionInfo.mb_str(wxConvUTF8) << std::endl;
   std::cout << std::endl;  
-  std::cout << "               LISAH-INRA, Montpellier, France             " << std::endl;
+  std::cout << "                 LISAH, Montpellier, France                " << std::endl;
   std::cout << "===========================================================" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
