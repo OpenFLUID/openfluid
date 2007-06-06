@@ -40,11 +40,11 @@ mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString 
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
   wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
-
-  mhydasdk::base::PluggableFunction* Plug = NULL;
+  mhydasdk::base::PluggableFunction* Plug = NULL;  
+  
 
   // library loading
-  if (PlugLib->Load(PluginFile))
+  if (PluginFile.Length()>0 && PlugLib->Load(PluginFile))
   {
     // checks if the handle proc exists
     if (PlugLib->HasSymbol(wxT("GetMHYDASPluggableFunction")))

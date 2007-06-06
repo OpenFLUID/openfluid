@@ -25,7 +25,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   //m_PlugsDirs.Add(wxStandardPaths::Get().GetPluginsDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
   
 //  m_PlugsDirs.Add(wxStandardPaths::Get().GetPluginsDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
-  #ifdef __WXGTK__
+  #ifdef __LINUX__
   m_PlugsDirs.Add(MHYDAS_PLUGINS_STDSYSDIR);
   #endif
 
@@ -36,7 +36,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   
   m_PlugsDirs.Add(wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
     
-  #ifdef __WXGTK__
+  #ifdef __LINUX__
   m_PlugsDirs.Add(m_AppDir + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
   #endif
   
@@ -84,6 +84,7 @@ wxString RuntimeEnvironment::getPluginFullPath(wxString Filename)
   
   while ((PlugFullPath.Length() == 0) && (i<m_PlugsDirs.Count()))
   {
+    
     TmpPath = m_PlugsDirs[i] + wxFILE_SEP_PATH + Filename;
     
     if (wxFileExists(TmpPath)) PlugFullPath = TmpPath;

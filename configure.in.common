@@ -52,7 +52,7 @@ MDEF_SIMINFOFILE=siminfo.out
 
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
-PACKDEPENDS="libwxbase2.6-dev (>= 2.6), mhydasdk-libs (>= 0.7-93)"
+PACKDEPENDS="libwxbase2.6-dev (>= 2.6), mhydasdk-libs (>= 0.7-98)"
 PACKSECTION="science"
 PACKPRIORITY="optional"
 PACKDESC="MHYDAS modelling platform engine\\\n This engine uses pluggable simulation functions to simulate hydrological processes."
