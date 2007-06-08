@@ -6,3 +6,4 @@ SUDOBIN=
 STDSYSDIR=
 
 PACKARCH=`uname -m`
+
