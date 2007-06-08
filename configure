@@ -354,12 +354,12 @@ echo "const wxString BUILD_VERSION = wxT(\"$BUILDVER\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
-if [ $SVNREV != "x" ]; then
+#if [ $SVNREV != "x" ]; then
   echo "// Subversion revision information" >> $SETUPH
   echo "#define SVN_REV" >> $SETUPH
   echo "const wxString SVN_REVISION = wxT(\"$SVNREV\");" >> $SETUPH
   echo "" >> $SETUPH
-fi
+#fi
 
 if [ $INPUT_RAIN_MMH -eq 1 ]; then
   echo "// Input rain inn mm/h" >> $SETUPH
