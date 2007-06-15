@@ -42,40 +42,19 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
   mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
 
-//  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;runoff;Runoff on the surface of the unit;m/s"));
-//  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;infiltration;Infiltration through the surface of the unit;m/s"));
-/*
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;ks;Hydraulic conductivity when saturated;m/s"));
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetares;-;-"));  
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;thetasat;-;-"));
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;betaMS;-;-"));
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;hc;-;-"));
-  mp_Signature->HandledVarsPropsParams.Add(wxT("inic;SU;thetaisurf;-;-"));        
-*/
+  mp_Signature->Domain = wxT("Production");
 
-
-//  SU_VARIABLE_TO_CREATE("runoff");
   DECLARE_SU_PRODUCED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));
-
-//  SU_VARIABLE_TO_CREATE("infiltration");
   DECLARE_SU_PRODUCED_VAR("infiltration",wxT("Infiltration through the surface of the unit"),wxT("m/s"));
 
-//  SU_PROPERTY_TO_CHECK("ks");
   DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("Hydraulic conductivity when saturated"),wxT("m/s"));
-
-//  SU_PROPERTY_TO_CHECK("thetares");
-  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT("-"),wxT("-"));  
-//  SU_PROPERTY_TO_CHECK("thetasat");  
+  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT("-"),wxT("-"));   
   DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT("-"),wxT("-"));  
-//  SU_PROPERTY_TO_CHECK("betaMS");  
-  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT("-"),wxT("-"));  
-//   SU_PROPERTY_TO_CHECK("hc");  
+  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT("-"),wxT("-"));    
   DECLARE_SU_REQUIRED_PROPERTY("hc",wxT("-"),wxT("-"));
 
-//  SU_INICOND_TO_CHECK("thetaisurf");
   DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));
   
-
   DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT("-"));
   
   m_ResStep = 0.000005;

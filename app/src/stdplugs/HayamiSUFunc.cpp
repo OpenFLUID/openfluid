@@ -37,19 +37,7 @@ HayamiSUFunction::HayamiSUFunction()
   mp_Signature->Name = wxT("Hayami hydrological transfer on surface units");
   mp_Signature->Description = wxT("");
 
-/*
-  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;SU;qoutput;Output volume at the outlet of the unit;m3/s"));
-  mp_Signature->HandledVarsPropsParams.Add(wxT("rvar;SU;runoff;Runoff on the surface of the unit;m/s"));
-
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;SU;nmanning;;"));
-
-
-  SU_VARIABLE_TO_CREATE("qoutput");
-  
-  SU_VARIABLE_TO_CHECK("runoff");
-   
-  SU_PROPERTY_TO_CHECK("nmanning");
-*/
+  mp_Signature->Domain = wxT("Transfer");
 
   DECLARE_SU_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the unit"),wxT("m3/s"));
   DECLARE_SU_REQUIRED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));  

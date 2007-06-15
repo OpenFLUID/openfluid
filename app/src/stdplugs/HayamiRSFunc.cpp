@@ -33,18 +33,7 @@ HayamiRSFunction::HayamiRSFunction()
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
   mp_Signature->Description = wxT("");
-
-/*
-  mp_Signature->HandledVarsPropsParams.Add(wxT("pvar;RS;qoutput;-;-"));
-  
-  mp_Signature->HandledVarsPropsParams.Add(wxT("prop;RS;nmanning;-;-"));
-
-
-
-  RS_VARIABLE_TO_CREATE("qoutput");
-    
-  RS_PROPERTY_TO_CHECK("nmanning");
-*/
+  mp_Signature->Domain = wxT("Transfer");
 
   DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
   DECLARE_RS_PRODUCED_VAR("waterheight",wxT("Water height at the outlet of the ditch"),wxT("m"));
@@ -334,13 +323,15 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
             
     }
 
-        
+              
     Q1 = HeightDischarge->at(i-1);
     Q2 = HeightDischarge->at(i);
 
     H1 = (i-1) * m_CalibrationStep;
     H2 = i * m_CalibrationStep; 
 
+
+    // risque de division par 0 si Q1 == Q2 !! à revoir, comment fait-on?
     *Height = H1 + ((Discharge-Q1) * (H2-H1) / (Q2-Q1));
     
       
