@@ -152,9 +152,29 @@ echo "DYNLIBLDFLAGS = $DYNLIBLDFLAGS" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
-echo "# sdk libs files names" >> $OPTFILE
-echo "SDKLIBBASE = $SDKLIBSROOT-base" >> $OPTFILE
-echo "SDKLIBCORE = $SDKLIBSROOT-core" >> $OPTFILE
+BASESONAME=lib$SDKLIBSROOT-base.$DYNLIBEXT
+CORESONAME=lib$SDKLIBSROOT-core.$DYNLIBEXT
+
+echo "# sdk libs roots, files names, sonames and flags" >> $OPTFILE
+echo "SDKLIBBASEROOT = $SDKLIBSROOT-base" >> $OPTFILE
+echo "SDKLIBCOREROOT = $SDKLIBSROOT-core" >> $OPTFILE
+echo "SDKLIBBASESONAME = $BASESONAME" >> $OPTFILE
+echo "SDKLIBCORESONAME = $CORESONAME" >> $OPTFILE
+
+if [ "$OSTYPE" = "msys" ]; then
+  echo "SDKLIBBASEFILE = lib$SDKLIBSROOT-base.$DYNLIBEXT" >> $OPTFILE
+  echo "SDKLIBCOREFILE = lib$SDKLIBSROOT-core.$DYNLIBEXT" >> $OPTFILE
+  echo "SDKLIBCORELDFLAGS = -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc" >> $OPTFILE
+  echo "SDKLIBBASELDFLAGS = -Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc" >> $OPTFILE  
+else
+  echo "SDKLIBBASEFILE = lib$SDKLIBSROOT-base.$DYNLIBEXT.$MAJORVER.$MINORVER.$SVNREV" >> $OPTFILE
+  echo "SDKLIBCOREFILE = lib$SDKLIBSROOT-core.$DYNLIBEXT.$MAJORVER.$MINORVER.$SVNREV" >> $OPTFILE  
+  echo "SDKLIBCORELDFLAGS = -Wl,-soname,$CORESONAME" >> $OPTFILE
+  echo "SDKLIBBASELDFLAGS = -Wl,-soname,$BASESONAME" >> $OPTFILE  
+fi
+
+
+
 
 echo "" >> $OPTFILE
 
@@ -182,8 +202,9 @@ echo "# build base dir" >> $OPTFILE
 BASEBUILDDIR=$ABSPATH/build/$MACHTYPE
 echo "BASEBUILDDIR = $BASEBUILDDIR" >> $OPTFILE
 
+BASEBINDIR=$BASEBUILDDIR/bin
 echo "# binary dir" >> $OPTFILE
-echo "BASEBINDIR = $BASEBUILDDIR/bin" >> $OPTFILE
+echo "BASEBINDIR = $BASEBINDIR" >> $OPTFILE
 
 echo "# built objects dir" >> $OPTFILE
 echo "BASEOBJDIR = $BASEBUILDDIR/obj" >> $OPTFILE
@@ -214,6 +235,15 @@ echo "" >> $OPTFILE
 echo "# SDK installation infos" >> $OPTFILE
 
 echo "SUDO = $SUDOBIN" >> $OPTFILE
+echo "LDCONFIG = $LDCONFIGBIN" >> $OPTFILE
+
+if [ "$OSTYPE" = "msys" ]; then
+  echo "LDCONFIGBUILD = " >> $OPTFILE
+  echo "LDCONFIGINST = " >> $OPTFILE
+else
+  echo "LDCONFIGBUILD = $LDCONFIGBIN -n $BASEBINDIR" >> $OPTFILE
+  echo "LDCONFIGINST = $LDCONFIGBIN $INSTSDKLIBSPATH" >> $OPTFILE
+fi  
 echo "INSTSDKLIBSPATH = $INSTSDKLIBSPATH" >> $OPTFILE
 echo "INSTSDKINCPATH = $INSTSDKINCPATH" >> $OPTFILE
 echo "INSTSDKBINPATH = $INSTSDKBINPATH" >> $OPTFILE
@@ -248,3 +278,4 @@ echo "configuration file for compilation generated ($OPTFILE)"
 
 
 exit 0
+

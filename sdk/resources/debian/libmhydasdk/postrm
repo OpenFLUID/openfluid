@@ -1,0 +1,26 @@
+#! /bin/sh
+# postrm script for libmhydasdk
+
+set -e
+
+
+case "$1" in
+    remove|purge)
+
+        /sbin/ldconfig
+
+    ;;
+
+    abort-remove)
+
+    ;;
+
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0;
+

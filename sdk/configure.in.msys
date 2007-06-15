@@ -8,3 +8,6 @@ INSTSDKBINPATH=/usr/local/bin
 
 
 PACKARCH=`uname -m`
+
+LDCONFIGBIN=
+

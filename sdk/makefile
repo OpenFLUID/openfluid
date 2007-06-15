@@ -15,12 +15,13 @@ sdk-core:
 	@echo ""
 	@echo "==== Compiling core SDK ===="
 	@(cd src/core && $(MAKE))
+	@$(LDCONFIGBUILD)
 
 sdk-base:
 	@echo ""
 	@echo "==== Compiling base SDK ===="
 	@(cd src/base && $(MAKE))
-
+	@$(LDCONFIGBUILD)
 
 mhydasdk-conf-file:
 	@echo ""
@@ -29,8 +30,8 @@ mhydasdk-conf-file:
 	@echo "" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)    
 	@echo "SDKLIBSPATH=$(INSTSDKLIBSPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
 	@echo "SDKINCPATH=$(INSTSDKINCPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
-	@echo "SDKLIBBASEROOT=$(SDKLIBBASE)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)                
-	@echo "SDKLIBCOREROOT=$(SDKLIBCORE)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
+	@echo "SDKLIBBASEROOT=$(SDKLIBBASEROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)                
+	@echo "SDKLIBCOREROOT=$(SDKLIBCOREROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@cat ./mhydasdk-config.in >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@chmod ugo+x $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 
@@ -41,7 +42,7 @@ clean:
 	@rm -R -f $(BASEDOCDIR)
 
 
-doc:
+docs:
 	@mkdir -p $(BASEDOCDIR)
 	@doxygen
 
@@ -54,10 +55,10 @@ clean-installed-sdk:
 	@echo ""
 	@echo "==== Removing installed SDK ===="
 	@$(SUDO) rm -f -R $(INSTSDKINCPATH)
-	@$(SUDO) rm -f $(INSTSDKLIBSPATH)/lib$(SDKLIBBASE).$(DYNLIBEXT)
-	@$(SUDO) rm -f $(INSTSDKLIBSPATH)/lib$(SDKLIBCORE).$(DYNLIBEXT)	
+	@$(SUDO) rm -f $(INSTSDKLIBSPATH)/$(SDKLIBBASEFILE)
+	@$(SUDO) rm -f $(INSTSDKLIBSPATH)/$(SDKLIBCOREFILE)
 	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
-
+	@$(SUDO) $(LDCONFIGINST)
 
 install-sdk: sdk clean-installed-sdk mhydasdk-conf-file
 	@echo ""
@@ -69,14 +70,15 @@ install-sdk: sdk clean-installed-sdk mhydasdk-conf-file
 	@$(SUDO) cp src/core/*.h $(INSTSDKINCPATH)/core/
 	@$(SUDO) cp src/base/*.h $(INSTSDKINCPATH)/base/
 	@echo "Installing libraries"
-	@$(SUDO) cp $(BASEBINDIR)/lib$(SDKLIBBASE).$(DYNLIBEXT) $(INSTSDKLIBSPATH)
-	@$(SUDO) cp $(BASEBINDIR)/lib$(SDKLIBCORE).$(DYNLIBEXT) $(INSTSDKLIBSPATH)
-	@$(SUDO) chmod 644 $(INSTSDKLIBSPATH)/lib$(SDKLIBBASE).$(DYNLIBEXT)
-	@$(SUDO) chmod 644 $(INSTSDKLIBSPATH)/lib$(SDKLIBCORE).$(DYNLIBEXT)
+	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBBASEFILE) $(INSTSDKLIBSPATH)
+	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBCOREFILE) $(INSTSDKLIBSPATH)
+	@$(SUDO) chmod 644 $(INSTSDKLIBSPATH)/$(SDKLIBBASEFILE)
+	@$(SUDO) chmod 644 $(INSTSDKLIBSPATH)/$(SDKLIBCOREFILE)
+	@$(SUDO) $(LDCONFIGINST)
 	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
 
 
-deb-packages: all mhydasdk-conf-file doc
+deb-packages: all mhydasdk-conf-file docs
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
 	@rm -f -R $(BASEPACKDIR)/debian/*
@@ -85,8 +87,8 @@ deb-packages: all mhydasdk-conf-file doc
 	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
 	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/lib$(SDKLIBBASE).$(DYNLIBEXT) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
-	@cp $(BASEBINDIR)/lib$(SDKLIBCORE).$(DYNLIBEXT) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
+	@cp $(BASEBINDIR)/$(SDKLIBBASEFILE) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
+	@cp $(BASEBINDIR)/$(SDKLIBCOREFILE) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@cp resources/debian/common/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
 	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN

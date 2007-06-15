@@ -1,8 +1,6 @@
 # sdk-core makefile
 
 
-# en cours, a revoir
-
 include ../../makeopts.inc
 
 OBJDIR=$(BASEOBJDIR)/core
@@ -10,15 +8,10 @@ BINDIR=$(BASEBINDIR)
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/core
 
-LIBNAME=lib$(SDKLIBCORE)
+LIBFILE=$(SDKLIBCOREFILE)
 
 CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL $(DYNLIBCCFLAGS) $(WXFLAGS) -I .. -I.
 CCLIBS=$(WXLIBS)
-
-LDFLAGS=-Wl,-soname,$(LIBNAME).$(DYNLIBEXT)
-ifeq ($(OSTYPE),msys)
-  LDFLAGS=-Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc #-Wl,--out-implib,$(LIBDIR)/$(LIBNAME).$(STALIBEXT)
-endif
 
 
 OBJ=$(OBJDIR)/DateTime.o \
@@ -40,7 +33,7 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(OBJ)
-	$(CPP) -o $(BINDIR)/$(LIBNAME).$(DYNLIBEXT) $(OBJ) $(CCLIBS) -shared $(LDFLAGS) 
+	$(CPP) -o $(BINDIR)/$(LIBFILE) $(OBJ) $(CCLIBS) -shared $(SDKLIBCORELDFLAGS) 
 
 prechecks:
 	@mkdir -p $(OBJDIR)

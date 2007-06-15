@@ -10,15 +10,11 @@ BINDIR=$(BASEBINDIR)
 LIBDIR=$(BASELIBDIR)
 DOCDIR=$(BASEDOCDIR)/base
 
-LIBNAME=lib$(SDKLIBBASE)
+LIBNAME=$(SDKLIBBASEFILE)
 
 CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL $(DYNLIBCCFLAGS) $(WXFLAGS) -I.. -I.
-CCLIBS=-L$(BINDIR) $(WXLIBS) -l$(SDKLIBCORE)
+CCLIBS=-L$(BINDIR) $(WXLIBS) -l$(SDKLIBCOREROOT)
 
-LDFLAGS=-Wl,-soname,$(LIBNAME).$(DYNLIBEXT)
-ifeq ($(OSTYPE),msys)
-  LDFLAGS=-Wl,-no-undefined -Wl,--enable-runtime-pseudo-reloc #-Wl,--out-implib,$(LIBDIR)/$(LIBNAME).$(STALIBEXT)
-endif
 
 
 
@@ -33,7 +29,7 @@ $(OBJDIR)/%.o : %.cpp %.h
 
 
 all: prechecks $(OBJ)
-	$(CPP) -o $(BINDIR)/$(LIBNAME).$(DYNLIBEXT) $(OBJ) -shared $(LDFLAGS) $(CCLIBS)
+	$(CPP) -o $(BINDIR)/$(SDKLIBBASEFILE) $(OBJ) -shared $(SDKLIBBASELDFLAGS) $(CCLIBS)
 
 prechecks:
 	@mkdir -p $(OBJDIR)
