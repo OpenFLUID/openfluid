@@ -280,9 +280,15 @@ void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams,
       }
       else
       {
-        std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": " << CurrentStr[0].mb_str(wxConvUTF8) << " ";
-        if (CurrentStr[1] == wxT("global")) std::cout << "globally distributed ";
-        else std::cout << "distributed on " << CurrentStr[1].mb_str(wxConvUTF8) << "s ";
+        std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": ";
+        if (CurrentStr[0] == wxT("rvar")) std::cout << "required variable, ";  
+        if (CurrentStr[0] == wxT("pvar")) std::cout << "produced variable, ";        
+        if (CurrentStr[0] == wxT("uvar")) std::cout << "used variable (if available), ";        
+        if (CurrentStr[0] == wxT("prop")) std::cout << "required property, ";        
+        if (CurrentStr[0] == wxT("inic")) std::cout << "required initial condition, ";        
+        if (CurrentStr[0] == wxT("gpar")) std::cout << "function parameter ";        
+         
+        if (CurrentStr[1] != wxT("--")) std::cout << "distributed on " << CurrentStr[1].mb_str(wxConvUTF8) << " ";
         std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")" << std::endl;        
       }   
     }
