@@ -1,6 +1,6 @@
 /**
-  \file
-  \brief implements ...
+  \file PlugFunction.cpp
+  \brief implementation file for generic pluggable function interface definition
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -99,7 +99,7 @@ PluggableFunction::PluggableFunction()
 // =====================================================================
 
 
-bool PluggableFunction::prepareData()
+bool PluggableFunction::prepareFunctionData()
 {
 
   int i;
@@ -191,7 +191,7 @@ bool PluggableFunction::prepareData()
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::checkConsistency()
+bool PluggableFunction::checkFunctionConsistency()
 {
 
   int i;
@@ -452,9 +452,13 @@ bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObjec
     
     if (it != HO->getSimulatedVars()->end())
     {    
-      //mhydasdk::core::VectorOfDouble ValuesVect = it->second->;
-      //ValuesVect[Step] = Value;
-      return true;
+      mhydasdk::core::VectorOfDouble* ValuesVect = it->second;
+      if (Step < ValuesVect->size())
+      {
+        ValuesVect->at(Step) = Value;
+        return true;
+      }
+      else return false;  
     }
     else return false;  
   }

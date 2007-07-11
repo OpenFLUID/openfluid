@@ -60,7 +60,7 @@ clean-installed-sdk:
 	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
 	@$(SUDO) $(LDCONFIGINST)
 
-install-sdk: sdk clean-installed-sdk mhydasdk-conf-file
+install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@echo ""
 	@echo "==== Installing SDK ===="
 	@echo "Installing header files"

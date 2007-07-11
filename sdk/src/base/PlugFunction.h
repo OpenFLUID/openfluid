@@ -6,11 +6,11 @@
 
   The PluggableFunction class defines the minimal structure for a 
   pluggable function
-  ALL PLUGGABLE FUNCTIONS MUST INHERIT FROM THIS CLASS TO BE LOADED
+  EVERY PLUGGABLE FUNCTION MUST INHERIT FROM THIS CLASS TO BE LOADED
   It sets some essential methods
   The PluggableFunctionProc type defines the handle method for the 
-  function integration into the host application. Every pluggable 
-  simulation function must have the function:
+  function integration into the host application. 
+  EVERY PLUGGABLE FUNCTION MUST DEFINE AND IMPLEMENT THE FUNCTION:
   \code
   extern "C"
   {
@@ -33,7 +33,7 @@
 // =====================================================================
 // =====================================================================
 
-
+// compilation dircetives for shared libs linkage
 #ifdef WIN32
   #ifdef BUILDPLUGDLL
     #define DLLIMPORT __declspec(dllexport)
@@ -55,119 +55,251 @@
 // =====================================================================
 // =====================================================================
 
+
+/**
+  Macro for declaration of a function parameter
+  \param[in] name name of the parameter 
+  \param[in] description description of the parameter  
+  \param[in] unit unit of the parameter. Could be an empty string if there is no unit  
+*/ 
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("gpar;--;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
 
+/**
+  Macro for declaration of a produced variable on all SUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/ 
 #define DECLARE_SU_PRODUCED_VAR(name,description,unit) \
   m_SUVarsToCreate.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("pvar;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
   
+/**
+  Macro for declaration of an updated variable on all SUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/ 
 #define DECLARE_SU_UPDATED_VAR(name,description,unit) \
   m_SUVarsToUpdate.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("uvar;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
   
+/**
+  Macro for declaration of a required variable on all SUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
   m_SUVarsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("rvar;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
 
+/**
+  Macro for declaration of an used variable on all SUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/
 #define DECLARE_SU_USED_VAR(name) \
-  m_SUVarsToCreate.Add(wxT(name));
+  m_SUVarsToCheck.Add(wxT(name));
 
+/**
+  Macro for declaration of a required property on all SUs
+  \param[in] name name of the property
+  \param[in] description description of the property  
+  \param[in] unit unit of the property. Could be an empty string if there is no unit    
+*/
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
   m_SUPropsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("prop;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
 
+/**
+  Macro for declaration of a required initial condition on all SUs
+  \param[in] name name of the initial condition 
+  \param[in] description description of the initial condition  
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
+*/
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
   m_SUInicondsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("inic;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
 
-
-
+/**
+  Macro for declaration of a produced variable on all RSs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/
 #define DECLARE_RS_PRODUCED_VAR(name,description,unit) \
   m_RSVarsToCreate.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("pvar;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
-  
+
+/**
+  Macro for declaration of an updated variable on all RSs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/  
 #define DECLARE_RS_UPDATED_VAR(name,description,unit) \
   m_RSVarsToUpdate.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("uvar;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
-  
+
+/**
+  Macro for declaration of a required variable on all RSs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/  
 #define DECLARE_RS_REQUIRED_VAR(name,description,unit) \
   m_RSVarsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("rvar;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
 
+/**
+  Macro for declaration of an used variable on all RSs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/
 #define DECLARE_RS_USED_VAR(name) \
   m_RSVarsToCreate.Add(wxT(name));
 
+/**
+  Macro for declaration of a required property on all RSs
+  \param[in] name name of the property 
+  \param[in] description description of the property  
+  \param[in] unit unit of the property. Could be an empty string if there is no unit    
+*/
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
   m_RSPropsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("prop;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
 
+/**
+  Macro for declaration of a required initial condition on all RSs
+  \param[in] name name of the initial condition 
+  \param[in] description description of the initial condition  
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
+*/
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
   m_RSInicondsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("inic;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
 
 
-
+/**
+  Macro for declaration of a produced variable on all GUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/
 #define DECLARE_GU_PRODUCED_VAR(name,description,unit) \
   m_GUVarsToCreate.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("pvar;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
-  
+
+/**
+  Macro for declaration of an updated variable on all GUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/  
 #define DECLARE_GU_UPDATED_VAR(name,description,unit) \
   m_GUVarsToUpdate.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("uvar;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
-  
+
+/**
+  Macro for declaration of a required variable on all GUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/  
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
   m_GUVarsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("rvar;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
 
+/**
+  Macro for declaration of an used variable on all GUs
+  \param[in] name name of the variable 
+  \param[in] description description of the variable  
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+*/
 #define DECLARE_GU_USED_VAR(name) \
   m_GUVarsToCreate.Add(wxT(name));
 
+/**
+  Macro for declaration of a required property on all GUs
+  \param[in] name name of the property 
+  \param[in] description description of the property  
+  \param[in] unit unit of the property. Could be an empty string if there is no unit    
+*/
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
   m_GUPropsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("prop;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
 
+/**
+  Macro for declaration of a required initial condition on all GUs
+  \param[in] name name of the initial condition 
+  \param[in] description description of the initial condition  
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
+*/
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
   m_GUInicondsToCheck.Add(wxT(name)); \
   mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("inic;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
 
 
-
-
 // =====================================================================
 // =====================================================================
 
 
-
+/**
+  Macro for declaration of a loop processing SUs, following their process order
+*/
 #define DECLARE_SU_ORDERED_LOOP \
   list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
   list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
 
+/**
+  Macro for the begining of a loop processing SUs, following their process order
+  \param[out] suobj pointer to a mhydasdk::core::SurfaceUnit object, pointing to the current processed SU 
+*/
 #define BEGIN_SU_ORDERED_LOOP(suobj) \
   for(_M_SUiter=_M_SUsList->begin(); _M_SUiter != _M_SUsList->end(); _M_SUiter++) \
   { \
     suobj = *_M_SUiter; \
 
-
+/**
+  Macro for declaration of a loop processing RSs, following their process order
+*/
 #define DECLARE_RS_ORDERED_LOOP \
   list<mhydasdk::core::ReachSegment*>::iterator _M_RSiter; \
   list<mhydasdk::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
 
+/**
+  Macro for the begining of a loop processing RSs, following their process order
+  \param[out] rsobj pointer to a mhydasdk::core::ReachSegment object, pointing to the current processed RS 
+*/
 #define BEGIN_RS_ORDERED_LOOP(rsobj) \
   for(_M_RSiter=_M_RSsList->begin(); _M_RSiter != _M_RSsList->end(); _M_RSiter++) \
   { \
     rsobj = *_M_RSiter; \
 
 
+/**
+  Macro for declaration of a loop processing GUs, following their process order
+*/
 #define DECLARE_GU_ORDERED_LOOP \
   list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUiter; \
   list<mhydasdk::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
 
+/**
+  Macro for the begining of a loop processing GUs, following their process order
+  \param[out] guobj pointer to a mhydasdk::core::GroundwaterUnit object, pointing to the current processed GU 
+*/
 #define BEGIN_GU_ORDERED_LOOP(guobj) \
   for(_M_GUiter=_M_GUsList->begin(); _M_GUiter != _M_GUsList->end(); _M_GUiter++) \
   { \
     guobj = *_M_GUiter; \
 
+/**
+  Macro for the ending of a loop
+*/  
 #define END_LOOP }
 
 // =====================================================================
@@ -332,22 +464,77 @@ class PluggableFunction : public wxObject
     wxArrayString m_GUPropsToCheck;
 
 
+    /**
+      Gets the distributed variable value for a spatial object at a time step
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the requested variable
+      \param[in] Step the time step for the value of the requested variable            
+      \param[out] Value the value of the requested variable      
+    */ 
     bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value);
 
+    /**
+      Gets a distributed property for a spatial object
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] PropName the name of the requested property          
+      \param[out] Value the value of the requested property     
+    */
     bool MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value);
     
+    /**
+      Gets an initial condition for a spatial object
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] IniCondName the name of the requested initial condition          
+      \param[out] Value the value of the requested initial condition     
+    */
     bool MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value);
   
+    /**
+      Gets the rain intensity for a surface unit at a time step
+      \param[in] SU the surface unit
+      \param[in] Step the time step for rain intensity
+      \param[out] Value the value of the requested rain intensity     
+    */
     bool MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value); 
     
+    /**
+      Returns true if a distributed variable exists, false otherwise
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the requested variable               
+    */
     bool MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
     
+    /**
+      Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the variable            
+      \param[in] Value the added value of the variable      
+    */ 
     bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, float Value);
-    
+
+    /**
+      Sets a distributed variable value for a spatial object at a time step
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the variable
+      \param[in] Step the time step for the value of the variable            
+      \param[in] Value the added value of the variable      
+    */     
     bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float Value);
 
+    /**
+      Gets a function parameter from the parameters set, as an integer
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Value the value of the requested parameter
+    */ 
     bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, float *Value);
     
+    /**
+      Gets a function parameter value from the parameters set, as a float
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Value the value of the requested parameter
+    */ 
     bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value);
 
 
@@ -374,6 +561,17 @@ class PluggableFunction : public wxObject
     bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
     /**
+      Adds needed function data.
+    */
+    bool prepareFunctionData();
+
+    /**
+      Checks function needed data.
+    
+    */
+    bool checkFunctionConsistency();
+
+    /**
       initializes of global parameters of the function, given as a hash map
       (Params["name"] gives the value of the param named "name")
     */
@@ -381,16 +579,15 @@ class PluggableFunction : public wxObject
 
     /**
       Adds needed data.
-      May be overloaded and called if you want to add more preparation instructions.
-    */
-    bool prepareData();
 
+    */
+    virtual bool prepareData()=0;
 
     /**
       Checks needed data.
-      May be overloaded and called if you want to add more consistency checking instructions.
+    
     */
-    virtual bool checkConsistency();
+    virtual bool checkConsistency()=0;
     
     /**
       Pure virtual method, must be overloaded.
