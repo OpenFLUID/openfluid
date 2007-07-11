@@ -58,9 +58,11 @@ class HayamiSUFunction : public mhydasdk::base::PluggableFunction
 
     bool initParams(mhydasdk::core::ParamsMap Params);
 
-    bool initializeRun(mhydasdk::base::SimulationInfo* SimInfo);
-
+    bool prepareData();
+    
     bool checkConsistency();
+
+    bool initializeRun(mhydasdk::base::SimulationInfo* SimInfo);
 
     bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
 

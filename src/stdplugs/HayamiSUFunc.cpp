@@ -90,6 +90,27 @@ bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
 // =====================================================================
 // =====================================================================
 
+bool HayamiSUFunction::prepareData()
+{
+  
+  return true;  
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+bool HayamiSUFunction::checkConsistency()
+{
+  
+  return true;  
+}
+
+// =====================================================================
+// =====================================================================
+
 
 bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
@@ -130,19 +151,6 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   return true;
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-
-bool HayamiSUFunction::checkConsistency()
-{
-
-  bool IsOK = PluggableFunction::checkConsistency();
-  
-  return IsOK;  
-}
 
 
 // =====================================================================

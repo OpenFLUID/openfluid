@@ -79,6 +79,34 @@ bool HayamiRSFunction::initParams(mhydasdk::core::ParamsMap Params)
   return true;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool HayamiRSFunction::prepareData()
+{
+  // On verifie s'il existe des SU pour recuperer leur debit
+   
+  m_UseUpSUOutput = false;   
+  if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
+  {
+    DECLARE_SU_USED_VAR("qoutput");    
+    m_UseUpSUOutput = true;
+  } 
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool HayamiRSFunction::checkConsistency()
+{
+
+  return true;
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -148,24 +176,6 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   return true;
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-bool HayamiRSFunction::checkConsistency()
-{
-  // On verifie s'il existe des SU pour recuperer leur debit
-   
-  m_UseUpSUOutput = false;   
-  if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
-  {
-    DECLARE_SU_USED_VAR("qoutput");    
-    m_UseUpSUOutput = true;
-  } 
-
-  return PluggableFunction::checkConsistency();
-}
 
 
 // =====================================================================

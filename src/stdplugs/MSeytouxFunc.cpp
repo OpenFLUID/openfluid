@@ -56,6 +56,7 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));
   
   DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT("-"));
+
   
   m_ResStep = 0.000005;
   
@@ -81,6 +82,28 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
   
   return true;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MorelSeytouxFunc::prepareData()
+{
+
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool MorelSeytouxFunc::checkConsistency()
+{
+  return true;
+}
+
 
 
 // =====================================================================
@@ -148,15 +171,6 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   return IsOK;
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-bool MorelSeytouxFunc::checkConsistency()
-{
-  return PluggableFunction::checkConsistency();
-}
 
 
 // =====================================================================

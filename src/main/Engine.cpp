@@ -42,6 +42,16 @@ WX_DEFINE_LIST(FunctionsList);
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
+#define PARSE_FUNCTION_LIST_FOUR(calledmethod1,calledmethod2,calledmethod3,calledmethod4,statevar) \
+    _M_FuncNode = m_Functions.GetFirst(); \
+    while (_M_FuncNode && statevar) \
+    { \
+      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = (statevar && ((CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2) && (CurrentFunction->calledmethod3 && CurrentFunction->calledmethod4))); \
+      _M_FuncNode = _M_FuncNode->GetNext(); \
+    }
+
+
 
 
 // =====================================================================
@@ -227,7 +237,9 @@ bool Engine::prepareDataAndCheckConsistency()
 
   // checks consistency
     
-  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+//  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+  PARSE_FUNCTION_LIST_FOUR(prepareData(),prepareFunctionData(),
+                           checkConsistency(),checkFunctionConsistency(),IsOK);
   if (!IsOK)
   {       
     return false;    
