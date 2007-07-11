@@ -94,6 +94,28 @@ bool TransferGUFunction::initParams(mhydasdk::core::ParamsMap Params)
   return true;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool TransferGUFunction::prepareData()
+{
+  
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool TransferGUFunction::checkConsistency()
+{
+  
+  return true;
+}
+
+
 
 // =====================================================================
 // =====================================================================
@@ -111,35 +133,23 @@ bool TransferGUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 
 
-bool TransferGUFunction::checkConsistency()
-{
-  
-  return PluggableFunction::checkConsistency();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool TransferGUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
 
   float ThetaS, ThetaI, Volume, WL;
   mhydasdk::core::GroundwaterUnit* GU;
-
-
   DECLARE_GU_ORDERED_LOOP;
+
   BEGIN_GU_ORDERED_LOOP(GU)
-   ThetaS = 0.3;
-   ThetaI = 0.1;
-   Volume = 100;
+    ThetaS = 0.3;
+    ThetaI = 0.1;
+    Volume = 100;
    
    // MHYDAS_GetDistributedProperty(GU,wxT("thetasat"),&ThetaS));
    // MHYDAS_GetDistributedIniCondition(GU,wxT("thetai"),&ThetaI);
    
-   WL = (Volume/(GU->getUsrArea()))*(ThetaS - ThetaI);
-   MHYDAS_AppendDistributedVarValue(GU,wxT("waterlevel"),GU->getUsrArea());
+    WL = (Volume/(GU->getUsrArea()))*(ThetaS - ThetaI);
+     MHYDAS_AppendDistributedVarValue(GU,wxT("waterlevel"),GU->getUsrArea());
    
    //mp_ExecMsgs->setError(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("erreur pour test"));
    // if (GU->getID() == 1 && SimStatus->getCurrentStep() % 10 == 0) mp_ExecMsgs->addWarning(wxT("tranfergu plug/run"),SimStatus->getCurrentStep(),wxT("pour test"));
