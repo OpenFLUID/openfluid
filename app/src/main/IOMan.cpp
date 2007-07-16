@@ -1422,6 +1422,10 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
 
 bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo)
 {
+
+  int i;
+  
+  // ********** text file ********** 
   
   wxString FileContents = wxT("");
   
@@ -1431,6 +1435,13 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   FileContents << wxT("*                                                          *\n");  
   FileContents << wxT("************************************************************") << wxT("\n");
   FileContents << wxT("\n");
+  
+  if (mp_ExecMsgs->isErrorFlag())
+  {
+    FileContents << wxT("ERROR: ") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\n");
+    FileContents << wxT("\n");
+  }  
+  
   FileContents << wxT("Simulation ID: ") << ExSI.SimID << wxT("\n");
   FileContents << wxT("Date: ") << ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S")) << wxT("\n");
   FileContents << wxT("Computer: ") << wxGetHostName() << wxT("\n");
@@ -1452,7 +1463,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   // warnings
   if (mp_ExecMsgs->getWarningMsgs().Count() > 0)
   {
-    for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
+    for (i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
     {
       FileContents << wxT("WARNING: ") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT("\n");
     }
@@ -1466,6 +1477,35 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
   SimInfoFile.Write(FileContents);
   SimInfoFile.Close();
+
+  // ********** xml file ********** 
+  wxString XMLFileContents = wxT("");
+
+  XMLFileContents << wxT("<?xml version=\"1.0\" standalone=\"yes\"?>") << wxT("\n");
+  XMLFileContents << wxT("<mhydas>") << wxT("\n");
+  XMLFileContents << wxT("  <simreport>") << wxT("\n");
+
+  if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
+  
+  if (mp_ExecMsgs->getWarningMsgs().Count() > 0)
+  {
+    XMLFileContents << wxT("    <warnings count=\"") << mp_ExecMsgs->getWarningMsgs().Count() << wxT("\">") << wxT("\n");    
+    for (i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
+    {
+      XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT(" />") << wxT("\n");
+    }
+    XMLFileContents << wxT("    </warnings>") << wxT("\n");
+  }  
+  else XMLFileContents << wxT("    <warnings count=\"0\">") << wxT("\n");
+  
+  XMLFileContents << wxT("  </simreport>") << wxT("\n");
+  XMLFileContents << wxT("</mhydas>") << wxT("\n");
+
+  wxFile XMLSimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE + wxT(".xml")),wxFile::write);
+  XMLSimInfoFile.Write(XMLFileContents);
+  XMLSimInfoFile.Close();
+
+
 
   return true;
    

@@ -121,6 +121,12 @@ class MHYDASApp : public wxAppConsole
     */
     bool saveResults();
 
+    /**
+      Saves simulation reports
+    */
+    bool saveSimulationReports();
+
+
 };
 
 
