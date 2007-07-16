@@ -3,6 +3,8 @@
 include ./makeopts.inc
 
 
+#@BASEDIR = $(shell pwd)
+
 
 all: sdk
 
@@ -114,6 +116,27 @@ deb-packages: all mhydasdk-conf-file docs
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(DEVPACKNAME))
 
 
+win32-packages: all mhydasdk-conf-file
+	@echo ""	
+	@rm -f -R $(BASEPACKDIR)/win32/*
+	@mkdir -p $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32	
+	@echo "==== Building packages (win32) ===="
+	@echo "Building library package"
+	@cp $(BASEBINDIR)/$(SDKLIBBASEFILE) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32
+	@cp $(BASEBINDIR)/$(SDKLIBCOREFILE) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32
+	@cd $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32/ && \
+         $(ZIP) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32.zip $(SDKLIBBASEFILE) $(SDKLIBCOREFILE) && \
+         cd $(BASEMAINDIR) > /dev/null
+	@echo "Building development package"
+	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/
+	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
+	@cp src/mhydasdk-*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/
+	@cp src/core/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/ 
+	@cp src/base/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
+	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/
+	@cd $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/ && \
+         $(ZIP) -r $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32.zip * && \
+         cd $(BASEMAINDIR) > /dev/null
 
 
 #	@cp -R -f $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/to_pack/$(PLUGSUBDIR)

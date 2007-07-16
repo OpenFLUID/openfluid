@@ -58,6 +58,7 @@ fi
 
 
 OPTFILE=makeopts.inc
+REVFILE=revision
 
 rm -f $OPTFILE
 rm -f $SETUPH
@@ -73,7 +74,10 @@ esac
 
 SVNREV=x
 if [ -x /usr/bin/svn ]; then
-  SVNREV=`svn info -r HEAD | grep "vision :" | cut -d" " -f3 `  
+  echo `svn info -r HEAD | grep "vision :" | cut -d" " -f3 ` > $REVFILE
+fi
+if [ -x $REVFILE ]; then
+  SVNREV=`cat $REVFILE`
 fi
 
 
@@ -197,8 +201,10 @@ ABSPATH=`pwd`
 cd $ORIGPATH
 
 
+echo "# base dir" >> $OPTFILE
+echo "BASEMAINDIR = $ABSPATH" >> $OPTFILE
 
-echo "# build base dir" >> $OPTFILE
+echo "# build dir" >> $OPTFILE
 BASEBUILDDIR=$ABSPATH/build/$MACHTYPE
 echo "BASEBUILDDIR = $BASEBUILDDIR" >> $OPTFILE
 
@@ -235,6 +241,7 @@ echo "" >> $OPTFILE
 echo "# SDK installation infos" >> $OPTFILE
 
 echo "SUDO = $SUDOBIN" >> $OPTFILE
+echo "ZIP = $ZIPBIN" >> $OPTFILE
 echo "LDCONFIG = $LDCONFIGBIN" >> $OPTFILE
 
 if [ "$OSTYPE" = "msys" ]; then

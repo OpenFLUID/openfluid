@@ -14,9 +14,9 @@ SDKLIBSROOT=mhydasdk
 MHYDASDKCONFIGFILE=mhydasdk-config
 
 
-MAJORVER=0
+MAJORVER=1
 #MINORVER=`date +%-y.%m`
-MINORVER=7
+MINORVER=0
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
 PACKDEPENDS="libwxbase2.6-dev (>= 2.6)"
