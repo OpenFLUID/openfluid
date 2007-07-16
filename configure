@@ -58,6 +58,7 @@ fi
 
 
 OPTFILE=makeopts.inc
+REVFILE=revision
 
 SETUPH=src/main/$SETUPH
 
@@ -74,8 +75,13 @@ esac
 
 SVNREV=x
 if [ -x /usr/bin/svn ]; then
-  SVNREV=`svn info -r HEAD | grep "vision :" | cut -d" " -f3 `  
+  echo `svn info -r HEAD | grep "vision :" | cut -d" " -f3 ` > $REVFILE
 fi
+
+if [ -r $REVFILE ]; then
+  SVNREV=`cat $REVFILE`
+fi
+
 
 
 
@@ -198,6 +204,9 @@ ABSPATH=`pwd`
 cd $ORIGPATH
 
 
+echo "# base dir" >> $OPTFILE
+echo "BASEMAINDIR = $ABSPATH" >> $OPTFILE
+
 
 echo "# build base dir" >> $OPTFILE
 echo "BASEBUILDDIR = $ABSPATH/build/$MACHTYPE" >> $OPTFILE
@@ -251,6 +260,7 @@ fi
 
 echo "# Packages infos" >> $OPTFILE
 
+echo "ZIP = $ZIPBIN" >> $OPTFILE
 
 echo "PACKMAINTAINER=$PACKMAINTAINER" >> $OPTFILE
 echo "PACKDEPENDS=$PACKDEPENDS" >> $OPTFILE
