@@ -356,8 +356,19 @@ bool Engine::run()
 bool Engine::saveResults(ExtraSimInfos ExSI)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveResults(mp_CoreData,ExSI) && mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
+  return (mp_IOMan->saveResults(mp_CoreData,ExSI));
 }
+
+// =====================================================================
+// =====================================================================
+
+bool Engine::saveReports(ExtraSimInfos ExSI)
+{
+  mp_ExecMsgs->resetWarningFlag();
+  return (mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
+}
+
+
 
 // =====================================================================
 // =====================================================================

@@ -87,6 +87,8 @@ class Engine
 
     bool saveResults(ExtraSimInfos ExSI);
 
+    bool saveReports(ExtraSimInfos ExSI);
+
     EngineConfig getConfig() const { return m_Config; };
 
     mhydasdk::base::SimulationInfo *getSimulationInfo() { return (mhydasdk::base::SimulationInfo*)mp_SimStatus; };
