@@ -430,6 +430,12 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
       {
         RIFMap[ID] = wxString(Child->Attribute("file"),wxConvUTF8);
       }
+      else
+      {
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain event file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error. Incorrect rain source definition"));
+        RIFMap.clear();
+        return RIFMap;          
+      }
     }
 
 
@@ -437,6 +443,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
   else
   {
     mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain event file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error"));
+    RIFMap.clear();    
   }
   return RIFMap;
 
