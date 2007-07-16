@@ -39,8 +39,8 @@ purge: clean
 
 deb-packages: all
 	@echo ""	
-	@mkdir -p $(BASEPACKDIR)
-	@rm -f -R $(BASEPACKDIR)
+	@mkdir -p $(BASEPACKDIR)/debian
+	@rm -f -R $(BASEPACKDIR)/debian
 	@echo "==== Building packages (debian based distro) ===="
 	@echo "Building package"
 	@mkdir -p $(BASEPACKDIR)/debian/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
@@ -55,8 +55,18 @@ deb-packages: all
 	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(PACKNAME))
 
-
-	
+win32-packages: all
+	@echo ""	
+	@mkdir -p $(BASEPACKDIR)/win32
+	@rm -f -R $(BASEPACKDIR)/win32
+	@echo "==== Building packages (win32) ===="
+	@echo "Building package"
+	@mkdir -p $(BASEPACKDIR)/win32/$(PACKNAME)_win32/$(PLUGSUBDIR)
+	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/win32/$(PACKNAME)_win32/
+	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/win32/$(PACKNAME)_win32/$(PLUGSUBDIR)
+	@cd $(BASEPACKDIR)/win32/$(PACKNAME)_win32/ && \
+         $(ZIP) -r $(BASEPACKDIR)/win32/$(PACKNAME)_win32.zip * && \
+         cd $(BASEMAINDIR) > /dev/null
 
 
 
