@@ -76,7 +76,7 @@ SVNREV=x
 if [ -x /usr/bin/svn ]; then
   echo `svn info -r HEAD | grep "vision :" | cut -d" " -f3 ` > $REVFILE
 fi
-if [ -x $REVFILE ]; then
+if [ -r $REVFILE ]; then
   SVNREV=`cat $REVFILE`
 fi
 

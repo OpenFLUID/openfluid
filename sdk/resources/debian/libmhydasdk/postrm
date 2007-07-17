@@ -5,13 +5,13 @@ set -e
 
 
 case "$1" in
-    remove|purge)
+    remove|purge|update)
 
         /sbin/ldconfig
 
     ;;
 
-    abort-remove)
+    abort-remove|abort-upgrade|failed-upgrade)
 
     ;;
 

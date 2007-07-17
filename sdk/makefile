@@ -3,9 +3,6 @@
 include ./makeopts.inc
 
 
-#@BASEDIR = $(shell pwd)
-
-
 all: sdk
 
 .PHONY: sdk
