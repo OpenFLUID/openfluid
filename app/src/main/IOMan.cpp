@@ -1492,7 +1492,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
     XMLFileContents << wxT("    <warnings count=\"") << mp_ExecMsgs->getWarningMsgs().Count() << wxT("\">") << wxT("\n");    
     for (i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
     {
-      XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT(" />") << wxT("\n");
+      XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT("\" />") << wxT("\n");
     }
     XMLFileContents << wxT("    </warnings>") << wxT("\n");
   }  
