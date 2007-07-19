@@ -30,9 +30,10 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
   Splits the passed string int a wxStringArray, splitted by the passed SepString
   \param[in] StrToSplit the string to split
   \param[in] SepString the string used to split
+  \param[in] ReturnsEmpty if true, the empty strings are returned  
   \return a wxArraySTring
 */
-wxArrayString SplitString(const wxString StrToSplit, const wxString SepString);
+wxArrayString SplitString(const wxString StrToSplit, const wxString SepString,  bool ReturnsEmpty = false);
 
 wxString GenerateSimulationID();
 
