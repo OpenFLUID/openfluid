@@ -14,6 +14,8 @@
 
 #include "AppTools.h"
 
+#include <iostream>
+
 // =====================================================================
 // =====================================================================
 
@@ -113,12 +115,17 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 // =====================================================================
 // =====================================================================
 
-wxArrayString SplitString(const wxString StrToSplit, const wxString SepString)
+wxArrayString SplitString(const wxString StrToSplit, const wxString SepString, bool ReturnsEmpty)
 {
   // using wxStringTokenizer class
 
   wxArrayString SplitParts;
-  wxStringTokenizer Tokenizer(StrToSplit,SepString);
+  
+  
+  wxStringTokenizerMode TokensMode = wxTOKEN_DEFAULT;
+  if (ReturnsEmpty) TokensMode = wxTOKEN_RET_EMPTY_ALL;     
+  
+  wxStringTokenizer Tokenizer(StrToSplit,SepString,TokensMode);  
 
   while (Tokenizer.HasMoreTokens())
   {

@@ -275,7 +275,7 @@ void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams,
 
   for (int i=0;i<VarsPropsParams.GetCount();i++)
   {
-    CurrentStr = SplitString(VarsPropsParams[i],wxT(";"));
+    CurrentStr = SplitString(VarsPropsParams[i],wxT(";"),true);
     if (CurrentStr.GetCount() == 5)
     {
       std::cout << Suffix.mb_str(wxConvUTF8);
