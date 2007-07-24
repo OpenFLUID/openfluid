@@ -1195,6 +1195,8 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
   vector<double>* Values;
   wxString ColsStr;
   int i,j,k;
+  wxString NaNStr = wxT("!");
+  bool NoValue = false;
 
 
   if (Def->SelectedObjectIDs.size() > 0)
@@ -1287,10 +1289,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     }
 
   }
-
-  
-  
-  
+      
 
 
   // checking if requested variables exist and
@@ -1351,12 +1350,21 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
         {
           if (HOSet[i]->getSimulatedVars()->find(Def->Columns[k]) != HOSet[i]->getSimulatedVars()->end())
             Values = HOSet[i]->getSimulatedVars()->find(Def->Columns[k])->second;
-          if (Values != NULL) FileContents << ColSeparator << Values->at(j);
+          if (Values != NULL)
+          { 
+            // check if value exists for this time step
+            if (j<Values->size()) FileContents << ColSeparator << Values->at(j);
+            else
+            {
+              FileContents << ColSeparator << NaNStr;
+              NoValue = true;
+            }  
+          }  
         }
         FileContents << wxT("\n");
-      }
+      }      
 
-
+      if (NoValue) mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("at least one value was unavailable during ")+Filename+wxT(" saving process"));
 
       wxFile RFile(mp_RunEnv->getOutputFullPath(Filename),wxFile::write);
 
