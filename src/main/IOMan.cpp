@@ -1496,7 +1496,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
     }
     XMLFileContents << wxT("    </warnings>") << wxT("\n");
   }  
-  else XMLFileContents << wxT("    <warnings count=\"0\">") << wxT("\n");
+  else XMLFileContents << wxT("    <warnings count=\"0\" />") << wxT("\n");
   
   XMLFileContents << wxT("  </simreport>") << wxT("\n");
   XMLFileContents << wxT("</mhydas>") << wxT("\n");
