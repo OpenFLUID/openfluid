@@ -21,6 +21,9 @@ typedef int hoid_t;
 
 typedef std::vector<double> VectorOfDouble;
 
+
+
+
 /**
   Hash table for calculated variables during simulation.
   Each variable is stored in the hash table as an entry, located by its name.
@@ -94,5 +97,7 @@ class HydroObject
 
 
 } } // namespace mhydasdk::core
+
+
 
 #endif

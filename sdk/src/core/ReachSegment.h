@@ -18,7 +18,6 @@
 namespace mhydasdk { namespace core {
 
 
-
 typedef hoid_t nodeid_t;
 
 /**

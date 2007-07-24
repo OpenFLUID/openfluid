@@ -202,6 +202,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
   
   SUDownstreamCode SUDownCode;
 
+
   // =========== SUs ============
 
   //std::cout << "rebuilding SHUs topology" << std::endl;
@@ -266,6 +267,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 
   }
 
+
   // =========== hydro network ============
 
   RSMap::iterator RSit;
@@ -278,7 +280,11 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     {
       LinkedGU = getGUByID(RSit->second->getGUExchangeID());
       if (LinkedGU == NULL) return false;
-      else RSit->second->setGUExchange(LinkedGU);
+      else 
+      {
+        RSit->second->setGUExchange(LinkedGU);
+        LinkedGU->getRSsExchange()->push_back(RSit->second);
+      }  
     }
 
     // downstream reach link
@@ -298,6 +304,8 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     }
   }
 
+
+
   // =========== GUs ============
 
   GUMap::iterator GUit;
@@ -313,7 +321,11 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     {
       LinkedGU = getGUByID(GUit->second->getGUExchangeID());
       if (LinkedGU == NULL) return false;
-      else GUit->second->setGUExchange(LinkedGU);
+      else 
+      {
+        GUit->second->setGUExchange(LinkedGU);
+        LinkedGU->getGUsExchange()->push_back(GUit->second);
+      }  
     }
     
     // compute UsrArea
@@ -388,7 +400,6 @@ bool SpatialRepository::buildProcessOrders()
   }*/
 
 
-
   // =============== Reaches =================
 
   MaxOrder = -1;
@@ -418,7 +429,6 @@ bool SpatialRepository::buildProcessOrders()
     mp_RSsOrderedList->push_back(RSit->second);
   }
   mp_RSsOrderedList->sort(SortByProcessOrder());
-
 
 
 

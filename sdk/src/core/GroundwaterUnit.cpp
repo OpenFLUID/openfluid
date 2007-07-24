@@ -23,6 +23,8 @@ GroundwaterUnit::GroundwaterUnit()
 
   mp_GUExchange = NULL;
   mp_SUsExchange = new std::list<SurfaceUnit*>(); 
+  mp_GUsExchange = new std::list<GroundwaterUnit*>(); 
+  mp_RSsExchange = new std::list<ReachSegment*>(); 
   
 }
 
@@ -35,7 +37,9 @@ GroundwaterUnit::GroundwaterUnit(hoid_t ID,int ProcessOrder,
   m_UsrArea = -1;
 
   mp_GUExchange = NULL;
-  mp_SUsExchange = new std::list<SurfaceUnit*>(); 
+  mp_SUsExchange = new std::list<SurfaceUnit*>();
+  mp_GUsExchange = new std::list<GroundwaterUnit*>(); 
+  mp_RSsExchange = new std::list<ReachSegment*>();    
 
     
   m_GUExchangeID = GUExchangeID;

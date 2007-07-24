@@ -12,9 +12,11 @@
 #include "HydroObject.h"
 #include "SurfaceUnit.h"
 
+
 namespace mhydasdk { namespace core {
 
 class SurfaceUnit;
+class ReachSegment;
 
 /**
   \brief Definition class for Groundwater Hydrological Units
@@ -29,7 +31,10 @@ class GroundwaterUnit : public HydroObject
     hoid_t m_GUExchangeID;
 		GroundwaterUnit *mp_GUExchange;
 		double m_SubstratumLevel;
-    std::list<SurfaceUnit*>* mp_SUsExchange;
+    std::list<SurfaceUnit*> *mp_SUsExchange;
+    std::list<ReachSegment*>* mp_RSsExchange;
+    std::list<GroundwaterUnit*> *mp_GUsExchange;
+    
     
 
   public:
@@ -69,7 +74,11 @@ class GroundwaterUnit : public HydroObject
     
     void setUsrArea(double Area) { m_UsrArea = Area; };
 
-    std::list<SurfaceUnit*>* getSUsExchange() { return mp_SUsExchange; };     
+    std::list<SurfaceUnit*>* getSUsExchange() { return mp_SUsExchange; };  
+    
+    std::list<ReachSegment*>* getRSsExchange() { return mp_RSsExchange; };  
+
+    std::list<GroundwaterUnit*>* getGUsExchange() { return mp_GUsExchange; };   
 
 };
 
