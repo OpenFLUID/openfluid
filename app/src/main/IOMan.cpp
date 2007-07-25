@@ -1432,7 +1432,8 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 {
 
   int i;
-  
+
+
   // ********** text file ********** 
   
   wxString FileContents = wxT("");
@@ -1457,16 +1458,24 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   FileContents << wxT("\n");
   FileContents << wxT("Input data set: ") << mp_RunEnv->getInputDir() << wxT("\n");  
   FileContents << wxT("Output data set: ") << mp_RunEnv->getOutputDir()  << wxT("\n");  
-  FileContents << wxT("\n");  
+  FileContents << wxT("\n");
   FileContents << wxT("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << wxT("\n");  
   FileContents << wxT("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << wxT("\n");
   FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");    
-  FileContents << wxT("Rain gauges: ") << CoreData->getRainEvent()->getRainSourceCollection().size() << wxT("\n");  
-  FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
-  FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
+  
+  FileContents << wxT("Rain gauges: ") << CoreData->getRainEvent()->getRainSourceCollection().size() << wxT("\n");
+
+  if (SimInfo != NULL)
+  {    
+    FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
+    FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
+  }
+   
   FileContents << wxT("\n");
   FileContents << wxT("------------------------------------------------------------") << wxT("\n");  
   FileContents << wxT("\n");
+
+
   
   // warnings
   if (mp_ExecMsgs->getWarningMsgs().Count() > 0)
@@ -1480,11 +1489,13 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
   FileContents << wxT("\n");
   FileContents << wxT("------------------------------------------------------------") << wxT("\n");
   FileContents << wxT("\n");  
+
           
   // write file to disk
   wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
   SimInfoFile.Write(FileContents);
   SimInfoFile.Close();
+
 
   // ********** xml file ********** 
   wxString XMLFileContents = wxT("");
