@@ -74,6 +74,8 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::Executi
   mp_IOMan = new IOManager(mp_ExecMsgs,mp_RunEnv);
 
   m_Config.SimulationID = wxT("");
+  
+  mp_SimStatus = NULL;
 
 }
 
