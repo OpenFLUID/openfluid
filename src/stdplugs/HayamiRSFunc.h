@@ -33,6 +33,8 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     float m_MeanSlope;
     
     float m_MeanManning;        
+    
+    float m_RSBuffer;  
 
     /**
       Calibration step for height-discharge relation (meters) 
