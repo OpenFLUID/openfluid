@@ -102,30 +102,11 @@ bool Engine::processConfig()
 
   FunctionConfigsList::Node *FuncNode = m_Config.FuncConfigs.GetFirst();
   FunctionConfig *FConf;
-
+  mhydasdk::base::PluggableFunction* FuncToAdd;
+  
   m_Functions.clear();
 
 
-  // start display test
-/*
-  while (FuncNode)
-  {
-    FConf = (FunctionConfig*)(FuncNode->GetData());
-    std::cerr << "Function " << FConf->Name.mb_str(wxConvUTF8) << ", " << FConf->File.mb_str(wxConvUTF8) << std::endl;
-
-
-    mhydasdk::core::ParamsMap::iterator it;
-    for( it = FConf->Params.begin(); it != FConf->Params.end(); ++it )
-    {
-      std::cerr << "  - " << it->first.mb_str(wxConvUTF8) << " = " << it->second << std::endl;
-    }
-
-    FuncNode = FuncNode->GetNext();
-  }
-*/
-  // end display test
-
-  mhydasdk::base::PluggableFunction* FuncToAdd;
 
   while (FuncNode)
   {
