@@ -42,6 +42,7 @@ HayamiRSFunction::HayamiRSFunction()
   DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("-"));
   DECLARE_FUNCTION_PARAM("meancel",wxT("-"),wxT("-"));  
   DECLARE_FUNCTION_PARAM("meansigma",wxT("-"),wxT("-"));  
+  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("-"));  
 
   // default values
   m_MaxSteps = 100;    
@@ -50,6 +51,7 @@ HayamiRSFunction::HayamiRSFunction()
   m_MeanSlope = 0;    
   m_MeanManning = 0;        
   m_CalibrationStep = 0.01;
+  m_RSBuffer = 0;
 }
 
 
@@ -69,13 +71,11 @@ HayamiRSFunction::~HayamiRSFunction()
 
 bool HayamiRSFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
-  //if (Params.find(wxT("maxsteps")) != Params.end()) m_MaxSteps = (int)(Params[wxT("maxsteps")]);
   MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
-  //if (Params.find(wxT("meancel")) != Params.end()) m_MeanCelerity = Params[wxT("meancel")];      
   MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
-  // if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
   MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
   MHYDAS_GetFunctionParam(Params,wxT("calibstep"),&m_CalibrationStep);
+  MHYDAS_GetFunctionParam(Params,wxT("rsbuffer"),&m_RSBuffer);
   return true;
 }
 
@@ -156,7 +156,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
     MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);    
     
-    StepsNbr = int(ceil(RS->getUsrHeight() / m_CalibrationStep));
+    StepsNbr = int(ceil((RS->getUsrHeight() + m_RSBuffer) / m_CalibrationStep));
     for (i=0;i<StepsNbr;i++)
     {
       CurrentHeight = i * m_CalibrationStep;
@@ -286,7 +286,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl; 
     if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) 
-      mp_ExecMsgs->addWarning(wxT("hayamirs"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
+      mp_ExecMsgs->addWarning(wxT("hayamirs"),SimStatus->getCurrentStep(),wxT("water height is over reach height + buffer on RS ") + wxString::Format(wxT("%d"),ID));
     
     MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);
 
@@ -313,7 +313,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
 {
   
   if (Discharge < 0) return false;
-  if (Discharge == 0) Height = 0;
+  if (Discharge == 0) *Height = 0;
   else
   {
    
@@ -326,24 +326,28 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché
     i = 1;  
    
-    while (HeightDischarge->at(i) < Discharge)
+    while ((i < HeightDischarge->size()) && (HeightDischarge->at(i) < Discharge))
     {
-      i++;
-      if (i == HeightDischarge->size()) return false;
-            
+      i++;            
     }
 
-              
-    Q1 = HeightDischarge->at(i-1);
-    Q2 = HeightDischarge->at(i);
-
-    H1 = (i-1) * m_CalibrationStep;
-    H2 = i * m_CalibrationStep; 
-
-
-    // risque de division par 0 si Q1 == Q2 !! à revoir, comment fait-on?
-    *Height = H1 + ((Discharge-Q1) * (H2-H1) / (Q2-Q1));
     
+    if (i == HeightDischarge->size())
+    {	
+      *Height = (i-1) * m_CalibrationStep;
+      return false;   
+    }
+    else
+    {	
+      Q1 = HeightDischarge->at(i-1);
+      Q2 = HeightDischarge->at(i);
+
+      H1 = (i-1) * m_CalibrationStep;
+      H2 = i * m_CalibrationStep;
+      
+      // risque de division par 0 si Q1 == Q2 !! à revoir, comment fait-on?
+      *Height = H1 + ((Discharge-Q1) * (H2-H1) / (Q2-Q1));
+    }    
       
   }
   
