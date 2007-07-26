@@ -79,6 +79,8 @@ class GroundwaterUnit : public HydroObject
     std::list<ReachSegment*>* getRSsExchange() { return mp_RSsExchange; };  
 
     std::list<GroundwaterUnit*>* getGUsExchange() { return mp_GUsExchange; };   
+    
+    GroundwaterUnit* getGUExchange() { return mp_GUExchange; };
 
 };
 
