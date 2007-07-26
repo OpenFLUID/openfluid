@@ -286,7 +286,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl; 
     if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) 
-      mp_ExecMsgs->addWarning(wxT("hyamirs"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
+      mp_ExecMsgs->addWarning(wxT("hayamirs"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
     
     MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);
 
