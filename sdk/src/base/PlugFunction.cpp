@@ -275,10 +275,7 @@ bool PluggableFunction::checkFunctionConsistency()
               mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
               getProperties(),IsOK);
     i++;
-    if (!IsOK) mp_ExecMsgs->setError(mp_Signature->ID + wxT(" function, consistency checking"),-1,wxT("requested GU property ") + m_GUPropsToCheck[i-1] + wxT(" not found"));
   }
-
-
 
   // ============= initial conditions =============
 
@@ -338,8 +335,14 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
     
     if (it != HO->getSimulatedVars()->end())
     {    
-      *Value = (it->second)->at(Step);
-      return true;
+      mhydasdk::core::VectorOfDouble* ValuesVect  = it->second;
+      
+      if (Step < ValuesVect->size())
+      {
+        *Value = ValuesVect->at(Step);
+        return true;
+      }
+      else return false;  
     }
     else return false;  
   }
@@ -399,10 +402,14 @@ bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroO
 bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value)
 {
 
-  float* TmpValues = SU->getRainSource()->getProcessedData();
-  *Value = TmpValues[Step];
+  if (SU->getRainSource() != NULL)
+  {
   
-  return true;
+    float* TmpValues = SU->getRainSource()->getProcessedData();
+    *Value = TmpValues[Step]; 
+    return true;
+  }
+  else return false;  
 }
 
 
@@ -412,7 +419,29 @@ bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUn
 
 bool PluggableFunction::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
 {
-  return (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end());  
+  return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+{
+  if (HO != NULL)
+  {
+    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    it = HO->getSimulatedVars()->find(VarName);
+
+    if (it != HO->getSimulatedVars()->end())
+    {
+      mhydasdk::core::VectorOfDouble* ValuesVect = it->second;
+      if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
+      else return false;            
+    }
+    else return false;              
+  }
+  else return false;  
 }
 
 // =====================================================================

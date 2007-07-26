@@ -30,10 +30,7 @@
 #include "ExecMsgs.h"
 
 
-// =====================================================================
-// =====================================================================
-
-// compilation dircetives for shared libs linkage
+// compilation directives for shared libs linkage
 #ifdef WIN32
   #ifdef BUILDPLUGDLL
     #define DLLIMPORT __declspec(dllexport)
@@ -503,6 +500,14 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the requested variable               
     */
     bool MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
+
+   /**
+      Returns true if a distributed variable exists and if a value has been set for the given step false otherwise
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the requested variable
+      \param[in] Step the time step for the value of the variable                     
+    */
+    bool MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);
     
     /**
       Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
@@ -573,7 +578,8 @@ class PluggableFunction : public wxObject
 
     /**
       initializes of global parameters of the function, given as a hash map
-      (Params["name"] gives the value of the param named "name")
+      (Params["name"] gives the value of the param named "n/===================================================================
+      ame")
     */
     virtual bool initParams(mhydasdk::core::ParamsMap Params)=0;
 
