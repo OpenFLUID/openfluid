@@ -270,7 +270,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     // 2.b propagation via Hayami
         
        
-    QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum + UpLatSUsOutputsSum; 
+    QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum; 
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
     m_Input[ID]->push_back(QInput);
     
@@ -325,7 +325,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
 
    
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché
-    i = 1;  
+    i = 0;  
    
     while ((i < HeightDischarge->size()) && (HeightDischarge->at(i) < Discharge))
     {
