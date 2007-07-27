@@ -150,7 +150,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   
   // calcul de la relation hauteur débit
   
-  float HydrauRadius, Speed, Q, Section, CurrentHeight;
+  double HydrauRadius, Speed, Q, Section, CurrentHeight;
   int i, StepsNbr;
   
   BEGIN_RS_ORDERED_LOOP(RS)
@@ -163,11 +163,12 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
       CurrentHeight = i * m_CalibrationStep;
       
       Section = RS->getUsrWidth() * CurrentHeight;
-      HydrauRadius = Section / (2 *CurrentHeight + RS->getUsrWidth());
-      Speed = (1/TmpValue) * pow(HydrauRadius,2/3) * sqrt(RS->getUsrSlope());   
+      HydrauRadius = Section / ((2 * CurrentHeight) + RS->getUsrWidth());
+      Speed = (1/TmpValue) * pow(HydrauRadius,0.6666) * pow(RS->getUsrSlope(),0.5);   
       Q = Speed * Section;
     
-      m_HeightDischarge[RS->getID()]->push_back(Q);    
+      m_HeightDischarge[RS->getID()]->push_back(Q);
+      
     }
         
     
