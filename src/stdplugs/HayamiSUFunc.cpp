@@ -177,7 +177,7 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ID = SU->getID();
-
+  
     MHYDAS_GetDistributedVarValue(SU,wxT("runoff"),CurrentStep,&TmpValue);
 
     QInput = TmpValue * SU->getUsrArea() / TimeStep;
