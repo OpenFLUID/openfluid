@@ -42,6 +42,7 @@ HayamiRSFunction::HayamiRSFunction()
   DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("-"));
   DECLARE_FUNCTION_PARAM("meancel",wxT("-"),wxT("-"));  
   DECLARE_FUNCTION_PARAM("meansigma",wxT("-"),wxT("-"));  
+  DECLARE_FUNCTION_PARAM("calibstep",wxT("-"),wxT("-"));    
   DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("-"));  
 
   // default values

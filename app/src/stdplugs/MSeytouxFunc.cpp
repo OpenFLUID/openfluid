@@ -229,12 +229,11 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     CurrentRunoff = 0;
     CurrentInfiltration = 0;
 
-    
+    OutputsSum = 0;      
     // ajout des apports des unites amont (sorties des unites amont a t-1)
-    // adding upstream units output (step n-1) to rain    
+    // adding upstream units output (step n-1) to rain       
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
-      OutputsSum = 0;      
       UpSUsList = SU->getUpstreamSUs();
       
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
@@ -243,21 +242,25 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
         //OutputsSum = OutputsSum + GET_SIMVAR_VALUE(UpSU,"qoutput",CurrentStep-1) * TimeStep / Area;
         MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep-1,&TmpValue);
         OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
-      }
-      m_CurrentUpstreamInput[ID] = OutputsSum;
+      }      
     } 
-
+    m_CurrentUpstreamInput[ID] = OutputsSum;
+    
     // transformation de la pluie de m/s en m/pas de temps       
     MHYDAS_GetDistributedRainValue(SU,CurrentStep,&CurrentRain);
     CurrentRain = CurrentRain * TimeStep;
 
+    CurrentRain = CurrentRain + m_CurrentUpstreamInput[ID];
+
     // calcul de l'intensite de pluie
     RainIntensity = (CurrentRain / TimeStep);   
 
+    
+    
     if (Ks == 0)
     {
       // si ks == 0 alors tout ruisselle
-      CurrentRunoff = CurrentRain + m_CurrentUpstreamInput[ID];
+      CurrentRunoff = CurrentRain;
       CurrentInfiltration = 0;
     }
     else
@@ -271,7 +274,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       if (m_SUSatState[ID] == 0)
       {
         // calcul du temps de saturation
-        m_RainSum[ID] = m_RainSum[ID] + CurrentRain + m_CurrentUpstreamInput[ID];
+        m_RainSum[ID] = m_RainSum[ID] + CurrentRain;
         if (EfficientRainIntensity > 1)
         {
           m_PondingTime[ID] = (CurrentStep-1) * TimeStep + (1/(RainIntensity)) * ((m_SUSf[ID] / (EfficientRainIntensity -1)-m_RainSum[ID]));        
@@ -301,6 +304,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       if (m_SUSatState[ID] > 0)             
       //else
       {
+    	  
         EfficientPondingRainIntensity = m_PondingRainIntensity[ID] / Ks;     
         ExtraTime = (CurrentStep * TimeStep) - m_PondingTime[ID];   
         Criteria = true;
@@ -342,13 +346,14 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
         
       }
     
-      CurrentInfiltration = (m_CurrentUpstreamInput[ID] + CurrentRain) - CurrentRunoff;
+      CurrentInfiltration = CurrentRain - CurrentRunoff;
     }   
 
 
     MHYDAS_AppendDistributedVarValue(SU, wxT("runoff"), CurrentRunoff);
 
     MHYDAS_AppendDistributedVarValue(SU, wxT("infiltration"), CurrentInfiltration);
+
     
   END_LOOP
 
