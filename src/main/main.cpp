@@ -469,7 +469,8 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(TmpStr);
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
-
+    if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
+    
     wxLogVerbose(wxT("Input dir: ")+mp_RunEnv->getInputDir());
     wxLogVerbose(wxT("Output dir: ")+mp_RunEnv->getOutputDir());
   }

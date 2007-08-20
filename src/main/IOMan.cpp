@@ -8,6 +8,7 @@
 
 #include <wx/filefn.h>
 #include <wx/tokenzr.h>
+#include <wx/dir.h>
 
 #include <iostream>
 
@@ -1166,6 +1167,7 @@ bool IOManager::prepareOutputDir()
 {
   bool IsOK = true;
 
+  
   if (!wxDirExists(mp_RunEnv->getOutputDir()))
   {
     #ifdef __WXMSW__
@@ -1173,9 +1175,26 @@ bool IOManager::prepareOutputDir()
     #else
     wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
     #endif
-    IsOK = wxDirExists(mp_RunEnv->getOutputDir());
-    
-  }  
+    IsOK = wxDirExists(mp_RunEnv->getOutputDir());    
+  }
+  else
+  {
+    if (mp_RunEnv->isClearOutputDir())
+    {
+      wxString FileToRemove;
+      wxDir Dir(mp_RunEnv->getOutputDir());
+      
+      bool Continue = Dir.GetFirst(&FileToRemove, wxT("*"), wxDIR_FILES);
+      while (Continue)
+      {
+        wxRemoveFile(mp_RunEnv->getOutputDir() + wxFILE_SEP_PATH + FileToRemove);
+        Continue = Dir.GetNext(&FileToRemove);
+      }
+      
+      
+      
+    }
+  }
 
   return IsOK;
 }

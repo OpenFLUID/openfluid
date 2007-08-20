@@ -207,7 +207,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
   list<mhydasdk::core::ReachSegment*>* UpRSsList;  
   
-
+  if (RS->getID() == 300) 
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();
   

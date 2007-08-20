@@ -45,6 +45,8 @@ class RuntimeEnvironment
     wxString m_AppDir;
 
     wxArrayString m_PlugsDirs;
+    
+    bool m_ClearOutputDir;
 
   public:
 
@@ -82,6 +84,10 @@ class RuntimeEnvironment
     wxString getPluginFullPath(wxString Filename);
 
     wxArrayString getPluginsPaths() const { return m_PlugsDirs; };
+    
+    bool isClearOutputDir() const { return m_ClearOutputDir; };
+    
+    void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; };
 
 };
 
