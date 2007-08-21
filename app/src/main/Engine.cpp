@@ -271,54 +271,53 @@ bool Engine::run()
 
   // run
 
-  std::cout << std::endl;
-  std::cout << std::setw(10) << "Time step";
-  std::cout << std::setw(18) << "Real time";
-  std::cout << std::setw(17) << "Status";
-  std::cout << std::endl;
-  std::cout << std::endl;
-  cout.flush();
-
+  if (!mp_RunEnv->isQuietRun())
+  {
+    std::cout << std::endl;
+    std::cout << std::setw(10) << "Time step";
+    std::cout << std::setw(18) << "Real time";
+    std::cout << std::setw(17) << "Status";
+    std::cout << std::endl;
+    std::cout << std::endl;
+    cout.flush();
+  }
 
   do
   {
-
-    std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-    std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
-    std::cout.flush();
+    if (!mp_RunEnv->isQuietRun())
+    {
+      std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
+      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
+      std::cout.flush();
+    }  
 
     mp_ExecMsgs->resetWarningFlag();
    
     PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
         
-/*    if (IsOK)
-    {
-      
-      std::cout << std::setw(11) << "[OK]";
-      
-    }
-    else
-    {
-      std::cout << std::setw(9) << "[Error]";
-    }
-*/
 
     if (mp_ExecMsgs->isErrorFlag())
     {
-      
       std::cout << std::setw(12) << "[Error]";
-      std::cout << std::endl << std::endl;      
+      std::cout << std::endl << std::endl;
       return false;
       
     }
     else
     {
-      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-      else std::cout << std::setw(12) << "[OK]";
+      if (!mp_RunEnv->isQuietRun())
+      {
+
+        if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+        else std::cout << std::setw(12) << "[OK]";
+      }  
     }
 
-    std::cout << std::endl;
-    cout.flush();
+    if (!mp_RunEnv->isQuietRun())
+    {
+      std::cout << std::endl;
+      cout.flush();
+    }  
 
   } while (mp_SimStatus->switchToNextStep());
 
@@ -326,7 +325,6 @@ bool Engine::run()
   std::cout << std::endl;
 
   // finalization of functions
-  //mp_Module->finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus);
   PARSE_FUNCTION_LIST(finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK)  
 
   return IsOK;

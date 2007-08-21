@@ -47,6 +47,8 @@ class RuntimeEnvironment
     wxArrayString m_PlugsDirs;
     
     bool m_ClearOutputDir;
+    
+    bool m_QuietRun;
 
   public:
 
@@ -89,6 +91,10 @@ class RuntimeEnvironment
     
     void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; };
 
+    bool isQuietRun() const { return m_QuietRun; };
+    
+    void setQuietRun(bool Quiet) { m_QuietRun = Quiet; };
+    
 };
 
 
