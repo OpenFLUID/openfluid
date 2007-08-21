@@ -23,6 +23,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
 
   m_ClearOutputDir = false;
   
+  m_QuietRun = false;
   
   // plugins search order: user directory then system directory
 
