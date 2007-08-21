@@ -32,8 +32,9 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_OPTION, _T("o"), _T("outputdir"), _T("set results output directory")}, 
   {wxCMD_LINE_SWITCH, _T("q"), _T("quiet"), _T("quiet display during simulation run")},  
   {wxCMD_LINE_SWITCH, _T("r"), _T("functions-report"), _T("print a report of available functions, with details (do not run the model)")},
-  {wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("enable verbose display")},  
+  {wxCMD_LINE_SWITCH, _T("s"), _T("no-simreport"), _T("do not generate simulation report")},  
   {wxCMD_LINE_SWITCH, _T("x"), _T("xml-functions-report"), _T("print a report of available functions in xml format, with details (do not run the model)")},  
+  {wxCMD_LINE_SWITCH, _T("z"), _T("no-results"), _T("do not write results files")},
   {wxCMD_LINE_NONE}
 };
 

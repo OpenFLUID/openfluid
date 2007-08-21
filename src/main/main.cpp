@@ -138,8 +138,17 @@ bool MHYDASApp::saveResults()
 bool MHYDASApp::saveSimulationReports()
 {
 
-  mp_Engine->saveReports(m_ExSI);
+  bool ExecStatus;
 
+  std::cout << "* Saving simulation report... ";
+  std::cout.flush();
+
+  ExecStatus = mp_Engine->saveReports(m_ExSI);
+
+  printlnExecStatus();
+
+  return ExecStatus;  
+  
   return true;
 }
 
@@ -470,7 +479,10 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
-    if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);    
+    if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
+    if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);    
+    if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);    
+    
     
     wxLogVerbose(wxT("Input dir: ")+mp_RunEnv->getInputDir());
     wxLogVerbose(wxT("Output dir: ")+mp_RunEnv->getOutputDir());
@@ -523,18 +535,24 @@ int MHYDASApp::OnRun()
     m_ExSI.RunTime = EffSimTime;
     
 
-    // saving results 
-    saveResults();
-    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
-    mp_ExecMsgs->resetWarningFlag();
+    // saving results
+    if (mp_RunEnv->isWriteResults())
+    {  
+      saveResults();
+      if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
+      mp_ExecMsgs->resetWarningFlag();
+    }  
     
-    saveSimulationReports();
-    mp_ExecMsgs->resetWarningFlag();
+    if (mp_RunEnv->isWriteSimReport())
+    {  
+      saveSimulationReports();
+      mp_ExecMsgs->resetWarningFlag();
+    }  
     
             
     m_TotalEndTime = wxDateTime::Now();
 
-    std::cout << std::endl;
+    if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << std::endl;
 
     wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 

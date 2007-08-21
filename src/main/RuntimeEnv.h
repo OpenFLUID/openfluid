@@ -49,6 +49,10 @@ class RuntimeEnvironment
     bool m_ClearOutputDir;
     
     bool m_QuietRun;
+    
+    bool m_WriteResults;    
+
+    bool m_WriteSimReport;    
 
   public:
 
@@ -94,6 +98,17 @@ class RuntimeEnvironment
     bool isQuietRun() const { return m_QuietRun; };
     
     void setQuietRun(bool Quiet) { m_QuietRun = Quiet; };
+    
+    bool isWriteResults() const { return m_WriteResults; };
+    
+    void setWriteResults(bool WriteIt) { m_WriteResults = WriteIt; };
+
+    bool isWriteSimReport() const { return m_WriteSimReport; };
+    
+    void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; };
+    
+    
+    
     
 };
 
