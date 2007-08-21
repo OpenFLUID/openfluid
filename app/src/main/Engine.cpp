@@ -288,8 +288,9 @@ bool Engine::run()
     std::cout.flush();
 
     mp_ExecMsgs->resetWarningFlag();
-
+   
     PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
+        
 /*    if (IsOK)
     {
       

@@ -1181,7 +1181,8 @@ bool IOManager::prepareOutputDir()
   {
     if (mp_RunEnv->isClearOutputDir())
     {
-      wxString FileToRemove;
+      EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
+/*      wxString FileToRemove;
       wxDir Dir(mp_RunEnv->getOutputDir());
       
       bool Continue = Dir.GetFirst(&FileToRemove, wxT("*"), wxDIR_FILES);
@@ -1190,7 +1191,7 @@ bool IOManager::prepareOutputDir()
         wxRemoveFile(mp_RunEnv->getOutputDir() + wxFILE_SEP_PATH + FileToRemove);
         Continue = Dir.GetNext(&FileToRemove);
       }
-      
+*/      
       
       
     }
