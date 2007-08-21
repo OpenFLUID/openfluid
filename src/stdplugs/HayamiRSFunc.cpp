@@ -207,7 +207,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
   list<mhydasdk::core::ReachSegment*>* UpRSsList;  
   
-  if (RS->getID() == 300) 
+ 
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();
   
@@ -218,7 +218,8 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     QOutput = 0;
     
-    // 1.a calcul du debit provenant des SU sources qui se jettent dans les noeuds sources    
+    // 1.a calcul du debit provenant des SU sources qui se jettent dans les noeuds sources
+    
     
     UpSrcSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
@@ -253,6 +254,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 
     // 2.a calcul des debits provenant des RS amont
+  
     
     UpRSsOutputsSum = 0;
 
@@ -269,7 +271,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 //    std::cerr << UpSrcSUsOutputsSum << " / " << UpLatSUsOutputsSum << " / " << UpRSsOutputsSum << std::endl;
     
     // 2.b propagation via Hayami
-        
+       
        
     QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum; 
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;

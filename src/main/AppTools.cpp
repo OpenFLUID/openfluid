@@ -10,6 +10,9 @@
 #include <wx/tokenzr.h>
 #include <wx/datetime.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <dirent.h>
+#include <limits.h>
 #include <time.h>
 
 #include "AppTools.h"
@@ -185,4 +188,57 @@ wxString FormatExecutionMessage(wxString Message)
   return Formatted;
   
 }
+
+
+// =====================================================================
+// =====================================================================
+
+bool EmptyDirectoryRecursively(const char* DirPath)
+{
+  DIR *Directory, *TmpDir;
+  struct dirent *Entry;
+  char Path[PATH_MAX];
+  
+  
+  // check if directory can be open
+  
+  Directory = opendir(DirPath);
+  if (Directory == NULL)
+  {  
+    return false;
+  }
+
+  // empty directory recursively
+  while ((Entry = readdir(Directory)) != NULL) 
+  {
+    if (strcmp(Entry->d_name, ".") && strcmp(Entry->d_name, ".."))
+    {
+      snprintf(Path, (size_t) PATH_MAX, "%s/%s", DirPath, Entry->d_name);
+/*      if (Entry->d_type == DT_DIR)
+      {
+        EmptyDirectoryRecursively(Path);
+      }
+*/
+      if (TmpDir = opendir(Path))
+      {
+        EmptyDirectoryRecursively(Path);
+        closedir(TmpDir);        
+        rmdir(Path);
+      }
+      else
+      {  
+        remove(Path);
+      }  
+
+    }
+
+  }
+  closedir(Directory);
+
+  return true;   
+}
+
+
+
+
 
