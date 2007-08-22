@@ -271,6 +271,8 @@ bool Engine::run()
 
   // run
 
+  if (mp_RunEnv->getTraceMode()) mp_IOMan->prepareTraceDir(mp_CoreData);
+  
   if (!mp_RunEnv->isQuietRun())
   {
     std::cout << std::endl;
@@ -281,7 +283,7 @@ bool Engine::run()
     std::cout << std::endl;
     cout.flush();
   }
-
+  
   do
   {
     if (!mp_RunEnv->isQuietRun())
@@ -319,6 +321,8 @@ bool Engine::run()
       cout.flush();
     }  
 
+    if (mp_RunEnv->getTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
+    
   } while (mp_SimStatus->switchToNextStep());
 
 

@@ -20,11 +20,15 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   m_AppDir = AppDir;
   m_OutputDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_DEFAULT_OUTDIR;
   m_InputDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_DEFAULT_INDIR;
+  m_TraceDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_DEFAULT_TRACEDIR;
 
+  
   m_ClearOutputDir = false; 
   m_QuietRun = false;  
   m_WriteResults = true;  
   m_WriteSimReport = true;  
+  m_EnableTrace = false;
+  
   
   // plugins search order: user directory then system directory
 

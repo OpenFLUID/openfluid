@@ -1550,4 +1550,237 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
    
 }
 
+// =====================================================================
+// =====================================================================
 
+
+bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
+{
+ 
+  bool IsOK = true;
+
+
+  if (!wxDirExists(mp_RunEnv->getTraceDir()))
+  {
+#ifdef __WXMSW__
+    wxMkDir(mp_RunEnv->getTraceDir().mb_str(wxConvUTF8));
+#else
+    wxMkDir(mp_RunEnv->getTraceDir().mb_str(wxConvUTF8),0777);
+#endif
+    IsOK = wxDirExists(mp_RunEnv->getTraceDir());    
+  }
+  else
+  {
+    EmptyDirectoryRecursively(mp_RunEnv->getTraceDir().mb_str(wxConvUTF8));
+  }
+  
+  
+  
+  // preparing files headers for columns order
+  if (IsOK)
+  {  
+    wxString Filename, Filecontent;
+    wxString NaNStr = wxT("!");
+    int i;
+
+    mhydasdk::core::SimulatedVarsMap::iterator Simit;
+
+    mhydasdk::core::SUMap::iterator SUit;
+    mhydasdk::core::SurfaceUnit* SU;
+    mhydasdk::core::RSMap::iterator RSit;
+    mhydasdk::core::ReachSegment* RS;
+    mhydasdk::core::GUMap::iterator GUit;
+    mhydasdk::core::GroundwaterUnit* GU;
+
+    wxFile TFile;
+
+    
+    // SUs headers
+    
+    for(SUit = Data->getSpatialData()->getSUsCollection()->begin(); SUit != Data->getSpatialData()->getSUsCollection()->end(); ++SUit)
+    {
+      SU = SUit->second;
+          
+      if (SU->getSimulatedVars()->size() > 0)
+      {
+        Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND");
+
+        for(Simit = SU->getSimulatedVars()->begin(); Simit != SU->getSimulatedVars()->end(); ++Simit)
+        {
+          Filecontent << wxT(" ") << Simit->first;        
+        }
+
+        Filecontent << wxT("\n");
+        
+        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        TFile.Write(Filecontent);
+        TFile.Close();      
+      }   
+    }    
+
+    
+    // RSs headers
+    
+    for(RSit = Data->getSpatialData()->getRSsCollection()->begin(); RSit != Data->getSpatialData()->getRSsCollection()->end(); ++RSit)
+    {
+      RS = RSit->second;
+          
+      if (RS->getSimulatedVars()->size() > 0)
+      {
+        Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND");
+
+        for(Simit = RS->getSimulatedVars()->begin(); Simit != RS->getSimulatedVars()->end(); ++Simit)
+        {
+          Filecontent << wxT(" ") << Simit->first;        
+        }
+
+        Filecontent << wxT("\n");
+        
+        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        TFile.Write(Filecontent);
+        TFile.Close();      
+      }   
+    }    
+    
+    
+    // GUs headers
+    
+    for(GUit = Data->getSpatialData()->getGUsCollection()->begin(); GUit != Data->getSpatialData()->getGUsCollection()->end(); ++GUit)
+    {
+      GU = GUit->second;
+          
+      if (GU->getSimulatedVars()->size() > 0)
+      {
+        Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND");
+
+        for(Simit = GU->getSimulatedVars()->begin(); Simit != GU->getSimulatedVars()->end(); ++Simit)
+        {
+          Filecontent << wxT(" ") << Simit->first;        
+        }
+
+        Filecontent << wxT("\n");
+        
+        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        TFile.Write(Filecontent);
+        TFile.Close();      
+      }   
+    }    
+    
+    
+  }
+
+   return IsOK;
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydasdk::core::DateTime DT)
+{
+  
+  wxString Filename, Filecontent;
+  wxString NaNStr = wxT("!");
+  int i;
+
+  mhydasdk::core::SimulatedVarsMap::iterator Simit;
+  mhydasdk::core::VectorOfDouble* Values;
+
+  mhydasdk::core::SUMap::iterator SUit;
+  mhydasdk::core::SurfaceUnit* SU;
+  mhydasdk::core::RSMap::iterator RSit;
+  mhydasdk::core::ReachSegment* RS;
+  mhydasdk::core::GUMap::iterator GUit;
+  mhydasdk::core::GroundwaterUnit* GU;
+
+  wxFile TFile;
+
+  // trace SUs
+  
+  for(SUit = Data->getSpatialData()->getSUsCollection()->begin(); SUit != Data->getSpatialData()->getSUsCollection()->end(); ++SUit)
+  {
+    SU = SUit->second;
+        
+    if (SU->getSimulatedVars()->size() > 0)
+    {
+      Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+
+      for(Simit = SU->getSimulatedVars()->begin(); Simit != SU->getSimulatedVars()->end(); ++Simit)
+      {
+        Values = Simit->second;
+
+        if (Values->size() > Step) Filecontent << wxT(" ") << Values->at(Step);
+        else Filecontent << wxT(" ") << NaNStr;        
+      }
+
+      Filecontent << wxT("\n");
+      
+      Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+      TFile.Write(Filecontent);
+      TFile.Close();      
+    }   
+  }
+
+  
+  // trace RSs
+  
+  for(RSit = Data->getSpatialData()->getRSsCollection()->begin(); RSit != Data->getSpatialData()->getRSsCollection()->end(); ++RSit)
+  {
+    RS = RSit->second;
+        
+    if (RS->getSimulatedVars()->size() > 0)
+    {
+      Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+
+      for(Simit = RS->getSimulatedVars()->begin(); Simit != RS->getSimulatedVars()->end(); ++Simit)
+      {
+        Values = Simit->second;
+
+        if (Values->size() > Step) Filecontent << wxT(" ") << Values->at(Step);
+        else Filecontent << wxT(" ") << NaNStr;        
+      }
+
+      Filecontent << wxT("\n");
+      
+      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);      
+      TFile.Write(Filecontent);
+      TFile.Close();      
+    }   
+  }  
+
+  
+  // trace GUs
+  
+  for(GUit = Data->getSpatialData()->getGUsCollection()->begin(); GUit != Data->getSpatialData()->getGUsCollection()->end(); ++GUit)
+  {
+    GU = GUit->second;
+        
+    if (GU->getSimulatedVars()->size() > 0)
+    {
+      Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+
+      for(Simit = GU->getSimulatedVars()->begin(); Simit != GU->getSimulatedVars()->end(); ++Simit)
+      {
+        Values = Simit->second;
+
+        if (Values->size() > Step) Filecontent << wxT(" ") << Values->at(Step);
+        else Filecontent << wxT(" ") << NaNStr;        
+      }
+
+      Filecontent << wxT("\n");
+      
+      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);      
+      TFile.Write(Filecontent);
+      TFile.Close();      
+    }   
+  }
+  
+  
+}
