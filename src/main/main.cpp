@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include <wx/log.h>
+//#include <wx/log.h>
 
 
 #include "AppTools.h"
@@ -97,7 +97,7 @@ bool MHYDASApp::runSimulation()
 
   printDataInfos();
 
-  std::cout << "**** Starting simulation ****" << endl;
+  std::cout << "**** Running simulation ****" << endl;
   std::cout.flush();
 
   m_EffectiveStartTime = wxDateTime::Now();
@@ -477,15 +477,18 @@ bool MHYDASApp::OnInit()
     
     if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(TmpStr);
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
+    if (Parser.Found(wxT("m"),&TmpStr)) mp_RunEnv->setTraceDir(TmpStr);
+    
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
     if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);    
+    if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);           
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);    
     
     
-    wxLogVerbose(wxT("Input dir: ")+mp_RunEnv->getInputDir());
-    wxLogVerbose(wxT("Output dir: ")+mp_RunEnv->getOutputDir());
+//    wxLogVerbose(wxT("Input dir: ")+mp_RunEnv->getInputDir());
+//    wxLogVerbose(wxT("Output dir: ")+mp_RunEnv->getOutputDir());
   }
 
   return true;

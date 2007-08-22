@@ -42,6 +42,7 @@ class RuntimeEnvironment
   private:
     wxString m_OutputDir;
     wxString m_InputDir;
+    wxString m_TraceDir;    
     wxString m_AppDir;
 
     wxArrayString m_PlugsDirs;
@@ -54,6 +55,8 @@ class RuntimeEnvironment
 
     bool m_WriteSimReport;    
 
+    bool m_EnableTrace;
+    
   public:
 
     /**
@@ -90,6 +93,13 @@ class RuntimeEnvironment
     wxString getPluginFullPath(wxString Filename);
 
     wxArrayString getPluginsPaths() const { return m_PlugsDirs; };
+
+    wxString getTraceDir() const { return m_TraceDir; };
+
+    wxString getTraceFullPath(wxString Filename) const { return m_TraceDir + wxFILE_SEP_PATH + Filename; };
+    
+    
+    void setTraceDir(const wxString TraceDir) { m_TraceDir = TraceDir; };        
     
     bool isClearOutputDir() const { return m_ClearOutputDir; };
     
@@ -106,6 +116,11 @@ class RuntimeEnvironment
     bool isWriteSimReport() const { return m_WriteSimReport; };
     
     void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; };
+    
+    bool getTraceMode() const { return m_EnableTrace; };
+        
+    void setTraceMode(bool Trace) { m_EnableTrace = Trace; };
+        
     
     
     

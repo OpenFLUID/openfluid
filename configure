@@ -311,6 +311,8 @@ echo "" >> $SETUPH
 echo "// Default directories" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_INDIR = wxT(\"$MDEF_INDIR\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_OUTDIR = wxT(\"$MDEF_OUTDIR\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_TRACEDIR = wxT(\"$MDEF_TRACEDIR\");" >> $SETUPH
+
 
 echo "" >> $SETUPH
 
@@ -335,6 +337,8 @@ echo "" >> $SETUPH
 
 echo "// Default file extensions" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_OUPUTFILES_EXT = wxT(\"$MDEF_OUTPUTFILES_EXT\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_TRACEFILES_EXT = wxT(\"$MDEF_TRACEFILES_EXT\");" >> $SETUPH
+
 
 echo "" >> $SETUPH
 

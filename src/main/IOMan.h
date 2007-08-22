@@ -111,6 +111,7 @@ class IOManager
     bool loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename);
 
     bool prepareOutputDir();
+    
 
     bool extractColumnOrderAndDataFromFile(wxString Filename, wxString SpecTag,
                                            wxArrayString* ColOrder, wxString* Data);
@@ -169,6 +170,11 @@ class IOManager
 
 
     bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
+    
+
+    bool prepareTraceDir(mhydasdk::core::CoreRepository *Data);
+    
+    bool saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydasdk::core::DateTime DT);
 
     bool saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo);    
 
