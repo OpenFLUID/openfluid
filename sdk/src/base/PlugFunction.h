@@ -527,7 +527,23 @@ class PluggableFunction : public wxObject
     bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float Value);
 
     /**
-      Gets a function parameter from the parameters set, as an integer
+      Gets a function parameter from the parameters set, as a double
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Value the value of the requested parameter
+    */ 
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, double *Value);
+    
+    /**
+      Gets a function parameter value from the parameters set, as a long int
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Value the value of the requested parameter
+    */ 
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, long *Value);
+        
+    /**
+      Gets a function parameter from the parameters set, as a float
       \param[in] Params the parameters set for the simulation function
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
@@ -535,12 +551,20 @@ class PluggableFunction : public wxObject
     bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, float *Value);
     
     /**
-      Gets a function parameter value from the parameters set, as a float
+      Gets a function parameter value from the parameters set, as an int
       \param[in] Params the parameters set for the simulation function
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
     */ 
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value);
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value);    
+
+    /**
+      Gets a function parameter value from the parameters set, as a string
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Value the value of the requested parameter
+    */ 
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
 
   public:

@@ -359,7 +359,7 @@ bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObjec
   
   if (HO != NULL)  
   {
-    mhydasdk::core::ParamsMap::iterator it; 
+    mhydasdk::core::PropertiesMap::iterator it; 
     it = HO->getProperties()->find(PropName);
     
     if (it != HO->getProperties()->end())
@@ -381,7 +381,7 @@ bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroO
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::ParamsMap::iterator it; 
+    mhydasdk::core::PropertiesMap::iterator it; 
     it = HO->getIniConditions()->find(IniCondName);
     
     if (it != HO->getIniConditions()->end())
@@ -499,11 +499,58 @@ bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObjec
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, float *Value)
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, double *Value)
 {
+  wxString TmpStr;
+  
   if (Params.find(ParamName) != Params.end())
   {
-    *Value = Params[ParamName];
+    TmpStr = Params[ParamName];
+    
+    return TmpStr.ToDouble(Value);
+    
+  }
+  else return false;  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+    
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, long *Value)
+{
+  wxString TmpStr;
+  
+  if (Params.find(ParamName) != Params.end())
+  {
+    TmpStr = Params[ParamName];
+
+    return TmpStr.ToLong(Value);
+  }
+  else return false;  
+  
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, float *Value)
+{
+  wxString TmpStr;
+  bool IsOK = true;
+  double TmpValue;
+  
+  if (Params.find(ParamName) != Params.end())
+  {
+    TmpStr = Params[ParamName];
+    IsOK = TmpStr.ToDouble(&TmpValue);    
+    if (IsOK) *Value = (float)TmpValue;
+    
+    return IsOK;
+    
   }
   else return false;  
 }
@@ -515,14 +562,41 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
     
 bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value)
 {
+  wxString TmpStr;
+  bool IsOK = true;
+  long TmpValue;
+  
   if (Params.find(ParamName) != Params.end())
   {
-    *Value = (int)(Params[ParamName]);
+    TmpStr = Params[ParamName];
+    IsOK = TmpStr.ToLong(&TmpValue);    
+    if (IsOK) *Value = (int)TmpValue;
+    
+    return IsOK;
   }
   else return false;  
   
 }
 
+
+
+// =====================================================================
+// =====================================================================
+
+    
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value)
+{
+  wxString TmpStr;
+  
+  if (Params.find(ParamName) != Params.end())
+  {
+    TmpStr = Params[ParamName];
+
+    return true;
+  }
+  else return false;  
+  
+}
 
 // =====================================================================
 // =====================================================================

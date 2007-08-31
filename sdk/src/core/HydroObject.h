@@ -33,9 +33,14 @@ typedef std::vector<double> VectorOfDouble;
 WX_DECLARE_STRING_HASH_MAP(VectorOfDouble*, SimulatedVarsMap);
 
 /**
-  Hash table for parameters (distributed properties, distributed initial conditions, global parameters, ...)
+  Hash table for parameters (distributed properties, distributed initial conditions, ...)
 */
-WX_DECLARE_STRING_HASH_MAP(double,ParamsMap);
+WX_DECLARE_STRING_HASH_MAP(double,PropertiesMap);
+
+/**
+  Hash table for parameters (distributed properties, distributed initial conditions, ...)
+*/
+WX_DECLARE_STRING_HASH_MAP(wxString,ParamsMap);
 
 
 /**
@@ -53,9 +58,9 @@ class HydroObject
 
     SimulatedVarsMap* mp_SimVars;
 
-    ParamsMap* mp_Properties;
+    PropertiesMap* mp_Properties;
 
-    ParamsMap* mp_IniConditions;
+    PropertiesMap* mp_IniConditions;
 
 
 
@@ -87,9 +92,9 @@ class HydroObject
 
     SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
 
-    ParamsMap* getProperties() { return mp_Properties; };
+    PropertiesMap* getProperties() { return mp_Properties; };
 
-    ParamsMap* getIniConditions() { return mp_IniConditions; };
+    PropertiesMap* getIniConditions() { return mp_IniConditions; };
 
 
 };

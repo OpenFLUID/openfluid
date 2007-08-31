@@ -23,8 +23,8 @@ HydroObject::HydroObject()
   m_ProcessOrder = 0;
 
   mp_SimVars = new SimulatedVarsMap();
-  mp_Properties = new ParamsMap();
-  mp_IniConditions = new ParamsMap();
+  mp_Properties = new PropertiesMap();
+  mp_IniConditions = new PropertiesMap();
 
 }
 
@@ -37,8 +37,8 @@ HydroObject::HydroObject(hoid_t ID, int ProcessOrder)
 {
 
   mp_SimVars = new SimulatedVarsMap();
-  mp_Properties = new ParamsMap();
-  mp_IniConditions = new ParamsMap();
+  mp_Properties = new PropertiesMap();
+  mp_IniConditions = new PropertiesMap();
 
   m_ID = ID;
   m_ProcessOrder = ProcessOrder;
