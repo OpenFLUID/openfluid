@@ -1497,12 +1497,16 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 
 
   
+  wxArrayString WMessages = mp_ExecMsgs->getWarningMsgs();
+  int WarningCount = WMessages.Count();
+  
   // warnings
-  if (mp_ExecMsgs->getWarningMsgs().Count() > 0)
+  if ( WarningCount > 0)
   {
-    for (i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
+    
+    for (i=0; i<WarningCount;i++)
     {
-      FileContents << wxT("WARNING: ") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT("\n");
+      FileContents << wxT("WARNING: ") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\n");            
     }
   }
   else FileContents << wxT("NO WARNING");  
@@ -1526,12 +1530,12 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 
   if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
   
-  if (mp_ExecMsgs->getWarningMsgs().Count() > 0)
+  if (WarningCount > 0)
   {
-    XMLFileContents << wxT("    <warnings count=\"") << mp_ExecMsgs->getWarningMsgs().Count() << wxT("\">") << wxT("\n");    
-    for (i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
+    XMLFileContents << wxT("    <warnings count=\"") << WarningCount << wxT("\">") << wxT("\n");    
+    for (i=0; i<WarningCount;i++)
     {
-      XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)) << wxT("\" />") << wxT("\n");
+      XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\" />") << wxT("\n");
     }
     XMLFileContents << wxT("    </warnings>") << wxT("\n");
   }  
