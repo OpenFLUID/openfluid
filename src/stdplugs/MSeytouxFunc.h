@@ -22,7 +22,7 @@ class MorelSeytouxFunc : public mhydasdk::base::PluggableFunction
     /** 
       Resolution step
     */  
-    float m_ResStep;
+    double m_ResStep;
     
     /**
       Theta star on each SU

@@ -82,7 +82,7 @@ bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
   MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
   // if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
   MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
-
+  
   return true;
 }
 

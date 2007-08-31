@@ -67,6 +67,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
   wxString Str;
   double DoubleValue;
+  
   int IntValue;
   
 
@@ -134,9 +135,9 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
           for(Child2;Child2;Child2=Child2->NextSiblingElement())
           {
-            if (Child2->Attribute("name") != NULL && Child2->Attribute("value",&DoubleValue) != NULL)
+            if (Child2->Attribute("name") != NULL && Child2->Attribute("value") != NULL)
             {
-              FConf->Params[wxString(Child2->Attribute("name"),wxConvUTF8)] = DoubleValue;
+              FConf->Params[wxString(Child2->Attribute("name"),wxConvUTF8)] = wxString(Child2->Attribute("value"),wxConvUTF8);
 
             }
 
@@ -724,7 +725,7 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
           {
             if (SUProps.getDoubleValue(i,j,&Value))
             {
-              SU->getProperties()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+              SU->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
             }
           }
         }
@@ -772,7 +773,7 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
           {
             if (RSProps.getDoubleValue(i,j,&Value))
             {
-              RS->getProperties()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+              RS->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
             }
           }
         }
@@ -820,7 +821,7 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
           {
             if (GUProps.getDoubleValue(i,j,&Value))
             {
-              GU->getProperties()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+              GU->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
             }
           }
         }
@@ -886,7 +887,7 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
           {
             if (SUIni.getDoubleValue(i,j,&Value))
             {
-              SU->getIniConditions()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+              SU->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
             }
           }
         }
@@ -938,7 +939,7 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
           {
             if (RSIni.getDoubleValue(i,j,&Value))
             {
-              RS->getIniConditions()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+              RS->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
             }
           }
         }
@@ -990,7 +991,7 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
           {
             if (GUIni.getDoubleValue(i,j,&Value))
             {
-              GU->getIniConditions()->insert(mhydasdk::core::ParamsMap::value_type(Columns[j-1],Value));
+              GU->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
             }
           }
         }

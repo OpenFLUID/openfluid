@@ -56,8 +56,7 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));
   
   DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT("-"));
-
-  
+ 
   m_ResStep = 0.000005;
   
 }
@@ -78,8 +77,8 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 {
 //  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];
-  MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);      
-  
+  MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);
+    
   return true;
 }
 
