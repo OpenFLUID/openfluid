@@ -145,7 +145,9 @@ bool MHYDASApp::saveSimulationReports()
 
   ExecStatus = mp_Engine->saveReports(m_ExSI);
 
-  printlnExecStatus();
+  std::cout << "[Done]" << std::endl;
+
+  std::cout.flush();
 
   return ExecStatus;  
   
@@ -406,8 +408,11 @@ bool MHYDASApp::stopAppReturn()
   std::cout << std::endl;
   printlnExecMessagesStats();
 
-  saveSimulationReports();
-
+  if (mp_RunEnv->isWriteSimReport())
+  {  
+    saveSimulationReports();
+  }
+  
   std::cout << "ERROR: " << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()).mb_str(wxConvUTF8) << std::endl;
 
   for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
@@ -539,7 +544,7 @@ int MHYDASApp::OnRun()
     
 
     // saving results
-    if (mp_RunEnv->isWriteResults())
+    if (mp_RunEnv->isWriteResults() && !mp_ExecMsgs->isErrorFlag())
     {  
       saveResults();
       if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();

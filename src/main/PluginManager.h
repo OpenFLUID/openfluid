@@ -42,7 +42,7 @@ class PluginManager
     ~PluginManager();
 
     /**
-      Lists available functions, buil-in or from plugins
+      Lists available simulation functions
     */
     ArrayOfPluginsSignatures getAvailableFunctionsList();
 
