@@ -44,8 +44,8 @@ MorelSeytouxFunc::MorelSeytouxFunc()
 
   mp_Signature->Domain = wxT("Production");
 
-  DECLARE_SU_PRODUCED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));
-  DECLARE_SU_PRODUCED_VAR("infiltration",wxT("Infiltration through the surface of the unit"),wxT("m/s"));
+  DECLARE_SU_PRODUCED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m"));
+  DECLARE_SU_PRODUCED_VAR("infiltration",wxT("Infiltration through the surface of the unit"),wxT("m"));
 
   DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("Hydraulic conductivity when saturated"),wxT("m/s"));
   DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT("-"),wxT("-"));   

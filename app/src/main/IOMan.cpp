@@ -1443,6 +1443,9 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
 
   }
 
+  // TODO voir s'il ne manque pas un de mettre: else IsOK = false; 
+
+  
   return IsOK;
 }
 
@@ -1452,6 +1455,8 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
 bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo)
 {
 
+  // TODO voir s'il ne manque pas un if (prepareOutputDir())
+  
   int i;
 
 

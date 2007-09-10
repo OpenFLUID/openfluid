@@ -84,7 +84,6 @@ fi
 
 
 
-
 # ------------ option file for makefiles -------------
 
 if [ "$OSTYPE" = "msys" ]; then
