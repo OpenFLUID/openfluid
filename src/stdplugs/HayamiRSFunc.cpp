@@ -229,6 +229,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
       {                
         UpSU = *UpSUiter;
+        
         MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
         UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue; // / UpSU->getUsrArea();
       }  
