@@ -9,13 +9,13 @@ usage_info() {
   echo "MHYDAS SDK config usage:\n"
   echo "  mhydasdk-config [ARG]\n"
   echo " available options:"
-  echo "      --libs      returns libraries linker options" 
-  echo "      --cflags    returns libraries compilation flags (C)"
-
+  echo "      --libs        returns linker options" 
+  echo "      --cflags      returns compilation flags (C)"
+  echo "      --version     returns complete version number"
 }
 
 
-if [ "$1" != "--libs" ] && [ "$1" != "--cflags" ]; then
+if [ "$1" != "--libs" ] && [ "$1" != "--cflags" ] && [ "$1" != "--version" ]; then
   usage_info
   exit 1
 fi
@@ -27,5 +27,10 @@ fi
 
 if [ "$1" = "--cflags" ]; then
   echo "-I$SDKINCPATH"
+fi
+
+
+if [ "$1" = "--version" ]; then
+  echo "$MAJORVER.$MINORVER-$SVNREV"
 fi
 

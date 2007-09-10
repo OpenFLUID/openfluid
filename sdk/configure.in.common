@@ -15,7 +15,6 @@ MHYDASDKCONFIGFILE=mhydasdk-config
 
 
 MAJORVER=1
-#MINORVER=`date +%-y.%m`
 MINORVER=0
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
