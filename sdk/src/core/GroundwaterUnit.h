@@ -28,7 +28,7 @@ class GroundwaterUnit : public HydroObject
 
   private:
     double m_UsrArea;
-    hoid_t m_GUExchangeID;
+    HOID m_GUExchangeID;
 		GroundwaterUnit *mp_GUExchange;
 		double m_SubstratumLevel;
     std::list<SurfaceUnit*> *mp_SUsExchange;
@@ -46,8 +46,8 @@ class GroundwaterUnit : public HydroObject
 	  /**
 	    Constructor
 	  */
-		GroundwaterUnit(hoid_t ID, int ProcessOrder,
-                    hoid_t GUExchangeID, double SubstratumLevel);
+		GroundwaterUnit(HOID ID, int ProcessOrder,
+                    HOID GUExchangeID, double SubstratumLevel);
 
 	  /**
 	    Destructor
@@ -60,7 +60,7 @@ class GroundwaterUnit : public HydroObject
     */
     double getUsrArea() const;
     
-    hoid_t getGUExchangeID() const;
+    HOID getGUExchangeID() const;
 
     /**
       Returns substratum level

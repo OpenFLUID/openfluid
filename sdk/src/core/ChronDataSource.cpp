@@ -89,7 +89,7 @@ void ChronDataSource::Process()
 
   int Count = m_TimeSerie->getItemsCollection()->size();
   
-  mp_ProcessedData = new float[Count];
+  mp_ProcessedData = new RainValue[Count];
   
   for (int i=0; i<Count; i++)
   {

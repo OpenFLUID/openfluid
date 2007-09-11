@@ -37,9 +37,9 @@ SurfaceUnit::SurfaceUnit()
 // =====================================================================
 
 
-SurfaceUnit::SurfaceUnit(hoid_t ID, int ProcessOrder,
+SurfaceUnit::SurfaceUnit(HOID ID, int ProcessOrder,
 		         double UsrArea, double UsrSlope,
-		         SUDownstreamCode DSCode, int DownstreamID, double DSDistance, hoid_t GUExchangeID)
+		         SUDownstreamCode DSCode, int DownstreamID, double DSDistance, HOID GUExchangeID)
            : HydroObject(ID, ProcessOrder)
 {
 
@@ -114,7 +114,7 @@ SUDownstreamCode SurfaceUnit::getDownstreamCode() const
 // =====================================================================
 
 
-hoid_t SurfaceUnit::getDownstreamID() const
+HOID SurfaceUnit::getDownstreamID() const
 {
   return m_DownstreamID;
 }
@@ -185,7 +185,7 @@ void SurfaceUnit::setDownstreamCode(SUDownstreamCode Code)
 // =====================================================================
 
 
-void SurfaceUnit::setDownstreamID(hoid_t ID)
+void SurfaceUnit::setDownstreamID(HOID ID)
 {
   m_DownstreamID = ID;
 }
@@ -205,7 +205,7 @@ void SurfaceUnit::setDownstreamDistance(double Distance)
 // =====================================================================
 
 
-void SurfaceUnit::setGUExchangeID(hoid_t ID)
+void SurfaceUnit::setGUExchangeID(HOID ID)
 {
   m_GUExchangeID = ID;
 }

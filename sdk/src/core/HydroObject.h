@@ -17,9 +17,12 @@
 namespace mhydasdk { namespace core {
 
 
-typedef int hoid_t;
+typedef int HOID;
 
-typedef std::vector<double> VectorOfDouble;
+typedef double MHYDASValue;
+typedef double PropertyValue;
+
+typedef std::vector<MHYDASValue> VectorOfMHYDASValue;
 
 
 
@@ -30,12 +33,12 @@ typedef std::vector<double> VectorOfDouble;
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
 */
-WX_DECLARE_STRING_HASH_MAP(VectorOfDouble*, SimulatedVarsMap);
+WX_DECLARE_STRING_HASH_MAP(VectorOfMHYDASValue*, SimulatedVarsMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
 */
-WX_DECLARE_STRING_HASH_MAP(double,PropertiesMap);
+WX_DECLARE_STRING_HASH_MAP(PropertyValue,PropertiesMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
@@ -53,7 +56,7 @@ class HydroObject
 	private:
 
 	protected:
-		hoid_t m_ID;
+		HOID m_ID;
 		int m_ProcessOrder;
 
     SimulatedVarsMap* mp_SimVars;
@@ -77,14 +80,14 @@ class HydroObject
 		  \param[in] Comment The associated comment
 		  \param[in] ProcessOrder the process order of the objects during the model execution
 		*/
-		HydroObject(hoid_t ID, int ProcessOrder);
+		HydroObject(HOID ID, int ProcessOrder);
 
 		/**
 		  Virtual destructor
 		*/
 		virtual ~HydroObject();
 
-    int getID() const;
+    HOID getID() const;
 
     int getProcessOrder() const;
 

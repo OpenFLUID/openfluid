@@ -18,6 +18,7 @@ namespace mhydasdk { namespace core {
 
 
 typedef int cdsid_t;
+typedef double RainValue;
 
 
 /**
@@ -38,7 +39,7 @@ class ChronDataSource
     std::string m_Name;
     TimeSerie* m_TimeSerie;
 
-    float *mp_ProcessedData;
+    RainValue *mp_ProcessedData;
 
   public:
 		/**
@@ -92,7 +93,7 @@ class ChronDataSource
 
     void Process();
 
-    float* getProcessedData() { return mp_ProcessedData; };
+    RainValue* getProcessedData() { return mp_ProcessedData; };
 
 };
 

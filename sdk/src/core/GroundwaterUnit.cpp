@@ -29,8 +29,8 @@ GroundwaterUnit::GroundwaterUnit()
 }
 
 
-GroundwaterUnit::GroundwaterUnit(hoid_t ID,int ProcessOrder,
-                                hoid_t GUExchangeID, double SubstratumLevel)
+GroundwaterUnit::GroundwaterUnit(HOID ID,int ProcessOrder,
+                                HOID GUExchangeID, double SubstratumLevel)
            : HydroObject(ID, ProcessOrder)
 {
   
@@ -68,7 +68,7 @@ double GroundwaterUnit::getUsrArea() const
 
 
 
-hoid_t GroundwaterUnit::getGUExchangeID() const
+HOID GroundwaterUnit::getGUExchangeID() const
 {
   return m_GUExchangeID;
 }

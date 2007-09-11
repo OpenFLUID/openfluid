@@ -326,7 +326,7 @@ bool PluggableFunction::checkFunctionConsistency()
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float *Value)
+bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASValue *Value)
 {
   if (HO != NULL)  
   {
@@ -335,7 +335,7 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
     
     if (it != HO->getSimulatedVars()->end())
     {    
-      mhydasdk::core::VectorOfDouble* ValuesVect  = it->second;
+      mhydasdk::core::VectorOfMHYDASValue* ValuesVect  = it->second;
       
       if (Step < ValuesVect->size())
       {
@@ -353,7 +353,7 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, float *Value)
+bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue *Value)
 {
   // attention, la verif de l'existence de la prop bouffe beaucoup de temps
   
@@ -377,7 +377,7 @@ bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObjec
 // =====================================================================
 
     
-bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, float *Value)
+bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, mhydasdk::core::PropertyValue *Value)
 {
   if (HO != NULL)  
   {
@@ -399,13 +399,13 @@ bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroO
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, float *Value)
+bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, mhydasdk::core::RainValue *Value)
 {
 
   if (SU->getRainSource() != NULL)
   {
   
-    float* TmpValues = SU->getRainSource()->getProcessedData();
+    mhydasdk::core::RainValue *TmpValues = SU->getRainSource()->getProcessedData();
     *Value = TmpValues[Step]; 
     return true;
   }
@@ -435,7 +435,7 @@ bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::Hydro
 
     if (it != HO->getSimulatedVars()->end())
     {
-      mhydasdk::core::VectorOfDouble* ValuesVect = it->second;
+      mhydasdk::core::VectorOfMHYDASValue* ValuesVect = it->second;
       if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
       else return false;            
     }
@@ -449,7 +449,7 @@ bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::Hydro
 
 
     
-bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, float Value)
+bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASValue Value)
 {
   if (HO != NULL)  
   {
@@ -472,7 +472,7 @@ bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroOb
 
 
     
-bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, float Value)
+bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASValue Value)
 {
   if (HO != NULL)  
   {
@@ -481,7 +481,7 @@ bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObjec
     
     if (it != HO->getSimulatedVars()->end())
     {    
-      mhydasdk::core::VectorOfDouble* ValuesVect = it->second;
+      mhydasdk::core::VectorOfMHYDASValue* ValuesVect = it->second;
       if (Step < ValuesVect->size())
       {
         ValuesVect->at(Step) = Value;

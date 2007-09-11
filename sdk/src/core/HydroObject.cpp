@@ -33,7 +33,7 @@ HydroObject::HydroObject()
 // =====================================================================
 
 
-HydroObject::HydroObject(hoid_t ID, int ProcessOrder)
+HydroObject::HydroObject(HOID ID, int ProcessOrder)
 {
 
   mp_SimVars = new SimulatedVarsMap();
