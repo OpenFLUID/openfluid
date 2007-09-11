@@ -260,12 +260,12 @@ void MHYDASApp::printPluginsList()
 {
   ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList();
 
-  std::cout << "Available pluggable functions:" << std::endl;
+  std::cout << "Available pluggable simulation functions:" << std::endl;
 
 
   if (Signatures.GetCount() > 0)
   {
-    for (int i=0;i<Signatures.GetCount();i++) std::cout << "  - " << Signatures[i]->Name.mb_str(wxConvUTF8) << std::endl;
+    for (int i=0;i<Signatures.GetCount();i++) std::cout << "  - " << ReplaceEmptyString(Signatures[i]->Name,wxT("(unknown simulation function)")).mb_str(wxConvUTF8) << std::endl;
   }
   else
   {
