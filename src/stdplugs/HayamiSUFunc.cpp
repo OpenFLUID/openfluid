@@ -117,8 +117,8 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
   mhydasdk::core::SurfaceUnit* SU;
   float Cel, Sigma;
-  int ID;
-  float TmpValue;
+  mhydasdk::core::HOID ID;
+  mhydasdk::core::PropertyValue TmpValue;
 
   DECLARE_SU_ORDERED_LOOP;
  
@@ -126,7 +126,7 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   BEGIN_SU_ORDERED_LOOP(SU)
     ID = SU->getID();
     
-    m_Input[ID] = new mhydasdk::core::VectorOfDouble();
+    m_Input[ID] = new mhydasdk::core::VectorOfMHYDASValue();
     m_CurrentInputSum[ID] = 0;
   
     m_MeanSlope = m_MeanSlope + SU->getUsrSlope();
@@ -164,9 +164,9 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   int ID;
   int CurrentStep;
   int TimeStep;
-  float QOutput;
-  float QInput;
-  float TmpValue;
+  mhydasdk::core::MHYDASValue QOutput;
+  mhydasdk::core::MHYDASValue QInput;
+  mhydasdk::core::MHYDASValue TmpValue;
 
   
   mhydasdk::core::SurfaceUnit* SU;

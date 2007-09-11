@@ -259,14 +259,14 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         {
           // if everithing's OK, builds the new spatial object and adds it to the collection
 
-          if (!SpatialData->addSU(new mhydasdk::core::SurfaceUnit((mhydasdk::core::hoid_t)ID,
-                                                                  (mhydasdk::core::hoid_t)ProcessOrder,
+          if (!SpatialData->addSU(new mhydasdk::core::SurfaceUnit((mhydasdk::core::HOID)ID,
+                                                                  (mhydasdk::core::HOID)ProcessOrder,
                                                                   Area,
                                                                   Slope,
                                                                   getSUDownstreamCode(FlowCode),
-                                                                  (mhydasdk::core::hoid_t)FlowID,
+                                                                  (mhydasdk::core::HOID)FlowID,
                                                                   FlowDist,
-                                                                  (mhydasdk::core::hoid_t)GUExch)))
+                                                                  (mhydasdk::core::HOID)GUExch)))
           {            
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
@@ -314,16 +314,16 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         {
 
 
-          if (!SpatialData->addRS(new mhydasdk::core::ReachSegment((mhydasdk::core::hoid_t)ID,
-                                                                   (mhydasdk::core::hoid_t)ProcessOrder,
+          if (!SpatialData->addRS(new mhydasdk::core::ReachSegment((mhydasdk::core::HOID)ID,
+                                                                   (mhydasdk::core::HOID)ProcessOrder,
                                                                    (mhydasdk::core::nodeid_t)UpNode,
                                                                    (mhydasdk::core::nodeid_t)DownNode,
-                                                                   (mhydasdk::core::hoid_t)LowRSID,
+                                                                   (mhydasdk::core::HOID)LowRSID,
                                                                    Slope,
                                                                    Length,
                                                                    Width,
                                                                    Height,
-                                                                   (mhydasdk::core::hoid_t)GUExch)))
+                                                                   (mhydasdk::core::HOID)GUExch)))
           {
             //mhydasdk::base::LastError::Message = wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
@@ -365,9 +365,9 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
             GUsFileParser.getLongValue(i,2,&GUExch) && GUsFileParser.getLongValue(i,3,&ProcessOrder))
         {
 
-          if (!SpatialData->addGU(new mhydasdk::core::GroundwaterUnit((mhydasdk::core::hoid_t)ID,
-                                                                      (mhydasdk::core::hoid_t)ProcessOrder,
-                                                                      (mhydasdk::core::hoid_t)GUExch,
+          if (!SpatialData->addGU(new mhydasdk::core::GroundwaterUnit((mhydasdk::core::HOID)ID,
+                                                                      (mhydasdk::core::HOID)ProcessOrder,
+                                                                      (mhydasdk::core::HOID)GUExch,
                                                                       SubstrLevel)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use."));
@@ -1693,7 +1693,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
   wxString NaNStr = wxT("!");
 
   mhydasdk::core::SimulatedVarsMap::iterator Simit;
-  mhydasdk::core::VectorOfDouble* Values;
+  mhydasdk::core::VectorOfMHYDASValue* Values;
 
   mhydasdk::core::SUMap::iterator SUit;
   mhydasdk::core::SurfaceUnit* SU;

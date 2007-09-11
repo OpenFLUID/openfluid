@@ -12,7 +12,7 @@
 #include <vector>
 #include "mhydasdk-core.h"
 
-typedef std::vector<float> t_HayamiKernel;
+typedef std::vector<double> t_HayamiKernel;
 
 WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernelMap);
 
@@ -26,13 +26,13 @@ WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernel
   \return a vector of double containing the kernel      
 */
 
- t_HayamiKernel ComputeHayamiKernel(float Celerity, float Sigma, float Length, int MaxSteps, int TimeStep);
+ t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep);
 
 
 /**
   Propagates the wave using the Hayami kernel
 */
-float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfDouble* QInput, int MaxSteps, int TimeStep);
+float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfMHYDASValue* QInput, int MaxSteps, int TimeStep);
 
 
 #endif // __HAYAMITOOLS_H__

@@ -69,7 +69,7 @@ WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainEventFilesM
 struct AutoOutfileDef
 {
   wxString ObjectsKind;
-  vector<mhydasdk::core::hoid_t> SelectedObjectIDs;
+  vector<mhydasdk::core::HOID> SelectedObjectIDs;
   wxString FileSuffix;
   wxArrayString Columns;
 

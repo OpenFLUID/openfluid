@@ -114,7 +114,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   bool IsOK =  true;
 
 
-  float ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
+  mhydasdk::core::PropertyValue ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
   mhydasdk::core::SurfaceUnit* SU;
   
 
@@ -189,19 +189,19 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   float CurrentInfiltration; 
 
   int ID;
-  float CurrentRain;
+  mhydasdk::core::RainValue CurrentRain;
   int CurrentStep;
   int TimeStep;
-  float Ks;
+  mhydasdk::core::PropertyValue Ks;
 
-  float Beta;
+  mhydasdk::core::PropertyValue Beta;
   double DeltaWi;
   bool Criteria;
   float ExtraTime;
   double InfiltrationCapacity;
   float Area;
 
-  float TmpValue;
+  mhydasdk::core::MHYDASValue TmpValue;
 
   mhydasdk::core::SurfaceUnit* SU;
   mhydasdk::core::SurfaceUnit* UpSU;
