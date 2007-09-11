@@ -36,8 +36,9 @@ HayamiSUFunction::HayamiSUFunction()
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on surface units");
   mp_Signature->Description = wxT("");
-
   mp_Signature->Domain = wxT("Transfer");
+  mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
+  
 
   DECLARE_SU_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the unit"),wxT("m3/s"));
   DECLARE_SU_REQUIRED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));  

@@ -39,8 +39,8 @@ wxString GenerateSimulationID();
 
 wxString FormatExecutionMessage(wxString Message);
 
-
 bool EmptyDirectoryRecursively(const char* DirPath);
 
+wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr);
 
 #endif

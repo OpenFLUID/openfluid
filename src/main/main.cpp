@@ -347,8 +347,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
         std::cout << "      <process>" << Signatures[i]->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
         std::cout << "      <method>" << Signatures[i]->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
         std::cout << "      <description>" << Signatures[i]->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
-        std::cout << "      <version major=\"" << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) 
-                  << "\" minor=\"" << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << "\"/>" << std::endl;
+        std::cout << "      <version number=\"" << Signatures[i]->Version.mb_str(wxConvUTF8) << "\" sdk=\""<< Signatures[i]->SDKVersion.mb_str(wxConvUTF8) << "\"/>" << std::endl;
         std::cout << "      <author name=\"" << Signatures[i]->Author.mb_str(wxConvUTF8) 
                   << "\" email=\"" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << "\"/>" << std::endl;
 
@@ -358,15 +357,17 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
                  
       }
       else
-      {
+      {       
         std::cout << "* " << Signatures[i]->ID.mb_str(wxConvUTF8) << std::endl;           
-        std::cout << "   - Name: " << Signatures[i]->Name.mb_str(wxConvUTF8) << std::endl;        
-        std::cout << "   - Domain: " << Signatures[i]->Domain.mb_str(wxConvUTF8) << std::endl;
-        std::cout << "   - Process: " << Signatures[i]->Process.mb_str(wxConvUTF8) << std::endl;
-        std::cout << "   - Method: " << Signatures[i]->Method.mb_str(wxConvUTF8) << std::endl;                
-        std::cout << "   - Description: " << Signatures[i]->Description.mb_str(wxConvUTF8) << std::endl;                
-        std::cout << "   - Version: " << Signatures[i]->MajorVersion.mb_str(wxConvUTF8) << "." << Signatures[i]->MinorVersion.mb_str(wxConvUTF8) << std::endl;                        
-        std::cout << "   - Author: " << Signatures[i]->Author.mb_str(wxConvUTF8) << " (" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << ")" << std::endl;                                
+        std::cout << "   - Name: " << ReplaceEmptyString(Signatures[i]->Name,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;        
+        std::cout << "   - Domain: " << ReplaceEmptyString(Signatures[i]->Domain,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Process: " << ReplaceEmptyString(Signatures[i]->Process,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Method: " << ReplaceEmptyString(Signatures[i]->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                
+        std::cout << "   - Description: " << ReplaceEmptyString(Signatures[i]->Description,wxT("(none)")).mb_str(wxConvUTF8) << std::endl;                
+        std::cout << "   - Version: " << ReplaceEmptyString(Signatures[i]->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                        
+        std::cout << "   - SDK version used at build time: " << Signatures[i]->SDKVersion.mb_str(wxConvUTF8) <<  std::endl;        
+        std::cout << "   - Author(s): " << ReplaceEmptyString(Signatures[i]->Author,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                                
+        std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(Signatures[i]->AuthorEmail,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
         std::cout << "   - Handled data" << std::endl;                  
         printPluginsVarsPropsParamsReport(Signatures[i]->HandledVarsPropsParams,wxT("     . "),IsXMLFormat);
         
