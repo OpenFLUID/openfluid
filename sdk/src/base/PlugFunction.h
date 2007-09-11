@@ -382,15 +382,15 @@ struct Signature
   wxString Method;
 
   /**
-    Major version number
+    Plug-in version number
   */
-  wxString MajorVersion;
+  wxString Version;
 
   /**
-    Minor version number
+    SDK version number
   */
-  wxString MinorVersion;
-
+  wxString SDKVersion;
+    
   /**
     Author's name
   */
@@ -402,6 +402,26 @@ struct Signature
   wxString AuthorEmail;
   
   wxArrayString HandledVarsPropsParams;
+  
+  Signature()
+  {
+    FunctionType = SIMULATION;
+    ID = wxT("");
+    Name = wxT("");
+    Description = wxT("");
+    Domain = wxT("");
+    Process = wxT("");
+    Method = wxT("");
+    Author = wxT("");
+    AuthorEmail = wxT("");
+    Version = wxT("");
+    SDKVersion = wxT("");    
+  }
+  
+  void setSDKVersion(int Major, int Minor, int Revision)
+  {
+    SDKVersion << Major << wxT(".") << Minor << wxT("-") << Revision;
+  }
 
 };
 
@@ -635,8 +655,7 @@ class PluggableFunction : public wxObject
       Pure virtual method, must be overloaded.
       Place post-simulation finalization here in overloads
     */
-    virtual bool finalizeRun(SimulationInfo* SimInfo)=0;
-    
+    virtual bool finalizeRun(SimulationInfo* SimInfo)=0;    
 
 };
 
