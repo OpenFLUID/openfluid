@@ -15,7 +15,7 @@
 // =====================================================================
 
 
-t_HayamiKernel ComputeHayamiKernel(float Celerity, float Sigma, float Length, int MaxSteps, int TimeStep)
+t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep)
 {
   float Theta, Zed;
   float Value1, Value2, Value3; 
@@ -73,7 +73,7 @@ t_HayamiKernel ComputeHayamiKernel(float Celerity, float Sigma, float Length, in
 // =====================================================================
 
 
-float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfDouble* QInput, int MaxSteps, int TimeStep)
+float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfMHYDASValue* QInput, int MaxSteps, int TimeStep)
 {
   float QOutput;
   

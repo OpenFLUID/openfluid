@@ -29,19 +29,19 @@ class HayamiSUFunction : public mhydasdk::base::PluggableFunction
 
     int m_MaxSteps;
     
-    float m_MeanCelerity;
+    double m_MeanCelerity;
 
-    float m_MeanSigma;    
+    double m_MeanSigma;    
     
-    float m_MeanSlope;
+    double m_MeanSlope;
     
-    float m_MeanManning;        
+    double m_MeanManning;        
 
     IDKernelMap m_SUKernel;
     
-    mhydasdk::base::IDVectOfDoubleMap m_Input;
+    mhydasdk::base::IDVectOfMHYDASValueMap m_Input;
     
-    mhydasdk::base::IDFloatValueMap m_CurrentInputSum;
+    mhydasdk::base::IDMHYDASValueMap m_CurrentInputSum;
         
 
   public:

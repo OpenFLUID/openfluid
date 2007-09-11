@@ -119,16 +119,16 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
   mhydasdk::core::ReachSegment* RS;
   float Cel, Sigma;
-  int ID;
-  float TmpValue;
+  mhydasdk::core::HOID ID;
+  mhydasdk::core::MHYDASValue TmpValue;
   DECLARE_RS_ORDERED_LOOP;
  
  
   BEGIN_RS_ORDERED_LOOP(RS)
     ID = RS->getID();  
     
-    m_Input[ID] = new mhydasdk::core::VectorOfDouble();
-    m_HeightDischarge[ID] = new mhydasdk::core::VectorOfDouble();
+    m_Input[ID] = new mhydasdk::core::VectorOfMHYDASValue();
+    m_HeightDischarge[ID] = new mhydasdk::core::VectorOfMHYDASValue();
     m_CurrentInputSum[ID] = 0;
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -194,9 +194,9 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   float UpSrcSUsOutputsSum;  
   float UpLatSUsOutputsSum;  
   float UpRSsOutputsSum;  
-  float QOutput;
-  float QInput;
-  float TmpValue;
+  mhydasdk::core::MHYDASValue QOutput;
+  mhydasdk::core::MHYDASValue QInput;
+  mhydasdk::core::MHYDASValue TmpValue;
 
   
   mhydasdk::core::ReachSegment* RS;
@@ -315,10 +315,11 @@ bool HayamiRSFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 // =====================================================================
 
-bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, float *Height)
+bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASValue Discharge, mhydasdk::core::MHYDASValue *Height)
 {
   
   if (Discharge < 0) return false;
+  
   if (Discharge == 0) *Height = 0;
   else
   {
@@ -326,7 +327,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
     int i;
     float Q1, Q2, H1, H2;
     
-    mhydasdk::core::VectorOfDouble* HeightDischarge = m_HeightDischarge[ID]; 
+    mhydasdk::core::VectorOfMHYDASValue* HeightDischarge = m_HeightDischarge[ID]; 
 
    
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

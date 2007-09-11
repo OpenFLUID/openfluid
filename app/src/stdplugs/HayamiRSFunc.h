@@ -45,13 +45,13 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     
     bool m_UseUpSUOutput;
     
-    mhydasdk::base::IDVectOfDoubleMap m_Input;
+    mhydasdk::base::IDVectOfMHYDASValueMap m_Input;
     
-    mhydasdk::base::IDFloatValueMap m_CurrentInputSum;
+    mhydasdk::base::IDMHYDASValueMap m_CurrentInputSum;
 
-    mhydasdk::base::IDVectOfDoubleMap m_HeightDischarge;
+    mhydasdk::base::IDVectOfMHYDASValueMap m_HeightDischarge;
         
-    bool computeWaterHeightFromDischarge(int ID, float Discharge, float *Height);
+    bool computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASValue Discharge, mhydasdk::core::MHYDASValue *Height);
 
 
   public:

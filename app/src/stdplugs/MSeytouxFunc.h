@@ -27,51 +27,51 @@ class MorelSeytouxFunc : public mhydasdk::base::PluggableFunction
     /**
       Theta star on each SU
     */
-    mhydasdk::base::IDFloatValueMap m_SUThetaStar;
+    mhydasdk::base::IDDoubleMap m_SUThetaStar;
     
     /**
       Sf on each SU
     */
-    mhydasdk::base::IDFloatValueMap m_SUSf;
+    mhydasdk::base::IDDoubleMap m_SUSf;
 
     /**
       Saturation state on each SU
     */
-    mhydasdk::base::IDIntValueMap m_SUSatState;
+    mhydasdk::base::IDIntMap m_SUSatState;
 
     /**
       Use of upstream output as input on each SU
     */
-    mhydasdk::base::IDBoolValueMap m_UseUpstreamOutput;
+    mhydasdk::base::IDBoolMap m_UseUpstreamOutput;
 
     /**
       Current upstream input value for each SU
     */
-    mhydasdk::base::IDFloatValueMap m_CurrentUpstreamInput;
+    mhydasdk::base::IDDoubleMap m_CurrentUpstreamInput;
     
     /**
       Rain sum for each SU
     */
-    mhydasdk::base::IDFloatValueMap m_RainSum;    
+    mhydasdk::base::IDFloatMap m_RainSum;    
 
     /**
       Previous DeltaW for each SU
     */
-    mhydasdk::base::IDFloatValueMap m_PreviousDeltaW;    
+    mhydasdk::base::IDFloatMap m_PreviousDeltaW;    
 
-    mhydasdk::base::IDFloatValueMap m_PondingTime; // tp
+    mhydasdk::base::IDFloatMap m_PondingTime; // tp
 
-    mhydasdk::base::IDFloatValueMap m_PondingSum;  // wp
+    mhydasdk::base::IDFloatMap m_PondingSum;  // wp
 
-    mhydasdk::base::IDIntValueMap m_PondingStep; // ip
+    mhydasdk::base::IDIntMap m_PondingStep; // ip
 
-    mhydasdk::base::IDFloatValueMap m_PondingRainIntensity; // rp
+    mhydasdk::base::IDFloatMap m_PondingRainIntensity; // rp
 
 
-    mhydasdk::base::IDFloatValueMap m_DeltaW1;
-    mhydasdk::base::IDFloatValueMap m_DeltaW2;
-    mhydasdk::base::IDFloatValueMap m_DeltaT1;
-    mhydasdk::base::IDFloatValueMap m_DeltaT2;
+    mhydasdk::base::IDFloatMap m_DeltaW1;
+    mhydasdk::base::IDFloatMap m_DeltaW2;
+    mhydasdk::base::IDFloatMap m_DeltaT1;
+    mhydasdk::base::IDFloatMap m_DeltaT2;
 
 
 
