@@ -37,8 +37,7 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   mp_Signature->Author = wxT("Jean-Christophe Fabre");
   mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
   mp_Signature->ID = wxT("mseytoux");
-  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
-  // mp_Signature->FunctionType = mhydasdk::base::FUNC_SU_PRODUCTION;
+  mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
   mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
   mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
 

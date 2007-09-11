@@ -238,7 +238,14 @@ bool EmptyDirectoryRecursively(const char* DirPath)
   return true;   
 }
 
+// =====================================================================
+// =====================================================================
 
+wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr)
+{
+  if (SourceStr.Length() == 0) SourceStr = ReplaceStr;
+  return SourceStr;
+}
 
 
 

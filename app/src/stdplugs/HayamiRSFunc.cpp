@@ -30,10 +30,12 @@ HayamiRSFunction::HayamiRSFunction()
   mp_Signature->Author = wxT("Jean-Christophe FABRE");
   mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
   mp_Signature->ID = wxT("hayamirs");
+  mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
   mp_Signature->Description = wxT("");
   mp_Signature->Domain = wxT("Transfer");
+  
 
   DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
   DECLARE_RS_PRODUCED_VAR("waterheight",wxT("Water height at the outlet of the ditch"),wxT("m"));
