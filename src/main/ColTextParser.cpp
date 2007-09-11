@@ -140,7 +140,6 @@ bool ColumnTextParser::isEmptyLineStr(wxString LineStr)
 bool ColumnTextParser::loadFromFile(wxString Filename)
 {
 
-  bool IsOK = true;
   int LinesCount;
   wxString StrLine;
   wxTextFile *ColumnFile;

@@ -178,9 +178,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 {
 
-  double Value;
-  int i;
-  
+ 
   float OutputsSum;
   float RainIntensity; //r
   float EfficientRainIntensity; // re

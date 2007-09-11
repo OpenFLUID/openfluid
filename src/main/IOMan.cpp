@@ -62,14 +62,11 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
   // à terminer
 
   TiXmlDocument LoadDoc;
-  TiXmlElement* Child;
-  TiXmlElement* Child2;
+  TiXmlElement* Child, *Child2;
 
   wxString Str;
-  double DoubleValue;
   
   int IntValue;
-  
 
   FunctionConfig* FConf;
 
@@ -1029,7 +1026,6 @@ bool IOManager::loadOutputConfig()
 
   TiXmlDocument LoadDoc;
   TiXmlElement* Child;
-  TiXmlElement* Child2;
 
   wxString Str;
   int i;
@@ -1591,7 +1587,7 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
   {  
     wxString Filename, Filecontent;
     wxString NaNStr = wxT("!");
-    int i;
+
 
     mhydasdk::core::SimulatedVarsMap::iterator Simit;
 
@@ -1695,7 +1691,6 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
   
   wxString Filename, Filecontent;
   wxString NaNStr = wxT("!");
-  int i;
 
   mhydasdk::core::SimulatedVarsMap::iterator Simit;
   mhydasdk::core::VectorOfDouble* Values;
