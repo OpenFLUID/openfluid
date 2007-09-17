@@ -494,7 +494,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
       {
 
         #ifdef INPUT_RAIN_MMH
-        Value = Value * SIFACT_MMH_TO_MS;
+        Value = Value / SIFACT_MS_TO_MMH;
         #endif
         Serie->addValue(new mhydasdk::core::TimeSerieItem(Year,Month,Day,Hour,Min,Sec,Value));
 
