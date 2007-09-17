@@ -91,6 +91,8 @@ class SurfaceUnit : public HydroObject
     double getDownstreamDistance() const;
 
     HOID getGUExchangeID() const;
+    
+    GroundwaterUnit* getGUExchange() { return mp_GUExchange; };
 
     std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };     
 
