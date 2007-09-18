@@ -42,16 +42,19 @@ mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString 
   wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
   mhydasdk::base::PluggableFunction* Plug = NULL;  
   
-
+  
   // library loading
   if (PluginFile.Length()>0 && PlugLib->Load(PluginFile))
   {
+    
     // checks if the handle proc exists
     if (PlugLib->HasSymbol(wxT("GetMHYDASPluggableFunction")))
     {
-    	// hooks the handle proc
+     
+      // hooks the handle proc
     	mhydasdk::base::GetPluggableFunctionProc PlugProc = (mhydasdk::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT("GetMHYDASPluggableFunction"));
 
+    	
       if (PlugProc != NULL)
       {
         Plug = PlugProc();            
@@ -107,7 +110,7 @@ mhydasdk::base::PluggableFunction *PluginManager::getFunctionFromPlugin(wxString
 {
 
   mhydasdk::base::PluggableFunction *Plug = getPluggableFunction(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
-
+  
   if (Plug != NULL)
   {
     if (Plug->getSignature()->FunctionType == ReqFuncType)
@@ -123,27 +126,3 @@ mhydasdk::base::PluggableFunction *PluginManager::getFunctionFromPlugin(wxString
 }
 
 
-/*
-mhydasdk::base::Function *PluginManager::getFunctionFromPlugin(wxString PluginName,
-                                                     mhydasdk::base::ModuleTypeList ReqModType,
-                                                     mhydasdk::base::FunctionTypeList ReqFuncType)
-{
-  mhydasdk::base::Function *Func = NULL;
-
-  mhydasdk::base::Plugin *Plug = getPlugin(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
-
-
-  if (Plug != NULL)
-  {
-    if ((Plug->getSignature()->ModuleType == ReqModType) &&
-        (Plug->getSignature()->FunctionType == ReqFuncType))
-    {
-      Func = Plug->getFunction();
-    }
-  }
-
-
-  return Func;
-}
-
-*/

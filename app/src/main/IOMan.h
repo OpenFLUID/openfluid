@@ -26,10 +26,8 @@
 */
 struct FunctionConfig
 {
-  wxString Name;  // Name of the function
-  wxString File;  // Plug-in file
+  wxString FileID;  // Plug-in fileID (filename without ext)
   mhydasdk::core::ParamsMap Params;  // Function parameters set
-
 };
 
 

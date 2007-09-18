@@ -41,7 +41,7 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
   mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
 
-  mp_Signature->Domain = wxT("Production");
+  mp_Signature->Domain = wxT("hydrology");
 
   DECLARE_SU_PRODUCED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m"));
   DECLARE_SU_PRODUCED_VAR("infiltration",wxT("Infiltration through the surface of the unit"),wxT("m"));

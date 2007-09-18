@@ -34,7 +34,7 @@ HayamiRSFunction::HayamiRSFunction()
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
   mp_Signature->Description = wxT("");
-  mp_Signature->Domain = wxT("Transfer");
+  mp_Signature->Domain = wxT("hydrology");
   
 
   DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
