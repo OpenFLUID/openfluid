@@ -110,18 +110,15 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
     for(Child;Child;Child=Child->NextSiblingElement())
 	  {
-      if (Child->Attribute("ID") != NULL  &&
-          Child->Attribute("file") != NULL )
+      if (Child->Attribute("fileID") != NULL)
       {
 
-
-        // function name and file
+        // function fileID
         FConf = new FunctionConfig();
-        FConf->Name = wxString(Child->Attribute("ID"),wxConvUTF8);
-        FConf->File = wxString(Child->Attribute("file"),wxConvUTF8);
+        FConf->FileID = wxString(Child->Attribute("fileID"),wxConvUTF8);
 
 
-        if ((FConf->Name.Length() > 0) && (FConf->File.Length() > 0))
+        if (FConf->FileID.Length() > 0)
         {
 
           FConf->Params.clear();
@@ -325,7 +322,6 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                    Height,
                                                                    (mhydasdk::core::HOID)GUExch)))
           {
-            //mhydasdk::base::LastError::Message = wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use.");
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
           }

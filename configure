@@ -126,6 +126,11 @@ echo "PLATFORM = $MACHTYPE"  >> $OPTFILE
 
 echo "" >> $OPTFILE
 
+echo "# compilator lang" >> $OPTFILE
+echo "LANG = C" >> $OPTFILE
+
+echo "" >> $OPTFILE
+
 echo "# C compilator" >> $OPTFILE
 echo "CC = $CC" >> $OPTFILE
 

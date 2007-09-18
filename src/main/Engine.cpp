@@ -111,10 +111,9 @@ bool Engine::processConfig()
   while (FuncNode)
   {
     FConf = (FunctionConfig*)(FuncNode->GetData());
-
-
-    FuncToAdd = mp_PlugMan->getFunctionFromPlugin(FConf->File,mhydasdk::base::SIMULATION,mp_CoreData);
-
+   
+    FuncToAdd = mp_PlugMan->getFunctionFromPlugin(FConf->FileID,mhydasdk::base::SIMULATION,mp_CoreData);
+    
     if (FuncToAdd != NULL)
     {
        if (FuncToAdd->initParams(FConf->Params))
@@ -130,7 +129,7 @@ bool Engine::processConfig()
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("Engine"),wxT("Loading function from plugin ") + FConf->File + wxT(" error."));
+      mp_ExecMsgs->setError(wxT("Engine"),wxT("Loading function from plugin ") + FConf->FileID + wxT(" error."));
       return false;
     }
 

@@ -27,16 +27,16 @@ MSEYTOUXNAME=mseytoux
 
 HAYAMISUOBJ=$(OBJDIR)/HayamiSUFunc.o \
             $(OBJDIR)/HayamiTools.o
-HAYAMISUNAME=hayamiSU
+HAYAMISUNAME=hayamisu
 
 
 HAYAMIRSOBJ=$(OBJDIR)/HayamiRSFunc.o \
             $(OBJDIR)/HayamiTools.o
-HAYAMIRSNAME=hayamiRS
+HAYAMIRSNAME=hayamirs
 
 
 TRANSFERGUOBJ=$(OBJDIR)/TransferGUFunc.o
-TRANSFERGUNAME=transferGU
+TRANSFERGUNAME=transfergu
 
 
 
