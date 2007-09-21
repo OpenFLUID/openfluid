@@ -341,7 +341,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
     {
       if (IsXMLFormat)
       {
-        std::cout << "    <funcdef ID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
+        std::cout << "    <funcdef fileID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
                   << "\" name=\"" << Signatures[i]->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
         std::cout << "      <domain>" << Signatures[i]->Domain.mb_str(wxConvUTF8) << "</domain>" << std::endl;
         std::cout << "      <process>" << Signatures[i]->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
