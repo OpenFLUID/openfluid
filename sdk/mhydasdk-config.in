@@ -22,7 +22,7 @@ fi
 
 
 if [ "$1" = "--libs" ]; then
-  echo "-L$SDKLIBSPATH -l$SDKLIBCOREROOT -l$SDKLIBBASEROOT"
+  echo "-L$SDKLIBPATH -l$SDKLIBROOT"
 fi
 
 if [ "$1" = "--cflags" ]; then

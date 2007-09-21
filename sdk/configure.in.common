@@ -8,7 +8,7 @@ RELEASE_CCCFLAGS=-O3
 DEVEL_CCCFLAGS=-g3
 
 
-SDKLIBSROOT=mhydasdk
+SDKLIBROOT=mhydasdk
 
 
 MHYDASDKCONFIGFILE=mhydasdk-config
@@ -21,11 +21,11 @@ PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
 PACKDEPENDS="libwxbase2.6-dev (>= 2.6)"
 PACKSECTION="science"
 PACKPRIORITY="optional"
-LIBPACKDESC="MHYDAS core and base libraries\\\n These libraries ares used by the mhydas program. There are also needed for pluggable function development."
-DEVPACKDESC="MHYDAS core and base headers"
+LIBPACKDESC="MHYDAS SDK library\\\n This library is used by the mhydas program. It is also needed for pluggable function development."
+DEVPACKDESC="MHYDAS SDK headers"
 
-LIBPACKROOT=$SDKLIBSROOT-libs
-DEVPACKROOT=$SDKLIBSROOT-dev
+LIBPACKROOT=$SDKLIBROOT-libs
+DEVPACKROOT=$SDKLIBROOT-dev
 
 
 

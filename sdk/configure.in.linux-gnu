@@ -2,7 +2,7 @@
 
 SUDOBIN="sudo"
 
-INSTSDKLIBSPATH=/usr/lib
+INSTSDKLIBPATH=/usr/lib
 INSTSDKINCPATH=/usr/include/mhydasdk
 INSTSDKBINPATH=/usr/bin
 

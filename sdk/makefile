@@ -7,30 +7,21 @@ all: sdk
 
 .PHONY: sdk
 
-sdk: sdk-core sdk-base
-
-
-sdk-core:
+sdk: 
 	@echo ""
 	@echo "==== Compiling core SDK ===="
-	@(cd src/core && $(MAKE))
+	@(cd src && $(MAKE))
 	@$(LDCONFIGBUILD)
 
-sdk-base:
-	@echo ""
-	@echo "==== Compiling base SDK ===="
-	@(cd src/base && $(MAKE))
-	@$(LDCONFIGBUILD)
 
 mhydasdk-conf-file:
 	@echo ""
 	@echo "==== Creating mhydasdk-config file ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@echo "" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)    
-	@echo "SDKLIBSPATH=$(INSTSDKLIBSPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
+	@echo "SDKLIBPATH=$(INSTSDKLIBPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
 	@echo "SDKINCPATH=$(INSTSDKINCPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
-	@echo "SDKLIBBASEROOT=$(SDKLIBBASEROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)                
-	@echo "SDKLIBCOREROOT=$(SDKLIBCOREROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
+	@echo "SDKLIBROOT=$(SDKLIBROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)                
 	@echo "MAJORVER=$(MAJORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@echo "MINORVER=$(MINORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)  
 	@echo "SVNREV=$(SVNREV)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)	
@@ -39,8 +30,7 @@ mhydasdk-conf-file:
 
 
 clean:
-	@(cd src/core && $(MAKE) clean)
-	@(cd src/base && $(MAKE) clean)
+	@(cd src && $(MAKE) clean)
 	@rm -R -f $(BASEDOCDIR)
 
 
@@ -57,8 +47,7 @@ clean-installed-sdk:
 	@echo ""
 	@echo "==== Removing installed SDK ===="
 	@$(SUDO) rm -f -R $(INSTSDKINCPATH)
-	@$(SUDO) rm -f $(INSTSDKLIBSPATH)/$(SDKLIBBASEFILE)
-	@$(SUDO) rm -f $(INSTSDKLIBSPATH)/$(SDKLIBCOREFILE)
+	@$(SUDO) rm -f $(INSTSDKLIBPATH)/$(SDKLIBFILE)
 	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
 	@$(SUDO) $(LDCONFIGINST)
 
@@ -72,10 +61,8 @@ install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@$(SUDO) cp src/core/*.h $(INSTSDKINCPATH)/core/
 	@$(SUDO) cp src/base/*.h $(INSTSDKINCPATH)/base/
 	@echo "Installing libraries"
-	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBBASEFILE) $(INSTSDKLIBSPATH)
-	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBCOREFILE) $(INSTSDKLIBSPATH)
-	@$(SUDO) chmod 644 $(INSTSDKLIBSPATH)/$(SDKLIBBASEFILE)
-	@$(SUDO) chmod 644 $(INSTSDKLIBSPATH)/$(SDKLIBCOREFILE)
+	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBFILE) $(INSTSDKLIBPATH)
+	@$(SUDO) chmod 644 $(INSTSDKLIBPATH)/$(SDKLIBFILE)
 	@$(SUDO) $(LDCONFIGINST)
 	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
 
@@ -86,11 +73,10 @@ deb-packages: all mhydasdk-conf-file docs
 	@rm -f -R $(BASEPACKDIR)/debian/*
 	@echo "==== Building packages (debian based distro) ===="
 	@echo "Building library package"
-	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
+	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBPATH)
 	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(SDKLIBBASEFILE) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
-	@cp $(BASEBINDIR)/$(SDKLIBCOREFILE) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBSPATH)
+	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@cp resources/debian/common/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
 	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
@@ -122,8 +108,7 @@ win32-packages: all mhydasdk-conf-file
 	@mkdir -p $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32	
 	@echo "==== Building packages (win32) ===="
 	@echo "Building library package"
-	@cp $(BASEBINDIR)/$(SDKLIBBASEFILE) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32
-	@cp $(BASEBINDIR)/$(SDKLIBCOREFILE) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32
+	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32
 	@cd $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32/ && \
          $(ZIP) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32.zip $(SDKLIBBASEFILE) $(SDKLIBCOREFILE) && \
          cd $(BASEMAINDIR) > /dev/null
@@ -138,14 +123,6 @@ win32-packages: all mhydasdk-conf-file
          $(ZIP) -r $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32.zip * && \
          cd $(BASEMAINDIR) > /dev/null
 
-
-#	@cp -R -f $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/to_pack/$(PLUGSUBDIR)
-#	@cp -f $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/to_pack/
-#	@cp -f $(BASEBINDIR)/lib* $(BASEPACKDIR)/to_pack/
-#	@echo ""
-#	@echo "==== Building tgz package ===="
-#	@(cd $(BASEPACKDIR)/to_pack/ && tar cvzf $(BASEPACKDIR)/$(BINPACKNAMEROOT).tgz *)
-	
 	
 
 

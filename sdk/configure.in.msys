@@ -3,7 +3,7 @@
 SUDOBIN=
 ZIPBIN=zip
 
-INSTSDKLIBSPATH=/usr/local/lib
+INSTSDKLIBPATH=/usr/local/lib
 INSTSDKINCPATH=/usr/local/include/mhydasdk
 INSTSDKBINPATH=/usr/local/bin
 
