@@ -18,9 +18,11 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
 {
 
   m_AppDir = AppDir;
-  m_OutputDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_DEFAULT_OUTDIR;
-  m_InputDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_DEFAULT_INDIR;
-  m_TraceDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_DEFAULT_TRACEDIR;
+  m_UserDataDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + wxT("engine");
+  
+  m_OutputDir = m_UserDataDir + wxFILE_SEP_PATH + MHYDAS_DEFAULT_OUTDIR;
+  m_InputDir = m_UserDataDir + wxFILE_SEP_PATH + MHYDAS_DEFAULT_INDIR;
+  m_TraceDir = m_UserDataDir + wxFILE_SEP_PATH + MHYDAS_DEFAULT_TRACEDIR;
 
   
   m_ClearOutputDir = false; 
@@ -32,7 +34,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   
   // plugins search order: user directory then system directory
 
-  m_PlugsDirs.Add(wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);  
+  m_PlugsDirs.Add(m_UserDataDir + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);  
   
   #ifdef __LINUX__
   m_PlugsDirs.Add(MHYDAS_PLUGINS_STDSYSDIR);
@@ -73,7 +75,7 @@ RuntimeEnvironment::~RuntimeEnvironment()
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
   wxDateTime Now = wxDateTime::Now();
-  m_OutputDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + wxT("MHYDAS.") + Now.Format(wxT("%Y%m%d-%H%M%S")) + wxT(".OUT");
+  m_OutputDir = m_UserDataDir + wxFILE_SEP_PATH + wxT("MHYDAS.") + Now.Format(wxT("%Y%m%d-%H%M%S")) + wxT(".OUT");
 }
 
 

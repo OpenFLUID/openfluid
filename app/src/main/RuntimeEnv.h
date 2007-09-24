@@ -44,6 +44,7 @@ class RuntimeEnvironment
     wxString m_InputDir;
     wxString m_TraceDir;    
     wxString m_AppDir;
+    wxString m_UserDataDir;
 
     wxArrayString m_PlugsDirs;
     
