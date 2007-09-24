@@ -306,7 +306,7 @@ void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams,
         std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": ";
         if (CurrentStr[0] == wxT("rvar")) std::cout << "required variable, ";  
         if (CurrentStr[0] == wxT("pvar")) std::cout << "produced variable, ";        
-        if (CurrentStr[0] == wxT("uvar")) std::cout << "used variable (if available), ";        
+        if (CurrentStr[0] == wxT("uvar")) std::cout << "updated variable, ";        
         if (CurrentStr[0] == wxT("prop")) std::cout << "required property, ";        
         if (CurrentStr[0] == wxT("inic")) std::cout << "required initial condition, ";        
         if (CurrentStr[0] == wxT("gpar")) std::cout << "function parameter ";        
