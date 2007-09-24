@@ -417,11 +417,13 @@ bool MHYDASApp::stopAppReturn()
   
   std::cout << "ERROR: " << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()).mb_str(wxConvUTF8) << std::endl;
 
+  /*
   for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
   {
     std::cout << "WARNING: " << FormatExecutionMessage(mp_ExecMsgs->getWarningMsgs().Item(i)).mb_str(wxConvUTF8) << std::endl;
   }  
-    
+  */
+  
   std::cout << std::endl;
   std::cout.flush();
 
