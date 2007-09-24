@@ -1434,8 +1434,8 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
     }
 
   }
+  else IsOK = false; 
 
-  // TODO voir s'il ne manque pas un de mettre: else IsOK = false; 
 
   
   return IsOK;
@@ -1447,108 +1447,114 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
 bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo)
 {
 
-  // TODO voir s'il ne manque pas un if (prepareOutputDir())
-  
-  int i;
+
+  bool IsOK = true;
 
 
-  // ********** text file ********** 
-  
-  wxString FileContents = wxT("");
-  
-  FileContents << wxT("************************************************************") << wxT("\n");
-  FileContents << wxT("*                                                          *\n");
-  FileContents << wxT("*                     Simulation report                    *") << wxT("\n");
-  FileContents << wxT("*                                                          *\n");  
-  FileContents << wxT("************************************************************") << wxT("\n");
-  FileContents << wxT("\n");
-  
-  if (mp_ExecMsgs->isErrorFlag())
-  {
-    FileContents << wxT("ERROR: ") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\n");
-    FileContents << wxT("\n");
-  }  
-  
-  FileContents << wxT("Simulation ID: ") << ExSI.SimID << wxT("\n");
-  FileContents << wxT("Date: ") << ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S")) << wxT("\n");
-  FileContents << wxT("Computer: ") << wxGetHostName() << wxT("\n");
-  FileContents << wxT("User: ") << wxGetUserId() << wxT(" (") << wxGetUserName() << wxT(")") << wxT("\n");      
-  FileContents << wxT("\n");
-  FileContents << wxT("Input data set: ") << mp_RunEnv->getInputDir() << wxT("\n");  
-  FileContents << wxT("Output data set: ") << mp_RunEnv->getOutputDir()  << wxT("\n");  
-  FileContents << wxT("\n");
-  FileContents << wxT("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << wxT("\n");  
-  FileContents << wxT("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << wxT("\n");
-  FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");    
-  
-  FileContents << wxT("Rain gauges: ") << CoreData->getRainEvent()->getRainSourceCollection().size() << wxT("\n");
-
-  if (SimInfo != NULL)
-  {    
-    FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
-    FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
-  }
-   
-  FileContents << wxT("\n");
-  FileContents << wxT("------------------------------------------------------------") << wxT("\n");  
-  FileContents << wxT("\n");
-
-
-  
-  wxArrayString WMessages = mp_ExecMsgs->getWarningMsgs();
-  int WarningCount = WMessages.Count();
-  
-  // warnings
-  if ( WarningCount > 0)
+  if (prepareOutputDir())
   {
     
-    for (i=0; i<WarningCount;i++)
+    int i;
+    
+    
+    // ********** text file ********** 
+    
+    wxString FileContents = wxT("");
+    
+    FileContents << wxT("************************************************************") << wxT("\n");
+    FileContents << wxT("*                                                          *\n");
+    FileContents << wxT("*                     Simulation report                    *") << wxT("\n");
+    FileContents << wxT("*                                                          *\n");  
+    FileContents << wxT("************************************************************") << wxT("\n");
+    FileContents << wxT("\n");
+    
+    if (mp_ExecMsgs->isErrorFlag())
     {
-      FileContents << wxT("WARNING: ") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\n");            
+      FileContents << wxT("ERROR: ") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\n");
+      FileContents << wxT("\n");
+    }  
+    
+    FileContents << wxT("Simulation ID: ") << ExSI.SimID << wxT("\n");
+    FileContents << wxT("Date: ") << ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S")) << wxT("\n");
+    FileContents << wxT("Computer: ") << wxGetHostName() << wxT("\n");
+    FileContents << wxT("User: ") << wxGetUserId() << wxT(" (") << wxGetUserName() << wxT(")") << wxT("\n");      
+    FileContents << wxT("\n");
+    FileContents << wxT("Input data set: ") << mp_RunEnv->getInputDir() << wxT("\n");  
+    FileContents << wxT("Output data set: ") << mp_RunEnv->getOutputDir()  << wxT("\n");  
+    FileContents << wxT("\n");
+    FileContents << wxT("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << wxT("\n");  
+    FileContents << wxT("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << wxT("\n");
+    FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");    
+    
+    FileContents << wxT("Rain gauges: ") << CoreData->getRainEvent()->getRainSourceCollection().size() << wxT("\n");
+    
+    if (SimInfo != NULL)
+    {    
+      FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
+      FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
     }
+     
+    FileContents << wxT("\n");
+    FileContents << wxT("------------------------------------------------------------") << wxT("\n");  
+    FileContents << wxT("\n");
+    
+    
+    
+    wxArrayString WMessages = mp_ExecMsgs->getWarningMsgs();
+    int WarningCount = WMessages.Count();
+    
+    // warnings
+    if ( WarningCount > 0)
+    {
+      
+      for (i=0; i<WarningCount;i++)
+      {
+        FileContents << wxT("WARNING: ") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\n");            
+      }
+    }
+    else FileContents << wxT("NO WARNING");  
+    FileContents << wxT("\n");
+    FileContents << wxT("------------------------------------------------------------") << wxT("\n");
+    FileContents << wxT("\n");  
+    
+            
+    // write file to disk
+    wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
+    SimInfoFile.Write(FileContents);
+    SimInfoFile.Close();
+    
+    
+    // ********** xml file ********** 
+    wxString XMLFileContents = wxT("");
+    
+    XMLFileContents << wxT("<?xml version=\"1.0\" standalone=\"yes\"?>") << wxT("\n");
+    XMLFileContents << wxT("<mhydas>") << wxT("\n");
+    XMLFileContents << wxT("  <simreport>") << wxT("\n");
+    
+    if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
+    
+    if (WarningCount > 0)
+    {
+      XMLFileContents << wxT("    <warnings count=\"") << WarningCount << wxT("\">") << wxT("\n");    
+      for (i=0; i<WarningCount;i++)
+      {
+        XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\" />") << wxT("\n");
+      }
+      XMLFileContents << wxT("    </warnings>") << wxT("\n");
+    }  
+    else XMLFileContents << wxT("    <warnings count=\"0\" />") << wxT("\n");
+    
+    XMLFileContents << wxT("  </simreport>") << wxT("\n");
+    XMLFileContents << wxT("</mhydas>") << wxT("\n");
+    
+    wxFile XMLSimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE + wxT(".xml")),wxFile::write);
+    XMLSimInfoFile.Write(XMLFileContents);
+    XMLSimInfoFile.Close();
   }
-  else FileContents << wxT("NO WARNING");  
-  FileContents << wxT("\n");
-  FileContents << wxT("------------------------------------------------------------") << wxT("\n");
-  FileContents << wxT("\n");  
-
-          
-  // write file to disk
-  wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
-  SimInfoFile.Write(FileContents);
-  SimInfoFile.Close();
+  else IsOK = false;
 
 
-  // ********** xml file ********** 
-  wxString XMLFileContents = wxT("");
-
-  XMLFileContents << wxT("<?xml version=\"1.0\" standalone=\"yes\"?>") << wxT("\n");
-  XMLFileContents << wxT("<mhydas>") << wxT("\n");
-  XMLFileContents << wxT("  <simreport>") << wxT("\n");
-
-  if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
-  
-  if (WarningCount > 0)
-  {
-    XMLFileContents << wxT("    <warnings count=\"") << WarningCount << wxT("\">") << wxT("\n");    
-    for (i=0; i<WarningCount;i++)
-    {
-      XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\" />") << wxT("\n");
-    }
-    XMLFileContents << wxT("    </warnings>") << wxT("\n");
-  }  
-  else XMLFileContents << wxT("    <warnings count=\"0\" />") << wxT("\n");
-  
-  XMLFileContents << wxT("  </simreport>") << wxT("\n");
-  XMLFileContents << wxT("</mhydas>") << wxT("\n");
-
-  wxFile XMLSimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE + wxT(".xml")),wxFile::write);
-  XMLSimInfoFile.Write(XMLFileContents);
-  XMLSimInfoFile.Close();
-
-
-
-  return true;
+  return IsOK;
    
 }
 
