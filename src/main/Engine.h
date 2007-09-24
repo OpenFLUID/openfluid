@@ -65,6 +65,9 @@ class Engine
      */
      bool processConfig();
 
+     bool checkSimulationVarsProduction(int ExpectedVarsCount);
+     
+     
   public:
     /**
       Constructor

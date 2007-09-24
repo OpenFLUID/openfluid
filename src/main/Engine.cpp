@@ -140,6 +140,75 @@ bool Engine::processConfig()
   return true;
 }
 
+// =====================================================================
+// =====================================================================
+
+bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
+{
+  
+  mhydasdk::core::SurfaceUnit *SU;
+  mhydasdk::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
+  mhydasdk::core::SUMap::iterator SUiter;
+
+  mhydasdk::core::ReachSegment *RS;
+  mhydasdk::core::RSMap *RSsMap = mp_CoreData->getSpatialData()->getRSsCollection();
+  mhydasdk::core::RSMap::iterator RSiter;
+  
+  mhydasdk::core::GroundwaterUnit *GU;
+  mhydasdk::core::GUMap *GUsMap = mp_CoreData->getSpatialData()->getGUsCollection();
+  mhydasdk::core::GUMap::iterator GUiter;
+  
+  mhydasdk::core::SimulatedVarsMap *VarsMap;
+  mhydasdk::core::SimulatedVarsMap::iterator VMiter;
+  
+
+  // checking SUs
+  for(SUiter = SUsMap->begin(); SUiter != SUsMap->end(); ++SUiter)
+  {    
+    VarsMap = SUiter->second->getSimulatedVars();
+    VMiter = VarsMap->begin();
+        
+     
+    for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
+    {
+      if (VMiter->second->size() != ExpectedVarsCount) return false;  
+    }            
+  }
+  
+
+  // checking RSs
+  for(RSiter = RSsMap->begin(); RSiter != RSsMap->end(); ++RSiter)
+  {    
+    VarsMap = RSiter->second->getSimulatedVars();
+    VMiter = VarsMap->begin();
+        
+     
+    for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
+    {
+      if (VMiter->second->size() != ExpectedVarsCount) return false;  
+    }            
+  }
+  
+
+  // checking GUs
+  for(GUiter = GUsMap->begin(); GUiter != GUsMap->end(); ++GUiter)
+  {    
+    VarsMap = GUiter->second->getSimulatedVars();
+    VMiter = VarsMap->begin();
+        
+     
+    for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
+    {
+      if (VMiter->second->size() != ExpectedVarsCount) return false;  
+    }            
+  }
+  
+  
+  
+  return true;
+  
+}
+
 
 
 // =====================================================================
@@ -255,20 +324,30 @@ bool Engine::run()
   DECLARE_FUNCTION_PARSER;
                                                       
                                                       
-  // initialization of functions
-/*  if (!mp_Module->initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus))
+  // Check for simulation vars production before init
+  if (!checkSimulationVarsProduction(0))
   {
-    return false;
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production before run initialization"));
+    return false;      
   }
-*/
-
+  
+  
   PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
+
   if (mp_ExecMsgs->isErrorFlag())
   {
     return false;
   }
 
-  // run
+  // check simulation vars production after init
+  if (!checkSimulationVarsProduction(0))
+  {
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run initialization"));
+    return false;      
+  }
+  
+  
+
 
   if (mp_RunEnv->getTraceMode()) mp_IOMan->prepareTraceDir(mp_CoreData);
   
@@ -282,6 +361,9 @@ bool Engine::run()
     std::cout << std::endl;
     cout.flush();
   }
+
+
+  // run loop 
   
   do
   {
@@ -294,9 +376,15 @@ bool Engine::run()
 
     mp_ExecMsgs->resetWarningFlag();
    
-    PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
-        
+    PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);    
 
+    // check simulation vars production at each time step
+    if (!mp_ExecMsgs->isErrorFlag() && !checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1))
+    {
+      mp_ExecMsgs->setError(wxT("Engine"),mp_SimStatus->getCurrentStep(),wxT("Wrong simulation variable production"));      
+    }
+
+    
     if (mp_ExecMsgs->isErrorFlag())
     {
       std::cout << std::setw(12) << "[Error]";
@@ -320,6 +408,7 @@ bool Engine::run()
       cout.flush();
     }  
 
+    
     if (mp_RunEnv->getTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
     
   } while (mp_SimStatus->switchToNextStep());
@@ -330,6 +419,15 @@ bool Engine::run()
   // finalization of functions
   PARSE_FUNCTION_LIST(finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK)  
 
+  
+  // check simulation vars production after finalize
+  if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1))
+  {
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run finalization"));
+    return false;      
+  }
+  
+  
   return IsOK;
 }
 
