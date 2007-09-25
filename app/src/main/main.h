@@ -79,8 +79,10 @@ class MHYDASApp : public wxAppConsole
     void printDataInfos();
 
     void printPluginsList();
-
-    void printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams, wxString Suffix, bool IsXMLFormat);
+    
+    void printPluginsHandledDataReport(mhydasdk::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat);    
+    
+    void printPluginsHandledDataItemReport(mhydasdk::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat);    
 
     void printPluginsReport(bool IsXMLFormat);
 

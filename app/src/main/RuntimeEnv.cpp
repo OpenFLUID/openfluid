@@ -49,12 +49,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   #endif
   
 
-
-  //std::cerr << _C(wxStandardPaths::Get().GetInstallPrefix()) << std::endl;
-  //std::cerr << _C(m_PlugsDirs[0]) << std::endl; 
-  //std::cerr << _C(m_PlugsDirs[1]) << std::endl;  
-  //std::cerr << _C(m_PlugsDirs[2]) << std::endl;  
-  
+ 
 
 }
 

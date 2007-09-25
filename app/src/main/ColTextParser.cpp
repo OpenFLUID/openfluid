@@ -177,12 +177,10 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
   }
 */
 
-//  std::cerr << Filename.mb_str(wxConvUTF8) << std::endl;
+
 
   for (StrLine=ColumnFile->GetFirstLine();!ColumnFile->Eof();StrLine = ColumnFile->GetNextLine())
   {
-//    if (isCommentLineStr(StrLine)) std::cerr << "comment" << std::endl;
-//    if (isEmptyLineStr(StrLine)) std::cerr << "vide" << std::endl;    
     if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
   }
 
@@ -240,14 +238,11 @@ bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
     // more tokens processed but not a complete line. not good!
     if (LineStr->Count() != 0 && LineStr->Count() != ColumnsNbr)
     {
-      //std::cerr << "icciii" << std::endl;
       IsOK = false;
     }
   }
   else
   {
-//    std::cerr << _C(Contents) << std::endl;
-    //std::cerr << "iciiiii 2 " << Tkz.CountTokens() << std::endl;
     IsOK = false;
   }
 

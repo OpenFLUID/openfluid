@@ -233,8 +233,6 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         SUsFileParser.getColsCount() != MHYDAS_SUDEFSFILE_COLNBR ||
         SUsFileParser.getColsCount() < 1)
     {
-
-//      std::cerr << SUsFileParser.getColsCount() << std::endl;
       mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error"));
       return false;
     }
@@ -474,8 +472,6 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
   if (FileParser.loadFromFile(mp_RunEnv->getInputFullPath(Filename)) 
   && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
-
-//    std::cerr << FileParser.getLinesCount() << std::endl;
 
     Serie = new mhydasdk::core::TimeSerie("m/s");        
 
