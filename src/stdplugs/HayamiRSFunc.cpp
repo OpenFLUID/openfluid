@@ -39,13 +39,15 @@ HayamiRSFunction::HayamiRSFunction()
 
   DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
   DECLARE_RS_PRODUCED_VAR("waterheight",wxT("Water height at the outlet of the ditch"),wxT("m"));
-  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("-"),wxT("-"));
+  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT(""),wxT("?"));
 
-  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("-"));
-  DECLARE_FUNCTION_PARAM("meancel",wxT("-"),wxT("-"));  
-  DECLARE_FUNCTION_PARAM("meansigma",wxT("-"),wxT("-"));  
-  DECLARE_FUNCTION_PARAM("calibstep",wxT("-"),wxT("-"));    
-  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("-"));  
+  DECLARE_SU_USED_VAR("qoutput",wxT(""),wxT("?"));
+  
+  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("?"));
+  DECLARE_FUNCTION_PARAM("meancel",wxT(""),wxT("?"));  
+  DECLARE_FUNCTION_PARAM("meansigma",wxT(""),wxT("?"));  
+  DECLARE_FUNCTION_PARAM("calibstep",wxT(""),wxT("?"));    
+  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("?"));  
 
   // default values
   m_MaxSteps = 100;    
@@ -92,8 +94,7 @@ bool HayamiRSFunction::prepareData()
    
   m_UseUpSUOutput = false;   
   if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
-  {
-    DECLARE_SU_USED_VAR("qoutput");    
+  {    
     m_UseUpSUOutput = true;
   } 
 

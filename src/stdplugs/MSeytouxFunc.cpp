@@ -47,15 +47,17 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   DECLARE_SU_PRODUCED_VAR("infiltration",wxT("Infiltration through the surface of the unit"),wxT("m"));
 
   DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("Hydraulic conductivity when saturated"),wxT("m/s"));
-  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT("-"),wxT("-"));   
-  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT("-"),wxT("-"));  
-  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT("-"),wxT("-"));    
-  DECLARE_SU_REQUIRED_PROPERTY("hc",wxT("-"),wxT("-"));
+  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT(""),wxT("?"));   
+  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT(""),wxT("?"));  
+  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT(""),wxT(""));    
+  DECLARE_SU_REQUIRED_PROPERTY("hc",wxT(""),wxT("?"));
 
-  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT("-"),wxT("-"));
+  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT(""),wxT("?"));
   
-  DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT("-"));
+  DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT(""));
  
+  DECLARE_REQUIRED_SU_RAIN;
+  
   m_ResStep = 0.000005;
   
 }

@@ -66,7 +66,14 @@ class Engine
      bool processConfig();
 
      bool checkSimulationVarsProduction(int ExpectedVarsCount);
+
+     bool checkModelConsistency();
+
+     bool checkDataConsistency();
      
+     bool checkRainConsistency();
+     
+     bool checkExtraFilesConsistency();
      
   public:
     /**

@@ -42,22 +42,21 @@ mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString 
   wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
   mhydasdk::base::PluggableFunction* Plug = NULL;  
   
-  
+ 
   // library loading
   if (PluginFile.Length()>0 && PlugLib->Load(PluginFile))
   {
-    
+  
     // checks if the handle proc exists
     if (PlugLib->HasSymbol(wxT("GetMHYDASPluggableFunction")))
     {
      
       // hooks the handle proc
     	mhydasdk::base::GetPluggableFunctionProc PlugProc = (mhydasdk::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT("GetMHYDASPluggableFunction"));
-
-    	
+      
       if (PlugProc != NULL)
       {
-        Plug = PlugProc();            
+        Plug = PlugProc();           
       }
 
       // unloads the library
@@ -81,6 +80,7 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
   wxArrayString TmpFiles;
   int i,j;
   
+  
   for (i=0;i<PluginsPaths.GetCount();i++)
   {
     TmpFiles = GetFilesByExt(PluginsPaths[i],MHYDAS_PLUGINS_EXT);    
@@ -95,7 +95,7 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
     CurrentPlug = getPluggableFunction(PluginFiles[i]);
     if (CurrentPlug != NULL) Signatures.Add(CurrentPlug->getSignature());
   }
-
+  
   return Signatures;
 }
 

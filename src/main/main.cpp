@@ -280,42 +280,106 @@ void MHYDASApp::printPluginsList()
 // =====================================================================
 // =====================================================================
 
-void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams, wxString Suffix, bool IsXMLFormat)
-{
-  wxArrayString CurrentStr;  
-    
 
-  for (int i=0;i<VarsPropsParams.GetCount();i++)
+
+void MHYDASApp::printPluginsHandledDataItemReport(mhydasdk::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat)
+{
+  wxString TypeStr = wxT("");
+
+  std::cout << Suffix.mb_str(wxConvUTF8);
+
+  if (IsXMLFormat)
   {
-    CurrentStr = SplitString(VarsPropsParams[i],wxT(";"),true);
-    if (CurrentStr.GetCount() == 5)
-    {
-      std::cout << Suffix.mb_str(wxConvUTF8);
-      if (IsXMLFormat)
-      {
-        std::cout << "<varpropparam";
-        std::cout << " type=\"" << CurrentStr[0].mb_str(wxConvUTF8) << "\"";
-        std::cout << " distribution=\"" << CurrentStr[1].mb_str(wxConvUTF8) << "\"";        
-        std::cout << " ID=\"" << CurrentStr[2].mb_str(wxConvUTF8) << "\"";                
-        std::cout << " description=\"" << CurrentStr[3].mb_str(wxConvUTF8) << "\"";
-        std::cout << " unit=\"" << CurrentStr[4].mb_str(wxConvUTF8) << "\"";        
-        std::cout << "/>" << std::endl;
-      }
-      else
-      {
-        std::cout << CurrentStr[2].mb_str(wxConvUTF8) << ": ";
-        if (CurrentStr[0] == wxT("rvar")) std::cout << "required variable, ";  
-        if (CurrentStr[0] == wxT("pvar")) std::cout << "produced variable, ";        
-        if (CurrentStr[0] == wxT("uvar")) std::cout << "updated variable, ";        
-        if (CurrentStr[0] == wxT("prop")) std::cout << "required property, ";        
-        if (CurrentStr[0] == wxT("inic")) std::cout << "required initial condition, ";        
-        if (CurrentStr[0] == wxT("gpar")) std::cout << "function parameter ";        
-         
-        if (CurrentStr[1] != wxT("--")) std::cout << "distributed on " << CurrentStr[1].mb_str(wxConvUTF8) << " ";
-        std::cout << "(" << CurrentStr[4].mb_str(wxConvUTF8) << ")" << std::endl;        
-      }   
-    }
+    std::cout << "<varpropparam";
+    std::cout << " type=\"" << Type.mb_str(wxConvUTF8) << "\"";
+    std::cout << " distribution=\"" << HandledItem.Distribution.mb_str(wxConvUTF8) << "\"";        
+    std::cout << " ID=\"" << HandledItem.Name.mb_str(wxConvUTF8) << "\"";                
+    std::cout << " description=\"" << HandledItem.Description.mb_str(wxConvUTF8) << "\"";
+    std::cout << " unit=\"" << HandledItem.Unit.mb_str(wxConvUTF8) << "\"";        
+    std::cout << "/>" << std::endl;
+      
   }
+  else
+  {
+    wxString UnitStr = wxT("");
+    wxString DistribStr = wxT("");
+    
+        
+    if (HandledItem.Unit != wxT("")) UnitStr = wxT(" (")+HandledItem.Unit+wxT(")");
+    if (HandledItem.Distribution != wxT("")) DistribStr = wxT(", distributed on ")+HandledItem.Distribution;
+    
+    
+    if (Type == wxT("pvar")) TypeStr = wxT("produced variable");
+    if (Type == wxT("uvar")) TypeStr = wxT("updated variable");    
+    
+    if (Type == wxT("rvar")) TypeStr = wxT("required variable");
+    if (Type == wxT("rprevvar")) TypeStr = wxT("required variable produced at previous step");
+    if (Type == wxT("svar")) TypeStr = wxT("used variable (only if available)");    
+    if (Type == wxT("sprevvar")) TypeStr = wxT("used variable produced at previous step (only if available)");
+    
+    if (Type == wxT("fpar")) TypeStr = wxT("function parameter");
+    
+    if (Type == wxT("rprop")) TypeStr = wxT("required distributed property");
+    if (Type == wxT("sprop")) TypeStr = wxT("used distributed property (only if available)");
+    if (Type == wxT("rinicond")) TypeStr = wxT("required distributed initial condition");
+    if (Type == wxT("sinicond")) TypeStr = wxT("used distributed initial condition (only if available)");
+    
+    std::cout << HandledItem.Name.mb_str(wxConvUTF8) << UnitStr.mb_str(wxConvUTF8) << " : " << TypeStr.mb_str(wxConvUTF8) << DistribStr.mb_str(wxConvUTF8) << ".";
+    if (HandledItem.Description.Length()!=0) std::cout << " " << HandledItem.Description.mb_str(wxConvUTF8);     
+    std::cout << std::endl;
+    
+  }
+  
+  
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MHYDASApp::printPluginsHandledDataReport(mhydasdk::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat)
+{
+  
+  int i;
+
+  for (i=0;i<HandledData.FunctionParams.size();i++) printPluginsHandledDataItemReport(HandledData.FunctionParams[i],Suffix,wxT("fpar"),IsXMLFormat);
+  for (i=0;i<HandledData.ProducedVars.size();i++) printPluginsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,wxT("pvar"),IsXMLFormat);  
+  for (i=0;i<HandledData.RequiredVars.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,wxT("rvar"),IsXMLFormat);  
+  for (i=0;i<HandledData.UpdatedVars.size();i++) printPluginsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,wxT("uvar"),IsXMLFormat);
+  for (i=0;i<HandledData.UsedVars.size();i++) printPluginsHandledDataItemReport(HandledData.UsedVars[i],Suffix,wxT("svar"),IsXMLFormat);
+  for (i=0;i<HandledData.RequiredPrevVars.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredPrevVars[i],Suffix,wxT("rprevvar"),IsXMLFormat);
+  for (i=0;i<HandledData.UsedPrevVars.size();i++) printPluginsHandledDataItemReport(HandledData.UsedPrevVars[i],Suffix,wxT("sprevvar"),IsXMLFormat);
+  for (i=0;i<HandledData.RequiredProps.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredProps[i],Suffix,wxT("rprop"),IsXMLFormat);
+  for (i=0;i<HandledData.UsedProps.size();i++) printPluginsHandledDataItemReport(HandledData.UsedProps[i],Suffix,wxT("sprop"),IsXMLFormat);
+  for (i=0;i<HandledData.RequiredIniconds.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredIniconds[i],Suffix,wxT("rinicond"),IsXMLFormat);
+  for (i=0;i<HandledData.UsedIniconds.size();i++) printPluginsHandledDataItemReport(HandledData.UsedIniconds[i],Suffix,wxT("sinicond"),IsXMLFormat);
+
+  if (IsXMLFormat)
+  {
+    std::cout << Suffix.mb_str(wxConvUTF8) << "<requiredrain SU=\"" << HandledData.RequiredRainOnSU << "\" RS=\"" << HandledData.RequiredRainOnRS << "\"/>" << std::endl;
+
+    for (i=0;i<HandledData.RequiredExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "<extrafile type=\"required\" name=\"" << HandledData.RequiredExtraFiles[i].mb_str(wxConvUTF8) << "\" />" << std::endl;   
+    for (i=0;i<HandledData.UsedExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "<extrafile type=\"used\" name=\"" << HandledData.UsedExtraFiles[i].mb_str(wxConvUTF8) << "\" />" << std::endl;
+    
+  }
+  else
+  {
+    wxString RainSUStr = wxT("no");
+    wxString RainRSStr = wxT("no");
+
+    if (HandledData.RequiredRainOnSU) RainSUStr = wxT("yes");
+    if (HandledData.RequiredRainOnRS) RainRSStr = wxT("yes");
+    
+    std::cout << Suffix.mb_str(wxConvUTF8) << "Rain required on SUs : " << RainSUStr.mb_str(wxConvUTF8) << std::endl;    
+    std::cout << Suffix.mb_str(wxConvUTF8) << "Rain required on RSs : " << RainRSStr.mb_str(wxConvUTF8) << std::endl;
+
+    for (i=0;i<HandledData.RequiredExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "Required extra file : " << HandledData.RequiredExtraFiles[i].mb_str(wxConvUTF8) << std::endl;    
+    for (i=0;i<HandledData.UsedExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "Used extra file : " << HandledData.UsedExtraFiles[i].mb_str(wxConvUTF8) << std::endl;
+    
+  }
+  
 }
 
 
@@ -325,8 +389,11 @@ void MHYDASApp::printPluginsVarsPropsParamsReport(wxArrayString VarsPropsParams,
 void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 {
 
+ 
   ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList(); 
 
+  
+  
   // insertion du début du fichier XML
   if (IsXMLFormat)
   {
@@ -334,6 +401,8 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
     std::cout << "<mhydas>" << std::endl;   
     std::cout << "  <funcsreport>" << std::endl;   
   }
+  
+
   
   if (Signatures.GetCount() > 0)
   {
@@ -352,7 +421,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
                   << "\" email=\"" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << "\"/>" << std::endl;
 
         std::cout << "      <handleddata>" << std::endl;                  
-        printPluginsVarsPropsParamsReport(Signatures[i]->HandledVarsPropsParams,wxT("        "),IsXMLFormat);
+        printPluginsHandledDataReport(Signatures[i]->HandledData,wxT("        "),IsXMLFormat);
         std::cout << "      </handleddata>" << std::endl;                  
                  
       }
@@ -369,7 +438,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
         std::cout << "   - Author(s): " << ReplaceEmptyString(Signatures[i]->Author,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                                
         std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(Signatures[i]->AuthorEmail,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
         std::cout << "   - Handled data" << std::endl;                  
-        printPluginsVarsPropsParamsReport(Signatures[i]->HandledVarsPropsParams,wxT("     . "),IsXMLFormat);
+        printPluginsHandledDataReport(Signatures[i]->HandledData,wxT("     . "),IsXMLFormat);
         
       }
 
@@ -593,5 +662,8 @@ int MHYDASApp::OnExit()
 
 // =====================================================================
 // =====================================================================
+
+
+
 
 

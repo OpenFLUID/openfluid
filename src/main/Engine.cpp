@@ -51,11 +51,53 @@ WX_DEFINE_LIST(FunctionsList);
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
+// =====================================================================
+// =====================================================================
 
+// checks if var exists
+#define CHECK_VAR(name,objects,objshashtype,vars,status) \
+    objshashtype::iterator _M_it;\
+    _M_it = objects->begin(); \
+    while (status && (_M_it != objects->end()))\
+    {\
+      status = (!(_M_it->second->vars->find(name) == _M_it->second->vars->end())); \
+      ++_M_it; \
+    }\
+
+// adds a new var, returns false status if already exits
+#define CREATE_VAR(name,objects,objshashtype,vars,varshashtype,status) \
+    objshashtype::iterator _M_it;\
+    _M_it = objects->begin(); \
+    while (status && (_M_it != objects->end()))\
+    {\
+      status = (_M_it->second->vars->find(name) == _M_it->second->vars->end()); \
+      ++_M_it; \
+    }\
+    if (status) \
+    {\
+      for(_M_it = objects->begin(); _M_it != objects->end(); ++_M_it ) \
+      { \
+        _M_it->second->vars->insert(varshashtype::value_type(name,new std::vector<double>)); \
+      } \
+    }
+
+// adds a new var if doesn't exist
+#define UPDATE_VAR(name,objects,objshashtype,vars,varshashtype,status) \
+    objshashtype::iterator _M_it;\
+    _M_it = objects->begin(); \
+    while (status && (_M_it != objects->end()))\
+    {\
+      if (_M_it->second->vars->find(name) == _M_it->second->vars->end()) \
+      {\
+        _M_it->second->vars->insert(varshashtype::value_type(name,new std::vector<double>)); \
+      }\
+      ++_M_it; \
+    }\
 
 
 // =====================================================================
 // =====================================================================
+
 
 
 
@@ -209,10 +251,349 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   
 }
 
+// =====================================================================
+// =====================================================================
 
+bool Engine::checkModelConsistency()
+{
+
+  FunctionsList::Node *FuncNode = NULL;
+  mhydasdk::base::SignatureHandledData HData;
+  
+  int i;
+  bool IsOK = true; 
+  
+  
+  FuncNode = m_Functions.GetFirst();
+  while (FuncNode && IsOK)
+  {
+    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    if (CurrentFunction != NULL)
+    {        
+      HData = CurrentFunction->getSignature()->HandledData;
+
+      // required vars
+      i = 0;
+      while (IsOK && i<HData.RequiredVars.size())
+      {
+
+        if (HData.RequiredVars[i].Distribution == wxT("SU"))
+        {
+          CHECK_VAR(HData.RequiredVars[i].Name,
+                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                     getSimulatedVars(),IsOK);
+          
+        }
+
+        if (HData.RequiredVars[i].Distribution == wxT("RS"))
+        {
+          CHECK_VAR(HData.RequiredVars[i].Name,
+                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                     getSimulatedVars(),IsOK);
+          
+        }
+
+        if (HData.RequiredVars[i].Distribution == wxT("GU"))
+        {
+          CHECK_VAR(HData.RequiredVars[i].Name,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     getSimulatedVars(),IsOK);
+          
+        }
+                
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable required by ") + CurrentFunction->getSignature()->ID + wxT(" is not previously created"));
+        else i++;        
+      }
+      
+      
+      // produced vars
+      i = 0;
+      while (IsOK && i<HData.ProducedVars.size())
+      {
+
+        
+        if (HData.ProducedVars[i].Distribution == wxT("SU"))
+        {
+          CREATE_VAR(HData.ProducedVars[i].Name,
+                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          
+        }
+
+        if (HData.ProducedVars[i].Distribution == wxT("RS"))
+        {
+          CREATE_VAR(HData.ProducedVars[i].Name,
+                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          
+        }
+
+        if (HData.ProducedVars[i].Distribution == wxT("GU"))
+        {
+          CREATE_VAR(HData.ProducedVars[i].Name,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          
+        }
+       
+        
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.ProducedVars[i].Name+wxT(" variable produced by ") + CurrentFunction->getSignature()->ID + wxT(" cannot be created because it is previously created"));
+        else i++;
+      }
+     
+
+      // updated vars
+      i = 0;
+      while (IsOK && i<HData.UpdatedVars.size())
+      {
+
+        if (HData.UpdatedVars[i].Distribution == wxT("SU"))
+        {
+          CREATE_VAR(HData.UpdatedVars[i].Name,
+                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          
+        }
+
+        if (HData.UpdatedVars[i].Distribution == wxT("RS"))
+        {
+          CREATE_VAR(HData.UpdatedVars[i].Name,
+                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          
+        }
+
+        if (HData.UpdatedVars[i].Distribution == wxT("GU"))
+        {
+          CREATE_VAR(HData.UpdatedVars[i].Name,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          
+        }        
+        
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),wxT("Problem handling of ")+HData.ProducedVars[i].Name+wxT(" updated variable declared by ") + CurrentFunction->getSignature()->ID);
+        else i++;        
+      }
+    
+    }
+
+    FuncNode = FuncNode->GetNext();   
+  }
+
+  
+  
+  
+  // prev vars
+  
+  FuncNode = m_Functions.GetFirst();
+  while (FuncNode && IsOK)
+  {
+    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    if (CurrentFunction != NULL)
+    {        
+      HData = CurrentFunction->getSignature()->HandledData;
+
+      // required vars
+      i = 0;
+      while (IsOK && i<HData.RequiredPrevVars.size())
+      {
+
+        if (HData.RequiredPrevVars[i].Distribution == wxT("SU"))
+        {
+          CHECK_VAR(HData.RequiredPrevVars[i].Name,
+                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                     getSimulatedVars(),IsOK);
+          
+        }
+
+        if (HData.RequiredPrevVars[i].Distribution == wxT("RS"))
+        {
+          CHECK_VAR(HData.RequiredPrevVars[i].Name,
+                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                     getSimulatedVars(),IsOK);
+          
+        }
+
+        if (HData.RequiredPrevVars[i].Distribution == wxT("GU"))
+        {
+          CHECK_VAR(HData.RequiredPrevVars[i].Name,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     getSimulatedVars(),IsOK);
+          
+        }
+                
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredPrevVars[i].Name+wxT(" variable required at previous step by ") + CurrentFunction->getSignature()->ID + wxT(" does not exist"));
+        else i++;        
+      }
+    
+    }
+
+    FuncNode = FuncNode->GetNext();   
+  }
+  
+  
+  
+  return IsOK;
+}
 
 // =====================================================================
 // =====================================================================
+
+
+
+bool Engine::checkDataConsistency()
+{
+
+  FunctionsList::Node *FuncNode = NULL;
+  mhydasdk::base::SignatureHandledData HData;
+  
+  int i;
+  bool IsOK = true; 
+  
+  
+  FuncNode = m_Functions.GetFirst();
+  while (FuncNode && IsOK)
+  {
+    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    if (CurrentFunction != NULL)
+    {        
+      HData = CurrentFunction->getSignature()->HandledData;
+
+      // required props
+      i = 0;
+      while (IsOK && i<HData.RequiredProps.size())
+      {
+        
+        if (HData.RequiredProps[i].Distribution == wxT("SU"))
+        {
+          CHECK_VAR(HData.RequiredProps[i].Name,
+                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                     getProperties(),IsOK);
+          
+        }
+
+        if (HData.RequiredProps[i].Distribution == wxT("RS"))
+        {
+          CHECK_VAR(HData.RequiredProps[i].Name,
+                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                     getProperties(),IsOK);
+          
+        }
+
+        if (HData.RequiredProps[i].Distribution == wxT("GU"))
+        {
+          CHECK_VAR(HData.RequiredProps[i].Name,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     getProperties(),IsOK);
+          
+        }
+                
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed property required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+        else i++;        
+      }
+      
+
+      // required props
+      i = 0;
+      while (IsOK && i<HData.RequiredIniconds.size())
+      {
+        
+        if (HData.RequiredIniconds[i].Distribution == wxT("SU"))
+        {
+          CHECK_VAR(HData.RequiredIniconds[i].Name,
+                    mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                    getIniConditions(),IsOK);
+          
+        }
+
+        if (HData.RequiredIniconds[i].Distribution == wxT("RS"))
+        {
+          CHECK_VAR(HData.RequiredIniconds[i].Name,
+                    mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                    getIniConditions (),IsOK);
+          
+        }
+
+        if (HData.RequiredIniconds[i].Distribution == wxT("GU"))
+        {
+          CHECK_VAR(HData.RequiredIniconds[i].Name,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     getIniConditions(),IsOK);
+          
+        }
+                
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed initial condition required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+        else i++;        
+      }
+      
+      
+    }
+
+    FuncNode = FuncNode->GetNext();   
+  }
+  
+  
+  
+  return IsOK;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+bool Engine::checkRainConsistency()
+{
+
+  
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Engine::checkExtraFilesConsistency()
+{
+  
+  FunctionsList::Node *FuncNode = NULL;
+  int i;
+  mhydasdk::base::SignatureHandledData HData;
+  
+  
+  
+
+  FuncNode = m_Functions.GetFirst();
+  while (FuncNode)
+  {
+    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    if (CurrentFunction != NULL)
+    {
+      HData = CurrentFunction->getSignature()->HandledData;      
+      
+      for (i=0;i<HData.RequiredExtraFiles.size();i++)
+      {
+        if (!wxFileExists(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
+        {
+          mp_ExecMsgs->setError(wxT("Engine"),wxT("File ") + HData.RequiredExtraFiles[i] + wxT(" required by ") + CurrentFunction->getSignature()->ID + wxT(" not found"));
+          return false;          
+        }
+      }
+      
+      
+    }
+    FuncNode = FuncNode->GetNext(); 
+  }
+  
+ 
+  
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 
 bool Engine::buildModel()
 {
@@ -286,11 +667,34 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
 
-  // checks consistency
-    
-//  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+  IsOK = checkModelConsistency();
+  if (!IsOK)
+  {       
+    return false;    
+  }
+
+  IsOK = checkDataConsistency();
+  if (!IsOK)
+  {       
+    return false;    
+  }
+  
+  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+/*
   PARSE_FUNCTION_LIST_FOUR(prepareData(),prepareFunctionData(),
                            checkConsistency(),checkFunctionConsistency(),IsOK);
+*/
+ 
+  
+  
+  IsOK = checkRainConsistency();  
+  if (!IsOK)
+  {       
+    return false;    
+  }
+  
+  
+  IsOK = checkExtraFilesConsistency();
   if (!IsOK)
   {       
     return false;    
