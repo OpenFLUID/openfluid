@@ -60,7 +60,12 @@
   \param[in] unit unit of the parameter. Could be an empty string if there is no unit  
 */ 
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("gpar;--;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
+  mp_Signature->HandledData.FunctionParams.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT(""),description,unit));
+
+
+// =====================================================================
+// =====================================================================
+
 
 /**
   Macro for declaration of a produced variable on all SUs
@@ -69,8 +74,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */ 
 #define DECLARE_SU_PRODUCED_VAR(name,description,unit) \
-  m_SUVarsToCreate.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("pvar;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
+  mp_Signature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
   
 /**
   Macro for declaration of an updated variable on all SUs
@@ -79,9 +83,8 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */ 
 #define DECLARE_SU_UPDATED_VAR(name,description,unit) \
-  m_SUVarsToUpdate.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("uvar;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
-  
+  mp_Signature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+
 /**
   Macro for declaration of a required variable on all SUs
   \param[in] name name of the variable 
@@ -89,8 +92,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
-  m_SUVarsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("rvar;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+
+#define DECLARE_SU_REQUIRED_PREVVAR(name,description,unit) \
+  mp_Signature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 /**
   Macro for declaration of an used variable on all SUs
@@ -98,9 +103,12 @@
   \param[in] description description of the variable  
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
-#define DECLARE_SU_USED_VAR(name) \
-  m_SUVarsToCheck.Add(wxT(name));
+#define DECLARE_SU_USED_VAR(name,description,unit) \
+  mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
+#define DECLARE_SU_USED_PREVVAR(name,description,unit) \
+  mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  
 /**
   Macro for declaration of a required property on all SUs
   \param[in] name name of the property
@@ -108,9 +116,12 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
-  m_SUPropsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("prop;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
+#define DECLARE_SU_USED_PROPERTY(name,description,unit) \
+  mp_Signature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  
+  
 /**
   Macro for declaration of a required initial condition on all SUs
   \param[in] name name of the initial condition 
@@ -118,9 +129,17 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
-  m_SUInicondsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("inic;SU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
+  mp_Signature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
+#define DECLARE_SU_USED_INICOND(name,description,unit) \
+  mp_Signature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+
+
+  
+// =====================================================================
+// =====================================================================
+
+  
 /**
   Macro for declaration of a produced variable on all RSs
   \param[in] name name of the variable 
@@ -128,9 +147,8 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_PRODUCED_VAR(name,description,unit) \
-  m_RSVarsToCreate.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("pvar;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
-
+  mp_Signature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  
 /**
   Macro for declaration of an updated variable on all RSs
   \param[in] name name of the variable 
@@ -138,8 +156,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_RS_UPDATED_VAR(name,description,unit) \
-  m_RSVarsToUpdate.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("uvar;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 /**
   Macro for declaration of a required variable on all RSs
@@ -148,8 +165,11 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_RS_REQUIRED_VAR(name,description,unit) \
-  m_RSVarsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("rvar;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+
+#define DECLARE_RS_REQUIRED_PREVVAR(name,description,unit) \
+  mp_Signature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+
 
 /**
   Macro for declaration of an used variable on all RSs
@@ -158,7 +178,11 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_USED_VAR(name) \
-  m_RSVarsToCreate.Add(wxT(name));
+  mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+
+#define DECLARE_RS_USED_PREVVAR(name) \
+  mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+
 
 /**
   Macro for declaration of a required property on all RSs
@@ -167,8 +191,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
-  m_RSPropsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("prop;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+
+#define DECLARE_RS_USED_PROPERTY(name,description,unit) \
+  mp_Signature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 /**
   Macro for declaration of a required initial condition on all RSs
@@ -177,10 +203,15 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
-  m_RSInicondsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("inic;RS;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
+  mp_Signature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
+#define DECLARE_RS_USED_INICOND(name,description,unit) \
+  mp_Signature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
+// =====================================================================
+// =====================================================================
+  
+  
 /**
   Macro for declaration of a produced variable on all GUs
   \param[in] name name of the variable 
@@ -188,9 +219,8 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_PRODUCED_VAR(name,description,unit) \
-  m_GUVarsToCreate.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("pvar;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
-
+  mp_Signature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  
 /**
   Macro for declaration of an updated variable on all GUs
   \param[in] name name of the variable 
@@ -198,9 +228,8 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_GU_UPDATED_VAR(name,description,unit) \
-  m_GUVarsToUpdate.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("uvar;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
-
+  mp_Signature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  
 /**
   Macro for declaration of a required variable on all GUs
   \param[in] name name of the variable 
@@ -208,9 +237,12 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
-  m_GUVarsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("rvar;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
+#define DECLARE_GU_REQUIRED_PREVVAR(name,description,unit) \
+  mp_Signature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+
+  
 /**
   Macro for declaration of an used variable on all GUs
   \param[in] name name of the variable 
@@ -218,8 +250,12 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_USED_VAR(name) \
-  m_GUVarsToCreate.Add(wxT(name));
+  mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
+#define DECLARE_GU_USED_PREVVAR(name) \
+  mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+
+  
 /**
   Macro for declaration of a required property on all GUs
   \param[in] name name of the property 
@@ -227,8 +263,11 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
-  m_GUPropsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("prop;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));  
+  mp_Signature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+
+#define DECLARE_GU_USED_PROPERTY(name,description,unit) \
+  mp_Signature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  
 
 /**
   Macro for declaration of a required initial condition on all GUs
@@ -237,12 +276,34 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
-  m_GUInicondsToCheck.Add(wxT(name)); \
-  mp_Signature->HandledVarsPropsParams.Add(wxString(wxT("inic;GU;"))+wxString(wxT(name))+wxString(wxT(";"))+wxString(description)+wxString(wxT(";"))+wxString(unit));
+  mp_Signature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+
+#define DECLARE_GU_USED_INICOND(name,description,unit) \
+  mp_Signature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  
+  
+// =====================================================================
+// =====================================================================
+
+#define DECLARE_REQUIRED_EXTRAFILE(name) \
+  mp_Signature->HandledData.RequiredExtraFiles.Add(name);
+
+
+#define DECLARE_USED_EXTRAFILE(name) \
+  mp_Signature->HandledData.UsedExtraFiles.Add(name);
 
 
 // =====================================================================
 // =====================================================================
+
+#define DECLARE_REQUIRED_SU_RAIN mp_Signature->HandledData.RequiredRainOnSU = true;
+
+#define DECLARE_REQUIRED_RS_RAIN mp_Signature->HandledData.RequiredRainOnRS = true;
+
+// =====================================================================
+// =====================================================================
+
+
 
 
 /**
@@ -251,6 +312,7 @@
 #define DECLARE_SU_ORDERED_LOOP \
   list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
   list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
+
 
 /**
   Macro for the begining of a loop processing SUs, following their process order
@@ -332,6 +394,75 @@ enum ModuleTypeList
 // =====================================================================
 // =====================================================================
 
+struct SignatureHandledItem
+{
+  wxString Name;
+  wxString Type;
+  wxString Distribution; // "SU", "RS", "GU", or empty if none
+  wxString Description;
+  wxString Unit; // empty if none, "?" if unknown
+  
+  SignatureHandledItem()
+  {
+    Name = wxT("");
+    Distribution = wxT("");
+    Description = wxT("");
+    Unit = wxT("");
+  }
+
+  SignatureHandledItem(wxString ZeName, wxString ZeDistribution,
+                       wxString ZeDescription, wxString ZeUnit)
+  {
+    Name = ZeName;
+    Distribution = ZeDistribution;
+    Description = ZeDescription;
+    Unit = ZeUnit;
+  }
+  
+};
+
+
+
+
+struct SignatureHandledData
+{
+  std::vector<SignatureHandledItem> ProducedVars;
+  
+  std::vector<SignatureHandledItem> UpdatedVars;
+  
+  std::vector<SignatureHandledItem> RequiredVars;
+  
+  std::vector<SignatureHandledItem> UsedVars;
+  
+  std::vector<SignatureHandledItem> RequiredPrevVars;  
+  
+  std::vector<SignatureHandledItem> UsedPrevVars;  
+  
+  std::vector<SignatureHandledItem> FunctionParams;
+
+  std::vector<SignatureHandledItem> RequiredProps;  
+  
+  std::vector<SignatureHandledItem> RequiredIniconds;  
+
+  std::vector<SignatureHandledItem> UsedProps;  
+  
+  std::vector<SignatureHandledItem> UsedIniconds;  
+  
+  wxArrayString RequiredExtraFiles;
+
+  wxArrayString UsedExtraFiles;
+  
+  bool RequiredRainOnSU;
+
+  bool RequiredRainOnRS;
+  
+  SignatureHandledData()
+  {
+    RequiredRainOnSU = false;
+    RequiredRainOnRS = false;    
+  }
+  
+};
 
 
 /**
@@ -401,7 +532,7 @@ struct Signature
   */
   wxString AuthorEmail;
   
-  wxArrayString HandledVarsPropsParams;
+  SignatureHandledData HandledData;
   
   Signature()
   {
@@ -466,23 +597,6 @@ class PluggableFunction : public wxObject
     
     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
-    wxArrayString m_SUVarsToCheck;
-    wxArrayString m_SUVarsToCreate;
-    wxArrayString m_SUVarsToUpdate;
-    wxArrayString m_SUInicondsToCheck;
-    wxArrayString m_SUPropsToCheck;
-
-    wxArrayString m_RSVarsToCheck;
-    wxArrayString m_RSVarsToCreate;
-    wxArrayString m_RSVarsToUpdate;
-    wxArrayString m_RSInicondsToCheck;
-    wxArrayString m_RSPropsToCheck;
-
-    wxArrayString m_GUVarsToCheck;
-    wxArrayString m_GUVarsToCreate;
-    wxArrayString m_GUVarsToUpdate;
-    wxArrayString m_GUInicondsToCheck;
-    wxArrayString m_GUPropsToCheck;
 
 
     /**
@@ -612,17 +726,6 @@ class PluggableFunction : public wxObject
     bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; };
     
     bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
-
-    /**
-      Adds needed function data.
-    */
-    bool prepareFunctionData();
-
-    /**
-      Checks function needed data.
-    
-    */
-    bool checkFunctionConsistency();
 
     /**
       initializes of global parameters of the function, given as a hash map
