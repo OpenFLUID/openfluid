@@ -349,7 +349,7 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("SU"))
         {
-          CREATE_VAR(HData.UpdatedVars[i].Name,
+          UPDATE_VAR(HData.UpdatedVars[i].Name,
                      mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
                      getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
           
@@ -357,7 +357,7 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("RS"))
         {
-          CREATE_VAR(HData.UpdatedVars[i].Name,
+          UPDATE_VAR(HData.UpdatedVars[i].Name,
                      mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
                      getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
           
@@ -365,7 +365,7 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("GU"))
         {
-          CREATE_VAR(HData.UpdatedVars[i].Name,
+          UPDATE_VAR(HData.UpdatedVars[i].Name,
                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
                      getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
           
