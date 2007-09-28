@@ -615,6 +615,13 @@ class PluggableFunction : public wxObject
       \param[out] Value the value of the requested property     
     */
     bool MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue *Value);
+
+    /**
+      Returns true if a distributed property exists, false otherwise
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] PropName the name of the queried variable               
+    */            
+    bool MHYDAS_IsDistributedPropertyExists(mhydasdk::core::HydroObject *HO, wxString PropName);    
     
     /**
       Gets an initial condition for a spatial object
@@ -624,6 +631,13 @@ class PluggableFunction : public wxObject
     */
     bool MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, mhydasdk::core::PropertyValue *Value);
   
+    /**
+      Returns true if a distributed initial condition exists, false otherwise
+      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] IniCondName the name of the queried variable               
+    */        
+    bool MHYDAS_IsDistributedIniConditionExists(mhydasdk::core::HydroObject *HO, wxString IniCondName);    
+    
     /**
       Gets the rain intensity for a surface unit at a time step
       \param[in] SU the surface unit

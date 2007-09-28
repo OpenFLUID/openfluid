@@ -88,6 +88,28 @@ bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObjec
 // =====================================================================
 // =====================================================================
 
+bool PluggableFunction::MHYDAS_IsDistributedPropertyExists(mhydasdk::core::HydroObject *HO, wxString PropName)
+{
+
+  if (HO != NULL)
+   {
+     mhydasdk::core::PropertiesMap::iterator it; 
+     it = HO->getProperties()->find(PropName);
+
+     if (it != HO->getProperties()->end())
+     {
+       return true;            
+     }
+     else return false;              
+   }
+   else return false;  
+  
+}
+
+
+// =====================================================================
+// =====================================================================
+
     
 bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, mhydasdk::core::PropertyValue *Value)
 {
@@ -107,6 +129,32 @@ bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroO
   else return false;  
   
 }
+
+// =====================================================================
+// =====================================================================
+
+
+
+bool PluggableFunction::MHYDAS_IsDistributedIniConditionExists(mhydasdk::core::HydroObject *HO, wxString IniCondName)
+{
+
+
+  if (HO != NULL)
+   {
+     mhydasdk::core::PropertiesMap::iterator it; 
+     it = HO->getIniConditions()->find(IniCondName);
+
+     if (it != HO->getIniConditions()->end())
+     {
+       return true;            
+     }
+     else return false;              
+   }
+   else return false;  
+
+  
+}
+
 
 // =====================================================================
 // =====================================================================
