@@ -117,6 +117,7 @@ mhydasdk::base::PluggableFunction *PluginManager::getFunctionFromPlugin(wxString
     {
       Plug->setDataRepository(CoreData);
       Plug->setExecutionMessages(mp_ExecMsgs);
+      Plug->setFunctionEnvironment(mp_RunEnv->createFunctionEnvironment());
       return Plug;      
     }
   }

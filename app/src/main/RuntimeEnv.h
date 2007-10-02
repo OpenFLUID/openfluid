@@ -122,7 +122,7 @@ class RuntimeEnvironment
         
     void setTraceMode(bool Trace) { m_EnableTrace = Trace; };
         
-    
+    mhydasdk::base::FunctionEnvironment createFunctionEnvironment();
     
     
     

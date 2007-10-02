@@ -90,8 +90,7 @@ bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 
 bool MorelSeytouxFunc::prepareData()
 {
-
-
+  
   return true;
 }
 
