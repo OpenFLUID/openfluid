@@ -559,6 +559,16 @@ struct Signature
 // =====================================================================
 // =====================================================================
 
+struct FunctionEnvironment
+{
+  wxString InputDir;
+  wxString OutputDir;
+};
+
+
+// =====================================================================
+// =====================================================================
+
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
 
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
@@ -597,7 +607,7 @@ class PluggableFunction : public wxObject
     
     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
-
+    mhydasdk::base::FunctionEnvironment m_FunctionEnv;
 
     /**
       Gets the distributed variable value for a spatial object at a time step
@@ -727,7 +737,9 @@ class PluggableFunction : public wxObject
     
     void MHYDAS_RaiseError(wxString Sender, wxString WarningMsg);
 
+    void MHYDAS_GetEnvironmentInputDir(wxString *Directory);
     
+    void MHYDAS_GetEnvironmentOutputDir(wxString *Directory);
     
     
   public:
@@ -751,6 +763,8 @@ class PluggableFunction : public wxObject
     bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; };
     
     bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
+    
+    bool setFunctionEnvironment(mhydasdk::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
 
     /**
       initializes of global parameters of the function, given as a hash map

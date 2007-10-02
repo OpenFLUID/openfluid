@@ -395,6 +395,24 @@ void PluggableFunction::MHYDAS_RaiseError(wxString Sender, wxString WarningMsg)
   mp_ExecMsgs->setError(Sender,WarningMsg);
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::MHYDAS_GetEnvironmentInputDir(wxString *Directory)
+{
+  *Directory = m_FunctionEnv.InputDir;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::MHYDAS_GetEnvironmentOutputDir(wxString *Directory)
+{
+  *Directory = m_FunctionEnv.OutputDir;
+}
+
 
 
 } } // namespace mhydasdk::base
