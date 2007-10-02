@@ -362,7 +362,38 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
 
+void PluggableFunction::MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg)
+{
+  mp_ExecMsgs->addWarning(Sender,TimeStep,WarningMsg);
+}
+    
 
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::MHYDAS_RaiseWarning(wxString Sender, wxString WarningMsg)
+{
+  mp_ExecMsgs->addWarning(Sender,WarningMsg);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::MHYDAS_RaiseError(wxString Sender, int TimeStep, wxString WarningMsg)
+{
+  mp_ExecMsgs->setError(Sender,TimeStep,WarningMsg);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::MHYDAS_RaiseError(wxString Sender, wxString WarningMsg)
+{
+  mp_ExecMsgs->setError(Sender,WarningMsg);
+}
 
 
 

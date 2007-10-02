@@ -719,6 +719,17 @@ class PluggableFunction : public wxObject
     bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
 
+    void MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
+    
+    void MHYDAS_RaiseWarning(wxString Sender, wxString WarningMsg);
+
+    void MHYDAS_RaiseError(wxString Sender, int TimeStep, wxString WarningMsg);
+    
+    void MHYDAS_RaiseError(wxString Sender, wxString WarningMsg);
+
+    
+    
+    
   public:
     /**
       Constructor
