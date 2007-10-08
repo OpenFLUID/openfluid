@@ -645,7 +645,7 @@ int MHYDASApp::OnRun()
   }
 
 
-  return true;
+  return 0;
 
 }
 
