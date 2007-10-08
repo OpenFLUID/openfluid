@@ -1170,19 +1170,7 @@ bool IOManager::prepareOutputDir()
   {
     if (mp_RunEnv->isClearOutputDir())
     {
-      EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
-/*      wxString FileToRemove;
-      wxDir Dir(mp_RunEnv->getOutputDir());
-      
-      bool Continue = Dir.GetFirst(&FileToRemove, wxT("*"), wxDIR_FILES);
-      while (Continue)
-      {
-        wxRemoveFile(mp_RunEnv->getOutputDir() + wxFILE_SEP_PATH + FileToRemove);
-        Continue = Dir.GetNext(&FileToRemove);
-      }
-*/      
-      
-      
+      EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));            
     }
   }
 
@@ -1351,14 +1339,16 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
       FileContents << wxT("\n");
 
       // file contents
-
+      
       for (j=0;j<DTStrings.Count();j++)
       {
         FileContents << DTStrings[j];
         for (k=0;k<Def->Columns.Count();k++)
         {
+          Values = NULL;
           if (HOSet[i]->getSimulatedVars()->find(Def->Columns[k]) != HOSet[i]->getSimulatedVars()->end())
             Values = HOSet[i]->getSimulatedVars()->find(Def->Columns[k])->second;
+          
           if (Values != NULL)
           { 
             // check if value exists for this time step
