@@ -103,6 +103,7 @@ class IOManager
 
     AutoOutfiles m_AutoOutFiles;
 
+    bool m_ClearedOuputDir;
 
     RainEventFilesMap buildRainEventFileMap();
 

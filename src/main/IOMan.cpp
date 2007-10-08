@@ -39,6 +39,8 @@ IOManager::IOManager(mhydasdk::base::ExecutionMessages* ExecMsgs,RuntimeEnvironm
 {
   mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
+  
+  m_ClearedOuputDir = false;  
 }
 
 // =====================================================================
@@ -1168,9 +1170,10 @@ bool IOManager::prepareOutputDir()
   }
   else
   {
-    if (mp_RunEnv->isClearOutputDir())
+    if (mp_RunEnv->isClearOutputDir() && !m_ClearedOuputDir)
     {
-      EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));            
+      EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8));
+      m_ClearedOuputDir = true;
     }
   }
 
