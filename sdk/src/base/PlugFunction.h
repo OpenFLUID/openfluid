@@ -767,9 +767,7 @@ class PluggableFunction : public wxObject
     bool setFunctionEnvironment(mhydasdk::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
 
     /**
-      initializes of global parameters of the function, given as a hash map
-      (Params["name"] gives the value of the param named "n/===================================================================
-      ame")
+      Iinitializes function parameters of the function, given as a hash map
     */
     virtual bool initParams(mhydasdk::core::ParamsMap Params)=0;
 

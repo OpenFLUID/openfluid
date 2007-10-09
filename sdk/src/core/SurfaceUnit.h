@@ -49,8 +49,6 @@ class SurfaceUnit : public HydroObject
 
   private:
 
-
-  protected:
     double m_UsrArea;
     double m_UsrSlope;
     SUDownstreamCode m_DownstreamCode;
