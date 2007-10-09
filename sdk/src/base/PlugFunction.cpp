@@ -176,6 +176,23 @@ bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUn
 // =====================================================================
 // =====================================================================
 
+bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::ReachSegment *RS, int Step, mhydasdk::core::RainValue *Value)
+{
+
+  if (RS->getRainSource() != NULL)
+  {
+  
+    mhydasdk::core::RainValue *TmpValues = RS->getRainSource()->getProcessedData();
+    *Value = TmpValues[Step]; 
+    return true;
+  }
+  else return false;  
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool PluggableFunction::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
 {

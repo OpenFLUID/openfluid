@@ -657,6 +657,16 @@ class PluggableFunction : public wxObject
     bool MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, mhydasdk::core::RainValue *Value); 
 
     /**
+      Gets the rain intensity for a reach segment at a time step
+      \param[in] RS the reach segment
+      \param[in] Step the time step for rain intensity
+      \param[out] Value the value of the requested rain intensity     
+    */
+    bool MHYDAS_GetDistributedRainValue(mhydasdk::core::ReachSegment *RS, int Step, mhydasdk::core::RainValue *Value); 
+    
+    
+    
+    /**
       Returns true if a distributed variable exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable               
@@ -815,3 +825,4 @@ typedef PluggableFunction*(*GetPluggableFunctionProc)();
 
 
 #endif
+
