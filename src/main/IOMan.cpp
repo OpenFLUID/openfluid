@@ -543,7 +543,6 @@ bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
     {
       if (!loadRainFile(RainData,RIFit->first,RIFit->second))
       {
-//        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error loading ") + RIFit->second + wxT(" rain file.");
         return false;
       }
     }
@@ -562,50 +561,98 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
 {
   if (Data == NULL) return false;
 
-  long SUID;
+  long SUID, RSID;
   long RainID;
 
   int i;
+  mhydasdk::core::ChronDataSource *CurrentRainGauge;  
 
-  ColumnTextParser DistriFileParser(wxT("%"));
+  ColumnTextParser SUDistriFileParser(wxT("%"));
+  ColumnTextParser RSDistriFileParser(wxT("%"));
 
-  if (!DistriFileParser.loadFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RAINDISTRIFILE)) ||
-      DistriFileParser.getColsCount() != MHYDAS_RAINDISTRIFILE_COLNBR ||
-      DistriFileParser.getColsCount() < 1)
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(" file parsing error"));
-    return false;
-  }
-  else
-  {
-    mhydasdk::core::SurfaceUnit *CurrentSU;
-    mhydasdk::core::ChronDataSource *CurrentRainGauge;
-
-    for (i=0;i<DistriFileParser.getLinesCount();i++)
+  if (wxFileExists(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SURAINDISTRIFILE)))
+  {      
+    if (!SUDistriFileParser.loadFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SURAINDISTRIFILE)) ||
+        SUDistriFileParser.getColsCount() != MHYDAS_RAINDISTRIFILE_COLNBR ||
+        SUDistriFileParser.getColsCount() < 1)
     {
-
-      if (DistriFileParser.getLongValue(i,0,&SUID) && DistriFileParser.getLongValue(i,1,&RainID))
+      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_SURAINDISTRIFILE + wxT(" file parsing error"));
+      return false;
+    }
+    else
+    {
+      mhydasdk::core::SurfaceUnit *CurrentSU;
+  
+      for (i=0;i<SUDistriFileParser.getLinesCount();i++)
       {
-        CurrentSU = Data->getSpatialData()->getSUByID(SUID);
-        CurrentRainGauge = Data->getRainEvent()->getRainSourceByID(RainID);
-        if ((CurrentSU != NULL) && (CurrentRainGauge != NULL))
+  
+        if (SUDistriFileParser.getLongValue(i,0,&SUID) && SUDistriFileParser.getLongValue(i,1,&RainID))
         {
-          CurrentSU->setRainSource(CurrentRainGauge);
+          CurrentSU = Data->getSpatialData()->getSUByID(SUID);
+          CurrentRainGauge = Data->getRainEvent()->getRainSourceByID(RainID);
+          if ((CurrentSU != NULL) && (CurrentRainGauge != NULL))
+          {
+            CurrentSU->setRainSource(CurrentRainGauge);
+          }
+          else
+          {
+            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Matching error between SU and rain source  (") + MHYDAS_DEFAULT_SURAINDISTRIFILE + wxT(")"));
+            return false;
+          }
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Matching error between SU and rain source"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain distribution contents error (") + MHYDAS_DEFAULT_SURAINDISTRIFILE + wxT(")"));
           return false;
         }
       }
-      else
-      {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain distribution contents error (") + MHYDAS_DEFAULT_RAINDISTRIFILE + wxT(")"));
-        return false;
-      }
+  
     }
-
   }
+
+  
+  if (wxFileExists(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSRAINDISTRIFILE)))
+  {      
+    if (!RSDistriFileParser.loadFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSRAINDISTRIFILE)) ||
+        RSDistriFileParser.getColsCount() != MHYDAS_RAINDISTRIFILE_COLNBR ||
+        RSDistriFileParser.getColsCount() < 1)
+    {
+      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RSRAINDISTRIFILE + wxT(" file parsing error"));
+      return false;
+    }
+    else
+    {
+      mhydasdk::core::ReachSegment *CurrentRS;
+      
+  
+      for (i=0;i<RSDistriFileParser.getLinesCount();i++)
+      {
+  
+        if (RSDistriFileParser.getLongValue(i,0,&RSID) && RSDistriFileParser.getLongValue(i,1,&RainID))
+        {
+          CurrentRS = Data->getSpatialData()->getRSByID(RSID);
+          CurrentRainGauge = Data->getRainEvent()->getRainSourceByID(RainID);
+          if ((CurrentRS != NULL) && (CurrentRainGauge != NULL))
+          {
+            CurrentRS->setRainSource(CurrentRainGauge);
+          }
+          else
+          {
+            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Matching error between RS and rain source (") + MHYDAS_DEFAULT_RSRAINDISTRIFILE + wxT(")"));
+            return false;
+          }
+        }
+        else
+        {
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain distribution contents error (") + MHYDAS_DEFAULT_RSRAINDISTRIFILE + wxT(")"));
+          return false;
+        }
+      }
+  
+    }
+  }
+
+  
   return true;
 }
 
