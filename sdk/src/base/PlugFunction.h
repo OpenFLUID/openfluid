@@ -51,6 +51,40 @@
 
 // =====================================================================
 // =====================================================================
+/*
+    ID = wxT("");
+    Name = wxT("");
+    Description = wxT("");
+    Domain = wxT("");
+    Process = wxT("");
+    Method = wxT("");
+    Author = wxT("");
+    AuthorEmail = wxT("");
+    Version = wxT("");
+    SDKVersion = wxT("");
+*/    
+#define DECLARE_SIGNATURE_ID(id) mp_Signature->ID = id;
+
+#define DECLARE_SIGNATURE_NAME(name) mp_Signature->Name = name;
+
+#define DECLARE_SIGNATURE_DESCRIPTION(desc) mp_Signature->Description = desc;
+
+#define DECLARE_SIGNATURE_DOMAIN(domain) mp_Signature->Domain = domain;
+
+#define DECLARE_SIGNATURE_PROCESS(process) mp_Signature->Process = process;
+
+#define DECLARE_SIGNATURE_METHOD(method) mp_Signature->Method = method;
+
+#define DECLARE_SIGNATURE_AUTHORNAME(name) mp_Signature->Author = name;
+
+#define DECLARE_SIGNATURE_AUTHOREMAIL(email) mp_Signature->AuthorEmail = email;
+
+#define DECLARE_SIGNATURE_VERSION(version) mp_Signature->Version = version;
+
+#define DECLARE_SIGNATURE_SDKVERSION mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -546,7 +580,7 @@ struct Signature
     Author = wxT("");
     AuthorEmail = wxT("");
     Version = wxT("");
-    SDKVersion = wxT("");    
+    SDKVersion = wxT("");   
   }
   
   void setSDKVersion(int Major, int Minor, int Revision)
