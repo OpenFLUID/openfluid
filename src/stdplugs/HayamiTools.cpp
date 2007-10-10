@@ -14,9 +14,10 @@
 // =====================================================================
 // =====================================================================
 
-
+/*
 t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep)
 {
+  
   float Theta, Zed;
   float Value1, Value2, Value3; 
   float T;
@@ -27,6 +28,7 @@ t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length,
   t_HayamiKernel ZeKernel;
   
   ZeKernel.resize(MaxSteps,0);
+  
   
   Theta = Length / Celerity;
   Zed = (Celerity * Length) / ( 4 * Sigma);
@@ -58,19 +60,73 @@ t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length,
   for (i=0;i<ZeKernel.size();i++)
   {
     Volume = Volume + (ZeKernel[i] * TimeStep);
-//    std::cerr << ZeKernel[i] << std::endl;
   }  
-//  std::cerr << "Volume: " << Volume << std::endl;
+
 
   for (i=0;i<ZeKernel.size();i++) ZeKernel[i] = ZeKernel[i] * (1/Volume);
   
-
+  
   return ZeKernel;
 }  
-
+*/
 
 // =====================================================================
 // =====================================================================
+
+void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep, t_HayamiKernel *HKernel)
+{
+  float Theta, Zed;
+  float Value1, Value2, Value3; 
+  float T;
+  float Volume;
+
+  int i;
+
+
+  (*HKernel).clear();
+  
+  (*HKernel).resize(MaxSteps,0);
+
+
+  Theta = Length / Celerity;
+  Zed = (Celerity * Length) / ( 4 * Sigma);
+
+  if (Zed < 0.5) Zed = 0.5;
+  if (Zed > 50) Zed = 50;
+
+  Value1 = pow((Theta * Zed / 3.1411592654),0.5);
+  if (Theta > (0.1*TimeStep))
+  {
+    for (i=0;i<MaxSteps;i++)
+    {
+      T = ((i+1)-0.5) * TimeStep;
+      Value2 = exp(Zed * (2 - (T/Theta) - (Theta/T)));
+      Value3 = pow(T,1.5);
+      (*HKernel)[i] = Value1 * Value2 / Value3;
+    }    
+  }
+  else
+  {
+    (*HKernel)[0] = 0.5 / TimeStep;
+    (*HKernel)[1] = 0.5 / TimeStep;    
+  }
+
+
+  Volume = 0;
+
+
+  for (i=0;i<(*HKernel).size();i++)
+  {
+    Volume = Volume + ((*HKernel)[i] * TimeStep);
+  }  
+
+  for (i=0;i<(*HKernel).size();i++) (*HKernel)[i] = (*HKernel)[i] * (1/Volume);
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfMHYDASValue* QInput, int MaxSteps, int TimeStep)

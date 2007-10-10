@@ -134,8 +134,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
     MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
-    m_MeanManning = m_MeanManning + TmpValue;
-    //m_MeanManning = m_MeanManning + RS->getProperties()->find(wxT("nmanning"))->second;    
+    m_MeanManning = m_MeanManning + TmpValue;    
   END_LOOP
 
   m_MeanSlope = m_MeanSlope / mp_CoreData->getSpatialData()->getRSsCollection()->size();
@@ -143,11 +142,10 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
   BEGIN_RS_ORDERED_LOOP(RS)
     MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
-//    Cel = m_MeanCelerity * (m_MeanManning / RS->getProperties()->find(wxT("nmanning"))->second) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
-//    Sigma = m_MeanSigma * (RS->getProperties()->find(wxT("nmanning"))->second / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());      
     Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
     Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());      
-    m_RSKernel[RS->getID()] = ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep());        
+    m_RSKernel[RS->getID()] = t_HayamiKernel();
+    ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep(), &m_RSKernel[RS->getID()]);        
   END_LOOP
 
   
