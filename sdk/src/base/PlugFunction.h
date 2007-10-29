@@ -773,6 +773,35 @@ class PluggableFunction : public wxObject
     bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
 
+    
+    /**
+      Gets a function parameter vector of values from the parameters set, as a vector of strings
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Values the vector of values of the requested parameter
+    */     
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);    
+
+    
+    /**
+      Gets a function parameter vector of values from the parameters set, as a vector of doubles
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Values the vector of values of the requested parameter
+    */     
+    
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
+
+    
+    /**
+      Gets a function parameter vector of values from the parameters set, as a vector of long ints
+      \param[in] Params the parameters set for the simulation function
+      \param[in] ParamName the name of the requested parameter            
+      \param[out] Values the vector of values of the requested parameter
+    */         
+    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);    
+   
+    
     void MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
     
     void MHYDAS_RaiseWarning(wxString Sender, wxString WarningMsg);

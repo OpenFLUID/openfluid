@@ -110,7 +110,7 @@ win32-packages: all mhydasdk-conf-file
 	@echo "Building library package"
 	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32
 	@cd $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32/ && \
-         $(ZIP) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32.zip $(SDKLIBBASEFILE) $(SDKLIBCOREFILE) && \
+         $(ZIP) $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32.zip $(SDKLIBFILE) $(SDKLIBFILE) && \
          cd $(BASEMAINDIR) > /dev/null
 	@echo "Building development package"
 	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/

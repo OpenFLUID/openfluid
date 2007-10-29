@@ -9,6 +9,7 @@
 
 #include "PlugFunction.h"
 
+#include <wx/tokenzr.h>
 
 
 // =====================================================================
@@ -336,7 +337,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
 
-    
+
 bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value)
 {
   wxString TmpStr;
@@ -356,11 +357,10 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
-    
+
 bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value)
 {
   wxString TmpStr;
@@ -368,15 +368,109 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
   if (Params.find(ParamName) != Params.end())
   {
     TmpStr = Params[ParamName];
-
+    *Value = TmpStr;
     return true;
   }
   else return false;  
   
 }
 
+
 // =====================================================================
 // =====================================================================
+
+    
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values)
+{
+	wxString TmpStr;
+
+	if (Params.find(ParamName) != Params.end())
+	{
+		TmpStr = Params[ParamName];
+
+		wxStringTokenizer TmpTkz(TmpStr, wxT(";"),wxTOKEN_STRTOK);
+		wxString TmpToken;
+
+		(*Values).clear();
+
+		while (TmpTkz.HasMoreTokens() )
+		{
+			TmpToken = TmpTkz.GetNextToken();
+			(*Values).push_back(TmpToken);      
+		}        
+		return true;
+	}
+	else return false;  
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values)
+{
+  std::vector<wxString> StrVect;
+  double TmpValue;
+  
+  // gets the param as a vector of string  
+  bool IsOK = MHYDAS_GetFunctionParam(Params,ParamName,&StrVect);
+
+  // clears the double values vector
+  (*Values).clear();
+  
+  int i=0;
+  
+  while (IsOK && i < StrVect.size())
+  {    
+    IsOK = IsOK && StrVect[i].ToDouble(&TmpValue);    
+    
+    // if conversion is OK, add the value and continue
+    if (IsOK) Values->push_back(TmpValue);
+    else (*Values).clear();
+    
+    i++;
+  }   
+  
+  return IsOK;
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values)
+{
+  std::vector<wxString> StrVect;
+  long TmpValue;
+  
+  // gets the param as a vector of string  
+  bool IsOK = MHYDAS_GetFunctionParam(Params,ParamName,&StrVect);
+
+  // clears the double values vector
+  (*Values).clear();
+  
+  int i=0;
+  
+  while (IsOK && i < StrVect.size())
+  {    
+    IsOK = IsOK && StrVect[i].ToLong(&TmpValue);    
+    
+    // if conversion is OK, add the value and continue
+    if (IsOK) Values->push_back(TmpValue);
+    else (*Values).clear();
+    
+    i++;
+  }   
+  
+  return IsOK;
+  
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 void PluggableFunction::MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg)
