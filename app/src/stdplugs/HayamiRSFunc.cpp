@@ -217,6 +217,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     ID = RS->getID();
 
     QOutput = 0;
+
     
     // 1.a calcul du debit provenant des SU sources qui se jettent dans les noeuds sources
     
@@ -238,6 +239,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     // 1.b calcul du debit provenant des SU laterales
 
+    
     UpLatSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
     {      
@@ -255,7 +257,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 
     // 2.a calcul des debits provenant des RS amont
-  
+      
     
     UpRSsOutputsSum = 0;
 
@@ -268,12 +270,11 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;                
     }    
     
-
-//    std::cerr << UpSrcSUsOutputsSum << " / " << UpLatSUsOutputsSum << " / " << UpRSsOutputsSum << std::endl;
     
     // 2.b propagation via Hayami
        
-       
+    
+    
     QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum; 
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
     m_Input[ID]->push_back(QInput);
@@ -286,15 +287,18 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     QOutput = QOutput + UpLatSUsOutputsSum;
 
-        
+    
     MHYDAS_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
 
-    //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl; 
-    if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) 
-      MHYDAS_RaiseWarning(wxT("hayamirs"),SimStatus->getCurrentStep(),wxT("water height is over reach height + buffer on RS ") + wxString::Format(wxT("%d"),ID));
     
-    MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);
-
+    if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue))
+    {      
+      MHYDAS_RaiseWarning(wxT("hayamirs"),SimStatus->getCurrentStep(),wxT("cannot compute water height on RS ") + wxString::Format(wxT("%d"),ID));
+    }
+        
+    
+    MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);    
+    
   END_LOOP
 
   return true;
@@ -316,13 +320,19 @@ bool HayamiRSFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 
 bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASValue Discharge, mhydasdk::core::MHYDASValue *Height)
 {
+    
+
+  if (isnan(Discharge)) return false;
   
   if (Discharge < 0) return false;
+
+    
   
   if (Discharge == 0) *Height = 0;
   else
   {
    
+    
     int i;
     float Q1, Q2, H1, H2;
     
@@ -336,23 +346,31 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, 
     {
       i++;            
     }
-
+   
     
     if (i == HeightDischarge->size())
     {	
       *Height = (i-1) * m_CalibrationStep;
+
       return false;   
     }
     else
     {	
+      
       Q1 = HeightDischarge->at(i-1);
+     
+      
       Q2 = HeightDischarge->at(i);
-
+     
+      
       H1 = (i-1) * m_CalibrationStep;
       H2 = i * m_CalibrationStep;
       
+     
       // risque de division par 0 si Q1 == Q2 !! à revoir, comment fait-on?
       *Height = H1 + ((Discharge-Q1) * (H2-H1) / (Q2-Q1));
+
+      
     }    
       
   }
