@@ -12,6 +12,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include <math.h>
+
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(FunctionsList);
@@ -213,7 +215,8 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
-      if (VMiter->second->size() != ExpectedVarsCount) return false;  
+      if (VMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false; // checks if vars are not NaN
     }            
   }
   
@@ -227,7 +230,8 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
-      if (VMiter->second->size() != ExpectedVarsCount) return false;  
+      if (VMiter->second->size() != ExpectedVarsCount) return false;
+      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false;      
     }            
   }
   
@@ -241,7 +245,9 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
-      if (VMiter->second->size() != ExpectedVarsCount) return false;  
+      if (VMiter->second->size() != ExpectedVarsCount) return false; 
+      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false;
+      
     }            
   }
   
