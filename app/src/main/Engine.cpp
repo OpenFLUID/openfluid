@@ -67,7 +67,7 @@ WX_DEFINE_LIST(FunctionsList);
     }\
 
 // adds a new var, returns false status if already exits
-#define CREATE_VAR(name,objects,objshashtype,vars,varshashtype,status) \
+#define CREATE_VAR(name,objects,objshashtype,vars,varshashtype,datatype,status) \
     objshashtype::iterator _M_it;\
     _M_it = objects->begin(); \
     while (status && (_M_it != objects->end()))\
@@ -79,19 +79,19 @@ WX_DEFINE_LIST(FunctionsList);
     {\
       for(_M_it = objects->begin(); _M_it != objects->end(); ++_M_it ) \
       { \
-        _M_it->second->vars->insert(varshashtype::value_type(name,new std::vector<double>)); \
+        _M_it->second->vars->insert(varshashtype::value_type(name,new datatype)); \
       } \
     }
 
 // adds a new var if doesn't exist
-#define UPDATE_VAR(name,objects,objshashtype,vars,varshashtype,status) \
+#define UPDATE_VAR(name,objects,objshashtype,vars,varshashtype,datatype,status) \
     objshashtype::iterator _M_it;\
     _M_it = objects->begin(); \
     while (status && (_M_it != objects->end()))\
     {\
       if (_M_it->second->vars->find(name) == _M_it->second->vars->end()) \
       {\
-        _M_it->second->vars->insert(varshashtype::value_type(name,new std::vector<double>)); \
+        _M_it->second->vars->insert(varshashtype::value_type(name,new datatype)); \
       }\
       ++_M_it; \
     }\
@@ -129,6 +129,18 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::Executi
 Engine::~Engine()
 {
 
+}
+
+// =====================================================================
+// =====================================================================
+
+
+wxString Engine::getVectorNamedVariableName(wxString Name)
+{
+    
+  if (Name.Right(2) == wxT("[]")) return Name.Mid(1,Name.Length()-2); 
+  else return Name;
+  
 }
 
 // =====================================================================
@@ -205,19 +217,35 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   mhydasdk::core::SimulatedVarsMap *VarsMap;
   mhydasdk::core::SimulatedVarsMap::iterator VMiter;
   
+  mhydasdk::core::SimulatedVectorizedVarsMap *VectVarsMap;
+  mhydasdk::core::SimulatedVectorizedVarsMap::iterator VVMiter;
 
+  
+  
   // checking SUs
   for(SUiter = SUsMap->begin(); SUiter != SUsMap->end(); ++SUiter)
   {    
     VarsMap = SUiter->second->getSimulatedVars();
-    VMiter = VarsMap->begin();
-        
+    VMiter = VarsMap->begin();        
      
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
       if (VMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
       if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false; // checks if vars are not NaN
-    }            
+    }
+
+    
+    // vector vars
+    VectVarsMap = SUiter->second->getSimulatedVectorizedVars();
+    VVMiter = VectVarsMap->begin();        
+     
+    for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
+    {
+      if (VVMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+    }
+    
+    
+    
   }
   
 
@@ -226,13 +254,24 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   {    
     VarsMap = RSiter->second->getSimulatedVars();
     VMiter = VarsMap->begin();
-        
-     
+             
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
       if (VMiter->second->size() != ExpectedVarsCount) return false;
       if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false;      
-    }            
+    }
+    
+    
+    // vector vars
+    VectVarsMap = RSiter->second->getSimulatedVectorizedVars();
+    VVMiter = VectVarsMap->begin();        
+     
+    for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
+    {
+      if (VVMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+    }
+    
+    
   }
   
 
@@ -241,14 +280,25 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   {    
     VarsMap = GUiter->second->getSimulatedVars();
     VMiter = VarsMap->begin();
-        
-     
+             
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
       if (VMiter->second->size() != ExpectedVarsCount) return false; 
       if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false;
       
-    }            
+    }
+
+    
+    // vector vars    
+    VectVarsMap = GUiter->second->getSimulatedVectorizedVars();
+    VVMiter = VectVarsMap->begin();        
+     
+    for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
+    {
+      if (VVMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+    }
+    
+    
   }
   
   
@@ -285,26 +335,51 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredVars[i].Distribution == wxT("SU"))
         {
-          CHECK_VAR(HData.RequiredVars[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                     getSimulatedVars(),IsOK);
+          if (isVectorNamedVariable(HData.RequiredVars[i].Name))
+          {  
+            CHECK_VAR(getVectorNamedVariableName(HData.RequiredVars[i].Name),
+                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       getSimulatedVectorizedVars(),IsOK);
+          }  
+          else 
+          {
+            CHECK_VAR(HData.RequiredVars[i].Name,
+                      mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                      getSimulatedVars(),IsOK);            
+          }
           
         }
 
         if (HData.RequiredVars[i].Distribution == wxT("RS"))
         {
-          CHECK_VAR(HData.RequiredVars[i].Name,
-                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                     getSimulatedVars(),IsOK);
-          
+          if (isVectorNamedVariable(HData.RequiredVars[i].Name))
+          {  
+            CHECK_VAR(getVectorNamedVariableName(HData.RequiredVars[i].Name),
+                      mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                      getSimulatedVectorizedVars(),IsOK);
+          }
+          else
+          {            
+            CHECK_VAR(HData.RequiredVars[i].Name,
+                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       getSimulatedVars(),IsOK);
+          }
         }
 
         if (HData.RequiredVars[i].Distribution == wxT("GU"))
         {
-          CHECK_VAR(HData.RequiredVars[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                     getSimulatedVars(),IsOK);
-          
+          if (isVectorNamedVariable(HData.RequiredVars[i].Name))
+          {  
+            CHECK_VAR(getVectorNamedVariableName(HData.RequiredVars[i].Name),
+                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                      getSimulatedVectorizedVars(),IsOK);
+          }
+          else
+          {
+            CHECK_VAR(HData.RequiredVars[i].Name,
+                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                      getSimulatedVars(),IsOK);
+          }
         }
                 
         if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable required by ") + CurrentFunction->getSignature()->ID + wxT(" is not previously created"));
@@ -320,25 +395,57 @@ bool Engine::checkModelConsistency()
         
         if (HData.ProducedVars[i].Distribution == wxT("SU"))
         {
-          CREATE_VAR(HData.ProducedVars[i].Name,
+          if (isVectorNamedVariable(HData.ProducedVars[i].Name))
+          {          
+            CREATE_VAR(getVectorNamedVariableName(HData.ProducedVars[i].Name),
+                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
+                       mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);            
+          }
+          else
+          {
+            CREATE_VAR(HData.ProducedVars[i].Name,
                      mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
-          
+                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
+                     mhydasdk::core::VectorOfMHYDASValue,IsOK);
+            
+          }
         }
 
         if (HData.ProducedVars[i].Distribution == wxT("RS"))
         {
-          CREATE_VAR(HData.ProducedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
-          
+          if (isVectorNamedVariable(HData.ProducedVars[i].Name))
+          {
+            CREATE_VAR(getVectorNamedVariableName(HData.ProducedVars[i].Name),
+                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
+                       mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);            
+          }
+          else
+          {          
+            CREATE_VAR(HData.ProducedVars[i].Name,
+                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
+                       mhydasdk::core::VectorOfMHYDASValue,IsOK);
+          }
         }
 
         if (HData.ProducedVars[i].Distribution == wxT("GU"))
         {
-          CREATE_VAR(HData.ProducedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          if (isVectorNamedVariable(HData.ProducedVars[i].Name))
+          {
+            CREATE_VAR(getVectorNamedVariableName(HData.ProducedVars[i].Name),
+                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                       getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
+                       mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);                        
+          }
+          else
+          {          
+            CREATE_VAR(HData.ProducedVars[i].Name,
+                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
+                       mhydasdk::core::VectorOfMHYDASValue,IsOK);
+          }  
           
         }
        
@@ -355,26 +462,57 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("SU"))
         {
-          UPDATE_VAR(HData.UpdatedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
-          
+          if (isVectorNamedVariable(HData.UpdatedVars[i].Name))
+          {
+            UPDATE_VAR(getVectorNamedVariableName(HData.UpdatedVars[i].Name),
+                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
+                       mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);            
+          }
+          else
+          {          
+            UPDATE_VAR(HData.UpdatedVars[i].Name,
+                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
+                       mhydasdk::core::VectorOfMHYDASValue,IsOK);
+          }
         }
 
         if (HData.UpdatedVars[i].Distribution == wxT("RS"))
         {
-          UPDATE_VAR(HData.UpdatedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
+          if (isVectorNamedVariable(HData.UpdatedVars[i].Name))
+          {
+            UPDATE_VAR(getVectorNamedVariableName(HData.UpdatedVars[i].Name),
+                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
+                       mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);                        
+          }
+          else
+          {          
           
+            UPDATE_VAR(HData.UpdatedVars[i].Name,
+                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
+                       mhydasdk::core::VectorOfMHYDASValue,IsOK);
+          }
         }
 
         if (HData.UpdatedVars[i].Distribution == wxT("GU"))
         {
-          UPDATE_VAR(HData.UpdatedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,IsOK);
-          
+          if (isVectorNamedVariable(HData.UpdatedVars[i].Name))
+          {
+            UPDATE_VAR(getVectorNamedVariableName(HData.UpdatedVars[i].Name),
+                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                       getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
+                       mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);                        
+          }
+          else
+          {
+            UPDATE_VAR(HData.UpdatedVars[i].Name,
+                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
+                       mhydasdk::core::VectorOfMHYDASValue,IsOK);
+          }
         }        
         
         if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),wxT("Problem handling of ")+HData.ProducedVars[i].Name+wxT(" updated variable declared by ") + CurrentFunction->getSignature()->ID);
@@ -406,25 +544,52 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredPrevVars[i].Distribution == wxT("SU"))
         {
-          CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                     getSimulatedVars(),IsOK);
-          
+          if (isVectorNamedVariable(HData.RequiredPrevVars[i].Name))
+          {
+            CHECK_VAR(getVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
+                      mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                      getSimulatedVectorizedVars(),IsOK);
+            
+          }
+          else
+          {          
+            CHECK_VAR(HData.RequiredPrevVars[i].Name,
+                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       getSimulatedVars(),IsOK);
+          }          
         }
 
         if (HData.RequiredPrevVars[i].Distribution == wxT("RS"))
         {
-          CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                     getSimulatedVars(),IsOK);
+          if (isVectorNamedVariable(HData.RequiredPrevVars[i].Name))
+          {
+            CHECK_VAR(getVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
+                      mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                      getSimulatedVectorizedVars(),IsOK);            
+          }
+          else
+          {          
+            CHECK_VAR(HData.RequiredPrevVars[i].Name,
+                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       getSimulatedVars(),IsOK);
+          }  
           
         }
 
         if (HData.RequiredPrevVars[i].Distribution == wxT("GU"))
         {
-          CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                     getSimulatedVars(),IsOK);
+          if (isVectorNamedVariable(HData.RequiredPrevVars[i].Name))
+          {
+            CHECK_VAR(getVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
+                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                      getSimulatedVectorizedVars(),IsOK);            
+          }
+          else
+          {          
+            CHECK_VAR(HData.RequiredPrevVars[i].Name,
+                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                       getSimulatedVars(),IsOK);
+          }  
           
         }
                 
@@ -499,7 +664,7 @@ bool Engine::checkDataConsistency()
       }
       
 
-      // required props
+      // required initial conditions
       i = 0;
       while (IsOK && i<HData.RequiredIniconds.size())
       {
