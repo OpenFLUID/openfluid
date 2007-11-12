@@ -138,7 +138,7 @@ Engine::~Engine()
 wxString Engine::getVectorNamedVariableName(wxString Name)
 {
     
-  if (Name.Right(2) == wxT("[]")) return Name.Mid(1,Name.Length()-2); 
+  if (Name.Right(2) == wxT("[]")) return Name.Mid(0,Name.Length()-2); 
   else return Name;
   
 }
