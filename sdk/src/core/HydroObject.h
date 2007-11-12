@@ -24,6 +24,7 @@ typedef double PropertyValue;
 
 typedef std::vector<MHYDASValue> VectorOfMHYDASValue;
 
+typedef std::vector<VectorOfMHYDASValue> VectorOfVectorizedMHYDASValue;
 
 
 
@@ -34,6 +35,8 @@ typedef std::vector<MHYDASValue> VectorOfMHYDASValue;
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
 */
 WX_DECLARE_STRING_HASH_MAP(VectorOfMHYDASValue*, SimulatedVarsMap);
+
+WX_DECLARE_STRING_HASH_MAP(VectorOfVectorizedMHYDASValue*, SimulatedVectorizedVarsMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
@@ -60,6 +63,7 @@ class HydroObject
 		int m_ProcessOrder;
 
     SimulatedVarsMap* mp_SimVars;
+    SimulatedVectorizedVarsMap* mp_SimVectorizedVars;    
 
     PropertiesMap* mp_Properties;
 
@@ -94,6 +98,7 @@ class HydroObject
     void setProcessOrder(const int ProcessOrder);
 
     SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
+    SimulatedVectorizedVarsMap* getSimulatedVectorizedVars() { return mp_SimVectorizedVars; };    
 
     PropertiesMap* getProperties() { return mp_Properties; };
 

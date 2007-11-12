@@ -23,7 +23,6 @@ namespace mhydasdk { namespace base {
 
 
 PluggableFunction::PluggableFunction()
-
 {
 
   mp_CoreData = NULL;

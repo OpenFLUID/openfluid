@@ -492,38 +492,62 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
   mhydasdk::core::SimulatedVarsMap *VarsMap;
   SimulatedVarsMap::iterator Vit;
 
+  mhydasdk::core::SimulatedVectorizedVarsMap *VectVarsMap;
+  SimulatedVectorizedVarsMap::iterator VVit;  
+  
 
   // pour les SU
   for(SUit = mp_SUsCollection->begin(); SUit != mp_SUsCollection->end(); ++SUit)
   {
-    VarsMap = SUit->second->getSimulatedVars();
-    
+    VarsMap = SUit->second->getSimulatedVars();    
     for (Vit = VarsMap->begin();Vit != VarsMap->end();++Vit)
     {
       Vit->second->reserve(StepsNbr);
     }
+
+    VectVarsMap = SUit->second->getSimulatedVectorizedVars();    
+    for (VVit = VectVarsMap->begin();VVit != VectVarsMap->end();++VVit)
+    {
+      VVit->second->reserve(StepsNbr);
+    }
+    
+    
   }
   
   // pour les RS
   for(RSit = mp_RSsCollection->begin(); RSit != mp_RSsCollection->end(); ++RSit)
   {
-    VarsMap = RSit->second->getSimulatedVars();
-    
+    VarsMap = RSit->second->getSimulatedVars();    
     for (Vit = VarsMap->begin();Vit != VarsMap->end();++Vit)
     {
       Vit->second->reserve(StepsNbr);
     }
+    
+    VectVarsMap = RSit->second->getSimulatedVectorizedVars();    
+    for (VVit = VectVarsMap->begin();VVit != VectVarsMap->end();++VVit)
+    {
+      VVit->second->reserve(StepsNbr);
+    }
+    
+    
   }
 
   // pour les GU
   for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit)
   {
-    VarsMap = GUit->second->getSimulatedVars();
-    
+    VarsMap = GUit->second->getSimulatedVars();    
     for (Vit = VarsMap->begin();Vit != VarsMap->end();++Vit)
     {
       Vit->second->reserve(StepsNbr);
     }
+    
+    VectVarsMap = GUit->second->getSimulatedVectorizedVars();    
+    for (VVit = VectVarsMap->begin();VVit != VectVarsMap->end();++VVit)
+    {
+      VVit->second->reserve(StepsNbr);
+    }
+    
+    
   }
 
 

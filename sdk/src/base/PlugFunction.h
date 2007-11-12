@@ -51,18 +51,8 @@
 
 // =====================================================================
 // =====================================================================
-/*
-    ID = wxT("");
-    Name = wxT("");
-    Description = wxT("");
-    Domain = wxT("");
-    Process = wxT("");
-    Method = wxT("");
-    Author = wxT("");
-    AuthorEmail = wxT("");
-    Version = wxT("");
-    SDKVersion = wxT("");
-*/    
+
+
 #define DECLARE_SIGNATURE_ID(id) mp_Signature->ID = id;
 
 #define DECLARE_SIGNATURE_NAME(name) mp_Signature->Name = name;
