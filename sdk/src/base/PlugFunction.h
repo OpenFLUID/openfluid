@@ -642,6 +642,8 @@ class PluggableFunction : public wxObject
     */ 
     bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASValue *Value);
 
+    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::VectorizedMHYDASValue *Value);    
+    
     /**
       Gets a distributed property for a spatial object
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
@@ -697,6 +699,11 @@ class PluggableFunction : public wxObject
     */
     bool MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
 
+    bool MHYDAS_IsDistributedScalarVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);    
+    
+    bool MHYDAS_IsDistributedVectorVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
+    
+    
    /**
       Returns true if a distributed variable exists and if a value has been set for the given step false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
@@ -704,6 +711,10 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the variable                     
     */
     bool MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);
+    
+    bool MHYDAS_IsDistributedScalarVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);    
+
+    bool MHYDAS_IsDistributedVectorVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);
     
     /**
       Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
@@ -713,6 +724,8 @@ class PluggableFunction : public wxObject
     */ 
     bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASValue Value);
 
+    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::VectorizedMHYDASValue Value);    
+
     /**
       Sets a distributed variable value for a spatial object at a time step
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
@@ -721,6 +734,8 @@ class PluggableFunction : public wxObject
       \param[in] Value the added value of the variable      
     */     
     bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASValue Value);
+
+    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::VectorizedMHYDASValue Value);    
 
     /**
       Gets a function parameter from the parameters set, as a double

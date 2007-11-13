@@ -62,6 +62,34 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
   
 }
 
+
+// =====================================================================
+// =====================================================================
+
+bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::VectorizedMHYDASValue *Value)
+{
+  if (HO != NULL)  
+  {
+    mhydasdk::core::SimulatedVectorizedVarsMap::iterator it; 
+    it = HO->getSimulatedVectorizedVars()->find(VarName);
+    
+    if (it != HO->getSimulatedVectorizedVars()->end())
+    {    
+      mhydasdk::core::VectorOfVectorizedMHYDASValue* ValuesVect  = it->second;
+      
+      if (Step < ValuesVect->size())
+      {
+        *Value = ValuesVect->at(Step);
+        return true;
+      }
+      else return false;  
+    }
+    else return false;  
+  }
+  else return false;  
+  
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -194,16 +222,30 @@ bool PluggableFunction::MHYDAS_GetDistributedRainValue(mhydasdk::core::ReachSegm
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+bool PluggableFunction::MHYDAS_IsDistributedScalarVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
 {
   return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));  
+}
+
+bool PluggableFunction::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+{
+  return MHYDAS_IsDistributedScalarVarExists(HO,VarName);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+bool PluggableFunction::MHYDAS_IsDistributedVectorVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+{
+  return (HO != NULL && (HO->getSimulatedVectorizedVars()->find(VarName) != HO->getSimulatedVectorizedVars()->end()));  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_IsDistributedScalarVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
 {
   if (HO != NULL)
   {
@@ -221,6 +263,36 @@ bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::Hydro
   else return false;  
 }
 
+
+
+bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+{
+  return MHYDAS_IsDistributedScalarVarValueExists(HO,VarName,Step);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_IsDistributedVectorVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+{
+  if (HO != NULL)
+  {
+    mhydasdk::core::SimulatedVectorizedVarsMap::iterator it; 
+    it = HO->getSimulatedVectorizedVars()->find(VarName);
+
+    if (it != HO->getSimulatedVectorizedVars()->end())
+    {
+      mhydasdk::core::VectorOfVectorizedMHYDASValue* ValuesVect = it->second;
+      if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
+      else return false;            
+    }
+    else return false;              
+  }
+  else return false;  
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -234,6 +306,28 @@ bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroOb
     it = HO->getSimulatedVars()->find(VarName);
     
     if (it != HO->getSimulatedVars()->end())
+    {    
+      it->second->push_back(Value);
+      return true;
+    }
+    else return false;  
+  }
+  else return false;  
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::VectorizedMHYDASValue Value)
+{
+  if (HO != NULL)  
+  {
+    mhydasdk::core::SimulatedVectorizedVarsMap::iterator it; 
+    it = HO->getSimulatedVectorizedVars()->find(VarName);
+    
+    if (it != HO->getSimulatedVectorizedVars()->end())
     {    
       it->second->push_back(Value);
       return true;
@@ -274,6 +368,33 @@ bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObjec
 
 // =====================================================================
 // =====================================================================
+
+bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::VectorizedMHYDASValue Value)
+{
+  if (HO != NULL)  
+  {
+    mhydasdk::core::SimulatedVectorizedVarsMap::iterator it; 
+    it = HO->getSimulatedVectorizedVars()->find(VarName);
+    
+    if (it != HO->getSimulatedVectorizedVars()->end())
+    {    
+      mhydasdk::core::VectorOfVectorizedMHYDASValue* ValuesVect = it->second;
+      if (Step < ValuesVect->size())
+      {
+        ValuesVect->at(Step) = Value;
+        return true;
+      }
+      else return false;  
+    }
+    else return false;  
+  }
+  else return false;  
+  
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, double *Value)

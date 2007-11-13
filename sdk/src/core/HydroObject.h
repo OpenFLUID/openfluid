@@ -24,7 +24,9 @@ typedef double PropertyValue;
 
 typedef std::vector<MHYDASValue> VectorOfMHYDASValue;
 
-typedef std::vector<VectorOfMHYDASValue> VectorOfVectorizedMHYDASValue;
+typedef std::vector<MHYDASValue> VectorizedMHYDASValue;
+
+typedef std::vector<VectorizedMHYDASValue> VectorOfVectorizedMHYDASValue;
 
 
 
