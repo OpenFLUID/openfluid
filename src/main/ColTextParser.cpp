@@ -166,24 +166,16 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
 
   // parse and loads file contents
 
-/*  StrLine = ColumnFile->GetFirstLine();
 
-  while (!ColumnFile->Eof())
-  {
-    // adds the line if it is not a comment line nor empty
-    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
-
-    StrLine = ColumnFile->GetNextLine();
-  }
-*/
-
-
-
+  // processing of the file except the last line
   for (StrLine=ColumnFile->GetFirstLine();!ColumnFile->Eof();StrLine = ColumnFile->GetNextLine())
   {
-    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
+    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine)); 
   }
 
+  // processing of the last line
+  if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
+  
 
   ColumnFile->Close();
 
