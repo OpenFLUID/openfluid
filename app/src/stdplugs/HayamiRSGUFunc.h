@@ -47,13 +47,24 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     
     mhydasdk::base::IDVectOfMHYDASValueMap m_Input;
     
-    mhydasdk::base::IDMHYDASValueMap m_CurrentInputSum;
+    mhydasdk::base::IDFloatMap m_CurrentInputSum;
 
     mhydasdk::base::IDVectOfMHYDASValueMap m_HeightDischarge;
         
-    bool computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASValue Discharge, mhydasdk::core::MHYDASValue *Height);
+    bool computeWaterHeightFromDischarge(int ID, float Discharge, float *Height);
 
+    /**
+         for groundwater flow use
+        */ 
+     float m_CoeffInfiltration;
+     float m_CoeffDrainage;
+     float m_CoeffGW;
 
+    
+     mhydasdk::base::IDFloatMap m_ThetaIni;
+     mhydasdk::base::IDFloatMap m_ThetaSat;
+     
+     
   public:
 
     /**

@@ -32,7 +32,7 @@ HayamiSUFunction::HayamiSUFunction()
 
   mp_Signature->Author = wxT("Jean-Christophe FABRE");
   mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
-  mp_Signature->ID = wxT("hayamisu");
+  mp_Signature->ID = wxT("water.surf.transfer-su.hayami");
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on surface units");
   mp_Signature->Description = wxT("");
@@ -40,8 +40,9 @@ HayamiSUFunction::HayamiSUFunction()
   mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
   
 
-  DECLARE_SU_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the unit"),wxT("m3/s"));
-  DECLARE_SU_REQUIRED_VAR("runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));  
+  DECLARE_SU_PRODUCED_VAR("water.surf.Q.downstream-su",wxT("Output volume at the outlet of the unit"),wxT("m3/s"));  
+  DECLARE_SU_REQUIRED_VAR("water.surf.H.runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));  
+  
   DECLARE_SU_REQUIRED_PROPERTY("nmanning",wxT(""),wxT("?"));
  
   
@@ -179,7 +180,7 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
     ID = SU->getID();
   
-    MHYDAS_GetDistributedVarValue(SU,wxT("runoff"),CurrentStep,&TmpValue);
+    MHYDAS_GetDistributedVarValue(SU,wxT("water.surf.H.runoff"),CurrentStep,&TmpValue);
 
     QInput = TmpValue * SU->getUsrArea() / TimeStep;
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
@@ -191,9 +192,8 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       QOutput = DoHayamiPropagation(m_SUKernel[ID], CurrentStep, m_Input[ID], m_MaxSteps, TimeStep);
     }  
         
-//    std::cerr << "Hayamisu " << QOutput << std::endl;
 
-    MHYDAS_AppendDistributedVarValue(SU,wxT("qoutput"),QOutput);
+    MHYDAS_AppendDistributedVarValue(SU,wxT("water.surf.Q.downstream-su"),QOutput);
 
   END_LOOP
   
