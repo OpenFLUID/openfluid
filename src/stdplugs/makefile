@@ -22,21 +22,22 @@ endif
 
 
 MSEYTOUXOBJ=$(OBJDIR)/MSeytouxFunc.o
-MSEYTOUXNAME=mseytoux
+MSEYTOUXNAME=water.surf-uz.runoff-infiltration.mseytoux
 
 
 HAYAMISUOBJ=$(OBJDIR)/HayamiSUFunc.o \
             $(OBJDIR)/HayamiTools.o
-HAYAMISUNAME=hayamisu
+HAYAMISUNAME=water.surf.transfer-su.hayami
 
 
 HAYAMIRSOBJ=$(OBJDIR)/HayamiRSFunc.o \
             $(OBJDIR)/HayamiTools.o
-HAYAMIRSNAME=hayamirs
+HAYAMIRSNAME=water.surf.transfer-rs.hayami
 
 
-TRANSFERGUOBJ=$(OBJDIR)/TransferGUFunc.o
-TRANSFERGUNAME=transfergu
+HAYAMIRSGUOBJ=$(OBJDIR)/HayamiRSGUFunc.o \
+            $(OBJDIR)/HayamiTools.o
+HAYAMIRSGUNAME=water.surf.transfer-rs-exchange-gu.hayami-tank
 
 
 
@@ -44,11 +45,12 @@ $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
-all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ) $(HAYAMIRSOBJ) #$(TRANSFERGUOBJ)
+all: prechecks $(MSEYTOUXOBJ) $(HAYAMISUOBJ) $(HAYAMIRSOBJ) $(HAYAMIRSGUOBJ)  
 	$(CPP) $(MSEYTOUXOBJ) $(CCLIBS) -o $(BINDIR)/$(MSEYTOUXNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 	$(CPP) $(HAYAMISUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMISUNAME).$(PLUGINEXT) -shared $(LDFLAGS)
 	$(CPP) $(HAYAMIRSOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMIRSNAME).$(PLUGINEXT) -shared $(LDFLAGS)
-#	$(CPP) $(TRANSFERGUOBJ) $(CCLIBS) -o $(BINDIR)/$(TRANSFERGUNAME).$(PLUGINEXT) -shared $(LDFLAGS)	
+	$(CPP) $(HAYAMIRSGUOBJ) $(CCLIBS) -o $(BINDIR)/$(HAYAMIRSGUNAME).$(PLUGINEXT) -shared $(LDFLAGS)	
+	
 
 
 prechecks:

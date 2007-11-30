@@ -29,7 +29,7 @@ HayamiRSFunction::HayamiRSFunction()
 
   mp_Signature->Author = wxT("Jean-Christophe FABRE");
   mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
-  mp_Signature->ID = wxT("hayamirs");
+  mp_Signature->ID = wxT("water.surf.transfer-rs.hayami");
   mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
@@ -37,11 +37,12 @@ HayamiRSFunction::HayamiRSFunction()
   mp_Signature->Domain = wxT("hydrology");
   
 
-  DECLARE_RS_PRODUCED_VAR("qoutput",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
-  DECLARE_RS_PRODUCED_VAR("waterheight",wxT("Water height at the outlet of the ditch"),wxT("m"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",wxT("Water height at the outlet of the ditch"),wxT("m"));
+  
   DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT(""),wxT("?"));
 
-  DECLARE_SU_USED_VAR("qoutput",wxT(""),wxT("?"));
+  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT(""),wxT("?"));
   
   DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("?"));
   DECLARE_FUNCTION_PARAM("meancel",wxT(""),wxT("?"));  
@@ -231,7 +232,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       {                
         UpSU = *UpSUiter;
         
-        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
         UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue; // / UpSU->getUsrArea();
       }  
     }
@@ -249,7 +250,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
       {                
         UpSU = *UpSUiter;
         
-        MHYDAS_GetDistributedVarValue(UpSU,wxT("qoutput"),CurrentStep,&TmpValue);        
+        MHYDAS_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);        
         UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue;// / UpSU->getUsrArea();                
         
       }  
@@ -266,7 +267,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     for(UpRSiter=UpRSsList->begin(); UpRSiter != UpRSsList->end(); UpRSiter++) \
     {                
       UpRS = *UpRSiter;
-      MHYDAS_GetDistributedVarValue(UpRS,wxT("qoutput"),CurrentStep,&TmpValue);
+      MHYDAS_GetDistributedVarValue(UpRS,wxT("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
       UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;                
     }    
     
@@ -288,16 +289,16 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     QOutput = QOutput + UpLatSUsOutputsSum;
 
     
-    MHYDAS_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
+    MHYDAS_AppendDistributedVarValue(RS,wxT("water.surf.Q.downstream-rs"),QOutput);
 
     
     if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue))
     {      
-      MHYDAS_RaiseWarning(wxT("hayamirs"),SimStatus->getCurrentStep(),wxT("cannot compute water height on RS ") + wxString::Format(wxT("%d"),ID));
+      MHYDAS_RaiseWarning(wxT("water.surf.transfer-rs.hayami"),SimStatus->getCurrentStep(),wxT("cannot compute water height on RS ") + wxString::Format(wxT("%d"),ID));
     }
         
     
-    MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),TmpValue);    
+    MHYDAS_AppendDistributedVarValue(RS,wxT("water.surf.H.level-rs"),TmpValue);    
     
   END_LOOP
 
