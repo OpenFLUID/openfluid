@@ -201,10 +201,10 @@
   \param[in] description description of the variable  
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
-#define DECLARE_RS_USED_VAR(name) \
+#define DECLARE_RS_USED_VAR(name,description,unit) \
   mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
 
-#define DECLARE_RS_USED_PREVVAR(name) \
+#define DECLARE_RS_USED_PREVVAR(name,description,unit) \
   mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
 
 
@@ -273,10 +273,10 @@
   \param[in] description description of the variable  
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
-#define DECLARE_GU_USED_VAR(name) \
+#define DECLARE_GU_USED_VAR(name,description,unit) \
   mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
-#define DECLARE_GU_USED_PREVVAR(name) \
+#define DECLARE_GU_USED_PREVVAR(name,description,unit) \
   mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
   
