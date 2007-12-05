@@ -71,6 +71,8 @@
 
 #define DECLARE_SIGNATURE_VERSION(version) mp_Signature->Version = version;
 
+#define DECLARE_SIGNATURE_STATUS(status) mp_Signature->Status = status;
+
 #define DECLARE_SIGNATURE_SDKVERSION mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
 
 // =====================================================================
@@ -412,7 +414,12 @@ enum ModuleTypeList
   MOD_HYDROLOGY
 };
 
-
+enum FunctionStatusList
+{
+  EXPERIMENTAL,
+  BETA,
+  STABLE
+};
 
 
 // =====================================================================
@@ -542,7 +549,12 @@ struct Signature
   wxString Version;
 
   /**
-    SDK version number
+    Development status
+  */
+  FunctionStatusList Status;
+  
+  /**
+    SDK version number used to build the function
   */
   wxString SDKVersion;
     
@@ -570,6 +582,7 @@ struct Signature
     Author = wxT("");
     AuthorEmail = wxT("");
     Version = wxT("");
+    Status = EXPERIMENTAL;
     SDKVersion = wxT("");   
   }
   
