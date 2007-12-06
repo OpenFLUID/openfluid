@@ -65,7 +65,7 @@ class Engine
      */
      bool processConfig();
 
-     bool checkSimulationVarsProduction(int ExpectedVarsCount);
+     bool checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Message);
 
      bool checkModelConsistency();
 
