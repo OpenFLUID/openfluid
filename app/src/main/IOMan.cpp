@@ -1231,9 +1231,9 @@ bool IOManager::prepareOutputDir()
 // =====================================================================
 
 bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
-                                   wxString ColSeparator, wxString CommentChar,
-                                   AutoOutfileDef* Def, wxArrayString DTStrings,
-                                   ExtraSimInfos ExSI)
+                                          wxString ColSeparator, wxString CommentChar,
+                                          AutoOutfileDef* Def, wxArrayString DTStrings,
+                                          ExtraSimInfos ExSI)
 {
 
   wxString FileContents;
@@ -1374,8 +1374,8 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
       if (Def->FileSuffix.Length() > 0) Filename = Filename + wxT("_") + Def->FileSuffix;
 
-
       Filename = Filename + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+      //Filename = Filename + wxT(".scalars.") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
 
       FileContents.Clear();
 

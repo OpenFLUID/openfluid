@@ -199,7 +199,7 @@ bool Engine::processConfig()
 // =====================================================================
 // =====================================================================
 
-bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
+bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Message)
 {
   
   mhydasdk::core::SurfaceUnit *SU;
@@ -220,7 +220,7 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   mhydasdk::core::SimulatedVectorizedVarsMap *VectVarsMap;
   mhydasdk::core::SimulatedVectorizedVarsMap::iterator VVMiter;
 
-  
+  (*Message) = wxT("");
   
   // checking SUs
   for(SUiter = SUsMap->begin(); SUiter != SUsMap->end(); ++SUiter)
@@ -230,8 +230,20 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
-      if (VMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
-      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false; // checks if vars are not NaN
+      if (VMiter->second->size() != ExpectedVarsCount)
+      {
+        (*Message) = wxT("variable ") + VMiter->first + wxT(" on SU ") + wxString::Format(wxT("%d"),SUiter->first) + 
+                     wxT(" has ") + wxString::Format(wxT("%d"),VMiter->second->size()) + wxT(" values but ") +
+                     wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
+        return false;  // checks correct vars count
+      }
+      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1)))
+      {
+        (*Message) = wxT("variable ") + VMiter->first + wxT(" on SU ") + wxString::Format(wxT("%d"),SUiter->first) + 
+                     wxT(" is NaN");
+        return false; // checks if vars are not NaN
+      }
+        
     }
 
     
@@ -241,7 +253,13 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
     {
-      if (VVMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+      if (VVMiter->second->size() != ExpectedVarsCount)
+      { 
+        (*Message) = wxT("variable ") + VVMiter->first + wxT("[] on SU ") + wxString::Format(wxT("%d"),SUiter->first) + 
+                     wxT(" has ") + wxString::Format(wxT("%d"),VVMiter->second->size()) + wxT(" values but ") +
+                     wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
+        return false;  // checks correct vars count
+      }
     }
     
     
@@ -257,8 +275,19 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
              
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
-      if (VMiter->second->size() != ExpectedVarsCount) return false;
-      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false;      
+      if (VMiter->second->size() != ExpectedVarsCount)
+      { 
+        (*Message) = wxT("variable ") + VMiter->first + wxT(" on RS ") + wxString::Format(wxT("%d"),RSiter->first) + 
+                     wxT(" has ") + wxString::Format(wxT("%d"),VMiter->second->size()) + wxT(" values but ") +
+                     wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
+        return false;      
+      }
+      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) 
+      {  
+        (*Message) = wxT("variable ") + VMiter->first + wxT(" on RS ") + wxString::Format(wxT("%d"),RSiter->first) + 
+                     wxT(" is NaN");
+        return false;
+      }
     }
     
     
@@ -268,7 +297,13 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
     {
-      if (VVMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+      if (VVMiter->second->size() != ExpectedVarsCount)
+      {
+        (*Message) = wxT("variable ") + VVMiter->first + wxT("[] on RS ") + wxString::Format(wxT("%d"),RSiter->first) + 
+                             wxT(" has ") + wxString::Format(wxT("%d"),VVMiter->second->size()) + wxT(" values but ") +
+                             wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
+        return false;  // checks correct vars count
+      }
     }
     
     
@@ -283,8 +318,19 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
              
     for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
     {
-      if (VMiter->second->size() != ExpectedVarsCount) return false; 
-      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1))) return false;
+      if (VMiter->second->size() != ExpectedVarsCount)
+      {
+        (*Message) = wxT("variable ") + VMiter->first + wxT(" on GU ") + wxString::Format(wxT("%d"),GUiter->first) + 
+                             wxT(" has ") + wxString::Format(wxT("%d"),VMiter->second->size()) + wxT(" values but ") +
+                             wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
+        return false; 
+      }
+      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1)))
+      {
+        (*Message) = wxT("variable ") + VMiter->first + wxT(" on GU ") + wxString::Format(wxT("%d"),GUiter->first) + 
+                     wxT(" is NaN");
+        return false;
+      }
       
     }
 
@@ -295,7 +341,13 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
      
     for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
     {
-      if (VVMiter->second->size() != ExpectedVarsCount) return false;  // checks correct vars count
+      if (VVMiter->second->size() != ExpectedVarsCount)
+      {
+        (*Message) = wxT("variable ") + VVMiter->first + wxT("[] on GU ") + wxString::Format(wxT("%d"),GUiter->first) + 
+                             wxT(" has ") + wxString::Format(wxT("%d"),VVMiter->second->size()) + wxT(" values but ") +
+                             wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
+        return false;  // checks correct vars count
+      }  
     }
     
     
@@ -962,11 +1014,11 @@ bool Engine::run()
   bool IsOK = true;
   DECLARE_FUNCTION_PARSER;
                                                       
-                                                      
+  wxString ProdMessage;                                                      
   // Check for simulation vars production before init
-  if (!checkSimulationVarsProduction(0))
+  if (!checkSimulationVarsProduction(0, &ProdMessage))
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production before run initialization"));
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production before run initialization : ")+ProdMessage);
     return false;      
   }
   
@@ -979,9 +1031,9 @@ bool Engine::run()
   }
 
   // check simulation vars production after init
-  if (!checkSimulationVarsProduction(0))
+  if (!checkSimulationVarsProduction(0,&ProdMessage))
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run initialization"));
+    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production before run initialization : ")+ProdMessage);
     return false;      
   }
   
@@ -1018,9 +1070,9 @@ bool Engine::run()
     PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);    
 
     // check simulation vars production at each time step
-    if (!mp_ExecMsgs->isErrorFlag() && !checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1))
+    if (!mp_ExecMsgs->isErrorFlag() && !checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
     {
-      mp_ExecMsgs->setError(wxT("Engine"),mp_SimStatus->getCurrentStep(),wxT("Wrong simulation variable production"));      
+      mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run step ")+ wxString::Format(wxT("%d"),mp_SimStatus->getCurrentStep())+ wxT(" : ")+ProdMessage);
     }
 
     
@@ -1060,7 +1112,7 @@ bool Engine::run()
 
   
   // check simulation vars production after finalize
-  if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1))
+  if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
   {
     mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run finalization"));
     return false;      
