@@ -339,6 +339,12 @@
   list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
   list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
 
+/**
+  Macro for declaration of a loop processing a list of SUs
+*/
+#define DECLARE_SU_LIST_LOOP \
+  list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUListiter; \
+
 
 /**
   Macro for the begining of a loop processing SUs, following their process order
@@ -350,11 +356,29 @@
     suobj = *_M_SUiter; \
 
 /**
+  Macro for the begining of a loop processing a list of SUs
+  \param[out] sulist pointer to a list of mhydasdk::core::SurfaceUnit 
+  \param[out] suobj pointer to a mhydasdk::core::SurfaceUnit object, pointing to the current processed SU 
+*/
+#define BEGIN_SU_LIST_LOOP(sulist,suobj) \
+  for(_M_SUListiter=sulist->begin(); _M_SUListiter != sulist->end(); _M_SUListiter++) \
+  { \
+    suobj = *_M_SUListiter; \
+
+
+/**
   Macro for declaration of a loop processing RSs, following their process order
 */
 #define DECLARE_RS_ORDERED_LOOP \
   list<mhydasdk::core::ReachSegment*>::iterator _M_RSiter; \
   list<mhydasdk::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
+
+/**
+  Macro for declaration of a loop processing a list of RSs
+*/
+#define DECLARE_RS_LIST_LOOP \
+  list<mhydasdk::core::ReachSegment*>::iterator _M_RSListiter; \
+
 
 /**
   Macro for the begining of a loop processing RSs, following their process order
@@ -365,6 +389,17 @@
   { \
     rsobj = *_M_RSiter; \
 
+/**
+  Macro for the begining of a loop processing a list of RSs
+  \param[out] rslist pointer to a list of mhydasdk::core::ReachSegment
+  \param[out] rsobj pointer to a mhydasdk::core::ReachSegment object, pointing to the current processed RS 
+*/
+#define BEGIN_RS_LIST_LOOP(rslist,rsobj) \
+  for(_M_RSListiter=rslist->begin(); _M_RSListiter != rslist->end(); _M_RSListiter++) \
+  { \
+    rsobj = *_M_RSSListiter; \
+
+
 
 /**
   Macro for declaration of a loop processing GUs, following their process order
@@ -374,6 +409,13 @@
   list<mhydasdk::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
 
 /**
+  Macro for declaration of a loop processing a list of GUs
+*/
+#define DECLARE_GU_LIST_LOOP \
+  list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUListiter; \
+
+
+/**
   Macro for the begining of a loop processing GUs, following their process order
   \param[out] guobj pointer to a mhydasdk::core::GroundwaterUnit object, pointing to the current processed GU 
 */
@@ -381,6 +423,17 @@
   for(_M_GUiter=_M_GUsList->begin(); _M_GUiter != _M_GUsList->end(); _M_GUiter++) \
   { \
     guobj = *_M_GUiter; \
+
+/**
+  Macro for the begining of a loop processing a list of GUs
+  \param[out] gulist pointer to a list of mhydasdk::core::GroundwaterUnit 
+  \param[out] guobj pointer to a mhydasdk::core::GroundwaterUnit object, pointing to the current processed GU 
+*/
+#define BEGIN_GU_LIST_LOOP(gulist,guobj) \
+  for(_M_GUListiter=gulist->begin(); _M_GUListiter != gulist->end(); _M_GUListiter++) \
+  { \
+    guobj = *_M_GUListiter; \
+
 
 /**
   Macro for the ending of a loop
