@@ -919,20 +919,23 @@ bool Engine::prepareDataAndCheckConsistency()
   bool IsOK = true;
   DECLARE_FUNCTION_PARSER;
 
+  
   // builds topology by linking objects
   if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
   {
     mp_ExecMsgs->setError(wxT("Engine"),wxT("Topology rebuild error"));
     return false;
-  }
+  }  
 
+  
   // builds process orders lists
   if (!mp_CoreData->getSpatialData()->buildProcessOrders())
   {
     mp_ExecMsgs->setError(wxT("Engine"),wxT("Process orders build error"));
     return false;
-  }
+  }  
 
+  
   // process RainEVent
   if (!mp_CoreData->getRainEvent()->ProcessRainSources(m_Config.DeltaT))
   {
@@ -953,12 +956,15 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
 
+
   IsOK = checkModelConsistency();
   if (!IsOK)
   {       
     return false;    
   }
 
+  
+  
   IsOK = checkDataConsistency();
   if (!IsOK)
   {       
@@ -966,20 +972,20 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   
   PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
-/*
-  PARSE_FUNCTION_LIST_FOUR(prepareData(),prepareFunctionData(),
-                           checkConsistency(),checkFunctionConsistency(),IsOK);
-*/
  
   
   
   IsOK = checkRainConsistency();
+
+  
   
   if (!IsOK)
   {       
     return false;    
   }
   
+
+ 
   
   IsOK = checkExtraFilesConsistency();
   if (!IsOK)
@@ -989,18 +995,19 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
 
-
   // inits the simulation infos and status
 
   mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
                                                       mp_CoreData->getRainEvent()->getEventEndingTime(),
                                                       m_Config.DeltaT);
 
-
+  
+  
   // preparation des donnees de simulation
   mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
-
-
+ 
+  
+  
   return true;
 }
 
