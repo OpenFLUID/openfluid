@@ -79,9 +79,11 @@ bool MHYDASApp::checkConsistency()
 
   std::cout << "* Preparing data and checking consistency... ";
   std::cout.flush();
-
+ 
+  
   ExecStatus = mp_Engine->prepareDataAndCheckConsistency();
-
+  
+  
   printlnExecStatus();
 
   return ExecStatus;

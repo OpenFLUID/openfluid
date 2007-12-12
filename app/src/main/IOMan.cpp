@@ -460,6 +460,8 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
   */
 
+  //std::cerr << "Rainfile : " << mp_RunEnv->getInputFullPath(Filename).mb_str(wxConvUTF8) << std::endl;
+  
   ColumnTextParser FileParser(wxT("%"));
   bool IsOK;
 

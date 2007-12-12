@@ -33,7 +33,7 @@ HayamiRSFunction::HayamiRSFunction()
   mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
   mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments; surface water/ groundwater exchange + GUs exchanges");
   mp_Signature->Description = wxT("WARNING: UNIQUE BUFFER WITHOUT TAKING INTO ACCOUNT THE HEIGHT OF THE REACHES");
-  mp_Signature->Domain = wxT("Hydrology");
+  mp_Signature->Domain = wxT("hydrology");
 
   // Produced variables
   DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));  
