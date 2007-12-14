@@ -16,7 +16,7 @@ SDKCONFIGTOOL=mhydasdk-config
 PLUGSUBDIR=plugs
 
 APPNAME=mhydas
-EXEFILEROOT=mhydas
+EXEFILEROOT=mhydas-engine
 
 MAJORVER=0
 #MINORVER=`date +%-y.%m`
@@ -62,5 +62,5 @@ PACKSECTION="science"
 PACKPRIORITY="optional"
 PACKDESC="MHYDAS modelling platform engine\\\n This engine uses pluggable simulation functions to simulate hydrological processes."
 
-PACKROOT=$APPNAME
+PACKROOT=$EXEFILEROOT
 
