@@ -10,7 +10,6 @@ all: main stdplugs
 
 
 
-
 main:
 	@echo ""
 	@echo "==== Compiling main program ===="
@@ -52,8 +51,14 @@ deb-packages: all
 	@cp resources/doc/* $(BASEPACKDIR)/debian/$(PACKNAME)/usr/share/doc/$(PACKROOT)
 	@cp resources/debian/* $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/copyright
-	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
+	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)\n .\n This package is built using mhydas-engine revision $(SVNREV)." > $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(PACKNAME))
+
 
 win32-packages: all
 	@echo ""	
