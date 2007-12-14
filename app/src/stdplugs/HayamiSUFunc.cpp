@@ -30,25 +30,28 @@ HayamiSUFunction::HayamiSUFunction()
                 : PluggableFunction()
 {
 
-  mp_Signature->Author = wxT("Jean-Christophe FABRE");
-  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
-  mp_Signature->ID = wxT("water.surf.transfer-su.hayami");
-  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
-  mp_Signature->Name = wxT("Hayami hydrological transfer on surface units");
-  mp_Signature->Description = wxT("");
-  mp_Signature->Domain = wxT("hydrology");
-  mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
+  DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-su.hayami"));  
+  DECLARE_SIGNATURE_NAME(wxT("water transfer on surface units using hayami propagation method"));
+  DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
+  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
   
+  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);  
+  
+  DECLARE_SIGNATURE_SDKVERSION;
 
-  DECLARE_SU_PRODUCED_VAR("water.surf.Q.downstream-su",wxT("Output volume at the outlet of the unit"),wxT("m3/s"));  
-  DECLARE_SU_REQUIRED_VAR("water.surf.H.runoff",wxT("Runoff on the surface of the unit"),wxT("m/s"));  
+  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C."));
+  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr"));  
+
+  DECLARE_SU_PRODUCED_VAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the SUs"),wxT("m3/s"));  
+
+  DECLARE_SU_REQUIRED_VAR("water.surf.H.runoff",wxT("runoff on the surface of the unit"),wxT("m/s"));  
   
-  DECLARE_SU_REQUIRED_PROPERTY("nmanning",wxT(""),wxT("?"));
+  DECLARE_SU_REQUIRED_PROPERTY("nmanning",wxT("Manning roughness coefficient"),wxT("s/m^(-1/3)"));
  
   
   DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT(""));
-  DECLARE_FUNCTION_PARAM("meancel",wxT(""),wxT("?"));  
-  DECLARE_FUNCTION_PARAM("meansigma",wxT(""),wxT("?"));  
+  DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity"),wxT("m/s"));  
+  DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on SUs"),wxT("m2/s"));  
 
 
   // default values
@@ -72,17 +75,14 @@ HayamiSUFunction::~HayamiSUFunction()
 
 
 // =====================================================================
-// =====================================================================
+// =============================================)========================
 
 
 bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-  //if (Params.find(wxT("maxsteps")) != Params.end()) m_MaxSteps = (int)(Params[wxT("maxsteps")]);
-  MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
-  //if (Params.find(wxT("meancel")) != Params.end()) m_MeanCelerity = Params[wxT("meancel")];      
+  MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);        
   MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
-  // if (Params.find(wxT("meansigma")) != Params.end()) m_MeanSigma = Params[wxT("meansigma")];
   MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
   
   return true;
