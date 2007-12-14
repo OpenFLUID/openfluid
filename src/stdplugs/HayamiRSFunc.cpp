@@ -27,28 +27,32 @@ HayamiRSFunction::HayamiRSFunction()
                 : PluggableFunction()
 {
 
-  mp_Signature->Author = wxT("Jean-Christophe FABRE");
-  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
-  mp_Signature->ID = wxT("water.surf.transfer-rs.hayami");
-  mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
-  mp_Signature->FunctionType = mhydasdk::base::SIMULATION;
-  mp_Signature->Name = wxT("Hayami hydrological transfer on reach segments");
-  mp_Signature->Description = wxT("");
-  mp_Signature->Domain = wxT("hydrology");
+  
+  DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-rs.hayami"));
+  DECLARE_SIGNATURE_NAME(wxT("water transfer on reach segments using hayami propagation method"));
+  DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
+  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
+
+  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);
+  
+  DECLARE_SIGNATURE_SDKVERSION;
+  
+  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C., Louchart X."));
+  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr, louchart@supagro.inra.fr"));  
   
 
-  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
-  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",wxT("Water height at the outlet of the ditch"),wxT("m"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("output volume at the outlet of the ditch"),wxT("m3/s"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",wxT("water height at the outlet of the ditch"),wxT("m"));
   
-  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT(""),wxT("?"));
+  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("Manning roughness coefficient"),wxT("s/m^(-1/3)"));
 
-  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT(""),wxT("?"));
+  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the SUs"),wxT("m3/s"));
   
-  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT("?"));
-  DECLARE_FUNCTION_PARAM("meancel",wxT(""),wxT("?"));  
-  DECLARE_FUNCTION_PARAM("meansigma",wxT(""),wxT("?"));  
-  DECLARE_FUNCTION_PARAM("calibstep",wxT(""),wxT("?"));    
-  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("?"));  
+  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT(""));
+  DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity on RSs"),wxT("m/s"));  
+  DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on RSs"),wxT("m2/s"));  
+  DECLARE_FUNCTION_PARAM("calibstep",wxT("calibration step for height-discharge relation"),wxT("m"));    
+  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("m"));  
 
   // default values
   m_MaxSteps = 100;    

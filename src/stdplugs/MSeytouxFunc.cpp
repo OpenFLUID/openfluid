@@ -33,28 +33,30 @@ mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
 MorelSeytouxFunc::MorelSeytouxFunc()
                 : PluggableFunction()
 {
-
-  mp_Signature->Author = wxT("Jean-Christophe Fabre");
-  mp_Signature->AuthorEmail = wxT("fabrejc@ensam.inra.fr");
-  mp_Signature->ID = wxT("water.surf-uz.runoff-infiltration.mseytoux");
-  mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
-  mp_Signature->Name = wxT("Morel-Seytoux production on surface units");
-  mp_Signature->Description = wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method;");
-
-  mp_Signature->Domain = wxT("hydrology");
-
-  DECLARE_SU_PRODUCED_VAR("water.surf.H.runoff",wxT("Runoff on the surface of the unit"),wxT("m"));
-  DECLARE_SU_PRODUCED_VAR("water.surf.H.infiltration",wxT("Infiltration through the surface of the unit"),wxT("m"));
-
-  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT("Output volume at the outlet of the upstream unit"),wxT("m3/s"));  
   
-  DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("Hydraulic conductivity when saturated"),wxT("m/s"));
-  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT(""),wxT("?"));   
-  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT(""),wxT("?"));  
-  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT(""),wxT(""));    
-  DECLARE_SU_REQUIRED_PROPERTY("hc",wxT(""),wxT("?"));
+  DECLARE_SIGNATURE_ID(wxT("water.surf-uz.runoff-infiltration.mseytoux"));  
+  DECLARE_SIGNATURE_NAME(wxT("Morel-Seytoux production on surface units"));
+  DECLARE_SIGNATURE_DESCRIPTION(wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method."));  
+  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
+  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);
+  
+  DECLARE_SIGNATURE_SDKVERSION;
+  
+  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C."));
+  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr"));  
 
-  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT(""),wxT("?"));
+  DECLARE_SU_PRODUCED_VAR("water.surf.H.runoff",wxT("runoff on the surface of the unit"),wxT("m"));
+  DECLARE_SU_PRODUCED_VAR("water.surf.H.infiltration",wxT("infiltration through the surface of the unit"),wxT("m"));
+
+  DECLARE_SU_USED_PREVVAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the upstream SUs"),wxT("m3/s"));  
+  
+  DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("hydraulic conductivity when saturated"),wxT("m/s"));
+  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT(""),wxT("m3/m3"));   
+  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT(""),wxT("m3/m3"));  
+  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT(""),wxT(""));    
+  DECLARE_SU_REQUIRED_PROPERTY("hc",wxT(""),wxT("m"));
+
+  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT(""),wxT("m3/m3"));
   
   DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT(""));
  
@@ -79,7 +81,7 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 
 bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
 {
-//  if (Params.find(wxT("resstep")) != Params.end()) m_ResStep = Params[wxT("resstep")];
+
   MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);
     
   return true;
@@ -125,17 +127,13 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   BEGIN_SU_ORDERED_LOOP(SU)
 
 
-    //ThetaR = SU->getProperties()->find(wxT("thetares"))->second;
-    MHYDAS_GetDistributedProperty(SU,wxT("thetares"),&ThetaR);
-    //ThetaS = SU->getProperties()->find(wxT("thetasat"))->second;    
-    MHYDAS_GetDistributedProperty(SU,wxT("thetasat"),&ThetaS);
-    //ThetaI = SU->getIniConditions()->find(wxT("thetaisurf"))->second;  
-    MHYDAS_GetDistributedIniCondition(SU,wxT("thetaisurf"),&ThetaI);
-    //Hc = SU->getProperties()->find(wxT("hc"))->second;    
+    // getting distributed properties
+    MHYDAS_GetDistributedProperty(SU,wxT("thetares"),&ThetaR);    
+    MHYDAS_GetDistributedProperty(SU,wxT("thetasat"),&ThetaS);  
+    MHYDAS_GetDistributedIniCondition(SU,wxT("thetaisurf"),&ThetaI);    
     MHYDAS_GetDistributedProperty(SU,wxT("hc"),&Hc);
     
-            
-    
+                
     // Computing ThetaStar
     ThetaStar = (ThetaI - ThetaR) / (ThetaS - ThetaR);
     m_SUThetaStar[SU->getID()] = ThetaStar; 
@@ -162,9 +160,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
     m_DeltaW2[SU->getID()] = 0;
     m_DeltaT1[SU->getID()] = 0;
     m_DeltaT2[SU->getID()] = 0;
-    
-    
-
+        
   END_LOOP
 
 
@@ -219,9 +215,9 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   BEGIN_SU_ORDERED_LOOP(SU)
 
     ID = SU->getID();
-    //Ks = SU->getProperties()->find(wxT("ks"))->second;
+
+    // Getting distributed properties
     MHYDAS_GetDistributedProperty(SU,wxT("ks"),&Ks);
-    //Beta = SU->getProperties()->find(wxT("betaMS"))->second;
     MHYDAS_GetDistributedProperty(SU,wxT("betaMS"),&Beta);    
     Area = SU->getUsrArea();
     
@@ -229,8 +225,9 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     CurrentInfiltration = 0;
 
     OutputsSum = 0;      
-    // ajout des apports des unites amont (sorties des unites amont a t-1)
-    // adding upstream units output (step n-1) to rain       
+
+    
+    // adding upstream SU output (step n-1) to rain       
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
       UpSUsList = SU->getUpstreamSUs();
@@ -244,13 +241,13 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
     } 
     m_CurrentUpstreamInput[ID] = OutputsSum;
     
-    // transformation de la pluie de m/s en m/pas de temps       
+    // convert rain from m/s to m/time step       
     MHYDAS_GetDistributedRainValue(SU,CurrentStep,&CurrentRain);
     CurrentRain = CurrentRain * TimeStep;
 
     CurrentRain = CurrentRain + m_CurrentUpstreamInput[ID];
 
-    // calcul de l'intensite de pluie
+    // computing rain intensity
     RainIntensity = (CurrentRain / TimeStep);   
 
     
@@ -308,17 +305,19 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
         Criteria = true;
         DeltaWi = 0;
         
-        // calcul de termes pour optimisation des calculs
+        // computing values for optimization
         CurrentPondingSum = m_PondingSum[ID];
         CurrentPondingTime = m_PondingTime[ID];
+
         float PSBEKs = CurrentPondingSum * (Beta * EfficientPondingRainIntensity -1) / Ks;
         float BetaOnKs = Beta / Ks;
-        float EPRIPS = EfficientPondingRainIntensity * CurrentPondingSum;
-       
+        float EPRIPS = EfficientPondingRainIntensity * CurrentPondingSum;       
         
         m_DeltaT1[ID] = (m_DeltaW1[ID] * BetaOnKs) - (PSBEKs) * log((EPRIPS + m_DeltaW1[ID]) / (EPRIPS));
         m_DeltaW2[ID] = m_DeltaW1[ID] + m_ResStep;
+
         
+        // determine ponding time 
         while (Criteria)
         {        
           m_DeltaT2[ID] = (m_DeltaW2[ID] * BetaOnKs) - (PSBEKs) * log((EPRIPS + m_DeltaW2[ID]) / (EPRIPS));                                      
@@ -333,7 +332,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
         }      
         
         
-        // calcul de la capacite d'infiltration        
+        // computing infiltration capacity        
         InfiltrationCapacity = (DeltaWi - m_PreviousDeltaW[ID]) / TimeStep;
         m_PreviousDeltaW[ID] = DeltaWi;                
           
@@ -349,7 +348,6 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 
     MHYDAS_AppendDistributedVarValue(SU, wxT("water.surf.H.runoff"), CurrentRunoff);
-
     MHYDAS_AppendDistributedVarValue(SU, wxT("water.surf.H.infiltration"), CurrentInfiltration);
 
     
@@ -367,7 +365,6 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 
 bool MorelSeytouxFunc::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 {
-  // std::cout << "Momo finalizeRun()" << std::endl;
   return true;
 }
 
