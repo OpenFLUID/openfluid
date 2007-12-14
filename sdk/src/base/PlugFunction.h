@@ -895,7 +895,7 @@ class PluggableFunction : public wxObject
     /**
       Virtual destructor
     */
-    virtual ~PluggableFunction() { };
+    virtual ~PluggableFunction();
 
     /**
       Returns the pluggable function signature

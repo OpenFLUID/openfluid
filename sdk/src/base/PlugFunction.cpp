@@ -29,7 +29,18 @@ PluggableFunction::PluggableFunction()
 
   mp_ExecMsgs = NULL;
 
-  mp_Signature = new mhydasdk::base::Signature();
+  mp_Signature = new mhydasdk::base::Signature(); 
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+PluggableFunction::~PluggableFunction()
+{ 
+  
+  delete mp_Signature;
   
 }
 

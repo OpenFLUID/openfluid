@@ -82,6 +82,11 @@ deb-packages: all mhydasdk-conf-file docs
 	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(LIBPACKNAME))
 	@echo "Building development package"
 	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
@@ -99,6 +104,11 @@ deb-packages: all mhydasdk-conf-file docs
 	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(DEVPACKNAME))
 
 
