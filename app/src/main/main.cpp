@@ -483,7 +483,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 // =====================================================================
 // =====================================================================
 
-bool MHYDASApp::stopAppReturn()
+int MHYDASApp::stopAppReturn()
 {  
   std::cout << std::endl;
   printlnExecMessagesStats();
@@ -505,7 +505,7 @@ bool MHYDASApp::stopAppReturn()
   std::cout << std::endl;
   std::cout.flush();
 
-  return false;
+  return 127;
 }
 
 // =====================================================================
@@ -654,10 +654,11 @@ int MHYDASApp::OnRun()
     std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
     std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
     std::cout << std::endl;
+    
+    return 0;
+    
   }
-
-
-  return 0;
+  else return 127;   
 
 }
 

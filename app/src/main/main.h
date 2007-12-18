@@ -86,7 +86,7 @@ class MHYDASApp : public wxAppConsole
 
     void printPluginsReport(bool IsXMLFormat);
 
-    bool stopAppReturn();
+    int stopAppReturn();
 
   public:
 
