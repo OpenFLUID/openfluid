@@ -393,7 +393,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 
  
   ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList(); 
-
+  wxString StatusStr;
   
   
   // insertion du début du fichier XML
@@ -410,6 +410,12 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
   {
     for (int i=0;i<Signatures.GetCount();i++)
     {
+      
+      // Status string
+      StatusStr = wxT("experimental");
+      if (Signatures[i]->Status == mhydasdk::base::BETA) StatusStr = wxT("beta");
+      if (Signatures[i]->Status == mhydasdk::base::STABLE) StatusStr = wxT("stable");      
+      
       if (IsXMLFormat)
       {
         std::cout << "    <funcdef fileID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
@@ -418,7 +424,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
         std::cout << "      <process>" << Signatures[i]->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
         std::cout << "      <method>" << Signatures[i]->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
         std::cout << "      <description>" << Signatures[i]->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
-        std::cout << "      <version number=\"" << Signatures[i]->Version.mb_str(wxConvUTF8) << "\" sdk=\""<< Signatures[i]->SDKVersion.mb_str(wxConvUTF8) << "\"/>" << std::endl;
+        std::cout << "      <version number=\"" << Signatures[i]->Version.mb_str(wxConvUTF8) << "\" sdk=\""<< Signatures[i]->SDKVersion.mb_str(wxConvUTF8) << "\" devstatus=\"" << StatusStr.mb_str(wxConvUTF8) << "\"/>" << std::endl;
         std::cout << "      <author name=\"" << Signatures[i]->Author.mb_str(wxConvUTF8) 
                   << "\" email=\"" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << "\"/>" << std::endl;
 
@@ -436,7 +442,8 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
         std::cout << "   - Method: " << ReplaceEmptyString(Signatures[i]->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                
         std::cout << "   - Description: " << ReplaceEmptyString(Signatures[i]->Description,wxT("(none)")).mb_str(wxConvUTF8) << std::endl;                
         std::cout << "   - Version: " << ReplaceEmptyString(Signatures[i]->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                        
-        std::cout << "   - SDK version used at build time: " << Signatures[i]->SDKVersion.mb_str(wxConvUTF8) <<  std::endl;        
+        std::cout << "   - SDK version used at build time: " << Signatures[i]->SDKVersion.mb_str(wxConvUTF8) <<  std::endl;
+        std::cout << "   - Development status: " << StatusStr.mb_str(wxConvUTF8) <<  std::endl;        
         std::cout << "   - Author(s): " << ReplaceEmptyString(Signatures[i]->Author,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                                
         std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(Signatures[i]->AuthorEmail,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
         std::cout << "   - Handled data" << std::endl;                  
