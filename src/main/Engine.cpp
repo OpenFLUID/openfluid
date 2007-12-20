@@ -891,12 +891,18 @@ bool Engine::buildModel()
 
 bool Engine::loadData()
 {
-  return (mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData()) &&
+  bool IsOK;
+    
+  IsOK =  (mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData()) &&
           mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData()) &&
           mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData()) &&
           mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent()) &&
-          mp_IOMan->loadRainDistribution(mp_CoreData) &&
-          mp_IOMan->loadOutputConfig());
+          mp_IOMan->loadRainDistribution(mp_CoreData));
+  
+  if (mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
+  
+  return IsOK;
+  
 }
 
 
