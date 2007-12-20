@@ -247,5 +247,34 @@ wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr)
   return SourceStr;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool IsVectorNamedVariable(wxString Name) 
+{ 
+  return Name.Right(2) == wxT("[]"); 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+wxString GetVectorNamedVariableName(wxString Name)
+{
+    
+  if (Name.Right(2) == wxT("[]")) return Name.Mid(0,Name.Length()-2); 
+  else return Name;
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
+
 
 

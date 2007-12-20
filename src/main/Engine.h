@@ -74,11 +74,7 @@ class Engine
      bool checkRainConsistency();
      
      bool checkExtraFilesConsistency();
-     
-     bool isVectorNamedVariable(wxString Name) { return Name.Right(2) == wxT("[]"); };
-     
-     wxString getVectorNamedVariableName(wxString Name);
-     
+          
      
   public:
     /**
