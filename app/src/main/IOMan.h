@@ -69,11 +69,11 @@ struct AutoOutfileDef
   wxString ObjectsKind;
   vector<mhydasdk::core::HOID> SelectedObjectIDs;
   wxString FileSuffix;
-  wxArrayString Columns;
-
+  bool SaveAllVars;
+  wxArrayString Scalars;
+  wxArrayString Vectors;
 };
 
-//WX_DEFINE_ARRAY(AutoOutfileDef*, ArrayOfAutoOutfileDefs);
 
 struct AutoOutfiles
 {

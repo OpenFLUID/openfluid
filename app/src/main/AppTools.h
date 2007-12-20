@@ -43,4 +43,9 @@ bool EmptyDirectoryRecursively(const char* DirPath);
 
 wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr);
 
+bool IsVectorNamedVariable(wxString Name);
+
+wxString GetVectorNamedVariableName(wxString Name);
+
+
 #endif

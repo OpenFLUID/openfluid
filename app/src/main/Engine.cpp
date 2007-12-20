@@ -135,16 +135,6 @@ Engine::~Engine()
 // =====================================================================
 
 
-wxString Engine::getVectorNamedVariableName(wxString Name)
-{
-    
-  if (Name.Right(2) == wxT("[]")) return Name.Mid(0,Name.Length()-2); 
-  else return Name;
-  
-}
-
-// =====================================================================
-// =====================================================================
 
 
 bool Engine::processConfig()
@@ -387,9 +377,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredVars[i].Distribution == wxT("SU"))
         {
-          if (isVectorNamedVariable(HData.RequiredVars[i].Name))
+          if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
           {  
-            CHECK_VAR(getVectorNamedVariableName(HData.RequiredVars[i].Name),
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
                        mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
                        getSimulatedVectorizedVars(),IsOK);
           }  
@@ -404,9 +394,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredVars[i].Distribution == wxT("RS"))
         {
-          if (isVectorNamedVariable(HData.RequiredVars[i].Name))
+          if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
           {  
-            CHECK_VAR(getVectorNamedVariableName(HData.RequiredVars[i].Name),
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
                       getSimulatedVectorizedVars(),IsOK);
           }
@@ -420,9 +410,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredVars[i].Distribution == wxT("GU"))
         {
-          if (isVectorNamedVariable(HData.RequiredVars[i].Name))
+          if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
           {  
-            CHECK_VAR(getVectorNamedVariableName(HData.RequiredVars[i].Name),
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
                       getSimulatedVectorizedVars(),IsOK);
           }
@@ -447,9 +437,9 @@ bool Engine::checkModelConsistency()
         
         if (HData.ProducedVars[i].Distribution == wxT("SU"))
         {
-          if (isVectorNamedVariable(HData.ProducedVars[i].Name))
+          if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
           {          
-            CREATE_VAR(getVectorNamedVariableName(HData.ProducedVars[i].Name),
+            CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
                        mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
                        getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
                        mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);            
@@ -466,9 +456,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.ProducedVars[i].Distribution == wxT("RS"))
         {
-          if (isVectorNamedVariable(HData.ProducedVars[i].Name))
+          if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
           {
-            CREATE_VAR(getVectorNamedVariableName(HData.ProducedVars[i].Name),
+            CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
                        mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
                        getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
                        mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);            
@@ -484,9 +474,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.ProducedVars[i].Distribution == wxT("GU"))
         {
-          if (isVectorNamedVariable(HData.ProducedVars[i].Name))
+          if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
           {
-            CREATE_VAR(getVectorNamedVariableName(HData.ProducedVars[i].Name),
+            CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
                        mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
                        getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
                        mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);                        
@@ -514,9 +504,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("SU"))
         {
-          if (isVectorNamedVariable(HData.UpdatedVars[i].Name))
+          if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
           {
-            UPDATE_VAR(getVectorNamedVariableName(HData.UpdatedVars[i].Name),
+            UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
                        mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
                        getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
                        mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);            
@@ -532,9 +522,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("RS"))
         {
-          if (isVectorNamedVariable(HData.UpdatedVars[i].Name))
+          if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
           {
-            UPDATE_VAR(getVectorNamedVariableName(HData.UpdatedVars[i].Name),
+            UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
                        mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
                        getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
                        mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);                        
@@ -551,9 +541,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.UpdatedVars[i].Distribution == wxT("GU"))
         {
-          if (isVectorNamedVariable(HData.UpdatedVars[i].Name))
+          if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
           {
-            UPDATE_VAR(getVectorNamedVariableName(HData.UpdatedVars[i].Name),
+            UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
                        mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
                        getSimulatedVectorizedVars(),mhydasdk::core::SimulatedVectorizedVarsMap,
                        mhydasdk::core::VectorOfVectorizedMHYDASValue,IsOK);                        
@@ -596,9 +586,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredPrevVars[i].Distribution == wxT("SU"))
         {
-          if (isVectorNamedVariable(HData.RequiredPrevVars[i].Name))
+          if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
           {
-            CHECK_VAR(getVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
                       getSimulatedVectorizedVars(),IsOK);
             
@@ -613,9 +603,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredPrevVars[i].Distribution == wxT("RS"))
         {
-          if (isVectorNamedVariable(HData.RequiredPrevVars[i].Name))
+          if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
           {
-            CHECK_VAR(getVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
                       getSimulatedVectorizedVars(),IsOK);            
           }
@@ -630,9 +620,9 @@ bool Engine::checkModelConsistency()
 
         if (HData.RequiredPrevVars[i].Distribution == wxT("GU"))
         {
-          if (isVectorNamedVariable(HData.RequiredPrevVars[i].Name))
+          if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
           {
-            CHECK_VAR(getVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
                       getSimulatedVectorizedVars(),IsOK);            
           }

@@ -1071,8 +1071,11 @@ bool IOManager::loadOutputConfig()
   TiXmlElement* Child;
 
   wxString Str;
-  int i;
+  int i,j;
   long LongValue;
+  
+  wxArrayString OutVars;
+  OutVars.Clear();
 
   m_AutoOutFiles.ColSeparator = wxT("\t");
   m_AutoOutFiles.CommentChar = wxT("%");
@@ -1152,25 +1155,43 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing objects selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing spatial objects selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
 
 
         // processing simulated vars columns attribute
-        if (Child->Attribute("columns") != NULL)
+        if (Child->Attribute("vars") != NULL)
         {
-          Str = _U(Child->Attribute("columns"));
-          if (Str != wxT("*") && Str.Length() > 0) CurrentDef->Columns = SplitString(Str,wxT(";"));
+          Str = _U(Child->Attribute("vars"));
+          
+          CurrentDef->SaveAllVars = false;
+          OutVars.Clear();
+          
+          
+          if (Str == wxT("*")) CurrentDef->SaveAllVars = true;
+          else
+          {
+            if (Str.Length() > 0)
+            {
+              OutVars = SplitString(Str,wxT(";"));
+              for (j=0;j<OutVars.GetCount();j++)
+              {
+            
+                if (IsVectorNamedVariable(OutVars[j])) CurrentDef->Vectors.Add(GetVectorNamedVariableName(OutVars[j]));  
+                else CurrentDef->Scalars.Add(OutVars[j]);
+              }
+            }
+          }                     
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing column description (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing variables selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
 
 
-        // processing object type adn adds current def to def list
+        // processing object type and adds current def to def list
         Str = _U(Child->Value());
         if ((Str == wxT("SUout")) || (Str == wxT("RSout")) || (Str == wxT("GUout")))
         {
@@ -1241,9 +1262,10 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
   wxString FileContents;
   wxString Filename;
   vector<mhydasdk::core::HydroObject*> HOSet;
-  vector<double>* Values;
+  mhydasdk::core::VectorOfMHYDASValue* Values;
+  mhydasdk::core::VectorizedMHYDASValue VValues;
   wxString ColsStr;
-  int i,j,k;
+  int i,j,k,l;
   wxString NaNStr = wxT("!");
   bool NoValue = false;
 
@@ -1322,111 +1344,208 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
     }
 
-
-
   }
 
 
-  // creating column list if empty (*)
-  if (Def->Columns.Count() == 0 && HOSet[0] != NULL)
+  //  ======== Scalars ========  
+    
+  
+  // creating scalars column list if SaveAllVars
+  if (Def->SaveAllVars && HOSet[0] != NULL)
   {
     mhydasdk::core::SimulatedVarsMap::iterator Simit;
 
     for(Simit = HOSet[0]->getSimulatedVars()->begin(); Simit != HOSet[0]->getSimulatedVars()->end(); ++Simit)
     {
-      Def->Columns.Add(Simit->first);
+      Def->Scalars.Add(Simit->first);
     }
 
   }
       
-
-
-  // checking if requested variables exist and
-  // building columns string for file headers
-  ColsStr.Clear();
-  for (i=0;i<Def->Columns.Count();i++)
-  {
-    if (HOSet[0]->getSimulatedVars()->find(Def->Columns[i]) != HOSet[0]->getSimulatedVars()->end())
-    {    
-      ColsStr << Def->Columns[i];
-      if (i != (Def->Columns.Count()-1)) ColsStr << ColSeparator;
-    }
-    else
-    {
-      wxString ObjKind = wxT("SU");
-      if (Def->ObjectsKind == wxT("RSout")) ObjKind = wxT("RS");
-      if (Def->ObjectsKind == wxT("GUout")) ObjKind = wxT("GU");
-      mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("requested ")+ObjKind+wxT(" variable ")+Def->Columns[i]+wxT(" does not exists and cannot be saved"));
-      Def->Columns.RemoveAt(i);
-    }  
-  }
-
-
-  for (i=0;i<HOSet.size();i++)
+  
+  if (Def->Scalars.GetCount() > 0)
   {
 
-    if (HOSet[i] != NULL)
+    // checking if requested scalar variables exist and
+    // building columns string for file headers
+    ColsStr.Clear();
+    for (i=0;i<Def->Scalars.Count();i++)
     {
-      Filename = wxT("SU");
-      if (Def->ObjectsKind == wxT("RSout")) Filename = wxT("RS");
-      if (Def->ObjectsKind == wxT("GUout")) Filename = wxT("GU");
-
-
-      Filename = Filename + wxString::Format(wxT("%d"),HOSet[i]->getID());
-
-      if (Def->FileSuffix.Length() > 0) Filename = Filename + wxT("_") + Def->FileSuffix;
-
-      Filename = Filename + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
-      //Filename = Filename + wxT(".scalars.") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
-
-      FileContents.Clear();
-
-      // file header
-      FileContents << CommentChar << wxT(" simulation ID: ") << ExSI.SimID << wxT("\n");
-      FileContents << CommentChar << wxT(" file: ") << Filename << wxT("\n");
-      FileContents << CommentChar << wxT(" object ID: ") << HOSet[i]->getID() << wxT("\n");
-      FileContents << CommentChar << wxT(" columns order (after date and time): ") << ColsStr << wxT("\n");
-
-      for (j=0;j<10;j++) FileContents << CommentChar;
-      FileContents << wxT("\n");
-
-      // file contents
-      
-      for (j=0;j<DTStrings.Count();j++)
+      if (HOSet[0]->getSimulatedVars()->find(Def->Scalars[i]) != HOSet[0]->getSimulatedVars()->end())
+      {    
+        ColsStr << Def->Scalars[i];
+        if (i != (Def->Scalars.Count()-1)) ColsStr << ColSeparator;
+      }
+      else
       {
-        FileContents << DTStrings[j];
-        for (k=0;k<Def->Columns.Count();k++)
-        {
-          Values = NULL;
-          if (HOSet[i]->getSimulatedVars()->find(Def->Columns[k]) != HOSet[i]->getSimulatedVars()->end())
-            Values = HOSet[i]->getSimulatedVars()->find(Def->Columns[k])->second;
-          
-          if (Values != NULL)
-          { 
-            // check if value exists for this time step
-            if (j<Values->size()) FileContents << ColSeparator << Values->at(j);
-            else
-            {
-              FileContents << ColSeparator << NaNStr;
-              NoValue = true;
-            }  
-          }  
-        }
+        wxString ObjKind = wxT("SU");
+        if (Def->ObjectsKind == wxT("RSout")) ObjKind = wxT("RS");
+        if (Def->ObjectsKind == wxT("GUout")) ObjKind = wxT("GU");
+        mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("requested ")+ObjKind+wxT(" scalar variable ")+Def->Scalars[i]+wxT(" does not exists and cannot be saved"));
+        Def->Scalars.RemoveAt(i);
+      }  
+    }
+
+
+    for (i=0;i<HOSet.size();i++)
+    {
+
+      if (HOSet[i] != NULL)
+      {
+
+        // set filename object kind
+        Filename = wxT("SU");
+        if (Def->ObjectsKind == wxT("RSout")) Filename = wxT("RS");
+        if (Def->ObjectsKind == wxT("GUout")) Filename = wxT("GU");
+
+        // set filename object ID
+        Filename = Filename + wxString::Format(wxT("%d"),HOSet[i]->getID());
+
+        // set filename suffix
+        if (Def->FileSuffix.Length() > 0) Filename = Filename + wxT("_") + Def->FileSuffix;
+
+        //Filename = Filename + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+        Filename = Filename + wxT(".scalars.") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+
+        FileContents.Clear();
+
+        // file header
+        FileContents << CommentChar << wxT(" simulation ID: ") << ExSI.SimID << wxT("\n");
+        FileContents << CommentChar << wxT(" file: ") << Filename << wxT("\n");
+        FileContents << CommentChar << wxT(" object ID: ") << HOSet[i]->getID() << wxT("\n");
+        FileContents << CommentChar << wxT(" scalar variables order (after date and time): ") << ColsStr << wxT("\n");
+
+        for (j=0;j<10;j++) FileContents << CommentChar;
         FileContents << wxT("\n");
-      }      
 
-      if (NoValue) mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("at least one value was unavailable during ")+Filename+wxT(" saving process"));
+        // file contents
 
-      wxFile RFile(mp_RunEnv->getOutputFullPath(Filename),wxFile::write);
+        for (j=0;j<DTStrings.Count();j++)
+        {
+          FileContents << DTStrings[j];
+          for (k=0;k<Def->Scalars.Count();k++)
+          {
+            Values = NULL;
+            if (HOSet[i]->getSimulatedVars()->find(Def->Scalars[k]) != HOSet[i]->getSimulatedVars()->end())
+              Values = HOSet[i]->getSimulatedVars()->find(Def->Scalars[k])->second;
 
-      RFile.Write(FileContents);
+            if (Values != NULL)
+            { 
+              // check if value exists for this time step
+              if (j<Values->size()) FileContents << ColSeparator << Values->at(j);
+              else
+              {
+                FileContents << ColSeparator << NaNStr;
+                NoValue = true;
+              }  
+            }  
+          }
+          FileContents << wxT("\n");
+        }      
 
-      RFile.Close();
+        if (NoValue) mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("at least one value was unavailable during ")+Filename+wxT(" saving process"));
+
+        wxFile RFile(mp_RunEnv->getOutputFullPath(Filename),wxFile::write);
+
+        RFile.Write(FileContents);
+
+        RFile.Close();
+      }
+    }
+
+  }
+  
+  
+  //  ======== Vectors ========
+  
+  // creating vectors list if SaveAllVars (*)  
+  
+  if (Def->SaveAllVars && HOSet[0] != NULL)
+  {
+    mhydasdk::core::SimulatedVectorizedVarsMap::iterator VSimit;
+      
+    for(VSimit = HOSet[0]->getSimulatedVectorizedVars()->begin(); VSimit != HOSet[0]->getSimulatedVectorizedVars()->end(); ++VSimit)
+    {
+      Def->Vectors.Add(VSimit->first);
+    }
+
+  }
+  
+  
+  if (Def->Vectors.GetCount() > 0)
+  {
+
+    wxString FilenameRoot;
+
+    for (i=0;i<HOSet.size();i++)
+    {
+      if (HOSet[i] != NULL)
+      {
+        // set filename object kind
+        FilenameRoot = wxT("SU");
+        if (Def->ObjectsKind == wxT("RSout")) FilenameRoot = wxT("RS");
+        if (Def->ObjectsKind == wxT("GUout")) FilenameRoot = wxT("GU");
+
+        // set filename object ID
+        FilenameRoot = FilenameRoot + wxString::Format(wxT("%d"),HOSet[i]->getID());
+
+        // set filename suffix
+        if (Def->FileSuffix.Length() > 0) FilenameRoot = FilenameRoot + wxT("_") + Def->FileSuffix;
+
+        FilenameRoot = FilenameRoot + wxT(".vector.");
+
+
+        for (j=0;j<Def->Vectors.GetCount();j++)
+        {
+          if (HOSet[i]->getSimulatedVectorizedVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorizedVars()->end())
+          {                
+            Filename = FilenameRoot + Def->Vectors[j] + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+
+            FileContents.Clear();
+
+            // file header
+            FileContents << CommentChar << wxT(" simulation ID: ") << ExSI.SimID << wxT("\n");
+            FileContents << CommentChar << wxT(" file: ") << Filename << wxT("\n");
+            FileContents << CommentChar << wxT(" object ID: ") << HOSet[i]->getID() << wxT("\n");
+            FileContents << CommentChar << wxT(" vector variable values (after date and time): ") << Def->Vectors[j] << wxT("\n");
+
+            for (k=0;k<10;k++) FileContents << CommentChar;
+            FileContents << wxT("\n");
+
+            for (k=0;k<DTStrings.Count();k++)
+            {
+              FileContents << DTStrings[k];
+
+              VValues.clear();
+
+              if (HOSet[i]->getSimulatedVectorizedVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorizedVars()->end())
+                VValues = (HOSet[i]->getSimulatedVectorizedVars()->find(Def->Vectors[j])->second)->at(k);
+
+
+              if (VValues.size() > 0)
+              {
+                for (l=0;l<VValues.size();l++)
+                {
+                  FileContents << ColSeparator << VValues.at(l);
+                }
+              }
+
+              FileContents << wxT("\n");
+            }      
+
+            wxFile RFile(mp_RunEnv->getOutputFullPath(Filename),wxFile::write);
+
+            RFile.Write(FileContents);
+
+            RFile.Close();
+
+          }
+        }
+      }
     }
   }
-
-
-
+  
+  
   return true;
 }
 
