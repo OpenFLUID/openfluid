@@ -661,9 +661,9 @@ struct FunctionEnvironment
 
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
+WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
+WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASValue, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
 
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
 
