@@ -18,7 +18,8 @@ MAJORVER=1
 MINORVER=0
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
-PACKDEPENDS="libwxbase2.6-dev (>= 2.6)"
+EDGYDEPENDS="libwxbase2.6-dev (>= 2.6)"
+DAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6)"
 PACKSECTION="science"
 PACKPRIORITY="optional"
 LIBPACKDESC="MHYDAS SDK library\\\n This library is used by the mhydas program. It is also needed for pluggable function development."

@@ -66,50 +66,98 @@ install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@$(SUDO) $(LDCONFIGINST)
 	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
 
-
-deb-packages: all mhydasdk-conf-file docs
+ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
+ubuntu-edgy-packages: all mhydasdk-conf-file docs
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
-	@rm -f -R $(BASEPACKDIR)/debian/*
-	@echo "==== Building packages (debian based distro) ===="
+	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
+	@echo "==== Building packages ($(LOCALDIR)) ===="
 	@echo "Building library package"
-	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBPATH)
-	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
-	@mkdir -p $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/debian/$(LIBPACKNAME)$(INSTSDKLIBPATH)
-	@cp resources/doc/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
-	@cp resources/debian/common/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
-	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/debian/$(LIBPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(LIBPACKNAME))
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
+	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
+	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(LIBPACKNAME))
 	@echo "Building development package"
-	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
-	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
-	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKBINPATH)
-	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
-	@mkdir -p $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
-	@cp src/mhydasdk-*.h $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/
-	@cp src/core/*.h $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
-	@cp src/base/*.h $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
-	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/debian/$(DEVPACKNAME)$(INSTSDKBINPATH)
-	@cp resources/doc/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
-	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
-	@cp resources/debian/common/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
-	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/debian/$(DEVPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(DEVPACKNAME))
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp src/mhydasdk-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
+	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
+	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
+	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
+	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
+	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(DEVPACKNAME))
+
+
+ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
+ubuntu-dapper-packages: all mhydasdk-conf-file docs	
+	@echo ""	
+	@mkdir -p $(BASEPACKDIR)
+	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
+	@echo "==== Building packages ($(LOCALDIR)) ===="
+	@echo "Building library package"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
+	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
+	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(DAPPERDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(LIBPACKNAME))
+	@echo "Building development package"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp src/mhydasdk-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
+	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
+	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
+	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
+	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
+	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(DAPPERDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(DEVPACKNAME))
+
+
 
 
 win32-packages: all mhydasdk-conf-file
