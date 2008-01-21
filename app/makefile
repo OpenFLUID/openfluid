@@ -36,28 +36,54 @@ purge: clean
 	@rm -f $(BASEBINDIR)
 
 
-deb-packages: all
+ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
+ubuntu-edgy-packages: all
 	@echo ""	
-	@mkdir -p $(BASEPACKDIR)/debian
-	@rm -f -R $(BASEPACKDIR)/debian
-	@echo "==== Building packages (debian based distro) ===="
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)
+	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
+	@echo "==== Building packages ($(LOCALDIR)) ===="
 	@echo "Building package"
-	@mkdir -p $(BASEPACKDIR)/debian/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@mkdir -p $(BASEPACKDIR)/debian/$(PACKNAME)/usr/bin	
-	@mkdir -p $(BASEPACKDIR)/debian/$(PACKNAME)/usr/share/doc/$(PACKROOT)
-	@mkdir -p $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/debian/$(PACKNAME)/usr/bin/$(EXEFILE)
-	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/debian/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@cp resources/doc/* $(BASEPACKDIR)/debian/$(PACKNAME)/usr/share/doc/$(PACKROOT)
-	@cp resources/debian/* $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/copyright
-	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(PACKDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)\n .\n This package is built using mhydas-engine revision $(SVNREV)." > $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/debian/$(PACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/debian && dpkg-deb --build $(PACKNAME))
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin/$(EXEFILE)
+	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
+	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/copyright
+	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)\n .\n This package is built using mhydas-engine revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(PACKNAME))
+
+
+ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
+ubuntu-dapper-packages: all
+	@echo ""	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)
+	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
+	@echo "==== Building packages ($(LOCALDIR)) ===="
+	@echo "Building package"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin/$(EXEFILE)
+	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
+	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/copyright
+	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(DAPPERDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)\n .\n This package is built using mhydas-engine revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(PACKNAME))
 
 
 win32-packages: all
