@@ -127,7 +127,16 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
 	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(DAPPERDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Package: $(LIBPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Depends: $(DAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Description: $(LIBPACKDESC)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo " This package is built using revision $(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -149,7 +158,16 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(DAPPERDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Package: $(DEVPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Depends: $(DAPPERDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Description: $(DEVPACKDESC)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo " This package is built using revision $(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
