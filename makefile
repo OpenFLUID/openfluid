@@ -77,7 +77,17 @@ ubuntu-dapper-packages: all
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
 	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/copyright
-	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(DAPPERDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)\n .\n This package is built using mhydas-engine revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Package: $(PACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Depends: $(DAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Replaces: mhydas" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo "Description: $(PACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
+	@echo " This package is built using mhydas-engine revision $(SVNREV)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
