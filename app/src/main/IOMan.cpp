@@ -196,7 +196,8 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   */
 
-
+   
+  
   if (SpatialData == NULL) return false;
 
   long ID;
@@ -729,6 +730,9 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
   long ID;
   double Value;
 
+    
+  
+  
   /*
 
     essayer de trouver une macro du type
@@ -769,7 +773,11 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
             }
           }
         }
-        else return false;
+        else
+        {
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed properties format error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(")"));
+          return false;
+        }
         i++;
       }
     }
@@ -801,6 +809,7 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
     {
       mhydasdk::core::ReachSegment* RS;
 
+      
       i = 0;
 
       while (i<RSProps.getLinesCount() && IsOK)
@@ -817,7 +826,11 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
             }
           }
         }
-        else return false;
+        else
+        {
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed properties format error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(")"));
+          return false;
+        }
         i++;
       }
     }
@@ -836,6 +849,7 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
 
   // ============== GUs =========================
 
+  
   Columns.Clear();
   Data.Clear();
 
@@ -865,7 +879,11 @@ bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *Sp
             }
           }
         }
-        else return false;
+        else
+        {
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed properties format error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(")"));
+          return false;
+        }
         i++;
       }
     }
@@ -905,18 +923,22 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
   Columns.Clear();
   Data.Clear();
 
+  std::cerr << "hfdshdhskkjdkkd" << std::endl;
+  
   if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUINIFILE),
                                         wxT("SUini"),&Columns,&Data))
   {
 
     ColumnTextParser SUIni(wxT("%"));
-
+    
+    
     if (SUIni.setFromString(Data,Columns.Count()+1))
     {
       mhydasdk::core::SurfaceUnit* SU;
 
       i = 0;
 
+      std::cerr << SUIni.getLinesCount()<< std::endl;
       while (i<SUIni.getLinesCount() && IsOK)
       {
         IsOK = SUIni.getLongValue(i,0,&ID);

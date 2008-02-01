@@ -62,7 +62,7 @@ WX_DEFINE_LIST(FunctionsList);
     _M_it = objects->begin(); \
     while (status && (_M_it != objects->end()))\
     {\
-      status = (!(_M_it->second->vars->find(name) == _M_it->second->vars->end())); \
+      status = (!(_M_it->second->vars->find(name) == _M_it->second->vars->end()));\
       ++_M_it; \
     }\
 
@@ -80,8 +80,8 @@ WX_DEFINE_LIST(FunctionsList);
       for(_M_it = objects->begin(); _M_it != objects->end(); ++_M_it ) \
       { \
         _M_it->second->vars->insert(varshashtype::value_type(name,new datatype)); \
-      } \
-    }
+      }\
+    }\
 
 // adds a new var if doesn't exist
 #define UPDATE_VAR(name,objects,objshashtype,vars,varshashtype,datatype,status) \
@@ -93,7 +93,7 @@ WX_DEFINE_LIST(FunctionsList);
       {\
         _M_it->second->vars->insert(varshashtype::value_type(name,new datatype)); \
       }\
-      ++_M_it; \
+      ++_M_it;\
     }\
 
 
@@ -675,7 +675,7 @@ bool Engine::checkDataConsistency()
       // required props
       i = 0;
       while (IsOK && i<HData.RequiredProps.size())
-      {
+      {                
         
         if (HData.RequiredProps[i].Distribution == wxT("SU"))
         {
@@ -700,46 +700,57 @@ bool Engine::checkDataConsistency()
                      getProperties(),IsOK);
           
         }
-                
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed property required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+
+        
+        if (!IsOK)
+        {
+          mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed property required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+          return false;
+        }
         else i++;        
       }
       
 
       // required initial conditions
       i = 0;
-      while (IsOK && i<HData.RequiredIniconds.size())
-      {
-        
-        if (HData.RequiredIniconds[i].Distribution == wxT("SU"))
+      if (IsOK)
+      {  
+        while (IsOK && i<HData.RequiredIniconds.size())
         {
-          CHECK_VAR(HData.RequiredIniconds[i].Name,
-                    mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                    getIniConditions(),IsOK);
-          
-        }
 
-        if (HData.RequiredIniconds[i].Distribution == wxT("RS"))
-        {
-          CHECK_VAR(HData.RequiredIniconds[i].Name,
-                    mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                    getIniConditions (),IsOK);
-          
-        }
+          if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("SU"))
+          {
+            CHECK_VAR(HData.RequiredIniconds[i].Name,
+                mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                getIniConditions(),IsOK);          
+          }
 
-        if (HData.RequiredIniconds[i].Distribution == wxT("GU"))
-        {
-          CHECK_VAR(HData.RequiredIniconds[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                     getIniConditions(),IsOK);
-          
+          if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("RS"))
+          {
+            CHECK_VAR(HData.RequiredIniconds[i].Name,
+                mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                getIniConditions (),IsOK);
+
+          }
+
+          if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("GU"))
+          {
+            CHECK_VAR(HData.RequiredIniconds[i].Name,
+                mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                getIniConditions(),IsOK);
+
+          }
+
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredIniconds[i].Name+wxT(" distributed initial condition required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+            return false;
+          }
+          else i++;        
         }
-                
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed initial condition required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
-        else i++;        
       }
-      
-      
+
     }
 
     FuncNode = FuncNode->GetNext();   
@@ -893,14 +904,18 @@ bool Engine::loadData()
 {
   bool IsOK;
     
-  IsOK =  (mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData()) &&
-          mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData()) &&
-          mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData()) &&
-          mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent()) &&
-          mp_IOMan->loadRainDistribution(mp_CoreData));
+  IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
   
-  if (mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
+  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData());  
+
+  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData());
+
+  if (IsOK) IsOK = mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent());
   
+  if (IsOK) IsOK = mp_IOMan->loadRainDistribution(mp_CoreData);
+
+  if (IsOK && mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
+    
   return IsOK;
   
 }
