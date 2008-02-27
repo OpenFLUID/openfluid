@@ -2021,7 +2021,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
 
       Filecontent << wxT("\n");
       
-      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
       TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);      
       TFile.Write(Filecontent);
       TFile.Close();      
@@ -2079,7 +2079,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
 
       Filecontent << wxT("\n");
       
-      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
+      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
       TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);      
       TFile.Write(Filecontent);
       TFile.Close();      
