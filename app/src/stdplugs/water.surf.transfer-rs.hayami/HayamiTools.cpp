@@ -144,7 +144,6 @@ float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core
   
   for (int i=0;i<ZeEnd;i++)
   {
-    //std::cerr << Kernel[i] << std::endl;
     QOutput = QOutput + (Kernel[i] * QInput->at(CurrentStep - i) * TimeStep); 
   } 
   

@@ -352,7 +352,6 @@ void ColumnTextParser::coutContents()
 
     }
     cout.flush();
-    std::cerr << std::endl;
 
   }
   std::cout << "" << std::endl;

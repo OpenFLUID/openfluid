@@ -461,7 +461,6 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
   */
 
-  //std::cerr << "Rainfile : " << mp_RunEnv->getInputFullPath(Filename).mb_str(wxConvUTF8) << std::endl;
   
   ColumnTextParser FileParser(wxT("%"));
   bool IsOK;
@@ -923,8 +922,6 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
   Columns.Clear();
   Data.Clear();
 
-  std::cerr << "hfdshdhskkjdkkd" << std::endl;
-  
   if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUINIFILE),
                                         wxT("SUini"),&Columns,&Data))
   {
@@ -938,7 +935,6 @@ bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialReposit
 
       i = 0;
 
-      std::cerr << SUIni.getLinesCount()<< std::endl;
       while (i<SUIni.getLinesCount() && IsOK)
       {
         IsOK = SUIni.getLongValue(i,0,&ID);
