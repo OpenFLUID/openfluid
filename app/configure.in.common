@@ -20,7 +20,7 @@ EXEFILEROOT=mhydas-engine
 
 MAJORVER=1
 #MINORVER=`date +%-y.%m`
-MINORVER=0
+MINORVER=1
 
 
 INPUT_RAIN_MMH=1

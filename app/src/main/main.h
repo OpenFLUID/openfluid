@@ -76,6 +76,8 @@ class MHYDASApp : public wxAppConsole
     
     void printMHYDASInfos();
 
+    void printEnvInfos();    
+    
     void printDataInfos();
 
     void printPluginsList();
