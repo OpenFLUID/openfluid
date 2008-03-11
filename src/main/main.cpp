@@ -259,7 +259,8 @@ void MHYDASApp::printDataInfos()
 // =====================================================================
 
 void MHYDASApp::printPluginsList()
-{
+{  std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
+
   ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList();
 
   std::cout << "Available pluggable simulation functions:" << std::endl;
@@ -562,22 +563,36 @@ bool MHYDASApp::OnInit()
   }
   else
   {
-    printMHYDASInfos();
-    
     if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(TmpStr);
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
     if (Parser.Found(wxT("m"),&TmpStr)) mp_RunEnv->setTraceDir(TmpStr);
-    
+	    
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
     if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);    
     if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);           
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);    
+	  
+	  printMHYDASInfos();
+	  printEnvInfos();
        
   }
 
   return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MHYDASApp::printEnvInfos()
+{
+  std::cout << "Input dir: " << _C(mp_RunEnv->getInputDir()) << std::endl;
+  if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << "Output dir: " << _C(mp_RunEnv->getOutputDir()) << std::endl;  
+  if ((mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) && (mp_RunEnv->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl; 
+  if (mp_RunEnv->getTraceMode()) std::cout << "Trace mode enabled" << std::endl;
+  if (mp_RunEnv->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
+  std::cout << std::endl; 
 }
 
 
