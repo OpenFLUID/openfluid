@@ -392,17 +392,17 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 // =====================================================================
 
 
-RainEventFilesMap IOManager::buildRainEventFileMap()
+RainSourcesFilesMap IOManager::buildRainSourcesFileMap()
 {
   /** \internal
 
-    the rain event description is in an XML file.
+    the rain sources description is in an XML file.
     the XML file is parsed and for each rain source,
     an (ID,file) pair is added to the map
 
   */
 
-  RainEventFilesMap RIFMap;
+  RainSourcesFilesMap RIFMap;
   TiXmlDocument LoadDoc;
 
   RIFMap.clear();
@@ -417,7 +417,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
 
     TiXmlHandle DocHandle(&LoadDoc);
 
-    TiXmlElement* Child = DocHandle.FirstChild("mhydas").FirstChild("rainevent").FirstChild("rainsource").Element();
+    TiXmlElement* Child = DocHandle.FirstChild("mhydas").FirstChild("rainsources").FirstChild("raindata").Element();
 
 
      for(Child; Child; Child=Child->NextSiblingElement())
@@ -428,7 +428,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain event file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error. Incorrect rain source definition"));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain sources file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error. Incorrect rain source definition"));
         RIFMap.clear();
         return RIFMap;          
       }
@@ -438,7 +438,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain event file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error"));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain sources file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error"));
     RIFMap.clear();    
   }
   return RIFMap;
@@ -451,7 +451,7 @@ RainEventFilesMap IOManager::buildRainEventFileMap()
 // =====================================================================
 
 
-bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename)
+bool IOManager::loadRainFile(mhydasdk::core::RainSources *RainData, mhydasdk::core::cdsid_t ID, wxString Filename)
 {
   /** \internal
 
@@ -533,14 +533,14 @@ bool IOManager::loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core
 
 
 
-bool IOManager::loadRainEvent(mhydasdk::core::RainEvent *RainData)
+bool IOManager::loadRainSources(mhydasdk::core::RainSources *RainData)
 {
-  RainEventFilesMap RIFMap = buildRainEventFileMap();
+  RainSourcesFilesMap RIFMap = buildRainSourcesFileMap();
 
   if (RIFMap.size() == 0) return false;
   else
   {
-    RainEventFilesMap::iterator RIFit;
+    RainSourcesFilesMap::iterator RIFit;
     for(RIFit = RIFMap.begin(); RIFit != RIFMap.end(); ++RIFit )
     {
       if (!loadRainFile(RainData,RIFit->first,RIFit->second))
@@ -591,7 +591,7 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
         if (SUDistriFileParser.getLongValue(i,0,&SUID) && SUDistriFileParser.getLongValue(i,1,&RainID))
         {
           CurrentSU = Data->getSpatialData()->getSUByID(SUID);
-          CurrentRainGauge = Data->getRainEvent()->getRainSourceByID(RainID);
+          CurrentRainGauge = Data->getRainSources()->getRainSourceByID(RainID);
           if ((CurrentSU != NULL) && (CurrentRainGauge != NULL))
           {
             CurrentSU->setRainSource(CurrentRainGauge);
@@ -633,7 +633,7 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
         if (RSDistriFileParser.getLongValue(i,0,&RSID) && RSDistriFileParser.getLongValue(i,1,&RainID))
         {
           CurrentRS = Data->getSpatialData()->getRSByID(RSID);
-          CurrentRainGauge = Data->getRainEvent()->getRainSourceByID(RainID);
+          CurrentRainGauge = Data->getRainSources()->getRainSourceByID(RainID);
           if ((CurrentRS != NULL) && (CurrentRainGauge != NULL))
           {
             CurrentRS->setRainSource(CurrentRainGauge);
@@ -1587,7 +1587,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
     AutoOutfileDef* CurrentDef;
 
     wxArrayString DTStrings;
-    mhydasdk::core::TimeSerie* TSerie = Data->getRainEvent()->getRainSourceCollection().begin()->second->getTimeSerie();
+    mhydasdk::core::TimeSerie* TSerie = Data->getRainSources()->getRainSourceCollection().begin()->second->getTimeSerie();
 
 
     // preparing and formatting datetime column(s)
@@ -1661,7 +1661,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
     FileContents << wxT("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << wxT("\n");
     FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");    
     
-    FileContents << wxT("Rain gauges: ") << CoreData->getRainEvent()->getRainSourceCollection().size() << wxT("\n");
+    FileContents << wxT("Rain gauges: ") << CoreData->getRainSources()->getRainSourceCollection().size() << wxT("\n");
     
     if (SimInfo != NULL)
     {    

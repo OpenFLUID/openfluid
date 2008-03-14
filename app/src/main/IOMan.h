@@ -54,7 +54,7 @@ struct EngineConfig
 /**
   Hash map type indexing rain files of the rain event
 */
-WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainEventFilesMap);
+WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainSourcesFilesMap);
 
 
 // =====================================================================
@@ -105,9 +105,9 @@ class IOManager
 
     bool m_ClearedOuputDir;
 
-    RainEventFilesMap buildRainEventFileMap();
+    RainSourcesFilesMap buildRainSourcesFileMap();
 
-    bool loadRainFile(mhydasdk::core::RainEvent *RainData, mhydasdk::core::cdsid_t ID, wxString Filename);
+    bool loadRainFile(mhydasdk::core::RainSources *RainData, mhydasdk::core::cdsid_t ID, wxString Filename);
 
     bool prepareOutputDir();
     
@@ -158,7 +158,7 @@ class IOManager
       Loads rain sources and builds rain event
       \param[out] Rain event data structure to populate
     */
-    bool loadRainEvent(mhydasdk::core::RainEvent *RainData);
+    bool loadRainSources(mhydasdk::core::RainSources *RainData);
 
 
     /**

@@ -245,7 +245,7 @@ void MHYDASApp::printDataInfos()
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
-  std::cout << "Rain source(s): " << mp_CoreData->getRainEvent()->getRainSourceCollection().size() << std::endl;
+  std::cout << "Rain source(s): " << mp_CoreData->getRainSources()->getRainSourceCollection().size() << std::endl;
   std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().asString())
             << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().asString()) << std::endl
             << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
@@ -613,7 +613,7 @@ int MHYDASApp::OnRun()
     mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
 
 
-    mp_CoreData->getRainEvent()->enableFirstSerieConstraint(true);
+    mp_CoreData->getRainSources()->enableFirstSerieConstraint(true);
 
     // model load and check    
     buildModel();

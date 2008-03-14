@@ -910,7 +910,7 @@ bool Engine::loadData()
 
   if (IsOK) IsOK = mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData());
 
-  if (IsOK) IsOK = mp_IOMan->loadRainEvent(mp_CoreData->getRainEvent());
+  if (IsOK) IsOK = mp_IOMan->loadRainSources(mp_CoreData->getRainSources());
   
   if (IsOK) IsOK = mp_IOMan->loadRainDistribution(mp_CoreData);
 
@@ -948,7 +948,7 @@ bool Engine::prepareDataAndCheckConsistency()
 
   
   // process RainEVent
-  if (!mp_CoreData->getRainEvent()->ProcessRainSources(m_Config.DeltaT))
+  if (!mp_CoreData->getRainSources()->ProcessRainSources(m_Config.DeltaT))
   {
     mp_ExecMsgs->setError(wxT("Engine"),wxT("Rain sources process error"));
     return false;
@@ -1008,8 +1008,8 @@ bool Engine::prepareDataAndCheckConsistency()
 
   // inits the simulation infos and status
 
-  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainEvent()->getEventStartingTime(),
-                                                      mp_CoreData->getRainEvent()->getEventEndingTime(),
+  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainSources()->getStartingTime(),
+                                                      mp_CoreData->getRainSources()->getEndingTime(),
                                                       m_Config.DeltaT);
 
   
