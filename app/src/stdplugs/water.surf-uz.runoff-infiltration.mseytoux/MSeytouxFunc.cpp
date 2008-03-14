@@ -18,10 +18,8 @@
 
 
 
-mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
-{
-  return new MorelSeytouxFunc();
-}
+PLUGIN_HOOK(MorelSeytouxFunc);
+
 
 
 // =====================================================================

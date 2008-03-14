@@ -49,6 +49,13 @@
 
 #define PLUGIN_PROC_NAME "GetMHYDASPluggableFunction"
 
+#define PLUGIN_HOOK(pluginclassname) \
+  mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction() \
+  { \
+    return new pluginclassname(); \
+  }
+
+
 // =====================================================================
 // =====================================================================
 
