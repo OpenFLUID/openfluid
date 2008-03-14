@@ -27,7 +27,7 @@
 #include "core/TimeSerieItem.h"
 #include "core/TimeSerie.h"
 #include "core/ChronDataSource.h"
-#include "core/RainEvent.h"
+#include "core/RainSources.h"
 #include "core/CoreRepository.h"
 #include "core/HydroObject.h"
 #include "core/SurfaceUnit.h"
@@ -43,7 +43,7 @@ class DLLEXPORT DateTime;
 class DLLEXPORT TimeSerieItem;
 class DLLEXPORT TimeSerie;
 class DLLEXPORT ChronDataSource;
-class DLLEXPORT RainEvent;
+class DLLEXPORT RainSources;
 class DLLEXPORT ValueFactory;
 class DLLEXPORT CoreRepository;
 class DLLEXPORT SurfaceUnit;

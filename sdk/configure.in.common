@@ -15,7 +15,7 @@ MHYDASDKCONFIGFILE=mhydasdk-config
 
 
 MAJORVER=1
-MINORVER=0
+MINORVER=1
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
 EDGYDEPENDS="libwxbase2.6-dev (>= 2.6)"

@@ -1,5 +1,5 @@
 /**
-  \file RainRepository.h
+  \file RainSources.h
   \brief header de ...
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
@@ -23,7 +23,7 @@ WX_DECLARE_HASH_MAP(int, ChronDataSource*, wxIntegerHash, wxIntegerEqual, RainSo
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
-class RainEvent
+class RainSources
 {
   private:
     RainSourceMap m_RainSrcCollection;
@@ -44,12 +44,12 @@ class RainEvent
     /**
       Constructor
     */
-    RainEvent();
+    RainSources();
 
     /**
       Destructor
     */
-    ~RainEvent();
+    ~RainSources();
 
     /**
       Adds a rain source to the repository
@@ -105,16 +105,16 @@ class RainEvent
     bool isFirstSerieConstraintEnabled() const { return  m_FirstSerieConstraint; };
 
     /**
-      Returns the starting date of the event
+      Returns the starting date
       \return a datetime
     */
-    DateTime getEventStartingTime();
+    DateTime getStartingTime();
 
     /**
-      Returns the ending date of the event
+      Returns the ending date
       \return a datetime
     */
-    DateTime getEventEndingTime();
+    DateTime getEndingTime();
 
 
     bool ProcessRainSources(int TimeStep);

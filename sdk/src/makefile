@@ -20,7 +20,7 @@ COREOBJ=$(OBJDIR)/core/DateTime.o \
     $(OBJDIR)/core/TimeSerie.o \
     $(OBJDIR)/core/ChronDataSource.o \
     $(OBJDIR)/core/ValueFactory.o \
-    $(OBJDIR)/core/RainEvent.o \
+    $(OBJDIR)/core/RainSources.o \
     $(OBJDIR)/core/HydroObject.o \
     $(OBJDIR)/core/SurfaceUnit.o \
     $(OBJDIR)/core/GroundwaterUnit.o \

@@ -1,12 +1,12 @@
 /**
-  \file RainEvent.cpp
-  \brief implémentation de ...
+  \file RainSources.cpp
+  \brief implementation de ...
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
 
 
-#include "RainEvent.h"
+#include "RainSources.h"
 #include "ValueFactory.h"
 
 #include <iostream>
@@ -20,7 +20,7 @@ namespace mhydasdk { namespace core {
 
 
 
-RainEvent::RainEvent()
+RainSources::RainSources()
 {
   m_RainSrcCollection.clear();
 
@@ -36,7 +36,7 @@ RainEvent::RainEvent()
 // =====================================================================
 
 
-RainEvent::~RainEvent()
+RainSources::~RainSources()
 {
 
 }
@@ -45,7 +45,7 @@ RainEvent::~RainEvent()
 // =====================================================================
 
 
-bool RainEvent::addRainSource(ChronDataSource *Source)
+bool RainSources::addRainSource(ChronDataSource *Source)
 {
   bool OKToAdd = true;
   int ReturnCode = 0;
@@ -93,7 +93,7 @@ bool RainEvent::addRainSource(ChronDataSource *Source)
 // =====================================================================
 // =====================================================================
 
-RainSourceMap RainEvent::getRainSourceCollection()
+RainSourceMap RainSources::getRainSourceCollection()
 {
   return m_RainSrcCollection;
 }
@@ -103,7 +103,7 @@ RainSourceMap RainEvent::getRainSourceCollection()
 // =====================================================================
 
 
-ChronDataSource* RainEvent::getRainSourceByID(cdsid_t ID)
+ChronDataSource* RainSources::getRainSourceByID(cdsid_t ID)
 {
   ChronDataSource* Source = NULL;
 
@@ -119,7 +119,7 @@ ChronDataSource* RainEvent::getRainSourceByID(cdsid_t ID)
 // =====================================================================
 
 
-bool RainEvent::computeTimeRange(rawtime_t &First, rawtime_t &Last, rawtime_t &FirstCommon, rawtime_t &LastCommon)
+bool RainSources::computeTimeRange(rawtime_t &First, rawtime_t &Last, rawtime_t &FirstCommon, rawtime_t &LastCommon)
 {
 
   bool ReturnedValue = true;
@@ -183,7 +183,7 @@ bool RainEvent::computeTimeRange(rawtime_t &First, rawtime_t &Last, rawtime_t &F
 
 
 
-void RainEvent::enableTimeStepConstraint(bool Enabled, int TimeStep)
+void RainSources::enableTimeStepConstraint(bool Enabled, int TimeStep)
 {
   m_TimeStepConstraint = Enabled;
   m_ConstrainedTimeStep = TimeStep;
@@ -195,7 +195,7 @@ void RainEvent::enableTimeStepConstraint(bool Enabled, int TimeStep)
 // =====================================================================
 
 
-void RainEvent::enableFirstSerieConstraint(bool Enabled)
+void RainSources::enableFirstSerieConstraint(bool Enabled)
 {
   m_FirstSerieConstraint = Enabled;
 
@@ -207,7 +207,7 @@ void RainEvent::enableFirstSerieConstraint(bool Enabled)
 
 
 
-DateTime RainEvent::getEventStartingTime()
+DateTime RainSources::getStartingTime()
 {
   return m_RainSrcCollection.begin()->second->getTimeSerie()->getFirstItem()->getDateTime();
 }
@@ -217,7 +217,7 @@ DateTime RainEvent::getEventStartingTime()
 // =====================================================================
 
 
-DateTime RainEvent::getEventEndingTime()
+DateTime RainSources::getEndingTime()
 {
   return m_RainSrcCollection.begin()->second->getTimeSerie()->getLastItem()->getDateTime();
 }
@@ -226,7 +226,7 @@ DateTime RainEvent::getEventEndingTime()
 // =====================================================================
 // =====================================================================
 
-bool RainEvent::ProcessRainSources(int TimeStep)
+bool RainSources::ProcessRainSources(int TimeStep)
 {
   
 
