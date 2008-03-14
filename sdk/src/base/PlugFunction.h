@@ -47,40 +47,63 @@
 // =====================================================================
 // =====================================================================
 
-#define PLUGIN_PROC_NAME "GetMHYDASPluggableFunction"
+#define PLUGFUNCTION_PROC_NAME "GetPlugFunction"
+#define PLUGSIGNATURE_PROC_NAME "GetPlugSignature"
 
-#define PLUGIN_HOOK(pluginclassname) \
-  mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction() \
+#define DEFINE_FUNCTION_HOOK(pluginclassname) \
+  mhydasdk::base::PluggableFunction* GetPlugFunction() \
   { \
     return new pluginclassname(); \
   }
 
 
+#define DECLARE_PLUGIN_HOOKS \
+  extern "C" \
+  { \
+    DLLIMPORT mhydasdk::base::PluggableFunction* GetPlugFunction(); \
+    DLLIMPORT mhydasdk::base::Signature* GetPlugSignature(); \
+  };
+
+
 // =====================================================================
 // =====================================================================
 
 
-#define DECLARE_SIGNATURE_ID(id) mp_Signature->ID = id;
 
-#define DECLARE_SIGNATURE_NAME(name) mp_Signature->Name = name;
 
-#define DECLARE_SIGNATURE_DESCRIPTION(desc) mp_Signature->Description = desc;
+#define BEGIN_SIGNATURE_HOOK \
+  mhydasdk::base::Signature* GetPlugSignature() \
+  { \
+    mhydasdk::base::Signature* ZeSignature = new mhydasdk::base::Signature(); \
+    ZeSignature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
+  
 
-#define DECLARE_SIGNATURE_DOMAIN(domain) mp_Signature->Domain = domain;
+#define END_SIGNATURE_HOOK \
+    return ZeSignature; \
+  }
 
-#define DECLARE_SIGNATURE_PROCESS(process) mp_Signature->Process = process;
 
-#define DECLARE_SIGNATURE_METHOD(method) mp_Signature->Method = method;
+#define DECLARE_SIGNATURE_ID(id) ZeSignature->ID = id;
 
-#define DECLARE_SIGNATURE_AUTHORNAME(name) mp_Signature->Author = name;
+#define DECLARE_SIGNATURE_NAME(name) ZeSignature->Name = name;
 
-#define DECLARE_SIGNATURE_AUTHOREMAIL(email) mp_Signature->AuthorEmail = email;
+#define DECLARE_SIGNATURE_DESCRIPTION(desc) ZeSignature->Description = desc;
 
-#define DECLARE_SIGNATURE_VERSION(version) mp_Signature->Version = version;
+#define DECLARE_SIGNATURE_DOMAIN(domain) ZeSignature->Domain = domain;
 
-#define DECLARE_SIGNATURE_STATUS(status) mp_Signature->Status = status;
+#define DECLARE_SIGNATURE_PROCESS(process) ZeSignature->Process = process;
 
-#define DECLARE_SIGNATURE_SDKVERSION mp_Signature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
+#define DECLARE_SIGNATURE_METHOD(method) ZeSignature->Method = method;
+
+#define DECLARE_SIGNATURE_AUTHORNAME(name) ZeSignature->Author = name;
+
+#define DECLARE_SIGNATURE_AUTHOREMAIL(email) ZeSignature->AuthorEmail = email;
+
+#define DECLARE_SIGNATURE_VERSION(version) ZeSignature->Version = version;
+
+#define DECLARE_SIGNATURE_STATUS(status) ZeSignature->Status = status;
+
+#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
 
 // =====================================================================
 // =====================================================================
@@ -93,7 +116,7 @@
   \param[in] unit unit of the parameter. Could be an empty string if there is no unit  
 */ 
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
-  mp_Signature->HandledData.FunctionParams.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT(""),description,unit));
+  ZeSignature->HandledData.FunctionParams.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT(""),description,unit));
 
 
 // =====================================================================
@@ -107,7 +130,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */ 
 #define DECLARE_SU_PRODUCED_VAR(name,description,unit) \
-  mp_Signature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
   
 /**
   Macro for declaration of an updated variable on all SUs
@@ -116,7 +139,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */ 
 #define DECLARE_SU_UPDATED_VAR(name,description,unit) \
-  mp_Signature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
 /**
   Macro for declaration of a required variable on all SUs
@@ -125,10 +148,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
-  mp_Signature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_REQUIRED_PREVVAR(name,description,unit) \
-  mp_Signature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 /**
   Macro for declaration of an used variable on all SUs
@@ -137,10 +160,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_USED_VAR(name,description,unit) \
-  mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_PREVVAR(name,description,unit) \
-  mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
   
 /**
   Macro for declaration of a required property on all SUs
@@ -149,10 +172,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
-  mp_Signature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_PROPERTY(name,description,unit) \
-  mp_Signature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
   
   
 /**
@@ -162,10 +185,10 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
-  mp_Signature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
 #define DECLARE_SU_USED_INICOND(name,description,unit) \
-  mp_Signature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
 
   
@@ -180,7 +203,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_PRODUCED_VAR(name,description,unit) \
-  mp_Signature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
   
 /**
   Macro for declaration of an updated variable on all RSs
@@ -189,7 +212,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_RS_UPDATED_VAR(name,description,unit) \
-  mp_Signature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 /**
   Macro for declaration of a required variable on all RSs
@@ -198,10 +221,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_RS_REQUIRED_VAR(name,description,unit) \
-  mp_Signature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 #define DECLARE_RS_REQUIRED_PREVVAR(name,description,unit) \
-  mp_Signature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 
 /**
@@ -211,10 +234,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_USED_VAR(name,description,unit) \
-  mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
 
 #define DECLARE_RS_USED_PREVVAR(name,description,unit) \
-  mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
 
 
 /**
@@ -224,10 +247,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
-  mp_Signature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 #define DECLARE_RS_USED_PROPERTY(name,description,unit) \
-  mp_Signature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 /**
   Macro for declaration of a required initial condition on all RSs
@@ -236,10 +259,10 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
-  mp_Signature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 #define DECLARE_RS_USED_INICOND(name,description,unit) \
-  mp_Signature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 // =====================================================================
 // =====================================================================
@@ -252,7 +275,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_PRODUCED_VAR(name,description,unit) \
-  mp_Signature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
 /**
   Macro for declaration of an updated variable on all GUs
@@ -261,7 +284,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_GU_UPDATED_VAR(name,description,unit) \
-  mp_Signature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
 /**
   Macro for declaration of a required variable on all GUs
@@ -270,10 +293,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
-  mp_Signature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_REQUIRED_PREVVAR(name,description,unit) \
-  mp_Signature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
   
 /**
@@ -283,10 +306,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_USED_VAR(name,description,unit) \
-  mp_Signature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_PREVVAR(name,description,unit) \
-  mp_Signature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
   
 /**
@@ -296,10 +319,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
-  mp_Signature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_PROPERTY(name,description,unit) \
-  mp_Signature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
 
 /**
@@ -309,34 +332,32 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
-  mp_Signature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_INICOND(name,description,unit) \
-  mp_Signature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
   
 // =====================================================================
 // =====================================================================
 
 #define DECLARE_REQUIRED_EXTRAFILE(name) \
-  mp_Signature->HandledData.RequiredExtraFiles.Add(name);
+  ZeSignature->HandledData.RequiredExtraFiles.Add(name);
 
 
 #define DECLARE_USED_EXTRAFILE(name) \
-  mp_Signature->HandledData.UsedExtraFiles.Add(name);
+  ZeSignature->HandledData.UsedExtraFiles.Add(name);
 
 
 // =====================================================================
 // =====================================================================
 
-#define DECLARE_REQUIRED_SU_RAIN mp_Signature->HandledData.RequiredRainOnSU = true;
+#define DECLARE_REQUIRED_SU_RAIN ZeSignature->HandledData.RequiredRainOnSU = true;
 
-#define DECLARE_REQUIRED_RS_RAIN mp_Signature->HandledData.RequiredRainOnRS = true;
+#define DECLARE_REQUIRED_RS_RAIN ZeSignature->HandledData.RequiredRainOnRS = true;
 
 // =====================================================================
 // =====================================================================
-
-
 
 
 /**
@@ -574,7 +595,7 @@ struct Signature
   // ModuleTypeList ModuleType;
 
   /**
-    Plugin identity
+    Plugin identitypluginclassname
   */
   wxString ID;
 
@@ -696,7 +717,7 @@ class PluggableFunction : public wxObject
 
   protected:
 
-    mhydasdk::base::Signature* mp_Signature;
+//    mhydasdk::base::Signature* mp_Signature;
 
     mhydasdk::core::ParamsMap m_ParamsMap;
 
@@ -908,7 +929,7 @@ class PluggableFunction : public wxObject
       Returns the pluggable function signature
       \return \link Signature Signature \endlink
     */
-    mhydasdk::base::Signature* getSignature() { return mp_Signature; };
+//    mhydasdk::base::Signature* getSignature() { return mp_Signature; };
 
 
     bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; };
@@ -959,6 +980,8 @@ class PluggableFunction : public wxObject
 // =====================================================================
 
 typedef PluggableFunction*(*GetPluggableFunctionProc)();
+
+typedef Signature*(*GetSignatureProc)();
 
 
 } } // namespace mhydasdk::base
