@@ -83,10 +83,8 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-extern "C"
-{
-  DLLIMPORT mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction();
-};
+
+DECLARE_PLUGIN_HOOKS;
 
 
 

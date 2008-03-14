@@ -14,64 +14,68 @@
 // =====================================================================
 // =====================================================================
 
-PLUGIN_HOOK(HayamiRSFunction);
+DEFINE_FUNCTION_HOOK(HayamiRSFunction);
 
 
 // =====================================================================
 // =====================================================================
 
-
-HayamiRSFunction::HayamiRSFunction()
-: PluggableFunction()
-{
-
+BEGIN_SIGNATURE_HOOK;
   DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"));
   DECLARE_SIGNATURE_NAME(wxT("water transfer on reach segments using hayami propagation method; surface water/groundwater exchanges + exchanges betwen groundwater units"));
   DECLARE_SIGNATURE_DESCRIPTION(wxT("WARNING: UNIQUE BUFFER WITHOUT TAKING INTO ACCOUNT THE HEIGHT OF THE REACHES"));
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
-
+  
   DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);  
   
   DECLARE_SIGNATURE_SDKVERSION;
   
   DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa. R, Dages C., Louchart X., Fabre J.-C."));
   DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, dages@supagro.inra.fr, louchart@supagro.inra.fr, fabrejc@supagro.inra.fr"));  
-
-
+  
+  
   
   // Produced variables
   DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));  
   DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",wxT("Water height at the outlet of the ditch"),wxT("m"));  
   DECLARE_RS_PRODUCED_VAR("water.surf-sz.Q.exchange-rs-gu",wxT("water flux exchanged betwwen RS and GU unit"),wxT("m3/s"));
-
+  
   DECLARE_GU_PRODUCED_VAR("water.sz.Q.output",wxT("water flux output of the GU"),wxT("m3/s"));
   DECLARE_GU_PRODUCED_VAR("water.sz-surf.Q.exfiltration",wxT("exfiltration from GU to RS"),wxT("m3/s/m2"));
   DECLARE_GU_PRODUCED_VAR("water.sz.H.watertable",wxT("watertable depth, positive value from soil surface"),wxT("m"));
-
+  
   // Required variables
   DECLARE_SU_REQUIRED_VAR("water.surf.H.infiltration",wxT(""),wxT("m"));
   DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the SUs"),wxT("m3/s"));    
-
-
+  
+  
   // Required initial conditions
   DECLARE_SU_REQUIRED_INICOND("thetains",wxT(""),wxT("m3/m3"));
   DECLARE_GU_REQUIRED_INICOND("iniwatertable",wxT("initial watertable depth, positive value from soil surface"),wxT("m"));
-
+  
   // Required properties
   DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT(""),wxT("m3/m3"));
   DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("Manning roughness coefficient"),wxT(""));
-
-
+  
+  
   // Function parameters
   DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT(""));
   DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity on RSs"),wxT("m/s"));  
   DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on RSs"),wxT("m2/s"));  
   DECLARE_FUNCTION_PARAM("calibstep",wxT("calibration step for height-discharge relation"),wxT("m"));    
   DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("m"));  
-
+  
   DECLARE_FUNCTION_PARAM("coeffinfiltration",wxT("multiplicative exchange coefficient when watertable level is under surface level"),wxT(""));
   DECLARE_FUNCTION_PARAM("coeffdrainage",wxT("multiplicative exchange coefficient when watertable level is above surface level"),wxT(""));
   DECLARE_FUNCTION_PARAM("coeffgw",wxT("multiplicative exchange coefficient between GUs"),wxT(""));
+
+END_SIGNATURE_HOOK;
+
+
+HayamiRSFunction::HayamiRSFunction()
+: PluggableFunction()
+{
+
 
 
   // default values

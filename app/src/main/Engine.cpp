@@ -16,22 +16,22 @@
 
 
 #include <wx/listimpl.cpp>
-WX_DEFINE_LIST(FunctionsList);
+WX_DEFINE_LIST(PluginsList);
 
 
 // =====================================================================
 // =====================================================================
 
 #define DECLARE_FUNCTION_PARSER \
-    FunctionsList::Node *_M_FuncNode = NULL;
+    PluginsList::Node *_M_FuncNode = NULL;
 
 
 #define PARSE_FUNCTION_LIST(calledmethod,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
-      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = statevar && CurrentFunction->calledmethod; \
+      PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = (statevar && CurrentFunction->Function->calledmethod); \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
@@ -39,8 +39,8 @@ WX_DEFINE_LIST(FunctionsList);
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
-      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = (statevar && (CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2)); \
+      PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
@@ -48,8 +48,8 @@ WX_DEFINE_LIST(FunctionsList);
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
-      mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = (statevar && ((CurrentFunction->calledmethod1 && CurrentFunction->calledmethod2) && (CurrentFunction->calledmethod3 && CurrentFunction->calledmethod4))); \
+      PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
+      if (CurrentFunction != NULL) statevar = (statevar && ((CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2) && (CurrentFunction->Function->calledmethod3 && CurrentFunction->Function->calledmethod4))); \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
@@ -148,7 +148,7 @@ bool Engine::processConfig()
 
   FunctionConfigsList::Node *FuncNode = m_Config.FuncConfigs.GetFirst();
   FunctionConfig *FConf;
-  mhydasdk::base::PluggableFunction* FuncToAdd;
+  PluginContainer* FuncToAdd;
   
   m_Functions.clear();
 
@@ -158,13 +158,13 @@ bool Engine::processConfig()
   {
     FConf = (FunctionConfig*)(FuncNode->GetData());
    
-    FuncToAdd = mp_PlugMan->getFunctionFromPlugin(FConf->FileID,mhydasdk::base::SIMULATION,mp_CoreData);
+    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,mhydasdk::base::SIMULATION,mp_CoreData);
     
     if (FuncToAdd != NULL)
     {
-       if (FuncToAdd->initParams(FConf->Params))
+       if (FuncToAdd->Function->initParams(FConf->Params))
        {
-         m_Functions.Append((mhydasdk::base::PluggableFunction**)FuncToAdd);
+         m_Functions.Append((PluginContainer**)FuncToAdd);
        }
        else
        {
@@ -355,7 +355,7 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Mess
 bool Engine::checkModelConsistency()
 {
 
-  FunctionsList::Node *FuncNode = NULL;
+  PluginsList::Node *FuncNode = NULL;
   mhydasdk::base::SignatureHandledData HData;
   
   int i;
@@ -365,11 +365,12 @@ bool Engine::checkModelConsistency()
   FuncNode = m_Functions.GetFirst();
   while (FuncNode && IsOK)
   {
-    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
     if (CurrentFunction != NULL)
     {        
-      HData = CurrentFunction->getSignature()->HandledData;
-
+     
+      HData = CurrentFunction->Signature->HandledData;
+    
       // required vars
       i = 0;
       while (IsOK && i<HData.RequiredVars.size())
@@ -424,7 +425,7 @@ bool Engine::checkModelConsistency()
           }
         }
                 
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable required by ") + CurrentFunction->getSignature()->ID + wxT(" is not previously created"));
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable required by ") + CurrentFunction->Signature->ID + wxT(" is not previously created"));
         else i++;        
       }
       
@@ -492,7 +493,7 @@ bool Engine::checkModelConsistency()
         }
        
         
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.ProducedVars[i].Name+wxT(" variable produced by ") + CurrentFunction->getSignature()->ID + wxT(" cannot be created because it is previously created"));
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.ProducedVars[i].Name+wxT(" variable produced by ") + CurrentFunction->Signature->ID + wxT(" cannot be created because it is previously created"));
         else i++;
       }
      
@@ -557,7 +558,7 @@ bool Engine::checkModelConsistency()
           }
         }        
         
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),wxT("Problem handling of ")+HData.ProducedVars[i].Name+wxT(" updated variable declared by ") + CurrentFunction->getSignature()->ID);
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),wxT("Problem handling of ")+HData.ProducedVars[i].Name+wxT(" updated variable declared by ") + CurrentFunction->Signature->ID);
         else i++;        
       }
     
@@ -568,16 +569,15 @@ bool Engine::checkModelConsistency()
 
   
   
-  
   // prev vars
   
   FuncNode = m_Functions.GetFirst();
   while (FuncNode && IsOK)
   {
-    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
     if (CurrentFunction != NULL)
     {        
-      HData = CurrentFunction->getSignature()->HandledData;
+      HData = CurrentFunction->Signature->HandledData;
 
       // required vars
       i = 0;
@@ -635,7 +635,7 @@ bool Engine::checkModelConsistency()
           
         }
                 
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredPrevVars[i].Name+wxT(" variable required at previous step by ") + CurrentFunction->getSignature()->ID + wxT(" does not exist"));
+        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredPrevVars[i].Name+wxT(" variable required at previous step by ") + CurrentFunction->Signature->ID + wxT(" does not exist"));
         else i++;        
       }
     
@@ -657,20 +657,20 @@ bool Engine::checkModelConsistency()
 bool Engine::checkDataConsistency()
 {
 
-  FunctionsList::Node *FuncNode = NULL;
+  PluginsList::Node *FuncNode = NULL;
   mhydasdk::base::SignatureHandledData HData;
   
   int i;
   bool IsOK = true; 
   
-  
+ 
   FuncNode = m_Functions.GetFirst();
   while (FuncNode && IsOK)
   {
-    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
     if (CurrentFunction != NULL)
     {        
-      HData = CurrentFunction->getSignature()->HandledData;
+      HData = CurrentFunction->Signature->HandledData;
 
       // required props
       i = 0;
@@ -704,7 +704,7 @@ bool Engine::checkDataConsistency()
         
         if (!IsOK)
         {
-          mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed property required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+          mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed property required by ") + CurrentFunction->Signature->ID + wxT(" is missing"));
           return false;
         }
         else i++;        
@@ -744,7 +744,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredIniconds[i].Name+wxT(" distributed initial condition required by ") + CurrentFunction->getSignature()->ID + wxT(" is missing"));
+            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredIniconds[i].Name+wxT(" distributed initial condition required by ") + CurrentFunction->Signature->ID + wxT(" is missing"));
             return false;
           }
           else i++;        
@@ -768,7 +768,7 @@ bool Engine::checkDataConsistency()
 
 bool Engine::checkRainConsistency()
 {
-  FunctionsList::Node *FuncNode = NULL;
+  PluginsList::Node *FuncNode = NULL;
   mhydasdk::base::SignatureHandledData HData;
   bool RequiredRainOnSU = false;
   bool RequiredRainOnRS = false;  
@@ -777,10 +777,10 @@ bool Engine::checkRainConsistency()
   while (FuncNode && !RequiredRainOnSU && !RequiredRainOnRS)
   {
 
-    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
     if (CurrentFunction != NULL)
     {
-      HData = CurrentFunction->getSignature()->HandledData;
+      HData = CurrentFunction->Signature->HandledData;
       
       RequiredRainOnSU = HData.RequiredRainOnSU || RequiredRainOnSU;
       RequiredRainOnRS = HData.RequiredRainOnRS || RequiredRainOnRS;            
@@ -843,7 +843,7 @@ bool Engine::checkRainConsistency()
 bool Engine::checkExtraFilesConsistency()
 {
   
-  FunctionsList::Node *FuncNode = NULL;
+  PluginsList::Node *FuncNode = NULL;
   int i;
   mhydasdk::base::SignatureHandledData HData;
   
@@ -853,16 +853,16 @@ bool Engine::checkExtraFilesConsistency()
   FuncNode = m_Functions.GetFirst();
   while (FuncNode)
   {
-    mhydasdk::base::PluggableFunction* CurrentFunction = (mhydasdk::base::PluggableFunction*)FuncNode->GetData();
+    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
     if (CurrentFunction != NULL)
     {
-      HData = CurrentFunction->getSignature()->HandledData;      
+      HData = CurrentFunction->Signature->HandledData;      
       
       for (i=0;i<HData.RequiredExtraFiles.size();i++)
       {
         if (!wxFileExists(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
         {
-          mp_ExecMsgs->setError(wxT("Engine"),wxT("File ") + HData.RequiredExtraFiles[i] + wxT(" required by ") + CurrentFunction->getSignature()->ID + wxT(" not found"));
+          mp_ExecMsgs->setError(wxT("Engine"),wxT("File ") + HData.RequiredExtraFiles[i] + wxT(" required by ") + CurrentFunction->Signature->ID + wxT(" not found"));
           return false;          
         }
       }
@@ -981,22 +981,19 @@ bool Engine::prepareDataAndCheckConsistency()
   {       
     return false;    
   }
+
   
   PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
  
   
-  
   IsOK = checkRainConsistency();
 
-  
   
   if (!IsOK)
   {       
     return false;    
   }
   
-
- 
   
   IsOK = checkExtraFilesConsistency();
   if (!IsOK)
