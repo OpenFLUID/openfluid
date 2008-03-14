@@ -14,10 +14,12 @@
 // =====================================================================
 // =====================================================================
 
-mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
+PLUGIN_HOOK(HayamiRSFunction)
+
+/*mhydasdk::base::PluggableFunction* GetMHYDASPluggableFunction()
 {
   return new HayamiRSFunction();
-}
+}*/
 
 // =====================================================================
 // =====================================================================
