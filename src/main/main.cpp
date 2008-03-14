@@ -261,14 +261,14 @@ void MHYDASApp::printDataInfos()
 void MHYDASApp::printPluginsList()
 {  std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
 
-  ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList();
+  ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions();
 
   std::cout << "Available pluggable simulation functions:" << std::endl;
 
 
-  if (Signatures.GetCount() > 0)
+  if (PlugContainers.GetCount() > 0)
   {
-    for (int i=0;i<Signatures.GetCount();i++) std::cout << "  - " << ReplaceEmptyString(Signatures[i]->Name,wxT("(unknown simulation function)")).mb_str(wxConvUTF8) << std::endl;
+    for (int i=0;i<PlugContainers.GetCount();i++) std::cout << "  - " << ReplaceEmptyString(PlugContainers[i]->Signature->Name,wxT("(unknown simulation function)")).mb_str(wxConvUTF8) << std::endl;
   }
   else
   {
@@ -393,7 +393,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 {
 
  
-  ArrayOfPluginsSignatures Signatures = mp_PlugMan->getAvailableFunctionsList(); 
+  ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions(); 
   wxString StatusStr;
   
   
@@ -407,48 +407,48 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
   
 
   
-  if (Signatures.GetCount() > 0)
+  if (PlugContainers.GetCount() > 0)
   {
-    for (int i=0;i<Signatures.GetCount();i++)
+    for (int i=0;i<PlugContainers.GetCount();i++)
     {
       
       // Status string
       StatusStr = wxT("experimental");
-      if (Signatures[i]->Status == mhydasdk::base::BETA) StatusStr = wxT("beta");
-      if (Signatures[i]->Status == mhydasdk::base::STABLE) StatusStr = wxT("stable");      
+      if (PlugContainers[i]->Signature->Status == mhydasdk::base::BETA) StatusStr = wxT("beta");
+      if (PlugContainers[i]->Signature->Status == mhydasdk::base::STABLE) StatusStr = wxT("stable");      
       
       if (IsXMLFormat)
       {
-        std::cout << "    <funcdef fileID=\"" << Signatures[i]->ID.mb_str(wxConvUTF8) 
-                  << "\" name=\"" << Signatures[i]->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
-        std::cout << "      <domain>" << Signatures[i]->Domain.mb_str(wxConvUTF8) << "</domain>" << std::endl;
-        std::cout << "      <process>" << Signatures[i]->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
-        std::cout << "      <method>" << Signatures[i]->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
-        std::cout << "      <description>" << Signatures[i]->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
-        std::cout << "      <version number=\"" << Signatures[i]->Version.mb_str(wxConvUTF8) << "\" sdk=\""<< Signatures[i]->SDKVersion.mb_str(wxConvUTF8) << "\" devstatus=\"" << StatusStr.mb_str(wxConvUTF8) << "\"/>" << std::endl;
-        std::cout << "      <author name=\"" << Signatures[i]->Author.mb_str(wxConvUTF8) 
-                  << "\" email=\"" << Signatures[i]->AuthorEmail.mb_str(wxConvUTF8) << "\"/>" << std::endl;
+        std::cout << "    <funcdef fileID=\"" << PlugContainers[i]->Signature->ID.mb_str(wxConvUTF8) 
+                  << "\" name=\"" << PlugContainers[i]->Signature->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
+        std::cout << "      <domain>" << PlugContainers[i]->Signature->Domain.mb_str(wxConvUTF8) << "</domain>" << std::endl;
+        std::cout << "      <process>" << PlugContainers[i]->Signature->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
+        std::cout << "      <method>" << PlugContainers[i]->Signature->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
+        std::cout << "      <description>" << PlugContainers[i]->Signature->Description.mb_str(wxConvUTF8) << "</description>" << std::endl;
+        std::cout << "      <version number=\"" << PlugContainers[i]->Signature->Version.mb_str(wxConvUTF8) << "\" sdk=\""<< PlugContainers[i]->Signature->SDKVersion.mb_str(wxConvUTF8) << "\" devstatus=\"" << StatusStr.mb_str(wxConvUTF8) << "\"/>" << std::endl;
+        std::cout << "      <author name=\"" << PlugContainers[i]->Signature->Author.mb_str(wxConvUTF8) 
+                  << "\" email=\"" << PlugContainers[i]->Signature->AuthorEmail.mb_str(wxConvUTF8) << "\"/>" << std::endl;
 
         std::cout << "      <handleddata>" << std::endl;                  
-        printPluginsHandledDataReport(Signatures[i]->HandledData,wxT("        "),IsXMLFormat);
+        printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,wxT("        "),IsXMLFormat);
         std::cout << "      </handleddata>" << std::endl;                  
                  
       }
       else
       {       
-        std::cout << "* " << Signatures[i]->ID.mb_str(wxConvUTF8) << std::endl;           
-        std::cout << "   - Name: " << ReplaceEmptyString(Signatures[i]->Name,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;        
-        std::cout << "   - Domain: " << ReplaceEmptyString(Signatures[i]->Domain,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
-        std::cout << "   - Process: " << ReplaceEmptyString(Signatures[i]->Process,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
-        std::cout << "   - Method: " << ReplaceEmptyString(Signatures[i]->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                
-        std::cout << "   - Description: " << ReplaceEmptyString(Signatures[i]->Description,wxT("(none)")).mb_str(wxConvUTF8) << std::endl;                
-        std::cout << "   - Version: " << ReplaceEmptyString(Signatures[i]->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                        
-        std::cout << "   - SDK version used at build time: " << Signatures[i]->SDKVersion.mb_str(wxConvUTF8) <<  std::endl;
+        std::cout << "* " << PlugContainers[i]->Signature->ID.mb_str(wxConvUTF8) << std::endl;           
+        std::cout << "   - Name: " << ReplaceEmptyString(PlugContainers[i]->Signature->Name,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;        
+        std::cout << "   - Domain: " << ReplaceEmptyString(PlugContainers[i]->Signature->Domain,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Process: " << ReplaceEmptyString(PlugContainers[i]->Signature->Process,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Method: " << ReplaceEmptyString(PlugContainers[i]->Signature->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                
+        std::cout << "   - Description: " << ReplaceEmptyString(PlugContainers[i]->Signature->Description,wxT("(none)")).mb_str(wxConvUTF8) << std::endl;                
+        std::cout << "   - Version: " << ReplaceEmptyString(PlugContainers[i]->Signature->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                        
+        std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->SDKVersion.mb_str(wxConvUTF8) <<  std::endl;
         std::cout << "   - Development status: " << StatusStr.mb_str(wxConvUTF8) <<  std::endl;        
-        std::cout << "   - Author(s): " << ReplaceEmptyString(Signatures[i]->Author,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                                
-        std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(Signatures[i]->AuthorEmail,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
+        std::cout << "   - Author(s): " << ReplaceEmptyString(PlugContainers[i]->Signature->Author,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                                
+        std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
         std::cout << "   - Handled data" << std::endl;                  
-        printPluginsHandledDataReport(Signatures[i]->HandledData,wxT("     . "),IsXMLFormat);
+        printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,wxT("     . "),IsXMLFormat);
         
       }
 
@@ -458,7 +458,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       }  
       else
       {
-        if (i != Signatures.GetCount()-1)
+        if (i != PlugContainers.GetCount()-1)
           std::cout << "================================================================================" << std::endl;
       }        
     }

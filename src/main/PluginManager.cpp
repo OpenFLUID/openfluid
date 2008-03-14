@@ -35,7 +35,7 @@ PluginManager::~PluginManager()
 
 // =====================================================================
 // =====================================================================
-
+/*
 mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString PluginFilename)
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
@@ -67,11 +67,59 @@ mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString 
 
   return Plug;
 }
+*/
+
+PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
+{
+  wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
+  wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
+  PluginContainer* Plug = NULL;  
+  
+ 
+  // library loading
+  if (PluginFile.Length()>0 && PlugLib->Load(PluginFile))
+  {
+    
+    // checks if the handle proc exists
+    if (PlugLib->HasSymbol(wxT(PLUGFUNCTION_PROC_NAME)) && PlugLib->HasSymbol(wxT(PLUGSIGNATURE_PROC_NAME)))
+    {
+      // hooks the handle proc
+      mhydasdk::base::GetSignatureProc SignProc = (mhydasdk::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));      
+      
+      if (SignProc != NULL)
+      {
+        Plug = new PluginContainer();
+        
+        Plug->Signature = SignProc();
+
+        mhydasdk::base::GetPluggableFunctionProc PlugProc = (mhydasdk::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT(PLUGFUNCTION_PROC_NAME));
+        if (PlugProc != NULL)
+        {
+          Plug->Function = PlugProc();
+          Plug->Filename = PluginFile; 
+        }
+        else 
+        {
+          Plug->Function = NULL;
+          Plug->Signature = NULL;
+          Plug = NULL;
+        }
+      }
+
+      // unloads the library
+      //PlugLib->Unload();
+
+    }
+  }
+
+  return Plug;
+}
+
 
 
 // =====================================================================
 // =====================================================================
-
+/*
 ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 {
   ArrayOfPluginsSignatures Signatures;
@@ -98,26 +146,58 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
   
   return Signatures;
 }
+*/
+
+ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
+{
+  ArrayOfPluginsContainers PluginsContainers;
+  wxArrayString PluginsPaths = mp_RunEnv->getPluginsPaths();
+  wxArrayString PluginFiles;
+  wxArrayString TmpFiles;
+  int i,j;
+  
+  
+  for (i=0;i<PluginsPaths.GetCount();i++)
+  {
+    TmpFiles = GetFilesByExt(PluginsPaths[i],MHYDAS_PLUGINS_EXT);    
+    for (j=0;j<TmpFiles.GetCount();j++) PluginFiles.Add(TmpFiles[j]);
+  }
+  
+
+  PluginContainer* CurrentPlug;
+
+  for (i=0;i<PluginFiles.GetCount();i++)
+  {
+    CurrentPlug = buildPluginContainer(PluginFiles[i]);
+    
+    if (CurrentPlug != NULL) PluginsContainers.Add(CurrentPlug);
+  }
+  
+  return PluginsContainers;
+}
+
 
 
 
 // =====================================================================
 // =====================================================================
 
-mhydasdk::base::PluggableFunction *PluginManager::getFunctionFromPlugin(wxString PluginName,
-                                                               mhydasdk::base::FunctionTypeList ReqFuncType,
-                                                               mhydasdk::core::CoreRepository* CoreData)
+PluginContainer *PluginManager::getPlugin(wxString PluginName,
+                                          mhydasdk::base::FunctionTypeList ReqFuncType,
+                                          mhydasdk::core::CoreRepository* CoreData)
 {
 
-  mhydasdk::base::PluggableFunction *Plug = getPluggableFunction(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
+  PluginContainer *Plug = buildPluginContainer(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
+  
+
   
   if (Plug != NULL)
   {
-    if (Plug->getSignature()->FunctionType == ReqFuncType)
+    if (Plug->Signature->FunctionType == ReqFuncType)
     {
-      Plug->setDataRepository(CoreData);
-      Plug->setExecutionMessages(mp_ExecMsgs);
-      Plug->setFunctionEnvironment(mp_RunEnv->createFunctionEnvironment());
+      Plug->Function->setDataRepository(CoreData);
+      Plug->Function->setExecutionMessages(mp_ExecMsgs);
+      Plug->Function->setFunctionEnvironment(mp_RunEnv->createFunctionEnvironment());
       return Plug;      
     }
   }

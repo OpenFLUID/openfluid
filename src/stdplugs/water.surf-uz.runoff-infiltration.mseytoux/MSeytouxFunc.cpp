@@ -17,20 +17,13 @@
 // =====================================================================
 
 
-
-PLUGIN_HOOK(MorelSeytouxFunc);
-
-
+DEFINE_FUNCTION_HOOK(MorelSeytouxFunc);
 
 // =====================================================================
 // =====================================================================
 
 
-
-
-MorelSeytouxFunc::MorelSeytouxFunc()
-                : PluggableFunction()
-{
+BEGIN_SIGNATURE_HOOK
   
   DECLARE_SIGNATURE_ID(wxT("water.surf-uz.runoff-infiltration.mseytoux"));  
   DECLARE_SIGNATURE_NAME(wxT("Morel-Seytoux production on surface units"));
@@ -59,7 +52,22 @@ MorelSeytouxFunc::MorelSeytouxFunc()
   DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT(""));
  
   DECLARE_REQUIRED_SU_RAIN;
+
+
+
+END_SIGNATURE_HOOK
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+MorelSeytouxFunc::MorelSeytouxFunc()
+                : PluggableFunction()
+{
   
+    
   m_ResStep = 0.000005;
   
 }

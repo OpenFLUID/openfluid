@@ -14,8 +14,25 @@
 #include "RuntimeEnv.h"
 
 
+struct PluginContainer
+{
+  
+  wxString Filename;
+  mhydasdk::base::Signature* Signature;
+  mhydasdk::base::PluggableFunction* Function;
+  
+  PluginContainer()
+  {
+    Filename = wxT("");
+    Signature = NULL;
+    Function = NULL;
+  }
+  
+};
+
 
 WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
+WX_DEFINE_ARRAY(PluginContainer*, ArrayOfPluginsContainers);
 
 /**
   Management class for plugins
@@ -27,7 +44,9 @@ class PluginManager
     RuntimeEnvironment* mp_RunEnv;
     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
-    mhydasdk::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);
+/*    mhydasdk::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);*/
+    PluginContainer *buildPluginContainer(wxString PluginFilename);
+    
 
 
   public:
@@ -44,15 +63,17 @@ class PluginManager
     /**
       Lists available simulation functions
     */
-    ArrayOfPluginsSignatures getAvailableFunctionsList();
+//    ArrayOfPluginsSignatures getAvailableFunctionsList();
+    
+    ArrayOfPluginsContainers getAvailableFunctions();
 
 
     /**
       Returns function and function types
     */
-    mhydasdk::base::PluggableFunction *getFunctionFromPlugin(wxString PluginName,
-                                                             mhydasdk::base::FunctionTypeList ReqFuncType,
-                                                             mhydasdk::core::CoreRepository* CoreData);
+    PluginContainer *getPlugin(wxString PluginName,
+                               mhydasdk::base::FunctionTypeList ReqFuncType,
+                               mhydasdk::core::CoreRepository* CoreData);
 
 /*
     mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,

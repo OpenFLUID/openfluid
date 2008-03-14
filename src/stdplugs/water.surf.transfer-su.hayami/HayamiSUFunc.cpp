@@ -15,18 +15,14 @@
 // =====================================================================
 // =====================================================================
 
-PLUGIN_HOOK(HayamiSUFunction);
+DEFINE_FUNCTION_HOOK(HayamiSUFunction);
 
 
 
 // =====================================================================
 // =====================================================================
 
-
-
-HayamiSUFunction::HayamiSUFunction()
-                : PluggableFunction()
-{
+BEGIN_SIGNATURE_HOOK
 
   DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-su.hayami"));  
   DECLARE_SIGNATURE_NAME(wxT("water transfer on surface units using hayami propagation method"));
@@ -51,7 +47,18 @@ HayamiSUFunction::HayamiSUFunction()
   DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity"),wxT("m/s"));  
   DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on SUs"),wxT("m2/s"));  
 
+END_SIGNATURE_HOOK
 
+// =====================================================================
+// =====================================================================
+
+
+
+HayamiSUFunction::HayamiSUFunction()
+                : PluggableFunction()
+{
+
+  
   // default values
   m_MaxSteps = 100;    
   m_MeanCelerity = 0.045;    

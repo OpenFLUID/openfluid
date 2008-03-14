@@ -20,7 +20,7 @@
 
 
 #include <wx/list.h>
-WX_DECLARE_LIST(mhydasdk::base::PluggableFunction*, FunctionsList);
+WX_DECLARE_LIST(PluginContainer*, PluginsList);
 
 // =====================================================================
 // =====================================================================
@@ -34,7 +34,7 @@ class Engine
 {
   private:
 
-     FunctionsList m_Functions;
+     PluginsList m_Functions;
 
      mhydasdk::core::CoreRepository* mp_CoreData;
 
