@@ -10,11 +10,12 @@
   It sets some essential methods
   The PluggableFunctionProc type defines the handle method for the 
   function integration into the host application. 
-  EVERY PLUGGABLE FUNCTION MUST DEFINE AND IMPLEMENT THE FUNCTION:
+  EVERY PLUGGABLE FUNCTION MUST DECLARE AND DEFINE THE FUNCTIONS:
   \code
   extern "C"
   {
-    DLLIMPORT PluggableFunction* GetMHYDASPluggableFunction(wxString SelfPath);
+    DLLIMPORT PluggableFunction* GetPlugFunction();
+    DLLIMPORT PluggableFunction* GetPlugSignature();    
   };
   \endcode
   returning an instance of the pluggable function class, inherited from the class defined here.
@@ -50,13 +51,10 @@
 #define PLUGFUNCTION_PROC_NAME "GetPlugFunction"
 #define PLUGSIGNATURE_PROC_NAME "GetPlugSignature"
 
-#define DEFINE_FUNCTION_HOOK(pluginclassname) \
-  mhydasdk::base::PluggableFunction* GetPlugFunction() \
-  { \
-    return new pluginclassname(); \
-  }
 
-
+/**
+  Macro for declaration of function and signature hooks   
+*/ 
 #define DECLARE_PLUGIN_HOOKS \
   extern "C" \
   { \
@@ -65,12 +63,29 @@
   };
 
 
+
 // =====================================================================
 // =====================================================================
 
 
+/**
+  Macro for definition of function hook
+  \param[in] pluginclassname The name of the class to instanciate   
+*/ 
+
+#define DEFINE_FUNCTION_HOOK(pluginclassname) \
+  mhydasdk::base::PluggableFunction* GetPlugFunction() \
+  { \
+    return new pluginclassname(); \
+  }
 
 
+// =====================================================================
+// =====================================================================
+
+/**
+  Macro for the beginning of definition of signature hook   
+*/ 
 #define BEGIN_SIGNATURE_HOOK \
   mhydasdk::base::Signature* GetPlugSignature() \
   { \
@@ -78,9 +93,16 @@
     ZeSignature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
   
 
+/**
+  Macro for the end of definition of signature hook   
+*/
 #define END_SIGNATURE_HOOK \
     return ZeSignature; \
   }
+
+
+// =====================================================================
+// =====================================================================
 
 
 #define DECLARE_SIGNATURE_ID(id) ZeSignature->ID = id;
@@ -505,7 +527,9 @@ enum FunctionStatusList
 
 // =====================================================================
 // =====================================================================
-
+/**
+  Structure for storage of the definition an item handled by the function. 
+*/
 struct SignatureHandledItem
 {
   wxString Name;
@@ -534,8 +558,9 @@ struct SignatureHandledItem
 };
 
 
-
-
+/**
+  Structure for storage of the definition of the data handled by the function. This is part of the signature. 
+*/
 struct SignatureHandledData
 {
   std::vector<SignatureHandledItem> ProducedVars;
@@ -649,6 +674,9 @@ struct Signature
   */
   wxString AuthorEmail;
   
+  /**
+    Handled data
+  */
   SignatureHandledData HandledData;
   
   Signature()
@@ -669,6 +697,7 @@ struct Signature
   
   void setSDKVersion(int Major, int Minor, int Revision)
   {
+    SDKVersion.Clear();
     SDKVersion << Major << wxT(".") << Minor << wxT("-") << Revision;
   }
 
@@ -717,14 +746,24 @@ class PluggableFunction : public wxObject
 
   protected:
 
-//    mhydasdk::base::Signature* mp_Signature;
-
+    /**
+      Function parameters 
+    */    
     mhydasdk::core::ParamsMap m_ParamsMap;
 
+    /**
+      Pointer to the core repository 
+    */
     mhydasdk::core::CoreRepository* mp_CoreData;
     
+    /**
+      Pointer to the execution messages repository 
+    */
     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
+    /**
+      Function execution environment
+    */  
     mhydasdk::base::FunctionEnvironment m_FunctionEnv;
 
     /**
@@ -925,13 +964,6 @@ class PluggableFunction : public wxObject
     */
     virtual ~PluggableFunction();
 
-    /**
-      Returns the pluggable function signature
-      \return \link Signature Signature \endlink
-    */
-//    mhydasdk::base::Signature* getSignature() { return mp_Signature; };
-
-
     bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; };
     
     bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
@@ -939,37 +971,33 @@ class PluggableFunction : public wxObject
     bool setFunctionEnvironment(mhydasdk::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
 
     /**
-      Iinitializes function parameters of the function, given as a hash map
+      Initializes function parameters of the function, given as a hash map. Called by the kernel.
     */
     virtual bool initParams(mhydasdk::core::ParamsMap Params)=0;
 
     /**
-      Adds needed data.
-
+      Prepares data. Called by the kernel.
     */
     virtual bool prepareData()=0;
 
     /**
-      Checks needed data.
-    
+      Checks the function consistency. Called by the kernel.
     */
     virtual bool checkConsistency()=0;
     
+
     /**
-      Pure virtual method, must be overloaded.
-      Place pre-simulation initialization here in overloads
+      Called by the kernel.
     */
     virtual bool initializeRun(SimulationInfo* SimInfo)=0;
 
     /**
-      Pure virtual method, must be overloaded.
-      Place simulation process that must be done here in overloads
+      Called by the kernel.
     */
     virtual bool runStep(SimulationStatus* SimStatus)=0;
 
     /**
-      Pure virtual method, must be overloaded.
-      Place post-simulation finalization here in overloads
+      Called by the kernel.
     */
     virtual bool finalizeRun(SimulationInfo* SimInfo)=0;    
 

@@ -24,12 +24,9 @@ namespace mhydasdk { namespace base {
 
 PluggableFunction::PluggableFunction()
 {
-
   mp_CoreData = NULL;
 
   mp_ExecMsgs = NULL;
-
-  // mp_Signature = new mhydasdk::base::Signature(); 
   
 }
 
@@ -40,7 +37,6 @@ PluggableFunction::PluggableFunction()
 PluggableFunction::~PluggableFunction()
 { 
   
-//  delete mp_Signature;
   
 }
 
@@ -106,7 +102,7 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
 
 bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue *Value)
 {
-  // attention, la verif de l'existence de la prop bouffe beaucoup de temps
+  // NOTICE: the checking of properties costs execution time
   
   if (HO != NULL)  
   {
