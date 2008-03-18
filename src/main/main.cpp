@@ -421,6 +421,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       {
         std::cout << "    <funcdef fileID=\"" << PlugContainers[i]->Signature->ID.mb_str(wxConvUTF8) 
                   << "\" name=\"" << PlugContainers[i]->Signature->Name.mb_str(wxConvUTF8) << "\">" << std::endl;
+        std::cout << "      <file>" << PlugContainers[i]->Filename.mb_str(wxConvUTF8) << "</file>" << std::endl;
         std::cout << "      <domain>" << PlugContainers[i]->Signature->Domain.mb_str(wxConvUTF8) << "</domain>" << std::endl;
         std::cout << "      <process>" << PlugContainers[i]->Signature->Process.mb_str(wxConvUTF8) << "</process>" << std::endl;
         std::cout << "      <method>" << PlugContainers[i]->Signature->Method.mb_str(wxConvUTF8) << "</method>" << std::endl;
@@ -438,6 +439,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
       {       
         std::cout << "* " << PlugContainers[i]->Signature->ID.mb_str(wxConvUTF8) << std::endl;           
         std::cout << "   - Name: " << ReplaceEmptyString(PlugContainers[i]->Signature->Name,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;        
+        std::cout << "   - File: " << PlugContainers[i]->Filename.mb_str(wxConvUTF8) << std::endl;        
         std::cout << "   - Domain: " << ReplaceEmptyString(PlugContainers[i]->Signature->Domain,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
         std::cout << "   - Process: " << ReplaceEmptyString(PlugContainers[i]->Signature->Process,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;
         std::cout << "   - Method: " << ReplaceEmptyString(PlugContainers[i]->Signature->Method,wxT("(unknown)")).mb_str(wxConvUTF8) << std::endl;                
