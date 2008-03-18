@@ -57,6 +57,8 @@ fi
 ############################
 
 
+#for being seen from mhydasdk-config script
+export MHYDASDKPREFIX 
 
 
 OPTFILE=makeopts.inc
@@ -150,9 +152,9 @@ echo "" >> $OPTFILE
 
 echo "# compile options for mhydas sdk" >> $OPTFILE
 VARTOWRITE=
-VARTOWRITE=`mhydasdk-config --libs`
+VARTOWRITE=`$MHYDASDKPREFIX/bin/mhydasdk-config --libs`
 echo "MHYDASDKLIBS = $VARTOWRITE" >> $OPTFILE
-VARTOWRITE=`mhydasdk-config --cflags`
+VARTOWRITE=`$MHYDASDKPREFIX/bin/mhydasdk-config --cflags`
 echo "MHYDASDKFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE
@@ -262,6 +264,11 @@ fi
 if [ -z $BUILDVER ]; then
   echo "BINPACKNAMEROOT = mhydas-bin-$MAJORVER.$MINORVER-$MACHTYPE" >> $OPTFILE  
 fi
+
+echo "" >> $OPTFILE
+echo "SDKPREFIX = $MHYDASDKPREFIX" >> $OPTFILE
+echo "MHYDASDKPATH = $MHYDASDKPREFIX/bin:$PATH" >> $OPTFILE
+echo "" >> $OPTFILE
 
 
 echo "# Packages infos" >> $OPTFILE

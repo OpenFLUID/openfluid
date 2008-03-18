@@ -2,16 +2,24 @@
 
 include ./makeopts.inc
 
+export PATH := $(MHYDASDKPATH):$(PATH)
+export MHYDASDKPREFIX := $(SDKPREFIX)
 
 
-all: main stdplugs
+all: main stdplugs run-script
 
 .PHONY: main stdplugs
 
 
+run-script:
+	@echo "==== Generating run script for build environment ===="
+	@echo "#!/bin/sh" > $(BASEBINDIR)/run-engine.sh
+	@echo "LD_LIBRARY_PATH=$(MHYDASDKPREFIX)/lib:$LD_LIBRARY_PATH" >> $(BASEBINDIR)/run-engine.sh
+	@echo "./$(EXEFILE) \$$*" >> $(BASEBINDIR)/run-engine.sh
+	@chmod 755 $(BASEBINDIR)/run-engine.sh
 
 main:
-	@echo ""
+	@echo ""	
 	@echo "==== Compiling main program ===="
 	@(cd src/main && $(MAKE))
 
@@ -108,6 +116,7 @@ win32-packages: all
 	@cd $(BASEPACKDIR)/win32/$(PACKNAME)_win32/ && \
          $(ZIP) -r $(BASEPACKDIR)/win32/$(PACKNAME)_win32.zip * && \
          cd $(BASEMAINDIR) > /dev/null
+
 
 
 

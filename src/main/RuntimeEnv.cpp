@@ -32,22 +32,29 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   m_EnableTrace = false;
   
   
-  // plugins search order: user directory then system directory
+  
+  // when development mode (__DEVEL__), 
+  // use the plugins built on the same development cycle (located in mainappdir/plugs)
+  #ifdef __LINUX__
+  #ifdef __DEVEL__
+    m_PlugsDirs.Add(m_AppDir + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
+  #endif
+  #endif
 
+  // plugins search order: user directory then system directory
   m_PlugsDirs.Add(m_UserDataDir + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);  
   
   #ifdef __LINUX__
+  #ifndef __DEVEL__
   m_PlugsDirs.Add(MHYDAS_PLUGINS_STDSYSDIR);
+  #endif
   #endif
 
   #ifdef __WXMSW__
   m_PlugsDirs.Add(wxStandardPaths::Get().GetPluginsDir() + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
   #endif  
-    
-  #ifdef __LINUX__
-  m_PlugsDirs.Add(m_AppDir + wxFILE_SEP_PATH + MHYDAS_PLUGINS_SUBDIR);
-  #endif
-  
+   
+ 
 
  
 
