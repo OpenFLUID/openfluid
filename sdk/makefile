@@ -9,7 +9,7 @@ all: sdk
 
 sdk: 
 	@echo ""
-	@echo "==== Compiling core SDK ===="
+	@echo "==== Compiling SDK ===="
 	@(cd src && $(MAKE))
 	@$(LDCONFIGBUILD)
 
@@ -19,8 +19,9 @@ mhydasdk-conf-file:
 	@echo "==== Creating mhydasdk-config file ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@echo "" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)    
-	@echo "SDKLIBPATH=$(INSTSDKLIBPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
-	@echo "SDKINCPATH=$(INSTSDKINCPATH)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
+	@echo "SDKLIBDIR=$(INSTSDKLIBDIR)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
+	@echo "SDKINCDIR=$(INSTSDKINCDIR)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
+	@echo "SDKPREFIX=$(INSTSDKPREFIX)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)	
 	@echo "SDKLIBROOT=$(SDKLIBROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)                
 	@echo "MAJORVER=$(MAJORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@echo "MINORVER=$(MINORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)  
@@ -43,28 +44,47 @@ purge: clean
 	@rm -f $(BASEBINDIR)/*
 
 
-clean-installed-sdk:
-	@echo ""
-	@echo "==== Removing installed SDK ===="
-	@$(SUDO) rm -f -R $(INSTSDKINCPATH)
-	@$(SUDO) rm -f $(INSTSDKLIBPATH)/$(SDKLIBFILE)
-	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
-	@$(SUDO) $(LDCONFIGINST)
+#clean-installed-sdk:
+#	@echo ""
+#	@echo "==== Removing installed SDK ===="
+#	@$(SUDO) rm -f -R $(INSTSDKINCPATH)
+#	@$(SUDO) rm -f $(INSTSDKLIBPATH)/$(SDKLIBFILE)
+#	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
+#	@$(SUDO) $(LDCONFIGINST)
 
 install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@echo ""
 	@echo "==== Installing SDK ===="
-	@echo "Installing header files"
+	@echo "Installing header files in $(INSTSDKINCPATH)"
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/core/
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/base/
 	@$(SUDO) cp src/mhydasdk-*.h $(INSTSDKINCPATH)/
 	@$(SUDO) cp src/core/*.h $(INSTSDKINCPATH)/core/
 	@$(SUDO) cp src/base/*.h $(INSTSDKINCPATH)/base/
-	@echo "Installing libraries"
+	@echo "Installing libraries in $(INSTSDKLIBPATH)"
 	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBFILE) $(INSTSDKLIBPATH)
 	@$(SUDO) chmod 644 $(INSTSDKLIBPATH)/$(SDKLIBFILE)
 	@$(SUDO) $(LDCONFIGINST)
 	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
+	
+for-app-dev: sdk mhydasdk-conf-file
+	@echo ""
+	@echo "==== Installing SDK for app development ===="
+	@rm -R -f $(DEVPREFIX)
+	@echo "Installing header files in $(DEVPREFIX)/$(INSTSDKINCDIR)"
+	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
+	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
+	@cp src/mhydasdk-*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/
+	@cp src/core/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
+	@cp src/base/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
+	@echo "Installing libraries in $(DEVPREFIX)/$(INSTSDKLIBDIR)" 	
+	@mkdir -p $(DEVPREFIX)/$(INSTSDKLIBDIR)
+	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(DEVPREFIX)/$(INSTSDKLIBDIR)
+	@chmod 644 $(DEVPREFIX)/$(INSTSDKLIBDIR)/$(SDKLIBFILE)
+	@$(LDCONFIGDEV)
+	@mkdir -p $(DEVPREFIX)/$(INSTSDKBINDIR)
+	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(DEVPREFIX)/$(INSTSDKBINDIR)
+	
 
 ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
 ubuntu-edgy-packages: all mhydasdk-conf-file docs

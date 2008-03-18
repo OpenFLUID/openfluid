@@ -10,8 +10,8 @@ usage_info() {
   echo "  mhydasdk-config [ARG]\n"
   echo " available options:"
   echo "      --libs        returns linker options" 
-  echo "      --cflags      returns compilation flags (C)"
-  echo "      --version     returns complete version number"  
+  echo "      --cflags      returns compilation flags (C)" 
+  echo "      --version     returns complete version number"
 }
 
 
@@ -20,13 +20,18 @@ if [ "$1" != "--libs" ] && [ "$1" != "--cflags" ] && [ "$1" != "--version" ]; th
   exit 1
 fi
 
+INSTPREFIX=/usr
+if [ -n "$MHYDASDKPREFIX" ]; then
+  INSTPREFIX=$MHYDASDKPREFIX
+fi
+
 
 if [ "$1" = "--libs" ]; then
-  echo "-L$SDKLIBPATH -l$SDKLIBROOT"
+  echo "-L$INSTPREFIX/$SDKLIBDIR -l$SDKLIBROOT"
 fi
 
 if [ "$1" = "--cflags" ]; then
-  echo "-I$SDKINCPATH -DMHYDASDK_MAJORVER=$MAJORVER -DMHYDASDK_MINORVER=$MINORVER -DMHYDASDK_REVISION=$SVNREV"
+  echo "-I$INSTPREFIX/$SDKINCDIR -DMHYDASDK_MAJORVER=$MAJORVER -DMHYDASDK_MINORVER=$MINORVER -DMHYDASDK_REVISION=$SVNREV"
 fi
 
 

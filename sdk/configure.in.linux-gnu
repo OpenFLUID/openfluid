@@ -2,9 +2,7 @@
 
 SUDOBIN="sudo"
 
-INSTSDKLIBPATH=/usr/lib
-INSTSDKINCPATH=/usr/include/mhydasdk
-INSTSDKBINPATH=/usr/bin
+INSTSDKPREFIX=/usr
 
 
 PACKARCH=`dpkg-architecture -qDEB_BUILD_ARCH`
