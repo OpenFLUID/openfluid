@@ -659,15 +659,39 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
 }
 
 
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::loadDistributedData(mhydasdk::core::SpatialRepository *SpatialData)
+{
+  
+  wxArrayString FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),wxT("ddata.xml"),true);
+    
+  bool IsOK = true;
+  int i=0;
+  
+  while (IsOK && i<FilesToLoad.GetCount())
+  {
+    IsOK =  loadDistributedDataFile(FilesToLoad[i],SpatialData);
+    i++;
+  }
+  
+  
+  return IsOK;
+}
+
 // =====================================================================
 // =====================================================================
 
 
-bool IOManager::extractColumnOrderAndDataFromFile(wxString Filename, wxString SpecTag,
-                                                  wxArrayString* ColOrder, wxString* Data)
+bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData)
 {
 
   bool IsOK = true;
+  wxString Data;
+  wxArrayString ColOrder;
+  wxString UnitClass, DataCat;
 
   if (wxFileExists(Filename))
   {
@@ -678,29 +702,47 @@ bool IOManager::extractColumnOrderAndDataFromFile(wxString Filename, wxString Sp
     {
 
       TiXmlHandle DocHandle(&Doc);
-      Child = DocHandle.FirstChild("mhydas").FirstChild(_C(SpecTag)).FirstChild("columns").Element();
 
-      // columns
+      // unitclass and category
+
+      Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").Element();
+
       if (Child != NULL)
       {
-        if (Child->Attribute("order") != NULL)
+        if (Child->Attribute("unitclass") != NULL && Child->Attribute("datacat") != NULL)
         {
-          wxStringTokenizer Tkz(_U(Child->Attribute("order")), wxT(";"));
 
-          while (Tkz.HasMoreTokens())
+          UnitClass = _U(Child->Attribute("unitclass"));
+          
+          DataCat = _U(Child->Attribute("datacat"));
+
+          Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").FirstChild("columns").Element();
+
+          // columns
+          if (Child != NULL)
           {
-            ColOrder->Add(Tkz.GetNextToken());
-          }
-
-          // data
-          if (ColOrder->GetCount() > 0)
-          {
-            Child = DocHandle.FirstChild("mhydas").FirstChild(_C(SpecTag)).FirstChild("data").Element();
-
-            if (Child != NULL)
+            if (Child->Attribute("order") != NULL)
             {
-              Data->Clear();
-              Data->Append(_U(Child->GetText()));
+              wxStringTokenizer Tkz(_U(Child->Attribute("order")), wxT(";"));
+
+              while (Tkz.HasMoreTokens())
+              {
+                ColOrder.Add(Tkz.GetNextToken());
+              }
+
+              // data
+              if (ColOrder.GetCount() > 0)
+              {
+                Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").FirstChild("data").Element();
+
+                if (Child != NULL)
+                {
+                  Data.Clear();
+                  Data.Append(_U(Child->GetText()));
+                }
+                else IsOK = false;
+              }
+              else IsOK = false;
             }
             else IsOK = false;
           }
@@ -708,376 +750,85 @@ bool IOManager::extractColumnOrderAndDataFromFile(wxString Filename, wxString Sp
         }
         else IsOK = false;
       }
-      else IsOK = false;
+      else IsOK = false;      
     }
   }
 
-  return IsOK;
 
-}
+  if ((DataCat != wxT("ini") && DataCat != wxT("param")) ||
+      (UnitClass != wxT("SU") && UnitClass != wxT("RS") && UnitClass != wxT("GU"))) IsOK = false;
 
-
-// =====================================================================
-// =====================================================================
-
-bool IOManager::loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *SpatialData)
-{
-  wxArrayString Columns;
-  wxString Data;
-  int i, j;
-  bool IsOK = true;
+  int i,j;
   long ID;
-  double Value;
+  mhydasdk::core::PropertyValue Value;
 
-    
-  
-  
-  /*
 
-    essayer de trouver une macro du type
-    LOAD_DISTRIBUTED_PARAMS_FILE(file,HOstr,HO,getparamsfunc,columns,data)
-
-  */
-
-  // ============== SUs =========================
-
-  Columns.Clear();
-  Data.Clear();
-
-  // extracts column order
-  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUPROPSFILE),
-                                        wxT("SUprops"),&Columns,&Data))
+  if (IsOK)
   {
+    ColumnTextParser DataParser(wxT("%"));
 
-    ColumnTextParser SUProps(wxT("%"));
-
-    if (SUProps.setFromString(Data,Columns.Count()+1))
+    if (DataParser.setFromString(Data,ColOrder.Count()+1))
     {
-      mhydasdk::core::SurfaceUnit* SU;
+      mhydasdk::core::HydroObject* HO;
 
       i = 0;
 
       // parses file and loads it in the properties hash table, ordered by columns
-      while (i<SUProps.getLinesCount() && IsOK)
+      while (i<DataParser.getLinesCount() && IsOK)
       {
-        IsOK = SUProps.getLongValue(i,0,&ID);
-        SU = SpatialData->getSUByID((int)ID);
-        if (IsOK && SU != NULL)
+        IsOK = DataParser.getLongValue(i,0,&ID);
+
+        if (IsOK)
         {
-          for (j=1;j<SUProps.getColsCount();j++)
+
+          if (UnitClass == wxT("SU")) HO = SpatialData->getSUByID((int)ID);
+          if (UnitClass == wxT("RS")) HO = SpatialData->getRSByID((int)ID);
+          if (UnitClass == wxT("GU")) HO = SpatialData->getGUByID((int)ID);
+
+          if (HO != NULL)
           {
-            if (SUProps.getDoubleValue(i,j,&Value))
+            for (j=1;j<DataParser.getColsCount();j++)
             {
-              SU->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
+              if (DataParser.getDoubleValue(i,j,&Value))
+              {
+                if (DataCat == wxT("ini"))             
+                  HO->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(ColOrder[j-1],Value));
+                else
+                  HO->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(ColOrder[j-1],Value));
+              }
             }
           }
+          else
+          {
+            mp_ExecMsgs->addWarning(wxT("IO Manager"),UnitClass + wxT(" ") + wxString::Format(wxT("%d"),ID) + wxT(" does not exist (") + Filename + wxT(")"));            
+          }
+          i++;
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed properties format error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(")"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data format error (") + Filename + wxT(")"));          
           return false;
         }
-        i++;
       }
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed properties data error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(")"));
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data error (") + Filename + wxT(")"));
       return false;
     }
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed properties file error (") + MHYDAS_DEFAULT_SUPROPSFILE + wxT(")"));
-    return false;
-  }
-
-  // ============== RSs =========================
-
-  Columns.Clear();
-  Data.Clear();
-
-
-  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSPROPSFILE),
-                                        wxT("RSprops"),&Columns,&Data))
-  {
-
-    ColumnTextParser RSProps(wxT("%"));
-
-    if (RSProps.setFromString(Data,Columns.Count()+1))
-    {
-      mhydasdk::core::ReachSegment* RS;
-
-      
-      i = 0;
-
-      while (i<RSProps.getLinesCount() && IsOK)
-      {
-        IsOK = RSProps.getLongValue(i,0,&ID);
-        RS = SpatialData->getRSByID((int)ID);
-        if (IsOK && RS != NULL)
-        {
-          for (j=1;j<RSProps.getColsCount();j++)
-          {
-            if (RSProps.getDoubleValue(i,j,&Value))
-            {
-              RS->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
-            }
-          }
-        }
-        else
-        {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed properties format error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(")"));
-          return false;
-        }
-        i++;
-      }
-    }
-    else
-    {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed properties data error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(")"));
-      return false;
-    }
-  }
-  else
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed properties file error (") + MHYDAS_DEFAULT_RSPROPSFILE + wxT(")"));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data xml error (") + Filename + wxT(")"));
     return false;
   }
 
 
-  // ============== GUs =========================
+  return IsOK;
 
   
-  Columns.Clear();
-  Data.Clear();
-
-  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUPROPSFILE),
-                                        wxT("GUprops"),&Columns,&Data))
-  {
-
-    ColumnTextParser GUProps(wxT("%"));
-
-    if (GUProps.setFromString(Data,Columns.Count()+1))
-    {
-      mhydasdk::core::GroundwaterUnit* GU;
-
-      i = 0;
-
-      while (i<GUProps.getLinesCount() && IsOK)
-      {
-        IsOK = GUProps.getLongValue(i,0,&ID);
-        GU = SpatialData->getGUByID((int)ID);
-        if (IsOK && GU != NULL)
-        {
-          for (j=1;j<GUProps.getColsCount();j++)
-          {
-            if (GUProps.getDoubleValue(i,j,&Value))
-            {
-              GU->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
-            }
-          }
-        }
-        else
-        {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed properties format error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(")"));
-          return false;
-        }
-        i++;
-      }
-    }
-    else
-    {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed properties data error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(")"));
-      return false;
-    }
-  }
-  else
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed properties file error (") + MHYDAS_DEFAULT_GUPROPSFILE + wxT(")"));
-    return false;
-  }
-
-
-  return true;
+  
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool IOManager::loadHydroObjectsInitialConditions(mhydasdk::core::SpatialRepository *SpatialData)
-{
-  wxArrayString Columns;
-  wxString Data;
-  int i, j;
-  bool IsOK = true;
-  long ID;
-  double Value;
-
-
-  // ============== SUs =========================
-
-  Columns.Clear();
-  Data.Clear();
-
-  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUINIFILE),
-                                        wxT("SUini"),&Columns,&Data))
-  {
-
-    ColumnTextParser SUIni(wxT("%"));
-    
-    
-    if (SUIni.setFromString(Data,Columns.Count()+1))
-    {
-      mhydasdk::core::SurfaceUnit* SU;
-
-      i = 0;
-
-      while (i<SUIni.getLinesCount() && IsOK)
-      {
-        IsOK = SUIni.getLongValue(i,0,&ID);
-        SU = SpatialData->getSUByID((int)ID);
-        if (IsOK && SU != NULL)
-        {
-          for (j=1;j<SUIni.getColsCount();j++)
-          {
-            if (SUIni.getDoubleValue(i,j,&Value))
-            {
-              SU->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
-            }
-          }
-        }
-        else
-        {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed initial conditions format error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(")"));
-          return false;
-        }
-        i++;
-      }
-    }
-    else
-    {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed initial conditions data error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(")"));
-      return false;
-    }
-  }
-  else
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("SU distributed initial conditions file error (") + MHYDAS_DEFAULT_SUINIFILE + wxT(")"));
-    return false;
-  }
-
-
-  // ============== RSs =========================
-
-  Columns.Clear();
-  Data.Clear();
-
-  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSINIFILE),
-                                        wxT("RSini"),&Columns,&Data))
-  {
-
-    ColumnTextParser RSIni(wxT("%"));
-
-    if (RSIni.setFromString(Data,Columns.Count()+1))
-    {
-      mhydasdk::core::ReachSegment* RS;
-
-      i = 0;
-
-      while (i<RSIni.getLinesCount() && IsOK)
-      {
-        IsOK = RSIni.getLongValue(i,0,&ID);
-        RS = SpatialData->getRSByID((int)ID);
-        if (IsOK && RS != NULL)
-        {
-          for (j=1;j<RSIni.getColsCount();j++)
-          {
-            if (RSIni.getDoubleValue(i,j,&Value))
-            {
-              RS->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
-            }
-          }
-        }
-        else
-        {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed initial conditions format error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(")"));
-          return false;
-        }
-        i++;
-      }
-    }
-    else
-    {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed initial conditions data error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(")"));
-      return false;
-    }
-  }
-  else
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("RS distributed initial conditions file error (") + MHYDAS_DEFAULT_RSINIFILE + wxT(")"));
-    return false;
-  }
-
-
-  // ============== GUs =========================
-
-  Columns.Clear();
-  Data.Clear();
-
-  if (extractColumnOrderAndDataFromFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUINIFILE),
-                                        wxT("GUini"),&Columns,&Data))
-  {
-
-    ColumnTextParser GUIni(wxT("%"));
-
-    if (GUIni.setFromString(Data,Columns.Count()+1))
-    {
-      mhydasdk::core::GroundwaterUnit* GU;
-
-      i = 0;
-
-      while (i<GUIni.getLinesCount() && IsOK)
-      {
-        IsOK = GUIni.getLongValue(i,0,&ID);
-        GU = SpatialData->getGUByID((int)ID);
-        if (IsOK && GU != NULL)
-        {
-          for (j=1;j<GUIni.getColsCount();j++)
-          {
-            if (GUIni.getDoubleValue(i,j,&Value))
-            {
-              GU->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(Columns[j-1],Value));
-            }
-          }
-        }
-        else
-        {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed initial conditions format error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(")"));
-          return false;
-        }
-        i++;
-      }
-    }
-    else
-    {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed initial conditions data error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(")"));
-      return false;
-    }
-  }
-  else
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("GU distributed initial conditions file error (") + MHYDAS_DEFAULT_GUINIFILE + wxT(")"));
-    return false;
-  }
-
-
-
-  return true;
-}
-
 
 // =====================================================================
 // =====================================================================
