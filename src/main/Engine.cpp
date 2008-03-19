@@ -906,9 +906,11 @@ bool Engine::loadData()
     
   IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
   
-  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData());  
+  if (IsOK) IsOK = mp_IOMan->loadDistributedData(mp_CoreData->getSpatialData());
+  
+//  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData());  
 
-  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData());
+//  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData());
 
   if (IsOK) IsOK = mp_IOMan->loadRainSources(mp_CoreData->getRainSources());
   

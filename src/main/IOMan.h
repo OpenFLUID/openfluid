@@ -121,6 +121,8 @@ class IOManager
                             AutoOutfileDef* Def, wxArrayString DTStrings,
                             ExtraSimInfos ExSI);
 
+    
+    bool loadDistributedDataFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData);
 
 
 
@@ -167,10 +169,10 @@ class IOManager
     */
     bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
 
-
+    bool loadDistributedData(mhydasdk::core::SpatialRepository *SpatialData);
+    
     bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
     
-
     bool prepareTraceDir(mhydasdk::core::CoreRepository *Data);
     
     bool saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydasdk::core::DateTime DT);
