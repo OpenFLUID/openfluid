@@ -574,7 +574,8 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
     if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);    
     if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);           
-    if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);    
+    if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);
+    if (Parser.Found(wxT("no-varname-check"))) mp_RunEnv->setCheckVarNames(false);
 	  
 	  printMHYDASInfos();
 	  printEnvInfos();
@@ -592,8 +593,9 @@ void MHYDASApp::printEnvInfos()
   std::cout << "Input dir: " << _C(mp_RunEnv->getInputDir()) << std::endl;
   if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << "Output dir: " << _C(mp_RunEnv->getOutputDir()) << std::endl;  
   if ((mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) && (mp_RunEnv->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl; 
-  if (mp_RunEnv->getTraceMode()) std::cout << "Trace mode enabled" << std::endl;
+  if (mp_RunEnv->isTraceMode()) std::cout << "Trace mode enabled" << std::endl;
   if (mp_RunEnv->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
+  if (!mp_RunEnv->isCheckVarNames()) std::cout << "Variable names checking disabled" << std::endl;  
   std::cout << std::endl; 
 }
 

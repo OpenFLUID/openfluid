@@ -14,6 +14,7 @@
 
 #include <math.h>
 
+#include <wx/regex.h>
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(PluginsList);
@@ -659,15 +660,136 @@ bool Engine::checkDataConsistency()
 
   PluginsList::Node *FuncNode = NULL;
   mhydasdk::base::SignatureHandledData HData;
+  PluginContainer* CurrentFunction;
   
   int i;
   bool IsOK = true; 
   
- 
+  
+  
+  
+  
+  // check variable name against nomenclature
+  if (mp_RunEnv->isCheckVarNames())
+  {
+
+    wxRegEx RegExp(wxT("[a-zA-Z,\\-]+\\.[a-zA-Z\\-]+\\.[a-zA-Z\\-\\#]+\\.[a-zA-Z\\-]+"));
+
+
+    FuncNode = m_Functions.GetFirst();
+    while (FuncNode && IsOK)
+    {  
+
+      CurrentFunction = (PluginContainer*)FuncNode->GetData();
+      if (CurrentFunction != NULL)
+      {    
+        HData = CurrentFunction->Signature->HandledData;
+
+
+        // produced vars
+        i = 0;
+        while (IsOK && i<HData.ProducedVars.size())
+        {                
+          IsOK = RegExp.Matches(HData.ProducedVars[i].Name);
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.ProducedVars[i].Name+wxT(" variable name does not match nomenclature."));
+            return false;
+          }
+          i++;
+        }
+
+
+        // required vars
+        i = 0;
+        while (IsOK && i<HData.RequiredVars.size())
+        {                
+          IsOK = RegExp.Matches(HData.RequiredVars[i].Name);
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable name does not match nomenclature."));
+            return false;
+          }
+          i++;
+        }
+
+        
+        // used vars
+        i = 0;
+        while (IsOK && i<HData.UsedVars.size())
+        {                
+          IsOK = RegExp.Matches(HData.UsedVars[i].Name);
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.UsedVars[i].Name+wxT(" variable name does not match nomenclature."));
+            return false;
+          }
+          i++;
+        }
+
+        // updated
+        i = 0;
+        while (IsOK && i<HData.UpdatedVars.size())
+        {                
+          IsOK = RegExp.Matches(HData.UpdatedVars[i].Name);
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.UpdatedVars[i].Name+wxT(" variable name does not match nomenclature."));
+            return false;
+          }
+          i++;
+        }
+
+        // required prev
+        i = 0;
+        while (IsOK && i<HData.RequiredPrevVars.size())
+        {                
+          IsOK = RegExp.Matches(HData.RequiredPrevVars[i].Name);
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredPrevVars[i].Name+wxT(" variable name does not match nomenclature."));
+            return false;
+          }
+          i++;
+        }
+
+
+        // used prev
+        i = 0;
+        while (IsOK && i<HData.UsedPrevVars.size())
+        {                
+          IsOK = RegExp.Matches(HData.UsedPrevVars[i].Name);
+
+          if (!IsOK)
+          {
+            mp_ExecMsgs->setError(wxT("Engine"),HData.UsedPrevVars[i].Name+wxT(" variable name does not match nomenclature."));
+            return false;
+          }
+          i++;
+        }
+
+        
+        
+        FuncNode = FuncNode->GetNext();   
+
+      }
+    }
+  }  
+
+  
+  
+  
+  
+  // check data consistency
   FuncNode = m_Functions.GetFirst();
   while (FuncNode && IsOK)
   {
-    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
+    CurrentFunction = (PluginContainer*)FuncNode->GetData();
     if (CurrentFunction != NULL)
     {        
       HData = CurrentFunction->Signature->HandledData;
@@ -907,10 +1029,6 @@ bool Engine::loadData()
   IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
   
   if (IsOK) IsOK = mp_IOMan->loadDistributedData(mp_CoreData->getSpatialData());
-  
-//  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsProperties(mp_CoreData->getSpatialData());  
-
-//  if (IsOK) IsOK = mp_IOMan->loadHydroObjectsInitialConditions(mp_CoreData->getSpatialData());
 
   if (IsOK) IsOK = mp_IOMan->loadRainSources(mp_CoreData->getRainSources());
   
@@ -1057,7 +1175,7 @@ bool Engine::run()
   
 
 
-  if (mp_RunEnv->getTraceMode()) mp_IOMan->prepareTraceDir(mp_CoreData);
+  if (mp_RunEnv->isTraceMode()) mp_IOMan->prepareTraceDir(mp_CoreData);
   
   if (!mp_RunEnv->isQuietRun())
   {
@@ -1117,7 +1235,7 @@ bool Engine::run()
     }  
 
     
-    if (mp_RunEnv->getTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
+    if (mp_RunEnv->isTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
     
   } while (mp_SimStatus->switchToNextStep());
 

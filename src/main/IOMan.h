@@ -112,9 +112,6 @@ class IOManager
     bool prepareOutputDir();
     
 
-    bool extractColumnOrderAndDataFromFile(wxString Filename, wxString SpecTag,
-                                           wxArrayString* ColOrder, wxString* Data);
-
 
     bool saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
                             wxString ColSeparator, wxString CommentChar,
@@ -178,10 +175,6 @@ class IOManager
     bool saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydasdk::core::DateTime DT);
 
     bool saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo);    
-
-    bool loadHydroObjectsProperties(mhydasdk::core::SpatialRepository *SpatialData);
-
-    bool loadHydroObjectsInitialConditions(mhydasdk::core::SpatialRepository *SpatialData);
 
 };
 
