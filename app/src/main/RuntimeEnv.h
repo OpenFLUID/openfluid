@@ -58,6 +58,8 @@ class RuntimeEnvironment
 
     bool m_EnableTrace;
     
+    bool m_CheckVarNames;
+    
   public:
 
     /**
@@ -118,10 +120,15 @@ class RuntimeEnvironment
     
     void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; };
     
-    bool getTraceMode() const { return m_EnableTrace; };
+    bool isTraceMode() const { return m_EnableTrace; };
         
     void setTraceMode(bool Trace) { m_EnableTrace = Trace; };
+
+    bool isCheckVarNames() const { return m_CheckVarNames; };
         
+    void setCheckVarNames(bool Trace) { m_CheckVarNames = Trace; };
+    
+    
     mhydasdk::base::FunctionEnvironment createFunctionEnvironment();
     
     

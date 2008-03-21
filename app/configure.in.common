@@ -52,8 +52,8 @@ MDEF_RSRAINDISTRIFILE=RSraindistri.dat
 MDEF_OUTPUTFILES_EXT=out
 MDEF_TRACEFILES_EXT=trace
 
-
 MDEF_SIMINFOFILE=siminfo.out
+
 
 
 MHYDASDKPREFIX=/var/tmp/mhydasdk
@@ -66,6 +66,5 @@ PACKPRIORITY="optional"
 PACKDESC="MHYDAS modelling platform engine\\\n This engine uses pluggable simulation functions to simulate hydrological processes."
 
 PACKROOT=$EXEFILEROOT
-
 
 

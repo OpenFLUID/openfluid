@@ -30,6 +30,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   m_WriteResults = true;  
   m_WriteSimReport = true;  
   m_EnableTrace = false;
+  m_CheckVarNames = true;
   
   
   

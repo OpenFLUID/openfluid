@@ -39,6 +39,7 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_SWITCH, _T("v"), _T("version"), _T("get version (do not run the model)")},  
   {wxCMD_LINE_SWITCH, _T("x"), _T("xml-functions-report"), _T("print a report of available functions in xml format, with details (do not run the model)")},  
   {wxCMD_LINE_SWITCH, _T("z"), _T("no-results"), _T("do not write results files")},
+  {wxCMD_LINE_SWITCH, _T(""), _T("no-varname-check"), _T("do not check variable name against nomenclature")},  
   {wxCMD_LINE_NONE}
 };
 
