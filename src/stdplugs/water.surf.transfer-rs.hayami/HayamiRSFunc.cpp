@@ -134,15 +134,15 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   mhydasdk::core::ReachSegment* RS;
   float Cel, Sigma;
   mhydasdk::core::HOID ID;
-  mhydasdk::core::MHYDASValue TmpValue;
+  mhydasdk::core::MHYDASScalarValue TmpValue;
   DECLARE_RS_ORDERED_LOOP;
  
  
   BEGIN_RS_ORDERED_LOOP(RS)
     ID = RS->getID();  
     
-    m_Input[ID] = new mhydasdk::core::VectorOfMHYDASValue();
-    m_HeightDischarge[ID] = new mhydasdk::core::VectorOfMHYDASValue();
+    m_Input[ID] = new mhydasdk::core::SerieOfMHYDASScalarValue();
+    m_HeightDischarge[ID] = new mhydasdk::core::SerieOfMHYDASScalarValue();
     m_CurrentInputSum[ID] = 0;
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -206,9 +206,9 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   float UpSrcSUsOutputsSum;  
   float UpLatSUsOutputsSum;  
   float UpRSsOutputsSum;  
-  mhydasdk::core::MHYDASValue QOutput;
-  mhydasdk::core::MHYDASValue QInput;
-  mhydasdk::core::MHYDASValue TmpValue;
+  mhydasdk::core::MHYDASScalarValue QOutput;
+  mhydasdk::core::MHYDASScalarValue QInput;
+  mhydasdk::core::MHYDASScalarValue TmpValue;
 
   
   mhydasdk::core::ReachSegment* RS;
@@ -331,7 +331,7 @@ bool HayamiRSFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 // =====================================================================
 
-bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASValue Discharge, mhydasdk::core::MHYDASValue *Height)
+bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASScalarValue Discharge, mhydasdk::core::MHYDASScalarValue *Height)
 {
     
 
@@ -349,7 +349,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, 
     int i;
     float Q1, Q2, H1, H2;
     
-    mhydasdk::core::VectorOfMHYDASValue* HeightDischarge = m_HeightDischarge[ID]; 
+    mhydasdk::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
 
    
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

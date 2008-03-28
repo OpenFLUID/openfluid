@@ -129,7 +129,7 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
 
 
 
-float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfMHYDASValue* QInput, int MaxSteps, int TimeStep)
+float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::SerieOfMHYDASScalarValue* QInput, int MaxSteps, int TimeStep)
 {
   float QOutput;
   
