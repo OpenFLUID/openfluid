@@ -51,7 +51,7 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
 
     mhydasdk::base::IDVectOfMHYDASValueMap m_HeightDischarge;
         
-    bool computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASValue Discharge, mhydasdk::core::MHYDASValue *Height);
+    bool computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASScalarValue Discharge, mhydasdk::core::MHYDASScalarValue *Height);
 
 
   public:

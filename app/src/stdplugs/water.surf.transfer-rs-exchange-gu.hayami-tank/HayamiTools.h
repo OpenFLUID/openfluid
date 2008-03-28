@@ -35,7 +35,7 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
 /**
   Propagates the wave using the Hayami kernel
 */
-float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::VectorOfMHYDASValue* QInput, int MaxSteps, int TimeStep);
+float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::MHYDASVectorValue* QInput, int MaxSteps, int TimeStep);
 
 
 #endif // __HAYAMITOOLS_H__

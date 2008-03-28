@@ -1031,8 +1031,8 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
   wxString FileContents;
   wxString Filename;
   vector<mhydasdk::core::HydroObject*> HOSet;
-  mhydasdk::core::VectorOfMHYDASValue* Values;
-  mhydasdk::core::VectorizedMHYDASValue VValues;
+  mhydasdk::core::SerieOfMHYDASScalarValue* Values;
+  mhydasdk::core::MHYDASVectorValue VValues;
   wxString ColsStr;
   int i,j,k,l;
   wxString NaNStr = wxT("!");
@@ -1231,9 +1231,9 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
   
   if (Def->SaveAllVars && HOSet[0] != NULL)
   {
-    mhydasdk::core::SimulatedVectorizedVarsMap::iterator VSimit;
+    mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
       
-    for(VSimit = HOSet[0]->getSimulatedVectorizedVars()->begin(); VSimit != HOSet[0]->getSimulatedVectorizedVars()->end(); ++VSimit)
+    for(VSimit = HOSet[0]->getSimulatedVectorVars()->begin(); VSimit != HOSet[0]->getSimulatedVectorVars()->end(); ++VSimit)
     {
       Def->Vectors.Add(VSimit->first);
     }
@@ -1266,7 +1266,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
         for (j=0;j<Def->Vectors.GetCount();j++)
         {
-          if (HOSet[i]->getSimulatedVectorizedVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorizedVars()->end())
+          if (HOSet[i]->getSimulatedVectorVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorVars()->end())
           {                
             Filename = FilenameRoot + Def->Vectors[j] + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
 
@@ -1287,8 +1287,8 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
               VValues.clear();
 
-              if (HOSet[i]->getSimulatedVectorizedVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorizedVars()->end())
-                VValues = (HOSet[i]->getSimulatedVectorizedVars()->find(Def->Vectors[j])->second)->at(k);
+              if (HOSet[i]->getSimulatedVectorVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorVars()->end())
+                VValues = (HOSet[i]->getSimulatedVectorVars()->find(Def->Vectors[j])->second)->at(k);
 
 
               if (VValues.size() > 0)
@@ -1518,7 +1518,7 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 
 
     mhydasdk::core::SimulatedVarsMap::iterator Simit;
-    mhydasdk::core::SimulatedVectorizedVarsMap::iterator VSimit;    
+    mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;    
 
     mhydasdk::core::SUMap::iterator SUit;
     mhydasdk::core::SurfaceUnit* SU;
@@ -1555,9 +1555,9 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
       }
       
       // vectors
-      if (SU->getSimulatedVectorizedVars()->size() > 0)
+      if (SU->getSimulatedVectorVars()->size() > 0)
       {
-        for(VSimit = SU->getSimulatedVectorizedVars()->begin(); VSimit != SU->getSimulatedVectorizedVars()->end(); ++VSimit)
+        for(VSimit = SU->getSimulatedVectorVars()->begin(); VSimit != SU->getSimulatedVectorVars()->end(); ++VSimit)
         {          
           Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");          
           Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
@@ -1598,9 +1598,9 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
       }
       
       // vectors
-      if (RS->getSimulatedVectorizedVars()->size() > 0)
+      if (RS->getSimulatedVectorVars()->size() > 0)
       {
-        for(VSimit = RS->getSimulatedVectorizedVars()->begin(); VSimit != RS->getSimulatedVectorizedVars()->end(); ++VSimit)
+        for(VSimit = RS->getSimulatedVectorVars()->begin(); VSimit != RS->getSimulatedVectorVars()->end(); ++VSimit)
         {          
           Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");          
           Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
@@ -1641,9 +1641,9 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
       }
       
       // vectors
-      if (GU->getSimulatedVectorizedVars()->size() > 0)
+      if (GU->getSimulatedVectorVars()->size() > 0)
       {
-        for(VSimit = GU->getSimulatedVectorizedVars()->begin(); VSimit != GU->getSimulatedVectorizedVars()->end(); ++VSimit)
+        for(VSimit = GU->getSimulatedVectorVars()->begin(); VSimit != GU->getSimulatedVectorVars()->end(); ++VSimit)
         {          
           Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");          
           Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
@@ -1677,9 +1677,9 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
   wxString NaNStr = wxT("!");
 
   mhydasdk::core::SimulatedVarsMap::iterator Simit;
-  mhydasdk::core::SimulatedVectorizedVarsMap::iterator VSimit;
-  mhydasdk::core::VectorOfMHYDASValue* Values;
-  mhydasdk::core::VectorOfVectorizedMHYDASValue* VValues;
+  mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
+  mhydasdk::core::SerieOfMHYDASScalarValue* Values;
+  mhydasdk::core::SerieOfMHYDASVectorValue* VValues;
 
   mhydasdk::core::SUMap::iterator SUit;
   mhydasdk::core::SurfaceUnit* SU;
@@ -1688,7 +1688,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
   mhydasdk::core::GUMap::iterator GUit;
   mhydasdk::core::GroundwaterUnit* GU;
   
-  mhydasdk::core::VectorizedMHYDASValue* ZeVector;
+  mhydasdk::core::MHYDASVectorValue* ZeVector;
   int i;
 
   wxFile TFile;
@@ -1721,10 +1721,10 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
     }
     
     // vectors
-    if (SU->getSimulatedVectorizedVars()->size() > 0)
+    if (SU->getSimulatedVectorVars()->size() > 0)
     {     
 
-      for(VSimit = SU->getSimulatedVectorizedVars()->begin(); VSimit != SU->getSimulatedVectorizedVars()->end(); ++VSimit)
+      for(VSimit = SU->getSimulatedVectorVars()->begin(); VSimit != SU->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
         Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
@@ -1780,10 +1780,10 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
     
     
     // vectors
-    if (RS->getSimulatedVectorizedVars()->size() > 0)
+    if (RS->getSimulatedVectorVars()->size() > 0)
     {     
 
-      for(VSimit = RS->getSimulatedVectorizedVars()->begin(); VSimit != RS->getSimulatedVectorizedVars()->end(); ++VSimit)
+      for(VSimit = RS->getSimulatedVectorVars()->begin(); VSimit != RS->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
         Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
@@ -1837,10 +1837,10 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
     } 
     
     // vectors
-    if (GU->getSimulatedVectorizedVars()->size() > 0)
+    if (GU->getSimulatedVectorVars()->size() > 0)
     {     
 
-      for(VSimit = GU->getSimulatedVectorizedVars()->begin(); VSimit != GU->getSimulatedVectorizedVars()->end(); ++VSimit)
+      for(VSimit = GU->getSimulatedVectorVars()->begin(); VSimit != GU->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
         Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;

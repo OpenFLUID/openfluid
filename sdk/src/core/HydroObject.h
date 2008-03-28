@@ -19,14 +19,14 @@ namespace mhydasdk { namespace core {
 
 typedef int HOID;
 
-typedef double MHYDASValue;
+typedef double MHYDASScalarValue;
 typedef double PropertyValue;
 
-typedef std::vector<MHYDASValue> VectorOfMHYDASValue;
+typedef std::vector<MHYDASScalarValue> MHYDASVectorValue;
 
-typedef std::vector<MHYDASValue> VectorizedMHYDASValue;
+typedef std::vector<MHYDASScalarValue> SerieOfMHYDASScalarValue;
 
-typedef std::vector<VectorizedMHYDASValue> VectorOfVectorizedMHYDASValue;
+typedef std::vector<MHYDASVectorValue> SerieOfMHYDASVectorValue;
 
 
 
@@ -36,9 +36,9 @@ typedef std::vector<VectorizedMHYDASValue> VectorOfVectorizedMHYDASValue;
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
 */
-WX_DECLARE_STRING_HASH_MAP(VectorOfMHYDASValue*, SimulatedVarsMap);
+WX_DECLARE_STRING_HASH_MAP(SerieOfMHYDASScalarValue*, SimulatedVarsMap);
 
-WX_DECLARE_STRING_HASH_MAP(VectorOfVectorizedMHYDASValue*, SimulatedVectorizedVarsMap);
+WX_DECLARE_STRING_HASH_MAP(SerieOfMHYDASVectorValue*, SimulatedVectorVarsMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
@@ -65,7 +65,7 @@ class HydroObject
 		int m_ProcessOrder;
 
     SimulatedVarsMap* mp_SimVars;
-    SimulatedVectorizedVarsMap* mp_SimVectorizedVars;    
+    SimulatedVectorVarsMap* mp_SimVectorVars;    
 
     PropertiesMap* mp_Properties;
 
@@ -100,7 +100,7 @@ class HydroObject
     void setProcessOrder(const int ProcessOrder);
 
     SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
-    SimulatedVectorizedVarsMap* getSimulatedVectorizedVars() { return mp_SimVectorizedVars; };    
+    SimulatedVectorVarsMap* getSimulatedVectorVars() { return mp_SimVectorVars; };    
 
     PropertiesMap* getProperties() { return mp_Properties; };
 

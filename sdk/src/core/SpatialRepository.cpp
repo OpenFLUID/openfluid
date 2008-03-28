@@ -492,8 +492,8 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
   mhydasdk::core::SimulatedVarsMap *VarsMap;
   SimulatedVarsMap::iterator Vit;
 
-  mhydasdk::core::SimulatedVectorizedVarsMap *VectVarsMap;
-  SimulatedVectorizedVarsMap::iterator VVit;  
+  mhydasdk::core::SimulatedVectorVarsMap *VectVarsMap;
+  SimulatedVectorVarsMap::iterator VVit;  
   
 
   // pour les SU
@@ -505,7 +505,7 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
       Vit->second->reserve(StepsNbr);
     }
 
-    VectVarsMap = SUit->second->getSimulatedVectorizedVars();    
+    VectVarsMap = SUit->second->getSimulatedVectorVars();    
     for (VVit = VectVarsMap->begin();VVit != VectVarsMap->end();++VVit)
     {
       VVit->second->reserve(StepsNbr);
@@ -523,7 +523,7 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
       Vit->second->reserve(StepsNbr);
     }
     
-    VectVarsMap = RSit->second->getSimulatedVectorizedVars();    
+    VectVarsMap = RSit->second->getSimulatedVectorVars();    
     for (VVit = VectVarsMap->begin();VVit != VectVarsMap->end();++VVit)
     {
       VVit->second->reserve(StepsNbr);
@@ -541,7 +541,7 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
       Vit->second->reserve(StepsNbr);
     }
     
-    VectVarsMap = GUit->second->getSimulatedVectorizedVars();    
+    VectVarsMap = GUit->second->getSimulatedVectorVars();    
     for (VVit = VectVarsMap->begin();VVit != VectVarsMap->end();++VVit)
     {
       VVit->second->reserve(StepsNbr);

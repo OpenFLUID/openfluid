@@ -206,7 +206,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   double InfiltrationCapacity;
   float Area;
 
-  mhydasdk::core::MHYDASValue TmpValue;
+  mhydasdk::core::MHYDASScalarValue TmpValue;
 
   mhydasdk::core::SurfaceUnit* SU;
   mhydasdk::core::SurfaceUnit* UpSU;

@@ -174,8 +174,8 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
   BEGIN_RS_ORDERED_LOOP(RS)
   ID = RS->getID();  
 
-  m_Input[ID] = new mhydasdk::core::VectorOfMHYDASValue();
-  m_HeightDischarge[ID] = new mhydasdk::core::VectorOfMHYDASValue();
+  m_Input[ID] = new mhydasdk::core::MHYDASVectorValue();
+  m_HeightDischarge[ID] = new mhydasdk::core::MHYDASVectorValue();
   m_CurrentInputSum[ID] = 0;
 
   m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -274,17 +274,17 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
   float UpSrcSUsOutputsSum;  
   float UpLatSUsOutputsSum;  
   float UpRSsOutputsSum;  
-  mhydasdk::core::MHYDASValue QOutput;
+  mhydasdk::core::MHYDASScalarValue QOutput;
   float QInput;
-  mhydasdk::core::MHYDASValue TmpValue;
+  mhydasdk::core::MHYDASScalarValue TmpValue;
   float TmpGUValue;
   bool m_UseUpGUExchangersgu;
 
-  mhydasdk::core::MHYDASValue WaterTable, WaterTableDown,QguOutput;
+  mhydasdk::core::MHYDASScalarValue WaterTable, WaterTableDown,QguOutput;
   float  InputVol,ExchangeSurface,  OutputVol;
-  mhydasdk::core::MHYDASValue TmpExfiltration, Exfiltration;
-  mhydasdk::core::MHYDASValue  SUInfiltration; // for SU
-  mhydasdk::core::MHYDASValue TmpQExchange;
+  mhydasdk::core::MHYDASScalarValue TmpExfiltration, Exfiltration;
+  mhydasdk::core::MHYDASScalarValue  SUInfiltration; // for SU
+  mhydasdk::core::MHYDASScalarValue TmpQExchange;
   float RSHeight,WaterHeight ; // for RS
 
 
@@ -638,7 +638,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
     int i;
     float Q1, Q2, H1, H2;
 
-    mhydasdk::core::VectorOfMHYDASValue* HeightDischarge = m_HeightDischarge[ID]; 
+    mhydasdk::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
 
 
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

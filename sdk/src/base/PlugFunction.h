@@ -720,13 +720,13 @@ WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, 
 
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASValue, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
+WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASScalarValue, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
 
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
 
 WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::VectorOfMHYDASValue*, wxIntegerHash, wxIntegerEqual, IDVectOfMHYDASValueMap);
+WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASVectorValue*, wxIntegerHash, wxIntegerEqual, IDVectOfMHYDASValueMap);
 
 // =====================================================================
 // =====================================================================
@@ -773,9 +773,9 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the requested variable            
       \param[out] Value the value of the requested variable      
     */ 
-    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASValue *Value);
+    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASScalarValue *Value);
 
-    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::VectorizedMHYDASValue *Value);    
+    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASVectorValue *Value);    
     
     /**
       Gets a distributed property for a spatial object
@@ -855,9 +855,9 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the variable            
       \param[in] Value the added value of the variable      
     */ 
-    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASValue Value);
+    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASScalarValue Value);
 
-    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::VectorizedMHYDASValue Value);    
+    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASVectorValue Value);    
 
     /**
       Sets a distributed variable value for a spatial object at a time step
@@ -866,9 +866,9 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the variable            
       \param[in] Value the added value of the variable      
     */     
-    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASValue Value);
+    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASScalarValue Value);
 
-    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::VectorizedMHYDASValue Value);    
+    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASVectorValue Value);    
 
     /**
       Gets a function parameter from the parameters set, as a double
