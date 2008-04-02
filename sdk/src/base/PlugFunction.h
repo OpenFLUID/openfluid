@@ -447,7 +447,7 @@
 #define BEGIN_RS_LIST_LOOP(rslist,rsobj) \
   for(_M_RSListiter=rslist->begin(); _M_RSListiter != rslist->end(); _M_RSListiter++) \
   { \
-    rsobj = *_M_RSSListiter; \
+    rsobj = *_M_RSListiter; \
 
 
 
