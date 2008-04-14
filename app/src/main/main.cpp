@@ -218,8 +218,8 @@ void MHYDASApp::printMHYDASInfos()
   
   std::cout << std::endl;
   std::cout << "===========================================================" << std::endl;
-  std::cout << "                       M H Y D A S                         " << std::endl;
-  std::cout << "      Distributed hydrological model for agrosystems       " << std::endl;
+  std::cout << "                       XXXXX-engine                        " << std::endl;
+  std::cout << "                Landscape modelling system                 " << std::endl;
   std::cout << std::endl;
   std::cout << VersionInfo.mb_str(wxConvUTF8) << std::endl;
   std::cout << std::endl;  
