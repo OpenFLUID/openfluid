@@ -14,7 +14,7 @@ all: main stdplugs run-script
 run-script:
 	@echo "==== Generating run script for build environment ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/run-engine.sh
-	@echo "LD_LIBRARY_PATH=$(MHYDASDKPREFIX)/lib:$$LD_LIBRARY_PATH" >> $(BASEBINDIR)/run-engine.sh
+	@echo "export LD_LIBRARY_PATH=$(MHYDASDKPREFIX)/lib:$$LD_LIBRARY_PATH" >> $(BASEBINDIR)/run-engine.sh
 	@echo "./$(EXEFILE) \$$*" >> $(BASEBINDIR)/run-engine.sh
 	@chmod 755 $(BASEBINDIR)/run-engine.sh
 
