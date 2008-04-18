@@ -3,7 +3,7 @@
   \brief
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
-*/
+ */
 
 #ifndef __HYDROOBJECT_H__
 #define __HYDROOBJECT_H__
@@ -12,41 +12,10 @@
 #include <vector>
 #include <wx/hashmap.h>
 
-
+#include "EventCollection.h"
+#include "TypeDefs.h"
 
 namespace mhydasdk { namespace core {
-
-
-typedef int HOID;
-
-
-/**
- Type definition for scalar values 
-*/
-typedef double MHYDASScalarValue;
-
-/**
- Type definition for distributed properties values 
-*/
-typedef double PropertyValue;
-
-
-/**
- Type definition for vector values 
-*/
-typedef std::vector<MHYDASScalarValue> MHYDASVectorValue;
-
-/**
- Type definition for a time serie of scalar values 
-*/
-typedef std::vector<MHYDASScalarValue> SerieOfMHYDASScalarValue;
-
-
-/**
- Type definition for a time serie of vectorvalues 
-*/
-typedef std::vector<MHYDASVectorValue> SerieOfMHYDASVectorValue;
-
 
 
 /**
@@ -54,19 +23,19 @@ typedef std::vector<MHYDASVectorValue> SerieOfMHYDASVectorValue;
   Each variable is stored in the hash table as an entry, located by its name.
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
-*/
+ */
 WX_DECLARE_STRING_HASH_MAP(SerieOfMHYDASScalarValue*, SimulatedVarsMap);
 
 WX_DECLARE_STRING_HASH_MAP(SerieOfMHYDASVectorValue*, SimulatedVectorVarsMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
-*/
+ */
 WX_DECLARE_STRING_HASH_MAP(PropertyValue,PropertiesMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
-*/
+ */
 WX_DECLARE_STRING_HASH_MAP(wxString,ParamsMap);
 
 
@@ -74,14 +43,14 @@ WX_DECLARE_STRING_HASH_MAP(wxString,ParamsMap);
   Generic definition class for Hydrological Objetcs
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
-*/
+ */
 class HydroObject
 {
-	private:
+  private:
 
-	protected:
-		HOID m_ID;
-		int m_ProcessOrder;
+  protected:
+    HOID m_ID;
+    int m_ProcessOrder;
 
     SimulatedVarsMap* mp_SimVars;
     SimulatedVectorVarsMap* mp_SimVectorVars;    
@@ -90,27 +59,28 @@ class HydroObject
 
     PropertiesMap* mp_IniConditions;
 
+    EventCollection* mp_Events;
 
 
-	public:
-		/**
+  public:
+    /**
 		  Default constructor
-		*/
-		HydroObject();
+     */
+    HydroObject();
 
-		/**
+    /**
 		  Constructor
 		  \param[in] Geometry The objects geometry
 		  \param[in] ID The object identifier
 		  \param[in] Comment The associated comment
 		  \param[in] ProcessOrder the process order of the objects during the model execution
-		*/
-		HydroObject(HOID ID, int ProcessOrder);
+     */
+    HydroObject(HOID ID, int ProcessOrder);
 
-		/**
+    /**
 		  Virtual destructor
-		*/
-		virtual ~HydroObject();
+     */
+    virtual ~HydroObject();
 
     HOID getID() const;
 
@@ -125,7 +95,7 @@ class HydroObject
 
     PropertiesMap* getIniConditions() { return mp_IniConditions; };
 
-
+    EventCollection* getEvents() { return mp_Events; };
 };
 
 

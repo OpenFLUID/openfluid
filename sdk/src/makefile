@@ -21,6 +21,8 @@ COREOBJ=$(OBJDIR)/core/DateTime.o \
     $(OBJDIR)/core/ChronDataSource.o \
     $(OBJDIR)/core/ValueFactory.o \
     $(OBJDIR)/core/RainSources.o \
+    $(OBJDIR)/core/DistributedEvent.o \
+    $(OBJDIR)/core/EventCollection.o \
     $(OBJDIR)/core/HydroObject.o \
     $(OBJDIR)/core/SurfaceUnit.o \
     $(OBJDIR)/core/GroundwaterUnit.o \

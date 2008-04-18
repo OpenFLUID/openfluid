@@ -33,7 +33,8 @@
 #include "core/SurfaceUnit.h"
 #include "core/ReachSegment.h"
 #include "core/GroundwaterUnit.h"
-
+#include "core/EventCollection.h"
+#include "core/TypeDefs.h"
 
 
 
@@ -49,7 +50,10 @@ class DLLEXPORT CoreRepository;
 class DLLEXPORT SurfaceUnit;
 class DLLEXPORT GroundwaterUnit;
 class DLLEXPORT HydroObject;
-class DLLEXPORT ReachSegement;
+class DLLEXPORT ReachSegment;
+class DLLEXPORT DistributedEvent;
+class DLLEXPORT EventCollection;
+
 
 
 } } // namespace mhydasdk::core

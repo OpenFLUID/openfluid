@@ -26,6 +26,8 @@ HydroObject::HydroObject()
   mp_SimVectorVars = new SimulatedVectorVarsMap();  
   mp_Properties = new PropertiesMap();
   mp_IniConditions = new PropertiesMap();
+  
+  mp_Events = new EventCollection();
 
 }
 
@@ -42,6 +44,9 @@ HydroObject::HydroObject(HOID ID, int ProcessOrder)
   
   mp_Properties = new PropertiesMap();
   mp_IniConditions = new PropertiesMap();
+  
+  mp_Events = new EventCollection();
+
 
   m_ID = ID;
   m_ProcessOrder = ProcessOrder;
