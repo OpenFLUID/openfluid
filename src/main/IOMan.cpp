@@ -781,6 +781,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
         if (IsOK)
         {
 
+          HO = NULL;
           if (UnitClass == wxT("SU")) HO = SpatialData->getSUByID((int)ID);
           if (UnitClass == wxT("RS")) HO = SpatialData->getRSByID((int)ID);
           if (UnitClass == wxT("GU")) HO = SpatialData->getGUByID((int)ID);
@@ -829,6 +830,146 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
   
   
 }
+
+// =====================================================================
+// =====================================================================
+
+bool IOManager::loadDistributedEvents(mhydasdk::core::SpatialRepository *SpatialData)
+{
+  
+  wxArrayString FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),wxT("events.xml"),true);
+    
+  bool IsOK = true;
+  int i=0;
+  
+  
+  while (IsOK && i<FilesToLoad.GetCount())
+  {
+    IsOK =  loadDistributedEventsFile(FilesToLoad[i],SpatialData);
+    i++;
+  }
+  
+  
+  return IsOK;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData)
+{
+
+  bool IsOK = true;
+    
+  
+  wxDateTime ZeDate;
+  wxString ZeDateStr;
+  wxString UnitClass, UnitID;
+  wxString InfoKey, InfoValue;
+
+  if (wxFileExists(Filename))
+  {
+    TiXmlDocument Doc;
+    TiXmlElement* Child, *Child2, *Child3;
+
+    if (Doc.LoadFile(_C(Filename)))
+    {
+
+      TiXmlHandle DocHandle(&Doc);
+
+      Child = DocHandle.FirstChild("mhydas").FirstChild("calendar").Element();
+      
+
+      if (Child != NULL)
+      {
+        TiXmlHandle Child2Handle(Child);
+        Child2 = Child2Handle.FirstChild("event").Element();
+        
+        // loop on all events in the file 
+        
+        for(Child2;Child2;Child2=Child2->NextSiblingElement())
+        {
+          ZeDateStr = wxT("");
+          UnitClass = wxT("");
+          UnitID = wxT("");
+          
+          if (Child2->Attribute("date") != NULL) ZeDateStr = wxString(Child2->Attribute("date"),wxConvUTF8);
+          if (Child2->Attribute("unitclass") != NULL) UnitClass = wxString(Child2->Attribute("unitclass"),wxConvUTF8);
+          if (Child2->Attribute("unitID") != NULL) UnitID = wxString(Child2->Attribute("unitID"),wxConvUTF8);
+                   
+          if ((ZeDateStr != wxT("")) && (UnitClass != wxT("")) && (UnitID != wxT("")))
+          {
+            mhydasdk::core::DistributedEvent *DEvent;
+            mhydasdk::core::HydroObject* HO;
+            long ID;
+            
+            
+            if (UnitID.ToLong(&ID))
+            {
+              HO = NULL;
+              
+              // get the righ unit
+              
+              if (UnitClass == wxT("SU")) HO = SpatialData->getSUByID((int)ID);
+              if (UnitClass == wxT("RS")) HO = SpatialData->getRSByID((int)ID);
+              if (UnitClass == wxT("GU")) HO = SpatialData->getGUByID((int)ID);
+              
+              if (HO != NULL)
+              {
+                ZeDate.ParseFormat(ZeDateStr,wxT("%Y-%m-%d %H:%M:%S"));
+                
+                DEvent = new mhydasdk::core::DistributedEvent(ZeDate);
+                
+                // read infos by event
+                
+                TiXmlHandle Child3Handle(Child2);
+                Child3 = Child3Handle.FirstChild("info").Element();
+                        
+                for(Child3;Child3;Child3=Child3->NextSiblingElement())
+                {
+                  InfoKey = wxT("");
+                  InfoValue = wxT("");
+                  
+                  if (Child3->Attribute("key") != NULL) InfoKey = wxString(Child3->Attribute("key"),wxConvUTF8);
+                  if (Child3->Attribute("value") != NULL) InfoValue = wxString(Child3->Attribute("value"),wxConvUTF8);
+
+                  if (InfoKey != wxT("")) DEvent->addInfo(InfoKey,InfoValue);                  
+                  
+                }
+                
+                HO->getEvents()->addEvent(DEvent);
+                                
+              }
+            }
+          }         
+        }
+      }
+      else
+      {
+        IsOK = false;
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Event file format error"));
+      }
+    }
+    else
+    {
+      IsOK = false;
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Event file error"));
+    }
+  }
+  else
+  {
+    IsOK = false;
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Event file error"));
+
+  }
+
+  return IsOK;
+
+  
+  
+}
+
 
 // =====================================================================
 // =====================================================================
