@@ -121,7 +121,9 @@ class IOManager
     
     bool loadDistributedDataFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData);
 
+    bool loadDistributedEventsFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData);
 
+    
 
   public:
     /**
@@ -167,6 +169,9 @@ class IOManager
     bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
 
     bool loadDistributedData(mhydasdk::core::SpatialRepository *SpatialData);
+    
+    bool loadDistributedEvents(mhydasdk::core::SpatialRepository *SpatialData);
+
     
     bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
     
