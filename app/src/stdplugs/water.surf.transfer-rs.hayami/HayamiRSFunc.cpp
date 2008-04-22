@@ -129,7 +129,7 @@ bool HayamiRSFunction::checkConsistency()
 // =====================================================================
 
 
-bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiRSFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
   mhydasdk::core::ReachSegment* RS;
   float Cel, Sigma;
@@ -198,7 +198,7 @@ bool HayamiRSFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 
 
-bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
 {
   int ID;
   int CurrentStep;
@@ -322,7 +322,7 @@ bool HayamiRSFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool HayamiRSFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiRSFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
 
   return true;

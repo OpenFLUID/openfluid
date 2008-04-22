@@ -119,7 +119,7 @@ bool HayamiSUFunction::checkConsistency()
 // =====================================================================
 
 
-bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiSUFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
   mhydasdk::core::SurfaceUnit* SU;
   float Cel, Sigma;
@@ -164,7 +164,7 @@ bool HayamiSUFunction::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 
 
-bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiSUFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
 {
 
   int ID;
@@ -213,7 +213,7 @@ bool HayamiSUFunction::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool HayamiSUFunction::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiSUFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
 
   return true;

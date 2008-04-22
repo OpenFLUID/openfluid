@@ -989,17 +989,17 @@ class PluggableFunction : public wxObject
     /**
       Called by the kernel.
     */
-    virtual bool initializeRun(SimulationInfo* SimInfo)=0;
+    virtual bool initializeRun(const SimulationInfo* SimInfo)=0;
 
     /**
       Called by the kernel.
     */
-    virtual bool runStep(SimulationStatus* SimStatus)=0;
+    virtual bool runStep(const SimulationStatus* SimStatus)=0;
 
     /**
       Called by the kernel.
     */
-    virtual bool finalizeRun(SimulationInfo* SimInfo)=0;    
+    virtual bool finalizeRun(const SimulationInfo* SimInfo)=0;    
 
 };
 
