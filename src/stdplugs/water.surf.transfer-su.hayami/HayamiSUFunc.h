@@ -62,11 +62,11 @@ class HayamiSUFunction : public mhydasdk::base::PluggableFunction
     
     bool checkConsistency();
 
-    bool initializeRun(mhydasdk::base::SimulationInfo* SimInfo);
+    bool initializeRun(const mhydasdk::base::SimulationInfo* SimInfo);
 
-    bool runStep(mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(const mhydasdk::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(mhydasdk::base::SimulationInfo* SimInfo);
+    bool finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo);
 
 };
 

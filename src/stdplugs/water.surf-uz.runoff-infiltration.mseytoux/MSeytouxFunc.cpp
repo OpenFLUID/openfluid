@@ -119,7 +119,7 @@ bool MorelSeytouxFunc::checkConsistency()
 // =====================================================================
 
 
-bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
+bool MorelSeytouxFunc::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
 
   bool IsOK =  true;
@@ -180,7 +180,7 @@ bool MorelSeytouxFunc::initializeRun(mhydasdk::base::SimulationInfo* SimInfo)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
+bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
 {
 
  
@@ -369,7 +369,7 @@ bool MorelSeytouxFunc::runStep(mhydasdk::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool MorelSeytouxFunc::finalizeRun(mhydasdk::base::SimulationInfo* SimInfo)
+bool MorelSeytouxFunc::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
   return true;
 }
