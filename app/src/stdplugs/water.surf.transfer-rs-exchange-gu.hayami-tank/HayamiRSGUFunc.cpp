@@ -453,7 +453,7 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
 
   //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl; 
   if (!computeWaterHeightFromDischarge(ID,QOutput,&WaterHeight)) 
-    mp_ExecMsgs->addWarning(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"),CurrentStep,wxT("water height is over reach height + buffer on RS ") + wxString::Format(wxT("%d"),ID));
+    MHYDAS_RaiseWarning(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"),CurrentStep,wxT("water height is over reach height + buffer on RS ") + wxString::Format(wxT("%d"),ID));
 
   //MHYDAS_AppendDistributedVarValue(RS,wxT("waterheight"),WaterHeight);
 
@@ -501,7 +501,7 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
 
 
   if (!computeWaterHeightFromDischarge(ID,QOutput,&WaterHeight)) 
-    mp_ExecMsgs->addWarning(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
+    MHYDAS_RaiseWarning(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
 
   MHYDAS_AppendDistributedVarValue(RS,wxT("water.surf.Q.downstream-rs"),QOutput);
 
