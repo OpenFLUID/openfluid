@@ -381,6 +381,16 @@
 // =====================================================================
 // =====================================================================
 
+#define DECLARE_USED_SU_EVENTS ZeSignature->HandledData.UsedEventsOnSU = true;
+
+#define DECLARE_USED_RS_EVENTS ZeSignature->HandledData.UsedEventsOnRS = true;
+
+#define DECLARE_USED_GU_EVENTS ZeSignature->HandledData.UsedEventsOnGU = true;
+
+
+// =====================================================================
+// =====================================================================
+
 
 /**
   Macro for declaration of a loop processing SUs, following their process order
@@ -484,6 +494,14 @@
   { \
     guobj = *_M_GUListiter; \
 
+
+#define DECLARE_EVENT_COLLECTION_LOOP \
+  std::list<DistributedEvent*>::iterator _M_EvListiter;
+
+#define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
+  for(_M_EvListiter=evlist->begin(); _M_EvListiter != evlist->end(); _M_EvListiter++) \
+  { \
+    evobj = *_M_EvListiter;
 
 /**
   Macro for the ending of a loop
@@ -593,10 +611,19 @@ struct SignatureHandledData
 
   bool RequiredRainOnRS;
   
+  bool UsedEventsOnSU;
+  
+  bool UsedEventsOnRS;
+  
+  bool UsedEventsOnGU;
+  
   SignatureHandledData()
   {
     RequiredRainOnSU = false;
-    RequiredRainOnRS = false;    
+    RequiredRainOnRS = false;
+    UsedEventsOnSU = false;
+    UsedEventsOnRS = false;
+    UsedEventsOnGU = false;
   }
   
 };
