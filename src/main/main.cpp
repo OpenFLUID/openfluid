@@ -363,6 +363,8 @@ void MHYDASApp::printPluginsHandledDataReport(mhydasdk::base::SignatureHandledDa
   {
     std::cout << Suffix.mb_str(wxConvUTF8) << "<requiredrain SU=\"" << HandledData.RequiredRainOnSU << "\" RS=\"" << HandledData.RequiredRainOnRS << "\"/>" << std::endl;
 
+    std::cout << Suffix.mb_str(wxConvUTF8) << "<usedevents SU=\"" << HandledData.UsedEventsOnSU << "\" RS=\"" << HandledData.UsedEventsOnRS << "\" GU=\"" << HandledData.UsedEventsOnGU << "\"/>" << std::endl;
+
     for (i=0;i<HandledData.RequiredExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "<extrafile type=\"required\" name=\"" << HandledData.RequiredExtraFiles[i].mb_str(wxConvUTF8) << "\" />" << std::endl;   
     for (i=0;i<HandledData.UsedExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "<extrafile type=\"used\" name=\"" << HandledData.UsedExtraFiles[i].mb_str(wxConvUTF8) << "\" />" << std::endl;
     
@@ -371,13 +373,29 @@ void MHYDASApp::printPluginsHandledDataReport(mhydasdk::base::SignatureHandledDa
   {
     wxString RainSUStr = wxT("no");
     wxString RainRSStr = wxT("no");
-
+    
+    wxString EventsSUStr = wxT("no");
+    wxString EventsRSStr = wxT("no");
+    wxString EventsGUStr = wxT("no");
+    
     if (HandledData.RequiredRainOnSU) RainSUStr = wxT("yes");
     if (HandledData.RequiredRainOnRS) RainRSStr = wxT("yes");
+
+    if (HandledData.UsedEventsOnSU) EventsSUStr = wxT("yes");
+    if (HandledData.UsedEventsOnRS) EventsRSStr = wxT("yes");
+    if (HandledData.UsedEventsOnGU) EventsGUStr = wxT("yes");
+        
+    
     
     std::cout << Suffix.mb_str(wxConvUTF8) << "Rain required on SUs : " << RainSUStr.mb_str(wxConvUTF8) << std::endl;    
     std::cout << Suffix.mb_str(wxConvUTF8) << "Rain required on RSs : " << RainRSStr.mb_str(wxConvUTF8) << std::endl;
 
+    std::cout << Suffix.mb_str(wxConvUTF8) << "Events used on SUs : " << EventsSUStr.mb_str(wxConvUTF8) << std::endl;
+    std::cout << Suffix.mb_str(wxConvUTF8) << "Events used on RSs : " << EventsRSStr.mb_str(wxConvUTF8) << std::endl;
+    std::cout << Suffix.mb_str(wxConvUTF8) << "Events used on GUs : " << EventsGUStr.mb_str(wxConvUTF8) << std::endl;
+    
+    
+    
     for (i=0;i<HandledData.RequiredExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "Required extra file : " << HandledData.RequiredExtraFiles[i].mb_str(wxConvUTF8) << std::endl;    
     for (i=0;i<HandledData.UsedExtraFiles.GetCount();i++) std::cout << Suffix.mb_str(wxConvUTF8) << "Used extra file : " << HandledData.UsedExtraFiles[i].mb_str(wxConvUTF8) << std::endl;
     
