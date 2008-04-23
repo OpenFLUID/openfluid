@@ -743,28 +743,42 @@ WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASVectorValue*, wx
 */
 class PluggableFunction : public wxObject
 {
-
-  protected:
-
-    /**
-      Function parameters 
-    */    
-    mhydasdk::core::ParamsMap m_ParamsMap;
+  private:
 
     /**
-      Pointer to the core repository 
+      Pointer to the core repository
     */
-    mhydasdk::core::CoreRepository* mp_CoreData;
+    
+    mhydasdk::core::CoreRepository* mp_InternalCoreData;
+    
     
     /**
       Pointer to the execution messages repository 
     */
     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
 
+
     /**
       Function execution environment
     */  
     mhydasdk::base::FunctionEnvironment m_FunctionEnv;
+
+
+    /**
+      Function parameters 
+    */    
+    mhydasdk::core::ParamsMap m_ParamsMap;
+       
+  protected:
+
+ 
+
+    /**
+      Pointer to the core repository (const)
+    */
+    const mhydasdk::core::CoreRepository* mp_CoreData;
+    
+   
 
     /**
       Gets the distributed variable value for a spatial object at a time step
@@ -939,7 +953,8 @@ class PluggableFunction : public wxObject
     */         
     bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);    
    
-    
+    bool MHYDAS_GetEvents(mhydasdk::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, mhydasdk::core::EventCollection* EventColl);
+        
     void MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
     
     void MHYDAS_RaiseWarning(wxString Sender, wxString WarningMsg);
@@ -964,7 +979,7 @@ class PluggableFunction : public wxObject
     */
     virtual ~PluggableFunction();
 
-    bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; };
+    bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData; };
     
     bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
     

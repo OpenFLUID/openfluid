@@ -25,6 +25,7 @@ namespace mhydasdk { namespace base {
 PluggableFunction::PluggableFunction()
 {
   mp_CoreData = NULL;
+  mp_InternalCoreData = NULL;
 
   mp_ExecMsgs = NULL;
   
@@ -593,6 +594,17 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
   
   return IsOK;
   
+}
+
+// =====================================================================
+// =====================================================================
+
+bool PluggableFunction::MHYDAS_GetEvents(mhydasdk::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, mhydasdk::core::EventCollection* EventColl)
+{
+  
+  HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
+  
+  return true;
 }
 
 // =====================================================================
