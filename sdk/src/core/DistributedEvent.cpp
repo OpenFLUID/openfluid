@@ -38,6 +38,65 @@ DistributedEvent::~DistributedEvent()
   
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool DistributedEvent::isInfoExists(wxString Key)
+{
+  return !(m_Infos.find(Key) == m_Infos.end());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DistributedEvent::isInfoEquals(wxString Key, wxString Value)
+{
+  wxString TmpValue;
+  
+  return (getInfoAsString(Key,&TmpValue) && (TmpValue == Value));
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DistributedEvent::isInfoEquals(wxString Key, long Value)
+{
+ long TmpValue;
+  
+  return (getInfoAsLong(Key,&TmpValue) && (TmpValue == Value));
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DistributedEvent::isInfoEquals(wxString Key, double Value)
+{
+  double TmpValue;
+  
+  return (getInfoAsDouble(Key,&TmpValue) && (TmpValue == Value));
+  
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DistributedEvent::isInfoEquals(wxString Key, MHYDASScalarValue *Value)
+{
+  MHYDASScalarValue TmpValue;
+  
+  return (getInfoAsMHYDASScalarValue(Key,&TmpValue) && (TmpValue == (*Value)));
+  
+}    
+
+
 // =====================================================================
 // =====================================================================
 

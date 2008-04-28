@@ -37,6 +37,14 @@ class DistributedEvent
 
     bool isInfoExists(wxString Key);
 
+    bool isInfoEquals(wxString Key, wxString Value);    
+
+    bool isInfoEquals(wxString Key, long Value);
+    
+    bool isInfoEquals(wxString Key, double Value);
+    
+    bool isInfoEquals(wxString Key, MHYDASScalarValue *Info);    
+    
     int getInfosCount() { return m_Infos.size(); }
     
     EventInfosMap getInfos() { return m_Infos; }

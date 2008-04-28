@@ -36,7 +36,7 @@ class EventCollection
     
     bool getEventsBetween(const wxDateTime BeginDate, const wxDateTime EndDate, EventCollection *Events);
     
-    std::list<DistributedEvent*> getEventsList() { return m_Events; };
+    std::list<DistributedEvent*>* getEventsList() { return &m_Events; };
     
     int getCount() const { return m_Events.size(); };
     
