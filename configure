@@ -86,6 +86,7 @@ if [ -r $REVFILE ]; then
   SVNREV=`cat $REVFILE`
 fi
 
+SVNREV=$SVNREV
 
 
 # ------------ option file for makefiles -------------
@@ -249,6 +250,7 @@ echo "SVNREV = $SVNREV" >> $OPTFILE
 echo "# version" >> $OPTFILE
 echo "MAJORVER = $MAJORVER" >> $OPTFILE
 echo "MINORVER = $MINORVER" >> $OPTFILE
+echo "RELEASESTATUS = $RELEASESTATUS" >> $OPTFILE
 
 
 echo "# package name root" >> $OPTFILE
@@ -285,7 +287,7 @@ echo "PACKDESC=$PACKDESC" >> $OPTFILE
 
 echo "PACKROOT = $PACKROOT" >> $OPTFILE
 
-PACKNAME=$PACKROOT\_$MAJORVER.$MINORVER-$SVNREV\_$PACKARCH
+PACKNAME=$PACKROOT\_$MAJORVER.$MINORVER-$SVNREV$RELEASESTATUS\_$PACKARCH
 
 echo "PACKNAME = $PACKNAME" >> $OPTFILE
 
@@ -380,6 +382,7 @@ echo "// Version information" >> $SETUPH
 echo "const wxString MAJOR_VERSION = wxT(\"$MAJORVER\");" >> $SETUPH
 echo "const wxString MINOR_VERSION = wxT(\"$MINORVER\");" >> $SETUPH
 echo "const wxString BUILD_VERSION = wxT(\"$BUILDVER\");" >> $SETUPH
+echo "const wxString RELEASE_STATUS = wxT(\"$RELEASESTATUS\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
