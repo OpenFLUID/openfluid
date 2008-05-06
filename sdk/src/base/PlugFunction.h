@@ -832,6 +832,16 @@ class PluggableFunction : public wxObject
       \param[in] PropName the name of the queried variable               
     */            
     bool MHYDAS_IsDistributedPropertyExists(mhydasdk::core::HydroObject *HO, wxString PropName);    
+
+    /**
+      Sets a distributed property for a spatial object
+      \param[in] HO the spatial object
+      \param[in] PropName the name of the property to modify          
+      \param[in] Value the new value of the property     
+    */
+    bool MHYDAS_SetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue Value);
+    
+    
     
     /**
       Gets an initial condition for a spatial object

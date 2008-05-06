@@ -143,6 +143,27 @@ bool PluggableFunction::MHYDAS_IsDistributedPropertyExists(mhydasdk::core::Hydro
 }
 
 
+bool PluggableFunction::MHYDAS_SetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue Value)
+{
+
+  if (HO != NULL)
+   {
+     mhydasdk::core::PropertiesMap::iterator it; 
+     it = HO->getProperties()->find(PropName);
+
+     if (it != HO->getProperties()->end())
+     {
+       it->second = Value;
+       return true;            
+     }
+     else return false;              
+   }
+   else return false;  
+
+  
+}
+
+
 // =====================================================================
 // =====================================================================
 
