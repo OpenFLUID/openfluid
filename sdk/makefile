@@ -58,6 +58,7 @@ install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@echo "Installing header files in $(INSTSDKINCPATH)"
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/core/
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/base/
+	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/tools/	
 	@$(SUDO) cp src/mhydasdk-*.h $(INSTSDKINCPATH)/
 	@$(SUDO) cp src/core/*.h $(INSTSDKINCPATH)/core/
 	@$(SUDO) cp src/base/*.h $(INSTSDKINCPATH)/base/
@@ -75,6 +76,7 @@ for-app-dev: sdk mhydasdk-conf-file
 	@echo "Installing header files in $(DEVPREFIX)/$(INSTSDKINCDIR)"
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
+	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/tools/	
 	@cp src/mhydasdk-*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/
 	@cp src/core/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
 	@cp src/base/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
