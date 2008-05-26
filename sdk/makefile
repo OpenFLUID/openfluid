@@ -61,6 +61,7 @@ install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@$(SUDO) cp src/mhydasdk-*.h $(INSTSDKINCPATH)/
 	@$(SUDO) cp src/core/*.h $(INSTSDKINCPATH)/core/
 	@$(SUDO) cp src/base/*.h $(INSTSDKINCPATH)/base/
+	@$(SUDO) cp src/tools/*.h $(INSTSDKINCPATH)/tools/	
 	@echo "Installing libraries in $(INSTSDKLIBPATH)"
 	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBFILE) $(INSTSDKLIBPATH)
 	@$(SUDO) chmod 644 $(INSTSDKLIBPATH)/$(SDKLIBFILE)
@@ -77,6 +78,7 @@ for-app-dev: sdk mhydasdk-conf-file
 	@cp src/mhydasdk-*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/
 	@cp src/core/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
 	@cp src/base/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
+	@cp src/tools/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/tools/	
 	@echo "Installing libraries in $(DEVPREFIX)/$(INSTSDKLIBDIR)" 	
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKLIBDIR)
 	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(DEVPREFIX)/$(INSTSDKLIBDIR)
@@ -111,12 +113,14 @@ ubuntu-edgy-packages: all mhydasdk-conf-file docs
 	@echo "Building development package"
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp src/mhydasdk-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
 	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
@@ -166,12 +170,14 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 	@echo "Building development package"
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp src/mhydasdk-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
+	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
 	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
@@ -211,9 +217,11 @@ win32-packages: all mhydasdk-conf-file
 	@echo "Building development package"
 	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/
 	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
+	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/tools/	
 	@cp src/mhydasdk-*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/
 	@cp src/core/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
+	@cp src/tools/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/tools/	
 	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/
 	@cd $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/ && \
          $(ZIP) -r $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32.zip * && \
