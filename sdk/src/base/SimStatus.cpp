@@ -28,7 +28,7 @@ SimulationInfo::SimulationInfo(wxDateTime StartTime,
 
   DeltaTime = EndTime-StartTime;
   
-  m_StepsCount = ((DeltaTime.GetSeconds().ToLong()) / TimeStep) + 1;  
+  m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep) + 1;  
   
 }
 
@@ -80,17 +80,17 @@ SimulationStatus::~SimulationStatus()
 bool SimulationStatus::switchToNextStep()
 {
   wxDateTime NextTime(m_CurrentTime + wxTimeSpan(0,0,m_TimeStep,0));
-
-//  std::cerr << NextTime.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;
   
-  if (NextTime <=  m_EndTime)
+  if (NextTime < m_EndTime)
   {
     m_CurrentStep++;
 
     m_CurrentTime = wxDateTime(m_CurrentTime + wxTimeSpan(0,0,m_TimeStep,0));
    
-    m_IsFirstStep =  (m_CurrentStep == 0);
-    m_IsLastStep = (NextTime ==  m_EndTime);    
+    m_IsFirstStep = (m_CurrentStep == 0);    
+
+    // the new step is the last one if (new time + time step value) is after end time 
+    m_IsLastStep = (wxDateTime(NextTime + wxTimeSpan(0,0,m_TimeStep,0)) >  m_EndTime);
     
     return true;
   }
