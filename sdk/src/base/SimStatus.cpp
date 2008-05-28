@@ -8,21 +8,27 @@
 
 
 #include "SimStatus.h"
+#include <iostream>
 
 namespace mhydasdk { namespace base {
 
 
-SimulationInfo::SimulationInfo(mhydasdk::core::DateTime StartTime,
-                               mhydasdk::core::DateTime EndTime,
+SimulationInfo::SimulationInfo(wxDateTime StartTime,
+                               wxDateTime EndTime,
                                int TimeStep)
 
 {
+  wxTimeSpan DeltaTime;
+  
   m_StartTime = StartTime;
   m_EndTime = EndTime;
+  
 
   m_TimeStep = TimeStep;
 
-  m_StepsCount = ((EndTime.getRawTime() - StartTime.getRawTime()) / TimeStep) + 1;  
+  DeltaTime = EndTime-StartTime;
+  
+  m_StepsCount = ((DeltaTime.GetSeconds().ToLong()) / TimeStep) + 1;  
   
 }
 
@@ -41,8 +47,8 @@ SimulationInfo::~SimulationInfo()
 
 
 
-SimulationStatus::SimulationStatus(mhydasdk::core::DateTime StartTime,
-                                   mhydasdk::core::DateTime EndTime,
+SimulationStatus::SimulationStatus(wxDateTime StartTime,
+                                   wxDateTime EndTime,
                                    int TimeStep)
                 : SimulationInfo(StartTime,EndTime,TimeStep)                   
 
@@ -73,16 +79,18 @@ SimulationStatus::~SimulationStatus()
 
 bool SimulationStatus::switchToNextStep()
 {
-  mhydasdk::core::DateTime NextTime(m_CurrentTime.getRawTime() + m_TimeStep);
+  wxDateTime NextTime(m_CurrentTime + wxTimeSpan(0,0,m_TimeStep,0));
 
-  if (NextTime.getRawTime() <=  m_EndTime.getRawTime())
+//  std::cerr << NextTime.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;
+  
+  if (NextTime <=  m_EndTime)
   {
     m_CurrentStep++;
 
-    m_CurrentTime = mhydasdk::core::DateTime(m_CurrentTime.getRawTime() + m_TimeStep);
+    m_CurrentTime = wxDateTime(m_CurrentTime + wxTimeSpan(0,0,m_TimeStep,0));
    
     m_IsFirstStep =  (m_CurrentStep == 0);
-    m_IsLastStep = (NextTime.getRawTime() ==  m_EndTime.getRawTime());    
+    m_IsLastStep = (NextTime ==  m_EndTime);    
     
     return true;
   }

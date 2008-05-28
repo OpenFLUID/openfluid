@@ -11,6 +11,7 @@
 
 
 #include "mhydasdk-core.h"
+#include "wx/datetime.h"
 
 namespace mhydasdk { namespace base {
 
@@ -23,8 +24,8 @@ namespace mhydasdk { namespace base {
 class SimulationInfo 
 {
   protected:
-    mhydasdk::core::DateTime m_StartTime;
-    mhydasdk::core::DateTime m_EndTime;
+    wxDateTime m_StartTime;
+    wxDateTime m_EndTime;
     int m_TimeStep;
     
     unsigned int m_StepsCount;
@@ -34,8 +35,8 @@ class SimulationInfo
     /**
       Constructor
     */
-    SimulationInfo(mhydasdk::core::DateTime StartTime,
-                   mhydasdk::core::DateTime EndTime,
+    SimulationInfo(wxDateTime StartTime,
+                   wxDateTime EndTime,
                    int TimeStep);
 
     /**
@@ -47,8 +48,8 @@ class SimulationInfo
     
     unsigned int getStepsCount() const { return m_StepsCount; };
     
-    mhydasdk::core::DateTime getStartTime() const { return m_StartTime; };
-    mhydasdk::core::DateTime getEndTime() const { return m_EndTime; };
+    wxDateTime getStartTime() const { return m_StartTime; };
+    wxDateTime getEndTime() const { return m_EndTime; };
     
     
 };
@@ -62,7 +63,7 @@ class SimulationStatus : public SimulationInfo
 
     unsigned int m_CurrentStep;
 
-    mhydasdk::core::DateTime m_CurrentTime;
+    wxDateTime m_CurrentTime;
 
     bool m_IsFirstStep;
     
@@ -72,8 +73,8 @@ class SimulationStatus : public SimulationInfo
     /**
       Constructor
     */
-    SimulationStatus(mhydasdk::core::DateTime StartTime,
-                     mhydasdk::core::DateTime EndTime,
+    SimulationStatus(wxDateTime StartTime,
+                     wxDateTime EndTime,
                      int TimeStep);
 
 
@@ -87,7 +88,7 @@ class SimulationStatus : public SimulationInfo
 
     unsigned int getCurrentStep() const { return m_CurrentStep; };
 
-    mhydasdk::core::DateTime getCurrentTime() const { return m_CurrentTime; };
+    wxDateTime getCurrentTime() const { return m_CurrentTime; };
 
     bool isFirstStep() const { return m_IsFirstStep; };
 
