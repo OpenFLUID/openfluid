@@ -1577,7 +1577,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
 
 
-bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI)
+bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI)
 {
   bool IsOK = true;
 
@@ -1588,14 +1588,14 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
     wxString Filename;
     AutoOutfileDef* CurrentDef;
 
-    wxArrayString DTStrings;
-    mhydasdk::core::TimeSerie* TSerie = Data->getRainSources()->getRainSourceCollection().begin()->second->getTimeSerie();
-
+    wxArrayString DTStrings;    
+    wxDateTime CurrentDate = Config.BeginDate;
 
     // preparing and formatting datetime column(s)
-    for (i=0;i<TSerie->getItemsCollection()->size();i++)
+    for (i=0;i<TimeStepsCount;i++)
     {
-      DTStrings.Add(TSerie->getItemsCollection()->at(i)->getDateTime().asString(m_AutoOutFiles.DTFormat));
+      DTStrings.Add(CurrentDate.Format(m_AutoOutFiles.DTFormat));
+      CurrentDate = CurrentDate + wxTimeSpan(0,0,Config.DeltaT,0);
     }
 
 
@@ -1617,6 +1617,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos 
   
   return IsOK;
 }
+
 
 // =====================================================================
 // =====================================================================
