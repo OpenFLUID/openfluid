@@ -43,7 +43,7 @@ bool MHYDASApp::buildModel()
 
   if (!mp_ExecMsgs->isErrorFlag())
   {
-    if (mp_Engine->getConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getConfig().SimulationID;
+    if (mp_Engine->getRunConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getRunConfig().SimulationID;
     else m_ExSI.SimID = GenerateSimulationID();
   }  
 
@@ -246,8 +246,8 @@ void MHYDASApp::printDataInfos()
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
   std::cout << "Rain source(s): " << mp_CoreData->getRainSources()->getRainSourceCollection().size() << std::endl;
-  std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().asString())
-            << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().asString()) << std::endl
+  std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S")))
+            << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl
             << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
   std::cout << std::endl;
   std::cout.flush();

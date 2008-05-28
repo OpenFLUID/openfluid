@@ -51,17 +51,127 @@ IOManager::~IOManager()
 
 }
 
-
-
-
 // =====================================================================
 // =====================================================================
 
 
-bool IOManager::loadModelConfig(EngineConfig* Config)
+bool IOManager::loadRunConfig(RunConfig* Config)
 {
+  TiXmlDocument LoadDoc;
+  TiXmlElement* Child, *Child2;
 
-  // à terminer
+  wxString Str;
+  wxDateTime ZeDate;
+  
+  
+  long IntValue;
+
+  FunctionConfig* FConf;
+
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RUNFILE).mb_str(wxConvUTF8)))
+  {
+
+    TiXmlHandle DocHandle(&LoadDoc);
+    
+    
+    // -------- DeltaT ----------------
+    
+    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("deltat").Element();    
+
+    if (Child == NULL)
+    {
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing deltat."));      
+      return false;
+    }
+    else
+    {
+      Str = _U(Child->GetText());
+      
+      if (Str.ToLong(&IntValue))
+      {
+        Config->DeltaT = int(IntValue);
+        
+//        std::cerr << Config->DeltaT << std::endl;
+      }
+      else
+      {
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong deltat format."));      
+        return false;        
+      }
+    }
+
+    // -------- Simulation period ----------------
+    
+    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("period").Element();    
+
+    if (Child == NULL)
+    {
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing period."));      
+      return false;
+    }
+    else
+    {
+      if (Child->Attribute("begin") != NULL)
+      {
+        Str = _U(Child->Attribute("begin"));
+        
+        if (ZeDate.ParseFormat(Str,wxT("%Y-%m-%d %H:%M:%S")) != NULL)
+        {
+          Config->BeginDate = ZeDate;
+
+//          std::cerr << Config->BeginDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;          
+          
+        }
+        else
+        {
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of begin attribute for period."));      
+          return false;                  
+        }
+      }         
+      else
+      {
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));      
+        return false;        
+      }
+      
+      if (Child->Attribute("end") != NULL)
+      {
+        Str = _U(Child->Attribute("end"));
+        
+        if (ZeDate.ParseFormat(Str,wxT("%Y-%m-%d %H:%M:%S")) != NULL)
+        {
+          Config->EndDate = ZeDate;
+
+//          std::cerr << Config->EndDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;          
+          
+        }
+        else
+        {
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of end attribute for period."));      
+          return false;                  
+        }
+      }         
+      else
+      {
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing end attribute for period."));      
+        return false;        
+      }
+      
+    }
+    
+  }  
+
+  return true;
+  
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool IOManager::loadModelConfig(ModelConfig* Config)
+{
 
   TiXmlDocument LoadDoc;
   TiXmlElement* Child, *Child2;
@@ -72,7 +182,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
 
   FunctionConfig* FConf;
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_CONFFILE).mb_str(wxConvUTF8)))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_MODELFILE).mb_str(wxConvUTF8)))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -147,7 +257,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error. Incorrect function definition."));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error. Incorrect function definition."));
         return false;
       }  
        
@@ -159,7 +269,7 @@ bool IOManager::loadModelConfig(EngineConfig* Config)
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_CONFFILE + wxT(") error."));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error."));
     return false;
   }
 
@@ -502,7 +612,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainSources *RainData, mhydasdk::co
         mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain file content error (") + Filename + wxT(")"));
       }
 
-      i++;
+      i++; 
     }
 
     if (IsOK)
@@ -1557,7 +1667,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
     
     if (SimInfo != NULL)
     {    
-      FileContents << wxT("Simulation period: ") << SimInfo->getStartTime().asString() << wxT(" to ") << SimInfo->getEndTime().asString() << wxT("\n"); 
+      FileContents << wxT("Simulation period: ") << (SimInfo->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT(" to ") << (SimInfo->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT("\n"); 
       FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
     }
      
@@ -1811,7 +1921,7 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 // =====================================================================
 
 
-bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydasdk::core::DateTime DT)
+bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDateTime DT)
 {
   
   wxString Filename, Filecontent;
@@ -1843,7 +1953,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
     // scalars
     if (SU->getSimulatedVars()->size() > 0)
     {
-      Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+      Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
 
       for(Simit = SU->getSimulatedVars()->begin(); Simit != SU->getSimulatedVars()->end(); ++Simit)
       {
@@ -1870,7 +1980,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
         VValues = VSimit->second;
         Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
         
-        Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+        Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
         
         if (VValues->size() > Step)
         {          
@@ -1901,7 +2011,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
     // scalars
     if (RS->getSimulatedVars()->size() > 0)
     {
-      Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+      Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
 
       for(Simit = RS->getSimulatedVars()->begin(); Simit != RS->getSimulatedVars()->end(); ++Simit)
       {
@@ -1929,7 +2039,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
         VValues = VSimit->second;
         Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
         
-        Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+        Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
         
         if (VValues->size() > Step)
         {          
@@ -1959,7 +2069,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
     // scalars
     if (GU->getSimulatedVars()->size() > 0)
     {
-      Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+      Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
 
       for(Simit = GU->getSimulatedVars()->begin(); Simit != GU->getSimulatedVars()->end(); ++Simit)
       {
@@ -1986,7 +2096,7 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydas
         VValues = VSimit->second;
         Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
         
-        Filecontent = DT.asString(wxT("%Y %m %d %H %M %S"));
+        Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
         
         if (VValues->size() > Step)
         {          
