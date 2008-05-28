@@ -13,7 +13,7 @@
 #include <iostream>
 
 #include "IOMan.h"
-#include "ColTextParser.h"
+#include "mhydasdk-tools.h"
 #include "setup.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
@@ -229,7 +229,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (SUsFileExists)
   {
-    ColumnTextParser SUsFileParser(wxT("%"));
+    mhydasdk::tools::ColumnTextParser SUsFileParser(wxT("%"));
 
     //  checks that files has the right column number
     if (!SUsFileParser.loadFromFile(SUsFilename) ||
@@ -287,7 +287,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (RSsFileExists)
   {
-    ColumnTextParser RSsFileParser(wxT("%"));
+    mhydasdk::tools::ColumnTextParser RSsFileParser(wxT("%"));
 
     if (!RSsFileParser.loadFromFile(RSsFilename) ||
         RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
@@ -341,7 +341,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (GUsFileExists)
   {
-    ColumnTextParser GUsFileParser(wxT("%"));
+    mhydasdk::tools::ColumnTextParser GUsFileParser(wxT("%"));
 
     if (!GUsFileParser.loadFromFile(GUsFilename) ||
         GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
@@ -462,7 +462,7 @@ bool IOManager::loadRainFile(mhydasdk::core::RainSources *RainData, mhydasdk::co
   */
 
   
-  ColumnTextParser FileParser(wxT("%"));
+  mhydasdk::tools::ColumnTextParser FileParser(wxT("%"));
   bool IsOK;
 
   IsOK = true;
@@ -569,8 +569,8 @@ bool IOManager::loadRainDistribution(mhydasdk::core::CoreRepository *Data)
   int i;
   mhydasdk::core::ChronDataSource *CurrentRainGauge;  
 
-  ColumnTextParser SUDistriFileParser(wxT("%"));
-  ColumnTextParser RSDistriFileParser(wxT("%"));
+  mhydasdk::tools::ColumnTextParser SUDistriFileParser(wxT("%"));
+  mhydasdk::tools::ColumnTextParser RSDistriFileParser(wxT("%"));
 
   if (wxFileExists(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SURAINDISTRIFILE)))
   {      
@@ -765,7 +765,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 
   if (IsOK)
   {
-    ColumnTextParser DataParser(wxT("%"));
+    mhydasdk::tools::ColumnTextParser DataParser(wxT("%"));
 
     if (DataParser.setFromString(Data,ColOrder.Count()+1))
     {
