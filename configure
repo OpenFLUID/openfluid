@@ -333,7 +333,8 @@ echo "const wxString MHYDAS_DEFAULT_TRACEDIR = wxT(\"$MDEF_TRACEDIR\");" >> $SET
 echo "" >> $SETUPH
 
 echo "// Default files" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_CONFFILE = wxT(\"$MDEF_CONFFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_MODELFILE = wxT(\"$MDEF_MODELFILE\");" >> $SETUPH
+echo "const wxString MHYDAS_DEFAULT_RUNFILE = wxT(\"$MDEF_RUNFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_INDATAFILE = wxT(\"$MDEF_INDATAFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_OUTPUTCONFFILE = wxT(\"$MDEF_OUTPUTCONFFILE\");" >> $SETUPH
 echo "const wxString MHYDAS_DEFAULT_SUDEFSFILE = wxT(\"$MDEF_SUDEFSFILE\");" >> $SETUPH

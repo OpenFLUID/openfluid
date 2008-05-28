@@ -36,7 +36,7 @@ WX_DECLARE_LIST(FunctionConfig, FunctionConfigsList);
 /**
   Structure storing the full engine configuration, including global parameters
 */
-struct EngineConfig
+struct ModelConfig
 {
   int DeltaT;
   
@@ -45,6 +45,21 @@ struct EngineConfig
   FunctionConfigsList FuncConfigs;
 
 };
+
+
+struct RunConfig
+{
+  int DeltaT;
+  
+  wxString SimulationID;
+
+  wxDateTime BeginDate;
+  
+  wxDateTime EndDate;  
+
+};
+
+
 
 
 // =====================================================================
@@ -136,11 +151,14 @@ class IOManager
     */
     ~IOManager();
 
+    
+    bool loadRunConfig(RunConfig* Config);    
+    
     /**
       Loads model engine configuration
       \param[out] Configuration definition to populate
     */
-    bool loadModelConfig(EngineConfig* Config);
+    bool loadModelConfig(ModelConfig* Config);
 
 
     /**
@@ -177,7 +195,7 @@ class IOManager
     
     bool prepareTraceDir(mhydasdk::core::CoreRepository *Data);
     
-    bool saveTrace(mhydasdk::core::CoreRepository *Data, int Step, mhydasdk::core::DateTime DT);
+    bool saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDateTime DT);
 
     bool saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo);    
 

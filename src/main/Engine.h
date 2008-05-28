@@ -57,8 +57,14 @@ class Engine
      /**
 
      */
-     EngineConfig m_Config;
+     ModelConfig m_ModelConfig;
 
+     /**
+
+     */
+     RunConfig m_RunConfig;
+     
+     
      /**
        Processes the config file, check the list of plugins to load,
        loads them, registers params to pass and builds the processing list.
@@ -98,7 +104,9 @@ class Engine
 
     bool saveReports(ExtraSimInfos ExSI);
 
-    EngineConfig getConfig() const { return m_Config; };
+    ModelConfig getModelConfig() const { return m_ModelConfig; };
+
+    RunConfig getRunConfig() const { return m_RunConfig; };
 
     mhydasdk::base::SimulationInfo *getSimulationInfo() { return (mhydasdk::base::SimulationInfo*)mp_SimStatus; };
 

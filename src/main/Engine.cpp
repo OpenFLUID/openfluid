@@ -118,7 +118,7 @@ Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::Executi
 
   mp_IOMan = new IOManager(mp_ExecMsgs,mp_RunEnv);
 
-  m_Config.SimulationID = wxT("");
+  m_ModelConfig.SimulationID = wxT("");
   
   mp_SimStatus = NULL;
 
@@ -147,7 +147,7 @@ bool Engine::processConfig()
   */
 
 
-  FunctionConfigsList::Node *FuncNode = m_Config.FuncConfigs.GetFirst();
+  FunctionConfigsList::Node *FuncNode = m_ModelConfig.FuncConfigs.GetFirst();
   FunctionConfig *FConf;
   PluginContainer* FuncToAdd;
   
@@ -940,7 +940,7 @@ bool Engine::buildModel()
 
   */
 
-  return (mp_IOMan->loadModelConfig(&m_Config) && processConfig());
+  return (mp_IOMan->loadModelConfig(&m_ModelConfig) && processConfig());
 }
 
 
@@ -950,8 +950,10 @@ bool Engine::buildModel()
 bool Engine::loadData()
 {
   bool IsOK;
-    
-  IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
+
+  IsOK =  mp_IOMan->loadRunConfig(&m_RunConfig);  
+  
+  if (IsOK) IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
   
   if (IsOK) IsOK = mp_IOMan->loadDistributedData(mp_CoreData->getSpatialData());
   
@@ -995,7 +997,7 @@ bool Engine::prepareDataAndCheckConsistency()
 
   
   // process RainEVent
-  if (!mp_CoreData->getRainSources()->ProcessRainSources(m_Config.DeltaT))
+  if (!mp_CoreData->getRainSources()->ProcessRainSources(m_ModelConfig.DeltaT))
   {
     mp_ExecMsgs->setError(wxT("Engine"),wxT("Rain sources process error"));
     return false;
@@ -1049,9 +1051,14 @@ bool Engine::prepareDataAndCheckConsistency()
 
   // inits the simulation infos and status
 
-  mp_SimStatus = new mhydasdk::base::SimulationStatus(mp_CoreData->getRainSources()->getStartingTime(),
-                                                      mp_CoreData->getRainSources()->getEndingTime(),
-                                                      m_Config.DeltaT);
+  wxDateTime BeginDate, EndDate;
+  
+//  BeginDate.ParseFormat(wxT("2008-05-10 06:20:00"),wxT("%Y-%m-%d %H:%M:%S"));
+//  EndDate.ParseFormat(wxT("2008-05-10 16:20:00"),wxT("%Y-%m-%d %H:%M:%S"));
+  
+  mp_SimStatus = new mhydasdk::base::SimulationStatus(m_RunConfig.BeginDate,
+                                                      m_RunConfig.EndDate,
+                                                      m_RunConfig.DeltaT);
 
   
   
@@ -1120,7 +1127,7 @@ bool Engine::run()
     if (!mp_RunEnv->isQuietRun())
     {
       std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().asString());
+      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().Format(wxT("%Y-%m-%d %H:%M:%S")));
       std::cout.flush();
     }  
 
