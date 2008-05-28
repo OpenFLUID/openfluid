@@ -1196,7 +1196,7 @@ bool Engine::run()
 bool Engine::saveResults(ExtraSimInfos ExSI)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveResults(mp_CoreData,ExSI));
+  return (mp_IOMan->saveResults(mp_CoreData, m_RunConfig, mp_SimStatus->getStepsCount(),ExSI));
 }
 
 // =====================================================================

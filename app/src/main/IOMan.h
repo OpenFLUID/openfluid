@@ -191,7 +191,9 @@ class IOManager
     bool loadDistributedEvents(mhydasdk::core::SpatialRepository *SpatialData);
 
     
-    bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
+    //bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
+    bool saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI);
+
     
     bool prepareTraceDir(mhydasdk::core::CoreRepository *Data);
     
