@@ -70,9 +70,7 @@ class Engine
      bool checkModelConsistency();
 
      bool checkDataConsistency();
-     
-     bool checkRainConsistency();
-     
+          
      bool checkExtraFilesConsistency();
           
      

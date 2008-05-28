@@ -887,81 +887,6 @@ bool Engine::checkDataConsistency()
 // =====================================================================
 
 
-
-bool Engine::checkRainConsistency()
-{
-  PluginsList::Node *FuncNode = NULL;
-  mhydasdk::base::SignatureHandledData HData;
-  bool RequiredRainOnSU = false;
-  bool RequiredRainOnRS = false;  
-  
-  FuncNode = m_Functions.GetFirst();
-  while (FuncNode && !RequiredRainOnSU && !RequiredRainOnRS)
-  {
-
-    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
-    if (CurrentFunction != NULL)
-    {
-      HData = CurrentFunction->Signature->HandledData;
-      
-      RequiredRainOnSU = HData.RequiredRainOnSU || RequiredRainOnSU;
-      RequiredRainOnRS = HData.RequiredRainOnRS || RequiredRainOnRS;            
-    }    
-    FuncNode = FuncNode->GetNext(); 
-  }
-  
-
-  
-  if (RequiredRainOnSU)
-  {
-
-    mhydasdk::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
-    mhydasdk::core::SUMap::iterator SUiter;       
-
-    // checking SUs
-    for(SUiter = SUsMap->begin(); SUiter != SUsMap->end(); ++SUiter)
-    {    
-      if (SUiter->second->getRainSource() == NULL) 
-      {
-        mp_ExecMsgs->setError(wxT("Engine"),wxT("Required rain source not found for SU #") + wxString::Format(wxT("%d"),SUiter->second->getID()));        
-        return false;
-      }
-    }
-    
-  }
-
-  
-  
-  
-  if (RequiredRainOnRS)
-  {
-    // checking RSs
-
-    mhydasdk::core::RSMap *RSsMap = mp_CoreData->getSpatialData()->getRSsCollection();
-    mhydasdk::core::RSMap::iterator RSiter;
-
-    
-    for(RSiter = RSsMap->begin(); RSiter != RSsMap->end(); ++RSiter)
-    {
-      if (RSiter->second->getRainSource() == NULL)
-      {
-        mp_ExecMsgs->setError(wxT("Engine"),wxT("Required rain source not found for RS #") + wxString::Format(wxT("%d"),RSiter->second->getID()));        
-        return false;
-        
-        return false;      
-      }
-    }
-    
-  }
-  
-  
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 bool Engine::checkExtraFilesConsistency()
 {
   
@@ -1107,10 +1032,7 @@ bool Engine::prepareDataAndCheckConsistency()
   
   PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
  
-  
-  IsOK = checkRainConsistency();
-
-  
+    
   if (!IsOK)
   {       
     return false;    

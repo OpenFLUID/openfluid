@@ -374,12 +374,6 @@
 // =====================================================================
 // =====================================================================
 
-#define DECLARE_REQUIRED_SU_RAIN ZeSignature->HandledData.RequiredRainOnSU = true;
-
-#define DECLARE_REQUIRED_RS_RAIN ZeSignature->HandledData.RequiredRainOnRS = true;
-
-// =====================================================================
-// =====================================================================
 
 #define DECLARE_USED_SU_EVENTS ZeSignature->HandledData.UsedEventsOnSU = true;
 
@@ -606,11 +600,7 @@ struct SignatureHandledData
   wxArrayString RequiredExtraFiles;
 
   wxArrayString UsedExtraFiles;
-  
-  bool RequiredRainOnSU;
-
-  bool RequiredRainOnRS;
-  
+    
   bool UsedEventsOnSU;
   
   bool UsedEventsOnRS;
@@ -619,8 +609,6 @@ struct SignatureHandledData
   
   SignatureHandledData()
   {
-    RequiredRainOnSU = false;
-    RequiredRainOnRS = false;
     UsedEventsOnSU = false;
     UsedEventsOnRS = false;
     UsedEventsOnGU = false;
