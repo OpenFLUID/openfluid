@@ -36,6 +36,9 @@ BASEOBJ=$(OBJDIR)/base/SimStatus.o \
     $(OBJDIR)/base/PlugFunction.o \
     $(OBJDIR)/base/ExecMsgs.o
 
+TOOLSOBJ=$(OBJDIR)/tools/ColTextParser.o
+
+
 
 $(OBJDIR)/core/%.o : core/%.cpp core/%.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
@@ -43,13 +46,18 @@ $(OBJDIR)/core/%.o : core/%.cpp core/%.h
 $(OBJDIR)/base/%.o : base/%.cpp base/%.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
+$(OBJDIR)/tools/%.o : tools/%.cpp tools/%.h
+	$(CPP) $(CCFLAGS) -c $< -o $@
 
-all: prechecks $(COREOBJ) $(BASEOBJ)
-	$(CPP) -o $(BINDIR)/$(LIBFILE) $(COREOBJ) $(BASEOBJ) $(CCLIBS) -shared $(SDKLIBLDFLAGS) 
+
+
+all: prechecks $(COREOBJ) $(BASEOBJ) $(TOOLSOBJ)
+	$(CPP) -o $(BINDIR)/$(LIBFILE) $(COREOBJ) $(BASEOBJ) $(TOOLSOBJ) $(CCLIBS) -shared $(SDKLIBLDFLAGS) 
 
 prechecks:
 	@mkdir -p $(OBJDIR)/core
 	@mkdir -p $(OBJDIR)/base
+	@mkdir -p $(OBJDIR)/tools	
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LIBDIR)
 

@@ -17,6 +17,7 @@
 // =====================================================================
 // =====================================================================
 
+namespace mhydasdk { namespace tools {
 
 
 ColumnTextParser::ColumnTextParser(wxString CommentLineSymbol, wxString Delimiter)
@@ -357,4 +358,6 @@ void ColumnTextParser::coutContents()
   std::cout << "" << std::endl;
 }
 
+
+} }
 

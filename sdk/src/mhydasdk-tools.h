@@ -23,7 +23,13 @@
 
 
 #include "tools/FortranCPP.h"
+#include "tools/ColTextParser.h"
 
+namespace mhydasdk { namespace tools {
+
+class DLLEXPORT ColumnTextParser;
+
+} }
 
 #endif
 

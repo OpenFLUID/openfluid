@@ -12,6 +12,9 @@
 #include <wx/wx.h>
 #include <wx/textfile.h>
 
+
+namespace mhydasdk { namespace tools {
+
 WX_DEFINE_ARRAY(wxArrayString*, ArrayContents);
 
 /**
@@ -89,6 +92,7 @@ class ColumnTextParser
 
 };
 
+} }
 
 
 #endif
