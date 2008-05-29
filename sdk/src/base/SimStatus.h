@@ -31,6 +31,8 @@ class SimulationInfo
     
     unsigned int m_StepsCount;
   
+    
+    
   public:
     
     /**
@@ -65,6 +67,8 @@ class SimulationStatus : public SimulationInfo
     unsigned int m_CurrentStep;
 
     wxDateTime m_CurrentTime;
+    
+    bool m_BidouilledTime;
 
     bool m_IsFirstStep;
     

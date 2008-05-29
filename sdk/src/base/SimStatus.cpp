@@ -18,6 +18,8 @@ SimulationInfo::SimulationInfo(wxDateTime StartTime,
                                int TimeStep)
 
 {
+
+ 
   wxTimeSpan DeltaTime;
   
   m_StartTime = StartTime;
@@ -25,10 +27,12 @@ SimulationInfo::SimulationInfo(wxDateTime StartTime,
 
   m_TimeStep = TimeStep;
   m_TimeStepSpan = wxTimeSpan(0,0,m_TimeStep,0);
-
   
   DeltaTime = EndTime-StartTime;  
   m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep) + 1;  
+    
+  
+
   
 }
 
@@ -59,7 +63,10 @@ SimulationStatus::SimulationStatus(wxDateTime StartTime,
   
   m_IsFirstStep = true;
     
-  m_IsLastStep = false;        
+  m_IsLastStep = false;     
+  
+  m_BidouilledTime = false;
+  
 }
 
 // =====================================================================
@@ -84,11 +91,29 @@ bool SimulationStatus::switchToNextStep()
     m_CurrentStep++;
 
     m_CurrentTime = NextTime;
+
+
    
+    // Big bidouilling for Daylight Saving Time handling
+    if (m_CurrentTime.IsDST() && !m_BidouilledTime)
+    {     
+      m_CurrentTime.Subtract(wxTimeSpan(1,0,0,0));      
+      m_BidouilledTime = true;
+    }
+    else
+    {
+      if (!m_CurrentTime.IsDST() && m_BidouilledTime)
+      {     
+        m_CurrentTime.Add(wxTimeSpan(1,0,0,0));      
+        m_BidouilledTime = false;
+      }
+
+    }
+
     m_IsFirstStep = (m_CurrentStep == 0);    
 
-    // the new step is the last one if (new time + time step value) is after end time 
-    m_IsLastStep = (wxDateTime(NextTime + m_TimeStepSpan) >  m_EndTime);
+    // the next step is the last one if (new time + time step value) is after end time 
+    m_IsLastStep = (wxDateTime(m_CurrentTime + m_TimeStepSpan) >  m_EndTime);
     
     return true;
   }
@@ -98,3 +123,4 @@ bool SimulationStatus::switchToNextStep()
 
 
 } } // namespace mhydasdk::core
+
