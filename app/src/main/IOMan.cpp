@@ -158,6 +158,18 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       }
       
     }
+
+    // -------- Simulation ID ----------------
+    
+    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("simid").Element();    
+
+    if (Child != NULL)
+    {
+      Str = _U(Child->GetText());
+      if (Str != wxT("") && (Str.Find(wxT(" ")) == -1)) Config->SimulationID = Str;
+    }
+    
+    
     
   }  
 

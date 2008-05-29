@@ -107,7 +107,8 @@ WX_DEFINE_LIST(PluginsList);
 Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::ExecutionMessages* ExecMsgs,
                RuntimeEnvironment* RunEnv, PluginManager* PlugMan)
 {
-
+ 
+  
   mp_CoreData = CoreData;
   mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
@@ -1109,7 +1110,7 @@ bool Engine::run()
     if (!mp_RunEnv->isQuietRun())
     {
       std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().Format(wxT("%Y-%m-%d %H:%M:%S")));
+      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().Format(wxT("%Y-%m-%d %H:%M:%S")));      
       std::cout.flush();
     }  
 

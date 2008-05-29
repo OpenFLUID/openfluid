@@ -59,9 +59,7 @@ SimulationStatus::SimulationStatus(wxDateTime StartTime,
   
   m_IsFirstStep = true;
     
-  m_IsLastStep = false;    
-  
-  
+  m_IsLastStep = false;        
 }
 
 // =====================================================================
