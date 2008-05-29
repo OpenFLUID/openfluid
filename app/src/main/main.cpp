@@ -100,7 +100,7 @@ bool MHYDASApp::runSimulation()
 
   printDataInfos();
 
-  std::cout << "**** Running simulation ****" << endl;
+  std::cout << "**** Running simulation ****" << std::endl;
   std::cout.flush();
 
   m_EffectiveStartTime = wxDateTime::Now();
@@ -109,8 +109,8 @@ bool MHYDASApp::runSimulation()
 
   m_EffectiveEndTime = wxDateTime::Now();
 
-  if (!mp_ExecMsgs->isErrorFlag()) std::cout << "**** Simulation completed ****" << endl << endl;
-  else  std::cout << "**** Simulation aborted ****" << endl;
+  if (!mp_ExecMsgs->isErrorFlag()) std::cout << "**** Simulation completed ****" << std::endl << std::endl;
+  else  std::cout << "**** Simulation aborted ****" << std::endl;
   std::cout.flush();
 
   return ExecStatus;
@@ -244,8 +244,7 @@ void MHYDASApp::printDataInfos()
   std::cout << "Spatial objects: " << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
-  std::cout << "Rain source(s): " << mp_CoreData->getRainSources()->getRainSourceCollection().size() << std::endl;
+            << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;  
   std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S")))
             << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl
             << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
@@ -622,7 +621,6 @@ int MHYDASApp::OnRun()
     mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
 
 
-    mp_CoreData->getRainSources()->enableFirstSerieConstraint(true);
 
     // model load and check    
     buildModel();

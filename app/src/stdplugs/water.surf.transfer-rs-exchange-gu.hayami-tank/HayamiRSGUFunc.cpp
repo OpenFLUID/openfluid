@@ -298,10 +298,10 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   std::list<mhydasdk::core::GroundwaterUnit*>::iterator IterGW;
   std::list<mhydasdk::core::SurfaceUnit*>* SUList;
   std::list<mhydasdk::core::SurfaceUnit*>::iterator IterSU;
-  list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
-  list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
-  list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
-  list<mhydasdk::core::ReachSegment*>* UpRSsList;  
+  std::list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
+  std::list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
+  std::list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
+  std::list<mhydasdk::core::ReachSegment*>* UpRSsList;  
   std::list<mhydasdk::core::ReachSegment*>* RSList;
   std::list<mhydasdk::core::ReachSegment*>::iterator IterRS;
 

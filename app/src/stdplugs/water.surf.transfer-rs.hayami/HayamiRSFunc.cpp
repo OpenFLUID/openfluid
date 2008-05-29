@@ -215,10 +215,10 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   mhydasdk::core::ReachSegment* UpRS;
   mhydasdk::core::SurfaceUnit* UpSU;
 
-  list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
-  list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
-  list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
-  list<mhydasdk::core::ReachSegment*>* UpRSsList;  
+  std::list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
+  std::list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
+  std::list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
+  std::list<mhydasdk::core::ReachSegment*>* UpRSsList;  
   
  
   TimeStep = SimStatus->getTimeStep();

@@ -82,7 +82,7 @@ WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainSourcesFile
 struct AutoOutfileDef
 {
   wxString ObjectsKind;
-  vector<mhydasdk::core::HOID> SelectedObjectIDs;
+  std::vector<mhydasdk::core::HOID> SelectedObjectIDs;
   wxString FileSuffix;
   bool SaveAllVars;
   wxArrayString Scalars;
@@ -96,7 +96,7 @@ struct AutoOutfiles
   wxString DTFormat; // = wxT("%Y%m%dT%H%M%S");
   wxString CommentChar; // = wxT("%");
 
-  vector<AutoOutfileDef*> Defs;
+  std::vector<AutoOutfileDef*> Defs;
 };
 
 // =====================================================================
@@ -121,8 +121,6 @@ class IOManager
     bool m_ClearedOuputDir;
 
     RainSourcesFilesMap buildRainSourcesFileMap();
-
-    bool loadRainFile(mhydasdk::core::RainSources *RainData, mhydasdk::core::cdsid_t ID, wxString Filename);
 
     bool prepareOutputDir();
     
@@ -172,12 +170,6 @@ class IOManager
       \param[out] Spatial data structure to populate
     */
     bool loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData);
-
-    /**
-      Loads rain sources and builds rain event
-      \param[out] Rain event data structure to populate
-    */
-    bool loadRainSources(mhydasdk::core::RainSources *RainData);
 
 
     /**

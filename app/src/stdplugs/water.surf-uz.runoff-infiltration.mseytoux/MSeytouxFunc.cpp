@@ -7,7 +7,6 @@
 
 #include "MSeytouxFunc.h"
 #include "math.h"
-//#include "setup.h"
 #include <iostream>
 #include <stdio.h>
 
@@ -192,7 +191,7 @@ bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   float CurrentInfiltration; 
 
   int ID;
-  mhydasdk::core::RainValue CurrentRain;
+  mhydasdk::core::MHYDASScalarValue CurrentRain;
   int CurrentStep;
   int TimeStep;
   mhydasdk::core::PropertyValue Ks;
@@ -209,8 +208,8 @@ bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   mhydasdk::core::SurfaceUnit* SU;
   mhydasdk::core::SurfaceUnit* UpSU;
 
-  list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
-  list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
+  std::list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
+  std::list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
 
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();

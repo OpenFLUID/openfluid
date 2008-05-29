@@ -959,10 +959,6 @@ bool Engine::loadData()
   
   if (IsOK) IsOK = mp_IOMan->loadDistributedEvents(mp_CoreData->getSpatialData());
 
-  if (IsOK) IsOK = mp_IOMan->loadRainSources(mp_CoreData->getRainSources());
-  
-  if (IsOK) IsOK = mp_IOMan->loadRainDistribution(mp_CoreData);
-
   if (IsOK && mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
     
   return IsOK;
@@ -987,22 +983,13 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }  
 
-  
+
   // builds process orders lists
   if (!mp_CoreData->getSpatialData()->buildProcessOrders())
   {
     mp_ExecMsgs->setError(wxT("Engine"),wxT("Process orders build error"));
     return false;
   }  
-
-  
-  // process RainEVent
-  if (!mp_CoreData->getRainSources()->ProcessRainSources(m_ModelConfig.DeltaT))
-  {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Rain sources process error"));
-    return false;
-  }
-  
 
 
 
@@ -1013,7 +1000,6 @@ bool Engine::prepareDataAndCheckConsistency()
     mp_ExecMsgs->setError(wxT("Engine"),wxT("No simulation function"));
     return false;
   }
-
 
 
 
@@ -1051,11 +1037,7 @@ bool Engine::prepareDataAndCheckConsistency()
 
   // inits the simulation infos and status
 
-  wxDateTime BeginDate, EndDate;
-  
-//  BeginDate.ParseFormat(wxT("2008-05-10 06:20:00"),wxT("%Y-%m-%d %H:%M:%S"));
-//  EndDate.ParseFormat(wxT("2008-05-10 16:20:00"),wxT("%Y-%m-%d %H:%M:%S"));
-  
+    
   mp_SimStatus = new mhydasdk::base::SimulationStatus(m_RunConfig.BeginDate,
                                                       m_RunConfig.EndDate,
                                                       m_RunConfig.DeltaT);
@@ -1116,7 +1098,7 @@ bool Engine::run()
     std::cout << std::setw(17) << "Status";
     std::cout << std::endl;
     std::cout << std::endl;
-    cout.flush();
+    std::cout.flush();
   }
 
 
@@ -1162,7 +1144,7 @@ bool Engine::run()
     if (!mp_RunEnv->isQuietRun())
     {
       std::cout << std::endl;
-      cout.flush();
+      std::cout.flush();
     }  
 
     
