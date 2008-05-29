@@ -12,7 +12,6 @@
 #include <list>
 #include "HydroObject.h"
 #include "GroundwaterUnit.h"
-#include "ChronDataSource.h"
 
 
 
@@ -57,7 +56,6 @@ class SurfaceUnit : public HydroObject
     double m_DownstreamDistance;
     HOID m_GUExchangeID;
     GroundwaterUnit *mp_GUExchange;
-    ChronDataSource *mp_RainSource;
     std::list<SurfaceUnit*>* mp_UpstreamSUs;
 
   public:
@@ -76,8 +74,6 @@ class SurfaceUnit : public HydroObject
     ~SurfaceUnit();
 
 
-    ChronDataSource* getRainSource();
-
     double getUsrArea() const;
 
     double getUsrSlope() const;
@@ -93,8 +89,6 @@ class SurfaceUnit : public HydroObject
     GroundwaterUnit* getGUExchange() { return mp_GUExchange; };
 
     std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };     
-
-    void setRainSource(ChronDataSource* RainSource);
 
     void setUsrArea(double Area);
 

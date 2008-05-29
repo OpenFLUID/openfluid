@@ -15,9 +15,6 @@ namespace mhydasdk { namespace core {
 CoreRepository::CoreRepository()
 {
   mp_SpatialData = new SpatialRepository();
-  mp_RainSources = new RainSources();
-  
-//  mp_PcssRainEvent = NULL;
 
 }
 
@@ -31,12 +28,5 @@ CoreRepository::~CoreRepository()
 
 // =====================================================================
 // =====================================================================
-/*
-bool CoreRepository::ProcessRainEvent(int TimeStep)
-{
-  mp_PcssRainEvent = new ProcessedRainEvent(mp_RainEvent,TimeStep);   
-  return true;
-}
-*/
 
 } } // namespace mhydasdk::core

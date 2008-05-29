@@ -27,6 +27,7 @@ class SimulationInfo
     wxDateTime m_StartTime;
     wxDateTime m_EndTime;
     int m_TimeStep;
+    wxTimeSpan m_TimeStepSpan;
     
     unsigned int m_StepsCount;
   

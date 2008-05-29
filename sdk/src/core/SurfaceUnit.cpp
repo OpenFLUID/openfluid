@@ -27,7 +27,6 @@ SurfaceUnit::SurfaceUnit()
 
   mp_DownstreamObject = NULL;
 	mp_GUExchange = NULL;
-  mp_RainSource = NULL;
   mp_UpstreamSUs = new std::list<SurfaceUnit*>(); 
 
 }
@@ -53,7 +52,6 @@ SurfaceUnit::SurfaceUnit(HOID ID, int ProcessOrder,
 
   mp_DownstreamObject = NULL;
 	mp_GUExchange = NULL;
-	mp_RainSource = NULL;
   mp_UpstreamSUs = new std::list<SurfaceUnit*>();   
 
 }
@@ -73,15 +71,6 @@ SurfaceUnit::~SurfaceUnit()
 // =====================================================================
 
 
-ChronDataSource* SurfaceUnit::getRainSource()
-{
-
-  return mp_RainSource;
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 double SurfaceUnit::getUsrArea() const
@@ -144,15 +133,6 @@ int SurfaceUnit::getGUExchangeID() const
 // =====================================================================
 
 
-
-void SurfaceUnit::setRainSource(ChronDataSource* RainSource)
-{
-  mp_RainSource = RainSource;
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 void SurfaceUnit::setUsrArea(double Area)

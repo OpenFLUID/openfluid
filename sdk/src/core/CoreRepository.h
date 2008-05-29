@@ -10,7 +10,6 @@
 #define __COREREPOSITORY_H__
 
 #include "SpatialRepository.h"
-#include "RainSources.h"
 
 
 
@@ -25,8 +24,6 @@ class CoreRepository
   private:
 
     SpatialRepository *mp_SpatialData;
-    RainSources *mp_RainSources;
-//    ProcessedRainEvent *mp_PcssRainEvent;
 
   public:
     /**
@@ -52,16 +49,6 @@ class CoreRepository
     */
     SpatialRepository* getSpatialData() const { return mp_SpatialData; };
 
-    void setRainEvent(RainSources* Sources) { mp_RainSources = Sources; };
-
-    RainSources* getRainSources() const { return mp_RainSources; };
-    
-    /*
-    bool ProcessRainEvent(int TimeStep);
-    
-    ProcessedRainEvent* getProcessedRainEvent() const { return mp_PcssRainEvent; };
-*/
-   
 
 };
 

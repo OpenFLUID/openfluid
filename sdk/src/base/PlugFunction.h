@@ -390,14 +390,14 @@
   Macro for declaration of a loop processing SUs, following their process order
 */
 #define DECLARE_SU_ORDERED_LOOP \
-  list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
-  list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
+  std::list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
+  std::list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
 
 /**
   Macro for declaration of a loop processing a list of SUs
 */
 #define DECLARE_SU_LIST_LOOP \
-  list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUListiter; \
+  std::list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUListiter; \
 
 
 /**
@@ -424,14 +424,14 @@
   Macro for declaration of a loop processing RSs, following their process order
 */
 #define DECLARE_RS_ORDERED_LOOP \
-  list<mhydasdk::core::ReachSegment*>::iterator _M_RSiter; \
-  list<mhydasdk::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
+  std::list<mhydasdk::core::ReachSegment*>::iterator _M_RSiter; \
+  std::list<mhydasdk::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
 
 /**
   Macro for declaration of a loop processing a list of RSs
 */
 #define DECLARE_RS_LIST_LOOP \
-  list<mhydasdk::core::ReachSegment*>::iterator _M_RSListiter; \
+  std::list<mhydasdk::core::ReachSegment*>::iterator _M_RSListiter; \
 
 
 /**
@@ -459,14 +459,14 @@
   Macro for declaration of a loop processing GUs, following their process order
 */
 #define DECLARE_GU_ORDERED_LOOP \
-  list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUiter; \
-  list<mhydasdk::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
+  std::list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUiter; \
+  std::list<mhydasdk::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
 
 /**
   Macro for declaration of a loop processing a list of GUs
 */
 #define DECLARE_GU_LIST_LOOP \
-  list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUListiter; \
+  std::list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUListiter; \
 
 
 /**
@@ -845,24 +845,7 @@ class PluggableFunction : public wxObject
       \param[in] IniCondName the name of the queried variable               
     */        
     bool MHYDAS_IsDistributedIniConditionExists(mhydasdk::core::HydroObject *HO, wxString IniCondName);    
-    
-    /**
-      Gets the rain intensity for a surface unit at a time step
-      \param[in] SU the surface unit
-      \param[in] Step the time step for rain intensity
-      \param[out] Value the value of the requested rain intensity     
-    */
-    bool MHYDAS_GetDistributedRainValue(mhydasdk::core::SurfaceUnit *SU, int Step, mhydasdk::core::RainValue *Value); 
-
-    /**
-      Gets the rain intensity for a reach segment at a time step
-      \param[in] RS the reach segment
-      \param[in] Step the time step for rain intensity
-      \param[out] Value the value of the requested rain intensity     
-    */
-    bool MHYDAS_GetDistributedRainValue(mhydasdk::core::ReachSegment *RS, int Step, mhydasdk::core::RainValue *Value); 
-    
-    
+         
     
     /**
       Returns true if a distributed variable exists, false otherwise

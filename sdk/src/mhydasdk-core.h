@@ -23,12 +23,8 @@
 
 #include <wx/hashmap.h>
 
-#include "core/DateTime.h"
-#include "core/TimeSerieItem.h"
-#include "core/TimeSerie.h"
-#include "core/ChronDataSource.h"
-#include "core/RainSources.h"
 #include "core/CoreRepository.h"
+#include "core/SpatialRepository.h"
 #include "core/HydroObject.h"
 #include "core/SurfaceUnit.h"
 #include "core/ReachSegment.h"
@@ -40,12 +36,8 @@
 
 namespace mhydasdk { namespace core {
 
-class DLLEXPORT DateTime;
-class DLLEXPORT TimeSerieItem;
-class DLLEXPORT TimeSerie;
-class DLLEXPORT ChronDataSource;
-class DLLEXPORT RainSources;
 class DLLEXPORT ValueFactory;
+class DLLEXPORT SpatialRepository;
 class DLLEXPORT CoreRepository;
 class DLLEXPORT SurfaceUnit;
 class DLLEXPORT GroundwaterUnit;

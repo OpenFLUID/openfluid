@@ -10,17 +10,12 @@ DOCDIR=$(BASEDOCDIR)
 
 LIBFILE=$(SDKLIBFILE)
 
-CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL $(DYNLIBCCFLAGS) $(WXFLAGS) -I .. -I.
+CCFLAGS= $(CCCFLAGS) -DBUILDINGDLL $(DYNLIBCCFLAGS) $(WXFLAGS) -I.. -I.
 CCLIBS=$(WXLIBS)
 
 
 
-COREOBJ=$(OBJDIR)/core/DateTime.o \
-    $(OBJDIR)/core/TimeSerieItem.o \
-    $(OBJDIR)/core/TimeSerie.o \
-    $(OBJDIR)/core/ChronDataSource.o \
-    $(OBJDIR)/core/ValueFactory.o \
-    $(OBJDIR)/core/RainSources.o \
+COREOBJ=$(OBJDIR)/core/ValueFactory.o \
     $(OBJDIR)/core/DistributedEvent.o \
     $(OBJDIR)/core/EventCollection.o \
     $(OBJDIR)/core/HydroObject.o \

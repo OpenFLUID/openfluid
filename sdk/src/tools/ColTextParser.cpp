@@ -352,7 +352,7 @@ void ColumnTextParser::coutContents()
       std::cout << _C(getValue(i,j)) << "\t";
 
     }
-    cout.flush();
+    std::cout.flush();
 
   }
   std::cout << "" << std::endl;

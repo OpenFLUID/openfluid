@@ -28,7 +28,6 @@ ReachSegment::ReachSegment()
   m_UsrHeight = 0;
   m_GUExchangeID = -1;
   mp_GUExchange = NULL;
-  mp_RainSource = NULL;
   mp_DownstreamReach = NULL;
   mp_UpstreamReaches = new std::list<ReachSegment*>;  
   mp_SrcUpstreamSUs = new std::list<SurfaceUnit*>;    
@@ -62,8 +61,6 @@ ReachSegment::ReachSegment(int ID, int ProcessOrder,
   mp_UpstreamReaches = new std::list<ReachSegment*>;
   mp_SrcUpstreamSUs = new std::list<SurfaceUnit*>;      
   mp_LatUpstreamSUs = new std::list<SurfaceUnit*>;    
-  mp_RainSource = NULL;  
-
 }
 
 // =====================================================================

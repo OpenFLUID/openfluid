@@ -18,9 +18,8 @@
 
 
 #include "SpatialRepository.h"
-#include "HydroObject.h"
 
-#include <iostream>
+
 
 // =====================================================================
 // =====================================================================
@@ -46,13 +45,13 @@ SpatialRepository::SpatialRepository()
   mp_GUsCollection = new GUMap();
 
 
-  mp_SUsProcessOrders = new vector<vector<SurfaceUnit*>*>();
-  mp_RSsProcessOrders = new vector<vector<ReachSegment*>*>();
-  mp_GUsProcessOrders = new vector<vector<GroundwaterUnit*>*>();
+  mp_SUsProcessOrders = new std::vector<std::vector<SurfaceUnit*>*>();
+  mp_RSsProcessOrders = new std::vector<std::vector<ReachSegment*>*>();
+  mp_GUsProcessOrders = new std::vector<std::vector<GroundwaterUnit*>*>();
 
-  mp_SUsOrderedList = new list<SurfaceUnit*>;
-  mp_RSsOrderedList = new list<ReachSegment*>;
-  mp_GUsOrderedList = new list<GroundwaterUnit*>;
+  mp_SUsOrderedList = new std::list<SurfaceUnit*>;
+  mp_RSsOrderedList = new std::list<ReachSegment*>;
+  mp_GUsOrderedList = new std::list<GroundwaterUnit*>;
 
 }
 
@@ -64,10 +63,7 @@ SpatialRepository::SpatialRepository()
 
 SpatialRepository::~SpatialRepository()
 {
-//  std::cout << "~SpatialRepository() in" << std::endl;
 
-
-//  std::cout << "~SpatialRepository() out" << std::endl;
 }
 
 
@@ -310,7 +306,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
 
   GUMap::iterator GUit;
   SurfaceUnit* SU;
-  list<SurfaceUnit*>::iterator SUiter;
+  std::list<SurfaceUnit*>::iterator SUiter;
   float UsrAreaSum;
   
   for(GUit = mp_GUsCollection->begin(); GUit != mp_GUsCollection->end(); ++GUit )
@@ -330,7 +326,7 @@ bool SpatialRepository::buildObjectLinkedTopologyFromIDs()
     
     // compute UsrArea
 
-    list<SurfaceUnit*>* SUsList = GUit->second->getSUsExchange();
+    std::list<SurfaceUnit*>* SUsList = GUit->second->getSUsExchange();
     UsrAreaSum = 0;
 
    
@@ -375,7 +371,7 @@ bool SpatialRepository::buildProcessOrders()
   }
 
   // creating process order classes
-  for (i=0; i<MaxOrder; i++)  mp_SUsProcessOrders->push_back(new vector<SurfaceUnit*>());
+  for (i=0; i<MaxOrder; i++)  mp_SUsProcessOrders->push_back(new std::vector<SurfaceUnit*>());
 
 
   // adding SU in its process order class
@@ -414,7 +410,7 @@ bool SpatialRepository::buildProcessOrders()
   }
 
   // creating process order classes
-  for (i=0; i<MaxOrder; i++)  mp_RSsProcessOrders->push_back(new vector<ReachSegment*>());
+  for (i=0; i<MaxOrder; i++)  mp_RSsProcessOrders->push_back(new std::vector<ReachSegment*>());
 
 
   // adding RS in its process order class
@@ -446,7 +442,7 @@ bool SpatialRepository::buildProcessOrders()
   }
 
   // creating process order classes
-  for (i=0; i<MaxOrder; i++)  mp_GUsProcessOrders->push_back(new vector<GroundwaterUnit*>());
+  for (i=0; i<MaxOrder; i++)  mp_GUsProcessOrders->push_back(new std::vector<GroundwaterUnit*>());
 
 
   // adding GU in its process order class

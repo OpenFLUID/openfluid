@@ -22,12 +22,12 @@ SimulationInfo::SimulationInfo(wxDateTime StartTime,
   
   m_StartTime = StartTime;
   m_EndTime = EndTime;
-  
 
   m_TimeStep = TimeStep;
+  m_TimeStepSpan = wxTimeSpan(0,0,m_TimeStep,0);
 
-  DeltaTime = EndTime-StartTime;
   
+  DeltaTime = EndTime-StartTime;  
   m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep) + 1;  
   
 }
@@ -79,18 +79,18 @@ SimulationStatus::~SimulationStatus()
 
 bool SimulationStatus::switchToNextStep()
 {
-  wxDateTime NextTime(m_CurrentTime + wxTimeSpan(0,0,m_TimeStep,0));
+  wxDateTime NextTime(m_CurrentTime + m_TimeStepSpan);
   
   if (NextTime < m_EndTime)
   {
     m_CurrentStep++;
 
-    m_CurrentTime = wxDateTime(m_CurrentTime + wxTimeSpan(0,0,m_TimeStep,0));
+    m_CurrentTime = NextTime;
    
     m_IsFirstStep = (m_CurrentStep == 0);    
 
     // the new step is the last one if (new time + time step value) is after end time 
-    m_IsLastStep = (wxDateTime(NextTime + wxTimeSpan(0,0,m_TimeStep,0)) >  m_EndTime);
+    m_IsLastStep = (wxDateTime(NextTime + m_TimeStepSpan) >  m_EndTime);
     
     return true;
   }

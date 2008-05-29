@@ -13,7 +13,6 @@
 #include "HydroObject.h"
 #include "GroundwaterUnit.h"
 #include "SurfaceUnit.h"
-#include "ChronDataSource.h"
 
 
 namespace mhydasdk { namespace core {
@@ -43,8 +42,7 @@ class ReachSegment : public HydroObject
     double m_UsrLength;
     double m_UsrWidth;
     double m_UsrHeight;
-    HOID m_GUExchangeID;
-    ChronDataSource *mp_RainSource;    
+    HOID m_GUExchangeID;   
     GroundwaterUnit *mp_GUExchange;
 
   public:
@@ -92,8 +90,6 @@ class ReachSegment : public HydroObject
     
     std::list<SurfaceUnit*>* getLatUpstreamSUs() { return mp_LatUpstreamSUs; };  
 
-    ChronDataSource* getRainSource() const { return mp_RainSource; };
-
     void setUpstreamNode(nodeid_t Node);
 
     void setDownstreamNode(nodeid_t Node);
@@ -114,10 +110,6 @@ class ReachSegment : public HydroObject
 
     void setDownstreamReach(ReachSegment *RS);
     
-    void setRainSource(ChronDataSource* RainSource) { mp_RainSource = RainSource; };
-
-
-
 };
 
 

@@ -10,7 +10,6 @@
 
 
 #include <vector>
-#include <list>
 #include <wx/hashmap.h>
 
 #include "SurfaceUnit.h"
@@ -21,8 +20,6 @@
 
 
 namespace mhydasdk { namespace core {
-
-
 
 WX_DECLARE_HASH_MAP(int, SurfaceUnit*, wxIntegerHash, wxIntegerEqual, SUMap);
 WX_DECLARE_HASH_MAP(int, GroundwaterUnit*, wxIntegerHash, wxIntegerEqual, GUMap);
@@ -41,13 +38,13 @@ class SpatialRepository
     RSMap* mp_RSsCollection;
     GUMap* mp_GUsCollection;
 
-    vector<vector<SurfaceUnit*>*>* mp_SUsProcessOrders;
-    vector<vector<ReachSegment*>*>* mp_RSsProcessOrders;
-    vector<vector<GroundwaterUnit*>*>* mp_GUsProcessOrders;
+    std::vector<std::vector<SurfaceUnit*>*>* mp_SUsProcessOrders;
+    std::vector<std::vector<ReachSegment*>*>* mp_RSsProcessOrders;
+    std::vector<std::vector<GroundwaterUnit*>*>* mp_GUsProcessOrders;
 
-    list<SurfaceUnit*>* mp_SUsOrderedList;
-    list<ReachSegment*>* mp_RSsOrderedList;
-    list<GroundwaterUnit*>* mp_GUsOrderedList;
+    std::list<SurfaceUnit*>* mp_SUsOrderedList;
+    std::list<ReachSegment*>* mp_RSsOrderedList;
+    std::list<GroundwaterUnit*>* mp_GUsOrderedList;
 
   public:
 
@@ -82,7 +79,7 @@ class SpatialRepository
     /**
 
     */
-    list<SurfaceUnit*>* getSUsOrderedList() { return mp_SUsOrderedList; };
+    std::list<SurfaceUnit*>* getSUsOrderedList() { return mp_SUsOrderedList; };
 
     /**
       Adds a Reach Segment to the RSs collection
@@ -106,7 +103,7 @@ class SpatialRepository
     /**
 
     */
-    list<ReachSegment*>* getRSsOrderedList() { return mp_RSsOrderedList; };
+    std::list<ReachSegment*>* getRSsOrderedList() { return mp_RSsOrderedList; };
 
     /**
       Adds a groundwater Unit to the GUs collection
@@ -129,7 +126,7 @@ class SpatialRepository
     /**
 
     */
-    list<GroundwaterUnit*>* getGUsOrderedList() { return mp_GUsOrderedList; };
+    std::list<GroundwaterUnit*>* getGUsOrderedList() { return mp_GUsOrderedList; };
 
 
     bool buildObjectLinkedTopologyFromIDs();
