@@ -107,7 +107,7 @@ WX_DEFINE_LIST(PluginsList);
 Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::ExecutionMessages* ExecMsgs,
                RuntimeEnvironment* RunEnv, PluginManager* PlugMan)
 {
- 
+    
   
   mp_CoreData = CoreData;
   mp_ExecMsgs = ExecMsgs;
