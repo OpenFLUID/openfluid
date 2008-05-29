@@ -41,12 +41,6 @@ bool MHYDASApp::buildModel()
 
   printlnExecStatus();
 
-  if (!mp_ExecMsgs->isErrorFlag())
-  {
-    if (mp_Engine->getRunConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getRunConfig().SimulationID;
-    else m_ExSI.SimID = GenerateSimulationID();
-  }  
-
   return ExecStatus;
 }
 
@@ -65,6 +59,13 @@ bool MHYDASApp::loadData()
   
   printlnExecStatus();
 
+  if (!mp_ExecMsgs->isErrorFlag())
+  {
+    if (mp_Engine->getRunConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getRunConfig().SimulationID;
+    else m_ExSI.SimID = GenerateSimulationID();
+  }  
+  
+  
   return ExecStatus;
 }
 
