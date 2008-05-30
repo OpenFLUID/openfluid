@@ -259,7 +259,7 @@ void MHYDASApp::printDataInfos()
 // =====================================================================
 
 void MHYDASApp::printPluginsList()
-{  std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
+{  
 
   ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions();
 
