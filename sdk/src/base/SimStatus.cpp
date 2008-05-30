@@ -65,7 +65,8 @@ SimulationStatus::SimulationStatus(wxDateTime StartTime,
     
   m_IsLastStep = false;     
   
-  m_BidouilledTime = false;
+  m_BidouilledTime = false;  
+  if (m_CurrentTime.IsDST()) m_BidouilledTime = true;
   
 }
 
