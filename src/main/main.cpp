@@ -263,7 +263,7 @@ void MHYDASApp::printPluginsList()
 
   ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions();
 
-  std::cout << "Available pluggable simulation functions:" << std::endl;
+  std::cout << "Available simulation functions:" << std::endl;
 
 
   if (PlugContainers.GetCount() > 0)

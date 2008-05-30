@@ -14,6 +14,7 @@ usage_info() {
 }
 
 
+
 if [ "$1" != "--release" ] && [ "$1" != "--devel" ] && [ "$1" != "--nightly" ]; then
   usage_info
   exit 1
