@@ -133,6 +133,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));      
         return false;        
       }
+
       
       if (Child->Attribute("end") != NULL)
       {
@@ -159,6 +160,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       
     }
 
+    if (Config->EndDate < Config->BeginDate)
+    {
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong simulation period definition."));      
+      return false;              
+    }
+    
+    
     // -------- Simulation ID ----------------
     
     Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("simid").Element();    
