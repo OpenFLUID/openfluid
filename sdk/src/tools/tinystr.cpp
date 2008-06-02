@@ -27,20 +27,20 @@ distribution.
  */
 
 
-/*
- * THIS FILE WAS ALTERED BY Jean-Christophe Fabre, 30. November 2007.
- */
-
-
 #ifndef TIXML_USE_STL
 
 #include "tinystr.h"
 
+
+namespace mhydasdk { namespace tools {
+
+
 // Error value for find primitive
-const TiXmlString::size_type TiXmlString::npos = static_cast< size_type >(-1);
+const TiXmlString::size_type TiXmlString::npos = static_cast< TiXmlString::size_type >(-1);
+
 
 // Null rep.
-TiXmlString::Rep TiXmlString::nullrep_ = { 0, 0, {'\0'} };
+TiXmlString::Rep TiXmlString::nullrep_ = { 0, 0, { '\0' } };
 
 
 void TiXmlString::reserve (size_type cap)
@@ -116,5 +116,6 @@ TiXmlString operator + (const char* a, const TiXmlString & b)
 	return tmp;
 }
 
+} } // namespace
 
 #endif	// TIXML_USE_STL

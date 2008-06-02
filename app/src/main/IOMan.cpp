@@ -16,7 +16,7 @@
 #include "mhydasdk-tools.h"
 #include "setup.h"
 #include "AppTools.h"
-#include "xml/tinyxml.h"
+#include "tools/tinyxml.h"
 
 
 // =====================================================================
@@ -57,8 +57,8 @@ IOManager::~IOManager()
 
 bool IOManager::loadRunConfig(RunConfig* Config)
 {
-  TiXmlDocument LoadDoc;
-  TiXmlElement* Child, *Child2;
+  mhydasdk::tools::TiXmlDocument LoadDoc;
+  mhydasdk::tools::TiXmlElement* Child, *Child2;
 
   wxString Str;
   wxDateTime ZeDate;
@@ -71,7 +71,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RUNFILE).mb_str(wxConvUTF8)))
   {
 
-    TiXmlHandle DocHandle(&LoadDoc);
+    mhydasdk::tools::TiXmlHandle DocHandle(&LoadDoc);
     
     
     // -------- DeltaT ----------------
@@ -193,8 +193,8 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 bool IOManager::loadModelConfig(ModelConfig* Config)
 {
 
-  TiXmlDocument LoadDoc;
-  TiXmlElement* Child, *Child2;
+  mhydasdk::tools::TiXmlDocument LoadDoc;
+  mhydasdk::tools::TiXmlElement* Child, *Child2;
 
   wxString Str;
   
@@ -205,7 +205,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_MODELFILE).mb_str(wxConvUTF8)))
   {
 
-    TiXmlHandle DocHandle(&LoadDoc);
+    mhydasdk::tools::TiXmlHandle DocHandle(&LoadDoc);
 
 
     // =========== run params ===========
@@ -256,7 +256,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
           FConf->Params.clear();
 
           // function params parsing
-          TiXmlHandle Child2Handle(Child);
+          mhydasdk::tools::TiXmlHandle Child2Handle(Child);
           Child2 = Child2Handle.FirstChild("param").Element();
 
           for(Child2;Child2;Child2=Child2->NextSiblingElement())
@@ -521,7 +521,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 // =====================================================================
 // =====================================================================
 
-
+/*
 RainSourcesFilesMap IOManager::buildRainSourcesFileMap()
 {
   /** \internal
@@ -531,7 +531,7 @@ RainSourcesFilesMap IOManager::buildRainSourcesFileMap()
     an (ID,file) pair is added to the map
 
   */
-
+/*
   RainSourcesFilesMap RIFMap;
   TiXmlDocument LoadDoc;
 
@@ -557,7 +557,7 @@ RainSourcesFilesMap IOManager::buildRainSourcesFileMap()
         RIFMap[ID] = wxString(Child->Attribute("file"),wxConvUTF8);
       }
       else
-      {
+      {xml
         mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain sources file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error. Incorrect rain source definition"));
         RIFMap.clear();
         return RIFMap;          
@@ -574,7 +574,7 @@ RainSourcesFilesMap IOManager::buildRainSourcesFileMap()
   return RIFMap;
 
 }
-
+*/
 
 // =====================================================================
 // =====================================================================
@@ -611,13 +611,13 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 
   if (wxFileExists(Filename))
   {
-    TiXmlDocument Doc;
-    TiXmlElement* Child;
+    mhydasdk::tools::TiXmlDocument Doc;
+    mhydasdk::tools::TiXmlElement* Child;
 
     if (Doc.LoadFile(_C(Filename)))
     {
 
-      TiXmlHandle DocHandle(&Doc);
+      mhydasdk::tools::TiXmlHandle DocHandle(&Doc);
 
       // unitclass and category
 
@@ -786,20 +786,20 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 
   if (wxFileExists(Filename))
   {
-    TiXmlDocument Doc;
-    TiXmlElement* Child, *Child2, *Child3;
+    mhydasdk::tools::TiXmlDocument Doc;
+    mhydasdk::tools::TiXmlElement* Child, *Child2, *Child3;
 
     if (Doc.LoadFile(_C(Filename)))
     {
 
-      TiXmlHandle DocHandle(&Doc);
+      mhydasdk::tools::TiXmlHandle DocHandle(&Doc);
 
       Child = DocHandle.FirstChild("mhydas").FirstChild("calendar").Element();
       
 
       if (Child != NULL)
       {
-        TiXmlHandle Child2Handle(Child);
+        mhydasdk::tools::TiXmlHandle Child2Handle(Child);
         Child2 = Child2Handle.FirstChild("event").Element();
         
         // loop on all events in the file 
@@ -839,7 +839,7 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
                 
                 // read infos by event
                 
-                TiXmlHandle Child3Handle(Child2);
+                mhydasdk::tools::TiXmlHandle Child3Handle(Child2);
                 Child3 = Child3Handle.FirstChild("info").Element();
                         
                 for(Child3;Child3;Child3=Child3->NextSiblingElement())
@@ -893,8 +893,8 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 bool IOManager::loadOutputConfig()
 {
 
-  TiXmlDocument LoadDoc;
-  TiXmlElement* Child;
+  mhydasdk::tools::TiXmlDocument LoadDoc;
+  mhydasdk::tools::TiXmlElement* Child;
 
   wxString Str;
   int i,j;
@@ -910,7 +910,7 @@ bool IOManager::loadOutputConfig()
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_OUTPUTCONFFILE).mb_str(wxConvUTF8)))
   {
 
-    TiXmlHandle DocHandle(&LoadDoc);
+    mhydasdk::tools::TiXmlHandle DocHandle(&LoadDoc);
 
 
     // auto output files

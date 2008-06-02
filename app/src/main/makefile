@@ -9,7 +9,7 @@ DOCDIR=$(BASEDOCDIR)/main
 LIBDIR=$(BASELIBDIR)
 
 CCFLAGS=$(CCCFLAGS) $(MHYDASDKFLAGS) $(WXFLAGS)
-CCLIBS=$(MHYDASDKLIBS) -L$(BASELIBDIR) -ltinyxml $(WXLIBS)
+CCLIBS=$(MHYDASDKLIBS) -L$(BASELIBDIR) $(WXLIBS)
 
 
 OBJ= $(OBJDIR)/AppTools.o \
@@ -24,16 +24,12 @@ $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
-all: prechecks xml $(OBJ)
+all: prechecks $(OBJ)
 	$(CPP) $(OBJ) $(CCLIBS) $(CCFLAGS) -o $(BINDIR)/$(EXEFILE)
-
-xml: prechecks
-	@(cd xml && $(MAKE))
 	
 
 prechecks:
 	@mkdir -p $(OBJDIR)
-	@mkdir -p $(OBJDIR)/xml
 	@mkdir -p $(BINDIR)
 
 

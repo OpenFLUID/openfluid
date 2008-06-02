@@ -57,6 +57,9 @@ distribution.
 #endif
 
 
+namespace mhydasdk { namespace tools {
+
+
 /*
    TiXmlString is an emulation of a subset of the std::string template.
    Its purpose is to allow compiling TinyXML on compilers with no or poor STL support.
@@ -80,21 +83,21 @@ class TiXmlString
 	}
 
 	// TiXmlString copy constructor
-	TiXmlString ( const TiXmlString & copy)
+	TiXmlString ( const TiXmlString & copy) : rep_(0)
 	{
 		init(copy.length());
 		memcpy(start(), copy.data(), length());
 	}
 
 	// TiXmlString constructor, based on a string
-	TIXML_EXPLICIT TiXmlString ( const char * copy)
+	TIXML_EXPLICIT TiXmlString ( const char * copy) : rep_(0)
 	{
 		init( static_cast<size_type>( strlen(copy) ));
 		memcpy(start(), copy, length());
 	}
 
 	// TiXmlString constructor, based on a string
-	TIXML_EXPLICIT TiXmlString ( const char * str, size_type len)
+	TIXML_EXPLICIT TiXmlString ( const char * str, size_type len) : rep_(0)
 	{
 		init(len);
 		memcpy(start(), str, len);
@@ -314,6 +317,8 @@ public :
 	}
 
 } ;
+
+} } // namespace
 
 #endif	// TIXML_STRING_INCLUDED
 #endif	// TIXML_USE_STL

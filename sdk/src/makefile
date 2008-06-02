@@ -31,8 +31,11 @@ BASEOBJ=$(OBJDIR)/base/SimStatus.o \
     $(OBJDIR)/base/PlugFunction.o \
     $(OBJDIR)/base/ExecMsgs.o
 
-TOOLSOBJ=$(OBJDIR)/tools/ColTextParser.o
-
+TOOLSOBJ=$(OBJDIR)/tools/ColTextParser.o \
+    $(OBJDIR)/tools/tinyxmlerror.o \
+    $(OBJDIR)/tools/tinystr.o \
+    $(OBJDIR)/tools/tinyxml.o \
+    $(OBJDIR)/tools/tinyxmlparser.o
 
 
 $(OBJDIR)/core/%.o : core/%.cpp core/%.h
@@ -41,7 +44,7 @@ $(OBJDIR)/core/%.o : core/%.cpp core/%.h
 $(OBJDIR)/base/%.o : base/%.cpp base/%.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
-$(OBJDIR)/tools/%.o : tools/%.cpp tools/%.h
+$(OBJDIR)/tools/%.o : tools/%.cpp
 	$(CPP) $(CCFLAGS) -c $< -o $@
 
 
