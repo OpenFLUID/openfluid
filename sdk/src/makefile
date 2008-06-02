@@ -35,7 +35,8 @@ TOOLSOBJ=$(OBJDIR)/tools/ColTextParser.o \
     $(OBJDIR)/tools/tinyxmlerror.o \
     $(OBJDIR)/tools/tinystr.o \
     $(OBJDIR)/tools/tinyxml.o \
-    $(OBJDIR)/tools/tinyxmlparser.o
+    $(OBJDIR)/tools/tinyxmlparser.o \
+    $(OBJDIR)/tools/DataSrcFile.o
 
 
 $(OBJDIR)/core/%.o : core/%.cpp core/%.h
