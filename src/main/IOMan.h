@@ -120,8 +120,6 @@ class IOManager
 
     bool m_ClearedOuputDir;
 
-    // RainSourcesFilesMap buildRainSourcesFileMap();
-
     bool prepareOutputDir();
     
 
