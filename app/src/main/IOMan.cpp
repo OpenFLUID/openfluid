@@ -516,66 +516,6 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
 }
 
-
-
-// =====================================================================
-// =====================================================================
-
-/*
-RainSourcesFilesMap IOManager::buildRainSourcesFileMap()
-{
-  /** \internal
-
-    the rain sources description is in an XML file.
-    the XML file is parsed and for each rain source,
-    an (ID,file) pair is added to the map
-
-  */
-/*
-  RainSourcesFilesMap RIFMap;
-  TiXmlDocument LoadDoc;
-
-  RIFMap.clear();
-
-  int ID;
-  wxString Filename;
-
-
-
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RAINEVTFILE).mb_str(wxConvUTF8)))
-  {
-
-    TiXmlHandle DocHandle(&LoadDoc);
-
-    TiXmlElement* Child = DocHandle.FirstChild("mhydas").FirstChild("rainsources").FirstChild("raindata").Element();
-
-
-     for(Child; Child; Child=Child->NextSiblingElement())
-    {
-      if (Child->Attribute("ID",&ID) != NULL && Child->Attribute("file") != NULL)
-      {
-        RIFMap[ID] = wxString(Child->Attribute("file"),wxConvUTF8);
-      }
-      else
-      {xml
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain sources file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error. Incorrect rain source definition"));
-        RIFMap.clear();
-        return RIFMap;          
-      }
-    }
-
-
-  }
-  else
-  {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Rain sources file (") + MHYDAS_DEFAULT_RAINEVTFILE + wxT(") error"));
-    RIFMap.clear();    
-  }
-  return RIFMap;
-
-}
-*/
-
 // =====================================================================
 // =====================================================================
 
