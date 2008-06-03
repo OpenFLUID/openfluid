@@ -12,6 +12,7 @@
 
 
 #include <wx/wx.h>
+#include <wx/hashmap.h>
 #include "TypeDefs.h"
 #include <wx/datetime.h>
 
