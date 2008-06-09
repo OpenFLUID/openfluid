@@ -50,23 +50,35 @@ ubuntu-edgy-packages: all
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
 	@echo "==== Building packages ($(LOCALDIR)) ===="
-	@echo "Building package"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin/$(EXEFILE)
-	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
-	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/copyright
-	@echo "Package: $(PACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(PACKDESC)\n .\n This package is built using mhydas-engine revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(PACKNAME))
+	@echo "Building package $(ENGPACKNAME)"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin/$(EXEFILE)	
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
+	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/copyright
+	@echo "Package: $(ENGPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGEDGYDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(ENGPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(ENGPACKNAME))
+	@echo "Building package $(FUNCSPACKNAME)"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/copyright
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)/copyright
+	@echo "Package: $(FUNCSPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(FUNCSPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(FUNCSPACKNAME))
 
 
 ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
@@ -76,32 +88,54 @@ ubuntu-dapper-packages: all
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
 	@echo "==== Building packages ($(LOCALDIR)) ===="
 	@echo "Building package"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/bin/$(EXEFILE)
-	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/usr/share/doc/$(PACKROOT)
-	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/copyright
-	@echo "Package: $(PACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Depends: $(DAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Replaces: mhydas" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo "Description: $(PACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " This package is built using mhydas-engine revision $(SVNREV)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(PACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(PACKNAME))
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin/$(EXEFILE)
+	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
+	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/copyright
+	@echo "Package: $(ENGPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Depends: $(ENGDAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Replaces: mhydas" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Description: $(ENGPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " This package is built using mhydas-engine revision $(SVNREV)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(ENGPACKNAME))
+	@echo "Building package $(FUNCSPACKNAME)"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN
+	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/copyright
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)/copyright
+	@echo "Package: $(FUNCSPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Depends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Replaces: mhydas" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Description: $(FUNCSPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " This package is built using mhydas-engine revision $(SVNREV)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(FUNCSPACKNAME))
 
 
 win32-packages: all
@@ -110,11 +144,11 @@ win32-packages: all
 	@rm -f -R $(BASEPACKDIR)/win32
 	@echo "==== Building packages (win32) ===="
 	@echo "Building package"
-	@mkdir -p $(BASEPACKDIR)/win32/$(PACKNAME)_win32/$(PLUGSUBDIR)
-	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/win32/$(PACKNAME)_win32/
-	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/win32/$(PACKNAME)_win32/$(PLUGSUBDIR)
-	@cd $(BASEPACKDIR)/win32/$(PACKNAME)_win32/ && \
-         $(ZIP) -r $(BASEPACKDIR)/win32/$(PACKNAME)_win32.zip * && \
+	@mkdir -p $(BASEPACKDIR)/win32/$(ENGPACKNAME)_win32/$(PLUGSUBDIR)
+	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/win32/$(ENGPACKNAME)_win32/
+	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/win32/$(ENGPACKNAME)_win32/$(PLUGSUBDIR)
+	@cd $(BASEPACKDIR)/win32/$(ENGPACKNAME)_win32/ && \
+         $(ZIP) -r $(BASEPACKDIR)/win32/$(ENGPACKNAME)_win32.zip * && \
          cd $(BASEMAINDIR) > /dev/null
 
 
