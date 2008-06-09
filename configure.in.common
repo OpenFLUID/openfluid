@@ -59,12 +59,14 @@ MDEF_SIMINFOFILE=siminfo.out
 MHYDASDKPREFIX=/var/tmp/mhydasdk
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
-EDGYDEPENDS="libwxbase2.6-dev (>= 2.6), mhydasdk-libs (= `$MHYDASDKPREFIX/bin/mhydasdk-config --version`)"
-DAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), mhydasdk-libs (= `$MHYDASDKPREFIX/bin/mhydasdk-config --version`)"
 PACKSECTION="science"
 PACKPRIORITY="optional"
-PACKDESC="MHYDAS modelling platform engine\\\n This engine uses pluggable simulation functions to simulate hydrological processes."
-
-PACKROOT=$EXEFILEROOT
 
 
+ENGEDGYDEPENDS="libwxbase2.6-dev (>= 2.6), mhydasdk-libs (= `$MHYDASDKPREFIX/bin/mhydasdk-config --version`)"
+ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), mhydasdk-libs (= `$MHYDASDKPREFIX/bin/mhydasdk-config --version`)"
+ENGPACKDESC="MHYDAS modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
+ENGPACKROOT=$EXEFILEROOT
+
+FUNCSPACKDESC="Simulation functions for the MHYDAS modelling platform engine\\\n This Functions are developed by the LISAH."
+FUNCSPACKROOT=$ENGPACKROOT-lisahfuncs
