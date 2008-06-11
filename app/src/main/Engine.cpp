@@ -1071,9 +1071,33 @@ bool Engine::run()
     return false;      
   }
   
+  if (!mp_RunEnv->isQuietRun())
+  {
+    std::cout << std::endl;
+    std::cout << std::setw(16) << "Initialize...";
+    std::cout.flush();
+  }  
   
   PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
 
+  if (!mp_RunEnv->isQuietRun())
+  {
+    if (mp_ExecMsgs->isErrorFlag() || !IsOK)
+    {
+      std::cout << std::setw(12) << "[Error]";
+      std::cout << std::endl << std::endl;
+      std::cout.flush();
+    }
+    else
+    {
+      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+      else std::cout << std::setw(12) << "[OK]"; 
+      std::cout << std::endl;
+      std::cout.flush();
+
+    }      
+  }  
+  
   if (mp_ExecMsgs->isErrorFlag())
   {
     return false;
@@ -1098,6 +1122,9 @@ bool Engine::run()
     std::cout << std::setw(18) << "Real time";
     std::cout << std::setw(17) << "Status";
     std::cout << std::endl;
+    std::cout << std::setw(10) << "---------";
+    std::cout << std::setw(18) << "---------";
+    std::cout << std::setw(17) << "------";
     std::cout << std::endl;
     std::cout.flush();
   }
@@ -1129,6 +1156,7 @@ bool Engine::run()
     {
       std::cout << std::setw(12) << "[Error]";
       std::cout << std::endl << std::endl;
+      std::cout.flush();
       return false;
       
     }
@@ -1139,6 +1167,7 @@ bool Engine::run()
 
         if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
         else std::cout << std::setw(12) << "[OK]";
+        std::cout.flush();
       }  
     }
 
@@ -1156,9 +1185,33 @@ bool Engine::run()
 
   std::cout << std::endl;
 
+  if (!mp_RunEnv->isQuietRun())
+  {
+    std::cout << std::setw(16) << "Finalize...";
+    std::cout.flush();
+  }    
+  
   // finalization of functions
   PARSE_FUNCTION_LIST(finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK)  
 
+  if (!mp_RunEnv->isQuietRun())
+  {
+    if (mp_ExecMsgs->isErrorFlag() || !IsOK)
+    {
+      std::cout << std::setw(12) << "[Error]";
+      std::cout << std::endl << std::endl;
+      std::cout.flush();
+    }
+    else
+    {
+      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+      else std::cout << std::setw(12) << "[OK]";
+      std::cout << std::endl << std::endl;      
+      std::cout.flush();
+
+    }      
+  }  
+ 
   
   // check simulation vars production after finalize
   if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))

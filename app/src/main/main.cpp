@@ -101,7 +101,7 @@ bool MHYDASApp::runSimulation()
 
   printDataInfos();
 
-  std::cout << "**** Running simulation ****" << std::endl;
+  std::cout << std::endl << "**** Running simulation ****" << std::endl;
   std::cout.flush();
 
   m_EffectiveStartTime = wxDateTime::Now();
@@ -112,6 +112,7 @@ bool MHYDASApp::runSimulation()
 
   if (!mp_ExecMsgs->isErrorFlag()) std::cout << "**** Simulation completed ****" << std::endl << std::endl;
   else  std::cout << "**** Simulation aborted ****" << std::endl;
+  std::cout << std::endl;
   std::cout.flush();
 
   return ExecStatus;
@@ -638,12 +639,14 @@ int MHYDASApp::OnRun()
     checkConsistency();
     if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
     mp_ExecMsgs->resetWarningFlag();
-        
+
+    
     // simulation
     runSimulation();
     if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
     mp_ExecMsgs->resetWarningFlag();
-        
+           
+    
     wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
     m_ExSI.RunTime = EffSimTime;
     
