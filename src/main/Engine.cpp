@@ -32,16 +32,46 @@ WX_DEFINE_LIST(PluginsList);
     while (_M_FuncNode && statevar) \
     { \
       PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = (statevar && CurrentFunction->Function->calledmethod); \
+      if (CurrentFunction != NULL) \
+      { \
+        if (mp_RunEnv->isVerboseRun()) std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+        statevar = (statevar && CurrentFunction->Function->calledmethod); \
+        if (mp_RunEnv->isVerboseRun()) \
+        { \
+          if (mp_ExecMsgs->isErrorFlag() || !IsOK) std::cout << "  " << "[Error]";\
+          else \
+          { \
+            if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
+            else std::cout << "  " << "[OK]"; \
+          } \
+          std::cout.flush(); \
+        } \
+      } \
       _M_FuncNode = _M_FuncNode->GetNext(); \
-    }
+    } \
+    if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
+
 
 #define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
       PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
+      if (CurrentFunction != NULL) \
+      { \
+        if (mp_RunEnv->isVerboseRun()) std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+        statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
+        if (mp_RunEnv->isVerboseRun()) \
+        { \
+          if (mp_ExecMsgs->isErrorFlag() || !IsOK) std::cout << "  " << "[Error]";\
+          else \
+          { \
+            if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
+            else std::cout << "  " << "[OK]"; \
+          } \
+          std::cout.flush(); \
+        } \
+      } \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
@@ -1080,7 +1110,7 @@ bool Engine::run()
   
   PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
 
-  if (!mp_RunEnv->isQuietRun())
+  if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
     if (mp_ExecMsgs->isErrorFlag() || !IsOK)
     {
@@ -1162,7 +1192,7 @@ bool Engine::run()
     }
     else
     {
-      if (!mp_RunEnv->isQuietRun())
+      if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
       {
 
         if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
@@ -1194,24 +1224,29 @@ bool Engine::run()
   // finalization of functions
   PARSE_FUNCTION_LIST(finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK)  
 
-  if (!mp_RunEnv->isQuietRun())
+  if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
     if (mp_ExecMsgs->isErrorFlag() || !IsOK)
     {
       std::cout << std::setw(12) << "[Error]";
-      std::cout << std::endl << std::endl;
+      std::cout << std::endl;
       std::cout.flush();
     }
     else
     {
       if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
       else std::cout << std::setw(12) << "[OK]";
-      std::cout << std::endl << std::endl;      
+      std::cout << std::endl;      
       std::cout.flush();
 
     }      
   }  
  
+  if (!mp_RunEnv->isQuietRun())
+  {
+    std::cerr << std::endl;
+  }
+  
   
   // check simulation vars production after finalize
   if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))

@@ -85,7 +85,8 @@ bool MHYDASApp::checkConsistency()
   ExecStatus = mp_Engine->prepareDataAndCheckConsistency();
   
   
-  printlnExecStatus();
+  if (!mp_RunEnv->isVerboseRun()) printlnExecStatus();
+  else std::cout << std::endl;
 
   return ExecStatus;
 }
@@ -553,7 +554,7 @@ bool MHYDASApp::OnInit()
   }
 
 
-  if (Parser.Found(wxT("f")) || Parser.Found(wxT("k")) || Parser.Found(wxT("r")) || Parser.Found(wxT("v")) || Parser.Found(wxT("x")))
+  if (Parser.Found(wxT("f")) || Parser.Found(wxT("k")) || Parser.Found(wxT("r")) || Parser.Found(wxT("version")) || Parser.Found(wxT("x")))
   {
     if (Parser.Found(wxT("f")))
     {
@@ -564,7 +565,7 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("r"))) printPluginsReport(false);
     if (Parser.Found(wxT("x"))) printPluginsReport(true);
 
-    if (Parser.Found(wxT("v"))) std::cout << MAJOR_VERSION.mb_str(wxConvUTF8) << "." << MINOR_VERSION.mb_str(wxConvUTF8) << "-" << SVN_REVISION.mb_str(wxConvUTF8) << std::endl;   
+    if (Parser.Found(wxT("version"))) std::cout << MAJOR_VERSION.mb_str(wxConvUTF8) << "." << MINOR_VERSION.mb_str(wxConvUTF8) << "-" << SVN_REVISION.mb_str(wxConvUTF8) << std::endl;   
     if (Parser.Found(wxT("k"))) std::cout << MHYDASDK_MAJORVER << "." << MHYDASDK_MINORVER << "-" << MHYDASDK_REVISION << std::endl;
 
     m_OKToRun = false;
@@ -579,7 +580,8 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
     if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);    
-    if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);           
+    if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);
+    if (Parser.Found(wxT("v"))) mp_RunEnv->setVerboseRun(true);    
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);
     if (Parser.Found(wxT("no-varname-check"))) mp_RunEnv->setCheckVarNames(false);
 	  
@@ -601,6 +603,7 @@ void MHYDASApp::printEnvInfos()
   if ((mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) && (mp_RunEnv->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl; 
   if (mp_RunEnv->isTraceMode()) std::cout << "Trace mode enabled" << std::endl;
   if (mp_RunEnv->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
+  if (mp_RunEnv->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;  
   if (!mp_RunEnv->isCheckVarNames()) std::cout << "Variable names checking disabled" << std::endl;  
   std::cout << std::endl; 
 }

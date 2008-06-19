@@ -52,6 +52,8 @@ class RuntimeEnvironment
     
     bool m_QuietRun;
     
+    bool m_VerboseRun;    
+    
     bool m_WriteResults;    
 
     bool m_WriteSimReport;    
@@ -110,7 +112,11 @@ class RuntimeEnvironment
 
     bool isQuietRun() const { return m_QuietRun; };
     
-    void setQuietRun(bool Quiet) { m_QuietRun = Quiet; };
+    void setQuietRun(bool Quiet) { m_QuietRun = Quiet; m_VerboseRun = !Quiet; };
+
+    bool isVerboseRun() const { return m_VerboseRun; };
+    
+    void setVerboseRun(bool Verbose) { m_VerboseRun = Verbose; m_QuietRun = !Verbose; };    
     
     bool isWriteResults() const { return m_WriteResults; };
     
