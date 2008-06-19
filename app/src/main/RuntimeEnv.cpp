@@ -27,11 +27,11 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   
   m_ClearOutputDir = false; 
   m_QuietRun = false;  
+  m_VerboseRun = false;
   m_WriteResults = true;  
   m_WriteSimReport = true;  
   m_EnableTrace = false;
   m_CheckVarNames = true;
-  
   
   
   // when development mode (__DEVEL__), 
