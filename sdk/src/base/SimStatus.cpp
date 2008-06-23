@@ -29,7 +29,9 @@ SimulationInfo::SimulationInfo(wxDateTime StartTime,
   m_TimeStepSpan = wxTimeSpan(0,0,m_TimeStep,0);
   
   DeltaTime = EndTime-StartTime;  
-  m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep) + 1;  
+  m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep);
+  if ((DeltaTime.GetSeconds().ToLong() % TimeStep) != 0) m_StepsCount++;
+  
     
   
 
