@@ -31,7 +31,8 @@ BASEOBJ=$(OBJDIR)/base/SimStatus.o \
     $(OBJDIR)/base/PlugFunction.o \
     $(OBJDIR)/base/ExecMsgs.o
 
-TOOLSOBJ=$(OBJDIR)/tools/ColTextParser.o \
+TOOLSOBJ= $(OBJDIR)/tools/Tools.o \
+    $(OBJDIR)/tools/ColTextParser.o \
     $(OBJDIR)/tools/tinyxmlerror.o \
     $(OBJDIR)/tools/tinystr.o \
     $(OBJDIR)/tools/tinyxml.o \

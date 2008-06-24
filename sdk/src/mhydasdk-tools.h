@@ -22,6 +22,7 @@
 
 
 
+#include "tools/Tools.h"
 #include "tools/FortranCPP.h"
 #include "tools/ColTextParser.h"
 #include "tools/DataSrcFile.h"
@@ -32,6 +33,8 @@ namespace mhydasdk { namespace tools {
 class DLLEXPORT ColumnTextParser;
 class DLLEXPORT DataSourcesFile;
 class DLLEXPORT DateTimeSerie;
+class DLLEXPORT Tools;
+
 struct DLLEXPORT IndexedSerie;
 
 } }
