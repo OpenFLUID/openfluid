@@ -5,7 +5,8 @@
 
 
 #include "RainSUFromFilesFunc.h"
-
+#include <iostream>
+#include <math.h>
 
 // =====================================================================
 // =====================================================================
@@ -34,10 +35,10 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHOREMAIL(wxT("fabrejc@supagro.inra.fr"));
 
   // Produced variables
-  DECLARE_SU_PRODUCED_VAR("water.atm-surf.I.rain",wxT("m/s"),wxT("rain on each SU"));
+  DECLARE_SU_PRODUCED_VAR("water.atm-surf.I.rain",wxT("m/s"),wxT("rain intensity on each SU by time step"));
 
   // Required extra files
-  DECLARE_REQUIRED_EXTRAFILE(wxT("raindistriSU.dat"));
+  DECLARE_REQUIRED_EXTRAFILE(wxT("SUraindistri.dat"));
   DECLARE_REQUIRED_EXTRAFILE(wxT("rainsources.xml"));
 END_SIGNATURE_HOOK
 
@@ -50,6 +51,7 @@ RainSUFromFilesFunction::RainSUFromFilesFunction()
                 : PluggableFunction()
 {
 
+  m_Threshold = 0.00001;
 
 }
 
@@ -72,7 +74,8 @@ RainSUFromFilesFunction::~RainSUFromFilesFunction()
 bool RainSUFromFilesFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-
+  MHYDAS_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);  
+  
   return true;
 }
 
@@ -83,7 +86,7 @@ bool RainSUFromFilesFunction::initParams(mhydasdk::core::ParamsMap Params)
 bool RainSUFromFilesFunction::prepareData()
 {
 
-
+  
   return true;
 }
 
@@ -95,7 +98,8 @@ bool RainSUFromFilesFunction::prepareData()
 bool RainSUFromFilesFunction::checkConsistency()
 {
 
-
+  
+  
   return true;
 }
 
@@ -107,7 +111,19 @@ bool RainSUFromFilesFunction::checkConsistency()
 bool RainSUFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
 
+  wxString InputDir;
+  
+  MHYDAS_GetEnvironmentInputDir(&InputDir);  
 
+  m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("SUraindistri.dat"),mhydasdk::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
+  
+  if (!m_DataPool.loadAndPrepareData())
+  {
+    MHYDAS_RaiseError(wxT("water.atm-surf.rain-su.filesbeta"),m_DataPool.getErrorMessage());
+    return false;
+  }
+     
+  
   return true;
 }
 
@@ -118,17 +134,36 @@ bool RainSUFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo
 bool RainSUFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
 {
   mhydasdk::core::SurfaceUnit* SU;
+  mhydasdk::core::MHYDASScalarValue Value,ValueNext,MSValue;
   DECLARE_SU_ORDERED_LOOP;
-  
-  BEGIN_SU_ORDERED_LOOP(SU)
-  
-    MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.I.rain"),0);
-  
-  END_LOOP
-  
 
-  
-  
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+
+    Value = 0;
+    ValueNext = 0;
+    
+    if (m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep(),&Value) && m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep()+1,&ValueNext))    
+//    if (m_DataPool.getValue(SU->getID(),SimStatus->getCurrentTime()-wxTimeSpan(0,0,SimStatus->getTimeStep(),0),&Value) && m_DataPool.getValue(SU->getID(),SimStatus->getCurrentTime(),&ValueNext))
+    {
+      MSValue = (ValueNext-Value)/1000;
+      
+      if (isnan(MSValue) || MSValue < m_Threshold) MSValue = 0;
+      
+//      std::cerr << "MSValue " << MSValue << std::endl;
+      MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.I.rain"),MSValue);
+      
+    }
+    else
+    {
+      return false;
+    }
+
+
+    
+
+  END_LOOP
+
   return true;
 }
 

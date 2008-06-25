@@ -16,7 +16,7 @@
 #include "mhydasdk-tools.h"
 #include "setup.h"
 #include "AppTools.h"
-#include "tools/tinyxml.h"
+#include "xml/tinyxml.h"
 
 
 // =====================================================================
@@ -57,8 +57,8 @@ IOManager::~IOManager()
 
 bool IOManager::loadRunConfig(RunConfig* Config)
 {
-  mhydasdk::tools::TiXmlDocument LoadDoc;
-  mhydasdk::tools::TiXmlElement* Child, *Child2;
+  TiXmlDocument LoadDoc;
+  TiXmlElement* Child, *Child2;
 
   wxString Str;
   wxDateTime ZeDate;
@@ -71,7 +71,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RUNFILE).mb_str(wxConvUTF8)))
   {
 
-    mhydasdk::tools::TiXmlHandle DocHandle(&LoadDoc);
+    TiXmlHandle DocHandle(&LoadDoc);
     
     
     // -------- DeltaT ----------------
@@ -193,8 +193,8 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 bool IOManager::loadModelConfig(ModelConfig* Config)
 {
 
-  mhydasdk::tools::TiXmlDocument LoadDoc;
-  mhydasdk::tools::TiXmlElement* Child, *Child2;
+  TiXmlDocument LoadDoc;
+  TiXmlElement* Child, *Child2;
 
   wxString Str;
   
@@ -205,7 +205,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_MODELFILE).mb_str(wxConvUTF8)))
   {
 
-    mhydasdk::tools::TiXmlHandle DocHandle(&LoadDoc);
+    TiXmlHandle DocHandle(&LoadDoc);
 
 
     // =========== run params ===========
@@ -256,7 +256,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
           FConf->Params.clear();
 
           // function params parsing
-          mhydasdk::tools::TiXmlHandle Child2Handle(Child);
+          TiXmlHandle Child2Handle(Child);
           Child2 = Child2Handle.FirstChild("param").Element();
 
           for(Child2;Child2;Child2=Child2->NextSiblingElement())
@@ -551,13 +551,13 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 
   if (wxFileExists(Filename))
   {
-    mhydasdk::tools::TiXmlDocument Doc;
-    mhydasdk::tools::TiXmlElement* Child;
+    TiXmlDocument Doc;
+    TiXmlElement* Child;
 
     if (Doc.LoadFile(_C(Filename)))
     {
 
-      mhydasdk::tools::TiXmlHandle DocHandle(&Doc);
+      TiXmlHandle DocHandle(&Doc);
 
       // unitclass and category
 
@@ -726,20 +726,20 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 
   if (wxFileExists(Filename))
   {
-    mhydasdk::tools::TiXmlDocument Doc;
-    mhydasdk::tools::TiXmlElement* Child, *Child2, *Child3;
+    TiXmlDocument Doc;
+    TiXmlElement* Child, *Child2, *Child3;
 
     if (Doc.LoadFile(_C(Filename)))
     {
 
-      mhydasdk::tools::TiXmlHandle DocHandle(&Doc);
+      TiXmlHandle DocHandle(&Doc);
 
       Child = DocHandle.FirstChild("mhydas").FirstChild("calendar").Element();
       
 
       if (Child != NULL)
       {
-        mhydasdk::tools::TiXmlHandle Child2Handle(Child);
+        TiXmlHandle Child2Handle(Child);
         Child2 = Child2Handle.FirstChild("event").Element();
         
         // loop on all events in the file 
@@ -779,7 +779,7 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
                 
                 // read infos by event
                 
-                mhydasdk::tools::TiXmlHandle Child3Handle(Child2);
+                TiXmlHandle Child3Handle(Child2);
                 Child3 = Child3Handle.FirstChild("info").Element();
                         
                 for(Child3;Child3;Child3=Child3->NextSiblingElement())
@@ -833,8 +833,8 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 bool IOManager::loadOutputConfig()
 {
 
-  mhydasdk::tools::TiXmlDocument LoadDoc;
-  mhydasdk::tools::TiXmlElement* Child;
+  TiXmlDocument LoadDoc;
+  TiXmlElement* Child;
 
   wxString Str;
   int i,j;
@@ -850,7 +850,7 @@ bool IOManager::loadOutputConfig()
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_OUTPUTCONFFILE).mb_str(wxConvUTF8)))
   {
 
-    mhydasdk::tools::TiXmlHandle DocHandle(&LoadDoc);
+    TiXmlHandle DocHandle(&LoadDoc);
 
 
     // auto output files

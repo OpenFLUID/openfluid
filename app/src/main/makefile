@@ -17,11 +17,19 @@ OBJ= $(OBJDIR)/AppTools.o \
      $(OBJDIR)/Engine.o \
      $(OBJDIR)/PluginManager.o \
      $(OBJDIR)/IOMan.o \
-     $(OBJDIR)/main.o
+     $(OBJDIR)/main.o \
+     $(OBJDIR)/xml/tinystr.o \
+     $(OBJDIR)/xml/tinyxml.o \
+     $(OBJDIR)/xml/tinyxmlerror.o \
+     $(OBJDIR)/xml/tinyxmlparser.o
 
 
 $(OBJDIR)/%.o : %.cpp %.h
 	$(CPP) $(CCFLAGS) -c $< -o $@
+
+$(OBJDIR)/xml/%.o : xml/%.cpp
+	$(CPP) $(CCFLAGS) -c $< -o $@
+
 
 
 all: prechecks $(OBJ)
@@ -29,7 +37,7 @@ all: prechecks $(OBJ)
 	
 
 prechecks:
-	@mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)/xml
 	@mkdir -p $(BINDIR)
 
 
