@@ -35,7 +35,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C."));
   DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr"));  
 
-  DECLARE_SU_REQUIRED_VAR("water.atm-surf.I.rain",wxT("Rain on SU"),wxT("m/s"));  
+  DECLARE_SU_REQUIRED_VAR("water.atm-surf.H.rain",wxT("rainfall height on SU"),wxT("m"));  
   
   DECLARE_SU_PRODUCED_VAR("water.surf.H.runoff",wxT("runoff on the surface of the unit"),wxT("m"));
   DECLARE_SU_PRODUCED_VAR("water.surf.H.infiltration",wxT("infiltration through the surface of the unit"),wxT("m"));
@@ -245,8 +245,7 @@ bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus
     m_CurrentUpstreamInput[ID] = OutputsSum;
     
     // convert rain from m/s to m/time step       
-    MHYDAS_GetDistributedVarValue(SU,wxT("water.atm-surf.I.rain"),CurrentStep,&CurrentRain);    
-    CurrentRain = CurrentRain * TimeStep;
+    MHYDAS_GetDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),CurrentStep,&CurrentRain);    
 
     CurrentRain = CurrentRain + m_CurrentUpstreamInput[ID];
 
