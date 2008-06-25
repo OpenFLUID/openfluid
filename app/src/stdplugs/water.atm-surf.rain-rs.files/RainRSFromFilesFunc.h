@@ -8,6 +8,7 @@
 
 #include "mhydasdk-base.h"
 #include "mhydasdk-core.h"
+#include "mhydasdk-tools.h"
 
 
 // =====================================================================
@@ -27,6 +28,10 @@ DECLARE_PLUGIN_HOOKS;
 class RainRSFromFilesFunction : public mhydasdk::base::PluggableFunction
 {
   private:
+
+    mhydasdk::tools::DistributeInterpolate m_DataPool;
+    
+    double m_Threshold;
 
   public:
     /**
