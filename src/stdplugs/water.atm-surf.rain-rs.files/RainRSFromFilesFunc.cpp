@@ -5,7 +5,7 @@
 
 
 #include "RainRSFromFilesFunc.h"
-
+#include <math.h>
 
 // =====================================================================
 // =====================================================================
@@ -34,10 +34,10 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHOREMAIL(wxT("fabrejc@supagro.inra.fr"));
 
   // Produced variables
-  DECLARE_RS_PRODUCED_VAR("water.atm-surf.I.rain",wxT(""),wxT("m/s"));
+  DECLARE_RS_PRODUCED_VAR("water.atm-surf.H.rain",wxT("rainfall height on RS"),wxT("m"));
 
   // Required extra files
-  DECLARE_REQUIRED_EXTRAFILE(wxT("raindistriRS.dat"));
+  DECLARE_REQUIRED_EXTRAFILE(wxT("RSraindistri.dat"));
   DECLARE_REQUIRED_EXTRAFILE(wxT("rainsources.xml"));
 END_SIGNATURE_HOOK
 
@@ -49,6 +49,7 @@ END_SIGNATURE_HOOK
 RainRSFromFilesFunction::RainRSFromFilesFunction()
                 : PluggableFunction()
 {
+  m_Threshold = 0.00001;
 
 
 }
@@ -72,6 +73,7 @@ RainRSFromFilesFunction::~RainRSFromFilesFunction()
 bool RainRSFromFilesFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
 
+  MHYDAS_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);  
 
   return true;
 }
@@ -107,6 +109,17 @@ bool RainRSFromFilesFunction::checkConsistency()
 bool RainRSFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
 {
 
+  wxString InputDir;
+  
+  MHYDAS_GetEnvironmentInputDir(&InputDir);  
+
+  m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("RSraindistri.dat"),mhydasdk::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
+  
+  if (!m_DataPool.loadAndPrepareData())
+  {
+    MHYDAS_RaiseError(wxT("water.atm-surf.rain-rs.files"),m_DataPool.getErrorMessage());
+    return false;
+  }
 
   return true;
 }
@@ -119,11 +132,27 @@ bool RainRSFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* Si
 {
   
   mhydasdk::core::ReachSegment* RS;
+  mhydasdk::core::MHYDASScalarValue Value,ValueNext,MSValue;  
+  
   DECLARE_RS_ORDERED_LOOP;
   
   BEGIN_RS_ORDERED_LOOP(RS)
   
-    MHYDAS_AppendDistributedVarValue(RS,wxT("water.atm-surf.I.rain"),0);
+    Value = 0;
+    ValueNext = 0;
+    
+    if (m_DataPool.getValue(RS->getID(),SimStatus->getCurrentStep(),&Value) && m_DataPool.getValue(RS->getID(),SimStatus->getCurrentStep()+1,&ValueNext))    
+    {
+      MSValue = (ValueNext-Value)/1000;
+      
+      if (isnan(MSValue) || MSValue < m_Threshold) MSValue = 0;
+      
+      MHYDAS_AppendDistributedVarValue(RS,wxT("water.atm-surf.H.rain"),MSValue);      
+    }
+    else
+    {
+      return false;
+    }
   
   END_LOOP
 

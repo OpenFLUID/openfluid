@@ -119,7 +119,7 @@ bool RainSUFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo
   
   if (!m_DataPool.loadAndPrepareData())
   {
-    MHYDAS_RaiseError(wxT("water.atm-surf.rain-su.filesbeta"),m_DataPool.getErrorMessage());
+    MHYDAS_RaiseError(wxT("water.atm-surf.rain-su.files"),m_DataPool.getErrorMessage());
     return false;
   }
      
