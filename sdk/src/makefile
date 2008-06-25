@@ -38,7 +38,8 @@ TOOLSOBJ= $(OBJDIR)/tools/Tools.o \
     $(OBJDIR)/tools/tinyxml.o \
     $(OBJDIR)/tools/tinyxmlparser.o \
     $(OBJDIR)/tools/DataSrcFile.o \
-    $(OBJDIR)/tools/DTSerie.o    
+    $(OBJDIR)/tools/DTSerie.o \
+    $(OBJDIR)/tools/DistribInterp.o           
 
 
 $(OBJDIR)/core/%.o : core/%.cpp core/%.h

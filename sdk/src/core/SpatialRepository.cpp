@@ -7,14 +7,10 @@
 
 
 
-/*
 
-  attention, methodes:
-  - buildObjectLinkedTopologyFromIDs();
-  - buildProcessOrders()
-  à peaufiner!
 
-*/
+  // TODO attention, methodes buildObjectLinkedTopologyFromIDs(), buildProcessOrders() à peaufiner!
+
 
 
 #include "SpatialRepository.h"

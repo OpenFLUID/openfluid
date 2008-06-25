@@ -82,6 +82,7 @@ distribution.
 	#endif
 #endif	
 
+#include "../mhydasdk-tools.h"
 
 namespace mhydasdk { namespace tools {
 
