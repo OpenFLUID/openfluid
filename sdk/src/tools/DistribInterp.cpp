@@ -9,7 +9,6 @@
 #include "DistribInterp.h"
 #include "ColTextParser.h"
 
-#include <iostream>
 #include <math.h>
 
 namespace mhydasdk { namespace tools {
@@ -159,16 +158,9 @@ bool DistributeInterpolate::loadDataAsSerie(wxString FilePath, SeriePreprocess S
   
   Serie->clear();
   
-  /*std::cerr << "loadDataAsSerie() new Serie" << std::endl;
-  Serie = new DateTimeSerie();*/
-
-//  std::cerr << "loadDataAsSerie() " << FilePath.mb_str(wxConvUTF8) << std::endl;
-
   
   if (FileParser.loadFromFile(FilePath) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
   {
-    //std::cerr << "loadDataAsSerie() file lines # " << FileParser.getLinesCount() << std::endl;
-    
     int i = 0;
     CumValue = 0;
     
@@ -186,7 +178,6 @@ bool DistributeInterpolate::loadDataAsSerie(wxString FilePath, SeriePreprocess S
           ZeDT = wxDateTime(Day,wxDateTime::Month(wxDateTime::Jan + Month-1),Year,Hour,Min,Sec);
 
           CumValue +=  Value;
-          //          std::cerr << "CumValue = " << CumValue << std::endl;
 
           if (SPpcs == SERIEPREPCS_CUMULATE) ValueToAdd = CumValue;
           else ValueToAdd = Value;
@@ -246,12 +237,10 @@ bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
 
       for (i=0;i<DistriFileParser.getLinesCount();i++)
       {
-//        std::cerr << "ici 3  " << i << std::endl;
 
         if (DistriFileParser.getLongValue(i,0,&UnitID) && DistriFileParser.getLongValue(i,1,&DataSrcID))
         {
-//          std::cerr << "ici 4" << std::endl;
-         
+
           if (m_InterpData.find(DataSrcID) != m_InterpData.end())
           {
             m_UnitsData[UnitID] = m_InterpData[DataSrcID];

@@ -8,7 +8,6 @@
 
 
 #include "DTSerie.h"
-#include <iostream>
 #include <math.h>
 
 namespace mhydasdk { namespace tools {
@@ -154,7 +153,6 @@ short DateTimeSerie::getNearestValues(wxDateTime SearchedDT, TimePair* LowerPair
     
   */
   
-
   
   std::list<TimePair>::iterator it;
   std::list<TimePair>::iterator previt;
