@@ -35,7 +35,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHOREMAIL(wxT("fabrejc@supagro.inra.fr"));
 
   // Produced variables
-  DECLARE_SU_PRODUCED_VAR("water.atm-surf.I.rain",wxT("m/s"),wxT("rain intensity on each SU by time step"));
+  DECLARE_SU_PRODUCED_VAR("water.atm-surf.H.rain",wxT("m/s"),wxT("rain intensity on each SU by time step"));
 
   // Required extra files
   DECLARE_REQUIRED_EXTRAFILE(wxT("SUraindistri.dat"));
@@ -144,15 +144,12 @@ bool RainSUFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* Si
     ValueNext = 0;
     
     if (m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep(),&Value) && m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep()+1,&ValueNext))    
-//    if (m_DataPool.getValue(SU->getID(),SimStatus->getCurrentTime()-wxTimeSpan(0,0,SimStatus->getTimeStep(),0),&Value) && m_DataPool.getValue(SU->getID(),SimStatus->getCurrentTime(),&ValueNext))
     {
       MSValue = (ValueNext-Value)/1000;
       
       if (isnan(MSValue) || MSValue < m_Threshold) MSValue = 0;
       
-//      std::cerr << "MSValue " << MSValue << std::endl;
-      MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.I.rain"),MSValue);
-      
+      MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),MSValue);      
     }
     else
     {
