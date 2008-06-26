@@ -34,7 +34,11 @@ WX_DEFINE_LIST(PluginsList);
       PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
       if (CurrentFunction != NULL) \
       { \
-        if (mp_RunEnv->isVerboseRun()) std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+        if (mp_RunEnv->isVerboseRun()) \
+        { \
+          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+          std::cout.flush(); \
+        } \
         statevar = (statevar && CurrentFunction->Function->calledmethod); \
         if (mp_RunEnv->isVerboseRun()) \
         { \
@@ -43,6 +47,7 @@ WX_DEFINE_LIST(PluginsList);
           { \
             if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
             else std::cout << "  " << "[OK]"; \
+            mp_ExecMsgs->resetWarningFlag(); \
           } \
           std::cout.flush(); \
         } \
@@ -59,7 +64,11 @@ WX_DEFINE_LIST(PluginsList);
       PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
       if (CurrentFunction != NULL) \
       { \
-        if (mp_RunEnv->isVerboseRun()) std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+        if (mp_RunEnv->isVerboseRun()) \
+        { \
+          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+          std::cout.flush(); \
+        } \
         statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
         if (mp_RunEnv->isVerboseRun()) \
         { \
@@ -68,13 +77,14 @@ WX_DEFINE_LIST(PluginsList);
           { \
             if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
             else std::cout << "  " << "[OK]"; \
+            mp_ExecMsgs->resetWarningFlag(); \
           } \
           std::cout.flush(); \
         } \
       } \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
-
+/*
 #define PARSE_FUNCTION_LIST_FOUR(calledmethod1,calledmethod2,calledmethod3,calledmethod4,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
@@ -83,7 +93,7 @@ WX_DEFINE_LIST(PluginsList);
       if (CurrentFunction != NULL) statevar = (statevar && ((CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2) && (CurrentFunction->Function->calledmethod3 && CurrentFunction->Function->calledmethod4))); \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
-
+*/
 // =====================================================================
 // =====================================================================
 
@@ -1133,6 +1143,8 @@ bool Engine::run()
     return false;
   }
 
+  mp_ExecMsgs->resetWarningFlag();  
+  
   // check simulation vars production after init
   if (!checkSimulationVarsProduction(0,&ProdMessage))
   {
@@ -1215,6 +1227,8 @@ bool Engine::run()
 
   std::cout << std::endl;
 
+  mp_ExecMsgs->resetWarningFlag();
+  
   if (!mp_RunEnv->isQuietRun())
   {
     std::cout << std::setw(16) << "Finalize...";
@@ -1246,6 +1260,8 @@ bool Engine::run()
   {
     std::cerr << std::endl;
   }
+  
+  mp_ExecMsgs->resetWarningFlag();
   
   
   // check simulation vars production after finalize
