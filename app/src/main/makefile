@@ -39,6 +39,7 @@ all: prechecks $(OBJ)
 prechecks:
 	@mkdir -p $(OBJDIR)/xml
 	@mkdir -p $(BINDIR)
+	@mkdir -p $(DOCDIR)
 
 
 clean:
