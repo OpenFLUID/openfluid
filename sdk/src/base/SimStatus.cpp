@@ -19,23 +19,23 @@ SimulationInfo::SimulationInfo(wxDateTime StartTime,
 
 {
 
- 
+
   wxTimeSpan DeltaTime;
-  
+
   m_StartTime = StartTime;
   m_EndTime = EndTime;
 
   m_TimeStep = TimeStep;
   m_TimeStepSpan = wxTimeSpan(0,0,m_TimeStep,0);
-  
-  DeltaTime = EndTime-StartTime;  
+
+  DeltaTime = EndTime-StartTime;
   m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep);
   if ((DeltaTime.GetSeconds().ToLong() % TimeStep) != 0) m_StepsCount++;
-  
-    
-  
 
-  
+
+
+
+
 }
 
 // =====================================================================
@@ -56,20 +56,21 @@ SimulationInfo::~SimulationInfo()
 SimulationStatus::SimulationStatus(wxDateTime StartTime,
                                    wxDateTime EndTime,
                                    int TimeStep)
-                : SimulationInfo(StartTime,EndTime,TimeStep)                   
+                : SimulationInfo(StartTime,EndTime,TimeStep)
 
 {
 
   m_CurrentStep = 0;
   m_CurrentTime = m_StartTime;
-  
+
   m_IsFirstStep = true;
-    
-  m_IsLastStep = false;     
-  
-  m_BidouilledTime = false;  
+
+  m_IsLastStep = false;
+  if (m_StepsCount == 1) m_IsLastStep = true;
+
+  m_BidouilledTime = false;
   if (m_CurrentTime.IsDST()) m_BidouilledTime = true;
-  
+
 }
 
 // =====================================================================
@@ -88,7 +89,7 @@ SimulationStatus::~SimulationStatus()
 bool SimulationStatus::switchToNextStep()
 {
   wxDateTime NextTime(m_CurrentTime + m_TimeStepSpan);
-  
+
   if (NextTime < m_EndTime)
   {
     m_CurrentStep++;
@@ -96,28 +97,26 @@ bool SimulationStatus::switchToNextStep()
     m_CurrentTime = NextTime;
 
 
-   
+
     // Big bidouilling for Daylight Saving Time handling
     if (m_CurrentTime.IsDST() && !m_BidouilledTime)
-    {     
-      m_CurrentTime.Subtract(wxTimeSpan(1,0,0,0));      
+    {
+      m_CurrentTime.Subtract(wxTimeSpan(1,0,0,0));
       m_BidouilledTime = true;
     }
     else
     {
       if (!m_CurrentTime.IsDST() && m_BidouilledTime)
-      {     
-        m_CurrentTime.Add(wxTimeSpan(1,0,0,0));      
+      {
+        m_CurrentTime.Add(wxTimeSpan(1,0,0,0));
         m_BidouilledTime = false;
       }
 
     }
 
-    m_IsFirstStep = (m_CurrentStep == 0);    
+    m_IsFirstStep = (m_CurrentStep == 0);
+    m_IsLastStep = (m_CurrentStep == (m_StepsCount-1));
 
-    // the next step is the last one if (new time + time step value) is after end time 
-    m_IsLastStep = (wxDateTime(m_CurrentTime + m_TimeStepSpan) >  m_EndTime);
-    
     return true;
   }
   else return false;
