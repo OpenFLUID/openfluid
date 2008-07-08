@@ -39,8 +39,8 @@ IOManager::IOManager(mhydasdk::base::ExecutionMessages* ExecMsgs,RuntimeEnvironm
 {
   mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
-  
-  m_ClearedOuputDir = false;  
+
+  m_ClearedOuputDir = false;
 }
 
 // =====================================================================
@@ -62,8 +62,8 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
   wxString Str;
   wxDateTime ZeDate;
-  
-  
+
+
   long IntValue;
 
   FunctionConfig* FConf;
@@ -72,41 +72,41 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
-    
-    
+
+
     // -------- DeltaT ----------------
-    
-    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("deltat").Element();    
+
+    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("deltat").Element();
 
     if (Child == NULL)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing deltat."));      
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing deltat."));
       return false;
     }
     else
     {
       Str = _U(Child->GetText());
-      
+
       if (Str.ToLong(&IntValue))
       {
         Config->DeltaT = int(IntValue);
-        
+
 //        std::cerr << Config->DeltaT << std::endl;
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong deltat format."));      
-        return false;        
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong deltat format."));
+        return false;
       }
     }
 
     // -------- Simulation period ----------------
-    
-    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("period").Element();    
+
+    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("period").Element();
 
     if (Child == NULL)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing period."));      
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing period."));
       return false;
     }
     else
@@ -114,75 +114,81 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       if (Child->Attribute("begin") != NULL)
       {
         Str = _U(Child->Attribute("begin"));
-        
+
         if (ZeDate.ParseFormat(Str,wxT("%Y-%m-%d %H:%M:%S")) != NULL)
         {
           Config->BeginDate = ZeDate;
 
-//          std::cerr << Config->BeginDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;          
-          
+//          std::cerr << Config->BeginDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;
+
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of begin attribute for period."));      
-          return false;                  
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of begin attribute for period."));
+          return false;
         }
-      }         
+      }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));      
-        return false;        
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));
+        return false;
       }
 
-      
+
       if (Child->Attribute("end") != NULL)
       {
         Str = _U(Child->Attribute("end"));
-        
+
         if (ZeDate.ParseFormat(Str,wxT("%Y-%m-%d %H:%M:%S")) != NULL)
         {
           Config->EndDate = ZeDate;
 
-//          std::cerr << Config->EndDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;          
-          
+//          std::cerr << Config->EndDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;
+
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of end attribute for period."));      
-          return false;                  
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of end attribute for period."));
+          return false;
         }
-      }         
+      }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing end attribute for period."));      
-        return false;        
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing end attribute for period."));
+        return false;
       }
-      
+
     }
 
     if (Config->EndDate < Config->BeginDate)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong simulation period definition."));      
-      return false;              
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong simulation period definition."));
+      return false;
     }
-    
-    
+
+
     // -------- Simulation ID ----------------
-    
-    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("simid").Element();    
+
+    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("simid").Element();
 
     if (Child != NULL)
     {
       Str = _U(Child->GetText());
       if (Str != wxT("") && (Str.Find(wxT(" ")) == -1)) Config->SimulationID = Str;
     }
-    
-    
-    
-  }  
+
+
+
+  }
+  else
+  {
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run configuration file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error."));
+    return false;
+  }
+
 
   return true;
-  
+
 }
 
 
@@ -197,7 +203,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   TiXmlElement* Child, *Child2;
 
   wxString Str;
-  
+
   int IntValue;
 
   FunctionConfig* FConf;
@@ -277,10 +283,10 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error. Incorrect function definition."));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error. Incorrect function definition."));
         return false;
-      }  
-       
+      }
+
 
     }
 
@@ -289,7 +295,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model config file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error."));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error."));
     return false;
   }
 
@@ -326,8 +332,8 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   */
 
-   
-  
+
+
   if (SpatialData == NULL) return false;
 
   long ID;
@@ -395,7 +401,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                   (mhydasdk::core::HOID)FlowID,
                                                                   FlowDist,
                                                                   (mhydasdk::core::HOID)GUExch)))
-          {            
+          {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
           }
@@ -477,7 +483,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
         GUsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error."));      
+      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error."));
       return false;
     }
     else
@@ -498,7 +504,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
                                                                       SubstrLevel)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use."));
-            
+
             return false;
           }
         }
@@ -521,19 +527,19 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
 bool IOManager::loadDistributedData(mhydasdk::core::SpatialRepository *SpatialData)
 {
-  
+
   wxArrayString FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),wxT("ddata.xml"),true);
-    
+
   bool IsOK = true;
   int i=0;
-  
+
   while (IsOK && i<FilesToLoad.GetCount())
   {
     IsOK =  loadDistributedDataFile(FilesToLoad[i],SpatialData);
     i++;
   }
-  
-  
+
+
   return IsOK;
 }
 
@@ -569,7 +575,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
         {
 
           UnitClass = _U(Child->Attribute("unitclass"));
-          
+
           DataCat = _U(Child->Attribute("datacat"));
 
           Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").FirstChild("columns").Element();
@@ -606,7 +612,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
         }
         else IsOK = false;
       }
-      else IsOK = false;      
+      else IsOK = false;
     }
   }
 
@@ -648,7 +654,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
             {
               if (DataParser.getDoubleValue(i,j,&Value))
               {
-                if (DataCat == wxT("ini"))             
+                if (DataCat == wxT("ini"))
                   HO->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(ColOrder[j-1],Value));
                 else
                   HO->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(ColOrder[j-1],Value));
@@ -657,13 +663,13 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
           }
           else
           {
-            mp_ExecMsgs->addWarning(wxT("IO Manager"),UnitClass + wxT(" ") + wxString::Format(wxT("%d"),ID) + wxT(" does not exist (") + Filename + wxT(")"));            
+            mp_ExecMsgs->addWarning(wxT("IO Manager"),UnitClass + wxT(" ") + wxString::Format(wxT("%d"),ID) + wxT(" does not exist (") + Filename + wxT(")"));
           }
           i++;
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data format error (") + Filename + wxT(")"));          
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data format error (") + Filename + wxT(")"));
           return false;
         }
       }
@@ -683,8 +689,8 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 
   return IsOK;
 
-  
-  
+
+
 }
 
 // =====================================================================
@@ -692,20 +698,20 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 
 bool IOManager::loadDistributedEvents(mhydasdk::core::SpatialRepository *SpatialData)
 {
-  
+
   wxArrayString FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),wxT("events.xml"),true);
-    
+
   bool IsOK = true;
   int i=0;
-  
-  
+
+
   while (IsOK && i<FilesToLoad.GetCount())
   {
     IsOK =  loadDistributedEventsFile(FilesToLoad[i],SpatialData);
     i++;
   }
-  
-  
+
+
   return IsOK;
 }
 
@@ -717,8 +723,8 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 {
 
   bool IsOK = true;
-    
-  
+
+
   wxDateTime ZeDate;
   wxString ZeDateStr;
   wxString UnitClass, UnitID;
@@ -735,70 +741,70 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
       TiXmlHandle DocHandle(&Doc);
 
       Child = DocHandle.FirstChild("mhydas").FirstChild("calendar").Element();
-      
+
 
       if (Child != NULL)
       {
         TiXmlHandle Child2Handle(Child);
         Child2 = Child2Handle.FirstChild("event").Element();
-        
-        // loop on all events in the file 
-        
+
+        // loop on all events in the file
+
         for(Child2;Child2;Child2=Child2->NextSiblingElement())
         {
           ZeDateStr = wxT("");
           UnitClass = wxT("");
           UnitID = wxT("");
-          
+
           if (Child2->Attribute("date") != NULL) ZeDateStr = wxString(Child2->Attribute("date"),wxConvUTF8);
           if (Child2->Attribute("unitclass") != NULL) UnitClass = wxString(Child2->Attribute("unitclass"),wxConvUTF8);
           if (Child2->Attribute("unitID") != NULL) UnitID = wxString(Child2->Attribute("unitID"),wxConvUTF8);
-                   
+
           if ((ZeDateStr != wxT("")) && (UnitClass != wxT("")) && (UnitID != wxT("")))
           {
             mhydasdk::core::DistributedEvent *DEvent;
             mhydasdk::core::HydroObject* HO;
             long ID;
-            
-            
+
+
             if (UnitID.ToLong(&ID))
             {
               HO = NULL;
-              
+
               // get the righ unit
-              
+
               if (UnitClass == wxT("SU")) HO = SpatialData->getSUByID((int)ID);
               if (UnitClass == wxT("RS")) HO = SpatialData->getRSByID((int)ID);
               if (UnitClass == wxT("GU")) HO = SpatialData->getGUByID((int)ID);
-              
+
               if (HO != NULL)
               {
                 ZeDate.ParseFormat(ZeDateStr,wxT("%Y-%m-%d %H:%M:%S"));
-                
+
                 DEvent = new mhydasdk::core::DistributedEvent(ZeDate);
-                
+
                 // read infos by event
-                
+
                 TiXmlHandle Child3Handle(Child2);
                 Child3 = Child3Handle.FirstChild("info").Element();
-                        
+
                 for(Child3;Child3;Child3=Child3->NextSiblingElement())
                 {
                   InfoKey = wxT("");
                   InfoValue = wxT("");
-                  
+
                   if (Child3->Attribute("key") != NULL) InfoKey = wxString(Child3->Attribute("key"),wxConvUTF8);
                   if (Child3->Attribute("value") != NULL) InfoValue = wxString(Child3->Attribute("value"),wxConvUTF8);
 
-                  if (InfoKey != wxT("")) DEvent->addInfo(InfoKey,InfoValue);                  
-                  
+                  if (InfoKey != wxT("")) DEvent->addInfo(InfoKey,InfoValue);
+
                 }
-                
+
                 HO->getEvents()->addEvent(DEvent);
-                                
+
               }
             }
-          }         
+          }
         }
       }
       else
@@ -822,8 +828,8 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 
   return IsOK;
 
-  
-  
+
+
 }
 
 
@@ -839,7 +845,7 @@ bool IOManager::loadOutputConfig()
   wxString Str;
   int i,j;
   long LongValue;
-  
+
   wxArrayString OutVars;
   OutVars.Clear();
 
@@ -930,11 +936,11 @@ bool IOManager::loadOutputConfig()
         if (Child->Attribute("vars") != NULL)
         {
           Str = _U(Child->Attribute("vars"));
-          
+
           CurrentDef->SaveAllVars = false;
           OutVars.Clear();
-          
-          
+
+
           if (Str == wxT("*")) CurrentDef->SaveAllVars = true;
           else
           {
@@ -943,12 +949,12 @@ bool IOManager::loadOutputConfig()
               OutVars = SplitString(Str,wxT(";"));
               for (j=0;j<OutVars.GetCount();j++)
               {
-            
-                if (IsVectorNamedVariable(OutVars[j])) CurrentDef->Vectors.Add(GetVectorNamedVariableName(OutVars[j]));  
+
+                if (IsVectorNamedVariable(OutVars[j])) CurrentDef->Vectors.Add(GetVectorNamedVariableName(OutVars[j]));
                 else CurrentDef->Scalars.Add(OutVars[j]);
               }
             }
-          }                     
+          }
         }
         else
         {
@@ -994,7 +1000,7 @@ bool IOManager::prepareOutputDir()
 {
   bool IsOK = true;
 
-  
+
   if (!wxDirExists(mp_RunEnv->getOutputDir()))
   {
     #ifdef __WXMSW__
@@ -1002,7 +1008,7 @@ bool IOManager::prepareOutputDir()
     #else
     wxMkDir(mp_RunEnv->getOutputDir().mb_str(wxConvUTF8),0777);
     #endif
-    IsOK = wxDirExists(mp_RunEnv->getOutputDir());    
+    IsOK = wxDirExists(mp_RunEnv->getOutputDir());
   }
   else
   {
@@ -1113,9 +1119,9 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
   }
 
 
-  //  ======== Scalars ========  
-    
-  
+  //  ======== Scalars ========
+
+
   // creating scalars column list if SaveAllVars
   if (Def->SaveAllVars && HOSet[0] != NULL)
   {
@@ -1127,8 +1133,8 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     }
 
   }
-      
-  
+
+
   if (Def->Scalars.GetCount() > 0)
   {
 
@@ -1138,7 +1144,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     for (i=0;i<Def->Scalars.Count();i++)
     {
       if (HOSet[0]->getSimulatedVars()->find(Def->Scalars[i]) != HOSet[0]->getSimulatedVars()->end())
-      {    
+      {
         ColsStr << Def->Scalars[i];
         if (i != (Def->Scalars.Count()-1)) ColsStr << ColSeparator;
       }
@@ -1149,7 +1155,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
         if (Def->ObjectsKind == wxT("GUout")) ObjKind = wxT("GU");
         mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("requested ")+ObjKind+wxT(" scalar variable ")+Def->Scalars[i]+wxT(" does not exists and cannot be saved"));
         Def->Scalars.RemoveAt(i);
-      }  
+      }
     }
 
 
@@ -1196,18 +1202,18 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
               Values = HOSet[i]->getSimulatedVars()->find(Def->Scalars[k])->second;
 
             if (Values != NULL)
-            { 
+            {
               // check if value exists for this time step
               if (j<Values->size()) FileContents << ColSeparator << Values->at(j);
               else
               {
                 FileContents << ColSeparator << NaNStr;
                 NoValue = true;
-              }  
-            }  
+              }
+            }
           }
           FileContents << wxT("\n");
-        }      
+        }
 
         if (NoValue) mp_ExecMsgs->addWarning(wxT("IOManager"),wxT("at least one value was unavailable during ")+Filename+wxT(" saving process"));
 
@@ -1220,24 +1226,24 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     }
 
   }
-  
-  
+
+
   //  ======== Vectors ========
-  
-  // creating vectors list if SaveAllVars (*)  
-  
+
+  // creating vectors list if SaveAllVars (*)
+
   if (Def->SaveAllVars && HOSet[0] != NULL)
   {
     mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
-      
+
     for(VSimit = HOSet[0]->getSimulatedVectorVars()->begin(); VSimit != HOSet[0]->getSimulatedVectorVars()->end(); ++VSimit)
     {
       Def->Vectors.Add(VSimit->first);
     }
 
   }
-  
-  
+
+
   if (Def->Vectors.GetCount() > 0)
   {
 
@@ -1264,7 +1270,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
         for (j=0;j<Def->Vectors.GetCount();j++)
         {
           if (HOSet[i]->getSimulatedVectorVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorVars()->end())
-          {                
+          {
             Filename = FilenameRoot + Def->Vectors[j] + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
 
             FileContents.Clear();
@@ -1297,7 +1303,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
               }
 
               FileContents << wxT("\n");
-            }      
+            }
 
             wxFile RFile(mp_RunEnv->getOutputFullPath(Filename),wxFile::write);
 
@@ -1310,8 +1316,8 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
       }
     }
   }
-  
-  
+
+
   return true;
 }
 
@@ -1334,7 +1340,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Conf
     wxString Filename;
     AutoOutfileDef* CurrentDef;
 
-    wxArrayString DTStrings;    
+    wxArrayString DTStrings;
     wxDateTime CurrentDate = Config.BeginDate;
 
     // preparing and formatting datetime column(s)
@@ -1357,10 +1363,10 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Conf
     }
 
   }
-  else IsOK = false; 
+  else IsOK = false;
 
 
-  
+
   return IsOK;
 }
 
@@ -1377,98 +1383,98 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 
   if (prepareOutputDir())
   {
-    
+
     int i;
-    
-    
-    // ********** text file ********** 
-    
+
+
+    // ********** text file **********
+
     wxString FileContents = wxT("");
-    
+
     FileContents << wxT("************************************************************") << wxT("\n");
     FileContents << wxT("*                                                          *\n");
     FileContents << wxT("*                     Simulation report                    *") << wxT("\n");
-    FileContents << wxT("*                                                          *\n");  
+    FileContents << wxT("*                                                          *\n");
     FileContents << wxT("************************************************************") << wxT("\n");
     FileContents << wxT("\n");
-    
+
     if (mp_ExecMsgs->isErrorFlag())
     {
       FileContents << wxT("ERROR: ") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\n");
       FileContents << wxT("\n");
-    }  
-    
+    }
+
     FileContents << wxT("Simulation ID: ") << ExSI.SimID << wxT("\n");
     FileContents << wxT("Date: ") << ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S")) << wxT("\n");
     FileContents << wxT("Computer: ") << wxGetHostName() << wxT("\n");
-    FileContents << wxT("User: ") << wxGetUserId() << wxT(" (") << wxGetUserName() << wxT(")") << wxT("\n");      
+    FileContents << wxT("User: ") << wxGetUserId() << wxT(" (") << wxGetUserName() << wxT(")") << wxT("\n");
     FileContents << wxT("\n");
-    FileContents << wxT("Input data set: ") << mp_RunEnv->getInputDir() << wxT("\n");  
-    FileContents << wxT("Output data set: ") << mp_RunEnv->getOutputDir()  << wxT("\n");  
+    FileContents << wxT("Input data set: ") << mp_RunEnv->getInputDir() << wxT("\n");
+    FileContents << wxT("Output data set: ") << mp_RunEnv->getOutputDir()  << wxT("\n");
     FileContents << wxT("\n");
-    FileContents << wxT("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << wxT("\n");  
+    FileContents << wxT("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << wxT("\n");
     FileContents << wxT("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << wxT("\n");
-    FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");        
-    
+    FileContents << wxT("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << wxT("\n");
+
     if (SimInfo != NULL)
-    {    
-      FileContents << wxT("Simulation period: ") << (SimInfo->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT(" to ") << (SimInfo->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT("\n"); 
-      FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");  
+    {
+      FileContents << wxT("Simulation period: ") << (SimInfo->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT(" to ") << (SimInfo->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT("\n");
+      FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");
     }
-     
+
     FileContents << wxT("\n");
-    FileContents << wxT("------------------------------------------------------------") << wxT("\n");  
+    FileContents << wxT("------------------------------------------------------------") << wxT("\n");
     FileContents << wxT("\n");
-    
-    
-    
+
+
+
     wxArrayString WMessages = mp_ExecMsgs->getWarningMsgs();
     int WarningCount = WMessages.Count();
-    
+
     // warnings
     if ( WarningCount > 0)
     {
-      
+
       for (i=0; i<WarningCount;i++)
       {
-        FileContents << wxT("WARNING: ") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\n");            
+        FileContents << wxT("WARNING: ") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\n");
       }
     }
-    else FileContents << wxT("NO WARNING");  
+    else FileContents << wxT("NO WARNING");
     FileContents << wxT("\n");
     FileContents << wxT("------------------------------------------------------------") << wxT("\n");
-    FileContents << wxT("\n");  
-    
-            
+    FileContents << wxT("\n");
+
+
     // write file to disk
     wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
     SimInfoFile.Write(FileContents);
     SimInfoFile.Close();
-    
-    
-    // ********** xml file ********** 
+
+
+    // ********** xml file **********
     wxString XMLFileContents = wxT("");
-    
+
     XMLFileContents << wxT("<?xml version=\"1.0\" standalone=\"yes\"?>") << wxT("\n");
     XMLFileContents << wxT("<mhydas>") << wxT("\n");
     XMLFileContents << wxT("  <simreport>") << wxT("\n");
-    
+
     if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
-    
+
     if (WarningCount > 0)
     {
-      XMLFileContents << wxT("    <warnings count=\"") << WarningCount << wxT("\">") << wxT("\n");    
+      XMLFileContents << wxT("    <warnings count=\"") << WarningCount << wxT("\">") << wxT("\n");
       for (i=0; i<WarningCount;i++)
       {
         XMLFileContents << wxT("      <message text=\"") << FormatExecutionMessage(WMessages.Item(i)) << wxT("\" />") << wxT("\n");
       }
       XMLFileContents << wxT("    </warnings>") << wxT("\n");
-    }  
+    }
     else XMLFileContents << wxT("    <warnings count=\"0\" />") << wxT("\n");
-    
+
     XMLFileContents << wxT("  </simreport>") << wxT("\n");
     XMLFileContents << wxT("</mhydas>") << wxT("\n");
-    
+
     wxFile XMLSimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE + wxT(".xml")),wxFile::write);
     XMLSimInfoFile.Write(XMLFileContents);
     XMLSimInfoFile.Close();
@@ -1477,7 +1483,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 
 
   return IsOK;
-   
+
 }
 
 // =====================================================================
@@ -1486,7 +1492,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 
 bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 {
- 
+
   bool IsOK = true;
 
 
@@ -1497,24 +1503,24 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 #else
     wxMkDir(mp_RunEnv->getTraceDir().mb_str(wxConvUTF8),0777);
 #endif
-    IsOK = wxDirExists(mp_RunEnv->getTraceDir());    
+    IsOK = wxDirExists(mp_RunEnv->getTraceDir());
   }
   else
   {
     EmptyDirectoryRecursively(mp_RunEnv->getTraceDir().mb_str(wxConvUTF8));
   }
-  
-  
-  
+
+
+
   // preparing files headers for columns order
   if (IsOK)
-  {  
+  {
     wxString Filename, Filecontent;
     wxString NaNStr = wxT("!");
 
 
     mhydasdk::core::SimulatedVarsMap::iterator Simit;
-    mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;    
+    mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
 
     mhydasdk::core::SUMap::iterator SUit;
     mhydasdk::core::SurfaceUnit* SU;
@@ -1525,13 +1531,13 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 
     wxFile TFile;
 
-    
+
     // SUs headers
-    
+
     for(SUit = Data->getSpatialData()->getSUsCollection()->begin(); SUit != Data->getSpatialData()->getSUsCollection()->end(); ++SUit)
     {
       SU = SUit->second;
-          
+
       // scalars
       if (SU->getSimulatedVars()->size() > 0)
       {
@@ -1539,127 +1545,127 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 
         for(Simit = SU->getSimulatedVars()->begin(); Simit != SU->getSimulatedVars()->end(); ++Simit)
         {
-          Filecontent << wxT(" ") << Simit->first;        
+          Filecontent << wxT(" ") << Simit->first;
         }
 
         Filecontent << wxT("\n");
-        
-        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+
+        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
-        TFile.Close();      
+        TFile.Close();
       }
-      
+
       // vectors
       if (SU->getSimulatedVectorVars()->size() > 0)
       {
         for(VSimit = SU->getSimulatedVectorVars()->begin(); VSimit != SU->getSimulatedVectorVars()->end(); ++VSimit)
-        {          
-          Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");          
-          Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-          
-          TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
-          TFile.Write(Filecontent);
-          
-          TFile.Close();          
-        }
-                      
-      }   
-      
-      
-    }    
+        {
+          Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");
+          Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
 
-    
+          TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
+          TFile.Write(Filecontent);
+
+          TFile.Close();
+        }
+
+      }
+
+
+    }
+
+
     // RSs headers
-    
+
     for(RSit = Data->getSpatialData()->getRSsCollection()->begin(); RSit != Data->getSpatialData()->getRSsCollection()->end(); ++RSit)
     {
       RS = RSit->second;
-          
+
       if (RS->getSimulatedVars()->size() > 0)
       {
         Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND");
 
         for(Simit = RS->getSimulatedVars()->begin(); Simit != RS->getSimulatedVars()->end(); ++Simit)
         {
-          Filecontent << wxT(" ") << Simit->first;        
+          Filecontent << wxT(" ") << Simit->first;
         }
 
         Filecontent << wxT("\n");
-        
-        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+
+        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
-        TFile.Close();      
+        TFile.Close();
       }
-      
+
       // vectors
       if (RS->getSimulatedVectorVars()->size() > 0)
       {
         for(VSimit = RS->getSimulatedVectorVars()->begin(); VSimit != RS->getSimulatedVectorVars()->end(); ++VSimit)
-        {          
-          Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");          
-          Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-          
-          TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        {
+          Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");
+          Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+
+          TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
           TFile.Write(Filecontent);
-          
-          TFile.Close();          
+
+          TFile.Close();
         }
-                      
-      }   
-      
-      
-    }    
-    
-    
+
+      }
+
+
+    }
+
+
     // GUs headers
-    
+
     for(GUit = Data->getSpatialData()->getGUsCollection()->begin(); GUit != Data->getSpatialData()->getGUsCollection()->end(); ++GUit)
     {
       GU = GUit->second;
-          
+
       if (GU->getSimulatedVars()->size() > 0)
       {
         Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND");
 
         for(Simit = GU->getSimulatedVars()->begin(); Simit != GU->getSimulatedVars()->end(); ++Simit)
         {
-          Filecontent << wxT(" ") << Simit->first;        
+          Filecontent << wxT(" ") << Simit->first;
         }
 
         Filecontent << wxT("\n");
-        
-        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+
+        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
-        TFile.Close();      
+        TFile.Close();
       }
-      
+
       // vectors
       if (GU->getSimulatedVectorVars()->size() > 0)
       {
         for(VSimit = GU->getSimulatedVectorVars()->begin(); VSimit != GU->getSimulatedVectorVars()->end(); ++VSimit)
-        {          
-          Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");          
-          Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-          
-          TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        {
+          Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");
+          Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+
+          TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
           TFile.Write(Filecontent);
-          
-          TFile.Close();          
+
+          TFile.Close();
         }
-                      
-      }   
-      
-      
-    }    
-    
-    
+
+      }
+
+
+    }
+
+
   }
 
    return IsOK;
-  
+
 }
 
 // =====================================================================
@@ -1668,7 +1674,7 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 
 bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDateTime DT)
 {
-  
+
   wxString Filename, Filecontent;
   wxString NaNStr = wxT("!");
 
@@ -1683,18 +1689,18 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDate
   mhydasdk::core::ReachSegment* RS;
   mhydasdk::core::GUMap::iterator GUit;
   mhydasdk::core::GroundwaterUnit* GU;
-  
+
   mhydasdk::core::MHYDASVectorValue* ZeVector;
   int i;
 
   wxFile TFile;
 
   // trace SUs
-  
+
   for(SUit = Data->getSpatialData()->getSUsCollection()->begin(); SUit != Data->getSpatialData()->getSUsCollection()->end(); ++SUit)
   {
     SU = SUit->second;
-        
+
     // scalars
     if (SU->getSimulatedVars()->size() > 0)
     {
@@ -1705,54 +1711,54 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDate
         Values = Simit->second;
 
         if (Values->size() > Step) Filecontent << wxT(" ") << Values->at(Step);
-        else Filecontent << wxT(" ") << NaNStr;        
+        else Filecontent << wxT(" ") << NaNStr;
       }
 
       Filecontent << wxT("\n");
-      
-      Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+
+      Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
       TFile.Write(Filecontent);
-      TFile.Close();      
+      TFile.Close();
     }
-    
+
     // vectors
     if (SU->getSimulatedVectorVars()->size() > 0)
-    {     
+    {
 
       for(VSimit = SU->getSimulatedVectorVars()->begin(); VSimit != SU->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
         Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
-        
+
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
-        
+
         if (VValues->size() > Step)
-        {          
+        {
           ZeVector = &(VValues->at(Step));
-          for (i=0;i<ZeVector->size();i++) Filecontent << wxT(" ") << ZeVector->at(i); 
-        }  
+          for (i=0;i<ZeVector->size();i++) Filecontent << wxT(" ") << ZeVector->at(i);
+        }
         else Filecontent << wxT(" ") << NaNStr;
 
         Filecontent << wxT("\n");
-        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
-        TFile.Close();      
+        TFile.Close();
 
       }
-    }    
-    
-    
+    }
+
+
   }
 
-  
+
   // trace RSs
-  
+
   for(RSit = Data->getSpatialData()->getRSsCollection()->begin(); RSit != Data->getSpatialData()->getRSsCollection()->end(); ++RSit)
   {
     RS = RSit->second;
 
-    
+
     // scalars
     if (RS->getSimulatedVars()->size() > 0)
     {
@@ -1763,54 +1769,54 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDate
         Values = Simit->second;
 
         if (Values->size() > Step) Filecontent << wxT(" ") << Values->at(Step);
-        else Filecontent << wxT(" ") << NaNStr;        
+        else Filecontent << wxT(" ") << NaNStr;
       }
 
       Filecontent << wxT("\n");
-      
-      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);      
+
+      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
       TFile.Write(Filecontent);
-      TFile.Close();      
+      TFile.Close();
     }
-    
-    
+
+
     // vectors
     if (RS->getSimulatedVectorVars()->size() > 0)
-    {     
+    {
 
       for(VSimit = RS->getSimulatedVectorVars()->begin(); VSimit != RS->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
         Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
-        
+
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
-        
+
         if (VValues->size() > Step)
-        {          
+        {
           ZeVector = &(VValues->at(Step));
-          for (i=0;i<ZeVector->size();i++) Filecontent << wxT(" ") << ZeVector->at(i); 
-        }  
+          for (i=0;i<ZeVector->size();i++) Filecontent << wxT(" ") << ZeVector->at(i);
+        }
         else Filecontent << wxT(" ") << NaNStr;
 
         Filecontent << wxT("\n");
-        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
-        TFile.Close();      
+        TFile.Close();
 
       }
-    }    
-    
-    
-  }  
+    }
 
-  
+
+  }
+
+
   // trace GUs
-  
+
   for(GUit = Data->getSpatialData()->getGUsCollection()->begin(); GUit != Data->getSpatialData()->getGUsCollection()->end(); ++GUit)
   {
     GU = GUit->second;
-    
+
     // scalars
     if (GU->getSimulatedVars()->size() > 0)
     {
@@ -1821,45 +1827,45 @@ bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDate
         Values = Simit->second;
 
         if (Values->size() > Step) Filecontent << wxT(" ") << Values->at(Step);
-        else Filecontent << wxT(" ") << NaNStr;        
+        else Filecontent << wxT(" ") << NaNStr;
       }
 
       Filecontent << wxT("\n");
-      
-      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;      
-      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);      
+
+      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+      TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
       TFile.Write(Filecontent);
-      TFile.Close();      
-    } 
-    
+      TFile.Close();
+    }
+
     // vectors
     if (GU->getSimulatedVectorVars()->size() > 0)
-    {     
+    {
 
       for(VSimit = GU->getSimulatedVectorVars()->begin(); VSimit != GU->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
         Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
-        
+
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
-        
+
         if (VValues->size() > Step)
-        {          
+        {
           ZeVector = &(VValues->at(Step));
-          for (i=0;i<ZeVector->size();i++) Filecontent << wxT(" ") << ZeVector->at(i); 
-        }  
+          for (i=0;i<ZeVector->size();i++) Filecontent << wxT(" ") << ZeVector->at(i);
+        }
         else Filecontent << wxT(" ") << NaNStr;
 
         Filecontent << wxT("\n");
-        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);     
+        TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
-        TFile.Close();      
+        TFile.Close();
 
       }
-    }    
-    
-    
+    }
+
+
   }
-  
-  
+
+
 }
