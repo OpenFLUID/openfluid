@@ -35,7 +35,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHOREMAIL(wxT("fabrejc@supagro.inra.fr"));
 
   // Produced variables
-  DECLARE_SU_PRODUCED_VAR("water.atm-surf.H.rain",wxT("m/s"),wxT("rain intensity on each SU by time step"));
+  DECLARE_SU_PRODUCED_VAR("water.atm-surf.H.rain",wxT("m"),wxT("rainfall height on each SU by time step"));
 
   // Required extra files
   DECLARE_REQUIRED_EXTRAFILE(wxT("SUraindistri.dat"));
@@ -74,8 +74,8 @@ RainSUFromFilesFunction::~RainSUFromFilesFunction()
 bool RainSUFromFilesFunction::initParams(mhydasdk::core::ParamsMap Params)
 {
 
-  MHYDAS_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);  
-  
+  MHYDAS_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);
+
   return true;
 }
 
@@ -86,7 +86,7 @@ bool RainSUFromFilesFunction::initParams(mhydasdk::core::ParamsMap Params)
 bool RainSUFromFilesFunction::prepareData()
 {
 
-  
+
   return true;
 }
 
@@ -98,8 +98,8 @@ bool RainSUFromFilesFunction::prepareData()
 bool RainSUFromFilesFunction::checkConsistency()
 {
 
-  
-  
+
+
   return true;
 }
 
@@ -112,18 +112,18 @@ bool RainSUFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo
 {
 
   wxString InputDir;
-  
-  MHYDAS_GetEnvironmentInputDir(&InputDir);  
+
+  MHYDAS_GetEnvironmentInputDir(&InputDir);
 
   m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("SUraindistri.dat"),mhydasdk::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
-  
+
   if (!m_DataPool.loadAndPrepareData())
   {
     MHYDAS_RaiseError(wxT("water.atm-surf.rain-su.files"),m_DataPool.getErrorMessage());
     return false;
   }
-     
-  
+
+
   return true;
 }
 
@@ -142,14 +142,14 @@ bool RainSUFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* Si
 
     Value = 0;
     ValueNext = 0;
-    
-    if (m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep(),&Value) && m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep()+1,&ValueNext))    
+
+    if (m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep(),&Value) && m_DataPool.getValue(SU->getID(),SimStatus->getCurrentStep()+1,&ValueNext))
     {
       MSValue = (ValueNext-Value)/1000;
-      
+
       if (isnan(MSValue) || MSValue < m_Threshold) MSValue = 0;
-      
-      MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),MSValue);      
+
+      MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),MSValue);
     }
     else
     {
@@ -157,7 +157,7 @@ bool RainSUFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* Si
     }
 
 
-    
+
 
   END_LOOP
 
