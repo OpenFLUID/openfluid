@@ -24,9 +24,9 @@ RELEASESTATUS=
 
 INPUT_RAIN_MMH=1
 
-MDEF_INDIR=MHYDAS.IN
-MDEF_OUTDIR=MHYDAS.OUT
-MDEF_TRACEDIR=MHYDAS.TRACE
+MDEF_INDIR=OPENFLUID.IN
+MDEF_OUTDIR=OPENFLUID.OUT
+MDEF_TRACEDIR=OPENFLUID.TRACE
 
 MDEF_MODELFILE=model.xml
 MDEF_RUNFILE=run.xml
@@ -65,8 +65,8 @@ PACKPRIORITY="optional"
 
 ENGEDGYDEPENDS="libwxbase2.6-dev (>= 2.6), openfluid-libs (= `$MHYDASDKPREFIX/bin/openfluid-config --version`)"
 ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), openfluid-libs (= `$MHYDASDKPREFIX/bin/openfluid-config --version`)"
-ENGPACKDESC="MHYDAS modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
+ENGPACKDESC="OpenFLUID modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
 ENGPACKROOT=$EXEFILEROOT
 
-FUNCSPACKDESC="Simulation functions for the MHYDAS modelling platform engine\\\n This Functions are developed by the LISAH."
+FUNCSPACKDESC="Simulation functions for the OpenFLUID modelling platform engine\\\n This Functions are developed by the LISAH."
 FUNCSPACKROOT=$ENGPACKROOT-lisahfuncs
