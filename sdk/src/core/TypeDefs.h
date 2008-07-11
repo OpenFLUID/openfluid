@@ -7,35 +7,46 @@ namespace openfluid { namespace core {
 
 
 
-typedef int HOID;
+typedef int UnitID;
 
 
 /**
- Type definition for scalar values 
+ Type definition for scalar values
  */
-typedef double MHYDASScalarValue;
-
-/**
- Type definition for distributed properties values 
- */
-typedef double PropertyValue;
+typedef double ScalarValue;
 
 
 /**
- Type definition for vector values 
+ Type definition for vector values
  */
-typedef std::vector<MHYDASScalarValue> MHYDASVectorValue;
+typedef std::vector<ScalarValue> VectorValue;
 
 /**
- Type definition for a time serie of scalar values 
+ Type definition for a time serie of scalar values
  */
-typedef std::vector<MHYDASScalarValue> SerieOfMHYDASScalarValue;
+typedef std::vector<ScalarValue> SerieOfScalarValue;
 
 
 /**
- Type definition for a time serie of vectorvalues 
+ Type definition for a time serie of vectorvalues
  */
-typedef std::vector<MHYDASVectorValue> SerieOfMHYDASVectorValue;
+typedef std::vector<VectorValue> SerieOfVectorValue;
+
+
+// =====================================================================
+// =====================================================================
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::ScalarValue, wxIntegerHash, wxIntegerEqual, IDScalarValueMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue*, wxIntegerHash, wxIntegerEqual, IDVectorValueMap);
 
 
 

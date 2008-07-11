@@ -88,11 +88,11 @@ bool DistributedEvent::isInfoEquals(wxString Key, double Value)
 // =====================================================================
 
 
-bool DistributedEvent::isInfoEquals(wxString Key, MHYDASScalarValue *Value)
+bool DistributedEvent::isInfoEquals(wxString Key, ScalarValue *Value)
 {
-  MHYDASScalarValue TmpValue;
+  ScalarValue TmpValue;
   
-  return (getInfoAsMHYDASScalarValue(Key,&TmpValue) && (TmpValue == (*Value)));
+  return (getInfoAsScalarValue(Key,&TmpValue) && (TmpValue == (*Value)));
   
 }    
 
@@ -140,7 +140,7 @@ bool DistributedEvent::getInfoAsDouble(wxString Key, double *Info)
 // =====================================================================
 
 
-bool DistributedEvent::getInfoAsMHYDASScalarValue(wxString Key, MHYDASScalarValue *Info)
+bool DistributedEvent::getInfoAsScalarValue(wxString Key, ScalarValue *Info)
 {
   return getInfoAsDouble(Key,Info);
 }

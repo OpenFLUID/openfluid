@@ -4,18 +4,18 @@
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 
-  The PluggableFunction class defines the minimal structure for a 
+  The PluggableFunction class defines the minimal structure for a
   pluggable function
   EVERY PLUGGABLE FUNCTION MUST INHERIT FROM THIS CLASS TO BE LOADED
   It sets some essential methods
-  The PluggableFunctionProc type defines the handle method for the 
-  function integration into the host application. 
+  The PluggableFunctionProc type defines the handle method for the
+  function integration into the host application.
   EVERY PLUGGABLE FUNCTION MUST DECLARE AND DEFINE THE FUNCTIONS:
   \code
   extern "C"
   {
     DLLIMPORT PluggableFunction* GetPlugFunction();
-    DLLIMPORT PluggableFunction* GetPlugSignature();    
+    DLLIMPORT PluggableFunction* GetPlugSignature();
   };
   \endcode
   returning an instance of the pluggable function class, inherited from the class defined here.
@@ -53,8 +53,8 @@
 
 
 /**
-  Macro for declaration of function and signature hooks   
-*/ 
+  Macro for declaration of function and signature hooks
+*/
 #define DECLARE_PLUGIN_HOOKS \
   extern "C" \
   { \
@@ -70,8 +70,8 @@
 
 /**
   Macro for definition of function hook
-  \param[in] pluginclassname The name of the class to instanciate   
-*/ 
+  \param[in] pluginclassname The name of the class to instanciate
+*/
 
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
   openfluid::base::PluggableFunction* GetPlugFunction() \
@@ -84,17 +84,17 @@
 // =====================================================================
 
 /**
-  Macro for the beginning of definition of signature hook   
-*/ 
+  Macro for the beginning of definition of signature hook
+*/
 #define BEGIN_SIGNATURE_HOOK \
   openfluid::base::Signature* GetPlugSignature() \
   { \
     openfluid::base::Signature* ZeSignature = new openfluid::base::Signature(); \
-    ZeSignature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
-  
+    ZeSignature->setSDKVersion(OPENFLUIDSDK_MAJORVER,OPENFLUIDSDK_MINORVER,OPENFLUIDSDK_REVISION);
+
 
 /**
-  Macro for the end of definition of signature hook   
+  Macro for the end of definition of signature hook
 */
 #define END_SIGNATURE_HOOK \
     return ZeSignature; \
@@ -125,7 +125,7 @@
 
 #define DECLARE_SIGNATURE_STATUS(status) ZeSignature->Status = status;
 
-#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
+#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(OPENFLUIDSDK_MAJORVER,OPENFLUIDSDK_MINORVER,OPENFLUIDSDK_REVISION);
 
 // =====================================================================
 // =====================================================================
@@ -133,10 +133,10 @@
 
 /**
   Macro for declaration of a function parameter
-  \param[in] name name of the parameter 
-  \param[in] description description of the parameter  
-  \param[in] unit unit of the parameter. Could be an empty string if there is no unit  
-*/ 
+  \param[in] name name of the parameter
+  \param[in] description description of the parameter
+  \param[in] unit unit of the parameter. Could be an empty string if there is no unit
+*/
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
   ZeSignature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT(""),description,unit));
 
@@ -147,27 +147,27 @@
 
 /**
   Macro for declaration of a produced variable on all SUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
-*/ 
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_SU_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
-  
+  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+
 /**
   Macro for declaration of an updated variable on all SUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
-*/ 
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_SU_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 /**
   Macro for declaration of a required variable on all SUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
   ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
@@ -177,96 +177,96 @@
 
 /**
   Macro for declaration of an used variable on all SUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_SU_USED_VAR(name,description,unit) \
   ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
-  
+  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+
 /**
   Macro for declaration of a required property on all SUs
   \param[in] name name of the property
-  \param[in] description description of the property  
-  \param[in] unit unit of the property. Could be an empty string if there is no unit    
+  \param[in] description description of the property
+  \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
-  
-  
+
+
 /**
   Macro for declaration of a required initial condition on all SUs
-  \param[in] name name of the initial condition 
-  \param[in] description description of the initial condition  
-  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
+  \param[in] name name of the initial condition
+  \param[in] description description of the initial condition
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit
 */
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 
-  
+
 // =====================================================================
 // =====================================================================
 
-  
+
 /**
   Macro for declaration of a produced variable on all RSs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_RS_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
-  
+  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+
 /**
   Macro for declaration of an updated variable on all RSs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
-*/  
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_RS_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 /**
   Macro for declaration of a required variable on all RSs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
-*/  
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_RS_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 #define DECLARE_RS_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 
 /**
   Macro for declaration of an used variable on all RSs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_RS_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 #define DECLARE_RS_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 
 /**
   Macro for declaration of a required property on all RSs
-  \param[in] name name of the property 
-  \param[in] description description of the property  
-  \param[in] unit unit of the property. Could be an empty string if there is no unit    
+  \param[in] name name of the property
+  \param[in] description description of the property
+  \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
@@ -276,9 +276,9 @@
 
 /**
   Macro for declaration of a required initial condition on all RSs
-  \param[in] name name of the initial condition 
-  \param[in] description description of the initial condition  
-  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
+  \param[in] name name of the initial condition
+  \param[in] description description of the initial condition
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit
 */
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
   ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
@@ -288,44 +288,44 @@
 
 // =====================================================================
 // =====================================================================
-  
-  
+
+
 /**
   Macro for declaration of a produced variable on all GUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_GU_PRODUCED_VAR(name,description,unit) \
   ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
-  
+
 /**
   Macro for declaration of an updated variable on all GUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
-*/  
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_GU_UPDATED_VAR(name,description,unit) \
   ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
-  
+
 /**
   Macro for declaration of a required variable on all GUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
-*/  
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
   ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_REQUIRED_PREVVAR(name,description,unit) \
   ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
-  
+
 /**
   Macro for declaration of an used variable on all GUs
-  \param[in] name name of the variable 
-  \param[in] description description of the variable  
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit    
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_GU_USED_VAR(name,description,unit) \
   ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
@@ -333,33 +333,33 @@
 #define DECLARE_GU_USED_PREVVAR(name,description,unit) \
   ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
-  
+
 /**
   Macro for declaration of a required property on all GUs
-  \param[in] name name of the property 
-  \param[in] description description of the property  
-  \param[in] unit unit of the property. Could be an empty string if there is no unit    
+  \param[in] name name of the property
+  \param[in] description description of the property
+  \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
-  
+
 
 /**
   Macro for declaration of a required initial condition on all GUs
-  \param[in] name name of the initial condition 
-  \param[in] description description of the initial condition  
-  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
+  \param[in] name name of the initial condition
+  \param[in] description description of the initial condition
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit
 */
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
   ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_INICOND(name,description,unit) \
   ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
-  
-  
+
+
 // =====================================================================
 // =====================================================================
 
@@ -402,7 +402,7 @@
 
 /**
   Macro for the begining of a loop processing SUs, following their process order
-  \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU 
+  \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU
 */
 #define BEGIN_SU_ORDERED_LOOP(suobj) \
   for(_M_SUiter=_M_SUsList->begin(); _M_SUiter != _M_SUsList->end(); _M_SUiter++) \
@@ -411,8 +411,8 @@
 
 /**
   Macro for the begining of a loop processing a list of SUs
-  \param[out] sulist pointer to a list of openfluid::core::SurfaceUnit 
-  \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU 
+  \param[out] sulist pointer to a list of openfluid::core::SurfaceUnit
+  \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU
 */
 #define BEGIN_SU_LIST_LOOP(sulist,suobj) \
   for(_M_SUListiter=sulist->begin(); _M_SUListiter != sulist->end(); _M_SUListiter++) \
@@ -436,7 +436,7 @@
 
 /**
   Macro for the begining of a loop processing RSs, following their process order
-  \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS 
+  \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS
 */
 #define BEGIN_RS_ORDERED_LOOP(rsobj) \
   for(_M_RSiter=_M_RSsList->begin(); _M_RSiter != _M_RSsList->end(); _M_RSiter++) \
@@ -446,7 +446,7 @@
 /**
   Macro for the begining of a loop processing a list of RSs
   \param[out] rslist pointer to a list of openfluid::core::ReachSegment
-  \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS 
+  \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS
 */
 #define BEGIN_RS_LIST_LOOP(rslist,rsobj) \
   for(_M_RSListiter=rslist->begin(); _M_RSListiter != rslist->end(); _M_RSListiter++) \
@@ -460,7 +460,7 @@
 */
 #define DECLARE_GU_ORDERED_LOOP \
   std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUiter; \
-  std::list<openfluid::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
+  std::list<openfluid::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList();
 
 /**
   Macro for declaration of a loop processing a list of GUs
@@ -471,7 +471,7 @@
 
 /**
   Macro for the begining of a loop processing GUs, following their process order
-  \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU 
+  \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU
 */
 #define BEGIN_GU_ORDERED_LOOP(guobj) \
   for(_M_GUiter=_M_GUsList->begin(); _M_GUiter != _M_GUsList->end(); _M_GUiter++) \
@@ -480,8 +480,8 @@
 
 /**
   Macro for the begining of a loop processing a list of GUs
-  \param[out] gulist pointer to a list of openfluid::core::GroundwaterUnit 
-  \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU 
+  \param[out] gulist pointer to a list of openfluid::core::GroundwaterUnit
+  \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU
 */
 #define BEGIN_GU_LIST_LOOP(gulist,guobj) \
   for(_M_GUListiter=gulist->begin(); _M_GUListiter != gulist->end(); _M_GUListiter++) \
@@ -499,7 +499,7 @@
 
 /**
   Macro for the ending of a loop
-*/  
+*/
 #define END_LOOP }
 
 // =====================================================================
@@ -540,7 +540,7 @@ enum FunctionStatusList
 // =====================================================================
 // =====================================================================
 /**
-  Structure for storage of the definition an item handled by the function. 
+  Structure for storage of the definition an item handled by the function.
 */
 struct SignatureHandledItem
 {
@@ -549,7 +549,7 @@ struct SignatureHandledItem
   wxString Distribution; // "SU", "RS", "GU", or empty if none
   wxString Description;
   wxString Unit; // empty if none, "?" if unknown
-  
+
   SignatureHandledItem()
   {
     Name = wxT("");
@@ -566,54 +566,54 @@ struct SignatureHandledItem
     Description = ZeDescription;
     Unit = ZeUnit;
   }
-  
+
 };
 
 
 /**
-  Structure for storage of the definition of the data handled by the function. This is part of the signature. 
+  Structure for storage of the definition of the data handled by the function. This is part of the signature.
 */
 struct SignatureHandledData
 {
   std::vector<SignatureHandledItem> ProducedVars;
-  
+
   std::vector<SignatureHandledItem> UpdatedVars;
-  
+
   std::vector<SignatureHandledItem> RequiredVars;
-  
+
   std::vector<SignatureHandledItem> UsedVars;
-  
-  std::vector<SignatureHandledItem> RequiredPrevVars;  
-  
-  std::vector<SignatureHandledItem> UsedPrevVars;  
-  
+
+  std::vector<SignatureHandledItem> RequiredPrevVars;
+
+  std::vector<SignatureHandledItem> UsedPrevVars;
+
   std::vector<SignatureHandledItem> FunctionParams;
 
-  std::vector<SignatureHandledItem> RequiredProps;  
-  
-  std::vector<SignatureHandledItem> RequiredIniconds;  
+  std::vector<SignatureHandledItem> RequiredProps;
 
-  std::vector<SignatureHandledItem> UsedProps;  
-  
-  std::vector<SignatureHandledItem> UsedIniconds;  
-  
+  std::vector<SignatureHandledItem> RequiredIniconds;
+
+  std::vector<SignatureHandledItem> UsedProps;
+
+  std::vector<SignatureHandledItem> UsedIniconds;
+
   wxArrayString RequiredExtraFiles;
 
   wxArrayString UsedExtraFiles;
-    
+
   bool UsedEventsOnSU;
-  
+
   bool UsedEventsOnRS;
-  
+
   bool UsedEventsOnGU;
-  
+
   SignatureHandledData()
   {
     UsedEventsOnSU = false;
     UsedEventsOnRS = false;
     UsedEventsOnGU = false;
   }
-  
+
 };
 
 
@@ -673,12 +673,12 @@ struct Signature
     Development status
   */
   FunctionStatusList Status;
-  
+
   /**
     SDK version number used to build the function
   */
   wxString SDKVersion;
-    
+
   /**
     Author's name
   */
@@ -688,12 +688,12 @@ struct Signature
     Author's email
   */
   wxString AuthorEmail;
-  
+
   /**
     Handled data
   */
   SignatureHandledData HandledData;
-  
+
   Signature()
   {
     FunctionType = SIMULATION;
@@ -707,9 +707,9 @@ struct Signature
     AuthorEmail = wxT("");
     Version = wxT("");
     Status = EXPERIMENTAL;
-    SDKVersion = wxT("");   
+    SDKVersion = wxT("");
   }
-  
+
   void setSDKVersion(int Major, int Minor, int Revision)
   {
     SDKVersion.Clear();
@@ -728,20 +728,6 @@ struct FunctionEnvironment
 };
 
 
-// =====================================================================
-// =====================================================================
-
-WX_DECLARE_HASH_MAP(openfluid::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
-
-WX_DECLARE_HASH_MAP(openfluid::core::HOID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
-
-WX_DECLARE_HASH_MAP(openfluid::core::HOID, openfluid::core::MHYDASScalarValue, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
-
-WX_DECLARE_HASH_MAP(openfluid::core::HOID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
-
-WX_DECLARE_HASH_MAP(openfluid::core::HOID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
-
-WX_DECLARE_HASH_MAP(openfluid::core::HOID, openfluid::core::MHYDASVectorValue*, wxIntegerHash, wxIntegerEqual, IDVectOfMHYDASValueMap);
 
 // =====================================================================
 // =====================================================================
@@ -763,219 +749,219 @@ class PluggableFunction : public wxObject
     /**
       Pointer to the core repository
     */
-    
+
     openfluid::core::CoreRepository* mp_InternalCoreData;
-    
-    
+
+
     /**
-      Pointer to the execution messages repository 
+      Pointer to the execution messages repository
     */
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
 
     /**
       Function execution environment
-    */  
+    */
     openfluid::base::FunctionEnvironment m_FunctionEnv;
 
 
     /**
-      Function parameters 
-    */    
+      Function parameters
+    */
     openfluid::core::ParamsMap m_ParamsMap;
-       
+
   protected:
 
- 
+
 
     /**
       Pointer to the core repository (const)
     */
     const openfluid::core::CoreRepository* mp_CoreData;
-    
-   
+
+
 
     /**
       Gets the distributed variable value for a spatial object at a time step
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable
-      \param[in] Step the time step for the value of the requested variable            
-      \param[out] Value the value of the requested variable      
-    */ 
-    bool MHYDAS_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASScalarValue *Value);
+      \param[in] Step the time step for the value of the requested variable
+      \param[out] Value the value of the requested variable
+    */
+    bool OPENFLUID_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value);
 
-    bool MHYDAS_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASVectorValue *Value);    
-    
+    bool OPENFLUID_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value);
+
     /**
       Gets a distributed property for a spatial object
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
-      \param[in] PropName the name of the requested property          
-      \param[out] Value the value of the requested property     
+      \param[in] PropName the name of the requested property
+      \param[out] Value the value of the requested property
     */
-    bool MHYDAS_GetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::PropertyValue *Value);
+    bool OPENFLUID_GetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue *Value);
 
     /**
       Returns true if a distributed property exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
-      \param[in] PropName the name of the queried variable               
-    */            
-    bool MHYDAS_IsDistributedPropertyExists(openfluid::core::HydroObject *HO, wxString PropName);    
+      \param[in] PropName the name of the queried variable
+    */
+    bool OPENFLUID_IsDistributedPropertyExists(openfluid::core::HydroObject *HO, wxString PropName);
 
     /**
       Sets a distributed property for a spatial object
       \param[in] HO the spatial object
-      \param[in] PropName the name of the property to modify          
-      \param[in] Value the new value of the property     
+      \param[in] PropName the name of the property to modify
+      \param[in] Value the new value of the property
     */
-    bool MHYDAS_SetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::PropertyValue Value);
-    
-    
-    
+    bool OPENFLUID_SetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue Value);
+
+
+
     /**
       Gets an initial condition for a spatial object
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
-      \param[in] IniCondName the name of the requested initial condition          
-      \param[out] Value the value of the requested initial condition     
+      \param[in] IniCondName the name of the requested initial condition
+      \param[out] Value the value of the requested initial condition
     */
-    bool MHYDAS_GetDistributedIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::PropertyValue *Value);
-  
+    bool OPENFLUID_GetDistributedIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::ScalarValue *Value);
+
     /**
       Returns true if a distributed initial condition exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
-      \param[in] IniCondName the name of the queried variable               
-    */        
-    bool MHYDAS_IsDistributedIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName);    
-         
-    
+      \param[in] IniCondName the name of the queried variable
+    */
+    bool OPENFLUID_IsDistributedIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName);
+
+
     /**
       Returns true if a distributed variable exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
-      \param[in] VarName the name of the requested variable               
+      \param[in] VarName the name of the requested variable
     */
-    bool MHYDAS_IsDistributedVarExists(openfluid::core::HydroObject *HO, wxString VarName);
+    bool OPENFLUID_IsDistributedVarExists(openfluid::core::HydroObject *HO, wxString VarName);
 
-    bool MHYDAS_IsDistributedScalarVarExists(openfluid::core::HydroObject *HO, wxString VarName);    
-    
-    bool MHYDAS_IsDistributedVectorVarExists(openfluid::core::HydroObject *HO, wxString VarName);
-    
-    
+    bool OPENFLUID_IsDistributedScalarVarExists(openfluid::core::HydroObject *HO, wxString VarName);
+
+    bool OPENFLUID_IsDistributedVectorVarExists(openfluid::core::HydroObject *HO, wxString VarName);
+
+
    /**
       Returns true if a distributed variable exists and if a value has been set for the given step false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable
-      \param[in] Step the time step for the value of the variable                     
+      \param[in] Step the time step for the value of the variable
     */
-    bool MHYDAS_IsDistributedVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
-    
-    bool MHYDAS_IsDistributedScalarVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);    
+    bool OPENFLUID_IsDistributedVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
-    bool MHYDAS_IsDistributedVectorVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
-    
+    bool OPENFLUID_IsDistributedScalarVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
+
+    bool OPENFLUID_IsDistributedVectorVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
+
     /**
       Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
-      \param[in] VarName the name of the variable            
-      \param[in] Value the added value of the variable      
-    */ 
-    bool MHYDAS_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::MHYDASScalarValue Value);
+      \param[in] VarName the name of the variable
+      \param[in] Value the added value of the variable
+    */
+    bool OPENFLUID_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::ScalarValue Value);
 
-    bool MHYDAS_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::MHYDASVectorValue Value);    
+    bool OPENFLUID_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value);
 
     /**
       Sets a distributed variable value for a spatial object at a time step
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the variable
-      \param[in] Step the time step for the value of the variable            
-      \param[in] Value the added value of the variable      
-    */     
-    bool MHYDAS_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASScalarValue Value);
+      \param[in] Step the time step for the value of the variable
+      \param[in] Value the added value of the variable
+    */
+    bool OPENFLUID_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue Value);
 
-    bool MHYDAS_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASVectorValue Value);    
+    bool OPENFLUID_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue Value);
 
     /**
       Gets a function parameter from the parameters set, as a double
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
-    */ 
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, double *Value);
-    
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, double *Value);
+
     /**
       Gets a function parameter value from the parameters set, as a long int
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
-    */ 
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, long *Value);
-        
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, long *Value);
+
     /**
       Gets a function parameter from the parameters set, as a float
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
-    */ 
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, float *Value);
-    
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, float *Value);
+
     /**
       Gets a function parameter value from the parameters set, as an int
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
-    */ 
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, int *Value);    
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, int *Value);
 
     /**
       Gets a function parameter value from the parameters set, as a string
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
-    */ 
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value);
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
 
-    
+
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of strings
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Values the vector of values of the requested parameter
-    */     
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);    
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);
 
-    
+
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of doubles
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Values the vector of values of the requested parameter
-    */     
-    
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
+    */
 
-    
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
+
+
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of long ints
       \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter            
+      \param[in] ParamName the name of the requested parameter
       \param[out] Values the vector of values of the requested parameter
-    */         
-    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);    
-   
-    bool MHYDAS_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl);
-        
-    void MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
-    
-    void MHYDAS_RaiseWarning(wxString Sender, wxString WarningMsg);
+    */
+    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);
 
-    void MHYDAS_RaiseError(wxString Sender, int TimeStep, wxString WarningMsg);
-    
-    void MHYDAS_RaiseError(wxString Sender, wxString WarningMsg);
+    bool OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl);
 
-    void MHYDAS_GetEnvironmentInputDir(wxString *Directory);
-    
-    void MHYDAS_GetEnvironmentOutputDir(wxString *Directory);
-    
-    
+    void OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
+
+    void OPENFLUID_RaiseWarning(wxString Sender, wxString WarningMsg);
+
+    void OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxString WarningMsg);
+
+    void OPENFLUID_RaiseError(wxString Sender, wxString WarningMsg);
+
+    void OPENFLUID_GetEnvironmentInputDir(wxString *Directory);
+
+    void OPENFLUID_GetEnvironmentOutputDir(wxString *Directory);
+
+
   public:
     /**
       Constructor
@@ -988,9 +974,9 @@ class PluggableFunction : public wxObject
     virtual ~PluggableFunction();
 
     bool setDataRepository(openfluid::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData; };
-    
+
     bool setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
-    
+
     bool setFunctionEnvironment(openfluid::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
 
     /**
@@ -1007,7 +993,7 @@ class PluggableFunction : public wxObject
       Checks the function consistency. Called by the kernel.
     */
     virtual bool checkConsistency()=0;
-    
+
 
     /**
       Called by the kernel.
@@ -1022,7 +1008,7 @@ class PluggableFunction : public wxObject
     /**
       Called by the kernel.
     */
-    virtual bool finalizeRun(const SimulationInfo* SimInfo)=0;    
+    virtual bool finalizeRun(const SimulationInfo* SimInfo)=0;
 
 };
 

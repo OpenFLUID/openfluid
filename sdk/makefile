@@ -16,18 +16,18 @@ sdk:
 
 openfluid-conf-file:
 	@echo ""
-	@echo "==== Creating mhydasdk-config file ===="
-	@echo "#!/bin/sh" > $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
-	@echo "" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)    
-	@echo "SDKLIBDIR=$(INSTSDKLIBDIR)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
-	@echo "SDKINCDIR=$(INSTSDKINCDIR)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)        
-	@echo "SDKPREFIX=$(INSTSDKPREFIX)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)	
-	@echo "SDKLIBROOT=$(SDKLIBROOT)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)                
-	@echo "MAJORVER=$(MAJORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
-	@echo "MINORVER=$(MINORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)  
-	@echo "SVNREV=$(SVNREV)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)	
-	@cat ./openfluid-config.in >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
-	@chmod ugo+x $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
+	@echo "==== Creating openfluid-config file ===="
+	@echo "#!/bin/sh" > $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
+	@echo "" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)    
+	@echo "SDKLIBDIR=$(INSTSDKLIBDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
+	@echo "SDKINCDIR=$(INSTSDKINCDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
+	@echo "SDKPREFIX=$(INSTSDKPREFIX)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)	
+	@echo "SDKLIBROOT=$(SDKLIBROOT)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)                
+	@echo "MAJORVER=$(MAJORVER)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
+	@echo "MINORVER=$(MINORVER)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)  
+	@echo "SVNREV=$(SVNREV)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)	
+	@cat ./openfluid-config.in >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
+	@chmod ugo+x $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
 
 
 clean:
@@ -49,7 +49,7 @@ purge: clean
 #	@echo "==== Removing installed SDK ===="
 #	@$(SUDO) rm -f -R $(INSTSDKINCPATH)
 #	@$(SUDO) rm -f $(INSTSDKLIBPATH)/$(SDKLIBFILE)
-#	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
+#	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(OPENFLUIDCONFIGFILE)
 #	@$(SUDO) $(LDCONFIGINST)
 
 install-sdk: sdk openfluid-conf-file #clean-installed-sdk
@@ -67,7 +67,7 @@ install-sdk: sdk openfluid-conf-file #clean-installed-sdk
 	@$(SUDO) cp $(BASEBINDIR)/$(SDKLIBFILE) $(INSTSDKLIBPATH)
 	@$(SUDO) chmod 644 $(INSTSDKLIBPATH)/$(SDKLIBFILE)
 	@$(SUDO) $(LDCONFIGINST)
-	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
+	@$(SUDO) cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(INSTSDKBINPATH)
 	
 for-app-dev: sdk openfluid-conf-file
 	@echo ""
@@ -87,7 +87,7 @@ for-app-dev: sdk openfluid-conf-file
 	@chmod 644 $(DEVPREFIX)/$(INSTSDKLIBDIR)/$(SDKLIBFILE)
 	@$(LDCONFIGDEV)
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKBINDIR)
-	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(DEVPREFIX)/$(INSTSDKBINDIR)
+	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(DEVPREFIX)/$(INSTSDKBINDIR)
 	
 
 ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
@@ -123,7 +123,7 @@ ubuntu-edgy-packages: all openfluid-conf-file docs
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
-	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
@@ -180,7 +180,7 @@ ubuntu-dapper-packages: all openfluid-conf-file docs
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
-	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
@@ -224,7 +224,7 @@ win32-packages: all openfluid-conf-file
 	@cp src/core/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/tools/	
-	@cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/
+	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/
 	@cd $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/ && \
          $(ZIP) -r $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32.zip * && \
          cd $(BASEMAINDIR) > /dev/null

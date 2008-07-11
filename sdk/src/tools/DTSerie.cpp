@@ -31,7 +31,7 @@ DateTimeSerie::~DateTimeSerie()
 // =====================================================================
 
 
-bool DateTimeSerie::addValue(wxDateTime DT, openfluid::core::MHYDASScalarValue Value)
+bool DateTimeSerie::addValue(wxDateTime DT, openfluid::core::ScalarValue Value)
 {
   std::list<TimePair>::iterator it;
   
@@ -74,7 +74,7 @@ bool DateTimeSerie::addValue(wxDateTime DT, openfluid::core::MHYDASScalarValue V
 // =====================================================================
 
 
-bool DateTimeSerie::getValue(wxDateTime DT, openfluid::core::MHYDASScalarValue* Value)
+bool DateTimeSerie::getValue(wxDateTime DT, openfluid::core::ScalarValue* Value)
 {
   std::list<TimePair>::iterator it;
 
@@ -232,7 +232,7 @@ bool DateTimeSerie::createInterpolatedSerie(wxDateTime Begin,wxDateTime End,int 
   Serie->clear();  
   wxTimeSpan TimeStepSpan = wxTimeSpan(0,0,TimeStep,0);  
   wxDateTime CurrentTime;
-  openfluid::core::MHYDASScalarValue InterpValue; 
+  openfluid::core::ScalarValue InterpValue; 
   
   CurrentTime = Begin;
 
@@ -278,7 +278,7 @@ bool DateTimeSerie::createInterpolatedSerie(wxDateTime Begin,wxDateTime End,int 
 // =====================================================================
 
 
-bool DateTimeSerie::getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::MHYDASScalarValue* Value)
+bool DateTimeSerie::getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::ScalarValue* Value)
 {
   TimePair LowerPair;
   TimePair UpperPair;
@@ -290,7 +290,7 @@ bool DateTimeSerie::getInterpolatedValue(wxDateTime SearchedDT, openfluid::core:
   
   if ( ReturnVal == 1)
   {
-    openfluid::core::MHYDASScalarValue y,y0,y1;
+    openfluid::core::ScalarValue y,y0,y1;
     long x,x1;
     
     if (LowerPair.DT == UpperPair.DT)
@@ -328,7 +328,7 @@ bool DateTimeSerie::createIndexedSerie(IndexedSerie *ISerie)
   if (m_Data.size() == 0) return false;
   
   ISerie->Count = m_Data.size();   
-  ISerie->Values = new openfluid::core::MHYDASScalarValue[ISerie->Count];
+  ISerie->Values = new openfluid::core::ScalarValue[ISerie->Count];
   
   std::list<TimePair>::iterator it;
 

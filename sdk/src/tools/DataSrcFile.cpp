@@ -1,6 +1,6 @@
 /**
   \file DataSrcFile.cpp
-  \brief 
+  \brief
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -18,7 +18,7 @@ DataSourcesFile::DataSourcesFile()
   m_Loaded = false;
   m_IDs.clear();
   m_Sources.clear();
-  
+
 }
 
 // =====================================================================
@@ -40,19 +40,19 @@ bool DataSourcesFile::load(wxString Filename)
 
   TiXmlDocument LoadDoc;
   int ID;
-  
-  
+
+
   m_Loaded = true;
   m_IDs.clear();
-  m_Sources.clear();  
+  m_Sources.clear();
 
-  
+
   if (LoadDoc.LoadFile(Filename.mb_str(wxConvUTF8)))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
 
-    TiXmlElement* Child = DocHandle.FirstChild("mhydas").FirstChild("datasources").FirstChild("filesource").Element();
+    TiXmlElement* Child = DocHandle.FirstChild("openfluid").FirstChild("datasources").FirstChild("filesource").Element();
 
 
     for(Child; Child; Child=Child->NextSiblingElement())
@@ -70,17 +70,17 @@ bool DataSourcesFile::load(wxString Filename)
   }
   else
   {
-    m_Loaded = false;  
+    m_Loaded = false;
   }
 
   if (!m_Loaded)
   {
     m_IDs.clear();
-    m_Sources.clear();      
+    m_Sources.clear();
   }
-  
+
   return m_Loaded;
-  
+
 }
 
 // =====================================================================
@@ -99,9 +99,9 @@ std::vector<int> DataSourcesFile::getIDs()
 wxString DataSourcesFile::getSource(int ID)
 {
   IDDataSourcesMap::iterator iter;
-  
+
   iter = m_Sources.find(ID);
-  
+
   if (iter != m_Sources.end()) return iter->second;
   else return wxT("");
 }

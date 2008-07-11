@@ -278,7 +278,7 @@ bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
 // =====================================================================
 
 
-bool DistributeInterpolate::getValue(int ID, wxDateTime DT, openfluid::core::MHYDASScalarValue *Value)
+bool DistributeInterpolate::getValue(int ID, wxDateTime DT, openfluid::core::ScalarValue *Value)
 {
 
   return (m_UnitsData[ID]->getValue(DT,Value));
@@ -289,7 +289,7 @@ bool DistributeInterpolate::getValue(int ID, wxDateTime DT, openfluid::core::MHY
 // =====================================================================
 
 
-bool DistributeInterpolate::getValue(int ID, int Index, openfluid::core::MHYDASScalarValue *Value)
+bool DistributeInterpolate::getValue(int ID, int Index, openfluid::core::ScalarValue *Value)
 {
     
   if (Index>m_UnitsIndexedData[ID]->Count) return false;

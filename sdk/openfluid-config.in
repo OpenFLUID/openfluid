@@ -6,8 +6,8 @@
 
 
 usage_info() {
-  echo "MHYDAS SDK config usage:\n"
-  echo "  mhydasdk-config [ARG]\n"
+  echo "OpenFLUID SDK config usage:\n"
+  echo "  openfluid-config [ARG]\n"
   echo " available options:"
   echo "      --libs        returns linker options" 
   echo "      --cflags      returns compilation flags (C)" 
@@ -21,8 +21,8 @@ if [ "$1" != "--libs" ] && [ "$1" != "--cflags" ] && [ "$1" != "--version" ]; th
 fi
 
 INSTPREFIX=/usr
-if [ -n "$MHYDASDKPREFIX" ]; then
-  INSTPREFIX=$MHYDASDKPREFIX
+if [ -n "$OPENFLUIDSDKPREFIX" ]; then
+  INSTPREFIX=$OPENFLUIDSDKPREFIX
 fi
 
 
@@ -31,7 +31,7 @@ if [ "$1" = "--libs" ]; then
 fi
 
 if [ "$1" = "--cflags" ]; then
-  echo "-I$INSTPREFIX/$SDKINCDIR -DMHYDASDK_MAJORVER=$MAJORVER -DMHYDASDK_MINORVER=$MINORVER -DMHYDASDK_REVISION=$SVNREV"
+  echo "-I$INSTPREFIX/$SDKINCDIR -DOPENFLUIDSDK_MAJORVER=$MAJORVER -DOPENFLUIDSDK_MINORVER=$MINORVER -DOPENFLUIDSDK_REVISION=$SVNREV"
 fi
 
 

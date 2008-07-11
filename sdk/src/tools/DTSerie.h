@@ -18,7 +18,7 @@ namespace openfluid { namespace tools {
 struct TimePair
 {
   wxDateTime DT;
-  openfluid::core::MHYDASScalarValue Value;  
+  openfluid::core::ScalarValue Value;  
 };
 
 
@@ -26,7 +26,7 @@ struct TimePair
 struct IndexedSerie
 {
   int Count;  
-  openfluid::core::MHYDASScalarValue* Values;
+  openfluid::core::ScalarValue* Values;
   
   IndexedSerie()
   {
@@ -36,7 +36,7 @@ struct IndexedSerie
 
 
 /**
-  Class for management of a time ordered serie of data (MHYDASScalarValue)
+  Class for management of a time ordered serie of data (ScalarValue)
 */
 class DateTimeSerie
 {
@@ -52,13 +52,13 @@ class DateTimeSerie
 
     virtual ~DateTimeSerie();
     
-    bool addValue(wxDateTime DT, openfluid::core::MHYDASScalarValue Value);
+    bool addValue(wxDateTime DT, openfluid::core::ScalarValue Value);
     
-    bool getValue(wxDateTime DT, openfluid::core::MHYDASScalarValue* Value);    
+    bool getValue(wxDateTime DT, openfluid::core::ScalarValue* Value);    
 
     short getNearestValues(wxDateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);    
     
-    bool getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::MHYDASScalarValue* Value);
+    bool getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::ScalarValue* Value);
 
     void clear();
     

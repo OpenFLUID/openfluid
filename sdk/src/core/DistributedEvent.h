@@ -44,7 +44,7 @@ class DistributedEvent
     
     bool isInfoEquals(wxString Key, double Value);
     
-    bool isInfoEquals(wxString Key, MHYDASScalarValue *Info);    
+    bool isInfoEquals(wxString Key, ScalarValue *Info);    
     
     int getInfosCount() { return m_Infos.size(); }
     
@@ -58,7 +58,7 @@ class DistributedEvent
 
     bool getInfoAsDouble(wxString Key, double *Info);
 
-    bool getInfoAsMHYDASScalarValue(wxString Key, MHYDASScalarValue *Info);	
+    bool getInfoAsScalarValue(wxString Key, ScalarValue *Info);	
     
     bool addInfo(wxString Key, wxString Info);
 	

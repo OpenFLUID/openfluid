@@ -65,9 +65,9 @@ class DistributeInterpolate : public openfluid::tools::Tools
     
     bool loadAndPrepareData();
     
-    bool getValue(int ID, wxDateTime DT, openfluid::core::MHYDASScalarValue *Value);
+    bool getValue(int ID, wxDateTime DT, openfluid::core::ScalarValue *Value);
     
-    bool getValue(int ID, int Index, openfluid::core::MHYDASScalarValue *Value);
+    bool getValue(int ID, int Index, openfluid::core::ScalarValue *Value);
     
     virtual ~DistributeInterpolate();
 };

@@ -42,9 +42,9 @@ ReachSegment::ReachSegment()
 
 
 ReachSegment::ReachSegment(int ID, int ProcessOrder,
-                     nodeid_t UpstreamNode, nodeid_t DownstreamNode, HOID DownstreamReachID,
+                     nodeid_t UpstreamNode, nodeid_t DownstreamNode, UnitID DownstreamReachID,
                      double UsrSlope, double UsrLength, double UsrWidth, double UsrHeight,
-                     HOID GUExchangeID)
+                     UnitID GUExchangeID)
          : HydroObject(ID, ProcessOrder)
 {
   m_UpstreamNode = UpstreamNode;
@@ -92,7 +92,7 @@ nodeid_t ReachSegment::getDownstreamNode() const
 // =====================================================================
 // =====================================================================
 
-HOID ReachSegment::getDownstreamReachID() const
+UnitID ReachSegment::getDownstreamReachID() const
 {
   return m_DownstreamReachID;
 }
@@ -142,7 +142,7 @@ double ReachSegment::getUsrHeight() const
 // =====================================================================
 
 
-HOID ReachSegment::getGUExchangeID() const
+UnitID ReachSegment::getGUExchangeID() const
 {
   return m_GUExchangeID;
 }
@@ -194,7 +194,7 @@ void ReachSegment::setDownstreamNode(nodeid_t Node)
 // =====================================================================
 
 
-void ReachSegment::setDownstreamReachID(HOID ID)
+void ReachSegment::setDownstreamReachID(UnitID ID)
 {
   m_DownstreamReachID = ID;
 }
@@ -244,7 +244,7 @@ void ReachSegment::setUsrHeight(double Height)
 // =====================================================================
 
 
-void ReachSegment::setGUExchangeID(HOID ID)
+void ReachSegment::setGUExchangeID(UnitID ID)
 {
   m_GUExchangeID = ID;
 }

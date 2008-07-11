@@ -24,14 +24,14 @@ namespace openfluid { namespace core {
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
  */
-WX_DECLARE_STRING_HASH_MAP(SerieOfMHYDASScalarValue*, SimulatedVarsMap);
+WX_DECLARE_STRING_HASH_MAP(SerieOfScalarValue*, SimulatedVarsMap);
 
-WX_DECLARE_STRING_HASH_MAP(SerieOfMHYDASVectorValue*, SimulatedVectorVarsMap);
+WX_DECLARE_STRING_HASH_MAP(SerieOfVectorValue*, SimulatedVectorVarsMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
  */
-WX_DECLARE_STRING_HASH_MAP(PropertyValue,PropertiesMap);
+WX_DECLARE_STRING_HASH_MAP(ScalarValue,PropertiesMap);
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
@@ -49,11 +49,11 @@ class HydroObject
   private:
 
   protected:
-    HOID m_ID;
+    UnitID m_ID;
     int m_ProcessOrder;
 
     SimulatedVarsMap* mp_SimVars;
-    SimulatedVectorVarsMap* mp_SimVectorVars;    
+    SimulatedVectorVarsMap* mp_SimVectorVars;
 
     PropertiesMap* mp_Properties;
 
@@ -75,21 +75,21 @@ class HydroObject
 		  \param[in] Comment The associated comment
 		  \param[in] ProcessOrder the process order of the objects during the model execution
      */
-    HydroObject(HOID ID, int ProcessOrder);
+    HydroObject(UnitID ID, int ProcessOrder);
 
     /**
 		  Virtual destructor
      */
     virtual ~HydroObject();
 
-    HOID getID() const;
+    UnitID getID() const;
 
     int getProcessOrder() const;
 
     void setProcessOrder(const int ProcessOrder);
 
     SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
-    SimulatedVectorVarsMap* getSimulatedVectorVars() { return mp_SimVectorVars; };    
+    SimulatedVectorVarsMap* getSimulatedVectorVars() { return mp_SimVectorVars; };
 
     PropertiesMap* getProperties() { return mp_Properties; };
 

@@ -18,7 +18,7 @@
 namespace openfluid { namespace core {
 
 
-typedef HOID nodeid_t;
+typedef UnitID nodeid_t;
 
 /**
   \brief Definition class for reach segments
@@ -32,7 +32,7 @@ class ReachSegment : public HydroObject
 
     nodeid_t m_UpstreamNode;
     nodeid_t m_DownstreamNode;
-    HOID m_DownstreamReachID;
+    UnitID m_DownstreamReachID;
     ReachSegment *mp_DownstreamReach;
     std::list<ReachSegment*>* mp_UpstreamReaches;
     std::list<SurfaceUnit*>* mp_SrcUpstreamSUs;    
@@ -42,7 +42,7 @@ class ReachSegment : public HydroObject
     double m_UsrLength;
     double m_UsrWidth;
     double m_UsrHeight;
-    HOID m_GUExchangeID;   
+    UnitID m_GUExchangeID;   
     GroundwaterUnit *mp_GUExchange;
 
   public:
@@ -54,10 +54,10 @@ class ReachSegment : public HydroObject
 	  /**
 	    Constructor
 	  */
-		ReachSegment(HOID ID, int ProcessOrder,
-              nodeid_t UpstreamNode, nodeid_t DownstreamNode, HOID LowReachID,
+		ReachSegment(UnitID ID, int ProcessOrder,
+              nodeid_t UpstreamNode, nodeid_t DownstreamNode, UnitID LowReachID,
               double UsrSlope, double UsrLength, double UsrWidth, double UsrHeight,
-              HOID GUExchangeID);
+              UnitID GUExchangeID);
 
 	  /**
 	    Destructor
@@ -68,7 +68,7 @@ class ReachSegment : public HydroObject
 
     nodeid_t getDownstreamNode() const;
 
-    HOID getDownstreamReachID() const;
+    UnitID getDownstreamReachID() const;
 
     double getUsrSlope() const;
 
@@ -78,7 +78,7 @@ class ReachSegment : public HydroObject
 
     double getUsrHeight() const;
 
-		HOID getGUExchangeID() const;
+		UnitID getGUExchangeID() const;
 
     GroundwaterUnit *getGUExchange() const;
 
@@ -94,7 +94,7 @@ class ReachSegment : public HydroObject
 
     void setDownstreamNode(nodeid_t Node);
 
-    void setDownstreamReachID(HOID ID);
+    void setDownstreamReachID(UnitID ID);
 
     void setUsrSlope(double Slope);
 
@@ -104,7 +104,7 @@ class ReachSegment : public HydroObject
 
     void setUsrHeight(double Height);
 
-		void setGUExchangeID(HOID ID);
+		void setGUExchangeID(UnitID ID);
 
     void setGUExchange(GroundwaterUnit *GU);
 

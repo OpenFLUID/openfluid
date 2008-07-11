@@ -51,10 +51,10 @@ class SurfaceUnit : public HydroObject
     double m_UsrArea;
     double m_UsrSlope;
     SUDownstreamCode m_DownstreamCode;
-    HOID m_DownstreamID;
+    UnitID m_DownstreamID;
     HydroObject *mp_DownstreamObject;
     double m_DownstreamDistance;
-    HOID m_GUExchangeID;
+    UnitID m_GUExchangeID;
     GroundwaterUnit *mp_GUExchange;
     std::list<SurfaceUnit*>* mp_UpstreamSUs;
 
@@ -68,9 +68,9 @@ class SurfaceUnit : public HydroObject
     /**
       Constructor
     */
-    SurfaceUnit(HOID ID, int ProcessOrder,
+    SurfaceUnit(UnitID ID, int ProcessOrder,
 	            double UsrArea, double UsrSlope,
-	            SUDownstreamCode DSCode, HOID DownstreamID, double DSDistance, HOID GUExchangeID);
+	            SUDownstreamCode DSCode, UnitID DownstreamID, double DSDistance, UnitID GUExchangeID);
     ~SurfaceUnit();
 
 
@@ -80,11 +80,11 @@ class SurfaceUnit : public HydroObject
 
     SUDownstreamCode getDownstreamCode() const;
 
-    HOID getDownstreamID() const;
+    UnitID getDownstreamID() const;
 
     double getDownstreamDistance() const;
 
-    HOID getGUExchangeID() const;
+    UnitID getGUExchangeID() const;
     
     GroundwaterUnit* getGUExchange() { return mp_GUExchange; };
 
@@ -96,11 +96,11 @@ class SurfaceUnit : public HydroObject
 
     void setDownstreamCode(SUDownstreamCode Code);
 
-    void setDownstreamID(HOID ID);
+    void setDownstreamID(UnitID ID);
 
     void setDownstreamDistance(double Distance);
 
-    void setGUExchangeID(HOID ID);
+    void setGUExchangeID(UnitID ID);
 
     void setGUExchange(GroundwaterUnit *GHU);
 
