@@ -27,51 +27,51 @@ class MorelSeytouxFunc : public openfluid::base::PluggableFunction
     /**
       Theta star on each SU
     */
-    openfluid::base::IDDoubleMap m_SUThetaStar;
+    openfluid::core::IDDoubleMap m_SUThetaStar;
     
     /**
       Sf on each SU
     */
-    openfluid::base::IDDoubleMap m_SUSf;
+    openfluid::core::IDDoubleMap m_SUSf;
 
     /**
       Saturation state on each SU
     */
-    openfluid::base::IDIntMap m_SUSatState;
+    openfluid::core::IDIntMap m_SUSatState;
 
     /**
       Use of upstream output as input on each SU
     */
-    openfluid::base::IDBoolMap m_UseUpstreamOutput;
+    openfluid::core::IDBoolMap m_UseUpstreamOutput;
 
     /**
       Current upstream input value for each SU
     */
-    openfluid::base::IDDoubleMap m_CurrentUpstreamInput;
+    openfluid::core::IDDoubleMap m_CurrentUpstreamInput;
     
     /**
       Rain sum for each SU
     */
-    openfluid::base::IDFloatMap m_RainSum;    
+    openfluid::core::IDFloatMap m_RainSum;    
 
     /**
       Previous DeltaW for each SU
     */
-    openfluid::base::IDFloatMap m_PreviousDeltaW;    
+    openfluid::core::IDFloatMap m_PreviousDeltaW;    
 
-    openfluid::base::IDFloatMap m_PondingTime; // tp
+    openfluid::core::IDFloatMap m_PondingTime; // tp
 
-    openfluid::base::IDFloatMap m_PondingSum;  // wp
+    openfluid::core::IDFloatMap m_PondingSum;  // wp
 
-    openfluid::base::IDIntMap m_PondingStep; // ip
+    openfluid::core::IDIntMap m_PondingStep; // ip
 
-    openfluid::base::IDFloatMap m_PondingRainIntensity; // rp
+    openfluid::core::IDFloatMap m_PondingRainIntensity; // rp
 
 
-    openfluid::base::IDFloatMap m_DeltaW1;
-    openfluid::base::IDFloatMap m_DeltaW2;
-    openfluid::base::IDFloatMap m_DeltaT1;
-    openfluid::base::IDFloatMap m_DeltaT2;
+    openfluid::core::IDFloatMap m_DeltaW1;
+    openfluid::core::IDFloatMap m_DeltaW2;
+    openfluid::core::IDFloatMap m_DeltaT1;
+    openfluid::core::IDFloatMap m_DeltaT2;
 
 
 

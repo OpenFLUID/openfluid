@@ -28,21 +28,21 @@ class HayamiSUFunction : public openfluid::base::PluggableFunction
   private:
 
     int m_MaxSteps;
-    
+
     double m_MeanCelerity;
 
-    double m_MeanSigma;    
-    
+    double m_MeanSigma;
+
     double m_MeanSlope;
-    
-    double m_MeanManning;        
+
+    double m_MeanManning;
 
     IDKernelMap m_SUKernel;
-    
-    openfluid::base::IDVectOfMHYDASValueMap m_Input;
-    
-    openfluid::base::IDMHYDASValueMap m_CurrentInputSum;
-        
+
+    openfluid::core::IDVectorValueMap m_Input;
+
+    openfluid::core::IDScalarValueMap m_CurrentInputSum;
+
 
   public:
 
@@ -59,7 +59,7 @@ class HayamiSUFunction : public openfluid::base::PluggableFunction
     bool initParams(openfluid::core::ParamsMap Params);
 
     bool prepareData();
-    
+
     bool checkConsistency();
 
     bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);

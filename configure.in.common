@@ -56,15 +56,15 @@ MDEF_SIMINFOFILE=siminfo.out
 
 
 
-MHYDASDKPREFIX=/var/tmp/openfluid
+OPENFLUIDSDKPREFIX=/var/tmp/openfluid
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
 PACKSECTION="science"
 PACKPRIORITY="optional"
 
 
-ENGEDGYDEPENDS="libwxbase2.6-dev (>= 2.6), openfluid-libs (= `$MHYDASDKPREFIX/bin/openfluid-config --version`)"
-ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), openfluid-libs (= `$MHYDASDKPREFIX/bin/openfluid-config --version`)"
+ENGEDGYDEPENDS="libwxbase2.6-dev (>= 2.6), openfluid-libs (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
+ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), openfluid-libs (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
 ENGPACKDESC="OpenFLUID modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
 ENGPACKROOT=$EXEFILEROOT
 

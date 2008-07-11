@@ -86,9 +86,9 @@ HayamiSUFunction::~HayamiSUFunction()
 bool HayamiSUFunction::initParams(openfluid::core::ParamsMap Params)
 {
 
-  MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);        
-  MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
-  MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
+  OPENFLUID_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);        
+  OPENFLUID_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
+  OPENFLUID_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
   
   return true;
 }
@@ -123,8 +123,8 @@ bool HayamiSUFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
 {
   openfluid::core::SurfaceUnit* SU;
   float Cel, Sigma;
-  openfluid::core::HOID ID;
-  openfluid::core::PropertyValue TmpValue;
+  openfluid::core::UnitID ID;
+  openfluid::core::ScalarValue TmpValue;
   
   DECLARE_SU_ORDERED_LOOP;
  
@@ -132,11 +132,11 @@ bool HayamiSUFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   BEGIN_SU_ORDERED_LOOP(SU)
     ID = SU->getID();
     
-    m_Input[ID] = new openfluid::core::SerieOfMHYDASScalarValue();
+    m_Input[ID] = new openfluid::core::SerieOfScalarValue();
     m_CurrentInputSum[ID] = 0;
   
     m_MeanSlope = m_MeanSlope + SU->getUsrSlope();
-    MHYDAS_GetDistributedProperty(SU,wxT("nmanning"),&TmpValue);
+    OPENFLUID_GetDistributedProperty(SU,wxT("nmanning"),&TmpValue);
     m_MeanManning = m_MeanManning + TmpValue;
   END_LOOP  
   
@@ -144,7 +144,7 @@ bool HayamiSUFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getSUsCollection()->size(); 
 
   BEGIN_SU_ORDERED_LOOP(SU)
-    MHYDAS_GetDistributedProperty(SU,wxT("nmanning"),&TmpValue);
+    OPENFLUID_GetDistributedProperty(SU,wxT("nmanning"),&TmpValue);
     Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((SU->getUsrSlope() / m_MeanSlope)));
     Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / SU->getUsrSlope());    
     
@@ -170,9 +170,9 @@ bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   int ID;
   int CurrentStep;
   int TimeStep;
-  openfluid::core::MHYDASScalarValue QOutput;
-  openfluid::core::MHYDASScalarValue QInput;
-  openfluid::core::MHYDASScalarValue TmpValue;
+  openfluid::core::ScalarValue QOutput;
+  openfluid::core::ScalarValue QInput;
+  openfluid::core::ScalarValue TmpValue;
 
   
   openfluid::core::SurfaceUnit* SU;
@@ -185,7 +185,7 @@ bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     ID = SU->getID();
   
-    MHYDAS_GetDistributedVarValue(SU,wxT("water.surf.H.runoff"),CurrentStep,&TmpValue);
+    OPENFLUID_GetDistributedVarValue(SU,wxT("water.surf.H.runoff"),CurrentStep,&TmpValue);
 
     QInput = TmpValue * SU->getUsrArea() / TimeStep;
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
@@ -198,7 +198,7 @@ bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     }  
         
 
-    MHYDAS_AppendDistributedVarValue(SU,wxT("water.surf.Q.downstream-su"),QOutput);
+    OPENFLUID_AppendDistributedVarValue(SU,wxT("water.surf.Q.downstream-su"),QOutput);
 
   END_LOOP
   

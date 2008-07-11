@@ -59,7 +59,7 @@ fi
 
 
 #for being seen from mhydasdk-config script
-export MHYDASDKPREFIX 
+export OPENFLUIDSDKPREFIX 
 
 
 OPTFILE=makeopts.inc
@@ -154,9 +154,9 @@ echo "" >> $OPTFILE
 
 echo "# compile options for mhydas sdk" >> $OPTFILE
 VARTOWRITE=
-VARTOWRITE=`$MHYDASDKPREFIX/bin/openfluid-config --libs`
+VARTOWRITE=`$OPENFLUIDSDKPREFIX/bin/openfluid-config --libs`
 echo "MHYDASDKLIBS = $VARTOWRITE" >> $OPTFILE
-VARTOWRITE=`$MHYDASDKPREFIX/bin/openfluid-config --cflags`
+VARTOWRITE=`$OPENFLUIDSDKPREFIX/bin/openfluid-config --cflags`
 echo "MHYDASDKFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE
@@ -269,8 +269,8 @@ if [ -z $BUILDVER ]; then
 fi
 
 echo "" >> $OPTFILE
-echo "SDKPREFIX = $MHYDASDKPREFIX" >> $OPTFILE
-echo "MHYDASDKPATH = $MHYDASDKPREFIX/bin:$PATH" >> $OPTFILE
+echo "SDKPREFIX = $OPENFLUIDSDKPREFIX" >> $OPTFILE
+echo "MHYDASDKPATH = $OPENFLUIDSDKPREFIX/bin:$PATH" >> $OPTFILE
 echo "" >> $OPTFILE
 
 
