@@ -21,7 +21,7 @@
 // =====================================================================
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 
@@ -481,10 +481,10 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
   RSMap::iterator RSit;
   GUMap::iterator GUit;
   
-  mhydasdk::core::SimulatedVarsMap *VarsMap;
+  openfluid::core::SimulatedVarsMap *VarsMap;
   SimulatedVarsMap::iterator Vit;
 
-  mhydasdk::core::SimulatedVectorVarsMap *VectVarsMap;
+  openfluid::core::SimulatedVectorVarsMap *VectVarsMap;
   SimulatedVectorVarsMap::iterator VVit;  
   
 
@@ -548,7 +548,7 @@ bool SpatialRepository::reserveSimulationVars(int StepsNbr)
 }
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

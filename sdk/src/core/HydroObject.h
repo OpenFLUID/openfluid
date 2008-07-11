@@ -15,7 +15,7 @@
 #include "EventCollection.h"
 #include "TypeDefs.h"
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 /**
@@ -100,7 +100,7 @@ class HydroObject
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

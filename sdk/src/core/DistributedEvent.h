@@ -16,7 +16,7 @@
 #include "TypeDefs.h"
 #include <wx/datetime.h>
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 WX_DECLARE_STRING_HASH_MAP(wxString, EventInfosMap);
 
@@ -66,6 +66,6 @@ class DistributedEvent
     
 };
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 #endif /* __DISTRIBUTEDEVENT_H__ */

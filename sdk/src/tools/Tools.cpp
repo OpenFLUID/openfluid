@@ -1,6 +1,6 @@
 /**
   \file tools.cpp
-  \brief Common super class dor mhydasdk-tools classes
+  \brief Common super class dor openfluid-tools classes
   
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
@@ -9,7 +9,7 @@
 
 #include "Tools.h"
 
-namespace mhydasdk { namespace tools
+namespace openfluid { namespace tools
 {
 
 Tools::Tools()

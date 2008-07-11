@@ -13,13 +13,13 @@
 #include <wx/hashmap.h>
 #include <wx/datetime.h>
 
-#include "mhydasdk-core.h"
+#include "openfluid-core.h"
 #include "DTSerie.h"
 #include "DataSrcFile.h"
 #include "Tools.h"
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,DTSeriesMap);
 WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,UnitsDTSeriesMap);
@@ -33,7 +33,7 @@ enum SeriePreprocess
 };
 
 
-class DistributeInterpolate : public mhydasdk::tools::Tools
+class DistributeInterpolate : public openfluid::tools::Tools
 {
 
   private:
@@ -65,9 +65,9 @@ class DistributeInterpolate : public mhydasdk::tools::Tools
     
     bool loadAndPrepareData();
     
-    bool getValue(int ID, wxDateTime DT, mhydasdk::core::MHYDASScalarValue *Value);
+    bool getValue(int ID, wxDateTime DT, openfluid::core::MHYDASScalarValue *Value);
     
-    bool getValue(int ID, int Index, mhydasdk::core::MHYDASScalarValue *Value);
+    bool getValue(int ID, int Index, openfluid::core::MHYDASScalarValue *Value);
     
     virtual ~DistributeInterpolate();
 };

@@ -31,7 +31,7 @@
 
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 class DLLEXPORT ColumnTextParser;
 class DLLEXPORT DataSourcesFile;

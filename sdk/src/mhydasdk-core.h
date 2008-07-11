@@ -34,7 +34,7 @@
 
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 class DLLEXPORT ValueFactory;
 class DLLEXPORT SpatialRepository;
@@ -48,7 +48,7 @@ class DLLEXPORT EventCollection;
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

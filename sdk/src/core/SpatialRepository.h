@@ -19,7 +19,7 @@
 
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 WX_DECLARE_HASH_MAP(int, SurfaceUnit*, wxIntegerHash, wxIntegerEqual, SUMap);
 WX_DECLARE_HASH_MAP(int, GroundwaterUnit*, wxIntegerHash, wxIntegerEqual, GUMap);
@@ -156,7 +156,7 @@ class SpatialRepository
 };
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

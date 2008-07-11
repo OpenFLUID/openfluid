@@ -10,7 +10,7 @@
 #include "DTSerie.h"
 #include <math.h>
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 DateTimeSerie::DateTimeSerie()
@@ -31,7 +31,7 @@ DateTimeSerie::~DateTimeSerie()
 // =====================================================================
 
 
-bool DateTimeSerie::addValue(wxDateTime DT, mhydasdk::core::MHYDASScalarValue Value)
+bool DateTimeSerie::addValue(wxDateTime DT, openfluid::core::MHYDASScalarValue Value)
 {
   std::list<TimePair>::iterator it;
   
@@ -74,7 +74,7 @@ bool DateTimeSerie::addValue(wxDateTime DT, mhydasdk::core::MHYDASScalarValue Va
 // =====================================================================
 
 
-bool DateTimeSerie::getValue(wxDateTime DT, mhydasdk::core::MHYDASScalarValue* Value)
+bool DateTimeSerie::getValue(wxDateTime DT, openfluid::core::MHYDASScalarValue* Value)
 {
   std::list<TimePair>::iterator it;
 
@@ -232,7 +232,7 @@ bool DateTimeSerie::createInterpolatedSerie(wxDateTime Begin,wxDateTime End,int 
   Serie->clear();  
   wxTimeSpan TimeStepSpan = wxTimeSpan(0,0,TimeStep,0);  
   wxDateTime CurrentTime;
-  mhydasdk::core::MHYDASScalarValue InterpValue; 
+  openfluid::core::MHYDASScalarValue InterpValue; 
   
   CurrentTime = Begin;
 
@@ -278,7 +278,7 @@ bool DateTimeSerie::createInterpolatedSerie(wxDateTime Begin,wxDateTime End,int 
 // =====================================================================
 
 
-bool DateTimeSerie::getInterpolatedValue(wxDateTime SearchedDT, mhydasdk::core::MHYDASScalarValue* Value)
+bool DateTimeSerie::getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::MHYDASScalarValue* Value)
 {
   TimePair LowerPair;
   TimePair UpperPair;
@@ -290,7 +290,7 @@ bool DateTimeSerie::getInterpolatedValue(wxDateTime SearchedDT, mhydasdk::core::
   
   if ( ReturnVal == 1)
   {
-    mhydasdk::core::MHYDASScalarValue y,y0,y1;
+    openfluid::core::MHYDASScalarValue y,y0,y1;
     long x,x1;
     
     if (LowerPair.DT == UpperPair.DT)
@@ -328,7 +328,7 @@ bool DateTimeSerie::createIndexedSerie(IndexedSerie *ISerie)
   if (m_Data.size() == 0) return false;
   
   ISerie->Count = m_Data.size();   
-  ISerie->Values = new mhydasdk::core::MHYDASScalarValue[ISerie->Count];
+  ISerie->Values = new openfluid::core::MHYDASScalarValue[ISerie->Count];
   
   std::list<TimePair>::iterator it;
 
@@ -341,4 +341,4 @@ bool DateTimeSerie::createIndexedSerie(IndexedSerie *ISerie)
   
 }
 
-} } // namespace mhydasdk::tools
+} } // namespace openfluid::tools

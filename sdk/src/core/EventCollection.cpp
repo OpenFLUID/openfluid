@@ -8,7 +8,7 @@
 #include "EventCollection.h"
 #include <iostream>
 
-namespace mhydasdk { namespace core 
+namespace openfluid { namespace core 
 {
 
 

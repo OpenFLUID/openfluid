@@ -14,7 +14,7 @@
 #include <wx/datetime.h>
  
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 class DistributedEvent;
 
@@ -47,7 +47,7 @@ class EventCollection
 };
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

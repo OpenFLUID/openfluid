@@ -7,7 +7,7 @@
 
 
 #include "ColTextParser.h"
-#include "mhydasdk-base.h"
+#include "openfluid-base.h"
 
 #include <wx/tokenzr.h>
 
@@ -17,7 +17,7 @@
 // =====================================================================
 // =====================================================================
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 ColumnTextParser::ColumnTextParser(wxString CommentLineSymbol, wxString Delimiter)

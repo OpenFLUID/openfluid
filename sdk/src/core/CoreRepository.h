@@ -13,7 +13,7 @@
 
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 /**
@@ -55,7 +55,7 @@ class CoreRepository
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

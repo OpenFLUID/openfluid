@@ -58,7 +58,7 @@
 
 
 
-namespace mhydasdk { namespace base
+namespace openfluid { namespace base
 {
 
 class DLLEXPORT ColumnFileParser;
@@ -67,7 +67,7 @@ class DLLEXPORT ExecutionMessages;
 class DLLEXPORT PluggableFunction;
 
 
-} } // namespace mhydasdk::base
+} } // namespace openfluid::base
 
 
 

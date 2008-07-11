@@ -11,7 +11,7 @@
 
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 GroundwaterUnit::GroundwaterUnit()
@@ -105,5 +105,5 @@ void GroundwaterUnit::setSubstratumLevel(double Level)
 }
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 

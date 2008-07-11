@@ -13,7 +13,7 @@
 #include "SurfaceUnit.h"
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 class SurfaceUnit;
 class ReachSegment;
@@ -85,6 +85,6 @@ class GroundwaterUnit : public HydroObject
 };
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 #endif

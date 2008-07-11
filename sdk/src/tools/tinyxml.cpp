@@ -31,7 +31,7 @@ distribution.
 
 #include "tinyxml.h"
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 bool TiXmlBase::condenseWhiteSpace = true;
 

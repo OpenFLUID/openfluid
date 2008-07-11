@@ -10,7 +10,7 @@
 #include "tinyxml.h"
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 DataSourcesFile::DataSourcesFile()

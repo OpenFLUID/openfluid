@@ -8,7 +8,7 @@
 
 #include "SurfaceUnit.h"
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 // =====================================================================
@@ -213,5 +213,5 @@ void SurfaceUnit::setDownstreamObject(HydroObject *HObject)
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 

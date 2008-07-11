@@ -10,7 +10,7 @@
 #include "SimStatus.h"
 #include <iostream>
 
-namespace mhydasdk { namespace base {
+namespace openfluid { namespace base {
 
 
 SimulationInfo::SimulationInfo(wxDateTime StartTime,
@@ -124,5 +124,5 @@ bool SimulationStatus::switchToNextStep()
 }
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 

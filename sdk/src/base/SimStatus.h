@@ -10,10 +10,10 @@
 #define __SIMSTATUS_H__
 
 
-#include "mhydasdk-core.h"
+#include "openfluid-core.h"
 #include "wx/datetime.h"
 
-namespace mhydasdk { namespace base {
+namespace openfluid { namespace base {
 
 
 /**
@@ -104,7 +104,7 @@ class SimulationStatus : public SimulationInfo
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 #endif

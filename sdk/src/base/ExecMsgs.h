@@ -12,7 +12,7 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 
-namespace mhydasdk { namespace base {
+namespace openfluid { namespace base {
 
 /**
   Class ...
@@ -62,7 +62,7 @@ class ExecutionMessages
 
 };
 
-} } // namespace mhydasdk::base
+} } // namespace openfluid::base
 
 
 #endif /*__EXECMSGS_H__*/

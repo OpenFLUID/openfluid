@@ -13,7 +13,7 @@
 #include <wx/textfile.h>
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 WX_DEFINE_ARRAY(wxArrayString*, ArrayContents);
 

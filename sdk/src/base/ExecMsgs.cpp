@@ -8,7 +8,7 @@
 
 #include "ExecMsgs.h"
 
-namespace mhydasdk { namespace base {
+namespace openfluid { namespace base {
 
 
 
@@ -52,7 +52,7 @@ void ExecutionMessages::setError(wxString Sender, int TimeStep, wxString ErrorMs
 
 
 
-} } // namespace mhydasdk::base
+} } // namespace openfluid::base
 
 
 

@@ -11,7 +11,7 @@
 
 #include <math.h>
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 DistributeInterpolate::DistributeInterpolate()
@@ -53,10 +53,10 @@ void DistributeInterpolate::setConfig(wxString DataDir, wxString DataSourcesFile
 
 bool DistributeInterpolate::loadAndPrepareData()
 {
-  mhydasdk::tools::DataSourcesFile DSFile;
-  mhydasdk::tools::DateTimeSerie *Serie;
-  mhydasdk::tools::DateTimeSerie *InterpolatedSerie;
-  mhydasdk::tools::IndexedSerie *IInterpolatedSerie;
+  openfluid::tools::DataSourcesFile DSFile;
+  openfluid::tools::DateTimeSerie *Serie;
+  openfluid::tools::DateTimeSerie *InterpolatedSerie;
+  openfluid::tools::IndexedSerie *IInterpolatedSerie;
   
 
   if (!m_Configured)
@@ -88,9 +88,9 @@ bool DistributeInterpolate::loadAndPrepareData()
       {
         // load file
    
-        InterpolatedSerie = new mhydasdk::tools::DateTimeSerie();
-        Serie = new mhydasdk::tools::DateTimeSerie();
-        IInterpolatedSerie = new mhydasdk::tools::IndexedSerie(); 
+        InterpolatedSerie = new openfluid::tools::DateTimeSerie();
+        Serie = new openfluid::tools::DateTimeSerie();
+        IInterpolatedSerie = new openfluid::tools::IndexedSerie(); 
         
         if (loadDataAsSerie(m_DataDir + wxFILE_SEP_PATH + DSFile.getSource(IDs[i]),m_SPpcs, Serie))
         {
@@ -278,7 +278,7 @@ bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
 // =====================================================================
 
 
-bool DistributeInterpolate::getValue(int ID, wxDateTime DT, mhydasdk::core::MHYDASScalarValue *Value)
+bool DistributeInterpolate::getValue(int ID, wxDateTime DT, openfluid::core::MHYDASScalarValue *Value)
 {
 
   return (m_UnitsData[ID]->getValue(DT,Value));
@@ -289,7 +289,7 @@ bool DistributeInterpolate::getValue(int ID, wxDateTime DT, mhydasdk::core::MHYD
 // =====================================================================
 
 
-bool DistributeInterpolate::getValue(int ID, int Index, mhydasdk::core::MHYDASScalarValue *Value)
+bool DistributeInterpolate::getValue(int ID, int Index, openfluid::core::MHYDASScalarValue *Value)
 {
     
   if (Index>m_UnitsIndexedData[ID]->Count) return false;

@@ -57,7 +57,7 @@ distribution.
 #endif
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 /*

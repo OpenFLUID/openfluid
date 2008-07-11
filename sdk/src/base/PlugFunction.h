@@ -26,7 +26,7 @@
 #define __PLUGFUNCTION_H__
 
 #include <wx/wx.h>
-#include "mhydasdk-core.h"
+#include "openfluid-core.h"
 #include "SimStatus.h"
 #include "ExecMsgs.h"
 
@@ -58,8 +58,8 @@
 #define DECLARE_PLUGIN_HOOKS \
   extern "C" \
   { \
-    DLLIMPORT mhydasdk::base::PluggableFunction* GetPlugFunction(); \
-    DLLIMPORT mhydasdk::base::Signature* GetPlugSignature(); \
+    DLLIMPORT openfluid::base::PluggableFunction* GetPlugFunction(); \
+    DLLIMPORT openfluid::base::Signature* GetPlugSignature(); \
   };
 
 
@@ -74,7 +74,7 @@
 */ 
 
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
-  mhydasdk::base::PluggableFunction* GetPlugFunction() \
+  openfluid::base::PluggableFunction* GetPlugFunction() \
   { \
     return new pluginclassname(); \
   }
@@ -87,9 +87,9 @@
   Macro for the beginning of definition of signature hook   
 */ 
 #define BEGIN_SIGNATURE_HOOK \
-  mhydasdk::base::Signature* GetPlugSignature() \
+  openfluid::base::Signature* GetPlugSignature() \
   { \
-    mhydasdk::base::Signature* ZeSignature = new mhydasdk::base::Signature(); \
+    openfluid::base::Signature* ZeSignature = new openfluid::base::Signature(); \
     ZeSignature->setSDKVersion(MHYDASDK_MAJORVER,MHYDASDK_MINORVER,MHYDASDK_REVISION);
   
 
@@ -138,7 +138,7 @@
   \param[in] unit unit of the parameter. Could be an empty string if there is no unit  
 */ 
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
-  ZeSignature->HandledData.FunctionParams.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT(""),description,unit));
+  ZeSignature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT(""),description,unit));
 
 
 // =====================================================================
@@ -152,7 +152,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */ 
 #define DECLARE_SU_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
   
 /**
   Macro for declaration of an updated variable on all SUs
@@ -161,7 +161,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */ 
 #define DECLARE_SU_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
 /**
   Macro for declaration of a required variable on all SUs
@@ -170,10 +170,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 /**
   Macro for declaration of an used variable on all SUs
@@ -182,10 +182,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
   
 /**
   Macro for declaration of a required property on all SUs
@@ -194,10 +194,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
 #define DECLARE_SU_USED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
+  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
   
   
 /**
@@ -207,10 +207,10 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
 #define DECLARE_SU_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
+  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));  
 
 
   
@@ -225,7 +225,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
   
 /**
   Macro for declaration of an updated variable on all RSs
@@ -234,7 +234,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_RS_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 /**
   Macro for declaration of a required variable on all RSs
@@ -243,10 +243,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_RS_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 #define DECLARE_RS_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
+  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));  
 
 
 /**
@@ -256,10 +256,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
 
 #define DECLARE_RS_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
+  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));    
 
 
 /**
@@ -269,10 +269,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 #define DECLARE_RS_USED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 /**
   Macro for declaration of a required initial condition on all RSs
@@ -281,10 +281,10 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 #define DECLARE_RS_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
+  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("RS"),description,unit));
 
 // =====================================================================
 // =====================================================================
@@ -297,7 +297,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
 /**
   Macro for declaration of an updated variable on all GUs
@@ -306,7 +306,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_GU_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
 /**
   Macro for declaration of a required variable on all GUs
@@ -315,10 +315,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */  
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
   
 /**
@@ -328,10 +328,10 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
   
 /**
@@ -341,10 +341,10 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
 
 /**
@@ -354,10 +354,10 @@
   \param[in] unit unit of the initial condition. Could be an empty string if there is no unit    
 */
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
 #define DECLARE_GU_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(mhydasdk::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
+  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
   
   
 // =====================================================================
@@ -390,19 +390,19 @@
   Macro for declaration of a loop processing SUs, following their process order
 */
 #define DECLARE_SU_ORDERED_LOOP \
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUiter; \
-  std::list<mhydasdk::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
+  std::list<openfluid::core::SurfaceUnit*>::iterator _M_SUiter; \
+  std::list<openfluid::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
 
 /**
   Macro for declaration of a loop processing a list of SUs
 */
 #define DECLARE_SU_LIST_LOOP \
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator _M_SUListiter; \
+  std::list<openfluid::core::SurfaceUnit*>::iterator _M_SUListiter; \
 
 
 /**
   Macro for the begining of a loop processing SUs, following their process order
-  \param[out] suobj pointer to a mhydasdk::core::SurfaceUnit object, pointing to the current processed SU 
+  \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU 
 */
 #define BEGIN_SU_ORDERED_LOOP(suobj) \
   for(_M_SUiter=_M_SUsList->begin(); _M_SUiter != _M_SUsList->end(); _M_SUiter++) \
@@ -411,8 +411,8 @@
 
 /**
   Macro for the begining of a loop processing a list of SUs
-  \param[out] sulist pointer to a list of mhydasdk::core::SurfaceUnit 
-  \param[out] suobj pointer to a mhydasdk::core::SurfaceUnit object, pointing to the current processed SU 
+  \param[out] sulist pointer to a list of openfluid::core::SurfaceUnit 
+  \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU 
 */
 #define BEGIN_SU_LIST_LOOP(sulist,suobj) \
   for(_M_SUListiter=sulist->begin(); _M_SUListiter != sulist->end(); _M_SUListiter++) \
@@ -424,19 +424,19 @@
   Macro for declaration of a loop processing RSs, following their process order
 */
 #define DECLARE_RS_ORDERED_LOOP \
-  std::list<mhydasdk::core::ReachSegment*>::iterator _M_RSiter; \
-  std::list<mhydasdk::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
+  std::list<openfluid::core::ReachSegment*>::iterator _M_RSiter; \
+  std::list<openfluid::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
 
 /**
   Macro for declaration of a loop processing a list of RSs
 */
 #define DECLARE_RS_LIST_LOOP \
-  std::list<mhydasdk::core::ReachSegment*>::iterator _M_RSListiter; \
+  std::list<openfluid::core::ReachSegment*>::iterator _M_RSListiter; \
 
 
 /**
   Macro for the begining of a loop processing RSs, following their process order
-  \param[out] rsobj pointer to a mhydasdk::core::ReachSegment object, pointing to the current processed RS 
+  \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS 
 */
 #define BEGIN_RS_ORDERED_LOOP(rsobj) \
   for(_M_RSiter=_M_RSsList->begin(); _M_RSiter != _M_RSsList->end(); _M_RSiter++) \
@@ -445,8 +445,8 @@
 
 /**
   Macro for the begining of a loop processing a list of RSs
-  \param[out] rslist pointer to a list of mhydasdk::core::ReachSegment
-  \param[out] rsobj pointer to a mhydasdk::core::ReachSegment object, pointing to the current processed RS 
+  \param[out] rslist pointer to a list of openfluid::core::ReachSegment
+  \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS 
 */
 #define BEGIN_RS_LIST_LOOP(rslist,rsobj) \
   for(_M_RSListiter=rslist->begin(); _M_RSListiter != rslist->end(); _M_RSListiter++) \
@@ -459,19 +459,19 @@
   Macro for declaration of a loop processing GUs, following their process order
 */
 #define DECLARE_GU_ORDERED_LOOP \
-  std::list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUiter; \
-  std::list<mhydasdk::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
+  std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUiter; \
+  std::list<openfluid::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList(); 
 
 /**
   Macro for declaration of a loop processing a list of GUs
 */
 #define DECLARE_GU_LIST_LOOP \
-  std::list<mhydasdk::core::GroundwaterUnit*>::iterator _M_GUListiter; \
+  std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUListiter; \
 
 
 /**
   Macro for the begining of a loop processing GUs, following their process order
-  \param[out] guobj pointer to a mhydasdk::core::GroundwaterUnit object, pointing to the current processed GU 
+  \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU 
 */
 #define BEGIN_GU_ORDERED_LOOP(guobj) \
   for(_M_GUiter=_M_GUsList->begin(); _M_GUiter != _M_GUsList->end(); _M_GUiter++) \
@@ -480,8 +480,8 @@
 
 /**
   Macro for the begining of a loop processing a list of GUs
-  \param[out] gulist pointer to a list of mhydasdk::core::GroundwaterUnit 
-  \param[out] guobj pointer to a mhydasdk::core::GroundwaterUnit object, pointing to the current processed GU 
+  \param[out] gulist pointer to a list of openfluid::core::GroundwaterUnit 
+  \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU 
 */
 #define BEGIN_GU_LIST_LOOP(gulist,guobj) \
   for(_M_GUListiter=gulist->begin(); _M_GUListiter != gulist->end(); _M_GUListiter++) \
@@ -490,7 +490,7 @@
 
 
 #define DECLARE_EVENT_COLLECTION_LOOP \
-  std::list<mhydasdk::core::DistributedEvent*>::iterator _M_EvListiter;
+  std::list<openfluid::core::DistributedEvent*>::iterator _M_EvListiter;
 
 #define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
   for(_M_EvListiter=evlist->begin(); _M_EvListiter != evlist->end(); _M_EvListiter++) \
@@ -506,7 +506,7 @@
 // =====================================================================
 
 
-namespace mhydasdk { namespace base {
+namespace openfluid { namespace base {
 
 
 /**
@@ -731,17 +731,17 @@ struct FunctionEnvironment
 // =====================================================================
 // =====================================================================
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
+WX_DECLARE_HASH_MAP(openfluid::core::HOID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
+WX_DECLARE_HASH_MAP(openfluid::core::HOID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASScalarValue, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
+WX_DECLARE_HASH_MAP(openfluid::core::HOID, openfluid::core::MHYDASScalarValue, wxIntegerHash, wxIntegerEqual, IDMHYDASValueMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
+WX_DECLARE_HASH_MAP(openfluid::core::HOID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
+WX_DECLARE_HASH_MAP(openfluid::core::HOID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
 
-WX_DECLARE_HASH_MAP(mhydasdk::core::HOID, mhydasdk::core::MHYDASVectorValue*, wxIntegerHash, wxIntegerEqual, IDVectOfMHYDASValueMap);
+WX_DECLARE_HASH_MAP(openfluid::core::HOID, openfluid::core::MHYDASVectorValue*, wxIntegerHash, wxIntegerEqual, IDVectOfMHYDASValueMap);
 
 // =====================================================================
 // =====================================================================
@@ -764,25 +764,25 @@ class PluggableFunction : public wxObject
       Pointer to the core repository
     */
     
-    mhydasdk::core::CoreRepository* mp_InternalCoreData;
+    openfluid::core::CoreRepository* mp_InternalCoreData;
     
     
     /**
       Pointer to the execution messages repository 
     */
-    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
 
     /**
       Function execution environment
     */  
-    mhydasdk::base::FunctionEnvironment m_FunctionEnv;
+    openfluid::base::FunctionEnvironment m_FunctionEnv;
 
 
     /**
       Function parameters 
     */    
-    mhydasdk::core::ParamsMap m_ParamsMap;
+    openfluid::core::ParamsMap m_ParamsMap;
        
   protected:
 
@@ -791,7 +791,7 @@ class PluggableFunction : public wxObject
     /**
       Pointer to the core repository (const)
     */
-    const mhydasdk::core::CoreRepository* mp_CoreData;
+    const openfluid::core::CoreRepository* mp_CoreData;
     
    
 
@@ -802,9 +802,9 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the requested variable            
       \param[out] Value the value of the requested variable      
     */ 
-    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASScalarValue *Value);
+    bool MHYDAS_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASScalarValue *Value);
 
-    bool MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASVectorValue *Value);    
+    bool MHYDAS_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASVectorValue *Value);    
     
     /**
       Gets a distributed property for a spatial object
@@ -812,14 +812,14 @@ class PluggableFunction : public wxObject
       \param[in] PropName the name of the requested property          
       \param[out] Value the value of the requested property     
     */
-    bool MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue *Value);
+    bool MHYDAS_GetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::PropertyValue *Value);
 
     /**
       Returns true if a distributed property exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] PropName the name of the queried variable               
     */            
-    bool MHYDAS_IsDistributedPropertyExists(mhydasdk::core::HydroObject *HO, wxString PropName);    
+    bool MHYDAS_IsDistributedPropertyExists(openfluid::core::HydroObject *HO, wxString PropName);    
 
     /**
       Sets a distributed property for a spatial object
@@ -827,7 +827,7 @@ class PluggableFunction : public wxObject
       \param[in] PropName the name of the property to modify          
       \param[in] Value the new value of the property     
     */
-    bool MHYDAS_SetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue Value);
+    bool MHYDAS_SetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::PropertyValue Value);
     
     
     
@@ -837,14 +837,14 @@ class PluggableFunction : public wxObject
       \param[in] IniCondName the name of the requested initial condition          
       \param[out] Value the value of the requested initial condition     
     */
-    bool MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, mhydasdk::core::PropertyValue *Value);
+    bool MHYDAS_GetDistributedIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::PropertyValue *Value);
   
     /**
       Returns true if a distributed initial condition exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] IniCondName the name of the queried variable               
     */        
-    bool MHYDAS_IsDistributedIniConditionExists(mhydasdk::core::HydroObject *HO, wxString IniCondName);    
+    bool MHYDAS_IsDistributedIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName);    
          
     
     /**
@@ -852,11 +852,11 @@ class PluggableFunction : public wxObject
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable               
     */
-    bool MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
+    bool MHYDAS_IsDistributedVarExists(openfluid::core::HydroObject *HO, wxString VarName);
 
-    bool MHYDAS_IsDistributedScalarVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);    
+    bool MHYDAS_IsDistributedScalarVarExists(openfluid::core::HydroObject *HO, wxString VarName);    
     
-    bool MHYDAS_IsDistributedVectorVarExists(mhydasdk::core::HydroObject *HO, wxString VarName);
+    bool MHYDAS_IsDistributedVectorVarExists(openfluid::core::HydroObject *HO, wxString VarName);
     
     
    /**
@@ -865,11 +865,11 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the requested variable
       \param[in] Step the time step for the value of the variable                     
     */
-    bool MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);
+    bool MHYDAS_IsDistributedVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
     
-    bool MHYDAS_IsDistributedScalarVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);    
+    bool MHYDAS_IsDistributedScalarVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);    
 
-    bool MHYDAS_IsDistributedVectorVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step);
+    bool MHYDAS_IsDistributedVectorVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
     
     /**
       Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
@@ -877,9 +877,9 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the variable            
       \param[in] Value the added value of the variable      
     */ 
-    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASScalarValue Value);
+    bool MHYDAS_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::MHYDASScalarValue Value);
 
-    bool MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASVectorValue Value);    
+    bool MHYDAS_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::MHYDASVectorValue Value);    
 
     /**
       Sets a distributed variable value for a spatial object at a time step
@@ -888,9 +888,9 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the variable            
       \param[in] Value the added value of the variable      
     */     
-    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASScalarValue Value);
+    bool MHYDAS_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASScalarValue Value);
 
-    bool MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASVectorValue Value);    
+    bool MHYDAS_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASVectorValue Value);    
 
     /**
       Gets a function parameter from the parameters set, as a double
@@ -898,7 +898,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
     */ 
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, double *Value);
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, double *Value);
     
     /**
       Gets a function parameter value from the parameters set, as a long int
@@ -906,7 +906,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
     */ 
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, long *Value);
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, long *Value);
         
     /**
       Gets a function parameter from the parameters set, as a float
@@ -914,7 +914,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
     */ 
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, float *Value);
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, float *Value);
     
     /**
       Gets a function parameter value from the parameters set, as an int
@@ -922,7 +922,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
     */ 
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value);    
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, int *Value);    
 
     /**
       Gets a function parameter value from the parameters set, as a string
@@ -930,7 +930,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Value the value of the requested parameter
     */ 
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value);
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
 
     
@@ -940,7 +940,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Values the vector of values of the requested parameter
     */     
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);    
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);    
 
     
     /**
@@ -950,7 +950,7 @@ class PluggableFunction : public wxObject
       \param[out] Values the vector of values of the requested parameter
     */     
     
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
 
     
     /**
@@ -959,9 +959,9 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter            
       \param[out] Values the vector of values of the requested parameter
     */         
-    bool MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);    
+    bool MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);    
    
-    bool MHYDAS_GetEvents(mhydasdk::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, mhydasdk::core::EventCollection* EventColl);
+    bool MHYDAS_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl);
         
     void MHYDAS_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
     
@@ -987,16 +987,16 @@ class PluggableFunction : public wxObject
     */
     virtual ~PluggableFunction();
 
-    bool setDataRepository(mhydasdk::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData; };
+    bool setDataRepository(openfluid::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData; };
     
-    bool setExecutionMessages(mhydasdk::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
+    bool setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
     
-    bool setFunctionEnvironment(mhydasdk::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
+    bool setFunctionEnvironment(openfluid::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
 
     /**
       Initializes function parameters of the function, given as a hash map. Called by the kernel.
     */
-    virtual bool initParams(mhydasdk::core::ParamsMap Params)=0;
+    virtual bool initParams(openfluid::core::ParamsMap Params)=0;
 
     /**
       Prepares data. Called by the kernel.
@@ -1035,7 +1035,7 @@ typedef PluggableFunction*(*GetPluggableFunctionProc)();
 typedef Signature*(*GetSignatureProc)();
 
 
-} } // namespace mhydasdk::base
+} } // namespace openfluid::base
 
 
 

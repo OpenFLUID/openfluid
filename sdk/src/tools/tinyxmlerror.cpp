@@ -31,7 +31,7 @@ distribution.
 // It also cleans up the code a bit.
 //
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 const char* TiXmlBase::errorString[ TIXML_ERROR_STRING_COUNT ] =

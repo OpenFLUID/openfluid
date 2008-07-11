@@ -32,7 +32,7 @@ distribution.
 #include "tinystr.h"
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 // Error value for find primitive

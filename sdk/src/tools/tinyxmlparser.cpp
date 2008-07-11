@@ -38,7 +38,7 @@ distribution.
 #endif
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 // Note tha "PutString" hardcodes the same list. This

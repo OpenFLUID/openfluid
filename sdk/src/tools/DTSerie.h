@@ -10,15 +10,15 @@
 #define __DTSERIE_H__
 
 
-#include <mhydasdk-core.h>
+#include <openfluid-core.h>
 #include <list>
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 struct TimePair
 {
   wxDateTime DT;
-  mhydasdk::core::MHYDASScalarValue Value;  
+  openfluid::core::MHYDASScalarValue Value;  
 };
 
 
@@ -26,7 +26,7 @@ struct TimePair
 struct IndexedSerie
 {
   int Count;  
-  mhydasdk::core::MHYDASScalarValue* Values;
+  openfluid::core::MHYDASScalarValue* Values;
   
   IndexedSerie()
   {
@@ -52,13 +52,13 @@ class DateTimeSerie
 
     virtual ~DateTimeSerie();
     
-    bool addValue(wxDateTime DT, mhydasdk::core::MHYDASScalarValue Value);
+    bool addValue(wxDateTime DT, openfluid::core::MHYDASScalarValue Value);
     
-    bool getValue(wxDateTime DT, mhydasdk::core::MHYDASScalarValue* Value);    
+    bool getValue(wxDateTime DT, openfluid::core::MHYDASScalarValue* Value);    
 
     short getNearestValues(wxDateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);    
     
-    bool getInterpolatedValue(wxDateTime SearchedDT, mhydasdk::core::MHYDASScalarValue* Value);
+    bool getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::MHYDASScalarValue* Value);
 
     void clear();
     
@@ -71,6 +71,6 @@ class DateTimeSerie
 };
 
 
-} } // namespace mhydasdk::tools
+} } // namespace openfluid::tools
 
 #endif /*DTSERIE_H_*/

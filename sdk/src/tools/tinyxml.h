@@ -82,9 +82,9 @@ distribution.
 	#endif
 #endif	
 
-#include "../mhydasdk-tools.h"
+#include "../openfluid-tools.h"
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 
 class TiXmlDocument;

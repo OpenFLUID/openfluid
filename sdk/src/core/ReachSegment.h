@@ -15,7 +15,7 @@
 #include "SurfaceUnit.h"
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 typedef HOID nodeid_t;
@@ -116,7 +116,7 @@ class ReachSegment : public HydroObject
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

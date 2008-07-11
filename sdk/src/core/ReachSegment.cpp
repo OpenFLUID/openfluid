@@ -13,7 +13,7 @@
 
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 ReachSegment::ReachSegment()
@@ -273,7 +273,7 @@ void ReachSegment::setDownstreamReach(ReachSegment *RS)
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 

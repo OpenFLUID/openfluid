@@ -17,7 +17,7 @@
 
 
 
-namespace mhydasdk { namespace tools {
+namespace openfluid { namespace tools {
 
 WX_DECLARE_HASH_MAP(int, wxString, wxIntegerHash, wxIntegerEqual, IDDataSourcesMap);
 

@@ -18,7 +18,7 @@
 
 
 
-namespace mhydasdk { namespace base {
+namespace openfluid { namespace base {
 
 
 
@@ -46,16 +46,16 @@ PluggableFunction::~PluggableFunction()
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASScalarValue *Value)
+bool PluggableFunction::MHYDAS_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASScalarValue *Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it; 
     it = HO->getSimulatedVars()->find(VarName);
     
     if (it != HO->getSimulatedVars()->end())
     {    
-      mhydasdk::core::SerieOfMHYDASScalarValue* ValuesVect  = it->second;
+      openfluid::core::SerieOfMHYDASScalarValue* ValuesVect  = it->second;
       
       if (Step < ValuesVect->size())
       {
@@ -74,16 +74,16 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASVectorValue *Value)
+bool PluggableFunction::MHYDAS_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASVectorValue *Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it; 
     it = HO->getSimulatedVectorVars()->find(VarName);
     
     if (it != HO->getSimulatedVectorVars()->end())
     {    
-      mhydasdk::core::SerieOfMHYDASVectorValue* ValuesVect  = it->second;
+      openfluid::core::SerieOfMHYDASVectorValue* ValuesVect  = it->second;
       
       if (Step < ValuesVect->size())
       {
@@ -101,13 +101,13 @@ bool PluggableFunction::MHYDAS_GetDistributedVarValue(mhydasdk::core::HydroObjec
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue *Value)
+bool PluggableFunction::MHYDAS_GetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::PropertyValue *Value)
 {
   // NOTICE: the checking of properties costs execution time
   
   if (HO != NULL)  
   {
-    mhydasdk::core::PropertiesMap::iterator it; 
+    openfluid::core::PropertiesMap::iterator it; 
     it = HO->getProperties()->find(PropName);
     
     if (it != HO->getProperties()->end())
@@ -124,12 +124,12 @@ bool PluggableFunction::MHYDAS_GetDistributedProperty(mhydasdk::core::HydroObjec
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_IsDistributedPropertyExists(mhydasdk::core::HydroObject *HO, wxString PropName)
+bool PluggableFunction::MHYDAS_IsDistributedPropertyExists(openfluid::core::HydroObject *HO, wxString PropName)
 {
 
   if (HO != NULL)
    {
-     mhydasdk::core::PropertiesMap::iterator it; 
+     openfluid::core::PropertiesMap::iterator it; 
      it = HO->getProperties()->find(PropName);
 
      if (it != HO->getProperties()->end())
@@ -143,12 +143,12 @@ bool PluggableFunction::MHYDAS_IsDistributedPropertyExists(mhydasdk::core::Hydro
 }
 
 
-bool PluggableFunction::MHYDAS_SetDistributedProperty(mhydasdk::core::HydroObject *HO, wxString PropName, mhydasdk::core::PropertyValue Value)
+bool PluggableFunction::MHYDAS_SetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::PropertyValue Value)
 {
 
   if (HO != NULL)
    {
-     mhydasdk::core::PropertiesMap::iterator it; 
+     openfluid::core::PropertiesMap::iterator it; 
      it = HO->getProperties()->find(PropName);
 
      if (it != HO->getProperties()->end())
@@ -168,11 +168,11 @@ bool PluggableFunction::MHYDAS_SetDistributedProperty(mhydasdk::core::HydroObjec
 // =====================================================================
 
     
-bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroObject *HO, wxString IniCondName, mhydasdk::core::PropertyValue *Value)
+bool PluggableFunction::MHYDAS_GetDistributedIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::PropertyValue *Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::PropertiesMap::iterator it; 
+    openfluid::core::PropertiesMap::iterator it; 
     it = HO->getIniConditions()->find(IniCondName);
     
     if (it != HO->getIniConditions()->end())
@@ -192,13 +192,13 @@ bool PluggableFunction::MHYDAS_GetDistributedIniCondition(mhydasdk::core::HydroO
 
 
 
-bool PluggableFunction::MHYDAS_IsDistributedIniConditionExists(mhydasdk::core::HydroObject *HO, wxString IniCondName)
+bool PluggableFunction::MHYDAS_IsDistributedIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName)
 {
 
 
   if (HO != NULL)
    {
-     mhydasdk::core::PropertiesMap::iterator it; 
+     openfluid::core::PropertiesMap::iterator it; 
      it = HO->getIniConditions()->find(IniCondName);
 
      if (it != HO->getIniConditions()->end())
@@ -217,12 +217,12 @@ bool PluggableFunction::MHYDAS_IsDistributedIniConditionExists(mhydasdk::core::H
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_IsDistributedScalarVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+bool PluggableFunction::MHYDAS_IsDistributedScalarVarExists(openfluid::core::HydroObject *HO, wxString VarName)
 {
   return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));  
 }
 
-bool PluggableFunction::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+bool PluggableFunction::MHYDAS_IsDistributedVarExists(openfluid::core::HydroObject *HO, wxString VarName)
 {
   return MHYDAS_IsDistributedScalarVarExists(HO,VarName);
 }
@@ -231,7 +231,7 @@ bool PluggableFunction::MHYDAS_IsDistributedVarExists(mhydasdk::core::HydroObjec
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_IsDistributedVectorVarExists(mhydasdk::core::HydroObject *HO, wxString VarName)
+bool PluggableFunction::MHYDAS_IsDistributedVectorVarExists(openfluid::core::HydroObject *HO, wxString VarName)
 {
   return (HO != NULL && (HO->getSimulatedVectorVars()->find(VarName) != HO->getSimulatedVectorVars()->end()));  
 }
@@ -240,16 +240,16 @@ bool PluggableFunction::MHYDAS_IsDistributedVectorVarExists(mhydasdk::core::Hydr
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_IsDistributedScalarVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+bool PluggableFunction::MHYDAS_IsDistributedScalarVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step)
 {
   if (HO != NULL)
   {
-    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it; 
     it = HO->getSimulatedVars()->find(VarName);
 
     if (it != HO->getSimulatedVars()->end())
     {
-      mhydasdk::core::SerieOfMHYDASScalarValue* ValuesVect = it->second;
+      openfluid::core::SerieOfMHYDASScalarValue* ValuesVect = it->second;
       if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
       else return false;            
     }
@@ -260,7 +260,7 @@ bool PluggableFunction::MHYDAS_IsDistributedScalarVarValueExists(mhydasdk::core:
 
 
 
-bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step)
 {
   return MHYDAS_IsDistributedScalarVarValueExists(HO,VarName,Step);
 }
@@ -269,16 +269,16 @@ bool PluggableFunction::MHYDAS_IsDistributedVarValueExists(mhydasdk::core::Hydro
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_IsDistributedVectorVarValueExists(mhydasdk::core::HydroObject *HO, wxString VarName, int Step)
+bool PluggableFunction::MHYDAS_IsDistributedVectorVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step)
 {
   if (HO != NULL)
   {
-    mhydasdk::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it; 
     it = HO->getSimulatedVectorVars()->find(VarName);
 
     if (it != HO->getSimulatedVectorVars()->end())
     {
-      mhydasdk::core::SerieOfMHYDASVectorValue* ValuesVect = it->second;
+      openfluid::core::SerieOfMHYDASVectorValue* ValuesVect = it->second;
       if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
       else return false;            
     }
@@ -293,11 +293,11 @@ bool PluggableFunction::MHYDAS_IsDistributedVectorVarValueExists(mhydasdk::core:
 
 
     
-bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASScalarValue Value)
+bool PluggableFunction::MHYDAS_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::MHYDASScalarValue Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it; 
     it = HO->getSimulatedVars()->find(VarName);
     
     if (it != HO->getSimulatedVars()->end())
@@ -315,11 +315,11 @@ bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroOb
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, mhydasdk::core::MHYDASVectorValue Value)
+bool PluggableFunction::MHYDAS_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::MHYDASVectorValue Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it; 
     it = HO->getSimulatedVectorVars()->find(VarName);
     
     if (it != HO->getSimulatedVectorVars()->end())
@@ -338,16 +338,16 @@ bool PluggableFunction::MHYDAS_AppendDistributedVarValue(mhydasdk::core::HydroOb
 
 
     
-bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASScalarValue Value)
+bool PluggableFunction::MHYDAS_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASScalarValue Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it; 
     it = HO->getSimulatedVars()->find(VarName);
     
     if (it != HO->getSimulatedVars()->end())
     {    
-      mhydasdk::core::SerieOfMHYDASScalarValue* ValuesVect = it->second;
+      openfluid::core::SerieOfMHYDASScalarValue* ValuesVect = it->second;
       if (Step < ValuesVect->size())
       {
         ValuesVect->at(Step) = Value;
@@ -364,16 +364,16 @@ bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObjec
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObject *HO, wxString VarName, int Step, mhydasdk::core::MHYDASVectorValue Value)
+bool PluggableFunction::MHYDAS_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::MHYDASVectorValue Value)
 {
   if (HO != NULL)  
   {
-    mhydasdk::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it; 
     it = HO->getSimulatedVectorVars()->find(VarName);
     
     if (it != HO->getSimulatedVectorVars()->end())
     {    
-      mhydasdk::core::SerieOfMHYDASVectorValue* ValuesVect = it->second;
+      openfluid::core::SerieOfMHYDASVectorValue* ValuesVect = it->second;
       if (Step < ValuesVect->size())
       {
         ValuesVect->at(Step) = Value;
@@ -392,7 +392,7 @@ bool PluggableFunction::MHYDAS_SetDistributedVarValue(mhydasdk::core::HydroObjec
 
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, double *Value)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, double *Value)
 {
   wxString TmpStr;
   
@@ -411,7 +411,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 
 
     
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, long *Value)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, long *Value)
 {
   wxString TmpStr;
   
@@ -430,7 +430,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, float *Value)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, float *Value)
 {
   wxString TmpStr;
   bool IsOK = true;
@@ -453,7 +453,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, int *Value)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, int *Value)
 {
   wxString TmpStr;
   bool IsOK = true;
@@ -476,7 +476,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, wxString *Value)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value)
 {
   wxString TmpStr;
   
@@ -495,7 +495,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
     
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values)
 {
 	wxString TmpStr;
 
@@ -523,7 +523,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values)
 {
   std::vector<wxString> StrVect;
   double TmpValue;
@@ -555,7 +555,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 
 
-bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values)
+bool PluggableFunction::MHYDAS_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values)
 {
   std::vector<wxString> StrVect;
   long TmpValue;
@@ -586,7 +586,7 @@ bool PluggableFunction::MHYDAS_GetFunctionParam(mhydasdk::core::ParamsMap Params
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::MHYDAS_GetEvents(mhydasdk::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, mhydasdk::core::EventCollection* EventColl)
+bool PluggableFunction::MHYDAS_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl)
 {
   
   HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
@@ -652,7 +652,7 @@ void PluggableFunction::MHYDAS_GetEnvironmentOutputDir(wxString *Directory)
 
 
 
-} } // namespace mhydasdk::base
+} } // namespace openfluid::base
 
 
 

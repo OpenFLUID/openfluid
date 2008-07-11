@@ -15,7 +15,7 @@
 
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 class GroundwaterUnit;
@@ -110,7 +110,7 @@ class SurfaceUnit : public HydroObject
 };
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 #endif

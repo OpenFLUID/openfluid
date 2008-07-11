@@ -9,7 +9,7 @@
 #include "HydroObject.h"
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 
@@ -96,5 +96,5 @@ void HydroObject::setProcessOrder(const int ProcessOrder)
 
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 

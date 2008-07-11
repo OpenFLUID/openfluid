@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 

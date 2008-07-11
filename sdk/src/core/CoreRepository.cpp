@@ -9,7 +9,7 @@
 #include "CoreRepository.h"
 #include <iostream>
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 
 CoreRepository::CoreRepository()
@@ -29,4 +29,4 @@ CoreRepository::~CoreRepository()
 // =====================================================================
 // =====================================================================
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core

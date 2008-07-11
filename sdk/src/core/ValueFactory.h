@@ -11,10 +11,10 @@
 #define __VALUEFACTORY_H__
 
 
-namespace mhydasdk { namespace core {
+namespace openfluid { namespace core {
 
 /**
-  \brief Classe ValueFactory (conversion de valeurs numériques)
+  \brief Classe ValueFactory (conversion de valeurs numï¿½riques)
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -34,7 +34,7 @@ class ValueFactory
     ValueFactory(T Multiplier) { m_Multiplier = Multiplier;};
 
     /**
-      Constructeur par défaut
+      Constructeur par dï¿½faut
     */
     ValueFactory() { m_Multiplier = 1;};
 
@@ -48,7 +48,7 @@ class ValueFactory
 };
 
 
-} } // namespace mhydasdk::core
+} } // namespace openfluid::core
 
 
 #endif
