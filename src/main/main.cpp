@@ -217,8 +217,8 @@ void MHYDASApp::printMHYDASInfos()
 
   std::cout << std::endl;
   std::cout << "===========================================================" << std::endl;
-  std::cout << "                       XXXXX-engine                        " << std::endl;
-  std::cout << "                Landscape modelling system                 " << std::endl;
+  std::cout << "                     OpenFLUID-engine                      " << std::endl;
+  std::cout << "              Modelling Fluxes in Landscapes               " << std::endl;
   std::cout << std::endl;
   std::cout << VersionInfo.mb_str(wxConvUTF8) << std::endl;
   std::cout << std::endl;
