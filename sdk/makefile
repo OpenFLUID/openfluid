@@ -14,7 +14,7 @@ sdk:
 	@$(LDCONFIGBUILD)
 
 
-mhydasdk-conf-file:
+openfluid-conf-file:
 	@echo ""
 	@echo "==== Creating mhydasdk-config file ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
@@ -26,7 +26,7 @@ mhydasdk-conf-file:
 	@echo "MAJORVER=$(MAJORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@echo "MINORVER=$(MINORVER)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)  
 	@echo "SVNREV=$(SVNREV)" >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)	
-	@cat ./mhydasdk-config.in >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
+	@cat ./openfluid-config.in >> $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 	@chmod ugo+x $(BASEBINDIR)/$(MHYDASDKCONFIGFILE)
 
 
@@ -52,14 +52,14 @@ purge: clean
 #	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(MHYDASDKCONFIGFILE)
 #	@$(SUDO) $(LDCONFIGINST)
 
-install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
+install-sdk: sdk openfluid-conf-file #clean-installed-sdk
 	@echo ""
 	@echo "==== Installing SDK ===="
 	@echo "Installing header files in $(INSTSDKINCPATH)"
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/core/
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/base/
 	@$(SUDO) mkdir -p $(INSTSDKINCPATH)/tools/	
-	@$(SUDO) cp src/mhydasdk-*.h $(INSTSDKINCPATH)/
+	@$(SUDO) cp src/openfluid-*.h $(INSTSDKINCPATH)/
 	@$(SUDO) cp src/core/*.h $(INSTSDKINCPATH)/core/
 	@$(SUDO) cp src/base/*.h $(INSTSDKINCPATH)/base/
 	@$(SUDO) cp src/tools/*.h $(INSTSDKINCPATH)/tools/	
@@ -69,7 +69,7 @@ install-sdk: sdk mhydasdk-conf-file #clean-installed-sdk
 	@$(SUDO) $(LDCONFIGINST)
 	@$(SUDO) cp $(BASEBINDIR)/$(MHYDASDKCONFIGFILE) $(INSTSDKBINPATH)
 	
-for-app-dev: sdk mhydasdk-conf-file
+for-app-dev: sdk openfluid-conf-file
 	@echo ""
 	@echo "==== Installing SDK for app development ===="
 	@rm -R -f $(DEVPREFIX)
@@ -77,7 +77,7 @@ for-app-dev: sdk mhydasdk-conf-file
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKINCDIR)/tools/	
-	@cp src/mhydasdk-*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/
+	@cp src/openfluid-*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/
 	@cp src/core/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/core/
 	@cp src/base/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/base/	
 	@cp src/tools/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/tools/	
@@ -91,7 +91,7 @@ for-app-dev: sdk mhydasdk-conf-file
 	
 
 ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
-ubuntu-edgy-packages: all mhydasdk-conf-file docs
+ubuntu-edgy-packages: all openfluid-conf-file docs
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
@@ -103,7 +103,7 @@ ubuntu-edgy-packages: all mhydasdk-conf-file docs
 	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/debian/libopenfluid/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -119,7 +119,7 @@ ubuntu-edgy-packages: all mhydasdk-conf-file docs
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-	@cp src/mhydasdk-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
+	@cp src/openfluid-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
@@ -127,7 +127,7 @@ ubuntu-edgy-packages: all mhydasdk-conf-file docs
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp resources/debian/openfluid-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
@@ -139,7 +139,7 @@ ubuntu-edgy-packages: all mhydasdk-conf-file docs
 
 
 ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
-ubuntu-dapper-packages: all mhydasdk-conf-file docs	
+ubuntu-dapper-packages: all openfluid-conf-file docs	
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
@@ -151,7 +151,7 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp resources/debian/libmhydasdk/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/debian/libopenfluid/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(LIBPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -176,7 +176,7 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-	@cp src/mhydasdk-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
+	@cp src/openfluid-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
@@ -184,7 +184,7 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-	@cp resources/debian/mhydasdk-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@cp resources/debian/openfluid-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(DEVPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
@@ -206,7 +206,7 @@ ubuntu-dapper-packages: all mhydasdk-conf-file docs
 
 
 
-win32-packages: all mhydasdk-conf-file
+win32-packages: all openfluid-conf-file
 	@echo ""	
 	@rm -f -R $(BASEPACKDIR)/win32/*
 	@mkdir -p $(BASEPACKDIR)/win32/$(LIBPACKNAME)_win32	
@@ -220,7 +220,7 @@ win32-packages: all mhydasdk-conf-file
 	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/
 	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
 	@mkdir -p $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/tools/	
-	@cp src/mhydasdk-*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/
+	@cp src/openfluid-*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/
 	@cp src/core/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/win32/$(DEVPACKNAME)_win32/include/tools/	

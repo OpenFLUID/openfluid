@@ -5,7 +5,7 @@
 LANG=C
 
 usage_info() {
-  echo "MHYDAS configure script usage:\n"
+  echo "OpenFLUID configure script usage:\n"
   echo "  ./configure [OPTION]\n"
   echo " available options:"
   echo "      --release      builds a release version" 

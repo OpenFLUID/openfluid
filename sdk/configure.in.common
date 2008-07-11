@@ -8,10 +8,10 @@ RELEASE_CCCFLAGS=-O3
 DEVEL_CCCFLAGS=-g3
 
 
-SDKLIBROOT=mhydasdk
+SDKLIBROOT=openfluid
 
 
-MHYDASDKCONFIGFILE=mhydasdk-config
+MHYDASDKCONFIGFILE=openfluid-config
 
 
 MAJORVER=1
@@ -22,15 +22,15 @@ EDGYDEPENDS="libwxbase2.6-dev (>= 2.6)"
 DAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6)"
 PACKSECTION="science"
 PACKPRIORITY="optional"
-LIBPACKDESC="MHYDAS SDK library\\\n This library is used by the mhydas program. It is also needed for pluggable function development."
-DEVPACKDESC="MHYDAS SDK headers"
+LIBPACKDESC="OpenFLUID SDK library\\\n This library is used by the mhydas program. It is also needed for pluggable function development."
+DEVPACKDESC="OpenFLUID SDK headers"
 
 LIBPACKROOT=$SDKLIBROOT-libs
 DEVPACKROOT=$SDKLIBROOT-dev
 
 INSTSDKLIBDIR=lib
-INSTSDKINCDIR=include/mhydasdk
+INSTSDKINCDIR=include/openfluid
 INSTSDKBINDIR=bin
 
-DEVPREFIX=/var/tmp/mhydasdk
+DEVPREFIX=/var/tmp/openfluid
 
