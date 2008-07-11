@@ -10,8 +10,8 @@
 #define __ENGINE_H__
 
 
-#include "mhydasdk-core.h"
-#include "mhydasdk-base.h"
+#include "openfluid-core.h"
+#include "openfluid-base.h"
 
 
 #include "IOMan.h"
@@ -36,12 +36,12 @@ class Engine
 
      PluginsList m_Functions;
 
-     mhydasdk::core::CoreRepository* mp_CoreData;
+     openfluid::core::CoreRepository* mp_CoreData;
 
      RuntimeEnvironment* mp_RunEnv;
-     mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
+     openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
-     mhydasdk::base::SimulationStatus* mp_SimStatus;
+     openfluid::base::SimulationStatus* mp_SimStatus;
 
      /**
        Plugin manager 
@@ -84,7 +84,7 @@ class Engine
     /**
       Constructor
     */
-    Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv,
+    Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv,
            PluginManager* PlugMan);
 
     /**
@@ -108,7 +108,7 @@ class Engine
 
     RunConfig getRunConfig() const { return m_RunConfig; };
 
-    mhydasdk::base::SimulationInfo *getSimulationInfo() { return (mhydasdk::base::SimulationInfo*)mp_SimStatus; };
+    openfluid::base::SimulationInfo *getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };
 
 };
 

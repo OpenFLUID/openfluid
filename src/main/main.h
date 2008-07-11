@@ -10,8 +10,8 @@
 #include <wx/cmdline.h>
 #include <wx/datetime.h>
 
-#include "mhydasdk-base.h"
-#include "mhydasdk-core.h"
+#include "openfluid-base.h"
+#include "openfluid-core.h"
 
 
 #include "Engine.h"
@@ -29,7 +29,7 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_SWITCH, _T("f"), _T("functions-list"), _T("list available functions (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("h"), _T("help"), _T("show this help message"),wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
   {wxCMD_LINE_OPTION, _T("i"), _T("input-dir"), _T("set dataset input directory") },
-  {wxCMD_LINE_SWITCH, _T("k"), _T("mhydasdk-version"), _T("get SDK version used for current mhydas build (do not run the model)")},  
+  {wxCMD_LINE_SWITCH, _T("k"), _T("openfluid-version"), _T("get SDK version used for current mhydas build (do not run the model)")},  
   {wxCMD_LINE_OPTION, _T("m"), _T("trace-dir"), _T("set trace directory")}, 
   {wxCMD_LINE_OPTION, _T("o"), _T("output-dir"), _T("set results output directory")}, 
   {wxCMD_LINE_SWITCH, _T("q"), _T("quiet"), _T("quiet display during simulation run")},  
@@ -57,11 +57,11 @@ class MHYDASApp : public wxAppConsole
 
     RuntimeEnvironment* mp_RunEnv;
     
-    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
     ExtraSimInfos m_ExSI;
 
-    mhydasdk::core::CoreRepository* mp_CoreData;
+    openfluid::core::CoreRepository* mp_CoreData;
 
     Engine *mp_Engine;
 
@@ -84,9 +84,9 @@ class MHYDASApp : public wxAppConsole
 
     void printPluginsList();
     
-    void printPluginsHandledDataReport(mhydasdk::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat);    
+    void printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat);    
     
-    void printPluginsHandledDataItemReport(mhydasdk::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat);    
+    void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat);    
 
     void printPluginsReport(bool IsXMLFormat);
 

@@ -26,7 +26,7 @@ BEGIN_SIGNATURE_HOOK;
   DECLARE_SIGNATURE_DESCRIPTION(wxT("WARNING: UNIQUE BUFFER WITHOUT TAKING INTO ACCOUNT THE HEIGHT OF THE REACHES"));
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
   
-  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);  
+  DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);  
   
   DECLARE_SIGNATURE_SDKVERSION;
   
@@ -108,7 +108,7 @@ HayamiRSFunction::~HayamiRSFunction()
 // =====================================================================
 
 
-bool HayamiRSFunction::initParams(mhydasdk::core::ParamsMap Params)
+bool HayamiRSFunction::initParams(openfluid::core::ParamsMap Params)
 {
   MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
   MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
@@ -153,18 +153,18 @@ bool HayamiRSFunction::checkConsistency()
 // =====================================================================
 
 
-bool HayamiRSFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  std::list<mhydasdk::core::SurfaceUnit*>* SUList;
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator Iter;
-  mhydasdk::core::GroundwaterUnit *GU;
-  mhydasdk::core::SurfaceUnit *SU;
-  mhydasdk::core::ReachSegment *RS;
+  std::list<openfluid::core::SurfaceUnit*>* SUList;
+  std::list<openfluid::core::SurfaceUnit*>::iterator Iter;
+  openfluid::core::GroundwaterUnit *GU;
+  openfluid::core::SurfaceUnit *SU;
+  openfluid::core::ReachSegment *RS;
 
   float Cel, Sigma;
-  mhydasdk::core::PropertyValue TmpValue;
+  openfluid::core::PropertyValue TmpValue;
   int ID;
-  mhydasdk::core::PropertyValue SUThetaIni, SUThetaSat;
+  openfluid::core::PropertyValue SUThetaIni, SUThetaSat;
 
   DECLARE_GU_ORDERED_LOOP;
 
@@ -174,8 +174,8 @@ bool HayamiRSFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimIn
   BEGIN_RS_ORDERED_LOOP(RS)
   ID = RS->getID();  
 
-  m_Input[ID] = new mhydasdk::core::MHYDASVectorValue();
-  m_HeightDischarge[ID] = new mhydasdk::core::MHYDASVectorValue();
+  m_Input[ID] = new openfluid::core::MHYDASVectorValue();
+  m_HeightDischarge[ID] = new openfluid::core::MHYDASVectorValue();
   m_CurrentInputSum[ID] = 0;
 
   m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -265,7 +265,7 @@ bool HayamiRSFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimIn
 // =====================================================================
 
 
-bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int ID;
   int CurrentStep;
@@ -274,36 +274,36 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   float UpSrcSUsOutputsSum;  
   float UpLatSUsOutputsSum;  
   float UpRSsOutputsSum;  
-  mhydasdk::core::MHYDASScalarValue QOutput;
+  openfluid::core::MHYDASScalarValue QOutput;
   float QInput;
-  mhydasdk::core::MHYDASScalarValue TmpValue;
+  openfluid::core::MHYDASScalarValue TmpValue;
   float TmpGUValue;
   bool m_UseUpGUExchangersgu;
 
-  mhydasdk::core::MHYDASScalarValue WaterTable, WaterTableDown,QguOutput;
+  openfluid::core::MHYDASScalarValue WaterTable, WaterTableDown,QguOutput;
   float  InputVol,ExchangeSurface,  OutputVol;
-  mhydasdk::core::MHYDASScalarValue TmpExfiltration, Exfiltration;
-  mhydasdk::core::MHYDASScalarValue  SUInfiltration; // for SU
-  mhydasdk::core::MHYDASScalarValue TmpQExchange;
+  openfluid::core::MHYDASScalarValue TmpExfiltration, Exfiltration;
+  openfluid::core::MHYDASScalarValue  SUInfiltration; // for SU
+  openfluid::core::MHYDASScalarValue TmpQExchange;
   float RSHeight,WaterHeight ; // for RS
 
 
-  mhydasdk::core::ReachSegment* RS;
-  mhydasdk::core::ReachSegment* UpRS;
-  mhydasdk::core::SurfaceUnit* UpSU;
-  mhydasdk::core::GroundwaterUnit *GU, *GUex, *GUdown,*GURS;
-  mhydasdk::core::SurfaceUnit *SU;
+  openfluid::core::ReachSegment* RS;
+  openfluid::core::ReachSegment* UpRS;
+  openfluid::core::SurfaceUnit* UpSU;
+  openfluid::core::GroundwaterUnit *GU, *GUex, *GUdown,*GURS;
+  openfluid::core::SurfaceUnit *SU;
 
-  std::list<mhydasdk::core::GroundwaterUnit*>* GUList;
-  std::list<mhydasdk::core::GroundwaterUnit*>::iterator IterGW;
-  std::list<mhydasdk::core::SurfaceUnit*>* SUList;
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator IterSU;
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
-  std::list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
-  std::list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
-  std::list<mhydasdk::core::ReachSegment*>* UpRSsList;  
-  std::list<mhydasdk::core::ReachSegment*>* RSList;
-  std::list<mhydasdk::core::ReachSegment*>::iterator IterRS;
+  std::list<openfluid::core::GroundwaterUnit*>* GUList;
+  std::list<openfluid::core::GroundwaterUnit*>::iterator IterGW;
+  std::list<openfluid::core::SurfaceUnit*>* SUList;
+  std::list<openfluid::core::SurfaceUnit*>::iterator IterSU;
+  std::list<openfluid::core::SurfaceUnit*>::iterator UpSUiter;
+  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
+  std::list<openfluid::core::ReachSegment*>::iterator UpRSiter;
+  std::list<openfluid::core::ReachSegment*>* UpRSsList;  
+  std::list<openfluid::core::ReachSegment*>* RSList;
+  std::list<openfluid::core::ReachSegment*>::iterator IterRS;
 
 
 
@@ -618,7 +618,7 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool HayamiRSFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiRSFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
   return true;
@@ -638,7 +638,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
     int i;
     float Q1, Q2, H1, H2;
 
-    mhydasdk::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
+    openfluid::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
 
 
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

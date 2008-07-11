@@ -29,7 +29,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
   
-  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);  
+  DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);  
   
   DECLARE_SIGNATURE_SDKVERSION;
 
@@ -83,7 +83,7 @@ HayamiSUFunction::~HayamiSUFunction()
 // =============================================)========================
 
 
-bool HayamiSUFunction::initParams(mhydasdk::core::ParamsMap Params)
+bool HayamiSUFunction::initParams(openfluid::core::ParamsMap Params)
 {
 
   MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);        
@@ -119,12 +119,12 @@ bool HayamiSUFunction::checkConsistency()
 // =====================================================================
 
 
-bool HayamiSUFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiSUFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  mhydasdk::core::SurfaceUnit* SU;
+  openfluid::core::SurfaceUnit* SU;
   float Cel, Sigma;
-  mhydasdk::core::HOID ID;
-  mhydasdk::core::PropertyValue TmpValue;
+  openfluid::core::HOID ID;
+  openfluid::core::PropertyValue TmpValue;
   
   DECLARE_SU_ORDERED_LOOP;
  
@@ -132,7 +132,7 @@ bool HayamiSUFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimIn
   BEGIN_SU_ORDERED_LOOP(SU)
     ID = SU->getID();
     
-    m_Input[ID] = new mhydasdk::core::SerieOfMHYDASScalarValue();
+    m_Input[ID] = new openfluid::core::SerieOfMHYDASScalarValue();
     m_CurrentInputSum[ID] = 0;
   
     m_MeanSlope = m_MeanSlope + SU->getUsrSlope();
@@ -164,18 +164,18 @@ bool HayamiSUFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimIn
 // =====================================================================
 
 
-bool HayamiSUFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
 
   int ID;
   int CurrentStep;
   int TimeStep;
-  mhydasdk::core::MHYDASScalarValue QOutput;
-  mhydasdk::core::MHYDASScalarValue QInput;
-  mhydasdk::core::MHYDASScalarValue TmpValue;
+  openfluid::core::MHYDASScalarValue QOutput;
+  openfluid::core::MHYDASScalarValue QInput;
+  openfluid::core::MHYDASScalarValue TmpValue;
 
   
-  mhydasdk::core::SurfaceUnit* SU;
+  openfluid::core::SurfaceUnit* SU;
 
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();
@@ -213,7 +213,7 @@ bool HayamiSUFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool HayamiSUFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiSUFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
   return true;

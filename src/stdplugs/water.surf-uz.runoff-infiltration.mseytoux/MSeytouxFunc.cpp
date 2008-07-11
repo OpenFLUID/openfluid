@@ -28,7 +28,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_NAME(wxT("Morel-Seytoux production on surface units"));
   DECLARE_SIGNATURE_DESCRIPTION(wxT("Production function computing infiltration and runoff at the surface of a unit using the Morel-Seytoux method, based on the Green and Ampt method."));  
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
-  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);
+  DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
   
   DECLARE_SIGNATURE_SDKVERSION;
   
@@ -82,7 +82,7 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 // =====================================================================
 // =====================================================================
 
-bool MorelSeytouxFunc::initParams(mhydasdk::core::ParamsMap Params)
+bool MorelSeytouxFunc::initParams(openfluid::core::ParamsMap Params)
 {
 
   MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);
@@ -116,14 +116,14 @@ bool MorelSeytouxFunc::checkConsistency()
 // =====================================================================
 
 
-bool MorelSeytouxFunc::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool MorelSeytouxFunc::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
   bool IsOK =  true;
 
 
-  mhydasdk::core::PropertyValue ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
-  mhydasdk::core::SurfaceUnit* SU;
+  openfluid::core::PropertyValue ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
+  openfluid::core::SurfaceUnit* SU;
   
 
   DECLARE_SU_ORDERED_LOOP
@@ -177,7 +177,7 @@ bool MorelSeytouxFunc::initializeRun(const mhydasdk::base::SimulationInfo* SimIn
 // =====================================================================
 
 
-bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
+bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
 
  
@@ -191,25 +191,25 @@ bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   float CurrentInfiltration; 
 
   int ID;
-  mhydasdk::core::MHYDASScalarValue CurrentRain;
+  openfluid::core::MHYDASScalarValue CurrentRain;
   int CurrentStep;
   int TimeStep;
-  mhydasdk::core::PropertyValue Ks;
+  openfluid::core::PropertyValue Ks;
 
-  mhydasdk::core::PropertyValue Beta;
+  openfluid::core::PropertyValue Beta;
   double DeltaWi;
   bool Criteria;
   float ExtraTime;
   double InfiltrationCapacity;
   float Area;
 
-  mhydasdk::core::MHYDASScalarValue TmpValue;
+  openfluid::core::MHYDASScalarValue TmpValue;
 
-  mhydasdk::core::SurfaceUnit* SU;
-  mhydasdk::core::SurfaceUnit* UpSU;
+  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::SurfaceUnit* UpSU;
 
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
-  std::list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
+  std::list<openfluid::core::SurfaceUnit*>::iterator UpSUiter;
+  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
 
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();
@@ -365,7 +365,7 @@ bool MorelSeytouxFunc::runStep(const mhydasdk::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool MorelSeytouxFunc::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool MorelSeytouxFunc::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
   return true;
 }

@@ -9,13 +9,13 @@
 #define __MSEYTOUXFUNC_H__
 
 
-#include "mhydasdk-base.h"
-#include "mhydasdk-core.h"
+#include "openfluid-base.h"
+#include "openfluid-core.h"
 
 /**
 
 */
-class MorelSeytouxFunc : public mhydasdk::base::PluggableFunction
+class MorelSeytouxFunc : public openfluid::base::PluggableFunction
 {
   private:
 
@@ -27,51 +27,51 @@ class MorelSeytouxFunc : public mhydasdk::base::PluggableFunction
     /**
       Theta star on each SU
     */
-    mhydasdk::base::IDDoubleMap m_SUThetaStar;
+    openfluid::base::IDDoubleMap m_SUThetaStar;
     
     /**
       Sf on each SU
     */
-    mhydasdk::base::IDDoubleMap m_SUSf;
+    openfluid::base::IDDoubleMap m_SUSf;
 
     /**
       Saturation state on each SU
     */
-    mhydasdk::base::IDIntMap m_SUSatState;
+    openfluid::base::IDIntMap m_SUSatState;
 
     /**
       Use of upstream output as input on each SU
     */
-    mhydasdk::base::IDBoolMap m_UseUpstreamOutput;
+    openfluid::base::IDBoolMap m_UseUpstreamOutput;
 
     /**
       Current upstream input value for each SU
     */
-    mhydasdk::base::IDDoubleMap m_CurrentUpstreamInput;
+    openfluid::base::IDDoubleMap m_CurrentUpstreamInput;
     
     /**
       Rain sum for each SU
     */
-    mhydasdk::base::IDFloatMap m_RainSum;    
+    openfluid::base::IDFloatMap m_RainSum;    
 
     /**
       Previous DeltaW for each SU
     */
-    mhydasdk::base::IDFloatMap m_PreviousDeltaW;    
+    openfluid::base::IDFloatMap m_PreviousDeltaW;    
 
-    mhydasdk::base::IDFloatMap m_PondingTime; // tp
+    openfluid::base::IDFloatMap m_PondingTime; // tp
 
-    mhydasdk::base::IDFloatMap m_PondingSum;  // wp
+    openfluid::base::IDFloatMap m_PondingSum;  // wp
 
-    mhydasdk::base::IDIntMap m_PondingStep; // ip
+    openfluid::base::IDIntMap m_PondingStep; // ip
 
-    mhydasdk::base::IDFloatMap m_PondingRainIntensity; // rp
+    openfluid::base::IDFloatMap m_PondingRainIntensity; // rp
 
 
-    mhydasdk::base::IDFloatMap m_DeltaW1;
-    mhydasdk::base::IDFloatMap m_DeltaW2;
-    mhydasdk::base::IDFloatMap m_DeltaT1;
-    mhydasdk::base::IDFloatMap m_DeltaT2;
+    openfluid::base::IDFloatMap m_DeltaW1;
+    openfluid::base::IDFloatMap m_DeltaW2;
+    openfluid::base::IDFloatMap m_DeltaT1;
+    openfluid::base::IDFloatMap m_DeltaT2;
 
 
 
@@ -88,17 +88,17 @@ class MorelSeytouxFunc : public mhydasdk::base::PluggableFunction
     ~MorelSeytouxFunc();
 
 
-    bool initParams(mhydasdk::core::ParamsMap Params);
+    bool initParams(openfluid::core::ParamsMap Params);
 
     bool checkConsistency();
     
     bool prepareData();
 
-    bool initializeRun(const mhydasdk::base::SimulationInfo* SimInfo);    
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);    
 
-    bool runStep(const mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 
 };

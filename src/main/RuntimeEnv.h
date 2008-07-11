@@ -11,7 +11,7 @@
 
 #include <wx/wx.h>
 #include <wx/datetime.h>
-#include "mhydasdk-base.h"
+#include "openfluid-base.h"
 
 // =====================================================================
 // =====================================================================
@@ -135,7 +135,7 @@ class RuntimeEnvironment
     void setCheckVarNames(bool Trace) { m_CheckVarNames = Trace; };
     
     
-    mhydasdk::base::FunctionEnvironment createFunctionEnvironment();
+    openfluid::base::FunctionEnvironment createFunctionEnvironment();
     
     
     

@@ -8,8 +8,8 @@
 #ifndef __IOMAN_H__
 #define __IOMAN_H__
 
-#include "mhydasdk-base.h"
-#include "mhydasdk-core.h"
+#include "openfluid-base.h"
+#include "openfluid-core.h"
 #include "RuntimeEnv.h"
 
 
@@ -27,7 +27,7 @@
 struct FunctionConfig
 {
   wxString FileID;  // Plug-in fileID (filename without ext)
-  mhydasdk::core::ParamsMap Params;  // Function parameters set
+  openfluid::core::ParamsMap Params;  // Function parameters set
 };
 
 
@@ -82,7 +82,7 @@ WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainSourcesFile
 struct AutoOutfileDef
 {
   wxString ObjectsKind;
-  std::vector<mhydasdk::core::HOID> SelectedObjectIDs;
+  std::vector<openfluid::core::HOID> SelectedObjectIDs;
   wxString FileSuffix;
   bool SaveAllVars;
   wxArrayString Scalars;
@@ -110,11 +110,11 @@ struct AutoOutfiles
 class IOManager
 {
   private:
-    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
     
     RuntimeEnvironment* mp_RunEnv;
 
-    mhydasdk::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
+    openfluid::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
 
     AutoOutfiles m_AutoOutFiles;
 
@@ -124,15 +124,15 @@ class IOManager
     
 
 
-    bool saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
+    bool saveResultsFromDef(openfluid::core::SpatialRepository *SpatialData,
                             wxString ColSeparator, wxString CommentChar,
                             AutoOutfileDef* Def, wxArrayString DTStrings,
                             ExtraSimInfos ExSI);
 
     
-    bool loadDistributedDataFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData);
+    bool loadDistributedDataFile(wxString Filename, openfluid::core::SpatialRepository *SpatialData);
 
-    bool loadDistributedEventsFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData);
+    bool loadDistributedEventsFile(wxString Filename, openfluid::core::SpatialRepository *SpatialData);
 
     
 
@@ -140,7 +140,7 @@ class IOManager
     /**
       Constructor
     */
-    IOManager(mhydasdk::base::ExecutionMessages* ExecMsgs,RuntimeEnvironment* RunEnv);
+    IOManager(openfluid::base::ExecutionMessages* ExecMsgs,RuntimeEnvironment* RunEnv);
 
     /**
       Destructor
@@ -167,29 +167,29 @@ class IOManager
       Loads spatial hydro objects definition and topology
       \param[out] Spatial data structure to populate
     */
-    bool loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData);
+    bool loadHydroObjects(openfluid::core::SpatialRepository *SpatialData);
 
 
     /**
       Loads rain distribution and distributes rain
       \param[out] Rain event data structure to populate
     */
-    bool loadRainDistribution(mhydasdk::core::CoreRepository *Data);
+    bool loadRainDistribution(openfluid::core::CoreRepository *Data);
 
-    bool loadDistributedData(mhydasdk::core::SpatialRepository *SpatialData);
+    bool loadDistributedData(openfluid::core::SpatialRepository *SpatialData);
     
-    bool loadDistributedEvents(mhydasdk::core::SpatialRepository *SpatialData);
-
-    
-    //bool saveResults(mhydasdk::core::CoreRepository *Data, ExtraSimInfos ExSI);
-    bool saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI);
+    bool loadDistributedEvents(openfluid::core::SpatialRepository *SpatialData);
 
     
-    bool prepareTraceDir(mhydasdk::core::CoreRepository *Data);
-    
-    bool saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDateTime DT);
+    //bool saveResults(openfluid::core::CoreRepository *Data, ExtraSimInfos ExSI);
+    bool saveResults(openfluid::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI);
 
-    bool saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo);    
+    
+    bool prepareTraceDir(openfluid::core::CoreRepository *Data);
+    
+    bool saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDateTime DT);
+
+    bool saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo);    
 
 };
 

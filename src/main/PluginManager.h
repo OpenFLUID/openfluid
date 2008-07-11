@@ -9,8 +9,8 @@
 #ifndef __PLUGINMANAGER_H__
 #define __PLUGINMANAGER_H__
 
-#include "mhydasdk-base.h"
-#include "mhydasdk-core.h"
+#include "openfluid-base.h"
+#include "openfluid-core.h"
 #include "RuntimeEnv.h"
 
 
@@ -18,8 +18,8 @@ struct PluginContainer
 {
   
   wxString Filename;
-  mhydasdk::base::Signature* Signature;
-  mhydasdk::base::PluggableFunction* Function;
+  openfluid::base::Signature* Signature;
+  openfluid::base::PluggableFunction* Function;
   
   PluginContainer()
   {
@@ -31,7 +31,7 @@ struct PluginContainer
 };
 
 
-WX_DEFINE_ARRAY(mhydasdk::base::Signature*, ArrayOfPluginsSignatures);
+WX_DEFINE_ARRAY(openfluid::base::Signature*, ArrayOfPluginsSignatures);
 WX_DEFINE_ARRAY(PluginContainer*, ArrayOfPluginsContainers);
 
 /**
@@ -42,9 +42,9 @@ class PluginManager
   private:
 
     RuntimeEnvironment* mp_RunEnv;
-    mhydasdk::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
-/*    mhydasdk::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);*/
+/*    openfluid::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);*/
     PluginContainer *buildPluginContainer(wxString PluginFilename);
     
 
@@ -53,7 +53,7 @@ class PluginManager
     /**
       Constructor
     */
-    PluginManager(mhydasdk::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv);
+    PluginManager(openfluid::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv);
 
     /**
       Destructor
@@ -72,13 +72,13 @@ class PluginManager
       Returns function and function types
     */
     PluginContainer *getPlugin(wxString PluginName,
-                               mhydasdk::base::FunctionTypeList ReqFuncType,
-                               mhydasdk::core::CoreRepository* CoreData);
+                               openfluid::base::FunctionTypeList ReqFuncType,
+                               openfluid::core::CoreRepository* CoreData);
 
 /*
-    mhydasdk::base::Function *getFunctionFromPlugin(wxString PluginName,
-                                          mhydasdk::base::ModuleTypeList ReqModType,
-                                          mhydasdk::base::FunctionTypeList ReqFuncType);
+    openfluid::base::Function *getFunctionFromPlugin(wxString PluginName,
+                                          openfluid::base::ModuleTypeList ReqModType,
+                                          openfluid::base::FunctionTypeList ReqFuncType);
 */
 
 };

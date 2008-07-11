@@ -10,7 +10,7 @@
 #define __HAYAMITOOLS_H__
 
 #include <vector>
-#include "mhydasdk-core.h"
+#include "openfluid-core.h"
 
 typedef std::vector<double> t_HayamiKernel;
 
@@ -35,7 +35,7 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
 /**
   Propagates the wave using the Hayami kernel
 */
-float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, mhydasdk::core::SerieOfMHYDASScalarValue* QInput, int MaxSteps, int TimeStep);
+float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, openfluid::core::SerieOfMHYDASScalarValue* QInput, int MaxSteps, int TimeStep);
 
 
 #endif // __HAYAMITOOLS_H__

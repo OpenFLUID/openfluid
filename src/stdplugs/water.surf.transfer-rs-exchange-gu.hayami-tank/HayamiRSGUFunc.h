@@ -10,8 +10,8 @@
 #define __HAYAMIRSFUNC_H__
 
 
-#include "mhydasdk-core.h"
-#include "mhydasdk-base.h"
+#include "openfluid-core.h"
+#include "openfluid-base.h"
 #include "HayamiTools.h"
 
 // =====================================================================
@@ -20,7 +20,7 @@
 /**
 
 */
-class HayamiRSFunction : public mhydasdk::base::PluggableFunction
+class HayamiRSFunction : public openfluid::base::PluggableFunction
 {
   private:
 
@@ -45,11 +45,11 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     
     bool m_UseUpSUOutput;
     
-    mhydasdk::base::IDVectOfMHYDASValueMap m_Input;
+    openfluid::base::IDVectOfMHYDASValueMap m_Input;
     
-    mhydasdk::base::IDFloatMap m_CurrentInputSum;
+    openfluid::base::IDFloatMap m_CurrentInputSum;
 
-    mhydasdk::base::IDVectOfMHYDASValueMap m_HeightDischarge;
+    openfluid::base::IDVectOfMHYDASValueMap m_HeightDischarge;
         
     bool computeWaterHeightFromDischarge(int ID, float Discharge, float *Height);
 
@@ -61,8 +61,8 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
      float m_CoeffGW;
 
     
-     mhydasdk::base::IDFloatMap m_ThetaIni;
-     mhydasdk::base::IDFloatMap m_ThetaSat;
+     openfluid::base::IDFloatMap m_ThetaIni;
+     openfluid::base::IDFloatMap m_ThetaSat;
      
      
   public:
@@ -77,17 +77,17 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     */
     ~HayamiRSFunction();
 
-    bool initParams(mhydasdk::core::ParamsMap Params);
+    bool initParams(openfluid::core::ParamsMap Params);
 
     bool prepareData();
     
     bool checkConsistency();
 
-    bool initializeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    bool runStep(const mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
 

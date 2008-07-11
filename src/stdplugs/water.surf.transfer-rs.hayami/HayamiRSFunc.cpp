@@ -27,7 +27,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
   
-  DECLARE_SIGNATURE_STATUS(mhydasdk::base::BETA);
+  DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
   
   DECLARE_SIGNATURE_SDKVERSION;
   
@@ -87,7 +87,7 @@ HayamiRSFunction::~HayamiRSFunction()
 // =====================================================================
 
 
-bool HayamiRSFunction::initParams(mhydasdk::core::ParamsMap Params)
+bool HayamiRSFunction::initParams(openfluid::core::ParamsMap Params)
 {
   MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
   MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
@@ -129,20 +129,20 @@ bool HayamiRSFunction::checkConsistency()
 // =====================================================================
 
 
-bool HayamiRSFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  mhydasdk::core::ReachSegment* RS;
+  openfluid::core::ReachSegment* RS;
   float Cel, Sigma;
-  mhydasdk::core::HOID ID;
-  mhydasdk::core::MHYDASScalarValue TmpValue;
+  openfluid::core::HOID ID;
+  openfluid::core::MHYDASScalarValue TmpValue;
   DECLARE_RS_ORDERED_LOOP;
  
  
   BEGIN_RS_ORDERED_LOOP(RS)
     ID = RS->getID();  
     
-    m_Input[ID] = new mhydasdk::core::SerieOfMHYDASScalarValue();
-    m_HeightDischarge[ID] = new mhydasdk::core::SerieOfMHYDASScalarValue();
+    m_Input[ID] = new openfluid::core::SerieOfMHYDASScalarValue();
+    m_HeightDischarge[ID] = new openfluid::core::SerieOfMHYDASScalarValue();
     m_CurrentInputSum[ID] = 0;
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -198,7 +198,7 @@ bool HayamiRSFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimIn
 // =====================================================================
 
 
-bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
+bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int ID;
   int CurrentStep;
@@ -206,19 +206,19 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
   float UpSrcSUsOutputsSum;  
   float UpLatSUsOutputsSum;  
   float UpRSsOutputsSum;  
-  mhydasdk::core::MHYDASScalarValue QOutput;
-  mhydasdk::core::MHYDASScalarValue QInput;
-  mhydasdk::core::MHYDASScalarValue TmpValue;
+  openfluid::core::MHYDASScalarValue QOutput;
+  openfluid::core::MHYDASScalarValue QInput;
+  openfluid::core::MHYDASScalarValue TmpValue;
 
   
-  mhydasdk::core::ReachSegment* RS;
-  mhydasdk::core::ReachSegment* UpRS;
-  mhydasdk::core::SurfaceUnit* UpSU;
+  openfluid::core::ReachSegment* RS;
+  openfluid::core::ReachSegment* UpRS;
+  openfluid::core::SurfaceUnit* UpSU;
 
-  std::list<mhydasdk::core::SurfaceUnit*>::iterator UpSUiter;
-  std::list<mhydasdk::core::SurfaceUnit*>* UpSUsList;
-  std::list<mhydasdk::core::ReachSegment*>::iterator UpRSiter;
-  std::list<mhydasdk::core::ReachSegment*>* UpRSsList;  
+  std::list<openfluid::core::SurfaceUnit*>::iterator UpSUiter;
+  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
+  std::list<openfluid::core::ReachSegment*>::iterator UpRSiter;
+  std::list<openfluid::core::ReachSegment*>* UpRSsList;  
   
  
   TimeStep = SimStatus->getTimeStep();
@@ -322,7 +322,7 @@ bool HayamiRSFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool HayamiRSFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool HayamiRSFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
   return true;
@@ -331,7 +331,7 @@ bool HayamiRSFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo
 // =====================================================================
 // =====================================================================
 
-bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASScalarValue Discharge, mhydasdk::core::MHYDASScalarValue *Height)
+bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::HOID ID, openfluid::core::MHYDASScalarValue Discharge, openfluid::core::MHYDASScalarValue *Height)
 {
     
 
@@ -349,7 +349,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, 
     int i;
     float Q1, Q2, H1, H2;
     
-    mhydasdk::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
+    openfluid::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
 
    
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

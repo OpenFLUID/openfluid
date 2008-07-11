@@ -10,8 +10,8 @@
 #define __HAYAMISUFUNC_H__
 
 
-#include "mhydasdk-core.h"
-#include "mhydasdk-base.h"
+#include "openfluid-core.h"
+#include "openfluid-base.h"
 
 #include "HayamiTools.h"
 
@@ -23,7 +23,7 @@
 /**
 
 */
-class HayamiSUFunction : public mhydasdk::base::PluggableFunction
+class HayamiSUFunction : public openfluid::base::PluggableFunction
 {
   private:
 
@@ -39,9 +39,9 @@ class HayamiSUFunction : public mhydasdk::base::PluggableFunction
 
     IDKernelMap m_SUKernel;
     
-    mhydasdk::base::IDVectOfMHYDASValueMap m_Input;
+    openfluid::base::IDVectOfMHYDASValueMap m_Input;
     
-    mhydasdk::base::IDMHYDASValueMap m_CurrentInputSum;
+    openfluid::base::IDMHYDASValueMap m_CurrentInputSum;
         
 
   public:
@@ -56,17 +56,17 @@ class HayamiSUFunction : public mhydasdk::base::PluggableFunction
     */
     ~HayamiSUFunction();
 
-    bool initParams(mhydasdk::core::ParamsMap Params);
+    bool initParams(openfluid::core::ParamsMap Params);
 
     bool prepareData();
     
     bool checkConsistency();
 
-    bool initializeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    bool runStep(const mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
 
