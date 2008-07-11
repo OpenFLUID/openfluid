@@ -85,7 +85,7 @@ MorelSeytouxFunc::~MorelSeytouxFunc()
 bool MorelSeytouxFunc::initParams(openfluid::core::ParamsMap Params)
 {
 
-  MHYDAS_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);
+  OPENFLUID_GetFunctionParam(Params,wxT("resstep"),&m_ResStep);
     
   return true;
 }
@@ -122,7 +122,7 @@ bool MorelSeytouxFunc::initializeRun(const openfluid::base::SimulationInfo* SimI
   bool IsOK =  true;
 
 
-  openfluid::core::PropertyValue ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
+  openfluid::core::ScalarValue ThetaR, ThetaS, ThetaI, Hc, ThetaStar;
   openfluid::core::SurfaceUnit* SU;
   
 
@@ -131,10 +131,10 @@ bool MorelSeytouxFunc::initializeRun(const openfluid::base::SimulationInfo* SimI
 
 
     // getting distributed properties
-    MHYDAS_GetDistributedProperty(SU,wxT("thetares"),&ThetaR);    
-    MHYDAS_GetDistributedProperty(SU,wxT("thetasat"),&ThetaS);  
-    MHYDAS_GetDistributedIniCondition(SU,wxT("thetaisurf"),&ThetaI);    
-    MHYDAS_GetDistributedProperty(SU,wxT("hc"),&Hc);
+    OPENFLUID_GetDistributedProperty(SU,wxT("thetares"),&ThetaR);    
+    OPENFLUID_GetDistributedProperty(SU,wxT("thetasat"),&ThetaS);  
+    OPENFLUID_GetDistributedIniCondition(SU,wxT("thetaisurf"),&ThetaI);    
+    OPENFLUID_GetDistributedProperty(SU,wxT("hc"),&Hc);
     
                 
     // Computing ThetaStar
@@ -149,7 +149,7 @@ bool MorelSeytouxFunc::initializeRun(const openfluid::base::SimulationInfo* SimI
 
     // sets whether the upstream output should be used or not.
     // a revoir
-    m_UseUpstreamOutput[SU->getID()] = MHYDAS_IsDistributedVarExists(SU,wxT("water.surf.Q.downstream-su"));
+    m_UseUpstreamOutput[SU->getID()] = OPENFLUID_IsDistributedVarExists(SU,wxT("water.surf.Q.downstream-su"));
     
     m_CurrentUpstreamInput[SU->getID()] = 0;
     
@@ -191,19 +191,19 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
   float CurrentInfiltration; 
 
   int ID;
-  openfluid::core::MHYDASScalarValue CurrentRain;
+  openfluid::core::ScalarValue CurrentRain;
   int CurrentStep;
   int TimeStep;
-  openfluid::core::PropertyValue Ks;
+  openfluid::core::ScalarValue Ks;
 
-  openfluid::core::PropertyValue Beta;
+  openfluid::core::ScalarValue Beta;
   double DeltaWi;
   bool Criteria;
   float ExtraTime;
   double InfiltrationCapacity;
   float Area;
 
-  openfluid::core::MHYDASScalarValue TmpValue;
+  openfluid::core::ScalarValue TmpValue;
 
   openfluid::core::SurfaceUnit* SU;
   openfluid::core::SurfaceUnit* UpSU;
@@ -220,8 +220,8 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
     ID = SU->getID();
 
     // Getting distributed properties
-    MHYDAS_GetDistributedProperty(SU,wxT("ks"),&Ks);
-    MHYDAS_GetDistributedProperty(SU,wxT("betaMS"),&Beta);    
+    OPENFLUID_GetDistributedProperty(SU,wxT("ks"),&Ks);
+    OPENFLUID_GetDistributedProperty(SU,wxT("betaMS"),&Beta);    
     Area = SU->getUsrArea();
     
     CurrentRunoff = 0;
@@ -238,14 +238,14 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
       {                
         UpSU = *UpSUiter;
-        MHYDAS_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep-1,&TmpValue);
+        OPENFLUID_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep-1,&TmpValue);
         OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
       }      
     } 
     m_CurrentUpstreamInput[ID] = OutputsSum;
     
     // convert rain from m/s to m/time step       
-    MHYDAS_GetDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),CurrentStep,&CurrentRain);    
+    OPENFLUID_GetDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),CurrentStep,&CurrentRain);    
 
     CurrentRain = CurrentRain + m_CurrentUpstreamInput[ID];
 
@@ -349,8 +349,8 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
     }   
 
 
-    MHYDAS_AppendDistributedVarValue(SU, wxT("water.surf.H.runoff"), CurrentRunoff);
-    MHYDAS_AppendDistributedVarValue(SU, wxT("water.surf.H.infiltration"), CurrentInfiltration);
+    OPENFLUID_AppendDistributedVarValue(SU, wxT("water.surf.H.runoff"), CurrentRunoff);
+    OPENFLUID_AppendDistributedVarValue(SU, wxT("water.surf.H.infiltration"), CurrentInfiltration);
 
     
   END_LOOP

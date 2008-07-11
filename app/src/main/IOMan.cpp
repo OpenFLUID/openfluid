@@ -76,7 +76,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     // -------- DeltaT ----------------
 
-    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("deltat").Element();
+    Child = DocHandle.FirstChild("openfluid").FirstChild("run").FirstChild("deltat").Element();
 
     if (Child == NULL)
     {
@@ -102,7 +102,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     // -------- Simulation period ----------------
 
-    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("period").Element();
+    Child = DocHandle.FirstChild("openfluid").FirstChild("run").FirstChild("period").Element();
 
     if (Child == NULL)
     {
@@ -169,7 +169,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     // -------- Simulation ID ----------------
 
-    Child = DocHandle.FirstChild("mhydas").FirstChild("run").FirstChild("simid").Element();
+    Child = DocHandle.FirstChild("openfluid").FirstChild("run").FirstChild("simid").Element();
 
     if (Child != NULL)
     {
@@ -215,7 +215,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
 
     // =========== run params ===========
-    Child = DocHandle.FirstChild("mhydas").FirstChild("runparams").FirstChild("param").Element();
+    Child = DocHandle.FirstChild("openfluid").FirstChild("runparams").FirstChild("param").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
@@ -243,7 +243,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
     // ======= model structure ===========
 
 
-    Child = DocHandle.FirstChild("mhydas").FirstChild("model").FirstChild("function").Element();
+    Child = DocHandle.FirstChild("openfluid").FirstChild("model").FirstChild("function").Element();
 
 
     for(Child;Child;Child=Child->NextSiblingElement())
@@ -393,14 +393,14 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         {
           // if everithing's OK, builds the new spatial object and adds it to the collection
 
-          if (!SpatialData->addSU(new openfluid::core::SurfaceUnit((openfluid::core::HOID)ID,
-                                                                  (openfluid::core::HOID)ProcessOrder,
+          if (!SpatialData->addSU(new openfluid::core::SurfaceUnit((openfluid::core::UnitID)ID,
+                                                                  (openfluid::core::UnitID)ProcessOrder,
                                                                   Area,
                                                                   Slope,
                                                                   getSUDownstreamCode(FlowCode),
-                                                                  (openfluid::core::HOID)FlowID,
+                                                                  (openfluid::core::UnitID)FlowID,
                                                                   FlowDist,
-                                                                  (openfluid::core::HOID)GUExch)))
+                                                                  (openfluid::core::UnitID)GUExch)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
@@ -448,16 +448,16 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         {
 
 
-          if (!SpatialData->addRS(new openfluid::core::ReachSegment((openfluid::core::HOID)ID,
-                                                                   (openfluid::core::HOID)ProcessOrder,
+          if (!SpatialData->addRS(new openfluid::core::ReachSegment((openfluid::core::UnitID)ID,
+                                                                   (openfluid::core::UnitID)ProcessOrder,
                                                                    (openfluid::core::nodeid_t)UpNode,
                                                                    (openfluid::core::nodeid_t)DownNode,
-                                                                   (openfluid::core::HOID)LowRSID,
+                                                                   (openfluid::core::UnitID)LowRSID,
                                                                    Slope,
                                                                    Length,
                                                                    Width,
                                                                    Height,
-                                                                   (openfluid::core::HOID)GUExch)))
+                                                                   (openfluid::core::UnitID)GUExch)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
@@ -498,9 +498,9 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
             GUsFileParser.getLongValue(i,2,&GUExch) && GUsFileParser.getLongValue(i,3,&ProcessOrder))
         {
 
-          if (!SpatialData->addGU(new openfluid::core::GroundwaterUnit((openfluid::core::HOID)ID,
-                                                                      (openfluid::core::HOID)ProcessOrder,
-                                                                      (openfluid::core::HOID)GUExch,
+          if (!SpatialData->addGU(new openfluid::core::GroundwaterUnit((openfluid::core::UnitID)ID,
+                                                                      (openfluid::core::UnitID)ProcessOrder,
+                                                                      (openfluid::core::UnitID)GUExch,
                                                                       SubstrLevel)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use."));
@@ -567,7 +567,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::Spat
 
       // unitclass and category
 
-      Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").Element();
+      Child = DocHandle.FirstChild("openfluid").FirstChild("distridata").Element();
 
       if (Child != NULL)
       {
@@ -578,7 +578,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::Spat
 
           DataCat = _U(Child->Attribute("datacat"));
 
-          Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").FirstChild("columns").Element();
+          Child = DocHandle.FirstChild("openfluid").FirstChild("distridata").FirstChild("columns").Element();
 
           // columns
           if (Child != NULL)
@@ -595,7 +595,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::Spat
               // data
               if (ColOrder.GetCount() > 0)
               {
-                Child = DocHandle.FirstChild("mhydas").FirstChild("distridata").FirstChild("data").Element();
+                Child = DocHandle.FirstChild("openfluid").FirstChild("distridata").FirstChild("data").Element();
 
                 if (Child != NULL)
                 {
@@ -622,7 +622,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::Spat
 
   int i,j;
   long ID;
-  openfluid::core::PropertyValue Value;
+  openfluid::core::ScalarValue Value;
 
 
   if (IsOK)
@@ -740,7 +740,7 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, openfluid::core::Sp
 
       TiXmlHandle DocHandle(&Doc);
 
-      Child = DocHandle.FirstChild("mhydas").FirstChild("calendar").Element();
+      Child = DocHandle.FirstChild("openfluid").FirstChild("calendar").Element();
 
 
       if (Child != NULL)
@@ -860,7 +860,7 @@ bool IOManager::loadOutputConfig()
 
 
     // auto output files
-    Child = DocHandle.FirstChild("mhydas").FirstChild("output").FirstChild("autooutfiles").Element();
+    Child = DocHandle.FirstChild("openfluid").FirstChild("output").FirstChild("autooutfiles").Element();
 
     if (Child != NULL)
     {
@@ -890,7 +890,7 @@ bool IOManager::loadOutputConfig()
         }
       }
 
-      Child = DocHandle.FirstChild("mhydas").FirstChild("output").FirstChild("autooutfiles").FirstChild().Element();
+      Child = DocHandle.FirstChild("openfluid").FirstChild("output").FirstChild("autooutfiles").FirstChild().Element();
 
       AutoOutfileDef* CurrentDef;
 
@@ -1034,8 +1034,8 @@ bool IOManager::saveResultsFromDef(openfluid::core::SpatialRepository *SpatialDa
   wxString FileContents;
   wxString Filename;
   std::vector<openfluid::core::HydroObject*> HOSet;
-  openfluid::core::SerieOfMHYDASScalarValue* Values;
-  openfluid::core::MHYDASVectorValue VValues;
+  openfluid::core::SerieOfScalarValue* Values;
+  openfluid::core::VectorValue VValues;
   wxString ColsStr;
   int i,j,k,l;
   wxString NaNStr = wxT("!");
@@ -1680,8 +1680,8 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
 
   openfluid::core::SimulatedVarsMap::iterator Simit;
   openfluid::core::SimulatedVectorVarsMap::iterator VSimit;
-  openfluid::core::SerieOfMHYDASScalarValue* Values;
-  openfluid::core::SerieOfMHYDASVectorValue* VValues;
+  openfluid::core::SerieOfScalarValue* Values;
+  openfluid::core::SerieOfVectorValue* VValues;
 
   openfluid::core::SUMap::iterator SUit;
   openfluid::core::SurfaceUnit* SU;
@@ -1690,7 +1690,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
   openfluid::core::GUMap::iterator GUit;
   openfluid::core::GroundwaterUnit* GU;
 
-  openfluid::core::MHYDASVectorValue* ZeVector;
+  openfluid::core::VectorValue* ZeVector;
   int i;
 
   wxFile TFile;

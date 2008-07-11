@@ -485,14 +485,14 @@ bool Engine::checkModelConsistency()
             CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
                        mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                        getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);            
+                       openfluid::core::SerieOfVectorValue,IsOK);            
           }
           else
           {
             CREATE_VAR(HData.ProducedVars[i].Name,
                      mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                      getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                     openfluid::core::SerieOfMHYDASScalarValue,IsOK);
+                     openfluid::core::SerieOfScalarValue,IsOK);
             
           }
         }
@@ -504,14 +504,14 @@ bool Engine::checkModelConsistency()
             CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
                        mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                        getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);            
+                       openfluid::core::SerieOfVectorValue,IsOK);            
           }
           else
           {          
             CREATE_VAR(HData.ProducedVars[i].Name,
                        mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                        getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
+                       openfluid::core::SerieOfScalarValue,IsOK);
           }
         }
 
@@ -522,14 +522,14 @@ bool Engine::checkModelConsistency()
             CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
                        mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                        getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);                        
+                       openfluid::core::SerieOfVectorValue,IsOK);                        
           }
           else
           {          
             CREATE_VAR(HData.ProducedVars[i].Name,
                        mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                        getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
+                       openfluid::core::SerieOfScalarValue,IsOK);
           }  
           
         }
@@ -552,14 +552,14 @@ bool Engine::checkModelConsistency()
             UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
                        mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                        getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);            
+                       openfluid::core::SerieOfVectorValue,IsOK);            
           }
           else
           {          
             UPDATE_VAR(HData.UpdatedVars[i].Name,
                        mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                        getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
+                       openfluid::core::SerieOfScalarValue,IsOK);
           }
         }
 
@@ -570,7 +570,7 @@ bool Engine::checkModelConsistency()
             UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
                        mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                        getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);                        
+                       openfluid::core::SerieOfVectorValue,IsOK);                        
           }
           else
           {          
@@ -578,7 +578,7 @@ bool Engine::checkModelConsistency()
             UPDATE_VAR(HData.UpdatedVars[i].Name,
                        mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                        getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
+                       openfluid::core::SerieOfScalarValue,IsOK);
           }
         }
 
@@ -589,14 +589,14 @@ bool Engine::checkModelConsistency()
             UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
                        mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                        getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);                        
+                       openfluid::core::SerieOfVectorValue,IsOK);                        
           }
           else
           {
             UPDATE_VAR(HData.UpdatedVars[i].Name,
                        mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                        getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
+                       openfluid::core::SerieOfScalarValue,IsOK);
           }
         }        
         

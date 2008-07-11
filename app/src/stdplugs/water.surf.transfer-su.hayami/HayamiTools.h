@@ -35,7 +35,7 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
 /**
   Propagates the wave using the Hayami kernel
 */
-float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, openfluid::core::SerieOfMHYDASScalarValue* QInput, int MaxSteps, int TimeStep);
+float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, openfluid::core::SerieOfScalarValue* QInput, int MaxSteps, int TimeStep);
 
 
 #endif // __HAYAMITOOLS_H__

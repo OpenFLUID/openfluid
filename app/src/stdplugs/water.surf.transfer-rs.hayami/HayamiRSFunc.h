@@ -25,33 +25,33 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
   private:
 
     int m_MaxSteps;
-    
+
     float m_MeanCelerity;
 
-    float m_MeanSigma;    
-    
+    float m_MeanSigma;
+
     float m_MeanSlope;
-    
-    float m_MeanManning;        
-    
-    float m_RSBuffer;  
+
+    float m_MeanManning;
+
+    float m_RSBuffer;
 
     /**
-      Calibration step for height-discharge relation (meters) 
-    */ 
+      Calibration step for height-discharge relation (meters)
+    */
     float m_CalibrationStep;
 
     IDKernelMap m_RSKernel;
-    
-    bool m_UseUpSUOutput;
-    
-    openfluid::base::IDVectOfMHYDASValueMap m_Input;
-    
-    openfluid::base::IDMHYDASValueMap m_CurrentInputSum;
 
-    openfluid::base::IDVectOfMHYDASValueMap m_HeightDischarge;
-        
-    bool computeWaterHeightFromDischarge(openfluid::core::HOID ID, openfluid::core::MHYDASScalarValue Discharge, openfluid::core::MHYDASScalarValue *Height);
+    bool m_UseUpSUOutput;
+
+    openfluid::core::IDVectorValueMap m_Input;
+
+    openfluid::core::IDScalarValueMap m_CurrentInputSum;
+
+    openfluid::core::IDVectorValueMap m_HeightDischarge;
+
+    bool computeWaterHeightFromDischarge(openfluid::core::UnitID ID, openfluid::core::ScalarValue Discharge, openfluid::core::ScalarValue *Height);
 
 
   public:
@@ -69,7 +69,7 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
     bool initParams(openfluid::core::ParamsMap Params);
 
     bool prepareData();
-    
+
     bool checkConsistency();
 
     bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);

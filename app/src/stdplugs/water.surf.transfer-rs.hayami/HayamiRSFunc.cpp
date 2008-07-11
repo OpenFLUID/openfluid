@@ -89,11 +89,11 @@ HayamiRSFunction::~HayamiRSFunction()
 
 bool HayamiRSFunction::initParams(openfluid::core::ParamsMap Params)
 {
-  MHYDAS_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
-  MHYDAS_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
-  MHYDAS_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
-  MHYDAS_GetFunctionParam(Params,wxT("calibstep"),&m_CalibrationStep);
-  MHYDAS_GetFunctionParam(Params,wxT("rsbuffer"),&m_RSBuffer);
+  OPENFLUID_GetFunctionParam(Params,wxT("maxsteps"),&m_MaxSteps);  
+  OPENFLUID_GetFunctionParam(Params,wxT("meancel"),&m_MeanCelerity);
+  OPENFLUID_GetFunctionParam(Params,wxT("meansigma"),&m_MeanSigma);
+  OPENFLUID_GetFunctionParam(Params,wxT("calibstep"),&m_CalibrationStep);
+  OPENFLUID_GetFunctionParam(Params,wxT("rsbuffer"),&m_RSBuffer);
   return true;
 }
 
@@ -133,20 +133,20 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
 {
   openfluid::core::ReachSegment* RS;
   float Cel, Sigma;
-  openfluid::core::HOID ID;
-  openfluid::core::MHYDASScalarValue TmpValue;
+  openfluid::core::UnitID ID;
+  openfluid::core::ScalarValue TmpValue;
   DECLARE_RS_ORDERED_LOOP;
  
  
   BEGIN_RS_ORDERED_LOOP(RS)
     ID = RS->getID();  
     
-    m_Input[ID] = new openfluid::core::SerieOfMHYDASScalarValue();
-    m_HeightDischarge[ID] = new openfluid::core::SerieOfMHYDASScalarValue();
+    m_Input[ID] = new openfluid::core::SerieOfScalarValue();
+    m_HeightDischarge[ID] = new openfluid::core::SerieOfScalarValue();
     m_CurrentInputSum[ID] = 0;
            
     m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
-    MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
+    OPENFLUID_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
     m_MeanManning = m_MeanManning + TmpValue;    
   END_LOOP
 
@@ -154,7 +154,7 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getRSsCollection()->size(); 
 
   BEGIN_RS_ORDERED_LOOP(RS)
-    MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
+    OPENFLUID_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);
     Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
     Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());      
     m_RSKernel[RS->getID()] = t_HayamiKernel();
@@ -169,7 +169,7 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   
   BEGIN_RS_ORDERED_LOOP(RS)
 
-    MHYDAS_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);    
+    OPENFLUID_GetDistributedProperty(RS,wxT("nmanning"),&TmpValue);    
     
     StepsNbr = int(ceil((RS->getUsrHeight() + m_RSBuffer) / m_CalibrationStep));
     for (i=0;i<StepsNbr;i++)
@@ -206,9 +206,9 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   float UpSrcSUsOutputsSum;  
   float UpLatSUsOutputsSum;  
   float UpRSsOutputsSum;  
-  openfluid::core::MHYDASScalarValue QOutput;
-  openfluid::core::MHYDASScalarValue QInput;
-  openfluid::core::MHYDASScalarValue TmpValue;
+  openfluid::core::ScalarValue QOutput;
+  openfluid::core::ScalarValue QInput;
+  openfluid::core::ScalarValue TmpValue;
 
   
   openfluid::core::ReachSegment* RS;
@@ -244,7 +244,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
       {                
         UpSU = *UpSUiter;
         
-        MHYDAS_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
+        OPENFLUID_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
         UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue; // / UpSU->getUsrArea();
       }  
     }
@@ -262,7 +262,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
       {                
         UpSU = *UpSUiter;
         
-        MHYDAS_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);        
+        OPENFLUID_GetDistributedVarValue(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);        
         UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue;// / UpSU->getUsrArea();                
         
       }  
@@ -279,7 +279,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for(UpRSiter=UpRSsList->begin(); UpRSiter != UpRSsList->end(); UpRSiter++) \
     {                
       UpRS = *UpRSiter;
-      MHYDAS_GetDistributedVarValue(UpRS,wxT("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
+      OPENFLUID_GetDistributedVarValue(UpRS,wxT("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
       UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;                
     }    
     
@@ -301,16 +301,16 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     QOutput = QOutput + UpLatSUsOutputsSum;
 
     
-    MHYDAS_AppendDistributedVarValue(RS,wxT("water.surf.Q.downstream-rs"),QOutput);
+    OPENFLUID_AppendDistributedVarValue(RS,wxT("water.surf.Q.downstream-rs"),QOutput);
 
     
     if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue))
     {      
-      MHYDAS_RaiseWarning(wxT("water.surf.transfer-rs.hayami"),SimStatus->getCurrentStep(),wxT("cannot compute water height on RS ") + wxString::Format(wxT("%d"),ID));
+      OPENFLUID_RaiseWarning(wxT("water.surf.transfer-rs.hayami"),SimStatus->getCurrentStep(),wxT("cannot compute water height on RS ") + wxString::Format(wxT("%d"),ID));
     }
         
     
-    MHYDAS_AppendDistributedVarValue(RS,wxT("water.surf.H.level-rs"),TmpValue);    
+    OPENFLUID_AppendDistributedVarValue(RS,wxT("water.surf.H.level-rs"),TmpValue);    
     
   END_LOOP
 
@@ -331,7 +331,7 @@ bool HayamiRSFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInf
 // =====================================================================
 // =====================================================================
 
-bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::HOID ID, openfluid::core::MHYDASScalarValue Discharge, openfluid::core::MHYDASScalarValue *Height)
+bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::UnitID ID, openfluid::core::ScalarValue Discharge, openfluid::core::ScalarValue *Height)
 {
     
 
@@ -349,7 +349,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::HOID ID,
     int i;
     float Q1, Q2, H1, H2;
     
-    openfluid::core::MHYDASVectorValue* HeightDischarge = m_HeightDischarge[ID]; 
+    openfluid::core::VectorValue* HeightDischarge = m_HeightDischarge[ID]; 
 
    
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

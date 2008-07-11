@@ -562,7 +562,7 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("x"))) printPluginsReport(true);
 
     if (Parser.Found(wxT("version"))) std::cout << MAJOR_VERSION.mb_str(wxConvUTF8) << "." << MINOR_VERSION.mb_str(wxConvUTF8) << "-" << SVN_REVISION.mb_str(wxConvUTF8) << std::endl;
-    if (Parser.Found(wxT("k"))) std::cout << MHYDASDK_MAJORVER << "." << MHYDASDK_MINORVER << "-" << MHYDASDK_REVISION << std::endl;
+    if (Parser.Found(wxT("k"))) std::cout << OPENFLUIDSDK_MAJORVER << "." << OPENFLUIDSDK_MINORVER << "-" << OPENFLUIDSDK_REVISION << std::endl;
 
     m_OKToRun = false;
   }

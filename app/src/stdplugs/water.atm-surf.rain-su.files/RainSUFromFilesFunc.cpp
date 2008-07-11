@@ -74,7 +74,7 @@ RainSUFromFilesFunction::~RainSUFromFilesFunction()
 bool RainSUFromFilesFunction::initParams(openfluid::core::ParamsMap Params)
 {
 
-  MHYDAS_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);
+  OPENFLUID_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);
 
   return true;
 }
@@ -113,13 +113,13 @@ bool RainSUFromFilesFunction::initializeRun(const openfluid::base::SimulationInf
 
   wxString InputDir;
 
-  MHYDAS_GetEnvironmentInputDir(&InputDir);
+  OPENFLUID_GetEnvironmentInputDir(&InputDir);
 
   m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("SUraindistri.dat"),openfluid::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
 
   if (!m_DataPool.loadAndPrepareData())
   {
-    MHYDAS_RaiseError(wxT("water.atm-surf.rain-su.files"),m_DataPool.getErrorMessage());
+    OPENFLUID_RaiseError(wxT("water.atm-surf.rain-su.files"),m_DataPool.getErrorMessage());
     return false;
   }
 
@@ -134,7 +134,7 @@ bool RainSUFromFilesFunction::initializeRun(const openfluid::base::SimulationInf
 bool RainSUFromFilesFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   openfluid::core::SurfaceUnit* SU;
-  openfluid::core::MHYDASScalarValue Value,ValueNext,MSValue;
+  openfluid::core::ScalarValue Value,ValueNext,MSValue;
   DECLARE_SU_ORDERED_LOOP;
 
   BEGIN_SU_ORDERED_LOOP(SU)
@@ -149,7 +149,7 @@ bool RainSUFromFilesFunction::runStep(const openfluid::base::SimulationStatus* S
 
       if (isnan(MSValue) || MSValue < m_Threshold) MSValue = 0;
 
-      MHYDAS_AppendDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),MSValue);
+      OPENFLUID_AppendDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),MSValue);
     }
     else
     {

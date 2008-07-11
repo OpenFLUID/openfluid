@@ -82,7 +82,7 @@ WX_DECLARE_HASH_MAP(int, wxString,wxIntegerHash, wxIntegerEqual, RainSourcesFile
 struct AutoOutfileDef
 {
   wxString ObjectsKind;
-  std::vector<openfluid::core::HOID> SelectedObjectIDs;
+  std::vector<openfluid::core::UnitID> SelectedObjectIDs;
   wxString FileSuffix;
   bool SaveAllVars;
   wxArrayString Scalars;
