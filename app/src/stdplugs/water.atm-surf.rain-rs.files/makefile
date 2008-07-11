@@ -3,8 +3,8 @@
 CPP = g++
 WXLIBS = $(shell wx-config --libs base)
 WXFLAGS = $(shell wx-config --cxxflags base)
-MHYDASDKLIBS = $(shell mhydasdk-config --libs)
-MHYDASDKFLAGS = $(shell mhydasdk-config --cflags)
+MHYDASDKLIBS = $(shell openfluid-config --libs)
+MHYDASDKFLAGS = $(shell openfluid-config --cflags)
 BINFILE = water.atm-surf.rain-rs.files
 SRCFILESROOT = RainRSFromFilesFunc
 

@@ -154,9 +154,9 @@ echo "" >> $OPTFILE
 
 echo "# compile options for mhydas sdk" >> $OPTFILE
 VARTOWRITE=
-VARTOWRITE=`$MHYDASDKPREFIX/bin/mhydasdk-config --libs`
+VARTOWRITE=`$MHYDASDKPREFIX/bin/openfluid-config --libs`
 echo "MHYDASDKLIBS = $VARTOWRITE" >> $OPTFILE
-VARTOWRITE=`$MHYDASDKPREFIX/bin/mhydasdk-config --cflags`
+VARTOWRITE=`$MHYDASDKPREFIX/bin/openfluid-config --cflags`
 echo "MHYDASDKFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE

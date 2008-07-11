@@ -531,7 +531,7 @@ bool MHYDASApp::OnInit()
 
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
 
-  mp_ExecMsgs = new ExecutionMessages();
+  mp_ExecMsgs = new openfluid::base::ExecutionMessages();
 
   mp_PlugMan = new PluginManager(mp_ExecMsgs,mp_RunEnv);
 
@@ -618,7 +618,7 @@ int MHYDASApp::OnRun()
     m_TotalStartTime = wxDateTime::Now();
     m_ExSI.StartTime = m_TotalStartTime;
 
-    mp_CoreData = new CoreRepository();
+    mp_CoreData = new openfluid::core::CoreRepository();
 
     mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
 
