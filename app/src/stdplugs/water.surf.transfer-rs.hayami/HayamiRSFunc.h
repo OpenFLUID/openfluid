@@ -10,8 +10,8 @@
 #define __HAYAMIRSFUNC_H__
 
 
-#include "mhydasdk-core.h"
-#include "mhydasdk-base.h"
+#include "openfluid-core.h"
+#include "openfluid-base.h"
 #include "HayamiTools.h"
 
 // =====================================================================
@@ -20,7 +20,7 @@
 /**
 
 */
-class HayamiRSFunction : public mhydasdk::base::PluggableFunction
+class HayamiRSFunction : public openfluid::base::PluggableFunction
 {
   private:
 
@@ -45,13 +45,13 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     
     bool m_UseUpSUOutput;
     
-    mhydasdk::base::IDVectOfMHYDASValueMap m_Input;
+    openfluid::base::IDVectOfMHYDASValueMap m_Input;
     
-    mhydasdk::base::IDMHYDASValueMap m_CurrentInputSum;
+    openfluid::base::IDMHYDASValueMap m_CurrentInputSum;
 
-    mhydasdk::base::IDVectOfMHYDASValueMap m_HeightDischarge;
+    openfluid::base::IDVectOfMHYDASValueMap m_HeightDischarge;
         
-    bool computeWaterHeightFromDischarge(mhydasdk::core::HOID ID, mhydasdk::core::MHYDASScalarValue Discharge, mhydasdk::core::MHYDASScalarValue *Height);
+    bool computeWaterHeightFromDischarge(openfluid::core::HOID ID, openfluid::core::MHYDASScalarValue Discharge, openfluid::core::MHYDASScalarValue *Height);
 
 
   public:
@@ -66,17 +66,17 @@ class HayamiRSFunction : public mhydasdk::base::PluggableFunction
     */
     ~HayamiRSFunction();
 
-    bool initParams(mhydasdk::core::ParamsMap Params);
+    bool initParams(openfluid::core::ParamsMap Params);
 
     bool prepareData();
     
     bool checkConsistency();
 
-    bool initializeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    bool runStep(const mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
 

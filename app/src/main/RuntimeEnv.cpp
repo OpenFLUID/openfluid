@@ -112,9 +112,9 @@ wxString RuntimeEnvironment::getPluginFullPath(wxString Filename)
 // =====================================================================
 // =====================================================================
 
-mhydasdk::base::FunctionEnvironment RuntimeEnvironment::createFunctionEnvironment()
+openfluid::base::FunctionEnvironment RuntimeEnvironment::createFunctionEnvironment()
 {
-  mhydasdk::base::FunctionEnvironment FuncEnv;
+  openfluid::base::FunctionEnvironment FuncEnv;
   
   FuncEnv.InputDir = m_InputDir;
   FuncEnv.OutputDir = m_OutputDir;

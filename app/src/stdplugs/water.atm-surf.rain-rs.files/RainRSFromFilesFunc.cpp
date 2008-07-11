@@ -25,7 +25,7 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_SIGNATURE_VERSION(wxT("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(mhydasdk::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
   DECLARE_SIGNATURE_PROCESS(wxT(""));
@@ -70,7 +70,7 @@ RainRSFromFilesFunction::~RainRSFromFilesFunction()
 // =====================================================================
 
 
-bool RainRSFromFilesFunction::initParams(mhydasdk::core::ParamsMap Params)
+bool RainRSFromFilesFunction::initParams(openfluid::core::ParamsMap Params)
 {
 
   MHYDAS_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);
@@ -106,14 +106,14 @@ bool RainRSFromFilesFunction::checkConsistency()
 // =====================================================================
 
 
-bool RainRSFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool RainRSFromFilesFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
   wxString InputDir;
 
   MHYDAS_GetEnvironmentInputDir(&InputDir);
 
-  m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("RSraindistri.dat"),mhydasdk::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
+  m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("RSraindistri.dat"),openfluid::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
 
   if (!m_DataPool.loadAndPrepareData())
   {
@@ -128,11 +128,11 @@ bool RainRSFromFilesFunction::initializeRun(const mhydasdk::base::SimulationInfo
 // =====================================================================
 
 
-bool RainRSFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* SimStatus)
+bool RainRSFromFilesFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
 
-  mhydasdk::core::ReachSegment* RS;
-  mhydasdk::core::MHYDASScalarValue Value,ValueNext,MSValue;
+  openfluid::core::ReachSegment* RS;
+  openfluid::core::MHYDASScalarValue Value,ValueNext,MSValue;
 
   DECLARE_RS_ORDERED_LOOP;
 
@@ -164,7 +164,7 @@ bool RainRSFromFilesFunction::runStep(const mhydasdk::base::SimulationStatus* Si
 // =====================================================================
 
 
-bool RainRSFromFilesFunction::finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo)
+bool RainRSFromFilesFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
 

@@ -144,7 +144,7 @@ WX_DEFINE_LIST(PluginsList);
 
 
 
-Engine::Engine(mhydasdk::core::CoreRepository* CoreData, mhydasdk::base::ExecutionMessages* ExecMsgs,
+Engine::Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::ExecutionMessages* ExecMsgs,
                RuntimeEnvironment* RunEnv, PluginManager* PlugMan)
 {
     
@@ -200,7 +200,7 @@ bool Engine::processConfig()
   {
     FConf = (FunctionConfig*)(FuncNode->GetData());
    
-    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,mhydasdk::base::SIMULATION,mp_CoreData);
+    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,openfluid::base::SIMULATION,mp_CoreData);
     
     if (FuncToAdd != NULL)
     {
@@ -234,23 +234,23 @@ bool Engine::processConfig()
 bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Message)
 {
   
-  mhydasdk::core::SurfaceUnit *SU;
-  mhydasdk::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
-  mhydasdk::core::SUMap::iterator SUiter;
+  openfluid::core::SurfaceUnit *SU;
+  openfluid::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
+  openfluid::core::SUMap::iterator SUiter;
 
-  mhydasdk::core::ReachSegment *RS;
-  mhydasdk::core::RSMap *RSsMap = mp_CoreData->getSpatialData()->getRSsCollection();
-  mhydasdk::core::RSMap::iterator RSiter;
+  openfluid::core::ReachSegment *RS;
+  openfluid::core::RSMap *RSsMap = mp_CoreData->getSpatialData()->getRSsCollection();
+  openfluid::core::RSMap::iterator RSiter;
   
-  mhydasdk::core::GroundwaterUnit *GU;
-  mhydasdk::core::GUMap *GUsMap = mp_CoreData->getSpatialData()->getGUsCollection();
-  mhydasdk::core::GUMap::iterator GUiter;
+  openfluid::core::GroundwaterUnit *GU;
+  openfluid::core::GUMap *GUsMap = mp_CoreData->getSpatialData()->getGUsCollection();
+  openfluid::core::GUMap::iterator GUiter;
   
-  mhydasdk::core::SimulatedVarsMap *VarsMap;
-  mhydasdk::core::SimulatedVarsMap::iterator VMiter;
+  openfluid::core::SimulatedVarsMap *VarsMap;
+  openfluid::core::SimulatedVarsMap::iterator VMiter;
   
-  mhydasdk::core::SimulatedVectorVarsMap *VectVarsMap;
-  mhydasdk::core::SimulatedVectorVarsMap::iterator VVMiter;
+  openfluid::core::SimulatedVectorVarsMap *VectVarsMap;
+  openfluid::core::SimulatedVectorVarsMap::iterator VVMiter;
 
   (*Message) = wxT("");
   
@@ -398,7 +398,7 @@ bool Engine::checkModelConsistency()
 {
 
   PluginsList::Node *FuncNode = NULL;
-  mhydasdk::base::SignatureHandledData HData;
+  openfluid::base::SignatureHandledData HData;
   
   int i;
   bool IsOK = true; 
@@ -423,13 +423,13 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
           {  
             CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                        getSimulatedVectorVars(),IsOK);
           }  
           else 
           {
             CHECK_VAR(HData.RequiredVars[i].Name,
-                      mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                      mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                       getSimulatedVars(),IsOK);            
           }
           
@@ -440,13 +440,13 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
           {  
             CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                      mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                      mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                       getSimulatedVectorVars(),IsOK);
           }
           else
           {            
             CHECK_VAR(HData.RequiredVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                        getSimulatedVars(),IsOK);
           }
         }
@@ -456,13 +456,13 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
           {  
             CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                      mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                       getSimulatedVectorVars(),IsOK);
           }
           else
           {
             CHECK_VAR(HData.RequiredVars[i].Name,
-                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                      mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                       getSimulatedVars(),IsOK);
           }
         }
@@ -483,16 +483,16 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
           {          
             CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                       getSimulatedVectorVars(),mhydasdk::core::SimulatedVectorVarsMap,
-                       mhydasdk::core::SerieOfMHYDASVectorValue,IsOK);            
+                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
+                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
+                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);            
           }
           else
           {
             CREATE_VAR(HData.ProducedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                     getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
-                     mhydasdk::core::SerieOfMHYDASScalarValue,IsOK);
+                     mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
+                     getSimulatedVars(),openfluid::core::SimulatedVarsMap,
+                     openfluid::core::SerieOfMHYDASScalarValue,IsOK);
             
           }
         }
@@ -502,16 +502,16 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
           {
             CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                       getSimulatedVectorVars(),mhydasdk::core::SimulatedVectorVarsMap,
-                       mhydasdk::core::SerieOfMHYDASVectorValue,IsOK);            
+                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
+                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
+                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);            
           }
           else
           {          
             CREATE_VAR(HData.ProducedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
-                       mhydasdk::core::SerieOfMHYDASScalarValue,IsOK);
+                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
+                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
+                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
           }
         }
 
@@ -520,16 +520,16 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
           {
             CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                       getSimulatedVectorVars(),mhydasdk::core::SimulatedVectorVarsMap,
-                       mhydasdk::core::SerieOfMHYDASVectorValue,IsOK);                        
+                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
+                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
+                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);                        
           }
           else
           {          
             CREATE_VAR(HData.ProducedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
-                       mhydasdk::core::SerieOfMHYDASScalarValue,IsOK);
+                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
+                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
+                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
           }  
           
         }
@@ -550,16 +550,16 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
           {
             UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                       getSimulatedVectorVars(),mhydasdk::core::SimulatedVectorVarsMap,
-                       mhydasdk::core::SerieOfMHYDASVectorValue,IsOK);            
+                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
+                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
+                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);            
           }
           else
           {          
             UPDATE_VAR(HData.UpdatedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
-                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
-                       mhydasdk::core::SerieOfMHYDASScalarValue,IsOK);
+                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
+                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
+                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
           }
         }
 
@@ -568,17 +568,17 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
           {
             UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                       getSimulatedVectorVars(),mhydasdk::core::SimulatedVectorVarsMap,
-                       mhydasdk::core::SerieOfMHYDASVectorValue,IsOK);                        
+                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
+                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
+                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);                        
           }
           else
           {          
           
             UPDATE_VAR(HData.UpdatedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
-                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
-                       mhydasdk::core::SerieOfMHYDASScalarValue,IsOK);
+                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
+                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
+                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
           }
         }
 
@@ -587,16 +587,16 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
           {
             UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                       getSimulatedVectorVars(),mhydasdk::core::SimulatedVectorVarsMap,
-                       mhydasdk::core::SerieOfMHYDASVectorValue,IsOK);                        
+                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
+                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
+                       openfluid::core::SerieOfMHYDASVectorValue,IsOK);                        
           }
           else
           {
             UPDATE_VAR(HData.UpdatedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
-                       getSimulatedVars(),mhydasdk::core::SimulatedVarsMap,
-                       mhydasdk::core::SerieOfMHYDASScalarValue,IsOK);
+                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
+                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
+                       openfluid::core::SerieOfMHYDASScalarValue,IsOK);
           }
         }        
         
@@ -631,14 +631,14 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
           {
             CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
-                      mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                      mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                       getSimulatedVectorVars(),IsOK);
             
           }
           else
           {          
             CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                       mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                        getSimulatedVars(),IsOK);
           }          
         }
@@ -648,13 +648,13 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
           {
             CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
-                      mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                      mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                       getSimulatedVectorVars(),IsOK);            
           }
           else
           {          
             CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                        getSimulatedVars(),IsOK);
           }  
           
@@ -665,13 +665,13 @@ bool Engine::checkModelConsistency()
           if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
           {
             CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
-                      mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                      mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                       getSimulatedVectorVars(),IsOK);            
           }
           else
           {          
             CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                       mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                        getSimulatedVars(),IsOK);
           }  
           
@@ -700,7 +700,7 @@ bool Engine::checkDataConsistency()
 {
 
   PluginsList::Node *FuncNode = NULL;
-  mhydasdk::base::SignatureHandledData HData;
+  openfluid::base::SignatureHandledData HData;
   PluginContainer* CurrentFunction;
   
   int i;
@@ -843,7 +843,7 @@ bool Engine::checkDataConsistency()
         if (HData.RequiredProps[i].Distribution == wxT("SU"))
         {
           CHECK_VAR(HData.RequiredProps[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                     mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                      getProperties(),IsOK);
           
         }
@@ -851,7 +851,7 @@ bool Engine::checkDataConsistency()
         if (HData.RequiredProps[i].Distribution == wxT("RS"))
         {
           CHECK_VAR(HData.RequiredProps[i].Name,
-                     mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                     mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                      getProperties(),IsOK);
           
         }
@@ -859,7 +859,7 @@ bool Engine::checkDataConsistency()
         if (HData.RequiredProps[i].Distribution == wxT("GU"))
         {
           CHECK_VAR(HData.RequiredProps[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                     mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                      getProperties(),IsOK);
           
         }
@@ -884,14 +884,14 @@ bool Engine::checkDataConsistency()
           if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("SU"))
           {
             CHECK_VAR(HData.RequiredIniconds[i].Name,
-                mp_CoreData->getSpatialData()->getSUsCollection(),mhydasdk::core::SUMap,
+                mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
                 getIniConditions(),IsOK);          
           }
 
           if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("RS"))
           {
             CHECK_VAR(HData.RequiredIniconds[i].Name,
-                mp_CoreData->getSpatialData()->getRSsCollection(),mhydasdk::core::RSMap,
+                mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
                 getIniConditions (),IsOK);
 
           }
@@ -899,7 +899,7 @@ bool Engine::checkDataConsistency()
           if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("GU"))
           {
             CHECK_VAR(HData.RequiredIniconds[i].Name,
-                mp_CoreData->getSpatialData()->getGUsCollection(),mhydasdk::core::GUMap,
+                mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
                 getIniConditions(),IsOK);
 
           }
@@ -933,7 +933,7 @@ bool Engine::checkExtraFilesConsistency()
   
   PluginsList::Node *FuncNode = NULL;
   int i;
-  mhydasdk::base::SignatureHandledData HData;
+  openfluid::base::SignatureHandledData HData;
   
   
   
@@ -1079,7 +1079,7 @@ bool Engine::prepareDataAndCheckConsistency()
   // inits the simulation infos and status
 
     
-  mp_SimStatus = new mhydasdk::base::SimulationStatus(m_RunConfig.BeginDate,
+  mp_SimStatus = new openfluid::base::SimulationStatus(m_RunConfig.BeginDate,
                                                       m_RunConfig.EndDate,
                                                       m_RunConfig.DeltaT);
 
@@ -1118,7 +1118,7 @@ bool Engine::run()
     std::cout.flush();
   }  
   
-  PARSE_FUNCTION_LIST(initializeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK);
+  PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
 
   if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
@@ -1236,7 +1236,7 @@ bool Engine::run()
   }    
   
   // finalization of functions
-  PARSE_FUNCTION_LIST(finalizeRun((mhydasdk::base::SimulationStatus*)mp_SimStatus),IsOK)  
+  PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)  
 
   if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
@@ -1292,7 +1292,7 @@ bool Engine::saveResults(ExtraSimInfos ExSI)
 bool Engine::saveReports(ExtraSimInfos ExSI)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(mhydasdk::base::SimulationInfo*)mp_SimStatus));
+  return (mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(openfluid::base::SimulationInfo*)mp_SimStatus));
 }
 
 

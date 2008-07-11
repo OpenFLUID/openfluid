@@ -13,7 +13,7 @@
 #include <iostream>
 
 #include "IOMan.h"
-#include "mhydasdk-tools.h"
+#include "openfluid-tools.h"
 #include "setup.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
@@ -35,7 +35,7 @@ WX_DEFINE_OBJARRAY(ArrayOfAutoOutfileDefs);*/
 
 
 
-IOManager::IOManager(mhydasdk::base::ExecutionMessages* ExecMsgs,RuntimeEnvironment* RunEnv)
+IOManager::IOManager(openfluid::base::ExecutionMessages* ExecMsgs,RuntimeEnvironment* RunEnv)
 {
   mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
@@ -308,12 +308,12 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 // =====================================================================
 // =====================================================================
 
-mhydasdk::core::SUDownstreamCode IOManager::getSUDownstreamCode(wxString Code)
+openfluid::core::SUDownstreamCode IOManager::getSUDownstreamCode(wxString Code)
 {
-  if (Code == wxT("S")) return mhydasdk::core::SUDownstream;
-  if (Code == wxT("R")) return mhydasdk::core::RLatDownstream;
+  if (Code == wxT("S")) return openfluid::core::SUDownstream;
+  if (Code == wxT("R")) return openfluid::core::RLatDownstream;
 
-  return mhydasdk::core::UnknownDownstreamCode;
+  return openfluid::core::UnknownDownstreamCode;
 }
 
 
@@ -321,7 +321,7 @@ mhydasdk::core::SUDownstreamCode IOManager::getSUDownstreamCode(wxString Code)
 // =====================================================================
 
 
-bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
+bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData)
 {
 
   /** \internal
@@ -365,7 +365,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (SUsFileExists)
   {
-    mhydasdk::tools::ColumnTextParser SUsFileParser(wxT("%"));
+    openfluid::tools::ColumnTextParser SUsFileParser(wxT("%"));
 
     //  checks that files has the right column number
     if (!SUsFileParser.loadFromFile(SUsFilename) ||
@@ -393,14 +393,14 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         {
           // if everithing's OK, builds the new spatial object and adds it to the collection
 
-          if (!SpatialData->addSU(new mhydasdk::core::SurfaceUnit((mhydasdk::core::HOID)ID,
-                                                                  (mhydasdk::core::HOID)ProcessOrder,
+          if (!SpatialData->addSU(new openfluid::core::SurfaceUnit((openfluid::core::HOID)ID,
+                                                                  (openfluid::core::HOID)ProcessOrder,
                                                                   Area,
                                                                   Slope,
                                                                   getSUDownstreamCode(FlowCode),
-                                                                  (mhydasdk::core::HOID)FlowID,
+                                                                  (openfluid::core::HOID)FlowID,
                                                                   FlowDist,
-                                                                  (mhydasdk::core::HOID)GUExch)))
+                                                                  (openfluid::core::HOID)GUExch)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
@@ -423,7 +423,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (RSsFileExists)
   {
-    mhydasdk::tools::ColumnTextParser RSsFileParser(wxT("%"));
+    openfluid::tools::ColumnTextParser RSsFileParser(wxT("%"));
 
     if (!RSsFileParser.loadFromFile(RSsFilename) ||
         RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
@@ -448,16 +448,16 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
         {
 
 
-          if (!SpatialData->addRS(new mhydasdk::core::ReachSegment((mhydasdk::core::HOID)ID,
-                                                                   (mhydasdk::core::HOID)ProcessOrder,
-                                                                   (mhydasdk::core::nodeid_t)UpNode,
-                                                                   (mhydasdk::core::nodeid_t)DownNode,
-                                                                   (mhydasdk::core::HOID)LowRSID,
+          if (!SpatialData->addRS(new openfluid::core::ReachSegment((openfluid::core::HOID)ID,
+                                                                   (openfluid::core::HOID)ProcessOrder,
+                                                                   (openfluid::core::nodeid_t)UpNode,
+                                                                   (openfluid::core::nodeid_t)DownNode,
+                                                                   (openfluid::core::HOID)LowRSID,
                                                                    Slope,
                                                                    Length,
                                                                    Width,
                                                                    Height,
-                                                                   (mhydasdk::core::HOID)GUExch)))
+                                                                   (openfluid::core::HOID)GUExch)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
             return false;
@@ -477,7 +477,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 
   if (GUsFileExists)
   {
-    mhydasdk::tools::ColumnTextParser GUsFileParser(wxT("%"));
+    openfluid::tools::ColumnTextParser GUsFileParser(wxT("%"));
 
     if (!GUsFileParser.loadFromFile(GUsFilename) ||
         GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
@@ -498,9 +498,9 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
             GUsFileParser.getLongValue(i,2,&GUExch) && GUsFileParser.getLongValue(i,3,&ProcessOrder))
         {
 
-          if (!SpatialData->addGU(new mhydasdk::core::GroundwaterUnit((mhydasdk::core::HOID)ID,
-                                                                      (mhydasdk::core::HOID)ProcessOrder,
-                                                                      (mhydasdk::core::HOID)GUExch,
+          if (!SpatialData->addGU(new openfluid::core::GroundwaterUnit((openfluid::core::HOID)ID,
+                                                                      (openfluid::core::HOID)ProcessOrder,
+                                                                      (openfluid::core::HOID)GUExch,
                                                                       SubstrLevel)))
           {
             mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use."));
@@ -525,7 +525,7 @@ bool IOManager::loadHydroObjects(mhydasdk::core::SpatialRepository *SpatialData)
 // =====================================================================
 // =====================================================================
 
-bool IOManager::loadDistributedData(mhydasdk::core::SpatialRepository *SpatialData)
+bool IOManager::loadDistributedData(openfluid::core::SpatialRepository *SpatialData)
 {
 
   wxArrayString FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),wxT("ddata.xml"),true);
@@ -547,7 +547,7 @@ bool IOManager::loadDistributedData(mhydasdk::core::SpatialRepository *SpatialDa
 // =====================================================================
 
 
-bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData)
+bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::SpatialRepository *SpatialData)
 {
 
   bool IsOK = true;
@@ -622,16 +622,16 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 
   int i,j;
   long ID;
-  mhydasdk::core::PropertyValue Value;
+  openfluid::core::PropertyValue Value;
 
 
   if (IsOK)
   {
-    mhydasdk::tools::ColumnTextParser DataParser(wxT("%"));
+    openfluid::tools::ColumnTextParser DataParser(wxT("%"));
 
     if (DataParser.setFromString(Data,ColOrder.Count()+1))
     {
-      mhydasdk::core::HydroObject* HO;
+      openfluid::core::HydroObject* HO;
 
       i = 0;
 
@@ -655,9 +655,9 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
               if (DataParser.getDoubleValue(i,j,&Value))
               {
                 if (DataCat == wxT("ini"))
-                  HO->getIniConditions()->insert(mhydasdk::core::PropertiesMap::value_type(ColOrder[j-1],Value));
+                  HO->getIniConditions()->insert(openfluid::core::PropertiesMap::value_type(ColOrder[j-1],Value));
                 else
-                  HO->getProperties()->insert(mhydasdk::core::PropertiesMap::value_type(ColOrder[j-1],Value));
+                  HO->getProperties()->insert(openfluid::core::PropertiesMap::value_type(ColOrder[j-1],Value));
               }
             }
           }
@@ -696,7 +696,7 @@ bool IOManager::loadDistributedDataFile(wxString Filename, mhydasdk::core::Spati
 // =====================================================================
 // =====================================================================
 
-bool IOManager::loadDistributedEvents(mhydasdk::core::SpatialRepository *SpatialData)
+bool IOManager::loadDistributedEvents(openfluid::core::SpatialRepository *SpatialData)
 {
 
   wxArrayString FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),wxT("events.xml"),true);
@@ -719,7 +719,7 @@ bool IOManager::loadDistributedEvents(mhydasdk::core::SpatialRepository *Spatial
 // =====================================================================
 
 
-bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::SpatialRepository *SpatialData)
+bool IOManager::loadDistributedEventsFile(wxString Filename, openfluid::core::SpatialRepository *SpatialData)
 {
 
   bool IsOK = true;
@@ -762,8 +762,8 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
 
           if ((ZeDateStr != wxT("")) && (UnitClass != wxT("")) && (UnitID != wxT("")))
           {
-            mhydasdk::core::DistributedEvent *DEvent;
-            mhydasdk::core::HydroObject* HO;
+            openfluid::core::DistributedEvent *DEvent;
+            openfluid::core::HydroObject* HO;
             long ID;
 
 
@@ -781,7 +781,7 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, mhydasdk::core::Spa
               {
                 ZeDate.ParseFormat(ZeDateStr,wxT("%Y-%m-%d %H:%M:%S"));
 
-                DEvent = new mhydasdk::core::DistributedEvent(ZeDate);
+                DEvent = new openfluid::core::DistributedEvent(ZeDate);
 
                 // read infos by event
 
@@ -1025,7 +1025,7 @@ bool IOManager::prepareOutputDir()
 // =====================================================================
 // =====================================================================
 
-bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialData,
+bool IOManager::saveResultsFromDef(openfluid::core::SpatialRepository *SpatialData,
                                           wxString ColSeparator, wxString CommentChar,
                                           AutoOutfileDef* Def, wxArrayString DTStrings,
                                           ExtraSimInfos ExSI)
@@ -1033,9 +1033,9 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
   wxString FileContents;
   wxString Filename;
-  std::vector<mhydasdk::core::HydroObject*> HOSet;
-  mhydasdk::core::SerieOfMHYDASScalarValue* Values;
-  mhydasdk::core::MHYDASVectorValue VValues;
+  std::vector<openfluid::core::HydroObject*> HOSet;
+  openfluid::core::SerieOfMHYDASScalarValue* Values;
+  openfluid::core::MHYDASVectorValue VValues;
   wxString ColsStr;
   int i,j,k,l;
   wxString NaNStr = wxT("!");
@@ -1083,7 +1083,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     // creating full list for SUs
     if (Def->ObjectsKind == wxT("SUout"))
     {
-      mhydasdk::core::SUMap::iterator SUit;
+      openfluid::core::SUMap::iterator SUit;
 
       for(SUit = SpatialData->getSUsCollection()->begin(); SUit != SpatialData->getSUsCollection()->end(); ++SUit)
       {
@@ -1095,7 +1095,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     // creating full list for RSs
     if (Def->ObjectsKind == wxT("RSout"))
     {
-      mhydasdk::core::RSMap::iterator RSit;
+      openfluid::core::RSMap::iterator RSit;
 
       for(RSit = SpatialData->getRSsCollection()->begin(); RSit != SpatialData->getRSsCollection()->end(); ++RSit)
       {
@@ -1107,7 +1107,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
     // creating full list for GUs
     if (Def->ObjectsKind == wxT("GUout"))
     {
-      mhydasdk::core::GUMap::iterator GUit;
+      openfluid::core::GUMap::iterator GUit;
 
       for(GUit = SpatialData->getGUsCollection()->begin(); GUit != SpatialData->getGUsCollection()->end(); ++GUit)
       {
@@ -1125,7 +1125,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
   // creating scalars column list if SaveAllVars
   if (Def->SaveAllVars && HOSet[0] != NULL)
   {
-    mhydasdk::core::SimulatedVarsMap::iterator Simit;
+    openfluid::core::SimulatedVarsMap::iterator Simit;
 
     for(Simit = HOSet[0]->getSimulatedVars()->begin(); Simit != HOSet[0]->getSimulatedVars()->end(); ++Simit)
     {
@@ -1234,7 +1234,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
   if (Def->SaveAllVars && HOSet[0] != NULL)
   {
-    mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
+    openfluid::core::SimulatedVectorVarsMap::iterator VSimit;
 
     for(VSimit = HOSet[0]->getSimulatedVectorVars()->begin(); VSimit != HOSet[0]->getSimulatedVectorVars()->end(); ++VSimit)
     {
@@ -1329,7 +1329,7 @@ bool IOManager::saveResultsFromDef(mhydasdk::core::SpatialRepository *SpatialDat
 
 
 
-bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI)
+bool IOManager::saveResults(openfluid::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI)
 {
   bool IsOK = true;
 
@@ -1374,7 +1374,7 @@ bool IOManager::saveResults(mhydasdk::core::CoreRepository *Data, RunConfig Conf
 // =====================================================================
 // =====================================================================
 
-bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, ExtraSimInfos ExSI, mhydasdk::base::SimulationInfo *SimInfo)
+bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo)
 {
 
 
@@ -1490,7 +1490,7 @@ bool IOManager::saveSimulationInfos(mhydasdk::core::CoreRepository *CoreData, Ex
 // =====================================================================
 
 
-bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
+bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
 {
 
   bool IsOK = true;
@@ -1519,15 +1519,15 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
     wxString NaNStr = wxT("!");
 
 
-    mhydasdk::core::SimulatedVarsMap::iterator Simit;
-    mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
+    openfluid::core::SimulatedVarsMap::iterator Simit;
+    openfluid::core::SimulatedVectorVarsMap::iterator VSimit;
 
-    mhydasdk::core::SUMap::iterator SUit;
-    mhydasdk::core::SurfaceUnit* SU;
-    mhydasdk::core::RSMap::iterator RSit;
-    mhydasdk::core::ReachSegment* RS;
-    mhydasdk::core::GUMap::iterator GUit;
-    mhydasdk::core::GroundwaterUnit* GU;
+    openfluid::core::SUMap::iterator SUit;
+    openfluid::core::SurfaceUnit* SU;
+    openfluid::core::RSMap::iterator RSit;
+    openfluid::core::ReachSegment* RS;
+    openfluid::core::GUMap::iterator GUit;
+    openfluid::core::GroundwaterUnit* GU;
 
     wxFile TFile;
 
@@ -1672,25 +1672,25 @@ bool IOManager::prepareTraceDir(mhydasdk::core::CoreRepository *Data)
 // =====================================================================
 
 
-bool IOManager::saveTrace(mhydasdk::core::CoreRepository *Data, int Step, wxDateTime DT)
+bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDateTime DT)
 {
 
   wxString Filename, Filecontent;
   wxString NaNStr = wxT("!");
 
-  mhydasdk::core::SimulatedVarsMap::iterator Simit;
-  mhydasdk::core::SimulatedVectorVarsMap::iterator VSimit;
-  mhydasdk::core::SerieOfMHYDASScalarValue* Values;
-  mhydasdk::core::SerieOfMHYDASVectorValue* VValues;
+  openfluid::core::SimulatedVarsMap::iterator Simit;
+  openfluid::core::SimulatedVectorVarsMap::iterator VSimit;
+  openfluid::core::SerieOfMHYDASScalarValue* Values;
+  openfluid::core::SerieOfMHYDASVectorValue* VValues;
 
-  mhydasdk::core::SUMap::iterator SUit;
-  mhydasdk::core::SurfaceUnit* SU;
-  mhydasdk::core::RSMap::iterator RSit;
-  mhydasdk::core::ReachSegment* RS;
-  mhydasdk::core::GUMap::iterator GUit;
-  mhydasdk::core::GroundwaterUnit* GU;
+  openfluid::core::SUMap::iterator SUit;
+  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::RSMap::iterator RSit;
+  openfluid::core::ReachSegment* RS;
+  openfluid::core::GUMap::iterator GUit;
+  openfluid::core::GroundwaterUnit* GU;
 
-  mhydasdk::core::MHYDASVectorValue* ZeVector;
+  openfluid::core::MHYDASVectorValue* ZeVector;
   int i;
 
   wxFile TFile;

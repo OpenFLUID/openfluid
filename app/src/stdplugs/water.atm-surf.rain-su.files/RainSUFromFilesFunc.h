@@ -6,9 +6,9 @@
 #ifndef __RAINSUFROMFILESFUNC_H__
 #define __RAINSUFROMFILESFUNC_H__
 
-#include "mhydasdk-base.h"
-#include "mhydasdk-core.h"
-#include "mhydasdk-tools.h"
+#include "openfluid-base.h"
+#include "openfluid-core.h"
+#include "openfluid-tools.h"
 
 
 // =====================================================================
@@ -26,11 +26,11 @@ DECLARE_PLUGIN_HOOKS;
 /**
 
 */
-class RainSUFromFilesFunction : public mhydasdk::base::PluggableFunction
+class RainSUFromFilesFunction : public openfluid::base::PluggableFunction
 {
   private:
 
-    mhydasdk::tools::DistributeInterpolate m_DataPool;
+    openfluid::tools::DistributeInterpolate m_DataPool;
     
     double m_Threshold;
     
@@ -46,17 +46,17 @@ class RainSUFromFilesFunction : public mhydasdk::base::PluggableFunction
     */
     ~RainSUFromFilesFunction();
 
-    bool initParams(mhydasdk::core::ParamsMap Params);
+    bool initParams(openfluid::core::ParamsMap Params);
 
     bool prepareData();
 
     bool checkConsistency();
 
-    bool initializeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    bool runStep(const mhydasdk::base::SimulationStatus* SimStatus);
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(const mhydasdk::base::SimulationInfo* SimInfo);
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
 

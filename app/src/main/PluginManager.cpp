@@ -18,7 +18,7 @@
 // =====================================================================
 
 
-PluginManager::PluginManager(mhydasdk::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv)
+PluginManager::PluginManager(openfluid::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
   mp_ExecMsgs = ExecMsgs;
@@ -36,11 +36,11 @@ PluginManager::~PluginManager()
 // =====================================================================
 // =====================================================================
 /*
-mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString PluginFilename)
+openfluid::base::PluggableFunction *PluginManager::getPluggableFunction(wxString PluginFilename)
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
   wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
-  mhydasdk::base::PluggableFunction* Plug = NULL;  
+  openfluid::base::PluggableFunction* Plug = NULL;  
   
  
   // library loading
@@ -52,7 +52,7 @@ mhydasdk::base::PluggableFunction *PluginManager::getPluggableFunction(wxString 
     {
      
       // hooks the handle proc
-    	mhydasdk::base::GetPluggableFunctionProc PlugProc = (mhydasdk::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT("GetMHYDASPluggableFunction"));
+    	openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT("GetMHYDASPluggableFunction"));
       
       if (PlugProc != NULL)
       {
@@ -84,7 +84,7 @@ PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
     if (PlugLib->HasSymbol(wxT(PLUGFUNCTION_PROC_NAME)) && PlugLib->HasSymbol(wxT(PLUGSIGNATURE_PROC_NAME)))
     {
       // hooks the handle proc
-      mhydasdk::base::GetSignatureProc SignProc = (mhydasdk::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));      
+      openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));      
       
       if (SignProc != NULL)
       {
@@ -92,7 +92,7 @@ PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
         
         Plug->Signature = SignProc();
 
-        mhydasdk::base::GetPluggableFunctionProc PlugProc = (mhydasdk::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT(PLUGFUNCTION_PROC_NAME));
+        openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT(PLUGFUNCTION_PROC_NAME));
         if (PlugProc != NULL)
         {
           Plug->Function = PlugProc();
@@ -136,7 +136,7 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
   }
   
 
-  mhydasdk::base::PluggableFunction* CurrentPlug;
+  openfluid::base::PluggableFunction* CurrentPlug;
 
   for (i=0;i<PluginFiles.GetCount();i++)
   {
@@ -183,8 +183,8 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
 // =====================================================================
 
 PluginContainer *PluginManager::getPlugin(wxString PluginName,
-                                          mhydasdk::base::FunctionTypeList ReqFuncType,
-                                          mhydasdk::core::CoreRepository* CoreData)
+                                          openfluid::base::FunctionTypeList ReqFuncType,
+                                          openfluid::core::CoreRepository* CoreData)
 {
 
   PluginContainer *Plug = buildPluginContainer(PluginName+wxT(".")+MHYDAS_PLUGINS_EXT);
