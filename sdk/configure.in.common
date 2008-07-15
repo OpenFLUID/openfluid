@@ -15,7 +15,7 @@ OPENFLUIDCONFIGFILE=openfluid-config
 
 
 MAJORVER=1
-MINORVER=2
+MINORVER=3
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
 EDGYDEPENDS="libwxbase2.6-dev (>= 2.6)"
