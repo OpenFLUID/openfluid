@@ -1,14 +1,14 @@
-# makefile for mhydas function
+# makefile for openfluid function
 
 CPP = g++
 WXLIBS = $(shell wx-config --libs base)
 WXFLAGS = $(shell wx-config --cxxflags base)
-MHYDASDKLIBS = $(shell openfluid-config --libs)
-MHYDASDKFLAGS = $(shell openfluid-config --cflags)
+OPENFLUIDLIBS = $(shell openfluid-config --libs)
+OPENFLUIDFLAGS = $(shell openfluid-config --cflags)
 BINFILE = water.surf.transfer-rs-exchange-gu.hayami-tank
 SRCFILESROOT = HayamiRSGUFunc
 
-INSTALLPATH = $(HOME)/.mhydas/engine/plugs
+INSTALLPATH = $(HOME)/.openfluid/engine/plugs
 OBJPATH = .
 BINPATH = .
 
@@ -33,9 +33,9 @@ endif
 
 
 all:	
-	$(CPP) -O3 -c $(SRCFILESROOT).cpp -o $(OBJPATH)/$(SRCFILESROOT).o -fPIC $(WXFLAGS) $(MHYDASDKFLAGS)
-	$(CPP) -O3 -c HayamiTools.cpp -o $(OBJPATH)/HayamiTools.o -fPIC $(WXFLAGS) $(MHYDASDKFLAGS)
-	$(CPP) $(OBJPATH)/$(SRCFILESROOT).o $(OBJPATH)/HayamiTools.o $(WXLIBS) $(MHYDASDKLIBS) -o $(BINPATH)/$(BINFILE).$(PLUGEXT) -shared $(LDFLAGS)
+	$(CPP) -O3 -c $(SRCFILESROOT).cpp -o $(OBJPATH)/$(SRCFILESROOT).o -fPIC $(WXFLAGS) $(OPENFLUIDFLAGS)
+	$(CPP) -O3 -c HayamiTools.cpp -o $(OBJPATH)/HayamiTools.o -fPIC $(WXFLAGS) $(OPENFLUIDFLAGS)
+	$(CPP) $(OBJPATH)/$(SRCFILESROOT).o $(OBJPATH)/HayamiTools.o $(WXLIBS) $(OPENFLUIDLIBS) -o $(BINPATH)/$(BINFILE).$(PLUGEXT) -shared $(LDFLAGS)
 
 clean:
 	rm -f $(BINPATH)/$(BINFILE).$(PLUGEXT)

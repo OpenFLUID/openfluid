@@ -5,7 +5,7 @@
 LANG=C
 
 usage_info() {
-  echo "MHYDAS configure script usage:\n"
+  echo "OpenFLUID build configure script usage:\n"
   echo "  ./configure [OPTION]\n"
   echo " available options:"
   echo "      --release      builds a release version" 
@@ -58,7 +58,7 @@ fi
 ############################
 
 
-#for being seen from mhydasdk-config script
+#for being seen from openfluid-config script
 export OPENFLUIDSDKPREFIX 
 
 
@@ -152,12 +152,12 @@ echo "F77 = $F77" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
-echo "# compile options for mhydas sdk" >> $OPTFILE
+echo "# compile options for openfluid sdk" >> $OPTFILE
 VARTOWRITE=
 VARTOWRITE=`$OPENFLUIDSDKPREFIX/bin/openfluid-config --libs`
-echo "MHYDASDKLIBS = $VARTOWRITE" >> $OPTFILE
+echo "OPENFLUIDLIBS = $VARTOWRITE" >> $OPTFILE
 VARTOWRITE=`$OPENFLUIDSDKPREFIX/bin/openfluid-config --cflags`
-echo "MHYDASDKFLAGS = $VARTOWRITE" >> $OPTFILE
+echo "OPENFLUIDFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE
 
@@ -254,23 +254,9 @@ echo "MINORVER = $MINORVER" >> $OPTFILE
 echo "RELEASESTATUS = $RELEASESTATUS" >> $OPTFILE
 
 
-echo "# package name root" >> $OPTFILE
-if [ "$BUILDVER" = "nightly" ]; then
-  echo "BINPACKNAMEROOT = mhydas-bin-$MAJORVER.$MINORVER-$MACHTYPE-nightly-`date +%Y%m%d`" >> $OPTFILE  
-fi
-
-if [ "$BUILDVER" = "development" ]; then
-  echo "BINPACKNAMEROOT = mhydas-bin-$MAJORVER.$MINORVER-$MACHTYPE-development-$SVNREV" >> $OPTFILE  
-fi
-
-
-if [ -z $BUILDVER ]; then
-  echo "BINPACKNAMEROOT = mhydas-bin-$MAJORVER.$MINORVER-$MACHTYPE" >> $OPTFILE  
-fi
-
 echo "" >> $OPTFILE
 echo "SDKPREFIX = $OPENFLUIDSDKPREFIX" >> $OPTFILE
-echo "MHYDASDKPATH = $OPENFLUIDSDKPREFIX/bin:$PATH" >> $OPTFILE
+echo "OPENFLUIDPATH = $OPENFLUIDSDKPREFIX/bin:$PATH" >> $OPTFILE
 echo "" >> $OPTFILE
 
 
@@ -326,64 +312,63 @@ echo "#include <wx/string.h>" >> $SETUPH
 echo "" >> $SETUPH
 
 echo "// App Name" >> $SETUPH
-echo "const wxString MHYDAS_APPNAME = wxT(\"$APPNAME\");" >> $SETUPH
+echo "const wxString OPENFLUID_APPNAME = wxT(\"$APPNAME\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
 
 
 echo "// Default directories" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_INDIR = wxT(\"$MDEF_INDIR\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_OUTDIR = wxT(\"$MDEF_OUTDIR\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_TRACEDIR = wxT(\"$MDEF_TRACEDIR\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_INDIR = wxT(\"$MDEF_INDIR\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_OUTDIR = wxT(\"$MDEF_OUTDIR\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_TRACEDIR = wxT(\"$MDEF_TRACEDIR\");" >> $SETUPH
 
 
 echo "" >> $SETUPH
 
 echo "// Default files" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_MODELFILE = wxT(\"$MDEF_MODELFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_RUNFILE = wxT(\"$MDEF_RUNFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_INDATAFILE = wxT(\"$MDEF_INDATAFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_OUTPUTCONFFILE = wxT(\"$MDEF_OUTPUTCONFFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_SUDEFSFILE = wxT(\"$MDEF_SUDEFSFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_RSDEFSFILE = wxT(\"$MDEF_RSDEFSFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_GUDEFSFILE = wxT(\"$MDEF_GUDEFSFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_SUPROPSFILE = wxT(\"$MDEF_SUPROPSFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_RSPROPSFILE = wxT(\"$MDEF_RSPROPSFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_GUPROPSFILE = wxT(\"$MDEF_GUPROPSFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_SUINIFILE = wxT(\"$MDEF_SUINIFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_RSINIFILE = wxT(\"$MDEF_RSINIFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_GUINIFILE = wxT(\"$MDEF_GUINIFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_RAINEVTFILE = wxT(\"$MDEF_RAINEVTFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_SURAINDISTRIFILE = wxT(\"$MDEF_SURAINDISTRIFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_RSRAINDISTRIFILE = wxT(\"$MDEF_RSRAINDISTRIFILE\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_SIMINFOFILE = wxT(\"$MDEF_SIMINFOFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_MODELFILE = wxT(\"$MDEF_MODELFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_RUNFILE = wxT(\"$MDEF_RUNFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_INDATAFILE = wxT(\"$MDEF_INDATAFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_OUTPUTCONFFILE = wxT(\"$MDEF_OUTPUTCONFFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_SUDEFSFILE = wxT(\"$MDEF_SUDEFSFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_RSDEFSFILE = wxT(\"$MDEF_RSDEFSFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_GUDEFSFILE = wxT(\"$MDEF_GUDEFSFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_SUPROPSFILE = wxT(\"$MDEF_SUPROPSFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_RSPROPSFILE = wxT(\"$MDEF_RSPROPSFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_GUPROPSFILE = wxT(\"$MDEF_GUPROPSFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_SUINIFILE = wxT(\"$MDEF_SUINIFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_RSINIFILE = wxT(\"$MDEF_RSINIFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_GUINIFILE = wxT(\"$MDEF_GUINIFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_RAINEVTFILE = wxT(\"$MDEF_RAINEVTFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_SURAINDISTRIFILE = wxT(\"$MDEF_SURAINDISTRIFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_RSRAINDISTRIFILE = wxT(\"$MDEF_RSRAINDISTRIFILE\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_SIMINFOFILE = wxT(\"$MDEF_SIMINFOFILE\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
 echo "// Default file extensions" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_OUPUTFILES_EXT = wxT(\"$MDEF_OUTPUTFILES_EXT\");" >> $SETUPH
-echo "const wxString MHYDAS_DEFAULT_TRACEFILES_EXT = wxT(\"$MDEF_TRACEFILES_EXT\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_OUPUTFILES_EXT = wxT(\"$MDEF_OUTPUTFILES_EXT\");" >> $SETUPH
+echo "const wxString OPENFLUID_DEFAULT_TRACEFILES_EXT = wxT(\"$MDEF_TRACEFILES_EXT\");" >> $SETUPH
 
 
 echo "" >> $SETUPH
 
 echo "// File formats" >> $SETUPH
-echo "const unsigned int MHYDAS_SUDEFSFILE_COLNBR = 8;" >> $SETUPH
-echo "const unsigned int MHYDAS_RSDEFSFILE_COLNBR = 10;" >> $SETUPH
-echo "const unsigned int MHYDAS_GUDEFSFILE_COLNBR = 4;" >> $SETUPH
-echo "const unsigned int MHYDAS_RAINDISTRIFILE_COLNBR = 2;" >> $SETUPH
+echo "const unsigned int OPENFLUID_SUDEFSFILE_COLNBR = 8;" >> $SETUPH
+echo "const unsigned int OPENFLUID_RSDEFSFILE_COLNBR = 10;" >> $SETUPH
+echo "const unsigned int OPENFLUID_GUDEFSFILE_COLNBR = 4;" >> $SETUPH
 
 echo "" >> $SETUPH
 
 echo "// Plugins extension" >> $SETUPH
-echo "const wxString MHYDAS_PLUGINS_EXT = wxT(\"$PLUGINEXT\");" >> $SETUPH
+echo "const wxString OPENFLUID_PLUGINS_EXT = wxT(\"$PLUGINEXT\");" >> $SETUPH
 
 echo "" >> $SETUPH
 
 echo "// Plugins dirs" >> $SETUPH
-echo "const wxString MHYDAS_PLUGINS_SUBDIR = wxT(\"$PLUGSUBDIR\");" >> $SETUPH
-echo "const wxString MHYDAS_PLUGINS_STDSYSDIR = wxT(\"$STDSYSDIR/$APPNAME/$PLUGSUBDIR\");" >> $SETUPH
+echo "const wxString OPENFLUID_PLUGINS_SUBDIR = wxT(\"$PLUGSUBDIR\");" >> $SETUPH
+echo "const wxString OPENFLUID_PLUGINS_STDSYSDIR = wxT(\"$STDSYSDIR/$APPNAME/$PLUGSUBDIR\");" >> $SETUPH
 echo "" >> $SETUPH
 
 
@@ -401,12 +386,6 @@ echo "" >> $SETUPH
   echo "const wxString SVN_REVISION = wxT(\"$SVNREV\");" >> $SETUPH
   echo "" >> $SETUPH
 #fi
-
-if [ $INPUT_RAIN_MMH -eq 1 ]; then
-  echo "// Input rain inn mm/h" >> $SETUPH
-  echo "#define INPUT_RAIN_MMH" >> $SETUPH
-  echo "" >> $SETUPH
-fi
 
 
 echo "#endif" >> $SETUPH

@@ -1,5 +1,5 @@
 #! /bin/sh
-# postrm script for libmhydasdk
+# postrm script for libopenfluid
 
 set -e
 

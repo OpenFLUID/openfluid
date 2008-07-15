@@ -68,7 +68,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
   FunctionConfig* FConf;
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RUNFILE).mb_str(wxConvUTF8)))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_RUNFILE).mb_str(wxConvUTF8)))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -80,7 +80,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Child == NULL)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing deltat."));
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing deltat."));
       return false;
     }
     else
@@ -95,7 +95,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong deltat format."));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong deltat format."));
         return false;
       }
     }
@@ -106,7 +106,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Child == NULL)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing period."));
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing period."));
       return false;
     }
     else
@@ -124,13 +124,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of begin attribute for period."));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong format of begin attribute for period."));
           return false;
         }
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));
         return false;
       }
 
@@ -148,13 +148,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong format of end attribute for period."));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong format of end attribute for period."));
           return false;
         }
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Missing end attribute for period."));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing end attribute for period."));
         return false;
       }
 
@@ -162,7 +162,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Config->EndDate < Config->BeginDate)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error. Wrong simulation period definition."));
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong simulation period definition."));
       return false;
     }
 
@@ -182,7 +182,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run configuration file (") + MHYDAS_DEFAULT_RUNFILE + wxT(") error."));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run configuration file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error."));
     return false;
   }
 
@@ -208,7 +208,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
   FunctionConfig* FConf;
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_MODELFILE).mb_str(wxConvUTF8)))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_MODELFILE).mb_str(wxConvUTF8)))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -283,7 +283,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error. Incorrect function definition."));
+        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + OPENFLUID_DEFAULT_MODELFILE + wxT(") error. Incorrect function definition."));
         return false;
       }
 
@@ -295,7 +295,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + MHYDAS_DEFAULT_MODELFILE + wxT(") error."));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + OPENFLUID_DEFAULT_MODELFILE + wxT(") error."));
     return false;
   }
 
@@ -342,13 +342,13 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
 
   int i;
 
-  wxString SUsFilename = mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_SUDEFSFILE);
+  wxString SUsFilename = mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_SUDEFSFILE);
   bool SUsFileExists = wxFileExists(SUsFilename);
 
-  wxString RSsFilename = mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_RSDEFSFILE);
+  wxString RSsFilename = mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_RSDEFSFILE);
   bool RSsFileExists = wxFileExists(RSsFilename);
 
-  wxString GUsFilename = mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_GUDEFSFILE);
+  wxString GUsFilename = mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_GUDEFSFILE);
   bool GUsFileExists = wxFileExists(GUsFilename);
 
 
@@ -369,10 +369,10 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
 
     //  checks that files has the right column number
     if (!SUsFileParser.loadFromFile(SUsFilename) ||
-        SUsFileParser.getColsCount() != MHYDAS_SUDEFSFILE_COLNBR ||
+        SUsFileParser.getColsCount() != OPENFLUID_SUDEFSFILE_COLNBR ||
         SUsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file parsing error"));
+      mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_SUDEFSFILE + wxT(" file parsing error"));
       return false;
     }
     else
@@ -410,7 +410,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
 
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_SUDEFSFILE + wxT(" file format error"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_SUDEFSFILE + wxT(" file format error"));
           return false;
         }
 
@@ -426,10 +426,10 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
     openfluid::tools::ColumnTextParser RSsFileParser(wxT("%"));
 
     if (!RSsFileParser.loadFromFile(RSsFilename) ||
-        RSsFileParser.getColsCount() != MHYDAS_RSDEFSFILE_COLNBR ||
+        RSsFileParser.getColsCount() != OPENFLUID_RSDEFSFILE_COLNBR ||
         RSsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file parsing error"));
+      mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_RSDEFSFILE + wxT(" file parsing error"));
       return false;
     }
     else
@@ -465,7 +465,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_RSDEFSFILE + wxT(" file format error"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_RSDEFSFILE + wxT(" file format error"));
           return false;
         }
       }
@@ -480,10 +480,10 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
     openfluid::tools::ColumnTextParser GUsFileParser(wxT("%"));
 
     if (!GUsFileParser.loadFromFile(GUsFilename) ||
-        GUsFileParser.getColsCount() != MHYDAS_GUDEFSFILE_COLNBR ||
+        GUsFileParser.getColsCount() != OPENFLUID_GUDEFSFILE_COLNBR ||
         GUsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file parsing error."));
+      mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_GUDEFSFILE + wxT(" file parsing error."));
       return false;
     }
     else
@@ -510,7 +510,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),MHYDAS_DEFAULT_GUDEFSFILE + wxT(" file format error."));
+          mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_GUDEFSFILE + wxT(" file format error."));
           return false;
         }
       }
@@ -853,7 +853,7 @@ bool IOManager::loadOutputConfig()
   m_AutoOutFiles.CommentChar = wxT("%");
   m_AutoOutFiles.DTFormat = wxT("%Y%m%dT%H%M%S");
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(MHYDAS_DEFAULT_OUTPUTCONFFILE).mb_str(wxConvUTF8)))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_OUTPUTCONFFILE).mb_str(wxConvUTF8)))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -917,7 +917,7 @@ bool IOManager::loadOutputConfig()
               if (StrArray[i].ToLong(&LongValue)) CurrentDef->SelectedObjectIDs.push_back((int)LongValue);
               else
               {
-                mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: objects selection ID (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+                mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: objects selection ID (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
                 return false;
 
               }
@@ -927,7 +927,7 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing spatial objects selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing spatial objects selection (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
 
@@ -958,7 +958,7 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing variables selection (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing variables selection (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
 
@@ -972,20 +972,20 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: unknown object type (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: unknown object type (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
           return false;
         }
        }
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
       return false;
     }
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file not found (") + MHYDAS_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file not found (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
     return false;
   }
 
@@ -1176,8 +1176,8 @@ bool IOManager::saveResultsFromDef(openfluid::core::SpatialRepository *SpatialDa
         // set filename suffix
         if (Def->FileSuffix.Length() > 0) Filename = Filename + wxT("_") + Def->FileSuffix;
 
-        //Filename = Filename + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
-        Filename = Filename + wxT(".scalars.") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+        //Filename = Filename + wxT(".") + OPENFLUID_DEFAULT_OUPUTFILES_EXT;
+        Filename = Filename + wxT(".scalars.") + OPENFLUID_DEFAULT_OUPUTFILES_EXT;
 
         FileContents.Clear();
 
@@ -1271,7 +1271,7 @@ bool IOManager::saveResultsFromDef(openfluid::core::SpatialRepository *SpatialDa
         {
           if (HOSet[i]->getSimulatedVectorVars()->find(Def->Vectors[j]) != HOSet[i]->getSimulatedVectorVars()->end())
           {
-            Filename = FilenameRoot + Def->Vectors[j] + wxT(".") + MHYDAS_DEFAULT_OUPUTFILES_EXT;
+            Filename = FilenameRoot + Def->Vectors[j] + wxT(".") + OPENFLUID_DEFAULT_OUPUTFILES_EXT;
 
             FileContents.Clear();
 
@@ -1447,7 +1447,7 @@ bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, E
 
 
     // write file to disk
-    wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE),wxFile::write);
+    wxFile SimInfoFile(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE),wxFile::write);
     SimInfoFile.Write(FileContents);
     SimInfoFile.Close();
 
@@ -1456,7 +1456,7 @@ bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, E
     wxString XMLFileContents = wxT("");
 
     XMLFileContents << wxT("<?xml version=\"1.0\" standalone=\"yes\"?>") << wxT("\n");
-    XMLFileContents << wxT("<mhydas>") << wxT("\n");
+    XMLFileContents << wxT("<openfluid>") << wxT("\n");
     XMLFileContents << wxT("  <simreport>") << wxT("\n");
 
     if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
@@ -1473,9 +1473,9 @@ bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, E
     else XMLFileContents << wxT("    <warnings count=\"0\" />") << wxT("\n");
 
     XMLFileContents << wxT("  </simreport>") << wxT("\n");
-    XMLFileContents << wxT("</mhydas>") << wxT("\n");
+    XMLFileContents << wxT("</openfluid>") << wxT("\n");
 
-    wxFile XMLSimInfoFile(mp_RunEnv->getOutputFullPath(MHYDAS_DEFAULT_SIMINFOFILE + wxT(".xml")),wxFile::write);
+    wxFile XMLSimInfoFile(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE + wxT(".xml")),wxFile::write);
     XMLSimInfoFile.Write(XMLFileContents);
     XMLSimInfoFile.Close();
   }
@@ -1550,7 +1550,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
 
         Filecontent << wxT("\n");
 
-        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
         TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
         TFile.Close();
@@ -1562,7 +1562,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
         for(VSimit = SU->getSimulatedVectorVars()->begin(); VSimit != SU->getSimulatedVectorVars()->end(); ++VSimit)
         {
           Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");
-          Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+          Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
           TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
           TFile.Write(Filecontent);
@@ -1593,7 +1593,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
 
         Filecontent << wxT("\n");
 
-        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
         TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
         TFile.Close();
@@ -1605,7 +1605,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
         for(VSimit = RS->getSimulatedVectorVars()->begin(); VSimit != RS->getSimulatedVectorVars()->end(); ++VSimit)
         {
           Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");
-          Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+          Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
           TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
           TFile.Write(Filecontent);
@@ -1636,7 +1636,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
 
         Filecontent << wxT("\n");
 
-        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
         TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
         TFile.Write(Filecontent);
         TFile.Close();
@@ -1648,7 +1648,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
         for(VSimit = GU->getSimulatedVectorVars()->begin(); VSimit != GU->getSimulatedVectorVars()->end(); ++VSimit)
         {
           Filecontent = wxT("% YEAR MONTH DAY HOUR MINUTE SECOND [values of vector ") + VSimit->first + wxT("]\n");
-          Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+          Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") + VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
           TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
           TFile.Write(Filecontent);
@@ -1716,7 +1716,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
 
       Filecontent << wxT("\n");
 
-      Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+      Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".scalars.") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
       TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
       TFile.Write(Filecontent);
       TFile.Close();
@@ -1729,7 +1729,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
       for(VSimit = SU->getSimulatedVectorVars()->begin(); VSimit != SU->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
-        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
 
@@ -1774,7 +1774,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
 
       Filecontent << wxT("\n");
 
-      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+      Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".scalars.") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
       TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
       TFile.Write(Filecontent);
       TFile.Close();
@@ -1788,7 +1788,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
       for(VSimit = RS->getSimulatedVectorVars()->begin(); VSimit != RS->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
-        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
 
@@ -1832,7 +1832,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
 
       Filecontent << wxT("\n");
 
-      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+      Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".scalars.") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
       TFile.Open(mp_RunEnv->getTraceFullPath(Filename),wxFile::write_append);
       TFile.Write(Filecontent);
       TFile.Close();
@@ -1845,7 +1845,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
       for(VSimit = GU->getSimulatedVectorVars()->begin(); VSimit != GU->getSimulatedVectorVars()->end(); ++VSimit)
       {
         VValues = VSimit->second;
-        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + MHYDAS_DEFAULT_TRACEFILES_EXT;
+        Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
 

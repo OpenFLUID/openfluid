@@ -1,8 +1,0 @@
-Package: libmhydasdk
-Version: 0.7.05
-Section: science
-Priority: optional
-Architecture: all
-Depends: libwxbase2.6-dev (>= 2.6), libmhydasdk (= 0.7.05)
-Maintainer: Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-Description: Mhydas development kit header

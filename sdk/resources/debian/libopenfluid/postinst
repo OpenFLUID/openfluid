@@ -1,5 +1,5 @@
 #! /bin/sh
-# postinst script for libmhydasdk
+# postinst script for libopenfluid
 
 set -e
 

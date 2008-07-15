@@ -20,13 +20,13 @@
 // =====================================================================
 
 
-IMPLEMENT_APP_CONSOLE(MHYDASApp);
+IMPLEMENT_APP_CONSOLE(OpenFLUIDApp);
 
 // =====================================================================
 // =====================================================================
 
 
-bool MHYDASApp::buildModel()
+bool OpenFLUIDApp::buildModel()
 {
   bool ExecStatus;
 
@@ -44,7 +44,7 @@ bool MHYDASApp::buildModel()
 // =====================================================================
 
 
-bool MHYDASApp::loadData()
+bool OpenFLUIDApp::loadData()
 {
   bool ExecStatus;
 
@@ -69,7 +69,7 @@ bool MHYDASApp::loadData()
 // =====================================================================
 
 
-bool MHYDASApp::checkConsistency()
+bool OpenFLUIDApp::checkConsistency()
 {
 
   bool ExecStatus;
@@ -91,7 +91,7 @@ bool MHYDASApp::checkConsistency()
 // =====================================================================
 
 
-bool MHYDASApp::runSimulation()
+bool OpenFLUIDApp::runSimulation()
 {
 
   bool ExecStatus;
@@ -119,7 +119,7 @@ bool MHYDASApp::runSimulation()
 // =====================================================================
 
 
-bool MHYDASApp::saveResults()
+bool OpenFLUIDApp::saveResults()
 {
 
   bool ExecStatus;
@@ -137,7 +137,7 @@ bool MHYDASApp::saveResults()
 // =====================================================================
 // =====================================================================
 
-bool MHYDASApp::saveSimulationReports()
+bool OpenFLUIDApp::saveSimulationReports()
 {
 
   bool ExecStatus;
@@ -161,7 +161,7 @@ bool MHYDASApp::saveSimulationReports()
 // =====================================================================
 
 
-void MHYDASApp::printlnExecStatus()
+void OpenFLUIDApp::printlnExecStatus()
 {
   if (!mp_ExecMsgs->isErrorFlag())
   {
@@ -177,7 +177,7 @@ void MHYDASApp::printlnExecStatus()
 // =====================================================================
 
 
-void MHYDASApp::printlnExecMessagesStats()
+void OpenFLUIDApp::printlnExecMessagesStats()
 {
   if (mp_ExecMsgs->isErrorFlag()) std::cout << "1 error, ";
   else  std::cout << "no error, ";
@@ -188,7 +188,7 @@ void MHYDASApp::printlnExecMessagesStats()
 // =====================================================================
 
 
-void MHYDASApp::printMHYDASInfos()
+void OpenFLUIDApp::printOpenFLUIDInfos()
 {
 
   int Width = 60;
@@ -233,7 +233,7 @@ void MHYDASApp::printMHYDASInfos()
 // =====================================================================
 // =====================================================================
 
-void MHYDASApp::printDataInfos()
+void OpenFLUIDApp::printDataInfos()
 {
   // int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT;
 
@@ -256,7 +256,7 @@ void MHYDASApp::printDataInfos()
 // =====================================================================
 // =====================================================================
 
-void MHYDASApp::printPluginsList()
+void OpenFLUIDApp::printPluginsList()
 {
 
   ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions();
@@ -283,7 +283,7 @@ void MHYDASApp::printPluginsList()
 
 
 
-void MHYDASApp::printPluginsHandledDataItemReport(openfluid::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat)
+void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat)
 {
   wxString TypeStr = wxT("");
 
@@ -340,7 +340,7 @@ void MHYDASApp::printPluginsHandledDataItemReport(openfluid::base::SignatureHand
 // =====================================================================
 
 
-void MHYDASApp::printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat)
+void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat)
 {
 
   int i;
@@ -392,7 +392,7 @@ void MHYDASApp::printPluginsHandledDataReport(openfluid::base::SignatureHandledD
 // =====================================================================
 // =====================================================================
 
-void MHYDASApp::printPluginsReport(bool IsXMLFormat)
+void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
 {
 
 
@@ -404,7 +404,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
   if (IsXMLFormat)
   {
     std::cout << "<?xml version=\"1.0\" standalone=\"yes\"?>" << std::endl;
-    std::cout << "<mhydas>" << std::endl;
+    std::cout << "<openfluid>" << std::endl;
     std::cout << "  <funcsreport>" << std::endl;
   }
 
@@ -478,7 +478,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
   if (IsXMLFormat)
   {
     std::cout << "  </funcsreport>" << std::endl;
-    std::cout << "</mhydas>" << std::endl;
+    std::cout << "</openfluid>" << std::endl;
   }
 
   std::cout.flush();
@@ -489,7 +489,7 @@ void MHYDASApp::printPluginsReport(bool IsXMLFormat)
 // =====================================================================
 // =====================================================================
 
-int MHYDASApp::stopAppReturn()
+int OpenFLUIDApp::stopAppReturn()
 {
   std::cout << std::endl;
   printlnExecMessagesStats();
@@ -519,7 +519,7 @@ int MHYDASApp::stopAppReturn()
 
 
 
-bool MHYDASApp::OnInit()
+bool OpenFLUIDApp::OnInit()
 {
   wxString TmpStr;
 
@@ -527,7 +527,7 @@ bool MHYDASApp::OnInit()
 
   m_OKToRun = true;
 
-  SetAppName(MHYDAS_APPNAME);
+  SetAppName(OPENFLUID_APPNAME);
 
   mp_RunEnv = new RuntimeEnvironment(wxPathOnly(GetExecutablePath()));
 
@@ -554,7 +554,7 @@ bool MHYDASApp::OnInit()
   {
     if (Parser.Found(wxT("f")))
     {
-      printMHYDASInfos();
+      printOpenFLUIDInfos();
       printPluginsList();
     }
 
@@ -581,7 +581,7 @@ bool MHYDASApp::OnInit()
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);
     if (Parser.Found(wxT("no-varname-check"))) mp_RunEnv->setCheckVarNames(false);
 
-	  printMHYDASInfos();
+	  printOpenFLUIDInfos();
 	  printEnvInfos();
 
   }
@@ -592,7 +592,7 @@ bool MHYDASApp::OnInit()
 // =====================================================================
 // =====================================================================
 
-void MHYDASApp::printEnvInfos()
+void OpenFLUIDApp::printEnvInfos()
 {
   std::cout << "Input dir: " << _C(mp_RunEnv->getInputDir()) << std::endl;
   if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << "Output dir: " << _C(mp_RunEnv->getOutputDir()) << std::endl;
@@ -608,7 +608,7 @@ void MHYDASApp::printEnvInfos()
 // =====================================================================
 // =====================================================================
 
-int MHYDASApp::OnRun()
+int OpenFLUIDApp::OnRun()
 {
 
 
@@ -693,7 +693,7 @@ int MHYDASApp::OnRun()
 // =====================================================================
 // =====================================================================
 
-int MHYDASApp::OnExit()
+int OpenFLUIDApp::OnExit()
 {
 
 }
