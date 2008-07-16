@@ -594,8 +594,12 @@ bool OpenFLUIDApp::OnInit()
 
 void OpenFLUIDApp::printEnvInfos()
 {
+  wxArrayString FunctionsPaths = mp_RunEnv->getPluginsPaths();
+  int i;
+
   std::cout << "Input dir: " << _C(mp_RunEnv->getInputDir()) << std::endl;
   if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << "Output dir: " << _C(mp_RunEnv->getOutputDir()) << std::endl;
+  for (i=0;i<FunctionsPaths.Count();i++) std::cout << "Functions search path: " << _C(FunctionsPaths[i]) << std::endl;
   if ((mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) && (mp_RunEnv->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
   if (mp_RunEnv->isTraceMode()) std::cout << "Trace mode enabled" << std::endl;
   if (mp_RunEnv->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
