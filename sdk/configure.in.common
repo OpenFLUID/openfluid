@@ -18,7 +18,7 @@ MAJORVER=1
 MINORVER=3
 
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
-EDGYDEPENDS="libwxbase2.6-dev (>= 2.6)"
+EDGYDEPENDS="libwxbase2.8-dev (>= 2.8)"
 DAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6)"
 PACKSECTION="science"
 PACKPRIORITY="optional"

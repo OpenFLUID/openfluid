@@ -63,7 +63,7 @@ PACKSECTION="science"
 PACKPRIORITY="optional"
 
 
-ENGEDGYDEPENDS="libwxbase2.6-dev (>= 2.6), libopenfluid (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
+ENGEDGYDEPENDS="libwxbase2.8-dev (>= 2.8), libopenfluid (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
 ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), libopenfluid (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
 ENGPACKDESC="OpenFLUID modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
 ENGPACKROOT=$EXEFILEROOT
