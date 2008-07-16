@@ -58,7 +58,7 @@ ubuntu-edgy-packages: all
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
 	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(ENGPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGEDGYDEPENDS)\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(ENGPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Package: $(ENGPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGEDGYDEPENDS)\nReplaces: mhydas, mhydas-engine\nMaintainer: $(PACKMAINTAINER)\nDescription: $(ENGPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
@@ -72,7 +72,7 @@ ubuntu-edgy-packages: all
 	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/copyright
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)/copyright
-	@echo "Package: $(FUNCSPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))\nReplaces: mhydas\nMaintainer: $(PACKMAINTAINER)\nDescription: $(FUNCSPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
+	@echo "Package: $(FUNCSPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))\nReplaces: mhydas, mhydas-engine\nMaintainer: $(PACKMAINTAINER)\nDescription: $(FUNCSPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
@@ -101,7 +101,7 @@ ubuntu-dapper-packages: all
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Depends: $(ENGDAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@echo "Replaces: mhydas" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo "Replaces: mhydas, mhydas-engine" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Description: $(ENGPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
@@ -125,7 +125,6 @@ ubuntu-dapper-packages: all
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo "Depends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Replaces: mhydas" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo "Description: $(FUNCSPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
