@@ -105,7 +105,7 @@ ubuntu-edgy-packages: all openfluid-conf-file docs
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
 	@cp resources/debian/libopenfluid/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nReplaces: mhydasdk-libs\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -129,7 +129,7 @@ ubuntu-edgy-packages: all openfluid-conf-file docs
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 #	@cp resources/debian/openfluid-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nReplaces: mhydasdk-dev\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
@@ -159,6 +159,7 @@ ubuntu-dapper-packages: all openfluid-conf-file docs
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Depends: $(DAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo "Replaces: mhydasdk-libs" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control	
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Description: $(LIBPACKDESC)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -192,6 +193,7 @@ ubuntu-dapper-packages: all openfluid-conf-file docs
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Depends: $(DAPPERDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo "Replaces: mhydasdk-dev" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Description: $(DEVPACKDESC)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control

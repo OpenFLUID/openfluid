@@ -25,8 +25,8 @@ PACKPRIORITY="optional"
 LIBPACKDESC="OpenFLUID SDK library\\\n This library is used by the OpenFLUID engine. It is also needed for pluggable function development."
 DEVPACKDESC="OpenFLUID SDK headers"
 
-LIBPACKROOT=$SDKLIBROOT-libs
-DEVPACKROOT=$SDKLIBROOT-dev
+LIBPACKROOT=lib$SDKLIBROOT
+DEVPACKROOT=lib$SDKLIBROOT-dev
 
 INSTSDKLIBDIR=lib
 INSTSDKINCDIR=include/openfluid
