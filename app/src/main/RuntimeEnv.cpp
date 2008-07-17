@@ -35,7 +35,7 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
 
 
   // when development mode (__DEVEL__),
-  // use the plugins built on the same development cycle (located in mainappdir/plugs)
+  // use the plugins built on the same development cycle (located in mainappdir/functions)
   #ifdef __LINUX__
   #ifdef __DEVEL__
     m_PlugsDirs.Add(m_AppDir + wxFILE_SEP_PATH + OPENFLUID_PLUGINS_SUBDIR);

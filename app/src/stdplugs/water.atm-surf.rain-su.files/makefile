@@ -8,7 +8,7 @@ OPENFLUIDFLAGS = $(shell openfluid-config --cflags)
 BINFILE = water.atm-surf.rain-su.files
 SRCFILESROOT = RainSUFromFilesFunc
 
-INSTALLPATH = $(HOME)/.openfluid/engine/plugs
+INSTALLPATH = $(HOME)/.openfluid/engine/functions
 OBJPATH = .
 BINPATH = .
 
