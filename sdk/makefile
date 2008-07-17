@@ -90,56 +90,7 @@ for-app-dev: sdk openfluid-conf-file
 	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(DEVPREFIX)/$(INSTSDKBINDIR)
 	
 
-ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
-ubuntu-edgy-packages: all openfluid-conf-file docs
-	@echo ""	
-	@mkdir -p $(BASEPACKDIR)
-	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
-	@echo "==== Building packages ($(LOCALDIR)) ===="
-	@echo "Building library package"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
-	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
-	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp resources/debian/libopenfluid/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(LIBPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS)\nReplaces: mhydasdk-libs\nMaintainer: $(PACKMAINTAINER)\nDescription: $(LIBPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(LIBPACKNAME))
-	@echo "Building development package"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-	@cp src/openfluid-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
-	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
-	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
-	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
-	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
-	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
-	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
-	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-#	@cp resources/debian/openfluid-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(DEVPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(EDGYDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))\nReplaces: mhydasdk-dev\nMaintainer: $(PACKMAINTAINER)\nDescription: $(DEVPACKDESC).\n .\n This package is built using revision $(SVNREV)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(DEVPACKNAME))
-
-
-ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
-ubuntu-dapper-packages: all openfluid-conf-file docs	
+ubuntu-packages: #all openfluid-conf-file docs	
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
@@ -158,7 +109,8 @@ ubuntu-dapper-packages: all openfluid-conf-file docs
 	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
-	@echo "Depends: $(DAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo -n "Depends: " >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
+	@echo $(DEPENDS) >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control	
 	@echo "Replaces: mhydasdk-libs" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control	
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Description: $(LIBPACKDESC)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -192,7 +144,9 @@ ubuntu-dapper-packages: all openfluid-conf-file docs
 	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
-	@echo "Depends: $(DAPPERDEPENDS), $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo -n "Depends: " >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo -n $(DEPENDS) >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
+	@echo ", $(LIBPACKROOT) (=$(MAJORVER).$(MINORVER)-$(SVNREV))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Replaces: mhydasdk-dev" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Description: $(DEVPACKDESC)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
@@ -205,6 +159,13 @@ ubuntu-dapper-packages: all openfluid-conf-file docs
 	@sed 's/^$$/./' ./resources/debian/common/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(DEVPACKNAME))
 
+ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
+ubuntu-dapper-packages: DEPENDS = "$(DAPPERDEPENDS)"
+ubuntu-dapper-packages: ubuntu-packages	
+
+ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
+ubuntu-edgy-packages: DEPENDS = "$(EDGYDEPENDS)"
+ubuntu-edgy-packages: ubuntu-packages	
 
 
 

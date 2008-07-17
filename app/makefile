@@ -44,63 +44,33 @@ purge: clean
 	@rm -f $(BASEBINDIR)
 
 
-ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
-ubuntu-edgy-packages: all
+
+
+
+ubuntu-packages: all
 	@echo ""	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)	
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
-	@echo "==== Building packages ($(LOCALDIR)) ===="
+	@echo "==== Building packages for ($(LOCALDIR)) ===="
 	@echo "Building package $(ENGPACKNAME)"
+	@echo toto
+	@echo "$(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin"	
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin	
+	@echo la
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin/$(EXEFILE)	
-	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
-	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/copyright
-	@echo "Package: $(ENGPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGEDGYDEPENDS)\nReplaces: mhydas, mhydas-engine\nMaintainer: $(PACKMAINTAINER)\nDescription: $(ENGPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(ENGPACKNAME))
-	@echo "Building package $(FUNCSPACKNAME)"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/copyright
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)/copyright
-	@echo "Package: $(FUNCSPACKROOT)\nVersion: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)\nSection: $(PACKSECTION)\nPriority: $(PACKPRIORITY)\nArchitecture: $(PACKARCH)\nDepends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))\nReplaces: mhydas, mhydas-engine\nMaintainer: $(PACKMAINTAINER)\nDescription: $(FUNCSPACKDESC)\n .\n This package is built using revision $(SVNREV)." > $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(FUNCSPACKNAME))
-
-
-ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
-ubuntu-dapper-packages: all
-	@echo ""	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)
-	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
-	@echo "==== Building packages ($(LOCALDIR)) ===="
-	@echo "Building package"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
+	@echo ici
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
 	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin/$(EXEFILE)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
 	@cp resources/debian/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/copyright
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/copyright	
 	@echo "Package: $(ENGPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
-	@echo "Depends: $(ENGDAPPERDEPENDS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo -n "Depends: " >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
+	@echo  $(ENGDEPENDS) >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control	
 	@echo "Replaces: mhydas, mhydas-engine" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@echo "Description: $(ENGPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
@@ -135,6 +105,15 @@ ubuntu-dapper-packages: all
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control			
 	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(FUNCSPACKNAME))
+
+ubuntu-edgy-packages: LOCALDIR = "ubuntu-edgy"
+ubuntu-edgy-packages: ENGDEPENDS = "$(ENGEDGYDEPENDS)"
+ubuntu-edgy-packages: ubuntu-packages
+	
+
+ubuntu-dapper-packages: LOCALDIR = "ubuntu-dapper"
+ubuntu-dapper-packages: ENGDEPENDS = "$(ENGDAPPERDEPENDS)"
+ubuntu-dapper-packages: ubuntu-packages
 
 
 win32-packages: all
