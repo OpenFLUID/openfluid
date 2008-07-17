@@ -12,8 +12,14 @@ SETUPH=setup.h
 
 
 SDKCONFIGTOOL=openfluid-config
+OPENFLUIDSDKPREFIX=/var/tmp/openfluid
+
+
 
 PLUGSUBDIR=plugs
+
+
+BUILDTOOLS="make g++ wx-config dpkg-deb cp mkdir $OPENFLUIDSDKPREFIX/bin/$SDKCONFIGTOOL"
 
 APPNAME=openfluid
 EXEFILEROOT=openfluid-engine
