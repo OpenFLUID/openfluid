@@ -30,7 +30,7 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
   Splits the passed string int a wxStringArray, splitted by the passed SepString
   \param[in] StrToSplit the string to split
   \param[in] SepString the string used to split
-  \param[in] ReturnsEmpty if true, the empty strings are returned  
+  \param[in] ReturnsEmpty if true, the empty strings are returned
   \return a wxArraySTring
 */
 wxArrayString SplitString(const wxString StrToSplit, const wxString SepString,  bool ReturnsEmpty = false);
@@ -46,6 +46,9 @@ wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr);
 bool IsVectorNamedVariable(wxString Name);
 
 wxString GetVectorNamedVariableName(wxString Name);
+
+wxString RemoveTrailingSlashes(wxString Str);
+
 
 
 #endif

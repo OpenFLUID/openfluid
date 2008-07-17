@@ -107,7 +107,7 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
         else FileList.Add(FoundFile);
         Continue = DirManager.GetNext(&FoundFile);
       }
-    }  
+    }
   }
 
   return FileList;
@@ -123,12 +123,12 @@ wxArrayString SplitString(const wxString StrToSplit, const wxString SepString, b
   // using wxStringTokenizer class
 
   wxArrayString SplitParts;
-  
-  
+
+
   wxStringTokenizerMode TokensMode = wxTOKEN_DEFAULT;
-  if (ReturnsEmpty) TokensMode = wxTOKEN_RET_EMPTY_ALL;     
-  
-  wxStringTokenizer Tokenizer(StrToSplit,SepString,TokensMode);  
+  if (ReturnsEmpty) TokensMode = wxTOKEN_RET_EMPTY_ALL;
+
+  wxStringTokenizer Tokenizer(StrToSplit,SepString,TokensMode);
 
   while (Tokenizer.HasMoreTokens())
   {
@@ -144,24 +144,24 @@ wxArrayString SplitString(const wxString StrToSplit, const wxString SepString, b
 
 wxString GenerateSimulationID()
 {
-  wxString BaseStr = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZ");  
+  wxString BaseStr = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
   wxString IDStr = wxT("");
 
   IDStr = wxDateTime::Now().Format(wxT("%Y%m%d")) + wxT("-");
-  
+
   srand(time(NULL));
-  
-  
+
+
   for (int i=0;i<6;i++)
   {
-    IDStr << BaseStr[rand() % 26]; 
+    IDStr << BaseStr[rand() % 26];
   }
 
-  
-  
+
+
   return IDStr;
-  
+
 }
 
 
@@ -171,22 +171,22 @@ wxString GenerateSimulationID()
 wxString FormatExecutionMessage(wxString Message)
 {
   wxString Formatted = wxT("");
-  
+
   wxArrayString Parts;
-   
+
   Parts = SplitString(Message,wxT(";"));
 
   Formatted = Parts[2] + wxT(" (message sent by ") + Parts[0];
-  
+
   if (Parts[1] != wxT("-1"))
   {
-    Formatted = Formatted + wxT(", at step ") + Parts[1];   
+    Formatted = Formatted + wxT(", at step ") + Parts[1];
   }
-  
+
   Formatted = Formatted + wxT(")");
-  
+
   return Formatted;
-  
+
 }
 
 
@@ -198,18 +198,18 @@ bool EmptyDirectoryRecursively(const char* DirPath)
   DIR *Directory, *TmpDir;
   struct dirent *Entry;
   char Path[PATH_MAX];
-  
-  
+
+
   // check if directory can be open
-  
+
   Directory = opendir(DirPath);
   if (Directory == NULL)
-  {  
+  {
     return false;
   }
 
   // empty directory recursively
-  while ((Entry = readdir(Directory)) != NULL) 
+  while ((Entry = readdir(Directory)) != NULL)
   {
     if (strcmp(Entry->d_name, ".") && strcmp(Entry->d_name, ".."))
     {
@@ -222,20 +222,20 @@ bool EmptyDirectoryRecursively(const char* DirPath)
       if (TmpDir = opendir(Path))
       {
         EmptyDirectoryRecursively(Path);
-        closedir(TmpDir);        
+        closedir(TmpDir);
         rmdir(Path);
       }
       else
-      {  
+      {
         remove(Path);
-      }  
+      }
 
     }
 
   }
   closedir(Directory);
 
-  return true;   
+  return true;
 }
 
 // =====================================================================
@@ -251,9 +251,9 @@ wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr)
 // =====================================================================
 
 
-bool IsVectorNamedVariable(wxString Name) 
-{ 
-  return Name.Right(2) == wxT("[]"); 
+bool IsVectorNamedVariable(wxString Name)
+{
+  return Name.Right(2) == wxT("[]");
 }
 
 
@@ -262,18 +262,29 @@ bool IsVectorNamedVariable(wxString Name)
 
 wxString GetVectorNamedVariableName(wxString Name)
 {
-    
-  if (Name.Right(2) == wxT("[]")) return Name.Mid(0,Name.Length()-2); 
+
+  if (Name.Right(2) == wxT("[]")) return Name.Mid(0,Name.Length()-2);
   else return Name;
-  
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
+wxString RemoveTrailingSlashes(wxString Str)
+{
+  while (Str.EndsWith(wxString(wxFILE_SEP_PATH)))
+  {
+    Str.RemoveLast();
+  }
 
+  return Str;
 
+}
+
+// =====================================================================
+// =====================================================================
 
 
 
