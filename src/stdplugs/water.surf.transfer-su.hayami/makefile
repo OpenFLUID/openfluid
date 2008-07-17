@@ -8,7 +8,7 @@ OPENFLUIDFLAGS = $(shell openfluid-config --cflags)
 BINFILE = water.surf.transfer-su.hayami
 SRCFILESROOT = HayamiSUFunc
 
-INSTALLPATH = $(HOME)/.openfluid/engine/plugs
+INSTALLPATH = $(HOME)/.openfluid/engine/functions
 OBJPATH = .
 BINPATH = .
 

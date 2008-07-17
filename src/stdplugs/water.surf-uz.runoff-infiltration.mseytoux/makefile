@@ -8,7 +8,7 @@ OPENFLUIDFLAGS = $(shell openfluid-config --cflags)
 BINFILE = water.surf-uz.runoff-infiltration.mseytoux
 SRCFILESROOT = MSeytouxFunc
 
-INSTALLPATH = $(HOME)/.openfluid/engine/plugs
+INSTALLPATH = $(HOME)/.openfluid/engine/functions
 OBJPATH = .
 BINPATH = .
 

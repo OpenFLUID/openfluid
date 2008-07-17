@@ -16,7 +16,7 @@ OPENFLUIDSDKPREFIX=/var/tmp/openfluid
 
 
 
-PLUGSUBDIR=plugs
+PLUGSUBDIR=functions
 
 
 BUILDTOOLS="make g++ wx-config dpkg-deb cp mkdir $OPENFLUIDSDKPREFIX/bin/$SDKCONFIGTOOL"
