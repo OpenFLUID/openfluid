@@ -57,9 +57,20 @@ fi
 
 ############################
 
+. ../check-tools.in
+
+check_tools $BUILDTOOLS
+if [ $? -eq 127 ]
+then
+  echo "missing required tool. aborting."
+  exit 1
+fi
+
+
 
 #for being seen from openfluid-config script
 export OPENFLUIDSDKPREFIX 
+
 
 
 OPTFILE=makeopts.inc
