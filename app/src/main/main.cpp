@@ -568,9 +568,9 @@ bool OpenFLUIDApp::OnInit()
   }
   else
   {
-    if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(TmpStr);
-    if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(TmpStr);
-    if (Parser.Found(wxT("m"),&TmpStr)) mp_RunEnv->setTraceDir(TmpStr);
+    if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(RemoveTrailingSlashes(TmpStr));
+    if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(RemoveTrailingSlashes(TmpStr));
+    if (Parser.Found(wxT("m"),&TmpStr)) mp_RunEnv->setTraceDir(RemoveTrailingSlashes(TmpStr));
 
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
