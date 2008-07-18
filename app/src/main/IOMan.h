@@ -39,7 +39,7 @@ WX_DECLARE_LIST(FunctionConfig, FunctionConfigsList);
 struct ModelConfig
 {
   int DeltaT;
-  
+
   wxString SimulationID;
 
   FunctionConfigsList FuncConfigs;
@@ -50,12 +50,12 @@ struct ModelConfig
 struct RunConfig
 {
   int DeltaT;
-  
+
   wxString SimulationID;
 
   wxDateTime BeginDate;
-  
-  wxDateTime EndDate;  
+
+  wxDateTime EndDate;
 
 };
 
@@ -111,7 +111,7 @@ class IOManager
 {
   private:
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
-    
+
     RuntimeEnvironment* mp_RunEnv;
 
     openfluid::core::SUDownstreamCode getSUDownstreamCode(wxString Code);
@@ -120,8 +120,7 @@ class IOManager
 
     bool m_ClearedOuputDir;
 
-    bool prepareOutputDir();
-    
+
 
 
     bool saveResultsFromDef(openfluid::core::SpatialRepository *SpatialData,
@@ -129,12 +128,12 @@ class IOManager
                             AutoOutfileDef* Def, wxArrayString DTStrings,
                             ExtraSimInfos ExSI);
 
-    
+
     bool loadDistributedDataFile(wxString Filename, openfluid::core::SpatialRepository *SpatialData);
 
     bool loadDistributedEventsFile(wxString Filename, openfluid::core::SpatialRepository *SpatialData);
 
-    
+
 
   public:
     /**
@@ -147,9 +146,9 @@ class IOManager
     */
     ~IOManager();
 
-    
-    bool loadRunConfig(RunConfig* Config);    
-    
+
+    bool loadRunConfig(RunConfig* Config);
+
     /**
       Loads model engine configuration
       \param[out] Configuration definition to populate
@@ -177,19 +176,19 @@ class IOManager
     bool loadRainDistribution(openfluid::core::CoreRepository *Data);
 
     bool loadDistributedData(openfluid::core::SpatialRepository *SpatialData);
-    
+
     bool loadDistributedEvents(openfluid::core::SpatialRepository *SpatialData);
 
-    
+    bool prepareOutputDir();
     //bool saveResults(openfluid::core::CoreRepository *Data, ExtraSimInfos ExSI);
     bool saveResults(openfluid::core::CoreRepository *Data, RunConfig Config, int TimeStepsCount, ExtraSimInfos ExSI);
 
-    
+
     bool prepareTraceDir(openfluid::core::CoreRepository *Data);
-    
+
     bool saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDateTime DT);
 
-    bool saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo);    
+    bool saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo);
 
 };
 
