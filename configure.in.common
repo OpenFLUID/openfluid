@@ -74,5 +74,12 @@ ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), libopenfluid (= 
 ENGPACKDESC="OpenFLUID modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
 ENGPACKROOT=$EXEFILEROOT
 
-FUNCSPACKDESC="Simulation functions for the OpenFLUID modelling platform engine\\\n This Functions are developed by the LISAH."
-FUNCSPACKROOT=$ENGPACKROOT-lisahfuncs
+FUNCSPACKROOT=$APPNAME-functions
+
+STDFUNCSPACKDESC="Standard simulation functions for the OpenFLUID modelling platform engine."
+STDFUNCSPACKROOT=$FUNCSPACKROOT-standard
+STDFUNCSPACKSRCPATH=src/functions/standard
+
+MHYDASFUNCSPACKDESC="MHYDAS simulation functions for the OpenFLUID modelling platform engine."
+MHYDASFUNCSPACKROOT=$FUNCSPACKROOT-mhydas
+MHYDASFUNCSPACKSRCPATH=src/functions/mhydas
