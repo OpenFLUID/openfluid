@@ -6,7 +6,7 @@ export PATH := $(OPENFLUIDPATH):$(PATH)
 export OPENFLUIDSDKPREFIX := $(SDKPREFIX)
 
 
-all: main stdplugs run-script
+all: main functions run-script
 
 .PHONY: main stdplugs
 
@@ -24,15 +24,15 @@ main:
 	@(cd src/main && $(MAKE))
 
 
-stdplugs:
+functions:
 	@echo ""
 	@echo "==== Compiling plugins ===="
-	@(cd src/stdplugs && $(MAKE))
+	@(cd src/$(PLUGSUBDIR) && $(MAKE))
 
 
 clean:
 	@(cd src/main && $(MAKE) clean)
-	@(cd src/stdplugs && $(MAKE) clean)
+	@(cd src/$(PLUGSUBDIR) && $(MAKE) clean)
 
 
 doc:
