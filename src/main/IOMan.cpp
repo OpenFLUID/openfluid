@@ -1334,36 +1334,32 @@ bool IOManager::saveResults(openfluid::core::CoreRepository *Data, RunConfig Con
   bool IsOK = true;
 
 
-  if (prepareOutputDir())
+  int i;
+  wxString Filename;
+  AutoOutfileDef* CurrentDef;
+
+  wxArrayString DTStrings;
+  wxDateTime CurrentDate = Config.BeginDate;
+
+  // preparing and formatting datetime column(s)
+  for (i=0;i<TimeStepsCount;i++)
   {
-    int i;
-    wxString Filename;
-    AutoOutfileDef* CurrentDef;
-
-    wxArrayString DTStrings;
-    wxDateTime CurrentDate = Config.BeginDate;
-
-    // preparing and formatting datetime column(s)
-    for (i=0;i<TimeStepsCount;i++)
-    {
-      DTStrings.Add(CurrentDate.Format(m_AutoOutFiles.DTFormat));
-      CurrentDate = CurrentDate + wxTimeSpan(0,0,Config.DeltaT,0);
-    }
+    DTStrings.Add(CurrentDate.Format(m_AutoOutFiles.DTFormat));
+    CurrentDate = CurrentDate + wxTimeSpan(0,0,Config.DeltaT,0);
+  }
 
 
-    // saving data matching each definition
-    for (i=0;i<m_AutoOutFiles.Defs.size();i++)
-    {
-      CurrentDef = m_AutoOutFiles.Defs[i];
+  // saving data matching each definition
+  for (i=0;i<m_AutoOutFiles.Defs.size();i++)
+  {
+    CurrentDef = m_AutoOutFiles.Defs[i];
 
-      saveResultsFromDef(Data->getSpatialData(),
-                         m_AutoOutFiles.ColSeparator,m_AutoOutFiles.CommentChar,
-                         CurrentDef,DTStrings,ExSI);
-
-    }
+    saveResultsFromDef(Data->getSpatialData(),
+        m_AutoOutFiles.ColSeparator,m_AutoOutFiles.CommentChar,
+        CurrentDef,DTStrings,ExSI);
 
   }
-  else IsOK = false;
+
 
 
 
@@ -1732,7 +1728,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
         Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
         Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
-
+        bool prepareOutputDir();
         if (VValues->size() > Step)
         {
           ZeVector = &(VValues->at(Step));
