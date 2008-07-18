@@ -46,19 +46,17 @@ purge: clean
 
 
 
-
-ubuntu-packages: all
+ubuntu-prepack:
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)	
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)
 	@echo "==== Building packages for ($(LOCALDIR)) ===="
+
+
+ubuntu-packages: ubuntu-prepack ubuntu-packages-functions-mhydas ubuntu-packages-functions-standard
 	@echo "Building package $(ENGPACKNAME)"
-	@echo toto
-	@echo "$(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin"	
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin	
-	@echo la
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
-	@echo ici
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN
 	@cp $(BASEBINDIR)/$(EXEFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/bin/$(EXEFILE)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/usr/share/doc/$(ENGPACKROOT)
@@ -82,29 +80,52 @@ ubuntu-packages: all
 	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control			
 	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(ENGPACKNAME)/DEBIAN/control
 	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(ENGPACKNAME))
-	@echo "Building package $(FUNCSPACKNAME)"
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)
-	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(PLUGSUBDIR)/* $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/copyright
-	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/usr/share/doc/$(FUNCSPACKROOT)/copyright
-	@echo "Package: $(FUNCSPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Depends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo "Description: $(FUNCSPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " This package is built using OpenFLUID-engine revision $(SVNREV)." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control			
-	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(FUNCSPACKNAME)/DEBIAN/control
-	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(FUNCSPACKNAME))
+
+ubuntu-packages-functions-mhydas:
+	@echo "Building package $(MHYDASFUNCSPACKNAME)"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/usr/share/doc/$(MHYDASFUNCSPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN	
+	@../copy-functions.sh $(BASEMAINDIR)/$(MHYDASFUNCSPACKSRCPATH) $(BASEBINDIR)/$(PLUGSUBDIR) $(PLUGINEXT) $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/copyright
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/usr/share/doc/$(MHYDASFUNCSPACKROOT)/copyright
+	@echo "Package: $(MHYDASFUNCSPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Depends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo "Description: $(MHYDASFUNCSPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(MHYDASFUNCSPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(MHYDASFUNCSPACKNAME))
+
+ubuntu-packages-functions-standard:
+	@echo "Building package $(STDFUNCSPACKNAME)"
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/usr/share/doc/$(STDFUNCSPACKROOT)
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN
+	@../copy-functions.sh $(BASEMAINDIR)/$(STDFUNCSPACKSRCPATH) $(BASEBINDIR)/$(PLUGSUBDIR) $(PLUGINEXT) $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)$(STDSYSDIR)/$(APPNAME)/$(PLUGSUBDIR)	
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/copyright
+	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/usr/share/doc/$(STDFUNCSPACKROOT)/copyright
+	@echo "Package: $(STDFUNCSPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Section: $(PACKSECTION)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Priority: $(PACKPRIORITY)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Architecture: $(PACKARCH)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Depends: $(ENGPACKROOT) (= $(MAJORVER).$(MINORVER)-$(SVNREV)$(RELEASESTATUS))" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Maintainer: $(PACKMAINTAINER)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo "Description: $(STDFUNCSPACKDESC)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo " CHANGELOG:" >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@echo " ." >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control			
+	@sed 's/^$$/./' ./resources/doc/changelog | sed 's/^/ /' >> $(BASEPACKDIR)/$(LOCALDIR)/$(STDFUNCSPACKNAME)/DEBIAN/control
+	@(cd $(BASEPACKDIR)/$(LOCALDIR) && dpkg-deb --build $(STDFUNCSPACKNAME))
 
 ubuntu-edgy-packages: LOCALDIR = "ubuntu-edgy"
 ubuntu-edgy-packages: ENGDEPENDS = "$(ENGEDGYDEPENDS)"
@@ -114,6 +135,8 @@ ubuntu-edgy-packages: ubuntu-packages
 ubuntu-dapper-packages: LOCALDIR = "ubuntu-dapper"
 ubuntu-dapper-packages: ENGDEPENDS = "$(ENGDAPPERDEPENDS)"
 ubuntu-dapper-packages: ubuntu-packages
+
+
 
 
 win32-packages: all
