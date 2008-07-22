@@ -33,6 +33,21 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   m_EnableTrace = false;
   m_CheckVarNames = true;
 
+  mp_FuncEnv = new openfluid::base::FunctionEnvironment();
+
+  mp_FuncEnv->setValue(wxT("dir.input"),m_InputDir);
+  mp_FuncEnv->setValue(wxT("dir.output"),m_OutputDir);
+  mp_FuncEnv->setValue(wxT("dir.trace"),m_TraceDir);
+
+  mp_FuncEnv->setValue(wxT("mode.cleanoutput"),m_ClearOutputDir);
+  mp_FuncEnv->setValue(wxT("mode.quiet"),m_QuietRun);
+  mp_FuncEnv->setValue(wxT("mode.verbose"),m_VerboseRun);
+  mp_FuncEnv->setValue(wxT("mode.saveresults"),m_WriteResults);
+  mp_FuncEnv->setValue(wxT("mode.writereport"),m_WriteSimReport);
+  mp_FuncEnv->setValue(wxT("mode.trace"),m_EnableTrace);
+  mp_FuncEnv->setValue(wxT("mode.checkvarnames"),m_CheckVarNames);
+
+
 
   // when development mode (__DEVEL__),
   // use the plugins built on the same development cycle (located in mainappdir/functions)
@@ -111,16 +126,5 @@ wxString RuntimeEnvironment::getPluginFullPath(wxString Filename)
 
 // =====================================================================
 // =====================================================================
-
-openfluid::base::FunctionEnvironment RuntimeEnvironment::createFunctionEnvironment()
-{
-  openfluid::base::FunctionEnvironment FuncEnv;
-
-  FuncEnv.InputDir = m_InputDir;
-  FuncEnv.OutputDir = m_OutputDir;
-
-  return FuncEnv;
-
-}
 
 
