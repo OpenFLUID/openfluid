@@ -28,7 +28,7 @@ PluggableFunction::PluggableFunction()
   mp_InternalCoreData = NULL;
 
   mp_ExecMsgs = NULL;
-  
+
 }
 
 // =====================================================================
@@ -36,9 +36,9 @@ PluggableFunction::PluggableFunction()
 
 
 PluggableFunction::~PluggableFunction()
-{ 
-  
-  
+{
+
+
 }
 
 
@@ -48,26 +48,26 @@ PluggableFunction::~PluggableFunction()
 
 bool PluggableFunction::OPENFLUID_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it;
     it = HO->getSimulatedVars()->find(VarName);
-    
+
     if (it != HO->getSimulatedVars()->end())
-    {    
+    {
       openfluid::core::SerieOfScalarValue* ValuesVect  = it->second;
-      
+
       if (Step < ValuesVect->size())
       {
         *Value = ValuesVect->at(Step);
         return true;
       }
-      else return false;  
+      else return false;
     }
-    else return false;  
+    else return false;
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 
@@ -76,26 +76,26 @@ bool PluggableFunction::OPENFLUID_GetDistributedVarValue(openfluid::core::HydroO
 
 bool PluggableFunction::OPENFLUID_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it;
     it = HO->getSimulatedVectorVars()->find(VarName);
-    
+
     if (it != HO->getSimulatedVectorVars()->end())
-    {    
+    {
       openfluid::core::SerieOfVectorValue* ValuesVect  = it->second;
-      
+
       if (Step < ValuesVect->size())
       {
         *Value = ValuesVect->at(Step);
         return true;
       }
-      else return false;  
+      else return false;
     }
-    else return false;  
+    else return false;
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 // =====================================================================
@@ -104,21 +104,21 @@ bool PluggableFunction::OPENFLUID_GetDistributedVarValue(openfluid::core::HydroO
 bool PluggableFunction::OPENFLUID_GetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue *Value)
 {
   // NOTICE: the checking of properties costs execution time
-  
-  if (HO != NULL)  
+
+  if (HO != NULL)
   {
-    openfluid::core::PropertiesMap::iterator it; 
+    openfluid::core::PropertiesMap::iterator it;
     it = HO->getProperties()->find(PropName);
-    
+
     if (it != HO->getProperties()->end())
     {
       *Value = it->second;
-      return true;  
+      return true;
     }
     else return false;
-    
+
   }
-  else return false;  
+  else return false;
 }
 
 // =====================================================================
@@ -129,17 +129,17 @@ bool PluggableFunction::OPENFLUID_IsDistributedPropertyExists(openfluid::core::H
 
   if (HO != NULL)
    {
-     openfluid::core::PropertiesMap::iterator it; 
+     openfluid::core::PropertiesMap::iterator it;
      it = HO->getProperties()->find(PropName);
 
      if (it != HO->getProperties()->end())
      {
-       return true;            
+       return true;
      }
-     else return false;              
+     else return false;
    }
-   else return false;  
-  
+   else return false;
+
 }
 
 
@@ -148,43 +148,43 @@ bool PluggableFunction::OPENFLUID_SetDistributedProperty(openfluid::core::HydroO
 
   if (HO != NULL)
    {
-     openfluid::core::PropertiesMap::iterator it; 
+     openfluid::core::PropertiesMap::iterator it;
      it = HO->getProperties()->find(PropName);
 
      if (it != HO->getProperties()->end())
      {
        it->second = Value;
-       return true;            
+       return true;
      }
-     else return false;              
+     else return false;
    }
-   else return false;  
+   else return false;
 
-  
+
 }
 
 
 // =====================================================================
 // =====================================================================
 
-    
+
 bool PluggableFunction::OPENFLUID_GetDistributedIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::ScalarValue *Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::PropertiesMap::iterator it; 
+    openfluid::core::PropertiesMap::iterator it;
     it = HO->getIniConditions()->find(IniCondName);
-    
+
     if (it != HO->getIniConditions()->end())
     {
       *Value = it->second;
-      return true;  
+      return true;
     }
     else return false;
-    
+
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 // =====================================================================
@@ -198,18 +198,18 @@ bool PluggableFunction::OPENFLUID_IsDistributedIniConditionExists(openfluid::cor
 
   if (HO != NULL)
    {
-     openfluid::core::PropertiesMap::iterator it; 
+     openfluid::core::PropertiesMap::iterator it;
      it = HO->getIniConditions()->find(IniCondName);
 
      if (it != HO->getIniConditions()->end())
      {
-       return true;            
+       return true;
      }
-     else return false;              
+     else return false;
    }
-   else return false;  
+   else return false;
 
-  
+
 }
 
 
@@ -219,7 +219,7 @@ bool PluggableFunction::OPENFLUID_IsDistributedIniConditionExists(openfluid::cor
 
 bool PluggableFunction::OPENFLUID_IsDistributedScalarVarExists(openfluid::core::HydroObject *HO, wxString VarName)
 {
-  return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));  
+  return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));
 }
 
 bool PluggableFunction::OPENFLUID_IsDistributedVarExists(openfluid::core::HydroObject *HO, wxString VarName)
@@ -233,7 +233,7 @@ bool PluggableFunction::OPENFLUID_IsDistributedVarExists(openfluid::core::HydroO
 
 bool PluggableFunction::OPENFLUID_IsDistributedVectorVarExists(openfluid::core::HydroObject *HO, wxString VarName)
 {
-  return (HO != NULL && (HO->getSimulatedVectorVars()->find(VarName) != HO->getSimulatedVectorVars()->end()));  
+  return (HO != NULL && (HO->getSimulatedVectorVars()->find(VarName) != HO->getSimulatedVectorVars()->end()));
 }
 
 // =====================================================================
@@ -244,18 +244,18 @@ bool PluggableFunction::OPENFLUID_IsDistributedScalarVarValueExists(openfluid::c
 {
   if (HO != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it;
     it = HO->getSimulatedVars()->find(VarName);
 
     if (it != HO->getSimulatedVars()->end())
     {
       openfluid::core::SerieOfScalarValue* ValuesVect = it->second;
       if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
-      else return false;            
+      else return false;
     }
-    else return false;              
+    else return false;
   }
-  else return false;  
+  else return false;
 }
 
 
@@ -273,18 +273,18 @@ bool PluggableFunction::OPENFLUID_IsDistributedVectorVarValueExists(openfluid::c
 {
   if (HO != NULL)
   {
-    openfluid::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it;
     it = HO->getSimulatedVectorVars()->find(VarName);
 
     if (it != HO->getSimulatedVectorVars()->end())
     {
       openfluid::core::SerieOfVectorValue* ValuesVect = it->second;
       if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
-      else return false;            
+      else return false;
     }
-    else return false;              
+    else return false;
   }
-  else return false;  
+  else return false;
 }
 
 
@@ -292,22 +292,22 @@ bool PluggableFunction::OPENFLUID_IsDistributedVectorVarValueExists(openfluid::c
 // =====================================================================
 
 
-    
+
 bool PluggableFunction::OPENFLUID_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::ScalarValue Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it;
     it = HO->getSimulatedVars()->find(VarName);
-    
+
     if (it != HO->getSimulatedVars()->end())
-    {    
+    {
       it->second->push_back(Value);
       return true;
     }
-    else return false;  
+    else return false;
   }
-  else return false;  
+  else return false;
 
 }
 
@@ -317,19 +317,19 @@ bool PluggableFunction::OPENFLUID_AppendDistributedVarValue(openfluid::core::Hyd
 
 bool PluggableFunction::OPENFLUID_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it;
     it = HO->getSimulatedVectorVars()->find(VarName);
-    
+
     if (it != HO->getSimulatedVectorVars()->end())
-    {    
+    {
       it->second->push_back(Value);
       return true;
     }
-    else return false;  
+    else return false;
   }
-  else return false;  
+  else return false;
 
 }
 
@@ -337,28 +337,28 @@ bool PluggableFunction::OPENFLUID_AppendDistributedVarValue(openfluid::core::Hyd
 // =====================================================================
 
 
-    
+
 bool PluggableFunction::OPENFLUID_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it; 
+    openfluid::core::SimulatedVarsMap::iterator it;
     it = HO->getSimulatedVars()->find(VarName);
-    
+
     if (it != HO->getSimulatedVars()->end())
-    {    
+    {
       openfluid::core::SerieOfScalarValue* ValuesVect = it->second;
       if (Step < ValuesVect->size())
       {
         ValuesVect->at(Step) = Value;
         return true;
       }
-      else return false;  
+      else return false;
     }
-    else return false;  
+    else return false;
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 // =====================================================================
@@ -366,25 +366,25 @@ bool PluggableFunction::OPENFLUID_SetDistributedVarValue(openfluid::core::HydroO
 
 bool PluggableFunction::OPENFLUID_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue Value)
 {
-  if (HO != NULL)  
+  if (HO != NULL)
   {
-    openfluid::core::SimulatedVectorVarsMap::iterator it; 
+    openfluid::core::SimulatedVectorVarsMap::iterator it;
     it = HO->getSimulatedVectorVars()->find(VarName);
-    
+
     if (it != HO->getSimulatedVectorVars()->end())
-    {    
+    {
       openfluid::core::SerieOfVectorValue* ValuesVect = it->second;
       if (Step < ValuesVect->size())
       {
         ValuesVect->at(Step) = Value;
         return true;
       }
-      else return false;  
+      else return false;
     }
-    else return false;  
+    else return false;
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 // =====================================================================
@@ -395,34 +395,34 @@ bool PluggableFunction::OPENFLUID_SetDistributedVarValue(openfluid::core::HydroO
 bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, double *Value)
 {
   wxString TmpStr;
-  
+
   if (Params.find(ParamName) != Params.end())
   {
     TmpStr = Params[ParamName];
-    
+
     return TmpStr.ToDouble(Value);
-    
+
   }
-  else return false;  
+  else return false;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-    
+
 bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, long *Value)
 {
   wxString TmpStr;
-  
+
   if (Params.find(ParamName) != Params.end())
   {
     TmpStr = Params[ParamName];
 
     return TmpStr.ToLong(Value);
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 
@@ -435,17 +435,17 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
   wxString TmpStr;
   bool IsOK = true;
   double TmpValue;
-  
+
   if (Params.find(ParamName) != Params.end())
   {
     TmpStr = Params[ParamName];
-    IsOK = TmpStr.ToDouble(&TmpValue);    
+    IsOK = TmpStr.ToDouble(&TmpValue);
     if (IsOK) *Value = (float)TmpValue;
-    
+
     return IsOK;
-    
+
   }
-  else return false;  
+  else return false;
 }
 
 // =====================================================================
@@ -458,17 +458,17 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
   wxString TmpStr;
   bool IsOK = true;
   long TmpValue;
-  
+
   if (Params.find(ParamName) != Params.end())
   {
     TmpStr = Params[ParamName];
-    IsOK = TmpStr.ToLong(&TmpValue);    
+    IsOK = TmpStr.ToLong(&TmpValue);
     if (IsOK) *Value = (int)TmpValue;
-    
+
     return IsOK;
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 
@@ -479,22 +479,22 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
 bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value)
 {
   wxString TmpStr;
-  
+
   if (Params.find(ParamName) != Params.end())
   {
     TmpStr = Params[ParamName];
     *Value = TmpStr;
     return true;
   }
-  else return false;  
-  
+  else return false;
+
 }
 
 
 // =====================================================================
 // =====================================================================
 
-    
+
 bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values)
 {
 	wxString TmpStr;
@@ -511,11 +511,11 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
 		while (TmpTkz.HasMoreTokens() )
 		{
 			TmpToken = TmpTkz.GetNextToken();
-			(*Values).push_back(TmpToken);      
-		}        
+			(*Values).push_back(TmpToken);
+		}
 		return true;
 	}
-	else return false;  
+	else return false;
 
 }
 
@@ -527,28 +527,28 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
 {
   std::vector<wxString> StrVect;
   double TmpValue;
-  
-  // gets the param as a vector of string  
+
+  // gets the param as a vector of string
   bool IsOK = OPENFLUID_GetFunctionParam(Params,ParamName,&StrVect);
 
   // clears the double values vector
   (*Values).clear();
-  
+
   int i=0;
-  
+
   while (IsOK && i < StrVect.size())
-  {    
-    IsOK = IsOK && StrVect[i].ToDouble(&TmpValue);    
-    
+  {
+    IsOK = IsOK && StrVect[i].ToDouble(&TmpValue);
+
     // if conversion is OK, add the value and continue
     if (IsOK) Values->push_back(TmpValue);
     else (*Values).clear();
-    
+
     i++;
-  }   
-  
+  }
+
   return IsOK;
-  
+
 }
 
 // =====================================================================
@@ -559,28 +559,28 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
 {
   std::vector<wxString> StrVect;
   long TmpValue;
-  
-  // gets the param as a vector of string  
+
+  // gets the param as a vector of string
   bool IsOK = OPENFLUID_GetFunctionParam(Params,ParamName,&StrVect);
 
   // clears the double values vector
   (*Values).clear();
-  
+
   int i=0;
-  
+
   while (IsOK && i < StrVect.size())
-  {    
-    IsOK = IsOK && StrVect[i].ToLong(&TmpValue);    
-    
+  {
+    IsOK = IsOK && StrVect[i].ToLong(&TmpValue);
+
     // if conversion is OK, add the value and continue
     if (IsOK) Values->push_back(TmpValue);
     else (*Values).clear();
-    
+
     i++;
-  }   
-  
+  }
+
   return IsOK;
-  
+
 }
 
 // =====================================================================
@@ -588,9 +588,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Pa
 
 bool PluggableFunction::OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl)
 {
-  
+
   HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
-  
+
   return true;
 }
 
@@ -603,7 +603,7 @@ void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wx
 {
   mp_ExecMsgs->addWarning(Sender,TimeStep,WarningMsg);
 }
-    
+
 
 // =====================================================================
 // =====================================================================
@@ -638,7 +638,8 @@ void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, wxString WarningMs
 
 void PluggableFunction::OPENFLUID_GetEnvironmentInputDir(wxString *Directory)
 {
-  *Directory = m_FunctionEnv.InputDir;
+//  *Directory = m_FunctionEnv.InputDir;
+  mp_FunctionEnv->getValue(wxT("dir.input"),Directory);
 }
 
 // =====================================================================
@@ -647,7 +648,8 @@ void PluggableFunction::OPENFLUID_GetEnvironmentInputDir(wxString *Directory)
 
 void PluggableFunction::OPENFLUID_GetEnvironmentOutputDir(wxString *Directory)
 {
-  *Directory = m_FunctionEnv.OutputDir;
+//  *Directory = m_FunctionEnv.OutputDir;
+  mp_FunctionEnv->getValue(wxT("dir.output"),Directory);
 }
 
 

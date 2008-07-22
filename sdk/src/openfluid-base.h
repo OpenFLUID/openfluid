@@ -55,6 +55,7 @@
 #include "base/PlugFunction.h"
 #include "base/SIFactors.h"
 #include "base/ExecMsgs.h"
+#include "base/FunctionEnv.h"
 
 
 
@@ -65,6 +66,7 @@ class DLLEXPORT ColumnFileParser;
 class DLLEXPORT SimulationStatus;
 class DLLEXPORT ExecutionMessages;
 class DLLEXPORT PluggableFunction;
+class DLLEXPORT FunctionEnvironment;
 
 
 } } // namespace openfluid::base

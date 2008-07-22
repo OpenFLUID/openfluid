@@ -29,7 +29,9 @@ COREOBJ=$(OBJDIR)/core/ValueFactory.o \
 
 BASEOBJ=$(OBJDIR)/base/SimStatus.o \
     $(OBJDIR)/base/PlugFunction.o \
-    $(OBJDIR)/base/ExecMsgs.o
+    $(OBJDIR)/base/ExecMsgs.o \
+    $(OBJDIR)/base/FunctionEnv.o
+        
 
 TOOLSOBJ= $(OBJDIR)/tools/Tools.o \
     $(OBJDIR)/tools/ColTextParser.o \

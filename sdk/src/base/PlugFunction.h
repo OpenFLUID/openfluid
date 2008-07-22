@@ -29,6 +29,7 @@
 #include "openfluid-core.h"
 #include "SimStatus.h"
 #include "ExecMsgs.h"
+#include "FunctionEnv.h"
 
 
 // compilation directives for shared libs linkage
@@ -718,15 +719,6 @@ struct Signature
 
 };
 
-// =====================================================================
-// =====================================================================
-
-struct FunctionEnvironment
-{
-  wxString InputDir;
-  wxString OutputDir;
-};
-
 
 
 // =====================================================================
@@ -762,7 +754,7 @@ class PluggableFunction : public wxObject
     /**
       Function execution environment
     */
-    openfluid::base::FunctionEnvironment m_FunctionEnv;
+    const openfluid::base::FunctionEnvironment* mp_FunctionEnv;
 
 
     /**
@@ -977,7 +969,7 @@ class PluggableFunction : public wxObject
 
     bool setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
-    bool setFunctionEnvironment(openfluid::base::FunctionEnvironment FuncEnv) { m_FunctionEnv = FuncEnv; };
+    bool setFunctionEnvironment(openfluid::base::FunctionEnvironment* FuncEnv) { mp_FunctionEnv = FuncEnv; };
 
     /**
       Initializes function parameters of the function, given as a hash map. Called by the kernel.
