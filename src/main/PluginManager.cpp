@@ -162,7 +162,7 @@ PluginContainer *PluginManager::getPlugin(wxString PluginName,
     {
       Plug->Function->setDataRepository(CoreData);
       Plug->Function->setExecutionMessages(mp_ExecMsgs);
-      Plug->Function->setFunctionEnvironment(mp_RunEnv->createFunctionEnvironment());
+      Plug->Function->setFunctionEnvironment(mp_RunEnv->getFunctionEnvironment());
       return Plug;
     }
   }
