@@ -8,7 +8,7 @@ export OPENFLUIDSDKPREFIX := $(SDKPREFIX)
 
 all: main functions run-script
 
-.PHONY: main stdplugs
+.PHONY: main functions
 
 
 run-script:
