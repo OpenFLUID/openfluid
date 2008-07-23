@@ -74,7 +74,7 @@ RainSUFromFilesFunction::~RainSUFromFilesFunction()
 bool RainSUFromFilesFunction::initParams(openfluid::core::ParamsMap Params)
 {
 
-  OPENFLUID_GetFunctionParam(Params,wxT("threshold"),&m_Threshold);
+  OPENFLUID_GetFunctionParameter(Params,wxT("threshold"),&m_Threshold);
 
   return true;
 }
@@ -113,7 +113,7 @@ bool RainSUFromFilesFunction::initializeRun(const openfluid::base::SimulationInf
 
   wxString InputDir;
 
-  OPENFLUID_GetEnvironmentInputDir(&InputDir);
+  OPENFLUID_GetRunEnvironment(wxT("dir.input"),&InputDir);
 
   m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("SUraindistri.dat"),openfluid::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
 
@@ -149,7 +149,7 @@ bool RainSUFromFilesFunction::runStep(const openfluid::base::SimulationStatus* S
 
       if (isnan(MSValue) || MSValue < m_Threshold) MSValue = 0;
 
-      OPENFLUID_AppendDistributedVarValue(SU,wxT("water.atm-surf.H.rain"),MSValue);
+      OPENFLUID_AppendVariable(SU,wxT("water.atm-surf.H.rain"),MSValue);
     }
     else
     {
