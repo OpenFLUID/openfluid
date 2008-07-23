@@ -780,9 +780,9 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the requested variable
       \param[out] Value the value of the requested variable
     */
-    bool OPENFLUID_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value);
+    bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value);
 
-    bool OPENFLUID_GetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value);
+    bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value);
 
     /**
       Gets a distributed property for a spatial object
@@ -790,14 +790,14 @@ class PluggableFunction : public wxObject
       \param[in] PropName the name of the requested property
       \param[out] Value the value of the requested property
     */
-    bool OPENFLUID_GetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue *Value);
+    bool OPENFLUID_GetProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue *Value);
 
     /**
       Returns true if a distributed property exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] PropName the name of the queried variable
     */
-    bool OPENFLUID_IsDistributedPropertyExists(openfluid::core::HydroObject *HO, wxString PropName);
+    bool OPENFLUID_IsPropertyExists(openfluid::core::HydroObject *HO, wxString PropName);
 
     /**
       Sets a distributed property for a spatial object
@@ -805,7 +805,7 @@ class PluggableFunction : public wxObject
       \param[in] PropName the name of the property to modify
       \param[in] Value the new value of the property
     */
-    bool OPENFLUID_SetDistributedProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue Value);
+    bool OPENFLUID_SetProperty(openfluid::core::HydroObject *HO, wxString PropName, openfluid::core::ScalarValue Value);
 
 
 
@@ -815,14 +815,14 @@ class PluggableFunction : public wxObject
       \param[in] IniCondName the name of the requested initial condition
       \param[out] Value the value of the requested initial condition
     */
-    bool OPENFLUID_GetDistributedIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::ScalarValue *Value);
+    bool OPENFLUID_GetIniCondition(openfluid::core::HydroObject *HO, wxString IniCondName, openfluid::core::ScalarValue *Value);
 
     /**
       Returns true if a distributed initial condition exists, false otherwise
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] IniCondName the name of the queried variable
     */
-    bool OPENFLUID_IsDistributedIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName);
+    bool OPENFLUID_IsIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName);
 
 
     /**
@@ -830,11 +830,11 @@ class PluggableFunction : public wxObject
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable
     */
-    bool OPENFLUID_IsDistributedVarExists(openfluid::core::HydroObject *HO, wxString VarName);
+    bool OPENFLUID_IsVariableExists(openfluid::core::HydroObject *HO, wxString VarName);
 
-    bool OPENFLUID_IsDistributedScalarVarExists(openfluid::core::HydroObject *HO, wxString VarName);
+    bool OPENFLUID_IsScalarVariableExists(openfluid::core::HydroObject *HO, wxString VarName);
 
-    bool OPENFLUID_IsDistributedVectorVarExists(openfluid::core::HydroObject *HO, wxString VarName);
+    bool OPENFLUID_IsVectorVariableExists(openfluid::core::HydroObject *HO, wxString VarName);
 
 
    /**
@@ -843,11 +843,11 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the requested variable
       \param[in] Step the time step for the value of the variable
     */
-    bool OPENFLUID_IsDistributedVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
+    bool OPENFLUID_IsVariableExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
-    bool OPENFLUID_IsDistributedScalarVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
+    bool OPENFLUID_IsScalarVariableExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
-    bool OPENFLUID_IsDistributedVectorVarValueExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
+    bool OPENFLUID_IsVectorVariableExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
     /**
       Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
@@ -855,9 +855,9 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the variable
       \param[in] Value the added value of the variable
     */
-    bool OPENFLUID_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::ScalarValue Value);
+    bool OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::ScalarValue Value);
 
-    bool OPENFLUID_AppendDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value);
+    bool OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value);
 
     /**
       Sets a distributed variable value for a spatial object at a time step
@@ -866,9 +866,9 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the variable
       \param[in] Value the added value of the variable
     */
-    bool OPENFLUID_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue Value);
+    bool OPENFLUID_SetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue Value);
 
-    bool OPENFLUID_SetDistributedVarValue(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue Value);
+    bool OPENFLUID_SetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue Value);
 
     /**
       Gets a function parameter from the parameters set, as a double
@@ -876,7 +876,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, double *Value);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, double *Value);
 
     /**
       Gets a function parameter value from the parameters set, as a long int
@@ -884,7 +884,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, long *Value);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, long *Value);
 
     /**
       Gets a function parameter from the parameters set, as a float
@@ -892,7 +892,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, float *Value);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, float *Value);
 
     /**
       Gets a function parameter value from the parameters set, as an int
@@ -900,7 +900,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, int *Value);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, int *Value);
 
     /**
       Gets a function parameter value from the parameters set, as a string
@@ -908,7 +908,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Value the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
 
 
@@ -918,7 +918,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Values the vector of values of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<wxString> *Values);
 
 
     /**
@@ -928,7 +928,7 @@ class PluggableFunction : public wxObject
       \param[out] Values the vector of values of the requested parameter
     */
 
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
 
 
     /**
@@ -937,7 +937,7 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Values the vector of values of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParam(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);
 
     bool OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl);
 
@@ -949,9 +949,9 @@ class PluggableFunction : public wxObject
 
     void OPENFLUID_RaiseError(wxString Sender, wxString WarningMsg);
 
-    void OPENFLUID_GetEnvironmentInputDir(wxString *Directory);
+    void OPENFLUID_GetRunEnvironment(wxString Key, wxString *Value);
 
-    void OPENFLUID_GetEnvironmentOutputDir(wxString *Directory);
+    void OPENFLUID_GetRunEnvironment(wxString Key, bool *Value);
 
 
   public:
