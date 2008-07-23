@@ -45,11 +45,11 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
 
     bool m_UseUpSUOutput;
 
-    openfluid::core::IDVectorValueMap m_Input;
+    openfluid::core::IDVectorValuePtrMap m_Input;
 
     openfluid::core::IDFloatMap m_CurrentInputSum;
 
-    openfluid::core::IDVectorValueMap m_HeightDischarge;
+    openfluid::core::IDVectorValuePtrMap m_HeightDischarge;
 
     bool computeWaterHeightFromDischarge(int ID, float Discharge, float *Height);
 

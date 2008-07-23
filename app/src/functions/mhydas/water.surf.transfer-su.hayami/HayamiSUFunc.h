@@ -39,7 +39,7 @@ class HayamiSUFunction : public openfluid::base::PluggableFunction
 
     IDKernelMap m_SUKernel;
 
-    openfluid::core::IDVectorValueMap m_Input;
+    openfluid::core::IDVectorValuePtrMap m_Input;
 
     openfluid::core::IDScalarValueMap m_CurrentInputSum;
 
