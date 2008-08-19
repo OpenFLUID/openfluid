@@ -1,7 +1,7 @@
 /**
   \file InterpDTSerie.h
-  \brief 
-  
+  \brief
+
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
@@ -42,33 +42,34 @@ class DistributeInterpolate : public openfluid::tools::Tools
     IndexedSeriesMap m_InterpIndexedData;
     UnitsDTSeriesMap m_UnitsData;
     UnitsIndexedSeriesMap m_UnitsIndexedData;
-    
-    
+
+
     wxString m_DataSourcesFilename;
     wxString m_DataDir;
     wxString m_DistributionFilename;
     SeriePreprocess m_SPpcs;
-    wxDateTime m_Begin;
-    wxDateTime m_End;
+    openfluid::core::DateTime m_Begin;
+    openfluid::core::DateTime m_End;
     int m_TimeStep;
-    
-    bool m_Configured;   
-    
+
+    bool m_Configured;
+
     bool loadDataAsSerie(wxString FilePath, SeriePreprocess SPpcs, DateTimeSerie *Serie);
-    
+
     bool loadDistributionAndDistribute(wxString FilePath);
-    
+
   public:
     DistributeInterpolate();
-     
-    void setConfig(wxString DataDir, wxString DataSourcesFilename, wxString DistributionFilename, SeriePreprocess SPpcs, wxDateTime Begin,wxDateTime End, int TimeStep);
-    
+
+    void setConfig(wxString DataDir, wxString DataSourcesFilename, wxString DistributionFilename, SeriePreprocess SPpcs,
+                   openfluid::core::DateTime Begin,openfluid::core::DateTime End, int TimeStep);
+
     bool loadAndPrepareData();
-    
-    bool getValue(int ID, wxDateTime DT, openfluid::core::ScalarValue *Value);
-    
+
+    bool getValue(int ID, openfluid::core::DateTime DT, openfluid::core::ScalarValue *Value);
+
     bool getValue(int ID, int Index, openfluid::core::ScalarValue *Value);
-    
+
     virtual ~DistributeInterpolate();
 };
 

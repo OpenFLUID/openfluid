@@ -13,24 +13,23 @@
 namespace openfluid { namespace base {
 
 
-SimulationInfo::SimulationInfo(wxDateTime StartTime,
-                               wxDateTime EndTime,
+SimulationInfo::SimulationInfo(openfluid::core::DateTime StartTime,
+                               openfluid::core::DateTime EndTime,
                                int TimeStep)
 
 {
 
 
-  wxTimeSpan DeltaTime;
+  openfluid::core::rawtime_t DeltaTime;
 
   m_StartTime = StartTime;
   m_EndTime = EndTime;
 
   m_TimeStep = TimeStep;
-  m_TimeStepSpan = wxTimeSpan(0,0,m_TimeStep,0);
 
-  DeltaTime = EndTime-StartTime;
-  m_StepsCount = int(((DeltaTime.GetSeconds().ToLong())) / TimeStep);
-  if ((DeltaTime.GetSeconds().ToLong() % TimeStep) != 0) m_StepsCount++;
+  DeltaTime = EndTime.diffInSeconds(StartTime);
+  m_StepsCount = int(DeltaTime / TimeStep);
+  if ((DeltaTime % TimeStep) != 0) m_StepsCount++;
 
 
 
@@ -53,8 +52,8 @@ SimulationInfo::~SimulationInfo()
 
 
 
-SimulationStatus::SimulationStatus(wxDateTime StartTime,
-                                   wxDateTime EndTime,
+SimulationStatus::SimulationStatus(openfluid::core::DateTime StartTime,
+                                   openfluid::core::DateTime EndTime,
                                    int TimeStep)
                 : SimulationInfo(StartTime,EndTime,TimeStep)
 
@@ -68,8 +67,6 @@ SimulationStatus::SimulationStatus(wxDateTime StartTime,
   m_IsLastStep = false;
   if (m_StepsCount == 1) m_IsLastStep = true;
 
-  m_BidouilledTime = false;
-  if (m_CurrentTime.IsDST()) m_BidouilledTime = true;
 
 }
 
@@ -88,31 +85,13 @@ SimulationStatus::~SimulationStatus()
 
 bool SimulationStatus::switchToNextStep()
 {
-  wxDateTime NextTime(m_CurrentTime + m_TimeStepSpan);
+  openfluid::core::DateTime NextTime(m_CurrentTime + m_TimeStep);
 
   if (NextTime < m_EndTime)
   {
     m_CurrentStep++;
 
     m_CurrentTime = NextTime;
-
-
-
-    // Big bidouilling for Daylight Saving Time handling
-    if (m_CurrentTime.IsDST() && !m_BidouilledTime)
-    {
-      m_CurrentTime.Subtract(wxTimeSpan(1,0,0,0));
-      m_BidouilledTime = true;
-    }
-    else
-    {
-      if (!m_CurrentTime.IsDST() && m_BidouilledTime)
-      {
-        m_CurrentTime.Add(wxTimeSpan(1,0,0,0));
-        m_BidouilledTime = false;
-      }
-
-    }
 
     m_IsFirstStep = (m_CurrentStep == 0);
     m_IsLastStep = (m_CurrentStep == (m_StepsCount-1));

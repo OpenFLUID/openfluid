@@ -586,7 +586,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMa
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl)
+bool PluggableFunction::OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventCollection* EventColl)
 {
 
   HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);

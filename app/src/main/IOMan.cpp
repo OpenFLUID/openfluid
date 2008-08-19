@@ -61,7 +61,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   TiXmlElement* Child, *Child2;
 
   wxString Str;
-  wxDateTime ZeDate;
+  openfluid::core::DateTime ZeDate;
 
 
   long IntValue;
@@ -115,7 +115,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       {
         Str = _U(Child->Attribute("begin"));
 
-        if (ZeDate.ParseFormat(Str,wxT("%Y-%m-%d %H:%M:%S")) != NULL)
+        if (ZeDate.setFromISOString(Str))
         {
           Config->BeginDate = ZeDate;
 
@@ -139,7 +139,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       {
         Str = _U(Child->Attribute("end"));
 
-        if (ZeDate.ParseFormat(Str,wxT("%Y-%m-%d %H:%M:%S")) != NULL)
+        if (ZeDate.setFromISOString(Str))
         {
           Config->EndDate = ZeDate;
 
@@ -725,7 +725,7 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, openfluid::core::Sp
   bool IsOK = true;
 
 
-  wxDateTime ZeDate;
+  openfluid::core::DateTime ZeDate;
   wxString ZeDateStr;
   wxString UnitClass, UnitID;
   wxString InfoKey, InfoValue;
@@ -779,7 +779,7 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, openfluid::core::Sp
 
               if (HO != NULL)
               {
-                ZeDate.ParseFormat(ZeDateStr,wxT("%Y-%m-%d %H:%M:%S"));
+                ZeDate.setFromISOString(ZeDateStr);
 
                 DEvent = new openfluid::core::DistributedEvent(ZeDate);
 
@@ -1339,13 +1339,13 @@ bool IOManager::saveResults(openfluid::core::CoreRepository *Data, RunConfig Con
   AutoOutfileDef* CurrentDef;
 
   wxArrayString DTStrings;
-  wxDateTime CurrentDate = Config.BeginDate;
+  openfluid::core::DateTime CurrentDate = Config.BeginDate;
 
   // preparing and formatting datetime column(s)
   for (i=0;i<TimeStepsCount;i++)
   {
-    DTStrings.Add(CurrentDate.Format(m_AutoOutFiles.DTFormat));
-    CurrentDate = CurrentDate + wxTimeSpan(0,0,Config.DeltaT,0);
+    DTStrings.Add(CurrentDate.getAsString(m_AutoOutFiles.DTFormat));
+    CurrentDate = CurrentDate + Config.DeltaT;
   }
 
 
@@ -1414,7 +1414,7 @@ bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, E
 
     if (SimInfo != NULL)
     {
-      FileContents << wxT("Simulation period: ") << (SimInfo->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT(" to ") << (SimInfo->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << wxT("\n");
+      FileContents << wxT("Simulation period: ") << (SimInfo->getStartTime().getAsString(wxT("%Y-%m-%d %H:%M:%S"))) << wxT(" to ") << (SimInfo->getEndTime().getAsString(wxT("%Y-%m-%d %H:%M:%S"))) << wxT("\n");
       FileContents << wxT("Time steps: ") << SimInfo->getStepsCount() << wxT(" of ") << SimInfo->getTimeStep() << wxT(" seconds") << wxT("\n");
     }
 
@@ -1668,7 +1668,7 @@ bool IOManager::prepareTraceDir(openfluid::core::CoreRepository *Data)
 // =====================================================================
 
 
-bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDateTime DT)
+bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, openfluid::core::DateTime DT)
 {
 
   wxString Filename, Filecontent;
@@ -1700,7 +1700,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
     // scalars
     if (SU->getSimulatedVars()->size() > 0)
     {
-      Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
+      Filecontent = DT.getAsString(wxT("%Y %m %d %H %M %S"));
 
       for(Simit = SU->getSimulatedVars()->begin(); Simit != SU->getSimulatedVars()->end(); ++Simit)
       {
@@ -1727,7 +1727,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
         VValues = VSimit->second;
         Filename = wxT("SU") + wxString::Format(wxT("%d"),SU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
-        Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
+        Filecontent = DT.getAsString(wxT("%Y %m %d %H %M %S"));
         bool prepareOutputDir();
         if (VValues->size() > Step)
         {
@@ -1758,7 +1758,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
     // scalars
     if (RS->getSimulatedVars()->size() > 0)
     {
-      Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
+      Filecontent = DT.getAsString(wxT("%Y %m %d %H %M %S"));
 
       for(Simit = RS->getSimulatedVars()->begin(); Simit != RS->getSimulatedVars()->end(); ++Simit)
       {
@@ -1786,7 +1786,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
         VValues = VSimit->second;
         Filename = wxT("RS") + wxString::Format(wxT("%d"),RS->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
-        Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
+        Filecontent = DT.getAsString(wxT("%Y %m %d %H %M %S"));
 
         if (VValues->size() > Step)
         {
@@ -1816,7 +1816,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
     // scalars
     if (GU->getSimulatedVars()->size() > 0)
     {
-      Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
+      Filecontent = DT.getAsString(wxT("%Y %m %d %H %M %S"));
 
       for(Simit = GU->getSimulatedVars()->begin(); Simit != GU->getSimulatedVars()->end(); ++Simit)
       {
@@ -1843,7 +1843,7 @@ bool IOManager::saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDat
         VValues = VSimit->second;
         Filename = wxT("GU") + wxString::Format(wxT("%d"),GU->getID()) + wxT(".vector.") +VSimit->first + wxT(".") + OPENFLUID_DEFAULT_TRACEFILES_EXT;
 
-        Filecontent = DT.Format(wxT("%Y %m %d %H %M %S"));
+        Filecontent = DT.getAsString(wxT("%Y %m %d %H %M %S"));
 
         if (VValues->size() > Step)
         {

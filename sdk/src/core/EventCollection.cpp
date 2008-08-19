@@ -8,7 +8,7 @@
 #include "EventCollection.h"
 #include <iostream>
 
-namespace openfluid { namespace core 
+namespace openfluid { namespace core
 {
 
 
@@ -33,8 +33,8 @@ EventCollection::~EventCollection()
 
 bool EventCollection::addEvent(DistributedEvent* Ev)
 {
-  
-  
+
+
   // empty list
   if (m_Events.size() == 0)
   {
@@ -58,7 +58,7 @@ bool EventCollection::addEvent(DistributedEvent* Ev)
       {
         // event has to be inserted somewhere in the collection
         std::list<DistributedEvent*>::iterator DEiter;
-        
+
         for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
         {
           if ((*DEiter)->getDateTime() >= Ev->getDateTime())
@@ -67,11 +67,11 @@ bool EventCollection::addEvent(DistributedEvent* Ev)
             return true;
           }
         }
-        
+
       }
     }
   }
-  
+
   return true;
 }
 
@@ -80,7 +80,7 @@ bool EventCollection::addEvent(DistributedEvent* Ev)
 // =====================================================================
 
 
-bool EventCollection::getEventsBetween(const wxDateTime BeginDate, const wxDateTime EndDate,
+bool EventCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
     EventCollection *Events)
 {
 
@@ -88,7 +88,7 @@ bool EventCollection::getEventsBetween(const wxDateTime BeginDate, const wxDateT
 
   for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
   {
-    if ((*DEiter)->getDateTime().IsBetween(BeginDate,EndDate))
+    if ((*DEiter)->getDateTime().isBetween(BeginDate,EndDate))
     {
       Events->addEvent(*DEiter);
     }
@@ -109,7 +109,7 @@ void EventCollection::println()
     for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
     {
       (*DEiter)->println();
-    }  
+    }
 }
 
 

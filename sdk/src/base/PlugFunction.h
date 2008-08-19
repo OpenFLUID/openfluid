@@ -939,7 +939,7 @@ class PluggableFunction : public wxObject
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);
 
-    bool OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, wxDateTime BeginDate, wxDateTime EndDate, openfluid::core::EventCollection* EventColl);
+    bool OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventCollection* EventColl);
 
     void OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
 

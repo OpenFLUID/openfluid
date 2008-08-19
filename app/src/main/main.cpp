@@ -244,8 +244,8 @@ void OpenFLUIDApp::printDataInfos()
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
-  std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().Format(wxT("%Y-%m-%d %H:%M:%S")))
-            << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl
+  std::cout << "Simulation from " << _C(mp_Engine->getSimulationInfo()->getStartTime().getAsISOString())
+            << " to " << _C(mp_Engine->getSimulationInfo()->getEndTime().getAsISOString()) << std::endl
             << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
   std::cout << std::endl;
   std::cout.flush();

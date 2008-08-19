@@ -1,7 +1,7 @@
 /**
   \file DTSerie.h
-  \brief 
-  
+  \brief
+
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
@@ -17,17 +17,17 @@ namespace openfluid { namespace tools {
 
 struct TimePair
 {
-  wxDateTime DT;
-  openfluid::core::ScalarValue Value;  
+  openfluid::core::DateTime DT;
+  openfluid::core::ScalarValue Value;
 };
 
 
 
 struct IndexedSerie
 {
-  int Count;  
+  int Count;
   openfluid::core::ScalarValue* Values;
-  
+
   IndexedSerie()
   {
     Count = 0;
@@ -45,29 +45,29 @@ class DateTimeSerie
 
     std::list<TimePair>::iterator m_LastAccessed;
     bool m_IsLastAccessedSet;
-    
+
   public:
 
     DateTimeSerie();
 
     virtual ~DateTimeSerie();
-    
-    bool addValue(wxDateTime DT, openfluid::core::ScalarValue Value);
-    
-    bool getValue(wxDateTime DT, openfluid::core::ScalarValue* Value);    
 
-    short getNearestValues(wxDateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);    
-    
-    bool getInterpolatedValue(wxDateTime SearchedDT, openfluid::core::ScalarValue* Value);
+    bool addValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue Value);
+
+    bool getValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue* Value);
+
+    short getNearestValues(openfluid::core::DateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);
+
+    bool getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::ScalarValue* Value);
 
     void clear();
-    
-    bool createInterpolatedSerie(wxDateTime Begin,wxDateTime End,int TimeStep,DateTimeSerie *Serie);
-    
+
+    bool createInterpolatedSerie(openfluid::core::DateTime Begin,openfluid::core::DateTime End,int TimeStep,DateTimeSerie *Serie);
+
     bool createIndexedSerie(IndexedSerie *ISerie);
-    
+
     int getCount();
-    
+
 };
 
 

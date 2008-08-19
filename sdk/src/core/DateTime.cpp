@@ -87,9 +87,44 @@ bool DateTime::setFromISOString(wxString DateTimeStr)
 
 
   // scan of the input string to break it down
-  sscanf(DateTimeStr.mb_str(wxConvUTF8),"%4u-%2u-%2u %2u:%2u%:2u",&Year,&Month,&Day,&Hour,&Min,&Sec);
+  sscanf(DateTimeStr.mb_str(wxConvUTF8),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec);
+
+//  std::cout << Year << " " << Month << " " << Day << " " << Hour << " " << Min << " " << Sec << std::endl;
 
   return set(Year, Month, Day, Hour, Min, Sec);
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DateTime::setFromString(wxString DateTimeStr, wxString Format)
+{
+
+  int Year;
+  int Month;
+  int Day;
+  int Hour;
+  int Min;
+  int Sec;
+
+
+  struct tm TM;
+
+
+  if (strptime(DateTimeStr.mb_str(wxConvUTF8), Format.mb_str(wxConvUTF8), &TM) != NULL)
+  {
+    Year = TM.tm_year+1900;
+    Month = TM.tm_mon +1;
+    Day = TM.tm_mday;
+    Hour = TM.tm_hour;
+    Min = TM.tm_min;
+    Sec = TM.tm_sec;
+
+    return set(Year, Month, Day, Hour, Min, Sec);
+  }
+  else return false;
 
 }
 
@@ -210,7 +245,7 @@ void DateTime::updateRawTimeFromYMDHMS()
 
 rawtime_t DateTime::getRawTime()
 {
-
+#include <iostream>
 
   return m_RawTime;
 
@@ -223,16 +258,15 @@ rawtime_t DateTime::getRawTime()
 
 wxString DateTime::getAsISOString()
 {
-/*
-  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
-                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%Y-%m-%d %H:%M:%S"));
-*/
 
   char pCh[80];
+  wxString Str;
 
   strftime(pCh,80,"%Y-%m-%d %H:%M:%S",&m_TM);
 
-  return wxString(pCh,wxConvUTF8,80);
+  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+
+  return Str;
 
 }
 
@@ -243,17 +277,15 @@ wxString DateTime::getAsISOString()
 wxString  DateTime::getAsString(wxString Format)
 {
 
-/*
-  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
-                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(Format);
-
-*/
-
   char pCh[80];
+  wxString Str;
+
 
   strftime(pCh,80,Format.mb_str(wxConvUTF8),&m_TM);
 
-  return wxString(pCh,wxConvUTF8,80);
+  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+
+  return Str;
 
 
 }
@@ -263,17 +295,18 @@ wxString  DateTime::getAsString(wxString Format)
 // =====================================================================
 
 
-wxString  DateTime::getDateAsISOString()
+wxString DateTime::getDateAsISOString()
 {
-/*
-  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
-                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%Y-%m-%d"));
-*/
+
   char pCh[80];
+  wxString Str;
+
 
   strftime(pCh,80,"%Y-%m-%d",&m_TM);
 
-  return wxString(pCh,wxConvUTF8,80);
+  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+
+  return Str;
 
 
 }
@@ -284,19 +317,17 @@ wxString  DateTime::getDateAsISOString()
 // =====================================================================
 
 
-wxString  DateTime::getTimeAsISOString()
+wxString DateTime::getTimeAsISOString()
 {
-/*
-  return (wxDateTime((unsigned short)(m_Day),(wxDateTime::Month)(m_Month-1),m_Year,
-                    (unsigned short)(m_Hour),(unsigned short)(m_Min),(unsigned short)(m_Sec),0)).Format(wxT("%H:%M:%S"));
-*/
 
   char pCh[80];
+  wxString Str;
 
   strftime(pCh,80,"%H:%M:%S",&m_TM);
 
-  return wxString(pCh,wxConvUTF8,80);
+  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
 
+  return Str;
 
 }
 
@@ -319,6 +350,25 @@ void DateTime::subtractSeconds(rawtime_t Seconds)
   m_RawTime = m_RawTime - Seconds;
   updateYMDHMSFromRawTime();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+bool DateTime::isBetween(const DateTime& FirstDT, const DateTime& SecondDT)
+{
+  return ((*this >= FirstDT) && (*this <= SecondDT));
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DateTime::isStrictlyBetween(const DateTime& FirstDT, const DateTime& SecondDT)
+{
+  return ((*this > FirstDT) && (*this < SecondDT));
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -447,7 +497,6 @@ bool DateTime::isValidDateTime(int Year, int Month, int Day, int Hour, int Minut
 {
   return ((Month >= 1) && (Month <= 12)  && (Day >= 1) && (Day <= getNumOfDaysInMonth(Year,Month)) &&
           (Hour >=0) && (Hour <= 23) && (Minute >=0) && (Minute <= 59) && (Second >=0) && (Second <= 59));
-
 }
 
 // =====================================================================

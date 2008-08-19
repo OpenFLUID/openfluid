@@ -11,7 +11,7 @@
 
 
 #include "openfluid-core.h"
-#include "wx/datetime.h"
+
 
 namespace openfluid { namespace base {
 
@@ -21,40 +21,39 @@ namespace openfluid { namespace base {
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
-class SimulationInfo 
+class SimulationInfo
 {
   protected:
-    wxDateTime m_StartTime;
-    wxDateTime m_EndTime;
+    openfluid::core::DateTime m_StartTime;
+    openfluid::core::DateTime m_EndTime;
     int m_TimeStep;
-    wxTimeSpan m_TimeStepSpan;
-    
+
     unsigned int m_StepsCount;
-  
-    
-    
+
+
+
   public:
-    
+
     /**
       Constructor
     */
-    SimulationInfo(wxDateTime StartTime,
-                   wxDateTime EndTime,
+    SimulationInfo(openfluid::core::DateTime StartTime,
+                   openfluid::core::DateTime EndTime,
                    int TimeStep);
 
     /**
       Destructor
     */
-    ~SimulationInfo();    
-  
+    ~SimulationInfo();
+
     int getTimeStep() const { return m_TimeStep; };
-    
+
     unsigned int getStepsCount() const { return m_StepsCount; };
-    
-    wxDateTime getStartTime() const { return m_StartTime; };
-    wxDateTime getEndTime() const { return m_EndTime; };
-    
-    
+
+    openfluid::core::DateTime getStartTime() const { return m_StartTime; };
+    openfluid::core::DateTime getEndTime() const { return m_EndTime; };
+
+
 };
 
 /**
@@ -66,20 +65,18 @@ class SimulationStatus : public SimulationInfo
 
     unsigned int m_CurrentStep;
 
-    wxDateTime m_CurrentTime;
-    
-    bool m_BidouilledTime;
+    openfluid::core::DateTime m_CurrentTime;
 
     bool m_IsFirstStep;
-    
-    bool m_IsLastStep;    
+
+    bool m_IsLastStep;
 
   public:
     /**
       Constructor
     */
-    SimulationStatus(wxDateTime StartTime,
-                     wxDateTime EndTime,
+    SimulationStatus(openfluid::core::DateTime StartTime,
+                     openfluid::core::DateTime EndTime,
                      int TimeStep);
 
 
@@ -93,12 +90,12 @@ class SimulationStatus : public SimulationInfo
 
     unsigned int getCurrentStep() const { return m_CurrentStep; };
 
-    wxDateTime getCurrentTime() const { return m_CurrentTime; };
+    openfluid::core::DateTime getCurrentTime() const { return m_CurrentTime; };
 
     bool isFirstStep() const { return m_IsFirstStep; };
 
     bool isLastStep() const { return m_IsLastStep; };
-            
+
 
 };
 

@@ -97,6 +97,12 @@ class DateTime
     bool setFromISOString(wxString DateTimeStr);
 
     /**
+      Sets the date and time from a formatted string (using strptime formatting)
+    */
+    bool setFromString(wxString DateTimeStr, wxString Format);
+
+
+    /**
       Sets the date and time from a wxDateTime object
     */
     bool setFromwxDateTime(wxDateTime DT);
@@ -191,6 +197,17 @@ class DateTime
       Returns the difference in seconds between the date-time and the given date-time (Self - Given)
     */
     rawtime_t diffInSeconds(DateTime DT);
+
+    /**
+      Returns true if the date-time is between the two given date-time
+    */
+    bool isBetween(const DateTime& FirstDT, const DateTime& SecondDT);
+
+    /**
+      Returns true if the date-time is strictly between the two given date-time
+    */
+    bool isStrictlyBetween(const DateTime& FirstDT, const DateTime& SecondDT);
+
 
     /**
       Assignment operator
