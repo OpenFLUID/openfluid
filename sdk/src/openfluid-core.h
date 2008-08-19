@@ -31,6 +31,7 @@
 #include "core/GroundwaterUnit.h"
 #include "core/EventCollection.h"
 #include "core/TypeDefs.h"
+#include "core/DateTime.h"
 
 
 
@@ -45,6 +46,7 @@ class DLLEXPORT HydroObject;
 class DLLEXPORT ReachSegment;
 class DLLEXPORT DistributedEvent;
 class DLLEXPORT EventCollection;
+class DLLEXPORT DateTime;
 
 
 

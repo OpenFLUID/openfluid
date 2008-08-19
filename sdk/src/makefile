@@ -16,6 +16,7 @@ CCLIBS=$(WXLIBS)
 
 
 COREOBJ=$(OBJDIR)/core/ValueFactory.o \
+    $(OBJDIR)/core/DateTime.o \
     $(OBJDIR)/core/DistributedEvent.o \
     $(OBJDIR)/core/EventCollection.o \
     $(OBJDIR)/core/HydroObject.o \
