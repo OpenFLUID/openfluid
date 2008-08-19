@@ -1186,7 +1186,7 @@ bool Engine::run()
     if (!mp_RunEnv->isQuietRun())
     {
       std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().Format(wxT("%Y-%m-%d %H:%M:%S")));
+      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().getAsISOString());
       std::cout.flush();
     }
 

@@ -53,9 +53,9 @@ struct RunConfig
 
   wxString SimulationID;
 
-  wxDateTime BeginDate;
+  openfluid::core::DateTime BeginDate;
 
-  wxDateTime EndDate;
+  openfluid::core::DateTime EndDate;
 
 };
 
@@ -186,7 +186,7 @@ class IOManager
 
     bool prepareTraceDir(openfluid::core::CoreRepository *Data);
 
-    bool saveTrace(openfluid::core::CoreRepository *Data, int Step, wxDateTime DT);
+    bool saveTrace(openfluid::core::CoreRepository *Data, int Step, openfluid::core::DateTime DT);
 
     bool saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo);
 
