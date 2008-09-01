@@ -1,6 +1,6 @@
 /**
   \file PlugFunction.h
-  \brief header file for generic pluggable function interface definition
+  \brief Header of generic pluggable function interface definition
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 

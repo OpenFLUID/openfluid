@@ -1,8 +1,8 @@
 /**
   \file DistributedEvent.cpp
-  \brief
+  \brief implements distributed event definition class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -16,7 +16,6 @@ DistributedEvent::DistributedEvent()
 {
   m_Infos.clear();
   m_Date = DateTime();
-  //m_Date.ParseFormat(wxT("2002-05-25 12:25:32"),wxT("%Y-%m-%d %H:%M:%S"));
 }
 
 // =====================================================================

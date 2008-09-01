@@ -2,7 +2,7 @@
   \file PlugFunction.cpp
   \brief implementation file for function environment
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

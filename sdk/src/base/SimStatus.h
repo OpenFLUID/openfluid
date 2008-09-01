@@ -1,6 +1,6 @@
 /**
-  \file
-  \brief header of ...
+  \file SimStatus.h
+  \brief Header of simulation status management class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */

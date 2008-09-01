@@ -1,6 +1,6 @@
 /**
   \file EventCollection.h
-  \brief
+  \brief Header of distributed event collection management class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */

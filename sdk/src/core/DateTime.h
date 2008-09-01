@@ -25,7 +25,6 @@ typedef long long rawtime_t;
 /**
   Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968).
   http://www.decimaltime.hynes.net/index.html
-
 */
 class DateTime
 {

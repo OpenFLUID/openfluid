@@ -1,6 +1,6 @@
 /**
   \file DistributedEvent.h
-  \brief
+  \brief Header of distributed event definition class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */

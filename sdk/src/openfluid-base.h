@@ -1,8 +1,8 @@
 /**
-  \file
-  \brief header of ...
+  \file openfluid-base.h
+  \brief Header for inclusion of openfluid::base part
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

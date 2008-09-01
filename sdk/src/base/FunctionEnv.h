@@ -1,8 +1,8 @@
 /**
-  \file PlugFunction.h
-  \brief header file for function environment
+  \file FunctionEnv.h
+  \brief Header of function environment management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -14,6 +14,9 @@
 
 namespace openfluid { namespace base {
 
+/**
+
+*/
 class FunctionEnvironment
 {
   private:
@@ -25,16 +28,42 @@ class FunctionEnvironment
 
   public:
 
+    /**
+      Constructor
+    */
     FunctionEnvironment();
 
+    /**
+      Destructor
+    */
     virtual ~FunctionEnvironment();
 
+    /**
+      Assigns a boolean value to the corresponding key
+
+      \return true if the assignment is correct
+    */
     bool setValue(wxString Key, bool Value);
 
+    /**
+      Assigns a string value to the corresponding key
+
+      \return true if the assignment is correct
+    */
     bool setValue(wxString Key, wxString Value);
 
+    /**
+      Gets the boolean value assigned to the key
+
+      \return true if the value exists as a boolean
+    */
     bool getValue(wxString Key, bool *Value) const;
 
+    /**
+      Gets the string value assigned to the key
+
+      \return true if the value exists as a string
+    */
     bool getValue(wxString Key, wxString *Value) const;
 
 

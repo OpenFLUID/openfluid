@@ -1,6 +1,6 @@
 /**
   \file DateTime.cpp
-  \brief implements date-time management class
+  \brief Implements date-time management class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */

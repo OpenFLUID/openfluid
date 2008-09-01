@@ -1,6 +1,6 @@
 /**
   \file EventCollection.cpp
-  \brief
+  \brief Implements distributed event collection management class
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
