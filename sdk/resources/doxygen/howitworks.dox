@@ -1,0 +1,25 @@
+/**
+
+\page howitworks How it works?
+
+
+\section genorg_ssec General organization
+ 
+ The OpenFLUID-engine library is contained by the openfluid namespace, which is splitted into three parts: 
+<ul>
+  <li>openfluid::core, defined in openfluid-core.h, gathers all the classes for the shared data between the kernel and the functions, and between the functions themselves
+  <li>openfluid::base, defined in openfluid-base.h, gathers all the classes for the dynamic linking between the kernel and the functions, and in particular the openfluid::base::PluggableFunction class
+  <li>openfluid::tools, defined in openfluid-tools.h, gathers tools available to process data, to build structures, to read files, ...
+</ul>
+
+\section feat_sec Features 
+ 
+
+
+
+
+\n
+\n 
+
+
+*/

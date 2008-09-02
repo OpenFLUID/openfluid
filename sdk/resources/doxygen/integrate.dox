@@ -1,0 +1,52 @@
+/**
+
+\page integrate Developping the computational code
+
+
+
+\section sign_sec Complete the signature
+
+The signature can be automatically generated through the OpenFLUID plugin for Eclipse, included in the SDK. However it is possible to write the signature "from scratch".
+
+The signature has to be defined between the #BEGIN_SIGNATURE_HOOK and #END_SIGNATURE_HOOK instructions.  
+
+
+\section split_sec Split in the class methods
+
+The code have to be splitted into the different methods proposed by the PluggableFunction class.
+To see how the source code is globally structured, see part \ref emptyfunc
+
+\section time_sec Handling time
+
+how to access to simulation time status
+
+\section space_sec Handling space
+
+how to access to space
+
+\section propini_ssec Access to units properties and initial conditions
+
+how to access to simulation ini props
+
+\subsection vars_sec Access to variables
+
+\subsection varstype_ssec Types
+
+vars types
+
+\subsection varsaccess_ssec Access
+
+\link #openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
+
+\section events_sec Access to distributed events
+
+distrievents
+
+\section warnerr_sec Raising warnings and errors
+
+rais
+
+
+ 
+
+*/
