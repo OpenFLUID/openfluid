@@ -32,7 +32,12 @@
 
 
 
-namespace openfluid { namespace tools {
+namespace openfluid {
+
+/**
+  Gathers tools available data processing
+*/
+namespace tools {
 
 class DLLEXPORT ColumnTextParser;
 class DLLEXPORT DataSourcesFile;

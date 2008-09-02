@@ -4,13 +4,11 @@
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 
-  The PluggableFunction class defines the minimal structure for a
-  pluggable function
-  EVERY PLUGGABLE FUNCTION MUST INHERIT FROM THIS CLASS TO BE LOADED
-  It sets some essential methods
-  The PluggableFunctionProc type defines the handle method for the
-  function integration into the host application.
-  EVERY PLUGGABLE FUNCTION MUST DECLARE AND DEFINE THE FUNCTIONS:
+  Every simulation function must :
+  \li define its own signature
+  \li define a class inherited from the PluggableFunction class.
+
+  To be linked to the OpenFLUID-engine kernel, the simulation function must have two hooks declarations.
   \code
   extern "C"
   {
@@ -18,8 +16,9 @@
     DLLIMPORT PluggableFunction* GetPlugSignature();
   };
   \endcode
-  returning an instance of the pluggable function class, inherited from the class defined here.
+  returning the signature and  an instance of the derived class inherited from the PluggableFunction class.
 */
+
 
 
 #ifndef __PLUGFUNCTION_H__
@@ -49,7 +48,14 @@
 // =====================================================================
 // =====================================================================
 
+/**
+  Function hook name
+*/
 #define PLUGFUNCTION_PROC_NAME "GetPlugFunction"
+
+/**
+  Signature hook name
+*/
 #define PLUGSIGNATURE_PROC_NAME "GetPlugSignature"
 
 
@@ -65,7 +71,7 @@
 
 
 
-// =====================================================================
+// =======================================of==============================
 // =====================================================================
 
 
@@ -572,10 +578,15 @@ struct SignatureHandledItem
 
 
 /**
+  \if DOCFORDEV
   Structure for storage of the definition of the data handled by the function. This is part of the signature.
+  \endif
 */
 struct SignatureHandledData
 {
+  /*
+
+  */
   std::vector<SignatureHandledItem> ProducedVars;
 
   std::vector<SignatureHandledItem> UpdatedVars;
@@ -616,6 +627,7 @@ struct SignatureHandledData
   }
 
 };
+
 
 
 /**
@@ -718,6 +730,9 @@ struct Signature
   }
 
 };
+/*
+  \endif
+*/
 
 
 
@@ -730,7 +745,11 @@ struct Signature
 
 
 /**
-  Abstact class for plugin interface
+  \brief Abstract class for plugin interface
+
+  Abstract class for plugin interface, defining the minimal structure for a
+  simulation function \n
+  All simulation functions must inherit from this class.
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
 */
@@ -739,9 +758,8 @@ class PluggableFunction : public wxObject
   private:
 
     /**
-      Pointer to the core repository
+      Pointer to the core repository, for internal use only
     */
-
     openfluid::core::CoreRepository* mp_InternalCoreData;
 
 
@@ -764,29 +782,33 @@ class PluggableFunction : public wxObject
 
   protected:
 
-
-
     /**
-      Pointer to the core repository (const)
+      Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
     */
     const openfluid::core::CoreRepository* mp_CoreData;
 
 
-
     /**
-      Gets the distributed variable value for a spatial object at a time step
+      Gets the distributed variable value for a unit at a time step
       \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable
       \param[in] Step the time step for the value of the requested variable
-      \param[out] Value the value of the requested variable
+      \param[out] Value the value of the requested variable (scalar)
     */
     bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value);
 
+    /**
+      Gets the distributed variable value for a unit at a time step
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the requested variable
+      \param[in] Step the time step for the value of the requested variable
+      \param[out] Value the value of the requested variable (vector)
+    */
     bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value);
 
     /**
-      Gets a distributed property for a spatial object
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      Gets a distributed property for a unit
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] PropName the name of the requested property
       \param[out] Value the value of the requested property
     */
@@ -794,14 +816,14 @@ class PluggableFunction : public wxObject
 
     /**
       Returns true if a distributed property exists, false otherwise
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] PropName the name of the queried variable
     */
     bool OPENFLUID_IsPropertyExists(openfluid::core::HydroObject *HO, wxString PropName);
 
     /**
-      Sets a distributed property for a spatial object
-      \param[in] HO the spatial object
+      Sets a distributed property for a unit
+      \param[in] HO the unit
       \param[in] PropName the name of the property to modify
       \param[in] Value the new value of the property
     */
@@ -810,8 +832,8 @@ class PluggableFunction : public wxObject
 
 
     /**
-      Gets an initial condition for a spatial object
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      Gets an initial condition for a unit
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] IniCondName the name of the requested initial condition
       \param[out] Value the value of the requested initial condition
     */
@@ -819,55 +841,90 @@ class PluggableFunction : public wxObject
 
     /**
       Returns true if a distributed initial condition exists, false otherwise
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] IniCondName the name of the queried variable
     */
     bool OPENFLUID_IsIniConditionExists(openfluid::core::HydroObject *HO, wxString IniCondName);
 
 
     /**
-      Returns true if a distributed variable exists, false otherwise
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      Returns true if a distributed variable exists, false otherwise (searches both scalar and vector variables)
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable
     */
     bool OPENFLUID_IsVariableExists(openfluid::core::HydroObject *HO, wxString VarName);
 
+    /**
+      Returns true if a distributed scalar variable exists, false otherwise
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the requested variable
+    */
     bool OPENFLUID_IsScalarVariableExists(openfluid::core::HydroObject *HO, wxString VarName);
 
+    /**
+      Returns true if a distributed vector variable exists, false otherwise
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the requested variable
+    */
     bool OPENFLUID_IsVectorVariableExists(openfluid::core::HydroObject *HO, wxString VarName);
 
 
    /**
-      Returns true if a distributed variable exists and if a value has been set for the given step false otherwise
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise (searches both scalar and vector variables)
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the requested variable
       \param[in] Step the time step for the value of the variable
     */
     bool OPENFLUID_IsVariableExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
+    /**
+       Returns true if a distributed scalar variable exists and if a value has been set for the given step, false otherwise
+       \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+       \param[in] VarName the name of the requested variable
+       \param[in] Step the time step for the value of the variable
+    */
     bool OPENFLUID_IsScalarVariableExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
+    /**
+       Returns true if a distributed vector variable exists and if a value has been set for the given step, false otherwise
+       \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+       \param[in] VarName the name of the requested variable
+       \param[in] Step the time step for the value of the variable
+    */
     bool OPENFLUID_IsVectorVariableExists(openfluid::core::HydroObject *HO, wxString VarName, int Step);
 
     /**
-      Appends a distributed variable value for a spatial object at the end of the previously added values for this variable
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      Appends a distributed scalar variable value for a unit at the end of the previously added values for this variable
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the variable
       \param[in] Value the added value of the variable
     */
     bool OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::ScalarValue Value);
 
+    /**
+      Appends a distributed vector variable value for a unit at the end of the previously added values for this variable
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the variable
+      \param[in] Value the added value of the variable
+    */
     bool OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value);
 
     /**
-      Sets a distributed variable value for a spatial object at a time step
-      \param[in] HO the spatial object, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      Sets a distributed scalar variable value for a unit at a time step
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
       \param[in] VarName the name of the variable
       \param[in] Step the time step for the value of the variable
       \param[in] Value the added value of the variable
     */
     bool OPENFLUID_SetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue Value);
 
+    /**
+      Sets a distributed vector variable value for a unit at a time step
+      \param[in] HO the unit, can be SurfaceUnit, ReachSegment or GroundwaterUnit
+      \param[in] VarName the name of the variable
+      \param[in] Step the time step for the value of the variable
+      \param[in] Value the added value of the variable
+    */
     bool OPENFLUID_SetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue Value);
 
     /**
@@ -910,8 +967,6 @@ class PluggableFunction : public wxObject
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, wxString *Value);
 
-
-
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of strings
       \param[in] Params the parameters set for the simulation function
@@ -927,7 +982,6 @@ class PluggableFunction : public wxObject
       \param[in] ParamName the name of the requested parameter
       \param[out] Values the vector of values of the requested parameter
     */
-
     bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<double> *Values);
 
 
@@ -939,18 +993,59 @@ class PluggableFunction : public wxObject
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::ParamsMap Params, wxString ParamName, std::vector<long> *Values);
 
+
+    /**
+      Gets discrete events happening on a unit during a time period
+      \param[in] HO the unit
+      \param[in] BeginDate the beginning of the time period
+      \param[in] EndDate the ending of the time period
+      \param[out] EventColl the collection of event corresponding to the request
+    */
     bool OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventCollection* EventColl);
 
-    void OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg);
 
-    void OPENFLUID_RaiseWarning(wxString Sender, wxString WarningMsg);
+    /**
+      Raises a time-marked warning message to the kernel. This do not stops the simulation
+      \param[in] Sender the sender of the message
+      \param[in] TimeStep the time step number when the message occurred
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wxString Msg);
 
-    void OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxString WarningMsg);
+    /**
+      Raises a warning message to the kernel. This do not stops the simulation
+      \param[in] Sender the sender of the message
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseWarning(wxString Sender, wxString Msg);
 
-    void OPENFLUID_RaiseError(wxString Sender, wxString WarningMsg);
+    /**
+      Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
+      \param[in] Sender the sender of the message
+      \param[in] TimeStep the time step number when the message occurred
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxString Msg);
 
+    /**
+      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
+      \param[in] Sender the sender of the message
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseError(wxString Sender, wxString Msg);
+
+    /**
+      Gets an environment string value associated to a Key
+      \param[in] Key the sender of the message
+      \param[out] Value the value associated with the environment key
+    */
     void OPENFLUID_GetRunEnvironment(wxString Key, wxString *Value);
 
+    /**
+      Gets an environment boolean value associated to a Key
+      \param[in] Key the sender of the message
+      \param[out] Value the value associated with the environment key
+    */
     void OPENFLUID_GetRunEnvironment(wxString Key, bool *Value);
 
 
@@ -970,6 +1065,7 @@ class PluggableFunction : public wxObject
     bool setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
     bool setFunctionEnvironment(openfluid::base::FunctionEnvironment* FuncEnv) { mp_FunctionEnv = FuncEnv; };
+
 
     /**
       Initializes function parameters of the function, given as a hash map. Called by the kernel.

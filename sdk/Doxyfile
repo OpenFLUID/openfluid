@@ -15,7 +15,7 @@ ABBREVIATE_BRIEF = "The $name class" "The $name widget" "The $name file" is prov
 ALWAYS_DETAILED_SEC = NO
 INLINE_INHERITED_MEMB = NO
 FULL_PATH_NAMES = YES
-STRIP_FROM_PATH = ./
+STRIP_FROM_PATH = ./src
 STRIP_FROM_INC_PATH = 
 SHORT_NAMES = NO
 JAVADOC_AUTOBRIEF = NO
@@ -35,11 +35,11 @@ SUBGROUPING = YES
 #---------------------------------------------------------------------------
 EXTRACT_ALL = NO
 EXTRACT_PRIVATE = NO
-EXTRACT_STATIC = YES
+EXTRACT_STATIC = NO
 EXTRACT_LOCAL_CLASSES = YES
 EXTRACT_LOCAL_METHODS = YES
-HIDE_UNDOC_MEMBERS = NO
-HIDE_UNDOC_CLASSES = NO
+HIDE_UNDOC_MEMBERS = YES
+HIDE_UNDOC_CLASSES = YES
 HIDE_FRIEND_COMPOUNDS = NO
 HIDE_IN_BODY_DOCS = NO
 INTERNAL_DOCS = NO
@@ -99,7 +99,7 @@ VERBATIM_HEADERS = NO
 #---------------------------------------------------------------------------
 # configuration options related to the alphabetical class index
 #---------------------------------------------------------------------------
-ALPHABETICAL_INDEX = NO
+ALPHABETICAL_INDEX = YES
 COLS_IN_ALPHA_INDEX = 5
 IGNORE_PREFIX = 
 #---------------------------------------------------------------------------
@@ -198,9 +198,9 @@ PERL_PATH = /usr/bin/perl
 CLASS_DIAGRAMS = NO
 HIDE_UNDOC_RELATIONS = YES
 HAVE_DOT = YES
-CLASS_GRAPH = YES
-COLLABORATION_GRAPH = YES
-GROUP_GRAPHS = YES
+CLASS_GRAPH = NO
+COLLABORATION_GRAPH = NO
+GROUP_GRAPHS = NO
 UML_LOOK = NO
 TEMPLATE_RELATIONS = NO
 INCLUDE_GRAPH = NO

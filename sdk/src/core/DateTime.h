@@ -2,7 +2,7 @@
   \file DateTime.h
   \brief header of date-time management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -23,14 +23,21 @@ namespace openfluid { namespace core {
 typedef long long rawtime_t;
 
 /**
-  Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968).
-  http://www.decimaltime.hynes.net/index.html
+  \brief Class for management of date and time information.
+
+  Class for management of date and time information. It includes arithmetics and comparisons operations.
+
+  Sources:
+  \li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968). http://www.decimaltime.hynes.net/index.html
+  \li http://en.wikipedia.org/wiki/Julian_day
+  \li wxDateTime documentation http://docs.wxwidgets.org/
 */
 class DateTime
 {
   private:
 
-    /*
+    /**
+      \if DOCFORDEV
       The tm struct contains:
         int tm_sec;
         int tm_min;
@@ -41,6 +48,7 @@ class DateTime
         int tm_wday;
         int tm_yday;
         int tm_isdst
+        \endif
     */
 
     /**

@@ -36,7 +36,12 @@
 
 
 
-namespace openfluid { namespace core {
+namespace openfluid {
+
+/**
+  Gathers data structures for shared information management
+*/
+namespace core {
 
 class DLLEXPORT ValueFactory;
 class DLLEXPORT SpatialRepository;

@@ -599,7 +599,7 @@ bool PluggableFunction::OPENFLUID_GetEvents(openfluid::core::HydroObject *HO, op
 
 
 
-void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wxString WarningMsg)
+void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wxString Msg)
 {
   mp_ExecMsgs->addWarning(Sender,TimeStep,WarningMsg);
 }
@@ -609,7 +609,7 @@ void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, int TimeStep, wx
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, wxString WarningMsg)
+void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, wxString Msg)
 {
   mp_ExecMsgs->addWarning(Sender,WarningMsg);
 }
@@ -618,7 +618,7 @@ void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, wxString Warning
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxString WarningMsg)
+void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxString Msg)
 {
   mp_ExecMsgs->setError(Sender,TimeStep,WarningMsg);
 }
@@ -627,7 +627,7 @@ void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxSt
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, wxString WarningMsg)
+void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, wxString Msg)
 {
   mp_ExecMsgs->setError(Sender,WarningMsg);
 }

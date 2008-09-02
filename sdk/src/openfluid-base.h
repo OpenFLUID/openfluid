@@ -59,7 +59,12 @@
 
 
 
-namespace openfluid { namespace base
+namespace openfluid {
+
+/**
+  Gathers structures for dynamic binding between the kernel and the simulation functions
+*/
+namespace base
 {
 
 class DLLEXPORT ColumnFileParser;

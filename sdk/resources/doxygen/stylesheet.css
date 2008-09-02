@@ -373,11 +373,12 @@ HR {
 	padding: 2px;
 }
 .memitem {
-	padding: 4px;
-	background-color: #eef3f5;
+	padding: 0px;
+/*	background-color: #eef3f5;*/
 	border-width: 1px;
 	border-style: solid;
-	border-color: #dedeee;
+/*	border-color: #dedeee;*/
+	border-color: #aaaaaa;
 	-moz-border-radius: 8px 8px 8px 8px;
 }
 .memname {
@@ -388,13 +389,13 @@ HR {
 	padding-left: 10px;
 }
 .memproto {
-	background-color: #d5e1e8;
+/*	background-color: #d5e1e8;*/
+	background-color: #e7e7e7;
 	width: 100%;
-	border-width: 1px;
-	border-style: solid;
-	border-color: #84b0c7;
+/*	border : 1px solid #84b0c7;*/
+/*	border-bottom: 1px solid #cccccc;*/
 	font-weight: bold;
-	-moz-border-radius: 8px 8px 8px 8px;
+	-moz-border-radius: 8px 8px 0px 0px;
 }
 .paramkey {
 	text-align: right;

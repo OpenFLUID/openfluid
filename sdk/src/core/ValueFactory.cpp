@@ -1,7 +1,7 @@
 /**
-  \file <fichier.cpp>  
-  \brief implémentation de 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \file
+  \brief
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

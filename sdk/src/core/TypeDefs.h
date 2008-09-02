@@ -1,3 +1,10 @@
+/**
+  \file TypeDefs.h
+  \brief header of data types definition
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
+
 #ifndef __TYPEDEFS_H__
 #define __TYPEDEFS_H__
 
@@ -6,7 +13,9 @@
 namespace openfluid { namespace core {
 
 
-
+/**
+  Type definition for the ID of units
+*/
 typedef int UnitID;
 
 
