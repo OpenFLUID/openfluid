@@ -161,11 +161,11 @@ ubuntu-packages: #all openfluid-conf-file docs
 
 ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
 ubuntu-dapper-packages: DEPENDS = "$(DAPPERDEPENDS)"
-ubuntu-dapper-packages: ubuntu-packages	
+ubuntu-dapper-packages: docs ubuntu-packages	
 
 ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
 ubuntu-edgy-packages: DEPENDS = "$(EDGYDEPENDS)"
-ubuntu-edgy-packages: ubuntu-packages	
+ubuntu-edgy-packages: docs ubuntu-packages	
 
 
 
