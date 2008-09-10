@@ -804,7 +804,7 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the requested variable
       \param[out] Value the value of the requested variable (vector)
     */
-    bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value);
+    bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue*& Value);
 
     /**
       Gets a distributed property for a unit
@@ -907,7 +907,7 @@ class PluggableFunction : public wxObject
       \param[in] VarName the name of the variable
       \param[in] Value the added value of the variable
     */
-    bool OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value);
+    bool OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue& Value);
 
     /**
       Sets a distributed scalar variable value for a unit at a time step

@@ -74,7 +74,7 @@ bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, 
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue *Value)
+bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::VectorValue*& Value)
 {
   if (HO != NULL)
   {
@@ -87,7 +87,7 @@ bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, 
 
       if (Step < ValuesVect->size())
       {
-        *Value = ValuesVect->at(Step);
+        Value = &(ValuesVect->at(Step));
         return true;
       }
       else return false;
@@ -97,6 +97,7 @@ bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, 
   else return false;
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -315,7 +316,7 @@ bool PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::HydroObject *H
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue Value)
+bool PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::HydroObject *HO, wxString VarName, openfluid::core::VectorValue& Value)
 {
   if (HO != NULL)
   {
@@ -324,7 +325,9 @@ bool PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::HydroObject *H
 
     if (it != HO->getSimulatedVectorVars()->end())
     {
+//      std::cerr << "Append 1" << std::endl; std::cerr.flush();
       it->second->push_back(Value);
+//      std::cerr << "Append 2" << std::endl; std::cerr.flush();
       return true;
     }
     else return false;

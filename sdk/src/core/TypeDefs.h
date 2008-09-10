@@ -9,8 +9,11 @@
 #define __TYPEDEFS_H__
 
 #include <vector>
+#include <wx/hashmap.h>
+#include "ArrayValue.h"
 
 namespace openfluid { namespace core {
+
 
 
 /**
@@ -24,11 +27,12 @@ typedef int UnitID;
  */
 typedef double ScalarValue;
 
-
 /**
  Type definition for vector values
  */
-typedef std::vector<ScalarValue> VectorValue;
+typedef ArrayValue<ScalarValue> VectorValue;
+
+
 
 /**
  Type definition for a time serie of scalar values
@@ -58,6 +62,12 @@ WX_DECLARE_HASH_MAP(openfluid::core::UnitID, bool, wxIntegerHash, wxIntegerEqual
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue, wxIntegerHash, wxIntegerEqual, IDVectorValueMap);
 
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue*, wxIntegerHash, wxIntegerEqual, IDVectorValuePtrMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValueMap);
+
+WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue*, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValuePtrMap);
+
+
 
 
 } } // namespaces
