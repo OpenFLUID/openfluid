@@ -349,7 +349,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::UnitID I
     int i;
     float Q1, Q2, H1, H2;
 
-    openfluid::core::VectorValue* HeightDischarge = m_HeightDischarge[ID];
+    openfluid::core::SerieOfScalarValue* HeightDischarge = m_HeightDischarge[ID];
 
 
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché

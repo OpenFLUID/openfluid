@@ -174,8 +174,8 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   BEGIN_RS_ORDERED_LOOP(RS)
   ID = RS->getID();
 
-  m_Input[ID] = new openfluid::core::VectorValue();
-  m_HeightDischarge[ID] = new openfluid::core::VectorValue();
+  m_Input[ID] = new openfluid::core::SerieOfScalarValue();
+  m_HeightDischarge[ID] = new openfluid::core::SerieOfScalarValue();
   m_CurrentInputSum[ID] = 0;
 
   m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
@@ -638,7 +638,7 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
     int i;
     float Q1, Q2, H1, H2;
 
-    openfluid::core::VectorValue* HeightDischarge = m_HeightDischarge[ID];
+    openfluid::core::SerieOfScalarValue* HeightDischarge = m_HeightDischarge[ID];
 
 
     // on determine par boucle le premier débit de la relation H/D supérieur au débit recherché
