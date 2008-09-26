@@ -11,7 +11,7 @@ namespace openfluid { namespace core {
 
 
 template <class T>
-class ArrayValue
+class Vector
 {
   private :
     T* m_Data;
@@ -23,17 +23,17 @@ class ArrayValue
 
   public :
 
-    ArrayValue();
+    Vector();
 
-    ArrayValue(const ArrayValue &Vector);
+    Vector(const Vector &Vector);
 
-    ArrayValue(long Size);
+    Vector(long Size);
 
-    ArrayValue(long Size, T InitValue);
+    Vector(long Size, T InitValue);
 
-    ArrayValue(T* Data, long Size);
+    Vector(T* Data, long Size);
 
-    ~ArrayValue();
+    ~Vector();
 
     long getSize() const { return m_Size; };
 
@@ -51,7 +51,7 @@ class ArrayValue
 
     T& operator[](long Index);
 
-    ArrayValue<T>& operator = (const ArrayValue &A);
+    Vector<T>& operator = (const Vector &A);
 
     void clear();
 
@@ -61,7 +61,7 @@ class ArrayValue
 // =====================================================================
 
 template <class T>
-ArrayValue<T>::ArrayValue()
+Vector<T>::Vector()
 {
   init();
 }
@@ -71,7 +71,7 @@ ArrayValue<T>::ArrayValue()
 // =====================================================================
 
 template <class T>
-ArrayValue<T>::ArrayValue(const ArrayValue &A)
+Vector<T>::Vector(const Vector &A)
 {
 //  std::cout << "copy constructor in" << std::endl;std::cout.flush();
 
@@ -93,7 +93,7 @@ ArrayValue<T>::ArrayValue(const ArrayValue &A)
 // =====================================================================
 
 template <class T>
-ArrayValue<T>::ArrayValue(long Size)
+Vector<T>::Vector(long Size)
 {
 //  std::cout << "size constructor in" << std::endl;std::cout.flush();
 
@@ -108,7 +108,7 @@ ArrayValue<T>::ArrayValue(long Size)
 // =====================================================================
 // =====================================================================
 template <class T>
-ArrayValue<T>::ArrayValue(long Size, T InitValue)
+Vector<T>::Vector(long Size, T InitValue)
 {
   init();
 
@@ -130,7 +130,7 @@ ArrayValue<T>::ArrayValue(long Size, T InitValue)
 
 
 template <class T>
-ArrayValue<T>::ArrayValue(T* Data, long Size)
+Vector<T>::Vector(T* Data, long Size)
 {
   init();
 
@@ -144,7 +144,7 @@ ArrayValue<T>::ArrayValue(T* Data, long Size)
 // =====================================================================
 
 template <class T>
-ArrayValue<T>::~ArrayValue()
+Vector<T>::~Vector()
 {
 //  std::cout << "destructor in" << std::endl;std::cout.flush();
   if (m_Data != NULL)
@@ -160,7 +160,7 @@ ArrayValue<T>::~ArrayValue()
 // =====================================================================
 
 template <class T>
-void ArrayValue<T>::allocate(long Size)
+void Vector<T>::allocate(long Size)
 {
 
   if (Size > 0)
@@ -177,7 +177,7 @@ void ArrayValue<T>::allocate(long Size)
 // =====================================================================
 
 template <class T>
-void ArrayValue<T>::setData(T* Data, long Size)
+void Vector<T>::setData(T* Data, long Size)
 {
   clear();
 
@@ -191,7 +191,7 @@ void ArrayValue<T>::setData(T* Data, long Size)
 // =====================================================================
 
 template <class T>
-T ArrayValue<T>::getElement(long Index) const
+T Vector<T>::getElement(long Index) const
 {
   return m_Data[Index];
 }
@@ -201,7 +201,7 @@ T ArrayValue<T>::getElement(long Index) const
 // =====================================================================
 
 template <class T>
-void ArrayValue<T>::setElement(long Index, T Element)
+void Vector<T>::setElement(long Index, T Element)
 {
   m_Data[Index] = Element;
 }
@@ -212,7 +212,7 @@ void ArrayValue<T>::setElement(long Index, T Element)
 
 
 template <class T>
-T& ArrayValue<T>::operator[](long Index)
+T& Vector<T>::operator[](long Index)
 {
   return m_Data[Index];
 }
@@ -221,7 +221,7 @@ T& ArrayValue<T>::operator[](long Index)
 // =====================================================================
 
 template <class T>
-ArrayValue<T>& ArrayValue<T>::operator=(const ArrayValue &A)
+Vector<T>& Vector<T>::operator=(const Vector &A)
 {
   std::cout << "operator = in" << std::endl;std::cout.flush();
 
@@ -243,7 +243,7 @@ ArrayValue<T>& ArrayValue<T>::operator=(const ArrayValue &A)
 
 
 template <class T>
-void ArrayValue<T>::init()
+void Vector<T>::init()
 {
   m_Data = NULL;
   m_Size = 0;
@@ -253,7 +253,7 @@ void ArrayValue<T>::init()
 // =====================================================================
 
 template <class T>
-void ArrayValue<T>::clear()
+void Vector<T>::clear()
 {
 //  std::cout << "clear in" << std::endl;std::cout.flush();
   if (m_Data != NULL) free(m_Data);

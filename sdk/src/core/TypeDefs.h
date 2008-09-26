@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <wx/hashmap.h>
-#include "ArrayValue.h"
+#include "Vector.h"
 
 namespace openfluid { namespace core {
 
@@ -30,7 +30,7 @@ typedef double ScalarValue;
 /**
  Type definition for vector values
  */
-typedef ArrayValue<ScalarValue> VectorValue;
+typedef Vector<ScalarValue> VectorValue;
 
 
 
