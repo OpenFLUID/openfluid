@@ -15,7 +15,7 @@
 namespace openfluid { namespace base {
 
 /**
-
+  Class containing execution environment information for funtions
 */
 class FunctionEnvironment
 {

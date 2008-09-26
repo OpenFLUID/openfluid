@@ -168,7 +168,7 @@ class DateTime
 
     /**
       Returns date-time as string, using strftime() format string
-      \param[in] strftime()-like format string
+      \param[in] Format strftime()-like format string
       \return a string
     */
     wxString getAsString(wxString Format);

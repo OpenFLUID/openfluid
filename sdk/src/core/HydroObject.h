@@ -70,10 +70,8 @@ class HydroObject
 
     /**
 		  Constructor
-		  \param[in] Geometry The objects geometry
-		  \param[in] ID The object identifier
-		  \param[in] Comment The associated comment
-		  \param[in] ProcessOrder the process order of the objects during the model execution
+		  \param[in] ID The unit identifier
+		  \param[in] ProcessOrder the process order of the unit during the model execution
      */
     HydroObject(UnitID ID, int ProcessOrder);
 
@@ -82,19 +80,44 @@ class HydroObject
      */
     virtual ~HydroObject();
 
+    /**
+      Returns the ID of the unit
+    */
     UnitID getID() const;
 
+    /**
+      Returns the process order of the unit
+    */
     int getProcessOrder() const;
 
+    /**
+      Sets the process order of the unit
+    */
     void setProcessOrder(const int ProcessOrder);
 
+    /**
+      Returns the set of simulated scalar variables of the unit
+    */
     SimulatedVarsMap* getSimulatedVars() { return mp_SimVars; };
+
+    /**
+      Returns the set of simulated vector variables of the unit
+    */
     SimulatedVectorVarsMap* getSimulatedVectorVars() { return mp_SimVectorVars; };
 
+    /**
+      Returns the set of properties of the unit
+    */
     PropertiesMap* getProperties() { return mp_Properties; };
 
+    /**
+      Returns the initial conditions of the unit
+    */
     PropertiesMap* getIniConditions() { return mp_IniConditions; };
 
+    /**
+      Returns the set of events associated with the unit
+    */
     EventCollection* getEvents() { return mp_Events; };
 };
 
