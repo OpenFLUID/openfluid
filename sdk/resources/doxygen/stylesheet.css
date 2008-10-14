@@ -7,9 +7,13 @@ BODY,TD {
 H1 {
 	text-align: center;
 	font-size: 160%;
+	margin-bottom : 25px;
 }
 H2 {
 	font-size: 130%;
+	padding-top : 20px;	
+	margin-bottom : 10px;	
+	border-bottom : 1px dashed grey;
 }
 H3 {
 	font-size: 115%;

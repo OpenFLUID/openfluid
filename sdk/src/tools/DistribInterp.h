@@ -1,5 +1,5 @@
 /**
-  \file InterpDTSerie.h
+  \file DistribInterp.h
   \brief
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -32,7 +32,9 @@ enum SeriePreprocess
   SERIEPREPCS_CUMULATE
 };
 
-
+/**
+  Class for time interpolation and spatial distribution of data
+*/
 class DistributeInterpolate : public openfluid::tools::Tools
 {
 

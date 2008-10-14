@@ -8,45 +8,181 @@
 
 The signature can be automatically generated through the OpenFLUID plugin for Eclipse, included in the SDK. However it is possible to write the signature "from scratch".
 
-The signature has to be defined between the #BEGIN_SIGNATURE_HOOK and #END_SIGNATURE_HOOK instructions.  
+The signature has to be defined between the #BEGIN_SIGNATURE_HOOK and #END_SIGNATURE_HOOK macros.  
+
+\subsection signid_ssec Identification
+
+The identification part of the signature must contain at least the ID of the simulation function. This ID will be used by the kernel to load functions. It is declared in the signature using the #DECLARE_SIGNATURE_ID macro.\n 
+The others information that can be included for identification are:
+<ul>
+<li>the function name, declared through the #DECLARE_SIGNATURE_NAME macro
+<li>the function description, declared through the #DECLARE_SIGNATURE_DESCRIPTION macro
+<li>the name of the author, declared through the #DECLARE_SIGNATURE_AUTHORNAME macro
+<li>the email of the author, declared through the #DECLARE_SIGNATURE_AUTHOREMAIL macro
+<li>the software version of the function, declared through the #DECLARE_SIGNATURE_VERSION macro
+<li>the software version of SDK used to build the function, declared through the #DECLARE_SIGNATURE_SDKVERSION macro (automatic)
+<li>the software status of the function, declared through the #DECLARE_SIGNATURE_STATUS macro (can be openfluid::base::EXPERIMENTAL, openfluid::base::BETA or openfluid::base::STABLE)
+</ul>
+  
+\subsection signapp_ssec Applications range
+
+The informations about applications range is just indicative. it has no effects on coherence or computation. These information are :
+<ul>
+<li> the domain in which the function can be applied, declared through the #DECLARE_SIGNATURE_DOMAIN macro
+<li> the processes simulated by the function, declared through the #DECLARE_SIGNATURE_PROCESS macro
+<li> the numerical methods used by the function, declared through the #DECLARE_SIGNATURE_METHOD macro
+</ul>
 
 
-\section split_sec Split in the class methods
+\subsection signdata_ssec Handled data
 
-The code have to be splitted into the different methods proposed by the PluggableFunction class.
-To see how the source code is globally structured, see part \ref emptyfunc
+The data handled by the simulation functions are function data or spatially distributed data, can be read by the function, appended by the function, and/or modified by the function.\n
+The function data are parameters passed to the simulation function, they usually are computation parameters. The distributed data are attached to spatial units, and can be simulation variables or units properties.\n   
+\n
+Read data must have rules associated when they are declared. These rules are :
+<ul>
+<li>REQUIRED, this means that data must be available or produced on the same time step
+<li>REQUIRED_PREV, this means that data must be available or produced on a previous time step
+<li>USED, this means that data are used only if they are available or produced on the same time step
+<li>USED_PREV,  this means that data are used only if they are available or produced on a previous time step
+</ul> 
+
+\subsubsection signdatafunc_ssec Function data
+
+
+Function data are attached to functions. The declaration macros take 3 arguments : the name of the data, the description of the data (not required), and the unit of the data (not required).
+<ul>
+<li>#DECLARE_FUNCTION_PARAM
+</ul>
+
+\subsubsection signdatadistri_ssec Distributed data
+
+Distributed data are attached to units, and categorized into properties and initial conditions. Simulation functions declares handling distributed data on each units class. The declaration macros take 3 arguments : the name of the data, the description of the data (not required), and the unit of the data (not required).
+<ul>
+<li>for distributed properties, the declaration macros are #DECLARE_SU_REQUIRED_INICOND, #DECLARE_RS_REQUIRED_INICOND, #DECLARE_GU_REQUIRED_INICOND, #DECLARE_SU_USED_INICOND, #DECLARE_RS_USED_INICOND, #DECLARE_GU_USED_INICOND
+<li>for distributed initial conditions, the declaration macros are #DECLARE_SU_REQUIRED_PROPS, #DECLARE_RS_REQUIRED_INICOND, #DECLARE_GU_REQUIRED_PROPS, #DECLARE_SU_USED_PROPS, #DECLARE_RS_USED_PROPS, #DECLARE_GU_USED_PROPS
+</ul>
+
+
+\subsubsection signdatavars_ssec Simulation variables
+
+Simulation variables are produced, read and modified by functions, and attached to distributed units. The declaration macros take 3 arguments : the name of the data, the description of the data (not required), and the unit of the data (not required).
+
+To declare read variables :
+<ul>
+<li>for required or used vars on the current time step, the declaration macros are #DECLARE_SU_REQUIRED_VAR, #DECLARE_RS_REQUIRED_VAR, #DECLARE_GU_REQUIRED_VAR, #DECLARE_SU_USED_VAR, #DECLARE_RS_USED_VAR, #DECLARE_GU_USED_VAR
+<li>for required or used vars on a previous time step, the declaration macros are #DECLARE_SU_REQUIRED_PREVVAR, #DECLARE_RS_REQUIRED_PREVVAR, #DECLARE_GU_REQUIRED_PREVVAR, #DECLARE_SU_USED_PREVVAR, #DECLARE_RS_USED_PREVVAR, #DECLARE_GU_USED_PREVVAR
+</ul>
+
+To declare produced or modified variables :
+<ul>
+<li>for produced vars, the declaration macros are #DECLARE_SU_PRODUCED_VAR, #DECLARE_RS_PRODUCED_VAR, #DECLARE_GU_PRODUCED_VAR
+<li>for modified vars, the declaration macros are #DECLARE_SU_UPDATED_VAR, #DECLARE_RS_UPDATED_VAR, #DECLARE_GU_UPDATED_VAR
+</ul>
+
+
+These variables can be scalar (no dimension) or vector (1 dimension). When they are declared in the signature, the variables names suffixed by the [] symbol are vectors, the ones not suffixed are scalars ( myvariable is scalar and myothervariable[] is vector). 
+
+\subsubsection signdataevts_ssec Distributed discrete events
+
+<I><B>TODO</B></I>
+
+
+\subsubsection signdatafiles_ssec Extra files
+
+<I><B>TODO</B></I>
+
+
+\section split_sec Split your code in the class methods
+
+A simulation function defines a class, inherited from the openfluid::base::PluggableFunction class. The code have to be distributed into the different methods imposed by this \link openfluid::base::PluggableFunction PluggableFunction\endlink class. You can also develop other methods to structure your source code.
+To see how the source code is globally structured, see part \ref emptyfunc.
+
+\subsection splitconstruct_ssec Constructor and destructor
+
+The constructor of the simulation function is called when the function is loaded. You may put here the initialization of you class attributes.\n
+The destructor of the simulation function is called when the function is freed, at the end of the execution of the engine. You may put here instruction to free the memory you allocate for the needs of the simulation function (objects, pointed vars, ...).
+
+\subsection splitmethods_ssec Required methods to define
+
+The class defining a simulation function must compound the following methods:
+<ul>
+<li>\link openfluid::base::PluggableFunction::initParams initParams \endlink
+<li>\link openfluid::base::PluggableFunction::prepareData prepareData \endlink
+<li>\link openfluid::base::PluggableFunction::checkConsistency checkConsistency \endlink
+<li>\link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink
+<li>\link openfluid::base::PluggableFunction::runStep runStep \endlink
+<li>\link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink
+</ul> 
+
+The \link openfluid::base::PluggableFunction::initParams initParams \endlink method should be used to retreive function parameters, read from the model.xml file (See \ref funcparams_sec). Once read, the values should be stored into class attributes to be accessed by other methods.  
+
+The \link openfluid::base::PluggableFunction::prepareData prepareData \endlink method should be used to 
+
+The \link openfluid::base::PluggableFunction::checkConsistency checkConsistency \endlink method should be used to
+
+The \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink method should be used to
+
+The \link openfluid::base::PluggableFunction::runStep runStep \endlink method should be used to
+
+The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to
 
 \section time_sec Handling time
 
+<I><B>TODO</B></I>
 how to access to simulation time status
 
 \section space_sec Handling space
 
+<I><B>TODO</B></I>
+
 how to access to space
 
-\section propini_ssec Access to units properties and initial conditions
+\section funcparams_sec Access to function parameters
 
-how to access to simulation ini props
+\section propini_sec Access to distributed properties and initial conditions
+
+<I><B>TODO</B></I>
+
+how to access to data
 
 \subsection vars_sec Access to variables
 
+<I><B>TODO</B></I>
+
 \subsection varstype_ssec Types
 
-vars types
+<I><B>TODO</B></I>
+
 
 \subsection varsaccess_ssec Access
 
+<I><B>TODO</B></I>
+
+\if NOCOMMENT
 \link #openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
+\endif
 
 \section events_sec Access to distributed events
 
-distrievents
+<I><B>TODO</B></I>
+
 
 \section warnerr_sec Raising warnings and errors
 
-rais
+<I><B>TODO</B></I>
 
+
+
+\section tools_sec Available tools
+
+<I><B>TODO</B></I>
+
+
+
+\section fortran_sec Calling Fortran source code
+
+<I><B>TODO</B></I>
 
  
-
 */

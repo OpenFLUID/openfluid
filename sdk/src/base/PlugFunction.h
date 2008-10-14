@@ -112,26 +112,59 @@
 // =====================================================================
 
 
+/**
+  Macro for declaration of the function ID
+*/
 #define DECLARE_SIGNATURE_ID(id) ZeSignature->ID = id;
 
+/**
+  Macro for declaration of the function name
+*/
 #define DECLARE_SIGNATURE_NAME(name) ZeSignature->Name = name;
 
+/**
+  Macro for declaration of the function description
+*/
 #define DECLARE_SIGNATURE_DESCRIPTION(desc) ZeSignature->Description = desc;
 
+/**
+  Macro for declaration of the function application domain
+*/
 #define DECLARE_SIGNATURE_DOMAIN(domain) ZeSignature->Domain = domain;
 
+/**
+  Macro for declaration of the function application processes
+*/
 #define DECLARE_SIGNATURE_PROCESS(process) ZeSignature->Process = process;
 
+/**
+  Macro for declaration of the function application numerical method
+*/
 #define DECLARE_SIGNATURE_METHOD(method) ZeSignature->Method = method;
 
+/**
+  Macro for declaration of the function author name
+*/
 #define DECLARE_SIGNATURE_AUTHORNAME(name) ZeSignature->Author = name;
 
+/**
+  Macro for declaration of the function author email
+*/
 #define DECLARE_SIGNATURE_AUTHOREMAIL(email) ZeSignature->AuthorEmail = email;
 
+/**
+  Macro for declaration of the function version
+*/
 #define DECLARE_SIGNATURE_VERSION(version) ZeSignature->Version = version;
 
+/**
+  Macro for declaration of the function status
+*/
 #define DECLARE_SIGNATURE_STATUS(status) ZeSignature->Status = status;
 
+/**
+  Macro for declaration of SDK version used to build the function
+*/
 #define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(OPENFLUIDSDK_MAJORVER,OPENFLUIDSDK_MINORVER,OPENFLUIDSDK_REVISION);
 
 // =====================================================================
@@ -179,6 +212,14 @@
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
   ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
+
+
+/**
+  Macro for declaration of a required variable on all SUs, using a value produced on a previous time step
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_SU_REQUIRED_PREVVAR(name,description,unit) \
   ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
@@ -191,6 +232,13 @@
 #define DECLARE_SU_USED_VAR(name,description,unit) \
   ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
+
+/**
+  Macro for declaration of an used variable on all SUs, using a value produced on a previous time step
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_SU_USED_PREVVAR(name,description,unit) \
   ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
@@ -203,6 +251,12 @@
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
+/**
+  Macro for declaration of a used property on all SUs
+  \param[in] name name of the property
+  \param[in] description description of the property
+  \param[in] unit unit of the property. Could be an empty string if there is no unit
+*/
 #define DECLARE_SU_USED_PROPERTY(name,description,unit) \
   ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
@@ -216,6 +270,12 @@
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
   ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
+/**
+  Macro for declaration of a used initial condition on all SUs
+  \param[in] name name of the initial condition
+  \param[in] description description of the initial condition
+  \param[in] unit unit of the initial condition. Could be an empty string if there is no unit
+*/
 #define DECLARE_SU_USED_INICOND(name,description,unit) \
   ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("SU"),description,unit));
 
@@ -324,6 +384,12 @@
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
   ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
+/**
+  Macro for declaration of a required variable on all GUs, using a value produced on a previous time step
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_GU_REQUIRED_PREVVAR(name,description,unit) \
   ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
@@ -337,6 +403,12 @@
 #define DECLARE_GU_USED_VAR(name,description,unit) \
   ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
+/**
+  Macro for declaration of an used variable on all GUs, using a value produced on a previous time step
+  \param[in] name name of the variable
+  \param[in] description description of the variable
+  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+*/
 #define DECLARE_GU_USED_PREVVAR(name,description,unit) \
   ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledItem(wxT(name),wxT("GU"),description,unit));
 
@@ -536,10 +608,24 @@ enum ModuleTypeList
   MOD_HYDROLOGY
 };
 
+/**
+  Function status
+*/
 enum FunctionStatusList
 {
+  /**
+    Experimental status, for testing only
+  */
   EXPERIMENTAL,
+
+  /**
+    Beta status, on the road to a stable status
+  */
   BETA,
+
+  /**
+    Stable status
+  */
   STABLE
 };
 
