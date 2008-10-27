@@ -48,19 +48,46 @@ typedef std::vector<VectorValue> SerieOfVectorValue;
 
 // =====================================================================
 // =====================================================================
-
+/**
+  \anchor IDFloatMap
+  Map associating a float value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
 
+/**
+  \anchor IDDoubleMap
+  Map associating a double precision value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
 
+/**
+  \anchor IDScalarValueMap
+  Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::ScalarValue, wxIntegerHash, wxIntegerEqual, IDScalarValueMap);
 
+/**
+  \anchor IDIntMap
+  Map associating an integer value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
 
+/**
+  \anchor IDBoolMap
+  Map associating a boolean value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
 
+/**
+  \anchor IDVectorValueMap
+  Map associating an openfluid::core::VectorValue value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue, wxIntegerHash, wxIntegerEqual, IDVectorValueMap);
 
+/**
+  \anchor IDVectorValuePtrMap
+  Map associating a pointer to an openfluid::core::VectorValue value to a unit, indexed by its ID
+*/
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue*, wxIntegerHash, wxIntegerEqual, IDVectorValuePtrMap);
 
 WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValueMap);

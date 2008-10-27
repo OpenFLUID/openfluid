@@ -19,13 +19,19 @@ namespace openfluid { namespace core {
 
 
 /**
-  Hash table for calculated variables during simulation.
+  Hash table for calculated scalar variables during simulation.
+  Each variable is stored in the hash table as an entry, located by its name.
+  (exemple "effrain" for efficient rain calculated by the production function)
+  Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
+*/
+WX_DECLARE_STRING_HASH_MAP(SerieOfScalarValue*, SimulatedVarsMap);
+
+/**
+  Hash table for calculated vector variables during simulation.
   Each variable is stored in the hash table as an entry, located by its name.
   (exemple "effrain" for efficient rain calculated by the production function)
   Each variable is stored as a vector of double (one vector item = one step, vector[25] is calculated at the 25th step)
  */
-WX_DECLARE_STRING_HASH_MAP(SerieOfScalarValue*, SimulatedVarsMap);
-
 WX_DECLARE_STRING_HASH_MAP(SerieOfVectorValue*, SimulatedVectorVarsMap);
 
 /**
@@ -40,9 +46,9 @@ WX_DECLARE_STRING_HASH_MAP(wxString,ParamsMap);
 
 
 /**
-  Generic definition class for Hydrological Objetcs
+  Generic definition class for homogeneous units
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 class HydroObject
 {

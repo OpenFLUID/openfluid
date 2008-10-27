@@ -177,41 +177,114 @@ The \link openfluid::base::PluggableFunction::runStep runStep \endlink method sh
 
 The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to
 
-\section time_sec Handling time
-
-<I><B>TODO</B></I>
-how to access to simulation time status
 
 \section space_sec Handling space
 
-<I><B>TODO</B></I>
+The spatial domain is represented by units of three different classes : openfluid::core::SurfaceUnit, openfluid::core::ReachSegment and openfluid::core::GroundwaterUnit. These classes are derivated from the openfluid::core::HydroObject super-class (unappropriate name, isn't it?). Each unit carries self information that can be exploited through accessor methods (see classes docs), and also properties and variables that can be exploited through special methods (see \ref funcparams_sec and \ref propini_sec).\n  
 
-how to access to space
+The spatial domain can be accessed using in different ways: using the access method of the CoreRepository, or use the macros intended for handling spatial entities. The first way is for experimented functions developpers only, so only the second way will be developped here.\n
+
+To parse all units of a specific class, you can use:
+<ul>
+<li>#DECLARE_SU_ORDERED_LOOP to declare a loop on all \link openfluid::core::SurfaceUnit SurfaceUnit \endlink, #BEGIN_SU_ORDERED_LOOP to begin, #END_LOOP to end 
+<li>#DECLARE_RS_ORDERED_LOOP to declare a loop on all \link openfluid::core::ReachSegment ReachSegment \endlink, #BEGIN_SU_ORDERED_LOOP to begin, #END_LOOP to end
+<li>#DECLARE_GU_ORDERED_LOOP to declare a loop on all \link openfluid::core::GroundwaterUnit GroundwaterUnit \endlink, #BEGIN_SU_ORDERED_LOOP to begin, #END_LOOP to end
+</ul>
+
+To parse a specific list of units of a specific class, you can use:
+<ul>
+<li>#DECLARE_SU_LIST_LOOP to declare a loop on a list of \link openfluid::core::SurfaceUnit SurfaceUnit \endlink, #BEGIN_SU_LIST_LOOP to begin, #END_LOOP to end 
+<li>#DECLARE_RS_LIST_LOOP to declare a loop on a list of \link openfluid::core::ReachSegment ReachSegment \endlink, #BEGIN_SU_LIST_LOOP to begin, #END_LOOP to end
+<li>#DECLARE_GU_LIST_LOOP to declare a loop on a list of \link openfluid::core::GroundwaterUnit GroundwaterUnit \endlink, #BEGIN_SU_LIST_LOOP to begin, #END_LOOP to end
+</ul>
+\n
+\code
+bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::SurfaceUnit* UpSU;
+  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
+
+  DECLARE_SU_ORDERED_LOOP;
+  DECLARE_SU_LIST_LOOP;
+
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+    UpSUsList = SU->getUpstreamSUs();
+
+    BEGIN_SU_LIST_LOOP(UpSUsList,UpSU)
+      OPENFLUID_GetVariable(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep-1,&TmpValue);
+    END_LOOP
+    
+  END_LOOP;
+}
+\endcode
+
+
+\section time_sec Handling time
+
+The simulation time information is only available from the \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink, \link openfluid::base::PluggableFunction::runStep runStep \endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink methods. They are accessible through the openfluid::core::SimulationInfo and openfluid::core::SimulationStatus classes passed through methods parameters.\n
+The information passed through these classes can be used to get the current time step, the value of the time step in second, the current real date and time, ...\n
+
+\code
+bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+  int CurrentStep;
+  openfluid::core::ScalarValue TmpValue;
+  openfluid::core::SurfaceUnit* SU;
+  DECLARE_SU_ORDERED_LOOP;
+  
+  CurrentStep = SimStatus->getCurrentStep();  
+  
+  BEGIN_SU_ORDERED_LOOP(SU)
+    OPENFLUID_GetVariable(SU,wxT("the.requested.var"),CurrentStep-1,&TmpValue);
+  END_LOOP;      
+}
+\endcode
+
 
 \section funcparams_sec Access to function parameters
-
-\section propini_sec Access to distributed properties and initial conditions
-
 <I><B>TODO</B></I>
 
-how to access to data
+\section vars_sec Access to variables
 
-\subsection vars_sec Access to variables
-
-<I><B>TODO</B></I>
+The values for the simulation variables are attached to the homogeneous units. They can be scalar or vectors.
 
 \subsection varstype_ssec Types
 
 <I><B>TODO</B></I>
+
+openfluid::core::ScalarValue
+
+openfluid::core::VectorValue
 
 
 \subsection varsaccess_ssec Access
 
 <I><B>TODO</B></I>
 
-\if NOCOMMENT
-\link #openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
-\endif
+The methods to access simulation variables exist in two flavours (scalar and vector), depending on the type you pass for the value:
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_AppendVariable OPENFLUID_AppendVariable \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_SetVariable OPENFLUID_SetVariable \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVariableExists OPENFLUID_IsVariableExists \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsScalarVariableExists OPENFLUID_IsScalarVariableExists \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVectorVariableExists OPENFLUID_IsVectorVariableExists \endlink
+</ul>
+
+\section propini_sec Access to distributed properties and initial conditions
+
+<I><B>TODO</B></I>
+
+\link openfluid::base::PluggableFunction::OPENFLUID_GetProperty OPENFLUID_GetProperty \endlink
+
+\link openfluid::base::PluggableFunction::OPENFLUID_SetProperty OPENFLUID_SetProperty \endlink
+
+\link openfluid::base::PluggableFunction::OPENFLUID_GetIniCondition OPENFLUID_GetIniCondition \endlink
+
+
+
 
 \section events_sec Access to distributed events
 
@@ -220,11 +293,25 @@ how to access to data
 \section persist_sec Persistance of internal data
 
 <I><B>TODO</B></I>
+<ul>
+<li>\ref IDFloatMap
+<li>\ref IDDoubleMap
+<li>\ref IDIntMap
+<li>\ref IDBoolMap
+<li>\ref IDScalarValueMap
+<li>\ref IDVectorValueMap
+<li>\ref IDVectorValuePtrMap
+</ul>
 
 \section warnerr_sec Raising warnings and errors
 
 <I><B>TODO</B></I>
 
+\link openfluid::base::PluggableFunction::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning \endlink
+
+\link openfluid::base::PluggableFunction::OPENFLUID_RaiseError OPENFLUID_RaiseError \endlink
+
+dated and undated
 
 
 \section tools_sec Available tools
