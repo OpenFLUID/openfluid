@@ -246,6 +246,8 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 \section funcparams_sec Access to function parameters
 <I><B>TODO</B></I>
 
+\link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink
+
 \section vars_sec Access to variables
 
 The values for the simulation variables are attached to the homogeneous units. They can be scalar or vectors.
@@ -281,14 +283,22 @@ The methods to access simulation variables exist in two flavours (scalar and vec
 
 \link openfluid::base::PluggableFunction::OPENFLUID_SetProperty OPENFLUID_SetProperty \endlink
 
+\link openfluid::base::PluggableFunction::OPENFLUID_IsPropertyExists OPENFLUID_IsPropertyExists \endlink
+
 \link openfluid::base::PluggableFunction::OPENFLUID_GetIniCondition OPENFLUID_GetIniCondition \endlink
 
+\link openfluid::base::PluggableFunction::OPENFLUID_IsIniConditionExists OPENFLUID_IsIniConditionExists \endlink
 
 
 
 \section events_sec Access to distributed events
 
 <I><B>TODO</B></I>
+
+openfluid::core::EventCollection
+
+\link openfluid::base::PluggableFunction::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink
+
 
 \section persist_sec Persistance of internal data
 
@@ -303,7 +313,7 @@ The methods to access simulation variables exist in two flavours (scalar and vec
 <li>\ref IDVectorValuePtrMap
 </ul>
 
-\section warnerr_sec Raising warnings and errors
+\section warnerr_sec Raise warnings and errors
 
 <I><B>TODO</B></I>
 
@@ -312,6 +322,12 @@ The methods to access simulation variables exist in two flavours (scalar and vec
 \link openfluid::base::PluggableFunction::OPENFLUID_RaiseError OPENFLUID_RaiseError \endlink
 
 dated and undated
+
+\section envir_sec Access runtime environment
+
+<I><B>TODO</B></I>
+
+\link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_OPENFLUID_GetRunEnvironment \endlink
 
 
 \section tools_sec Available tools
@@ -323,6 +339,6 @@ dated and undated
 \section fortran_sec Calling Fortran source code
 
 <I><B>TODO</B></I>
-
+FortranCPP.h
  
 */

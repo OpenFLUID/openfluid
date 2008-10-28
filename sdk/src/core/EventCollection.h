@@ -18,6 +18,10 @@ namespace openfluid { namespace core {
 
 class DistributedEvent;
 
+
+/**
+  \brief Class defining a collection of discrete events
+*/
 class EventCollection
 {
   private:

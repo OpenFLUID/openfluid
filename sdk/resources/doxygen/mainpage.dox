@@ -8,16 +8,8 @@
 
 The OpenFLUID-engine library is part of the OpenFLUID-engine Source Development Kit (SDK) which also compounds an Eclipse-based Integrated Development Environment (IDE) and the documentation. It is used by the OpenFLUID-engine kernel and to develop simulation functions that can be used in flux models.  
 
-The library mainly rely on three external libraries:
-<ul> 
-  <li>The base part of the wxWidgets library for strings and some data structures (hashmap, ...) : http://docs.wxwidgets.org/stable/   
-  <li>The TinyXML library for XML file handling : http://www.grinninglizard.com/tinyxmldocs/
-  <li>The C++ Standard Type Library (STL) for other data structures (list, vector) : http://www.sgi.com/tech/stl/ 
-</ul>
 
-\image html API_stack.png 
-\image latex API_stack.png 
- 
+
 \n
 \n 
    

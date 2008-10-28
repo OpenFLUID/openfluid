@@ -25,12 +25,11 @@ WX_DECLARE_STRING_HASH_MAP(wxString, EventInfosMap);
 
 
 /**
-  \brief Class defining  a discrete event, including hosted information
+  \brief Class defining  a discrete event, including attached information
 
-  Each event hosts informations represented as a Key-Value couple :
+  Each event attached information is represented by a Key-Value couple :
   \li Key is the name given to the information
   \li Value is the value of the information and can be numeric or text information
-
 */
 class DistributedEvent
 {
