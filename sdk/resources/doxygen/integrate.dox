@@ -167,15 +167,15 @@ The class defining a simulation function must compound the following methods:
 
 The \link openfluid::base::PluggableFunction::initParams initParams \endlink method should be used to retreive function parameters, read from the model.xml file (See \ref funcparams_sec). Once read, the values should be stored into class attributes to be accessed by other methods.  
 
-The \link openfluid::base::PluggableFunction::prepareData prepareData \endlink method should be used to 
+The \link openfluid::base::PluggableFunction::prepareData prepareData \endlink method should be used to do data pre-processing before the consistency checking.
 
-The \link openfluid::base::PluggableFunction::checkConsistency checkConsistency \endlink method should be used to
+The \link openfluid::base::PluggableFunction::checkConsistency checkConsistency \endlink method is called during the global consistency checking phase. It should be used to add function own consistency checking. 
 
-The \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink method should be used to
+The \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink method should be used to do data initialization, or to compute values that do not change during simulation.  
 
-The \link openfluid::base::PluggableFunction::runStep runStep \endlink method should be used to
+The \link openfluid::base::PluggableFunction::runStep runStep \endlink method is called at each exchange time step. it should contain the computation code.
 
-The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to
+The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to do post-processing after simulation. it is the last method ran.
 
 
 \section space_sec Handling space
@@ -332,13 +332,69 @@ dated and undated
 
 \section tools_sec Available tools
 
-<I><B>TODO</B></I>
-
+The tools have been developped to help function developpers in the set up of data processing or numerical computation. They are available in the namespace openfluid::tools.
+To get more information on theses tools and how to you use it, your are invited to browse the header files (.h) provided with the SDK.    
 
 
 \section fortran_sec Calling Fortran source code
 
-<I><B>TODO</B></I>
-FortranCPP.h
+The C++ - Fortran interface is defined in the FortranCPP.h file, located in the tool part of the SDK.
+In order to execute Fortran code from a simulation function, this Fortran source code have to be wrapped into a subroutine that will be called from the C++ code of the simulation function. To help programmers to achieve this wrapping operation, the FortranCPP.h file defines macros. These macros allows calls of Fortran77 and Fortran90 source code. Youa re invited to browse the FortranCPP.h file to get more information about these macros.\n
+
+
+\n
+<I>Fortran source code (FSubr.f90):</I>
+\code
+subroutine displayvector(Fsize,vect)
+
+implicit none
+
+integer Fsize,i
+real*8 vect(Fsize)
+
+write(*,*) 'size',Fsize
+write(*,*) (Vect(i),i=1,Fsize)
+
+return
+end
+\endcode
+\n
+<I>Declaration block int the .cpp file, located just after the function signature (MyFunc.cpp):</I>
+\code
+BEGIN_EXTERN_FORTRAN
+  EXTERN_FSUBROUTINE(toto)(FINT *Size, FREAL8 *Vect);
+END_EXTERN_FORTRAN
+\endcode
+\n
+<I>Call of the fortran subroutine from the initializeRun method (MyFunc.cpp):</I>
+\code
+bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+  openfluid::core::VectorValue* MyVect;
+  
+  MyVect = new openfluid::core::VectorValue(15,9);
+  int Size = MyVect->getSize();
+
+  CALL_FSUBROUTINE(toto)(&Size,(MyVect->getData()));
+
+  return true;
+}
+\endcode
+
+\n
+The compilation process of linked fortran code runs in 3 steps:
+<ol>
+<li>separate compilation of Fortran source files (without linkage),
+<li>compilation of the simulation function,
+<li>full linkage of the object files (.o) into the simulation function plug-in.
+</ol>      
+ \n
+<I>Modified all target in makefile for compiling and linking:</I> 
+ \code
+ all:
+	gfortran -c $(GFLAGS) FSubr.f90
+	$(CPP) -c $(SRCFILESROOT).cpp -o $(OBJPATH)/$(SRCFILESROOT).o -fPIC $(WXFLAGS) $(OPENFLUIDFLAGS)
+	$(CPP) $(OBJPATH)/$(SRCFILESROOT).o FSubr.o $(WXLIBS) $(OPENFLUIDLIBS) -lgfortran -o $(BINPATH)/$(BINFILE).$(PLUGEXT) -shared $(LDFLAGS)
+ \endcode
  
 */
