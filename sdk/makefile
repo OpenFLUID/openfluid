@@ -37,6 +37,7 @@ clean:
 
 docs:
 	@mkdir -p $(BASEDOCDIR)
+	cp resources/doxygen/openfluid.png $(BASEDOCDIR)/html
 	@doxygen
 
 

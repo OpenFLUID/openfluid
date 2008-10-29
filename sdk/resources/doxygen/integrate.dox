@@ -242,30 +242,59 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 }
 \endcode
 
+The real time information is given through the openfluid::core::DateTime class.
+
 
 \section funcparams_sec Access to function parameters
-<I><B>TODO</B></I>
 
-\link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink
+Functions parameters are passed through the model.xml file. They can be accessed in the source code from the \link openfluid::base::PluggableFunction::initParams initParams \endlink method of the simulation function, unsing \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink. The requested parameter name must be the same as the one used in the model.xml file.\n
+\n
+<i>model.xml file:</i>
+\code
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <model>
+   
+    <function fileID="myfunction">
+      <param name="myparam" value="2" />          
+    </function>
+    
+  </model>
+</openfluid>            
+\endcode
+\n
+<i>initParam method of the simulation function source code:</i>
+\code
+bool MyFunction::initParams(openfluid::core::ParamsMap Params)
+{
+  m_MyParam = 0; //default value
+  OPENFLUID_GetFunctionParameter(Params,wxT("myparam"),&m_MyParam);
+
+  return true;
+}
+\endcode
+
+To be reused in other part of the simulation function, the variable to store the value of function parameters should be declared as class variables. The parameters type can be string, double, integer, boolean, vector of string, vector of double, ... (see definitions of \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink to get more information about available types). 
+
 
 \section vars_sec Access to variables
 
-The values for the simulation variables are attached to the homogeneous units. They can be scalar or vectors.
+The values for the simulation variables are attached to the homogeneous units.
 
 \subsection varstype_ssec Types
 
-<I><B>TODO</B></I>
+Currently, the variables can be typed with one of the two defined types: 
+<ul>
+<li>openfluid::core::ScalarValue for scalar values
+<li>openfluid::core::VectorValue for vector values, which are vector of scalars values
+</ul>
 
-openfluid::core::ScalarValue
-
-openfluid::core::VectorValue
-
+The scalar type is a double precision floating point type. The corresponding plain old type in C++ is double.
 
 \subsection varsaccess_ssec Access
 
-<I><B>TODO</B></I>
 
-The methods to access simulation variables exist in two flavours (scalar and vector), depending on the type you pass for the value:
+The methods to access simulation variables exist in two flavours, for scalar and vector, depending on the type you pass for the value:
 <ul>
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_AppendVariable OPENFLUID_AppendVariable \endlink
@@ -274,6 +303,8 @@ The methods to access simulation variables exist in two flavours (scalar and vec
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_IsScalarVariableExists OPENFLUID_IsScalarVariableExists \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVectorVariableExists OPENFLUID_IsVectorVariableExists \endlink
 </ul>
+
+They can be accessed only from the \link openfluid::base::PluggableFunction::runStep runStep \endlink method.
 
 \section propini_sec Access to distributed properties and initial conditions
 
@@ -291,13 +322,55 @@ The methods to access simulation variables exist in two flavours (scalar and vec
 
 
 
-\section events_sec Access to distributed events
+\section events_sec Access todiscrete events
 
-<I><B>TODO</B></I>
+A discrete event is defined in the class openfluid::core::DistributedEvent. It is defined by a date and a list of key-value information that can be accessed by methods proposed by the openfluid::core::DistributedEvent class.\n 
+A collection of discrete events can be contained by an openfluid::core::EventCollection class.\n
+\n
+To get a collection of events occuring during a period on a given unit, you should use the \link openfluid::base::PluggableFunction::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink method. It returns an openfluid::core::EventCollection that can be processed.\n
+in order to process an event collection, you can parse it using specific macros:
+<ul>
+<li>#DECLARE_EVENT_COLLECTION_LOOP to declare a loop on an event collection,
+<li>#BEGIN_EVENT_COLLECTION_LOOP to begin the loop
+<li>#END_LOOP to finish the loop
+</ul>
+At each iteration, the current event can be processed.
 
-openfluid::core::EventCollection
+\n
+<i>Example of process of events occurring on the current time step:</i>
+\code
+bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::EventCollection EvColl;
+  openfluid::core::DistributedEvent* Ev;
+  std::list<openfluid::core::DistributedEvent* > *EvList;
+  openfluid::core::DateTime BTime, ETime;
+  DECLARE_EVENT_COLLECTION_LOOP;
+  DECLARE_SU_ORDERED_LOOP;
 
-\link openfluid::base::PluggableFunction::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink
+  BTime = SimStatus->getCurrentTime();
+  ETime = BTime + SimStatus->getTimeStep()-1;
+
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+    EvColl.clear();
+
+    OPENFLUID_GetEvents(SU,BTime,ETime,&EvColl);
+    EvList = EvColl.getEventsList();
+
+    BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)
+      if (Ev->isInfoEquals(wxT("molecule"),wxT("glyphosate")))
+      {
+        // process the event
+      }
+    END_LOOP;
+
+  END_LOOP;
+
+  return true;
+}
+\endcode
 
 
 \section persist_sec Persistance of internal data

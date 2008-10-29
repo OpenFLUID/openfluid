@@ -4,6 +4,8 @@ BODY,H1,H2,H3,H4,H5,H6,P,CENTER,TD,TH,UL,DL,DIV {
 BODY,TD {
 	font-size: 90%;
 }
+
+
 H1 {
 	text-align: center;
 	font-size: 160%;
@@ -28,6 +30,12 @@ H4 {
 CAPTION { 
 	font-weight: bold 
 }
+
+DIV.logo {
+  padding-left : 20px;
+  padding-bottom : 10px;
+}
+
 DIV.qindex {
 	width: 100%;
 	background-color: #e8eef2;

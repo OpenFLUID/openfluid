@@ -34,16 +34,28 @@ class EventCollection
 
 
     /**
-      Insert an event in the event collection, ordered by date
+      Inserts an event in the event collection, ordered by date
     */
     bool addEvent(DistributedEvent* Ev);
 
+    /**
+      Returns an event collection extracted from the current event collection, taking into account a time period
+    */
     bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventCollection *Events);
 
+    /**
+      Returns the event collection as a list
+    */
     std::list<DistributedEvent*>* getEventsList() { return &m_Events; };
 
+    /**
+      Returns number of events in the event collection
+    */
     int getCount() const { return m_Events.size(); };
 
+    /**
+      Clears the event collection
+    */
     void clear() { m_Events.clear(); };
 
     void println();

@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME = OpenFLUID SDK API
+PROJECT_NAME = OFElib API
 PROJECT_NUMBER = 
 OUTPUT_DIRECTORY = ./doc/
 CREATE_SUBDIRS = NO
