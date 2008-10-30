@@ -306,23 +306,44 @@ The methods to access simulation variables exist in two flavours, for scalar and
 
 They can be accessed only from the \link openfluid::base::PluggableFunction::runStep runStep \endlink method.
 
+\code
+bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+  int CurrentStep;
+  openfluid::core::ScalarValue TmpValue;
+  openfluid::core::SurfaceUnit* SU;
+  DECLARE_SU_ORDERED_LOOP;
+
+  CurrentStep = SimStatus->getCurrentStep();
+
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+    OPENFLUID_GetVariable(SU,wxT("MyVar"),CurrentStep,&TmpValue);
+    TmpValue = TmpValue * 2;
+    OPENFLUID_AppendVariable(SU,wxT("MyVarX2"),QOutput);
+
+  END_LOOP
+
+  return true;
+}
+\endcode
+
+
 \section propini_sec Access to distributed properties and initial conditions
 
-<I><B>TODO</B></I>
+In order to access to distributed properties and initial conditions provided through standard input files, you can use the following methods. They are usable from \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink, \link openfluid::base::PluggableFunction::runStep runStep \endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink :  
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetProperty OPENFLUID_GetProperty \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_SetProperty OPENFLUID_SetProperty \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsPropertyExists OPENFLUID_IsPropertyExists \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetIniCondition OPENFLUID_GetIniCondition \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsIniConditionExists OPENFLUID_IsIniConditionExists \endlink
+</ul>
 
-\link openfluid::base::PluggableFunction::OPENFLUID_GetProperty OPENFLUID_GetProperty \endlink
-
-\link openfluid::base::PluggableFunction::OPENFLUID_SetProperty OPENFLUID_SetProperty \endlink
-
-\link openfluid::base::PluggableFunction::OPENFLUID_IsPropertyExists OPENFLUID_IsPropertyExists \endlink
-
-\link openfluid::base::PluggableFunction::OPENFLUID_GetIniCondition OPENFLUID_GetIniCondition \endlink
-
-\link openfluid::base::PluggableFunction::OPENFLUID_IsIniConditionExists OPENFLUID_IsIniConditionExists \endlink
-
+The name of the accessed property or initial condition must match the name given in the standard input files.
 
 
-\section events_sec Access todiscrete events
+\section events_sec Access to discrete events
 
 A discrete event is defined in the class openfluid::core::DistributedEvent. It is defined by a date and a list of key-value information that can be accessed by methods proposed by the openfluid::core::DistributedEvent class.\n 
 A collection of discrete events can be contained by an openfluid::core::EventCollection class.\n
@@ -375,7 +396,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
 \section persist_sec Persistance of internal data
 
-<I><B>TODO</B></I>
+It may be interesting to keep the status of some internal variable from the a time step to the next one. In this case, the values of these variables must be stored as class attributes (they are persistant during the whole life of the simulation function). In order to ease the storage of distributed values, data structures are available to associate a unit ID to a value. These data structures exists for different types :   
 <ul>
 <li>\ref IDFloatMap
 <li>\ref IDDoubleMap
@@ -386,22 +407,118 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 <li>\ref IDVectorValuePtrMap
 </ul>
 
+
+<i>declaration of the ID-map structure in the .h file :</i>
+\code
+class MyFunction : public openfluid::base::PluggableFunction
+{
+  private:
+
+    openfluid::core::IDScalarValueMap m_LastValue;
+
+  public:
+  
+    // rest of the declaration of the class 
+
+}
+\endcode
+
+
+<i>usage of the ID-map structure in the .cpp file :</i>
+\code
+bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+  int ID;
+  openfluid::core::ScalarValue TmpValue;
+  openfluid::core::SurfaceUnit* SU;
+
+
+  DECLARE_SU_ORDERED_LOOP;
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+    ID = SU->getID();
+
+    TmpValue = TmpValue + m_LastValue[ID]
+
+    OPENFLUID_AppendVariable(SU,wxT("MyVar"),TmpValue);
+
+    m_LastValue[ID] = TmpValue;
+
+  END_LOOP
+
+  return true;
+}
+\endcode
+
+
 \section warnerr_sec Raise warnings and errors
 
-<I><B>TODO</B></I>
+In order to trace error and warnings during the run of a simulation, simulation functions car raise error and warning messages to inform the kernel that something wrong or critical had happened. An error stops the simulation the next time the kernel take the control, a warning does not stop the simulation. Error and warnings are reported in the simulation report (siminfo.out file). They both can be dated with the number of the time step when the warning or error occurs. \n  
 
-\link openfluid::base::PluggableFunction::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning \endlink
+To raise a warning you can use \link openfluid::base::PluggableFunction::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning \endlink, to raise an error you can use \link openfluid::base::PluggableFunction::OPENFLUID_RaiseError OPENFLUID_RaiseError \endlink \n
 
-\link openfluid::base::PluggableFunction::OPENFLUID_RaiseError OPENFLUID_RaiseError \endlink
+As already said, an error stops the simulation the next time the kernel takes control of the simulation. It is strongly advised to force the control taking by the kernel by using a return false instruction justr after the raise of the error.
 
-dated and undated
+\code
+bool Myfunction::checkConsistency()
+{
+  openfluid::core::ScalarValue TmpValue;
+  openfluid::core::SurfaceUnit* SU;
+  DECLARE_SU_ORDERED_LOOP;
+  
+  BEGIN_SU_ORDERED_LOOP(SU)
+
+    OPENFLUID_GetProperty(SU,wxT("MyVar"),&TmpValue);
+    
+    if (TmpValue <= 0)
+    {
+      OPENFLUID_RaiseError(wxT("my.function"),wxT("Wrong value for the MyProp distributed property on SU"));
+      return false;
+    }    
+
+  END_LOOP
+
+  return true;
+}
+
+\endcode 
+
 
 \section envir_sec Access runtime environment
 
-<I><B>TODO</B></I>
+The runtime environment are informations about the context during execution of the simulation : input and output directories, options passed to the kernel at runtime (verbose/quiet mode, ...)...
 
-\link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_OPENFLUID_GetRunEnvironment \endlink
+They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_OPENFLUID_GetRunEnvironment \endlink method.
 
+\code
+bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+  wxString InputDir;
+
+  OPENFLUID_GetRunEnvironment(wxT("dir.input"),&InputDir);
+
+  // the current input directory is now available through the InputDir local variable 
+
+  return true;
+}
+\endcode
+
+
+The keys for requesting runtime environment information are:
+<ul>
+<li>dir.input [string] : the current input directory
+<li>dir.output [string] : the current output directory
+<li>dir.trace [string] : the current trace directory (if enabled)
+<li>dir.userfuncs [string] : the current directory where user functions are scanned
+<li>dir.sysfuncs [string] : the current directory where standard functions are scanned
+<li>mode.trace [boolean] : trace mode is enabled/disabled
+<li>mode.verbose [boolean] : verbose mode is enabled/disabled (opposed to quiet mode)
+<li>mode.quiet [boolean] : quiet mode is enabled/disabled (opposed to verbose mode)
+<li>mode.cleanoutput [boolean] : cleaning output dir before data saving is enabled/disabled
+<li>mode.novarcheck [boolean] : variable names checking against nomencalture is enabled/disabled
+<li>mode.saveresults [boolean] : result saving in output directory is enabled/disabled
+<li>mode.writereport [boolean] : simulation report saving is enabled/disabled
+</ul>
 
 \section tools_sec Available tools
 
@@ -422,7 +539,7 @@ subroutine displayvector(Fsize,vect)
 
 implicit none
 
-integer Fsize,i
+integer Fsize,ifrom
 real*8 vect(Fsize)
 
 write(*,*) 'size',Fsize
