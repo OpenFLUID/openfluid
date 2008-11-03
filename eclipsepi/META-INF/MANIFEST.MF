@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Simulation function source file generator
+Bundle-SymbolicName: org.lisah.mhydas.newfunc;singleton:=true
+Bundle-Version: 1.1.1
+Bundle-Activator: org.lisah.mhydas.newfunc.Activator
+Bundle-Vendor: lisah
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.cdt
+Eclipse-LazyStart: true
+Export-Package: org,
+ org.lisah,
+ org.lisah.mhydas,
+ org.lisah.mhydas.newfunc,
+ org.lisah.mhydas.newfunc.wizards
