@@ -2,4 +2,19 @@
 <?eclipse version="3.2"?>
 <plugin>
 
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="OpenFLUID"
+            id="org.lisah.openfluid.newfunc">
+      </category>
+      <wizard
+            name="Simulation function wizard"
+            icon="icons/openfluid-eclipse.gif"
+            category="org.lisah.openfluid.newfunc"
+            class="org.lisah.openfluid.newfunc.wizards.NewFunctionWizard"
+            id="org.lisah.openfluid.newfunc.wizards.SampleNewWizard">
+      </wizard>
+   </extension>
+
 </plugin>
