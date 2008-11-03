@@ -250,7 +250,7 @@ echo "# built libs dir" >> $OPTFILE
 echo "BASELIBDIR = $BASEBUILDDIR/lib" >> $OPTFILE
 
 echo "# built doc dir" >> $OPTFILE
-echo "BASEDOCDIR = $ABSPATH/doc" >> $OPTFILE
+echo "BASEDOCDIR = $ABSPATH/autodoc" >> $OPTFILE
 
 echo "# packages dir" >> $OPTFILE
 echo "BASEPACKDIR = $ABSPATH/packages/$MACHTYPE" >> $OPTFILE

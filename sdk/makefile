@@ -35,10 +35,10 @@ clean:
 	@rm -R -f $(BASEDOCDIR)
 
 
-docs:
+autodoc:
 	@mkdir -p $(BASEDOCDIR)
-	cp resources/doxygen/openfluid.png $(BASEDOCDIR)/html
 	@doxygen
+	cp resources/doxygen/openfluid.png $(BASEDOCDIR)/html
 
 
 purge: clean
@@ -162,11 +162,11 @@ ubuntu-packages: #all openfluid-conf-file docs
 
 ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
 ubuntu-dapper-packages: DEPENDS = "$(DAPPERDEPENDS)"
-ubuntu-dapper-packages: docs ubuntu-packages	
+ubuntu-dapper-packages: autodoc ubuntu-packages	
 
 ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
 ubuntu-edgy-packages: DEPENDS = "$(EDGYDEPENDS)"
-ubuntu-edgy-packages: docs ubuntu-packages	
+ubuntu-edgy-packages: autodoc ubuntu-packages	
 
 
 
