@@ -38,7 +38,7 @@ clean:
 autodoc:
 	@mkdir -p $(BASEDOCDIR)
 	@doxygen
-	cp resources/doxygen/openfluid.png $(BASEDOCDIR)/html
+	cp resources/doxygen/openfluid.png $(BASEDOCDIR)/html/
 
 
 purge: clean
