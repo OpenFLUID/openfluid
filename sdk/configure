@@ -56,7 +56,23 @@ fi
 
 ############################
 
-. ../check-tools.in
+check_tools () {
+
+for i in $*
+do
+  echo -n "checking tool $i..."
+  if [ -z "`which $i`" ]
+  then
+    echo " not found!"
+    return 127
+  fi
+  echo " ok"
+done
+
+}
+
+
+
 
 check_tools $BUILDTOOLS
 if [ $? -eq 127 ]
