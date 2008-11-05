@@ -32,17 +32,18 @@ functions:
 
 
 clean:
-	@(cd src/main && $(MAKE) clean)
-	@(cd src/$(PLUGSUBDIR) && $(MAKE) clean)
+#	@(cd src/main && $(MAKE) clean)
+#	@(cd src/$(PLUGSUBDIR) && $(MAKE) clean)
+	@rm -f -R $(BASEBUILDDIR)	
 
 
 doc:
-	@(cd src/main && $(MAKE) doc)
-	@(cd src/stdplugs && $(MAKE) doc)
+#	@(cd src/main && $(MAKE) doc)
+#	@(cd src/stdplugs && $(MAKE) doc)
 
 
 purge: clean
-	@rm -f $(BASEBINDIR)
+	@rm -f $(BASEBUILDDIR)
 
 
 

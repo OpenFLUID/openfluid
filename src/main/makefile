@@ -43,7 +43,7 @@ prechecks:
 
 
 clean:
-	@rm -f -R $(OBJDIR)
+#	@rm -f -R $(OBJDIR)
 
 
 doc:

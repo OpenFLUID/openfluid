@@ -245,7 +245,8 @@ echo "BASEMAINDIR = $ABSPATH" >> $OPTFILE
 
 
 echo "# build base dir" >> $OPTFILE
-echo "BASEBUILDDIR = $ABSPATH/build/$MACHTYPE" >> $OPTFILE
+#echo "BASEBUILDDIR = $ABSPATH/build/$MACHTYPE" >> $OPTFILE
+echo "BASEBUILDDIR = $ABSPATH/build" >> $OPTFILE
 
 echo "# binary dir" >> $OPTFILE
 echo "BASEBINDIR = \$(BASEBUILDDIR)/bin" >> $OPTFILE
