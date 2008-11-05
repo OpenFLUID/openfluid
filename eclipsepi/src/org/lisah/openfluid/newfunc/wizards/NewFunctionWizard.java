@@ -530,8 +530,8 @@ public class NewFunctionWizard extends Wizard implements INewWizard {
 			"CPP = g++\n" +
 			"WXLIBS = $(shell wx-config --libs base)\n" +
 			"WXFLAGS = $(shell wx-config --cxxflags base)\n" +
-			"OPENFLUIDLIBS = $(shell openfluid-config --libs)\n"+
-			"OPENFLUIDFLAGS = $(shell openfluid-config --cflags)\n"+
+			"OPENFLUIDLIBS = $(shell ofelib-config --libs)\n"+
+			"OPENFLUIDFLAGS = $(shell ofelib-config --cflags)\n"+
 			"BINFILE = " + binName +"\n" +
 			"SRCFILESROOT = " + srcName +"\n" +
 			"\n" +
