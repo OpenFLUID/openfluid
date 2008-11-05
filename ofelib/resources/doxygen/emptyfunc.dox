@@ -33,8 +33,8 @@ The signature is declared and implemented in the .h file, and begin with the #BE
 
 \section emptycompile_ssec Compiling the function
 
-The OpenFLUID-engine simulation functions must be compiled using the gcc C++ compiler (g++) and must be linked to the OpenFLUID library.\n
-The openfluid-config tool gives the correct option to pass to the compiler:
+The OpenFLUID-engine simulation functions must be compiled using the gcc C++ compiler (g++) and must be linked to the OpenFLUID library (ofelib).\n
+The ofelib-config tool gives the correct option to pass to the compiler:
 <ul>
   <li>--libs returns linker options
   <li>--cflags returns compilation flags
