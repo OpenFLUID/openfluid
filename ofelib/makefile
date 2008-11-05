@@ -14,19 +14,18 @@ sdk:
 	@$(LDCONFIGBUILD)
 
 
-openfluid-conf-file:
+ofelib-conf-file:
 	@echo ""
 	@echo "==== Creating openfluid-config file ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
 	@echo "" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)    
-	@echo "SDKLIBDIR=$(INSTSDKLIBDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
-	@echo "SDKINCDIR=$(INSTSDKINCDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
-	@echo "SDKPREFIX=$(INSTSDKPREFIX)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)	
-	@echo "SDKLIBROOT=$(SDKLIBROOT)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)                
+	@echo "OFELIBDIR=$(INSTSDKLIBDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
+	@echo "OFELIBINCDIR=$(INSTSDKINCDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
+	@echo "OFELIBROOT=$(SDKLIBROOT)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)                
 	@echo "MAJORVER=$(MAJORVER)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
 	@echo "MINORVER=$(MINORVER)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)  
 	@echo "SVNREV=$(SVNREV)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)	
-	@cat ./openfluid-config.in >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
+	@cat ./ofelib-config.in >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
 	@chmod ugo+x $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
 
 
@@ -53,7 +52,7 @@ purge: clean
 #	@$(SUDO) rm -f $(INSTSDKBINPATH)/$(OPENFLUIDCONFIGFILE)
 #	@$(SUDO) $(LDCONFIGINST)
 
-install-sdk: sdk openfluid-conf-file #clean-installed-sdk
+install-sdk: sdk ofelib-conf-file #clean-installed-sdk
 	@echo ""
 	@echo "==== Installing SDK ===="
 	@echo "Installing header files in $(INSTSDKINCPATH)"
@@ -70,7 +69,7 @@ install-sdk: sdk openfluid-conf-file #clean-installed-sdk
 	@$(SUDO) $(LDCONFIGINST)
 	@$(SUDO) cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(INSTSDKBINPATH)
 	
-for-app-dev: sdk openfluid-conf-file
+for-app-dev: sdk ofelib-conf-file
 	@echo ""
 	@echo "==== Installing SDK for app development ===="
 	@rm -R -f $(DEVPREFIX)

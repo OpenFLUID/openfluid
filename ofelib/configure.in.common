@@ -8,8 +8,8 @@ RELEASE_CCCFLAGS=-O3
 DEVEL_CCCFLAGS=-g3
 
 
-SDKLIBROOT=openfluid
-OPENFLUIDCONFIGFILE=openfluid-config
+SDKLIBROOT=ofelib
+OPENFLUIDCONFIGFILE=ofelib-config
 
 MAJORVER=1
 MINORVER=3
@@ -21,15 +21,15 @@ EDGYDEPENDS="libwxbase2.8-dev (>= 2.8)"
 DAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6)"
 PACKSECTION="science"
 PACKPRIORITY="optional"
-LIBPACKDESC="OpenFLUID SDK library\\\n This library is used by the OpenFLUID engine. It is also needed for pluggable function development."
-DEVPACKDESC="OpenFLUID SDK headers"
+LIBPACKDESC="OpenFLUID-Engine library\\\n This library is used by the OpenFLUID engine. It is also needed for pluggable function development."
+DEVPACKDESC="OpenFLUID-Engine library headers"
 
 LIBPACKROOT=lib$SDKLIBROOT
 DEVPACKROOT=lib$SDKLIBROOT-dev
 
 INSTSDKLIBDIR=lib
-INSTSDKINCDIR=include/openfluid
+INSTSDKINCDIR=include/ofelib
 INSTSDKBINDIR=bin
 
-DEVPREFIX=/var/tmp/openfluid
+DEVPREFIX=/var/tmp/ofelib
 

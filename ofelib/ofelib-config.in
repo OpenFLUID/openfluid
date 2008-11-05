@@ -6,8 +6,8 @@
 
 
 usage_info() {
-  echo "OpenFLUID SDK config usage:\n"
-  echo "  openfluid-config [ARG]\n"
+  echo "OpenFLUID-Engine library config usage:\n"
+  echo "  ofelib-config [ARG]\n"
   echo " available options:"
   echo "      --libs        returns linker options" 
   echo "      --cflags      returns compilation flags (C)" 
@@ -21,17 +21,17 @@ if [ "$1" != "--libs" ] && [ "$1" != "--cflags" ] && [ "$1" != "--version" ]; th
 fi
 
 INSTPREFIX=/usr
-if [ -n "$OPENFLUIDSDKPREFIX" ]; then
-  INSTPREFIX=$OPENFLUIDSDKPREFIX
+if [ -n "$OFELIBPREFIX" ]; then
+  INSTPREFIX=$OFELIBPREFIX
 fi
 
 
 if [ "$1" = "--libs" ]; then
-  echo "-L$INSTPREFIX/$SDKLIBDIR -l$SDKLIBROOT"
+  echo "-L$INSTPREFIX/$OFELIBDIR -l$OFELIBROOT"
 fi
 
 if [ "$1" = "--cflags" ]; then
-  echo "-I$INSTPREFIX/$SDKINCDIR -DOPENFLUIDSDK_MAJORVER=$MAJORVER -DOPENFLUIDSDK_MINORVER=$MINORVER -DOPENFLUIDSDK_REVISION=$SVNREV"
+  echo "-I$INSTPREFIX/$OFELIBINCDIR -DOFELIB_MAJORVER=$MAJORVER -DOFELIB_MINORVER=$MINORVER -DOFELIB_REVISION=$SVNREV"
 fi
 
 

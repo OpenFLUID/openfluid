@@ -97,7 +97,7 @@
   openfluid::base::Signature* GetPlugSignature() \
   { \
     openfluid::base::Signature* ZeSignature = new openfluid::base::Signature(); \
-    ZeSignature->setSDKVersion(OPENFLUIDSDK_MAJORVER,OPENFLUIDSDK_MINORVER,OPENFLUIDSDK_REVISION);
+    ZeSignature->setSDKVersion(OFELIB_MAJORVER,OFELIB_MINORVER,OFELIB_REVISION);
 
 
 /**
@@ -165,7 +165,7 @@
 /**
   Macro for declaration of SDK version used to build the function
 */
-#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(OPENFLUIDSDK_MAJORVER,OPENFLUIDSDK_MINORVER,OPENFLUIDSDK_REVISION);
+#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(OFELIB_MAJORVER,OFELIB_MINORVER,OFELIB_REVISION);
 
 // =====================================================================
 // =====================================================================
