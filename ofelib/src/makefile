@@ -57,7 +57,7 @@ $(OBJDIR)/tools/%.o : tools/%.cpp
 
 
 all: prechecks $(COREOBJ) $(BASEOBJ) $(TOOLSOBJ)
-	$(CPP) -o $(BINDIR)/$(LIBFILE) $(COREOBJ) $(BASEOBJ) $(TOOLSOBJ) $(CCLIBS) -shared $(SDKLIBLDFLAGS) 
+	$(CPP) -o $(LIBDIR)/$(LIBFILE) $(COREOBJ) $(BASEOBJ) $(TOOLSOBJ) $(CCLIBS) -shared $(SDKLIBLDFLAGS) 
 
 prechecks:
 	@mkdir -p $(OBJDIR)/core
@@ -68,7 +68,7 @@ prechecks:
 
 
 clean:
-	@rm -f -R $(OBJDIR)/*
+#	@rm -f -R $(OBJDIR)/*
 
 
 doc:

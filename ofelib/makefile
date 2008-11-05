@@ -31,17 +31,17 @@ ofelib-conf-file:
 
 clean:
 	@(cd src && $(MAKE) clean)
-	@rm -R -f $(BASEDOCDIR)
+	@rm -R -f $(BASEBUILDDIR)
 
 
-autodoc:
+doc:
 	@mkdir -p $(BASEDOCDIR)
-	@doxygen
+	@(cat Doxyfile ; echo "OUTPUT_DIRECTORY = $(BASEDOCDIR)" ) | doxygen -	
 	cp resources/doxygen/openfluid.png $(BASEDOCDIR)/html/
 
 
 purge: clean
-	@rm -f $(BASEBINDIR)/*
+	@rm -f $(BASEBUILDDIR)/*
 
 
 #clean-installed-sdk:
@@ -83,7 +83,7 @@ for-app-dev: sdk ofelib-conf-file
 	@cp src/tools/*.h $(DEVPREFIX)/$(INSTSDKINCDIR)/tools/	
 	@echo "Installing libraries in $(DEVPREFIX)/$(INSTSDKLIBDIR)" 	
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKLIBDIR)
-	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(DEVPREFIX)/$(INSTSDKLIBDIR)
+	@cp $(BASELIBDIR)/$(SDKLIBFILE) $(DEVPREFIX)/$(INSTSDKLIBDIR)
 	@chmod 644 $(DEVPREFIX)/$(INSTSDKLIBDIR)/$(SDKLIBFILE)
 	@$(LDCONFIGDEV)
 	@mkdir -p $(DEVPREFIX)/$(INSTSDKBINDIR)
