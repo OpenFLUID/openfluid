@@ -11,15 +11,14 @@ DEVEL_CCCFLAGS=-D__DEVEL__
 SETUPH=setup.h
 
 
-SDKCONFIGTOOL=openfluid-config
-OPENFLUIDSDKPREFIX=/var/tmp/openfluid
-
+SDKCONFIGTOOL=ofelib-config
+OFELIBPREFIX=/var/tmp/ofelib
 
 
 PLUGSUBDIR=functions
 
 
-BUILDTOOLS="make g++ wx-config dpkg-deb cp mkdir $OPENFLUIDSDKPREFIX/bin/$SDKCONFIGTOOL"
+BUILDTOOLS="make g++ wx-config dpkg-deb cp mkdir $OFELIBPREFIX/bin/$SDKCONFIGTOOL"
 
 APPNAME=openfluid
 EXEFILEROOT=openfluid-engine
@@ -62,15 +61,13 @@ MDEF_SIMINFOFILE=siminfo.out
 
 
 
-OPENFLUIDSDKPREFIX=/var/tmp/openfluid
-
 PACKMAINTAINER="Jean-Christophe FABRE <fabrejc@supagro.inra.fr>"
 PACKSECTION="science"
 PACKPRIORITY="optional"
 
 
-ENGEDGYDEPENDS="libwxbase2.8-dev (>= 2.8), libopenfluid (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
-ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), libopenfluid (= `$OPENFLUIDSDKPREFIX/bin/openfluid-config --version`)"
+ENGEDGYDEPENDS="libwxbase2.8-dev (>= 2.8), libopenfluid (= `$OFELIBPREFIX/bin/ofelib-config --version`)"
+ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), libopenfluid (= `$OFELIBPREFIX/bin/ofelib-config --version`)"
 ENGPACKDESC="OpenFLUID modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
 ENGPACKROOT=$EXEFILEROOT
 

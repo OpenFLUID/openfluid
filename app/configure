@@ -83,8 +83,8 @@ fi
 
 
 
-#for being seen from openfluid-config script
-export OPENFLUIDSDKPREFIX 
+#for being seen from ofelib-config script
+export OFELIBPREFIX 
 
 
 
@@ -180,9 +180,9 @@ echo "" >> $OPTFILE
 
 echo "# compile options for openfluid sdk" >> $OPTFILE
 VARTOWRITE=
-VARTOWRITE=`$OPENFLUIDSDKPREFIX/bin/openfluid-config --libs`
+VARTOWRITE=`$OFELIBPREFIX/bin/ofelib-config --libs`
 echo "OPENFLUIDLIBS = $VARTOWRITE" >> $OPTFILE
-VARTOWRITE=`$OPENFLUIDSDKPREFIX/bin/openfluid-config --cflags`
+VARTOWRITE=`$OFELIBPREFIX/bin/ofelib-config --cflags`
 echo "OPENFLUIDFLAGS = $VARTOWRITE" >> $OPTFILE
 
 echo "" >> $OPTFILE
@@ -281,8 +281,8 @@ echo "RELEASESTATUS = $RELEASESTATUS" >> $OPTFILE
 
 
 echo "" >> $OPTFILE
-echo "SDKPREFIX = $OPENFLUIDSDKPREFIX" >> $OPTFILE
-echo "OPENFLUIDPATH = $OPENFLUIDSDKPREFIX/bin:$PATH" >> $OPTFILE
+echo "OFELIBPREFIX = $OFELIBPREFIX" >> $OPTFILE
+echo "OPENFLUIDPATH = $OFELIBPREFIX/bin:$PATH" >> $OPTFILE
 echo "" >> $OPTFILE
 
 
