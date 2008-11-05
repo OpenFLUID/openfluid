@@ -3,8 +3,9 @@
 include ./makeopts.inc
 
 export PATH := $(OPENFLUIDPATH):$(PATH)
-export OPENFLUIDSDKPREFIX := $(SDKPREFIX)
+export OFELIBPREFIX := $(OFELIBPREFIX)
 
+ 
 
 all: main functions run-script
 
@@ -14,7 +15,7 @@ all: main functions run-script
 run-script:
 	@echo "==== Generating run script for build environment ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/run-engine.sh
-	@echo "export LD_LIBRARY_PATH=$(OPENFLUIDSDKPREFIX)/lib:$$LD_LIBRARY_PATH" >> $(BASEBINDIR)/run-engine.sh
+	@echo "export LD_LIBRARY_PATH=$(OFELIBPREFIX)/lib:$$LD_LIBRARY_PATH" >> $(BASEBINDIR)/run-engine.sh
 	@echo "./$(EXEFILE) \$$*" >> $(BASEBINDIR)/run-engine.sh
 	@chmod 755 $(BASEBINDIR)/run-engine.sh
 

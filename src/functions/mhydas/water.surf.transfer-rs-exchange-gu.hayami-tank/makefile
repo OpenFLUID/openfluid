@@ -3,8 +3,8 @@
 CPP = g++
 WXLIBS = $(shell wx-config --libs base)
 WXFLAGS = $(shell wx-config --cxxflags base)
-OPENFLUIDLIBS = $(shell openfluid-config --libs)
-OPENFLUIDFLAGS = $(shell openfluid-config --cflags)
+OPENFLUIDLIBS = $(shell ofelib-config --libs)
+OPENFLUIDFLAGS = $(shell ofelib-config --cflags)
 BINFILE = water.surf.transfer-rs-exchange-gu.hayami-tank
 SRCFILESROOT = HayamiRSGUFunc
 
