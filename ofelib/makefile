@@ -99,10 +99,11 @@ ubuntu-packages: #all openfluid-conf-file docs
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp $(BASEBINDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
+	@cp $(BASELIBDIR)/$(SDKLIBFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)$(INSTSDKLIBPATH)
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/usr/share/doc/$(LIBPACKROOT)
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
-	@cp resources/debian/libopenfluid/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@cp resources/debian/libofelib/* $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN
+	@chmod 0755 $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/*
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(LIBPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
 	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(LIBPACKNAME)/DEBIAN/control
@@ -137,7 +138,6 @@ ubuntu-packages: #all openfluid-conf-file docs
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
-#	@cp resources/debian/openfluid-dev/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
 	@cp resources/doc/COPYING $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/copyright
 	@echo "Package: $(DEVPACKROOT)" > $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
 	@echo "Version: $(MAJORVER).$(MINORVER)-$(SVNREV)" >> $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN/control
@@ -161,11 +161,11 @@ ubuntu-packages: #all openfluid-conf-file docs
 
 ubuntu-dapper-packages: LOCALDIR = ubuntu-dapper
 ubuntu-dapper-packages: DEPENDS = "$(DAPPERDEPENDS)"
-ubuntu-dapper-packages: autodoc ubuntu-packages	
+ubuntu-dapper-packages: doc ubuntu-packages	
 
 ubuntu-edgy-packages: LOCALDIR = ubuntu-edgy
 ubuntu-edgy-packages: DEPENDS = "$(EDGYDEPENDS)"
-ubuntu-edgy-packages: autodoc ubuntu-packages	
+ubuntu-edgy-packages: doc ubuntu-packages	
 
 
 
