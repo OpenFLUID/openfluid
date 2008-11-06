@@ -66,8 +66,8 @@ PACKSECTION="science"
 PACKPRIORITY="optional"
 
 
-ENGEDGYDEPENDS="libwxbase2.8-dev (>= 2.8), libopenfluid (= `$OFELIBPREFIX/bin/ofelib-config --version`)"
-ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), libopenfluid (= `$OFELIBPREFIX/bin/ofelib-config --version`)"
+ENGEDGYDEPENDS="libwxbase2.8-dev (>= 2.8), libofelib (= `$OFELIBPREFIX/bin/ofelib-config --version`)"
+ENGDAPPERDEPENDS="wx-common (>= 2.6), libwxgtk2.6-dev (>= 2.6), libofelib (= `$OFELIBPREFIX/bin/ofelib-config --version`)"
 ENGPACKDESC="OpenFLUID modelling platform engine\\\n This engine uses pluggable simulation functions to simulate fluxes in landscapes."
 ENGPACKROOT=$EXEFILEROOT
 
