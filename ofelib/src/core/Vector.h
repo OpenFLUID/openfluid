@@ -9,7 +9,9 @@
 namespace openfluid { namespace core {
 
 
-
+/**
+  Template class for vector data
+*/
 template <class T>
 class Vector
 {
@@ -23,36 +25,84 @@ class Vector
 
   public :
 
+	/**
+	  Default constructor, creates an empty vector
+	*/
     Vector();
 
+	/**
+	  Copy constructor
+	*/
     Vector(const Vector &Vector);
 
+	/**
+	  Constructor, creates a vector containing Size elements
+	*/
     Vector(long Size);
 
+	/**
+	  Constructor, creates a vector containing Size elements, initialized with value InitValue
+	*/
     Vector(long Size, T InitValue);
 
+    /**
+      Constructor, creates a vector of size Size, containing Data
+    */
     Vector(T* Data, long Size);
 
+    /**
+      Destructor
+    */
     ~Vector();
 
+    /**
+      Returns the size of the vector
+    */
     long getSize() const { return m_Size; };
 
+    /**
+      Returns the size of the vector
+    */
     long size() const { return getSize(); };
 
+    /**
+      Returns a pointer to the content of the vector (like C arrays)
+    */
     T* getData() const { return m_Data; };
 
+    /**
+      Sets data for the vector from Data and with size Size
+    */
     void setData(T* Data, long Size);
 
+    /**
+      Returns the element of the vector for index Index
+    */
     T getElement(long Index) const;
 
+    /**
+      Returns the element of the vector for index Index
+    */
     T at(long Index) const { return getElement(Index); };
 
+    /**
+      Sets a new value for element at the given index
+    */
     void setElement(long Index, T Element);
 
+    /**
+      Operator to set a new value for element given between []
+    */
     T& operator[](long Index);
 
+    /**
+      Allocation operator
+    */
     Vector<T>& operator = (const Vector &A);
 
+    /**
+      Clears the vector (empty and size is 0)
+    */
     void clear();
 
 };
@@ -223,7 +273,7 @@ T& Vector<T>::operator[](long Index)
 template <class T>
 Vector<T>& Vector<T>::operator=(const Vector &A)
 {
-  std::cout << "operator = in" << std::endl;std::cout.flush();
+  /*std::cout << "operator = in" << std::endl;std::cout.flush();*/
 
   if (this == &A) return *this; // in case somebody tries assign array to itself
 

@@ -28,7 +28,29 @@ typedef int UnitID;
 typedef double ScalarValue;
 
 /**
- Type definition for vector values
+ Type definition for vector values. This type is based on the openfluid::core::Vector template.
+ \sa openfluid::core::Vector
+
+ <i>usage examples:</i>
+ \code
+  // create an empty vector
+  openfluid::core::VectorValue TmpValue;
+
+  // give a size of 10 to this vector
+  TmpValue = openfluid::core::VectorValue(10);
+
+  // give a size of 10 to this vector and fill it with a value of2
+  TmpValue = openfluid::core::VectorValue(10,2);
+
+  // read the value at index 6 in put it in a variable MyVar
+  MyVar = TmpValue[6];
+  // or
+  MyVar = TmpValue.at(6);
+
+  // set or modify the value 15 at index 3
+  TmpValue.setElement(3,15);
+ \endcode
+
  */
 typedef Vector<ScalarValue> VectorValue;
 
