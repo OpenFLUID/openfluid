@@ -86,7 +86,7 @@ class RuntimeEnvironment
 
     wxString getInputDir() const { return m_InputDir; };
 
-    void setOutputDir(const wxString OutputDir) { m_OutputDir = OutputDir; mp_FuncEnv->setValue(wxT("dir.input"),m_OutputDir); };
+    void setOutputDir(const wxString OutputDir) { m_OutputDir = OutputDir; mp_FuncEnv->setValue(wxT("dir.output"),m_OutputDir); };
 
     wxString getOutputDir() const { return m_OutputDir; };
 
