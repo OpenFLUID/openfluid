@@ -3,7 +3,7 @@
 include ./makeopts.inc
 
 
-all: sdk
+all: sdk ofelib-conf-file
 
 .PHONY: sdk
 
@@ -16,7 +16,7 @@ sdk:
 
 ofelib-conf-file:
 	@echo ""
-	@echo "==== Creating openfluid-config file ===="
+	@echo "==== Creating ofelib-config file ===="
 	@echo "#!/bin/sh" > $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)
 	@echo "" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)    
 	@echo "OFELIBDIR=$(INSTSDKLIBDIR)" >> $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE)        
@@ -90,7 +90,7 @@ for-app-dev: sdk ofelib-conf-file
 	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(DEVPREFIX)/$(INSTSDKBINDIR)
 	
 
-ubuntu-packages: #all openfluid-conf-file docs	
+ubuntu-packages: #all ofelib-conf-file docs	
 	@echo ""	
 	@mkdir -p $(BASEPACKDIR)
 	@rm -f -R $(BASEPACKDIR)/$(LOCALDIR)/*
@@ -130,11 +130,14 @@ ubuntu-packages: #all openfluid-conf-file docs
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN
+	@mkdir -p $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/ofefunc2doc/template	
 	@cp src/openfluid-*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/
 	@cp src/core/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/core/ 
 	@cp src/base/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/base/
 	@cp src/tools/*.h $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKINCPATH)/tools/	
 	@cp $(BASEBINDIR)/$(OPENFLUIDCONFIGFILE) $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)
+	@cp resources/ofefunc2doc/ofefunc2doc $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)$(INSTSDKBINPATH)	
+	@cp resources/ofefunc2doc/ofefunc2doc_tpl.tex $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/ofefunc2doc/template	
 	@cp resources/doc/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)
 	@cp -R $(BASEDOCDIR)/html/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/usr/share/doc/$(DEVPACKROOT)/html
 	@cp resources/debian/common/* $(BASEPACKDIR)/$(LOCALDIR)/$(DEVPACKNAME)/DEBIAN

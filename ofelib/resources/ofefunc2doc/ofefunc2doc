@@ -38,7 +38,7 @@ class OFEFunc2Latex:
   THE_FPARAMS = []
   THE_EVENTS = []
 
-  LATEX_TEMPLATE_FILE = "func2doc_tpl.tex"
+  LATEX_TEMPLATE_FILE = "/usr/share/ofefunc2doc/template/ofefunc2doc_tpl.tex"
   LATEX_TEMPLATE = ""
 
   LATEXFILE = ""
