@@ -1,0 +1,39 @@
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{tabularx}
+\usepackage[margin=2cm]{geometry}
+\usepackage{multicol}
+
+
+\title{$title}
+\author{$author}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\noindent \textbf{Name} : \textit{$name}\\
+\noindent \textbf{Domain} : \textit{$domain}\\
+\noindent \textbf{Description} : \textit{$description}\\
+
+$data
+
+\bigskip
+\bigskip
+
+\begin{multicols}{2}
+
+$funcdoc
+
+\end{multicols}
+
+\bigskip
+\bigskip
+\small
+\begin{flushright}generated using func2doc,\\
+on \today\end{flushright}
+\small
+
+\end{document}
