@@ -3,7 +3,7 @@
   \brief
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
-*/
+ */
 
 #ifndef __REACH_H__
 #define __REACH_H__
@@ -24,92 +24,125 @@ typedef UnitID nodeid_t;
   \brief Definition class for reach segments
 
   \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
-*/
+ */
 class ReachSegment : public HydroObject
 {
 
-  private:
+private:
 
-    nodeid_t m_UpstreamNode;
-    nodeid_t m_DownstreamNode;
-    UnitID m_DownstreamReachID;
-    ReachSegment *mp_DownstreamReach;
-    std::list<ReachSegment*>* mp_UpstreamReaches;
-    std::list<SurfaceUnit*>* mp_SrcUpstreamSUs;    
-    std::list<SurfaceUnit*>* mp_LatUpstreamSUs;    
-    
-    double m_UsrSlope;
-    double m_UsrLength;
-    double m_UsrWidth;
-    double m_UsrHeight;
-    UnitID m_GUExchangeID;   
-    GroundwaterUnit *mp_GUExchange;
+	nodeid_t m_UpstreamNode;
+	nodeid_t m_DownstreamNode;
+	UnitID m_DownstreamReachID;
+	ReachSegment *mp_DownstreamReach;
+	std::list<ReachSegment*>* mp_UpstreamReaches;
+	std::list<SurfaceUnit*>* mp_SrcUpstreamSUs;
+	std::list<SurfaceUnit*>* mp_LatUpstreamSUs;
 
-  public:
-	  /**
+	double m_UsrSlope;
+	double m_UsrLength;
+	double m_UsrWidth;
+	double m_UsrHeight;
+	UnitID m_GUExchangeID;
+	GroundwaterUnit *mp_GUExchange;
+
+public:
+	/**
 	    Default Constructor
-	  */
-	  ReachSegment();
+	 */
+	ReachSegment();
 
-	  /**
+	/**
 	    Constructor
-	  */
-		ReachSegment(UnitID ID, int ProcessOrder,
-              nodeid_t UpstreamNode, nodeid_t DownstreamNode, UnitID LowReachID,
-              double UsrSlope, double UsrLength, double UsrWidth, double UsrHeight,
-              UnitID GUExchangeID);
+	 */
+	ReachSegment(UnitID ID, int ProcessOrder,
+			nodeid_t UpstreamNode, nodeid_t DownstreamNode, UnitID LowReachID,
+			double UsrSlope, double UsrLength, double UsrWidth, double UsrHeight,
+			UnitID GUExchangeID);
 
-	  /**
+	/**
 	    Destructor
-	  */
-		~ReachSegment();
+	 */
+	~ReachSegment();
 
-    nodeid_t getUpstreamNode() const;
+    /**
+      Returns the upstream node
+     */
+	nodeid_t getUpstreamNode() const;
 
-    nodeid_t getDownstreamNode() const;
+    /**
+      Returns the downstream node
+     */
+	nodeid_t getDownstreamNode() const;
 
-    UnitID getDownstreamReachID() const;
+	UnitID getDownstreamReachID() const;
 
-    double getUsrSlope() const;
+    /**
+      Returns the slope of this RS
+     */
+	double getUsrSlope() const;
 
-    double getUsrLength() const;
+    /**
+      Returns the length of this RS
+     */
+	double getUsrLength() const;
 
-    double getUsrWidth() const;
+    /**
+      Returns the width of this RS
+     */
+	double getUsrWidth() const;
 
-    double getUsrHeight() const;
+    /**
+      Returns the height of this RS
+     */
+	double getUsrHeight() const;
 
-		UnitID getGUExchangeID() const;
+	UnitID getGUExchangeID() const;
 
-    GroundwaterUnit *getGUExchange() const;
+    /**
+      Returns the GU exchanging with this RS
+     */
+	GroundwaterUnit *getGUExchange() const;
 
-    ReachSegment *getDownstreamReach() const;
-    
-    std::list<ReachSegment*>* getUpstreamReaches() { return mp_UpstreamReaches; };
-    
-    std::list<SurfaceUnit*>* getSrcUpstreamSUs() { return mp_SrcUpstreamSUs; };
-    
-    std::list<SurfaceUnit*>* getLatUpstreamSUs() { return mp_LatUpstreamSUs; };  
+    /**
+      Returns the downstream RS
+     */
+	ReachSegment *getDownstreamReach() const;
 
-    void setUpstreamNode(nodeid_t Node);
+    /**
+      Returns the list of the upstream RSs
+     */
+	std::list<ReachSegment*>* getUpstreamReaches() { return mp_UpstreamReaches; };
 
-    void setDownstreamNode(nodeid_t Node);
+    /**
+      Returns the list of the upstream lateral SUs
+     */
+	std::list<SurfaceUnit*>* getSrcUpstreamSUs() { return mp_SrcUpstreamSUs; };
 
-    void setDownstreamReachID(UnitID ID);
+    /**
+      Returns the list of the upstream source SUs
+     */
+	std::list<SurfaceUnit*>* getLatUpstreamSUs() { return mp_LatUpstreamSUs; };
 
-    void setUsrSlope(double Slope);
+	void setUpstreamNode(nodeid_t Node);
 
-    void setUsrLength(double Length);
+	void setDownstreamNode(nodeid_t Node);
 
-    void setUsrWidth(double Width);
+	void setDownstreamReachID(UnitID ID);
 
-    void setUsrHeight(double Height);
+	void setUsrSlope(double Slope);
 
-		void setGUExchangeID(UnitID ID);
+	void setUsrLength(double Length);
 
-    void setGUExchange(GroundwaterUnit *GU);
+	void setUsrWidth(double Width);
 
-    void setDownstreamReach(ReachSegment *RS);
-    
+	void setUsrHeight(double Height);
+
+	void setGUExchangeID(UnitID ID);
+
+	void setGUExchange(GroundwaterUnit *GU);
+
+	void setDownstreamReach(ReachSegment *RS);
+
 };
 
 

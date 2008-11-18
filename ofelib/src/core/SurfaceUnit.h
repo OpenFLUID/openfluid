@@ -73,22 +73,36 @@ class SurfaceUnit : public HydroObject
 	            SUDownstreamCode DSCode, UnitID DownstreamID, double DSDistance, UnitID GUExchangeID);
     ~SurfaceUnit();
 
-
+    /**
+      Returns the area of the SU
+     */
     double getUsrArea() const;
 
+    /**
+      Returns the slope of the SU
+     */
     double getUsrSlope() const;
 
     SUDownstreamCode getDownstreamCode() const;
 
     UnitID getDownstreamID() const;
 
+    /**
+      Returns the distance to the downstream Unit
+     */
     double getDownstreamDistance() const;
 
     UnitID getGUExchangeID() const;
-    
+
+    /**
+      Returns the GU exchanging with this SU
+     */
     GroundwaterUnit* getGUExchange() { return mp_GUExchange; };
 
-    std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };     
+    /**
+      Returns the list of GUs exchanging with this SU
+     */
+    std::list<SurfaceUnit*>* getUpstreamSUs() { return mp_UpstreamSUs; };
 
     void setUsrArea(double Area);
 
