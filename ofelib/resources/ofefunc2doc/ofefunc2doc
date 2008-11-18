@@ -41,6 +41,8 @@ class OFEFunc2Latex:
   LATEX_TEMPLATE_FILE = "/usr/share/ofefunc2doc/template/ofefunc2doc_tpl.tex"
   LATEX_TEMPLATE = ""
 
+  OUTPUT_DIR="./"
+
   LATEXFILE = ""
   
 # ====================================================  
@@ -249,7 +251,7 @@ class OFEFunc2Latex:
                                        description=self.THE_DESCRIPTION, domain=self.THE_DOMAIN,
                                        name=self.THE_NAME, funcdoc=self.THE_FUNCTIONDOC, data=self.THE_HANDLED_DATA)
 
-    self.LATEXFILE = self.THE_TITLE+".tex"
+    self.LATEXFILE = self.OUTPUT_DIR+'/'+self.THE_TITLE+".tex"
     FileHandle = open(self.LATEXFILE,"w")
     FileHandle.write(LatexContent);
     FileHandle.close()
@@ -266,7 +268,7 @@ class OFEFunc2Latex:
     #pdflatex_process = subprocess.Popen([u"/usr/bin/pdflatex",self.LATEXFILE,u"-interaction=errorstopmode",u"-halt-on-error"],
      #                                   stdin = subprocess.PIPE      
       #                                  )
-    os.system('/usr/bin/pdflatex --interaction=errorstopmode '+ self.LATEXFILE)
+    os.system('/usr/bin/pdflatex --interaction=errorstopmode --output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE)
 #    os.execlp('pdflatex','--interaction=batchmode',self.LATEXFILE)       
 #		stdout = subprocess.PIPE, 
 	#	stdin = subprocess.PIPE)    
@@ -277,6 +279,8 @@ class OFEFunc2Latex:
 
   def buildHTML(self):
     print "Building HTML ...",
+    sys.stdout.flush()    
+    os.system('/usr/bin/latex2html -dir='+self.OUTPUT_DIR+' '+ self.LATEXFILE)        
     print "done"
 
 # ====================================================
@@ -286,6 +290,9 @@ class OFEFunc2Latex:
     if len(args) != 1 :
       print "Missing input file"
       return
+
+    if self.options.outputdir :
+      self.OUTPUT_DIR = self.options.outputdir 
 
     if self.options.tplfilename :
       self.LATEX_TEMPLATE_FILE = self.options.tplfilename 
@@ -308,7 +315,8 @@ class OFEFunc2Latex:
 parser = OptionParser()
 
 parser.add_option("-t", "--template-file", action="store", type="string", dest="tplfilename",  help="template file")
-parser.add_option("-p", "--build-pdf", action="store_true", dest="pdf")
+parser.add_option("-o", "--output-dir", action="store", type="string", dest="outputdir",  help="output directory")
+parser.add_option("-p", "--build-pdf", action="store_true", dest="pdf", help="build pdf file")
 parser.add_option("-m", "--build-html", action="store_true", dest="html")
 
 (options, args) = parser.parse_args()
@@ -316,5 +324,6 @@ parser.add_option("-m", "--build-html", action="store_true", dest="html")
 generator = OFEFunc2Latex(options,args)
 
 generator.run()
+
 
 
