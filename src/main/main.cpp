@@ -235,7 +235,6 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 
 void OpenFLUIDApp::printDataInfos()
 {
-  // int TimeStepsNbr = (mp_CoreData->getRainEvent()->getEventEndingTime().getRawTime() - mp_CoreData->getRainEvent()->getEventStartingTime().getRawTime()) / mp_Engine->getConfig().DeltaT;
 
   std::cout << std::endl;
   std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
@@ -568,10 +567,10 @@ bool OpenFLUIDApp::OnInit()
   }
   else
   {
-    if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(RemoveTrailingSlashes(TmpStr));
+    // update of run environment information
+	if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(RemoveTrailingSlashes(TmpStr));
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(RemoveTrailingSlashes(TmpStr));
     if (Parser.Found(wxT("m"),&TmpStr)) mp_RunEnv->setTraceDir(RemoveTrailingSlashes(TmpStr));
-
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
@@ -581,8 +580,8 @@ bool OpenFLUIDApp::OnInit()
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);
     if (Parser.Found(wxT("no-varname-check"))) mp_RunEnv->setCheckVarNames(false);
 
-	  printOpenFLUIDInfos();
-	  printEnvInfos();
+	printOpenFLUIDInfos();
+	printEnvInfos();
 
   }
 
