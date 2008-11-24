@@ -26,7 +26,11 @@ WX_DEFINE_LIST(PluginsList);
 #define DECLARE_FUNCTION_PARSER \
     PluginsList::Node *_M_FuncNode = NULL;
 
-
+/**
+  Macro for parsing the functions list and calling the given method of each function of the list
+  \param[in] calledmethod the method to call on each function
+  \param[out] statevar the globalized return of the method calls
+ */
 #define PARSE_FUNCTION_LIST(calledmethod,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
@@ -57,6 +61,12 @@ WX_DEFINE_LIST(PluginsList);
     if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
 
 
+/**
+  Macro for parsing the functions list and calling the given two methods of each function of the list
+  \param[in] calledmethod1 the first method to call on each function
+  \param[in] calledmethod2 the first method to call on each function
+  \param[out] statevar the globalized return of the method calls
+ */
 #define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
@@ -84,16 +94,8 @@ WX_DEFINE_LIST(PluginsList);
       } \
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
-/*
-#define PARSE_FUNCTION_LIST_FOUR(calledmethod1,calledmethod2,calledmethod3,calledmethod4,statevar) \
-    _M_FuncNode = m_Functions.GetFirst(); \
-    while (_M_FuncNode && statevar) \
-    { \
-      PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
-      if (CurrentFunction != NULL) statevar = (statevar && ((CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2) && (CurrentFunction->Function->calledmethod3 && CurrentFunction->Function->calledmethod4))); \
-      _M_FuncNode = _M_FuncNode->GetNext(); \
-    }
-*/
+
+
 // =====================================================================
 // =====================================================================
 
@@ -184,7 +186,7 @@ bool Engine::processConfig()
   /** \internal
 
     uses the PluginManager to
-      - load and parametrize functions
+      - load and parameterize functions
   */
 
 
@@ -195,11 +197,12 @@ bool Engine::processConfig()
   m_Functions.clear();
 
 
-
+  // on each function
   while (FuncNode)
   {
     FConf = (FunctionConfig*)(FuncNode->GetData());
 
+    // instanciates and gets a pointer to the function
     FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,openfluid::base::SIMULATION,mp_CoreData);
 
     if (FuncToAdd != NULL)

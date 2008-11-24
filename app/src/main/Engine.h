@@ -44,27 +44,26 @@ class Engine
      openfluid::base::SimulationStatus* mp_SimStatus;
 
      /**
-       Plugin manager 
+       Plugin manager
      */
-     
-     /**
-       IOManager
-     */     
      PluginManager* mp_PlugMan;
 
+     /**
+       IOManager
+     */
      IOManager* mp_IOMan;
 
      /**
-
+       Model configuration
      */
      ModelConfig m_ModelConfig;
 
      /**
-
+       Run configuration
      */
      RunConfig m_RunConfig;
-     
-     
+
+
      /**
        Processes the config file, check the list of plugins to load,
        loads them, registers params to pass and builds the processing list.
@@ -76,10 +75,10 @@ class Engine
      bool checkModelConsistency();
 
      bool checkDataConsistency();
-          
+
      bool checkExtraFilesConsistency();
-          
-     
+
+
   public:
     /**
       Constructor
