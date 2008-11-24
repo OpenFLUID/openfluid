@@ -31,12 +31,16 @@ class OFEFunc2Latex:
 
   THE_HANDLED_DATA = ""
 
+  THE_LATEX_NEWCOMMANDS = []
+
   THE_INVARS = []
   THE_OUTVARS = []
   THE_MODVARS = []
   THE_PROPS = []
   THE_FPARAMS = []
   THE_EVENTS = []
+  THE_EXTRAFILES = []
+
 
   LATEX_TEMPLATE_FILE = "/usr/share/ofefunc2doc/template/ofefunc2doc_tpl.tex"
   LATEX_TEMPLATE = ""
@@ -118,6 +122,7 @@ class OFEFunc2Latex:
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
         m = p.search(Line)        
         self.THE_TITLE = m.group()[1:len(m.group())-1]
+        self.THE_LATEX_NEWCOMMANDS.append(['funcID',self.THE_TITLE])
 
       elif (Line.startswith("SIGNATURE_DESCRIPTION") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
@@ -128,6 +133,8 @@ class OFEFunc2Latex:
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
         m = p.search(Line)        
         self.THE_NAME = m.group()[1:len(m.group())-1]
+        self.THE_LATEX_NEWCOMMANDS.append(['funcNAME',self.THE_NAME])
+
 
       elif (Line.startswith("SIGNATURE_DOMAIN") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
@@ -146,7 +153,6 @@ class OFEFunc2Latex:
         for match in iterator:
           TmpList.append(match.group()[1:len(match.group())-1])
         self.THE_FPARAMS.append(TmpList)
-      
       
       else :        
         for VarType in ['SU_REQUIRED_VAR','SU_USED_VAR','SU_REQUIRED_PREVVAR','SU_USED_PREVVAR',
@@ -185,6 +191,20 @@ class OFEFunc2Latex:
               TmpList.append(match.group()[1:len(match.group())-1])
             self.THE_PROPS.append(TmpList)
 
+        for VarType in ['USED_SU_EVENTS','USED_RS_EVENTS','USED_GU_EVENTS'] :
+          if (Line.startswith(VarType) == True) :
+            TmpSplit = VarType.split('_')
+            self.THE_EVENTS.append(TmpSplit[1])
+
+        for VarType in ['REQUIRED_EXTRAFILE','USED_EXTRAFILE']:
+          if (Line.startswith(VarType) == True) :
+            p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
+            iterator = p.finditer(Line)
+            TmpSplit = VarType.split('_')
+            TmpList = [TmpSplit[0]]
+            for match in iterator:
+              TmpList.append(match.group()[1:len(match.group())-1])
+            self.THE_EXTRAFILES.append(TmpList)
 
 # ====================================================
 
@@ -239,6 +259,23 @@ class OFEFunc2Latex:
         self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + '&$' + TmpVars[2] + r'$\\' + '\n'
       self.addEndHandledDataZone()
 
+    if len(self.THE_EVENTS) != 0 :
+      self.addBeginHandledDataZone("Distributed events",1)      
+      for TmpVars in self.THE_EVENTS :
+        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars + r'\\' + '\n'
+      self.addEndHandledDataZone()
+
+    if len(self.THE_EXTRAFILES) != 0 :
+      self.addBeginHandledDataZone("Extra files",2)      
+      for TmpVars in self.THE_EXTRAFILES :
+        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + r'\\' + '\n'
+      self.addEndHandledDataZone()
+
+
+    NewCommands = ''
+    
+    for Command in self.THE_LATEX_NEWCOMMANDS : 
+      NewCommands = NewCommands + '\\newcommand{\\' + Command[0] + r'}{'+Command[1] +r'}' + '\n' 
 
 
     FileHandle = open(self.LATEX_TEMPLATE_FILE,"r")
@@ -247,7 +284,7 @@ class OFEFunc2Latex:
 
 
     Tpl = Template(self.LATEX_TEMPLATE)
-    LatexContent = Tpl.safe_substitute(title=self.THE_TITLE, author=self.THE_AUTHOR,
+    LatexContent = Tpl.safe_substitute(newcommands=NewCommands,title=self.THE_TITLE, author=self.THE_AUTHOR,
                                        description=self.THE_DESCRIPTION, domain=self.THE_DOMAIN,
                                        name=self.THE_NAME, funcdoc=self.THE_FUNCTIONDOC, data=self.THE_HANDLED_DATA)
 
