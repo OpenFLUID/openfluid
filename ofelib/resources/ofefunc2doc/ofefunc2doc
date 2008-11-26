@@ -59,6 +59,8 @@ class OFEFunc2Latex:
 
   LATEXFILE = ""
   
+  SOURCEFILE = "" 
+  
 # ====================================================  
   
   def __init__(self,options,args):
@@ -110,32 +112,6 @@ class OFEFunc2Latex:
 # ====================================================
 
   def processSignatureLines(self,Lines) :
-
-    PY_STRING_LITERAL_RE = (r"""
-    [uU]?[rR]?
-      (?:              # Single-quote (') strings
-      '''(?:                 # Tripple-quoted can contain...
-        [^']               | # a non-quote
-        \\'                | # a backslashed quote
-        '{1,2}(?!')          # one or two quotes
-      )*''' |
-      '(?:                   # Non-tripple quoted can contain...
-       [^']                | # a non-quote
-       \\'                   # a backslashded quote
-       )*'(?!') | """+
-    r'''               # Double-quote (") strings
-      """(?:                 # Tripple-quoted can contain...
-        [^"]               | # a non-quote
-        \\"                | # a backslashed single
-        "{1,2}(?!")          # one or two quotes
-      )*""" |
-      "(?:                   # Non-tripple quoted can contain...
-       [^"]                | # a non-quote
-       \\"                   # a backslashded quote
-       )*"(?!")
-    )''')
-
-
 
     for Line in Lines : 
       Line = Line.replace("\n","");
@@ -246,18 +222,19 @@ class OFEFunc2Latex:
 
   def runCPreprocessor(self):
     print "Preprocessing input file ...",
-    sys.stdout.flush()    
-    os.system('/usr/bin/gcc -E -C -fdirectives-only -nostdinc -nostdinc++ -undef '+ self.args[0] + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
-    self.args[0] = str(self.OUTPUT_DIR) + '/input.tmp'
+    sys.stdout.flush()
+    self.SOURCEFILE = self.args[0]  
+    os.system('/usr/bin/gcc -E -C -fdirectives-only -nostdinc -nostdinc++ -undef '+ self.SOURCEFILE + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
+    self.SOURCEFILE = str(self.OUTPUT_DIR) + '/input.tmp'
     print "done"
 
 # ====================================================
 
   def generateLatex(self):
 
-    print "Processing file " + self.args[0] + " ...",
+    print "Generating LateX documentation from input file ...",
 
-    FileHandle = open(self.args[0],"r")
+    FileHandle = open(self.SOURCEFILE,"r")
     FileContent = FileHandle.read();
     FileHandle.close()
 
@@ -334,16 +311,16 @@ class OFEFunc2Latex:
 # ====================================================
 
   def buildPDF(self):
-    print "Building PDF ...",
-    sys.stdout.flush()    
-    #pdflatex_process = subprocess.Popen([u"/usr/bin/pdflatex",self.LATEXFILE,u"-interaction=errorstopmode",u"-halt-on-error"],
-     #                                   stdin = subprocess.PIPE      
-      #                                  )
-    os.system('/usr/bin/pdflatex --interaction=batchmode --output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE)
-#    os.execlp('pdflatex','--interaction=batchmode',self.LATEXFILE)       
-#		stdout = subprocess.PIPE, 
-	#	stdin = subprocess.PIPE)    
-# u"-interaction=errorstopmode",u"-halt-on-error",		
+    print "Building PDF... ",
+    print "first pass... ",
+    sys.stdout.flush()        
+    os.system('/usr/bin/pdflatex -interaction=batchmode -output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE + ' > /dev/null')
+    print "bibliography and references... ",
+    sys.stdout.flush()        
+    os.system('/usr/bin/bibtex '+ str(self.OUTPUT_DIR)+'/'+str(self.THE_TITLE)  + ' > /dev/null')    
+    print "second pass... ",
+    sys.stdout.flush()        
+    os.system('/usr/bin/pdflatex -interaction=batchmode -output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE + ' > /dev/null')    
     print "done"
 
 # ====================================================
