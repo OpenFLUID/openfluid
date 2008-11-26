@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+#
+# ofefunc2doc
+#
+# Tool for extracting information from OpenFLUID-Engine simulation,
+# and generating documentation as PDF and/or HTML 
+#
+# Written by Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+#   with the help of Xavier LOUCHART  <louchart@supagro.inra.fr>
+#
+
 
 from optparse import OptionParser
 from string import Template
@@ -224,12 +234,12 @@ class OFEFunc2Latex:
 
 # ====================================================
 
-  def addBeginHandledDataZone(self,Title,ColsNbr) :
-    self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r"\begin{center}"+"\n"+r"\begin{tabularx}{\linewidth}{"+ColsNbr*r"l"+r"}"+"\n"
-    self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r"\multicolumn{"+str(ColsNbr)+r"}{l}{\textbf{"+Title+r"}}\\"+"\n"+r"\hline"+"\n"
+  def addBeginHandledDataZone(self,Title,ColsFormat) :
+    self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r"\begin{center}\begin{small}"+"\n"+r"\begin{tabularx}{\linewidth}{"+ColsFormat+r"}"+"\n"
+    self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r"\multicolumn{"+str(len(ColsFormat))+r"}{l}{\begin{large}\textbf{"+Title+r"}\end{large}}\\"+"\n"+r"\hline"+"\n"
   
   def addEndHandledDataZone(self) :
-    self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r"\hline"+"\n"+r"\end{tabularx}"+"\n"+r"\end{center}"+"\n"+r"\smallskip"+"\n\n"
+    self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r"\hline"+"\n"+r"\end{tabularx}"+"\n"+r"\end{small}\end{center}"+"\n"+r"\smallskip"+"\n\n"
 
 
 # ====================================================
@@ -260,37 +270,37 @@ class OFEFunc2Latex:
 
     
     if len(self.THE_INVARS) != 0 :
-      self.addBeginHandledDataZone("Required or used variable",5)
+      self.addBeginHandledDataZone("Required or used variable","lllXr")
       for TmpVars in self.THE_INVARS :
-        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + '&' + TmpVars[2] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
+        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r'\texttt{' + TmpVars[2] + '}&' + TmpVars[1] + '&' + TmpVars[0] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
       self.addEndHandledDataZone()
              
     if len(self.THE_OUTVARS) != 0 :
-      self.addBeginHandledDataZone("Produced or modified variable",5)      
+      self.addBeginHandledDataZone("Produced or modified variable","lllXr")      
       for TmpVars in self.THE_OUTVARS :
-        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + '&' + TmpVars[2] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
+        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r'\texttt{' + TmpVars[2] + '}&' + TmpVars[1] + '&' + TmpVars[0] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
       self.addEndHandledDataZone()
 
     if len(self.THE_PROPS) != 0 :
-      self.addBeginHandledDataZone("Properties and initial conditions",5)      
+      self.addBeginHandledDataZone("Properties and initial conditions","lllXr")      
       for TmpVars in self.THE_PROPS :
-        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + '&' + TmpVars[2] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
+        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r'\texttt{' + TmpVars[2] + '}&' + TmpVars[1] + '&' + TmpVars[0] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
       self.addEndHandledDataZone()
 
     if len(self.THE_FPARAMS) != 0 :
-      self.addBeginHandledDataZone("Function parameters",3)      
+      self.addBeginHandledDataZone("Function parameters","lXr")      
       for TmpVars in self.THE_FPARAMS :
-        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + '&$' + TmpVars[2] + r'$\\' + '\n'
+        self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r'\texttt{' + TmpVars[0] + '}&' + TmpVars[1] + '&$' + TmpVars[2] + r'$\\' + '\n'
       self.addEndHandledDataZone()
 
     if len(self.THE_EVENTS) != 0 :
-      self.addBeginHandledDataZone("Distributed events",1)      
+      self.addBeginHandledDataZone("Distributed events","l")      
       for TmpVars in self.THE_EVENTS :
         self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars + r'\\' + '\n'
       self.addEndHandledDataZone()
 
     if len(self.THE_EXTRAFILES) != 0 :
-      self.addBeginHandledDataZone("Extra files",2)      
+      self.addBeginHandledDataZone("Extra files","lX")      
       for TmpVars in self.THE_EXTRAFILES :
         self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + TmpVars[0] + '&' + TmpVars[1] + r'\\' + '\n'
       self.addEndHandledDataZone()
@@ -329,7 +339,7 @@ class OFEFunc2Latex:
     #pdflatex_process = subprocess.Popen([u"/usr/bin/pdflatex",self.LATEXFILE,u"-interaction=errorstopmode",u"-halt-on-error"],
      #                                   stdin = subprocess.PIPE      
       #                                  )
-    os.system('/usr/bin/pdflatex --interaction=errorstopmode --output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE)
+    os.system('/usr/bin/pdflatex --interaction=batchmode --output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE)
 #    os.execlp('pdflatex','--interaction=batchmode',self.LATEXFILE)       
 #		stdout = subprocess.PIPE, 
 	#	stdin = subprocess.PIPE)    
