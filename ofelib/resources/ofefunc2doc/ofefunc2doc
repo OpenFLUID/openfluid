@@ -31,7 +31,7 @@ class OFEFunc2Latex:
 
   THE_HANDLED_DATA = ""
 
-  THE_LATEX_NEWCOMMANDS = []
+  THE_LATEX_NEWCOMMANDS = dict()
 
   THE_INVARS = []
   THE_OUTVARS = []
@@ -55,6 +55,22 @@ class OFEFunc2Latex:
     self.options = options
     self.args = args
     self.OKLatex = 0
+
+# ====================================================
+  
+  def toLateXFriendly(self,InputStr):
+      TmpStr = InputStr
+      TmpStr = TmpStr.replace(r'$',r'\$')
+      TmpStr = TmpStr.replace(r'_',r'\_')
+      TmpStr = TmpStr.replace(r'&',r'\&')
+      TmpStr = TmpStr.replace(r'%',r'\%')
+      TmpStr = TmpStr.replace(r'{',r'\{')
+      TmpStr = TmpStr.replace(r'}',r'\}')
+      TmpStr = TmpStr.replace(r'~',r'$\sim$')
+      TmpStr = TmpStr.replace(r'\\',r'$\backslash$')
+#      print TmpStr
+      return TmpStr
+  
 
 # ====================================================
 
@@ -121,25 +137,25 @@ class OFEFunc2Latex:
       if (Line.startswith("SIGNATURE_ID") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
         m = p.search(Line)        
-        self.THE_TITLE = m.group()[1:len(m.group())-1]
-        self.THE_LATEX_NEWCOMMANDS.append(['funcID',self.THE_TITLE])
+        self.THE_TITLE = self.toLateXFriendly(str(m.group()[1:len(m.group())-1]))
+        self.THE_LATEX_NEWCOMMANDS['funcID'] = self.THE_TITLE
 
       elif (Line.startswith("SIGNATURE_DESCRIPTION") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
         m = p.search(Line)        
-        self.THE_DESCRIPTION = m.group()[1:len(m.group())-1]
+        self.THE_DESCRIPTION = self.toLateXFriendly(str(m.group()[1:len(m.group())-1]))
 
       elif (Line.startswith("SIGNATURE_NAME") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
         m = p.search(Line)        
-        self.THE_NAME = m.group()[1:len(m.group())-1]
-        self.THE_LATEX_NEWCOMMANDS.append(['funcNAME',self.THE_NAME])
+        self.THE_NAME = self.toLateXFriendly(str(m.group()[1:len(m.group())-1]))
+        self.THE_LATEX_NEWCOMMANDS['funcNAME'] = self.THE_NAME
 
 
       elif (Line.startswith("SIGNATURE_DOMAIN") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
         m = p.search(Line)        
-        self.THE_DOMAIN = m.group()[1:len(m.group())-1]
+        self.THE_DOMAIN = self.toLateXFriendly(str(m.group()[1:len(m.group())-1]))
 
       elif (Line.startswith("SIGNATURE_AUTHORNAME") == True) :
         p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
@@ -164,7 +180,7 @@ class OFEFunc2Latex:
             TmpSplit = VarType.split('_')
             TmpList = [TmpSplit[0],TmpSplit[1]]
             for match in iterator:
-              TmpList.append(match.group()[1:len(match.group())-1])
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_INVARS.append(TmpList)
 
         for VarType in ['SU_PRODUCED_VAR','SU_UPDATED_VAR',
@@ -176,7 +192,7 @@ class OFEFunc2Latex:
             TmpSplit = VarType.split('_')
             TmpList = [TmpSplit[0],TmpSplit[1]]
             for match in iterator:
-              TmpList.append(match.group()[1:len(match.group())-1])
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_OUTVARS.append(TmpList)
 
         for VarType in ['SU_REQUIRED_PROPERTY','SU_USED_PROPERTY','SU_REQUIRED_INICOND','SU_USED_INICOND',
@@ -188,7 +204,7 @@ class OFEFunc2Latex:
             TmpSplit = VarType.split('_')
             TmpList = [TmpSplit[0],TmpSplit[1]]
             for match in iterator:
-              TmpList.append(match.group()[1:len(match.group())-1])
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_PROPS.append(TmpList)
 
         for VarType in ['USED_SU_EVENTS','USED_RS_EVENTS','USED_GU_EVENTS'] :
@@ -203,7 +219,7 @@ class OFEFunc2Latex:
             TmpSplit = VarType.split('_')
             TmpList = [TmpSplit[0]]
             for match in iterator:
-              TmpList.append(match.group()[1:len(match.group())-1])
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_EXTRAFILES.append(TmpList)
 
 # ====================================================
@@ -218,6 +234,14 @@ class OFEFunc2Latex:
 
 # ====================================================
 
+  def runCPreprocessor(self):
+    print "Preprocessing input file ...",
+    sys.stdout.flush()    
+    os.system('/usr/bin/gcc -E -C -fdirectives-only -nostdinc -nostdinc++ -undef '+ self.args[0] + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
+    self.args[0] = str(self.OUTPUT_DIR) + '/input.tmp'
+    print "done"
+
+# ====================================================
 
   def generateLatex(self):
 
@@ -274,8 +298,8 @@ class OFEFunc2Latex:
 
     NewCommands = ''
     
-    for Command in self.THE_LATEX_NEWCOMMANDS : 
-      NewCommands = NewCommands + '\\newcommand{\\' + Command[0] + r'}{'+Command[1] +r'}' + '\n' 
+    for Cmd, Val in self.THE_LATEX_NEWCOMMANDS.iteritems() : 
+      NewCommands = NewCommands + '\\newcommand{\\' + str(Cmd) + r'}{'+ str(Val) +r'}' + '\n' 
 
 
     FileHandle = open(self.LATEX_TEMPLATE_FILE,"r")
@@ -288,7 +312,7 @@ class OFEFunc2Latex:
                                        description=self.THE_DESCRIPTION, domain=self.THE_DOMAIN,
                                        name=self.THE_NAME, funcdoc=self.THE_FUNCTIONDOC, data=self.THE_HANDLED_DATA)
 
-    self.LATEXFILE = self.OUTPUT_DIR+'/'+self.THE_TITLE+".tex"
+    self.LATEXFILE = str(self.OUTPUT_DIR)+'/'+str(self.THE_TITLE)+".tex"
     FileHandle = open(self.LATEXFILE,"w")
     FileHandle.write(LatexContent);
     FileHandle.close()
@@ -333,6 +357,9 @@ class OFEFunc2Latex:
 
     if self.options.tplfilename :
       self.LATEX_TEMPLATE_FILE = self.options.tplfilename 
+
+    if self.options.Cpreproc :
+      self.runCPreprocessor() 
     
     self.generateLatex()
     if  self.OKLatex == 1 :
@@ -351,10 +378,11 @@ class OFEFunc2Latex:
 
 parser = OptionParser()
 
-parser.add_option("-t", "--template-file", action="store", type="string", dest="tplfilename",  help="template file")
+parser.add_option("-c", "--C-preproc", action="store_true", dest="Cpreproc", help="preprocess file using C preprocessor")
+parser.add_option("-m", "--build-html", action="store_true", dest="html", help="build HTML output")
 parser.add_option("-o", "--output-dir", action="store", type="string", dest="outputdir",  help="output directory")
 parser.add_option("-p", "--build-pdf", action="store_true", dest="pdf", help="build pdf file")
-parser.add_option("-m", "--build-html", action="store_true", dest="html")
+parser.add_option("-t", "--template-file", action="store", type="string", dest="tplfilename",  help="template file")
 
 (options, args) = parser.parse_args()
 
