@@ -12,7 +12,7 @@ SDKLIBROOT=ofelib
 OPENFLUIDCONFIGFILE=ofelib-config
 
 MAJORVER=1
-MINORVER=3
+MINORVER=3.0
 
 BUILDTOOLS="make g++ wx-config dpkg-deb cp mkdir"
 

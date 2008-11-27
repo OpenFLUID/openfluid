@@ -98,13 +98,13 @@ case $1 in
 esac
 
 
-SVNREV=x
 if [ -x /usr/bin/svn ]; then
-  echo `svn info -r HEAD | grep "Revision:" | cut -d" " -f2 ` > $REVFILE
+  SVNREV=`svn info -r HEAD 2>/dev/null | grep "Revision:" | cut -d" " -f2`
 fi
-if [ -r $REVFILE ]; then
-  SVNREV=`cat $REVFILE`
+if [ -z $SVNREV ]; then
+  SVNREV=norev
 fi
+
 
 
 
