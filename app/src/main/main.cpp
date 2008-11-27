@@ -195,7 +195,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   wxString VersionInfo = wxT("v ");
   wxString Whites = wxT("");
 
-  VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION + wxT("-") + SVN_REVISION + RELEASE_STATUS;
+  VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION + RELEASE_STATUS;
 
 
   if (BUILD_VERSION != wxT(""))
