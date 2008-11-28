@@ -27,7 +27,12 @@ class OFEFunc2Latex:
   BEGIN_FUNCDOC_TAG = "<func2doc>"
   END_FUNCDOC_TAG = "</func2doc>"
 
-  THE_TITLE = "NO\_TITLE"
+  PDFBUILDER = '/usr/bin/pdflatex'
+  CPREPROCESSOR = '/usr/bin/gcc'
+  BIBTEX = '/usr/bin/bibtex'
+  HTMLBUILDER = '/usr/bin/latex2html'
+
+  THE_TITLE = ""
 
   THE_AUTHOR = "NO\_AUTHOR"
 
@@ -70,6 +75,9 @@ class OFEFunc2Latex:
 
 # ====================================================
   
+  #
+  # backslashes LateX special chars
+  #
   def toLateXFriendly(self,InputStr):
       TmpStr = InputStr
       TmpStr = TmpStr.replace(r'$',r'\$')
@@ -86,6 +94,10 @@ class OFEFunc2Latex:
 
 # ====================================================
 
+  #
+  # extract signature (located between BEGIN_SIGNATURE_HOOK and END_SIGNATURE_HOOK)
+  # and split it into declacrations (beginning with DECLARE_)  
+  #
   def extractSignatureLines(self,Content):
     TmpPart = Content.partition(self.BEGIN_SIGNATURE_TAG)
     TmpPart = TmpPart[2].partition(self.END_SIGNATURE_TAG)
@@ -103,6 +115,9 @@ class OFEFunc2Latex:
 
 # ====================================================
 
+  #
+  # extract function documentation (located between <func2doc> and </func2doc>)  
+  #
   def extractFunctionDocTxt(self,Content):
     TmpPart = Content.partition(self.BEGIN_FUNCDOC_TAG)
     TmpPart = TmpPart[2].partition(self.END_FUNCDOC_TAG)
@@ -111,6 +126,9 @@ class OFEFunc2Latex:
 
 # ====================================================
 
+  #
+  # processes all lines of the signature and extract definition strings 
+  #
   def processSignatureLines(self,Lines) :
 
     for Line in Lines : 
@@ -223,13 +241,16 @@ class OFEFunc2Latex:
   def runCPreprocessor(self):
     print "Preprocessing input file ...",
     sys.stdout.flush()
-    self.SOURCEFILE = self.args[0]  
-    os.system('/usr/bin/gcc -E -C -fdirectives-only -nostdinc -nostdinc++ -undef '+ self.SOURCEFILE + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
+    os.system(self.CPREPROCESSOR + ' -E -C -fdirectives-only -nostdinc -nostdinc++ -undef '+ self.SOURCEFILE + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
     self.SOURCEFILE = str(self.OUTPUT_DIR) + '/input.tmp'
     print "done"
 
 # ====================================================
 
+  #
+  # generate latex file with collexted information from the source file
+  # uses signature and documentation extractions  
+  #
   def generateLatex(self):
 
     print "Generating LateX documentation from input file ...",
@@ -314,13 +335,13 @@ class OFEFunc2Latex:
     print "Building PDF... ",
     print "first pass... ",
     sys.stdout.flush()        
-    os.system('/usr/bin/pdflatex -interaction=batchmode -output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE + ' > /dev/null')
+    os.system(self.PDFBUILDER + ' -interaction=batchmode -output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE + ' > /dev/null')
     print "bibliography and references... ",
     sys.stdout.flush()        
-    os.system('/usr/bin/bibtex '+ str(self.OUTPUT_DIR)+'/'+str(self.THE_TITLE)  + ' > /dev/null')    
+    os.system(self.BIBTEX + ' '+ str(self.OUTPUT_DIR)+'/'+str(self.THE_TITLE)  + ' > /dev/null')    
     print "second pass... ",
     sys.stdout.flush()        
-    os.system('/usr/bin/pdflatex -interaction=batchmode -output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE + ' > /dev/null')    
+    os.system(self.PDFBUILDER + ' -interaction=batchmode -output-directory='+self.OUTPUT_DIR+' '+ self.LATEXFILE + ' > /dev/null')    
     print "done"
 
 # ====================================================
@@ -328,8 +349,14 @@ class OFEFunc2Latex:
   def buildHTML(self):
     print "Building HTML ...",
     sys.stdout.flush()    
-    os.system('/usr/bin/latex2html -dir='+self.OUTPUT_DIR+' '+ self.LATEXFILE)        
+    os.system(self.HTMLBUILDER + ' -dir='+self.OUTPUT_DIR+' '+ self.LATEXFILE)        
     print "done"
+
+
+# ====================================================
+  
+  def isToolExists(selfself,ToolFullPath):
+    return os.path.isfile(ToolFullPath)
 
 # ====================================================
 
@@ -339,6 +366,12 @@ class OFEFunc2Latex:
       print "Missing input file"
       return
 
+    self.SOURCEFILE = self.args[0]  
+
+    if os.path.isfile(self.SOURCEFILE) != True : 
+      print "Input file no found"
+      return
+
     if self.options.outputdir :
       self.OUTPUT_DIR = self.options.outputdir 
 
@@ -346,14 +379,28 @@ class OFEFunc2Latex:
       self.LATEX_TEMPLATE_FILE = self.options.tplfilename 
 
     if self.options.Cpreproc :
-      self.runCPreprocessor() 
+      if self.isToolExists(self.CPREPROCESSOR) : 
+        self.runCPreprocessor()
+      else :
+        print "Preprocessing skipped (could not find " + self.CPREPROCESSOR + ")"   
+
     
     self.generateLatex()
+
+    
     if  self.OKLatex == 1 :
+    
       if self.options.pdf : 
-        self.buildPDF()
+        if self.isToolExists(self.PDFBUILDER) and self.isToolExists(self.BIBTEX):
+          self.buildPDF()
+        else: 
+          print "PDF build skipped (could not find " + self.PDFBUILDER + " or " + self.BIBTEX + ")"          
+
       if self.options.html : 
-        self.buildHTML()
+        if self.isToolExists(self.HTMLBUILDER):
+          self.buildHTML()
+        else: 
+          print "HTML build skipped (could not find " + self.HTMLBUILDER + ")"          
 
 
 
