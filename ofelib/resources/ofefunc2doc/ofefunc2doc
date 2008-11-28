@@ -171,7 +171,7 @@ class OFEFunc2Latex:
         iterator = p.finditer(Line)
         TmpList = []
         for match in iterator:
-          TmpList.append(match.group()[1:len(match.group())-1])
+          TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
         self.THE_FPARAMS.append(TmpList)
       
       else :        
@@ -241,9 +241,15 @@ class OFEFunc2Latex:
   def runCPreprocessor(self):
     print "Preprocessing input file ...",
     sys.stdout.flush()
-    os.system(self.CPREPROCESSOR + ' -E -C -fdirectives-only -nostdinc -nostdinc++ -undef '+ self.SOURCEFILE + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
-    self.SOURCEFILE = str(self.OUTPUT_DIR) + '/input.tmp'
+    os.system(self.CPREPROCESSOR + ' -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed '+ self.SOURCEFILE + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
     print "done"
+
+# ====================================================
+
+
+  def sortBy(self,nlist, n):
+    nlist.sort(lambda x,y:cmp(str(x[n]).lower(), str(y[n]).lower()))
+
 
 # ====================================================
 
@@ -251,20 +257,20 @@ class OFEFunc2Latex:
   # generate latex file with collexted information from the source file
   # uses signature and documentation extractions  
   #
-  def generateLatex(self):
+  def generateLatex(self, FunctionDoc, SignatureLines):
 
     print "Generating LateX documentation from input file ...",
-
-    FileHandle = open(self.SOURCEFILE,"r")
-    FileContent = FileHandle.read();
-    FileHandle.close()
-
-    SignatureLines =  self.extractSignatureLines(FileContent)
-    FunctionDoc = self.extractFunctionDocTxt(FileContent)
 
     self.processSignatureLines(SignatureLines)
 
     self.THE_FUNCTIONDOC = FunctionDoc
+
+    self.sortBy(self.THE_INVARS,2)
+    self.sortBy(self.THE_OUTVARS,2)
+    self.sortBy(self.THE_PROPS,2)
+    self.sortBy(self.THE_FPARAMS,0)
+    self.sortBy(self.THE_EXTRAFILES,0)
+
 
     
     if len(self.THE_INVARS) != 0 :
@@ -378,14 +384,31 @@ class OFEFunc2Latex:
     if self.options.tplfilename :
       self.LATEX_TEMPLATE_FILE = self.options.tplfilename 
 
-    if self.options.Cpreproc :
-      if self.isToolExists(self.CPREPROCESSOR) : 
-        self.runCPreprocessor()
-      else :
-        print "Preprocessing skipped (could not find " + self.CPREPROCESSOR + ")"   
+#    if self.options.Cpreproc :
+#      if self.isToolExists(self.CPREPROCESSOR) : 
+#        self.runCPreprocessor()
+#      else :
+#        print "Preprocessing skipped (could not find " + self.CPREPROCESSOR + ")"   
+
+
+    FileHandle = open(self.SOURCEFILE,"r")
+    FileContent = FileHandle.read();
+    FileHandle.close()
+
+    FunctionDoc = self.extractFunctionDocTxt(FileContent)
+
+    self.runCPreprocessor()
+
+    self.SOURCEFILE = str(self.OUTPUT_DIR) + '/input.tmp'
+
+    FileHandle = open(self.SOURCEFILE,"r")
+    FileContent = FileHandle.read();
+    FileHandle.close()
+
+    SignatureLines =  self.extractSignatureLines(FileContent)
 
     
-    self.generateLatex()
+    self.generateLatex(FunctionDoc,SignatureLines)
 
     
     if  self.OKLatex == 1 :
@@ -412,7 +435,7 @@ class OFEFunc2Latex:
 
 parser = OptionParser()
 
-parser.add_option("-c", "--C-preproc", action="store_true", dest="Cpreproc", help="preprocess file using C preprocessor")
+#parser.add_option("-c", "--C-preproc", action="store_true", dest="Cpreproc", help="preprocess file using C preprocessor")
 parser.add_option("-m", "--build-html", action="store_true", dest="html", help="build HTML output")
 parser.add_option("-o", "--output-dir", action="store", type="string", dest="outputdir",  help="output directory")
 parser.add_option("-p", "--build-pdf", action="store_true", dest="pdf", help="build pdf file")
