@@ -36,6 +36,8 @@ fi
 
 
 if [ "$1" = "--version" ]; then
-  echo "$MAJORVER.$MINORVER-$SVNREV"
+  echo "$MAJORVER.$MINORVER"
 fi
+
+
 
