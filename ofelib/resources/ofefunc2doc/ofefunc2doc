@@ -66,6 +66,8 @@ class OFEFunc2Latex:
   
   SOURCEFILE = "" 
   
+  TMPFILE = "/tmp/ofefunc2doc.tmp"
+  
 # ====================================================  
   
   def __init__(self,options,args):
@@ -241,7 +243,7 @@ class OFEFunc2Latex:
   def runCPreprocessor(self):
     print "Preprocessing input file ...",
     sys.stdout.flush()
-    os.system(self.CPREPROCESSOR + ' -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed '+ self.SOURCEFILE + ' > ' + str(self.OUTPUT_DIR) + '/input.tmp 2>/dev/null')
+    os.system(self.CPREPROCESSOR + ' -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed '+ self.SOURCEFILE + ' > ' + self.TMPFILE + ' 2>/dev/null')
     print "done"
 
 # ====================================================
@@ -399,9 +401,7 @@ class OFEFunc2Latex:
 
     self.runCPreprocessor()
 
-    self.SOURCEFILE = str(self.OUTPUT_DIR) + '/input.tmp'
-
-    FileHandle = open(self.SOURCEFILE,"r")
+    FileHandle = open(self.TMPFILE,"r")
     FileContent = FileHandle.read();
     FileHandle.close()
 
