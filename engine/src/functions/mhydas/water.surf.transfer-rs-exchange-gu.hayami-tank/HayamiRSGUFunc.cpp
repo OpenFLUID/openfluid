@@ -2,7 +2,7 @@
   \file HayamiRSFunc.h
   \brief header of HayamiRSFunction
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 

@@ -2,7 +2,7 @@
   \file HayamiTools.cpp
   \brief header of tools for Hayami propagation method
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

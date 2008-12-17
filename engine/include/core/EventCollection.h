@@ -2,7 +2,7 @@
   \file EventCollection.h
   \brief Header of distributed event collection management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

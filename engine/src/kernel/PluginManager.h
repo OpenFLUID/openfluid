@@ -2,7 +2,7 @@
   \file PluginManager.h
   \brief header of the plugins management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

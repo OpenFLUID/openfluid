@@ -2,7 +2,7 @@
   \file GroundwaterUnit.h
   \brief header of GHU management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #ifndef __GROUNDWATERUNIT_H__
@@ -21,7 +21,7 @@ class ReachSegment;
 /**
   \brief Definition class for Groundwater Hydrological Units
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 class GroundwaterUnit : public HydroObject
 {

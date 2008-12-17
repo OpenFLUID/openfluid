@@ -2,7 +2,7 @@
   \file
   \brief header of ...
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __APPTOOLS_H__

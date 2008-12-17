@@ -2,7 +2,7 @@
   \file SpatialRepository.cpp
   \brief implements management class for spatial objects and data
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

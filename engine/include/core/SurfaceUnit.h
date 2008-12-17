@@ -2,7 +2,7 @@
   \file SurfaceUnit.h
   \brief
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __SURFACEUNIT_H__
@@ -25,7 +25,7 @@ class GroundwaterUnit;
 /**
   \brief Enumerates possible flow types from a surface unit
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 enum SUDownstreamCode
 {
@@ -40,7 +40,7 @@ enum SUDownstreamCode
 /**
   \brief Class definition for Surface Units (SUs)
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 class SurfaceUnit : public HydroObject
 {
