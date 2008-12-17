@@ -2,7 +2,7 @@
   \file ReachSegment.h
   \brief
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #ifndef __REACH_H__
@@ -23,7 +23,7 @@ typedef UnitID nodeid_t;
 /**
   \brief Definition class for reach segments
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 class ReachSegment : public HydroObject
 {

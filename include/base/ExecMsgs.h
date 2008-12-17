@@ -2,7 +2,7 @@
   \file ExecMsgs.h
   \brief Header of class managing execution messages
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -17,7 +17,7 @@ namespace openfluid { namespace base {
 /**
   Class ...
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 class ExecutionMessages
 {

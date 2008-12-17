@@ -2,7 +2,7 @@
   \file DistributedEvent.h
   \brief Header of distributed event definition class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __DISTRIBUTEDEVENT_H__

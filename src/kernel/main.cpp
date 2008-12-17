@@ -2,7 +2,7 @@
   \file main.cpp
   \brief implements main
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include <iostream>

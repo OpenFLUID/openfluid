@@ -2,7 +2,7 @@
   \file HydroObject.h
   \brief
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #ifndef __HYDROOBJECT_H__

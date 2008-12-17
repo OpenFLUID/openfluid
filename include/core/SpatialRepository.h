@@ -2,7 +2,7 @@
   \file SpatialRepository.h
   \brief header of management class for spatial objects and data
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __SPATIALREPOSITORY_H__
@@ -29,7 +29,7 @@ WX_DECLARE_HASH_MAP(int, ReachSegment*, wxIntegerHash, wxIntegerEqual, RSMap);
 /**
   Management class for spatial objects and data
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 class SpatialRepository
 {

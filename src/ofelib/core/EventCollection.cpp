@@ -2,7 +2,7 @@
   \file EventCollection.cpp
   \brief Implements distributed event collection management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include "EventCollection.h"

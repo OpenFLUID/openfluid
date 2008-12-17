@@ -2,7 +2,7 @@
   \file PlugFunction.h
   \brief Header of generic pluggable function interface definition
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 
   Every simulation function must :
   \li define its own signature
@@ -836,7 +836,7 @@ struct Signature
   simulation function \n
   All simulation functions must inherit from this class.
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 class PluggableFunction : public wxObject
 {

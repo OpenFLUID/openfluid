@@ -2,7 +2,7 @@
   \file HayamiSUFunc.h
   \brief header of HayamiSUFunction
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

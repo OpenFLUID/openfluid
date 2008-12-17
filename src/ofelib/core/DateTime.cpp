@@ -2,7 +2,7 @@
   \file DateTime.cpp
   \brief Implements date-time management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

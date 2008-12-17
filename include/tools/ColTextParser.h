@@ -2,7 +2,7 @@
   \file ColTextParser.h
   \brief header of column file parser
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __COLFILEPARSER_H__

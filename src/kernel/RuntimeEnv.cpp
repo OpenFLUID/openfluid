@@ -2,7 +2,7 @@
   \file
   \brief implements ...
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include <wx/datetime.h>

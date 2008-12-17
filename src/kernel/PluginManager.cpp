@@ -2,7 +2,7 @@
   \file PluginManager.cpp
   \brief implements the plugins management class
 
-  \author Jean-Christophe FABRE <fabrejc@ensam.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include <wx/dynlib.h>
