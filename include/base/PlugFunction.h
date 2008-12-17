@@ -45,6 +45,9 @@
 #endif
 
 
+#define STRINGIFY(x) XSTRINGIFY(x)
+#define XSTRINGIFY(x) #x
+
 // =====================================================================
 // =====================================================================
 
@@ -97,7 +100,7 @@
   openfluid::base::Signature* GetPlugSignature() \
   { \
     openfluid::base::Signature* ZeSignature = new openfluid::base::Signature(); \
-    ZeSignature->setSDKVersion(wxT(OFELIB_VERSION));
+    ZeSignature->setSDKVersion(wxT(STRINGIFY(OFELIB_VERSION)));
 
 
 /**
@@ -165,7 +168,7 @@
 /**
   Macro for declaration of SDK version used to build the function
 */
-#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(wxT(OFELIB_VERSION));
+#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(wxT(STRINGIFY(OFELIB_VERSION)));
 
 // =====================================================================
 // =====================================================================
