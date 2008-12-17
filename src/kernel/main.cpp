@@ -12,7 +12,7 @@
 
 #include "AppTools.h"
 #include "main.h"
-#include "setup.h"
+#include "config.h"
 
 
 
