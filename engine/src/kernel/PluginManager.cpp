@@ -7,7 +7,7 @@
 
 #include <wx/dynlib.h>
 
-#include "setup.h"
+#include "config.h"
 
 #include "PluginManager.h"
 #include "AppTools.h"

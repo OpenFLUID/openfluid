@@ -1,9 +1,0 @@
-#!/bin/sh
-
-SUDOBIN=
-ZIPBIN=zip
-
-STDSYSDIR=
-
-PACKARCH=`uname -m`
-

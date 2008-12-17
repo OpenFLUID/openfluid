@@ -14,7 +14,7 @@
 
 #include "IOMan.h"
 #include "openfluid-tools.h"
-#include "setup.h"
+#include "config.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
 

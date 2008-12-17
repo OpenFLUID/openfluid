@@ -8,7 +8,7 @@
 #include <wx/datetime.h>
 
 #include "RuntimeEnv.h"
-#include "setup.h"
+#include "config.h"
 
 #include <wx/stdpaths.h>
 
