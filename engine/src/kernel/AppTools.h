@@ -24,7 +24,7 @@ wxString GetExecutablePath();
   \param[in] Ext the file extension
   \param[in] WithPath return full path with file name if true, file name only otherwise
 */
-wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath = false);
+wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath = false, bool ExtIncludeDot = false);
 
 /**
   Splits the passed string int a wxStringArray, splitted by the passed SepString

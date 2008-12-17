@@ -82,12 +82,15 @@ wxString GetExecutablePath()
 // =====================================================================
 
 
-wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath)
+wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath, bool ExtIncludeDot)
 {
 
 
   bool Continue;
   wxArrayString FileList;
+
+  wxString FileRoot = wxT("*.");
+  if (ExtIncludeDot) FileRoot = wxT("*");
 
   if (wxDirExists(DirToExplore))
   {
@@ -100,7 +103,7 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 
       wxString FoundFile;
 
-      Continue = DirManager.GetFirst(&FoundFile,wxT("*.")+Ext);
+      Continue = DirManager.GetFirst(&FoundFile,FileRoot+Ext);
       while (Continue)
       {
         if (WithPath) FileList.Add(DirToExplore+wxFILE_SEP_PATH+FoundFile);
