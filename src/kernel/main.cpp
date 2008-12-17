@@ -195,9 +195,10 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   wxString VersionInfo = wxT("v ");
   wxString Whites = wxT("");
 
-  VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION + RELEASE_STATUS;
+//  VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION + RELEASE_STATUS;
+  VersionInfo = VersionInfo + FULL_VERSION;
 
-
+/*
   if (BUILD_VERSION != wxT(""))
   {
 
@@ -208,8 +209,8 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
     #endif
     VersionInfo = VersionInfo + wxT(")");
   }
-
-  // on centre le bizness avec des blancs
+*/
+  // centering the version number, using white spaces
   for (int i=0;i<((Width-VersionInfo.Length())/2);i++) Whites = Whites + wxT(" ");
 
   VersionInfo = Whites + VersionInfo;
@@ -560,8 +561,8 @@ bool OpenFLUIDApp::OnInit()
     if (Parser.Found(wxT("r"))) printPluginsReport(false);
     if (Parser.Found(wxT("x"))) printPluginsReport(true);
 
-    if (Parser.Found(wxT("version"))) std::cout << MAJOR_VERSION.mb_str(wxConvUTF8) << "." << MINOR_VERSION.mb_str(wxConvUTF8) << "-" << SVN_REVISION.mb_str(wxConvUTF8) << std::endl;
-    if (Parser.Found(wxT("k"))) std::cout << OFELIB_MAJORVER << "." << OFELIB_MINORVER << "-" << OFELIB_REVISION << std::endl;
+    if (Parser.Found(wxT("version"))) std::cout << FULL_VERSION.mb_str(wxConvUTF8) << std::endl;
+    if (Parser.Found(wxT("k"))) std::cout << FULL_VERSION.mb_str(wxConvUTF8) << std::endl;
 
     m_OKToRun = false;
   }

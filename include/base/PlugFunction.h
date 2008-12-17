@@ -29,7 +29,7 @@
 #include "SimStatus.h"
 #include "ExecMsgs.h"
 #include "FunctionEnv.h"
-
+#include <string>
 
 // compilation directives for shared libs linkage
 #ifdef WIN32
@@ -97,7 +97,7 @@
   openfluid::base::Signature* GetPlugSignature() \
   { \
     openfluid::base::Signature* ZeSignature = new openfluid::base::Signature(); \
-    ZeSignature->setSDKVersion(OFELIB_MAJORVER,OFELIB_MINORVER,OFELIB_REVISION);
+    ZeSignature->setSDKVersion(wxT(OFELIB_VERSION));
 
 
 /**
@@ -165,7 +165,7 @@
 /**
   Macro for declaration of SDK version used to build the function
 */
-#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(OFELIB_MAJORVER,OFELIB_MINORVER,OFELIB_REVISION);
+#define DECLARE_SIGNATURE_SDKVERSION ZeSignature->setSDKVersion(wxT(OFELIB_VERSION));
 
 // =====================================================================
 // =====================================================================
@@ -809,10 +809,9 @@ struct Signature
     SDKVersion = wxT("");
   }
 
-  void setSDKVersion(int Major, int Minor, int Revision)
+  void setSDKVersion(wxString Version)
   {
-    SDKVersion.Clear();
-    SDKVersion << Major << wxT(".") << Minor << wxT("-") << Revision;
+    SDKVersion = Version;
   }
 
 };

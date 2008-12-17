@@ -57,6 +57,7 @@ const wxString MINOR_VERSION = wxT("@ENGINE_VERSION_MINOR@");
 const wxString PATCH_VERSION = wxT("@ENGINE_VERSION_PATCH@");
 const wxString BUILD_VERSION = wxT("");
 const wxString RELEASE_STATUS = wxT("@ENGINE_VERSION_STATUS@");
+const wxString FULL_VERSION = wxT("@ENGINE_FULL_VERSION@");
 
 // Subversion revision information
 #define SVN_REV

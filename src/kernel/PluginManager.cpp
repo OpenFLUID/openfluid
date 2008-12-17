@@ -124,7 +124,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
 
   for (i=0;i<PluginsPaths.GetCount();i++)
   {
-    TmpFiles = GetFilesByExt(PluginsPaths[i],OPENFLUID_PLUGINS_EXT);
+    TmpFiles = GetFilesByExt(PluginsPaths[i],OPENFLUID_PLUGINS_EXT,false,true);
     for (j=0;j<TmpFiles.GetCount();j++) PluginFiles.Add(TmpFiles[j]);
   }
 
