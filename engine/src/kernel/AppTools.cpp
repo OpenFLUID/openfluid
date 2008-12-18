@@ -9,6 +9,7 @@
 #include <wx/dir.h>
 #include <wx/tokenzr.h>
 #include <wx/datetime.h>
+#include <wx/stdpaths.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <dirent.h>
@@ -26,7 +27,7 @@
 wxString GetExecutablePath()
 {
   // Le code de cette fonction est issu du wiki wxWidgets (auteur: Nigel Hathaway)
-
+/*
   static bool found = false;
   static wxString path;
 
@@ -74,7 +75,12 @@ wxString GetExecutablePath()
 #endif
     found = true;
   }
-	return path;
+	return path;*/
+
+  wxString Path;
+
+  wxFileName::SplitPath(wxStandardPaths::Get().GetExecutablePath(),NULL,&Path,NULL,NULL);
+  return Path;
 }
 
 

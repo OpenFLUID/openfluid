@@ -32,6 +32,7 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_SWITCH, _T("k"), _T("openfluid-version"), _T("get ofelib version used for current OpenFLUID-engine build (do not run the model)")},
   {wxCMD_LINE_OPTION, _T("m"), _T("trace-dir"), _T("set trace directory")},
   {wxCMD_LINE_OPTION, _T("o"), _T("output-dir"), _T("set results output directory")},
+  {wxCMD_LINE_OPTION, _T("p"), _T("functions-paths"), _T("add extra functions research paths (colon separated)")},
   {wxCMD_LINE_SWITCH, _T("q"), _T("quiet"), _T("quiet display during simulation run")},
   {wxCMD_LINE_SWITCH, _T("r"), _T("functions-report"), _T("print a report of available functions, with details (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("s"), _T("no-simreport"), _T("do not generate simulation report")},

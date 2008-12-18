@@ -192,7 +192,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 {
 
   int Width = 60;
-  wxString VersionInfo = wxT("v ");
+  wxString VersionInfo = wxT("OpenFLUID-engine v");
   wxString Whites = wxT("");
 
 //  VersionInfo = VersionInfo + MAJOR_VERSION + wxT(".") + MINOR_VERSION + RELEASE_STATUS;
@@ -218,10 +218,12 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 
   std::cout << std::endl;
   std::cout << "===========================================================" << std::endl;
-  std::cout << "                     OpenFLUID-engine                      " << std::endl;
-  std::cout << "              Modelling Fluxes in Landscapes               " << std::endl;
-  std::cout << std::endl;
+/*  std::cout << "                     OpenFLUID-engine                      " << std::endl;
+  std::cout << std::endl;*/
   std::cout << VersionInfo.mb_str(wxConvUTF8) << std::endl;
+  std::cout << std::endl;
+  std::cout << "                          software environment               " << std::endl;
+  std::cout << "            for Modelling Fluxes in Landscapes             " << std::endl;
   std::cout << std::endl;
   std::cout << "                 LISAH, Montpellier, France                " << std::endl;
   std::cout << "===========================================================" << std::endl;
@@ -548,6 +550,9 @@ bool OpenFLUIDApp::OnInit()
      std::cout << std::endl;
      return false;
   }
+
+
+  if (Parser.Found(wxT("p"),&TmpStr)) mp_RunEnv->addExtraPluginsPaths(TmpStr);
 
 
   if (Parser.Found(wxT("f")) || Parser.Found(wxT("k")) || Parser.Found(wxT("r")) || Parser.Found(wxT("version")) || Parser.Found(wxT("x")))
