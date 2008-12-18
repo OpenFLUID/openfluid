@@ -9,6 +9,7 @@
 
 #include "RuntimeEnv.h"
 #include "config.h"
+#include "AppTools.h"
 
 #include <wx/stdpaths.h>
 
@@ -99,6 +100,15 @@ void RuntimeEnvironment::setDateTimeOutputDir()
 
 // =====================================================================
 // =====================================================================
+
+void RuntimeEnvironment::addExtraPluginsPaths(wxString ColonSeparatedPaths)
+{
+  wxArrayString ExtraPaths;
+
+  ExtraPaths = SplitString(ColonSeparatedPaths,wxT(":"));
+
+  for (int i=ExtraPaths.GetCount()-1;i>=0;i--) m_PlugsDirs.Insert(RemoveTrailingSlashes(ExtraPaths[i]),0);
+}
 
 
 wxString RuntimeEnvironment::getPluginFullPath(wxString Filename)

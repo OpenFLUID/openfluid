@@ -100,6 +100,8 @@ class RuntimeEnvironment
 
     wxString getPluginFullPath(wxString Filename);
 
+    void addExtraPluginsPaths(wxString ColonSeparatedPaths);
+
     wxArrayString getPluginsPaths() const { return m_PlugsDirs; };
 
     wxString getTraceDir() const { return m_TraceDir; };
