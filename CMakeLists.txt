@@ -28,6 +28,7 @@ CONFIGURE_FILE(kernel.cpack.in kernel.cpack @ONLY)
 CONFIGURE_FILE(ofelib.cpack.in ofelib.cpack @ONLY)
 CONFIGURE_FILE(functions.cpack.in functions.cpack @ONLY)
 CONFIGURE_FILE(ofelib-dev.cpack.in ofelib-dev.cpack @ONLY)
+CONFIGURE_FILE(full.cpack.in full.cpack @ONLY)
 
 
 
