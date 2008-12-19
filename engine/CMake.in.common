@@ -42,33 +42,59 @@ ENDIF(ENGINE_VERSION_STATUS)
 
 ################### packaging ###################
 
-SET(PACKS_MAINTAINER "Jean-Christophe Fabre <fabrejc@supagro.inra.fr>")
-SET(PACKS_GENERATOR "DEB;RPM;TGZ")
+
 SET(PACKS_CMAKE_GENERATOR "Unix Makefiles")
+SET(PACKS_ARCH "noarch")
 
-EXECUTE_PROCESS(COMMAND "dpkg" "--print-architecture" OUTPUT_VARIABLE CURRENT_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
-SET(PACKS_ARCH ${CURRENT_ARCH})
 
-SET(OFELIB_PACK_DESC "This package contain....")
+
+IF (WIN32)
+  SET(PACKS_GENERATOR "ZIP")
+
+  SET(PACKS_ARCH "win32")
+ENDIF (WIN32)
+
+
+
+IF (UNIX)
+  SET(PACKS_GENERATOR "TGZ;TBZ2;DEB;RPM")
+
+  EXECUTE_PROCESS(COMMAND "dpkg" "--print-architecture" OUTPUT_VARIABLE CURRENT_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
+  SET(PACKS_ARCH ${CURRENT_ARCH})
+
+ENDIF (UNIX)
+
+
+IF (APPLE)
+  SET(PACKS_GENERATOR "OSXX11;TGZ;PackageMaker")
+
+  SET(PACKS_ARCH "OSX")
+ENDIF (APPLE)
+
+
+SET(PACKS_MAINTAINER "Jean-Christophe Fabre <fabrejc@supagro.inra.fr>")
+
+SET(OFELIB_PACK_DESC "This package is part of the OpenFLUID-Engine software. It is the support library for applications and functions.")
 SET(OFELIB_PACK_NAME "ofelib")
 SET(OFELIB_PACK_FILENAME "${OFELIB_PACK_NAME}_${ENGINE_FULL_VERSION}_${PACKS_ARCH}")
 SET(OFELIB_DEB_DEPENDS "libwxbase2.8-dev (>= 2.8)")
 
-
-SET(KERNEL_PACK_DESC "This package contain....")
-SET(KERNEL_PACK_NAME "openfluid-engine")
+SET(KERNEL_PACK_NAME "openfluid-engine-kernel")
 SET(KERNEL_PACK_FILENAME "${KERNEL_PACK_NAME}_${ENGINE_FULL_VERSION}_${PACKS_ARCH}")
 SET(KERNEL_DEB_DEPENDS "${OFELIB_PACK_NAME} (= ${ENGINE_FULL_VERSION})")
+SET(KERNEL_PACK_DESC "This package is part of the OpenFLUID-Engine software. It contains the openfluid-engine application (also called kernel)")
 
-
-SET(OFELIBDEV_PACK_DESC "This package contain....")
+SET(OFELIBDEV_PACK_DESC "This package is part of the OpenFLUID-Engine software. It is the support library header files, mainly used for functions development. This packages also includes the ofefunc2doc tool for documentation generation from functions source code.")
 SET(OFELIBDEV_PACK_NAME "ofelib-dev")
 SET(OFELIBDEV_PACK_FILENAME "${OFELIBDEV_PACK_NAME}_${ENGINE_FULL_VERSION}_${PACKS_ARCH}")
 SET(OFELIBDEV_DEB_DEPENDS "${OFELIB_PACK_NAME} (= ${ENGINE_FULL_VERSION})")
 
-SET(FUNCTIONS_PACK_DESC "This package contain....")
+SET(FUNCTIONS_PACK_DESC "This package is part of the OpenFLUID-Engine software. It contains a set of simulation functions that can be used to build models.")
 SET(FUNCTIONS_PACK_NAME "openfluid-engine-functions")
 SET(FUNCTIONS_PACK_FILENAME "${FUNCTIONS_PACK_NAME}_${ENGINE_FULL_VERSION}_${PACKS_ARCH}")
 SET(FUNCTIONS_DEB_DEPENDS "${OFELIB_PACK_NAME} (= ${ENGINE_FULL_VERSION})")
 
-
+SET(FULL_PACK_NAME "openfluid-engine")
+SET(FULL_PACK_FILENAME "${FULL_PACK_NAME}_${ENGINE_FULL_VERSION}_${PACKS_ARCH}")
+SET(FULL_DEB_DEPENDS "libwxbase2.8-dev (>= 2.8)")
+SET(FULL_PACK_DESC "This package is the OpenFLUID-Engine software. It contains the application, a set of simulation functions, and headers and tools for functions development")
