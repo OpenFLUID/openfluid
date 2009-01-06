@@ -1,4 +1,3 @@
-
 ################### install path ###################
 
 SET(BIN_INSTALL_PATH "bin")
@@ -38,6 +37,12 @@ SET(ENGINE_FULL_VERSION "${ENGINE_VERSION_MAJOR}.${ENGINE_VERSION_MINOR}.${ENGIN
 IF(ENGINE_VERSION_STATUS)
   SET(ENGINE_FULL_VERSION "${ENGINE_FULL_VERSION}~${ENGINE_VERSION_STATUS}")
 ENDIF(ENGINE_VERSION_STATUS)
+
+
+################### compilation flags ###################
+
+SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
+SET(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 
 ################### packaging ###################
