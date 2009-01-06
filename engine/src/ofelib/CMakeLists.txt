@@ -1,6 +1,8 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 
+
+
 SET(OFELIB_CORE_CPP 
     core/HydroObject.cpp core/SurfaceUnit.cpp core/GroundwaterUnit.cpp core/ReachSegment.cpp
     core/DistributedEvent.cpp core/EventCollection.cpp
@@ -21,6 +23,9 @@ SET(OFELIB_TOOLS_CPP
     tools/Tools.cpp
     tools/tinystr.cpp tools/tinyxml.cpp tools/tinyxmlerror.cpp tools/tinyxmlparser.cpp
 )
+
+
+ADD_DEFINITIONS(-DBUILDINGDLL)
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/core ${CMAKE_SOURCE_DIR}/include/base ${CMAKE_SOURCE_DIR}/include/tools)
 
