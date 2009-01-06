@@ -152,7 +152,7 @@ PluginContainer *PluginManager::getPlugin(wxString PluginName,
                                           openfluid::core::CoreRepository* CoreData)
 {
 
-  PluginContainer *Plug = buildPluginContainer(PluginName+wxT(".")+OPENFLUID_PLUGINS_EXT);
+  PluginContainer *Plug = buildPluginContainer(PluginName+OPENFLUID_PLUGINS_EXT);
 
 
 
