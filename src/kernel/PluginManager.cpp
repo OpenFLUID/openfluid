@@ -40,6 +40,7 @@ PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
   wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
   PluginContainer* Plug = NULL;
 
+  //if (!wxFileExists(PluginFile)) throw openfluid::base::OFException("Function file "+ std::string(PluginFilename.mb_str(wxConvUTF8)) +"not found");
 
   // library loading
   if (PluginFile.Length()>0 && PlugLib->Load(PluginFile))

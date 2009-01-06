@@ -26,12 +26,17 @@ class OFException : public std::exception
       m_Msg = Msg;
     }
 
-    virtual ~my_exception() throw()
+    OFException(std::string Msg)
+    {
+      m_Msg = Msg;
+    }
+
+    virtual ~OFException() throw()
     {
 
     }
 
-    virtual const char * what() const throw
+    virtual const char * what() const throw()
     {
       return this->m_Msg.c_str();
     }
@@ -40,10 +45,8 @@ class OFException : public std::exception
 };
 
 
-}
 
 
 } } // namespace
 
-
-}
+#endif
