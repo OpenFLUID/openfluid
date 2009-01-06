@@ -56,7 +56,7 @@
 #include "base/SIFactors.h"
 #include "base/ExecMsgs.h"
 #include "base/FunctionEnv.h"
-
+#include "base/OFException.h"
 
 
 namespace openfluid {
@@ -72,6 +72,7 @@ class DLLEXPORT SimulationStatus;
 class DLLEXPORT ExecutionMessages;
 class DLLEXPORT PluggableFunction;
 class DLLEXPORT FunctionEnvironment;
+class DLLEXPORT OFException;
 
 
 } } // namespace openfluid::base
