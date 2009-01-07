@@ -15,6 +15,15 @@ IF(wxWidgets_FOUND)
   FILE(MAKE_DIRECTORY "${LIBRARY_OUTPUT_PATH}")
   FILE(MAKE_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
 
+  # hack for compiler flags semicolon problem with MSYS
+  IF(MSYS)
+    FOREACH(arg ${CMAKE_CXX_FLAGS})
+      SET(MSYS_ADAPTED_CMAKE_CXX_FLAGS "${MSYS_ADAPTED_CMAKE_CXX_FLAGS} ${arg}")
+    ENDFOREACH(arg ${CMAKE_CXX_FLAGS})
+    SET(CMAKE_CXX_FLAGS "${MSYS_ADAPTED_CMAKE_CXX_FLAGS}")
+  ENDIF(MSYS)
+
+
   ADD_SUBDIRECTORY(src)
 
 ENDIF(wxWidgets_FOUND)
@@ -27,9 +36,10 @@ CONFIGURE_FILE(ofelib-dev.cpack.in ofelib-dev.cpack @ONLY)
 CONFIGURE_FILE(full.cpack.in full.cpack @ONLY)
 
 
+
 MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
-MESSAGE(STATUS "Compiler flags: " ${CMAKE_CXX_FLAGS} )
-MESSAGE(STATUS "Compiler flags added for release build: " ${CMAKE_CXX_FLAGS_RELEASE})
-MESSAGE(STATUS "Compiler flags added for debug build: " ${CMAKE_CXX_FLAGS_DEBUG})
+MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
+MESSAGE(STATUS "Compiler flags added for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
+MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
 
