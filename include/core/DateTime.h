@@ -108,7 +108,7 @@ class DateTime
     /**
       Sets the date and time from a formatted string (using strptime formatting)
     */
-    bool setFromString(wxString DateTimeStr, wxString Format);
+    //bool setFromString(wxString DateTimeStr, wxString Format);
 
 
     /**
