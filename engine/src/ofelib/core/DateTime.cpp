@@ -98,7 +98,7 @@ bool DateTime::setFromISOString(wxString DateTimeStr)
 // =====================================================================
 // =====================================================================
 
-
+/*
 bool DateTime::setFromString(wxString DateTimeStr, wxString Format)
 {
 
@@ -127,7 +127,7 @@ bool DateTime::setFromString(wxString DateTimeStr, wxString Format)
   else return false;
 
 }
-
+*/
 
 // =====================================================================
 // =====================================================================
