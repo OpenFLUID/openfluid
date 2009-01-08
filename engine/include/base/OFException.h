@@ -11,7 +11,7 @@
 
 #include <exception>
 #include <string>
-
+#include <sstream>
 
 namespace openfluid { namespace base {
 
@@ -30,6 +30,20 @@ class OFException : public std::exception
     {
       m_Msg = Msg;
     }
+
+    OFException(std::string Sender, std::string Msg)
+    {
+      m_Msg = Msg + " (sent by " + Sender + ")" ;
+    }
+
+    OFException(std::string Sender, int TimeStep, std::string Msg)
+    {
+      std::stringstream StrStream;
+      StrStream << TimeStep;
+
+      m_Msg = Msg + " (sent by " + Sender + ", time step #" + StrStream.str() +")" ;
+    }
+
 
     virtual ~OFException() throw()
     {

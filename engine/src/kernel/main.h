@@ -91,7 +91,7 @@ class OpenFLUIDApp : public wxAppConsole
 
     void printPluginsReport(bool IsXMLFormat);
 
-    int stopAppReturn();
+    int stopAppReturn(std::string Msg);
 
     /**
       Builds the model.
