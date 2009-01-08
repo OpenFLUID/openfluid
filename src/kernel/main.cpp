@@ -242,7 +242,7 @@ void OpenFLUIDApp::printDataInfos()
   std::cout << std::endl;
   std::cout << "Simulation ID: " << _C(m_ExSI.SimID) << std::endl;
   std::cout << std::endl;
-  std::cout << "Spatial objects: " << std::endl
+  std::cout << "Spatial domain: " << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
             << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;
@@ -491,17 +491,24 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
 // =====================================================================
 // =====================================================================
 
-int OpenFLUIDApp::stopAppReturn()
+int OpenFLUIDApp::stopAppReturn(std::string Msg)
 {
   std::cout << std::endl;
   printlnExecMessagesStats();
+
+  if (!mp_ExecMsgs->isErrorFlag())
+  {
+    mp_ExecMsgs->setError(wxT("Unknown"),wxString(Msg.c_str(), wxConvUTF8));
+  }
 
   if (mp_RunEnv->isWriteSimReport())
   {
     saveSimulationReports();
   }
 
-  std::cout << "ERROR: " << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()).mb_str(wxConvUTF8) << std::endl;
+
+//  std::cout << "ERROR: " << FormatExecutionMessage(wxString(Msg.c_str(), wxConvUTF8)).mb_str(wxConvUTF8) << std::endl;
+  std::cout << "ERROR: " << Msg << std::endl;
 
   /*
   for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
@@ -620,81 +627,87 @@ void OpenFLUIDApp::printEnvInfos()
 
 int OpenFLUIDApp::OnRun()
 {
-
+  int ReturnValue = 0;
 
   if (m_OKToRun)
   {
 
-    m_TotalStartTime = wxDateTime::Now();
-    m_ExSI.StartTime = m_TotalStartTime;
-
-    mp_CoreData = new openfluid::core::CoreRepository();
-
-    mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
-
-
-
-    // model load and check
-    buildModel();
-    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
-    mp_ExecMsgs->resetWarningFlag();
-
-    // input data load and check
-    loadData();
-    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
-    mp_ExecMsgs->resetWarningFlag();
-
-    // global consistency check
-    checkConsistency();
-    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
-    mp_ExecMsgs->resetWarningFlag();
-
-
-    // simulation
-    runSimulation();
-    if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
-    mp_ExecMsgs->resetWarningFlag();
-
-
-    wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
-    m_ExSI.RunTime = EffSimTime;
-
-
-    // saving results
-
-
-
-    if (mp_RunEnv->isWriteResults() && !mp_ExecMsgs->isErrorFlag())
+    try
     {
-      saveResults();
-      if (mp_ExecMsgs->isErrorFlag()) return stopAppReturn();
-      mp_ExecMsgs->resetWarningFlag();
-    }
+      m_TotalStartTime = wxDateTime::Now();
+      m_ExSI.StartTime = m_TotalStartTime;
 
-    if (mp_RunEnv->isWriteSimReport())
+      mp_CoreData = new openfluid::core::CoreRepository();
+
+      mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
+
+
+
+      // model load and check
+      buildModel();
+      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+      mp_ExecMsgs->resetWarningFlag();
+
+      // input data load and check
+      loadData();
+      if (mp_ExecMsgs->isErrorFlag())  throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+      mp_ExecMsgs->resetWarningFlag();
+
+      // global consistency check
+      checkConsistency();
+      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+      mp_ExecMsgs->resetWarningFlag();
+
+
+      // simulation
+      runSimulation();
+      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+      mp_ExecMsgs->resetWarningFlag();
+
+
+      wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
+      m_ExSI.RunTime = EffSimTime;
+
+
+      // saving results
+
+
+
+      if (mp_RunEnv->isWriteResults() && !mp_ExecMsgs->isErrorFlag())
+      {
+        saveResults();
+        if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+        mp_ExecMsgs->resetWarningFlag();
+      }
+
+      if (mp_RunEnv->isWriteSimReport())
+      {
+        saveSimulationReports();
+        mp_ExecMsgs->resetWarningFlag();
+      }
+
+
+      m_TotalEndTime = wxDateTime::Now();
+
+      if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << std::endl;
+
+      wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
+
+      printlnExecMessagesStats();
+      std::cout << std::endl;
+
+      std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
+      std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
+      std::cout << std::endl;
+
+
+    }
+    catch (openfluid::base::OFException& E)
     {
-      saveSimulationReports();
-      mp_ExecMsgs->resetWarningFlag();
+      ReturnValue = stopAppReturn(E.what());
     }
-
-
-    m_TotalEndTime = wxDateTime::Now();
-
-    if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << std::endl;
-
-    wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
-
-    printlnExecMessagesStats();
-    std::cout << std::endl;
-
-    std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
-    std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
-    std::cout << std::endl;
-
-    return 0;
-
   }
-  else return 127;
+  return ReturnValue;
 
 }
 
