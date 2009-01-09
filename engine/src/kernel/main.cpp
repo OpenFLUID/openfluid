@@ -494,21 +494,23 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
 int OpenFLUIDApp::stopAppReturn(std::string Msg)
 {
   std::cout << std::endl;
-  printlnExecMessagesStats();
 
   if (!mp_ExecMsgs->isErrorFlag())
   {
     mp_ExecMsgs->setError(wxT("Unknown"),wxString(Msg.c_str(), wxConvUTF8));
   }
 
+  printlnExecMessagesStats();
+
   if (mp_RunEnv->isWriteSimReport())
   {
     saveSimulationReports();
   }
 
+  std::cout << "ERROR: " << Msg << std::endl;
 
 //  std::cout << "ERROR: " << FormatExecutionMessage(wxString(Msg.c_str(), wxConvUTF8)).mb_str(wxConvUTF8) << std::endl;
-  std::cout << "ERROR: " << Msg << std::endl;
+
 
   /*
   for (int i=0; i<mp_ExecMsgs->getWarningMsgs().Count();i++)
@@ -702,7 +704,8 @@ int OpenFLUIDApp::OnRun()
 
 
     }
-    catch (openfluid::base::OFException& E)
+    //catch (openfluid::base::OFException& E)
+    catch (std::exception& E)
     {
       ReturnValue = stopAppReturn(E.what());
     }
