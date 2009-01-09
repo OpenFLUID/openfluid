@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "PlugFunction.h"
+#include "OFException.h"
 
 #include <wx/tokenzr.h>
 
@@ -623,7 +624,7 @@ void PluggableFunction::OPENFLUID_RaiseWarning(wxString Sender, wxString Msg)
 
 void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxString Msg)
 {
-  mp_ExecMsgs->setError(Sender,TimeStep,Msg);
+  throw OFException(std::string(Sender.mb_str(wxConvUTF8)),TimeStep,std::string(Msg.mb_str(wxConvUTF8)));
 }
 
 // =====================================================================
@@ -632,7 +633,24 @@ void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, int TimeStep, wxSt
 
 void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, wxString Msg)
 {
-  mp_ExecMsgs->setError(Sender,Msg);
+  throw OFException(std::string(Sender.mb_str(wxConvUTF8)),std::string(Msg.mb_str(wxConvUTF8)));
+}
+
+// =====================================================================
+// =====================================================================
+
+void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, wxString Source, int TimeStep, wxString Msg)
+{
+  throw OFException(std::string(Sender.mb_str(wxConvUTF8)),std::string(Source.mb_str(wxConvUTF8)),TimeStep,std::string(Msg.mb_str(wxConvUTF8)));
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_RaiseError(wxString Sender, wxString Source, wxString Msg)
+{
+  throw OFException(std::string(Sender.mb_str(wxConvUTF8)),std::string(Source.mb_str(wxConvUTF8)),std::string(Msg.mb_str(wxConvUTF8)));
 }
 
 // =====================================================================

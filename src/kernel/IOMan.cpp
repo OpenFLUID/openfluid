@@ -14,6 +14,7 @@
 
 #include "IOMan.h"
 #include "openfluid-tools.h"
+#include "openfluid-base.h"
 #include "config.h"
 #include "AppTools.h"
 #include "xml/tinyxml.h"
@@ -80,7 +81,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Child == NULL)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing deltat."));
+      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Missing deltat.");
       return false;
     }
     else
@@ -95,7 +96,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong deltat format."));
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Wrong deltat format.");
         return false;
       }
     }
@@ -106,7 +107,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Child == NULL)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing period."));
+      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Missing period.");
       return false;
     }
     else
@@ -124,13 +125,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong format of begin attribute for period."));
+          throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Wrong format of begin attribute for period.");
           return false;
         }
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing begin attribute for period."));
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Missing begin attribute for period.");
         return false;
       }
 
@@ -148,13 +149,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong format of end attribute for period."));
+          throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Wrong format of end attribute for period.");
           return false;
         }
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Missing end attribute for period."));
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Missing end attribute for period.");
         return false;
       }
 
@@ -162,7 +163,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Config->EndDate < Config->BeginDate)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run config file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error. Wrong simulation period definition."));
+      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + ") error. Wrong simulation period definition.");
       return false;
     }
 
@@ -182,7 +183,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Run configuration file (") + OPENFLUID_DEFAULT_RUNFILE + wxT(") error."));
+    throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","in run config file (" + _S(OPENFLUID_DEFAULT_RUNFILE) + "), " + std::string(LoadDoc.ErrorDesc()));
     return false;
   }
 
@@ -213,7 +214,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
     TiXmlHandle DocHandle(&LoadDoc);
 
-
+/*
     // =========== run params ===========
     Child = DocHandle.FirstChild("openfluid").FirstChild("runparams").FirstChild("param").Element();
 
@@ -239,7 +240,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
     }
 
-
+*/
     // ======= model structure ===========
 
 
@@ -283,7 +284,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
       }
       else
       {
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + OPENFLUID_DEFAULT_MODELFILE + wxT(") error. Incorrect function definition."));
+        throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in model config file (" + _S(OPENFLUID_DEFAULT_MODELFILE) + "), " + std::string(LoadDoc.ErrorDesc()));
         return false;
       }
 
@@ -295,7 +296,8 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Model configuration file (") + OPENFLUID_DEFAULT_MODELFILE + wxT(") error."));
+
+    throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in run config file (" + _S(OPENFLUID_DEFAULT_MODELFILE) + "), " + std::string(LoadDoc.ErrorDesc()));
     return false;
   }
 
@@ -355,7 +357,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
   // no available object
   if (!(SUsFileExists || RSsFileExists || GUsFileExists))
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("No spatial object file"));
+    throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects","No spatial units file");
     return false;
   }
 
@@ -372,7 +374,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         SUsFileParser.getColsCount() != OPENFLUID_SUDEFSFILE_COLNBR ||
         SUsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_SUDEFSFILE + wxT(" file parsing error"));
+      throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects",_S(OPENFLUID_DEFAULT_SUDEFSFILE) + " file parsing error");
       return false;
     }
     else
@@ -402,7 +404,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
                                                                   FlowDist,
                                                                   (openfluid::core::UnitID)GUExch)))
           {
-            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding SU #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
+            throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects","Error adding SU #" +_S(wxString::Format(wxT("%d"),ID)) + ". Maybe alredy in use");
             return false;
           }
 
@@ -410,7 +412,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
 
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_SUDEFSFILE + wxT(" file format error"));
+          throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects",_S(OPENFLUID_DEFAULT_SUDEFSFILE) + " file format error");
           return false;
         }
 
@@ -429,7 +431,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         RSsFileParser.getColsCount() != OPENFLUID_RSDEFSFILE_COLNBR ||
         RSsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_RSDEFSFILE + wxT(" file parsing error"));
+      throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects",_S(OPENFLUID_DEFAULT_RSDEFSFILE) + " file parsing error");
       return false;
     }
     else
@@ -459,13 +461,13 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
                                                                    Height,
                                                                    (openfluid::core::UnitID)GUExch)))
           {
-            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding RS #")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use"));
+            throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects","Error adding RS #" +_S(wxString::Format(wxT("%d"),ID)) + ". Maybe alredy in use");
             return false;
           }
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_RSDEFSFILE + wxT(" file format error"));
+          throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects",_S(OPENFLUID_DEFAULT_RSDEFSFILE) + " file format error");
           return false;
         }
       }
@@ -483,7 +485,7 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
         GUsFileParser.getColsCount() != OPENFLUID_GUDEFSFILE_COLNBR ||
         GUsFileParser.getColsCount() < 1)
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_GUDEFSFILE + wxT(" file parsing error."));
+      throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects",_S(OPENFLUID_DEFAULT_GUDEFSFILE) + " file parsing error");
       return false;
     }
     else
@@ -503,14 +505,13 @@ bool IOManager::loadHydroObjects(openfluid::core::SpatialRepository *SpatialData
                                                                       (openfluid::core::UnitID)GUExch,
                                                                       SubstrLevel)))
           {
-            mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Error adding GU ")+wxString::Format(wxT("%d"),ID)+wxT(". Maybe alredy in use."));
-
+            throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects","Error adding GU #" +_S(wxString::Format(wxT("%d"),ID)) + ". Maybe alredy in use");
             return false;
           }
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),OPENFLUID_DEFAULT_GUDEFSFILE + wxT(" file format error."));
+          throw openfluid::base::OFException("kernel","IOManager::loadHydroObjects",_S(OPENFLUID_DEFAULT_GUDEFSFILE) + " file format error");
           return false;
         }
       }
@@ -602,23 +603,26 @@ bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::Spat
                   Data.Clear();
                   Data.Append(_U(Child->GetText()));
                 }
-                else IsOK = false;
+                else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","No data found in file " + _S(Filename));
               }
-              else IsOK = false;
+              else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column order is empty in file " + _S(Filename));
             }
-            else IsOK = false;
+            else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column order not found in file " + _S(Filename));
           }
-          else IsOK = false;
+          else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column definition not found in file " + _S(Filename));
         }
-        else IsOK = false;
+        else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Unit class and/or data category not found in file " + _S(Filename));
       }
-      else IsOK = false;
+      else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Wrong format for file " + _S(Filename));
     }
+    else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","In file " + _S(Filename) +" : " + std::string(Doc.ErrorDesc()));
   }
 
 
-  if ((DataCat != wxT("ini") && DataCat != wxT("param")) ||
-      (UnitClass != wxT("SU") && UnitClass != wxT("RS") && UnitClass != wxT("GU"))) IsOK = false;
+  if (DataCat != wxT("ini") && DataCat != wxT("param")) throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Wrong unit class and/or data categrory in file " + _S(Filename));
+  if (UnitClass != wxT("SU") && UnitClass != wxT("RS") && UnitClass != wxT("GU")) throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Wrong data category in file " + _S(Filename));
+
+
 
   int i,j;
   long ID;
@@ -669,20 +673,20 @@ bool IOManager::loadDistributedDataFile(wxString Filename, openfluid::core::Spat
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data format error (") + Filename + wxT(")"));
+          openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Distributed data format error in file " + _S(Filename));
           return false;
         }
       }
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data error (") + Filename + wxT(")"));
+      throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Distributed data error in file " + _S(Filename));
       return false;
     }
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Distributed data xml error (") + Filename + wxT(")"));
+    throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Distributed data xml error (" + _S(Filename) + ")");
     return false;
   }
 
@@ -810,20 +814,19 @@ bool IOManager::loadDistributedEventsFile(wxString Filename, openfluid::core::Sp
       else
       {
         IsOK = false;
-        mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Event file format error"));
+        throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file format error (" + _S(Filename) + ")");
       }
     }
     else
     {
       IsOK = false;
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Event file error"));
+      throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file error (" + _S(Filename) + ")");
     }
   }
   else
   {
     IsOK = false;
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Event file error"));
-
+    throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file not found (" + _S(Filename) + ")");
   }
 
   return IsOK;
@@ -917,7 +920,7 @@ bool IOManager::loadOutputConfig()
               if (StrArray[i].ToLong(&LongValue)) CurrentDef->SelectedObjectIDs.push_back((int)LongValue);
               else
               {
-                mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: objects selection ID (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+                throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Output config file format error: objects selection ID (" + _S(OPENFLUID_DEFAULT_OUTPUTCONFFILE) + ")");
                 return false;
 
               }
@@ -927,7 +930,7 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing spatial objects selection (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Output config file format error: missing spatial objects selection (" + _S(OPENFLUID_DEFAULT_OUTPUTCONFFILE) + ")");
           return false;
         }
 
@@ -958,7 +961,7 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: missing variables selection (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Output config file format error: missing variables selection (" + _S(OPENFLUID_DEFAULT_OUTPUTCONFFILE) + ")");
           return false;
         }
 
@@ -972,20 +975,20 @@ bool IOManager::loadOutputConfig()
         }
         else
         {
-          mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error: unknown object type (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+          throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Output config file format error: unknown object type (" + _S(OPENFLUID_DEFAULT_OUTPUTCONFFILE) + ")");
           return false;
         }
        }
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file format error (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+      throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Output config file format error (" + _S(OPENFLUID_DEFAULT_OUTPUTCONFFILE) + ")");
       return false;
     }
   }
   else
   {
-    mp_ExecMsgs->setError(wxT("IO Manager"),wxT("Output config file not found (") + OPENFLUID_DEFAULT_OUTPUTCONFFILE + wxT(")"));
+    throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Output config file not found (" + _S(OPENFLUID_DEFAULT_OUTPUTCONFFILE) + ")");
     return false;
   }
 
@@ -1370,7 +1373,7 @@ bool IOManager::saveResults(openfluid::core::CoreRepository *Data, RunConfig Con
 // =====================================================================
 // =====================================================================
 
-bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo)
+bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, wxString ErrorMsg)
 {
 
 
@@ -1394,9 +1397,9 @@ bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, E
     FileContents << wxT("************************************************************") << wxT("\n");
     FileContents << wxT("\n");
 
-    if (mp_ExecMsgs->isErrorFlag())
+    if (ErrorMsg != wxT(""))
     {
-      FileContents << wxT("ERROR: ") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\n");
+      FileContents << ErrorMsg << wxT("\n");
       FileContents << wxT("\n");
     }
 
@@ -1455,7 +1458,7 @@ bool IOManager::saveSimulationInfos(openfluid::core::CoreRepository *CoreData, E
     XMLFileContents << wxT("<openfluid>") << wxT("\n");
     XMLFileContents << wxT("  <simreport>") << wxT("\n");
 
-    if (mp_ExecMsgs->isErrorFlag()) XMLFileContents << wxT("    <error message=\"") << FormatExecutionMessage(mp_ExecMsgs->getErrorMsg()) << wxT("\" />") << wxT("\n");
+    if (ErrorMsg != wxT("")) XMLFileContents << wxT("    <error message=\"") << ErrorMsg << wxT("\" />") << wxT("\n");
 
     if (WarningCount > 0)
     {

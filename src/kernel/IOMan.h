@@ -188,7 +188,7 @@ class IOManager
 
     bool saveTrace(openfluid::core::CoreRepository *Data, int Step, openfluid::core::DateTime DT);
 
-    bool saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo);
+    bool saveSimulationInfos(openfluid::core::CoreRepository *CoreData, ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, wxString ErrorMsg);
 
 };
 

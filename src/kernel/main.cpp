@@ -55,12 +55,8 @@ bool OpenFLUIDApp::loadData()
 
   printlnExecStatus();
 
-  if (!mp_ExecMsgs->isErrorFlag())
-  {
-    if (mp_Engine->getRunConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getRunConfig().SimulationID;
-    else m_ExSI.SimID = GenerateSimulationID();
-  }
-
+  if (mp_Engine->getRunConfig().SimulationID != wxT("")) m_ExSI.SimID = mp_Engine->getRunConfig().SimulationID;
+  else m_ExSI.SimID = GenerateSimulationID();
 
   return ExecStatus;
 }
@@ -107,8 +103,8 @@ bool OpenFLUIDApp::runSimulation()
 
   m_EffectiveEndTime = wxDateTime::Now();
 
-  if (!mp_ExecMsgs->isErrorFlag()) std::cout << "**** Simulation completed ****" << std::endl << std::endl;
-  else  std::cout << "**** Simulation aborted ****" << std::endl;
+  std::cout << "**** Simulation completed ****" << std::endl << std::endl;
+//  else  std::cout << "**** Simulation aborted ****" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
 
@@ -137,7 +133,7 @@ bool OpenFLUIDApp::saveResults()
 // =====================================================================
 // =====================================================================
 
-bool OpenFLUIDApp::saveSimulationReports()
+bool OpenFLUIDApp::saveSimulationReports(wxString ErrorMsg)
 {
 
   bool ExecStatus;
@@ -145,7 +141,7 @@ bool OpenFLUIDApp::saveSimulationReports()
   std::cout << "* Saving simulation report... ";
   std::cout.flush();
 
-  ExecStatus = mp_Engine->saveReports(m_ExSI);
+  ExecStatus = mp_Engine->saveReports(m_ExSI,ErrorMsg);
 
   std::cout << "[Done]" << std::endl;
 
@@ -163,12 +159,8 @@ bool OpenFLUIDApp::saveSimulationReports()
 
 void OpenFLUIDApp::printlnExecStatus()
 {
-  if (!mp_ExecMsgs->isErrorFlag())
-  {
-    if (mp_ExecMsgs->isWarningFlag()) std::cout << "[Warning]" << std::endl;
-    else std::cout << "[OK]" << std::endl;
-  }
-  else std::cout << "[Error]" << std::endl;
+  if (mp_ExecMsgs->isWarningFlag()) std::cout << "[Warning]" << std::endl;
+  else std::cout << "[OK]" << std::endl;
 
   std::cout.flush();
 }
@@ -179,8 +171,8 @@ void OpenFLUIDApp::printlnExecStatus()
 
 void OpenFLUIDApp::printlnExecMessagesStats()
 {
-  if (mp_ExecMsgs->isErrorFlag()) std::cout << "1 error, ";
-  else  std::cout << "no error, ";
+/*  if (mp_ExecMsgs->isErrorFlag()) std::cout << "1 error, ";
+  else  std::cout << "no error, ";*/
   std::cout << mp_ExecMsgs->getWarningMsgs().Count() << " warning(s)" << std::endl;
 }
 
@@ -495,19 +487,15 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 {
   std::cout << std::endl;
 
-  if (!mp_ExecMsgs->isErrorFlag())
-  {
-    mp_ExecMsgs->setError(wxT("Unknown"),wxString(Msg.c_str(), wxConvUTF8));
-  }
 
   printlnExecMessagesStats();
 
   if (mp_RunEnv->isWriteSimReport())
   {
-    saveSimulationReports();
+    saveSimulationReports(_U(Msg.c_str()));
   }
 
-  std::cout << "ERROR: " << Msg << std::endl;
+  std::cout << std::endl << Msg << std::endl;
 
 //  std::cout << "ERROR: " << FormatExecutionMessage(wxString(Msg.c_str(), wxConvUTF8)).mb_str(wxConvUTF8) << std::endl;
 
@@ -647,23 +635,23 @@ int OpenFLUIDApp::OnRun()
 
       // model load and check
       buildModel();
-      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+//      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
       mp_ExecMsgs->resetWarningFlag();
 
       // input data load and check
       loadData();
-      if (mp_ExecMsgs->isErrorFlag())  throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+//      if (mp_ExecMsgs->isErrorFlag())  throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
       mp_ExecMsgs->resetWarningFlag();
 
       // global consistency check
       checkConsistency();
-      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+//      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
       mp_ExecMsgs->resetWarningFlag();
 
 
       // simulation
       runSimulation();
-      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+//      if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
       mp_ExecMsgs->resetWarningFlag();
 
 
@@ -675,16 +663,16 @@ int OpenFLUIDApp::OnRun()
 
 
 
-      if (mp_RunEnv->isWriteResults() && !mp_ExecMsgs->isErrorFlag())
+      if (mp_RunEnv->isWriteResults())
       {
         saveResults();
-        if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
+//        if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg().mb_str(wxConvUTF8));
         mp_ExecMsgs->resetWarningFlag();
       }
 
       if (mp_RunEnv->isWriteSimReport())
       {
-        saveSimulationReports();
+//        saveSimulationReports();
         mp_ExecMsgs->resetWarningFlag();
       }
 
@@ -696,6 +684,7 @@ int OpenFLUIDApp::OnRun()
       wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
 
       printlnExecMessagesStats();
+
       std::cout << std::endl;
 
       std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")).mb_str(wxConvUTF8) << std::endl;
@@ -704,11 +693,24 @@ int OpenFLUIDApp::OnRun()
 
 
     }
-    //catch (openfluid::base::OFException& E)
+
+    catch (openfluid::base::OFException& E)
+    {
+      ReturnValue = stopAppReturn("ERROR: " + std::string(E.what()));
+    }
+    catch (std::bad_alloc& E)
+    {
+      ReturnValue = stopAppReturn("MEMORY ALLOCATION ERROR: " + std::string(E.what()) + ". Possibly not enough memory available");
+    }
     catch (std::exception& E)
     {
-      ReturnValue = stopAppReturn(E.what());
+      ReturnValue = stopAppReturn("SYSTEM ERROR: " + std::string(E.what()));
     }
+    catch (...)
+    {
+      ReturnValue = stopAppReturn("UNKNOWN ERROR");
+    }
+
   }
   return ReturnValue;
 

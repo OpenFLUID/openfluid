@@ -8,6 +8,7 @@
 
 #include "DistribInterp.h"
 #include "ColTextParser.h"
+#include "openfluid-base.h"
 
 #include <math.h>
 
@@ -63,7 +64,7 @@ bool DistributeInterpolate::loadAndPrepareData()
 
   if (!m_Configured)
   {
-    setErrorMessage(wxT("Distributed interpolator not configured"));
+    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Distributed interpolator not configured");
     return false;
   }
 
@@ -71,7 +72,7 @@ bool DistributeInterpolate::loadAndPrepareData()
   // loading of data sources
   if (!DSFile.load(m_DataDir + wxFILE_SEP_PATH + m_DataSourcesFilename) && DSFile.getIDs().size() <= 1)
   {
-    setErrorMessage(wxT("Error loading ")+m_DataSourcesFilename+wxT(" file"));
+    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading file " + _S(m_DataSourcesFilename));
     return false;
   }
   else
@@ -83,7 +84,7 @@ bool DistributeInterpolate::loadAndPrepareData()
     {
       if (!wxFileExists(m_DataDir + wxFILE_SEP_PATH + DSFile.getSource(IDs[i])))
       {
-        setErrorMessage(wxT("Error loading ")+DSFile.getSource(IDs[i])+wxT(" file as data source"));
+        throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading "+_S(DSFile.getSource(IDs[i])) + " file as data source");
         return false;
       }
       else
@@ -109,17 +110,17 @@ bool DistributeInterpolate::loadAndPrepareData()
           }
           else
           {
-            setErrorMessage(wxT("Error interpolating data from ")+DSFile.getSource(IDs[i])+wxT(" file"));
             delete Serie;
             delete InterpolatedSerie;
+            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error interpolating data from file " + _S(DSFile.getSource(IDs[i])));
             return false;
           }
         }
         else
         {
-          setErrorMessage(wxT("Error loading data from ")+DSFile.getSource(IDs[i])+wxT(" file"));
           delete Serie;
           delete InterpolatedSerie;
+          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading data from file " + _S(DSFile.getSource(IDs[i])));
           return false;
         }
       }
@@ -250,26 +251,26 @@ bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
           }
           else
           {
-            setErrorMessage(wxT("Error in distribution file ")+m_DistributionFilename+wxT(", data source ID not found"));
+            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + _S(m_DistributionFilename) + ", data source ID not found");
             return false;
           }
         }
         else
         {
-          setErrorMessage(wxT("Error in distribution file ")+m_DistributionFilename+wxT(", format error"));
+          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + _S(m_DistributionFilename) + ", format error");
           return false;
         }
       }
     }
     else
     {
-      setErrorMessage(wxT("Error in distribution file ")+m_DistributionFilename+wxT(", file not found or format error"));
+      throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + _S(m_DistributionFilename) + ", file not found or format error");
       return false;
     }
   }
   else
   {
-    setErrorMessage(wxT("Distribution file ")+m_DistributionFilename+wxT(" not found"));
+    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Distribution file " + _S(m_DistributionFilename) + " not found");
     return false;
   }
   return true;

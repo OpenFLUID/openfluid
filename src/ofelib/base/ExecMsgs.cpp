@@ -25,7 +25,7 @@ ExecutionMessages::ExecutionMessages()
 
 ExecutionMessages::~ExecutionMessages()
 {
-  
+
 }
 
 // =====================================================================
@@ -35,20 +35,12 @@ ExecutionMessages::~ExecutionMessages()
 void ExecutionMessages::addWarning(wxString Sender, int TimeStep, wxString WarningMsg)
 {
   m_WarningFlag = true;
-  m_WarningMsgs.Add(Sender + wxT(";") + wxString::Format(wxT("%d"),TimeStep) + wxT(";") + WarningMsg);  
+  m_WarningMsgs.Add(Sender + wxT(";") + wxString::Format(wxT("%d"),TimeStep) + wxT(";") + WarningMsg);
 }
 
 
 // =====================================================================
 // =====================================================================
-
-
-void ExecutionMessages::setError(wxString Sender, int TimeStep, wxString ErrorMsg)
-{
-  m_ErrorFlag = true;
-  m_ErrorMsg = Sender + wxT(";") + wxString::Format(wxT("%d"),TimeStep) + wxT(";") + ErrorMsg;  
-  
-}
 
 
 

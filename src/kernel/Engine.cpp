@@ -46,7 +46,11 @@ WX_DEFINE_LIST(PluginsList);
         statevar = (statevar && CurrentFunction->Function->calledmethod); \
         if (mp_RunEnv->isVerboseRun()) \
         { \
-          if (mp_ExecMsgs->isErrorFlag() || !IsOK) std::cout << "  " << "[Error]";\
+          if (!statevar) \
+          { \
+            std::cout << "  " << "[Error]";\
+            throw openfluid::base::OFException("kernel","Bad return value while calling function method"); \
+          }  \
           else \
           { \
             if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
@@ -82,7 +86,11 @@ WX_DEFINE_LIST(PluginsList);
         statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
         if (mp_RunEnv->isVerboseRun()) \
         { \
-          if (mp_ExecMsgs->isErrorFlag() || !IsOK) std::cout << "  " << "[Error]";\
+          if (!statevar) \
+          { \
+            std::cout << "  " << "[Error]";\
+            throw openfluid::base::OFException("kernel","Bad return value while calling function method"); \
+          }  \
           else \
           { \
             if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
@@ -213,14 +221,14 @@ bool Engine::processConfig()
        }
        else
        {
-         mp_ExecMsgs->setError(wxT("Engine"),wxT("Initializing params function error."));
+         throw openfluid::base::OFException("kernel","Engine::processConfig","Initializing params function error");
          return false;
        }
 
     }
     else
     {
-      mp_ExecMsgs->setError(wxT("Engine"),wxT("Loading function from plugin ") + FConf->FileID + wxT(" error."));
+      throw openfluid::base::OFException("kernel","Engine::processConfig","Loading function from plugin " + _S(FConf->FileID));
       return false;
     }
 
@@ -470,7 +478,7 @@ bool Engine::checkModelConsistency()
           }
         }
 
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable required by ") + CurrentFunction->Signature->ID + wxT(" is not previously created"));
+        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",_S(HData.RequiredVars[i].Name) + " variable required by " + _S(CurrentFunction->Signature->ID) + " is not previously created");
         else i++;
       }
 
@@ -538,7 +546,7 @@ bool Engine::checkModelConsistency()
         }
 
 
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.ProducedVars[i].Name+wxT(" variable produced by ") + CurrentFunction->Signature->ID + wxT(" cannot be created because it is previously created"));
+        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",_S(HData.ProducedVars[i].Name) + " variable produced by " + _S(CurrentFunction->Signature->ID) + " cannot be created because it is previously created");
         else i++;
       }
 
@@ -603,7 +611,7 @@ bool Engine::checkModelConsistency()
           }
         }
 
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),wxT("Problem handling of ")+HData.ProducedVars[i].Name+wxT(" updated variable declared by ") + CurrentFunction->Signature->ID);
+        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency","Problem handling of " + _S(HData.ProducedVars[i].Name) + " updated variable declared by " + _S(CurrentFunction->Signature->ID));
         else i++;
       }
 
@@ -680,7 +688,7 @@ bool Engine::checkModelConsistency()
 
         }
 
-        if (!IsOK) mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredPrevVars[i].Name+wxT(" variable required at previous step by ") + CurrentFunction->Signature->ID + wxT(" does not exist"));
+        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",_S(HData.RequiredPrevVars[i].Name) + " variable required at previous step by " + _S(CurrentFunction->Signature->ID) + " does not exist");
         else i++;
       }
 
@@ -711,8 +719,6 @@ bool Engine::checkDataConsistency()
 
 
 
-
-
   // check variable name against nomenclature
   if (mp_RunEnv->isCheckVarNames())
   {
@@ -738,7 +744,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.ProducedVars[i].Name+wxT(" variable name does not match nomenclature."));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.ProducedVars[i].Name) + " variable name does not match nomenclature");
             return false;
           }
           i++;
@@ -753,7 +759,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredVars[i].Name+wxT(" variable name does not match nomenclature."));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredVars[i].Name) + " variable name does not match nomenclature");
             return false;
           }
           i++;
@@ -768,7 +774,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.UsedVars[i].Name+wxT(" variable name does not match nomenclature."));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.UsedVars[i].Name) + " variable name does not match nomenclature");
             return false;
           }
           i++;
@@ -782,7 +788,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.UpdatedVars[i].Name+wxT(" variable name does not match nomenclature."));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.UpdatedVars[i].Name) + " variable name does not match nomenclature");
             return false;
           }
           i++;
@@ -796,7 +802,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredPrevVars[i].Name+wxT(" variable name does not match nomenclature."));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredPrevVars[i].Name) + " variable name does not match nomenclature");
             return false;
           }
           i++;
@@ -811,7 +817,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.UsedPrevVars[i].Name+wxT(" variable name does not match nomenclature."));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.UsedPrevVars[i].Name) + " variable name does not match nomenclature");
             return false;
           }
           i++;
@@ -870,7 +876,7 @@ bool Engine::checkDataConsistency()
 
         if (!IsOK)
         {
-          mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredProps[i].Name+wxT(" distributed property required by ") + CurrentFunction->Signature->ID + wxT(" is missing"));
+          throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredProps[i].Name) + " distributed property required by " + _S(CurrentFunction->Signature->ID) + " is missing");
           return false;
         }
         else i++;
@@ -910,7 +916,7 @@ bool Engine::checkDataConsistency()
 
           if (!IsOK)
           {
-            mp_ExecMsgs->setError(wxT("Engine"),HData.RequiredIniconds[i].Name+wxT(" distributed initial condition required by ") + CurrentFunction->Signature->ID + wxT(" is missing"));
+            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredIniconds[i].Name) + " distributed initial condition required by " + _S(CurrentFunction->Signature->ID) + " is missing");
             return false;
           }
           else i++;
@@ -953,7 +959,7 @@ bool Engine::checkExtraFilesConsistency()
       {
         if (!wxFileExists(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
         {
-          mp_ExecMsgs->setError(wxT("Engine"),wxT("File ") + HData.RequiredExtraFiles[i] + wxT(" required by ") + CurrentFunction->Signature->ID + wxT(" not found"));
+          throw openfluid::base::OFException("kernel","Engine::checkExtraFilesConsistency","File " + _S(HData.RequiredExtraFiles[i]) + " required by " + _S(CurrentFunction->Signature->ID) + " not found");
           return false;
         }
       }
@@ -1054,10 +1060,11 @@ bool Engine::prepareDataAndCheckConsistency()
   DECLARE_FUNCTION_PARSER;
 
 
+
   // builds topology by linking objects
   if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Topology rebuild error"));
+    throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","Topology rebuild error");
     return false;
   }
 
@@ -1065,17 +1072,16 @@ bool Engine::prepareDataAndCheckConsistency()
   // builds process orders lists
   if (!mp_CoreData->getSpatialData()->buildProcessOrders())
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Process orders build error"));
+    throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","Process orders build error");
     return false;
   }
-
 
 
   // check simulation functions count
 
   if (m_Functions.GetCount() == 0)
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("No simulation function"));
+    throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","No simulation function in model");
     return false;
   }
 
@@ -1398,10 +1404,10 @@ bool Engine::saveResults(ExtraSimInfos ExSI)
 // =====================================================================
 // =====================================================================
 
-bool Engine::saveReports(ExtraSimInfos ExSI)
+bool Engine::saveReports(ExtraSimInfos ExSI, wxString ErrorMsg)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(openfluid::base::SimulationInfo*)mp_SimStatus));
+  return (mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
 }
 
 

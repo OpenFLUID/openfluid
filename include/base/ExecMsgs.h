@@ -46,17 +46,9 @@ class ExecutionMessages
 
     void addWarning(wxString Sender, wxString WarningMsg) { addWarning(Sender,-1,WarningMsg); };
 
-    void setError(wxString Sender, int TimeStep, wxString ErrorMsg);
-
-    void setError(wxString Sender, wxString ErrorMsg) { setError(Sender,-1,ErrorMsg); };
-
     void resetWarningFlag() { m_WarningFlag = false; };
 
     bool isWarningFlag() const { return m_WarningFlag; };
-
-    bool isErrorFlag() const { return m_ErrorFlag; };
-
-    wxString getErrorMsg() const { return m_ErrorMsg; };
 
     wxArrayString getWarningMsgs() const { return m_WarningMsgs; };
 

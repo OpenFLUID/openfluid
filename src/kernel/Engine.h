@@ -101,7 +101,7 @@ class Engine
 
     bool saveResults(ExtraSimInfos ExSI);
 
-    bool saveReports(ExtraSimInfos ExSI);
+    bool saveReports(ExtraSimInfos ExSI, wxString ErrorMsg);
 
     ModelConfig getModelConfig() const { return m_ModelConfig; };
 

@@ -121,7 +121,7 @@ class OpenFLUIDApp : public wxAppConsole
     /**
       Saves simulation reports
     */
-    bool saveSimulationReports();
+    bool saveSimulationReports(wxString ErrorMsg);
 
 
 
