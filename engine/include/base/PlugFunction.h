@@ -1123,6 +1123,24 @@ class PluggableFunction : public wxObject
     void OPENFLUID_RaiseError(wxString Sender, wxString Msg);
 
     /**
+      Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
+      \param[in] Sender the sender of the message
+      \param[in] Source of the message (location in the sender)
+      \param[in] TimeStep the time step number when the message occurred
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseError(wxString Sender, wxString Source, int TimeStep, wxString Msg);
+
+    /**
+      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
+      \param[in] Sender the sender of the message
+      \param[in] Source of the message (location in the sender)
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseError(wxString Sender, wxString Source, wxString Msg);
+
+
+    /**
       Gets an environment string value associated to a Key
       \param[in] Key the sender of the message
       \param[out] Value the value associated with the environment key
