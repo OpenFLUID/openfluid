@@ -984,7 +984,41 @@ bool Engine::buildModel()
 
   */
 
-  return (mp_IOMan->loadModelConfig(&m_ModelConfig) && processConfig());
+  try
+  {
+    return (mp_IOMan->loadModelConfig(&m_ModelConfig) && processConfig());
+  }
+  catch (openfluid::base::OFException& E)
+  {
+
+    if (!mp_RunEnv->isQuietRun())
+    {
+      if (!mp_RunEnv->isVerboseRun())
+      {
+        std::cout << std::setw(12) << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+      else
+      {
+        std::cout << "  " << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+
+      }
+    }
+    throw;
+  }
+
+  if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
+  {
+
+    if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+    else std::cout << std::setw(12) << "[OK]";
+    std::cout.flush();
+  }
+
+
 }
 
 
@@ -1062,7 +1096,31 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
-  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+  try
+  {
+    PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+  }
+  catch (openfluid::base::OFException& E)
+  {
+    if (!mp_RunEnv->isQuietRun())
+    {
+      if (!mp_RunEnv->isVerboseRun())
+      {
+        std::cout << std::setw(12) << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+      else
+      {
+        std::cout << "  " << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+    }
+    throw;
+  }
+
+
 
 
   if (!IsOK)
@@ -1119,9 +1177,11 @@ bool Engine::run()
   // Check for simulation vars production before init
   if (!checkSimulationVarsProduction(0, &ProdMessage))
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production before run initialization : ")+ProdMessage);
+    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation initilialization : " + std::string(ProdMessage.mb_str(wxConvUTF8)));
     return false;
   }
+
+  // ============= initializeRun() =============
 
   if (!mp_RunEnv->isQuietRun())
   {
@@ -1130,41 +1190,53 @@ bool Engine::run()
     std::cout.flush();
   }
 
-  PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
+  try
+  {
+    PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
+  }
+  catch (openfluid::base::OFException& E)
+  {
+    if (!mp_RunEnv->isQuietRun())
+    {
+      if (!mp_RunEnv->isVerboseRun())
+      {
+        std::cout << std::setw(12) << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+      else
+      {
+        std::cout << "  " << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+
+      }
+    }
+    throw;
+  }
 
   if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
-    if (mp_ExecMsgs->isErrorFlag() || !IsOK)
-    {
-      std::cout << std::setw(12) << "[Error]";
-      std::cout << std::endl << std::endl;
-      std::cout.flush();
-    }
-    else
-    {
-      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-      else std::cout << std::setw(12) << "[OK]";
-      std::cout << std::endl;
-      std::cout.flush();
+    if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+    else std::cout << std::setw(12) << "[OK]";
+    std::cout << std::endl;
+    std::cout.flush();
 
-    }
   }
 
-  if (mp_ExecMsgs->isErrorFlag())
-  {
-    return false;
-  }
 
   mp_ExecMsgs->resetWarningFlag();
 
   // check simulation vars production after init
   if (!checkSimulationVarsProduction(0,&ProdMessage))
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production before run initialization : ")+ProdMessage);
+    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation first step: " + std::string(ProdMessage.mb_str(wxConvUTF8)));
     return false;
   }
 
 
+
+  // ============= runStep() =============
 
 
   if (!mp_RunEnv->isQuietRun())
@@ -1181,9 +1253,6 @@ bool Engine::run()
     std::cout.flush();
   }
 
-
-  // run loop
-
   do
   {
     if (!mp_RunEnv->isQuietRun())
@@ -1195,33 +1264,46 @@ bool Engine::run()
 
     mp_ExecMsgs->resetWarningFlag();
 
-    PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
-
-    // check simulation vars production at each time step
-    if (!mp_ExecMsgs->isErrorFlag() && !checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
+    try
     {
-      mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run step ")+ wxString::Format(wxT("%d"),mp_SimStatus->getCurrentStep())+ wxT(" : ")+ProdMessage);
-    }
+      PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
 
-
-    if (mp_ExecMsgs->isErrorFlag())
-    {
-      std::cout << std::setw(12) << "[Error]";
-      std::cout << std::endl << std::endl;
-      std::cout.flush();
-      return false;
-
-    }
-    else
-    {
-      if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
+      // check simulation vars production at each time step
+      if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
       {
-
-        if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-        else std::cout << std::setw(12) << "[OK]";
-        std::cout.flush();
+        throw openfluid::base::OFException("kernel","Engine::run",mp_SimStatus->getCurrentStep(),"Wrong simulation variable production : " + std::string(ProdMessage.mb_str(wxConvUTF8)));
       }
     }
+    catch (openfluid::base::OFException& E)
+    {
+
+      if (!mp_RunEnv->isQuietRun())
+      {
+        if (!mp_RunEnv->isVerboseRun())
+        {
+          std::cout << std::setw(12) << "[Error]";
+          std::cout << std::endl << std::endl;
+          std::cout.flush();
+        }
+        else
+        {
+          std::cout << "  " << "[Error]";
+          std::cout << std::endl << std::endl;
+          std::cout.flush();
+
+        }
+      }
+      throw;
+    }
+
+    if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
+    {
+
+      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+      else std::cout << std::setw(12) << "[OK]";
+      std::cout.flush();
+    }
+
 
     if (!mp_RunEnv->isQuietRun())
     {
@@ -1239,31 +1321,48 @@ bool Engine::run()
 
   mp_ExecMsgs->resetWarningFlag();
 
+
+  // ============= finalizeRun() =============
+
   if (!mp_RunEnv->isQuietRun())
   {
     std::cout << std::setw(16) << "Finalize...";
     std::cout.flush();
   }
 
-  // finalization of functions
-  PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
+  try
+  {
+
+    PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
+  }
+  catch (openfluid::base::OFException& E)
+  {
+    if (!mp_RunEnv->isQuietRun())
+    {
+      if (!mp_RunEnv->isVerboseRun())
+      {
+        std::cout << std::setw(12) << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+      else
+      {
+        std::cout << "  " << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+
+      }
+    }
+    throw;
+  }
+
 
   if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
-    if (mp_ExecMsgs->isErrorFlag() || !IsOK)
-    {
-      std::cout << std::setw(12) << "[Error]";
-      std::cout << std::endl;
-      std::cout.flush();
-    }
-    else
-    {
-      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-      else std::cout << std::setw(12) << "[OK]";
-      std::cout << std::endl;
-      std::cout.flush();
-
-    }
+    if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
+    else std::cout << std::setw(12) << "[OK]";
+    std::cout << std::endl;
+    std::cout.flush();
   }
 
   if (!mp_RunEnv->isQuietRun())
@@ -1277,7 +1376,7 @@ bool Engine::run()
   // check simulation vars production after finalize
   if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
   {
-    mp_ExecMsgs->setError(wxT("Engine"),wxT("Wrong simulation variable production during run finalization"));
+    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production during run finalization");
     return false;
   }
 

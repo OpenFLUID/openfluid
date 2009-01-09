@@ -65,16 +65,16 @@ PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
           Plug->Function = PlugProc();
           Plug->Filename = PluginFile;
         }
-        else throw openfluid::base::OFException("PluginManager::buildPluginContainer","Unable to find function in plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
+        else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find function in plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
       }
-      else throw openfluid::base::OFException("PluginManager::buildPluginContainer","Unable to find signature in plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
+      else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
 
       // unloads the library
       //PlugLib->Unload();
 
     }
   }
-  else throw openfluid::base::OFException("PluginManager::buildPluginContainer","Unable to find plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
+  else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
 
   return Plug;
 }
