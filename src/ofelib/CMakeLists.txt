@@ -51,7 +51,7 @@ ADD_CUSTOM_COMMAND(TARGET ofelib POST_BUILD
 
 
 INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" 
-        DESTINATION "${OFELIBDEV_INCLUDE_INSTALL_PATH}" COMPONENT ofelibdev)
+        DESTINATION "${OFELIBDEV_INCLUDE_INSTALL_PATH}" COMPONENT ofelibdev PATTERN ".svn" EXCLUDE)
 
 
 ################### ofelib-dev ofefunc2doc tool ###################
