@@ -25,6 +25,7 @@ SET(DOXYGEN_RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources/doxygen)
 ################### test datasets path ###################
 
 SET(TESTS_DATASETS_PATH "${CMAKE_SOURCE_DIR}/tests/datasets")
+SET(TESTS_OUTPUTDATA_PATH "/tmp")
 
 
 ################### versions ###################
