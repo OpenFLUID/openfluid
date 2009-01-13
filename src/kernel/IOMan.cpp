@@ -297,7 +297,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   else
   {
 
-    throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in run config file (" + _S(OPENFLUID_DEFAULT_MODELFILE) + "), " + std::string(LoadDoc.ErrorDesc()));
+    throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in model config file (" + _S(OPENFLUID_DEFAULT_MODELFILE) + "), " + std::string(LoadDoc.ErrorDesc()));
     return false;
   }
 
