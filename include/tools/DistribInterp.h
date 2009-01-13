@@ -16,7 +16,7 @@
 #include "openfluid-core.h"
 #include "DTSerie.h"
 #include "DataSrcFile.h"
-#include "Tools.h"
+
 
 
 namespace openfluid { namespace tools {
@@ -35,7 +35,7 @@ enum SeriePreprocess
 /**
   Class for time interpolation and spatial distribution of data
 */
-class DistributeInterpolate : public openfluid::tools::Tools
+class DistributeInterpolate
 {
 
   private:
