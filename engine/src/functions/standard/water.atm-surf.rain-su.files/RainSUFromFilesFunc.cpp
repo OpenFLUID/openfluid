@@ -117,11 +117,7 @@ bool RainSUFromFilesFunction::initializeRun(const openfluid::base::SimulationInf
 
   m_DataPool.setConfig(InputDir, wxT("rainsources.xml"),wxT("SUraindistri.dat"),openfluid::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
 
-  if (!m_DataPool.loadAndPrepareData())
-  {
-    OPENFLUID_RaiseError(wxT("water.atm-surf.rain-su.files"),m_DataPool.getErrorMessage());
-    return false;
-  }
+  m_DataPool.loadAndPrepareData();
 
 
   return true;
