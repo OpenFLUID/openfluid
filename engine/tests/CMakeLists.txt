@@ -21,32 +21,39 @@
                               "-p${FUNCTIONS_OUTPUT_PATH}")
   
   ADD_TEST(BasicRun "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
-                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun" 
+                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
+                    "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BasicRun"                     
                     "-p${FUNCTIONS_OUTPUT_PATH}")
 
   ADD_TEST(BasicRunQuiet "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
-                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun" 
+                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
+                    "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.BasicRunQuiet"                     
                     "-p${FUNCTIONS_OUTPUT_PATH}"
                     "-q")
     
   ADD_TEST(BasicRunVerbose "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
-                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun" 
+                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
+                    "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.BasicRunVerbose" 
                     "-p${FUNCTIONS_OUTPUT_PATH}"
                     "-v")
 
   ADD_TEST(BasicRunTrace "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
-                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun" 
+                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
+                    "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BasicRunTrace"                     
+                    "-m${TESTS_OUTPUTDATA_PATH}/OPENFLUID.TRACE.BasicRunTrace"
                     "-p${FUNCTIONS_OUTPUT_PATH}"
                     "-t")
 
                     
-  ADD_TEST(BasicRunWithNoSimreport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
+  ADD_TEST(BasicRunNoSimreport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
                               "-s"
-                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun" 
+                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
+                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BasicRunNoSimreport" 
                               "-p${FUNCTIONS_OUTPUT_PATH}")
 
-  ADD_TEST(BasicRunWithNoSave "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
-                         "-z"
-                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun" 
-                         "-p${FUNCTIONS_OUTPUT_PATH}")
+  ADD_TEST(BasicRunNoSave "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                              "-z"
+                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
+                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BasicRunNoSave" 
+                              "-p${FUNCTIONS_OUTPUT_PATH}")
 
