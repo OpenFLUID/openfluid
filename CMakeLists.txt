@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.4)
 
 PROJECT(OpenFLUID-Engine CXX)
 
+ENABLE_TESTING()
+
 INCLUDE(CMake.in.common)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(wxWidgets)
@@ -35,12 +37,16 @@ IF(wxWidgets_FOUND)
   CONFIGURE_FILE(full.cpack.in full.cpack @ONLY)
 
 
+  ADD_SUBDIRECTORY(tests)
+  
+
 
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
   MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
   MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
   MESSAGE(STATUS "Compiler flags added for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
   MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
+
 
 ENDIF(wxWidgets_FOUND)
 #ENDIF(wxWidgets_FOUND AND Boost_FOUND)

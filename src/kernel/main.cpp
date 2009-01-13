@@ -542,6 +542,7 @@ bool OpenFLUIDApp::OnInit()
 
   wxCmdLineParser Parser(CmdLineDesc,argc,argv);
 
+
   if (Parser.Parse() != 0)
   {
      std::cout << std::endl;

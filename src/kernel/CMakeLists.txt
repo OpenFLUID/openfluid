@@ -20,7 +20,9 @@ ADD_EXECUTABLE(openfluid-engine
 TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES})
 
 INSTALL(TARGETS openfluid-engine
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH} COMPONENT kernel
-)
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH} COMPONENT kernel)
+        
 
+       
+      
 
