@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <run>
+    <deltat>3600</deltat>
+    <period begin="1997-03-29 03:00:18" end="1997-04-01 16:23:21" />
+
+<!--    <simid>test</simid> -->
+  </run>
+</openfluid>

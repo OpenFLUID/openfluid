@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <output>
+
+    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
+    <!-- colsep default is \t -->
+    <autooutfiles colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%"> 
+      <SUout filesuffix="full" selection="*" vars="*" />
+      <RSout filesuffix="full" selection="*" vars="*" />
+
+<!--      <GUout filesuffix="fullfull" selection="*" columns="quicky" /> 
+      <RSout filesuffix="full" selection="*" columns="*" />-->
+<!--      <RSout filesuffix="qoutput" selection="2;5;125" columns="tetsttss" /> -->
+
+<!--      <GUout filesuffix="fullfull" selection="*" columns="*" /> 
+      <SUout filesuffix="prod" selection="1;18;152" columns="runoff;infiltration" />
+      <SUout filesuffix="qout" selection="*" columns="qoutput" /> -->
+
+    </autooutfiles>
+<!--
+    <customoutfiles>
+      <outfile filename="rain-runoff-outreach_SU17.dat">
+        <raincolumn ID="" />
+        <SUcolumn ID="17" set="simvars" order="runoff" />
+        <RScolumn ID="139" set="simvars" order="qoutput" />
+      </outfile>
+      <outfile filename="runoff-infiltration_SU153.dat">
+        <SUcolumn ID="153" set="simvars" order="runoff,infiltration" />
+      </outfile>
+    </customoutfiles>
+-->
+  </output>
+</openfluid>
