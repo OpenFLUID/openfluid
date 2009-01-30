@@ -277,8 +277,8 @@ Vector<T>& Vector<T>::operator=(const Vector &A)
 
   if (this == &A) return *this; // in case somebody tries assign array to itself
 
-
-  if (A.m_Size == 0) clear(); // is other array is empty -- clear this array
+  clear();
+  //if (A.m_Size == 0) clear(); // is other array is empty -- clear this array
 
   allocate(A.m_Size);
   memcpy(m_Data, A.m_Data, sizeof(T)*A.m_Size);
