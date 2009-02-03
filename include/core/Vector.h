@@ -4,10 +4,11 @@
 
 
 #include <iostream>
-
+#include "base/OFException.h"
 
 namespace openfluid { namespace core {
 
+//class OFException;
 
 /**
   Template class for vector data
@@ -19,7 +20,7 @@ class Vector
     T* m_Data;
     long m_Size;
 
-    void allocate(long Size);
+    bool allocate(long Size);
 
     void init();
 
@@ -128,7 +129,7 @@ Vector<T>::Vector(const Vector &A)
 //  clear();
   init();
 
-  allocate(A.m_Size);
+  if (!allocate(A.m_Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(const Vector)","Cannot allocate memory");
 
   memcpy((T*)m_Data,(T*)A.m_Data,A.m_Size*sizeof(T));
 
@@ -149,7 +150,7 @@ Vector<T>::Vector(long Size)
 
   init();
 
-  allocate(Size);
+  if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(Size)","Cannot allocate memory");
 
 //  std::cout << "size constructor out" << std::endl;std::cout.flush();
 }
@@ -163,7 +164,7 @@ Vector<T>::Vector(long Size, T InitValue)
   init();
 
 
-  allocate(Size);
+  if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(Size,T)","Cannot allocate memory");
 
 
   if (m_Data != NULL)
@@ -184,7 +185,7 @@ Vector<T>::Vector(T* Data, long Size)
 {
   init();
 
-  allocate(Size);
+  if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(T*,Size)","Cannot allocate memory");
 
   memcpy((T*)m_Data,(T*)Data,Size*sizeof(T));
 }
@@ -210,15 +211,20 @@ Vector<T>::~Vector()
 // =====================================================================
 
 template <class T>
-void Vector<T>::allocate(long Size)
+bool Vector<T>::allocate(long Size)
 {
 
   if (Size > 0)
   {
     m_Data = (T*)malloc(Size*sizeof(T));
     if (m_Data != NULL) m_Size = Size;
+    else
+    {
+      return false;
+    }
   }
 
+  return true;
 
 
 }
@@ -231,7 +237,7 @@ void Vector<T>::setData(T* Data, long Size)
 {
   clear();
 
-  allocate(Size);
+  if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::setData","Cannot allocate memory");
 
   if (m_Data != NULL) memcpy((T*)m_Data,(T*)Data,Size*sizeof(T));
 }
@@ -243,6 +249,7 @@ void Vector<T>::setData(T* Data, long Size)
 template <class T>
 T Vector<T>::getElement(long Index) const
 {
+  if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("ofelib","Vector::getElement","element access range error");
   return m_Data[Index];
 }
 
@@ -253,6 +260,7 @@ T Vector<T>::getElement(long Index) const
 template <class T>
 void Vector<T>::setElement(long Index, T Element)
 {
+  if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("ofelib","Vector::setElement","element access range error");
   m_Data[Index] = Element;
 }
 
@@ -264,6 +272,7 @@ void Vector<T>::setElement(long Index, T Element)
 template <class T>
 T& Vector<T>::operator[](long Index)
 {
+  if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("ofelib","Vector::operator[]","element access range error");
   return m_Data[Index];
 }
 
