@@ -56,7 +56,7 @@ INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/include/"
 ################### ofelib-dev ofefunc2doc tool ###################
 
 
-CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc.py "${EXECUTABLE_OUTPUT_PATH}/ofefunc2doc" COPYONLY)
+CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc.py "${EXECUTABLE_OUTPUT_PATH}/ofefunc2doc" @ONLY)
 
 INSTALL(FILES "${EXECUTABLE_OUTPUT_PATH}/ofefunc2doc" 
         DESTINATION ${BIN_INSTALL_PATH} COMPONENT ofelibdev

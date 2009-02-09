@@ -17,6 +17,7 @@ IF(wxWidgets_FOUND)
 
   FILE(MAKE_DIRECTORY "${LIBRARY_OUTPUT_PATH}")
   FILE(MAKE_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
+  FILE(MAKE_DIRECTORY "${FUNCTIONS_DOC_OUTPUT_PATH}")
 
   # hack for compiler flags semicolon problem with MSYS
   IF(MSYS)
@@ -29,6 +30,13 @@ IF(wxWidgets_FOUND)
 
   ADD_SUBDIRECTORY(src)
 
+
+  #CONFIGURE_FILE("resources/doc/COPYING" "${DOC_INSTALL_PATH}" COPYONLY)
+  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
+                "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
+                "${CMAKE_SOURCE_DIR}/resources/dist/README"   
+          DESTINATION ${DOC_INSTALL_PATH})
+  
 
   CONFIGURE_FILE(kernel.cpack.in kernel.cpack @ONLY)
   CONFIGURE_FILE(ofelib.cpack.in ofelib.cpack @ONLY)
