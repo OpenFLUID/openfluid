@@ -57,7 +57,7 @@ class OFEFunc2Latex:
   THE_EXTRAFILES = []
 
 
-  LATEX_TEMPLATE_FILE = "/usr/share/ofefunc2doc/template/ofefunc2doc_tpl.tex"
+  LATEX_TEMPLATE_FILE = "/usr/@OFEFUNC2DOC_TPL_INSTALL_PATH@/ofefunc2doc_tpl.tex"
   LATEX_TEMPLATE = ""
 
   OUTPUT_DIR="./"
@@ -377,7 +377,7 @@ class OFEFunc2Latex:
     self.SOURCEFILE = self.args[0]  
 
     if os.path.isfile(self.SOURCEFILE) != True : 
-      print "Input file no found"
+      print "Input file " + self.SOURCEFILE + " not found"
       return
 
     if self.options.outputdir :
