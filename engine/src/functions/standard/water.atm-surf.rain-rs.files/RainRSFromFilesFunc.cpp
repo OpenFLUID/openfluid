@@ -20,12 +20,12 @@ DEFINE_FUNCTION_HOOK(RainRSFromFilesFunction);
 
 BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_ID(wxT("water.atm-surf.rain-rs.files"));
-  DECLARE_SIGNATURE_NAME(wxT("Rain on RS from files"));
-  DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
+  DECLARE_SIGNATURE_NAME(wxT("Spatial distribution and time interpolation of rain on RS, from files as data sources"));
+  DECLARE_SIGNATURE_DESCRIPTION(wxT("This function interpolates rain data at the given model time step, then distribute it on the RSs of the spatial domain. The rain sources are given through a rainsources.xml file. The distribution of rain sources is given through a SUraindistri.dat file, which is a list of couples [UNIT_ID RAINSOURCE_ID]. A threshold can be set to replace by zero very small values (near null), as a function parameter. The resulting data of the time interpolation and spatial distribution can be used by other simulation functions as a variable called water.atm-surf.H.rain."));
 
   DECLARE_SIGNATURE_VERSION(wxT("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::base::STABLE);
 
   DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
   DECLARE_SIGNATURE_PROCESS(wxT(""));
@@ -35,6 +35,9 @@ BEGIN_SIGNATURE_HOOK
 
   // Produced variables
   DECLARE_RS_PRODUCED_VAR("water.atm-surf.H.rain",wxT("rainfall height on each RS by time step"),wxT("m"));
+
+  // Function parameters
+  DECLARE_FUNCTION_PARAM("threshold",wxT("rainfall heights lower than or equal to this value are replaced by zero"),wxT("m"));
 
   // Required extra files
   DECLARE_REQUIRED_EXTRAFILE(wxT("RSraindistri.dat"));
