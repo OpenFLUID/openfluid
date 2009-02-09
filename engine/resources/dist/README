@@ -1,0 +1,29 @@
+Requirements
+============
+
+- wxWidgets 2.8.9+ (base only is required)
+
+
+Installation
+============
+
+It is advised to preferably install using automatic packages (deb, rpm, ...).
+If you use archive (.zip, .tar.gz, ...), copy files to the right places by hand.
+
+
+Usage
+=====
+
+Open a terminal and type the following command... 
+
+			openfluid-engine -h
+
+... to get help on how to use openfluid-engine.
+
+Also refer to documentation available on the OpenFLUID-engine web site:
+https://www.umr-lisah.fr/openfluid/
+
+
+
+
+
