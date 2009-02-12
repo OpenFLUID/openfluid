@@ -1,3 +1,17 @@
+#
+# CMake build for OpenFLUID-engine
+#
+# Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+#
+#
+# CPack components for packaging:
+# - engine : OpenFLUID-engine, with SDK and standard simulation functions  
+# - engine-wodev : OpenFLUID-engine, with standard simulation functions
+# - mhydas : Simulation functions of the MHYDAS model
+#
+#
+
+
 CMAKE_MINIMUM_REQUIRED (VERSION 2.4)
 
 PROJECT(OpenFLUID-Engine CXX)
@@ -31,18 +45,20 @@ IF(wxWidgets_FOUND)
   ADD_SUBDIRECTORY(src)
 
 
-  #CONFIGURE_FILE("resources/doc/COPYING" "${DOC_INSTALL_PATH}" COPYONLY)
   INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
                 "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
                 "${CMAKE_SOURCE_DIR}/resources/dist/README"   
-          DESTINATION ${DOC_INSTALL_PATH})
+          DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine)
   
+  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
+                "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
+                "${CMAKE_SOURCE_DIR}/resources/dist/README"   
+          DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine-wodev)
 
-  CONFIGURE_FILE(kernel.cpack.in kernel.cpack @ONLY)
-  CONFIGURE_FILE(ofelib.cpack.in ofelib.cpack @ONLY)
-  CONFIGURE_FILE(functions.cpack.in functions.cpack @ONLY)
-  CONFIGURE_FILE(ofelib-dev.cpack.in ofelib-dev.cpack @ONLY)
-  CONFIGURE_FILE(full.cpack.in full.cpack @ONLY)
+
+  CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
+  CONFIGURE_FILE(mhydas.cpack.in mhydas.cpack @ONLY)
+  CONFIGURE_FILE(enginewodev.cpack.in enginewodev.cpack @ONLY)
 
 
   ADD_SUBDIRECTORY(tests)
