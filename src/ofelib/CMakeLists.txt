@@ -37,8 +37,10 @@ TARGET_LINK_LIBRARIES(ofelib ${wxWidgets_LIBRARIES})
 
 
 INSTALL(TARGETS ofelib 
-        DESTINATION ${LIB_INSTALL_PATH} COMPONENT ofelib)
+        DESTINATION ${LIB_INSTALL_PATH} COMPONENT engine)
 
+INSTALL(TARGETS ofelib 
+        DESTINATION ${LIB_INSTALL_PATH} COMPONENT engine-wodev)
 
 
 ################### ofelib-dev include files ###################
@@ -50,7 +52,7 @@ ADD_CUSTOM_COMMAND(TARGET ofelib POST_BUILD
 
 
 INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" 
-        DESTINATION "${OFELIBDEV_INCLUDE_INSTALL_PATH}" COMPONENT ofelibdev PATTERN ".svn" EXCLUDE)
+        DESTINATION "${OFELIBDEV_INCLUDE_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
 
 
 ################### ofelib-dev ofefunc2doc tool ###################
@@ -59,11 +61,12 @@ INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/include/"
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc.py "${EXECUTABLE_OUTPUT_PATH}/ofefunc2doc" @ONLY)
 
 INSTALL(FILES "${EXECUTABLE_OUTPUT_PATH}/ofefunc2doc" 
-        DESTINATION ${BIN_INSTALL_PATH} COMPONENT ofelibdev
+        DESTINATION ${BIN_INSTALL_PATH} COMPONENT engine
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
 
 INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc_tpl.tex" 
-        DESTINATION ${OFEFUNC2DOC_TPL_INSTALL_PATH} COMPONENT ofelibdev)
+        DESTINATION ${OFEFUNC2DOC_TPL_INSTALL_PATH} COMPONENT engine)
+
 
 
 ################### ofelib-dev ofelib-config tool ###################
@@ -71,8 +74,10 @@ INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc_tpl.tex"
 CONFIGURE_FILE(ofelib-config.in "${EXECUTABLE_OUTPUT_PATH}/ofelib-config" @ONLY)
 
 INSTALL(FILES "${EXECUTABLE_OUTPUT_PATH}/ofelib-config" 
-        DESTINATION ${BIN_INSTALL_PATH} COMPONENT ofelibdev
+        DESTINATION ${BIN_INSTALL_PATH} COMPONENT engine
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
+
+
 
 
 ################### ofelib-dev doxygen documentation ###################
@@ -98,7 +103,8 @@ IF(DOXYGEN)
 
 
   INSTALL(DIRECTORY "${DOXYGEN_OUTPUT_PATH}/"
-          DESTINATION "${OFELIBDEV_DOC_INSTALL_PATH}" COMPONENT ofelibdev)
+          DESTINATION "${OFELIBDEV_DOC_INSTALL_PATH}" COMPONENT engine)
+
 
 ENDIF(DOXYGEN)
 
