@@ -6,7 +6,7 @@
 #
 # CPack components for packaging:
 # - engine : OpenFLUID-engine, with SDK and standard simulation functions  
-# - engine-wodev : OpenFLUID-engine, with standard simulation functions
+# - engine-wodev : OpenFLUID-engine, without SDK, and with standard simulation functions
 # - mhydas : Simulation functions of the MHYDAS model
 #
 #
