@@ -48,11 +48,13 @@ IF(wxWidgets_FOUND)
   INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
                 "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
                 "${CMAKE_SOURCE_DIR}/resources/dist/README"   
+                "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
           DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine)
   
   INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
                 "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
-                "${CMAKE_SOURCE_DIR}/resources/dist/README"   
+                "${CMAKE_SOURCE_DIR}/resources/dist/README"
+                "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
           DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine-wodev)
 
 
