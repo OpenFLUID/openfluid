@@ -65,6 +65,11 @@ SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
 SET(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 
+################### functions foundry ###################
+
+SET(PROCESS_FUNCTIONS_FOUNDRY 0)
+
+
 ################### packaging ###################
 
 
