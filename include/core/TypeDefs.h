@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <list>
+#include <map>
 #include "Vector.h"
 
 
@@ -81,6 +82,19 @@ typedef std::vector<ScalarValue> SerieOfScalarValue;
  Type definition for a time serie of vectorvalues
  */
 typedef std::vector<VectorValue> SerieOfVectorValue;
+
+// =====================================================================
+// =====================================================================
+
+/**
+  Hash table for parameters (distributed properties, distributed initial conditions, ...)
+ */
+//WX_DECLARE_STRING_HASH_MAP(wxString,ParamsMap);
+
+typedef std::string FuncParamKey_t;
+typedef std::string FuncParamValue_t;
+
+typedef std::map<FuncParamKey_t,FuncParamValue_t> FuncParamsMap_t;
 
 
 // =====================================================================

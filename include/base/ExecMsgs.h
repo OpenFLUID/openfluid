@@ -9,8 +9,11 @@
 #ifndef __EXECMSGS_H__
 #define __EXECMSGS_H__
 
-#include <wx/string.h>
-#include <wx/arrstr.h>
+#include <string>
+#include <vector>
+
+#include "TypeDefs.h"
+#include "SwissTools.h"
 
 namespace openfluid { namespace base {
 
@@ -26,8 +29,8 @@ class ExecutionMessages
     bool m_WarningFlag;
     bool m_ErrorFlag;
 
-    wxArrayString m_WarningMsgs;
-    wxString m_ErrorMsg;
+    std::vector<std::string> m_WarningMsgs;
+    std::string m_ErrorMsg;
 
 
   public:
@@ -42,15 +45,15 @@ class ExecutionMessages
     */
     ~ExecutionMessages();
 
-    void addWarning(wxString Sender, int TimeStep, wxString WarningMsg);
+    void addWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg);
 
-    void addWarning(wxString Sender, wxString WarningMsg) { addWarning(Sender,-1,WarningMsg); };
+    void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Sender,-1,WarningMsg); };
 
     void resetWarningFlag() { m_WarningFlag = false; };
 
     bool isWarningFlag() const { return m_WarningFlag; };
 
-    wxArrayString getWarningMsgs() const { return m_WarningMsgs; };
+    std::vector<std::string> getWarningMsgs() const { return m_WarningMsgs; };
 
 };
 
