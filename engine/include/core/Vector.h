@@ -24,6 +24,8 @@ class Vector
 
     void init();
 
+    static void copy(const Vector& Source, Vector& Dest);
+
   public :
 
 	/**
@@ -124,18 +126,11 @@ Vector<T>::Vector()
 template <class T>
 Vector<T>::Vector(const Vector &A)
 {
-//  std::cout << "copy constructor in" << std::endl;std::cout.flush();
-
-//  clear();
   init();
 
   if (!allocate(A.m_Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(const Vector)","Cannot allocate memory");
 
-  memcpy((T*)m_Data,(T*)A.m_Data,A.m_Size*sizeof(T));
-
-
-//  std::cout << "copy constructor out" << std::endl;std::cout.flush();
-
+  std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
 
 }
 
@@ -146,14 +141,11 @@ Vector<T>::Vector(const Vector &A)
 template <class T>
 Vector<T>::Vector(long Size)
 {
-//  std::cout << "size constructor in" << std::endl;std::cout.flush();
-
   init();
 
   if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(Size)","Cannot allocate memory");
-
-//  std::cout << "size constructor out" << std::endl;std::cout.flush();
 }
+
 
 
 // =====================================================================
@@ -187,7 +179,8 @@ Vector<T>::Vector(T* Data, long Size)
 
   if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::Vector(T*,Size)","Cannot allocate memory");
 
-  memcpy((T*)m_Data,(T*)Data,Size*sizeof(T));
+  std::copy(Data, Data + Size, m_Data);
+
 }
 
 
@@ -197,13 +190,7 @@ Vector<T>::Vector(T* Data, long Size)
 template <class T>
 Vector<T>::~Vector()
 {
-//  std::cout << "destructor in" << std::endl;std::cout.flush();
-  if (m_Data != NULL)
-  {
-    //std::cout << "m_Data not NULL, size is " << m_Size << std::endl;std::cout.flush();
-    clear();
-  }
-//  std::cout << "destructor out" << std::endl;std::cout.flush();
+  if (m_Data != NULL) clear();
 }
 
 
@@ -216,7 +203,7 @@ bool Vector<T>::allocate(long Size)
 
   if (Size > 0)
   {
-    m_Data = (T*)malloc(Size*sizeof(T));
+    m_Data = new T[Size];
     if (m_Data != NULL) m_Size = Size;
     else
     {
@@ -239,7 +226,8 @@ void Vector<T>::setData(T* Data, long Size)
 
   if (!allocate(Size)) throw openfluid::base::OFException("ofelib","Vector::setData","Cannot allocate memory");
 
-  if (m_Data != NULL) memcpy((T*)m_Data,(T*)Data,Size*sizeof(T));
+  if (m_Data != NULL) std::copy(Data, Data + Size, m_Data);
+
 }
 
 
@@ -282,17 +270,13 @@ T& Vector<T>::operator[](long Index)
 template <class T>
 Vector<T>& Vector<T>::operator=(const Vector &A)
 {
-  /*std::cout << "operator = in" << std::endl;std::cout.flush();*/
 
   if (this == &A) return *this; // in case somebody tries assign array to itself
 
   clear();
-  //if (A.m_Size == 0) clear(); // is other array is empty -- clear this array
 
   allocate(A.m_Size);
-  memcpy(m_Data, A.m_Data, sizeof(T)*A.m_Size);
-
-
+  std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
 
   return *this;
 }
@@ -314,12 +298,24 @@ void Vector<T>::init()
 template <class T>
 void Vector<T>::clear()
 {
-//  std::cout << "clear in" << std::endl;std::cout.flush();
-  if (m_Data != NULL) free(m_Data);
+//  if (m_Data != NULL) free(m_Data);
+  delete [] m_Data;
   init();
 }
 
+// =====================================================================
+// =====================================================================
 
+template <class T>
+void Vector<T>::copy(const Vector& Source, Vector& Dest)
+{
+  Dest.clear;
+  Dest.allocate(Source.m_Size);
+  for (unsigned int i = 0; i < Source.m_Size;i++)
+  {
+    Dest.m_Data[i] = Source.m_Data[i];
+  }
+}
 
 
 
