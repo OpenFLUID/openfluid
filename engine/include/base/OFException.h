@@ -15,6 +15,8 @@
 
 namespace openfluid { namespace base {
 
+
+
 class OFException : public std::exception
 {
   private:
