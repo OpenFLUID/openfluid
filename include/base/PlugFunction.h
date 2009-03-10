@@ -883,7 +883,7 @@ class PluggableFunction : public wxObject
       \param[in] Step the time step for the value of the requested variable
       \param[out] Value the value of the requested variable (scalar)
     */
-    bool OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value);
+    bool OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, wxString VarName, int Step, openfluid::core::ScalarValue *Value);
 
     /**
       Gets the distributed variable value for a unit at a time step

@@ -4,10 +4,10 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 
 SET(OFELIB_CORE_CPP 
-    core/HydroObject.cpp core/SurfaceUnit.cpp core/GroundwaterUnit.cpp core/ReachSegment.cpp
+    core/Unit.cpp core/UnitsColl.cpp
     core/DistributedEvent.cpp core/EventCollection.cpp
     core/DateTime.cpp
-    core/CoreRepository.cpp core/SpatialRepository.cpp
+    core/CoreRepository.cpp
    )
 
 SET(OFELIB_BASE_CPP 
