@@ -47,7 +47,7 @@ PluggableFunction::~PluggableFunction()
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::HydroObject *HO, wxString VarName, int Step, openfluid::core::ScalarValue *Value)
+bool PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, wxString VarName, int Step, openfluid::core::ScalarValue *Value)
 {
   if (HO != NULL)
   {

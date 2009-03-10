@@ -1,66 +1,72 @@
-/**
-  \file
-  \brief header of ...
-
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
-
 
 #ifndef __COREREPOSITORY_H__
 #define __COREREPOSITORY_H__
 
-#include "SpatialRepository.h"
+
+#include "Unit.h"
+#include "UnitsColl.h"
+#include "MemMonitor.h"
 
 
 
 namespace openfluid { namespace core {
 
 
-/**
 
-*/
+
 class CoreRepository
 {
   private:
 
-    SpatialRepository *mp_SpatialData;
+    UnitsListByClassMap_t m_PcsOrderedUnitsByClass;
 
-  public:
-    /**
-      Constructor
-    */
+    // TODO static members below
+/*    static unsigned int Packet;
+    static unsigned int Keep;*/
+
+    static CoreRepository* mp_Singleton;
+
+    MemoryMonitor* mp_MemMonitor;
+
     CoreRepository();
 
-    /**
-      Destructor
-    */
-    ~CoreRepository();
+    bool releaseMemory(TimeStep_t Step);
 
+  public:
 
-    /**
-      Integrates the spatial data structure
-      \param[in] SpatialData The structure to integrate
-    */
-    void setSpatialData(SpatialRepository *SpatialData) { mp_SpatialData = SpatialData; };
+    static CoreRepository* getInstance();
 
-    /**
-      Returns the spatial data structure
-      \return The spatial data structure
-    */
-    SpatialRepository* getSpatialData() const { return mp_SpatialData; };
+    void setMemoryMonitor(MemoryMonitor* MemMonitor) { mp_MemMonitor = MemMonitor; };
+/*
+    static void setPacketAndKeep(unsigned int aPacket, unsigned int aKeep) { Packet = aPacket; Keep = aKeep; StepsReservation::setReservation(Packet+Keep);};
 
+    static unsigned int getPacket() { return Packet; };
+
+    static unsigned int getKeep() { return Keep; };
+*/
+    bool addUnit(const Unit aUnit);
+
+    bool sortUnitsByProcessOrder();
+
+    Unit* getUnit(UnitClass_t UnitClass, UnitID_t UnitID);
+
+    UnitsCollection* getUnits(UnitClass_t UnitClass);
+
+    bool isUnitsClassExists(UnitClass_t UnitClass) const;
+
+    void printSTDOUT();
+
+//    bool isMemReleaseStep(TimeStep_t Step);
+
+//    bool getMemReleaseRange(TimeStep_t* BeginStep, TimeStep_t* EndStep);
+
+    bool doMemRelease(TimeStep_t Step, bool WithoutKeep);
 
 };
 
 
+} } // namespaces
 
 
-} } // namespace openfluid::core
-
-
-
-#endif
-
-
-
+#endif /* COREREPOSITORY_H_ */
 

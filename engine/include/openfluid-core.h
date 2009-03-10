@@ -25,11 +25,10 @@
 #include <wx/hashmap.h>
 
 #include "core/CoreRepository.h"
-#include "core/SpatialRepository.h"
-#include "core/HydroObject.h"
-#include "core/SurfaceUnit.h"
-#include "core/ReachSegment.h"
-#include "core/GroundwaterUnit.h"
+#include "core/Unit.h"
+#include "core/UnitsColl.h"
+#include "core/InputData.h"
+#include "core/Variables.h"
 #include "core/EventCollection.h"
 #include "core/TypeDefs.h"
 #include "core/DateTime.h"
@@ -44,12 +43,9 @@ namespace openfluid {
 namespace core {
 
 class DLLEXPORT ValueFactory;
-class DLLEXPORT SpatialRepository;
 class DLLEXPORT CoreRepository;
-class DLLEXPORT SurfaceUnit;
-class DLLEXPORT GroundwaterUnit;
-class DLLEXPORT HydroObject;
-class DLLEXPORT ReachSegment;
+class DLLEXPORT Unit;
+class DLLEXPORT UnitsColl;
 class DLLEXPORT DistributedEvent;
 class DLLEXPORT EventCollection;
 class DLLEXPORT DateTime;
