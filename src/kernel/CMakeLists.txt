@@ -12,9 +12,9 @@ CONFIGURE_FILE(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 
 ADD_EXECUTABLE(openfluid-engine
                xml/tinystr.cpp xml/tinyxml.cpp xml/tinyxmlerror.cpp xml/tinyxmlparser.cpp
-               AppTools.cpp Engine.cpp 
-               IOMan.cpp PluginManager.cpp 
-               RuntimeEnv.cpp main.cpp
+               AppTools.cpp RuntimeEnv.cpp
+               PluginManager.cpp IOMan.cpp Engine.cpp                 
+               main.cpp
               )
 
 TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES})

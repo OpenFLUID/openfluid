@@ -8,15 +8,15 @@
 #ifndef __APPTOOLS_H__
 #define __APPTOOLS_H__
 
-
-#include <wx/wx.h>
+#include <string>
+#include <vector>
 
 /**
   Get current program executable path
-  \return a wxString containing the path, empty if indetermined
+  \return a std::string containing the path, empty if indetermined
 
 */
-wxString GetExecutablePath();
+std::string GetExecutablePath();
 
 /**
   Get list of files with specified extension contained in the specified dir
@@ -24,30 +24,30 @@ wxString GetExecutablePath();
   \param[in] Ext the file extension
   \param[in] WithPath return full path with file name if true, file name only otherwise
 */
-wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath = false, bool ExtIncludeDot = false);
+std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath = false, bool ExtIncludeDot = false);
 
 /**
-  Splits the passed string int a wxStringArray, splitted by the passed SepString
+  Splits the passed string int a std::stringArray, splitted by the passed SepString
   \param[in] StrToSplit the string to split
   \param[in] SepString the string used to split
   \param[in] ReturnsEmpty if true, the empty strings are returned
   \return a wxArraySTring
 */
-wxArrayString SplitString(const wxString StrToSplit, const wxString SepString,  bool ReturnsEmpty = false);
+std::vector<std::string> SplitString(const std::string StrToSplit, const std::string SepString,  bool ReturnsEmpty = false);
 
-wxString GenerateSimulationID();
+std::string GenerateSimulationID();
 
-wxString FormatExecutionMessage(wxString Message);
+std::string FormatExecutionMessage(std::string Message);
 
 bool EmptyDirectoryRecursively(const char* DirPath);
 
-wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr);
+std::string ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr);
 
-bool IsVectorNamedVariable(wxString Name);
+bool IsVectorNamedVariable(std::string Name);
 
-wxString GetVectorNamedVariableName(wxString Name);
+std::string GetVectorNamedVariableName(std::string Name);
 
-wxString RemoveTrailingSlashes(wxString Str);
+std::string RemoveTrailingSlashes(std::string Str);
 
 
 

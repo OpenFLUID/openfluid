@@ -16,18 +16,18 @@
 
 struct PluginContainer
 {
-  
-  wxString Filename;
-  openfluid::base::Signature* Signature;
+
+  std::string Filename;
+  openfluid::base::FunctionSignature* Signature;
   openfluid::base::PluggableFunction* Function;
-  
+
   PluginContainer()
   {
-    Filename = wxT("");
+    Filename = "";
     Signature = NULL;
     Function = NULL;
   }
-  
+
 };
 
 
@@ -46,7 +46,7 @@ class PluginManager
 
 /*    openfluid::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);*/
     PluginContainer *buildPluginContainer(wxString PluginFilename);
-    
+
 
 
   public:
@@ -64,7 +64,7 @@ class PluginManager
       Lists available simulation functions
     */
 //    ArrayOfPluginsSignatures getAvailableFunctionsList();
-    
+
     ArrayOfPluginsContainers getAvailableFunctions();
 
 

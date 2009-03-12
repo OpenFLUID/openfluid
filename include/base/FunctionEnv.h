@@ -9,8 +9,9 @@
 #ifndef __FUNCTIONENV_H__
 #define __FUNCTIONENV_H__
 
-#include <wx/string.h>
-#include <wx/hashmap.h>
+
+#include <map>
+#include <string>
 
 namespace openfluid { namespace base {
 
@@ -20,11 +21,12 @@ namespace openfluid { namespace base {
 class FunctionEnvironment
 {
   private:
-    WX_DECLARE_STRING_HASH_MAP(bool,KeyBoolMap);
-    WX_DECLARE_STRING_HASH_MAP(wxString,KeyStringMap);
 
-    KeyBoolMap m_BoolValues;
-    KeyStringMap m_StringValues;
+    typedef std::map<std::string,bool> KeyBoolMap_t;
+    typedef std::map<std::string,std::string> KeyStringMap_t;
+
+    KeyBoolMap_t m_BoolValues;
+    KeyStringMap_t m_StringValues;
 
   public:
 
@@ -43,28 +45,28 @@ class FunctionEnvironment
 
       \return true if the assignment is correct
     */
-    bool setValue(wxString Key, bool Value);
+    bool setValue(std::string Key, bool Value);
 
     /**
       Assigns a string value to the corresponding key
 
       \return true if the assignment is correct
     */
-    bool setValue(wxString Key, wxString Value);
+    bool setValue(std::string Key, std::string Value);
 
     /**
       Gets the boolean value assigned to the key
 
       \return true if the value exists as a boolean
     */
-    bool getValue(wxString Key, bool *Value) const;
+    bool getValue(std::string Key, bool *Value) const;
 
     /**
       Gets the string value assigned to the key
 
       \return true if the value exists as a string
     */
-    bool getValue(wxString Key, wxString *Value) const;
+    bool getValue(std::string Key, std::string *Value) const;
 
 
 };
