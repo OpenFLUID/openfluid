@@ -24,7 +24,7 @@ struct ExtraSimInfos
 {
   wxDateTime StartTime;
   wxTimeSpan RunTime;
-  wxString SimID;
+  std::string SimID;
 };
 
 
@@ -40,13 +40,13 @@ struct ExtraSimInfos
 class RuntimeEnvironment
 {
   private:
-    wxString m_OutputDir;
-    wxString m_InputDir;
-    wxString m_TraceDir;
-    wxString m_AppDir;
-    wxString m_UserDataDir;
+    std::string m_OutputDir;
+    std::string m_InputDir;
+    std::string m_TraceDir;
+    std::string m_AppDir;
+    std::string m_UserDataDir;
 
-    wxArrayString m_PlugsDirs;
+    std::vector<std::string> m_PlugsDirs;
 
     bool m_ClearOutputDir;
 
@@ -75,68 +75,68 @@ class RuntimeEnvironment
     /**
       Constructor
     */
-    RuntimeEnvironment(wxString AppDir);
+    RuntimeEnvironment(std::string AppDir);
 
     /**
       Destructor
     */
     ~RuntimeEnvironment();
 
-    void setInputDir(const wxString InputDir) { m_InputDir = InputDir; mp_FuncEnv->setValue(wxT("dir.input"),m_InputDir); };
+    void setInputDir(const std::string InputDir) { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
 
-    wxString getInputDir() const { return m_InputDir; };
+    std::string getInputDir() const { return m_InputDir; };
 
-    void setOutputDir(const wxString OutputDir) { m_OutputDir = OutputDir; mp_FuncEnv->setValue(wxT("dir.output"),m_OutputDir); };
+    void setOutputDir(const std::string OutputDir) { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
 
-    wxString getOutputDir() const { return m_OutputDir; };
+    std::string getOutputDir() const { return m_OutputDir; };
 
     void setDateTimeOutputDir();
 
-    wxString getAppDir() const { return m_AppDir; };
+    std::string getAppDir() const { return m_AppDir; };
 
-    wxString getInputFullPath(wxString Filename) const { return m_InputDir + wxFILE_SEP_PATH + Filename; };
+    std::string getInputFullPath(std::string Filename) const { return m_InputDir + _S(wxFILE_SEP_PATH) + Filename; };
 
-    wxString getOutputFullPath(wxString Filename) const { return m_OutputDir + wxFILE_SEP_PATH + Filename; };
+    std::string getOutputFullPath(std::string Filename) const { return m_OutputDir + _S(wxFILE_SEP_PATH) + Filename; };
 
-    wxString getPluginFullPath(wxString Filename);
+    std::string getPluginFullPath(std::string Filename);
 
-    void addExtraPluginsPaths(wxString ColonSeparatedPaths);
+    void addExtraPluginsPaths(std::string ColonSeparatedPaths);
 
-    wxArrayString getPluginsPaths() const { return m_PlugsDirs; };
+    std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
 
-    wxString getTraceDir() const { return m_TraceDir; };
+    std::string getTraceDir() const { return m_TraceDir; };
 
-    wxString getTraceFullPath(wxString Filename) const { return m_TraceDir + wxFILE_SEP_PATH + Filename; };
+    std::string getTraceFullPath(std::string Filename) const { return (m_TraceDir + _S(wxFILE_SEP_PATH) + Filename); };
 
-    void setTraceDir(const wxString TraceDir) { m_TraceDir = TraceDir; mp_FuncEnv->setValue(wxT("dir.trace"),m_TraceDir); };
+    void setTraceDir(const std::string TraceDir) { m_TraceDir = TraceDir; mp_FuncEnv->setValue("dir.trace",m_TraceDir); };
 
     bool isClearOutputDir() const { return m_ClearOutputDir; };
 
-    void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue(wxT("mode.cleanoutput"),m_ClearOutputDir); };
+    void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir); };
 
     bool isQuietRun() const { return m_QuietRun; };
 
-    void setQuietRun(bool Quiet) { m_QuietRun = Quiet; m_VerboseRun = !Quiet; mp_FuncEnv->setValue(wxT("mode.quiet"),m_QuietRun); mp_FuncEnv->setValue(wxT("mode.verbose"),m_VerboseRun); };
+    void setQuietRun(bool Quiet) { m_QuietRun = Quiet; m_VerboseRun = !Quiet; mp_FuncEnv->setValue("mode.quiet",m_QuietRun); mp_FuncEnv->setValue("mode.verbose",m_VerboseRun); };
 
     bool isVerboseRun() const { return m_VerboseRun; };
 
-    void setVerboseRun(bool Verbose) { m_VerboseRun = Verbose; m_QuietRun = !Verbose; mp_FuncEnv->setValue(wxT("mode.quiet"),m_QuietRun); mp_FuncEnv->setValue(wxT("mode.verbose"),m_VerboseRun); };
+    void setVerboseRun(bool Verbose) { m_VerboseRun = Verbose; m_QuietRun = !Verbose; mp_FuncEnv->setValue("mode.quiet",m_QuietRun); mp_FuncEnv->setValue("mode.verbose",m_VerboseRun); };
 
     bool isWriteResults() const { return m_WriteResults; };
 
-    void setWriteResults(bool WriteIt) { m_WriteResults = WriteIt; mp_FuncEnv->setValue(wxT("mode.saveresults"),m_WriteResults); };
+    void setWriteResults(bool WriteIt) { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
 
     bool isWriteSimReport() const { return m_WriteSimReport; };
 
-    void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue(wxT("mode.writereport"),m_WriteSimReport); };
+    void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
 
     bool isTraceMode() const { return m_EnableTrace; };
 
-    void setTraceMode(bool Trace) { m_EnableTrace = Trace; mp_FuncEnv->setValue(wxT("mode.trace"),m_EnableTrace); };
+    void setTraceMode(bool Trace) { m_EnableTrace = Trace; mp_FuncEnv->setValue("mode.trace",m_EnableTrace); };
 
     bool isCheckVarNames() const { return m_CheckVarNames; };
 
-    void setCheckVarNames(bool Check) { m_CheckVarNames = Check; mp_FuncEnv->setValue(wxT("mode.checkvarnames"),m_CheckVarNames); };
+    void setCheckVarNames(bool Check) { m_CheckVarNames = Check; mp_FuncEnv->setValue("mode.checkvarnames",m_CheckVarNames); };
 
     openfluid::base::FunctionEnvironment* getFunctionEnvironment() const { return mp_FuncEnv; };
 

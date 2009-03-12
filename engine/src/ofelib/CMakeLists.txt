@@ -20,7 +20,8 @@ SET(OFELIB_BASE_CPP
 SET(OFELIB_TOOLS_CPP 
     tools/ColTextParser.cpp tools/DataSrcFile.cpp
     tools/DTSerie.cpp tools/DistribInterp.cpp
-    tools/tinystr.cpp tools/tinyxml.cpp tools/tinyxmlerror.cpp tools/tinyxmlparser.cpp
+    tools/SwissTools.cpp
+    tools/tinystr.cpp tools/tinyxml.cpp tools/tinyxmlerror.cpp tools/tinyxmlparser.cpp    
 )
 
 

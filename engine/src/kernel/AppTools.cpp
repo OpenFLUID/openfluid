@@ -17,14 +17,15 @@
 #include <time.h>
 
 #include "AppTools.h"
-
+#include <openfluid-base.h>
 #include <iostream>
+#include <sstream>
 
 // =====================================================================
 // =====================================================================
 
 
-wxString GetExecutablePath()
+std::string GetExecutablePath()
 {
   // Le code de cette fonction est issu du wiki wxWidgets (auteur: Nigel Hathaway)
 /*
@@ -80,7 +81,7 @@ wxString GetExecutablePath()
   wxString Path;
 
   wxFileName::SplitPath(wxStandardPaths::Get().GetExecutablePath(),NULL,&Path,NULL,NULL);
-  return Path;
+  return _S(Path);
 }
 
 
@@ -88,20 +89,20 @@ wxString GetExecutablePath()
 // =====================================================================
 
 
-wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, bool WithPath, bool ExtIncludeDot)
+std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath, bool ExtIncludeDot)
 {
 
 
   bool Continue;
-  wxArrayString FileList;
+  std::vector<std::string> FileList;
 
   wxString FileRoot = wxT("*.");
   if (ExtIncludeDot) FileRoot = wxT("*");
 
-  if (wxDirExists(DirToExplore))
+  if (wxDirExists(_U(DirToExplore.c_str())))
   {
 
-    wxDir DirManager(DirToExplore);
+    wxDir DirManager(_U(DirToExplore.c_str()));
 
     if (DirManager.IsOpened())
     {
@@ -109,11 +110,11 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 
       wxString FoundFile;
 
-      Continue = DirManager.GetFirst(&FoundFile,FileRoot+Ext);
+      Continue = DirManager.GetFirst(&FoundFile,FileRoot+_U(Ext.c_str()));
       while (Continue)
       {
-        if (WithPath) FileList.Add(DirToExplore+wxFILE_SEP_PATH+FoundFile);
-        else FileList.Add(FoundFile);
+        if (WithPath) FileList.push_back(DirToExplore+_S(wxFILE_SEP_PATH)+_S(FoundFile));
+        else FileList.push_back(_S(FoundFile));
         Continue = DirManager.GetNext(&FoundFile);
       }
     }
@@ -127,21 +128,21 @@ wxArrayString GetFilesByExt(const wxString DirToExplore, const wxString Ext, boo
 // =====================================================================
 // =====================================================================
 
-wxArrayString SplitString(const wxString StrToSplit, const wxString SepString, bool ReturnsEmpty)
+std::vector<std::string> SplitString(const std::string StrToSplit, const std::string SepString, bool ReturnsEmpty)
 {
   // using wxStringTokenizer class
 
-  wxArrayString SplitParts;
+  std::vector<std::string> SplitParts;
 
 
   wxStringTokenizerMode TokensMode = wxTOKEN_DEFAULT;
   if (ReturnsEmpty) TokensMode = wxTOKEN_RET_EMPTY_ALL;
 
-  wxStringTokenizer Tokenizer(StrToSplit,SepString,TokensMode);
+  wxStringTokenizer Tokenizer(_U(StrToSplit.c_str()),_U(SepString.c_str()),TokensMode);
 
   while (Tokenizer.HasMoreTokens())
   {
-    SplitParts.Add(Tokenizer.GetNextToken());
+    SplitParts.push_back(_S(Tokenizer.GetNextToken()));
   }
 
   return SplitParts;
@@ -151,22 +152,22 @@ wxArrayString SplitString(const wxString StrToSplit, const wxString SepString, b
 // =====================================================================
 // =====================================================================
 
-wxString GenerateSimulationID()
+std::string GenerateSimulationID()
 {
-  wxString BaseStr = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-  wxString IDStr = wxT("");
+  std::string BaseStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  IDStr = wxDateTime::Now().Format(wxT("%Y%m%d")) + wxT("-");
+  std::string IDStr = "";
+
+  IDStr = _S(wxDateTime::Now().Format(wxT("%Y%m%d"))) + "-";
 
   srand(time(NULL));
 
 
   for (int i=0;i<6;i++)
   {
-    IDStr << BaseStr[rand() % 26];
+    IDStr = IDStr + BaseStr[rand() % 26];
   }
-
 
 
   return IDStr;
@@ -177,22 +178,22 @@ wxString GenerateSimulationID()
 // =====================================================================
 // =====================================================================
 
-wxString FormatExecutionMessage(wxString Message)
+std::string FormatExecutionMessage(std::string Message)
 {
-  wxString Formatted = wxT("");
+  std::string Formatted = "";
 
-  wxArrayString Parts;
+  std::vector<std::string> Parts;
 
-  Parts = SplitString(Message,wxT(";"));
+  Parts = SplitString(Message,";");
 
-  Formatted = Parts[2] + wxT(" (message sent by ") + Parts[0];
+  Formatted = Parts[2] + " (message sent by " + Parts[0];
 
-  if (Parts[1] != wxT("-1"))
+  if (Parts[1] != "-1")
   {
-    Formatted = Formatted + wxT(", at step ") + Parts[1];
+    Formatted = Formatted + ", at step " + Parts[1];
   }
 
-  Formatted = Formatted + wxT(")");
+  Formatted = Formatted +")";
 
   return Formatted;
 
@@ -250,9 +251,9 @@ bool EmptyDirectoryRecursively(const char* DirPath)
 // =====================================================================
 // =====================================================================
 
-wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr)
+std::string ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr)
 {
-  if (SourceStr.Length() == 0) SourceStr = ReplaceStr;
+  if (SourceStr.length() == 0) SourceStr = ReplaceStr;
   return SourceStr;
 }
 
@@ -260,20 +261,21 @@ wxString ReplaceEmptyString(wxString SourceStr, wxString ReplaceStr)
 // =====================================================================
 
 
-bool IsVectorNamedVariable(wxString Name)
+bool IsVectorNamedVariable(std::string Name)
 {
-  return Name.Right(2) == wxT("[]");
+  return _U(Name.c_str()).Right(2) == wxT("[]");
 }
 
 
 // =====================================================================
 // =====================================================================
 
-wxString GetVectorNamedVariableName(wxString Name)
+std::string GetVectorNamedVariableName(std::string Name)
 {
+  wxString NameWX = _U(Name.c_str());
 
-  if (Name.Right(2) == wxT("[]")) return Name.Mid(0,Name.Length()-2);
-  else return Name;
+  if (NameWX.Right(2) == wxT("[]")) return _S(NameWX.Mid(0,NameWX.Length()-2));
+  else return _S(NameWX);
 
 }
 
@@ -281,14 +283,16 @@ wxString GetVectorNamedVariableName(wxString Name)
 // =====================================================================
 
 
-wxString RemoveTrailingSlashes(wxString Str)
+std::string RemoveTrailingSlashes(std::string Str)
 {
-  while (Str.EndsWith(wxString(wxFILE_SEP_PATH)))
+  wxString StrWX = _U(Str.c_str());
+
+  while (StrWX.EndsWith(wxString(wxFILE_SEP_PATH)))
   {
-    Str.RemoveLast();
+    StrWX.RemoveLast();
   }
 
-  return Str;
+  return _S(StrWX);
 
 }
 

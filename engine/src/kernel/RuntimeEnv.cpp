@@ -15,15 +15,15 @@
 
 #include <iostream>
 
-RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
+RuntimeEnvironment::RuntimeEnvironment(std::string AppDir)
 {
 
   m_AppDir = AppDir;
-  m_UserDataDir = wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH + wxT("engine");
+  m_UserDataDir = _S(wxStandardPaths::Get().GetUserDataDir()) + _S(wxFILE_SEP_PATH) + "engine";
 
-  m_OutputDir = m_UserDataDir + wxFILE_SEP_PATH + OPENFLUID_DEFAULT_OUTDIR;
-  m_InputDir = m_UserDataDir + wxFILE_SEP_PATH + OPENFLUID_DEFAULT_INDIR;
-  m_TraceDir = m_UserDataDir + wxFILE_SEP_PATH + OPENFLUID_DEFAULT_TRACEDIR;
+  m_OutputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_OUTDIR;
+  m_InputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_INDIR;
+  m_TraceDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_TRACEDIR;
 
 
   m_ClearOutputDir = false;
@@ -36,17 +36,17 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
 
   mp_FuncEnv = new openfluid::base::FunctionEnvironment();
 
-  mp_FuncEnv->setValue(wxT("dir.input"),m_InputDir);
-  mp_FuncEnv->setValue(wxT("dir.output"),m_OutputDir);
-  mp_FuncEnv->setValue(wxT("dir.trace"),m_TraceDir);
+  mp_FuncEnv->setValue("dir.input",m_InputDir);
+  mp_FuncEnv->setValue("dir.output",m_OutputDir);
+  mp_FuncEnv->setValue("dir.trace",m_TraceDir);
 
-  mp_FuncEnv->setValue(wxT("mode.cleanoutput"),m_ClearOutputDir);
-  mp_FuncEnv->setValue(wxT("mode.quiet"),m_QuietRun);
-  mp_FuncEnv->setValue(wxT("mode.verbose"),m_VerboseRun);
-  mp_FuncEnv->setValue(wxT("mode.saveresults"),m_WriteResults);
-  mp_FuncEnv->setValue(wxT("mode.writereport"),m_WriteSimReport);
-  mp_FuncEnv->setValue(wxT("mode.trace"),m_EnableTrace);
-  mp_FuncEnv->setValue(wxT("mode.checkvarnames"),m_CheckVarNames);
+  mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir);
+  mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
+  mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
+  mp_FuncEnv->setValue("mode.saveresults",m_WriteResults);
+  mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport);
+  mp_FuncEnv->setValue("mode.trace",m_EnableTrace);
+  mp_FuncEnv->setValue("mode.checkvarnames",m_CheckVarNames);
 
 
 
@@ -59,16 +59,16 @@ RuntimeEnvironment::RuntimeEnvironment(wxString AppDir)
   #endif
 
   // plugins search order: user directory then system directory
-  m_PlugsDirs.Add(m_UserDataDir + wxFILE_SEP_PATH + OPENFLUID_PLUGINS_SUBDIR);
+  m_PlugsDirs.push_back(m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_PLUGINS_SUBDIR);
 
   #ifdef __LINUX__
   #ifndef __DEVEL__
-  m_PlugsDirs.Add(OPENFLUID_PLUGINS_STDSYSDIR);
+  m_PlugsDirs.push_back(OPENFLUID_PLUGINS_STDSYSDIR);
   #endif
   #endif
 
   #ifdef __WXMSW__
-  m_PlugsDirs.Add(wxStandardPaths::Get().GetPluginsDir() + wxFILE_SEP_PATH + OPENFLUID_PLUGINS_SUBDIR);
+  m_PlugsDirs.push_back(_S(wxStandardPaths::Get().GetPluginsDir()) + _S(wxFILE_SEP_PATH) + OPENFLUID_PLUGINS_SUBDIR);
   #endif
 
 
@@ -94,36 +94,40 @@ RuntimeEnvironment::~RuntimeEnvironment()
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
   wxDateTime Now = wxDateTime::Now();
-  m_OutputDir = m_UserDataDir + wxFILE_SEP_PATH + wxT("OPENFLUID.") + Now.Format(wxT("%Y%m%d-%H%M%S")) + wxT(".OUT");
+  m_OutputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + "OPENFLUID." + _S(Now.Format(wxT("%Y%m%d-%H%M%S"))) + ".OUT";
 }
 
 
 // =====================================================================
 // =====================================================================
 
-void RuntimeEnvironment::addExtraPluginsPaths(wxString ColonSeparatedPaths)
+void RuntimeEnvironment::addExtraPluginsPaths(std::string ColonSeparatedPaths)
 {
-  wxArrayString ExtraPaths;
+  std::vector<std::string> ExtraPaths;
 
-  ExtraPaths = SplitString(ColonSeparatedPaths,wxT(":"));
+  ExtraPaths = SplitString(ColonSeparatedPaths,":");
 
-  for (int i=ExtraPaths.GetCount()-1;i>=0;i--) m_PlugsDirs.Insert(RemoveTrailingSlashes(ExtraPaths[i]),0);
+  for (int i = ExtraPaths.size()-1 ; i>=0 ; i--) m_PlugsDirs.insert(m_PlugsDirs.begin(),1,RemoveTrailingSlashes(ExtraPaths[i]));
 }
 
 
-wxString RuntimeEnvironment::getPluginFullPath(wxString Filename)
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
 {
-  wxString PlugFullPath = wxT("");
-  wxString TmpPath;
+  std::string PlugFullPath = "";
+  std::string TmpPath;
 
   int i = 0;
 
-  while ((PlugFullPath.Length() == 0) && (i<m_PlugsDirs.Count()))
+  while ((PlugFullPath.length() == 0) && (i<m_PlugsDirs.size()))
   {
 
-    TmpPath = m_PlugsDirs[i] + wxFILE_SEP_PATH + Filename;
+    TmpPath = m_PlugsDirs[i] + _S(wxFILE_SEP_PATH) + Filename;
 
-    if (wxFileExists(TmpPath)) PlugFullPath = TmpPath;
+    if (wxFileExists(_U(TmpPath.c_str()))) PlugFullPath = TmpPath;
 
     i++;
   }

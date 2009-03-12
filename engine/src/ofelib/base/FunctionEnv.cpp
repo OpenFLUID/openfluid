@@ -30,7 +30,7 @@ FunctionEnvironment::~FunctionEnvironment()
 // =====================================================================
 
 
-bool FunctionEnvironment::setValue(wxString Key, bool Value)
+bool FunctionEnvironment::setValue(std::string Key, bool Value)
 {
   m_BoolValues[Key] = Value;
   return true;
@@ -40,7 +40,7 @@ bool FunctionEnvironment::setValue(wxString Key, bool Value)
 // =====================================================================
 
 
-bool FunctionEnvironment::setValue(wxString Key, wxString Value)
+bool FunctionEnvironment::setValue(std::string Key, std::string Value)
 {
   m_StringValues[Key] = Value;
   return true;
@@ -50,9 +50,9 @@ bool FunctionEnvironment::setValue(wxString Key, wxString Value)
 // =====================================================================
 
 
-bool FunctionEnvironment::getValue(wxString Key, bool *Value) const
+bool FunctionEnvironment::getValue(std::string Key, bool *Value) const
 {
-  KeyBoolMap::const_iterator it = m_BoolValues.find(Key);
+  KeyBoolMap_t::const_iterator it = m_BoolValues.find(Key);
 
   if (it != m_BoolValues.end())
   {
@@ -65,9 +65,9 @@ bool FunctionEnvironment::getValue(wxString Key, bool *Value) const
 // =====================================================================
 
 
-bool FunctionEnvironment::getValue(wxString Key, wxString *Value) const
+bool FunctionEnvironment::getValue(std::string Key, std::string *Value) const
 {
-  KeyStringMap::const_iterator it = m_StringValues.find(Key);
+  KeyStringMap_t::const_iterator it = m_StringValues.find(Key);
 
   if (it != m_StringValues.end())
   {

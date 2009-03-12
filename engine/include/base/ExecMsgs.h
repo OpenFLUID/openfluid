@@ -12,13 +12,13 @@
 #include <string>
 #include <vector>
 
-#include "TypeDefs.h"
-#include "SwissTools.h"
+#include "core/TypeDefs.h"
+#include "tools/SwissTools.h"
 
 namespace openfluid { namespace base {
 
 /**
-  Class ...
+  Class for managin messages during execution
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */

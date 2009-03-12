@@ -29,14 +29,14 @@
 #include "tools/DataSrcFile.h"
 #include "tools/DTSerie.h"
 #include "tools/DistribInterp.h"
-#include "tools/SwissTools.h"
+
 
 
 
 namespace openfluid {
 
 /**
-  Gathers tools available data processing
+  Available tools for data processing
 */
 namespace tools {
 
@@ -47,24 +47,6 @@ class DLLEXPORT DistributeInterpolate;
 class DLLEXPORT Tools;
 struct DLLEXPORT IndexedSerie;
 
-/*class DLLEXPORT TiXmlString;
-class DLLEXPORT TiXmlBase;
-class DLLEXPORT TiXmlNode;
-class DLLEXPORT TiXmlElement;
-class DLLEXPORT TiXmlDocument;
-class DLLEXPORT TiXmlDeclaration;
-class DLLEXPORT TiXmlAttribute;
-class DLLEXPORT TiXmlAttributeSet;
-class DLLEXPORT TiXmlText;
-class DLLEXPORT TiXmlComment;
-class DLLEXPORT TiXmlHandle;
-class DLLEXPORT TiXmlUnknown;
-class DLLEXPORT TiXmlVisitor;
-class DLLEXPORT TiXmlParsingData;
-class DLLEXPORT TiXmlPrinter;
-class DLLEXPORT TiXmlOutStream;
-struct DLLEXPORT TiXmlCursor;
-*/
 
 } }
 
