@@ -62,6 +62,12 @@
 */
 #define PLUGSIGNATURE_PROC_NAME "GetPlugSignature"
 
+/**
+  Signature hook name
+*/
+#define PLUGSDKVERSION_PROC_NAME "GetPlugSDKVersion"
+
+
 
 /**
   Macro for declaration of function and signature hooks
@@ -69,8 +75,9 @@
 #define DECLARE_PLUGIN_HOOKS \
   extern "C" \
   { \
+    DLLIMPORT std::string GetPlugSDKVersion(); \
     DLLIMPORT openfluid::base::PluggableFunction* GetPlugFunction(); \
-    DLLIMPORT openfluid::base::Signature* GetPlugSignature(); \
+    DLLIMPORT openfluid::base::FunctionSignature* GetPlugSignature(); \
   };
 
 
@@ -85,6 +92,12 @@
 */
 
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
+  std::string GetPlugSDKVersion() \
+  { \
+    // TODO check this
+    return std::string(STRINGIFY(OFELIB_VERSION)); \
+  } \
+  \
   openfluid::base::PluggableFunction* GetPlugFunction() \
   { \
     return new pluginclassname(); \
@@ -100,14 +113,14 @@
   Macro for declaration of a loop processing SUs, following their process order
 */
 #define DECLARE_SU_ORDERED_LOOP \
-  std::list<openfluid::core::SurfaceUnit*>::iterator _M_SUiter; \
-  std::list<openfluid::core::SurfaceUnit*>* _M_SUsList = mp_CoreData->getSpatialData()->getSUsOrderedList();
+  openfluid::core::UnitsList_t::iterator _M_SUsOrdIter; \
+  openfluid::core::UnitsList_t* _M_SUsOrderedList = mp_CoreData->getUnits("SU")->getList();
 
 /**
   Macro for declaration of a loop processing a list of SUs
 */
 #define DECLARE_SU_LIST_LOOP \
-  std::list<openfluid::core::SurfaceUnit*>::iterator _M_SUListiter; \
+  openfluid::core::UnitList_t::iterator _M_SUListIter; \
 
 
 /**
@@ -115,9 +128,9 @@
   \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU
 */
 #define BEGIN_SU_ORDERED_LOOP(suobj) \
-  for(_M_SUiter=_M_SUsList->begin(); _M_SUiter != _M_SUsList->end(); _M_SUiter++) \
+  for(_M_SUsOrdIter=_M_SUsOrderedList->begin(); _M_SUsOrdIter != _M_SUsOrderedList->end(); _M_SUsOrdIter++) \
   { \
-    suobj = *_M_SUiter; \
+    suobj = &(*_M_SUsOrdIter); \
 
 /**
   Macro for the begining of a loop processing a list of SUs
@@ -125,9 +138,9 @@
   \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU
 */
 #define BEGIN_SU_LIST_LOOP(sulist,suobj) \
-  for(_M_SUListiter=sulist->begin(); _M_SUListiter != sulist->end(); _M_SUListiter++) \
+  for(_M_SUListIter=sulist->begin(); _M_SUListIter != sulist->end(); _M_SUListIter++) \
   { \
-    suobj = *_M_SUListiter; \
+    suobj = &(*_M_SUListIter); \
 
 
 /**
@@ -249,7 +262,7 @@ class PluggableFunction : public wxObject
 
 
     /**
-      Function execution environment
+      Function execution environmentAdd
     */
     const openfluid::base::FunctionEnvironment* mp_FunctionEnv;
 
@@ -261,10 +274,11 @@ class PluggableFunction : public wxObject
 
   protected:
 
+    // TODO check if const
     /**
       Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
     */
-    const openfluid::core::CoreRepository* mp_CoreData;
+    openfluid::core::CoreRepository* mp_CoreData;
 
 
     /**

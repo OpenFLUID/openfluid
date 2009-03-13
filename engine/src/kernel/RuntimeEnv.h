@@ -11,6 +11,7 @@
 
 #include <wx/wx.h>
 #include <wx/datetime.h>
+#include "openfluid-tools.h"
 #include "openfluid-base.h"
 
 // =====================================================================

@@ -58,16 +58,6 @@ Unit* UnitsCollection::getUnit(UnitID_t aUnitID)
 
 
 
-UnitsList_t* UnitsCollection::getList()
-{
-  return &m_Data;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool UnitsCollection::addUnit(Unit aUnit)
 {
 

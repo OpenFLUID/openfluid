@@ -2,6 +2,8 @@
 
 #include "SwissTools.h"
 
+namespace openfluid { namespace tools {
+
 
 void TokenizeString(const std::string& StrToTokenize,
                     std::vector<std::string>& Tokens,
@@ -21,3 +23,5 @@ void TokenizeString(const std::string& StrToTokenize,
     Pos = StrToTokenize.find_first_of(Delimiters, LastPos);
   }
 }
+
+} } // namespaces

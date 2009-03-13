@@ -52,6 +52,8 @@ class CoreRepository
 
     UnitsCollection* getUnits(UnitClass_t UnitClass);
 
+    const UnitsCollection* getUnits(UnitClass_t UnitClass) const;
+
     bool isUnitsClassExists(UnitClass_t UnitClass) const;
 
     void printSTDOUT();

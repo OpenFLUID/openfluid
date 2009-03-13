@@ -7,7 +7,7 @@
 
 
 #include "ColTextParser.h"
-#include "openfluid-base.h"
+#include "openfluid-tools.h"
 
 #include <wx/tokenzr.h>
 
@@ -20,13 +20,11 @@
 namespace openfluid { namespace tools {
 
 
-ColumnTextParser::ColumnTextParser(wxString CommentLineSymbol, wxString Delimiter)
+ColumnTextParser::ColumnTextParser(std::string CommentLineSymbol, std::string Delimiter)
 {
 
   m_Delimiter = Delimiter;
   m_CommentSymbol = CommentLineSymbol;
-
-  mp_Contents = NULL;
 
   m_LinesCount = 0;
   m_ColsCount = 0;
@@ -51,16 +49,16 @@ ColumnTextParser::~ColumnTextParser()
 
 
 
-wxArrayString* ColumnTextParser::tokenizeLine(wxString Line)
+std::vector<std::string> ColumnTextParser::tokenizeLine(std::string Line)
 {
-  wxArrayString *NewLine = new wxArrayString();
+  std::vector<std::string> NewLine;
 
-  wxStringTokenizer Tokenizer(Line, m_Delimiter);
+  wxStringTokenizer Tokenizer(_U(Line.c_str()), _U(m_Delimiter.c_str()));
 
   while (Tokenizer.HasMoreTokens())
   {
     wxString Token = Tokenizer.GetNextToken();
-    NewLine->Add(Token);
+    NewLine.push_back(_S(Token));
   }
 
 
@@ -76,21 +74,21 @@ wxArrayString* ColumnTextParser::tokenizeLine(wxString Line)
 bool ColumnTextParser::checkContents()
 {
   int LineColCount;
-  int LineCount = mp_Contents->GetCount();
+  int LineCount = m_Contents.size();
 
   if (LineCount == 0) return true;
 
   // checks that all lines have the same size
   // i.e. same columns number
-  LineColCount = ((wxArrayString*)(mp_Contents->Item(0)))->GetCount();
+  LineColCount = m_Contents.at(0).size();
 
   for (int i=1;i<LineCount;i++)
   {
-    if (((wxArrayString*)(mp_Contents->Item(i)))->GetCount() != LineColCount)
+    if (m_Contents.at(i).size() != LineColCount)
       return false;
   }
 
-  m_LinesCount = mp_Contents->GetCount();
+  m_LinesCount = m_Contents.size();
   m_ColsCount = LineColCount;
 
   return true;
@@ -101,13 +99,14 @@ bool ColumnTextParser::checkContents()
 // =====================================================================
 
 
-bool ColumnTextParser::isCommentLineStr(wxString LineStr)
+bool ColumnTextParser::isCommentLineStr(std::string LineStr)
 {
+  wxString LineStrWX = _U(LineStr.c_str());
 
-  if (m_CommentSymbol.Length() > 0)
+  if (m_CommentSymbol.length() > 0)
   {
-    LineStr = LineStr.Trim(false);
-    if (LineStr.StartsWith(m_CommentSymbol.c_str()))
+    LineStrWX = LineStrWX.Trim(false);
+    if (LineStrWX.StartsWith(_U(m_CommentSymbol.c_str())))
       return true;
   }
 
@@ -121,12 +120,14 @@ bool ColumnTextParser::isCommentLineStr(wxString LineStr)
 // =====================================================================
 
 
-bool ColumnTextParser::isEmptyLineStr(wxString LineStr)
+bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
 {
 
-  LineStr = LineStr.Trim(true).Trim(false);
+  wxString LineStrWX = _U(LineStr.c_str());
 
-  if (LineStr.Length() == 0) return true;
+  LineStrWX = LineStrWX.Trim(true).Trim(false);
+
+  if (LineStrWX.Length() == 0) return true;
   else return false;
 
 }
@@ -138,21 +139,20 @@ bool ColumnTextParser::isEmptyLineStr(wxString LineStr)
 
 
 
-bool ColumnTextParser::loadFromFile(wxString Filename)
+bool ColumnTextParser::loadFromFile(std::string Filename)
 {
 
   int LinesCount;
   wxString StrLine;
   wxTextFile *ColumnFile;
 
-  if (mp_Contents != NULL) delete mp_Contents;
-  mp_Contents = new ArrayContents();
+  if (m_Contents.size()> 0 ) m_Contents.clear();
 
   m_LinesCount = 0;
   m_ColsCount = 0;
 
 
-  ColumnFile = new wxTextFile(Filename);
+  ColumnFile = new wxTextFile(_U(Filename.c_str()));
 
   // check if file exists and opens it
   if (!ColumnFile->Exists()) return false;
@@ -171,12 +171,12 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
   // processing of the file except the last line
   for (StrLine=ColumnFile->GetFirstLine();!ColumnFile->Eof();StrLine = ColumnFile->GetNextLine())
   {
-    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine)); 
+    if (!isCommentLineStr(_S(StrLine)) && !isEmptyLineStr(_S(StrLine))) m_Contents.push_back(tokenizeLine(_S(StrLine)));
   }
 
   // processing of the last line
-  if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) mp_Contents->Add(tokenizeLine(StrLine));
-  
+  if (!isCommentLineStr(_S(StrLine)) && !isEmptyLineStr(_S(StrLine))) m_Contents.push_back(tokenizeLine(_S(StrLine)));
+
 
   ColumnFile->Close();
 
@@ -191,7 +191,7 @@ bool ColumnTextParser::loadFromFile(wxString Filename)
 // =====================================================================
 // =====================================================================
 
-bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
+bool ColumnTextParser::setFromString(std::string Contents, int ColumnsNbr)
 {
   /** \internal
 
@@ -203,33 +203,32 @@ bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
 
   bool IsOK = true;
 
-  wxStringTokenizer Tkz(Contents, m_Delimiter);
+  wxStringTokenizer Tkz(_U(Contents.c_str()), _U(m_Delimiter.c_str()));
 
   if ((Tkz.CountTokens() % ColumnsNbr) == 0)
   {
 
-    if (mp_Contents != NULL) delete mp_Contents;
-    mp_Contents = new ArrayContents();
+    if (m_Contents.size() > 0) m_Contents.clear();
 
-    wxArrayString* LineStr = new wxArrayString();
+    std::vector<std::string> LineStr;
 
     while (Tkz.HasMoreTokens() && IsOK)
     {
       // add to the current line
-      LineStr->Add(Tkz.GetNextToken());
+      LineStr.push_back(_S(Tkz.GetNextToken()));
 
-      if (LineStr->Count() == ColumnsNbr)
+      if (LineStr.size() == ColumnsNbr)
       {
-        
-        // if current line has ColumnsNbr columns, it is added to the contents
-        mp_Contents->Add(LineStr);
 
-        if (Tkz.CountTokens() > 0) LineStr = new wxArrayString();
+        // if current line has ColumnsNbr columns, it is added to the contents
+        m_Contents.push_back(LineStr);
+
+        if (Tkz.CountTokens() > 0) LineStr.clear();
       }
     }
 
     // more tokens processed but not a complete line. not good!
-    if (LineStr->Count() != 0 && LineStr->Count() != ColumnsNbr)
+    if (LineStr.size() != 0 && LineStr.size() != ColumnsNbr)
     {
       IsOK = false;
     }
@@ -247,15 +246,15 @@ bool ColumnTextParser::setFromString(wxString Contents, int ColumnsNbr)
 
 
 
-wxArrayString* ColumnTextParser::getValues(int Line)
+std::vector<std::string> ColumnTextParser::getValues(int Line)
 {
-  if (Line < mp_Contents->GetCount())
+  if (Line < m_Contents.size())
   {
-    return ((wxArrayString*)(mp_Contents->Item(Line)));
+    return m_Contents.at(Line);
   }
   else
   {
-    return NULL;
+    return std::vector<std::string>();
   }
 
 }
@@ -266,17 +265,17 @@ wxArrayString* ColumnTextParser::getValues(int Line)
 // =====================================================================
 
 
-wxString ColumnTextParser::getValue(int Line, int Column)
+std::string ColumnTextParser::getValue(int Line, int Column)
 {
-  wxArrayString* LineString = getValues(Line);
+  std::vector<std::string> LineString = getValues(Line);
 
-  if (LineString != NULL && Column < LineString->GetCount())
+  if (LineString.size()!=0 && Column < LineString.size())
   {
-    return LineString->Item(Column);
+    return LineString.at(Column);
   }
   else
   {
-    return wxT("");
+    return "";
   }
 
 }
@@ -287,11 +286,11 @@ wxString ColumnTextParser::getValue(int Line, int Column)
 // =====================================================================
 
 
-bool ColumnTextParser::getStringValue(int Line, int Column, wxString *Value)
+bool ColumnTextParser::getStringValue(int Line, int Column, std::string *Value)
 {
-  wxString StrValue = getValue(Line,Column);
+  std::string StrValue = getValue(Line,Column);
 
-  if (StrValue.Length() == 0) return false;
+  if (StrValue.length() == 0) return false;
 
   *Value = StrValue;
 
@@ -306,11 +305,11 @@ bool ColumnTextParser::getStringValue(int Line, int Column, wxString *Value)
 
 bool ColumnTextParser::getLongValue(int Line, int Column, long* Value)
 {
-  wxString StrValue = getValue(Line,Column);
+  std::string StrValue = getValue(Line,Column);
 
-  if (StrValue.Length() != 0)
+  if (StrValue.length() != 0)
   {
-    return StrValue.ToLong(Value);
+    return openfluid::tools::ConvertString(StrValue,Value);
   }
 
   return false;
@@ -325,11 +324,11 @@ bool ColumnTextParser::getLongValue(int Line, int Column, long* Value)
 bool ColumnTextParser::getDoubleValue(int Line, int Column, double* Value)
 {
 
-  wxString StrValue = getValue(Line,Column);
+  std::string StrValue = getValue(Line,Column);
 
-  if (StrValue.Length() != 0)
+  if (StrValue.length() != 0)
   {
-    return StrValue.ToDouble(Value);
+    return openfluid::tools::ConvertString(StrValue,Value);
   }
 
   return false;
@@ -349,7 +348,7 @@ void ColumnTextParser::coutContents()
   {
     for (j=0;j<m_ColsCount;j++)
     {
-      std::cout << _C(getValue(i,j)) << "\t";
+      std::cout << getValue(i,j) << "\t";
 
     }
     std::cout.flush();

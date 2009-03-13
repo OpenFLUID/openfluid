@@ -1,6 +1,6 @@
 /**
   \file DataSrcFile.h
-  \brief 
+  \brief
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
@@ -19,30 +19,30 @@
 
 namespace openfluid { namespace tools {
 
-WX_DECLARE_HASH_MAP(int, wxString, wxIntegerHash, wxIntegerEqual, IDDataSourcesMap);
+WX_DECLARE_HASH_MAP(int, std::string, wxIntegerHash, wxIntegerEqual, IDDataSourcesMap);
 
 class DataSourcesFile
 {
   private:
     bool m_Loaded;
-    
+
     std::vector<int> m_IDs;
-  
+
     IDDataSourcesMap m_Sources;
-    
-  
+
+
   public:
-    
+
     DataSourcesFile();
 
     virtual ~DataSourcesFile();
-    
-    bool load(wxString Filename);
-    
+
+    bool load(std::string Filename);
+
     std::vector<int> getIDs();
-    
-    wxString getSource(int ID);    
-    
+
+    std::string getSource(int ID);
+
 };
 
 

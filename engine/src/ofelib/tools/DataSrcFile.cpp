@@ -35,7 +35,7 @@ DataSourcesFile::~DataSourcesFile()
 
 
 
-bool DataSourcesFile::load(wxString Filename)
+bool DataSourcesFile::load(std::string Filename)
 {
 
   TiXmlDocument LoadDoc;
@@ -47,7 +47,7 @@ bool DataSourcesFile::load(wxString Filename)
   m_Sources.clear();
 
 
-  if (LoadDoc.LoadFile(Filename.mb_str(wxConvUTF8)))
+  if (LoadDoc.LoadFile(Filename.c_str()))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -59,7 +59,7 @@ bool DataSourcesFile::load(wxString Filename)
     {
       if (Child->Attribute("ID",&ID) != NULL && Child->Attribute("file") != NULL)
       {
-        m_Sources[ID] = wxString(Child->Attribute("file"),wxConvUTF8);
+        m_Sources[ID] = Child->Attribute("file");
         m_IDs.push_back(ID);
       }
       else
@@ -96,14 +96,14 @@ std::vector<int> DataSourcesFile::getIDs()
 // =====================================================================
 
 
-wxString DataSourcesFile::getSource(int ID)
+std::string DataSourcesFile::getSource(int ID)
 {
   IDDataSourcesMap::iterator iter;
 
   iter = m_Sources.find(ID);
 
   if (iter != m_Sources.end()) return iter->second;
-  else return wxT("");
+  else return "";
 }
 
 

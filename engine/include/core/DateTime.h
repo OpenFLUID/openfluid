@@ -11,7 +11,6 @@
 
 
 #include <sys/types.h>
-#include <wx/string.h>
 #include <time.h>
 #include <wx/datetime.h>
 
@@ -103,12 +102,12 @@ class DateTime
     /**
       Sets the date and time from an ISO formatted string (YYYY-MM-DD hh:mm:ss)
     */
-    bool setFromISOString(wxString DateTimeStr);
+    bool setFromISOString(std::string DateTimeStr);
 
     /**
       Sets the date and time from a formatted string (using strptime formatting)
     */
-    //bool setFromString(wxString DateTimeStr, wxString Format);
+    //bool setFromString(std::string DateTimeStr, std::string Format);
 
 
     /**
@@ -164,27 +163,27 @@ class DateTime
       Returns date-time as string, using format YYYT-MM-DD hh:mm:ss
       \return a string
     */
-    wxString getAsISOString();
+    std::string getAsISOString();
 
     /**
       Returns date-time as string, using strftime() format string
       \param[in] Format strftime()-like format string
       \return a string
     */
-    wxString getAsString(wxString Format);
+    std::string getAsString(std::string Format);
 
 
     /**
       Returns date as string, using format YYYY-MM-DD
       \return a string
     */
-    wxString getDateAsISOString();
+    std::string getDateAsISOString();
 
     /**
       Returns time as string, using format hh:mm:ss
       \return a string
     */
-    wxString getTimeAsISOString();
+    std::string getTimeAsISOString();
 
     /**
       Returns date-time as a wxdateTime object

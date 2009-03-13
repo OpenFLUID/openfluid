@@ -39,7 +39,9 @@ class UnitsCollection
 
     void sortByProcessOrder();
 
-    UnitsList_t* getList();
+    const UnitsList_t* getList() const { return &m_Data; };
+
+    UnitsList_t* getList() { return &m_Data; };
 
 };
 

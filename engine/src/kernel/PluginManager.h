@@ -31,8 +31,8 @@ struct PluginContainer
 };
 
 
-WX_DEFINE_ARRAY(openfluid::base::Signature*, ArrayOfPluginsSignatures);
-WX_DEFINE_ARRAY(PluginContainer*, ArrayOfPluginsContainers);
+typedef std::vector<openfluid::base::FunctionSignature*> ArrayOfPluginsSignatures;
+typedef std::vector<PluginContainer*> ArrayOfPluginsContainers;
 
 /**
   Management class for plugins
@@ -44,8 +44,8 @@ class PluginManager
     RuntimeEnvironment* mp_RunEnv;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
-/*    openfluid::base::PluggableFunction *getPluggableFunction(wxString PluginFilename);*/
-    PluginContainer *buildPluginContainer(wxString PluginFilename);
+/*    openfluid::base::PluggableFunction *getPluggableFunction(std::string PluginFilename);*/
+    PluginContainer *buildPluginContainer(std::string PluginFilename);
 
 
 
@@ -71,12 +71,11 @@ class PluginManager
     /**
       Returns function and function types
     */
-    PluginContainer *getPlugin(wxString PluginName,
-                               openfluid::base::FunctionTypeList ReqFuncType,
+    PluginContainer *getPlugin(std::string PluginName,
                                openfluid::core::CoreRepository* CoreData);
 
 /*
-    openfluid::base::Function *getFunctionFromPlugin(wxString PluginName,
+    openfluid::base::Function *getFunctionFromPlugin(std::string PluginName,
                                           openfluid::base::ModuleTypeList ReqModType,
                                           openfluid::base::FunctionTypeList ReqFuncType);
 */

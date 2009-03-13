@@ -46,9 +46,9 @@ class DistributeInterpolate
     UnitsIndexedSeriesMap m_UnitsIndexedData;
 
 
-    wxString m_DataSourcesFilename;
-    wxString m_DataDir;
-    wxString m_DistributionFilename;
+    std::string m_DataSourcesFilename;
+    std::string m_DataDir;
+    std::string m_DistributionFilename;
     SeriePreprocess m_SPpcs;
     openfluid::core::DateTime m_Begin;
     openfluid::core::DateTime m_End;
@@ -56,14 +56,14 @@ class DistributeInterpolate
 
     bool m_Configured;
 
-    bool loadDataAsSerie(wxString FilePath, SeriePreprocess SPpcs, DateTimeSerie *Serie);
+    bool loadDataAsSerie(std::string FilePath, SeriePreprocess SPpcs, DateTimeSerie *Serie);
 
-    bool loadDistributionAndDistribute(wxString FilePath);
+    bool loadDistributionAndDistribute(std::string FilePath);
 
   public:
     DistributeInterpolate();
 
-    void setConfig(wxString DataDir, wxString DataSourcesFilename, wxString DistributionFilename, SeriePreprocess SPpcs,
+    void setConfig(std::string DataDir, std::string DataSourcesFilename, std::string DistributionFilename, SeriePreprocess SPpcs,
                    openfluid::core::DateTime Begin,openfluid::core::DateTime End, int TimeStep);
 
     bool loadAndPrepareData();

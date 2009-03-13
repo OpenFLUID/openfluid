@@ -76,7 +76,7 @@ bool DateTime::set(int Year, int Month, int Day, int Hour, int Minute, int Secon
 // =====================================================================
 
 
-bool DateTime::setFromISOString(wxString DateTimeStr)
+bool DateTime::setFromISOString(std::string DateTimeStr)
 {
   int Year;
   int Month;
@@ -87,7 +87,7 @@ bool DateTime::setFromISOString(wxString DateTimeStr)
 
 
   // scan of the input string to break it down
-  sscanf(DateTimeStr.mb_str(wxConvUTF8),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec);
+  sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec);
 
 //  std::cout << Year << " " << Month << " " << Day << " " << Hour << " " << Min << " " << Sec << std::endl;
 
@@ -256,15 +256,15 @@ rawtime_t DateTime::getRawTime()
 // =====================================================================
 
 
-wxString DateTime::getAsISOString()
+std::string DateTime::getAsISOString()
 {
 
   char pCh[80];
-  wxString Str;
+  std::string Str;
 
   strftime(pCh,80,"%Y-%m-%d %H:%M:%S",&m_TM);
 
-  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+  Str = std::string(pCh,strlen(pCh));
 
   return Str;
 
@@ -274,16 +274,16 @@ wxString DateTime::getAsISOString()
 // =====================================================================
 // =====================================================================
 
-wxString  DateTime::getAsString(wxString Format)
+std::string  DateTime::getAsString(std::string Format)
 {
 
   char pCh[80];
-  wxString Str;
+  std::string Str;
 
 
-  strftime(pCh,80,Format.mb_str(wxConvUTF8),&m_TM);
+  strftime(pCh,80,Format.c_str(),&m_TM);
 
-  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+  Str = std::string(pCh,strlen(pCh));
 
   return Str;
 
@@ -295,16 +295,16 @@ wxString  DateTime::getAsString(wxString Format)
 // =====================================================================
 
 
-wxString DateTime::getDateAsISOString()
+std::string DateTime::getDateAsISOString()
 {
 
   char pCh[80];
-  wxString Str;
+  std::string Str;
 
 
   strftime(pCh,80,"%Y-%m-%d",&m_TM);
 
-  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+  Str = std::string(pCh,strlen(pCh));
 
   return Str;
 
@@ -317,15 +317,15 @@ wxString DateTime::getDateAsISOString()
 // =====================================================================
 
 
-wxString DateTime::getTimeAsISOString()
+std::string DateTime::getTimeAsISOString()
 {
 
   char pCh[80];
-  wxString Str;
+  std::string Str;
 
   strftime(pCh,80,"%H:%M:%S",&m_TM);
 
-  Str = wxString(pCh,wxConvUTF8,strlen(pCh));
+  Str = std::string(pCh,strlen(pCh));
 
   return Str;
 

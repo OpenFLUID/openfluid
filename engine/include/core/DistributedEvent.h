@@ -21,7 +21,7 @@ namespace openfluid { namespace core {
 /**
   The map associating a key to a value
 */
-WX_DECLARE_STRING_HASH_MAP(wxString, EventInfosMap);
+//WX_DECLARE_STRING_HASH_MAP(std::string, EventInfosMap);
 
 
 /**
@@ -36,7 +36,9 @@ class DistributedEvent
 
   private:
 	  DateTime m_Date;
-    EventInfosMap m_Infos;
+    typedef std::map<std::string, std::string> EventInfosMap_t;
+
+	  EventInfosMap_t m_Infos;
 
   public:
 
@@ -60,35 +62,35 @@ class DistributedEvent
       Returns true if the information exists
       \param[in] Key the requested information key
     */
-    bool isInfoExists(wxString Key);
+    bool isInfoExists(std::string Key);
 
     /**
       Returns true if the information exists and equals the given string value
       \param[in] Key the requested information key
       \param[in] Value the requested value
     */
-    bool isInfoEquals(wxString Key, wxString Value);
+    bool isInfoEquals(std::string Key, std::string Value);
 
     /**
       Returns true if the information exists and equals the given long value
       \param[in] Key the requested information key
       \param[in] Value the requested value
     */
-    bool isInfoEquals(wxString Key, long Value);
+    bool isInfoEquals(std::string Key, long Value);
 
     /**
       Returns true if the information exists and equals the given double value
       \param[in] Key the requested information key
       \param[in] Value the requested value
     */
-    bool isInfoEquals(wxString Key, double Value);
+    bool isInfoEquals(std::string Key, double Value);
 
     /**
       Returns true if the information exists and equals the given ScalarValue value
       \param[in] Key the requested information key
       \param[in] Info the requested value
     */
-    bool isInfoEquals(wxString Key, ScalarValue *Info);
+    bool isInfoEquals(std::string Key, ScalarValue *Info);
 
     /**
       Returns the number of information
@@ -98,7 +100,7 @@ class DistributedEvent
     /**
       Returns all the informations as an EventInfosMap
     */
-    EventInfosMap getInfos() { return m_Infos; }
+    EventInfosMap_t getInfos() { return m_Infos; }
 
     /**
       Returns the date and time of the event
@@ -111,7 +113,7 @@ class DistributedEvent
       \param[out] Info the value corresponding to the requested key
       \return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsString(wxString Key, wxString *Info);
+    bool getInfoAsString(std::string Key, std::string *Info);
 
     /**
       Gets an information as a long integer
@@ -119,7 +121,7 @@ class DistributedEvent
       \param[out] Info the value corresponding to the requested key
       \return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsLong(wxString Key, long *Info);
+    bool getInfoAsLong(std::string Key, long *Info);
 
     /**
       Gets an information as a double
@@ -127,7 +129,7 @@ class DistributedEvent
       \param[out] Info the value corresponding to the requested key
       \return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsDouble(wxString Key, double *Info);
+    bool getInfoAsDouble(std::string Key, double *Info);
 
     /**
       Gets an information as a ScalarValue
@@ -135,7 +137,7 @@ class DistributedEvent
       \param[out] Info the value corresponding to the requested key
       \return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsScalarValue(wxString Key, ScalarValue *Info);
+    bool getInfoAsScalarValue(std::string Key, ScalarValue *Info);
 
     /**
       Adds an information to the event
@@ -143,7 +145,7 @@ class DistributedEvent
       \param[in] Info the value of the added information
       \return true if the adding is correct (key does not already exists)
     */
-    bool addInfo(wxString Key, wxString Info);
+    bool addInfo(std::string Key, std::string Info);
 
     /**
       Prints the content of the event to stdout

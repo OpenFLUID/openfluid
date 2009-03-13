@@ -12,7 +12,7 @@ namespace openfluid { namespace tools {
 
 
 template<typename T>
-inline T ConvertString(const std::string& StrToConvert, T* Converted)
+inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 {
   std::istringstream iss(StrToConvert);
   return !(iss >> (*Converted)).fail();
@@ -25,7 +25,7 @@ inline T ConvertString(const std::string& StrToConvert, T* Converted)
 
 void TokenizeString(const std::string& StrToTokenize,
                     std::vector<std::string>& Tokens,
-                    const std::string& Delimiters = " ");
+                    const std::string& Delimiters);
 
 
 
