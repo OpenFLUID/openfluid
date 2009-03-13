@@ -85,9 +85,9 @@ class OpenFLUIDApp : public wxAppConsole
 
     void printPluginsList();
 
-    void printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, wxString Suffix, bool IsXMLFormat);
+    void printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, std::string Suffix, bool IsXMLFormat);
 
-    void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledItem HandledItem, wxString Suffix, wxString Type, bool IsXMLFormat);
+    void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type, bool IsXMLFormat);
 
     void printPluginsReport(bool IsXMLFormat);
 
@@ -121,7 +121,7 @@ class OpenFLUIDApp : public wxAppConsole
     /**
       Saves simulation reports
     */
-    bool saveSimulationReports(wxString ErrorMsg);
+    bool saveSimulationReports(std::string ErrorMsg);
 
 
 

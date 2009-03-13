@@ -82,6 +82,22 @@ UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass)
 {
   UnitsListByClassMap_t::iterator it;
 
+  // TODO check if class exists
+  it = m_PcsOrderedUnitsByClass.find(UnitClass);
+
+  return  &(it->second);
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+const UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass) const
+{
+  UnitsListByClassMap_t::const_iterator it;
+
+  // TODO check if class exists
   it = m_PcsOrderedUnitsByClass.find(UnitClass);
 
   return  &(it->second);

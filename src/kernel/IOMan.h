@@ -1,11 +1,60 @@
+/**
+  \file IOMan.h
+  \brief header of ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
+
 
 #ifndef __IOMAN_H__
 #define __IOMAN_H__
 
-
-#include "CoreRepository.h"
-#include "MemMonitor.h"
+#include "openfluid-base.h"
+#include "openfluid-core.h"
+#include "openfluid-tools.h"
+#include "RuntimeEnv.h"
 #include <wx/arrstr.h>
+
+
+// =====================================================================
+// =====================================================================
+
+/**
+  Structure storing the config of a function, read from the xml model file
+*/
+struct FunctionConfig
+{
+  std::string FileID;  // Plug-in fileID (filename without ext)
+  openfluid::core::FuncParamsMap_t Params;  // Function parameters set
+};
+
+
+struct ModelConfig
+{
+  int DeltaT;
+
+  std::string SimulationID;
+
+  std::list<FunctionConfig> FuncConfigs;
+
+};
+
+
+struct RunConfig
+{
+  int DeltaT;
+
+  std::string SimulationID;
+
+  openfluid::core::DateTime BeginDate;
+
+  openfluid::core::DateTime EndDate;
+
+};
+
+// =====================================================================
+// =====================================================================
+
 
 class IOManager
 {
@@ -72,43 +121,53 @@ class IOManager
 
     openfluid::core::MemoryMonitor* mp_MemMonitor;
     openfluid::core::CoreRepository* mp_Repository;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
+    RuntimeEnvironment* mp_RunEnv;
 
     OutputConfig_t m_OutputConfig;
+
+    bool m_ClearedOuputDir;
+
 
     IOManager() { };
 
     bool prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
-                               wxString OutputDir);
+                               std::string OutputDir);
 
     bool saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
                             openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
-                            wxString OutputDir);
+                            std::string OutputDir);
 
-    bool loadDomainFile(wxString FullFilename,
+    bool loadDomainFile(std::string FullFilename,
                         std::list<openfluid::core::UnitsLink_t>* ToUnitsList);
 
-    bool loadInputDataFile(wxString FullFilename);
+    bool loadInputDataFile(std::string FullFilename);
 
-    wxString generateOuputFilename(const std::string UnitClass, const openfluid::core::UnitID_t UnitID,
+
+    bool loadEventsFile(std::string FullFilename);
+
+
+    std::string generateOuputFilename(const std::string UnitClass, const openfluid::core::UnitID_t UnitID,
                                    const std::string Suffix, const std::string VectorName = "");
 
-    wxString generateOutputScalarsFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
-                                             const wxString Filename, const std::vector<std::string> ScalarsNames,
+    std::string generateOutputScalarsFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
+                                             const std::string Filename, const std::vector<std::string> ScalarsNames,
                                              const std::string CommentChar);
 
-    wxString generateOutputVectorFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
-                                            const wxString Filename, const std::string VectorName,
+    std::string generateOutputVectorFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
+                                            const std::string Filename, const std::string VectorName,
                                             const std::string CommentChar);
 
 
-    wxString generateOutputScalarsFileContent(const openfluid::core::Unit* aUnit,
+    std::string generateOutputScalarsFileContent(const openfluid::core::Unit* aUnit,
                                               const std::vector<std::string> ScalarsNames,
                                               openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
                                               std::string ColSeparator);
 
-    wxString generateOutputVectorFileContent(const openfluid::core::Unit* aUnit, const std::string VectorName,
+    std::string generateOutputVectorFileContent(const openfluid::core::Unit* aUnit, const std::string VectorName,
                                               openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
                                               std::string ColSeparator);
+
 
   public:
 
@@ -118,9 +177,24 @@ class IOManager
 
     void setCoreRepository(openfluid::core::CoreRepository* Repository) { mp_Repository = Repository; };
 
+    void setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
+
+    void setRunEnvironment(RuntimeEnvironment* RunEnv) { mp_RunEnv = RunEnv; };
+
+    bool loadRunConfig(RunConfig* Config);
+
+    /**
+      Loads model engine configuration
+      \param[out] Configuration definition to populate
+    */
+    bool loadModelConfig(ModelConfig* Config);
+
     bool loadDomainFromFiles();
 
     bool loadInputDataFromFiles();
+
+    bool loadEventsFromFiles();
+
 
     bool loadOutputConfig();
 
@@ -128,7 +202,9 @@ class IOManager
 
     bool saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool WithoutKeep);
 
+    bool saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
 
+    bool prepareOutputDir();
 
 
 

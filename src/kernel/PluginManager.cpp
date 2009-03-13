@@ -35,23 +35,31 @@ PluginManager::~PluginManager()
 
 
 
-PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
+PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
-  wxString PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
+  std::string PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
   PluginContainer* Plug = NULL;
 
   //if (!wxFileExists(PluginFile)) throw openfluid::base::OFException("Function file "+ std::string(PluginFilename.mb_str(wxConvUTF8)) +"not found");
 
   // library loading
-  if (PluginFile.Length()>0 && PlugLib->Load(PluginFile))
+  if (PluginFile.length()>0 && PlugLib->Load(_U(PluginFile.c_str())))
   {
+    // TODO to develop
+    /*
+    if (PlugLib->HasSymbol(wxT(PLUGSDKVERSION_PROC_NAME)))
+    {
+      std::cout << ((openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSDKVERSION_PROC_NAME))) << std::endl;
+    }*/
 
     // checks if the handle proc exists
     if (PlugLib->HasSymbol(wxT(PLUGFUNCTION_PROC_NAME)) && PlugLib->HasSymbol(wxT(PLUGSIGNATURE_PROC_NAME)))
     {
+
       // hooks the handle proc
       openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));
+
 
       if (SignProc != NULL)
       {
@@ -65,16 +73,16 @@ PluginContainer *PluginManager::buildPluginContainer(wxString PluginFilename)
           Plug->Function = PlugProc();
           Plug->Filename = PluginFile;
         }
-        else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find function in plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
+        else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find function in plugin file " + PluginFilename);
       }
-      else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
+      else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + PluginFilename);
 
       // unloads the library
       //PlugLib->Unload();
 
     }
   }
-  else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find plugin file " + std::string(PluginFilename.mb_str(wxConvUTF8)));
+  else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find plugin file " + PluginFilename);
 
   return Plug;
 }
@@ -115,26 +123,26 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
 {
   ArrayOfPluginsContainers PluginsContainers;
-  wxArrayString PluginsPaths = mp_RunEnv->getPluginsPaths();
-  wxArrayString PluginFiles;
-  wxArrayString TmpFiles;
+  std::vector<std::string> PluginsPaths = mp_RunEnv->getPluginsPaths();
+  std::vector<std::string> PluginFiles;
+  std::vector<std::string> TmpFiles;
   int i,j;
 
 
-  for (i=0;i<PluginsPaths.GetCount();i++)
+  for (i=0;i<PluginsPaths.size();i++)
   {
     TmpFiles = GetFilesByExt(PluginsPaths[i],OPENFLUID_PLUGINS_EXT,false,true);
-    for (j=0;j<TmpFiles.GetCount();j++) PluginFiles.Add(TmpFiles[j]);
+    for (j=0;j<TmpFiles.size();j++) PluginFiles.push_back(TmpFiles[j]);
   }
 
 
   PluginContainer* CurrentPlug;
 
-  for (i=0;i<PluginFiles.GetCount();i++)
+  for (i=0;i<PluginFiles.size();i++)
   {
     CurrentPlug = buildPluginContainer(PluginFiles[i]);
 
-    if (CurrentPlug != NULL) PluginsContainers.Add(CurrentPlug);
+    if (CurrentPlug != NULL) PluginsContainers.push_back(CurrentPlug);
   }
 
   return PluginsContainers;
@@ -146,8 +154,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
 // =====================================================================
 // =====================================================================
 
-PluginContainer *PluginManager::getPlugin(wxString PluginName,
-                                          openfluid::base::FunctionTypeList ReqFuncType,
+PluginContainer *PluginManager::getPlugin(std::string PluginName,
                                           openfluid::core::CoreRepository* CoreData)
 {
 
@@ -157,13 +164,10 @@ PluginContainer *PluginManager::getPlugin(wxString PluginName,
 
   if (Plug != NULL)
   {
-    if (Plug->Signature->FunctionType == ReqFuncType)
-    {
-      Plug->Function->setDataRepository(CoreData);
-      Plug->Function->setExecutionMessages(mp_ExecMsgs);
-      Plug->Function->setFunctionEnvironment(mp_RunEnv->getFunctionEnvironment());
-      return Plug;
-    }
+    Plug->Function->setDataRepository(CoreData);
+    Plug->Function->setExecutionMessages(mp_ExecMsgs);
+    Plug->Function->setFunctionEnvironment(mp_RunEnv->getFunctionEnvironment());
+    return Plug;
   }
 
 

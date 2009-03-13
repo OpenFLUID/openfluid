@@ -8,7 +8,7 @@
 
 #include "DistribInterp.h"
 #include "ColTextParser.h"
-#include "openfluid-base.h"
+#include "openfluid-tools.h"
 
 #include <math.h>
 
@@ -32,8 +32,8 @@ DistributeInterpolate::~DistributeInterpolate()
 // =====================================================================
 // =====================================================================
 
-void DistributeInterpolate::setConfig(wxString DataDir, wxString DataSourcesFilename,
-                                      wxString DistributionFilename, SeriePreprocess SPpcs,
+void DistributeInterpolate::setConfig(std::string DataDir, std::string DataSourcesFilename,
+                                      std::string DistributionFilename, SeriePreprocess SPpcs,
                                       openfluid::core::DateTime Begin,openfluid::core::DateTime End, int TimeStep)
 {
   m_DataDir = DataDir;
@@ -69,9 +69,9 @@ bool DistributeInterpolate::loadAndPrepareData()
 
 
   // loading of data sources
-  if (!DSFile.load(m_DataDir + wxFILE_SEP_PATH + m_DataSourcesFilename) && DSFile.getIDs().size() <= 1)
+  if (!DSFile.load(m_DataDir + _S(wxFILE_SEP_PATH) + m_DataSourcesFilename) && DSFile.getIDs().size() <= 1)
   {
-    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading file " + _S(m_DataSourcesFilename));
+    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading file " + m_DataSourcesFilename);
     return false;
   }
   else
@@ -81,9 +81,9 @@ bool DistributeInterpolate::loadAndPrepareData()
 
     for (int i=0;i<IDs.size();i++)
     {
-      if (!wxFileExists(m_DataDir + wxFILE_SEP_PATH + DSFile.getSource(IDs[i])))
+      if (!wxFileExists(_U(m_DataDir.c_str()) + wxFILE_SEP_PATH + _U(DSFile.getSource(IDs[i]).c_str())))
       {
-        throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading "+_S(DSFile.getSource(IDs[i])) + " file as data source");
+        throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading "+ DSFile.getSource(IDs[i]) + " file as data source");
         return false;
       }
       else
@@ -94,7 +94,7 @@ bool DistributeInterpolate::loadAndPrepareData()
         Serie = new openfluid::tools::DateTimeSerie();
         IInterpolatedSerie = new openfluid::tools::IndexedSerie();
 
-        if (loadDataAsSerie(m_DataDir + wxFILE_SEP_PATH + DSFile.getSource(IDs[i]),m_SPpcs, Serie))
+        if (loadDataAsSerie(m_DataDir + _S(wxFILE_SEP_PATH) + DSFile.getSource(IDs[i]),m_SPpcs, Serie))
         {
 
           // interpolate in time for simulation
@@ -111,7 +111,7 @@ bool DistributeInterpolate::loadAndPrepareData()
           {
             delete Serie;
             delete InterpolatedSerie;
-            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error interpolating data from file " + _S(DSFile.getSource(IDs[i])));
+            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error interpolating data from file " + DSFile.getSource(IDs[i]));
             return false;
           }
         }
@@ -119,14 +119,14 @@ bool DistributeInterpolate::loadAndPrepareData()
         {
           delete Serie;
           delete InterpolatedSerie;
-          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading data from file " + _S(DSFile.getSource(IDs[i])));
+          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading data from file " + DSFile.getSource(IDs[i]));
           return false;
         }
       }
     }
 
 
-    if (!loadDistributionAndDistribute(m_DataDir + wxFILE_SEP_PATH + m_DistributionFilename))
+    if (!loadDistributionAndDistribute(m_DataDir + _S(wxFILE_SEP_PATH) + m_DistributionFilename))
     {
       return false;
     }
@@ -144,9 +144,9 @@ bool DistributeInterpolate::loadAndPrepareData()
 // =====================================================================
 
 
-bool DistributeInterpolate::loadDataAsSerie(wxString FilePath, SeriePreprocess SPpcs, DateTimeSerie *Serie)
+bool DistributeInterpolate::loadDataAsSerie(std::string FilePath, SeriePreprocess SPpcs, DateTimeSerie *Serie)
 {
-  ColumnTextParser FileParser(wxT("%"));
+  ColumnTextParser FileParser("%");
   bool IsOK;
 
   IsOK = true;
@@ -220,7 +220,7 @@ bool DistributeInterpolate::loadDataAsSerie(wxString FilePath, SeriePreprocess S
 // =====================================================================
 
 
-bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
+bool DistributeInterpolate::loadDistributionAndDistribute(std::string FilePath)
 {
   long UnitID;
   long DataSrcID;
@@ -228,10 +228,10 @@ bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
   int i;
 
 
-  ColumnTextParser DistriFileParser(wxT("%"));
+  ColumnTextParser DistriFileParser("%");
 
 
-  if (wxFileExists(FilePath))
+  if (wxFileExists(_U(FilePath.c_str())))
   {
 
     if ((DistriFileParser.loadFromFile(FilePath)) && (DistriFileParser.getColsCount() == 2) && (DistriFileParser.getLinesCount() >0))
@@ -250,26 +250,26 @@ bool DistributeInterpolate::loadDistributionAndDistribute(wxString FilePath)
           }
           else
           {
-            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + _S(m_DistributionFilename) + ", data source ID not found");
+            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", data source ID not found");
             return false;
           }
         }
         else
         {
-          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + _S(m_DistributionFilename) + ", format error");
+          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", format error");
           return false;
         }
       }
     }
     else
     {
-      throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + _S(m_DistributionFilename) + ", file not found or format error");
+      throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", file not found or format error");
       return false;
     }
   }
   else
   {
-    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Distribution file " + _S(m_DistributionFilename) + " not found");
+    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Distribution file " + m_DistributionFilename + " not found");
     return false;
   }
   return true;

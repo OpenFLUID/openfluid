@@ -31,10 +31,10 @@ class RainSUFromFilesFunction : public openfluid::base::PluggableFunction
   private:
 
     openfluid::tools::DistributeInterpolate m_DataPool;
-    
+
     double m_Threshold;
-    
-    
+
+
   public:
     /**
       Constructor
@@ -46,7 +46,7 @@ class RainSUFromFilesFunction : public openfluid::base::PluggableFunction
     */
     ~RainSUFromFilesFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 

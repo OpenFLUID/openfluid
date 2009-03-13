@@ -20,11 +20,12 @@
 
 
 #include <wx/list.h>
-WX_DECLARE_LIST(PluginContainer*, PluginsList);
+
 
 // =====================================================================
 // =====================================================================
 
+typedef std::list<PluginContainer*> PluginsList;
 
 
 /**
@@ -101,7 +102,7 @@ class Engine
 
     bool saveResults(ExtraSimInfos ExSI);
 
-    bool saveReports(ExtraSimInfos ExSI, wxString ErrorMsg);
+    bool saveReports(ExtraSimInfos ExSI, std::string ErrorMsg);
 
     ModelConfig getModelConfig() const { return m_ModelConfig; };
 

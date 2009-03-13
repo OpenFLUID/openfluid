@@ -9,13 +9,13 @@
 #define __COLFILEPARSER_H__
 
 
-#include <wx/wx.h>
+#include <vector>
 #include <wx/textfile.h>
 
 
 namespace openfluid { namespace tools {
 
-WX_DEFINE_ARRAY(wxArrayString*, ArrayContents);
+//WX_DEFINE_ARRAY(wxArrayString*, ArrayContents);
 
 /**
   Class for column file management and handling
@@ -27,18 +27,18 @@ class ColumnTextParser
 
   private:
 
-    wxString m_Delimiter;
-    wxString m_CommentSymbol;
+    std::string m_Delimiter;
+    std::string m_CommentSymbol;
 
-    ArrayContents* mp_Contents;
+    std::vector<std::vector<std::string> > m_Contents;
 
-    wxArrayString* tokenizeLine(wxString Line);
+    std::vector<std::string> tokenizeLine(std::string Line);
 
     bool checkContents();
 
-    bool isCommentLineStr(wxString LineStr);
+    bool isCommentLineStr(std::string LineStr);
 
-    bool isEmptyLineStr(wxString LineStr);
+    bool isEmptyLineStr(std::string LineStr);
 
     int m_LinesCount;
 
@@ -50,23 +50,23 @@ class ColumnTextParser
     /**
       Constructor
     */
-    ColumnTextParser(wxString CommentLineSymbol = wxT(""), wxString Delimiter = wxT(" \t\r\n"));
+    ColumnTextParser(std::string CommentLineSymbol = "", std::string Delimiter = " \t\r\n");
 
     /**
       Destructor
     */
     ~ColumnTextParser();
 
-    bool loadFromFile(wxString Filename);
+    bool loadFromFile(std::string Filename);
 
-    bool setFromString(wxString Contents, int ColumnsNbr);
+    bool setFromString(std::string Contents, int ColumnsNbr);
 
     /**
       Returns the value at a specified row-column, as a string
     */
-    wxString getValue(int Line, int Column);
+    std::string getValue(int Line, int Column);
 
-    bool getStringValue(int Line, int Column, wxString *Value);
+    bool getStringValue(int Line, int Column, std::string *Value);
 
     /**
       Returns the value at a specified row-column, as an int
@@ -82,7 +82,7 @@ class ColumnTextParser
     /**
       Returns the values of a line as astring list
     */
-    wxArrayString* getValues(int Line);
+    std::vector<std::string> getValues(int Line);
 
     int getLinesCount() const { return m_LinesCount;};
 

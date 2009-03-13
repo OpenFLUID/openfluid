@@ -13,7 +13,7 @@
   openfluid::base::FunctionSignature* GetPlugSignature() \
   { \
     openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature(); \
-    ZeSignature->setSDKVersion(STRINGIFY(OFELIB_VERSION));
+    Signature->setSDKVersion(STRINGIFY(OFELIB_VERSION));
 
 
 /**
@@ -120,7 +120,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_UPDATED_VAR(name,uclass,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required variable
@@ -130,7 +130,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_VAR(name,uclass,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 
 
@@ -142,7 +142,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_PREVVAR(name,uclass,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an used variable
@@ -152,7 +152,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_VAR(name,uclass,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 
 /**
@@ -163,7 +163,7 @@
   \param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_PREVVAR(name,uclass,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required input data
@@ -173,7 +173,7 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_INPUT(name,uclass,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used input data
@@ -183,7 +183,7 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_INPUT(name,uclass,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 
 
@@ -200,7 +200,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem(name,"SU",description,unit));
 
 /**
   Macro for declaration of an updated variable on all SUs
@@ -211,7 +211,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of a required variable on all SUs
@@ -222,7 +222,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 
 
@@ -235,7 +235,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of an used variable on all SUs
@@ -246,7 +246,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 
 /**
@@ -258,7 +258,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of a required property on all SUs
@@ -269,7 +269,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of a used property on all SUs
@@ -280,7 +280,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_USED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 
 /**
@@ -292,7 +292,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of a used initial condition on all SUs
@@ -303,7 +303,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 
 
@@ -320,7 +320,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 /**
   Macro for declaration of an updated variable on all RSs
@@ -331,7 +331,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 /**
   Macro for declaration of a required variable on all RSs
@@ -342,10 +342,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 #define DECLARE_RS_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 
 /**
@@ -357,10 +357,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 #define DECLARE_RS_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 
 /**
@@ -372,10 +372,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 #define DECLARE_RS_USED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 /**
   Macro for declaration of a required initial condition on all RSs
@@ -386,10 +386,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 #define DECLARE_RS_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 // =====================================================================
 // =====================================================================
@@ -404,7 +404,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_PRODUCED_VAR(name,description,unit) \
-  ZeSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 /**
   Macro for declaration of an updated variable on all GUs
@@ -415,7 +415,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_UPDATED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 /**
   Macro for declaration of a required variable on all GUs
@@ -426,7 +426,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_REQUIRED_VAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 /**
   Macro for declaration of a required variable on all GUs, using a value produced on a previous time step
@@ -437,7 +437,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_REQUIRED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 
 /**
@@ -449,7 +449,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_USED_VAR(name,description,unit) \
-  ZeSignature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 /**
   Macro for declaration of an used variable on all GUs, using a value produced on a previous time step
@@ -460,7 +460,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_USED_PREVVAR(name,description,unit) \
-  ZeSignature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 
 /**
@@ -472,10 +472,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 #define DECLARE_GU_USED_PROPERTY(name,description,unit) \
-  ZeSignature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 
 /**
@@ -487,21 +487,21 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 #define DECLARE_GU_USED_INICOND(name,description,unit) \
-  ZeSignature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 
 // =====================================================================
 // =====================================================================
 
 #define DECLARE_REQUIRED_EXTRAFILE(name) \
-  ZeSignature->HandledData.RequiredExtraFiles.Add(name);
+  Signature->HandledData.RequiredExtraFiles.push_back(name);
 
 
 #define DECLARE_USED_EXTRAFILE(name) \
-  ZeSignature->HandledData.UsedExtraFiles.Add(name);
+  Signature->HandledData.UsedExtraFiles.push_back(name);
 
 
 // =====================================================================
@@ -512,17 +512,17 @@
 /**
   \deprecated Deprecated macro, it is available for compatibility only.
 */
-#define DECLARE_USED_SU_EVENTS ZeSignature->HandledData.UsedEventsOnUnits.push_back("SU");
+#define DECLARE_USED_SU_EVENTS Signature->HandledData.UsedEventsOnUnits.push_back("SU");
 
 /**
   \deprecated Deprecated macro, it is available for compatibility only.
 */
-#define DECLARE_USED_RS_EVENTS ZeSignature->HandledData.UsedEventsOnUnits.push_back("RS");
+#define DECLARE_USED_RS_EVENTS Signature->HandledData.UsedEventsOnUnits.push_back("RS");
 
 /**
   \deprecated Deprecated macro, it is available for compatibility only.
 */
-#define DECLARE_USED_GU_EVENTS ZeSignature->HandledData.UsedEventsOnUnits.push_back("GU");
+#define DECLARE_USED_GU_EVENTS Signature->HandledData.UsedEventsOnUnits.push_back("GU");
 
 
 

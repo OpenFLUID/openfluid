@@ -17,21 +17,22 @@
 #include <wx/regex.h>
 
 #include <wx/listimpl.cpp>
-WX_DEFINE_LIST(PluginsList);
+
+
 
 
 // =====================================================================
 // =====================================================================
-
+/*
 #define DECLARE_FUNCTION_PARSER \
     PluginsList::Node *_M_FuncNode = NULL;
-
+*/
 /**
   Macro for parsing the functions list and calling the given method of each function of the list
   \param[in] calledmethod the method to call on each function
   \param[out] statevar the globalized return of the method calls
  */
-#define PARSE_FUNCTION_LIST(calledmethod,statevar) \
+/*#define PARSE_FUNCTION_LIST(calledmethod,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
     { \
@@ -63,7 +64,7 @@ WX_DEFINE_LIST(PluginsList);
       _M_FuncNode = _M_FuncNode->GetNext(); \
     } \
     if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
-
+*/
 
 /**
   Macro for parsing the functions list and calling the given two methods of each function of the list
@@ -71,6 +72,7 @@ WX_DEFINE_LIST(PluginsList);
   \param[in] calledmethod2 the first method to call on each function
   \param[out] statevar the globalized return of the method calls
  */
+/*
 #define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
     _M_FuncNode = m_Functions.GetFirst(); \
     while (_M_FuncNode && statevar) \
@@ -103,12 +105,12 @@ WX_DEFINE_LIST(PluginsList);
       _M_FuncNode = _M_FuncNode->GetNext(); \
     }
 
-
+*/
 // =====================================================================
 // =====================================================================
 
 // checks if var exists
-#define CHECK_VAR(name,objects,objshashtype,vars,status) \
+/*#define CHECK_VAR(name,objects,objshashtype,vars,status) \
     objshashtype::iterator _M_it;\
     _M_it = objects->begin(); \
     while (status && (_M_it != objects->end()))\
@@ -147,7 +149,7 @@ WX_DEFINE_LIST(PluginsList);
       ++_M_it;\
     }\
 
-
+*/
 // =====================================================================
 // =====================================================================
 
@@ -165,11 +167,14 @@ Engine::Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::Execu
   mp_PlugMan = PlugMan;
 
 
-  m_Functions.Clear();
+  m_Functions.clear();
 
-  mp_IOMan = new IOManager(mp_ExecMsgs,mp_RunEnv);
+  mp_IOMan = IOManager::getInstance();
+  mp_IOMan->setCoreRepository(CoreData);
+  mp_IOMan->setExecutionMessages(ExecMsgs);
+  mp_IOMan->setRunEnvironment(RunEnv);
 
-  m_ModelConfig.SimulationID = wxT("");
+  m_ModelConfig.SimulationID = "";
 
   mp_SimStatus = NULL;
 
@@ -198,26 +203,28 @@ bool Engine::processConfig()
   */
 
 
-  FunctionConfigsList::Node *FuncNode = m_ModelConfig.FuncConfigs.GetFirst();
-  FunctionConfig *FConf;
+//  FunctionConfigsList:: *FuncNode = m_ModelConfig.FuncConfigs.front();
+  std::list<FunctionConfig>::iterator FuncIt;
+
+  FunctionConfig* FConf;
   PluginContainer* FuncToAdd;
 
   m_Functions.clear();
 
 
   // on each function
-  while (FuncNode)
+  for (FuncIt = m_ModelConfig.FuncConfigs.begin(); FuncIt != m_ModelConfig.FuncConfigs.end(); ++FuncIt)
   {
-    FConf = (FunctionConfig*)(FuncNode->GetData());
+    FConf = &(*FuncIt);
 
     // instanciates and gets a pointer to the function
-    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,openfluid::base::SIMULATION,mp_CoreData);
+    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,mp_CoreData);
 
     if (FuncToAdd != NULL)
     {
        if (FuncToAdd->Function->initParams(FConf->Params))
        {
-         m_Functions.Append((PluginContainer**)FuncToAdd);
+         m_Functions.push_back(FuncToAdd);
        }
        else
        {
@@ -228,11 +235,9 @@ bool Engine::processConfig()
     }
     else
     {
-      throw openfluid::base::OFException("kernel","Engine::processConfig","Loading function from plugin " + _S(FConf->FileID));
+      throw openfluid::base::OFException("kernel","Engine::processConfig","Loading function from plugin " + FConf->FileID);
       return false;
     }
-
-    FuncNode = FuncNode->GetNext();
   }
 
 
@@ -244,7 +249,7 @@ bool Engine::processConfig()
 
 bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Message)
 {
-
+/*
   openfluid::core::SurfaceUnit *SU;
   openfluid::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
   openfluid::core::SUMap::iterator SUiter;
@@ -397,7 +402,7 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Mess
   }
 
 
-
+*/
   return true;
 
 }
@@ -408,11 +413,13 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Mess
 bool Engine::checkModelConsistency()
 {
 
+  bool IsOK = true;
+
+  /*
   PluginsList::Node *FuncNode = NULL;
   openfluid::base::SignatureHandledData HData;
 
   int i;
-  bool IsOK = true;
 
 
   FuncNode = m_Functions.GetFirst();
@@ -697,7 +704,7 @@ bool Engine::checkModelConsistency()
     FuncNode = FuncNode->GetNext();
   }
 
-
+*/
 
   return IsOK;
 }
@@ -710,12 +717,13 @@ bool Engine::checkModelConsistency()
 bool Engine::checkDataConsistency()
 {
 
+  bool IsOK = true;
+/*
   PluginsList::Node *FuncNode = NULL;
   openfluid::base::SignatureHandledData HData;
   PluginContainer* CurrentFunction;
 
   int i;
-  bool IsOK = true;
 
 
 
@@ -927,7 +935,7 @@ bool Engine::checkDataConsistency()
 
     FuncNode = FuncNode->GetNext();
   }
-
+*/
 
 
   return IsOK;
@@ -939,7 +947,7 @@ bool Engine::checkDataConsistency()
 
 bool Engine::checkExtraFilesConsistency()
 {
-
+/*
   PluginsList::Node *FuncNode = NULL;
   int i;
   openfluid::base::SignatureHandledData HData;
@@ -970,7 +978,7 @@ bool Engine::checkExtraFilesConsistency()
   }
 
 
-
+*/
   return true;
 }
 
@@ -1036,13 +1044,13 @@ bool Engine::loadData()
   bool IsOK;
 
   IsOK =  mp_IOMan->loadRunConfig(&m_RunConfig);
-
+/*
   if (IsOK) IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
 
   if (IsOK) IsOK = mp_IOMan->loadDistributedData(mp_CoreData->getSpatialData());
 
   if (IsOK) IsOK = mp_IOMan->loadDistributedEvents(mp_CoreData->getSpatialData());
-
+*/
   if (IsOK && mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
 
   return IsOK;
@@ -1057,29 +1065,34 @@ bool Engine::prepareDataAndCheckConsistency()
 {
 
   bool IsOK = true;
-  DECLARE_FUNCTION_PARSER;
+  // TODO check that
+  //DECLARE_FUNCTION_PARSER;
 
 
 
   // builds topology by linking objects
+  // TODO check if necessary, i think no
+/*
   if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
   {
     throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","Topology rebuild error");
     return false;
   }
-
+*/
 
   // builds process orders lists
+// TODO check if necessary, i think no
+  /*
   if (!mp_CoreData->getSpatialData()->buildProcessOrders())
   {
     throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","Process orders build error");
     return false;
   }
-
+*/
 
   // check simulation functions count
 
-  if (m_Functions.GetCount() == 0)
+  if (m_Functions.size() == 0)
   {
     throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","No simulation function in model");
     return false;
@@ -1104,7 +1117,8 @@ bool Engine::prepareDataAndCheckConsistency()
 
   try
   {
-    PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+    // TODO check that
+    //PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1153,12 +1167,15 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
   // preparation des donnees de simulation
-  mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
+  // TODO check that
+  //mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
 
-  if (mp_RunEnv->isTraceMode())
+  // TODO check that
+  //
+  /*if (mp_RunEnv->isTraceMode())
   {
     if (!mp_IOMan->prepareTraceDir(mp_CoreData)) return false;
-  }
+  }*/
 
   if (mp_RunEnv->isWriteResults())
   {
@@ -1177,7 +1194,8 @@ bool Engine::prepareDataAndCheckConsistency()
 bool Engine::run()
 {
   bool IsOK = true;
-  DECLARE_FUNCTION_PARSER;
+  // TODO check that
+  //DECLARE_FUNCTION_PARSER;
 
   wxString ProdMessage;
   // Check for simulation vars production before init
@@ -1198,7 +1216,8 @@ bool Engine::run()
 
   try
   {
-    PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
+    // TODO check that
+    //PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1264,7 +1283,7 @@ bool Engine::run()
     if (!mp_RunEnv->isQuietRun())
     {
       std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-      std::cout << std::setw(25) << _C(mp_SimStatus->getCurrentTime().getAsISOString());
+      std::cout << std::setw(25) << mp_SimStatus->getCurrentTime().getAsISOString();
       std::cout.flush();
     }
 
@@ -1272,7 +1291,8 @@ bool Engine::run()
 
     try
     {
-      PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
+      // TODO check that
+      //PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
 
       // check simulation vars production at each time step
       if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
@@ -1318,7 +1338,8 @@ bool Engine::run()
     }
 
 
-    if (mp_RunEnv->isTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
+    // TODO check that
+    //if (mp_RunEnv->isTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
 
   } while (mp_SimStatus->switchToNextStep());
 
@@ -1339,7 +1360,8 @@ bool Engine::run()
   try
   {
 
-    PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
+    // TODO check that
+    //PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1394,20 +1416,20 @@ bool Engine::run()
 // =====================================================================
 // =====================================================================
 
-
+/*
 bool Engine::saveResults(ExtraSimInfos ExSI)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveResults(mp_CoreData, m_RunConfig, mp_SimStatus->getStepsCount(),ExSI));
+  return (mp_IOMan->saveOutputs(m_RunConfig, mp_SimStatus->getStepsCount(),ExSI));
 }
-
+*/
 // =====================================================================
 // =====================================================================
 
-bool Engine::saveReports(ExtraSimInfos ExSI, wxString ErrorMsg)
+bool Engine::saveReports(ExtraSimInfos ExSI, std::string ErrorMsg)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveSimulationInfos(mp_CoreData,ExSI,(openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
+  return (mp_IOMan->saveSimulationInfos(ExSI,(openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
 }
 
 

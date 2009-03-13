@@ -12,6 +12,7 @@
 #include "UnitsColl.h"
 #include "InputData.h"
 #include "Variables.h"
+#include "EventCollection.h"
 
 namespace openfluid { namespace core {
 
@@ -44,6 +45,7 @@ class Unit
     Variables<ScalarValue> m_ScalarVariables;
     Variables<VectorValue> m_VectorVariables;
 
+    EventCollection m_Events;
 
 
   public:
@@ -76,14 +78,20 @@ class Unit
 
     Variables<ScalarValue>* getScalarVariables() { return &m_ScalarVariables; };
 
-    const Variables<ScalarValue>* getScalarVariables() const  { return &m_ScalarVariables; };
+    const Variables<ScalarValue>* getScalarVariables() const { return &m_ScalarVariables; };
 
     Variables<VectorValue>* getVectorVariables() { return &m_VectorVariables; };
 
     const Variables<VectorValue>* getVectorVariables() const { return &m_VectorVariables; };
 
+    EventCollection* getEvents() { return &m_Events; };
+
+    const EventCollection* getEvents() const { return &m_Events; };
+
+
     void printSTDOUT();
 
+    // TODO clean this
 /*    bool getInputData(const InputDataName_t aName, ScalarValue* aValue) const;
 
     bool setInputData(const InputDataName_t aName, const ScalarValue aValue);*/

@@ -7,7 +7,7 @@
 
 
 #include "DistributedEvent.h"
-
+#include "openfluid-tools.h"
 #include <iostream>
 
 namespace openfluid { namespace core {
@@ -42,7 +42,7 @@ DistributedEvent::~DistributedEvent()
 // =====================================================================
 
 
-bool DistributedEvent::isInfoExists(wxString Key)
+bool DistributedEvent::isInfoExists(std::string Key)
 {
   return !(m_Infos.find(Key) == m_Infos.end());
 }
@@ -51,9 +51,9 @@ bool DistributedEvent::isInfoExists(wxString Key)
 // =====================================================================
 
 
-bool DistributedEvent::isInfoEquals(wxString Key, wxString Value)
+bool DistributedEvent::isInfoEquals(std::string Key, std::string Value)
 {
-  wxString TmpValue;
+  std::string TmpValue;
 
   return (getInfoAsString(Key,&TmpValue) && (TmpValue == Value));
 
@@ -63,7 +63,7 @@ bool DistributedEvent::isInfoEquals(wxString Key, wxString Value)
 // =====================================================================
 
 
-bool DistributedEvent::isInfoEquals(wxString Key, long Value)
+bool DistributedEvent::isInfoEquals(std::string Key, long Value)
 {
  long TmpValue;
 
@@ -75,7 +75,7 @@ bool DistributedEvent::isInfoEquals(wxString Key, long Value)
 // =====================================================================
 
 
-bool DistributedEvent::isInfoEquals(wxString Key, double Value)
+bool DistributedEvent::isInfoEquals(std::string Key, double Value)
 {
   double TmpValue;
 
@@ -87,7 +87,7 @@ bool DistributedEvent::isInfoEquals(wxString Key, double Value)
 // =====================================================================
 
 
-bool DistributedEvent::isInfoEquals(wxString Key, ScalarValue *Value)
+bool DistributedEvent::isInfoEquals(std::string Key, ScalarValue *Value)
 {
   ScalarValue TmpValue;
 
@@ -100,7 +100,7 @@ bool DistributedEvent::isInfoEquals(wxString Key, ScalarValue *Value)
 // =====================================================================
 
 
-bool DistributedEvent::getInfoAsString(wxString Key, wxString *Info)
+bool DistributedEvent::getInfoAsString(std::string Key, std::string *Info)
 {
 
   if (m_Infos.find(Key) == m_Infos.end())
@@ -116,30 +116,30 @@ bool DistributedEvent::getInfoAsString(wxString Key, wxString *Info)
 // =====================================================================
 
 
-bool DistributedEvent::getInfoAsLong(wxString Key, long *Info)
+bool DistributedEvent::getInfoAsLong(std::string Key, long *Info)
 {
 
-  wxString InfoStr;
+  std::string InfoStr;
 
-  return ((getInfoAsString(Key,&InfoStr)) && (InfoStr.ToLong(Info)));
+  return ((getInfoAsString(Key,&InfoStr)) && (openfluid::tools::ConvertString(InfoStr,Info)));
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool DistributedEvent::getInfoAsDouble(wxString Key, double *Info)
+bool DistributedEvent::getInfoAsDouble(std::string Key, double *Info)
 {
-  wxString InfoStr;
+  std::string InfoStr;
 
-  return ((getInfoAsString(Key,&InfoStr)) && (InfoStr.ToDouble(Info)));
+  return ((getInfoAsString(Key,&InfoStr)) && (openfluid::tools::ConvertString(InfoStr,Info)));
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool DistributedEvent::getInfoAsScalarValue(wxString Key, ScalarValue *Info)
+bool DistributedEvent::getInfoAsScalarValue(std::string Key, ScalarValue *Info)
 {
   return getInfoAsDouble(Key,Info);
 }
@@ -148,7 +148,7 @@ bool DistributedEvent::getInfoAsScalarValue(wxString Key, ScalarValue *Info)
 // =====================================================================
 // =====================================================================
 
-bool DistributedEvent::addInfo(wxString Key, wxString Info)
+bool DistributedEvent::addInfo(std::string Key, std::string Info)
 {
   if (m_Infos.find(Key) != m_Infos.end())
   {
@@ -165,13 +165,13 @@ bool DistributedEvent::addInfo(wxString Key, wxString Info)
 
 void DistributedEvent::println()
 {
-  std::cerr << "Date : " << m_Date.getAsISOString().mb_str(wxConvUTF8) << std::endl;
+  std::cerr << "Date : " << m_Date.getAsISOString() << std::endl;
   std::cerr << "Infos : " <<std::endl;
 
-  EventInfosMap::iterator it;
+  EventInfosMap_t::iterator it;
   for (it = m_Infos.begin();it != m_Infos.end();++it)
   {
-    std::cerr << " - " << it->first.mb_str(wxConvUTF8) << " = " << it->second.mb_str(wxConvUTF8) << std::endl;
+    std::cerr << " - " << it->first << " = " << it->second << std::endl;
   }
 }
 
