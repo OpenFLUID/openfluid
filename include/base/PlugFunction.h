@@ -63,7 +63,7 @@
 #define PLUGSIGNATURE_PROC_NAME "GetPlugSignature"
 
 /**
-  Signature hook name
+  SDK version hook name
 */
 #define PLUGSDKVERSION_PROC_NAME "GetPlugSDKVersion"
 
@@ -82,6 +82,7 @@
 
 
 
+
 // =======================================of==============================
 // =====================================================================
 
@@ -90,11 +91,9 @@
   Macro for definition of function hook
   \param[in] pluginclassname The name of the class to instanciate
 */
-
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
   std::string GetPlugSDKVersion() \
   { \
-    // TODO check this
     return std::string(STRINGIFY(OFELIB_VERSION)); \
   } \
   \
@@ -143,18 +142,20 @@
     suobj = &(*_M_SUListIter); \
 
 
+
+
 /**
   Macro for declaration of a loop processing RSs, following their process order
 */
 #define DECLARE_RS_ORDERED_LOOP \
-  std::list<openfluid::core::ReachSegment*>::iterator _M_RSiter; \
-  std::list<openfluid::core::ReachSegment*>* _M_RSsList = mp_CoreData->getSpatialData()->getRSsOrderedList();
+  openfluid::core::UnitsList_t::iterator _M_RSsOrdIter; \
+  openfluid::core::UnitsList_t* _M_RSsOrderedList = mp_CoreData->getUnits("RS")->getList();
 
 /**
   Macro for declaration of a loop processing a list of RSs
 */
 #define DECLARE_RS_LIST_LOOP \
-  std::list<openfluid::core::ReachSegment*>::iterator _M_RSListiter; \
+  std::list<openfluid::core::ReachSegment*>::iterator _M_RSListIter; \
 
 
 /**
@@ -162,9 +163,9 @@
   \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS
 */
 #define BEGIN_RS_ORDERED_LOOP(rsobj) \
-  for(_M_RSiter=_M_RSsList->begin(); _M_RSiter != _M_RSsList->end(); _M_RSiter++) \
+  for(_M_RSsOrdIter=_M_RSsOrderedList->begin(); _M_RSsOrdIter != _M_RSsOrderedList->end(); _M_RSsOrdIter++) \
   { \
-    rsobj = *_M_RSiter; \
+    rsobj = &(*_M_RSsOrdIter); \
 
 /**
   Macro for the begining of a loop processing a list of RSs
@@ -172,9 +173,11 @@
   \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS
 */
 #define BEGIN_RS_LIST_LOOP(rslist,rsobj) \
-  for(_M_RSListiter=rslist->begin(); _M_RSListiter != rslist->end(); _M_RSListiter++) \
+  for(_M_RSListIter=rslist->begin(); _M_RSListIter != rslist->end(); _M_RSListIter++) \
   { \
-    rsobj = *_M_RSListiter; \
+    rsobj = &(*_M_RSListIter); \
+
+
 
 
 
@@ -182,14 +185,14 @@
   Macro for declaration of a loop processing GUs, following their process order
 */
 #define DECLARE_GU_ORDERED_LOOP \
-  std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUiter; \
-  std::list<openfluid::core::GroundwaterUnit*>* _M_GUsList = mp_CoreData->getSpatialData()->getGUsOrderedList();
+  openfluid::core::UnitsList_t::iterator _M_GUsOrdIter; \
+  openfluid::core::UnitsList_t* _M_GUsOrderedList = mp_CoreData->getUnits("GU")->getList();
 
 /**
   Macro for declaration of a loop processing a list of GUs
 */
 #define DECLARE_GU_LIST_LOOP \
-  std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUListiter; \
+  std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUListIter; \
 
 
 /**
@@ -197,9 +200,9 @@
   \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU
 */
 #define BEGIN_GU_ORDERED_LOOP(guobj) \
-  for(_M_GUiter=_M_GUsList->begin(); _M_GUiter != _M_GUsList->end(); _M_GUiter++) \
+  for(_M_GUsOrdIter=_M_GUsOrderedList->begin(); _M_GUsOrdIter != _M_GUsOrderedList->end(); _M_GUsOrdIter++) \
   { \
-    guobj = *_M_GUiter; \
+    guobj = &(*_M_GUsOrdIter); \
 
 /**
   Macro for the begining of a loop processing a list of GUs
@@ -207,9 +210,10 @@
   \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU
 */
 #define BEGIN_GU_LIST_LOOP(gulist,guobj) \
-  for(_M_GUListiter=gulist->begin(); _M_GUListiter != gulist->end(); _M_GUListiter++) \
+  for(_M_GUListIter=gulist->begin(); _M_GUListIter != gulist->end(); _M_GUListIter++) \
   { \
-    guobj = *_M_GUListiter; \
+    guobj = &(*_M_GUListIter); \
+
 
 
 #define DECLARE_EVENT_COLLECTION_LOOP \
@@ -635,12 +639,12 @@ class PluggableFunction : public wxObject
 };
 
 
-// =====================================================================
-// =====================================================================
+typedef PluggableFunction* (*GetPluggableFunctionProc)();
 
-typedef PluggableFunction*(*GetPluggableFunctionProc)();
+typedef FunctionSignature* (*GetSignatureProc)();
 
-typedef FunctionSignature*(*GetSignatureProc)();
+typedef std::string (*GetSDKVersionProc)();
+
 
 
 } } // namespace openfluid::base

@@ -119,7 +119,7 @@ class IOManager
 
     static IOManager* mp_Singleton;
 
-    openfluid::core::MemoryMonitor* mp_MemMonitor;
+    openfluid::core::MemoryMonitor* mp_MemMon;
     openfluid::core::CoreRepository* mp_Repository;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
     RuntimeEnvironment* mp_RunEnv;
@@ -129,7 +129,7 @@ class IOManager
     bool m_ClearedOuputDir;
 
 
-    IOManager() { };
+    IOManager() { mp_MemMon = openfluid::core::MemoryMonitor::getInstance(); };
 
     bool prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
                                std::string OutputDir);
@@ -173,7 +173,7 @@ class IOManager
 
     static IOManager* getInstance();
 
-    void setMemoryMonitor(openfluid::core::MemoryMonitor* MemMonitor) { mp_MemMonitor = MemMonitor; };
+    void setMemoryMonitor(openfluid::core::MemoryMonitor* MemMonitor) { mp_MemMon = MemMonitor; };
 
     void setCoreRepository(openfluid::core::CoreRepository* Repository) { mp_Repository = Repository; };
 

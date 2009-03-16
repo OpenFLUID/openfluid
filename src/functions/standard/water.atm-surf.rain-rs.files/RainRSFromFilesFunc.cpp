@@ -73,7 +73,7 @@ RainRSFromFilesFunction::~RainRSFromFilesFunction()
 // =====================================================================
 
 
-bool RainRSFromFilesFunction::initParams(openfluid::core::ParamsMap Params)
+bool RainRSFromFilesFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
 
   OPENFLUID_GetFunctionParameter(Params,("threshold"),&m_Threshold);
@@ -112,7 +112,7 @@ bool RainRSFromFilesFunction::checkConsistency()
 bool RainRSFromFilesFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
-  wxString InputDir;
+  std::string InputDir;
 
   OPENFLUID_GetRunEnvironment(("dir.input"),&InputDir);
 

@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-//#include <wx/log.h>
+#include <wx/filename.h>
 
 
 #include "AppTools.h"
@@ -231,20 +231,32 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 
 void OpenFLUIDApp::printDataInfos()
 {
+  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
   std::cout << std::endl;
   std::cout << "Simulation ID: " << m_ExSI.SimID << std::endl;
   std::cout << std::endl;
-  // TODO enable this with correct information
-  /*
-  std::cout << "Spatial domain: " << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getSUsCollection()->size() << " Surface Units" << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getRSsCollection()->size() << " Reach Segments" << std::endl
-            << "   - " << mp_CoreData->getSpatialData()->getGUsCollection()->size() << " Groundwater Units" << std::endl;*/
+
+
+  std::cout << "Spatial domain: " << std::endl;
+  for (UnitsIt = mp_CoreData->getUnits()->begin(); UnitsIt != mp_CoreData->getUnits()->end();++UnitsIt )
+  {
+    std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
+  }
+
+  std::cout << std::endl;
+
   std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
             << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
             << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
+
   std::cout << std::endl;
+
+  if (mp_RunEnv->isProgressiveOutput()) std::cout << "Progressive output enabled (Packet=" << mp_RunEnv->getProgressiveOutputPacket() << ", Keep=" << mp_RunEnv->getProgressiveOutputKeep() << ")" <<  std::endl;
+  else std::cout << "Progressive output disabled" << std::endl;
+
+  std::cout << std::endl;
+
   std::cout.flush();
 
 }
@@ -260,12 +272,20 @@ void OpenFLUIDApp::printPluginsList()
 
   std::cout << "Available simulation functions:" << std::endl;
 
+  bool OneAtLeast = false;
 
-  if (PlugContainers.size() > 0)
+  for (int i=0;i<PlugContainers.size();i++)
   {
-    for (int i=0;i<PlugContainers.size();i++) std::cout << "  - " << ReplaceEmptyString(PlugContainers[i]->Signature->Name,"(unknown simulation function)") << std::endl;
+    if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
+    {
+      wxFileName TmpFilename = wxFileName(_U(PlugContainers[i]->Filename.c_str()));
+      std::string TmpFilenameStr = _S(TmpFilename.GetName());
+      std::cout << "  - " << ReplaceEmptyString(TmpFilenameStr,"(unknown simulation function)") << std::endl;
+      OneAtLeast = true;
+    }
   }
-  else
+
+  if (!OneAtLeast)
   {
     std::cout << "  (none)" << std::endl;
   }
@@ -633,6 +653,7 @@ int OpenFLUIDApp::OnRun()
       m_ExSI.StartTime = m_TotalStartTime;
 
       mp_CoreData = openfluid::core::CoreRepository::getInstance();
+      mp_CoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
 
       mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
 
@@ -692,8 +713,8 @@ int OpenFLUIDApp::OnRun()
 
       std::cout << std::endl;
 
-      std::cout << "Simulation run time: " << EffSimTime.Format(wxT("%Hh %Mm %Ss")) << std::endl;
-      std::cout << "     Total run time: " << TotSimTime.Format(wxT("%Hh %Mm %Ss")) << std::endl;
+      std::cout << "Simulation run time: " << _S(EffSimTime.Format(wxT("%Hh %Mm %Ss"))) << std::endl;
+      std::cout << "     Total run time: " << _S(TotSimTime.Format(wxT("%Hh %Mm %Ss"))) << std::endl;
       std::cout << std::endl;
 
 

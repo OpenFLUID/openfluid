@@ -63,6 +63,12 @@ class RuntimeEnvironment
 
     bool m_CheckVarNames;
 
+    bool m_ProgressiveOutput;
+
+    unsigned int m_ProgOutPacket;
+
+    unsigned int m_ProgOutKeep;
+
     openfluid::base::FunctionEnvironment* mp_FuncEnv;
 
 
@@ -141,6 +147,15 @@ class RuntimeEnvironment
 
     openfluid::base::FunctionEnvironment* getFunctionEnvironment() const { return mp_FuncEnv; };
 
+    bool isProgressiveOutput() const { return m_ProgressiveOutput; };
+
+    void setProgressiveOutputKeep(unsigned int Keep)  { m_ProgressiveOutput = true; m_ProgOutKeep = Keep; };
+
+    void setProgressiveOutputPacket(unsigned int Packet)  { m_ProgressiveOutput = true; m_ProgOutPacket = Packet; };
+
+    unsigned int getProgressiveOutputKeep() const { return m_ProgOutKeep; };
+
+    unsigned int getProgressiveOutputPacket() const  { return m_ProgOutPacket; };
 
 
 };

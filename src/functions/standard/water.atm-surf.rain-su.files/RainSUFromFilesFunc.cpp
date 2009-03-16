@@ -117,9 +117,9 @@ bool RainSUFromFilesFunction::initializeRun(const openfluid::base::SimulationInf
 
   std::string InputDir;
 
-  OPENFLUID_GetRunEnvironment(("dir.input"),&InputDir);
+  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
 
-  m_DataPool.setConfig(InputDir, ("rainsources.xml"),("SUraindistri.dat"),openfluid::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
+  m_DataPool.setConfig(InputDir,"rainsources.xml","SUraindistri.dat",openfluid::tools::SERIEPREPCS_CUMULATE,SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
 
   m_DataPool.loadAndPrepareData();
 

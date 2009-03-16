@@ -34,6 +34,8 @@ RuntimeEnvironment::RuntimeEnvironment(std::string AppDir)
   m_EnableTrace = false;
   m_CheckVarNames = true;
 
+  m_ProgressiveOutput = false;
+
   mp_FuncEnv = new openfluid::base::FunctionEnvironment();
 
   mp_FuncEnv->setValue("dir.input",m_InputDir);

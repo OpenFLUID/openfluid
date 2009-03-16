@@ -155,6 +155,40 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       if (Str != "" && (Str.find(" ") == -1)) Config->SimulationID = Str;
     }
 
+    // -------- Progressive output ----------------
+
+    Child = DocHandle.FirstChild("openfluid").FirstChild("run").FirstChild("progressout").Element();
+
+    if (Child != NULL)
+    {
+      std::string PacketStr, KeepStr;
+      unsigned int Packet, Keep;
+
+
+
+      if (Child->Attribute("packet") != NULL && Child->Attribute("keep"))
+      {
+         PacketStr = Child->Attribute("packet");
+         KeepStr = Child->Attribute("keep");
+      }
+
+      if (openfluid::tools::ConvertString(PacketStr,&Packet) &&
+          openfluid::tools::ConvertString(KeepStr,&Keep) &&
+          Keep > 0 && Packet > Keep)
+      {
+        mp_RunEnv->setProgressiveOutputKeep(Keep);
+        mp_RunEnv->setProgressiveOutputPacket(Packet);
+        mp_MemMon->setPacketAndKeep(Packet,Keep);
+      }
+      else
+      {
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","in run config file (" + OPENFLUID_DEFAULT_RUNFILE + "), error in progressive output parameters");
+        return false;
+      }
+
+    }
+
+
 
 
   }
@@ -908,7 +942,7 @@ bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool Withou
 
 
   openfluid::core::TimeStep_t BeginStep, EndStep;
-  mp_MemMonitor->getMemoryReleaseRange(CurrentStep,WithoutKeep,&BeginStep,&EndStep);
+  mp_MemMon->getMemoryReleaseRange(CurrentStep,WithoutKeep,&BeginStep,&EndStep);
 
 //  std::cout << "Saving to disk from " << BeginStep << " to " << EndStep << std::endl;
 

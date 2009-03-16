@@ -30,7 +30,7 @@ class RainRSFromFilesFunction : public openfluid::base::PluggableFunction
   private:
 
     openfluid::tools::DistributeInterpolate m_DataPool;
-    
+
     double m_Threshold;
 
   public:
@@ -44,7 +44,7 @@ class RainRSFromFilesFunction : public openfluid::base::PluggableFunction
     */
     ~RainRSFromFilesFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 
