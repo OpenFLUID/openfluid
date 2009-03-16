@@ -50,6 +50,11 @@ class Engine
      PluginManager* mp_PlugMan;
 
      /**
+       Memory monitor
+     */
+     openfluid::core::MemoryMonitor* mp_MemMon;
+
+     /**
        IOManager
      */
      IOManager* mp_IOMan;
@@ -71,7 +76,7 @@ class Engine
      */
      bool processConfig();
 
-     bool checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Message);
+     bool checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message);
 
      bool checkModelConsistency();
 

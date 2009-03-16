@@ -18,6 +18,7 @@ struct PluginContainer
 {
 
   std::string Filename;
+  bool SDKCompatible;
   openfluid::base::FunctionSignature* Signature;
   openfluid::base::PluggableFunction* Function;
 
@@ -26,6 +27,7 @@ struct PluginContainer
     Filename = "";
     Signature = NULL;
     Function = NULL;
+    SDKCompatible = false;
   }
 
 };

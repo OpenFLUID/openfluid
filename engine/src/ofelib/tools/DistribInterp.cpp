@@ -157,7 +157,6 @@ bool DistributeInterpolate::loadDataAsSerie(std::string FilePath, SeriePreproces
   openfluid::core::DateTime ZeDT;
 
 
-
   Serie->clear();
 
 

@@ -23,25 +23,25 @@
 
 // =====================================================================
 // =====================================================================
-/*
+
 #define DECLARE_FUNCTION_PARSER \
-    PluginsList::Node *_M_FuncNode = NULL;
-*/
+    PluginsList::iterator _M_FuncIter;
+
 /**
   Macro for parsing the functions list and calling the given method of each function of the list
   \param[in] calledmethod the method to call on each function
   \param[out] statevar the globalized return of the method calls
  */
-/*#define PARSE_FUNCTION_LIST(calledmethod,statevar) \
-    _M_FuncNode = m_Functions.GetFirst(); \
-    while (_M_FuncNode && statevar) \
+#define PARSE_FUNCTION_LIST(calledmethod,statevar) \
+    _M_FuncIter = m_Functions.begin(); \
+    while (_M_FuncIter != m_Functions.end() && statevar) \
     { \
-      PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
+      PluginContainer* CurrentFunction = *_M_FuncIter; \
       if (CurrentFunction != NULL) \
       { \
         if (mp_RunEnv->isVerboseRun()) \
         { \
-          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID; \
           std::cout.flush(); \
         } \
         statevar = (statevar && CurrentFunction->Function->calledmethod); \
@@ -61,10 +61,10 @@
           std::cout.flush(); \
         } \
       } \
-      _M_FuncNode = _M_FuncNode->GetNext(); \
+      _M_FuncIter++; \
     } \
     if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
-*/
+
 
 /**
   Macro for parsing the functions list and calling the given two methods of each function of the list
@@ -72,17 +72,17 @@
   \param[in] calledmethod2 the first method to call on each function
   \param[out] statevar the globalized return of the method calls
  */
-/*
+
 #define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
-    _M_FuncNode = m_Functions.GetFirst(); \
-    while (_M_FuncNode && statevar) \
+    _M_FuncIter = m_Functions.begin(); \
+    while (_M_FuncIter != m_Functions.end() && statevar) \
     { \
-      PluginContainer* CurrentFunction = (PluginContainer*)_M_FuncNode->GetData(); \
+      PluginContainer* CurrentFunction = *_M_FuncIter; \
       if (CurrentFunction != NULL) \
       { \
         if (mp_RunEnv->isVerboseRun()) \
         { \
-          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID.mb_str(wxConvUTF8); \
+          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID; \
           std::cout.flush(); \
         } \
         statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
@@ -102,24 +102,41 @@
           std::cout.flush(); \
         } \
       } \
-      _M_FuncNode = _M_FuncNode->GetNext(); \
-    }
+      _M_FuncIter++; \
+    } \
+    if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
 
-*/
+
+
+
 // =====================================================================
 // =====================================================================
 
 // checks if var exists
-/*#define CHECK_VAR(name,objects,objshashtype,vars,status) \
-    objshashtype::iterator _M_it;\
-    _M_it = objects->begin(); \
-    while (status && (_M_it != objects->end()))\
-    {\
-      status = (!(_M_it->second->vars->find(name) == _M_it->second->vars->end()));\
-      ++_M_it; \
-    }\
+/*
+            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
+                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
+                       getSimulatedVectorVars(),IsOK);
 
-// adds a new var, returns false status if already exits
+*/
+// TODO check that
+#define DECLARE_CHECK_VAR \
+    openfluid::core::UnitsList_t::const_iterator _M_CHV_UnitIter; \
+    openfluid::core::UnitsList_t* _M_CHV_UnitList; \
+
+// TODO check that
+#define CHECK_VAR(varname,unitclass,status) \
+    _M_CHV_UnitList = NULL; \
+    if (mp_CoreData->isUnitsClassExists(unitclass)) _M_CHV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+    _M_CHV_UnitIter = _M_CHV_UnitList->begin(); \
+    while (status && (_M_CHV_UnitIter != _M_CHV_UnitList->end()))\
+    {\
+      if (IsVectorNamedVariable(varname) status = (*_M_CHV_UnitIter)->getVectorVariables()->IsVariableExist(GetVectorNamedVariableName(varname));\
+      else status = (*_M_CHV_UnitIter)->getScalarVariables()->IsVariableExist(varname); \
+      ++_M_CHV_UnitIter; \
+    }\
+/*
+// adds a new var, returns false status if already exists
 #define CREATE_VAR(name,objects,objshashtype,vars,varshashtype,datatype,status) \
     objshashtype::iterator _M_it;\
     _M_it = objects->begin(); \
@@ -165,6 +182,8 @@ Engine::Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::Execu
   mp_ExecMsgs = ExecMsgs;
   mp_RunEnv = RunEnv;
   mp_PlugMan = PlugMan;
+
+  mp_MemMon = openfluid::core::MemoryMonitor::getInstance();
 
 
   m_Functions.clear();
@@ -247,7 +266,7 @@ bool Engine::processConfig()
 // =====================================================================
 // =====================================================================
 
-bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, wxString* Message)
+bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message)
 {
 /*
   openfluid::core::SurfaceUnit *SU;
@@ -415,6 +434,25 @@ bool Engine::checkModelConsistency()
 
   bool IsOK = true;
 
+  DECLARE_CHECK_VAR;
+
+  PluginsList::iterator FuncIter;
+  openfluid::base::SignatureHandledData HData;
+
+  // TODO complete or rewrite this
+
+  FuncIter = m_Functions.begin();
+
+  while (FuncIter != m_Functions.end() && IsOK)
+  {
+
+
+
+
+  }
+
+
+  // TODO enable or rewrite this
   /*
   PluginsList::Node *FuncNode = NULL;
   openfluid::base::SignatureHandledData HData;
@@ -718,6 +756,7 @@ bool Engine::checkDataConsistency()
 {
 
   bool IsOK = true;
+  // TODO enable this
 /*
   PluginsList::Node *FuncNode = NULL;
   openfluid::base::SignatureHandledData HData;
@@ -947,7 +986,9 @@ bool Engine::checkDataConsistency()
 
 bool Engine::checkExtraFilesConsistency()
 {
-/*
+  // TODO enable this
+
+  /*
   PluginsList::Node *FuncNode = NULL;
   int i;
   openfluid::base::SignatureHandledData HData;
@@ -1043,14 +1084,16 @@ bool Engine::loadData()
 {
   bool IsOK;
 
+  // TODO check if complete
+
   IsOK =  mp_IOMan->loadRunConfig(&m_RunConfig);
-/*
-  if (IsOK) IsOK =  mp_IOMan->loadHydroObjects(mp_CoreData->getSpatialData());
 
-  if (IsOK) IsOK = mp_IOMan->loadDistributedData(mp_CoreData->getSpatialData());
+  if (IsOK) IsOK = mp_IOMan->loadDomainFromFiles();
 
-  if (IsOK) IsOK = mp_IOMan->loadDistributedEvents(mp_CoreData->getSpatialData());
-*/
+  if (IsOK) IsOK = mp_IOMan->loadInputDataFromFiles();
+
+  if (IsOK) IsOK = mp_IOMan->loadEventsFromFiles();
+
   if (IsOK && mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
 
   return IsOK;
@@ -1066,7 +1109,7 @@ bool Engine::prepareDataAndCheckConsistency()
 
   bool IsOK = true;
   // TODO check that
-  //DECLARE_FUNCTION_PARSER;
+  DECLARE_FUNCTION_PARSER;
 
 
 
@@ -1118,7 +1161,7 @@ bool Engine::prepareDataAndCheckConsistency()
   try
   {
     // TODO check that
-    //PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+    PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1195,15 +1238,16 @@ bool Engine::run()
 {
   bool IsOK = true;
   // TODO check that
-  //DECLARE_FUNCTION_PARSER;
+  DECLARE_FUNCTION_PARSER;
 
-  wxString ProdMessage;
+  std::string ProdMessage;
   // Check for simulation vars production before init
-  if (!checkSimulationVarsProduction(0, &ProdMessage))
+  // TODO enable this
+  /*if (!checkSimulationVarsProduction(0, &ProdMessage))
   {
     throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation initilialization : " + std::string(ProdMessage.mb_str(wxConvUTF8)));
     return false;
-  }
+  }*/
 
   // ============= initializeRun() =============
 
@@ -1217,7 +1261,7 @@ bool Engine::run()
   try
   {
     // TODO check that
-    //PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
+    PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1252,10 +1296,11 @@ bool Engine::run()
 
   mp_ExecMsgs->resetWarningFlag();
 
+  // TODO check that
   // check simulation vars production after init
   if (!checkSimulationVarsProduction(0,&ProdMessage))
   {
-    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation first step: " + std::string(ProdMessage.mb_str(wxConvUTF8)));
+    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation first step: " + ProdMessage);
     return false;
   }
 
@@ -1278,7 +1323,7 @@ bool Engine::run()
     std::cout.flush();
   }
 
-  do
+  do // time loop
   {
     if (!mp_RunEnv->isQuietRun())
     {
@@ -1292,12 +1337,12 @@ bool Engine::run()
     try
     {
       // TODO check that
-      //PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
+      PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
 
       // check simulation vars production at each time step
       if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
       {
-        throw openfluid::base::OFException("kernel","Engine::run",mp_SimStatus->getCurrentStep(),"Wrong simulation variable production : " + std::string(ProdMessage.mb_str(wxConvUTF8)));
+        throw openfluid::base::OFException("kernel","Engine::run",mp_SimStatus->getCurrentStep(),"Wrong simulation variable production : " + ProdMessage);
       }
     }
     catch (openfluid::base::OFException& E)
@@ -1338,10 +1383,22 @@ bool Engine::run()
     }
 
 
+    // TODO check this (progressive output)
+    // progressive output
+    if (mp_MemMon->isMemReleaseStep(mp_SimStatus->getCurrentStep()))
+    {
+      std::cout << std::endl << "        ---- Saving to disk and releasing memory ";
+      //mp_IOMan->saveOutputs(CurrentStep,false);
+      //mp_CoreData->doMemRelease(CurrentStep,false);
+      mp_MemMon->setLastMemoryRelease(mp_SimStatus->getCurrentStep());
+      std::cout << "[OK] ----" << std::endl << std::endl ;
+    }
+
+
     // TODO check that
     //if (mp_RunEnv->isTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
 
-  } while (mp_SimStatus->switchToNextStep());
+  } while (mp_SimStatus->switchToNextStep());  // end time loop
 
 
   std::cout << std::endl;
@@ -1361,7 +1418,7 @@ bool Engine::run()
   {
 
     // TODO check that
-    //PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
+    PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1407,6 +1464,13 @@ bool Engine::run()
     throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production during run finalization");
     return false;
   }
+
+
+  // TODO final progressive output
+  // -1 because of the previous loop, index exceeds range
+  //IOMan->saveOutputs(CurrentStep-1,true);
+  //TheRepos->doMemRelease(CurrentStep-1,true);
+
 
 
   return IsOK;

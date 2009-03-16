@@ -47,39 +47,44 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
   if (PluginFile.length()>0 && PlugLib->Load(_U(PluginFile.c_str())))
   {
     // TODO to develop
-    /*
+
+    Plug = new PluginContainer();
+    Plug->Filename = PluginFile;
+
     if (PlugLib->HasSymbol(wxT(PLUGSDKVERSION_PROC_NAME)))
     {
-      std::cout << ((openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSDKVERSION_PROC_NAME))) << std::endl;
-    }*/
+      openfluid::base::GetSDKVersionProc SDKProc;
+      if (SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->GetSymbol(wxT(PLUGSDKVERSION_PROC_NAME)));
+        Plug->SDKCompatible = (FULL_VERSION == SDKProc());
+    }
 
-    // checks if the handle proc exists
-    if (PlugLib->HasSymbol(wxT(PLUGFUNCTION_PROC_NAME)) && PlugLib->HasSymbol(wxT(PLUGSIGNATURE_PROC_NAME)))
+    if (Plug->SDKCompatible)
     {
-
-      // hooks the handle proc
-      openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));
-
-
-      if (SignProc != NULL)
+      // checks if the handle proc exists
+      if (PlugLib->HasSymbol(wxT(PLUGFUNCTION_PROC_NAME)) && PlugLib->HasSymbol(wxT(PLUGSIGNATURE_PROC_NAME)))
       {
-        Plug = new PluginContainer();
 
-        Plug->Signature = SignProc();
+        // hooks the handle proc
+        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));
 
-        openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT(PLUGFUNCTION_PROC_NAME));
-        if (PlugProc != NULL)
+
+        if (SignProc != NULL)
         {
-          Plug->Function = PlugProc();
-          Plug->Filename = PluginFile;
+          Plug->Signature = SignProc();
+
+          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT(PLUGFUNCTION_PROC_NAME));
+          if (PlugProc != NULL)
+          {
+            Plug->Function = PlugProc();
+          }
+          else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find function in plugin file " + PluginFilename);
         }
-        else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find function in plugin file " + PluginFilename);
+        else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + PluginFilename);
+
+        // unloads the library
+        //PlugLib->Unload();
+
       }
-      else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + PluginFilename);
-
-      // unloads the library
-      //PlugLib->Unload();
-
     }
   }
   else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find plugin file " + PluginFilename);
@@ -89,7 +94,7 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
 
 
 
-// =============================================================signature========
+// =====================================================================
 // =====================================================================
 /*
 ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
@@ -142,7 +147,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
   {
     CurrentPlug = buildPluginContainer(PluginFiles[i]);
 
-    if (CurrentPlug != NULL) PluginsContainers.push_back(CurrentPlug);
+    if (CurrentPlug != NULL && CurrentPlug->SDKCompatible) PluginsContainers.push_back(CurrentPlug);
   }
 
   return PluginsContainers;
