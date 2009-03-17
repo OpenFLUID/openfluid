@@ -172,7 +172,7 @@
   \param[in] description description of the property
   \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
-#define DECLARE_REQUIRED_INPUT(name,uclass,description,unit) \
+#define DECLARE_REQUIRED_INPUTDATA(name,uclass,description,unit) \
   Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
@@ -182,7 +182,7 @@
   \param[in] description description of the property
   \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
-#define DECLARE_USED_INPUT(name,uclass,description,unit) \
+#define DECLARE_USED_INPUTDATA(name,uclass,description,unit) \
   Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 
@@ -372,10 +372,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_REQUIRED_PROPERTY(name,description,unit) \
-  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 #define DECLARE_RS_USED_PROPERTY(name,description,unit) \
-  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 /**
   Macro for declaration of a required initial condition on all RSs
@@ -386,10 +386,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_RS_REQUIRED_INICOND(name,description,unit) \
-  Signature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 #define DECLARE_RS_USED_INICOND(name,description,unit) \
-  Signature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),("RS"),description,unit));
 
 // =====================================================================
 // =====================================================================
@@ -472,10 +472,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_REQUIRED_PROPERTY(name,description,unit) \
-  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 #define DECLARE_GU_USED_PROPERTY(name,description,unit) \
-  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 
 /**
@@ -487,10 +487,10 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_GU_REQUIRED_INICOND(name,description,unit) \
-  Signature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 #define DECLARE_GU_USED_INICOND(name,description,unit) \
-  Signature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),("GU"),description,unit));
 
 
 // =====================================================================

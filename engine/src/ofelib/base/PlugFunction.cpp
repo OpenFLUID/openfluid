@@ -492,6 +492,30 @@ void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, open
 // =====================================================================
 
 
+bool PluggableFunction::OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName)
+{
+  return mp_CoreData->isUnitsClassExist(ClassName);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t ClassName, unsigned int *UnitsCount)
+{
+  if (mp_CoreData->isUnitsClassExist(ClassName))
+  {
+    *UnitsCount = mp_CoreData->getUnits(ClassName)->getList()->size();
+    return true;
+  }
+  else return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 
 void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg)
 {

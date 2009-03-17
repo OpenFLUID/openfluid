@@ -56,7 +56,7 @@ class HayamiSUFunction : public openfluid::base::PluggableFunction
     */
     ~HayamiSUFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 

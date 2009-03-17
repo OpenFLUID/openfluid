@@ -524,6 +524,11 @@ class PluggableFunction : public wxObject
                              openfluid::core::EventCollection* EventColl);
 
 
+    bool OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName);
+
+    bool OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t ClassName, unsigned int *UnitsCount);
+
+
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation
       \param[in] Sender the sender of the message

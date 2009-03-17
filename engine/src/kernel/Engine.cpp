@@ -122,13 +122,13 @@
 // checks if var exists
 #define CHECK_VAR(varname,unitclass,status) \
   _M_CHV_UnitList = NULL; \
-  if (mp_CoreData->isUnitsClassExists(unitclass)) _M_CHV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  if (mp_CoreData->isUnitsClassExist(unitclass)) _M_CHV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
   else status = false; \
   if (status) _M_CHV_UnitIter = _M_CHV_UnitList->begin(); \
   while (status && (_M_CHV_UnitIter != _M_CHV_UnitList->end()))\
   {\
-    if (IsVectorNamedVariable(varname)) status = (*_M_CHV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname));\
-    else status = (*_M_CHV_UnitIter).getScalarVariables()->isVariableExists(varname); \
+    if (IsVectorNamedVariable(varname)) status = (*_M_CHV_UnitIter).getVectorVariables()->isVariableExist(GetVectorNamedVariableName(varname));\
+    else status = (*_M_CHV_UnitIter).getScalarVariables()->isVariableExist(varname); \
     ++_M_CHV_UnitIter; \
   }\
 
@@ -141,13 +141,13 @@
 // create var, error if already exists
 #define CREATE_VAR(varname,unitclass,status) \
   _M_CRV_UnitList = NULL; \
-  if (mp_CoreData->isUnitsClassExists(unitclass)) _M_CRV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  if (mp_CoreData->isUnitsClassExist(unitclass)) _M_CRV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
   else status = false; \
   if (status) _M_CRV_UnitIter = _M_CRV_UnitList->begin(); \
   while (status && (_M_CRV_UnitIter != _M_CRV_UnitList->end()))\
   {\
-    if (IsVectorNamedVariable(varname)) status = !((*_M_CRV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname)));\
-    else status = !((*_M_CRV_UnitIter).getScalarVariables()->isVariableExists(varname)); \
+    if (IsVectorNamedVariable(varname)) status = !((*_M_CRV_UnitIter).getVectorVariables()->isVariableExist(GetVectorNamedVariableName(varname)));\
+    else status = !((*_M_CRV_UnitIter).getScalarVariables()->isVariableExist(varname)); \
     ++_M_CRV_UnitIter; \
   }\
   if (status) \
@@ -169,17 +169,38 @@
 // adds a new var if doesn't exist
 #define UPDATE_VAR(varname,unitclass,status) \
   _M_UPV_UnitList = NULL; \
-  if (mp_CoreData->isUnitsClassExists(unitclass)) _M_UPV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  if (mp_CoreData->isUnitsClassExist(unitclass)) _M_UPV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
   else status = false; \
   if (status) _M_UPV_UnitIter = _M_UPV_UnitList->begin(); \
   while (status && (_M_UPV_UnitIter != _M_UPV_UnitList->end()))\
   {\
-    if (IsVectorNamedVariable(varname) && !(*_M_UPV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname))) \
+    if (IsVectorNamedVariable(varname) && !(*_M_UPV_UnitIter).getVectorVariables()->isVariableExist(GetVectorNamedVariableName(varname))) \
       (*_M_UPV_UnitIter).getVectorVariables()->createVariable(GetVectorNamedVariableName(varname)); \
-    if (!IsVectorNamedVariable(varname) && !(*_M_UPV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname))) \
+    if (!IsVectorNamedVariable(varname) && !(*_M_UPV_UnitIter).getVectorVariables()->isVariableExist(GetVectorNamedVariableName(varname))) \
       (*_M_UPV_UnitIter).getScalarVariables()->createVariable(varname); \
     ++_M_UPV_UnitIter; \
   }\
+
+
+#define DECLARE_CHECK_INPUTDATA \
+  openfluid::core::UnitsList_t::const_iterator _M_CHI_UnitIter; \
+  openfluid::core::UnitsList_t* _M_CHI_UnitList; \
+
+// TODO check that
+// checks if var exists
+#define CHECK_INPUTDATA(dataname,unitclass,status) \
+  _M_CHI_UnitList = NULL; \
+  if (mp_CoreData->isUnitsClassExist(unitclass)) _M_CHI_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  else status = false; \
+  if (status) _M_CHI_UnitIter = _M_CHI_UnitList->begin(); \
+  while (status && (_M_CHI_UnitIter != _M_CHI_UnitList->end()))\
+  {\
+    status = (*_M_CHI_UnitIter).getInputData()->isDataExist(dataname);\
+    ++_M_CHI_UnitIter; \
+  }\
+
+
+
 // =====================================================================
 // =====================================================================
 
@@ -698,6 +719,35 @@ bool Engine::checkDataConsistency()
 
 
   // TODO enable or rewrite this
+
+  DECLARE_CHECK_INPUTDATA;
+  PluginsList::iterator FuncIter;
+  openfluid::base::SignatureHandledData HData;
+  PluginContainer* CurrentFunction;
+  unsigned int i;
+
+
+  FuncIter = m_Functions.begin();
+
+  while (FuncIter != m_Functions.end() && IsOK)
+  {
+    CurrentFunction = (*FuncIter);
+    HData = CurrentFunction->Signature->HandledData;
+
+
+    // checking required input data
+    i = 0;
+    while (IsOK && i < HData.RequiredInput.size())
+    {
+      CHECK_INPUTDATA(HData.RequiredInput[i].DataName, HData.RequiredInput[i].UnitClass, IsOK);
+
+      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",HData.RequiredInput[i].DataName + " input data on " + HData.RequiredInput[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not available");
+      else i++;
+    }
+    FuncIter++;
+  }
+
+
 /*
   // check input data consistency
   FuncNode = m_Functions.GetFirst();
