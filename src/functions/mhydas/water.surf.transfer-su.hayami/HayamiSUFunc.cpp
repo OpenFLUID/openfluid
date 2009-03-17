@@ -24,28 +24,28 @@ DEFINE_FUNCTION_HOOK(HayamiSUFunction);
 
 BEGIN_SIGNATURE_HOOK
 
-  DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-su.hayami"));
-  DECLARE_SIGNATURE_NAME(wxT("water transfer on surface units using hayami propagation method"));
-  DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
-  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
+  DECLARE_SIGNATURE_ID(("water.surf.transfer-su.hayami"));
+  DECLARE_SIGNATURE_NAME(("water transfer on surface units using hayami propagation method"));
+  DECLARE_SIGNATURE_DESCRIPTION((""));
+  DECLARE_SIGNATURE_DOMAIN(("hydrology"));
 
   DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
 
   DECLARE_SIGNATURE_SDKVERSION;
 
-  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C."));
-  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr"));
+  DECLARE_SIGNATURE_AUTHORNAME(("Moussa R., Fabre J.-C."));
+  DECLARE_SIGNATURE_AUTHOREMAIL(("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr"));
 
-  DECLARE_SU_PRODUCED_VAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the SUs"),wxT("m3/s"));
+  DECLARE_SU_PRODUCED_VAR("water.surf.Q.downstream-su",("output volume at the outlet of the SUs"),("m3/s"));
 
-  DECLARE_SU_REQUIRED_VAR("water.surf.H.runoff",wxT("runoff on the surface of the unit"),wxT("m/s"));
+  DECLARE_SU_REQUIRED_VAR("water.surf.H.runoff",("runoff on the surface of the unit"),("m/s"));
 
-  DECLARE_SU_REQUIRED_PROPERTY("nmanning",wxT("Manning roughness coefficient"),wxT("s/m^(-1/3)"));
+  DECLARE_SU_REQUIRED_PROPERTY("nmanning",("Manning roughness coefficient"),("s/m^(-1/3)"));
 
 
-  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT(""));
-  DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity"),wxT("m/s"));
-  DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on SUs"),wxT("m2/s"));
+  DECLARE_FUNCTION_PARAM("maxsteps",("maximum hayami kernel steps"),(""));
+  DECLARE_FUNCTION_PARAM("meancel",("wave mean celerity"),("m/s"));
+  DECLARE_FUNCTION_PARAM("meansigma",("mean diffusivity on SUs"),("m2/s"));
 
 END_SIGNATURE_HOOK
 
@@ -80,15 +80,15 @@ HayamiSUFunction::~HayamiSUFunction()
 
 
 // =====================================================================
-// =============================================)========================
+// =====================================================================
 
 
-bool HayamiSUFunction::initParams(openfluid::core::ParamsMap Params)
+bool HayamiSUFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
 
-  OPENFLUID_GetFunctionParameter(Params,wxT("maxsteps"),&m_MaxSteps);
-  OPENFLUID_GetFunctionParameter(Params,wxT("meancel"),&m_MeanCelerity);
-  OPENFLUID_GetFunctionParameter(Params,wxT("meansigma"),&m_MeanSigma);
+  OPENFLUID_GetFunctionParameter(Params,("maxsteps"),&m_MaxSteps);
+  OPENFLUID_GetFunctionParameter(Params,("meancel"),&m_MeanCelerity);
+  OPENFLUID_GetFunctionParameter(Params,("meansigma"),&m_MeanSigma);
 
   return true;
 }
@@ -121,10 +121,14 @@ bool HayamiSUFunction::checkConsistency()
 
 bool HayamiSUFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::Unit* SU;
   float Cel, Sigma;
-  openfluid::core::UnitID ID;
+  openfluid::core::UnitID_t ID;
   openfluid::core::ScalarValue TmpValue;
+  openfluid::core::ScalarValue TmpValue2;
+  unsigned int SUCount = 0;
+
+  OPENFLUID_GetUnitsCount("SU",&SUCount);
 
   DECLARE_SU_ORDERED_LOOP;
 
@@ -135,22 +139,25 @@ bool HayamiSUFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
     m_Input[ID] = new openfluid::core::SerieOfScalarValue();
     m_CurrentInputSum[ID] = 0;
 
-    m_MeanSlope = m_MeanSlope + SU->getUsrSlope();
-    OPENFLUID_GetProperty(SU,wxT("nmanning"),&TmpValue);
+    OPENFLUID_GetInputData(SU,("slope"),&TmpValue);
+    m_MeanSlope = m_MeanSlope + TmpValue;
+    OPENFLUID_GetInputData(SU,("nmanning"),&TmpValue);
     m_MeanManning = m_MeanManning + TmpValue;
   END_LOOP
 
-  m_MeanSlope = m_MeanSlope / mp_CoreData->getSpatialData()->getSUsCollection()->size();
-  m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getSUsCollection()->size();
+  m_MeanSlope = m_MeanSlope / SUCount;
+  m_MeanManning = m_MeanManning / SUCount;
 
   BEGIN_SU_ORDERED_LOOP(SU)
-    OPENFLUID_GetProperty(SU,wxT("nmanning"),&TmpValue);
-    Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((SU->getUsrSlope() / m_MeanSlope)));
-    Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / SU->getUsrSlope());
+    OPENFLUID_GetInputData(SU,("nmanning"),&TmpValue);
+    OPENFLUID_GetInputData(SU,("slope"),&TmpValue2);
+    Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((TmpValue2 / m_MeanSlope)));
+    Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / TmpValue2);
 
     m_SUKernel[SU->getID()] = t_HayamiKernel();
 
-    ComputeHayamiKernel(Cel, Sigma,SU->getDownstreamDistance(),m_MaxSteps,SimInfo->getTimeStep(), &m_SUKernel[SU->getID()]);
+    OPENFLUID_GetInputData(SU,("flowdist"),&TmpValue);
+    ComputeHayamiKernel(Cel, Sigma,TmpValue,m_MaxSteps,SimInfo->getTimeStep(), &m_SUKernel[SU->getID()]);
 
   END_LOOP
 
@@ -172,10 +179,10 @@ bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   int TimeStep;
   openfluid::core::ScalarValue QOutput;
   openfluid::core::ScalarValue QInput;
-  openfluid::core::ScalarValue TmpValue;
+  openfluid::core::ScalarValue TmpValue, TmpValue2;
 
+  openfluid::core::Unit* SU;
 
-  openfluid::core::SurfaceUnit* SU;
 
   TimeStep = SimStatus->getTimeStep();
   CurrentStep = SimStatus->getCurrentStep();
@@ -185,9 +192,10 @@ bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     ID = SU->getID();
 
-    OPENFLUID_GetVariable(SU,wxT("water.surf.H.runoff"),CurrentStep,&TmpValue);
+    OPENFLUID_GetVariable(SU,("water.surf.H.runoff"),CurrentStep,&TmpValue);
 
-    QInput = TmpValue * SU->getUsrArea() / TimeStep;
+    OPENFLUID_GetInputData(SU,("area"),&TmpValue2);
+    QInput = TmpValue * TmpValue2 / TimeStep;
     m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
     m_Input[ID]->push_back(QInput);
 
@@ -198,7 +206,7 @@ bool HayamiSUFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     }
 
 
-    OPENFLUID_AppendVariable(SU,wxT("water.surf.Q.downstream-su"),QOutput);
+    OPENFLUID_AppendVariable(SU,("water.surf.Q.downstream-su"),QOutput);
 
   END_LOOP
 

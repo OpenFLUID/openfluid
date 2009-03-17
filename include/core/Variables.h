@@ -32,7 +32,7 @@ class Variables
 
     bool getValue(const VariableName_t aName, const TimeStep_t aStep, T *aValue) const;
 
-    bool isVariableExists(const VariableName_t aName) const;
+    bool isVariableExist(const VariableName_t aName) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
 
@@ -73,7 +73,7 @@ Variables<T>::~Variables()
 template <class T>
 bool Variables<T>::createVariable(const VariableName_t aName)
 {
-  if (!isVariableExists(aName))
+  if (!isVariableExist(aName))
   {
     m_Data[aName];
     return true;
@@ -87,7 +87,7 @@ bool Variables<T>::createVariable(const VariableName_t aName)
 template <class T>
 bool Variables<T>::modifyValue(const VariableName_t aName, const TimeStep_t aStep, const T aValue)
 {
-  if (isVariableExists(aName))
+  if (isVariableExist(aName))
   {
     return m_Data[aName].modifyValue(aStep,aValue);
   }
@@ -102,7 +102,7 @@ bool Variables<T>::modifyValue(const VariableName_t aName, const TimeStep_t aSte
 template <class T>
 bool Variables<T>::appendValue(const VariableName_t aName, const T aValue)
 {
-  if (isVariableExists(aName))
+  if (isVariableExist(aName))
   {
      return m_Data[aName].appendValue(aValue);
   }
@@ -134,7 +134,7 @@ bool Variables<T>::getValue(const VariableName_t aName, const TimeStep_t aStep, 
 // =====================================================================
 
 template <class T>
-bool Variables<T>::isVariableExists(const VariableName_t aName) const
+bool Variables<T>::isVariableExist(const VariableName_t aName) const
 {
 
   return m_Data.find(aName) != m_Data.end();

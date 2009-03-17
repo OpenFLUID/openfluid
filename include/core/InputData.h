@@ -25,7 +25,7 @@ class InputData
 
     bool getValue(const InputDataName_t aName, T *aValue) const;
 
-    bool isDataExists(const InputDataName_t aName) const;
+    bool isDataExist(const InputDataName_t aName) const;
 
 };
 
@@ -59,7 +59,7 @@ template <class T>
 bool InputData<T>::setValue(const InputDataName_t aName,const T aValue)
 {
 
-  if (isDataExists(aName)) return false;
+  if (isDataExist(aName)) return false;
   else
   {
     m_Data[aName] = aValue;
@@ -88,7 +88,7 @@ bool InputData<T>::getValue(const InputDataName_t aName, T *aValue) const
 // =====================================================================
 
 template <class T>
-bool InputData<T>::isDataExists(const InputDataName_t aName) const
+bool InputData<T>::isDataExist(const InputDataName_t aName) const
 {
   return m_Data.find(aName) != m_Data.end();
 }

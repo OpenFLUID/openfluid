@@ -21,53 +21,53 @@ DEFINE_FUNCTION_HOOK(HayamiRSFunction);
 // =====================================================================
 
 BEGIN_SIGNATURE_HOOK;
-  DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"));
-  DECLARE_SIGNATURE_NAME(wxT("water transfer on reach segments using hayami propagation method; surface water/groundwater exchanges + exchanges betwen groundwater units"));
-  DECLARE_SIGNATURE_DESCRIPTION(wxT("WARNING: UNIQUE BUFFER WITHOUT TAKING INTO ACCOUNT THE HEIGHT OF THE REACHES"));
-  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
+  DECLARE_SIGNATURE_ID(("water.surf.transfer-rs-exchange-gu.hayami-tank"));
+  DECLARE_SIGNATURE_NAME(("water transfer on reach segments using hayami propagation method; surface water/groundwater exchanges + exchanges betwen groundwater units"));
+  DECLARE_SIGNATURE_DESCRIPTION(("WARNING: UNIQUE BUFFER WITHOUT TAKING INTO ACCOUNT THE HEIGHT OF THE REACHES"));
+  DECLARE_SIGNATURE_DOMAIN(("hydrology"));
 
   DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
 
   DECLARE_SIGNATURE_SDKVERSION;
 
-  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa. R, Dages C., Louchart X., Fabre J.-C."));
-  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, dages@supagro.inra.fr, louchart@supagro.inra.fr, fabrejc@supagro.inra.fr"));
+  DECLARE_SIGNATURE_AUTHORNAME(("Moussa. R, Dages C., Louchart X., Fabre J.-C."));
+  DECLARE_SIGNATURE_AUTHOREMAIL(("moussa@supagro.inra.fr, dages@supagro.inra.fr, louchart@supagro.inra.fr, fabrejc@supagro.inra.fr"));
 
 
 
   // Produced variables
-  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("Output volume at the outlet of the ditch"),wxT("m3/s"));
-  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",wxT("Water height at the outlet of the ditch"),wxT("m"));
-  DECLARE_RS_PRODUCED_VAR("water.surf-sz.Q.exchange-rs-gu",wxT("water flux exchanged betwwen RS and GU unit"),wxT("m3/s"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",("Output volume at the outlet of the ditch"),("m3/s"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",("Water height at the outlet of the ditch"),("m"));
+  DECLARE_RS_PRODUCED_VAR("water.surf-sz.Q.exchange-rs-gu",("water flux exchanged betwwen RS and GU unit"),("m3/s"));
 
-  DECLARE_GU_PRODUCED_VAR("water.sz.Q.output",wxT("water flux output of the GU"),wxT("m3/s"));
-  DECLARE_GU_PRODUCED_VAR("water.sz-surf.Q.exfiltration",wxT("exfiltration from GU to RS"),wxT("m3/s/m2"));
-  DECLARE_GU_PRODUCED_VAR("water.sz.H.watertable",wxT("watertable depth, positive value from soil surface"),wxT("m"));
+  DECLARE_GU_PRODUCED_VAR("water.sz.Q.output",("water flux output of the GU"),("m3/s"));
+  DECLARE_GU_PRODUCED_VAR("water.sz-surf.Q.exfiltration",("exfiltration from GU to RS"),("m3/s/m2"));
+  DECLARE_GU_PRODUCED_VAR("water.sz.H.watertable",("watertable depth, positive value from soil surface"),("m"));
 
   // Required variables
-  DECLARE_SU_REQUIRED_VAR("water.surf.H.infiltration",wxT(""),wxT("m"));
-  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the SUs"),wxT("m3/s"));
+  DECLARE_SU_REQUIRED_VAR("water.surf.H.infiltration",(""),("m"));
+  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",("output volume at the outlet of the SUs"),("m3/s"));
 
 
   // Required initial conditions
-  DECLARE_SU_REQUIRED_INICOND("thetains",wxT(""),wxT("m3/m3"));
-  DECLARE_GU_REQUIRED_INICOND("iniwatertable",wxT("initial watertable depth, positive value from soil surface"),wxT("m"));
+  DECLARE_SU_REQUIRED_INICOND("thetains",(""),("m3/m3"));
+  DECLARE_GU_REQUIRED_INICOND("iniwatertable",("initial watertable depth, positive value from soil surface"),("m"));
 
   // Required properties
-  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT(""),wxT("m3/m3"));
-  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("Manning roughness coefficient"),wxT(""));
+  DECLARE_SU_REQUIRED_PROPERTY("thetasat",(""),("m3/m3"));
+  DECLARE_RS_REQUIRED_PROPERTY("nmanning",("Manning roughness coefficient"),(""));
 
 
   // Function parameters
-  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT(""));
-  DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity on RSs"),wxT("m/s"));
-  DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on RSs"),wxT("m2/s"));
-  DECLARE_FUNCTION_PARAM("calibstep",wxT("calibration step for height-discharge relation"),wxT("m"));
-  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("m"));
+  DECLARE_FUNCTION_PARAM("maxsteps",("maximum hayami kernel steps"),(""));
+  DECLARE_FUNCTION_PARAM("meancel",("wave mean celerity on RSs"),("m/s"));
+  DECLARE_FUNCTION_PARAM("meansigma",("mean diffusivity on RSs"),("m2/s"));
+  DECLARE_FUNCTION_PARAM("calibstep",("calibration step for height-discharge relation"),("m"));
+  DECLARE_FUNCTION_PARAM("rsbuffer",("buffer upon reach for water heigh over reach height"),("m"));
 
-  DECLARE_FUNCTION_PARAM("coeffinfiltration",wxT("multiplicative exchange coefficient when watertable level is under surface level"),wxT(""));
-  DECLARE_FUNCTION_PARAM("coeffdrainage",wxT("multiplicative exchange coefficient when watertable level is above surface level"),wxT(""));
-  DECLARE_FUNCTION_PARAM("coeffgw",wxT("multiplicative exchange coefficient between GUs"),wxT(""));
+  DECLARE_FUNCTION_PARAM("coeffinfiltration",("multiplicative exchange coefficient when watertable level is under surface level"),(""));
+  DECLARE_FUNCTION_PARAM("coeffdrainage",("multiplicative exchange coefficient when watertable level is above surface level"),(""));
+  DECLARE_FUNCTION_PARAM("coeffgw",("multiplicative exchange coefficient between GUs"),(""));
 
 END_SIGNATURE_HOOK;
 
@@ -108,16 +108,16 @@ HayamiRSFunction::~HayamiRSFunction()
 // =====================================================================
 
 
-bool HayamiRSFunction::initParams(openfluid::core::ParamsMap Params)
+bool HayamiRSFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
-  OPENFLUID_GetFunctionParameter(Params,wxT("maxsteps"),&m_MaxSteps);
-  OPENFLUID_GetFunctionParameter(Params,wxT("meancel"),&m_MeanCelerity);
-  OPENFLUID_GetFunctionParameter(Params,wxT("meansigma"),&m_MeanSigma);
-  OPENFLUID_GetFunctionParameter(Params,wxT("calibstep"),&m_CalibrationStep);
-  OPENFLUID_GetFunctionParameter(Params,wxT("rsbuffer"),&m_RSBuffer);
-  OPENFLUID_GetFunctionParameter(Params,wxT("coeffinfiltration"),&m_CoeffInfiltration);
-  OPENFLUID_GetFunctionParameter(Params,wxT("coeffdrainage"),&m_CoeffDrainage);
-  OPENFLUID_GetFunctionParameter(Params,wxT("coeffgw"),&m_CoeffGW);
+  OPENFLUID_GetFunctionParameter(Params,("maxsteps"),&m_MaxSteps);
+  OPENFLUID_GetFunctionParameter(Params,("meancel"),&m_MeanCelerity);
+  OPENFLUID_GetFunctionParameter(Params,("meansigma"),&m_MeanSigma);
+  OPENFLUID_GetFunctionParameter(Params,("calibstep"),&m_CalibrationStep);
+  OPENFLUID_GetFunctionParameter(Params,("rsbuffer"),&m_RSBuffer);
+  OPENFLUID_GetFunctionParameter(Params,("coeffinfiltration"),&m_CoeffInfiltration);
+  OPENFLUID_GetFunctionParameter(Params,("coeffdrainage"),&m_CoeffDrainage);
+  OPENFLUID_GetFunctionParameter(Params,("coeffgw"),&m_CoeffGW);
   return true;
 }
 
@@ -129,8 +129,13 @@ bool HayamiRSFunction::prepareData()
 {
   // On verifie s'il existe des SU pour recuperer leur debit
 
+  unsigned int SUCount = 0;
+
   m_UseUpSUOutput = false;
-  if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
+
+  OPENFLUID_GetUnitsCount("SU",&SUCount);
+
+  if (SUCount > 0)
   {
     m_UseUpSUOutput = true;
   }
@@ -155,11 +160,11 @@ bool HayamiRSFunction::checkConsistency()
 
 bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  std::list<openfluid::core::SurfaceUnit*>* SUList;
-  std::list<openfluid::core::SurfaceUnit*>::iterator Iter;
-  openfluid::core::GroundwaterUnit *GU;
-  openfluid::core::SurfaceUnit *SU;
-  openfluid::core::ReachSegment *RS;
+  std::list<openfluid::core::Unit*>* SUList;
+  std::list<openfluid::core::Unit*>::iterator Iter;
+  openfluid::core::Unit *GU;
+  openfluid::core::Unit *SU;
+  openfluid::core::Unit *RS;
 
   float Cel, Sigma;
   openfluid::core::ScalarValue TmpValue;
@@ -179,18 +184,18 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   m_CurrentInputSum[ID] = 0;
 
   m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
-  OPENFLUID_GetProperty(RS,wxT("nmanning"),&TmpValue);
+  OPENFLUID_GetInputData(RS,("nmanning"),&TmpValue);
   m_MeanManning = m_MeanManning + TmpValue;
-  //m_MeanManning = m_MeanManning + RS->getProperties()->find(wxT("nmanning"))->second;
+  //m_MeanManning = m_MeanManning + RS->getProperties()->find(("nmanning"))->second;
   END_LOOP
 
   m_MeanSlope = m_MeanSlope / mp_CoreData->getSpatialData()->getRSsCollection()->size();
   m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getRSsCollection()->size();
 
   BEGIN_RS_ORDERED_LOOP(RS)
-  OPENFLUID_GetProperty(RS,wxT("nmanning"),&TmpValue);
-  //    Cel = m_MeanCelerity * (m_MeanManning / RS->getProperties()->find(wxT("nmanning"))->second) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
-  //    Sigma = m_MeanSigma * (RS->getProperties()->find(wxT("nmanning"))->second / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());
+  OPENFLUID_GetInputData(RS,("nmanning"),&TmpValue);
+  //    Cel = m_MeanCelerity * (m_MeanManning / RS->getProperties()->find(("nmanning"))->second) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
+  //    Sigma = m_MeanSigma * (RS->getProperties()->find(("nmanning"))->second / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());
   Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
   Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());
   ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep(),&m_RSKernel[RS->getID()]);
@@ -204,7 +209,7 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
 
   BEGIN_RS_ORDERED_LOOP(RS)
 
-  OPENFLUID_GetProperty(RS,wxT("nmanning"),&TmpValue);
+  OPENFLUID_GetInputData(RS,("nmanning"),&TmpValue);
 
   // StepsNbr = int(ceil((RS->getUsrHeight() + m_RSBuffer) / m_CalibrationStep));
   StepsNbr = int(ceil((m_RSBuffer) / m_CalibrationStep));
@@ -244,8 +249,8 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   for (Iter=SUList->begin(); Iter != SUList->end(); Iter++)
   {
     SU = *Iter;
-    OPENFLUID_GetIniCondition(SU,wxT("thetains"),&SUThetaIni);
-    OPENFLUID_GetProperty(SU,wxT("thetasat"),&SUThetaSat);
+    OPENFLUID_GetInputData(SU,("thetains"),&SUThetaIni);
+    OPENFLUID_GetInputData(SU,("thetasat"),&SUThetaSat);
     m_ThetaIni[GU->getID()] = m_ThetaIni[GU->getID()] + SUThetaIni*SU->getUsrArea();
     m_ThetaSat[GU->getID()] = m_ThetaSat[GU->getID()] + SUThetaSat*SU->getUsrArea();
   }
@@ -288,22 +293,22 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   float RSHeight,WaterHeight ; // for RS
 
 
-  openfluid::core::ReachSegment* RS;
-  openfluid::core::ReachSegment* UpRS;
-  openfluid::core::SurfaceUnit* UpSU;
-  openfluid::core::GroundwaterUnit *GU, *GUex, *GUdown,*GURS;
-  openfluid::core::SurfaceUnit *SU;
+  openfluid::core::Unit* RS;
+  openfluid::core::Unit* UpRS;
+  openfluid::core::Unit* UpSU;
+  openfluid::core::Unit *GU, *GUex, *GUdown,*GURS;
+  openfluid::core::Unit *SU;
 
-  std::list<openfluid::core::GroundwaterUnit*>* GUList;
-  std::list<openfluid::core::GroundwaterUnit*>::iterator IterGW;
-  std::list<openfluid::core::SurfaceUnit*>* SUList;
-  std::list<openfluid::core::SurfaceUnit*>::iterator IterSU;
-  std::list<openfluid::core::SurfaceUnit*>::iterator UpSUiter;
-  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
-  std::list<openfluid::core::ReachSegment*>::iterator UpRSiter;
-  std::list<openfluid::core::ReachSegment*>* UpRSsList;
-  std::list<openfluid::core::ReachSegment*>* RSList;
-  std::list<openfluid::core::ReachSegment*>::iterator IterRS;
+  std::list<openfluid::core::Unit*>* GUList;
+  std::list<openfluid::core::Unit*>::iterator IterGW;
+  std::list<openfluid::core::Unit*>* SUList;
+  std::list<openfluid::core::Unit*>::iterator IterSU;
+  std::list<openfluid::core::Unit*>::iterator UpSUiter;
+  std::list<openfluid::core::Unit*>* UpSUsList;
+  std::list<openfluid::core::Unit*>::iterator UpRSiter;
+  std::list<openfluid::core::Unit*>* UpRSsList;
+  std::list<openfluid::core::Unit*>* RSList;
+  std::list<openfluid::core::Unit*>::iterator IterRS;
 
 
 
@@ -323,10 +328,10 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     // water level initializing
     ID = GU->getID();
 
-    OPENFLUID_GetIniCondition(GU,wxT("iniwatertable"),&WaterTable);
+    OPENFLUID_GetInputData(GU,("iniwatertable"),&WaterTable);
 
-    OPENFLUID_AppendVariable(GU,wxT("water.sz.Q.output"),0);
-    OPENFLUID_AppendVariable(GU,wxT("water.sz-surf.Q.exfiltration"),0);
+    OPENFLUID_AppendVariable(GU,("water.sz.Q.output"),0);
+    OPENFLUID_AppendVariable(GU,("water.sz-surf.Q.exfiltration"),0);
 
     // Computes recharge from SUs
     InputVol = 0;
@@ -336,12 +341,12 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for (IterSU=SUList->begin(); IterSU != SUList->end(); IterSU++)
     {
       SU = *IterSU;
-      OPENFLUID_GetVariable(SU,wxT("water.surf.H.infiltration"),SimStatus->getCurrentStep(),&SUInfiltration);
+      OPENFLUID_GetVariable(SU,("water.surf.H.infiltration"),SimStatus->getCurrentStep(),&SUInfiltration);
       InputVol = InputVol + SUInfiltration * SU->getUsrArea();
     }
     // Updates WaterTable according to the recharge
     WaterTable = WaterTable - (InputVol / (GU->getUsrArea()*(m_ThetaSat[GU->getID()] - m_ThetaIni[GU->getID()])));
-    OPENFLUID_AppendVariable(GU,wxT("water.sz.H.watertable"),WaterTable);
+    OPENFLUID_AppendVariable(GU,("water.sz.H.watertable"),WaterTable);
 
     END_LOOP
 
@@ -350,7 +355,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     ID = RS->getID();
     TmpQExchange = 0;
-    OPENFLUID_AppendVariable(RS,wxT("water.surf-sz.Q.exchange-rs-gu"),TmpQExchange);
+    OPENFLUID_AppendVariable(RS,("water.surf-sz.Q.exchange-rs-gu"),TmpQExchange);
 
     END_LOOP
 
@@ -376,13 +381,13 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
     {
       UpSU = *UpSUiter;
-      OPENFLUID_GetVariable(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
+      OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
       UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue; // / UpSU->getUsrArea();
 
       if (CurrentStep != 0)
       {
         GUex = mp_CoreData->getSpatialData()->getGUByID(UpSU->getGUExchangeID());
-        OPENFLUID_GetVariable(GUex,wxT("water.sz-surf.Q.exfiltration"),CurrentStep-1,&TmpExfiltration);
+        OPENFLUID_GetVariable(GUex,("water.sz-surf.Q.exfiltration"),CurrentStep-1,&TmpExfiltration);
         UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpExfiltration* UpSU->getUsrArea();
       }
     }
@@ -401,13 +406,13 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     {
       UpSU = *UpSUiter;
 
-      OPENFLUID_GetVariable(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
+      OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
       UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue;// / UpSU->getUsrArea();
 
       if (CurrentStep != 0)
       {
         GUex = mp_CoreData->getSpatialData()->getGUByID(UpSU->getGUExchangeID());
-        OPENFLUID_GetVariable(GUex,wxT("water.sz-surf.Q.exfiltration"),CurrentStep-1,&TmpExfiltration);
+        OPENFLUID_GetVariable(GUex,("water.sz-surf.Q.exfiltration"),CurrentStep-1,&TmpExfiltration);
         UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpExfiltration* UpSU->getUsrArea();
       }
 
@@ -425,7 +430,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   for(UpRSiter=UpRSsList->begin(); UpRSiter != UpRSsList->end(); UpRSiter++) \
   {
     UpRS = *UpRSiter;
-    OPENFLUID_GetVariable(UpRS,wxT("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
+    OPENFLUID_GetVariable(UpRS,("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
     UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;
   }
 
@@ -447,15 +452,15 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   QOutput = QOutput + UpLatSUsOutputsSum;
 
 
-  // OPENFLUID_AppendDistributedVarValue(RS,wxT("qoutput"),QOutput);
+  // OPENFLUID_AppendDistributedVarValue(RS,("qoutput"),QOutput);
 
   //3. Premier calcul de la hauteur d'eau
 
   //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl;
   if (!computeWaterHeightFromDischarge(ID,QOutput,&WaterHeight))
-    OPENFLUID_RaiseWarning(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"),CurrentStep,wxT("water height is over reach height + buffer on RS ") + wxString::Format(wxT("%d"),ID));
+    OPENFLUID_RaiseWarning(("water.surf.transfer-rs-exchange-gu.hayami-tank"),CurrentStep,("water height is over reach height + buffer on RS ") + wxString::Format(("%d"),ID));
 
-  //OPENFLUID_AppendDistributedVarValue(RS,wxT("waterheight"),WaterHeight);
+  //OPENFLUID_AppendDistributedVarValue(RS,("waterheight"),WaterHeight);
 
 
   // Echanges nappes-rivières
@@ -464,13 +469,13 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
   GURS = RS->getGUExchange();
 
-  //OPENFLUID_GetDistributedVarValue(RS,wxT("waterheight"),CurrentStep,&WaterHeight);
-  OPENFLUID_GetVariable(GURS,wxT("water.sz.H.watertable"),CurrentStep-1,&WaterTable);
+  //OPENFLUID_GetDistributedVarValue(RS,("waterheight"),CurrentStep,&WaterHeight);
+  OPENFLUID_GetVariable(GURS,("water.sz.H.watertable"),CurrentStep-1,&WaterTable);
 
 
   ExchangeSurface = RS->getUsrLength() * ((2 * WaterHeight) + RS->getUsrWidth());
 
-  /*  mp_ExecMsgs->setError(wxT("groundwater"),SimStatus->getCurrentStep(),wxT("watertable not present"));
+  /*  mp_ExecMsgs->setError(("groundwater"),SimStatus->getCurrentStep(),("watertable not present"));
           return false;
    */
 
@@ -501,12 +506,12 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
 
   if (!computeWaterHeightFromDischarge(ID,QOutput,&WaterHeight))
-    OPENFLUID_RaiseWarning(wxT("water.surf.transfer-rs-exchange-gu.hayami-tank"),SimStatus->getCurrentStep(),wxT("overflow on RS") + wxString::Format(wxT("%d"),ID));
+    OPENFLUID_RaiseWarning(("water.surf.transfer-rs-exchange-gu.hayami-tank"),SimStatus->getCurrentStep(),("overflow on RS") + wxString::Format(("%d"),ID));
 
-  OPENFLUID_AppendVariable(RS,wxT("water.surf.Q.downstream-rs"),QOutput);
+  OPENFLUID_AppendVariable(RS,("water.surf.Q.downstream-rs"),QOutput);
 
-  OPENFLUID_AppendVariable(RS,wxT("water.surf.H.level-rs"),WaterHeight);
-  if (CurrentStep != 0)   OPENFLUID_AppendVariable(RS,wxT("water.surf-sz.Q.exchange-rs-gu"),TmpQExchange);
+  OPENFLUID_AppendVariable(RS,("water.surf.H.level-rs"),WaterHeight);
+  if (CurrentStep != 0)   OPENFLUID_AppendVariable(RS,("water.surf-sz.Q.exchange-rs-gu"),TmpQExchange);
 
 
   END_LOOP
@@ -528,7 +533,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for (IterSU=SUList->begin(); IterSU != SUList->end(); IterSU++)
     {
       SU = *IterSU;
-      OPENFLUID_GetVariable(SU,wxT("water.surf.H.infiltration"),CurrentStep,&SUInfiltration);
+      OPENFLUID_GetVariable(SU,("water.surf.H.infiltration"),CurrentStep,&SUInfiltration);
       InputVol = InputVol + (SUInfiltration * SU->getUsrArea());
 
     }
@@ -538,7 +543,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for (IterGW=GUList->begin(); IterGW != GUList->end(); IterGW++)
     {
       GUex = *IterGW;
-      OPENFLUID_GetVariable(GUex,wxT("water.sz.Q.output"),CurrentStep-1,&QguOutput);
+      OPENFLUID_GetVariable(GUex,("water.sz.Q.output"),CurrentStep-1,&QguOutput);
       InputVol = InputVol + QguOutput*TimeStep;
     }
 
@@ -550,7 +555,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
 
 
-      OPENFLUID_GetVariable(RS,wxT("qexchangersgu"),CurrentStep,&TmpQExchange);
+      OPENFLUID_GetVariable(RS,("qexchangersgu"),CurrentStep,&TmpQExchange);
       OutputVol = OutputVol + TmpQExchange*TimeStep;
 
 
@@ -558,14 +563,14 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     //updates the Output Volume with the downGU
     // get WaterTable(t-1)
-    OPENFLUID_GetVariable(GU,wxT("water.sz.H.watertable"),CurrentStep-1,&WaterTable);
+    OPENFLUID_GetVariable(GU,("water.sz.H.watertable"),CurrentStep-1,&WaterTable);
 
     QguOutput = 0;
 
     if (GU->getGUExchange() != NULL)
     {
       GUdown = GU->getGUExchange();
-      OPENFLUID_GetVariable(GUdown,wxT("water.sz.H.watertable"),CurrentStep-1,&WaterTableDown); // Watertable on downGU
+      OPENFLUID_GetVariable(GUdown,("water.sz.H.watertable"),CurrentStep-1,&WaterTableDown); // Watertable on downGU
       QguOutput = m_CoeffGW * (WaterTableDown - WaterTable);
       OutputVol = OutputVol + QguOutput*TimeStep;
 
@@ -581,7 +586,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
 
 
-    OPENFLUID_AppendVariable(GU,wxT("water.sz.Q.output"),QguOutput);
+    OPENFLUID_AppendVariable(GU,("water.sz.Q.output"),QguOutput);
 
     // Updates WaterTable(t) according to the Input, Output volumes, and WaterTable(t-1)
     WaterTable = WaterTable - (InputVol - OutputVol) / (GU->getUsrArea()*(m_ThetaSat[GU->getID()] - m_ThetaIni[GU->getID()]));
@@ -604,8 +609,8 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
 
     // Append final WaterTable(t) and Exfiltration(t)
-    OPENFLUID_AppendVariable(GU,wxT("water.sz.H.watertable"),WaterTable);
-    OPENFLUID_AppendVariable(GU,wxT("water.sz-surf.Q.exfiltration"),Exfiltration);
+    OPENFLUID_AppendVariable(GU,("water.sz.H.watertable"),WaterTable);
+    OPENFLUID_AppendVariable(GU,("water.sz-surf.Q.exfiltration"),Exfiltration);
 
 
     END_LOOP

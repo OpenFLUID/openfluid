@@ -229,11 +229,12 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     OutputsSum = 0;
 
+    // TODO check here
 
     // adding upstream SU output (step n-1) to rain
     if (m_UseUpstreamOutput[ID] && CurrentStep > 0)
     {
-      //UpSUsList = SU->getUpstreamSUs();
+
       UpSUsList = SU->getFromUnits("SU");
 
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
@@ -247,6 +248,7 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     // convert rain from m/s to m/time step
     OPENFLUID_GetVariable(SU,("water.atm-surf.H.rain"),CurrentStep,&CurrentRain);
+
 
     CurrentRain = CurrentRain + m_CurrentUpstreamInput[ID];
 

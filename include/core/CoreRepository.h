@@ -47,7 +47,7 @@ class CoreRepository
 
     const UnitsListByClassMap_t* getUnits() const { return &m_PcsOrderedUnitsByClass; };
 
-    bool isUnitsClassExists(UnitClass_t UnitClass) const;
+    bool isUnitsClassExist(UnitClass_t UnitClass) const;
 
     void printSTDOUT();
 

@@ -21,7 +21,8 @@
 
 */
 class HayamiRSFunction : public openfluid::base::PluggableFunction
-{
+{    std::cout << "MS la 3" << std::endl; std::cout.flush();
+
   private:
 
     int m_MaxSteps;
@@ -77,7 +78,7 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
     */
     ~HayamiRSFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 

@@ -472,7 +472,7 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
 
         UnitClass = Child->Attribute("unitclass");
 
-        if (!mp_Repository->isUnitsClassExists(UnitClass))
+        if (!mp_Repository->isUnitsClassExist(UnitClass))
           throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Class "+ UnitClass +" found in " + FullFilename + " does not exist");
 
         Child = DocHandle.FirstChild("openfluid").FirstChild("domain").FirstChild("inputdata").FirstChild("columns").Element();
@@ -496,8 +496,8 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
 
               if (Child != NULL)
               {
-                //                Data.Clear();
-                //                Data.Append(_U(Child->GetText()));
+                Data = "";
+                Data = Child->GetText();
               }
               else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","No data found in file " + FullFilename);
             }
@@ -527,6 +527,45 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
   if (DataParser.setFromString(Data,ColOrder.size()+1))
   {
     //TODO to be continued here
+    openfluid::core::Unit* TheUnit;
+    int i,j;
+    i = 0;
+    bool IsOK = true;
+    long ID;
+    double Value;
+
+    // parses data in file and loads it in the input data table for each unit, ordered by columns
+    while (i<DataParser.getLinesCount() && IsOK)
+    {
+      IsOK = DataParser.getLongValue(i,0,&ID);
+
+      if (IsOK)
+      {
+
+        TheUnit = mp_Repository->getUnit(UnitClass,(openfluid::core::UnitID_t)ID);
+
+        if (TheUnit != NULL)
+        {
+          for (j=1;j<DataParser.getColsCount();j++)
+          {
+            if (DataParser.getDoubleValue(i,j,&Value))
+            {
+              TheUnit->getInputData()->setValue(ColOrder[j-1],Value);
+            }
+          }
+        }
+        else
+        {
+          mp_ExecMsgs->addWarning("IO Manager",UnitClass + " " + _S(wxString::Format(wxT("%d"),ID)) + " does not exist (" + FullFilename + ")");
+        }
+        i++;
+      }
+      else
+      {
+        openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Input data format error in file " + FullFilename);
+        return false;
+      }
+    }
   }
   else
   {
@@ -556,7 +595,7 @@ bool IOManager::loadInputDataFromFiles()
 
   while (IsOK && i<FilesToLoad.size())
   {
-    loadInputDataFile(FilesToLoad[i]);
+    IsOK = loadInputDataFile(FilesToLoad[i]);
     i++;
   }
 
@@ -635,7 +674,7 @@ bool IOManager::loadOutputConfig()
           IDStr = std::string(Child2->Attribute("unitsIDs"));
           VarsStr = std::string(Child2->Attribute("vars"));
 
-          if (NameStr != "" && ClassStr != "" && mp_Repository->isUnitsClassExists(ClassStr) && IDStr != "" && VarsStr != "")
+          if (NameStr != "" && ClassStr != "" && mp_Repository->isUnitsClassExist(ClassStr) && IDStr != "" && VarsStr != "")
           {
             FileOutputSet.Name = NameStr;
             FileOutputSet.UnitsClass = ClassStr;

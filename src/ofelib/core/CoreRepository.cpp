@@ -50,7 +50,7 @@ bool CoreRepository::addUnit(Unit aUnit)
 // =====================================================================
 
 
-bool CoreRepository::isUnitsClassExists(UnitClass_t UnitClass) const
+bool CoreRepository::isUnitsClassExist(UnitClass_t UnitClass) const
 {
   return m_PcsOrderedUnitsByClass.find(UnitClass) != m_PcsOrderedUnitsByClass.end();
 }
