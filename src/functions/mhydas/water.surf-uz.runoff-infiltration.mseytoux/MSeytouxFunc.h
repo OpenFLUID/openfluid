@@ -11,6 +11,7 @@
 
 #include "openfluid-base.h"
 #include "openfluid-core.h"
+#include "openfluid-tools.h"
 
 /**
 
@@ -19,16 +20,16 @@ class MorelSeytouxFunc : public openfluid::base::PluggableFunction
 {
   private:
 
-    /** 
+    /**
       Resolution step
-    */  
+    */
     double m_ResStep;
-    
+
     /**
       Theta star on each SU
     */
     openfluid::core::IDDoubleMap m_SUThetaStar;
-    
+
     /**
       Sf on each SU
     */
@@ -48,16 +49,16 @@ class MorelSeytouxFunc : public openfluid::base::PluggableFunction
       Current upstream input value for each SU
     */
     openfluid::core::IDDoubleMap m_CurrentUpstreamInput;
-    
+
     /**
       Rain sum for each SU
     */
-    openfluid::core::IDFloatMap m_RainSum;    
+    openfluid::core::IDFloatMap m_RainSum;
 
     /**
       Previous DeltaW for each SU
     */
-    openfluid::core::IDFloatMap m_PreviousDeltaW;    
+    openfluid::core::IDFloatMap m_PreviousDeltaW;
 
     openfluid::core::IDFloatMap m_PondingTime; // tp
 
@@ -88,13 +89,13 @@ class MorelSeytouxFunc : public openfluid::base::PluggableFunction
     ~MorelSeytouxFunc();
 
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool checkConsistency();
-    
+
     bool prepareData();
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);    
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
     bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 

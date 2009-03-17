@@ -173,7 +173,7 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_INPUT(name,uclass,description,unit) \
-  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used input data
@@ -183,7 +183,7 @@
   \param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_INPUT(name,uclass,description,unit) \
-  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 
 
@@ -269,7 +269,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_REQUIRED_PROPERTY(name,description,unit) \
-  Signature->HandledData.RequiredProps.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of a used property on all SUs
@@ -280,7 +280,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_USED_PROPERTY(name,description,unit) \
-  Signature->HandledData.UsedProps.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 
 /**
@@ -292,7 +292,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_REQUIRED_INICOND(name,description,unit) \
-  Signature->HandledData.RequiredIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 /**
   Macro for declaration of a used initial condition on all SUs
@@ -303,7 +303,7 @@
   \deprecated Deprecated macro, it is available for compatibility only.
 */
 #define DECLARE_SU_USED_INICOND(name,description,unit) \
-  Signature->HandledData.UsedIniconds.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),("SU"),description,unit));
 
 
 

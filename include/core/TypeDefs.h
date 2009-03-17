@@ -86,14 +86,13 @@ typedef std::vector<VectorValue> SerieOfVectorValue;
 // =====================================================================
 // =====================================================================
 
-/**
-  Hash table for parameters (distributed properties, distributed initial conditions, ...)
- */
-//WX_DECLARE_STRING_HASH_MAP(wxString,ParamsMap);
 
 typedef std::string FuncParamKey_t;
 typedef std::string FuncParamValue_t;
 
+/**
+  Hash table for parameters (distributed properties, distributed initial conditions, ...)
+*/
 typedef std::map<FuncParamKey_t,FuncParamValue_t> FuncParamsMap_t;
 
 
@@ -103,46 +102,55 @@ typedef std::map<FuncParamKey_t,FuncParamValue_t> FuncParamsMap_t;
   \anchor IDFloatMap
   Map associating a float value to a unit, indexed by its ID
 */
+typedef std::map<UnitID_t,float> IDFloatMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
 
 /**
   \anchor IDDoubleMap
   Map associating a double precision value to a unit, indexed by its ID
 */
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
+typedef std::map<UnitID_t,double> IDDoubleMap;
+//WX_DECLARE_HASH_MAP(openfluid::core::UnitID_t, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
 
 /**
   \anchor IDScalarValueMap
   Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
 */
+typedef std::map<UnitID_t,ScalarValue> IDScalarValueMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::ScalarValue, wxIntegerHash, wxIntegerEqual, IDScalarValueMap);
 
 /**
   \anchor IDIntMap
   Map associating an integer value to a unit, indexed by its ID
 */
+typedef std::map<UnitID_t,int> IDIntMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
 
 /**
   \anchor IDBoolMap
   Map associating a boolean value to a unit, indexed by its ID
 */
+typedef std::map<UnitID_t,bool> IDBoolMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
 
 /**
   \anchor IDVectorValueMap
   Map associating an openfluid::core::VectorValue value to a unit, indexed by its ID
 */
+typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue, wxIntegerHash, wxIntegerEqual, IDVectorValueMap);
 
 /**
   \anchor IDVectorValuePtrMap
   Map associating a pointer to an openfluid::core::VectorValue value to a unit, indexed by its ID
 */
+typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue*, wxIntegerHash, wxIntegerEqual, IDVectorValuePtrMap);
 
+typedef std::map<UnitID_t,SerieOfScalarValue> IDSerieOfScalarValueMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValueMap);
 
+typedef std::map<UnitID_t,SerieOfScalarValue*> IDSerieOfScalarValuePtrMap;
 //WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue*, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValuePtrMap);
 
 

@@ -603,7 +603,8 @@ bool OpenFLUIDApp::OnInit()
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
     if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);
-    if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);
+    // TODO enable this?
+    //    if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);
     if (Parser.Found(wxT("v"))) mp_RunEnv->setVerboseRun(true);
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);
     if (Parser.Found(wxT("no-varname-check"))) mp_RunEnv->setCheckVarNames(false);
