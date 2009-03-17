@@ -53,6 +53,8 @@ class StepSerieOfValues : public StepsReservation
 
     bool appendValue(const T Value);
 
+    unsigned int getNextStep() const;
+
     void displayStatus();
 
 };
@@ -90,7 +92,7 @@ StepSerieOfValues<T>::~StepSerieOfValues()
 template <class T>
 bool StepSerieOfValues<T>::deleteValues(const unsigned int UntilStepNbr)
 {
-
+  // TODO clean comments
   // compute the real index of UntilStepNbr in m_Data
   unsigned int RealEnd = UntilStepNbr - m_BaseStepIndex +1;
 
@@ -153,6 +155,17 @@ bool StepSerieOfValues<T>::appendValue(const T Value)
   m_NextStep++;
 
   return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+unsigned int StepSerieOfValues<T>::getNextStep() const
+{
+  return m_NextStep;
 }
 
 

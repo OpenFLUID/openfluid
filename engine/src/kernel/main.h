@@ -36,7 +36,8 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_SWITCH, _T("q"), _T("quiet"), _T("quiet display during simulation run")},
   {wxCMD_LINE_SWITCH, _T("r"), _T("functions-report"), _T("print a report of available functions, with details (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("s"), _T("no-simreport"), _T("do not generate simulation report")},
-  {wxCMD_LINE_SWITCH, _T("t"), _T("trace"), _T("enable trace mode")},
+  // TODO enable this?
+  //  {wxCMD_LINE_SWITCH, _T("t"), _T("trace"), _T("enable trace mode")},
   {wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("verbose display during simulation")},
   {wxCMD_LINE_SWITCH, _T(""), _T("version"), _T("get version (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("x"), _T("xml-functions-report"), _T("print a report of available functions in xml format, with details (do not run the model)")},

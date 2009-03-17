@@ -81,6 +81,8 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
 void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t inputName, openfluid::core::ScalarValue *Value)
 {
   // NOTICE: the checking of properties costs execution time
+  // TODO enable this
+
 /*
   if (HO != NULL)
   {
@@ -103,7 +105,8 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
 
 bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t inputName)
 {
-/*
+  // TODO enable this
+  /*
   if (HO != NULL)
    {
      openfluid::core::PropertiesMap::iterator it;
@@ -128,12 +131,15 @@ bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPt
 
 bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
-//  return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));
+  // TODO enable this
+
+  //  return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));
 }
 
 bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
-//  return OPENFLUID_IsScalarVariableExists(HO,VarName);
+  // TODO enable this
+  //  return OPENFLUID_IsScalarVariableExists(HO,VarName);
 }
 
 // =====================================================================
@@ -151,6 +157,8 @@ bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *U
 
 bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
+  // TODO enable this
+
   /*if (HO != NULL)
   {
     openfluid::core::SimulatedVarsMap::iterator it;
@@ -180,7 +188,9 @@ bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr
 
 bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
-/*  if (HO != NULL)
+  // TODO enable this
+
+  /*  if (HO != NULL)
   {
     openfluid::core::SimulatedVectorVarsMap::iterator it;
     it = HO->getSimulatedVectorVars()->find(VarName);
@@ -204,20 +214,12 @@ bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *U
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::ScalarValue Value)
 {
-/*  if (HO != NULL)
+  if (UnitPtr != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it;
-    it = HO->getSimulatedVars()->find(VarName);
-
-    if (it != HO->getSimulatedVars()->end())
-    {
-      it->second->push_back(Value);
-      return true;
-    }
-    else return false;
+    if (!UnitPtr->getScalarVariables()->appendValue(VarName,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for scalar variable "+ VarName);
   }
-  else return false;*/
-
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");;
 }
 
 // =====================================================================
@@ -226,22 +228,12 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::VectorValue& Value)
 {
-/*  if (HO != NULL)
+  if (UnitPtr != NULL)
   {
-    openfluid::core::SimulatedVectorVarsMap::iterator it;
-    it = HO->getSimulatedVectorVars()->find(VarName);
-
-    if (it != HO->getSimulatedVectorVars()->end())
-    {
-//      std::cerr << "Append 1" << std::endl; std::cerr.flush();
-      it->second->push_back(Value);
-//      std::cerr << "Append 2" << std::endl; std::cerr.flush();
-      return true;
-    }
-    else return false;
+    if (!UnitPtr->getVectorVariables()->appendValue(VarName,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for vector variable "+ VarName);
   }
-  else return false;*/
-
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 // =====================================================================
@@ -251,7 +243,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step, openfluid::core::ScalarValue Value)
 {
-/*  if (HO != NULL)
+
+  // TODO enable this
+  /*  if (HO != NULL)
   {
     openfluid::core::SimulatedVarsMap::iterator it;
     it = HO->getSimulatedVars()->find(VarName);
@@ -277,6 +271,7 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
 
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step, openfluid::core::VectorValue Value)
 {
+  // TODO enable this
   /*if (HO != NULL)
   {
     openfluid::core::SimulatedVectorVarsMap::iterator it;
@@ -487,7 +482,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventCollection* EventColl)
 {
 
-//  HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
+  // TODO enable this
+  //  HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
 
 
 }

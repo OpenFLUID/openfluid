@@ -112,61 +112,74 @@
 // =====================================================================
 // =====================================================================
 
-// checks if var exists
-/*
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                       getSimulatedVectorVars(),IsOK);
 
-*/
-// TODO check that
+
 #define DECLARE_CHECK_VAR \
-    openfluid::core::UnitsList_t::const_iterator _M_CHV_UnitIter; \
-    openfluid::core::UnitsList_t* _M_CHV_UnitList; \
+  openfluid::core::UnitsList_t::const_iterator _M_CHV_UnitIter; \
+  openfluid::core::UnitsList_t* _M_CHV_UnitList; \
 
 // TODO check that
+// checks if var exists
 #define CHECK_VAR(varname,unitclass,status) \
-    _M_CHV_UnitList = NULL; \
-    if (mp_CoreData->isUnitsClassExists(unitclass)) _M_CHV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
-    _M_CHV_UnitIter = _M_CHV_UnitList->begin(); \
-    while (status && (_M_CHV_UnitIter != _M_CHV_UnitList->end()))\
-    {\
-      if (IsVectorNamedVariable(varname) status = (*_M_CHV_UnitIter)->getVectorVariables()->IsVariableExist(GetVectorNamedVariableName(varname));\
-      else status = (*_M_CHV_UnitIter)->getScalarVariables()->IsVariableExist(varname); \
-      ++_M_CHV_UnitIter; \
+  _M_CHV_UnitList = NULL; \
+  if (mp_CoreData->isUnitsClassExists(unitclass)) _M_CHV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  else status = false; \
+  if (status) _M_CHV_UnitIter = _M_CHV_UnitList->begin(); \
+  while (status && (_M_CHV_UnitIter != _M_CHV_UnitList->end()))\
+  {\
+    if (IsVectorNamedVariable(varname)) status = (*_M_CHV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname));\
+    else status = (*_M_CHV_UnitIter).getScalarVariables()->isVariableExists(varname); \
+    ++_M_CHV_UnitIter; \
+  }\
+
+
+// TODO check that
+#define DECLARE_CREATE_VAR \
+  openfluid::core::UnitsList_t::iterator _M_CRV_UnitIter; \
+  openfluid::core::UnitsList_t* _M_CRV_UnitList; \
+
+// create var, error if already exists
+#define CREATE_VAR(varname,unitclass,status) \
+  _M_CRV_UnitList = NULL; \
+  if (mp_CoreData->isUnitsClassExists(unitclass)) _M_CRV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  else status = false; \
+  if (status) _M_CRV_UnitIter = _M_CRV_UnitList->begin(); \
+  while (status && (_M_CRV_UnitIter != _M_CRV_UnitList->end()))\
+  {\
+    if (IsVectorNamedVariable(varname)) status = !((*_M_CRV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname)));\
+    else status = !((*_M_CRV_UnitIter).getScalarVariables()->isVariableExists(varname)); \
+    ++_M_CRV_UnitIter; \
+  }\
+  if (status) \
+  {\
+    for(_M_CRV_UnitIter = _M_CRV_UnitList->begin(); _M_CRV_UnitIter != _M_CRV_UnitList->end(); ++_M_CRV_UnitIter ) \
+    { \
+      if (IsVectorNamedVariable(varname)) (*_M_CRV_UnitIter).getVectorVariables()->createVariable(GetVectorNamedVariableName(varname)); \
+      else (*_M_CRV_UnitIter).getScalarVariables()->createVariable(varname); \
     }\
-/*
-// adds a new var, returns false status if already exists
-#define CREATE_VAR(name,objects,objshashtype,vars,varshashtype,datatype,status) \
-    objshashtype::iterator _M_it;\
-    _M_it = objects->begin(); \
-    while (status && (_M_it != objects->end()))\
-    {\
-      status = (_M_it->second->vars->find(name) == _M_it->second->vars->end()); \
-      ++_M_it; \
-    }\
-    if (status) \
-    {\
-      for(_M_it = objects->begin(); _M_it != objects->end(); ++_M_it ) \
-      { \
-        _M_it->second->vars->insert(varshashtype::value_type(name,new datatype)); \
-      }\
-    }\
+  }\
+
+
+// TODO check that
+#define DECLARE_UPDATE_VAR \
+  openfluid::core::UnitsList_t::iterator _M_UPV_UnitIter; \
+  openfluid::core::UnitsList_t* _M_UPV_UnitList; \
+
 
 // adds a new var if doesn't exist
-#define UPDATE_VAR(name,objects,objshashtype,vars,varshashtype,datatype,status) \
-    objshashtype::iterator _M_it;\
-    _M_it = objects->begin(); \
-    while (status && (_M_it != objects->end()))\
-    {\
-      if (_M_it->second->vars->find(name) == _M_it->second->vars->end()) \
-      {\
-        _M_it->second->vars->insert(varshashtype::value_type(name,new datatype)); \
-      }\
-      ++_M_it;\
-    }\
-
-*/
+#define UPDATE_VAR(varname,unitclass,status) \
+  _M_UPV_UnitList = NULL; \
+  if (mp_CoreData->isUnitsClassExists(unitclass)) _M_UPV_UnitList = mp_CoreData->getUnits(unitclass)->getList(); \
+  else status = false; \
+  if (status) _M_UPV_UnitIter = _M_UPV_UnitList->begin(); \
+  while (status && (_M_UPV_UnitIter != _M_UPV_UnitList->end()))\
+  {\
+    if (IsVectorNamedVariable(varname) && !(*_M_UPV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname))) \
+      (*_M_UPV_UnitIter).getVectorVariables()->createVariable(GetVectorNamedVariableName(varname)); \
+    if (!IsVectorNamedVariable(varname) && !(*_M_UPV_UnitIter).getVectorVariables()->isVariableExists(GetVectorNamedVariableName(varname))) \
+      (*_M_UPV_UnitIter).getScalarVariables()->createVariable(varname); \
+    ++_M_UPV_UnitIter; \
+  }\
 // =====================================================================
 // =====================================================================
 
@@ -222,7 +235,6 @@ bool Engine::processConfig()
   */
 
 
-//  FunctionConfigsList:: *FuncNode = m_ModelConfig.FuncConfigs.front();
   std::list<FunctionConfig>::iterator FuncIt;
 
   FunctionConfig* FConf;
@@ -268,7 +280,38 @@ bool Engine::processConfig()
 
 bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message)
 {
+
+  // TODO check this
 /*
+  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsClassesIter;
+  openfluid::core::UnitsList_t::const_iterator UnitsIter;
+  const openfluid::core::UnitsListByClassMap_t* AllUnits;
+  const openfluid::core::UnitsList_t* UnitsList;
+  std::vector<std::string> VarsNames;
+  unsigned int i;
+
+  AllUnits = mp_CoreData->getUnits();
+
+  for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
+  {
+    UnitsList = UnitsClassesIter->second.getList();
+
+    for (UnitsIter = UnitsList->begin();UnitsIter !=UnitsList->end();++UnitsIter)
+    {
+      //scalars
+      VarsNames = UnitsIter->getScalarVariables()->getVariablesNames();
+      for (i=0;i<VarsNames.size();i++)
+      {
+        if (UnitsIter->getScalarVariables()->getVariableValuesCount(VarsNames[i]) != ExpectedVarsCount) return false;
+      }
+
+
+      //vectors
+    }
+
+  }
+*/
+  /*
   openfluid::core::SurfaceUnit *SU;
   openfluid::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
   openfluid::core::SUMap::iterator SUiter;
@@ -435,314 +478,75 @@ bool Engine::checkModelConsistency()
   bool IsOK = true;
 
   DECLARE_CHECK_VAR;
+  DECLARE_CREATE_VAR;
+  DECLARE_UPDATE_VAR;
 
   PluginsList::iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
+  PluginContainer* CurrentFunction;
+  unsigned int i;
 
-  // TODO complete or rewrite this
+
+  /* Variables processing order is important
+     1) required vars
+     2) produced vars
+     3) updated vars
+     4) required vars at t-1+
+  */
 
   FuncIter = m_Functions.begin();
 
   while (FuncIter != m_Functions.end() && IsOK)
   {
+    CurrentFunction = (*FuncIter);
+    HData = CurrentFunction->Signature->HandledData;
 
 
-
-
-  }
-
-
-  // TODO enable or rewrite this
-  /*
-  PluginsList::Node *FuncNode = NULL;
-  openfluid::base::SignatureHandledData HData;
-
-  int i;
-
-
-  FuncNode = m_Functions.GetFirst();
-  while (FuncNode && IsOK)
-  {
-    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
-    if (CurrentFunction != NULL)
+    // checking required variables
+    i = 0;
+    while (IsOK && i < HData.RequiredVars.size())
     {
+      CHECK_VAR(HData.RequiredVars[i].DataName, HData.RequiredVars[i].UnitClass, IsOK);
 
-      HData = CurrentFunction->Signature->HandledData;
-
-      // required vars
-      i = 0;
-      while (IsOK && i<HData.RequiredVars.size())
-      {
-
-        if (HData.RequiredVars[i].Distribution == wxT("SU"))
-        {
-          if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
-          {
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                       getSimulatedVectorVars(),IsOK);
-          }
-          else
-          {
-            CHECK_VAR(HData.RequiredVars[i].Name,
-                      mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                      getSimulatedVars(),IsOK);
-          }
-
-        }
-
-        if (HData.RequiredVars[i].Distribution == wxT("RS"))
-        {
-          if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
-          {
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                      mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                      getSimulatedVectorVars(),IsOK);
-          }
-          else
-          {
-            CHECK_VAR(HData.RequiredVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                       getSimulatedVars(),IsOK);
-          }
-        }
-
-        if (HData.RequiredVars[i].Distribution == wxT("GU"))
-        {
-          if (IsVectorNamedVariable(HData.RequiredVars[i].Name))
-          {
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredVars[i].Name),
-                      mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                      getSimulatedVectorVars(),IsOK);
-          }
-          else
-          {
-            CHECK_VAR(HData.RequiredVars[i].Name,
-                      mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                      getSimulatedVars(),IsOK);
-          }
-        }
-
-        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",_S(HData.RequiredVars[i].Name) + " variable required by " + _S(CurrentFunction->Signature->ID) + " is not previously created");
-        else i++;
-      }
-
-
-      // produced vars
-      i = 0;
-      while (IsOK && i<HData.ProducedVars.size())
-      {
-
-
-        if (HData.ProducedVars[i].Distribution == wxT("SU"))
-        {
-          if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
-          {
-            CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfVectorValue,IsOK);
-          }
-          else
-          {
-            CREATE_VAR(HData.ProducedVars[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                     getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                     openfluid::core::SerieOfScalarValue,IsOK);
-
-          }
-        }
-
-        if (HData.ProducedVars[i].Distribution == wxT("RS"))
-        {
-          if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
-          {
-            CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfVectorValue,IsOK);
-          }
-          else
-          {
-            CREATE_VAR(HData.ProducedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfScalarValue,IsOK);
-          }
-        }
-
-        if (HData.ProducedVars[i].Distribution == wxT("GU"))
-        {
-          if (IsVectorNamedVariable(HData.ProducedVars[i].Name))
-          {
-            CREATE_VAR(GetVectorNamedVariableName(HData.ProducedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfVectorValue,IsOK);
-          }
-          else
-          {
-            CREATE_VAR(HData.ProducedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfScalarValue,IsOK);
-          }
-
-        }
-
-
-        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",_S(HData.ProducedVars[i].Name) + " variable produced by " + _S(CurrentFunction->Signature->ID) + " cannot be created because it is previously created");
-        else i++;
-      }
-
-
-      // updated vars
-      i = 0;
-      while (IsOK && i<HData.UpdatedVars.size())
-      {
-
-        if (HData.UpdatedVars[i].Distribution == wxT("SU"))
-        {
-          if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
-          {
-            UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfVectorValue,IsOK);
-          }
-          else
-          {
-            UPDATE_VAR(HData.UpdatedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfScalarValue,IsOK);
-          }
-        }
-
-        if (HData.UpdatedVars[i].Distribution == wxT("RS"))
-        {
-          if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
-          {
-            UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfVectorValue,IsOK);
-          }
-          else
-          {
-
-            UPDATE_VAR(HData.UpdatedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfScalarValue,IsOK);
-          }
-        }
-
-        if (HData.UpdatedVars[i].Distribution == wxT("GU"))
-        {
-          if (IsVectorNamedVariable(HData.UpdatedVars[i].Name))
-          {
-            UPDATE_VAR(GetVectorNamedVariableName(HData.UpdatedVars[i].Name),
-                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                       getSimulatedVectorVars(),openfluid::core::SimulatedVectorVarsMap,
-                       openfluid::core::SerieOfVectorValue,IsOK);
-          }
-          else
-          {
-            UPDATE_VAR(HData.UpdatedVars[i].Name,
-                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                       getSimulatedVars(),openfluid::core::SimulatedVarsMap,
-                       openfluid::core::SerieOfScalarValue,IsOK);
-          }
-        }
-
-        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency","Problem handling of " + _S(HData.ProducedVars[i].Name) + " updated variable declared by " + _S(CurrentFunction->Signature->ID));
-        else i++;
-      }
-
+      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredVars[i].DataName + " variable on " + HData.RequiredVars[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not previously created");
+      else i++;
     }
 
-    FuncNode = FuncNode->GetNext();
-  }
 
-
-
-  // prev vars
-
-  FuncNode = m_Functions.GetFirst();
-  while (FuncNode && IsOK)
-  {
-    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
-    if (CurrentFunction != NULL)
+    // checking variables to create (produced)
+    i = 0;
+    while (IsOK && i < HData.ProducedVars.size())
     {
-      HData = CurrentFunction->Signature->HandledData;
+      CREATE_VAR(HData.ProducedVars[i].DataName, HData.ProducedVars[i].UnitClass, IsOK);
 
-      // required vars
-      i = 0;
-      while (IsOK && i<HData.RequiredPrevVars.size())
-      {
-
-        if (HData.RequiredPrevVars[i].Distribution == wxT("SU"))
-        {
-          if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
-          {
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
-                      mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                      getSimulatedVectorVars(),IsOK);
-
-          }
-          else
-          {
-            CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                       mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                       getSimulatedVars(),IsOK);
-          }
-        }
-
-        if (HData.RequiredPrevVars[i].Distribution == wxT("RS"))
-        {
-          if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
-          {
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
-                      mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                      getSimulatedVectorVars(),IsOK);
-          }
-          else
-          {
-            CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                       mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                       getSimulatedVars(),IsOK);
-          }
-
-        }
-
-        if (HData.RequiredPrevVars[i].Distribution == wxT("GU"))
-        {
-          if (IsVectorNamedVariable(HData.RequiredPrevVars[i].Name))
-          {
-            CHECK_VAR(GetVectorNamedVariableName(HData.RequiredPrevVars[i].Name),
-                      mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                      getSimulatedVectorVars(),IsOK);
-          }
-          else
-          {
-            CHECK_VAR(HData.RequiredPrevVars[i].Name,
-                       mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                       getSimulatedVars(),IsOK);
-          }
-
-        }
-
-        if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",_S(HData.RequiredPrevVars[i].Name) + " variable required at previous step by " + _S(CurrentFunction->Signature->ID) + " does not exist");
-        else i++;
-      }
-
+      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.ProducedVars[i].DataName + " variable on " + HData.ProducedVars[i].UnitClass + " produced by " + CurrentFunction->Signature->ID + " cannot be created because it is previously created");
+      else i++;
     }
 
-    FuncNode = FuncNode->GetNext();
+    // checking variables to update
+    i = 0;
+    while (IsOK && i < HData.UpdatedVars.size())
+    {
+      UPDATE_VAR(HData.UpdatedVars[i].DataName, HData.UpdatedVars[i].UnitClass, IsOK);
+
+      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.UpdatedVars[i].DataName + " variable on " + HData.UpdatedVars[i].UnitClass + " updated by " + CurrentFunction->Signature->ID + " cannot be handled");
+      else i++;
+    }
+
+    // checking required variables at t-1+
+    i = 0;
+    while (IsOK && i < HData.RequiredPrevVars.size())
+    {
+      CHECK_VAR(HData.RequiredPrevVars[i].DataName, HData.RequiredPrevVars[i].UnitClass, IsOK);
+
+      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredVars[i].DataName + " variable on " + HData.RequiredPrevVars[i].UnitClass + "required by " + CurrentFunction->Signature->ID + " is not created");
+      else i++;
+    }
+
+
+    FuncIter++;
   }
 
-*/
 
   return IsOK;
 }
@@ -768,7 +572,19 @@ bool Engine::checkDataConsistency()
 
   // check variable name against nomenclature
   if (mp_RunEnv->isCheckVarNames())
+  {  std::list<FunctionConfig>::iterator FuncIt;
+
+  FunctionConfig* FConf;
+  PluginContainer* FuncToAdd;
+
+  m_Functions.clear();
+
+
+  // on each function
+  for (FuncIt = m_ModelConfig.FuncConfigs.begin(); FuncIt != m_ModelConfig.FuncConfigs.end(); ++FuncIt)
   {
+    FConf = &(*FuncIt);
+
 
     wxRegEx RegExp(wxT("[a-zA-Z,\\-]+\\.[a-zA-Z\\-]+\\.[a-zA-Z\\-\\#]+\\.[a-zA-Z\\-]+"));
 
@@ -877,12 +693,13 @@ bool Engine::checkDataConsistency()
       }
     }
   }
+*/
 
 
 
-
-
-  // check data consistency
+  // TODO enable or rewrite this
+/*
+  // check input data consistency
   FuncNode = m_Functions.GetFirst();
   while (FuncNode && IsOK)
   {
@@ -988,38 +805,30 @@ bool Engine::checkExtraFilesConsistency()
 {
   // TODO enable this
 
-  /*
-  PluginsList::Node *FuncNode = NULL;
-  int i;
+
+  PluginsList::iterator FuncIt;
   openfluid::base::SignatureHandledData HData;
+  PluginContainer* CurrentFunction;
 
 
-
-
-  FuncNode = m_Functions.GetFirst();
-  while (FuncNode)
+  // on each function
+  for (FuncIt = m_Functions.begin(); FuncIt != m_Functions.end(); ++FuncIt)
   {
-    PluginContainer* CurrentFunction = (PluginContainer*)FuncNode->GetData();
-    if (CurrentFunction != NULL)
+    CurrentFunction = *FuncIt;
+
+    HData = CurrentFunction->Signature->HandledData;
+
+    for (int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
-      HData = CurrentFunction->Signature->HandledData;
-
-      for (i=0;i<HData.RequiredExtraFiles.size();i++)
+      if (!wxFileExists(_U(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]).c_str())))
       {
-        if (!wxFileExists(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i])))
-        {
-          throw openfluid::base::OFException("kernel","Engine::checkExtraFilesConsistency","File " + _S(HData.RequiredExtraFiles[i]) + " required by " + _S(CurrentFunction->Signature->ID) + " not found");
-          return false;
-        }
+        throw openfluid::base::OFException("kernel","Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentFunction->Signature->ID + " not found");
+        return false;
       }
-
-
     }
-    FuncNode = FuncNode->GetNext();
+
+
   }
-
-
-*/
   return true;
 }
 
@@ -1468,9 +1277,15 @@ bool Engine::run()
 
   // TODO final progressive output
   // -1 because of the previous loop, index exceeds range
-  //IOMan->saveOutputs(CurrentStep-1,true);
-  //TheRepos->doMemRelease(CurrentStep-1,true);
-
+//  mp_IOMan->saveOutputs(CurrentStep-1,true);
+  //mp_CoreData->doMemRelease(CurrentStep-1,true);
+  if (mp_MemMon->isMemReleaseStep(mp_SimStatus->getStepsCount()-1))
+  {
+    std::cout << std::endl << "        ---- Saving to disk and releasing memory (final) ";
+    //mp_IOMan->saveOutputs(mp_SimStatus->getStepsCount()-1,false);
+    //mp_CoreData->doMemRelease(mp_SimStatus->getStepsCount()-1,false);
+    std::cout << "[OK] ----" << std::endl << std::endl ;
+  }
 
 
   return IsOK;

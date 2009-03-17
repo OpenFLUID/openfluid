@@ -9,7 +9,6 @@
 namespace openfluid { namespace core {
 
 
-
 template <class T>
 class Variables
 {
@@ -17,6 +16,7 @@ class Variables
 
     typedef std::map<VariableName_t,StepSerieOfValues<T> > VariablesMap_t;
     VariablesMap_t m_Data;
+
 
   public :
 
@@ -35,6 +35,8 @@ class Variables
     bool isVariableExists(const VariableName_t aName) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
+
+    unsigned int getVariableValuesCount(const VariableName_t aName) const;
 
     bool releaseMemory(TimeStep_t Step);
 
@@ -172,6 +174,23 @@ bool Variables<T>::releaseMemory(TimeStep_t Step)
     it->second.deleteValues(Step);
   }
   return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+template <class T>
+unsigned int Variables<T>::getVariableValuesCount(const VariableName_t aName) const
+{
+  // TODO check this
+
+  typename VariablesMap_t::const_iterator it;
+
+  it = m_Data.find(aName);
+
+  if (it = m_Data.end()) return -1;
+
+  else return it->second.getNextStep();
 }
 
 
