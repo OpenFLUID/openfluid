@@ -129,12 +129,11 @@ bool MorelSeytouxFunc::initializeRun(const openfluid::base::SimulationInfo* SimI
   DECLARE_SU_ORDERED_LOOP
   BEGIN_SU_ORDERED_LOOP(SU)
 
-
     // getting distributed properties
-    OPENFLUID_GetInputData(SU,("thetares"),&ThetaR);
-    OPENFLUID_GetInputData(SU,("thetasat"),&ThetaS);
-    OPENFLUID_GetInputData(SU,("thetaisurf"),&ThetaI);
-    OPENFLUID_GetInputData(SU,("hc"),&Hc);
+    OPENFLUID_GetInputData(SU,"thetares",&ThetaR);
+    OPENFLUID_GetInputData(SU,"thetasat",&ThetaS);
+    OPENFLUID_GetInputData(SU,"thetaisurf",&ThetaI);
+    OPENFLUID_GetInputData(SU,"hc",&Hc);
 
 
     // Computing ThetaStar
@@ -220,8 +219,8 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
     ID = SU->getID();
 
     // Getting distributed properties
-    OPENFLUID_GetInputData(SU,("ks"),&Ks);
-    OPENFLUID_GetInputData(SU,("betaMS"),&Beta);
+    OPENFLUID_GetInputData(SU,"ks",&Ks);
+    OPENFLUID_GetInputData(SU,"betaMS",&Beta);
     OPENFLUID_GetInputData(SU,"area",&Area);
 
     CurrentRunoff = 0;
@@ -237,11 +236,17 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
 
       UpSUsList = SU->getFromUnits("SU");
 
-      for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++) \
+      if (UpSUsList != NULL)
       {
-        UpSU = *UpSUiter;
-        OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep-1,&TmpValue);
-        OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
+        for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
+        {
+          UpSU = *UpSUiter;
+          if (OPENFLUID_IsScalarVariableExist(UpSU,("water.surf.Q.downstream-su"),CurrentStep-1))
+          {
+            OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep-1,&TmpValue);
+            OutputsSum = OutputsSum + TmpValue * TimeStep / Area;
+          }
+        }
       }
     }
     m_CurrentUpstreamInput[ID] = OutputsSum;

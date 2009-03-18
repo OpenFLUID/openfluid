@@ -40,6 +40,7 @@ class Engine
      openfluid::core::CoreRepository* mp_CoreData;
 
      RuntimeEnvironment* mp_RunEnv;
+
      openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
      openfluid::base::SimulationStatus* mp_SimStatus;

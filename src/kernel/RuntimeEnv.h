@@ -157,7 +157,6 @@ class RuntimeEnvironment
 
     unsigned int getProgressiveOutputPacket() const  { return m_ProgOutPacket; };
 
-
 };
 
 
