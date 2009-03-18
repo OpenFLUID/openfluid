@@ -13,6 +13,7 @@
 #include <wx/tokenzr.h>
 #include <wx/dir.h>
 #include <wx/filefn.h>
+#include <wx/filename.h>
 #include <wx/datetime.h>
 
 IOManager* IOManager::mp_Singleton = NULL;
@@ -294,12 +295,14 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 // =====================================================================
 // =====================================================================
 
-bool IOManager::loadDomainFile(std::string FullFilename, std::list<openfluid::core::UnitsLink_t>* ToUnitsList)
+bool IOManager::loadDomainFile(std::string Filename, std::list<openfluid::core::UnitsLink_t>* ToUnitsList)
 {
 
   TiXmlDocument LoadDoc;
 
-//  std::cout << "Loading file " << FullFilename.mb_str(wxConvUTF8) << std::endl;
+
+  std::string FullFilename = mp_RunEnv->getInputFullPath(Filename);
+
 
   if (LoadDoc.LoadFile(FullFilename.c_str()))
   {
@@ -360,14 +363,14 @@ bool IOManager::loadDomainFile(std::string FullFilename, std::list<openfluid::co
             }
             else
             {
-              throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + FullFilename + ", wrong attributes in definition of topology");
+              throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + Filename + ", wrong attributes in definition of topology");
               return false;
             }
           }
         }
         else
         {
-          throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + FullFilename + ", wrong attributes in unit definition");
+          throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + Filename + ", wrong attributes in unit definition");
           return false;
         }
       }
@@ -377,13 +380,13 @@ bool IOManager::loadDomainFile(std::string FullFilename, std::list<openfluid::co
     }
     else
     {
-      throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + FullFilename + ", wrong file format");
+      throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + Filename + ", wrong file format");
       return false;
     }
   }
   else
   {
-    throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + FullFilename);
+    throw openfluid::base::OFException("kernel","IOManager::LoadDomainFile","Error loading file " + Filename);
     return false;
   }
 
@@ -409,10 +412,12 @@ bool IOManager::loadDomainFromFiles()
   bool IsOK = true;
   unsigned int i=0;
 
+  std::string CurrentFile;
 
   while (IsOK && i<FilesToLoad.size())
   {
-    loadDomainFile(FilesToLoad[i], &ToUnitsList);
+    CurrentFile = _S(wxFileName(_U(FilesToLoad[i].c_str())).GetFullName());
+    loadDomainFile(CurrentFile, &ToUnitsList);
     i++;
   }
 
@@ -446,7 +451,7 @@ bool IOManager::loadDomainFromFiles()
 // =====================================================================
 
 
-bool IOManager::loadInputDataFile(std::string FullFilename)
+bool IOManager::loadInputDataFile(std::string Filename)
 {
 //  std::cout << "Loading file " << FullFilename.mb_str(wxConvUTF8) << std::endl;
 
@@ -455,6 +460,7 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
   std::vector<std::string> ColOrder;
   std::string UnitClass;
 
+  std::string FullFilename = mp_RunEnv->getInputFullPath(Filename);
 
 
   if (LoadDoc.LoadFile(FullFilename.c_str()))
@@ -473,7 +479,7 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
         UnitClass = Child->Attribute("unitclass");
 
         if (!mp_Repository->isUnitsClassExist(UnitClass))
-          throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Class "+ UnitClass +" found in " + FullFilename + " does not exist");
+          throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Class "+ UnitClass +" found in " + Filename + " does not exist");
 
         Child = DocHandle.FirstChild("openfluid").FirstChild("domain").FirstChild("inputdata").FirstChild("columns").Element();
 
@@ -499,11 +505,11 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
                 Data = "";
                 Data = Child->GetText();
               }
-              else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","No data found in file " + FullFilename);
+              else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","No data found in file " + Filename);
             }
-            else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column order is empty in file " + FullFilename);
+            else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column order is empty in file " + Filename);
           }
-          else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column order not found in file " + FullFilename);
+          else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column order not found in file " + Filename);
         }
         else throw openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Column definition not found in file " + FullFilename);
       }
@@ -511,13 +517,13 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
     }
     else
     {
-      throw openfluid::base::OFException("kernel","IOManager::LoadInputDataFile","Error loading file " + FullFilename + ", wrong file format");
+      throw openfluid::base::OFException("kernel","IOManager::LoadInputDataFile","Error loading file " + Filename + ", wrong file format");
       return false;
     }
   }
   else
   {
-    throw openfluid::base::OFException("kernel","IOManager::LoadInputDataFile","Error loading file " + FullFilename);
+    throw openfluid::base::OFException("kernel","IOManager::LoadInputDataFile","Error loading file " + Filename);
     return false;
   }
 
@@ -562,14 +568,14 @@ bool IOManager::loadInputDataFile(std::string FullFilename)
       }
       else
       {
-        openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Input data format error in file " + FullFilename);
+        openfluid::base::OFException("kernel","IOManager::loadDistributedDataFile","Input data format error in file " + Filename);
         return false;
       }
     }
   }
   else
   {
-    throw openfluid::base::OFException("kernel","IOManager::LoadInputDataFile","Error loading file " + FullFilename + ",cannot parse data");
+    throw openfluid::base::OFException("kernel","IOManager::LoadInputDataFile","Error loading file " + Filename + ", cannot parse data");
     return false;
   }
 
@@ -593,9 +599,12 @@ bool IOManager::loadInputDataFromFiles()
   unsigned int i=0;
 
 
+  std::string CurrentFile;
+
   while (IsOK && i<FilesToLoad.size())
   {
-    IsOK = loadInputDataFile(FilesToLoad[i]);
+    CurrentFile = _S(wxFileName(_U(FilesToLoad[i].c_str())).GetFullName());
+    IsOK = loadInputDataFile(CurrentFile);
     i++;
   }
 
@@ -775,7 +784,7 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
           m_OutputConfig.FileSets[FileOutputIndex].Sets[OutputSetIndex].ScalarVariables,CommentChar);
 
 
-    TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(ScalarsFilename.c_str()),wxFile::write_append);
+    TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(ScalarsFilename.c_str()),wxFile::write);
     TFile.Write(_U(FileContent.c_str()));
     TFile.Close();
   }
@@ -800,7 +809,7 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
       FileContent = generateOutputVectorFileHeader("unknown", aUnit->getClass(), aUnit->getID(),VectorFilename,
           VarNames[j],CommentChar);
 
-      TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(VectorFilename.c_str()),wxFile::write_append);
+      TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(VectorFilename.c_str()),wxFile::write);
       TFile.Write(_U(FileContent.c_str()));
       TFile.Close();
 
@@ -971,7 +980,7 @@ std::string IOManager::generateOutputVectorFileHeader(std::string SimulationID, 
 // =====================================================================
 
 
-bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool WithoutKeep)
+bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep)
 {
 
   std::string OutputDir = mp_RunEnv->getOutputDir();
@@ -1001,7 +1010,7 @@ bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool Withou
 
         for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
         {
-          saveUnitFileOutput(&(*UnitIt),i,j,BeginStep,EndStep,OutputDir);
+          saveUnitFileOutput(&(*UnitIt),i,j,BeginStep,EndStep,SimInfo,OutputDir);
         }
 
       }
@@ -1009,7 +1018,7 @@ bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool Withou
       {
         for (unsigned int iUnits = 0; iUnits < m_OutputConfig.FileSets[i].Sets[j].Units.size();iUnits++)
         {
-          saveUnitFileOutput(m_OutputConfig.FileSets[i].Sets[j].Units[iUnits],i,j,BeginStep,EndStep,OutputDir);
+          saveUnitFileOutput(m_OutputConfig.FileSets[i].Sets[j].Units[iUnits],i,j,BeginStep,EndStep,SimInfo,OutputDir);
         }
       }
     }
@@ -1028,6 +1037,7 @@ bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool Withou
 
 bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
     openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
+    openfluid::base::SimulationInfo *SimInfo,
     std::string OutputDir)
 {
 
@@ -1051,11 +1061,15 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
       FileContent = generateOutputScalarsFileContent(aUnit,
           aUnit->getScalarVariables()->getVariablesNames(),
           BeginStep,EndStep,
+          SimInfo,
+          m_OutputConfig.FileSets[FileOutputIndex].DateFormat,
           ColSep);
     else
       FileContent = generateOutputScalarsFileContent(aUnit,
           m_OutputConfig.FileSets[FileOutputIndex].Sets[OutputSetIndex].ScalarVariables,
           BeginStep,EndStep,
+          SimInfo,
+          m_OutputConfig.FileSets[FileOutputIndex].DateFormat,
           ColSep);
 
 
@@ -1083,6 +1097,8 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
 
       FileContent = generateOutputVectorFileContent(aUnit,VarNames[j],
           BeginStep,EndStep,
+          SimInfo,
+          m_OutputConfig.FileSets[FileOutputIndex].DateFormat,
           ColSep);
 
       TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(VectorFilename.c_str()),wxFile::write_append);
@@ -1104,6 +1120,8 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
 
 std::string IOManager::generateOutputScalarsFileContent(const openfluid::core::Unit* aUnit, const std::vector<std::string> ScalarsNames,
     openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
+    openfluid::base::SimulationInfo *SimInfo,
+    std::string DateFormat,
     std::string ColSeparator)
 {
   std::ostringstream GeneratedContent;
@@ -1112,7 +1130,8 @@ std::string IOManager::generateOutputScalarsFileContent(const openfluid::core::U
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
     // TODO replace with correct date
-    GeneratedContent << "[Step " << iStep << "]";
+    //GeneratedContent << "[Step " << iStep << "]";
+    GeneratedContent << GenerateDateTimeFromStep(SimInfo->getStartTime(),SimInfo->getTimeStep(),iStep).getAsString(DateFormat);
 
     //    std::cout << iStep << std::endl;
 
@@ -1136,6 +1155,8 @@ std::string IOManager::generateOutputScalarsFileContent(const openfluid::core::U
 
 std::string IOManager::generateOutputVectorFileContent(const openfluid::core::Unit* aUnit, const std::string VectorName,
     openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
+    openfluid::base::SimulationInfo *SimInfo,
+    std::string DateFormat,
     std::string ColSeparator)
 {
   std::ostringstream GeneratedContent;
@@ -1144,7 +1165,7 @@ std::string IOManager::generateOutputVectorFileContent(const openfluid::core::Un
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
     // TODO replace with correct date
-    GeneratedContent << "[Step " << iStep << "]";
+    GeneratedContent << GenerateDateTimeFromStep(SimInfo->getStartTime(),SimInfo->getTimeStep(),iStep).getAsString(DateFormat);
 
     //    std::cout << "saving Vector-a " << iStep << std::endl; std::cout.flush();
 
@@ -1179,10 +1200,12 @@ bool IOManager::loadEventsFromFiles()
   bool IsOK = true;
   int i=0;
 
+  std::string CurrentFile;
 
   while (IsOK && i<FilesToLoad.size())
   {
-    IsOK =  loadEventsFile(FilesToLoad[i]);
+    CurrentFile = _S(wxFileName(_U(FilesToLoad[i].c_str())).GetFullName());
+    IsOK =  loadEventsFile(CurrentFile);
     i++;
   }
 
@@ -1194,7 +1217,7 @@ bool IOManager::loadEventsFromFiles()
 // =====================================================================
 // =====================================================================
 
-bool IOManager::loadEventsFile(std::string FullFilename)
+bool IOManager::loadEventsFile(std::string Filename)
 {
 
   bool IsOK = true;
@@ -1205,6 +1228,9 @@ bool IOManager::loadEventsFile(std::string FullFilename)
   openfluid::core::UnitClass_t UnitClass;
   std::string UnitIDStr;
   std::string InfoKey, InfoValue;
+
+  std::string FullFilename = mp_RunEnv->getInputFullPath(Filename);
+
 
   if (wxFileExists(_U(FullFilename.c_str())))
   {
@@ -1284,19 +1310,19 @@ bool IOManager::loadEventsFile(std::string FullFilename)
       else
       {
         IsOK = false;
-        throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file format error (" + FullFilename + ")");
+        throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file format error (" + Filename + ")");
       }
     }
     else
     {
       IsOK = false;
-      throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file error (" + FullFilename + ")");
+      throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file error (" + Filename + ")");
     }
   }
   else
   {
     IsOK = false;
-    throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file not found (" + FullFilename + ")");
+    throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file not found (" + Filename + ")");
   }
 
   return IsOK;

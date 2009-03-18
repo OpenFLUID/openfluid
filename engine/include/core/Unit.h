@@ -88,13 +88,7 @@ class Unit
 
     const EventCollection* getEvents() const { return &m_Events; };
 
-
     void printSTDOUT();
-
-    // TODO clean this
-/*    bool getInputData(const InputDataName_t aName, ScalarValue* aValue) const;
-
-    bool setInputData(const InputDataName_t aName, const ScalarValue aValue);*/
 
 };
 
@@ -102,5 +96,5 @@ class Unit
 } } // namespaces
 
 
-#endif /* __COREREPOSITORY_H__ */
+#endif /* __UNIT_H__ */
 

@@ -23,9 +23,12 @@ class InputData
 
     bool setValue(const InputDataName_t aName,const T aValue);
 
-    bool getValue(const InputDataName_t aName, T *aValue) const;
+    bool getValue(const InputDataName_t aName, T *aValue);
 
     bool isDataExist(const InputDataName_t aName) const;
+
+    std::vector<InputDataName_t> getInputDataNames() const;
+
 
 };
 
@@ -73,13 +76,14 @@ bool InputData<T>::setValue(const InputDataName_t aName,const T aValue)
 
 
 template <class T>
-bool InputData<T>::getValue(const InputDataName_t aName, T *aValue) const
+bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
 {
   typename InputDataMap_t::iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
   {
     aValue = &(it->second);
+    return true;
   }
   else return false;
 }
@@ -93,6 +97,24 @@ bool InputData<T>::isDataExist(const InputDataName_t aName) const
   return m_Data.find(aName) != m_Data.end();
 }
 
+// =====================================================================
+// =====================================================================
+
+template <class T>
+std::vector<InputDataName_t> InputData<T>::getInputDataNames() const
+{
+  std::vector<InputDataName_t> TheNames;
+
+  typename InputDataMap_t::const_iterator it;
+
+  for (it = m_Data.begin() ; it != m_Data.end() ; ++it)
+  {
+    TheNames.push_back(it->first);
+  }
+
+  return TheNames;
+
+}
 
 } } // namespaces
 

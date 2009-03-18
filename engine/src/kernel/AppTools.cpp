@@ -299,6 +299,22 @@ std::string RemoveTrailingSlashes(std::string Str)
 // =====================================================================
 // =====================================================================
 
+void printSTDOUT(std::vector<std::string> Strings, std::string Sep)
+{
+  for (int i=0; i< Strings.size(); i++) std::cout << Strings[i] << Sep;
+  std::cout << std::endl;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep)
+{
+  DT0.addSeconds(TS*CurrentStep);
+  return DT0;
+}
+
 
 
 

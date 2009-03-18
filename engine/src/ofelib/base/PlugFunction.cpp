@@ -78,32 +78,23 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
 // =====================================================================
 // =====================================================================
 
-void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t inputName, openfluid::core::ScalarValue *Value)
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, openfluid::core::ScalarValue *Value)
 {
   // NOTICE: the checking of properties costs execution time
   // TODO enable this
 
-/*
-  if (HO != NULL)
+  if (UnitPtr != NULL)
   {
-    openfluid::core::PropertiesMap::iterator it;
-    it = HO->getProperties()->find(PropName);
-
-    if (it != HO->getProperties()->end())
-    {
-      *Value = it->second;
-      return true;
-    }
-    else return false;
-
+    if (!UnitPtr->getInputData()->getValue(InputName,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Value for input data "+ InputName +" does not exist");
   }
-  else return false;*/
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");;
 }
 
 // =====================================================================
 // =====================================================================
 
-bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t inputName)
+bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName)
 {
   // TODO enable this
   /*
@@ -131,9 +122,12 @@ bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPt
 
 bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
-  // TODO enable this
 
-  //  return (HO != NULL && (HO->getSimulatedVars()->find(VarName) != HO->getSimulatedVars()->end()));
+  if (UnitPtr != NULL)
+  {
+    return UnitPtr->getScalarVariables()->isVariableExist(VarName);
+  }
+  return false;
 }
 
 bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
@@ -157,22 +151,14 @@ bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *U
 
 bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
-  // TODO enable this
+  // TODO rewrite with time step check
 
-  /*if (HO != NULL)
+  if (UnitPtr != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it;
-    it = HO->getSimulatedVars()->find(VarName);
-
-    if (it != HO->getSimulatedVars()->end())
-    {
-      openfluid::core::SerieOfScalarValue* ValuesVect = it->second;
-      if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
-      else return false;
-    }
-    else return false;
+    return UnitPtr->getScalarVariables()->isVariableExist(VarName);
   }
-  else return false;*/
+  return false;
+
 }
 
 

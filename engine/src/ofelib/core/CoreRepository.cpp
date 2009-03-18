@@ -5,6 +5,7 @@
 namespace openfluid { namespace core {
 
 
+// TODO clean this
 CoreRepository* CoreRepository::mp_Singleton = NULL;
 /*unsigned int CoreRepository::Packet = 0;
 unsigned int CoreRepository::Keep = 0;*/
@@ -207,7 +208,7 @@ bool CoreRepository::doMemRelease(TimeStep_t Step,bool WithoutKeep)
 
 bool CoreRepository::releaseMemory(TimeStep_t Step)
 {
-  std::cout << "Releasing memory from " << (mp_MemMonitor->getLastMemoryRelease() +1) << " to " << Step << std::endl;
+//  std::cout << "Releasing memory from " << (mp_MemMonitor->getLastMemoryRelease() +1) << " to " << Step << std::endl;
 
   UnitsListByClassMap_t::iterator ClassIt;
 

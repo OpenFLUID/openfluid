@@ -136,15 +136,16 @@ class IOManager
 
     bool saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
                             openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
+                            openfluid::base::SimulationInfo *SimInfo,
                             std::string OutputDir);
 
-    bool loadDomainFile(std::string FullFilename,
+    bool loadDomainFile(std::string Filename,
                         std::list<openfluid::core::UnitsLink_t>* ToUnitsList);
 
-    bool loadInputDataFile(std::string FullFilename);
+    bool loadInputDataFile(std::string Filename);
 
 
-    bool loadEventsFile(std::string FullFilename);
+    bool loadEventsFile(std::string Filename);
 
 
     std::string generateOuputFilename(const std::string UnitClass, const openfluid::core::UnitID_t UnitID,
@@ -162,10 +163,14 @@ class IOManager
     std::string generateOutputScalarsFileContent(const openfluid::core::Unit* aUnit,
                                               const std::vector<std::string> ScalarsNames,
                                               openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
+                                              openfluid::base::SimulationInfo *SimInfo,
+                                              std::string DateFormat,
                                               std::string ColSeparator);
 
     std::string generateOutputVectorFileContent(const openfluid::core::Unit* aUnit, const std::string VectorName,
                                               openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
+                                              openfluid::base::SimulationInfo *SimInfo,
+                                              std::string DateFormat,
                                               std::string ColSeparator);
 
 
@@ -200,7 +205,7 @@ class IOManager
 
     bool prepareOutputs();
 
-    bool saveOutputs(openfluid::core::TimeStep_t CurrentStep, bool WithoutKeep);
+    bool saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep);
 
     bool saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
 

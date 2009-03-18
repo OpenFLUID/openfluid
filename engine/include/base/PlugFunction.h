@@ -325,7 +325,7 @@ class PluggableFunction : public wxObject
       \param[in] PropName the name of the queried variable
     */
     bool OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr,
-                                    openfluid::core::InputDataName_t inputName);
+                                    openfluid::core::InputDataName_t InputName);
 
 
 

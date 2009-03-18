@@ -71,7 +71,7 @@ const UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass) const
 
 const UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass) const
 {
-  LinkedUnitsListByClassMap_t::const_iterator it = m_ToUnits.find(aClass);
+  LinkedUnitsListByClassMap_t::const_iterator it = m_FromUnits.find(aClass);
 
   if (it != m_FromUnits.end())
     return &(it->second);
@@ -97,7 +97,7 @@ UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass)
 
 UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass)
 {
-  LinkedUnitsListByClassMap_t::iterator it = m_ToUnits.find(aClass);
+  LinkedUnitsListByClassMap_t::iterator it = m_FromUnits.find(aClass);
 
   if (it != m_FromUnits.end())
     return &(it->second);
