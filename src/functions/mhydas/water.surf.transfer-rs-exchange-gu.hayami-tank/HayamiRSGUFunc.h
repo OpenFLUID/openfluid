@@ -21,7 +21,7 @@
 
 */
 class HayamiRSFunction : public openfluid::base::PluggableFunction
-{    std::cout << "MS la 3" << std::endl; std::cout.flush();
+{
 
   private:
 

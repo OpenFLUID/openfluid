@@ -51,7 +51,7 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
 
     openfluid::core::IDSerieOfScalarValuePtrMap m_HeightDischarge;
 
-    bool computeWaterHeightFromDischarge(openfluid::core::UnitID ID, openfluid::core::ScalarValue Discharge, openfluid::core::ScalarValue *Height);
+    bool computeWaterHeightFromDischarge(openfluid::core::UnitID_t ID, openfluid::core::ScalarValue Discharge, openfluid::core::ScalarValue *Height);
 
 
   public:
@@ -66,7 +66,7 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
     */
     ~HayamiRSFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 

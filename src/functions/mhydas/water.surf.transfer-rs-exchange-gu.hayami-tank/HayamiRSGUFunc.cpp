@@ -8,6 +8,7 @@
 
 #include "HayamiRSGUFunc.h"
 #include <math.h>
+#include "openfluid-tools.h"
 
 #include <iostream>
 
@@ -57,6 +58,14 @@ BEGIN_SIGNATURE_HOOK;
   DECLARE_SU_REQUIRED_PROPERTY("thetasat",(""),("m3/m3"));
   DECLARE_RS_REQUIRED_PROPERTY("nmanning",("Manning roughness coefficient"),(""));
 
+  DECLARE_REQUIRED_INPUTDATA("area","SU","","m2");
+
+  DECLARE_REQUIRED_INPUTDATA("length","RS","","m");
+  DECLARE_REQUIRED_INPUTDATA("width","RS","","m");
+  DECLARE_REQUIRED_INPUTDATA("height","RS","","m");
+  DECLARE_REQUIRED_INPUTDATA("slope","RS","","m/m");
+
+  DECLARE_REQUIRED_INPUTDATA("area","GU","","m2");
 
   // Function parameters
   DECLARE_FUNCTION_PARAM("maxsteps",("maximum hayami kernel steps"),(""));
@@ -166,10 +175,14 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   openfluid::core::Unit *SU;
   openfluid::core::Unit *RS;
 
+  openfluid::core::ScalarValue RSheight, RSwidth, RSslope, RSmanning, RSlength;
+  openfluid::core::ScalarValue SUslope,SUarea,SUthetaini, SUthetasat;
+  openfluid::core::ScalarValue GUarea;
+
   float Cel, Sigma;
-  openfluid::core::ScalarValue TmpValue;
+  //openfluid::core::ScalarValue TmpValue;
   int ID;
-  openfluid::core::ScalarValue SUThetaIni, SUThetaSat;
+
 
   DECLARE_GU_ORDERED_LOOP;
 
@@ -183,22 +196,26 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   m_HeightDischarge[ID] = new openfluid::core::SerieOfScalarValue();
   m_CurrentInputSum[ID] = 0;
 
-  m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
-  OPENFLUID_GetInputData(RS,("nmanning"),&TmpValue);
-  m_MeanManning = m_MeanManning + TmpValue;
+  OPENFLUID_GetInputData(RS,"slope",&RSslope);
+  m_MeanSlope = m_MeanSlope + RSslope;
+  OPENFLUID_GetInputData(RS,("nmanning"),&RSmanning);
+  m_MeanManning = m_MeanManning + RSmanning;
   //m_MeanManning = m_MeanManning + RS->getProperties()->find(("nmanning"))->second;
   END_LOOP
 
-  m_MeanSlope = m_MeanSlope / mp_CoreData->getSpatialData()->getRSsCollection()->size();
-  m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getRSsCollection()->size();
+  m_MeanSlope = m_MeanSlope / mp_CoreData->getUnits("RS")->getList()->size();
+  m_MeanManning = m_MeanManning / mp_CoreData->getUnits("RS")->getList()->size();
 
   BEGIN_RS_ORDERED_LOOP(RS)
-  OPENFLUID_GetInputData(RS,("nmanning"),&TmpValue);
+    OPENFLUID_GetInputData(RS,"nmanning",&RSmanning);
+    OPENFLUID_GetInputData(RS,"slope",&RSslope);
+    OPENFLUID_GetInputData(RS,"length",&RSlength);
+
   //    Cel = m_MeanCelerity * (m_MeanManning / RS->getProperties()->find(("nmanning"))->second) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
   //    Sigma = m_MeanSigma * (RS->getProperties()->find(("nmanning"))->second / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());
-  Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
-  Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());
-  ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep(),&m_RSKernel[RS->getID()]);
+    Cel = m_MeanCelerity * (m_MeanManning / RSmanning) * (sqrt((RSslope / m_MeanSlope)));
+    Sigma = m_MeanSigma * (RSmanning / m_MeanManning) * (m_MeanSlope / RSslope);
+    ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,SimInfo->getTimeStep(),&m_RSKernel[RS->getID()]);
   END_LOOP
 
 
@@ -209,7 +226,9 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
 
   BEGIN_RS_ORDERED_LOOP(RS)
 
-  OPENFLUID_GetInputData(RS,("nmanning"),&TmpValue);
+  OPENFLUID_GetInputData(RS,("nmanning"),&RSmanning);
+  OPENFLUID_GetInputData(RS,"slope",&RSslope);
+  OPENFLUID_GetInputData(RS,"width",&RSwidth);
 
   // StepsNbr = int(ceil((RS->getUsrHeight() + m_RSBuffer) / m_CalibrationStep));
   StepsNbr = int(ceil((m_RSBuffer) / m_CalibrationStep));
@@ -224,9 +243,9 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   {
     CurrentHeight = i * m_CalibrationStep;
 
-    Section = RS->getUsrWidth() * CurrentHeight;
-    HydrauRadius = Section / ((2 * CurrentHeight) + RS->getUsrWidth());
-    Speed = (1/TmpValue) * pow(HydrauRadius,0.6666) * pow(RS->getUsrSlope(),0.5);
+    Section = RSwidth * CurrentHeight;
+    HydrauRadius = Section / ((2 * CurrentHeight) + RSwidth);
+    Speed = (1/RSmanning) * pow(HydrauRadius,0.6666) * pow(RSslope,0.5);
     Q = Speed * Section;
 
     m_HeightDischarge[RS->getID()]->push_back(Q);
@@ -241,7 +260,7 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
    * ThetaSat and ThetaIni are the average of ThetaSat and ThetaIniNS of SUs weighted by the area of each SU
    */
 
-  SUList = GU->getSUsExchange();
+  SUList = GU->getFromUnits("SU");
 
   m_ThetaIni[GU->getID()] = 0;
   m_ThetaSat[GU->getID()] = 0;
@@ -249,14 +268,17 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   for (Iter=SUList->begin(); Iter != SUList->end(); Iter++)
   {
     SU = *Iter;
-    OPENFLUID_GetInputData(SU,("thetains"),&SUThetaIni);
-    OPENFLUID_GetInputData(SU,("thetasat"),&SUThetaSat);
-    m_ThetaIni[GU->getID()] = m_ThetaIni[GU->getID()] + SUThetaIni*SU->getUsrArea();
-    m_ThetaSat[GU->getID()] = m_ThetaSat[GU->getID()] + SUThetaSat*SU->getUsrArea();
+    OPENFLUID_GetInputData(SU,("thetains"),&SUthetaini);
+    OPENFLUID_GetInputData(SU,("thetasat"),&SUthetasat);
+    OPENFLUID_GetInputData(SU,("area"),&SUarea);
+    m_ThetaIni[GU->getID()] = m_ThetaIni[GU->getID()] + SUthetaini*SUarea;
+    m_ThetaSat[GU->getID()] = m_ThetaSat[GU->getID()] + SUthetasat*SUarea;
   }
+
   // the final sum is divided by the area of the GU
-  m_ThetaIni[GU->getID()] = m_ThetaIni[GU->getID()] / GU->getUsrArea();
-  m_ThetaSat[GU->getID()] = m_ThetaSat[GU->getID()] / GU->getUsrArea();
+  OPENFLUID_GetInputData(GU,("area"),&GUarea);
+  m_ThetaIni[GU->getID()] = m_ThetaIni[GU->getID()] / GUarea;
+  m_ThetaSat[GU->getID()] = m_ThetaSat[GU->getID()] / GUarea;
 
   END_LOOP
 
@@ -310,8 +332,9 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   std::list<openfluid::core::Unit*>* RSList;
   std::list<openfluid::core::Unit*>::iterator IterRS;
 
-
-
+  openfluid::core::ScalarValue RSheight, RSwidth, RSslope, RSmanning, RSlength;
+  openfluid::core::ScalarValue SUslope,SUarea,SUthetaini, SUthetasat;
+  openfluid::core::ScalarValue GUarea;
 
 
 
@@ -336,16 +359,18 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     // Computes recharge from SUs
     InputVol = 0;
 
-    SUList = GU->getSUsExchange();
+    SUList = GU->getFromUnits("SU");
 
     for (IterSU=SUList->begin(); IterSU != SUList->end(); IterSU++)
     {
       SU = *IterSU;
+      OPENFLUID_GetInputData(SU,"area",&SUarea);
       OPENFLUID_GetVariable(SU,("water.surf.H.infiltration"),SimStatus->getCurrentStep(),&SUInfiltration);
-      InputVol = InputVol + SUInfiltration * SU->getUsrArea();
+      InputVol = InputVol + SUInfiltration * SUarea;
     }
     // Updates WaterTable according to the recharge
-    WaterTable = WaterTable - (InputVol / (GU->getUsrArea()*(m_ThetaSat[GU->getID()] - m_ThetaIni[GU->getID()])));
+    OPENFLUID_GetInputData(GU,"area",&GUarea);
+    WaterTable = WaterTable - (InputVol / (GUarea*(m_ThetaSat[GU->getID()] - m_ThetaIni[GU->getID()])));
     OPENFLUID_AppendVariable(GU,("water.sz.H.watertable"),WaterTable);
 
     END_LOOP
@@ -372,11 +397,12 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
   // 1.a calcul du debit provenant des SU sources qui se jettent dans les noeuds sources
 
+  // TODO comment on traite différence entrée latéral / source
 
   UpSrcSUsOutputsSum = 0;
   if (m_UseUpSUOutput)
   {
-    UpSUsList = RS->getSrcUpstreamSUs();
+    UpSUsList = RS->getFromUnits("SU");
 
     for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
     {
@@ -386,18 +412,21 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
       if (CurrentStep != 0)
       {
-        GUex = mp_CoreData->getSpatialData()->getGUByID(UpSU->getGUExchangeID());
+        GUex = mp_CoreData->getUnit("GU",UpSU->getToUnits("GU")->front()->getID());
         OPENFLUID_GetVariable(GUex,("water.sz-surf.Q.exfiltration"),CurrentStep-1,&TmpExfiltration);
-        UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpExfiltration* UpSU->getUsrArea();
+
+        OPENFLUID_GetInputData(UpSU,"area",&SUarea);
+        UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpExfiltration* SUarea;
       }
     }
   }
 
 
-
+  // TODO comment on traite différence entrée latéral / source
   // 1.b calcul du debit provenant des SU laterales
 
   UpLatSUsOutputsSum = 0;
+  /*
   if (m_UseUpSUOutput)
   {
     UpSUsList = RS->getLatUpstreamSUs();
@@ -417,7 +446,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
       }
 
     }
-  }
+  }*/
 
 
   // 2.a calcul des debits provenant des RS amont
@@ -425,7 +454,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
   UpRSsOutputsSum = 0;
 
-  UpRSsList = RS->getUpstreamReaches();
+  UpRSsList = RS->getFromUnits("RS");
 
   for(UpRSiter=UpRSsList->begin(); UpRSiter != UpRSsList->end(); UpRSiter++) \
   {
@@ -458,7 +487,12 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
   //if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue)) std::cerr << "ça dépasse ID: " << ID <<std::endl;
   if (!computeWaterHeightFromDischarge(ID,QOutput,&WaterHeight))
-    OPENFLUID_RaiseWarning(("water.surf.transfer-rs-exchange-gu.hayami-tank"),CurrentStep,("water height is over reach height + buffer on RS ") + wxString::Format(("%d"),ID));
+  {
+    std::string IDStr;
+    openfluid::tools::ConvertValue(ID,&IDStr);
+    OPENFLUID_RaiseWarning(("water.surf.transfer-rs-exchange-gu.hayami-tank"),CurrentStep,("water height is over reach height + buffer on RS ") + IDStr);
+  }
+
 
   //OPENFLUID_AppendDistributedVarValue(RS,("waterheight"),WaterHeight);
 
@@ -467,20 +501,24 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   //   4.a. Calcul du débit échangé entre la rivière et l'aquifère
 
 
-  GURS = RS->getGUExchange();
+  // TODO à vérifier
+  GURS = RS->getToUnits("GU")->front();
 
   //OPENFLUID_GetDistributedVarValue(RS,("waterheight"),CurrentStep,&WaterHeight);
   OPENFLUID_GetVariable(GURS,("water.sz.H.watertable"),CurrentStep-1,&WaterTable);
+  OPENFLUID_GetInputData(RS,"length",&RSlength);
+  OPENFLUID_GetInputData(RS,"width",&RSwidth);
+  OPENFLUID_GetInputData(RS,"height",&RSheight);
 
 
-  ExchangeSurface = RS->getUsrLength() * ((2 * WaterHeight) + RS->getUsrWidth());
+  ExchangeSurface = RSlength * ((2 * WaterHeight) + RSwidth);
 
   /*  mp_ExecMsgs->setError(("groundwater"),SimStatus->getCurrentStep(),("watertable not present"));
           return false;
    */
 
   // computes water flux between RS and GU (qexchangersgu)
-  RSHeight = RS->getUsrHeight();
+  RSHeight = RSheight;
 
   TmpQExchange = 0;
 
@@ -506,7 +544,11 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
 
   if (!computeWaterHeightFromDischarge(ID,QOutput,&WaterHeight))
-    OPENFLUID_RaiseWarning(("water.surf.transfer-rs-exchange-gu.hayami-tank"),SimStatus->getCurrentStep(),("overflow on RS") + wxString::Format(("%d"),ID));
+  {
+    std::string IDStr;
+    openfluid::tools::ConvertValue(ID,&IDStr);
+    OPENFLUID_RaiseWarning(("water.surf.transfer-rs-exchange-gu.hayami-tank"),SimStatus->getCurrentStep(),("overflow on RS") + IDStr);
+  }
 
   OPENFLUID_AppendVariable(RS,("water.surf.Q.downstream-rs"),QOutput);
 
@@ -528,18 +570,20 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     InputVol = 0;
     OutputVol = 0;
 
-    SUList = GU->getSUsExchange();
+    SUList = GU->getFromUnits("SU");
 
     for (IterSU=SUList->begin(); IterSU != SUList->end(); IterSU++)
     {
       SU = *IterSU;
       OPENFLUID_GetVariable(SU,("water.surf.H.infiltration"),CurrentStep,&SUInfiltration);
-      InputVol = InputVol + (SUInfiltration * SU->getUsrArea());
+      OPENFLUID_GetInputData(SU,"area",&SUarea);
+      InputVol = InputVol + (SUInfiltration * SUarea);
 
     }
 
     // Add to the recharge upGUs fluxes
-    GUList = GU->getGUsExchange();
+    // TODO a vérifier
+    GUList = GU->getFromUnits("GU");
     for (IterGW=GUList->begin(); IterGW != GUList->end(); IterGW++)
     {
       GUex = *IterGW;
@@ -548,7 +592,7 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     }
 
     // computes the Output Volume in relation to the RSs
-    RSList = GU->getRSsExchange();
+    RSList = GU->getFromUnits("RS");
     for (IterRS=RSList->begin(); IterRS != RSList->end(); IterRS++)
     {
       RS = *IterRS;
@@ -567,9 +611,9 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     QguOutput = 0;
 
-    if (GU->getGUExchange() != NULL)
+    if (GU->getToUnits("GU")->size() == 1)
     {
-      GUdown = GU->getGUExchange();
+      GUdown = GU->getToUnits("GU")->front();
       OPENFLUID_GetVariable(GUdown,("water.sz.H.watertable"),CurrentStep-1,&WaterTableDown); // Watertable on downGU
       QguOutput = m_CoeffGW * (WaterTableDown - WaterTable);
       OutputVol = OutputVol + QguOutput*TimeStep;
@@ -589,7 +633,8 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     OPENFLUID_AppendVariable(GU,("water.sz.Q.output"),QguOutput);
 
     // Updates WaterTable(t) according to the Input, Output volumes, and WaterTable(t-1)
-    WaterTable = WaterTable - (InputVol - OutputVol) / (GU->getUsrArea()*(m_ThetaSat[GU->getID()] - m_ThetaIni[GU->getID()]));
+    OPENFLUID_GetInputData(GU,"area",&GUarea);
+    WaterTable = WaterTable - (InputVol - OutputVol) / (GUarea*(m_ThetaSat[GU->getID()] - m_ThetaIni[GU->getID()]));
 
 
 
