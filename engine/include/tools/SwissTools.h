@@ -19,6 +19,18 @@ inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 }
 
 
+template<typename T>
+inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
+{
+  std::ostringstream oss;
+  bool IsOK = !(oss << ValueToConvert).fail();
+
+  if (IsOK) *StrConverted = oss.str();
+
+  return IsOK;
+}
+
+
 // =====================================================================
 // =====================================================================
 

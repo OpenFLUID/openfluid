@@ -22,31 +22,39 @@ DEFINE_FUNCTION_HOOK(HayamiRSFunction)
 
 BEGIN_SIGNATURE_HOOK
 
-  DECLARE_SIGNATURE_ID(wxT("water.surf.transfer-rs.hayami"));
-  DECLARE_SIGNATURE_NAME(wxT("water transfer on reach segments using hayami propagation method"));
-  DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
-  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
+  DECLARE_SIGNATURE_ID(("water.surf.transfer-rs.hayami"));
+  DECLARE_SIGNATURE_NAME(("water transfer on reach segments using hayami propagation method"));
+  DECLARE_SIGNATURE_DESCRIPTION((""));
+  DECLARE_SIGNATURE_DOMAIN(("hydrology"));
 
   DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
 
   DECLARE_SIGNATURE_SDKVERSION;
 
-  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C., Louchart X."));
-  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr, louchart@supagro.inra.fr"));
+  DECLARE_SIGNATURE_AUTHORNAME(("Moussa R., Fabre J.-C., Louchart X."));
+  DECLARE_SIGNATURE_AUTHOREMAIL(("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr, louchart@supagro.inra.fr"));
 
 
-  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",wxT("output volume at the outlet of the ditch"),wxT("m3/s"));
-  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",wxT("water height at the outlet of the ditch"),wxT("m"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.Q.downstream-rs",("output volume at the outlet of the ditch"),("m3/s"));
+  DECLARE_RS_PRODUCED_VAR("water.surf.H.level-rs",("water height at the outlet of the ditch"),("m"));
 
-  DECLARE_RS_REQUIRED_PROPERTY("nmanning",wxT("Manning roughness coefficient"),wxT("s/m^(-1/3)"));
+  DECLARE_RS_REQUIRED_PROPERTY("nmanning",("Manning roughness coefficient"),("s/m^(-1/3)"));
 
-  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the SUs"),wxT("m3/s"));
+  DECLARE_REQUIRED_INPUTDATA("area","SU","","m2");
 
-  DECLARE_FUNCTION_PARAM("maxsteps",wxT("maximum hayami kernel steps"),wxT(""));
-  DECLARE_FUNCTION_PARAM("meancel",wxT("wave mean celerity on RSs"),wxT("m/s"));
-  DECLARE_FUNCTION_PARAM("meansigma",wxT("mean diffusivity on RSs"),wxT("m2/s"));
-  DECLARE_FUNCTION_PARAM("calibstep",wxT("calibration step for height-discharge relation"),wxT("m"));
-  DECLARE_FUNCTION_PARAM("rsbuffer",wxT("buffer upon reach for water heigh over reach height"),wxT("m"));
+  DECLARE_REQUIRED_INPUTDATA("length","RS","","m");
+  DECLARE_REQUIRED_INPUTDATA("width","RS","","m");
+  DECLARE_REQUIRED_INPUTDATA("height","RS","","m");
+  DECLARE_REQUIRED_INPUTDATA("slope","RS","","m/m");
+
+
+  DECLARE_SU_USED_VAR("water.surf.Q.downstream-su",("output volume at the outlet of the SUs"),("m3/s"));
+
+  DECLARE_FUNCTION_PARAM("maxsteps",("maximum hayami kernel steps"),(""));
+  DECLARE_FUNCTION_PARAM("meancel",("wave mean celerity on RSs"),("m/s"));
+  DECLARE_FUNCTION_PARAM("meansigma",("mean diffusivity on RSs"),("m2/s"));
+  DECLARE_FUNCTION_PARAM("calibstep",("calibration step for height-discharge relation"),("m"));
+  DECLARE_FUNCTION_PARAM("rsbuffer",("buffer upon reach for water heigh over reach height"),("m"));
 
 
 
@@ -87,13 +95,13 @@ HayamiRSFunction::~HayamiRSFunction()
 // =====================================================================
 
 
-bool HayamiRSFunction::initParams(openfluid::core::ParamsMap Params)
+bool HayamiRSFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
-  OPENFLUID_GetFunctionParameter(Params,wxT("maxsteps"),&m_MaxSteps);
-  OPENFLUID_GetFunctionParameter(Params,wxT("meancel"),&m_MeanCelerity);
-  OPENFLUID_GetFunctionParameter(Params,wxT("meansigma"),&m_MeanSigma);
-  OPENFLUID_GetFunctionParameter(Params,wxT("calibstep"),&m_CalibrationStep);
-  OPENFLUID_GetFunctionParameter(Params,wxT("rsbuffer"),&m_RSBuffer);
+  OPENFLUID_GetFunctionParameter(Params,("maxsteps"),&m_MaxSteps);
+  OPENFLUID_GetFunctionParameter(Params,("meancel"),&m_MeanCelerity);
+  OPENFLUID_GetFunctionParameter(Params,("meansigma"),&m_MeanSigma);
+  OPENFLUID_GetFunctionParameter(Params,("calibstep"),&m_CalibrationStep);
+  OPENFLUID_GetFunctionParameter(Params,("rsbuffer"),&m_RSBuffer);
   return true;
 }
 
@@ -106,7 +114,7 @@ bool HayamiRSFunction::prepareData()
   // On verifie s'il existe des SU pour recuperer leur debit
 
   m_UseUpSUOutput = false;
-  if (mp_CoreData->getSpatialData()->getSUsCollection()->size() > 0)
+  if (mp_CoreData->getUnits("SU")->getList()->size() > 0)
   {
     m_UseUpSUOutput = true;
   }
@@ -131,10 +139,10 @@ bool HayamiRSFunction::checkConsistency()
 
 bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  openfluid::core::ReachSegment* RS;
+  openfluid::core::Unit* RS;
   float Cel, Sigma;
-  openfluid::core::UnitID ID;
-  openfluid::core::ScalarValue TmpValue;
+  openfluid::core::UnitID_t ID;
+  openfluid::core::ScalarValue RSmanning,RSslope,RSlength,RSheight,RSwidth;
   DECLARE_RS_ORDERED_LOOP;
 
 
@@ -145,20 +153,23 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
     m_HeightDischarge[ID] = new openfluid::core::SerieOfScalarValue();
     m_CurrentInputSum[ID] = 0;
 
-    m_MeanSlope = m_MeanSlope + RS->getUsrSlope();
-    OPENFLUID_GetProperty(RS,wxT("nmanning"),&TmpValue);
-    m_MeanManning = m_MeanManning + TmpValue;
+    OPENFLUID_GetInputData(RS,("nmanning"),&RSmanning);
+    OPENFLUID_GetInputData(RS,("slope"),&RSslope);
+    m_MeanSlope = m_MeanSlope + RSslope;
+    m_MeanManning = m_MeanManning + RSmanning;
   END_LOOP
 
-  m_MeanSlope = m_MeanSlope / mp_CoreData->getSpatialData()->getRSsCollection()->size();
-  m_MeanManning = m_MeanManning / mp_CoreData->getSpatialData()->getRSsCollection()->size();
+  m_MeanSlope = m_MeanSlope / mp_CoreData->getUnits("RS")->getList()->size();
+  m_MeanManning = m_MeanManning / mp_CoreData->getUnits("RS")->getList()->size();
 
   BEGIN_RS_ORDERED_LOOP(RS)
-    OPENFLUID_GetProperty(RS,wxT("nmanning"),&TmpValue);
-    Cel = m_MeanCelerity * (m_MeanManning / TmpValue) * (sqrt((RS->getUsrSlope() / m_MeanSlope)));
-    Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / RS->getUsrSlope());
+    OPENFLUID_GetInputData(RS,("nmanning"),&RSmanning);
+    OPENFLUID_GetInputData(RS,("slope"),&RSslope);
+    OPENFLUID_GetInputData(RS,("length"),&RSlength);
+    Cel = m_MeanCelerity * (m_MeanManning / RSmanning) * (sqrt((RSslope / m_MeanSlope)));
+    Sigma = m_MeanSigma * (RSmanning/ m_MeanManning) * (m_MeanSlope / RSslope);
     m_RSKernel[RS->getID()] = t_HayamiKernel();
-    ComputeHayamiKernel(Cel, Sigma,RS->getUsrLength(),m_MaxSteps,SimInfo->getTimeStep(), &m_RSKernel[RS->getID()]);
+    ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,SimInfo->getTimeStep(), &m_RSKernel[RS->getID()]);
   END_LOOP
 
 
@@ -169,16 +180,22 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
 
   BEGIN_RS_ORDERED_LOOP(RS)
 
-    OPENFLUID_GetProperty(RS,wxT("nmanning"),&TmpValue);
+    OPENFLUID_GetInputData(RS,("nmanning"),&RSmanning);
+    OPENFLUID_GetInputData(RS,("height"),&RSheight);
+    OPENFLUID_GetInputData(RS,("slope"),&RSslope);
+    OPENFLUID_GetInputData(RS,("length"),&RSlength);
+    OPENFLUID_GetInputData(RS,("width"),&RSwidth);
 
-    StepsNbr = int(ceil((RS->getUsrHeight() + m_RSBuffer) / m_CalibrationStep));
+
+
+    StepsNbr = int(ceil((RSheight + m_RSBuffer) / m_CalibrationStep));
     for (i=0;i<StepsNbr;i++)
     {
       CurrentHeight = i * m_CalibrationStep;
 
-      Section = RS->getUsrWidth() * CurrentHeight;
-      HydrauRadius = Section / ((2 * CurrentHeight) + RS->getUsrWidth());
-      Speed = (1/TmpValue) * pow(HydrauRadius,0.6666) * pow(RS->getUsrSlope(),0.5);
+      Section = RSwidth * CurrentHeight;
+      HydrauRadius = Section / ((2 * CurrentHeight) + RSwidth);
+      Speed = (1/RSmanning) * pow(HydrauRadius,0.6666) * pow(RSslope,0.5);
       Q = Speed * Section;
 
       m_HeightDischarge[RS->getID()]->push_back(Q);
@@ -211,14 +228,14 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   openfluid::core::ScalarValue TmpValue;
 
 
-  openfluid::core::ReachSegment* RS;
-  openfluid::core::ReachSegment* UpRS;
-  openfluid::core::SurfaceUnit* UpSU;
+  openfluid::core::Unit* RS;
+  openfluid::core::Unit* UpRS;
+  openfluid::core::Unit* UpSU;
 
-  std::list<openfluid::core::SurfaceUnit*>::iterator UpSUiter;
-  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
-  std::list<openfluid::core::ReachSegment*>::iterator UpRSiter;
-  std::list<openfluid::core::ReachSegment*>* UpRSsList;
+  std::list<openfluid::core::Unit*>::iterator UpSUiter;
+  std::list<openfluid::core::Unit*>* UpSUsList;
+  std::list<openfluid::core::Unit*>::iterator UpRSiter;
+  std::list<openfluid::core::Unit*>* UpRSsList;
 
 
   TimeStep = SimStatus->getTimeStep();
@@ -238,13 +255,13 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     UpSrcSUsOutputsSum = 0;
     if (m_UseUpSUOutput)
     {
-      UpSUsList = RS->getSrcUpstreamSUs();
+      UpSUsList = RS->getFromUnits("SU");
 
       for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
       {
         UpSU = *UpSUiter;
 
-        OPENFLUID_GetVariable(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
+        OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
         UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue; // / UpSU->getUsrArea();
       }
     }
@@ -252,8 +269,10 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     // 1.b calcul du debit provenant des SU laterales
 
+   //TODO à vérifier ce qu'on en fait
 
     UpLatSUsOutputsSum = 0;
+    /*
     if (m_UseUpSUOutput)
     {
       UpSUsList = RS->getLatUpstreamSUs();
@@ -262,11 +281,11 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
       {
         UpSU = *UpSUiter;
 
-        OPENFLUID_GetVariable(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
+        OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
         UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue;// / UpSU->getUsrArea();
 
       }
-    }
+    }*/
 
 
     // 2.a calcul des debits provenant des RS amont
@@ -274,12 +293,12 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
     UpRSsOutputsSum = 0;
 
-    UpRSsList = RS->getUpstreamReaches();
+    UpRSsList = RS->getFromUnits("RS");
 
     for(UpRSiter=UpRSsList->begin(); UpRSiter != UpRSsList->end(); UpRSiter++) \
     {
       UpRS = *UpRSiter;
-      OPENFLUID_GetVariable(UpRS,wxT("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
+      OPENFLUID_GetVariable(UpRS,("water.surf.Q.downstream-rs"),CurrentStep,&TmpValue);
       UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;
     }
 
@@ -301,16 +320,19 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     QOutput = QOutput + UpLatSUsOutputsSum;
 
 
-    OPENFLUID_AppendVariable(RS,wxT("water.surf.Q.downstream-rs"),QOutput);
+    OPENFLUID_AppendVariable(RS,("water.surf.Q.downstream-rs"),QOutput);
 
 
     if (!computeWaterHeightFromDischarge(ID,QOutput,&TmpValue))
     {
-      OPENFLUID_RaiseWarning(wxT("water.surf.transfer-rs.hayami"),SimStatus->getCurrentStep(),wxT("cannot compute water height on RS ") + wxString::Format(wxT("%d"),ID));
+
+      std::string IDStr;
+      openfluid::tools::ConvertValue(ID,&IDStr);
+      OPENFLUID_RaiseWarning(("water.surf.transfer-rs.hayami"),SimStatus->getCurrentStep(),("cannot compute water height on RS ") + IDStr);
     }
 
 
-    OPENFLUID_AppendVariable(RS,wxT("water.surf.H.level-rs"),TmpValue);
+    OPENFLUID_AppendVariable(RS,("water.surf.H.level-rs"),TmpValue);
 
   END_LOOP
 
@@ -331,7 +353,7 @@ bool HayamiRSFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInf
 // =====================================================================
 // =====================================================================
 
-bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::UnitID ID, openfluid::core::ScalarValue Discharge, openfluid::core::ScalarValue *Height)
+bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::UnitID_t ID, openfluid::core::ScalarValue Discharge, openfluid::core::ScalarValue *Height)
 {
 
 
