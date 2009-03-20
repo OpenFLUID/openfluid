@@ -1001,7 +1001,22 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
+  // inits the simulation infos and status
 
+  mp_SimStatus = new openfluid::base::SimulationStatus(m_RunConfig.BeginDate,
+                                                      m_RunConfig.EndDate,
+                                                      m_RunConfig.DeltaT);
+
+  if (mp_RunEnv->isProgressiveOutput())
+  {
+    mp_MemMon->setPacketAndKeep(mp_RunEnv->getProgressiveOutputPacket(),mp_RunEnv->getProgressiveOutputKeep());
+  }
+  else
+  {
+    mp_MemMon->setPacketAndKeep(mp_SimStatus->getStepsCount(),1);
+  }
+
+  //std::cout << "Packet: " << mp_MemMon->getPacket() << ", Keep: " << mp_MemMon->getKeep() << std::endl;
 
   IsOK = checkModelConsistency();
   if (!IsOK)
@@ -1060,12 +1075,6 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
 
-  // inits the simulation infos and status
-
-
-  mp_SimStatus = new openfluid::base::SimulationStatus(m_RunConfig.BeginDate,
-                                                      m_RunConfig.EndDate,
-                                                      m_RunConfig.DeltaT);
 
 
 
@@ -1102,6 +1111,9 @@ bool Engine::run()
   DECLARE_FUNCTION_PARSER;
 
   std::string ProdMessage;
+  openfluid::core::TimeStep_t SaveReleaseBegin, SaveReleaseEnd;
+
+
   // Check for simulation vars production before init
   // TODO enable this
   /*if (!checkSimulationVarsProduction(0, &ProdMessage))
@@ -1244,13 +1256,14 @@ bool Engine::run()
     }
 
     // progressive output
-    if (mp_MemMon->isMemReleaseStep(mp_SimStatus->getCurrentStep()))
+    if (mp_RunEnv->isProgressiveOutput() && mp_MemMon->isMemReleaseStep(mp_SimStatus->getCurrentStep()))
     {
-      std::cout << std::endl << "    ---- Saving to disk and releasing memory "; std::cout.flush();
+      mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getCurrentStep(),false,&SaveReleaseBegin, &SaveReleaseEnd);
+      std::cout << std::endl << " -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
       mp_IOMan->saveOutputs(mp_SimStatus->getCurrentStep(),(openfluid::base::SimulationInfo*)mp_SimStatus,false);
       mp_CoreData->doMemRelease(mp_SimStatus->getCurrentStep(),false);
       mp_MemMon->setLastMemoryRelease(mp_SimStatus->getCurrentStep());
-      std::cout << "[OK] ----" << std::endl << std::endl ;
+      std::cout << "[OK] --" << std::endl << std::endl ;
     }
 
 
@@ -1325,10 +1338,11 @@ bool Engine::run()
   }
 
   // final progressive output
-  std::cout << std::endl << "   ---- Saving to disk and releasing memory (final) "; std::cout.flush();
+  mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getStepsCount()-1,true,&SaveReleaseBegin, &SaveReleaseEnd);
+  std::cout << std::endl << "  -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
   mp_IOMan->saveOutputs(mp_SimStatus->getStepsCount()-1,(openfluid::base::SimulationInfo*)mp_SimStatus,true);
   mp_CoreData->doMemRelease(mp_SimStatus->getStepsCount()-1,true);
-  std::cout << "[OK] ----" << std::endl << std::endl ;
+  std::cout << "[OK] --" << std::endl << std::endl ;
 
 
   return IsOK;

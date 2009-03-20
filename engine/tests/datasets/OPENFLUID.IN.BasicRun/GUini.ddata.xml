@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
-  <distridata unitclass="GU" datacat="ini">
+<domain>
+  <inputdata unitclass="GU">
     <columns order="iniwatertable" />
     <data>
 
@@ -31,5 +32,6 @@
 25	7.00
 
     </data>
-  </distridata>
+  </inputdata>
+  </domain>
 </openfluid>

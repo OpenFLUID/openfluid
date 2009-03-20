@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
-  <distridata unitclass="SU" datacat="param"> <!-- unitclass = SU|RS|GU ; category = ini | param -->
+<domain>
+  <inputdata unitclass="SU">
     <columns order="ks;hc;betaMS;thetares;thetasat;nmanning" />
     <data>
 1	0.000001	0.1	1.3	0.02	0.36	0.05
@@ -241,5 +242,6 @@
 236	0.000001	0.1	1.3	0.02	0.36	0.05
 237	0.000001	0.1	1.3	0.02	0.36	0.05
     </data>
-  </distridata>
+  </inputdata>
+</domain>  
 </openfluid>
