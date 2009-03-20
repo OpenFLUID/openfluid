@@ -3,5 +3,6 @@
   <run>
     <deltat>3600</deltat>
     <period begin="1997-03-29 03:00:18" end="1997-04-01 16:23:21" />
+    <progressout packet="20" keep="5" />
   </run>
 </openfluid>
