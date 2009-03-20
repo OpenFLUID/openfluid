@@ -61,4 +61,14 @@
                               "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
                               "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BasicRunNoSave" 
                               "-p${FUNCTIONS_OUTPUT_PATH}")
+                              
+  ADD_TEST(BenchRunVector "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BenchRunVector"
+                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BenchRunVector" 
+                              "-p${FUNCTIONS_OUTPUT_PATH}")                              
+                              
+  ADD_TEST(BenchRunLargeVector "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BenchRunLargeVector"
+                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BenchRunLargeVector" 
+                              "-p${FUNCTIONS_OUTPUT_PATH}")                              
 
