@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
-  <distridata unitclass="SU" datacat="ini">
+<domain>
+  <inputdata unitclass="SU">
     <columns order="thetaisurf;thetains" />
     <data>
 
@@ -243,5 +244,6 @@
 237	0.3	0.2
 
     </data>
-  </distridata>
+  </inputdata>
+  </domain>
 </openfluid>

@@ -6,8 +6,6 @@
    
       <function fileID="water.atm-surf.rain-su.files" />
 
-<!--      <function fileID="water.atm-surf.rain-rs.files" /> -->
-
       <function fileID="water.surf-uz.runoff-infiltration.mseytoux" >
         <param name="resstep" value="0.000005" />          
       </function>

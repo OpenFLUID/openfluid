@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
-  <distridata unitclass="RS" datacat="param">
+<domain>
+  <inputdata unitclass="RS">
     <columns order="ks;nmanning" />
     <data>
 
@@ -378,5 +379,6 @@
 372	0.003	0.2
 
     </data>
-  </distridata>
+  </inputdata>
+</domain>  
 </openfluid>
