@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+   
+      <function fileID="tests.vector.prod" />
+      
+      <function fileID="tests.vector.use" />      
+    
+  </model>
+</openfluid>
