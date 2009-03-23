@@ -123,7 +123,7 @@ bool LargeVectorUseFunction::runStep(const openfluid::base::SimulationStatus* Si
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
 
-    OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
+    OPENFLUID_GetVariable(TU,"tests.largevector",SimStatus->getCurrentStep(),&TheVector);
 
     if (TheVector.getSize() != VectorSize)
       throw openfluid::base::OFException("incorrect vector size");
