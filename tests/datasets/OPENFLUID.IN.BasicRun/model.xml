@@ -4,9 +4,18 @@
     <model>
 
    
-      <function fileID="tests.vector.prod" />
-      
-      <function fileID="tests.vector.use" />      
+      <function fileID="water.atm-surf.rain-su.files" />
+
+      <function fileID="water.surf-uz.runoff-infiltration.mseytoux" >
+        <param name="resstep" value="0.000005" />          
+      </function>
+
+
+      <function fileID="water.surf.transfer-su.hayami"> 
+        <param name="maxsteps" value="100" />
+        <param name="meancel" value="0.045" />
+        <param name="meansigma" value="500" />                                                                                   
+      </function>   
     
   </model>
 </openfluid>
