@@ -264,9 +264,8 @@ namespace openfluid { namespace base {
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class PluggableFunction : public wxObject
+class PluggableFunction
 {
-  // TODO remove public wxObject, no?
 
   private:
 
