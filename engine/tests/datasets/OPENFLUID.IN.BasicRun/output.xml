@@ -5,8 +5,11 @@
     <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
     <!-- colsep default is \t -->
     <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">     
-      <set name="full" unitsclass="TestUnits" unitsIDs="*" vars="*" />      
+<!--      <set name="testSU" unitsclass="SU" unitsIDs="18" vars="*" />
+      <set name="testRS" unitsclass="RS" unitsIDs="51;232" vars="*" />-->
+      <set name="full" unitsclass="SU" unitsIDs="*" vars="*" />
+      
     </files>  
-    
+
   </output>
 </openfluid>
