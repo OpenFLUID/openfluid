@@ -39,7 +39,7 @@ class PrimitivesProdFunction : public openfluid::base::PluggableFunction
     */
     ~PrimitivesProdFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 

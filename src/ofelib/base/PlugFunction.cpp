@@ -111,6 +111,7 @@ bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPt
    }
    else return false;
 */
+  return false;
 }
 
 
@@ -130,10 +131,14 @@ bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *U
   return false;
 }
 
+// =====================================================================
+// =====================================================================
+
 bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
   // TODO enable this
   //  return OPENFLUID_IsScalarVariableExists(HO,VarName);
+  return false;
 }
 
 // =====================================================================
@@ -143,6 +148,7 @@ bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr
 bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
 //  return (HO != NULL && (HO->getSimulatedVectorVars()->find(VarName) != HO->getSimulatedVectorVars()->end()));
+  return false;
 }
 
 // =====================================================================
@@ -165,7 +171,10 @@ bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *U
 
 bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
-//  return OPENFLUID_IsScalarVariableExists(HO,VarName,Step);
+  // TODO enable this
+
+  //  return OPENFLUID_IsScalarVariableExists(HO,VarName,Step);
+  return false;
 }
 
 // =====================================================================
@@ -190,6 +199,8 @@ bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *U
     else return false;
   }
   else return false;*/
+  return false;
+
 }
 
 
@@ -249,7 +260,6 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
     else return false;
   }
   else return false;*/
-
 }
 
 // =====================================================================
@@ -276,7 +286,6 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
     else return false;
   }
   else return false;*/
-
 }
 
 // =====================================================================
@@ -470,7 +479,6 @@ void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, open
 
   // TODO enable this
   //  HO->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
-
 
 }
 
