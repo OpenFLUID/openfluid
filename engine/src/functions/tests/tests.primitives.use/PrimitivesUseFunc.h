@@ -39,7 +39,7 @@ class PrimitivesUseFunction : public openfluid::base::PluggableFunction
     */
     ~PrimitivesUseFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 
