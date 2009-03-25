@@ -4,9 +4,9 @@
     <model>
 
    
-      <function fileID="tests.vector.prod" />
+      <function fileID="tests.primitives.prod" />
       
-      <function fileID="tests.vector.use" />      
+      <function fileID="tests.primitives.use" />      
     
   </model>
 </openfluid>
