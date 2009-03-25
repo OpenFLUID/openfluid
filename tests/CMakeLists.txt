@@ -72,3 +72,7 @@
                               "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLargeVector" 
                               "-p${FUNCTIONS_OUTPUT_PATH}")                              
 
+  ADD_TEST(CheckPrimitives "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckPrimitives"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckPrimitives" 
+                           "-p${FUNCTIONS_OUTPUT_PATH}")                              
