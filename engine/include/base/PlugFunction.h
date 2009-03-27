@@ -598,14 +598,14 @@ class PluggableFunction
       \param[in] Key the sender of the message
       \param[out] Value the value associated with the environment key
     */
-    void OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value);
+    bool OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value);
 
     /**
       Gets an environment boolean value associated to a Key
       \param[in] Key the sender of the message
       \param[out] Value the value associated with the environment key
     */
-    void OPENFLUID_GetRunEnvironment(std::string Key, bool *Value);
+    bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Value);
 
 
   public:
