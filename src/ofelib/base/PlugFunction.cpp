@@ -123,12 +123,7 @@ bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPt
 
 bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
-
-  if (UnitPtr != NULL)
-  {
-    return UnitPtr->getScalarVariables()->isVariableExist(VarName);
-  }
-  return false;
+  return (UnitPtr != NULL && UnitPtr->getScalarVariables()->isVariableExist(VarName));
 }
 
 // =====================================================================
@@ -136,9 +131,9 @@ bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *U
 
 bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
-  // TODO enable this
-  //  return OPENFLUID_IsScalarVariableExists(HO,VarName);
-  return false;
+
+  return (OPENFLUID_IsScalarVariableExist(UnitPtr,VarName) || OPENFLUID_IsVectorVariableExist(UnitPtr,VarName));
+
 }
 
 // =====================================================================
@@ -147,8 +142,7 @@ bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr
 
 bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName)
 {
-//  return (HO != NULL && (HO->getSimulatedVectorVars()->find(VarName) != HO->getSimulatedVectorVars()->end()));
-  return false;
+  return (UnitPtr != NULL && UnitPtr->getVectorVariables()->isVariableExist(VarName));
 }
 
 // =====================================================================
@@ -565,18 +559,18 @@ void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Sou
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value)
+bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value)
 {
-  mp_FunctionEnv->getValue(Key,Value);
+  return mp_FunctionEnv->getValue(Key,Value);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value)
+bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value)
 {
-  mp_FunctionEnv->getValue(Key,Value);
+  return mp_FunctionEnv->getValue(Key,Value);
 }
 
 

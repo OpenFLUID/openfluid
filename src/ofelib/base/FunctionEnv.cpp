@@ -57,6 +57,7 @@ bool FunctionEnvironment::getValue(std::string Key, bool *Value) const
   if (it != m_BoolValues.end())
   {
     *Value = it->second;
+    return true;
   }
   else return false;
 }
@@ -72,6 +73,7 @@ bool FunctionEnvironment::getValue(std::string Key, std::string *Value) const
   if (it != m_StringValues.end())
   {
     *Value = it->second;
+    return true;
   }
   else return false;
 

@@ -32,6 +32,16 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_METHOD((""));
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
+
+
+  DECLARE_USED_EVENTS("TestUnits");
+
+  DECLARE_REQUIRED_VAR("tests.vector[]","TestUnits","vector for tests","");
+  DECLARE_REQUIRED_VAR("tests.scalar","TestUnits","scalar for tests","");
+
+  DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataB","TestUnits","input data for tests","")
+
 END_SIGNATURE_HOOK
 
 
@@ -64,6 +74,99 @@ PrimitivesUseFunction::~PrimitivesUseFunction()
 
 bool PrimitivesUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
+
+  long LongParam;
+  double DoubleParam;
+  std::string StrParam;
+
+  std::vector<long> LongArrayParam;
+  std::vector<double> DoubleArrayParam;
+  std::vector<std::string> StrArrayParam;
+
+
+  // ====== String param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"strparam",&StrParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (strparam)");
+
+  if (OPENFLUID_GetFunctionParameter(Params,"wrongstrparam",&StrParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wrongstrparam)");
+
+
+
+  // ====== Double param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"doubleparam",&DoubleParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doubleparam)");
+
+  if (OPENFLUID_GetFunctionParameter(Params,"wrongdoubleparam",&DoubleParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wrongdoubleparam)");
+
+
+
+  // ====== Long param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"longparam",&LongParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (longparam)");
+
+  if (OPENFLUID_GetFunctionParameter(Params,"wronglongparam",&LongParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wronglongparam)");
+
+
+
+  // ====== String array param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"strarrayparam",&StrArrayParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam)");
+
+  if (StrArrayParam.size() != 3)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam, size)");
+
+  if (StrArrayParam[1] != "strvalue2")
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam, value)");
+
+  if (OPENFLUID_GetFunctionParameter(Params,"wrongstrarrayparam",&StrArrayParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wrongstrarrayparam)");
+
+
+
+  // ====== Double array param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"doublearrayparam",&DoubleArrayParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam)");
+
+  if (DoubleArrayParam.size() != 4)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, size)");
+
+  if (DoubleArrayParam[2] != 1.3)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, value)");
+
+  if (DoubleArrayParam[3] == 1.3)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, wrongvalue)");
+
+  if (OPENFLUID_GetFunctionParameter(Params,"wrongdoublearrayparam",&DoubleArrayParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wrongdoublearrayparam)");
+
+
+
+  // ====== Long array param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"longarrayparam",&LongArrayParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam)");
+
+  if (LongArrayParam.size() != 5)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, size)");
+
+  if (LongArrayParam[3] != 14)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, value)");
+
+  if (LongArrayParam[4] == 14)
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, wrongvalue)");
+
+
+  if (OPENFLUID_GetFunctionParameter(Params,"wronglongarrayparam",&LongArrayParam))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wronglongarrayparam)");
+
 
 
   return true;
@@ -114,18 +217,60 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   long VectorSize = 40;
   openfluid::core::VectorValue TheVector;
   openfluid::core::ScalarValue TheScalar;
-
-
+  openfluid::core::ScalarValue TheInput;
+  openfluid::core::EventCollection TheEvents;
   DECLARE_UNITS_ORDERED_LOOP(1);
+  std::string RunEnvStr;
+  bool RunEnvBool;
+  unsigned int UnitsCount;
+
+
+
+  // ===== Units =====
+
+  if (!OPENFLUID_IsUnitClassExist("TestUnits"))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsUnitClassExist (TestUnits)");
+
+  if (OPENFLUID_IsUnitClassExist("unknown"))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsUnitClassExist (unknown)");
+
+  if (!OPENFLUID_GetUnitsCount("TestUnits",&UnitsCount))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_getUnitsCount (TestUnits)");
+
+  if (OPENFLUID_GetUnitsCount("unknown",&UnitsCount))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_getUnitsCount (unknown)");
+
+
+  // ===== Run environment =====
+
+  if (!OPENFLUID_GetRunEnvironment("dir.input",&RunEnvStr))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (dir.input)");
+
+  if (OPENFLUID_GetRunEnvironment("wrong.str",&RunEnvStr))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.str)");
+
+  RunEnvBool = true;
+  if (!OPENFLUID_GetRunEnvironment("mode.verbose",&RunEnvBool))
+   OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose)");
+
+  if (RunEnvBool) OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose is true)");
+
+  if (OPENFLUID_GetRunEnvironment("wrong.bool",&RunEnvBool))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.bool)");
+
+
+  // TODO complete this
+
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
 
-    // TODO complete this
 
 
     // ====== Scalar ======
 
     OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
+
+    OPENFLUID_SetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),0);
 
 
     if (!OPENFLUID_IsVariableExist(TU,"tests.scalar"))
@@ -174,6 +319,8 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     if (TheVector.getSize() != VectorSize)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size");
 
+    OPENFLUID_SetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),openfluid::core::VectorValue(VectorSize,0));
+
 
     if (!OPENFLUID_IsVariableExist(TU,"tests.vector"))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector)");
@@ -215,7 +362,31 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsScalarVariableExist (tests.vector, timestep)");
 
 
+    // ====== Input data ======
 
+    if (!OPENFLUID_IsInputDataExist(TU,"idataA"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsinputDataExist (idataA)");
+
+    if (!OPENFLUID_IsInputDataExist(TU,"idataB"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsinputDataExist (idataB)");
+
+    if (!OPENFLUID_IsInputDataExist(TU,"idataC"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsinputDataExist (idataC)");
+
+    OPENFLUID_GetInputData(TU,"idataA",&TheInput);
+
+    OPENFLUID_GetInputData(TU,"idataB",&TheInput);
+
+
+
+    // ====== Events ======
+
+    TheEvents.clear();
+
+    OPENFLUID_GetEvents(TU,SimStatus->getCurrentTime(),SimStatus->getCurrentTime() + SimStatus->getTimeStep(),&TheEvents);
+
+    if (TheEvents.getCount() > 0)
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetEvents");
 
 
 
