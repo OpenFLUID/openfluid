@@ -1,16 +1,16 @@
 /**
   \file FortranCPP.h
   \brief Header for macros to call fortran code.
-  \author JC.Fabre <fabrejc@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr> 
+  \author JC.Fabre <fabrejc@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr>
 */
 
 /*
   http://www-h.eng.cam.ac.uk/help/tpl/languages/mixinglanguages.html
   http://www.neurophys.wisc.edu/comp/docs/notes/not017.html
   http://www.yolinux.com/TUTORIALS/LinuxTutorialMixingFortranAndC.html
-  http://arnholm.org/software/cppf77/cppf77.htm   
-  http://www.aei.mpg.de/~jthorn/c2f.html   
-*/ 
+  http://arnholm.org/software/cppf77/cppf77.htm
+  http://www.aei.mpg.de/~jthorn/c2f.html
+*/
 
 
 
@@ -22,7 +22,7 @@
 #ifdef __cplusplus
 #  define BEGIN_EXTERN_FORTRAN \
    extern "C" \
-   { 
+   {
 #  define END_EXTERN_FORTRAN }
 #else
 #  define BEGIN_EXTERN_FORTRAN
@@ -88,7 +88,14 @@
 #define WX2FSTRING(str) strdup((str).mb_str(wxConvUTF8))
 #define WX2FSTRINGLEN(str) strlen((str).mb_str(wxConvUTF8))
 #define WX2FSTRINGFULL(str) strdup((str).mb_str(wxConvUTF8)),strlen((str).mb_str(wxConvUTF8))
-  
+
+
+// Conversion of std::string
+
+#define STD2FSTRING(str) strdup((str).c_str())
+#define STD2FSTRINGLEN(str) strlen((str).c_str())
+#define STD2FSTRINGFULL(str) strdup((str).c_str()),strlen((str).c_str())
+
 
 #endif /*__FORTRAN2CPP_H__*/
 

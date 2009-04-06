@@ -11,7 +11,7 @@
 #ifndef __SDKTOOLS_H__
 #define __SDKTOOLS_H__
 
-#ifdef __WXMSW__
+#ifdef __WIN32__
   #ifdef BUILDINGDLL
     #define DLLEXPORT __declspec(dllexport)
   #else
