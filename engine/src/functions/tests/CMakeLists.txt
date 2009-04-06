@@ -10,5 +10,7 @@ ADD_FUNCTION(tests.largevector.use tests.largevector.use)
 ADD_FUNCTION(tests.primitives.prod tests.primitives.prod)
 ADD_FUNCTION(tests.primitives.use tests.primitives.use)
 
+ADD_SUBDIRECTORY(tests.fortran)
+
 
 

@@ -76,3 +76,9 @@
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckPrimitives"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckPrimitives" 
                            "-p${FUNCTIONS_OUTPUT_PATH}")                              
+
+  ADD_TEST(CheckFortran "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckFortran"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckFortran" 
+                        "-p${FUNCTIONS_OUTPUT_PATH}")                              
+                           
