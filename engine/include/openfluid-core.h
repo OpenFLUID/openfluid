@@ -11,7 +11,7 @@
 #ifndef __SDKCORE_H__
 #define __SDKCORE_H__
 
-#ifdef __WXMSW__
+#ifdef __WIN32__
   #ifdef BUILDINGDLL
     #define DLLEXPORT __declspec(dllexport)
   #else
@@ -38,7 +38,7 @@
 namespace openfluid {
 
 /**
-  Gathers data structures for shared information management
+  Data structures for shared information management
 */
 namespace core {
 
