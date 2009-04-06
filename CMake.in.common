@@ -64,6 +64,9 @@ ENDIF(ENGINE_VERSION_STATUS)
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
 SET(CMAKE_CXX_FLAGS_DEBUG "-g")
 
+IF(NOT CMAKE_BUILD_TYPE) 
+  SET(CMAKE_BUILD_TYPE "Release")
+ENDIF(NOT CMAKE_BUILD_TYPE)
 
 ################### functions foundry ###################
 
