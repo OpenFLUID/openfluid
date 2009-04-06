@@ -28,6 +28,8 @@ class FortranFunction : public openfluid::base::PluggableFunction
 {
   private:
 
+    double m_Precision;
+
   public:
     /**
       Constructor

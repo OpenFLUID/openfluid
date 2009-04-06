@@ -43,6 +43,7 @@ BEGIN_EXTERN_FORTRAN
   EXTERN_FSUBROUTINE(multrealvalue)(FREAL8*,FREAL8*,FREAL8*);
   EXTERN_FSUBROUTINE(multintvalue)(FINT*,FINT*,FINT*);
   EXTERN_FSUBROUTINE(catstrings)(FCHARACTER*,FCHARACTER*,FCHARACTER*);
+  EXTERN_FSUBROUTINE(multrealmatrix)(FREAL8*,FINT*,FINT*,FINT*,FREAL8*);
 END_EXTERN_FORTRAN
 
 
@@ -111,6 +112,7 @@ bool FortranFunction::checkConsistency()
 bool FortranFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
+  m_Precision = 0.000001;
 
   return true;
 }
@@ -121,6 +123,8 @@ bool FortranFunction::initializeRun(const openfluid::base::SimulationInfo* SimIn
 
 bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
+  int i;
+
 
   // ====== double ======
 
@@ -131,16 +135,16 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
   CALL_FSUBROUTINE(multrealvalue)(&DValue,&DMult,&DResult);
 
-  if (abs(DResult - (DValue*DMult)) > 0.000001)
+  if (abs(DResult - (DValue*DMult)) > m_Precision)
     OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealvalue)");
 
 
   // ====== int ======
 
   int IValue, IMult, IResult;
-  IValue = 1.5436;
-  IMult = 2.5;
-  IResult = 0.0;
+  IValue = 45;
+  IMult = 18;
+  IResult = 0;
 
   CALL_FSUBROUTINE(multintvalue)(&IValue,&IMult,&IResult);
 
@@ -163,6 +167,31 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
   if (SResult != (SStr1 + " " + SStr2))
     OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (catstrings)");
 */
+
+
+  // ====== matrix ======
+
+  int MMult, MDim1,MDim2;
+  double *MValue;
+  double *MResult;
+  MMult = 3;
+  MDim1 = 2;
+  MDim2 = 3;
+
+
+  MValue = new double[MDim1*MDim2];
+  MResult = new double[MDim1*MDim2];
+
+  for (i=0; i < MDim1*MDim2;i++) MValue[i] = 1.5;
+  for (i=0; i < MDim1*MDim2;i++) MResult[i] = 0.0;
+
+  CALL_FSUBROUTINE(multrealmatrix)(MValue,&MDim1,&MDim2,&MMult,MResult);
+
+  for (i=0; i < MDim1*MDim2;i++)
+  {
+    if (abs(MResult[i] - (MValue[i] * MMult)) > m_Precision)
+      OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
+  }
 
   return true;
 }
