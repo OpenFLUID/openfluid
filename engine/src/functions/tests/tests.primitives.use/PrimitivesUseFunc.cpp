@@ -268,7 +268,16 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
     OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
 
+    if ((openfluid::core::UnitID_t)TheScalar != TU->getID())
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value (tests.scalar)");
+
+
     OPENFLUID_SetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),0);
+
+    OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
+
+    if (TheScalar != 0)
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value after update (tests.scalar)");
 
 
     if (!OPENFLUID_IsVariableExist(TU,"tests.scalar"))
@@ -319,7 +328,6 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
     OPENFLUID_SetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),openfluid::core::VectorValue(VectorSize,0));
 
-
     if (!OPENFLUID_IsVariableExist(TU,"tests.vector"))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector)");
 
@@ -362,18 +370,22 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
     // ====== Input data ======
 
-    if (!OPENFLUID_IsInputDataExist(TU,"idataA"))
-      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsinputDataExist (idataA)");
+    if (!OPENFLUID_IsInputDataExist(TU,"indataA"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsInputDataExist (indataA)");
 
-    if (!OPENFLUID_IsInputDataExist(TU,"idataB"))
-      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsinputDataExist (idataB)");
+    if (!OPENFLUID_IsInputDataExist(TU,"indataB"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsInputDataExist (indataB)");
 
-    if (!OPENFLUID_IsInputDataExist(TU,"idataC"))
-      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsinputDataExist (idataC)");
+    if (!OPENFLUID_IsInputDataExist(TU,"indataC"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsInputDataExist (indataC)");
 
-    OPENFLUID_GetInputData(TU,"idataA",&TheInput);
+    if (OPENFLUID_IsInputDataExist(TU,"wrongdata"))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsInputDataExist (wrongdata)");
 
-    OPENFLUID_GetInputData(TU,"idataB",&TheInput);
+
+    OPENFLUID_GetInputData(TU,"indataA",&TheInput);
+
+    OPENFLUID_GetInputData(TU,"indataB",&TheInput);
 
 
 
