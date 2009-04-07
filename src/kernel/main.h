@@ -115,11 +115,6 @@ class OpenFLUIDApp : public wxAppConsole
     bool runSimulation();
 
     /**
-      Saves results
-    */
-    bool saveResults();
-
-    /**
       Saves simulation reports
     */
     bool saveSimulationReports(std::string ErrorMsg);

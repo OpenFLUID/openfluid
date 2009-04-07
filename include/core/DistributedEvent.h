@@ -8,8 +8,6 @@
 #ifndef __DISTRIBUTEDEVENT_H__
 #define __DISTRIBUTEDEVENT_H__
 
-// TODO    zieuter pour les mois dt.Set(..., wxDateTime::Month(wxDateTime::Jan + month - 1), ...);
-
 
 #include <wx/wx.h>
 #include <wx/hashmap.h>
@@ -18,10 +16,6 @@
 
 namespace openfluid { namespace core {
 
-/**
-  The map associating a key to a value
-*/
-//WX_DECLARE_STRING_HASH_MAP(std::string, EventInfosMap);
 
 
 /**

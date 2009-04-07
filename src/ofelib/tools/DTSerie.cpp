@@ -175,8 +175,8 @@ short DateTimeSerie::getNearestValues(openfluid::core::DateTime SearchedDT, Time
   }
 
 
-  // not before the first, not after the last
-  // TODO check the following algorithm
+
+  // check the following algorithm?
 
   previt = m_Data.begin();
 

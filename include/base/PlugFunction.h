@@ -107,7 +107,6 @@
 // =====================================================================
 // =====================================================================
 
-//TODO to check and comment
 
 #define DECLARE_UNITS_ORDERED_LOOP(loopid) \
   openfluid::core::UnitsList_t::iterator _M_##loopid##_it;\

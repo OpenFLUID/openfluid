@@ -114,25 +114,6 @@ bool OpenFLUIDApp::runSimulation()
 // =====================================================================
 // =====================================================================
 
-// TODO to remove completely
-/*
-bool OpenFLUIDApp::saveResults()
-{
-
-  bool ExecStatus;
-
-  std::cout << "* Saving results... ";
-  std::cout.flush();
-
-  ExecStatus = mp_Engine->saveResults(m_ExSI);
-
-  printlnExecStatus();
-
-  return ExecStatus;
-}
-*/
-// =====================================================================
-// =====================================================================
 
 bool OpenFLUIDApp::saveSimulationReports(std::string ErrorMsg)
 {
@@ -679,17 +660,7 @@ int OpenFLUIDApp::OnRun()
       m_ExSI.RunTime = EffSimTime;
 
 
-      // saving results
 
-// TODO to remove completely
-/*
-      if (mp_RunEnv->isWriteResults())
-      {
-        saveResults();
-//        if (mp_ExecMsgs->isErrorFlag()) throw openfluid::base::OFException(mp_ExecMsgs->getErrorMsg());
-        mp_ExecMsgs->resetWarningFlag();
-      }
-*/
       if (mp_RunEnv->isWriteSimReport())
       {
         saveSimulationReports("");
