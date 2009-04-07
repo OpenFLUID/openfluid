@@ -81,4 +81,9 @@
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckFortran"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckFortran" 
                         "-p${FUNCTIONS_OUTPUT_PATH}")                              
+
+  ADD_TEST(CheckEvents "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckEvents"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckEvents" 
+                        "-p${FUNCTIONS_OUTPUT_PATH}")                              
                            

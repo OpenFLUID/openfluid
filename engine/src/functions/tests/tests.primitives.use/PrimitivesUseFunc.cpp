@@ -259,8 +259,6 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.bool)");
 
 
-  // TODO complete this
-
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
 

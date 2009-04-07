@@ -237,7 +237,7 @@
   std::list<openfluid::core::DistributedEvent*>::iterator _M_EvListiter;
 
 #define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
-  for(_M_EvListiter=evlist->begin(); _M_EvListiter != evlist->end(); _M_EvListiter++) \
+  for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
   { \
     evobj = *_M_EvListiter;
 
