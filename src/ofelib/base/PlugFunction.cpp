@@ -91,21 +91,12 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
 
 bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName)
 {
-  // TODO enable this
-  /*
-  if (HO != NULL)
-   {
-     openfluid::core::PropertiesMap::iterator it;
-     it = HO->getProperties()->find(PropName);
+  if (UnitPtr != NULL)
+  {
+    return UnitPtr->getInputData()->isDataExist(InputName);
+  }
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");;
 
-     if (it != HO->getProperties()->end())
-     {
-       return true;
-     }
-     else return false;
-   }
-   else return false;
-*/
   return false;
 }
 
@@ -146,11 +137,10 @@ bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *U
 
 bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
-  // TODO rewrite with time step check
 
   if (UnitPtr != NULL)
   {
-    return UnitPtr->getScalarVariables()->isVariableExist(VarName);
+    return UnitPtr->getScalarVariables()->isVariableExist(VarName,Step);
   }
   return false;
 
@@ -160,10 +150,9 @@ bool PluggableFunction::OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *U
 
 bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
-  // TODO enable this
 
-  //  return OPENFLUID_IsScalarVariableExists(HO,VarName,Step);
-  return false;
+  return (OPENFLUID_IsScalarVariableExist(UnitPtr,VarName, Step) || OPENFLUID_IsVectorVariableExist(UnitPtr,VarName, Step));
+
 }
 
 // =====================================================================
@@ -172,22 +161,11 @@ bool PluggableFunction::OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr
 
 bool PluggableFunction::OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step)
 {
-  // TODO enable this
 
-  /*  if (HO != NULL)
+  if (UnitPtr != NULL)
   {
-    openfluid::core::SimulatedVectorVarsMap::iterator it;
-    it = HO->getSimulatedVectorVars()->find(VarName);
-
-    if (it != HO->getSimulatedVectorVars()->end())
-    {
-      openfluid::core::SerieOfVectorValue* ValuesVect = it->second;
-      if (ValuesVect != NULL && Step < ValuesVect->size()) return true;
-      else return false;
-    }
-    else return false;
+    return UnitPtr->getVectorVariables()->isVariableExist(VarName,Step);
   }
-  else return false;*/
   return false;
 
 }
@@ -230,25 +208,13 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step, openfluid::core::ScalarValue Value)
 {
 
-  // TODO enable this
-  /*  if (HO != NULL)
+  if (UnitPtr != NULL)
   {
-    openfluid::core::SimulatedVarsMap::iterator it;
-    it = HO->getSimulatedVars()->find(VarName);
-
-    if (it != HO->getSimulatedVars()->end())
-    {
-      openfluid::core::SerieOfScalarValue* ValuesVect = it->second;
-      if (Step < ValuesVect->size())
-      {
-        ValuesVect->at(Step) = Value;
-        return true;
-      }
-      else return false;
-    }
-    else return false;
+    if (!UnitPtr->getScalarVariables()->modifyValue(VarName,Step,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Error setting value for scalar variable "+ VarName);
   }
-  else return false;*/
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
+
 }
 
 // =====================================================================
@@ -256,25 +222,14 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
 
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step, openfluid::core::VectorValue Value)
 {
-  // TODO enable this
-  /*if (HO != NULL)
-  {
-    openfluid::core::SimulatedVectorVarsMap::iterator it;
-    it = HO->getSimulatedVectorVars()->find(VarName);
 
-    if (it != HO->getSimulatedVectorVars()->end())
-    {
-      openfluid::core::SerieOfVectorValue* ValuesVect = it->second;
-      if (Step < ValuesVect->size())
-      {
-        ValuesVect->at(Step) = Value;
-        return true;
-      }
-      else return false;
-    }
-    else return false;
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVectorVariables()->modifyValue(VarName,Step,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Error setting value for vector variable "+ VarName);
   }
-  else return false;*/
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
+
 }
 
 // =====================================================================

@@ -327,7 +327,7 @@ class PluggableFunction
     /**
       Gets a distributed property for a unit
       \param[in] UnitPtr a Unit
-      \param[in] PropName the name of the requested property
+      \param[in] InputName the name of the requested property
       \param[out] Value the value of the requested property
     */
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
@@ -337,7 +337,7 @@ class PluggableFunction
     /**
       Returns true if a distributed input data exists, false otherwise
       \param[in] UnitPtr a Unit
-      \param[in] PropName the name of the queried variable
+      \param[in] InputName the name of the queried variable
     */
     bool OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr,
                                     openfluid::core::InputDataName_t InputName);

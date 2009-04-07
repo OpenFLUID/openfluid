@@ -34,6 +34,9 @@ class Variables
 
     bool isVariableExist(const VariableName_t aName) const;
 
+    bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
+
+
     std::vector<VariableName_t> getVariablesNames() const;
 
     unsigned int getVariableValuesCount(const VariableName_t aName) const;
@@ -87,7 +90,7 @@ bool Variables<T>::createVariable(const VariableName_t aName)
 template <class T>
 bool Variables<T>::modifyValue(const VariableName_t aName, const TimeStep_t aStep, const T aValue)
 {
-  if (isVariableExist(aName))
+  if (isVariableExist(aName,aStep))
   {
     return m_Data[aName].modifyValue(aStep,aValue);
   }
@@ -119,14 +122,11 @@ bool Variables<T>::getValue(const VariableName_t aName, const TimeStep_t aStep, 
 
   typename VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-//  std::cout << "Variables::getValue-a " << aStep << std::endl; std::cout.flush();
-
   if (it != m_Data.end())
   {
-//    std::cout << "Variables::getValue-b " << aStep << std::endl; std::cout.flush();
     return it->second.getValue(aStep,aValue);
   }
-//  std::cout << "Variables::getValue-d " << aStep << std::endl; std::cout.flush();
+
   return false;
 }
 
@@ -140,6 +140,24 @@ bool Variables<T>::isVariableExist(const VariableName_t aName) const
   return m_Data.find(aName) != m_Data.end();
 }
 
+// =====================================================================
+// =====================================================================
+
+template <class T>
+bool Variables<T>::isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const
+{
+  typename VariablesMap_t::const_iterator it;
+
+  it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+  {
+    // the variable exist if the required step is -1 than the variable storage next step
+    return (aStep == (it->second.getNextStep()-1));
+  }
+  return false;
+
+}
 
 // =====================================================================
 // =====================================================================
