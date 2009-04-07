@@ -118,7 +118,6 @@
   openfluid::core::UnitsList_t::const_iterator _M_CHV_UnitIter; \
   openfluid::core::UnitsList_t* _M_CHV_UnitList; \
 
-// TODO check that
 // checks if var exists
 #define CHECK_VAR(varname,unitclass,status) \
   _M_CHV_UnitList = NULL; \
@@ -133,7 +132,6 @@
   }\
 
 
-// TODO check that
 #define DECLARE_CREATE_VAR \
   openfluid::core::UnitsList_t::iterator _M_CRV_UnitIter; \
   openfluid::core::UnitsList_t* _M_CRV_UnitList; \
@@ -160,7 +158,6 @@
   }\
 
 
-// TODO check that
 #define DECLARE_UPDATE_VAR \
   openfluid::core::UnitsList_t::iterator _M_UPV_UnitIter; \
   openfluid::core::UnitsList_t* _M_UPV_UnitList; \
@@ -187,7 +184,6 @@
   openfluid::core::UnitsList_t::const_iterator _M_CHI_UnitIter; \
   openfluid::core::UnitsList_t* _M_CHI_UnitList; \
 
-// TODO check that
 // checks if input data exists
 #define CHECK_INPUTDATA(dataname,unitclass,status) \
   _M_CHI_UnitList = NULL; \
@@ -719,8 +715,6 @@ bool Engine::checkDataConsistency()
 
 
 
-  // TODO enable or rewrite this
-
   DECLARE_CHECK_INPUTDATA;
   PluginsList::iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
@@ -748,101 +742,6 @@ bool Engine::checkDataConsistency()
     FuncIter++;
   }
 
-
-/*
-  // check input data consistency
-  FuncNode = m_Functions.GetFirst();
-  while (FuncNode && IsOK)
-  {
-    CurrentFunction = (PluginContainer*)FuncNode->GetData();
-    if (CurrentFunction != NULL)
-    {
-      HData = CurrentFunction->Signature->HandledData;
-
-      // required props
-      i = 0;
-      while (IsOK && i<HData.RequiredProps.size())
-      {
-
-        if (HData.RequiredProps[i].Distribution == wxT("SU"))
-        {
-          CHECK_VAR(HData.RequiredProps[i].Name,
-                     mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                     getProperties(),IsOK);
-
-        }
-
-        if (HData.RequiredProps[i].Distribution == wxT("RS"))
-        {
-          CHECK_VAR(HData.RequiredProps[i].Name,
-                     mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                     getProperties(),IsOK);
-
-        }
-
-        if (HData.RequiredProps[i].Distribution == wxT("GU"))
-        {
-          CHECK_VAR(HData.RequiredProps[i].Name,
-                     mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                     getProperties(),IsOK);
-
-        }
-
-
-        if (!IsOK)
-        {
-          throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredProps[i].Name) + " distributed property required by " + _S(CurrentFunction->Signature->ID) + " is missing");
-          return false;
-        }
-        else i++;
-      }
-
-
-      // required initial conditions
-      i = 0;
-      if (IsOK)
-      {
-        while (IsOK && i<HData.RequiredIniconds.size())
-        {
-
-          if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("SU"))
-          {
-            CHECK_VAR(HData.RequiredIniconds[i].Name,
-                mp_CoreData->getSpatialData()->getSUsCollection(),openfluid::core::SUMap,
-                getIniConditions(),IsOK);
-          }
-
-          if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("RS"))
-          {
-            CHECK_VAR(HData.RequiredIniconds[i].Name,
-                mp_CoreData->getSpatialData()->getRSsCollection(),openfluid::core::RSMap,
-                getIniConditions (),IsOK);
-
-          }
-
-          if (IsOK && HData.RequiredIniconds[i].Distribution == wxT("GU"))
-          {
-            CHECK_VAR(HData.RequiredIniconds[i].Name,
-                mp_CoreData->getSpatialData()->getGUsCollection(),openfluid::core::GUMap,
-                getIniConditions(),IsOK);
-
-          }
-
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredIniconds[i].Name) + " distributed initial condition required by " + _S(CurrentFunction->Signature->ID) + " is missing");
-            return false;
-          }
-          else i++;
-        }
-      }
-
-    }
-
-    FuncNode = FuncNode->GetNext();
-  }
-*/
 
 
   return IsOK;
@@ -944,8 +843,6 @@ bool Engine::loadData()
 {
   bool IsOK;
 
-  // TODO check if complete
-
   IsOK =  mp_IOMan->loadRunConfig(&m_RunConfig);
 
   if (IsOK) IsOK = mp_IOMan->loadDomainFromFiles();
@@ -968,30 +865,8 @@ bool Engine::prepareDataAndCheckConsistency()
 {
 
   bool IsOK = true;
-  // TODO check that
   DECLARE_FUNCTION_PARSER;
 
-
-
-  // builds topology by linking objects
-  // TODO check if necessary, i think no
-/*
-  if (!mp_CoreData->getSpatialData()->buildObjectLinkedTopologyFromIDs())
-  {
-    throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","Topology rebuild error");
-    return false;
-  }
-*/
-
-  // builds process orders lists
-// TODO check if necessary, i think no
-  /*
-  if (!mp_CoreData->getSpatialData()->buildProcessOrders())
-  {
-    throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","Process orders build error");
-    return false;
-  }
-*/
 
   // check simulation functions count
 
@@ -1016,7 +891,6 @@ bool Engine::prepareDataAndCheckConsistency()
     mp_MemMon->setPacketAndKeep(mp_SimStatus->getStepsCount(),1);
   }
 
-  //std::cout << "Packet: " << mp_MemMon->getPacket() << ", Keep: " << mp_MemMon->getKeep() << std::endl;
 
   IsOK = checkModelConsistency();
   if (!IsOK)
@@ -1035,7 +909,6 @@ bool Engine::prepareDataAndCheckConsistency()
 
   try
   {
-    // TODO check that
     PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
   }
   catch (openfluid::base::OFException& E)
@@ -1078,9 +951,6 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
 
-  // preparation des donnees de simulation
-  // TODO check that
-  //mp_CoreData->getSpatialData()->reserveSimulationVars(mp_SimStatus->getStepsCount());
 
   // TODO check that
   //
@@ -1107,7 +977,6 @@ bool Engine::prepareDataAndCheckConsistency()
 bool Engine::run()
 {
   bool IsOK = true;
-  // TODO check that
   DECLARE_FUNCTION_PARSER;
 
   std::string ProdMessage;
@@ -1133,7 +1002,6 @@ bool Engine::run()
 
   try
   {
-    // TODO check that
     PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
   }
   catch (openfluid::base::OFException& E)
@@ -1209,7 +1077,6 @@ bool Engine::run()
 
     try
     {
-      // TODO check that
       PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
 
       // check simulation vars production at each time step
@@ -1288,8 +1155,6 @@ bool Engine::run()
 
   try
   {
-
-    // TODO check that
     PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
   }
   catch (openfluid::base::OFException& E)

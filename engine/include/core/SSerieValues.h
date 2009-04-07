@@ -26,12 +26,8 @@ class StepsReservation
 template <class T>
 class StepSerieOfValues : public StepsReservation
 {
-  //TODO static values for packet size and keep???
-
 
   private:
-
-
 
     unsigned int m_BaseStepIndex;
     std::vector<T> m_Data;
@@ -92,24 +88,16 @@ StepSerieOfValues<T>::~StepSerieOfValues()
 template <class T>
 bool StepSerieOfValues<T>::deleteValues(const unsigned int UntilStepNbr)
 {
-  // TODO clean comments
   // compute the real index of UntilStepNbr in m_Data
   unsigned int RealEnd = UntilStepNbr - m_BaseStepIndex +1;
 
   if (RealEnd < 0) return false;
 
-//  std::cerr << "Erasing from 0 to " << RealEnd << " | ";
-
   m_Data.erase(m_Data.begin(),m_Data.begin()+RealEnd);
-
   m_Data.reserve(Reserved);
-
-//  std::cerr << UntilStepNbr << ", " << m_BaseStepIndex << " -> ";
 
   // compute the new BaseIndex
   m_BaseStepIndex = UntilStepNbr+1;
-
-//  std::cerr << " " << m_BaseStepIndex << std::endl;
 
   return true;
 }

@@ -45,7 +45,11 @@ class ExecutionMessages
     */
     ~ExecutionMessages();
 
+    void addWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Sender + "," + Source, TimeStep, WarningMsg); };
+
     void addWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg);
+
+    void addWarning(std::string Sender, std::string Source, std::string WarningMsg) { addWarning(Sender,Source,-1,WarningMsg); };
 
     void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Sender,-1,WarningMsg); };
 

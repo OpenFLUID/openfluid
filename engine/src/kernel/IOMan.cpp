@@ -260,7 +260,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
             }
 
           }
-          // TODO check if * is correct
+
           Config->FuncConfigs.push_back(*FConf);
 
         }
@@ -321,8 +321,6 @@ bool IOManager::loadDomainFile(std::string Filename, std::list<openfluid::core::
       int anInt;
       openfluid::core::PcsOrd_t UnitPcsOrder;
 
-      //      openfluid::core::Unit* TheUnit;
-      //      openfluid::core::Unit* TheToUnit;
 
       // read all units
       for(Child2 = Child2Handle.FirstChild("unit").Element();Child2;Child2=Child2->NextSiblingElement())
@@ -331,14 +329,16 @@ bool IOManager::loadDomainFile(std::string Filename, std::list<openfluid::core::
         {
 
           UnitPcsOrder = -1;
-          if (Child2->Attribute("pcsorder",&UnitPcsOrder) == NULL)
-          {
-            // TODO raise warning
-            std::cerr << " no pcs order" << std::endl;
-          }
-
           UnitClass = openfluid::core::UnitClass_t(Child2->Attribute("class"));
           UnitID = (openfluid::core::UnitID_t)anInt;
+
+          if (Child2->Attribute("pcsorder",&UnitPcsOrder) == NULL)
+          {
+            std::ostringstream UnitStr;
+            UnitStr << UnitClass << "#" << UnitID;
+            mp_ExecMsgs->addWarning("kernel","IOManager::LoadDomainFile","No process order for unit " + UnitStr.str());
+          }
+
           mp_Repository->addUnit(openfluid::core::Unit(UnitClass,UnitID,UnitPcsOrder));
 
 
@@ -532,7 +532,6 @@ bool IOManager::loadInputDataFile(std::string Filename)
 
   if (DataParser.setFromString(Data,ColOrder.size()+1))
   {
-    //TODO to be continued here
     openfluid::core::Unit* TheUnit;
     int i,j;
     i = 0;
@@ -723,15 +722,18 @@ bool IOManager::loadOutputConfig()
               }
             }
 
-
-
             FileOutput.Sets.push_back(FileOutputSet);
 
           }
-          // TODO else raise warning
-
+          else
+          {
+            mp_ExecMsgs->addWarning("kernel","IOManager::loadOutputConfig()","wrong definition of output config : incorrect values");
+          }
         }
-        // TODO else raise warning
+        else
+        {
+          mp_ExecMsgs->addWarning("kernel","IOManager::loadOutputConfig()","wrong definition of output config : incorrect attributes");
+        }
       }
 
 
@@ -1129,11 +1131,7 @@ std::string IOManager::generateOutputScalarsFileContent(const openfluid::core::U
 
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
-    // TODO replace with correct date
-    //GeneratedContent << "[Step " << iStep << "]";
     GeneratedContent << GenerateDateTimeFromStep(SimInfo->getStartTime(),SimInfo->getTimeStep(),iStep).getAsString(DateFormat);
-
-    //    std::cout << iStep << std::endl;
 
     for (unsigned int iVar = 0 ; iVar < ScalarsNames.size(); iVar++ )
     {
@@ -1164,23 +1162,16 @@ std::string IOManager::generateOutputVectorFileContent(const openfluid::core::Un
 
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
-    // TODO replace with correct date
     GeneratedContent << GenerateDateTimeFromStep(SimInfo->getStartTime(),SimInfo->getTimeStep(),iStep).getAsString(DateFormat);
 
-    //    std::cout << "saving Vector-a " << iStep << std::endl; std::cout.flush();
 
     if (!aUnit->getVectorVariables()->getValue(VectorName,iStep,&Value))
       throw openfluid::base::OFException("kernel","IOManager::generateOutputVectorFileContent",iStep,"value not found for vector variable " + VectorName);
 
-
     for (unsigned int iVal = 0 ; iVal < Value.getSize(); iVal++ )
     {
-      //      std::cout << "saving Vector-aa " << iVal << " " << Value.getSize() <<  std::endl; std::cout.flush();
       GeneratedContent << ColSeparator << Value.getElement(iVal);
-      //      std::cout << "saving Vector-ab " << iVal << std::endl; std::cout.flush();
     }
-
-    //    std::cout << "saving Vector-b " << iStep << std::endl; std::cout.flush();
 
     GeneratedContent << "\n";
 

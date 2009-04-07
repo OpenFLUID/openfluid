@@ -48,8 +48,6 @@ PluggableFunction::~PluggableFunction()
 // =====================================================================
 
 
-// TODO check if everithing is checked in the called stack of methods and classes
-
 void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step, openfluid::core::ScalarValue *Value)
 {
   if (UnitPtr != NULL)
@@ -80,9 +78,6 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
 
 void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, openfluid::core::ScalarValue *Value)
 {
-  // NOTICE: the checking of properties costs execution time
-  // TODO enable this
-
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValue(InputName,Value))

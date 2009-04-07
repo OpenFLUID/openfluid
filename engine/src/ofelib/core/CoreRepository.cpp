@@ -5,10 +5,8 @@
 namespace openfluid { namespace core {
 
 
-// TODO clean this
+
 CoreRepository* CoreRepository::mp_Singleton = NULL;
-/*unsigned int CoreRepository::Packet = 0;
-unsigned int CoreRepository::Keep = 0;*/
 unsigned int StepsReservation::Reserved = 0;
 MemoryMonitor* MemoryMonitor::mp_Singleton = NULL;
 
@@ -83,9 +81,9 @@ UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass)
 {
   UnitsListByClassMap_t::iterator it;
 
-  // TODO check if class exists
   it = m_PcsOrderedUnitsByClass.find(UnitClass);
 
+  if (it == m_PcsOrderedUnitsByClass.end()) return NULL;
   return  &(it->second);
 
 }
@@ -98,9 +96,9 @@ const UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass) const
 {
   UnitsListByClassMap_t::const_iterator it;
 
-  // TODO check if class exists
   it = m_PcsOrderedUnitsByClass.find(UnitClass);
 
+  if (it == m_PcsOrderedUnitsByClass.end()) return NULL;
   return  &(it->second);
 
 }
