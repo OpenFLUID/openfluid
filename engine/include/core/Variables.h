@@ -200,7 +200,6 @@ bool Variables<T>::releaseMemory(TimeStep_t Step)
 template <class T>
 unsigned int Variables<T>::getVariableValuesCount(const VariableName_t aName) const
 {
-  // TODO check this
 
   typename VariablesMap_t::const_iterator it;
 
