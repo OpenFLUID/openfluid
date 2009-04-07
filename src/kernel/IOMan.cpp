@@ -1344,6 +1344,7 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
   {
 
     int i;
+    openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
 
     // ********** text file **********
@@ -1355,36 +1356,39 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
     FileContents << "*                     Simulation report                    *" << "\n";
     FileContents << "*                                                          *\n";
     FileContents << "************************************************************" << "\n";
-    FileContents << "\n";
+    FileContents << std::endl;
 
     if (ErrorMsg != "")
     {
-      FileContents << ErrorMsg << ("\n");
-      FileContents << ("\n");
+      FileContents << ErrorMsg << std::endl;
+      FileContents << std::endl;
     }
 
-    FileContents << ("Simulation ID: ") << ExSI.SimID << ("\n");
-    FileContents << ("Date: ") << _S(ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S"))) << ("\n");
-    FileContents << ("Computer: ") << wxGetHostName() << ("\n");
-    FileContents << ("User: ") << wxGetUserId() << (" (") << wxGetUserName() << (")") << ("\n");
-    FileContents << ("\n");
-    FileContents << ("Input data set: ") << mp_RunEnv->getInputDir() << ("\n");
-    FileContents << ("Output data set: ") << mp_RunEnv->getOutputDir()  << ("\n");
-    FileContents << ("\n");
-    // TODO to complete
-    /*    FileContents << ("Surface units (SU): ") << CoreData->getSpatialData()->getSUsCollection()->size() << ("\n");
-    FileContents << ("Reach segments (RS): ") << CoreData->getSpatialData()->getRSsCollection()->size() << ("\n");
-    FileContents << ("Groundwater units (GU): ") << CoreData->getSpatialData()->getGUsCollection()->size() << ("\n");
-*/
+    FileContents << ("Simulation ID: ") << ExSI.SimID << std::endl;
+    FileContents << ("Date: ") << _S(ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl;
+    FileContents << ("Computer: ") << _S(wxGetHostName()) << std::endl;
+    FileContents << ("User: ") << _S(wxGetUserId()) << (" (") << _S(wxGetUserName()) << (")") << std::endl;
+    FileContents << std::endl;
+    FileContents << ("Input data set: ") << mp_RunEnv->getInputDir() << std::endl;
+    FileContents << ("Output data set: ") << mp_RunEnv->getOutputDir()  << std::endl;
+    FileContents << std::endl;
+
+    FileContents << "Spatial domain:" << std::endl;
+    for (UnitsIt = mp_Repository->getUnits()->begin(); UnitsIt != mp_Repository->getUnits()->end();++UnitsIt )
+    {
+      FileContents << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
+    }
+
     if (SimInfo != NULL)
     {
-      FileContents << ("Simulation period: ") << (SimInfo->getStartTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << ("\n");
-      FileContents << ("Time steps: ") << SimInfo->getStepsCount() << (" of ") << SimInfo->getTimeStep() << (" seconds") << ("\n");
+      FileContents << std::endl;
+      FileContents << ("Simulation period: ") << (SimInfo->getStartTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << std::endl;
+      FileContents << ("Time steps: ") << SimInfo->getStepsCount() << (" of ") << SimInfo->getTimeStep() << (" seconds") << std::endl;
     }
 
-    FileContents << ("\n");
-    FileContents << ("------------------------------------------------------------") << ("\n");
-    FileContents << ("\n");
+    FileContents << std::endl;
+    FileContents << ("------------------------------------------------------------") << std::endl;
+    FileContents << std::endl;
 
 
 
@@ -1397,13 +1401,13 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
 
       for (i=0; i<WarningCount;i++)
       {
-        FileContents << ("WARNING: ") << FormatExecutionMessage(WMessages.at(i)) << ("\n");
+        FileContents << ("WARNING: ") << FormatExecutionMessage(WMessages.at(i)) << std::endl;
       }
     }
-    else FileContents << ("NO WARNING");
-    FileContents << ("\n");
-    FileContents << ("------------------------------------------------------------") << ("\n");
-    FileContents << ("\n");
+    else FileContents << ("NO WARNING") << std::endl;
+    FileContents << std::endl;
+    FileContents << ("------------------------------------------------------------") << std::endl;;
+    FileContents << std::endl;;
 
 
     // write file to disk

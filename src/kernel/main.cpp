@@ -308,10 +308,10 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 
   if (IsXMLFormat)
   {
-    std::cout << "<varpropparam";
+    std::cout << "<vardata";
     std::cout << " type=\"" << Type << "\"";
-    std::cout << " distribution=\"" << HandledItem.UnitClass << "\"";
-    std::cout << " ID=\"" << HandledItem.DataName << "\"";
+    std::cout << " unitclass=\"" << HandledItem.UnitClass << "\"";
+    std::cout << " name=\"" << HandledItem.DataName << "\"";
     std::cout << " description=\"" << HandledItem.Description << "\"";
     std::cout << " unit=\"" << HandledItem.DataUnit << "\"";
     std::cout << "/>" << std::endl;
@@ -324,7 +324,7 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 
 
     if (HandledItem.DataUnit != ("")) UnitStr = (" (")+HandledItem.DataUnit+(")");
-    if (HandledItem.UnitClass != ("")) DistribStr = (", distributed on ")+HandledItem.UnitClass;
+    if (HandledItem.UnitClass != ("")) DistribStr = "{"+HandledItem.UnitClass+"} ";
 
 
     if (Type == ("pvar")) TypeStr = ("produced variable");
@@ -337,12 +337,10 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 
     if (Type == ("fpar")) TypeStr = ("function parameter");
 
-    if (Type == ("rprop")) TypeStr = ("required distributed property");
-    if (Type == ("sprop")) TypeStr = ("used distributed property (only if available)");
-    if (Type == ("rinicond")) TypeStr = ("required distributed initial condition");
-    if (Type == ("sinicond")) TypeStr = ("used distributed initial condition (only if available)");
+    if (Type == ("rinput")) TypeStr = ("required input data");
+    if (Type == ("sinput")) TypeStr = ("used input data");
 
-    std::cout << HandledItem.DataName << UnitStr << " : " << TypeStr << DistribStr << ".";
+    std::cout << DistribStr << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
     if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description;
     std::cout << std::endl;
 
@@ -361,8 +359,7 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 {
 
   int i;
-  // TODO to enable with correct code
-/*
+
   for (i=0;i<HandledData.FunctionParams.size();i++) printPluginsHandledDataItemReport(HandledData.FunctionParams[i],Suffix,("fpar"),IsXMLFormat);
   for (i=0;i<HandledData.ProducedVars.size();i++) printPluginsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"),IsXMLFormat);
   for (i=0;i<HandledData.RequiredVars.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"),IsXMLFormat);
@@ -370,40 +367,37 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
   for (i=0;i<HandledData.UsedVars.size();i++) printPluginsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"),IsXMLFormat);
   for (i=0;i<HandledData.RequiredPrevVars.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredPrevVars[i],Suffix,("rprevvar"),IsXMLFormat);
   for (i=0;i<HandledData.UsedPrevVars.size();i++) printPluginsHandledDataItemReport(HandledData.UsedPrevVars[i],Suffix,("sprevvar"),IsXMLFormat);
-  for (i=0;i<HandledData.RequiredProps.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredProps[i],Suffix,("rprop"),IsXMLFormat);
-  for (i=0;i<HandledData.UsedProps.size();i++) printPluginsHandledDataItemReport(HandledData.UsedProps[i],Suffix,("sprop"),IsXMLFormat);
-  for (i=0;i<HandledData.RequiredIniconds.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredIniconds[i],Suffix,("rinicond"),IsXMLFormat);
-  for (i=0;i<HandledData.UsedIniconds.size();i++) printPluginsHandledDataItemReport(HandledData.UsedIniconds[i],Suffix,("sinicond"),IsXMLFormat);
+  for (i=0;i<HandledData.RequiredInput.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredInput[i],Suffix,("rinput"),IsXMLFormat);
+  for (i=0;i<HandledData.UsedInput.size();i++) printPluginsHandledDataItemReport(HandledData.UsedInput[i],Suffix,("sinput"),IsXMLFormat);
 
   if (IsXMLFormat)
   {
-    std::cout << Suffix << "<usedevents SU=\"" << HandledData.UsedEventsOnSU << "\" RS=\"" << HandledData.UsedEventsOnRS << "\" GU=\"" << HandledData.UsedEventsOnGU << "\"/>" << std::endl;
+    for (i=0;i<HandledData.UsedEventsOnUnits.size();i++)
+      std::cout << Suffix << "<usedevents unitclass=\"" << HandledData.UsedEventsOnUnits[i] << "\" />" << std::endl;
 
-    for (i=0;i<HandledData.RequiredExtraFiles.GetCount();i++) std::cout << Suffix << "<extrafile type=\"required\" name=\"" << HandledData.RequiredExtraFiles[i] << "\" />" << std::endl;
-    for (i=0;i<HandledData.UsedExtraFiles.GetCount();i++) std::cout << Suffix << "<extrafile type=\"used\" name=\"" << HandledData.UsedExtraFiles[i] << "\" />" << std::endl;
+    for (i=0;i<HandledData.RequiredExtraFiles.size();i++) std::cout << Suffix << "<extrafile type=\"required\" name=\"" << HandledData.RequiredExtraFiles[i] << "\" />" << std::endl;
+    for (i=0;i<HandledData.UsedExtraFiles.size();i++) std::cout << Suffix << "<extrafile type=\"used\" name=\"" << HandledData.UsedExtraFiles[i] << "\" />" << std::endl;
 
   }
   else
   {
-
-    wxString EventsSUStr = wxT("no");
-    wxString EventsRSStr = wxT("no");
-    wxString EventsGUStr = wxT("no");
-
-    if (HandledData.UsedEventsOnSU) EventsSUStr = wxT("yes");
-    if (HandledData.UsedEventsOnRS) EventsRSStr = wxT("yes");
-    if (HandledData.UsedEventsOnGU) EventsGUStr = wxT("yes");
-
-    std::cout << Suffix << "Events used on SUs : " << EventsSUStr << std::endl;
-    std::cout << Suffix << "Events used on RSs : " << EventsRSStr << std::endl;
-    std::cout << Suffix << "Events used on GUs : " << EventsGUStr << std::endl;
+    if (HandledData.UsedEventsOnUnits.size() > 0)
+    {
+      std::cout << Suffix << "Events used on: ";
+      for (i=0;i<HandledData.UsedEventsOnUnits.size();i++)
+      {
+        std::cout << HandledData.UsedEventsOnUnits[i];
+        if (i == HandledData.UsedEventsOnUnits.size()-1 ) std::cout << std::endl;
+        else std::cout << ", ";
+      }
+    }
 
 
-    for (i=0;i<HandledData.RequiredExtraFiles.GetCount();i++) std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
-    for (i=0;i<HandledData.UsedExtraFiles.GetCount();i++) std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
+    for (i=0;i<HandledData.RequiredExtraFiles.size();i++) std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
+    for (i=0;i<HandledData.UsedExtraFiles.size();i++) std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
 
   }
-*/
+
 }
 
 
@@ -412,13 +406,12 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 
 void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
 {
-  //TODO to enable with correct code
 
   ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions();
   std::string StatusStr;
 
 
-  // insertion du début du fichier XML
+  // XML header + tags
   if (IsXMLFormat)
   {
     std::cout << "<?xml version=\"1.0\" standalone=\"yes\"?>" << std::endl;
@@ -446,13 +439,13 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
         std::cout << "      <domain>" << PlugContainers[i]->Signature->Domain << "</domain>" << std::endl;
         std::cout << "      <process>" << PlugContainers[i]->Signature->Process << "</process>" << std::endl;
         std::cout << "      <method>" << PlugContainers[i]->Signature->Method << "</method>" << std::endl;
-        std::cout << "      <description>" << PlugContainers[i]->Signature->Description << "</description>" << std::endl;
+        std::cout << "     insertion du début du fichier  <description>" << PlugContainers[i]->Signature->Description << "</description>" << std::endl;
         std::cout << "      <version number=\"" << PlugContainers[i]->Signature->Version << "\" sdk=\""<< PlugContainers[i]->Signature->SDKVersion << "\" devstatus=\"" << StatusStr << "\"/>" << std::endl;
         std::cout << "      <author name=\"" << PlugContainers[i]->Signature->Author
                   << "\" email=\"" << PlugContainers[i]->Signature->AuthorEmail << "\"/>" << std::endl;
 
         std::cout << "      <handleddata>" << std::endl;
-        //printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("        "),IsXMLFormat);
+        printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("        "),IsXMLFormat);
         std::cout << "      </handleddata>" << std::endl;
 
       }
@@ -471,7 +464,7 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
         std::cout << "   - Author(s): " << ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
         std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
         std::cout << "   - Handled data" << std::endl;
-        //printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "),IsXMLFormat);
+        printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "),IsXMLFormat);
 
       }
 
@@ -492,7 +485,7 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
 
   }
 
-  // insertion de la fin du fichier XML
+  // XML end
   if (IsXMLFormat)
   {
     std::cout << "  </funcsreport>" << std::endl;
@@ -699,7 +692,7 @@ int OpenFLUIDApp::OnRun()
 */
       if (mp_RunEnv->isWriteSimReport())
       {
-//        saveSimulationReports();
+        saveSimulationReports("");
         mp_ExecMsgs->resetWarningFlag();
       }
 
