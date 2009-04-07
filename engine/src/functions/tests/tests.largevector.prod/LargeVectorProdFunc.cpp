@@ -11,7 +11,7 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(LargeVectorProdFunction);
+DEFINE_FUNCTION_HOOK(LargeVectorProdFunction)
 
 
 // =====================================================================

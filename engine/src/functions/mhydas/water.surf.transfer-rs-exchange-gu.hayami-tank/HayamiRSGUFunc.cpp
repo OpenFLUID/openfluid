@@ -15,7 +15,7 @@
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(HayamiRSFunction);
+DEFINE_FUNCTION_HOOK(HayamiRSFunction)
 
 
 // =====================================================================
@@ -78,7 +78,7 @@ BEGIN_SIGNATURE_HOOK;
   DECLARE_FUNCTION_PARAM("coeffdrainage",("multiplicative exchange coefficient when watertable level is above surface level"),(""));
   DECLARE_FUNCTION_PARAM("coeffgw",("multiplicative exchange coefficient between GUs"),(""));
 
-END_SIGNATURE_HOOK;
+END_SIGNATURE_HOOK
 
 
 HayamiRSFunction::HayamiRSFunction()

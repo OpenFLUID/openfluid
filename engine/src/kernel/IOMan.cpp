@@ -37,15 +37,13 @@ IOManager* IOManager::getInstance()
 bool IOManager::loadRunConfig(RunConfig* Config)
 {
   TiXmlDocument LoadDoc;
-  TiXmlElement* Child, *Child2;
+  TiXmlElement* Child;
 
   std::string Str;
   openfluid::core::DateTime ZeDate;
 
 
   long IntValue;
-
-  FunctionConfig* FConf;
 
   if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_RUNFILE).c_str()))
   {
@@ -153,7 +151,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
     if (Child != NULL)
     {
       Str = Child->GetText();
-      if (Str != "" && (Str.find(" ") == -1)) Config->SimulationID = Str;
+      if (Str != "" && (Str.find(" ") == std::string::npos)) Config->SimulationID = Str;
     }
 
     // -------- Progressive output ----------------
@@ -216,8 +214,6 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   TiXmlElement* Child, *Child2;
 
   wxString Str;
-
-  int IntValue;
 
   FunctionConfig* FConf;
 
@@ -1125,7 +1121,7 @@ std::string IOManager::generateOutputScalarsFileContent(const openfluid::core::U
     std::string ColSeparator)
 {
   std::ostringstream GeneratedContent;
-  openfluid::core::ScalarValue Value;
+  openfluid::core::ScalarValue Value = 0;
 
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
@@ -1166,7 +1162,7 @@ std::string IOManager::generateOutputVectorFileContent(const openfluid::core::Un
     if (!aUnit->getVectorVariables()->getValue(VectorName,iStep,&Value))
       throw openfluid::base::OFException("kernel","IOManager::generateOutputVectorFileContent",iStep,"value not found for vector variable " + VectorName);
 
-    for (unsigned int iVal = 0 ; iVal < Value.getSize(); iVal++ )
+    for (unsigned long iVal = 0 ; iVal < Value.getSize(); iVal++ )
     {
       GeneratedContent << ColSeparator << Value.getElement(iVal);
     }
@@ -1187,7 +1183,7 @@ bool IOManager::loadEventsFromFiles()
  std::vector<std::string> FilesToLoad = GetFilesByExt(mp_RunEnv->getInputDir(),"events.xml",true);
 
   bool IsOK = true;
-  int i=0;
+  unsigned int i=0;
 
   std::string CurrentFile;
 

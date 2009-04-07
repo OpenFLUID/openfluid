@@ -74,7 +74,7 @@ class HayamiSUFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS;
+DECLARE_PLUGIN_HOOKS
 
 
 #endif  // __HAYAMISUFUNC_H__

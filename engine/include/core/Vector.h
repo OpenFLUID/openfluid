@@ -18,9 +18,9 @@ class Vector
 {
   private :
     T* m_Data;
-    long m_Size;
+    unsigned long m_Size;
 
-    bool allocate(long Size);
+    bool allocate(unsigned long Size);
 
     void init();
 
@@ -41,17 +41,17 @@ class Vector
 	/**
 	  Constructor, creates a vector containing Size elements
 	*/
-    Vector(long Size);
+    Vector(unsigned long Size);
 
 	/**
 	  Constructor, creates a vector containing Size elements, initialized with value InitValue
 	*/
-    Vector(long Size, T InitValue);
+    Vector(unsigned long Size, T InitValue);
 
     /**
       Constructor, creates a vector of size Size, containing Data
     */
-    Vector(T* Data, long Size);
+    Vector(T* Data, unsigned long Size);
 
     /**
       Destructor
@@ -61,12 +61,12 @@ class Vector
     /**
       Returns the size of the vector
     */
-    long getSize() const { return m_Size; };
+    unsigned long getSize() const { return m_Size; };
 
     /**
       Returns the size of the vector
     */
-    long size() const { return getSize(); };
+    unsigned long size() const { return getSize(); };
 
     /**
       Returns a pointer to the content of the vector (like C arrays)
@@ -76,27 +76,27 @@ class Vector
     /**
       Sets data for the vector from Data and with size Size
     */
-    void setData(T* Data, long Size);
+    void setData(T* Data, unsigned long Size);
 
     /**
       Returns the element of the vector for index Index
     */
-    T getElement(long Index) const;
+    T getElement(unsigned long Index) const;
 
     /**
       Returns the element of the vector for index Index
     */
-    T at(long Index) const { return getElement(Index); };
+    T at(unsigned long Index) const { return getElement(Index); };
 
     /**
       Sets a new value for element at the given index
     */
-    void setElement(long Index, T Element);
+    void setElement(unsigned long Index, T Element);
 
     /**
       Operator to set a new value for element given between []
     */
-    T& operator[](long Index);
+    T& operator[](unsigned long Index);
 
     /**
       Allocation operator
@@ -139,7 +139,7 @@ Vector<T>::Vector(const Vector &A)
 // =====================================================================
 
 template <class T>
-Vector<T>::Vector(long Size)
+Vector<T>::Vector(unsigned long Size)
 {
   init();
 
@@ -151,7 +151,7 @@ Vector<T>::Vector(long Size)
 // =====================================================================
 // =====================================================================
 template <class T>
-Vector<T>::Vector(long Size, T InitValue)
+Vector<T>::Vector(unsigned long Size, T InitValue)
 {
   init();
 
@@ -161,7 +161,7 @@ Vector<T>::Vector(long Size, T InitValue)
 
   if (m_Data != NULL)
   {
-    int i;
+    unsigned long i;
     for (i=0;i<m_Size;i++) m_Data[i] = InitValue;
   }
 
@@ -173,7 +173,7 @@ Vector<T>::Vector(long Size, T InitValue)
 
 
 template <class T>
-Vector<T>::Vector(T* Data, long Size)
+Vector<T>::Vector(T* Data, unsigned long Size)
 {
   init();
 
@@ -198,7 +198,7 @@ Vector<T>::~Vector()
 // =====================================================================
 
 template <class T>
-bool Vector<T>::allocate(long Size)
+bool Vector<T>::allocate(unsigned long Size)
 {
 
   if (Size > 0)
@@ -220,7 +220,7 @@ bool Vector<T>::allocate(long Size)
 // =====================================================================
 
 template <class T>
-void Vector<T>::setData(T* Data, long Size)
+void Vector<T>::setData(T* Data, unsigned long Size)
 {
   clear();
 
@@ -235,7 +235,7 @@ void Vector<T>::setData(T* Data, long Size)
 // =====================================================================
 
 template <class T>
-T Vector<T>::getElement(long Index) const
+T Vector<T>::getElement(unsigned long Index) const
 {
   if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("ofelib","Vector::getElement","element access range error");
   return m_Data[Index];
@@ -246,7 +246,7 @@ T Vector<T>::getElement(long Index) const
 // =====================================================================
 
 template <class T>
-void Vector<T>::setElement(long Index, T Element)
+void Vector<T>::setElement(unsigned long Index, T Element)
 {
   if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("ofelib","Vector::setElement","element access range error");
   m_Data[Index] = Element;
@@ -258,7 +258,7 @@ void Vector<T>::setElement(long Index, T Element)
 
 
 template <class T>
-T& Vector<T>::operator[](long Index)
+T& Vector<T>::operator[](unsigned long Index)
 {
   if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("ofelib","Vector::operator[]","element access range error");
   return m_Data[Index];
@@ -311,7 +311,7 @@ void Vector<T>::copy(const Vector& Source, Vector& Dest)
 {
   Dest.clear;
   Dest.allocate(Source.m_Size);
-  for (unsigned int i = 0; i < Source.m_Size;i++)
+  for (unsigned long i = 0; i < Source.m_Size;i++)
   {
     Dest.m_Data[i] = Source.m_Data[i];
   }

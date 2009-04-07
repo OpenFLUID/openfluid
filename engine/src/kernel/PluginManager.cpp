@@ -54,7 +54,7 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
     if (PlugLib->HasSymbol(wxT(PLUGSDKVERSION_PROC_NAME)))
     {
       openfluid::base::GetSDKVersionProc SDKProc;
-      if (SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->GetSymbol(wxT(PLUGSDKVERSION_PROC_NAME)));
+      if ((SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->GetSymbol(wxT(PLUGSDKVERSION_PROC_NAME))));
         Plug->SDKCompatible = (FULL_VERSION == SDKProc());
     }
 
@@ -131,7 +131,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
   std::vector<std::string> PluginsPaths = mp_RunEnv->getPluginsPaths();
   std::vector<std::string> PluginFiles;
   std::vector<std::string> TmpFiles;
-  int i,j;
+  unsigned int i,j;
 
 
   for (i=0;i<PluginsPaths.size();i++)

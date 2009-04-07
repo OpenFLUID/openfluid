@@ -11,7 +11,7 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(LargeVectorUseFunction);
+DEFINE_FUNCTION_HOOK(LargeVectorUseFunction)
 
 
 // =====================================================================

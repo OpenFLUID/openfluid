@@ -11,7 +11,7 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(RainRSFromFilesFunction);
+DEFINE_FUNCTION_HOOK(RainRSFromFilesFunction)
 
 
 // =====================================================================

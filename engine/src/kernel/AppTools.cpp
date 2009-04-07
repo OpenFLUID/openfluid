@@ -229,7 +229,7 @@ bool EmptyDirectoryRecursively(const char* DirPath)
         EmptyDirectoryRecursively(Path);
       }
 */
-      if (TmpDir = opendir(Path))
+      if ((TmpDir = opendir(Path)))
       {
         EmptyDirectoryRecursively(Path);
         closedir(TmpDir);

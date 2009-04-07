@@ -61,7 +61,7 @@ ENDIF(ENGINE_VERSION_STATUS)
 
 ################### compilation flags ###################
 
-SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
+SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wfloat-equal")
 SET(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 IF(NOT CMAKE_BUILD_TYPE) 

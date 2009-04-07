@@ -768,7 +768,7 @@ bool Engine::checkExtraFilesConsistency()
 
     HData = CurrentFunction->Signature->HandledData;
 
-    for (int i=0;i<HData.RequiredExtraFiles.size();i++)
+    for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
       if (!wxFileExists(_U(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]).c_str())))
       {
