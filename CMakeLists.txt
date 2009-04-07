@@ -21,6 +21,7 @@ ENABLE_TESTING()
 INCLUDE(CMake.in.common)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(wxWidgets)
+FIND_PACKAGE(PythonInterp)
 #FIND_PACKAGE(Boost COMPONENTS date_time)
 
 #IF(wxWidgets_FOUND AND Boost_FOUND)

@@ -122,7 +122,7 @@ std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
   std::string PlugFullPath = "";
   std::string TmpPath;
 
-  int i = 0;
+  unsigned int i = 0;
 
   while ((PlugFullPath.length() == 0) && (i<m_PlugsDirs.size()))
   {

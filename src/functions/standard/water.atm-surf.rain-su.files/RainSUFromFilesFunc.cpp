@@ -12,7 +12,7 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(RainSUFromFilesFunction);
+DEFINE_FUNCTION_HOOK(RainSUFromFilesFunction)
 
 
 // =====================================================================

@@ -11,7 +11,7 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(PrimitivesUseFunction);
+DEFINE_FUNCTION_HOOK(PrimitivesUseFunction)
 
 
 // =====================================================================

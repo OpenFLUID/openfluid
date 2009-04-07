@@ -78,7 +78,7 @@
     DLLIMPORT std::string GetPlugSDKVersion(); \
     DLLIMPORT openfluid::base::PluggableFunction* GetPlugFunction(); \
     DLLIMPORT openfluid::base::FunctionSignature* GetPlugSignature(); \
-  };
+  }
 
 
 
@@ -618,11 +618,11 @@ class PluggableFunction
     */
     virtual ~PluggableFunction();
 
-    bool setDataRepository(openfluid::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData; };
+    void setDataRepository(openfluid::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData;};
 
-    bool setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
+    void setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
-    bool setFunctionEnvironment(openfluid::base::FunctionEnvironment* FuncEnv) { mp_FunctionEnv = FuncEnv; };
+    void setFunctionEnvironment(openfluid::base::FunctionEnvironment* FuncEnv) { mp_FunctionEnv = FuncEnv; };
 
 
     /**

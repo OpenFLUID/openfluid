@@ -11,7 +11,7 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(PrimitivesProdFunction);
+DEFINE_FUNCTION_HOOK(PrimitivesProdFunction)
 
 
 // =====================================================================

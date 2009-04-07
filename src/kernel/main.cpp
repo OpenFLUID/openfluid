@@ -20,7 +20,7 @@
 // =====================================================================
 
 
-IMPLEMENT_APP_CONSOLE(OpenFLUIDApp);
+IMPLEMENT_APP_CONSOLE(OpenFLUIDApp)
 
 // =====================================================================
 // =====================================================================
@@ -28,7 +28,7 @@ IMPLEMENT_APP_CONSOLE(OpenFLUIDApp);
 
 bool OpenFLUIDApp::buildModel()
 {
-  bool ExecStatus;
+  bool ExecStatus = true;
 
   std::cout << "* Building model... ";
   std::cout.flush();
@@ -185,7 +185,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   }
 */
   // centering the version number, using white spaces
-  for (int i=0;i<((Width-VersionInfo.length())/2);i++) Whites = Whites + " ";
+  for (unsigned int i=0;i<((Width-VersionInfo.length())/2);i++) Whites = Whites + " ";
 
   VersionInfo = Whites + VersionInfo;
 

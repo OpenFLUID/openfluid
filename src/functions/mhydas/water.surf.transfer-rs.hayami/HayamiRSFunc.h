@@ -84,7 +84,7 @@ class HayamiRSFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS;
+DECLARE_PLUGIN_HOOKS
 
 
 
