@@ -916,13 +916,11 @@ std::string IOManager::generateOuputFilename(const std::string UnitClass, const 
 
   if (VectorName == "")
   {
-    // TODO put file extension from config file
-    GeneratedName << ".scalars.out";
+    GeneratedName << ".scalars." << OPENFLUID_DEFAULT_OUPUTFILES_EXT;
   }
   else
   {
-    // TODO put file extension from config file
-    GeneratedName << ".vector." << VectorName<< ".out";
+    GeneratedName << ".vector." << VectorName<< "." << OPENFLUID_DEFAULT_OUPUTFILES_EXT;
   }
 
   return GeneratedName.str();
