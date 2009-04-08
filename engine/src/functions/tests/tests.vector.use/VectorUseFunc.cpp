@@ -115,7 +115,7 @@ bool VectorUseFunction::runStep(const openfluid::base::SimulationStatus* SimStat
 {
 
   openfluid::core::Unit* TU;
-  long VectorSize = 40;
+  unsigned long VectorSize = 40;
   openfluid::core::VectorValue TheVector;
 
   DECLARE_UNITS_ORDERED_LOOP(1);

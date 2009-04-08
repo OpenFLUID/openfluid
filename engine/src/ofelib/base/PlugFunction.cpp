@@ -343,7 +343,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 		openfluid::tools::TokenizeString(TmpStr,Tokens,";");
 
 		(*Values).clear();
-    for (int i=0;i<Tokens.size();i++) (*Values).push_back(Tokens[i]);
+    for (unsigned int i=0;i<Tokens.size();i++) (*Values).push_back(Tokens[i]);
 
 		return true;
 	}
@@ -366,7 +366,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
   // clears the double values vector
   (*Values).clear();
 
-  int i=0;
+  unsigned int i=0;
 
   while (IsOK && i < StrVect.size())
   {
@@ -398,7 +398,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
   // clears the double values vector
   (*Values).clear();
 
-  int i=0;
+  unsigned int i=0;
 
   while (IsOK && i < StrVect.size())
   {

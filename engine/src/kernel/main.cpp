@@ -255,7 +255,7 @@ void OpenFLUIDApp::printPluginsList()
 
   bool OneAtLeast = false;
 
-  for (int i=0;i<PlugContainers.size();i++)
+  for (unsigned int i=0;i<PlugContainers.size();i++)
   {
     if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
     {
@@ -339,7 +339,7 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, std::string Suffix, bool IsXMLFormat)
 {
 
-  int i;
+  unsigned int i;
 
   for (i=0;i<HandledData.FunctionParams.size();i++) printPluginsHandledDataItemReport(HandledData.FunctionParams[i],Suffix,("fpar"),IsXMLFormat);
   for (i=0;i<HandledData.ProducedVars.size();i++) printPluginsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"),IsXMLFormat);
@@ -404,7 +404,7 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
 
   if (PlugContainers.size() > 0)
   {
-    for (int i=0;i<PlugContainers.size();i++)
+    for (unsigned int i=0;i<PlugContainers.size();i++)
     {
 
       // Status string
@@ -597,7 +597,7 @@ bool OpenFLUIDApp::OnInit()
 void OpenFLUIDApp::printEnvInfos()
 {
   std::vector<std::string> FunctionsPaths = mp_RunEnv->getPluginsPaths();
-  int i;
+  unsigned int i;
 
   std::cout << "Input dir: " << mp_RunEnv->getInputDir() << std::endl;
   if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << "Output dir: " << mp_RunEnv->getOutputDir() << std::endl;
@@ -631,8 +631,6 @@ int OpenFLUIDApp::OnRun()
       mp_CoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
 
       mp_Engine = new Engine(mp_CoreData,mp_ExecMsgs,mp_RunEnv,mp_PlugMan);
-
-
 
       // model load and check
       buildModel();
@@ -708,14 +706,6 @@ int OpenFLUIDApp::OnRun()
 }
 
 
-
-// =====================================================================
-// =====================================================================
-
-int OpenFLUIDApp::OnExit()
-{
-
-}
 
 
 // =====================================================================

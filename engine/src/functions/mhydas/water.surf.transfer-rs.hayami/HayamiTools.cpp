@@ -17,19 +17,19 @@
 /*
 t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep)
 {
-  
+
   float Theta, Zed;
-  float Value1, Value2, Value3; 
+  float Value1, Value2, Value3;
   float T;
   float Volume;
-  
+
   int i;
-  
+
   t_HayamiKernel ZeKernel;
-  
+
   ZeKernel.resize(MaxSteps,0);
-  
-  
+
+
   Theta = Length / Celerity;
   Zed = (Celerity * Length) / ( 4 * Sigma);
 
@@ -45,46 +45,46 @@ t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length,
       Value2 = exp(Zed * (2 - (T/Theta) - (Theta/T)));
       Value3 = pow(T,1.5);
       ZeKernel[i] = Value1 * Value2 / Value3;
-    }    
+    }
   }
   else
   {
     ZeKernel[0] = 0.5 / TimeStep;
-    ZeKernel[1] = 0.5 / TimeStep;    
+    ZeKernel[1] = 0.5 / TimeStep;
   }
-     
-  
+
+
   Volume = 0;
-  
-  
+
+
   for (i=0;i<ZeKernel.size();i++)
   {
     Volume = Volume + (ZeKernel[i] * TimeStep);
-  }  
+  }
 
 
   for (i=0;i<ZeKernel.size();i++) ZeKernel[i] = ZeKernel[i] * (1/Volume);
-  
-  
+
+
   return ZeKernel;
-}  
+}
 */
 
 // =====================================================================
 // =====================================================================
 
-void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep, t_HayamiKernel *HKernel)
+void ComputeHayamiKernel(double Celerity, double Sigma, double Length, unsigned int MaxSteps, int TimeStep, t_HayamiKernel *HKernel)
 {
   float Theta, Zed;
-  float Value1, Value2, Value3; 
+  float Value1, Value2, Value3;
   float T;
   float Volume;
 
-  int i;
+  unsigned int i;
 
 
   (*HKernel).clear();
-  
+
   (*HKernel).resize(MaxSteps,0);
 
 
@@ -103,12 +103,12 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
       Value2 = exp(Zed * (2 - (T/Theta) - (Theta/T)));
       Value3 = pow(T,1.5);
       (*HKernel)[i] = Value1 * Value2 / Value3;
-    }    
+    }
   }
   else
   {
     (*HKernel)[0] = 0.5 / TimeStep;
-    (*HKernel)[1] = 0.5 / TimeStep;    
+    (*HKernel)[1] = 0.5 / TimeStep;
   }
 
 
@@ -118,7 +118,7 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
   for (i=0;i<(*HKernel).size();i++)
   {
     Volume = Volume + ((*HKernel)[i] * TimeStep);
-  }  
+  }
 
   for (i=0;i<(*HKernel).size();i++) (*HKernel)[i] = (*HKernel)[i] * (1/Volume);
 
@@ -132,21 +132,21 @@ void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSt
 float DoHayamiPropagation(t_HayamiKernel Kernel, int CurrentStep, openfluid::core::SerieOfScalarValue* QInput, int MaxSteps, int TimeStep)
 {
   float QOutput;
-  
+
   int ZeEnd;
-  
-  
+
+
   ZeEnd = MaxSteps;
- 
+
   if (CurrentStep < ZeEnd) ZeEnd = CurrentStep;
-  
+
   QOutput = 0;
-  
+
   for (int i=0;i<ZeEnd;i++)
   {
-    QOutput = QOutput + (Kernel[i] * QInput->at(CurrentStep - i) * TimeStep); 
-  } 
-  
-  return QOutput;  
+    QOutput = QOutput + (Kernel[i] * QInput->at(CurrentStep - i) * TimeStep);
+  }
+
+  return QOutput;
 }
 

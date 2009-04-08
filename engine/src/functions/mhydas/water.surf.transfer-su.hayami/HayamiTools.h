@@ -14,7 +14,9 @@
 
 typedef std::vector<double> t_HayamiKernel;
 
-WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernelMap);
+//WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernelMap);
+typedef std::map<int, t_HayamiKernel> IDKernelMap;
+
 
 /**
   Computes the Hayami Kernel
@@ -23,12 +25,12 @@ WX_DECLARE_HASH_MAP(int, t_HayamiKernel, wxIntegerHash, wxIntegerEqual, IDKernel
   \param[in] Length Transfer Length (m)
   \param[in] MaxSteps Maximum steps for the kernel length
   \param[in] TimeStep Time step duration (s)
-  \param[out] HKernel Vector of double containing the kernel      
+  \param[out] HKernel Vector of double containing the kernel
 */
-void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep, t_HayamiKernel *HKernel);
+void ComputeHayamiKernel(double Celerity, double Sigma, double Length, unsigned int MaxSteps, int TimeStep, t_HayamiKernel *HKernel);
 
 //t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep);
- 
+
 
 
 

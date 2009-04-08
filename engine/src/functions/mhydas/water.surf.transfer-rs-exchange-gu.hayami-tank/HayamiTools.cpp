@@ -73,14 +73,14 @@ t_HayamiKernel ComputeHayamiKernel(double Celerity, double Sigma, double Length,
 // =====================================================================
 // =====================================================================
 
-void ComputeHayamiKernel(double Celerity, double Sigma, double Length, int MaxSteps, int TimeStep, t_HayamiKernel *HKernel)
+void ComputeHayamiKernel(double Celerity, double Sigma, double Length, unsigned int MaxSteps, int TimeStep, t_HayamiKernel *HKernel)
 {
   float Theta, Zed;
   float Value1, Value2, Value3;
   float T;
   float Volume;
 
-  int i;
+  unsigned int i;
 
 
   (*HKernel).clear();

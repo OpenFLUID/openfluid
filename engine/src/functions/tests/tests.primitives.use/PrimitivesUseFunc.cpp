@@ -138,10 +138,10 @@ bool PrimitivesUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
   if (DoubleArrayParam.size() != 4)
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, size)");
 
-  if (DoubleArrayParam[2] != 1.3)
+  if (!openfluid::tools::IsCloseEnough(DoubleArrayParam[2],1.3,0.00001))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, value)");
 
-  if (DoubleArrayParam[3] == 1.3)
+  if (openfluid::tools::IsCloseEnough(DoubleArrayParam[3],1.3,0.00001))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, wrongvalue)");
 
   if (OPENFLUID_GetFunctionParameter(Params,"wrongdoublearrayparam",&DoubleArrayParam))
@@ -214,7 +214,7 @@ bool PrimitivesUseFunction::initializeRun(const openfluid::base::SimulationInfo*
 bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   openfluid::core::Unit* TU;
-  long VectorSize = 40;
+  unsigned long VectorSize = 40;
   openfluid::core::VectorValue TheVector;
   openfluid::core::ScalarValue TheScalar;
   openfluid::core::ScalarValue TheInput;
@@ -276,7 +276,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
     OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
 
-    if (TheScalar != 0)
+    if (!openfluid::tools::IsCloseEnough(TheScalar,0,0.00001))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value after update (tests.scalar)");
 
 

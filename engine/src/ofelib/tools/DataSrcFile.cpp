@@ -52,10 +52,10 @@ bool DataSourcesFile::load(std::string Filename)
 
     TiXmlHandle DocHandle(&LoadDoc);
 
-    TiXmlElement* Child = DocHandle.FirstChild("openfluid").FirstChild("datasources").FirstChild("filesource").Element();
+    TiXmlElement* Child;
 
 
-    for(Child; Child; Child=Child->NextSiblingElement())
+    for(Child = DocHandle.FirstChild("openfluid").FirstChild("datasources").FirstChild("filesource").Element(); Child != 0; Child=Child->NextSiblingElement())
     {
       if (Child->Attribute("ID",&ID) != NULL && Child->Attribute("file") != NULL)
       {

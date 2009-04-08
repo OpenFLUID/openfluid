@@ -73,8 +73,8 @@ std::vector<std::string> ColumnTextParser::tokenizeLine(std::string Line)
 
 bool ColumnTextParser::checkContents()
 {
-  int LineColCount;
-  int LineCount = m_Contents.size();
+  unsigned int LineColCount;
+  unsigned int LineCount = m_Contents.size();
 
   if (LineCount == 0) return true;
 
@@ -82,7 +82,7 @@ bool ColumnTextParser::checkContents()
   // i.e. same columns number
   LineColCount = m_Contents.at(0).size();
 
-  for (int i=1;i<LineCount;i++)
+  for (unsigned int i=1;i<LineCount;i++)
   {
     if (m_Contents.at(i).size() != LineColCount)
       return false;
@@ -191,7 +191,7 @@ bool ColumnTextParser::loadFromFile(std::string Filename)
 // =====================================================================
 // =====================================================================
 
-bool ColumnTextParser::setFromString(std::string Contents, int ColumnsNbr)
+bool ColumnTextParser::setFromString(std::string Contents, unsigned int ColumnsNbr)
 {
   /** \internal
 
@@ -246,7 +246,7 @@ bool ColumnTextParser::setFromString(std::string Contents, int ColumnsNbr)
 
 
 
-std::vector<std::string> ColumnTextParser::getValues(int Line)
+std::vector<std::string> ColumnTextParser::getValues(unsigned int Line)
 {
   if (Line < m_Contents.size())
   {
@@ -265,7 +265,7 @@ std::vector<std::string> ColumnTextParser::getValues(int Line)
 // =====================================================================
 
 
-std::string ColumnTextParser::getValue(int Line, int Column)
+std::string ColumnTextParser::getValue(unsigned int Line, unsigned int Column)
 {
   std::vector<std::string> LineString = getValues(Line);
 
@@ -286,7 +286,7 @@ std::string ColumnTextParser::getValue(int Line, int Column)
 // =====================================================================
 
 
-bool ColumnTextParser::getStringValue(int Line, int Column, std::string *Value)
+bool ColumnTextParser::getStringValue(unsigned int Line, unsigned int Column, std::string *Value)
 {
   std::string StrValue = getValue(Line,Column);
 
@@ -303,7 +303,7 @@ bool ColumnTextParser::getStringValue(int Line, int Column, std::string *Value)
 // =====================================================================
 
 
-bool ColumnTextParser::getLongValue(int Line, int Column, long* Value)
+bool ColumnTextParser::getLongValue(unsigned int Line, unsigned int Column, long* Value)
 {
   std::string StrValue = getValue(Line,Column);
 
@@ -321,7 +321,7 @@ bool ColumnTextParser::getLongValue(int Line, int Column, long* Value)
 // =====================================================================
 
 
-bool ColumnTextParser::getDoubleValue(int Line, int Column, double* Value)
+bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, double* Value)
 {
 
   std::string StrValue = getValue(Line,Column);

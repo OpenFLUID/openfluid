@@ -134,10 +134,6 @@ class OpenFLUIDApp : public wxAppConsole
     */
     virtual int OnRun();
 
-    /**
-      Exit. Automatically called
-    */
-    virtual int OnExit();
 
 
 };

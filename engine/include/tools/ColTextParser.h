@@ -59,30 +59,30 @@ class ColumnTextParser
 
     bool loadFromFile(std::string Filename);
 
-    bool setFromString(std::string Contents, int ColumnsNbr);
+    bool setFromString(std::string Contents, unsigned int ColumnsNbr);
 
     /**
       Returns the value at a specified row-column, as a string
     */
-    std::string getValue(int Line, int Column);
+    std::string getValue(unsigned int Line, unsigned int Column);
 
-    bool getStringValue(int Line, int Column, std::string *Value);
+    bool getStringValue(unsigned int Line, unsigned int Column, std::string *Value);
 
     /**
       Returns the value at a specified row-column, as an int
     */
-    bool getLongValue(int Line, int Column, long* Value);
+    bool getLongValue(unsigned int Line, unsigned int Column, long* Value);
 
 
     /**
       Returns the value at a specified row-column, as a double
     */
-    bool getDoubleValue(int Line, int Column, double* Value);
+    bool getDoubleValue(unsigned int Line, unsigned int Column, double* Value);
 
     /**
       Returns the values of a line as astring list
     */
-    std::vector<std::string> getValues(int Line);
+    std::vector<std::string> getValues(unsigned int Line);
 
     int getLinesCount() const { return m_LinesCount;};
 
