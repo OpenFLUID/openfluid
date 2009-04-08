@@ -79,7 +79,7 @@ bool DistributedEvent::isInfoEquals(std::string Key, double Value)
 {
   double TmpValue;
 
-  return (getInfoAsDouble(Key,&TmpValue) && (TmpValue == Value));
+  return (getInfoAsDouble(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,Value,0.00001)));
 
 }
 
@@ -91,7 +91,7 @@ bool DistributedEvent::isInfoEquals(std::string Key, ScalarValue *Value)
 {
   ScalarValue TmpValue;
 
-  return (getInfoAsScalarValue(Key,&TmpValue) && (TmpValue == (*Value)));
+  return (getInfoAsScalarValue(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,*Value,0.00001)));
 
 }
 

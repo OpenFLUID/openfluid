@@ -21,10 +21,17 @@
 
 namespace openfluid { namespace tools {
 
-WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,DTSeriesMap);
-WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,UnitsDTSeriesMap);
-WX_DECLARE_HASH_MAP(int,IndexedSerie*,wxIntegerHash,wxIntegerEqual,IndexedSeriesMap);
-WX_DECLARE_HASH_MAP(int,IndexedSerie*,wxIntegerHash,wxIntegerEqual,UnitsIndexedSeriesMap);
+//WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,DTSeriesMap);
+//WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,UnitsDTSeriesMap);
+//WX_DECLARE_HASH_MAP(int,IndexedSerie*,wxIntegerHash,wxIntegerEqual,IndexedSeriesMap);
+//WX_DECLARE_HASH_MAP(int,IndexedSerie*,wxIntegerHash,wxIntegerEqual,UnitsIndexedSeriesMap);
+
+typedef std::map<int,DateTimeSerie*> DTSeriesMap;
+typedef std::map<int,DateTimeSerie*> UnitsDTSeriesMap;
+typedef std::map<int,IndexedSerie*> IndexedSeriesMap;
+typedef std::map<int,IndexedSerie*> UnitsIndexedSeriesMap;
+
+
 
 enum SeriePreprocess
 {

@@ -321,6 +321,7 @@ bool DateTimeSerie::createIndexedSerie(IndexedSerie *ISerie)
     i++;
   }
 
+  return true;
 }
 
 } } // namespace openfluid::tools

@@ -262,7 +262,7 @@ bool MorelSeytouxFunc::runStep(const openfluid::base::SimulationStatus* SimStatu
 
 
 
-    if (Ks == 0)
+    if (openfluid::tools::IsCloseEnough(Ks,0,0.00001))
     {
       // si ks == 0 alors tout ruisselle
       CurrentRunoff = CurrentRain;

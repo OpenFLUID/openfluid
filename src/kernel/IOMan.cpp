@@ -225,10 +225,8 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
     // ======= model structure ===========
 
 
-    Child = DocHandle.FirstChild("openfluid").FirstChild("model").FirstChild("function").Element();
 
-
-    for(Child;Child;Child=Child->NextSiblingElement())
+    for(Child = DocHandle.FirstChild("openfluid").FirstChild("model").FirstChild("function").Element();Child != 0;Child=Child->NextSiblingElement())
     {
       if (Child->Attribute("fileID") != NULL)
       {
@@ -237,7 +235,6 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
         FConf = new FunctionConfig();
         FConf->FileID = Child->Attribute("fileID");
 
-
         if (FConf->FileID.length() > 0)
         {
 
@@ -245,9 +242,8 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
           // function params parsing
           TiXmlHandle Child2Handle(Child);
-          Child2 = Child2Handle.FirstChild("param").Element();
 
-          for(Child2;Child2;Child2=Child2->NextSiblingElement())
+          for(Child2 = Child2Handle.FirstChild("param").Element();Child2 != 0;Child2=Child2->NextSiblingElement())
           {
             if (Child2->Attribute("name") != NULL && Child2->Attribute("value") != NULL)
             {
@@ -639,7 +635,7 @@ bool IOManager::loadOutputConfig()
 
     FileOutput_t FileOutput;
 
-    for(Child;Child;Child=Child->NextSiblingElement())
+    for(Child = Child;Child != 0;Child=Child->NextSiblingElement())
     {
       FileOutput = FileOutput_t();
 
@@ -660,11 +656,10 @@ bool IOManager::loadOutputConfig()
 
       // processing files sets
 
-      Child2 = Child->FirstChildElement("set");
 
       OutputSet_t FileOutputSet;
 
-      for(Child2;Child2;Child2=Child2->NextSiblingElement())
+      for(Child2 = Child->FirstChildElement("set");Child2 != 0;Child2=Child2->NextSiblingElement())
       {
         FileOutputSet = OutputSet_t();
 
@@ -1233,11 +1228,10 @@ bool IOManager::loadEventsFile(std::string Filename)
       if (Child != NULL)
       {
         TiXmlHandle Child2Handle(Child);
-        Child2 = Child2Handle.FirstChild("event").Element();
 
         // loop on all events in the file
 
-        for(Child2;Child2;Child2=Child2->NextSiblingElement())
+        for(Child2 = Child2Handle.FirstChild("event").Element();Child2 != 0;Child2=Child2->NextSiblingElement())
         {
           ZeDateStr = "";
           UnitClass = "";
@@ -1271,9 +1265,8 @@ bool IOManager::loadEventsFile(std::string Filename)
                 // read infos by event
 
                 TiXmlHandle Child3Handle(Child2);
-                Child3 = Child3Handle.FirstChild("info").Element();
 
-                for(Child3;Child3;Child3=Child3->NextSiblingElement())
+                for(Child3 = Child3Handle.FirstChild("info").Element();Child3 != 0;Child3=Child3->NextSiblingElement())
                 {
                   InfoKey = "";
                   InfoValue = "";

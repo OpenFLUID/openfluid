@@ -301,7 +301,7 @@ std::string RemoveTrailingSlashes(std::string Str)
 
 void printSTDOUT(std::vector<std::string> Strings, std::string Sep)
 {
-  for (int i=0; i< Strings.size(); i++) std::cout << Strings[i] << Sep;
+  for (unsigned int i=0; i< Strings.size(); i++) std::cout << Strings[i] << Sep;
   std::cout << std::endl;
 }
 

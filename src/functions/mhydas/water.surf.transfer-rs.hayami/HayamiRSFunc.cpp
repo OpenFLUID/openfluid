@@ -363,12 +363,12 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(openfluid::core::UnitID_t
 
 
 
-  if (Discharge == 0) *Height = 0;
+  if (openfluid::tools::IsCloseEnough(Discharge,0,0.000001)) *Height = 0.0;
   else
   {
 
 
-    int i;
+    unsigned int i;
     float Q1, Q2, H1, H2;
 
     openfluid::core::SerieOfScalarValue* HeightDischarge = m_HeightDischarge[ID];

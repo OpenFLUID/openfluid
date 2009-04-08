@@ -175,8 +175,8 @@ bool HayamiRSFunction::initializeRun(const openfluid::base::SimulationInfo* SimI
   openfluid::core::Unit *SU;
   openfluid::core::Unit *RS;
 
-  openfluid::core::ScalarValue RSheight, RSwidth, RSslope, RSmanning, RSlength;
-  openfluid::core::ScalarValue SUslope,SUarea,SUthetaini, SUthetasat;
+  openfluid::core::ScalarValue RSwidth, RSslope, RSmanning, RSlength;
+  openfluid::core::ScalarValue SUarea,SUthetaini, SUthetasat;
   openfluid::core::ScalarValue GUarea;
 
   float Cel, Sigma;
@@ -297,15 +297,12 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   int ID;
   int CurrentStep;
   int TimeStep;
-  int i;
   float UpSrcSUsOutputsSum;
   float UpLatSUsOutputsSum;
   float UpRSsOutputsSum;
   openfluid::core::ScalarValue QOutput;
   float QInput;
   openfluid::core::ScalarValue TmpValue;
-  float TmpGUValue;
-  bool m_UseUpGUExchangersgu;
 
   openfluid::core::ScalarValue WaterTable, WaterTableDown,QguOutput;
   float  InputVol,ExchangeSurface,  OutputVol;
@@ -332,8 +329,8 @@ bool HayamiRSFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
   std::list<openfluid::core::Unit*>* RSList;
   std::list<openfluid::core::Unit*>::iterator IterRS;
 
-  openfluid::core::ScalarValue RSheight, RSwidth, RSslope, RSmanning, RSlength;
-  openfluid::core::ScalarValue SUslope,SUarea,SUthetaini, SUthetasat;
+  openfluid::core::ScalarValue RSheight, RSwidth, RSlength;
+  openfluid::core::ScalarValue SUarea;
   openfluid::core::ScalarValue GUarea;
 
 
@@ -681,11 +678,12 @@ bool HayamiRSFunction::computeWaterHeightFromDischarge(int ID, float Discharge, 
 {
 
   if (Discharge < 0) return false;
-  if (Discharge == 0) *Height = 0;
+//  if (Discharge == 0) *Height = 0.0;
+  if (openfluid::tools::IsCloseEnough(Discharge,0,0.000001)) *Height = 0.0;
   else
   {
 
-    int i;
+    unsigned int i;
     float Q1, Q2, H1, H2;
 
     openfluid::core::SerieOfScalarValue* HeightDischarge = m_HeightDischarge[ID];

@@ -79,7 +79,7 @@ bool DistributeInterpolate::loadAndPrepareData()
     std::vector<int> IDs = DSFile.getIDs();
 
 
-    for (int i=0;i<IDs.size();i++)
+    for (unsigned int i=0;i<IDs.size();i++)
     {
       if (!wxFileExists(_U(m_DataDir.c_str()) + wxFILE_SEP_PATH + _U(DSFile.getSource(IDs[i]).c_str())))
       {

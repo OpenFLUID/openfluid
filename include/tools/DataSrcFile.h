@@ -13,13 +13,15 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 #include <vector>
+#include <map>
 #include <wx/hashmap.h>
 
 
 
 namespace openfluid { namespace tools {
 
-WX_DECLARE_HASH_MAP(int, std::string, wxIntegerHash, wxIntegerEqual, IDDataSourcesMap);
+//WX_DECLARE_HASH_MAP(int, std::string, wxIntegerHash, wxIntegerEqual, IDDataSourcesMap);
+typedef std::map<int,std::string> IDDataSourcesMap;
 
 class DataSourcesFile
 {
