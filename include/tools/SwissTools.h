@@ -10,7 +10,12 @@
 
 namespace openfluid { namespace tools {
 
-
+/**
+  Template function for string to other type conversion
+  \param[in] StrToConvert the string to convert
+  \param[out] Converted the result of the conversion
+  \return true if the conversion is correct
+*/
 template<typename T>
 inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 {
@@ -21,6 +26,12 @@ inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 // =====================================================================
 // =====================================================================
 
+/**
+  Template function for value to string conversion
+  \param[in] ValueToConvert the value to convert
+  \param[out] StrConverted the result of the conversion
+  \return true if the conversion is correct
+*/
 template<typename T>
 inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
 {
@@ -36,7 +47,12 @@ inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
 // =====================================================================
 // =====================================================================
 
-
+/**
+  Function for tokenizing string into a vector of tokens
+  \param[in] StrToTokenize the string to tokenize
+  \param[out] Tokens the resulting tokens
+  \param[in] Delimiters the string delimiter
+*/
 void TokenizeString(const std::string& StrToTokenize,
                     std::vector<std::string>& Tokens,
                     const std::string& Delimiters);
