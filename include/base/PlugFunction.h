@@ -107,25 +107,80 @@
 // =====================================================================
 // =====================================================================
 
-
+/**
+  Macro for declaration of a loop processing all units of a class, following their process order
+  \param[in] loopid ID of the loop
+*/
 #define DECLARE_UNITS_ORDERED_LOOP(loopid) \
-  openfluid::core::UnitsList_t::iterator _M_##loopid##_it;\
+  openfluid::core::UnitsList_t::iterator _M_##loopid##_ordit;\
   openfluid::core::UnitsList_t* _M_##loopid##_UList;
 
 
+/**
+  Macro for the beginning of a loop processing all units of a class, following their process order
+  \param[in] loopid ID of the loop, must match declaration
+  \param[in] unitclass name of the unit class
+  \param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
+*/
 #define BEGIN_UNITS_ORDERED_LOOP(loopid,unitclass,unit) \
   if (!mp_CoreData->isUnitsClassExist(unitclass)) \
     throw openfluid::base::OFException("ofelib","BEGIN_UNITS_ORDERED_LOOP","Unit class " + std::string(unitclass) + " does not exists"); \
   _M_##loopid##_UList = mp_CoreData->getUnits(unitclass)->getList(); \
-  for (_M_##loopid##_it = _M_##loopid##_UList->begin();_M_##loopid##_it != _M_##loopid##_UList->end();++_M_##loopid##_it) \
+  for (_M_##loopid##_ordit = _M_##loopid##_UList->begin();_M_##loopid##_ordit != _M_##loopid##_UList->end();++_M_##loopid##_ordit) \
   { \
-    unit = &(*_M_##loopid##_it);
-
-
+    unit = &(*_M_##loopid##_ordit);
 
 
 /**
+  Macro for declaration of a loop processing a list of units
+  \param[in] loopid ID of the loop
+*/
+#define DECLARE_UNITS_LIST_LOOP(loopid) \
+  openfluid::core::UnitsList_t::iterator _M_##loopid##_lstit;\
+
+
+/**
+  Macro for the beginning of a loop processing a list of units
+  \param[in] loopid ID of the loop, must match declaration
+  \param[in] ulist pointer to a list of openfluid::core::Unit
+  \param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
+*/
+#define BEGIN_UNITS_LIST_LOOP(loopid,ulist,unit) \
+  for(_M_##loopid##_lstit=ulist->begin(); _M_##loopid##_lstit != ulist->end(); _M_##loopid##_lstit++) \
+  { \
+    unit = &(*_M_##loopid##_lstit); \
+
+
+/**
+  Macro for declaration of a loop processing events in an event collection
+*/
+#define DECLARE_EVENT_COLLECTION_LOOP \
+  std::list<openfluid::core::DistributedEvent*>::iterator _M_EvListiter;
+
+/**
+  Macro for the beginning of a loop processing an event list from an event collection
+  \param[in] evlist pointer to a list of events
+  \param[out] evobj the current processed event
+*/
+#define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
+  for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
+  { \
+    evobj = *_M_EvListiter;
+
+/**
+  Macro for the ending of a loop
+*/
+#define END_LOOP }
+
+
+// =====================================================================
+// =====================================================================
+
+// macros below are deprecated
+
+/**
   Macro for declaration of a loop processing SUs, following their process order
+  \deprecated
 */
 #define DECLARE_SU_ORDERED_LOOP \
   openfluid::core::UnitsList_t::iterator _M_SUsOrdIter; \
@@ -133,6 +188,7 @@
 
 /**
   Macro for declaration of a loop processing a list of SUs
+  \deprecated
 */
 #define DECLARE_SU_LIST_LOOP \
   openfluid::core::UnitList_t::iterator _M_SUListIter; \
@@ -141,6 +197,7 @@
 /**
   Macro for the begining of a loop processing SUs, following their process order
   \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU
+  \deprecated
 */
 #define BEGIN_SU_ORDERED_LOOP(suobj) \
   for(_M_SUsOrdIter=_M_SUsOrderedList->begin(); _M_SUsOrdIter != _M_SUsOrderedList->end(); _M_SUsOrdIter++) \
@@ -151,6 +208,7 @@
   Macro for the begining of a loop processing a list of SUs
   \param[out] sulist pointer to a list of openfluid::core::SurfaceUnit
   \param[out] suobj pointer to a openfluid::core::SurfaceUnit object, pointing to the current processed SU
+  \deprecated
 */
 #define BEGIN_SU_LIST_LOOP(sulist,suobj) \
   for(_M_SUListIter=sulist->begin(); _M_SUListIter != sulist->end(); _M_SUListIter++) \
@@ -162,6 +220,7 @@
 
 /**
   Macro for declaration of a loop processing RSs, following their process order
+  \deprecated
 */
 #define DECLARE_RS_ORDERED_LOOP \
   openfluid::core::UnitsList_t::iterator _M_RSsOrdIter; \
@@ -169,6 +228,7 @@
 
 /**
   Macro for declaration of a loop processing a list of RSs
+  \deprecated
 */
 #define DECLARE_RS_LIST_LOOP \
   std::list<openfluid::core::ReachSegment*>::iterator _M_RSListIter; \
@@ -177,6 +237,7 @@
 /**
   Macro for the begining of a loop processing RSs, following their process order
   \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS
+  \deprecated
 */
 #define BEGIN_RS_ORDERED_LOOP(rsobj) \
   for(_M_RSsOrdIter=_M_RSsOrderedList->begin(); _M_RSsOrdIter != _M_RSsOrderedList->end(); _M_RSsOrdIter++) \
@@ -187,6 +248,7 @@
   Macro for the begining of a loop processing a list of RSs
   \param[out] rslist pointer to a list of openfluid::core::ReachSegment
   \param[out] rsobj pointer to a openfluid::core::ReachSegment object, pointing to the current processed RS
+  \deprecated
 */
 #define BEGIN_RS_LIST_LOOP(rslist,rsobj) \
   for(_M_RSListIter=rslist->begin(); _M_RSListIter != rslist->end(); _M_RSListIter++) \
@@ -199,6 +261,7 @@
 
 /**
   Macro for declaration of a loop processing GUs, following their process order
+  \deprecated
 */
 #define DECLARE_GU_ORDERED_LOOP \
   openfluid::core::UnitsList_t::iterator _M_GUsOrdIter; \
@@ -206,6 +269,7 @@
 
 /**
   Macro for declaration of a loop processing a list of GUs
+  \deprecated
 */
 #define DECLARE_GU_LIST_LOOP \
   std::list<openfluid::core::GroundwaterUnit*>::iterator _M_GUListIter; \
@@ -214,6 +278,7 @@
 /**
   Macro for the begining of a loop processing GUs, following their process order
   \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU
+  \deprecated
 */
 #define BEGIN_GU_ORDERED_LOOP(guobj) \
   for(_M_GUsOrdIter=_M_GUsOrderedList->begin(); _M_GUsOrdIter != _M_GUsOrderedList->end(); _M_GUsOrdIter++) \
@@ -224,6 +289,7 @@
   Macro for the begining of a loop processing a list of GUs
   \param[out] gulist pointer to a list of openfluid::core::GroundwaterUnit
   \param[out] guobj pointer to a openfluid::core::GroundwaterUnit object, pointing to the current processed GU
+  \deprecated
 */
 #define BEGIN_GU_LIST_LOOP(gulist,guobj) \
   for(_M_GUListIter=gulist->begin(); _M_GUListIter != gulist->end(); _M_GUListIter++) \
@@ -231,19 +297,6 @@
     guobj = &(*_M_GUListIter); \
 
 
-
-#define DECLARE_EVENT_COLLECTION_LOOP \
-  std::list<openfluid::core::DistributedEvent*>::iterator _M_EvListiter;
-
-#define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
-  for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
-  { \
-    evobj = *_M_EvListiter;
-
-/**
-  Macro for the ending of a loop
-*/
-#define END_LOOP }
 
 // =====================================================================
 // =====================================================================
