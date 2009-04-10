@@ -30,6 +30,57 @@ typedef unsigned long rawtime_t;
   \li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968). http://www.decimaltime.hynes.net/index.html
   \li http://en.wikipedia.org/wiki/Julian_day
   \li wxDateTime documentation http://docs.wxwidgets.org/
+
+  <BR>
+
+  <I>Example : creating a date</I>
+  \code
+  openfluid::core::DateTime aDate(2009,01,25,12,05,00);
+  \endcode
+
+
+  <I>Example : adding time span to a date</I>
+  \code
+  // adding 45 seconds
+  aDate.addSeconds(45);
+
+  // adding 5 minutes
+  aDate.addSeconds(openfluid::core::DateTime::Minutes(5));
+
+  // adding an hour
+  aDate.addSeconds(openfluid::core::DateTime::Hour());
+
+  // adding 60 days
+  aDate.addSeconds(openfluid::core::DateTime::Days(60));
+  \endcode
+
+
+  <I>Example : subtracting time span to a date</I>
+  \code
+  // subtracting 10 seconds
+  aDate.subtractSeconds(10);
+
+  // subtracting 30 days
+  aDate.subtractSeconds(openfluid::core::DateTime::Days(30));
+  \endcode
+
+
+  <I>Example : getting difference in seconds between two dates</I>
+  \code
+  openfluid::core::DateTime FirstDate(2009,01,25,12,05,00);
+  openfluid::core::DateTime SecondDate(2009,02,28,00,00,00);
+
+  openfluid::core::rawtime_t Diff;
+
+  Diff = SecondDate - FirstDate;
+
+  if (Diff > openfluid::core::DateTime::Days(60))
+    std::cout << "The difference between the two dates is greater than 60 days" << std::end;
+  else
+    std::cout << "The difference between the two dates is lesser than 60 days" << std::end;
+  \endcode
+
+
 */
 class DateTime
 {
