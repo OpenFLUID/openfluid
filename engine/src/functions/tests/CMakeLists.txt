@@ -11,5 +11,6 @@ ADD_FUNCTION(tests.primitives.prod tests.primitives.prod)
 ADD_FUNCTION(tests.primitives.use tests.primitives.use)
 ADD_SUBDIRECTORY(tests.fortran)
 ADD_FUNCTION(tests.events tests.events)
+ADD_FUNCTION(tests.loops tests.loops)
 
 

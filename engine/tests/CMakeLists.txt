@@ -61,6 +61,11 @@
                               "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
                               "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BasicRunNoSave" 
                               "-p${FUNCTIONS_OUTPUT_PATH}")
+
+  ADD_TEST(CheckLoops "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLoops"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLoops" 
+                        "-p${FUNCTIONS_OUTPUT_PATH}")                              
                               
   ADD_TEST(CheckVector "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
                               "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckVector"
@@ -86,4 +91,6 @@
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckEvents"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckEvents" 
                         "-p${FUNCTIONS_OUTPUT_PATH}")                              
+
+
                            
