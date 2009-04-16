@@ -2,34 +2,35 @@
 <openfluid>
   <domain>
     <definition>
+
       <unit class="TestUnits" ID="1" pcsorder="1">
+        <to class="TestUnits" ID="22" />
       </unit>
-      <unit class="TestUnits" ID="2" pcsorder="2">
+      <unit class="TestUnits" ID="2" pcsorder="1">
+        <to class="TestUnits" ID="22" />      
       </unit>
-      <unit class="TestUnits" ID="3" pcsorder="1">
+      <unit class="TestUnits" ID="52" pcsorder="1">
+        <to class="OtherUnits" ID="5" />      
       </unit>
-      <unit class="TestUnits" ID="4" pcsorder="3">
+      <unit class="OtherUnits" ID="13" pcsorder="1">
+        <to class="OtherUnits" ID="5" />            
       </unit>
-      <unit class="TestUnits" ID="5" pcsorder="1">
+      
+      
+      <unit class="TestUnits" ID="22" pcsorder="2">
+        <to class="TestUnits" ID="18" />      
       </unit>
-      <unit class="TestUnits" ID="6" pcsorder="2">
-      </unit>
-      <unit class="TestUnits" ID="7" pcsorder="1">
-      </unit>
-      <unit class="TestUnits" ID="8" pcsorder="2">
-      </unit>
-      <unit class="TestUnits" ID="9" pcsorder="3">
-      </unit>
-      <unit class="TestUnits" ID="10" pcsorder="2">
-      </unit>
-      <unit class="TestUnits" ID="11" pcsorder="4">
-      </unit>
-      <unit class="TestUnits" ID="12" pcsorder="1">
+      
+      
+      <unit class="TestUnits" ID="18" pcsorder="3">
+        <to class="OtherUnits" ID="5" />            
       </unit>
 
-      <unit class="OtherUnits" ID="118" pcsorder="2">
+
+      <unit class="OtherUnits" ID="5" pcsorder="4">
+        <to class="OtherUnits" ID="25" />                  
       </unit>
-      <unit class="OtherUnits" ID="218" pcsorder="1">
+      <unit class="OtherUnits" ID="25" pcsorder="5">
       </unit>
 
 
