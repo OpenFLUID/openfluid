@@ -136,7 +136,7 @@
   \param[in] loopid ID of the loop
 */
 #define DECLARE_UNITS_LIST_LOOP(loopid) \
-  openfluid::core::UnitsList_t::iterator _M_##loopid##_lstit;\
+  openfluid::core::UnitsPtrList_t::iterator _M_##loopid##_lstit;\
 
 
 /**
@@ -148,7 +148,7 @@
 #define BEGIN_UNITS_LIST_LOOP(loopid,ulist,unit) \
   for(_M_##loopid##_lstit=ulist->begin(); _M_##loopid##_lstit != ulist->end(); _M_##loopid##_lstit++) \
   { \
-    unit = &(*_M_##loopid##_lstit); \
+    unit = *_M_##loopid##_lstit; \
 
 
 /**
