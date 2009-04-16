@@ -19,7 +19,7 @@ namespace openfluid { namespace core {
 /**
   Type for raw time (seconds since 4713BC)
 */
-typedef unsigned long rawtime_t;
+typedef unsigned long long rawtime_t;
 
 /**
   \brief Class for management of date and time information.
