@@ -14,7 +14,9 @@ Unit::Unit(const UnitClass_t aClass, const UnitID_t anID, const PcsOrd_t aPcsOrd
   m_ID = anID;
   m_PcsOrder = aPcsOrder;
 
-  m_ScalarVariables = Variables<ScalarValue>();
+  // TODO clean this
+
+//  m_ScalarVariables = Variables<ScalarValue>();
 
 //  std:: cout << "Unit constructor " << aClass << " " << anID << std::endl;
 }
