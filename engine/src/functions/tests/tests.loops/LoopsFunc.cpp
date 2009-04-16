@@ -110,14 +110,83 @@ bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo
 
 bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
+
+/*
+  Tests are based on the following spatial domain,
+  with classes TestUnits (TU) and OtherUnits (OU),
+  represented here as class.ID
+
+
+TU.1         TU.2
+  |            |
+  -->  TU.22 <--
+         |
+         --> TU.18
+               |
+    TU.52 --> OU.5 <-- OU.13
+               |
+               --> OU.25
+
+
+
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <domain>
+    <definition>
+
+      <unit class="TestUnits" ID="1" pcsorder="1">
+        <to class="TestUnits" ID="22" />
+      </unit>
+      <unit class="TestUnits" ID="2" pcsorder="1">
+        <to class="TestUnits" ID="22" />
+      </unit>
+      <unit class="TestUnits" ID="52" pcsorder="1">
+        <to class="OtherUnits" ID="5" />
+      </unit>
+      <unit class="OtherUnits" ID="13" pcsorder="1">
+        <to class="OtherUnits" ID="5" />
+      </unit>
+
+
+      <unit class="TestUnits" ID="22" pcsorder="2">
+        <to class="TestUnits" ID="18" />
+      </unit>
+
+
+      <unit class="TestUnits" ID="18" pcsorder="3">
+        <to class="OtherUnits" ID="5" />
+      </unit>
+
+
+      <unit class="OtherUnits" ID="5" pcsorder="4">
+        <to class="OtherUnits" ID="25" />
+      </unit>
+      <unit class="OtherUnits" ID="25" pcsorder="5">
+      </unit>
+
+
+    </definition>
+  </domain>
+</openfluid>
+
+
+*/
+
+
   openfluid::core::Unit *TU;
-//  DECLARE_UNITS_ORDERED_LOOP(25)
-  DECLARE_UNITS_ORDERED_LOOP(1)
-  DECLARE_UNITS_ORDERED_LOOP(2)
+  openfluid::core::Unit *OU;
+  openfluid::core::Unit *ToUnit;
+  openfluid::core::Unit *FromUnit;
+  openfluid::core::UnitsPtrList_t *ToList;
+  openfluid::core::UnitsPtrList_t *FromList;
   unsigned int CountInside;
 
+  DECLARE_UNITS_ORDERED_LOOP(11)
+  DECLARE_UNITS_ORDERED_LOOP(1)
+  DECLARE_UNITS_ORDERED_LOOP(2)
+  DECLARE_UNITS_LIST_LOOP(1)
 
-  // TODO complete tests
+
 
   // ===== loop inside loop =====
 
@@ -130,7 +199,7 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
   END_LOOP
 
-  if (CountInside != 144)
+  if (CountInside != 25)
     OPENFLUID_RaiseError("tests.loops","runStep()","wrong units for while loop inside loop");
 
 
@@ -139,6 +208,68 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
     if (TU->getClass() != "TestUnits")
       OPENFLUID_RaiseError("tests.loops","runStep()","wrong units class");
+  END_LOOP
+
+
+
+  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+
+    if (TU->getID() == 22)
+    {
+      if (TU->getFromUnits("TestUnits") == NULL || TU->getFromUnits("TestUnits")->size() != 2)
+        OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(TestUnits) count for TestUnit 22");
+
+      if (TU->getToUnits("TestUnits") == NULL || TU->getToUnits("TestUnits")->size() != 1)
+        OPENFLUID_RaiseError("tests.loops","runStep()","wrong to-units(TestUnits) count for TestUnit 22");
+
+    }
+
+  END_LOOP
+
+
+  BEGIN_UNITS_ORDERED_LOOP(11,"OtherUnits",OU)
+
+    if (OU->getID() == 5)
+    {
+      if (OU->getFromUnits("TestUnits") == NULL || OU->getFromUnits("TestUnits")->size() != 2)
+        OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(TestUnits) count for OtherUnit 5");
+
+      if (OU->getFromUnits("OtherUnits") == NULL || OU->getFromUnits("OtherUnits")->size() != 1)
+        OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(OtherUnits) count for OtherUnit 5");
+
+      if (OU->getToUnits("OtherUnits") == NULL || OU->getToUnits("OtherUnits")->size() != 1)
+        OPENFLUID_RaiseError("tests.loops","runStep()","wrong To-units(OtherUnits) count for OtherUnit 5");
+
+
+      FromList = OU->getFromUnits("TestUnits");
+      BEGIN_UNITS_LIST_LOOP(1,FromList,FromUnit)
+
+        if (FromUnit->getID() != 18 && FromUnit->getID() != 52)
+          OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(TestUnits) content for OtherUnit 5");
+
+      END_LOOP
+
+      FromList = OU->getFromUnits("OtherUnits");
+      BEGIN_UNITS_LIST_LOOP(1,FromList,FromUnit)
+
+        if (FromUnit->getID() != 13)
+          OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(OtherUnits) content for OtherUnit 5");
+
+      END_LOOP
+
+
+      ToList = OU->getToUnits("OtherUnits");
+      BEGIN_UNITS_LIST_LOOP(1,ToList,ToUnit)
+
+        if (ToUnit->getID() != 25)
+          OPENFLUID_RaiseError("tests.loops","runStep()","wrong to-units(OtherUnits) content for OtherUnit 5");
+
+      END_LOOP
+
+
+
+    }
+
   END_LOOP
 
 
