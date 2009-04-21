@@ -85,6 +85,14 @@ class Engine
 
      bool checkExtraFilesConsistency();
 
+     bool checkExistingVariable(openfluid::core::VariableName_t VarName,
+                                openfluid::core::UnitClass_t ClassName);
+
+     bool createVariable(openfluid::core::VariableName_t VarName,
+                         openfluid::core::UnitClass_t ClassName, bool UpdateMode);
+
+     bool checkExistingInputData(openfluid::core::InputDataName_t DataName,
+                                 openfluid::core::UnitClass_t ClassName);
 
   public:
     /**
