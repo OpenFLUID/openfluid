@@ -14,9 +14,11 @@
 namespace openfluid { namespace core {
 
 /**
+  \if DOCFORDEV
   \brief Class for numerical values conversions and manipulations
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \endif
 */
 template <class T>
 class ValueFactory
@@ -46,7 +48,6 @@ class ValueFactory
     T getMax(T Val1, T Val2) { if (Val1 > Val2) return Val1; else return Val2; };
 
 };
-
 
 } } // namespace openfluid::core
 

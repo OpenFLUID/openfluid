@@ -1,9 +1,3 @@
-/*
- * MemMonitor.h
- *
- *  Created on: 24 févr. 2009
- *      Author: fabrejc
- */
 
 #ifndef __MEMMONITOR_H__
 #define __MEMMONITOR_H__

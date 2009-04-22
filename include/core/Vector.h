@@ -8,7 +8,6 @@
 
 namespace openfluid { namespace core {
 
-//class OFException;
 
 /**
   Template class for vector data

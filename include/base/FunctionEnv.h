@@ -16,7 +16,9 @@
 namespace openfluid { namespace base {
 
 /**
+  \if DOCFORDEV
   Class containing execution environment information for funtions
+  \endif
 */
 class FunctionEnvironment
 {
@@ -70,6 +72,7 @@ class FunctionEnvironment
 
 
 };
+
 
 } } // namespace
 
