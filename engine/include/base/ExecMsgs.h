@@ -18,9 +18,11 @@
 namespace openfluid { namespace base {
 
 /**
+  \if DOCFORDEV
   Class for managin messages during execution
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \endif
 */
 class ExecutionMessages
 {
@@ -60,6 +62,7 @@ class ExecutionMessages
     std::vector<std::string> getWarningMsgs() const { return m_WarningMsgs; };
 
 };
+
 
 } } // namespace openfluid::base
 

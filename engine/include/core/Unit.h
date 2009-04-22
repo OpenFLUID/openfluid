@@ -1,3 +1,8 @@
+/**
+  \file Unit.h
+  \brief Header for spatial unit definition
+  \author JC.Fabre <fabrejc@supagro.inra.fr>
+*/
 
 
 
@@ -26,9 +31,17 @@ class UnitsCollection;
 typedef std::map<UnitClass_t,UnitsCollection> UnitsListByClassMap_t;
 
 class Unit;
+
+/**
+  Type for a list of pointers on Unit
+*/
 typedef std::list<Unit*> UnitsPtrList_t;
+
 typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
 
+/**
+  Class defining a spatial unit
+*/
 class Unit
 {
   private:
@@ -50,24 +63,57 @@ class Unit
 
   public:
 
+    /*
+      \if DOCFORDEV
+      Constructor
+      \param[in] aClass the class of the unit
+      \param[in] anID the ID of the unit
+      \param[in] aPcsOrder the process order of the unit
+      \endif
+    */
     Unit(const UnitClass_t aClass, const UnitID_t anID, const PcsOrd_t aPcsOrder);
 
+    /*
+      \if DOCFORDEV
+      Destructor
+      \endif
+    */
     ~Unit();
 
+    /**
+      Returns the process order of the unit
+    */
     unsigned int getProcessOrder() const { return m_PcsOrder; };
 
+    /**
+      Returns the ID of the unit
+    */
     UnitID_t getID() const { return m_ID; };
 
+
+    /**
+      Returns the class of the unit
+    */
     UnitClass_t getClass() const { return m_Class; };
 
     bool addToUnit(Unit* aUnit);
 
     bool addFromUnit(Unit* aUnit);
 
+    /**
+      Returns a list of units, of the requested class, connected to this unit.
+      Returns NULL if no units of the requested class are connected to this unit.
+      \param[in] aClass the requested class
+    */
     UnitsPtrList_t* getToUnits(const UnitClass_t aClass);
 
     const UnitsPtrList_t* getToUnits(const UnitClass_t aClass) const;
 
+    /**
+      Returns a list of units, of the requested class, connected from this unit.
+      Returns NULL if no units of the requested class are connected from this unit.
+      \param[in] aClass the requested class
+    */
     UnitsPtrList_t* getFromUnits(const UnitClass_t aClass);
 
     const UnitsPtrList_t* getFromUnits(const UnitClass_t aClass) const;

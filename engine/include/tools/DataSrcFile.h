@@ -20,7 +20,6 @@
 
 namespace openfluid { namespace tools {
 
-//WX_DECLARE_HASH_MAP(int, std::string, wxIntegerHash, wxIntegerEqual, IDDataSourcesMap);
 typedef std::map<int,std::string> IDDataSourcesMap;
 
 class DataSourcesFile

@@ -592,8 +592,18 @@ class PluggableFunction
                              openfluid::core::EventCollection* EventColl);
 
 
+    /**
+      Returns true if the queried unit class exists
+      \param[in] ClassName the queried class name
+    */
     bool OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName);
 
+    /**
+      Returns the number of units of the class if the queried unit class exists
+      \param[in] ClassName the queried class name
+      \param[out] UnitsCount the queried class name
+      \return false if the unit class does not exist
+    */
     bool OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t ClassName, unsigned int *UnitsCount);
 
 

@@ -23,15 +23,31 @@ namespace openfluid { namespace core {
 */
 typedef unsigned int UnitID_t;
 
+/**
+  Type definition for the process order of units
+*/
 typedef int PcsOrd_t;
 
+/**
+  Type definition for the class of units
+*/
 typedef std::string UnitClass_t;
 
+/**
+  Type definition for name of input data
+*/
 typedef std::string InputDataName_t;
 
+/**
+  Type definition for name of a variable
+*/
 typedef std::string VariableName_t;
 
+/**
+  Type definition for a time step value
+*/
 typedef unsigned int TimeStep_t;
+
 
 typedef std::pair<UnitClass_t,UnitID_t> UnitClassID_t;
 
@@ -99,59 +115,43 @@ typedef std::map<FuncParamKey_t,FuncParamValue_t> FuncParamsMap_t;
 // =====================================================================
 // =====================================================================
 /**
-  \anchor IDFloatMap
   Map associating a float value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,float> IDFloatMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, float, wxIntegerHash, wxIntegerEqual, IDFloatMap);
 
 /**
-  \anchor IDDoubleMap
   Map associating a double precision value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,double> IDDoubleMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID_t, double, wxIntegerHash, wxIntegerEqual, IDDoubleMap);
 
 /**
-  \anchor IDScalarValueMap
   Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,ScalarValue> IDScalarValueMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::ScalarValue, wxIntegerHash, wxIntegerEqual, IDScalarValueMap);
 
 /**
-  \anchor IDIntMap
   Map associating an integer value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,int> IDIntMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, int, wxIntegerHash, wxIntegerEqual, IDIntMap);
 
 /**
-  \anchor IDBoolMap
   Map associating a boolean value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,bool> IDBoolMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, bool, wxIntegerHash, wxIntegerEqual, IDBoolMap);
 
 /**
-  \anchor IDVectorValueMap
   Map associating an openfluid::core::VectorValue value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue, wxIntegerHash, wxIntegerEqual, IDVectorValueMap);
 
 /**
-  \anchor IDVectorValuePtrMap
   Map associating a pointer to an openfluid::core::VectorValue value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::VectorValue*, wxIntegerHash, wxIntegerEqual, IDVectorValuePtrMap);
 
 typedef std::map<UnitID_t,SerieOfScalarValue> IDSerieOfScalarValueMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValueMap);
 
 typedef std::map<UnitID_t,SerieOfScalarValue*> IDSerieOfScalarValuePtrMap;
-//WX_DECLARE_HASH_MAP(openfluid::core::UnitID, openfluid::core::SerieOfScalarValue*, wxIntegerHash, wxIntegerEqual, IDSerieOfScalarValuePtrMap);
 
 
 

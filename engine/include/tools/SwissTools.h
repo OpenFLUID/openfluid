@@ -1,3 +1,8 @@
+/**
+  \file SwissTools.h
+  \brief Header for general purpose tools.
+  \author JC.Fabre <fabrejc@supagro.inra.fr>
+*/
 
 
 #ifndef __OFSWISSTOOLS_H__
@@ -60,6 +65,17 @@ void TokenizeString(const std::string& StrToTokenize,
 // =====================================================================
 // =====================================================================
 
+
+/**
+  Function for testing equality between two double precision floats,
+  using the "close enough" method.
+  \param[in] A the firts term of the equality
+  \param[in] B the firts term of the equality
+  \param[in] Epsilon the comparison tolerance factor
+
+  \see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
+  \see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
+*/
 inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218
@@ -68,7 +84,16 @@ inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 
 // =====================================================================
 // =====================================================================
+/**
+  Function for testing equality between two double precision floats,
+  using the "very close" method.
+  \param[in] A the firts term of the equality
+  \param[in] B the firts term of the equality
+  \param[in] Epsilon the comparison tolerance factor
 
+  \see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
+  \see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
+*/
 inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218

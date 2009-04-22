@@ -1,3 +1,10 @@
+/**
+  \file FuncSignature.h
+  \brief Header of function signature definition
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
+
 #ifndef __FUNCSIGNATURE_H__
 #define __FUNCSIGNATURE_H__
 
@@ -563,7 +570,9 @@ enum FuncStatus_t
 // =====================================================================
 // =====================================================================
 /**
+  \if DOCFORDEV
   Structure for storage of the definition of data handled by the function.
+  \endif
 */
 struct SignatureHandledDataItem
 {
@@ -591,7 +600,6 @@ struct SignatureHandledDataItem
 
 };
 
-
 /**
   \if DOCFORDEV
   Structure for storage of the definition of the data handled by the function. This is part of the signature.
@@ -599,9 +607,6 @@ struct SignatureHandledDataItem
 */
 struct SignatureHandledData
 {
-  /*
-
-  */
   std::vector<SignatureHandledDataItem> ProducedVars;
 
   std::vector<SignatureHandledDataItem> UpdatedVars;
@@ -636,8 +641,10 @@ struct SignatureHandledData
 
 
 /**
+  \if DOCFORDEV
   Structure encapsulating the plugin signature,
   returned from the plugin to the host app for registering
+  \endif
 */
 struct FunctionSignature
 {
@@ -723,9 +730,6 @@ struct FunctionSignature
   }
 
 };
-/*
-  \endif
-*/
 
 
 
