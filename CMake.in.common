@@ -39,6 +39,11 @@ SET(DOXYGEN_SOURCE_DIR "${CMAKE_SOURCE_DIR}/include")
 SET(OFELIBDEV_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 SET(DOXYGEN_RESOURCES_DIR "${CMAKE_SOURCE_DIR}/resources/doxygen")
 
+SET(DOXYGEN_DOCFORDEV_OUTPUT_PATH "${PROJECT_BINARY_DIR}/docfordev")
+SET(DOXYGEN_DOCFORDEV_SOURCE_DIR "${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src/kernel ${CMAKE_SOURCE_DIR}/ofelib")
+
+
+
 ################### test datasets path ###################
 
 SET(TESTS_DATASETS_PATH "${CMAKE_SOURCE_DIR}/tests/datasets")
@@ -59,7 +64,7 @@ IF(ENGINE_VERSION_STATUS)
 ENDIF(ENGINE_VERSION_STATUS)
 
 
-################### compilation ###################
+################### compilation and build ###################
 
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wfloat-equal")
 SET(CMAKE_CXX_FLAGS_DEBUG "-g")
@@ -71,9 +76,17 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 # uncomment this to build functions mixing C++ and fortran source codes
 #SET(BUILD_FORTRAN_FUNCTIONS 1)
 
-################### functions foundry ###################
+################### functions build ###################
 
 SET(BUILD_FUNCTIONS_FOUNDRY 0)
+
+# uncomment this to build functions mixing C++ and fortran source codes
+#SET(BUILD_FORTRAN_FUNCTIONS 1)
+
+
+################### docs for dev build ###################
+
+SET(BUILD_DOCFORDEV 1)
 
 
 ################### packaging ###################

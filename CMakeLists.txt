@@ -75,6 +75,28 @@ IF(wxWidgets_FOUND)
   MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
 
 ENDIF(wxWidgets_FOUND)
+
+
+IF(DOXYGEN AND BUILD_DOCFORDEV)
+  
+  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/Doxyfile.docfordev.in ${PROJECT_BINARY_DIR}/Doxyfile.docfordev)
+
+  FILE(MAKE_DIRECTORY ${DOXYGEN_DOCFORDEV_OUTPUT_PATH})
+
+  
+  ADD_CUSTOM_COMMAND(
+    OUTPUT "${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/index.html"
+    DEPENDS "${PROJECT_BINARY_DIR}/Doxyfile.docfordev"
+    COMMAND "${DOXYGEN}"
+    ARGS "${PROJECT_BINARY_DIR}/Doxyfile.docfordev")
+
+  ADD_CUSTOM_TARGET(docfordev-doc ALL DEPENDS "${PROJECT_BINARY_DIR}/Doxyfile.docfordev"
+    "${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/index.html" VERBATIM)
+
+
+ENDIF(DOXYGEN AND BUILD_DOCFORDEV)
+
+
 #ENDIF(wxWidgets_FOUND AND Boost_FOUND)
 
 
