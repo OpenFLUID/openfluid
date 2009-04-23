@@ -1,8 +1,10 @@
 /**
+  \if DOCFORDEV
   \file FunctionEnv.h
   \brief Header of function environment management class
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \endif
 */
 
 

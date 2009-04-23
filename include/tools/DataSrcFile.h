@@ -1,6 +1,6 @@
 /**
   \file DataSrcFile.h
-  \brief
+  \brief Header of class for managing data sources files
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
@@ -21,7 +21,9 @@
 namespace openfluid { namespace tools {
 
 typedef std::map<int,std::string> IDDataSourcesMap;
-
+/**
+  Class for managing data sources files
+*/
 class DataSourcesFile
 {
   private:

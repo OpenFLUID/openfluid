@@ -1,6 +1,6 @@
 /**
   \file DistribInterp.h
-  \brief
+  \brief Header of class for time interpolation and spatial distribution of data
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
@@ -20,11 +20,6 @@
 
 
 namespace openfluid { namespace tools {
-
-//WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,DTSeriesMap);
-//WX_DECLARE_HASH_MAP(int,DateTimeSerie*,wxIntegerHash,wxIntegerEqual,UnitsDTSeriesMap);
-//WX_DECLARE_HASH_MAP(int,IndexedSerie*,wxIntegerHash,wxIntegerEqual,IndexedSeriesMap);
-//WX_DECLARE_HASH_MAP(int,IndexedSerie*,wxIntegerHash,wxIntegerEqual,UnitsIndexedSeriesMap);
 
 typedef std::map<int,DateTimeSerie*> DTSeriesMap;
 typedef std::map<int,DateTimeSerie*> UnitsDTSeriesMap;

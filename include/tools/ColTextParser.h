@@ -15,7 +15,6 @@
 
 namespace openfluid { namespace tools {
 
-//WX_DEFINE_ARRAY(wxArrayString*, ArrayContents);
 
 /**
   Class for column file management and handling

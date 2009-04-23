@@ -1,7 +1,9 @@
 /**
+  \if DOCFORDEV
   \file ValueFactory.h
   \brief header of ValueFactory class
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \endif
 */
 
 
