@@ -78,10 +78,11 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 
 ################### functions build ###################
 
-SET(BUILD_FUNCTIONS_FOUNDRY 0)
+# uncomment this to build functions in foundry directory
+#SET(BUILD_FUNCTIONS_FOUNDRY 1)
 
-# uncomment this to build functions mixing C++ and fortran source codes
-#SET(BUILD_FORTRAN_FUNCTIONS 1)
+# uncomment this to build functions mixing C++ and fortran source codes (in this source tree)
+SET(BUILD_FORTRAN_FUNCTIONS 1)
 
 
 ################### docs for dev build ###################

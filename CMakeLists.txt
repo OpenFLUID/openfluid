@@ -77,6 +77,8 @@ IF(wxWidgets_FOUND)
 ENDIF(wxWidgets_FOUND)
 
 
+# build docs for core developers
+
 IF(DOXYGEN AND BUILD_DOCFORDEV)
   
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/Doxyfile.docfordev.in ${PROJECT_BINARY_DIR}/Doxyfile.docfordev)
@@ -97,7 +99,6 @@ IF(DOXYGEN AND BUILD_DOCFORDEV)
 ENDIF(DOXYGEN AND BUILD_DOCFORDEV)
 
 
-#ENDIF(wxWidgets_FOUND AND Boost_FOUND)
 
 
 
