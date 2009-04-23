@@ -1,6 +1,6 @@
 /**
   \file DTSerie.h
-  \brief
+  \brief Header of class for time interpolation and spatial distribution of data
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */

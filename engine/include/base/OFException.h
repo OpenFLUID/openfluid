@@ -1,8 +1,10 @@
 /**
+  \if DOCFORDEV
   \file OFException.h
   \brief Header of class managing exception
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \endif
 */
 
 
