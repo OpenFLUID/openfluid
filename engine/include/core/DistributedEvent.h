@@ -9,8 +9,8 @@
 #define __DISTRIBUTEDEVENT_H__
 
 
-#include <wx/wx.h>
-#include <wx/hashmap.h>
+//#include <wx/wx.h>
+//#include <wx/hashmap.h>
 #include "TypeDefs.h"
 #include "DateTime.h"
 

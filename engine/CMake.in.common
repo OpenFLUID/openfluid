@@ -59,7 +59,7 @@ IF(ENGINE_VERSION_STATUS)
 ENDIF(ENGINE_VERSION_STATUS)
 
 
-################### compilation flags ###################
+################### compilation ###################
 
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wfloat-equal")
 SET(CMAKE_CXX_FLAGS_DEBUG "-g")
@@ -68,9 +68,12 @@ IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE "Release")
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
+# uncomment this to build functions mixing C++ and fortran source codes
+#SET(BUILD_FORTRAN_FUNCTIONS 1)
+
 ################### functions foundry ###################
 
-SET(PROCESS_FUNCTIONS_FOUNDRY 0)
+SET(BUILD_FUNCTIONS_FOUNDRY 0)
 
 
 ################### packaging ###################
