@@ -77,7 +77,7 @@ IF(wxWidgets_FOUND)
 ENDIF(wxWidgets_FOUND)
 
 
-# build docs for core developers
+# Doxygen-built docs for core developers
 
 IF(DOXYGEN AND BUILD_DOCFORDEV)
   
@@ -85,6 +85,7 @@ IF(DOXYGEN AND BUILD_DOCFORDEV)
 
   FILE(MAKE_DIRECTORY ${DOXYGEN_DOCFORDEV_OUTPUT_PATH})
 
+  CONFIGURE_FILE(${DOXYGEN_RESOURCES_DIR}/openfluid.png ${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/openfluid.png COPYONLY)
   
   ADD_CUSTOM_COMMAND(
     OUTPUT "${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/index.html"
