@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <wx/datetime.h>
+#include <string>
 
 namespace openfluid { namespace core {
 
