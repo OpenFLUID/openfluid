@@ -78,7 +78,7 @@ class ExampleFunction : public openfluid::base::PluggableFunction
     */
     ~ExampleFunction();
 
-    bool initParams(openfluid::core::ParamsMap Params);
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool prepareData();
 
@@ -110,19 +110,19 @@ DEFINE_FUNCTION_HOOK(ExampleFunction);
 // =====================================================================
 
 BEGIN_SIGNATURE_HOOK
-  DECLARE_SIGNATURE_ID(wxT("examplefunc"));
-  DECLARE_SIGNATURE_NAME(wxT("Example Function"));
-  DECLARE_SIGNATURE_DESCRIPTION(wxT(""));
+  DECLARE_SIGNATURE_ID("examplefunc");
+  DECLARE_SIGNATURE_NAME("Example Function");
+  DECLARE_SIGNATURE_DESCRIPTION("");
 
-  DECLARE_SIGNATURE_VERSION(wxT("1.0"));
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN(wxT(""));
-  DECLARE_SIGNATURE_PROCESS(wxT(""));
-  DECLARE_SIGNATURE_METHOD(wxT(""));
-  DECLARE_SIGNATURE_AUTHORNAME(wxT(""));
-  DECLARE_SIGNATURE_AUTHOREMAIL(wxT(""));
+  DECLARE_SIGNATURE_DOMAIN("");
+  DECLARE_SIGNATURE_PROCESS("");
+  DECLARE_SIGNATURE_METHOD("");
+  DECLARE_SIGNATURE_AUTHORNAME("");
+  DECLARE_SIGNATURE_AUTHOREMAIL("");
 END_SIGNATURE_HOOK
 
 // =====================================================================
@@ -145,7 +145,7 @@ ExampleFunction::~ExampleFunction()
 // =====================================================================
 // =====================================================================
 
-bool ExampleFunction::initParams(openfluid::core::ParamsMap Params)
+bool ExampleFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
   // here code for function parameters initialization
   return true;

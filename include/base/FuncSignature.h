@@ -192,6 +192,25 @@
 #define DECLARE_USED_INPUTDATA(name,uclass,description,unit) \
   Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
+/**
+  Macro for declaration of used events
+  \param[in] uclass class of the concerned units
+*/
+#define DECLARE_USED_EVENTS(uclass) Signature->HandledData.UsedEventsOnUnits.push_back(uclass);
+
+/**
+  Macro for declaration of required file
+  \param[in] name name of the file
+*/
+#define DECLARE_REQUIRED_EXTRAFILE(name) \
+  Signature->HandledData.RequiredExtraFiles.push_back(name);
+
+/**
+  Macro for declaration of used file
+  \param[in] name name of the file
+*/
+#define DECLARE_USED_EXTRAFILE(name) \
+  Signature->HandledData.UsedExtraFiles.push_back(name);
 
 
 // =====================================================================
@@ -503,18 +522,7 @@
 // =====================================================================
 // =====================================================================
 
-#define DECLARE_REQUIRED_EXTRAFILE(name) \
-  Signature->HandledData.RequiredExtraFiles.push_back(name);
 
-
-#define DECLARE_USED_EXTRAFILE(name) \
-  Signature->HandledData.UsedExtraFiles.push_back(name);
-
-
-// =====================================================================
-// =====================================================================
-
-#define DECLARE_USED_EVENTS(uclass) Signature->HandledData.UsedEventsOnUnits.push_back(uclass);
 
 /**
   \deprecated Deprecated macro, it is available for compatibility only.

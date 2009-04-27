@@ -55,29 +55,28 @@ Function data are attached to functions. The declaration macros take 3 arguments
 <li>#DECLARE_FUNCTION_PARAM
 </ul>
 
-\subsubsection signdatadistri_ssec Distributed data
+\subsubsection signdatadistri_ssec Input data
 
-Distributed data are attached to units, and categorized into properties and initial conditions. Simulation functions declares handling distributed data on each units class. The declaration macros take 3 arguments : the name of the data, the description of the data (not required), and the unit of the data (not required).
+Input data are invariant information attached to units. Simulation functions declares handling input data on each unit class. The declaration macros take 4 arguments : the name of the data, the concerned unit class, the description of the data (not required), and the unit of the data (not required).
 <ul>
-<li>for distributed properties, the declaration macros are #DECLARE_SU_REQUIRED_INICOND, #DECLARE_RS_REQUIRED_INICOND, #DECLARE_GU_REQUIRED_INICOND, #DECLARE_SU_USED_INICOND, #DECLARE_RS_USED_INICOND, #DECLARE_GU_USED_INICOND
-<li>for distributed initial conditions, the declaration macros are #DECLARE_SU_REQUIRED_PROPS, #DECLARE_RS_REQUIRED_INICOND, #DECLARE_GU_REQUIRED_PROPS, #DECLARE_SU_USED_PROPS, #DECLARE_RS_USED_PROPS, #DECLARE_GU_USED_PROPS
+<li>#DECLARE_REQUIRED_INPUTDATA, #DECLARE_USED_INPUTDATA
 </ul>
 
 
 \subsubsection signdatavars_ssec Simulation variables
 
-Simulation variables are produced, read and modified by functions, and attached to distributed units. The declaration macros take 3 arguments : the name of the data, the description of the data (not required), and the unit of the data (not required).
+Simulation variables are produced, read and modified by functions, and attached to distributed units. The declaration macros take 4 arguments : the name of the data, the concerned unit class, the description of the data (not required), and the unit of the data (not required).
 
 To declare read variables :
 <ul>
-<li>for required or used vars on the current time step, the declaration macros are #DECLARE_SU_REQUIRED_VAR, #DECLARE_RS_REQUIRED_VAR, #DECLARE_GU_REQUIRED_VAR, #DECLARE_SU_USED_VAR, #DECLARE_RS_USED_VAR, #DECLARE_GU_USED_VAR
-<li>for required or used vars on a previous time step, the declaration macros are #DECLARE_SU_REQUIRED_PREVVAR, #DECLARE_RS_REQUIRED_PREVVAR, #DECLARE_GU_REQUIRED_PREVVAR, #DECLARE_SU_USED_PREVVAR, #DECLARE_RS_USED_PREVVAR, #DECLARE_GU_USED_PREVVAR
+<li>for required or used vars on the current time step, the declaration macros are #DECLARE_REQUIRED_VAR, #DECLARE_USED_VAR
+<li>for required or used vars on a previous time step, the declaration macros are #DECLARE_REQUIRED_PREVVAR, #DECLARE_USED_PREVVAR
 </ul>
 
 To declare produced or modified variables :
 <ul>
-<li>for produced vars, the declaration macros are #DECLARE_SU_PRODUCED_VAR, #DECLARE_RS_PRODUCED_VAR, #DECLARE_GU_PRODUCED_VAR
-<li>for modified vars, the declaration macros are #DECLARE_SU_UPDATED_VAR, #DECLARE_RS_UPDATED_VAR, #DECLARE_GU_UPDATED_VAR
+<li>for produced vars, the declaration macros are #DECLARE_PRODUCED_VAR
+<li>for modified vars, the declaration macros are #DECLARE_UPDATED_VAR
 </ul>
 
 
@@ -85,11 +84,11 @@ These variables can be scalar (no dimension) or vector (1 dimension). When they 
 
 \subsubsection signdataevts_ssec Distributed discrete events
 
-If the simulation function uses distributed discrete events, they must be declared in the signature.
+If the simulation function uses distributed discrete events, they must be declared in the signature. The declaration macros take 1 arguments : the concerned unit class
 
 To declare the use of discrete events:
 <ul>
-<li>#DECLARE_USED_SU_EVENTS, #DECLARE_USED_RS_EVENTS, #DECLARE_USED_GU_EVENTS
+<li>#DECLARE_USED_EVENTS
 </ul>
 
 
@@ -110,40 +109,40 @@ To declare extra files:
 
 BEGIN_SIGNATURE_HOOK
 
-  DECLARE_SIGNATURE_ID(wxT("water.surf-uz.runoff-infiltration.mseytoux"));
-  DECLARE_SIGNATURE_NAME(wxT("Morel-Seytoux production on surface units"));
-  DECLARE_SIGNATURE_DESCRIPTION(wxT("Production function computing infiltration and runoff at the surface of a unit 
-                                     using the Morel-Seytoux method, based on the Green and Ampt method."));
-  DECLARE_SIGNATURE_DOMAIN(wxT("hydrology"));
+  DECLARE_SIGNATURE_ID("water.surf-uz.runoff-infiltration.mseytoux");
+  DECLARE_SIGNATURE_NAME("Morel-Seytoux production on surface units");
+  DECLARE_SIGNATURE_DESCRIPTION("Production function computing infiltration and runoff at the surface of a unit 
+                                 using the Morel-Seytoux method, based on the Green and Ampt method.");
+  DECLARE_SIGNATURE_DOMAIN("hydrology");
   DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
 
   DECLARE_SIGNATURE_SDKVERSION;
 
-  DECLARE_SIGNATURE_AUTHORNAME(wxT("Moussa R., Fabre J.-C."));
-  DECLARE_SIGNATURE_AUTHOREMAIL(wxT("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr"));
+  DECLARE_SIGNATURE_AUTHORNAME("Moussa R., Fabre J.-C.");
+  DECLARE_SIGNATURE_AUTHOREMAIL("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr");
 
-  DECLARE_SU_REQUIRED_VAR("water.atm-surf.H.rain",wxT("rainfall height on SU"),wxT("m"));
+  DECLARE_SU_REQUIRED_VAR("water.atm-surf.H.rain","rainfall height on SU","m");
 
-  DECLARE_SU_PRODUCED_VAR("water.surf.H.runoff",wxT("runoff on the surface of the unit"),wxT("m"));
-  DECLARE_SU_PRODUCED_VAR("water.surf.H.infiltration",wxT("infiltration through the surface of the unit"),wxT("m"));
+  DECLARE_SU_PRODUCED_VAR("water.surf.H.runoff","runoff on the surface of the unit","m");
+  DECLARE_SU_PRODUCED_VAR("water.surf.H.infiltration","infiltration through the surface of the unit","m");
 
-  DECLARE_SU_USED_PREVVAR("water.surf.Q.downstream-su",wxT("output volume at the outlet of the upstream SUs"),wxT("m3/s"));
+  DECLARE_SU_USED_PREVVAR("water.surf.Q.downstream-su","output volume at the outlet of the upstream SUs","m3/s");
 
-  DECLARE_SU_REQUIRED_PROPERTY("ks",wxT("hydraulic conductivity when saturated"),wxT("m/s"));
-  DECLARE_SU_REQUIRED_PROPERTY("thetares",wxT(""),wxT("m3/m3"));
-  DECLARE_SU_REQUIRED_PROPERTY("thetasat",wxT(""),wxT("m3/m3"));
-  DECLARE_SU_REQUIRED_PROPERTY("betaMS",wxT(""),wxT(""));
-  DECLARE_SU_REQUIRED_PROPERTY("hc",wxT(""),wxT("m"));
+  DECLARE_SU_REQUIRED_PROPERTY("ks","hydraulic conductivity when saturated","m/s");
+  DECLARE_SU_REQUIRED_PROPERTY("thetares","","m3/m3");
+  DECLARE_SU_REQUIRED_PROPERTY("thetasat","","m3/m3");
+  DECLARE_SU_REQUIRED_PROPERTY("betaMS","","");
+  DECLARE_SU_REQUIRED_PROPERTY("hc","","m");
 
-  DECLARE_SU_REQUIRED_INICOND("thetaisurf",wxT(""),wxT("m3/m3"));
+  DECLARE_SU_REQUIRED_INICOND("thetaisurf","","m3/m3");
 
-  DECLARE_FUNCTION_PARAM("resstep",wxT("numerical resolution step for ponding time"),wxT(""));
+  DECLARE_FUNCTION_PARAM("resstep","numerical resolution step for ponding time","");
 
 END_SIGNATURE_HOOK
 
 \endcode
 
-\section split_sec Split and distribute your code into the class methods
+\section split_sec Write your code into the class methods
 
 A simulation function defines a class, inherited from the openfluid::base::PluggableFunction class. The code have to be distributed into the different methods imposed by this \link openfluid::base::PluggableFunction PluggableFunction\endlink class. You can also develop other methods to structure your source code.
 To see how the source code is globally structured, see part \ref emptyfunc.
@@ -186,34 +185,31 @@ The spatial domain can be accessed using in different ways: using the access met
 
 To parse all units of a specific class, you can use:
 <ul>
-<li>#DECLARE_SU_ORDERED_LOOP to declare a loop on all \link openfluid::core::SurfaceUnit SurfaceUnit \endlink, #BEGIN_SU_ORDERED_LOOP to begin, #END_LOOP to end 
-<li>#DECLARE_RS_ORDERED_LOOP to declare a loop on all \link openfluid::core::ReachSegment ReachSegment \endlink, #BEGIN_SU_ORDERED_LOOP to begin, #END_LOOP to end
-<li>#DECLARE_GU_ORDERED_LOOP to declare a loop on all \link openfluid::core::GroundwaterUnit GroundwaterUnit \endlink, #BEGIN_SU_ORDERED_LOOP to begin, #END_LOOP to end
+<li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
+<li>#BEGIN_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
 </ul>
 
 To parse a specific list of units of a specific class, you can use:
 <ul>
-<li>#DECLARE_SU_LIST_LOOP to declare a loop on a list of \link openfluid::core::SurfaceUnit SurfaceUnit \endlink, #BEGIN_SU_LIST_LOOP to begin, #END_LOOP to end 
-<li>#DECLARE_RS_LIST_LOOP to declare a loop on a list of \link openfluid::core::ReachSegment ReachSegment \endlink, #BEGIN_SU_LIST_LOOP to begin, #END_LOOP to end
-<li>#DECLARE_GU_LIST_LOOP to declare a loop on a list of \link openfluid::core::GroundwaterUnit GroundwaterUnit \endlink, #BEGIN_SU_LIST_LOOP to begin, #END_LOOP to end
-</ul>
+<li>#DECLARE_UNITS_LIST_LOOP to declare a loop on a list of \link openfluid::core::Unit Unit \endlink, 
+<li>#BEGIN_UNITS_LIST_LOOP to begin, #END_LOOP to end </ul>
 \n
 \code
 bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
-  openfluid::core::SurfaceUnit* SU;
-  openfluid::core::SurfaceUnit* UpSU;
-  std::list<openfluid::core::SurfaceUnit*>* UpSUsList;
+  openfluid::core::Unit* SU;
+  openfluid::core::Unit* UpSU;
+  openfluid::core::UnitsPtrList_t* UpSUsList;
 
-  DECLARE_SU_ORDERED_LOOP;
-  DECLARE_SU_LIST_LOOP;
+  DECLARE_UNITS_ORDERED_LOOP(1);
+  DECLARE_UNITS_LIST_LOOP(25);
 
-  BEGIN_SU_ORDERED_LOOP(SU)
+  BEGIN_UNITS_ORDERED_LOOP(1,"SU",SU)
 
-    UpSUsList = SU->getUpstreamSUs();
+    UpSUsList = SU->getFromUnits("SU");
 
-    BEGIN_SU_LIST_LOOP(UpSUsList,UpSU)
-      OPENFLUID_GetVariable(UpSU,wxT("water.surf.Q.downstream-su"),CurrentStep-1,&TmpValue);
+    BEGIN_UNITS_LIST_LOOP(25,UpSUsList,UpSU)
+      OPENFLUID_GetVariable(UpSU,"water.surf.Q.downstream-su",CurrentStep-1,&TmpValue);
     END_LOOP
     
   END_LOOP;
@@ -231,13 +227,13 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int CurrentStep;
   openfluid::core::ScalarValue TmpValue;
-  openfluid::core::SurfaceUnit* SU;
-  DECLARE_SU_ORDERED_LOOP;
+  openfluid::core::Unit* SU;
+  DECLARE_UNITS_ORDERED_LOOP(17);
   
   CurrentStep = SimStatus->getCurrentStep();  
   
-  BEGIN_SU_ORDERED_LOOP(SU)
-    OPENFLUID_GetVariable(SU,wxT("the.requested.var"),CurrentStep-1,&TmpValue);
+  BEGIN_UNITS_ORDERED_LOOP(17,"SU",SU)
+    OPENFLUID_GetVariable(SU,"the.requested.var",CurrentStep-1,&TmpValue);
   END_LOOP;      
 }
 \endcode
@@ -265,10 +261,10 @@ Functions parameters are passed through the model.xml file. They can be accessed
 \n
 <i>initParam method of the simulation function source code:</i>
 \code
-bool MyFunction::initParams(openfluid::core::ParamsMap Params)
+bool MyFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
   m_MyParam = 0; //default value
-  OPENFLUID_GetFunctionParameter(Params,wxT("myparam"),&m_MyParam);
+  OPENFLUID_GetFunctionParameter(Params,"myparam",&m_MyParam);
 
   return true;
 }
@@ -299,9 +295,9 @@ The methods to access simulation variables exist in two flavours, for scalar and
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_AppendVariable OPENFLUID_AppendVariable \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_SetVariable OPENFLUID_SetVariable \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVariableExists OPENFLUID_IsVariableExists \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsScalarVariableExists OPENFLUID_IsScalarVariableExists \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVectorVariableExists OPENFLUID_IsVectorVariableExists \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVariableExist OPENFLUID_IsVariableExist \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsScalarVariableExist OPENFLUID_IsScalarVariableExist \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVectorVariableExist OPENFLUID_IsVectorVariableExist \endlink
 </ul>
 
 They can be accessed only from the \link openfluid::base::PluggableFunction::runStep runStep \endlink method.
@@ -311,16 +307,16 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int CurrentStep;
   openfluid::core::ScalarValue TmpValue;
-  openfluid::core::SurfaceUnit* SU;
-  DECLARE_SU_ORDERED_LOOP;
+  openfluid::core::Unit* SU;
+  DECLARE_UNITS_ORDERED_LOOP(12);
 
   CurrentStep = SimStatus->getCurrentStep();
 
-  BEGIN_SU_ORDERED_LOOP(SU)
+  BEGIN_UNITS_ORDERED_LOOP(12,"SU",SU)
 
-    OPENFLUID_GetVariable(SU,wxT("MyVar"),CurrentStep,&TmpValue);
+    OPENFLUID_GetVariable(SU,"MyVar",CurrentStep,&TmpValue);
     TmpValue = TmpValue * 2;
-    OPENFLUID_AppendVariable(SU,wxT("MyVarX2"),QOutput);
+    OPENFLUID_AppendVariable(SU,"MyVarX2",QOutput);
 
   END_LOOP
 
@@ -329,18 +325,14 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 \endcode
 
 
-\section propini_sec Access to distributed properties and initial conditions
+\section propini_sec Access to input data
 
-In order to access to distributed properties and initial conditions provided through standard input files, you can use the following methods. They are usable from \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink, \link openfluid::base::PluggableFunction::runStep runStep \endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink :  
+In order to access to input data provided through standard input files, you can use the following methods. They are usable from \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink, \link openfluid::base::PluggableFunction::runStep runStep \endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink :  
 <ul>
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetProperty OPENFLUID_GetProperty \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_SetProperty OPENFLUID_SetProperty \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsPropertyExists OPENFLUID_IsPropertyExists \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetIniCondition OPENFLUID_GetIniCondition \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsIniConditionExists OPENFLUID_IsIniConditionExists \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetInputData OPENFLUID_GetGetInputData \endlink
 </ul>
 
-The name of the accessed property or initial condition must match the name given in the standard input files.
+The name of the accessed input data must match the name given in the standard input files.
 
 
 \section events_sec Access to discrete events
@@ -362,18 +354,18 @@ At each iteration, the current event can be processed.
 \code
 bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
-  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::Unit* SU;
   openfluid::core::EventCollection EvColl;
   openfluid::core::DistributedEvent* Ev;
   std::list<openfluid::core::DistributedEvent* > *EvList;
   openfluid::core::DateTime BTime, ETime;
   DECLARE_EVENT_COLLECTION_LOOP;
-  DECLARE_SU_ORDERED_LOOP;
+  DECLARE_UNITS_ORDERED_LOOP(1);
 
   BTime = SimStatus->getCurrentTime();
   ETime = BTime + SimStatus->getTimeStep()-1;
 
-  BEGIN_SU_ORDERED_LOOP(SU)
+  BEGIN_UNITS_ORDERED_LOOP(1,"SU",SU)
 
     EvColl.clear();
 
@@ -381,7 +373,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
     EvList = EvColl.getEventsList();
 
     BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)
-      if (Ev->isInfoEquals(wxT("molecule"),wxT("glyphosate")))
+      if (Ev->isInfoEquals("molecule","glyphosate"))
       {
         // process the event
       }
@@ -398,13 +390,13 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
 It may be interesting to keep the status of some internal variable from the a time step to the next one. In this case, the values of these variables must be stored as class attributes (they are persistant during the whole life of the simulation function). In order to ease the storage of distributed values, data structures are available to associate a unit ID to a value. These data structures exists for different types :   
 <ul>
-<li>\ref IDFloatMap
-<li>\ref IDDoubleMap
-<li>\ref IDIntMap
-<li>\ref IDBoolMap
-<li>\ref IDScalarValueMap
-<li>\ref IDVectorValueMap
-<li>\ref IDVectorValuePtrMap
+<li>\ref openfluid::core::IDFloatMap
+<li>\ref openfluid::core::IDDoubleMap
+<li>\ref openfluid::core::IDIntMap
+<li>\ref openfluid::core::IDBoolMap
+<li>\ref openfluid::core::IDScalarValueMap
+<li>\ref openfluid::core::IDVectorValueMap
+<li>\ref openfluid::core::IDVectorValuePtrMap
 </ul>
 
 
@@ -430,17 +422,17 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int ID;
   openfluid::core::ScalarValue TmpValue;
-  openfluid::core::SurfaceUnit* SU;
+  openfluid::core::Unit* SU;
 
 
-  DECLARE_SU_ORDERED_LOOP;
-  BEGIN_SU_ORDERED_LOOP(SU)
+  DECLARE_UNITS_ORDERED_LOOP(7);
+  BEGIN_UNITS_ORDERED_LOOP(7,"SU",SU)
 
     ID = SU->getID();
 
     TmpValue = TmpValue + m_LastValue[ID]
 
-    OPENFLUID_AppendVariable(SU,wxT("MyVar"),TmpValue);
+    OPENFLUID_AppendVariable(SU,"MyVar",TmpValue);
 
     m_LastValue[ID] = TmpValue;
 
@@ -463,16 +455,16 @@ As already said, an error stops the simulation the next time the kernel takes co
 bool Myfunction::checkConsistency()
 {
   openfluid::core::ScalarValue TmpValue;
-  openfluid::core::SurfaceUnit* SU;
-  DECLARE_SU_ORDERED_LOOP;
+  openfluid::core::Unit* SU;
+  DECLARE_SU_ORDERED_LOOP(1);
   
-  BEGIN_SU_ORDERED_LOOP(SU)
+  BEGIN_SU_ORDERED_LOOP(1,"SU",SU)
 
-    OPENFLUID_GetProperty(SU,wxT("MyVar"),&TmpValue);
+    OPENFLUID_GetInputData(SU,"MyVar",&TmpValue);
     
     if (TmpValue <= 0)
     {
-      OPENFLUID_RaiseError(wxT("my.function"),wxT("Wrong value for the MyProp distributed property on SU"));
+      OPENFLUID_RaiseError("my.function","Wrong value for the MyProp distributed property on SU");
       return false;
     }    
 
@@ -493,9 +485,9 @@ They are accessible from simulation functions using the \link openfluid::base::P
 \code
 bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
-  wxString InputDir;
+  std::string InputDir;
 
-  OPENFLUID_GetRunEnvironment(wxT("dir.input"),&InputDir);
+  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
 
   // the current input directory is now available through the InputDir local variable 
 
