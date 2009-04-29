@@ -1,0 +1,286 @@
+\usepackage{xcolor}
+\usepackage{shadow}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{verbatim}
+\usepackage{tabularx}
+\usepackage{ltxtable}
+\usepackage{html}
+\usepackage{tikz}
+\usepackage{cmbright}
+
+\definecolor{OFBlue}{HTML}{47617B}
+
+
+\definecolor{Myorange}{cmyk}{0,0.42,1,0}
+\definecolor{Myblue}{rgb}{0.2,0.2,1}
+\definecolor{Mygrey}{gray}{0.85}
+
+
+\definecolor{Myred}{rgb}{1,0.85,0.85}
+\definecolor{Myblue}{rgb}{0.85,0.90,1}
+\definecolor{Mygreen}{rgb}{0.4,1,0.4}
+
+% whitecdp (formerly schulzrinne.sty) --provide for blank pages
+% between chapters
+% This redefinition of the \cleardoublepage command provides
+% for a special pagestyle for the "extra" pages which are generated
+% to ensure that the chapter opener is on a recto page.
+% The pagestyle is "chapterverso"; for many publishers, this should be
+% identical to "empty", so that's the default.
+% \def\cleardoublepage{\clearpage
+%  \if@twoside
+%   \ifodd\c@page\else
+%    \null\thispagestyle{chapterverso}\newpage
+%    \if@twocolumn\null\newpage\fi
+%    \fi
+%   \fi
+%  }%
+% \def\ps@chapterverso{\ps@empty}%
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+  \hbox{}
+  \thispagestyle{empty}
+  \newpage
+  \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+
+% macro pour un exemple
+
+% \newcommand{\exempleblock}[1]{
+% \begin{latexonly}
+% 	\begin{minipage}[t]{0.1\linewidth}
+% 		\vspace{-0.5em}
+% 	        \includegraphics[scale=0.17]{template/sigle_ex_code.png}
+% 	\end{minipage}
+% 	\colorbox{Mygrey}{
+% 		\begin{minipage}[t]{0.83\linewidth}
+% 			\vspace{0.2em}
+% 			{{#1}}
+% 		\end{minipage}
+% 	}
+% \end{latexonly}
+% }
+
+
+\newcommand{\coverpage}[3]{
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw [fill=OFBlue] (-4,4) rectangle (-0.5,-29.7);
+    \draw (7.8,-2.0) node {\includegraphics[width=120mm]{common/graphics/openfluid.png}};
+    \draw (16, -15) node [anchor=east] {\huge{\textbf{#1}}};
+    \draw (16, -16) node [anchor=east] {\Large{\textbf{#2}}};
+    \draw (1,-24) node [anchor=west] {\includegraphics[width=50mm]{common/graphics/LISAH.png}};
+    \draw (16,-24) node [anchor=east,text centered,text width=4cm]{\Large{\textit{#3}}};
+ \end{tikzpicture}
+\end{titlepage}
+
+}
+
+
+
+
+% \newcommand*\chapterlabel{}
+% 
+% \titleformat{\chapter}
+% {\gdef\chapterlabel{}
+%  \normalfont\sffamily\Huge\bfseries\scshape}
+% {\gdef\chapterlabel{\thechapter\ }}{0pt}
+% {\begin{tikzpicture}[remember picture,overlay]
+%     \node[yshift=-3cm] at (current page.north west)
+%       {\begin{tikzpicture}[remember picture, overlay]
+%         \draw[fill=OFBlue] (0,0) rectangle
+%           (\paperwidth,3cm);
+%         \node[anchor=east,xshift=.9\paperwidth,rectangle,
+%               rounded corners=20pt,inner sep=11pt,
+%               fill=blue]
+%               {\color{white} test};
+%        \end{tikzpicture}
+%       };
+%    \end{tikzpicture}
+% }
+% \titlespacing*{\chapter}{0pt}{50pt}{-60pt}
+
+
+\newcommand{\pfname}{OpenFLUID}
+
+
+% macro pour du code
+
+\newcommand{\codeblock}[1]{
+\begin{latexonly}
+	\begin{minipage}[t]{0.1\linewidth}
+		\vspace{-0.5em}
+%	        \includegraphics[scale=0.17]{template/sigle_ex_code.png}
+	        \includegraphics[scale=0.8]{template/notecolor.png}
+	\end{minipage}
+	\colorbox{Mygrey}{
+		\begin{minipage}[t]{0.83\linewidth}
+			\vspace{0.2em}
+			{\footnotesize{\texttt{#1}}\normalsize}
+		\end{minipage}
+	}
+\end{latexonly}
+}
+
+\begin{htmlonly}
+\renewcommand{\codeblock}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD WIDTH="80" ALIGN="center" VALIGN="top">
+\end{rawhtml}
+\includegraphics[scale=1]{template/notecolor.png}
+\begin{rawhtml}
+</TD><TD BGCOLOR="#eeeeee" ALIGN="left" VALIGN="top">
+\end{rawhtml}
+	\texttt{#1}
+\begin{rawhtml}
+</TD></TR></TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
+
+\newcommand{\codeblockfromfile}[1]{
+	\begin{minipage}[t]{0.1\linewidth}
+		\vspace{-0.5em}
+%	        \includegraphics[scale=0.17]{template/sigle_ex_code.png}
+	        \includegraphics[scale=0.8]{template/notecolor.png}
+	\end{minipage}
+	\colorbox{Mygrey}{
+		\begin{minipage}[t]{0.83\linewidth}
+			\vspace{0.2em}
+			{\footnotesize\verbatiminput{#1}\normalsize}
+		\end{minipage}
+	}
+}
+
+
+\begin{htmlonly}
+\renewcommand{\codeblockfromfile}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD WIDTH="80" ALIGN="center" VALIGN="top">
+\end{rawhtml}
+\includegraphics[scale=1]{template/notecolor.png}
+\begin{rawhtml}
+</TD><TD BGCOLOR="#eeeeee" ALIGN="left" VALIGN="middle">
+\end{rawhtml}
+	\verbatiminput{#1}
+\begin{rawhtml}
+</TD></TR></TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
+% % macro pour paragraphe A noter
+% \newcommand{\noteblock}[1]{
+% 	\hbox{\raisebox{-0.5em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
+% 	\begin{minipage}[t]{0.1\linewidth}
+% 		\vspace{-0.6em}
+% 	        \includegraphics[scale=0.18]{template/sigle_a_noter.png}
+% 	\end{minipage}
+% 	\begin{minipage}[t]{0.86\linewidth}
+% 		\vspace{0.em}
+% 		{\sffamily{#1}}
+% 	\end{minipage}
+% 	\hbox{\raisebox{-0.2em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
+% }
+
+\newcommand{\noteblock}[1]{
+\begin{latexonly}
+	\begin{minipage}[t]{0.1\linewidth}
+		\vspace{-0.5em}
+%	        \includegraphics[scale=0.24]{template/sigle_a_noter.png}
+	        \includegraphics[scale=0.8]{template/tipcolor.png}
+	\end{minipage}
+	\colorbox{Myblue}{
+		\begin{minipage}[t]{0.83\linewidth}
+			\vspace{0.2em}
+			{\sffamily{#1}}
+		\end{minipage}
+	}
+\end{latexonly}
+}
+
+
+
+\begin{htmlonly}
+\renewcommand{\noteblock}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD WIDTH="80" ALIGN="center" VALIGN="top">
+\end{rawhtml}
+\includegraphics[scale=1]{template/tipcolor.png}
+\begin{rawhtml}
+</TD><TD BGCOLOR="#E6F0FF" ALIGN="left" VALIGN="middle">
+\end{rawhtml}
+	\sffamily{#1}
+\begin{rawhtml}
+</TD></TR>
+</TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
+
+
+% macro pour paragraphe attention!
+% \newcommand{\warnblock}[1]{
+% 	\hbox{\raisebox{-0.5em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
+% 	\begin{minipage}[t]{0.1\linewidth}
+% 		\vspace{-0.6em}
+% 	        \includegraphics[scale=0.24]{template/sigle_warn.png}
+% 	\end{minipage}
+% 	\begin{minipage}[t]{0.86\linewidth}
+% 		\vspace{0.em}
+% 		{\sffamily{#1}}
+% 	\end{minipage}
+% 	\hbox{\raisebox{-0.2em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
+% }
+
+
+% macro pour paragraphe attention!
+\newcommand{\warnblock}[1]{
+\begin{latexonly}
+	\begin{minipage}[t]{0.1\linewidth}
+		\vspace{-0.5em}
+%	        \includegraphics[scale=0.24]{template/sigle_warn.png}
+	        \includegraphics[scale=0.8]{template/warncolor.png}
+	\end{minipage}
+	\colorbox{Myred}{
+		\begin{minipage}[t]{0.83\linewidth}
+			\vspace{0.2em}
+			{\sffamily{#1}}
+		\end{minipage}
+	}
+\end{latexonly}
+}
+
+
+\begin{htmlonly}
+\renewcommand{\warnblock}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD WIDTH="80" ALIGN="center" VALIGN="top">
+\end{rawhtml}
+\includegraphics[scale=1]{template/warncolor.png}
+\begin{rawhtml}
+</TD><TD ALIGN="left" VALIGN="middle" BGCOLOR="#FFE6E6">
+\end{rawhtml}
+	\sffamily{#1}
+\begin{rawhtml}
+<BR></TD></TR>
+</TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
