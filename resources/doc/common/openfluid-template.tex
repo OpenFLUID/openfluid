@@ -11,8 +11,7 @@
 \usepackage{html}
 \usepackage{tikz}
 \usepackage{cmbright}
-
-\definecolor{OFBlue}{HTML}{47617B}
+\usepackage{listings}
 
 
 \definecolor{Myorange}{cmyk}{0,0.42,1,0}
@@ -23,6 +22,14 @@
 \definecolor{Myred}{rgb}{1,0.85,0.85}
 \definecolor{Myblue}{rgb}{0.85,0.90,1}
 \definecolor{Mygreen}{rgb}{0.4,1,0.4}
+
+
+\definecolor{OFBlue}{HTML}{47617B}
+\definecolor{blockblue}{rgb}{0.85,0.90,1}
+\definecolor{blockred}{rgb}{1,0.85,0.85}
+\definecolor{blockgrey}{gray}{0.85}
+
+
 
 % whitecdp (formerly schulzrinne.sty) --provide for blank pages
 % between chapters
@@ -111,21 +118,19 @@
 
 % macro pour du code
 
-\newcommand{\codeblock}[1]{
-\begin{latexonly}
-	\begin{minipage}[t]{0.1\linewidth}
-		\vspace{-0.5em}
-%	        \includegraphics[scale=0.17]{template/sigle_ex_code.png}
-	        \includegraphics[scale=0.8]{template/notecolor.png}
-	\end{minipage}
-	\colorbox{Mygrey}{
-		\begin{minipage}[t]{0.83\linewidth}
-			\vspace{0.2em}
-			{\footnotesize{\texttt{#1}}\normalsize}
-		\end{minipage}
-	}
+\newcommand{\codeblock}[2]{
+ \begin{latexonly}
+ 	\colorbox{blockgrey}{
+ 		\begin{minipage}[t]{1\linewidth}
+ 			\vspace{0.2em}
+ 			\lstset{language=#1}
+ 			#2
+% 			\lstlisting{#2}
+ 		\end{minipage}
+ 	}
 \end{latexonly}
 }
+
 
 \begin{htmlonly}
 \renewcommand{\codeblock}[1]{
@@ -195,15 +200,16 @@
 
 \newcommand{\noteblock}[1]{
 \begin{latexonly}
-	\begin{minipage}[t]{0.1\linewidth}
-		\vspace{-0.5em}
+%	\begin{minipage}[t]{0.1\linewidth}
+%      \Huge{Note}
+%		\vspace{-0.5em}
 %	        \includegraphics[scale=0.24]{template/sigle_a_noter.png}
-	        \includegraphics[scale=0.8]{template/tipcolor.png}
-	\end{minipage}
-	\colorbox{Myblue}{
-		\begin{minipage}[t]{0.83\linewidth}
+%	        \includegraphics[scale=0.8]{template/tipcolor.png}
+%	\end{minipage}
+	\colorbox{blockblue}{
+		\begin{minipage}[t]{1\linewidth}
 			\vspace{0.2em}
-			{\sffamily{#1}}
+			\sffamily{#1}
 		\end{minipage}
 	}
 \end{latexonly}
@@ -250,13 +256,8 @@
 % macro pour paragraphe attention!
 \newcommand{\warnblock}[1]{
 \begin{latexonly}
-	\begin{minipage}[t]{0.1\linewidth}
-		\vspace{-0.5em}
-%	        \includegraphics[scale=0.24]{template/sigle_warn.png}
-	        \includegraphics[scale=0.8]{template/warncolor.png}
-	\end{minipage}
-	\colorbox{Myred}{
-		\begin{minipage}[t]{0.83\linewidth}
+	\colorbox{blockred}{
+		\begin{minipage}[t]{1\linewidth}
 			\vspace{0.2em}
 			{\sffamily{#1}}
 		\end{minipage}
