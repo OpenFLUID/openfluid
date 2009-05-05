@@ -1,13 +1,80 @@
 \chapter{File formats}
 
+
+An \OFEname \ input dataset includes different informations, shared into many
+files:
+\begin{itemize}
+  \item the spatial domain definition
+  \item the flux model definition
+  \item the spatial domain input data 
+  \item the discrete events
+  \item the run configuration
+  \item the outputs configuration
+\end{itemize}
+
+All these files must be placed into any directory that can be reached by the
+engine. The default searched directory is a directory named
+\texttt{.openfluid/engine/OPENFLUID.IN} and located into the user home
+directory (the user home directory may vary, depending on the used operating
+system). If you prefer to place your dataset in another directory, you can
+specify it using command line options passed to the engine.
+
+
 \section{Spatial domain definition (*.ddef.xml)}
+
+The spatial domain is defined by a set of spatial units that are connected each
+others. These spatial units are defined by a numerical identifier (ID) and a
+class. They also include information about the preocessing order of the unit in
+the class. Each unit can be connected to zero or many other units from the
+same or a different unit class.\\
+\noindent This information is defined through XML files that must end with the
+suffix \texttt{.ddef.xml}. All the files in the dataset named using this suffix will be read and considered as spatial domain definition files, and must be
+structured follow these rules:
+\begin{itemize}
+  \item These files are XML files
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<domain>} tag
+  \item Inside the \texttt{<domain>} tag, there must be a set
+  of \texttt{<unit>} tags 
+  \item Each \texttt{<unit>} tag must bring an \texttt{<ID>} attribute giving
+  the identifier of the unit, a \texttt{<class>} attribute giving the class of
+  the unit, a \texttt{<pcsorder>} attribute giving the process order in the
+  class of the unit \texttt{<class>}
+  \item Each \texttt{<unit>} tag may include zero or many \texttt{<to>} tags giving
+  the outgoing connections to other units. Each \texttt{<to>} tag must bring an \texttt{<ID>} attribute giving
+  the identifier of the connected unit and a \texttt{<class>} attribute giving the class of
+  the connected unit  
+\end{itemize}
+
+\codeblockfromfile{openfluid-engine_users_en/domain.ddef.xml}
+
+\bigskip
 
 \section{Flux model definition (model.xml)}
 
+\codeblockfromfile{openfluid-engine_users_en/model.xml}
+
+\bigskip
+
 \section{Spatial domain input data (*.ddata.xml)}
+
+\codeblockfromfile{openfluid-engine_users_en/domain.ddata.xml}
+
+\bigskip
 
 \section{Discrete events (*.events.xml)}
 
+\codeblockfromfile{openfluid-engine_users_en/domain.events.xml}
+
+\bigskip
+
 \section{Run configuration(run.xml)}
 
-\section{Outputs configuration(run.xml)}
+\codeblockfromfile{openfluid-engine_users_en/run.xml}
+
+\bigskip
+
+\section{Outputs configuration(output.xml)}
+
+\codeblockfromfile{openfluid-engine_users_en/output.xml}
+

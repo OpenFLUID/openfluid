@@ -18,10 +18,14 @@
 \definecolor{Myblue}{rgb}{0.2,0.2,1}
 \definecolor{Mygrey}{gray}{0.85}
 
+% ============================================================================
 
-\definecolor{Myred}{rgb}{1,0.85,0.85}
-\definecolor{Myblue}{rgb}{0.85,0.90,1}
-\definecolor{Mygreen}{rgb}{0.4,1,0.4}
+\newcommand{\OFname}{OpenFLUID}
+\newcommand{\OFEname}{OpenFLUID-Engine}
+\newcommand{\OFBname}{OpenFLUID-Builder}
+\newcommand{\OFWname}{OpenFLUID-Web}
+
+% ============================================================================
 
 
 \definecolor{OFBlue}{HTML}{47617B}
@@ -29,24 +33,11 @@
 \definecolor{blockred}{rgb}{1,0.85,0.85}
 \definecolor{blockgrey}{gray}{0.85}
 
+% ============================================================================
 
 
-% whitecdp (formerly schulzrinne.sty) --provide for blank pages
-% between chapters
 % This redefinition of the \cleardoublepage command provides
-% for a special pagestyle for the "extra" pages which are generated
-% to ensure that the chapter opener is on a recto page.
-% The pagestyle is "chapterverso"; for many publishers, this should be
-% identical to "empty", so that's the default.
-% \def\cleardoublepage{\clearpage
-%  \if@twoside
-%   \ifodd\c@page\else
-%    \null\thispagestyle{chapterverso}\newpage
-%    \if@twocolumn\null\newpage\fi
-%    \fi
-%   \fi
-%  }%
-% \def\ps@chapterverso{\ps@empty}%
+% "chapterverso";
 \makeatletter
 \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
   \hbox{}
@@ -56,22 +47,7 @@
 \makeatother
 
 
-% macro pour un exemple
-
-% \newcommand{\exempleblock}[1]{
-% \begin{latexonly}
-% 	\begin{minipage}[t]{0.1\linewidth}
-% 		\vspace{-0.5em}
-% 	        \includegraphics[scale=0.17]{template/sigle_ex_code.png}
-% 	\end{minipage}
-% 	\colorbox{Mygrey}{
-% 		\begin{minipage}[t]{0.83\linewidth}
-% 			\vspace{0.2em}
-% 			{{#1}}
-% 		\end{minipage}
-% 	}
-% \end{latexonly}
-% }
+% ============================================================================
 
 
 \newcommand{\coverpage}[3]{
@@ -88,49 +64,22 @@
 
 }
 
+% ============================================================================
 
 
-
-% \newcommand*\chapterlabel{}
-% 
-% \titleformat{\chapter}
-% {\gdef\chapterlabel{}
-%  \normalfont\sffamily\Huge\bfseries\scshape}
-% {\gdef\chapterlabel{\thechapter\ }}{0pt}
-% {\begin{tikzpicture}[remember picture,overlay]
-%     \node[yshift=-3cm] at (current page.north west)
-%       {\begin{tikzpicture}[remember picture, overlay]
-%         \draw[fill=OFBlue] (0,0) rectangle
-%           (\paperwidth,3cm);
-%         \node[anchor=east,xshift=.9\paperwidth,rectangle,
-%               rounded corners=20pt,inner sep=11pt,
-%               fill=blue]
-%               {\color{white} test};
-%        \end{tikzpicture}
-%       };
-%    \end{tikzpicture}
-% }
-% \titlespacing*{\chapter}{0pt}{50pt}{-60pt}
-
-
-\newcommand{\pfname}{OpenFLUID}
-
-
-% macro pour du code
-
-\newcommand{\codeblock}[2]{
+\newcommand{\codeblock}[1]{
  \begin{latexonly}
  	\colorbox{blockgrey}{
  		\begin{minipage}[t]{1\linewidth}
- 			\vspace{0.2em}
- 			\lstset{language=#1}
- 			#2
-% 			\lstlisting{#2}
+			\vspace{0.2em}
+         
+          \texttt{#1}
  		\end{minipage}
  	}
 \end{latexonly}
 }
 
+% ============================================================================
 
 \begin{htmlonly}
 \renewcommand{\codeblock}[1]{
@@ -150,20 +99,23 @@
 }
 \end{htmlonly}
 
+% ============================================================================
+
 
 \newcommand{\codeblockfromfile}[1]{
-	\begin{minipage}[t]{0.1\linewidth}
-		\vspace{-0.5em}
-%	        \includegraphics[scale=0.17]{template/sigle_ex_code.png}
-	        \includegraphics[scale=0.8]{template/notecolor.png}
-	\end{minipage}
-	\colorbox{Mygrey}{
-		\begin{minipage}[t]{0.83\linewidth}
+ \begin{latexonly}
+ 	\colorbox{blockgrey}{
+ 		\begin{minipage}[t]{1\linewidth}
 			\vspace{0.2em}
-			{\footnotesize\verbatiminput{#1}\normalsize}
-		\end{minipage}
-	}
+         
+         {\footnotesize\verbatiminput{#1}\normalsize}
+          
+ 		\end{minipage}
+ 	}
+\end{latexonly}
 }
+
+% ============================================================================
 
 
 \begin{htmlonly}
@@ -184,28 +136,12 @@
 }
 \end{htmlonly}
 
-% % macro pour paragraphe A noter
-% \newcommand{\noteblock}[1]{
-% 	\hbox{\raisebox{-0.5em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
-% 	\begin{minipage}[t]{0.1\linewidth}
-% 		\vspace{-0.6em}
-% 	        \includegraphics[scale=0.18]{template/sigle_a_noter.png}
-% 	\end{minipage}
-% 	\begin{minipage}[t]{0.86\linewidth}
-% 		\vspace{0.em}
-% 		{\sffamily{#1}}
-% 	\end{minipage}
-% 	\hbox{\raisebox{-0.2em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
-% }
+
+% ============================================================================
+
 
 \newcommand{\noteblock}[1]{
 \begin{latexonly}
-%	\begin{minipage}[t]{0.1\linewidth}
-%      \Huge{Note}
-%		\vspace{-0.5em}
-%	        \includegraphics[scale=0.24]{template/sigle_a_noter.png}
-%	        \includegraphics[scale=0.8]{template/tipcolor.png}
-%	\end{minipage}
 	\colorbox{blockblue}{
 		\begin{minipage}[t]{1\linewidth}
 			\vspace{0.2em}
@@ -214,6 +150,9 @@
 	}
 \end{latexonly}
 }
+
+
+% ============================================================================
 
 
 
@@ -237,23 +176,9 @@
 \end{htmlonly}
 
 
-
-% macro pour paragraphe attention!
-% \newcommand{\warnblock}[1]{
-% 	\hbox{\raisebox{-0.5em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
-% 	\begin{minipage}[t]{0.1\linewidth}
-% 		\vspace{-0.6em}
-% 	        \includegraphics[scale=0.24]{template/sigle_warn.png}
-% 	\end{minipage}
-% 	\begin{minipage}[t]{0.86\linewidth}
-% 		\vspace{0.em}
-% 		{\sffamily{#1}}
-% 	\end{minipage}
-% 	\hbox{\raisebox{-0.2em}{\vrule depth 0pt height 0.4pt width 1\linewidth}}
-% }
+% ============================================================================
 
 
-% macro pour paragraphe attention!
 \newcommand{\warnblock}[1]{
 \begin{latexonly}
 	\colorbox{blockred}{
@@ -264,6 +189,8 @@
 	}
 \end{latexonly}
 }
+
+% ============================================================================
 
 
 \begin{htmlonly}
