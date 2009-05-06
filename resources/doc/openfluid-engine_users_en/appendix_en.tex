@@ -3,7 +3,84 @@
 
 \section{Command line options}
 
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\texttt{-a, --auto-output-dir}&generate automatic results output directory\\
+\texttt{-c, --clean-output-dir}&clean results output directory by removing existing files\\
+\texttt{-f, --functions-list}&list available functions (do not run the model)\\
+\texttt{-h, --help}&show this help message\\
+\texttt{-i, --input-dir=<str>}&set dataset input directory\\
+\texttt{-k, --openfluid-version}&get ofelib version used for current OpenFLUID-engine build (do not run the model)\\
+\texttt{-m, --trace-dir=<str>}&set trace directory\\
+\texttt{-o, --output-dir=<str>}&set results output directory\\
+\texttt{-p, --functions-paths=<str>}&add extra functions research paths (colon separated)\\
+\texttt{-q, --quiet}&quiet display during simulation run\\
+\texttt{-r, --functions-report}&print a report of available functions, with details (do not run the model)\\
+\texttt{-s, --no-simreport}&do not generate simulation report\\
+\texttt{-v, --verbose}&verbose display during simulation\\
+\texttt{--version}&get version (do not run the model)\\
+\texttt{-x, --xml-functions-report}&print a report of available functions in xml format, with details (do not run the model)\\
+\texttt{-z, --no-results}&do not write results files\\
+\texttt{--no-varname-check}&do not check variable name against nomenclature\\
+\end{tabularx}
+\end{center}
+
 \section{General information about file formats}
+
+\textbf{TODO or TOREMOVE}
 
 \section{Date-time formats used in outputs configuration}
 
+The output.xml file can use the ANSI strftime() standards formats for date time, through a format string. 
+The format string consists of zero or more conversion specifications and ordinary characters.
+A conversion specification consists of a \% character and a terminating conversion character that determines the conversion specification's behaviour.
+All ordinary characters (including the terminating null byte) are copied unchanged into the array.
+
+\bigskip
+
+For example, the nineteenth of April, two-thousand seven, at eleven hours, ten minutes and twenty-five seconds formatted using different format strings:
+\begin{itemize}
+\item "\verb|%d/%m/%Y %H:%M:%S|" will give "\verb|19/04/2007 10:11:25|"
+\item "\verb|%Y-%m-%d %H.%M|" will give "\verb|2007-04-19 10.11|"
+\item "\verb|%Y\t%m\t%d\t%H\t%M\t%S|" will give "\verb|2007	04	19	10	11	25|"
+\end{itemize}
+
+\bigskip 
+
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\%a & is replaced by the locale's abbreviated weekday name. \\
+\%A & is replaced by the locale's full weekday name. \\
+\%b & is replaced by the locale's abbreviated month name. \\
+\%B & is replaced by the locale's full month name. \\
+\%c & is replaced by the locale's appropriate date and time representation. \\
+\%C & is replaced by the century number (the year divided by 100 and truncated to an integer) as a decimal number [00-99]. \\
+\%d & is replaced by the day of the month as a decimal number [01,31]. \\
+\%D & same as \%m/\%d/\%y. \\
+\%e & is replaced by the day of the month as a decimal number [1,31]; a single digit is preceded by a space. \\
+\%h & same as \%b. \\
+\%H & is replaced by the hour (24-hour clock) as a decimal number [00,23]. \\
+\%I & is replaced by the hour (12-hour clock) as a decimal number [01,12]. \\
+\%j & is replaced by the day of the year as a decimal number [001,366]. \\
+\%m & is replaced by the month as a decimal number [01,12]. \\
+\%M & is replaced by the minute as a decimal number [00,59]. \\
+\%n & is replaced by a newline character. \\
+\%p & is replaced by the locale's equivalent of either a.m. or p.m. \\
+\%r & is replaced by the time in a.m. and p.m. notation; in the POSIX locale this is equivalent to \%I:\%M:\%S \%p. \\
+\%R & is replaced by the time in 24 hour notation (\%H:\%M). \\
+\%S & is replaced by the second as a decimal number [00,61]. \\
+\%t & is replaced by a tab character. \\
+\%T & is replaced by the time (\%H:\%M:\%S). \\
+\%u & is replaced by the weekday as a decimal number [1,7], with 1 representing Monday. \\
+\%U & is replaced by the week number of the year (Sunday as the first day of the week) as a decimal number [00,53]. \\
+\%V & is replaced by the week number of the year (Monday as the first day of the week) as a decimal number [01,53]. If the week containing 1 January has four or more days in the new year, then it is considered week 1. Otherwise, it is the last week of the previous year, and the next week is week 1. \\
+\%w & is replaced by the weekday as a decimal number [0,6], with 0 representing Sunday. \\
+\%W & is replaced by the week number of the year (Monday as the first day of the week) as a decimal number [00,53]. All days in a new year preceding the first Monday are considered to be in week 0. \\
+\%x & is replaced by the locale's appropriate date representation. \\
+\%X & is replaced by the locale's appropriate time representation. \\
+\%y & is replaced by the year without century as a decimal number [00,99]. \\
+\%Y & is replaced by the year with century as a decimal number. \\
+\%Z & is replaced by the timezone name or abbreviation, or by no bytes if no timezone information exists. \\
+\%\% & is replaced by \%. \\
+\end{tabularx}
+\end{center}

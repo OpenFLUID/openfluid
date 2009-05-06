@@ -1,17 +1,39 @@
 \chapter{Usage}
 
-
 The \OFEname \ application is available on Linux, Windows and MacOSX platforms.
 We encourage you to use \OFEname \ program on Linux platform as it is the development and usually used platform. 
 
 \section{Build the input dataset}
 
-Before running the simulation...
+Before running the simulation, the input dataset must be built.
+An \OFEname \ input dataset includes different informations, shared into many files:
+\begin{itemize}
+  \item the spatial domain definition
+  \item the flux model definition
+  \item the spatial domain input data 
+  \item the discrete events
+  \item the run configuration
+  \item the outputs configuration
+\end{itemize}
+
+\noindent All these files must be placed into any directory that can be reached by the
+engine. The default searched directory is a directory named
+\texttt{.openfluid/engine/OPENFLUID.IN} and located into the user home
+directory (the user home directory may vary, depending on the used operating
+system). If you prefer to place your dataset in another directory, you can
+specify it using command line options passed to the engine.\\
+
+\noindent In order to build these files, we encouraged you to use a good text editor, or better, an XML editor.
+You can also use custom scripts or macros in specialized sotware, such as spreadsheets or Geographic Information Systems (GIS), to generate automatically the input dataset.
 
 \bigskip
 
 \section{Run the simulation}
 
+\textbf{TODO}
+
 \bigskip
 
 \section{Explore the results}
+
+\textbf{TODO}
