@@ -18,7 +18,9 @@ PROJECT(OpenFLUID-Engine CXX)
 
 ENABLE_TESTING()
 
-INCLUDE(CMake.in.common)
+INCLUDE(CMake.in.config)
+INCLUDE(CMake.in.sub)
+
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(wxWidgets)
 FIND_PACKAGE(PythonInterp)
@@ -102,73 +104,7 @@ ENDIF(DOXYGEN AND BUILD_DOCFORDEV)
 
 
 
-MACRO(COMPILE_PDFLATEX_DOC DOC_NAME DOC_OUTDIR)
-
-
-  ADD_CUSTOM_COMMAND(
-    OUTPUT  ${DOC_BUILD_DIR}/${DOC_NAME}.pdf
-    DEPENDS ${DOC_BUILD_DIR}/${DOC_NAME}.tex        
-    DEPENDS ${DOC_BUILD_DIR}    
-    COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR} ${PDFLATEX_COMPILER}
-    ARGS "${DOC_BUILD_DIR}/${DOC_NAME}.tex"       
-    COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR} ${PDFLATEX_COMPILER}
-    ARGS "${DOC_BUILD_DIR}/${DOC_NAME}.tex"    
-    )  
-
-
-  ADD_CUSTOM_COMMAND(    
-    OUTPUT  ${DOC_OUTDIR}/${DOC_NAME}.pdf
-    DEPENDS  ${DOC_BUILD_DIR}/${DOC_NAME}.pdf      
-    COMMAND ${CMAKE_COMMAND} -E copy ${DOC_BUILD_DIR}/${DOC_NAME}.pdf ${DOC_OUTDIR}/${DOC_NAME}.pdf        
-    )  
-
-
-  ADD_CUSTOM_TARGET(${DOC_NAME}-doc-pdf ALL
-    DEPENDS ${DOC_OUTDIR}/${DOC_NAME}.pdf
-   )
- 
- 
-   # add INSTALL commands here
- 
-ENDMACRO(COMPILE_PDFLATEX_DOC DOC_NAME DOC_OUTDIR)
-
-
-
-MACRO(COMPILE_LATEX2HTML_DOC DOC_NAME DOC_OUTDIR)
-
-  ADD_CUSTOM_COMMAND(
-    OUTPUT  ${DOC_BUILD_DIR}/html        
-    DEPENDS ${DOC_BUILD_DIR}    
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${DOC_BUILD_DIR}/html       
-   )  
-    
-
-  ADD_CUSTOM_COMMAND(
-    OUTPUT  ${DOC_BUILD_DIR}/html/${DOC_NAME}/index.html
-    DEPENDS ${DOC_BUILD_DIR}/${DOC_NAME}.tex        
-    DEPENDS ${DOC_BUILD_DIR}/html    
-    COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR} ${LATEX2HTML_CONVERTER}
-    ARGS -mkdir -split +1 -html_version 4.0,latin1,unicode -show_section_numbers -noinfo -local_icons -dir ${DOC_BUILD_DIR}/html/${DOC_NAME} ${DOC_BUILD_DIR}/${DOC_NAME}.tex       
-    )  
-
-
-  ADD_CUSTOM_COMMAND(    
-    OUTPUT  ${DOC_OUTDIR}/${DOC_NAME}/
-    DEPENDS  ${DOC_BUILD_DIR}/html/${DOC_NAME}/index.html      
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${DOC_BUILD_DIR}/html/${DOC_NAME}/ ${DOC_OUTDIR}/${DOC_NAME}        
-    )  
-
-
-  ADD_CUSTOM_TARGET(${DOC_NAME}-doc-html ALL
-    DEPENDS ${DOC_OUTDIR}/${DOC_NAME}/
-   )
- 
- 
-   # add INSTALL commands here
- 
-ENDMACRO(COMPILE_LATEX2HTML_DOC DOC_NAME DOC_OUTDIR)
-
-
+# Latex docs compilation
 
 IF(PDFLATEX_COMPILER)
    
