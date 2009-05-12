@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/@OFELIBDEV_INCLUDE_INSTALL_PATH@
+
+Name: ofelib
+Description: OpenFLUID engine library
+Version: @ENGINE_FULL_VERSION@
+Libs: -L${libdir} -lofelib
+Cflags: -I${includedir}
