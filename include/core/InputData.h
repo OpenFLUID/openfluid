@@ -82,7 +82,8 @@ bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
 
   if (it != m_Data.end())
   {
-    aValue = &(it->second);
+    // TODO Check if by reference is possible
+    *aValue = it->second;
     return true;
   }
   else return false;

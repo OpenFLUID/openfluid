@@ -83,7 +83,7 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
     if (!UnitPtr->getInputData()->getValue(InputName,Value))
       throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Value for input data "+ InputName +" does not exist");
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");;
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 // =====================================================================

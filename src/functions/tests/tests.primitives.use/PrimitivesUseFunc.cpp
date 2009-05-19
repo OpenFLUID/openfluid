@@ -383,9 +383,16 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsInputDataExist (wrongdata)");
 
 
+    TheInput = 0.0;
     OPENFLUID_GetInputData(TU,"indataA",&TheInput);
+    if (!openfluid::tools::IsVeryClose(TheInput,1.1))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue)");
 
+
+    TheInput = 0.0;
     OPENFLUID_GetInputData(TU,"indataB",&TheInput);
+    if (!openfluid::tools::IsVeryClose(TheInput,1.2))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetInputData (indataB wrongvalue)");
 
 
 
