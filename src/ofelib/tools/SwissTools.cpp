@@ -24,4 +24,64 @@ void TokenizeString(const std::string& StrToTokenize,
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool WildcardMatching(const std::string Pattern, const std::string Str)
+{
+
+  // source : http://www.codeproject.com/KB/string/wildcmp.aspx
+
+  const char *cp = NULL;
+  const char *mp = NULL;
+
+  const char *StrToCheck = Str.c_str();
+  const char *WildStr = Pattern.c_str();
+
+  while ((*StrToCheck) && (*WildStr != '*'))
+  {
+    if ((*WildStr != *StrToCheck) && (*WildStr != '?'))
+    {
+      return false;
+    }
+    WildStr++;
+    StrToCheck++;
+  }
+
+  while (*StrToCheck)
+  {
+    if (*WildStr == '*')
+    {
+      if (!*++WildStr)
+      {
+        return true;
+      }
+      mp = WildStr;
+      cp = StrToCheck+1;
+    }
+    else
+    {
+      if ((*WildStr == *StrToCheck) || (*WildStr == '?'))
+      {
+        WildStr++;
+        StrToCheck++;
+      }
+      else
+      {
+        WildStr = mp;
+        StrToCheck = cp++;
+      }
+    }
+  }
+
+  while (*WildStr == '*')
+  {
+    WildStr++;
+  }
+  return !*WildStr;
+}
+
+
 } } // namespaces

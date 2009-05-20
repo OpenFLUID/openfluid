@@ -82,8 +82,11 @@ inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
   return ((std::abs(A - B)) <= (Epsilon * std::abs(A)));
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
 /**
   Function for testing equality between two double precision floats,
   using the "very close" method.
@@ -99,6 +102,13 @@ inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
   // see Knuth section 4.2.2 pages 217-218
   return (((std::abs(A - B)) <= (Epsilon * std::abs(A))) && ((std::abs(A - B)) <= (Epsilon * std::abs(B))));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WildcardMatching(const std::string Pattern, const std::string Str);
 
 
 
