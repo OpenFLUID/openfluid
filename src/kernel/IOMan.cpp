@@ -434,6 +434,7 @@ bool IOManager::loadDomainFromFiles()
     }
   }
 
+  mp_Repository->sortUnitsByProcessOrder();
 
   return IsOK;
 }

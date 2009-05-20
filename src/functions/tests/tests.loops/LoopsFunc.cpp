@@ -273,6 +273,39 @@ TU.1         TU.2
   END_LOOP
 
 
+  // ===== process order =====
+
+  unsigned int LastPcsOrd;
+  std::string LastStr, CurrentStr, IDStr;
+
+  LastPcsOrd = 0;
+  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+    if (TU->getProcessOrder() < LastPcsOrd)
+    {
+
+      openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
+      openfluid::tools::ConvertValue(TU->getProcessOrder(),&CurrentStr);
+      openfluid::tools::ConvertValue(TU->getID(),&IDStr);
+      OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit TestUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+    }
+
+    LastPcsOrd = TU->getProcessOrder();
+  END_LOOP
+
+  LastPcsOrd = 0;
+  BEGIN_UNITS_ORDERED_LOOP(1,"OtherUnits",OU)
+    if (OU->getProcessOrder() < LastPcsOrd)
+    {
+      openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
+      openfluid::tools::ConvertValue(OU->getProcessOrder(),&CurrentStr);
+      openfluid::tools::ConvertValue(OU->getID(),&IDStr);
+      OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit OtherUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+    }
+
+    LastPcsOrd = TU->getProcessOrder();
+  END_LOOP
+
+
 
   return true;
 }
