@@ -67,7 +67,7 @@ class PluginManager
     */
 //    ArrayOfPluginsSignatures getAvailableFunctionsList();
 
-    ArrayOfPluginsContainers getAvailableFunctions();
+    ArrayOfPluginsContainers getAvailableFunctions(const std::string Pattern = "");
 
 
     /**

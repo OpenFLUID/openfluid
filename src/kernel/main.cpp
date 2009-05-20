@@ -385,10 +385,10 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 // =====================================================================
 // =====================================================================
 
-void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat)
+void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Pattern)
 {
 
-  ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions();
+  ArrayOfPluginsContainers PlugContainers = mp_PlugMan->getAvailableFunctions(Pattern);
   std::string StatusStr;
 
 
@@ -551,7 +551,7 @@ bool OpenFLUIDApp::OnInit()
   if (Parser.Found(wxT("p"),&TmpStr)) mp_RunEnv->addExtraPluginsPaths(_S(TmpStr));
 
 
-  if (Parser.Found(wxT("f")) || Parser.Found(wxT("k")) || Parser.Found(wxT("r")) || Parser.Found(wxT("version")) || Parser.Found(wxT("x")))
+  if (Parser.Found(wxT("f")) || Parser.Found(wxT("k")) || Parser.Found(wxT("r")) || Parser.Found(wxT("u")) ||Parser.Found(wxT("version")) || Parser.Found(wxT("x")))
   {
     if (Parser.Found(wxT("f")))
     {
@@ -559,8 +559,9 @@ bool OpenFLUIDApp::OnInit()
       printPluginsList();
     }
 
-    if (Parser.Found(wxT("r"))) printPluginsReport(false);
-    if (Parser.Found(wxT("x"))) printPluginsReport(true);
+    if (Parser.Found(wxT("r"))) printPluginsReport(false,"");
+    if (Parser.Found(wxT("x"))) printPluginsReport(true,"");
+    if (Parser.Found(wxT("u"),&TmpStr)) printPluginsReport(false,_S(TmpStr));
 
     if (Parser.Found(wxT("version"))) std::cout << FULL_VERSION << std::endl;
     if (Parser.Found(wxT("k"))) std::cout << FULL_VERSION << std::endl;

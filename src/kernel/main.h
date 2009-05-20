@@ -38,6 +38,7 @@ static const wxCmdLineEntryDesc CmdLineDesc[] =
   {wxCMD_LINE_SWITCH, _T("s"), _T("no-simreport"), _T("do not generate simulation report")},
   // TODO enable this?
   //  {wxCMD_LINE_SWITCH, _T("t"), _T("trace"), _T("enable trace mode")},
+  {wxCMD_LINE_OPTION, _T("u"), _T("matching-functions-report"), _T("print a report of functions matching the given wildcard-based pattern (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("verbose display during simulation")},
   {wxCMD_LINE_SWITCH, _T(""), _T("version"), _T("get version (do not run the model)")},
   {wxCMD_LINE_SWITCH, _T("x"), _T("xml-functions-report"), _T("print a report of available functions in xml format, with details (do not run the model)")},
@@ -90,7 +91,7 @@ class OpenFLUIDApp : public wxAppConsole
 
     void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type, bool IsXMLFormat);
 
-    void printPluginsReport(bool IsXMLFormat);
+    void printPluginsReport(bool IsXMLFormat, const std::string Pattern);
 
     int stopAppReturn(std::string Msg);
 

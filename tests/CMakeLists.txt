@@ -15,6 +15,13 @@
   ADD_TEST(FunctionsReport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
                            "-r"
                            "-p${FUNCTIONS_OUTPUT_PATH}")
+
+# matching functions reporting test : not working!
+#  ADD_TEST(FunctionsMatchReport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
+#                                "-u tests.primitives"
+#                                "-p${FUNCTIONS_OUTPUT_PATH}")
+#  SET_TESTS_PROPERTIES(FunctionsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives")  
+                           
   
   ADD_TEST(FunctionsXMLReport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
                               "-x"

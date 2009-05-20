@@ -125,7 +125,7 @@ ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
 }
 */
 
-ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
+ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string Pattern)
 {
   ArrayOfPluginsContainers PluginsContainers;
   std::vector<std::string> PluginsPaths = mp_RunEnv->getPluginsPaths();
@@ -147,7 +147,16 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions()
   {
     CurrentPlug = buildPluginContainer(PluginFiles[i]);
 
-    if (CurrentPlug != NULL && CurrentPlug->SDKCompatible) PluginsContainers.push_back(CurrentPlug);
+    if (CurrentPlug != NULL && CurrentPlug->SDKCompatible)
+    {
+      if (Pattern != "")
+      {
+        if (openfluid::tools::WildcardMatching(Pattern,CurrentPlug->Signature->ID))
+          PluginsContainers.push_back(CurrentPlug);
+      }
+      else PluginsContainers.push_back(CurrentPlug);
+    }
+
   }
 
   return PluginsContainers;
