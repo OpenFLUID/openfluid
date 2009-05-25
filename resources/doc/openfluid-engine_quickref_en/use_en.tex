@@ -36,7 +36,38 @@ You can also use custom scripts or macros in specialized sotware, such as spread
 
 \section{Engine sequence}
 
-\textbf{TODO}
+The following sequence diagram describes the stage-by-stage execution of an \OFEname -engine simulation. The kernel is the main application, and the simulation function represents each simulation function used in the model definition.   
+
+\begin{latexonly}
+\begin{center}
+\includegraphics[scale=0.6]{common/graphics/ofeseq.png}
+\end{center}
+\end{latexonly}
+
+\begin{htmlonly}
+\begin{center}
+\includegraphics[scale=1]{common/graphics/ofeseq.png}
+\end{center}
+\end{htmlonly}
+
+Stages description:
+\begin{enumerate}
+  \item the kernel loads the model definition (from the \texttt{model.xml} file)  
+  \item the kernel loads and instanciates the simulation functions, according to the model definition
+  \item the kernel requests the signature of each simulation function 
+  \item the kernel runs the initParams() method of each simulation function
+  \item the kernel loads the domain definition (from the \texttt{*.ddef.xml} files)
+  \item the kernel check the domain definition consistency and rebuild the domain topology
+  \item the kernel loads the domain input data (from the \texttt{*.ddata.xml} files)
+  \item the kernel runs the prepareData() method of each simulation function
+  \item the kernel runs the checkConsistency() method of each simulation function
+  \item the kernel checks the global consistency (model + domain definition + domain input data)
+  \item the kernel runs the initializeRun() method of each simulation function
+  \item at every time step, the kernel runs the runStep() method of each simulation function
+  \item at every time step, if the progressive output of results is enabled and if the current time step is a "progressive output time step", the kernel saves a packet of data and frees memory  
+  \item the kernel runs the finalizeRun() method of each simulation function
+  \item the kernel completes the save of results (all results if progressive output is disabled, the remaining results if progressive output is enabled) 
+\end{enumerate}
 
 
 \bigskip

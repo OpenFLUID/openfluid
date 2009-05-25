@@ -27,7 +27,7 @@ structured following these rules:
   the connected unit  
 \end{itemize}
 
-\codeblockfromfile{openfluid-engine_users_en/domain.ddef.xml}
+\codeblockfromfile{openfluid-engine_quickref_en/domain.ddef.xml}
 
 \bigskip
 
@@ -53,7 +53,7 @@ and must be structured following these rules:
 
 \warnblock{The order of the simulation functions in the \texttt{model.xml} is very important : the same order will be used for executions on the same time step}
 
-\codeblockfromfile{openfluid-engine_users_en/model.xml}
+\codeblockfromfile{openfluid-engine_quickref_en/model.xml}
 
 \bigskip
 
@@ -74,7 +74,7 @@ structured following these rules:
   \item Inside the \texttt{<inputdata>} tag, there must be one (and only one) \texttt{<data>} tag containing the input data as row-column text. As a rule, the first column is the ID of the unit in the class given through the \texttt{<inputdata>} tag, the following columns are values following the column order given through the \texttt{<columns>} tag.   
 \end{itemize}
 
-\codeblockfromfile{openfluid-engine_users_en/domain.ddata.xml}
+\codeblockfromfile{openfluid-engine_quickref_en/domain.ddata.xml}
 
 \bigskip
 
@@ -95,7 +95,7 @@ structured following these rules:
   \item Each \texttt{<info>} tag give information about the event and must bring a \texttt{<key>} attribute giving the name (the "key") of the info, and a \texttt{<value>} attribute giving the value for this key.        
 \end{itemize}  
   
-\codeblockfromfile{openfluid-engine_users_en/domain.events.xml}
+\codeblockfromfile{openfluid-engine_quickref_en/domain.events.xml}
 
 \bigskip
 
@@ -116,7 +116,7 @@ and must be structured following these rules:
   This \texttt{<progressout>} tag must bring a \texttt{packet} attribute giving the size (in number of time steps) of the saved packets, and a \texttt{keep} attribute giving the number of time steps kept in memory.   
 \end{itemize}
 
-\codeblockfromfile{openfluid-engine_users_en/run.xml}
+\codeblockfromfile{openfluid-engine_quickref_en/run.xml}
 
 \bigskip
 
@@ -135,5 +135,5 @@ The configuration of the simulation outputs gives the description of the saved r
 \end{itemize}
 
 
-\codeblockfromfile{openfluid-engine_users_en/output.xml}
+\codeblockfromfile{openfluid-engine_quickref_en/output.xml}
 
