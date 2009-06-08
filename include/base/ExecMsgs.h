@@ -38,6 +38,8 @@ class ExecutionMessages
 
     unsigned int m_RealWarningsCount;
 
+    void addWarning(std::string Sender, bool IsTimeStep, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg);
+
   public:
 
     /**
@@ -50,13 +52,13 @@ class ExecutionMessages
     */
     ~ExecutionMessages();
 
-    void addWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Sender + "," + Source, TimeStep, WarningMsg); };
+    void addWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Sender + "," + Source, 1, TimeStep, WarningMsg); };
 
-    void addWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg);
+    void addWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Sender,1,TimeStep,WarningMsg); };
 
-    void addWarning(std::string Sender, std::string Source, std::string WarningMsg) { addWarning(Sender,Source,-1,WarningMsg); };
+    void addWarning(std::string Sender, std::string Source, std::string WarningMsg) { addWarning(Sender + "," + Source,0,-1,WarningMsg); };
 
-    void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Sender,-1,WarningMsg); };
+    void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Sender,0,-1,WarningMsg); };
 
     void resetWarningFlag() { m_WarningFlag = false; };
 
@@ -67,6 +69,9 @@ class ExecutionMessages
     void doMemRelease() { m_WarningMsgs.clear(); };
 
     unsigned int getWarningsCount() { return m_RealWarningsCount; };
+
+    static std::string FormatMessage(std::string Message);
+
 
 };
 

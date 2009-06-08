@@ -1328,7 +1328,7 @@ bool IOManager::saveMessages()
   for (unsigned int i=0; i<WarningCount;i++)
   {
 //    std::cout << "un warning" << std::endl;
-    FileContents << ("WARNING: ") << FormatExecutionMessage(WMessages.at(i)) << std::endl;
+    FileContents << ("WARNING: ") << openfluid::base::ExecutionMessages::FormatMessage(WMessages.at(i)) << std::endl;
   }
 
   wxFile OutMsgsFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE).c_str()),wxFile::write_append);

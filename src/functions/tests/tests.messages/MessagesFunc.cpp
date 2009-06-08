@@ -132,7 +132,7 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for (i = 0; i< m_RepeatMessages; i++)
     {
       openfluid::tools::ConvertValue((i+1),&RptStr);
-      OPENFLUID_RaiseWarning("tests.messages","["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
+      OPENFLUID_RaiseWarning("tests.messages",SimStatus->getCurrentStep(),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
     }
 
   END_LOOP

@@ -175,30 +175,6 @@ std::string GenerateSimulationID()
 }
 
 
-// =====================================================================
-// =====================================================================
-
-std::string FormatExecutionMessage(std::string Message)
-{
-  std::string Formatted = "";
-
-  std::vector<std::string> Parts;
-
-  Parts = SplitString(Message,";");
-
-  Formatted = Parts[2] + " (message sent by " + Parts[0];
-
-  if (Parts[1] != "-1")
-  {
-    Formatted = Formatted + ", at step " + Parts[1];
-  }
-
-  Formatted = Formatted +")";
-
-  return Formatted;
-
-}
-
 
 // =====================================================================
 // =====================================================================
