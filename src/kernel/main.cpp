@@ -153,9 +153,7 @@ void OpenFLUIDApp::printlnExecStatus()
 
 void OpenFLUIDApp::printlnExecMessagesStats()
 {
-/*  if (mp_ExecMsgs->isErrorFlag()) std::cout << "1 error, ";
-  else  std::cout << "no error, ";*/
-  std::cout << mp_ExecMsgs->getWarningMsgs().size() << " warning(s)" << std::endl;
+  std::cout << mp_ExecMsgs->getWarningsCount() << " warning(s)" << std::endl;
 }
 
 // =====================================================================
@@ -487,6 +485,8 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 
   printlnExecMessagesStats();
+
+  mp_Engine->saveMessages();
 
   if (mp_RunEnv->isWriteSimReport())
   {

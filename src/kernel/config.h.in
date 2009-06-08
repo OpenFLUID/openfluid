@@ -33,6 +33,7 @@ const std::string OPENFLUID_DEFAULT_RAINEVTFILE = "rainsources.xml";
 const std::string OPENFLUID_DEFAULT_SURAINDISTRIFILE = "SUraindistri.dat";
 const std::string OPENFLUID_DEFAULT_RSRAINDISTRIFILE = "RSraindistri.dat";
 const std::string OPENFLUID_DEFAULT_SIMINFOFILE = "siminfo.out";
+const std::string OPENFLUID_DEFAULT_OUTMSGSFILE = "messages.out";
 
 // Default file extensions
 const std::string OPENFLUID_DEFAULT_OUPUTFILES_EXT = "out";

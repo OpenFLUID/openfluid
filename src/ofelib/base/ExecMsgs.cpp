@@ -18,6 +18,8 @@ ExecutionMessages::ExecutionMessages()
   m_ErrorFlag = false;
   m_ErrorMsg = "";
   m_WarningMsgs.clear();
+  m_RealWarningsCount = 0;
+
 }
 
 // =====================================================================
@@ -40,6 +42,8 @@ void ExecutionMessages::addWarning(std::string Sender, openfluid::core::TimeStep
   OutStr << TimeStep;
 
   m_WarningMsgs.push_back(Sender + ";" + OutStr.str() + ";" + WarningMsg);
+
+  m_RealWarningsCount++;
 }
 
 

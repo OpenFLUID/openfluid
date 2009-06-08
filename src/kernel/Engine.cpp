@@ -971,9 +971,11 @@ bool Engine::prepareDataAndCheckConsistency()
     if (!mp_IOMan->prepareTraceDir(mp_CoreData)) return false;
   }*/
 
+  mp_IOMan->prepareOutputDir();
   if (mp_RunEnv->isWriteResults())
   {
-    if (!mp_IOMan->prepareOutputDir()) return false;
+    // TODO delete this
+    //    if (!mp_IOMan->prepareOutputDir()) return false;
     mp_IOMan->prepareOutputs();
   }
 
@@ -1140,7 +1142,9 @@ bool Engine::run()
       mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getCurrentStep(),false,&SaveReleaseBegin, &SaveReleaseEnd);
       std::cout << std::endl << " -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
       mp_IOMan->saveOutputs(mp_SimStatus->getCurrentStep(),(openfluid::base::SimulationInfo*)mp_SimStatus,false);
+      mp_IOMan->saveMessages();
       mp_CoreData->doMemRelease(mp_SimStatus->getCurrentStep(),false);
+      mp_ExecMsgs->doMemRelease();
       mp_MemMon->setLastMemoryRelease(mp_SimStatus->getCurrentStep());
       std::cout << "[OK] --" << std::endl << std::endl ;
     }
@@ -1218,7 +1222,9 @@ bool Engine::run()
   mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getStepsCount()-1,true,&SaveReleaseBegin, &SaveReleaseEnd);
   std::cout << std::endl << "  -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
   mp_IOMan->saveOutputs(mp_SimStatus->getStepsCount()-1,(openfluid::base::SimulationInfo*)mp_SimStatus,true);
+  mp_IOMan->saveMessages();
   mp_CoreData->doMemRelease(mp_SimStatus->getStepsCount()-1,true);
+  mp_ExecMsgs->doMemRelease();
   std::cout << "[OK] --" << std::endl << std::endl ;
 
 
@@ -1249,5 +1255,12 @@ bool Engine::saveReports(ExtraSimInfos ExSI, std::string ErrorMsg)
 
 // =====================================================================
 // =====================================================================
+
+
+bool Engine::saveMessages()
+{
+  mp_ExecMsgs->resetWarningFlag();
+  return (mp_IOMan->saveMessages());
+}
 
 

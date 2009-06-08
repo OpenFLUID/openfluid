@@ -207,6 +207,8 @@ class IOManager
 
     bool saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep);
 
+    bool saveMessages();
+
     bool saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
 
     bool prepareOutputDir();

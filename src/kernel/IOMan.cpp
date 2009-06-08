@@ -845,6 +845,11 @@ bool IOManager::prepareOutputDir()
     }
   }
 
+
+  // create empty message file
+  wxFile OutMsgsFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE).c_str()),wxFile::write);
+  OutMsgsFile.Close();
+
   return IsOK;
 }
 
@@ -860,8 +865,6 @@ bool IOManager::prepareOutputs()
   openfluid::core::UnitsList_t* Units;
   openfluid::core::UnitsList_t::iterator UnitIt;
 
-
-  prepareOutputDir();
 
 
   for (unsigned int i=0; i< m_OutputConfig.FileSets.size();i++)
@@ -1107,6 +1110,7 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
 
 
 
+
 // =====================================================================
 // =====================================================================
 
@@ -1312,6 +1316,36 @@ bool IOManager::loadEventsFile(std::string Filename)
 // =====================================================================
 // =====================================================================
 
+
+bool IOManager::saveMessages()
+{
+  std::ostringstream FileContents;
+
+  std::vector<std::string> WMessages = mp_ExecMsgs->getWarningMsgs();
+
+  unsigned int WarningCount = mp_ExecMsgs->getWarningMsgs().size();
+
+  for (unsigned int i=0; i<WarningCount;i++)
+  {
+//    std::cout << "un warning" << std::endl;
+    FileContents << ("WARNING: ") << FormatExecutionMessage(WMessages.at(i)) << std::endl;
+  }
+
+  wxFile OutMsgsFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE).c_str()),wxFile::write_append);
+  OutMsgsFile.Write(_U(FileContents.str().c_str()));
+  OutMsgsFile.Close();
+
+  std::cout << "appelé ici" << std::endl;
+
+  return true;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg)
 {
 
@@ -1319,81 +1353,59 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
   bool IsOK = true;
 
 
-  if (prepareOutputDir())
+  // TODO clean this
+  //int i;
+  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
+
+
+  // ********** text file **********
+
+  std::ostringstream FileContents;
+
+  FileContents << "************************************************************" << "\n";
+  FileContents << "*                                                          *\n";
+  FileContents << "*                     Simulation report                    *" << "\n";
+  FileContents << "*                                                          *\n";
+  FileContents << "************************************************************" << "\n";
+  FileContents << std::endl;
+
+  if (ErrorMsg != "")
   {
-
-    int i;
-    openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
-
-
-    // ********** text file **********
-
-    std::ostringstream FileContents;
-
-    FileContents << "************************************************************" << "\n";
-    FileContents << "*                                                          *\n";
-    FileContents << "*                     Simulation report                    *" << "\n";
-    FileContents << "*                                                          *\n";
-    FileContents << "************************************************************" << "\n";
+    FileContents << ErrorMsg << std::endl;
     FileContents << std::endl;
+  }
 
-    if (ErrorMsg != "")
-    {
-      FileContents << ErrorMsg << std::endl;
-      FileContents << std::endl;
-    }
+  FileContents << ("Simulation ID: ") << ExSI.SimID << std::endl;
+  FileContents << ("Date: ") << _S(ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl;
+  FileContents << ("Computer: ") << _S(wxGetHostName()) << std::endl;
+  FileContents << ("User: ") << _S(wxGetUserId()) << (" (") << _S(wxGetUserName()) << (")") << std::endl;
+  FileContents << std::endl;
+  FileContents << ("Input data set: ") << mp_RunEnv->getInputDir() << std::endl;
+  FileContents << ("Output data set: ") << mp_RunEnv->getOutputDir()  << std::endl;
+  FileContents << std::endl;
 
-    FileContents << ("Simulation ID: ") << ExSI.SimID << std::endl;
-    FileContents << ("Date: ") << _S(ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl;
-    FileContents << ("Computer: ") << _S(wxGetHostName()) << std::endl;
-    FileContents << ("User: ") << _S(wxGetUserId()) << (" (") << _S(wxGetUserName()) << (")") << std::endl;
+  FileContents << "Spatial domain:" << std::endl;
+  for (UnitsIt = mp_Repository->getUnits()->begin(); UnitsIt != mp_Repository->getUnits()->end();++UnitsIt )
+  {
+    FileContents << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
+  }
+
+  if (SimInfo != NULL)
+  {
     FileContents << std::endl;
-    FileContents << ("Input data set: ") << mp_RunEnv->getInputDir() << std::endl;
-    FileContents << ("Output data set: ") << mp_RunEnv->getOutputDir()  << std::endl;
-    FileContents << std::endl;
-
-    FileContents << "Spatial domain:" << std::endl;
-    for (UnitsIt = mp_Repository->getUnits()->begin(); UnitsIt != mp_Repository->getUnits()->end();++UnitsIt )
-    {
-      FileContents << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
-    }
-
-    if (SimInfo != NULL)
-    {
-      FileContents << std::endl;
-      FileContents << ("Simulation period: ") << (SimInfo->getStartTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << std::endl;
-      FileContents << ("Time steps: ") << SimInfo->getStepsCount() << (" of ") << SimInfo->getTimeStep() << (" seconds") << std::endl;
-    }
-
-    FileContents << std::endl;
-    FileContents << ("------------------------------------------------------------") << std::endl;
-    FileContents << std::endl;
+    FileContents << ("Simulation period: ") << (SimInfo->getStartTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << std::endl;
+    FileContents << ("Time steps: ") << SimInfo->getStepsCount() << (" of ") << SimInfo->getTimeStep() << (" seconds") << std::endl;
+  }
 
 
-
-    std::vector<std::string> WMessages = mp_ExecMsgs->getWarningMsgs();
-    int WarningCount = WMessages.size();
-
-    // warnings
-    if ( WarningCount > 0)
-    {
-
-      for (i=0; i<WarningCount;i++)
-      {
-        FileContents << ("WARNING: ") << FormatExecutionMessage(WMessages.at(i)) << std::endl;
-      }
-    }
-    else FileContents << ("NO WARNING") << std::endl;
-    FileContents << std::endl;
-    FileContents << ("------------------------------------------------------------") << std::endl;;
-    FileContents << std::endl;;
+  // write file to disk
+  wxFile SimInfoFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str()),wxFile::write);
+  SimInfoFile.Write(_U(FileContents.str().c_str()));
+  SimInfoFile.Close();
 
 
-    // write file to disk
-    wxFile SimInfoFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str()),wxFile::write);
-    SimInfoFile.Write(_U(FileContents.str().c_str()));
-    SimInfoFile.Close();
-
+  // TODO clean this (delete)
+  /*
 
     // ********** xml file **********
     std::ostringstream XMLFileContents;
@@ -1421,8 +1433,7 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
     wxFile XMLSimInfoFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str()) + wxT(".xml"),wxFile::write);
     XMLSimInfoFile.Write(_U(XMLFileContents.str().c_str()));
     XMLSimInfoFile.Close();
-  }
-  else IsOK = false;
+   */
 
 
   return IsOK;

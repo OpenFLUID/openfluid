@@ -36,6 +36,7 @@ class ExecutionMessages
     std::vector<std::string> m_WarningMsgs;
     std::string m_ErrorMsg;
 
+    unsigned int m_RealWarningsCount;
 
   public:
 
@@ -62,6 +63,10 @@ class ExecutionMessages
     bool isWarningFlag() const { return m_WarningFlag; };
 
     std::vector<std::string> getWarningMsgs() const { return m_WarningMsgs; };
+
+    void doMemRelease() { m_WarningMsgs.clear(); };
+
+    unsigned int getWarningsCount() { return m_RealWarningsCount; };
 
 };
 

@@ -118,6 +118,8 @@ class Engine
 
     bool saveReports(ExtraSimInfos ExSI, std::string ErrorMsg);
 
+    bool saveMessages();
+
     ModelConfig getModelConfig() const { return m_ModelConfig; };
 
     RunConfig getRunConfig() const { return m_RunConfig; };
