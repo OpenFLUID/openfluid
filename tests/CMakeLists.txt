@@ -102,5 +102,14 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckEvents" 
                         "-p${FUNCTIONS_OUTPUT_PATH}")                              
 
+  ADD_TEST(CheckMessages "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckMessages"
+                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckMessages" 
+                         "-p${FUNCTIONS_OUTPUT_PATH}")                              
 
+  ADD_TEST(CheckManyMessages "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                             "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckManyMessages"
+                             "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckManyMessages" 
+                             "-p${FUNCTIONS_OUTPUT_PATH}"
+                             "-z")                              
                            

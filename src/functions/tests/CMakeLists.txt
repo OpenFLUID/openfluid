@@ -16,5 +16,6 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
 
 ADD_FUNCTION(tests.events tests.events)
 ADD_FUNCTION(tests.loops tests.loops)
+ADD_FUNCTION(tests.messages tests.messages)
 
 
