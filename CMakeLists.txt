@@ -63,7 +63,6 @@ IF(wxWidgets_FOUND)
 
 
   CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
-  CONFIGURE_FILE(mhydas.cpack.in mhydas.cpack @ONLY)
   CONFIGURE_FILE(enginewodev.cpack.in enginewodev.cpack @ONLY)
 
   ADD_SUBDIRECTORY(tests)
