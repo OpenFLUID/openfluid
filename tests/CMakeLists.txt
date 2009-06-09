@@ -111,4 +111,10 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
 #                              "-p${FUNCTIONS_OUTPUT_PATH}")
 
 
+  ADD_TEST(OFEFunc2Doc "${EXECUTABLE_OUTPUT_PATH}/ofefunc2doc" 
+                       "${CMAKE_SOURCE_DIR}/src/functions/tests/tests.ofefunc2doc/OFEFunc2DocFunc.cpp"
+                       "-t${CMAKE_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc_tpl.tex"
+                       "-o${TESTS_OUTPUTDATA_PATH}"
+                       "-p")                              
+
                            

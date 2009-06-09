@@ -189,6 +189,22 @@ class OFEFunc2Latex:
               TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_INVARS.append(TmpList)
 
+        for VarType in ['REQUIRED_VAR','USED_VAR','REQUIRED_PREVVAR','USED_PREVVAR'] :
+          if (Line.startswith(VarType) == True) :
+            p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
+            iterator = p.finditer(Line)
+            TmpSplit = VarType.split('_')
+            TmpList = []
+            for match in iterator:
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
+            TmpList.insert(1,TmpSplit[0])
+            # swapping items to keep original order
+            TmpItem = TmpList[2]
+            TmpList[2] = TmpList[0]
+            TmpList[0] = TmpItem
+            self.THE_INVARS.append(TmpList)
+
+
         for VarType in ['SU_PRODUCED_VAR','SU_UPDATED_VAR',
                         'RS_PRODUCED_VAR','RS_UPDATED_VAR',
                         'GU_PRODUCED_VAR','GU_UPDATED_VAR']:
@@ -200,6 +216,23 @@ class OFEFunc2Latex:
             for match in iterator:
               TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_OUTVARS.append(TmpList)
+
+
+        for VarType in ['PRODUCED_VAR','SU_UPDATED_VAR']:
+          if (Line.startswith(VarType) == True) :
+            p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
+            iterator = p.finditer(Line)
+            TmpSplit = VarType.split('_')
+            TmpList = []
+            for match in iterator:
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
+            TmpList.insert(1,TmpSplit[0])
+            # swapping items to keep original order
+            TmpItem = TmpList[2]
+            TmpList[2] = TmpList[0]
+            TmpList[0] = TmpItem                          
+            self.THE_OUTVARS.append(TmpList)
+
 
         for VarType in ['SU_REQUIRED_PROPERTY','SU_USED_PROPERTY','SU_REQUIRED_INICOND','SU_USED_INICOND',
                         'RS_REQUIRED_PROPERTY','RS_USED_PROPERTY','RS_REQUIRED_INICOND','RS_USED_INICOND',
@@ -213,10 +246,36 @@ class OFEFunc2Latex:
               TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
             self.THE_PROPS.append(TmpList)
 
+        for VarType in ['REQUIRED_INPUTDATA','USED_INPUTDATA'] :
+          if (Line.startswith(VarType) == True) :
+            p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
+            iterator = p.finditer(Line)
+            TmpSplit = VarType.split('_')
+            TmpList = []
+            for match in iterator:
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
+            TmpList.insert(1,TmpSplit[0])
+            # swapping items to keep original order
+            TmpItem = TmpList[2]
+            TmpList[2] = TmpList[0]
+            TmpList[0] = TmpItem                          
+            self.THE_PROPS.append(TmpList)
+
+
         for VarType in ['USED_SU_EVENTS','USED_RS_EVENTS','USED_GU_EVENTS'] :
           if (Line.startswith(VarType) == True) :
             TmpSplit = VarType.split('_')
             self.THE_EVENTS.append(TmpSplit[1])
+
+        for VarType in ['USED_EVENTS']:
+          if (Line.startswith(VarType) == True) :
+            p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
+            iterator = p.finditer(Line)
+            TmpList = []
+            for match in iterator:
+              TmpList.append(self.toLateXFriendly(str(match.group()[1:len(match.group())-1])))
+            self.THE_EVENTS.append(TmpList[0])
+
 
         for VarType in ['REQUIRED_EXTRAFILE','USED_EXTRAFILE']:
           if (Line.startswith(VarType) == True) :
@@ -256,7 +315,7 @@ class OFEFunc2Latex:
 # ====================================================
 
   #
-  # generate latex file with collexted information from the source file
+  # generate latex file with collexted information from the souusedrce file
   # uses signature and documentation extractions  
   #
   def generateLatex(self, FunctionDoc, SignatureLines):
@@ -288,7 +347,7 @@ class OFEFunc2Latex:
       self.addEndHandledDataZone()
 
     if len(self.THE_PROPS) != 0 :
-      self.addBeginHandledDataZone("Properties and initial conditions","lllXr")      
+      self.addBeginHandledDataZone("Input data (Properties and initial conditions)","lllXr")      
       for TmpVars in self.THE_PROPS :
         self.THE_HANDLED_DATA = self.THE_HANDLED_DATA + r'\texttt{' + TmpVars[2] + '}&' + TmpVars[1] + '&' + TmpVars[0] + '&' + TmpVars[3] + '&$' + TmpVars[4] + r'$\\' + '\n'
       self.addEndHandledDataZone()
