@@ -173,12 +173,12 @@ TU.1         TU.2
 */
 
 
-  openfluid::core::Unit *TU;
-  openfluid::core::Unit *OU;
-  openfluid::core::Unit *ToUnit;
-  openfluid::core::Unit *FromUnit;
-  openfluid::core::UnitsPtrList_t *ToList;
-  openfluid::core::UnitsPtrList_t *FromList;
+  openfluid::core::Unit *TU = NULL;
+  openfluid::core::Unit *OU = NULL;
+  openfluid::core::Unit *ToUnit = NULL;
+  openfluid::core::Unit *FromUnit = NULL;
+  openfluid::core::UnitsPtrList_t *ToList = NULL;
+  openfluid::core::UnitsPtrList_t *FromList = NULL;
   unsigned int CountInside;
 
   DECLARE_UNITS_ORDERED_LOOP(11)
