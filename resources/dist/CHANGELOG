@@ -1,3 +1,26 @@
+1.4.0
+
+  * Introduced new "generic units" feature
+  * Introduced new "progressive output" feature (on data and execution messages)
+  * Modified data handling primitives (OPENFLUID_xxxx)
+  * Modified declaration of functions signatures 
+  * Added macros for units lists loops, according to the "generic units" features
+  * Added tool for floating point values equality check
+  * Added string conversion methods in openfluid::tools
+  * Removed PluggableFunction derivation from wxObject (obsolete)
+  * Modified hash tables type (from wxHashMap to std::map)
+  * Replaced wxString by std::string where possible
+  * Updated ofefunc2doc tool, according to the new declaration of signatures
+  * Added functions reporting command line option, using wildcard-based pattern matching (-u, --matching-functions-report)
+  * Added pkg-config config file for ofelib
+  * Fixed memory allocation bug in Vector<T>
+  * Fixed some minor bugs
+  * Cleaned source code
+  * Added more tests for validation 
+  * Added quick reference manual
+
+
+
 1.3.1
 
   * Modified management of errors (now uses exceptions)
