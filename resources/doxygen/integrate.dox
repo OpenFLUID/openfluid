@@ -121,20 +121,20 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME("Moussa R., Fabre J.-C.");
   DECLARE_SIGNATURE_AUTHOREMAIL("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr");
 
-  DECLARE_SU_REQUIRED_VAR("water.atm-surf.H.rain","rainfall height on SU","m");
+  DECLARE_REQUIRED_VAR("water.atm-surf.H.rain","SU","rainfall height on SU","m");
 
-  DECLARE_SU_PRODUCED_VAR("water.surf.H.runoff","runoff on the surface of the unit","m");
-  DECLARE_SU_PRODUCED_VAR("water.surf.H.infiltration","infiltration through the surface of the unit","m");
+  DECLARE_PRODUCED_VAR("water.surf.H.runoff","SU","runoff on the surface of the unit","m");
+  DECLARE_PRODUCED_VAR("water.surf.H.infiltration","SU","infiltration through the surface of the unit","m");
 
-  DECLARE_SU_USED_PREVVAR("water.surf.Q.downstream-su","output volume at the outlet of the upstream SUs","m3/s");
+  DECLARE_USED_PREVVAR("water.surf.Q.downstream-su","SU","output volume at the outlet of the upstream SUs","m3/s");
 
-  DECLARE_SU_REQUIRED_PROPERTY("ks","hydraulic conductivity when saturated","m/s");
-  DECLARE_SU_REQUIRED_PROPERTY("thetares","","m3/m3");
-  DECLARE_SU_REQUIRED_PROPERTY("thetasat","","m3/m3");
-  DECLARE_SU_REQUIRED_PROPERTY("betaMS","","");
-  DECLARE_SU_REQUIRED_PROPERTY("hc","","m");
+  DECLARE_REQUIRED_INPUTDATA("ks","SU","hydraulic conductivity when saturated","m/s");
+  DECLARE_REQUIRED_INPUTDATA("thetares","SU","","m3/m3");
+  DECLARE_REQUIRED_INPUTDATA("thetasat","SU","","m3/m3");
+  DECLARE_REQUIRED_INPUTDATA("betaMS","SU","","");
+  DECLARE_REQUIRED_INPUTDATA("hc","SU","","m");
 
-  DECLARE_SU_REQUIRED_INICOND("thetaisurf","","m3/m3");
+  DECLARE_REQUIRED_INPUTDATA("thetaisurf","SU","","m3/m3");
 
   DECLARE_FUNCTION_PARAM("resstep","numerical resolution step for ponding time","");
 
@@ -571,7 +571,7 @@ The compilation process of linked fortran code runs in 3 steps:
 <li>full linkage of the object files (.o) into the simulation function plug-in.
 </ol>      
  \n
-<I>Modified all target in makefile for compiling and linking:</I> 
+<I>Modified 'all' target in makefile for compiling and linking:</I> 
  \code
  all:
 	gfortran -c $(GFLAGS) FSubr.f90
