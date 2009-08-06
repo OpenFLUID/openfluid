@@ -49,13 +49,13 @@ IF(wxWidgets_FOUND)
   ADD_SUBDIRECTORY(src)
 
 
-  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
+  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/copyright"
                 "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
                 "${CMAKE_SOURCE_DIR}/resources/dist/README"   
                 "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
           DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine)
   
-  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/COPYING"
+  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/copyright"
                 "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
                 "${CMAKE_SOURCE_DIR}/resources/dist/README"
                 "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
