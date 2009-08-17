@@ -1,0 +1,191 @@
+\usepackage{xcolor}
+\usepackage{shadow}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{html}
+\usepackage{tikz}
+\usepackage{cmbright}
+\usepackage{listings}
+
+
+% ============================================================================
+
+\newcommand{\OFname}{OpenFLUID}
+\newcommand{\OFEname}{OpenFLUID-Engine}
+\newcommand{\OFBname}{OpenFLUID-Builder}
+\newcommand{\OFWname}{OpenFLUID-Web}
+
+% ============================================================================
+
+
+\definecolor{OFBlue}{HTML}{47617B}
+\definecolor{blockblue}{rgb}{0.85,0.90,1}
+\definecolor{blockred}{rgb}{1,0.85,0.85}
+\definecolor{blockgrey}{gray}{0.85}
+
+% ============================================================================
+
+
+% This redefinition of the \cleardoublepage command provides
+% "chapterverso";
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+  \hbox{}
+  \thispagestyle{empty}
+  \newpage
+  \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+
+% ============================================================================
+
+
+\newcommand{\coverpage}[3]{
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw [fill=OFBlue] (-4,4) rectangle (-0.5,-29.7);
+    \draw (7.8,-2.0) node {\includegraphics[width=120mm]{common/graphics/openfluid.png}};
+    \draw (16, -15) node [anchor=east] {\huge{\textbf{#1}}};
+    \draw (16, -16) node [anchor=east] {\Large{\textbf{#2}}};
+    \draw (1,-24) node [anchor=west] {\includegraphics[width=50mm]{common/graphics/LISAH.png}};
+    \draw (16,-24) node [anchor=east,text centered,text width=4cm]{\Large{\textit{#3}}};
+ \end{tikzpicture}
+\end{titlepage}
+
+}
+
+% ============================================================================
+
+
+\newcommand{\codeblock}[1]{
+ \begin{latexonly}
+ 	\colorbox{blockgrey}{
+ 		\begin{minipage}[t]{1\linewidth}
+			\vspace{0.2em}
+         
+          \texttt{#1}
+ 		\end{minipage}
+ 	}
+\end{latexonly}
+}
+
+% ============================================================================
+
+\begin{htmlonly}
+\renewcommand{\codeblock}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TD BGCOLOR="#eeeeee" ALIGN="left" VALIGN="top">
+\end{rawhtml}
+	\texttt{#1}
+\begin{rawhtml}
+</TD></TR></TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
+% ============================================================================
+
+
+\newcommand{\codeblockfromfile}[1]{
+ \begin{latexonly}
+ 	\colorbox{blockgrey}{
+ 		\begin{minipage}[t]{1\linewidth}
+			\vspace{0.2em}
+         
+         {\footnotesize\verbatiminput{#1}\normalsize}
+          
+ 		\end{minipage}
+ 	}
+\end{latexonly}
+}
+
+% ============================================================================
+
+
+\begin{htmlonly}
+\renewcommand{\codeblockfromfile}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD BGCOLOR="#eeeeee" ALIGN="left" VALIGN="middle">
+\end{rawhtml}
+	\verbatiminput{#1}
+\begin{rawhtml}
+</TD></TR></TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
+
+% ============================================================================
+
+
+\newcommand{\noteblock}[1]{
+\begin{latexonly}
+	\colorbox{blockblue}{
+		\begin{minipage}[t]{1\linewidth}
+			\vspace{0.2em}
+			\sffamily{#1}
+		\end{minipage}
+	}
+\end{latexonly}
+}
+
+
+% ============================================================================
+
+
+
+\begin{htmlonly}
+\renewcommand{\noteblock}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD BGCOLOR="#E6F0FF" ALIGN="left" VALIGN="middle">
+\end{rawhtml}
+	\sffamily{#1}
+\begin{rawhtml}
+</TD></TR>
+</TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+
+
+% ============================================================================
+
+
+\newcommand{\warnblock}[1]{
+\begin{latexonly}
+	\colorbox{blockred}{
+		\begin{minipage}[t]{1\linewidth}
+			\vspace{0.2em}
+			{\sffamily{#1}}
+		\end{minipage}
+	}
+\end{latexonly}
+}
+
+% ============================================================================
+
+
+\begin{htmlonly}
+\renewcommand{\warnblock}[1]{
+\begin{rawhtml}
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD ALIGN="left" VALIGN="middle" BGCOLOR="#FFE6E6">
+\end{rawhtml}
+	\sffamily{#1}
+\begin{rawhtml}
+<BR></TD></TR>
+</TABLE><BR>
+\end{rawhtml}
+
+}
+\end{htmlonly}
+

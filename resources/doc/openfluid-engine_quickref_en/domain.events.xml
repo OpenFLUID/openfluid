@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <calendar>
+  
+    <event name="" category="test" unitclass="SU" unitID="1" date="1999-12-31 23:59:59">
+      <info key="when" value="before"/>
+      <info key="where" value="1"/>
+      <info key="var1" value="1.13"/>
+      <info key="var2" value="EADGBE"/>
+    </event>
+    <event name="" category="test" unitclass="RS" unitID="1" date="1999-12-01 12:00:00">
+      <info key="when" value="before"/>
+      <info key="where" value="1"/>
+      <info key="var3" value="152.27"/>
+      <info key="var4" value="XYZ"/>
+    </event>        
+    <event name="" category="test" unitclass="SU" unitID="2" date="1999-12-01 12:00:00">
+      <info key="when" value="before"/>
+      <info key="where" value="7"/>
+      <info key="var1" value="1.15"/>
+      <info key="var2" value="EADG"/>
+    </event>    
+
+  </calendar>
+</openfluid>

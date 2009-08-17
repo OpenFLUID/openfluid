@@ -1,0 +1,139 @@
+\chapter{File formats}
+
+This part of this manual describes the file formats. Refer to the "Usage" part of this manual to run the simulation.
+
+\section{Spatial domain definition (*.ddef.xml)}
+
+The spatial domain is defined by a set of spatial units that are connected each others.
+These spatial units are defined by a numerical identifier (ID) and a class.
+They also include information about the preocessing order of the unit in the class.
+Each unit can be connected to zero or many other units from the same or a different unit class.\\
+\noindent This information is defined through XML files that must end with the
+suffix \texttt{.ddef.xml}. All the files in the dataset named using this suffix will be read and considered as spatial domain definition files, and must be
+structured following these rules:
+\begin{itemize}
+  \item These files are XML files
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<domain>} tag
+  \item Inside the \texttt{<domain>} tag, there must be a \texttt{<definition>} tag
+  \item Inside the \texttt{<definition>} tag, there must be a set of \texttt{<unit>} tags 
+  \item Each \texttt{<unit>} tag must bring an \texttt{<ID>} attribute giving
+  the identifier of the unit, a \texttt{<class>} attribute giving the class of
+  the unit, a \texttt{<pcsorder>} attribute giving the process order in the
+  class of the unit \texttt{<class>}
+  \item Each \texttt{<unit>} tag may include zero or many \texttt{<to>} tags giving
+  the outgoing connections to other units. Each \texttt{<to>} tag must bring an \texttt{<ID>} attribute giving
+  the identifier of the connected unit and a \texttt{<class>} attribute giving the class of
+  the connected unit  
+\end{itemize}
+
+\codeblockfromfile{openfluid-engine_quickref_en/domain.ddef.xml}
+
+\bigskip
+
+\section{Flux model definition (model.xml)}
+
+The flux model is defined by an ordered set of simulations functions that will be plugged to the \OFEname \ kernel.
+It defines the model for the simulation.\\
+\noindent The flux model must be defined in a file named \texttt{model.xml},
+and must be structured following these rules:
+\begin{itemize}
+  \item The \texttt{model.xml} file is an XML file
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<model>} tag
+  \item Inside the \texttt{<domain>} tag, there must be a set
+  of \texttt{<function>} tags 
+  \item Each \texttt{<function>} tag must bring a \texttt{<fileID>} attr\item ibute giving
+  the identifier of the simulation function; the value of the \texttt{<fileID>} attribute must match the file name (without extension)
+  of a reachable and pluggable simulation function.
+  \item Each \texttt{<function>} tag may include zero to many \texttt{<param>} tags giving
+  parameters to the function. Each \texttt{<param>} tag must bring a \texttt{<name>} attribute giving
+  the name of the parameter and a \texttt{<value>} attribute giving the value of the parameter. These parameters can be scalar or vector of integer values, floating point values, string values. In case of vector, the values of the vector are separated by a ; (semicolon).  
+\end{itemize}
+
+\warnblock{The order of the simulation functions in the \texttt{model.xml} is very important : the same order will be used for executions on the same time step}
+
+\codeblockfromfile{openfluid-engine_quickref_en/model.xml}
+
+\bigskip
+
+\section{Spatial domain input data (*.ddata.xml)}
+
+The spatial domain input data are static data brought by units, usually properties and initial conditions for each unit.\\
+\noindent This information is defined through XML files that must end with the suffix \texttt{.ddata.xml}.
+All the files in the dataset named using this suffix will be read and considered as spatial domain input data files, and must be
+structured following these rules:
+\begin{itemize}
+  \item These files are XML files
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<domain>} tag
+  \item Inside the \texttt{<domain>} tag, there must be one (and only one) \texttt{<inputdata>} tag
+  \item The \texttt{<inputdata>} tag must bring a \texttt{<unitclass>} attribute giving the unit class to which input data must be attached 
+  \item Inside the \texttt{<inputdata>} tag, there must be one (and only one) \texttt{<columns>} tag
+  \item The \texttt{<columns>} tag must bring a \texttt{<order>} attribute defining the order of the columns in the \texttt{<data>} tag.
+  \item Inside the \texttt{<inputdata>} tag, there must be one (and only one) \texttt{<data>} tag containing the input data as row-column text. As a rule, the first column is the ID of the unit in the class given through the \texttt{<inputdata>} tag, the following columns are values following the column order given through the \texttt{<columns>} tag.   
+\end{itemize}
+
+\codeblockfromfile{openfluid-engine_quickref_en/domain.ddata.xml}
+
+\bigskip
+
+\section{Discrete events (*.events.xml)}
+
+The discrete events are events occuring on units, and that can be processed by simulation functions. 
+\noindent They are defined through calendars in XML files that must end with the suffix \texttt{.events.xml}.
+All the files in the dataset named using this suffix will be read and considered as spatial domain input data files, and must be
+structured following these rules:
+\begin{itemize}
+  \item These files are XML files
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<calendar>} tag
+  \item Inside the \texttt{<calendar>} tag, there must be a set of \texttt{<event>} tags 
+  \item Each \texttt{<event>} tag must bring a \texttt{<unitID>} and a \texttt{<unitclass>} attribute giving the unit on which occurs the event, a \texttt{<date>} attribute giving the date and time of the event. The date format must be "YYYY-MM-DD hh:mm:ss". 
+  The \texttt{<event>} tag may bring a \texttt{<name>} attribute and a a \texttt{<category>} attribute, but they are actually ignored.
+  \item Each \texttt{<event>} tag may include zero to many \texttt{<info>} tags.
+  \item Each \texttt{<info>} tag give information about the event and must bring a \texttt{<key>} attribute giving the name (the "key") of the info, and a \texttt{<value>} attribute giving the value for this key.        
+\end{itemize}  
+  
+\codeblockfromfile{openfluid-engine_quickref_en/domain.events.xml}
+
+\bigskip
+
+\section{Run configuration(run.xml)}
+
+The configuration of the simulation gives the simulation period, the data exchange time step, and the optionnal progressive output parameters.\\
+\noindent The configuration of the simulation must be defined in a file named \texttt{run.xml},
+and must be structured following these rules:
+\begin{itemize}
+  \item The \texttt{run.xml} file is an XML file
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<run>} tag
+  \item Inside the \texttt{<run>} tag, there must be a \texttt{<deltat>} tag giving the data exchange time step (in seconds) 
+  \item Inside the \texttt{<run>} tag, there must be a \texttt{<period>} tag giving the simulation period.
+  \item The \texttt{<period>} tag must bring a \texttt{begin} and an \texttt{end} attributes, giving the dates of the beginning and the end of the simulation period.
+  The dates formats for these attributes must be "YYYY-MM-DD hh:mm:ss"  
+  \item Inside the \texttt{<run>} tag, there may be a \texttt{<progressout>} tag giving the configuration for the progressive output mode.
+  This \texttt{<progressout>} tag must bring a \texttt{packet} attribute giving the size (in number of time steps) of the saved packets, and a \texttt{keep} attribute giving the number of time steps kept in memory.   
+\end{itemize}
+
+\codeblockfromfile{openfluid-engine_quickref_en/run.xml}
+
+\bigskip
+
+\section{Outputs configuration(output.xml)}
+
+The configuration of the simulation outputs gives the description of the saved results.\\
+\noindent The configuration of the outputs must be defined in a file named \texttt{output.xml}, and must be structured following these rules:
+\begin{itemize}
+  \item The \texttt{run.xml} file is an XML file
+  \item The root tag must be \texttt{<openfluid>}
+  \item Inside the \texttt{<openfluid>} tag, there must be a \texttt{<output>} tag
+  \item Inside the \texttt{<output>} tag, there must be one to many \texttt{<files>} tags, defining files formats for saved data.
+  \item These \texttt{<files>} tags must bring a \texttt{colsep} attribute defining the separator strings between columns, a \texttt{dtformat} attribute defining the date time format used (it could be 6cols, iso or user defined using strftime() format), a \texttt{commentchar} attribute defining the string prefixing lines of comments in output files.       
+  \item Inside the \texttt{<files>} tags, there must be one to many \texttt{<set>} tags. Each \texttt{<set>} tag will lead to a set of files.
+  \item Each \texttt{<set>} tag must bring a \texttt{name} attribute defining the name of the set (this will be used as a suffix for generated output files), a \texttt{unitsclass} attribute and a \texttt{unitsIDs} attribute defining the processed units, a \texttt{vars} attribute defining the processed variables. The IDs for the \texttt{unitsIDs} attribute are semicolon-separated, the wildcard character ('*') can be used to include all units IDs for the given class.  The variables names for the \texttt{vars} attribute are semicolon-separated, the wildcard character ('*') can be used to include all variables for the given class.   
+\end{itemize}
+
+
+\codeblockfromfile{openfluid-engine_quickref_en/output.xml}
+
