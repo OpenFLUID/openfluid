@@ -10,7 +10,7 @@
 #include "ColTextParser.h"
 #include "openfluid-tools.h"
 
-#include <math.h>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 namespace openfluid { namespace tools {
 
@@ -173,7 +173,7 @@ bool DistributeInterpolate::loadDataAsSerie(std::string FilePath, SeriePreproces
           FileParser.getDoubleValue(i,6,&Value))
       {
 
-        if (isnan(Value) != 1 && isinf(Value) != 1)
+        if (!boost::math::isnan(Value) && !boost::math::isinf(Value))
         {
 
           ZeDT = openfluid::core::DateTime(Year,Month,Day,Hour,Min,Sec);
@@ -184,7 +184,7 @@ bool DistributeInterpolate::loadDataAsSerie(std::string FilePath, SeriePreproces
           else ValueToAdd = Value;
 
 
-          if (!isnan(ValueToAdd) && !isinf(ValueToAdd))
+          if (!boost::math::isnan(ValueToAdd) && !boost::math::isinf(ValueToAdd))
           {
             if (!Serie->addValue(ZeDT,ValueToAdd))
             {

@@ -22,16 +22,15 @@ INCLUDE(CMake.in.config)
 INCLUDE(CMake.in.sub)
 
 FIND_PACKAGE(Doxygen)
-FIND_PACKAGE(wxWidgets)
+FIND_PACKAGE(wxWidgets REQUIRED)
 FIND_PACKAGE(PythonInterp)
 FIND_PACKAGE(LATEX)
-#FIND_PACKAGE(Boost COMPONENTS date_time)
+FIND_PACKAGE(Boost REQUIRED)
 
-#IF(wxWidgets_FOUND AND Boost_FOUND)
-IF(wxWidgets_FOUND)
+IF(wxWidgets_FOUND AND Boost_FOUND)
   INCLUDE(${wxWidgets_USE_FILE})
   INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS})
-#  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
   FILE(MAKE_DIRECTORY "${LIBRARY_OUTPUT_PATH}")
   FILE(MAKE_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
@@ -73,7 +72,7 @@ IF(wxWidgets_FOUND)
   MESSAGE(STATUS "Compiler flags added for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
   MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
 
-ENDIF(wxWidgets_FOUND)
+ENDIF(wxWidgets_FOUND AND Boost_FOUND)
 
 
 # Doxygen-built docs for core developers
