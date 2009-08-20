@@ -9,6 +9,8 @@ ADD_DEFINITIONS(-DOFELIB_REVISION=${ENGINE_VERSION_PATCH})
 
 CONFIGURE_FILE(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 
+INCLUDE(${wxWidgets_USE_FILE})
+INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(openfluid-engine
                xml/tinystr.cpp xml/tinyxml.cpp xml/tinyxmlerror.cpp xml/tinyxmlparser.cpp

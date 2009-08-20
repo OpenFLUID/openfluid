@@ -11,6 +11,8 @@
 #include "openfluid-tools.h"
 
 #include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/filesystem.hpp>
+//using boost::filesystem;
 
 namespace openfluid { namespace tools {
 
@@ -69,7 +71,10 @@ bool DistributeInterpolate::loadAndPrepareData()
 
 
   // loading of data sources
-  if (!DSFile.load(m_DataDir + _S(wxFILE_SEP_PATH) + m_DataSourcesFilename) && DSFile.getIDs().size() <= 1)
+
+  boost::filesystem::path DSFilePath(m_DataDir + "/" + m_DataSourcesFilename);
+
+  if (!DSFile.load(DSFilePath.string()) && DSFile.getIDs().size() <= 1)
   {
     throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading file " + m_DataSourcesFilename);
     return false;
@@ -79,9 +84,11 @@ bool DistributeInterpolate::loadAndPrepareData()
     std::vector<int> IDs = DSFile.getIDs();
 
 
+    boost::filesystem::path SourcefilePath;
     for (unsigned int i=0;i<IDs.size();i++)
     {
-      if (!wxFileExists(_U(m_DataDir.c_str()) + wxFILE_SEP_PATH + _U(DSFile.getSource(IDs[i]).c_str())))
+      SourcefilePath = boost::filesystem::path(m_DataDir + "/" + DSFile.getSource(IDs[i]));
+      if (!boost::filesystem::exists(SourcefilePath))
       {
         throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading "+ DSFile.getSource(IDs[i]) + " file as data source");
         return false;
@@ -94,7 +101,7 @@ bool DistributeInterpolate::loadAndPrepareData()
         Serie = new openfluid::tools::DateTimeSerie();
         IInterpolatedSerie = new openfluid::tools::IndexedSerie();
 
-        if (loadDataAsSerie(m_DataDir + _S(wxFILE_SEP_PATH) + DSFile.getSource(IDs[i]),m_SPpcs, Serie))
+        if (loadDataAsSerie(SourcefilePath.string(),m_SPpcs, Serie))
         {
 
           // interpolate in time for simulation
@@ -126,7 +133,9 @@ bool DistributeInterpolate::loadAndPrepareData()
     }
 
 
-    if (!loadDistributionAndDistribute(m_DataDir + _S(wxFILE_SEP_PATH) + m_DistributionFilename))
+    boost::filesystem::path DistribFilePath(m_DataDir + "/" + m_DistributionFilename);
+
+    if (!loadDistributionAndDistribute(DistribFilePath.string()))
     {
       return false;
     }
@@ -230,7 +239,7 @@ bool DistributeInterpolate::loadDistributionAndDistribute(std::string FilePath)
   ColumnTextParser DistriFileParser("%");
 
 
-  if (wxFileExists(_U(FilePath.c_str())))
+  if (boost::filesystem::exists(boost::filesystem::path(FilePath)))
   {
 
     if ((DistriFileParser.loadFromFile(FilePath)) && (DistriFileParser.getColsCount() == 2) && (DistriFileParser.getLinesCount() >0))

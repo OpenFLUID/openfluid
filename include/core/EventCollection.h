@@ -11,7 +11,6 @@
 
 #include "DistributedEvent.h"
 #include <list>
-#include <wx/datetime.h>
 
 
 namespace openfluid { namespace core {

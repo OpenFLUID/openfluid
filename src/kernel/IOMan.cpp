@@ -12,6 +12,7 @@
 #include <sstream>
 #include <wx/tokenzr.h>
 #include <wx/dir.h>
+#include <wx/file.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
 #include <wx/datetime.h>

@@ -10,12 +10,9 @@
 #define __DATASRCFILE_H__
 
 
-#include <wx/string.h>
-#include <wx/arrstr.h>
 #include <vector>
 #include <map>
-#include <wx/hashmap.h>
-
+#include <string>
 
 
 namespace openfluid { namespace tools {

@@ -325,12 +325,6 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 // =====================================================================
 // =====================================================================
 
-// Conversion of wxString
-
-#define WX2FSTRING(str) strdup((str).mb_str(wxConvUTF8))
-#define WX2FSTRINGLEN(str) strlen((str).mb_str(wxConvUTF8))
-#define WX2FSTRINGFULL(str) strdup((str).mb_str(wxConvUTF8)),strlen((str).mb_str(wxConvUTF8))
-
 
 // Conversion of std::string
 

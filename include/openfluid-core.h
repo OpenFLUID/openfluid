@@ -22,7 +22,6 @@
 #endif
 
 
-#include <wx/hashmap.h>
 
 #include "core/CoreRepository.h"
 #include "core/Unit.h"

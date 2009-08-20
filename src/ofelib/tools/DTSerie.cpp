@@ -280,9 +280,7 @@ bool DateTimeSerie::getInterpolatedValue(openfluid::core::DateTime SearchedDT, o
     }
     else
     {
-//      x = wxTimeSpan(SearchedDT-LowerPair.DT).GetSeconds().ToLong();
       x = SearchedDT.diffInSeconds(LowerPair.DT);
-      //x1 = wxTimeSpan(UpperPair.DT-LowerPair.DT).GetSeconds().ToLong();
       x1 = UpperPair.DT.diffInSeconds(LowerPair.DT);
       y0 = LowerPair.Value;
       y1 = UpperPair.Value;

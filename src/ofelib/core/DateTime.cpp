@@ -8,6 +8,7 @@
 
 #include "DateTime.h"
 #include <iostream>
+#include <string.h>
 
 
 
@@ -94,40 +95,6 @@ bool DateTime::setFromISOString(std::string DateTimeStr)
   return set(Year, Month, Day, Hour, Min, Sec);
 
 }
-
-// =====================================================================
-// =====================================================================
-
-/*
-bool DateTime::setFromString(wxString DateTimeStr, wxString Format)
-{
-
-  int Year;
-  int Month;
-  int Day;
-  int Hour;
-  int Min;
-  int Sec;
-
-
-  struct tm TM;
-
-
-  if (strptime(DateTimeStr.mb_str(wxConvUTF8), Format.mb_str(wxConvUTF8), &TM) != NULL)
-  {
-    Year = TM.tm_year+1900;
-    Month = TM.tm_mon +1;
-    Day = TM.tm_mday;
-    Hour = TM.tm_hour;
-    Min = TM.tm_min;
-    Sec = TM.tm_sec;
-
-    return set(Year, Month, Day, Hour, Min, Sec);
-  }
-  else return false;
-
-}
-*/
 
 // =====================================================================
 // =====================================================================
@@ -519,22 +486,6 @@ bool DateTime::isSameTime(DateTime DT)
           ((m_TM.tm_sec) == DT.getSecond()));
 }
 
-// =====================================================================
-// =====================================================================
-
-
-bool DateTime::setFromwxDateTime(wxDateTime DT)
-{
-  return set(DT.GetYear(),DT.GetMonth()+1,DT.GetDay(),DT.GetHour(), DT.GetMinute(),DT.GetSecond());
-}
-
-// =====================================================================
-// =====================================================================
-
-wxDateTime DateTime::getAswxDateTime()
-{
-  return wxDateTime(getDay(),wxDateTime::Month(wxDateTime::Jan + getMonth()-1),getYear(),getHour(),getMinute(),getSecond());
-}
 
 
 

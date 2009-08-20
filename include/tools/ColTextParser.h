@@ -10,8 +10,7 @@
 
 
 #include <vector>
-#include <wx/textfile.h>
-
+#include <string>
 
 namespace openfluid { namespace tools {
 

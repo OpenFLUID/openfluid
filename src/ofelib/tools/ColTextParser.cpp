@@ -9,9 +9,12 @@
 #include "ColTextParser.h"
 #include "openfluid-tools.h"
 
-#include <wx/tokenzr.h>
 
 #include <iostream>
+#include <fstream>
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
+
 
 
 // =====================================================================
@@ -53,14 +56,7 @@ std::vector<std::string> ColumnTextParser::tokenizeLine(std::string Line)
 {
   std::vector<std::string> NewLine;
 
-  wxStringTokenizer Tokenizer(_U(Line.c_str()), _U(m_Delimiter.c_str()));
-
-  while (Tokenizer.HasMoreTokens())
-  {
-    wxString Token = Tokenizer.GetNextToken();
-    NewLine.push_back(_S(Token));
-  }
-
+  TokenizeString(Line,NewLine,m_Delimiter);
 
   return NewLine;
 }
@@ -101,13 +97,11 @@ bool ColumnTextParser::checkContents()
 
 bool ColumnTextParser::isCommentLineStr(std::string LineStr)
 {
-  wxString LineStrWX = _U(LineStr.c_str());
 
   if (m_CommentSymbol.length() > 0)
   {
-    LineStrWX = LineStrWX.Trim(false);
-    if (LineStrWX.StartsWith(_U(m_CommentSymbol.c_str())))
-      return true;
+    boost::trim_left(LineStr);
+    return boost::starts_with(LineStr,m_CommentSymbol.c_str());
   }
 
   return false;
@@ -123,13 +117,9 @@ bool ColumnTextParser::isCommentLineStr(std::string LineStr)
 bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
 {
 
-  wxString LineStrWX = _U(LineStr.c_str());
+  boost::trim(LineStr);
 
-  LineStrWX = LineStrWX.Trim(true).Trim(false);
-
-  if (LineStrWX.Length() == 0) return true;
-  else return false;
-
+  return (LineStr.length() == 0);
 }
 
 
@@ -142,9 +132,8 @@ bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
 bool ColumnTextParser::loadFromFile(std::string Filename)
 {
 
-  int LinesCount;
-  wxString StrLine;
-  wxTextFile *ColumnFile;
+  std::string StrLine;
+  boost::filesystem::path ColumnFilename;
 
   if (m_Contents.size()> 0 ) m_Contents.clear();
 
@@ -152,35 +141,26 @@ bool ColumnTextParser::loadFromFile(std::string Filename)
   m_ColsCount = 0;
 
 
-  ColumnFile = new wxTextFile(_U(Filename.c_str()));
+  ColumnFilename = boost::filesystem::path(Filename);
 
-  // check if file exists and opens it
-  if (!ColumnFile->Exists()) return false;
-  if (!ColumnFile->Open()) return false;
 
-  LinesCount = ColumnFile->GetLineCount();
+  std::ifstream FileContent(ColumnFilename.string().c_str());
 
-  if (LinesCount == 0) return false;
 
-  // identifies file type, i.e. DOS/MAC/UNIX/...
-  ColumnFile->GuessType();
+  // check if file exists and if it is "openable"
+  if (!boost::filesystem::exists(ColumnFilename)) return false;
+  if (!FileContent) return false;
+
+  //  TODO check if this is interesting : if (LinesCount == 0) return false;
 
   // parse and loads file contents
-
-
-  // processing of the file except the last line
-  for (StrLine=ColumnFile->GetFirstLine();!ColumnFile->Eof();StrLine = ColumnFile->GetNextLine())
+  while(std::getline(FileContent,StrLine))
   {
-    if (!isCommentLineStr(_S(StrLine)) && !isEmptyLineStr(_S(StrLine))) m_Contents.push_back(tokenizeLine(_S(StrLine)));
+    if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) m_Contents.push_back(tokenizeLine(StrLine));
   }
 
-  // processing of the last line
-  if (!isCommentLineStr(_S(StrLine)) && !isEmptyLineStr(_S(StrLine))) m_Contents.push_back(tokenizeLine(_S(StrLine)));
-
-
-  ColumnFile->Close();
-
-  delete ColumnFile;
+  //  TODO check if this is required : process last line after the loop;
+  //  if (!isCommentLineStr(_S(StrLine)) && !isEmptyLineStr(_S(StrLine))) m_Contents.push_back(tokenizeLine(_S(StrLine)));
 
 
   return checkContents();
@@ -200,22 +180,25 @@ bool ColumnTextParser::setFromString(std::string Contents, unsigned int ColumnsN
 
   */
 
+  std::vector<std::string> Tokens;
+  std::vector<std::string>::iterator it;
 
   bool IsOK = true;
 
-  wxStringTokenizer Tkz(_U(Contents.c_str()), _U(m_Delimiter.c_str()));
+  TokenizeString(Contents,Tokens,m_Delimiter);
 
-  if ((Tkz.CountTokens() % ColumnsNbr) == 0)
+  if (Tokens.size() % ColumnsNbr == 0)
   {
 
     if (m_Contents.size() > 0) m_Contents.clear();
 
     std::vector<std::string> LineStr;
 
-    while (Tkz.HasMoreTokens() && IsOK)
+    it = Tokens.begin();
+    while (it != Tokens.end() && IsOK)
     {
       // add to the current line
-      LineStr.push_back(_S(Tkz.GetNextToken()));
+      LineStr.push_back(*it);
 
       if (LineStr.size() == ColumnsNbr)
       {
@@ -223,8 +206,10 @@ bool ColumnTextParser::setFromString(std::string Contents, unsigned int ColumnsN
         // if current line has ColumnsNbr columns, it is added to the contents
         m_Contents.push_back(LineStr);
 
-        if (Tkz.CountTokens() > 0) LineStr.clear();
+        LineStr.clear();
       }
+
+      it++;
     }
 
     // more tokens processed but not a complete line. not good!

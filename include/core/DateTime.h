@@ -12,7 +12,6 @@
 
 #include <sys/types.h>
 #include <time.h>
-#include <wx/datetime.h>
 #include <string>
 
 namespace openfluid { namespace core {
@@ -30,7 +29,6 @@ typedef unsigned long long rawtime_t;
   Sources:
   \li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968). http://www.decimaltime.hynes.net/index.html
   \li http://en.wikipedia.org/wiki/Julian_day
-  \li wxDateTime documentation http://docs.wxwidgets.org/
 
   <BR>
 
@@ -156,17 +154,6 @@ class DateTime
     */
     bool setFromISOString(std::string DateTimeStr);
 
-    /**
-      Sets the date and time from a formatted string (using strptime formatting)
-    */
-    //bool setFromString(std::string DateTimeStr, std::string Format);
-
-
-    /**
-      Sets the date and time from a wxDateTime object
-    */
-    bool setFromwxDateTime(wxDateTime DT);
-
 
     /**
       Returns Year (4 digits)
@@ -236,11 +223,6 @@ class DateTime
       \return a string
     */
     std::string getTimeAsISOString();
-
-    /**
-      Returns date-time as a wxdateTime object
-    */
-    wxDateTime getAswxDateTime();
 
 
     /**

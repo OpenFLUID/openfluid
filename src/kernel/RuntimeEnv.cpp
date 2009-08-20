@@ -9,7 +9,6 @@
 
 #include "RuntimeEnv.h"
 #include "config.h"
-#include "AppTools.h"
 
 #include <wx/stdpaths.h>
 

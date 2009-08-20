@@ -9,9 +9,6 @@
 #ifndef __DISTRIBINTERP_H__
 #define __DISTRIBINTERP_H__
 
-#include <wx/string.h>
-#include <wx/hashmap.h>
-#include <wx/datetime.h>
 
 #include "openfluid-core.h"
 #include "DTSerie.h"
