@@ -73,6 +73,11 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
                              "-p${FUNCTIONS_OUTPUT_PATH}"
                              "-z")                              
 
+  ADD_TEST(CheckTools "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckTools"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckTools" 
+                        "-p${FUNCTIONS_OUTPUT_PATH}")
+
 #  ADD_TEST(BasicRunQuiet "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
 #                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
 #                    "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.BasicRunQuiet"                     

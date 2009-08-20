@@ -18,5 +18,7 @@ ADD_FUNCTION(tests.events tests.events)
 ADD_FUNCTION(tests.loops tests.loops)
 ADD_FUNCTION(tests.messages tests.messages)
 ADD_FUNCTION(tests.ofefunc2doc tests.ofefunc2doc)
+ADD_FUNCTION(tests.tools tests.tools)
+
 
 
