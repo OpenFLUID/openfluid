@@ -6,7 +6,8 @@
 
 #include "openfluid-base.h"
 #include "openfluid-core.h"
-
+#include "openfluid-tools.h"
+#include <boost/filesystem.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -146,6 +147,43 @@ bool ToolsFunction::checkConsistency()
 
 bool ToolsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
+
+  openfluid::tools::ColumnTextParser CTParser("#");
+  std::string InputDir;
+  double DoubleValue;
+  std::string StrValue;
+
+  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
+  boost::filesystem::path FileName(InputDir + "/" + "columnfile.txt");
+
+  if (boost::filesystem::exists(FileName))
+  {
+    CTParser.loadFromFile(FileName.string());
+
+    if (CTParser.getColsCount() != 5)
+      OPENFLUID_RaiseError("tests.tools","wrong columns number in " + FileName.string());
+
+    if (!CTParser.getDoubleValue(2,1,&DoubleValue))
+      OPENFLUID_RaiseError("tests.tools","error reading double value (3,2) in " + FileName.string());
+
+    if (!openfluid::tools::IsVeryClose(DoubleValue,1.2))
+      OPENFLUID_RaiseError("tests.tools","wrong double value for (3,2) in " + FileName.string());
+
+    if (!CTParser.getStringValue(0,0,&StrValue))
+      OPENFLUID_RaiseError("tests.tools","error reading string value (0,0) in " + FileName.string());
+
+    if (StrValue != "5")
+      OPENFLUID_RaiseError("tests.tools","wrong string value for (0,0) in " + FileName.string());
+
+
+    if (CTParser.getStringValue(5,5,&StrValue))
+      OPENFLUID_RaiseError("tests.tools","error : found value out of range (5,5) in " + FileName.string());
+  }
+  else OPENFLUID_RaiseError("tests.tools","file " + FileName.string() + " not found!");
+
+
+
+
 
   return true;
 }
