@@ -8,6 +8,6 @@ IF(BUILD_FORTRAN_FUNCTIONS)
   SET_TARGET_PROPERTIES(tests.fortran 
                         PROPERTIES PREFIX "" SUFFIX "${CMAKE_SHARED_LIBRARY_SUFFIX}mpi" 
                         LIBRARY_OUTPUT_DIRECTORY "${FUNCTIONS_OUTPUT_PATH}")
-  TARGET_LINK_LIBRARIES(tests.fortran ofelib ${wxWidgets_LIBRARIES} gfortran)
+  TARGET_LINK_LIBRARIES(tests.fortran ofelib gfortran)
 
 ENDIF(BUILD_FORTRAN_FUNCTIONS)
