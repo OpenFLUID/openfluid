@@ -1,3 +1,14 @@
+/***copyright>=========================================================
+
+  OpenFLUID - Software environment for modelling Fluxes In Landscapes
+
+  This file is a part of OpenFLUID software
+  http://www.umr-lisah.fr/openfluid
+  Copyright (c) INRA
+  See the file "copyright" for the full license governing this code.
+
+=========================================================<copyright***/
+
 
 #ifndef __INPUTDATA_H__
 #define __INPUTDATA_H__
