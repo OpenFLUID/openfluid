@@ -544,8 +544,6 @@ bool OpenFLUIDApp::OnInit()
 
   mp_PlugMan = new PluginManager(mp_ExecMsgs,mp_RunEnv);
 
-  wxLog::SetTimestamp(NULL);
-
 
 
   // =========== command line parsing ===========

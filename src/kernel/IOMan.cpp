@@ -22,12 +22,13 @@
 #include "AppTools.h"
 #include "config.h"
 #include <sstream>
+#include <fstream>
+#include <wx/wx.h>
 #include <wx/tokenzr.h>
-#include <wx/dir.h>
-#include <wx/file.h>
-#include <wx/filefn.h>
-#include <wx/filename.h>
 #include <wx/datetime.h>
+
+#include <boost/filesystem.hpp>
+
 
 IOManager* IOManager::mp_Singleton = NULL;
 
@@ -109,8 +110,6 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         {
           Config->BeginDate = ZeDate;
 
-//          std::cerr << Config->BeginDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;
-
         }
         else
         {
@@ -132,9 +131,6 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         if (ZeDate.setFromISOString(Str))
         {
           Config->EndDate = ZeDate;
-
-//          std::cerr << Config->EndDate.Format(wxT("%Y-%m-%d %H:%M:%S")).mb_str(wxConvUTF8) << std::endl;
-
         }
         else
         {
@@ -225,8 +221,6 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
   TiXmlDocument LoadDoc;
   TiXmlElement* Child, *Child2;
-
-  wxString Str;
 
   FunctionConfig* FConf;
 
@@ -418,10 +412,12 @@ bool IOManager::loadDomainFromFiles()
   unsigned int i=0;
 
   std::string CurrentFile;
+  boost::filesystem::path CurrentFilePath;
 
   while (IsOK && i<FilesToLoad.size())
   {
-    CurrentFile = _S(wxFileName(_U(FilesToLoad[i].c_str())).GetFullName());
+    CurrentFilePath = boost::filesystem::path(FilesToLoad[i]);
+    CurrentFile = CurrentFilePath.leaf();
     loadDomainFile(CurrentFile, &ToUnitsList);
     i++;
   }
@@ -459,7 +455,6 @@ bool IOManager::loadDomainFromFiles()
 
 bool IOManager::loadInputDataFile(std::string Filename)
 {
-//  std::cout << "Loading file " << FullFilename.mb_str(wxConvUTF8) << std::endl;
 
   TiXmlDocument LoadDoc;
   std::string Data;
@@ -567,7 +562,9 @@ bool IOManager::loadInputDataFile(std::string Filename)
         }
         else
         {
-          mp_ExecMsgs->addWarning("IO Manager",UnitClass + " " + _S(wxString::Format(wxT("%d"),ID)) + " does not exist (" + FullFilename + ")");
+          std::string TmpStr;
+          openfluid::tools::ConvertValue(ID,&TmpStr);
+          mp_ExecMsgs->addWarning("IO Manager",UnitClass + " " + TmpStr + " does not exist (" + FullFilename + ")");
         }
         i++;
       }
@@ -605,10 +602,12 @@ bool IOManager::loadInputDataFromFiles()
 
 
   std::string CurrentFile;
+  boost::filesystem::path CurrentFilePath;
 
   while (IsOK && i<FilesToLoad.size())
   {
-    CurrentFile = _S(wxFileName(_U(FilesToLoad[i].c_str())).GetFullName());
+    CurrentFilePath = boost::filesystem::path(FilesToLoad[i]);
+    CurrentFile = CurrentFilePath.leaf();
     IsOK = loadInputDataFile(CurrentFile);
     i++;
   }
@@ -767,7 +766,9 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
            << aUnit->getID() << "_" << m_OutputConfig.FileSets[FileOutputIndex].Sets[OutputSetIndex].Name;
    */
 
-  wxFile TFile;
+  std::ofstream OutFile;
+  boost::filesystem::path OutFilePath;
+
   std::string ScalarsFilename;
   std::string VectorFilename;
   std::string FileContent;
@@ -790,10 +791,10 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
       FileContent = generateOutputScalarsFileHeader("unknown", aUnit->getClass(), aUnit->getID(),ScalarsFilename,
           m_OutputConfig.FileSets[FileOutputIndex].Sets[OutputSetIndex].ScalarVariables,CommentChar);
 
-
-    TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(ScalarsFilename.c_str()),wxFile::write);
-    TFile.Write(_U(FileContent.c_str()));
-    TFile.Close();
+    OutFilePath = boost::filesystem::path(OutputDir+"/"+ScalarsFilename);
+    OutFile.open(OutFilePath.string().c_str(),std::ios::out);
+    OutFile << FileContent;
+    OutFile.close();
   }
 
 
@@ -816,9 +817,10 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
       FileContent = generateOutputVectorFileHeader("unknown", aUnit->getClass(), aUnit->getID(),VectorFilename,
           VarNames[j],CommentChar);
 
-      TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(VectorFilename.c_str()),wxFile::write);
-      TFile.Write(_U(FileContent.c_str()));
-      TFile.Close();
+      OutFilePath = boost::filesystem::path(OutputDir+"/"+VectorFilename);
+      OutFile.open(OutFilePath.string().c_str(),std::ios::out);
+      OutFile << FileContent;
+      OutFile.close();
 
     }
 
@@ -838,14 +840,13 @@ bool IOManager::prepareOutputDir()
   bool IsOK = true;
 
 
-  if (!wxDirExists(_U(mp_RunEnv->getOutputDir().c_str())))
+  boost::filesystem::path OutputDirPath(mp_RunEnv->getOutputDir());
+
+
+  if (!boost::filesystem::exists(OutputDirPath))
   {
-#ifdef __WXMSW__
-    wxMkDir(mp_RunEnv->getOutputDir().c_str());
-#else
-    wxMkDir(mp_RunEnv->getOutputDir().c_str(),0777);
-#endif
-    if (!wxDirExists(_U(mp_RunEnv->getOutputDir().c_str())))
+    boost::filesystem::create_directory(OutputDirPath);
+    if (!boost::filesystem::exists(OutputDirPath))
       throw openfluid::base::OFException("kernel","IOManager::prepareOutputDir","Error creating output directory");
 
   }
@@ -860,8 +861,12 @@ bool IOManager::prepareOutputDir()
 
 
   // create empty message file
-  wxFile OutMsgsFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE).c_str()),wxFile::write);
-  OutMsgsFile.Close();
+
+  std::ofstream OutMsgFile;
+
+  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE));
+  OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::out);
+  OutMsgFile.close();
 
   return IsOK;
 }
@@ -1000,12 +1005,10 @@ bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::
   openfluid::core::TimeStep_t BeginStep, EndStep;
   mp_MemMon->getMemoryReleaseRange(CurrentStep,WithoutKeep,&BeginStep,&EndStep);
 
-//  std::cout << "Saving to disk from " << BeginStep << " to " << EndStep << std::endl;
 
   for (unsigned int i=0; i< m_OutputConfig.FileSets.size();i++)
   {
 
-    //    std::cout << "   sets de sortie fichier: " << m_OutputConfig.FileSets[i].Sets.size() << std::endl;
 
     for (unsigned int j=0; j< m_OutputConfig.FileSets[i].Sets.size();j++)
     {
@@ -1049,7 +1052,9 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
     std::string OutputDir)
 {
 
-  wxFile TFile;
+  std::ofstream OutFile;
+  boost::filesystem::path OutFilePath;
+
   std::string ScalarsFilename;
   std::string VectorFilename;
   std::string FileContent;
@@ -1080,10 +1085,10 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
           m_OutputConfig.FileSets[FileOutputIndex].DateFormat,
           ColSep);
 
-
-    TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(ScalarsFilename.c_str()),wxFile::write_append);
-    TFile.Write(_U(FileContent.c_str()));
-    TFile.Close();
+    OutFilePath = boost::filesystem::path(OutputDir+"/"+ScalarsFilename);
+    OutFile.open(OutFilePath.string().c_str(),std::ios::app);
+    OutFile << FileContent;
+    OutFile.close();
   }
 
 
@@ -1109,9 +1114,10 @@ bool IOManager::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputI
           m_OutputConfig.FileSets[FileOutputIndex].DateFormat,
           ColSep);
 
-      TFile.Open(_U(OutputDir.c_str()) + wxFILE_SEP_PATH + _U(VectorFilename.c_str()),wxFile::write_append);
-      TFile.Write(_U(FileContent.c_str()));
-      TFile.Close();
+      OutFilePath = boost::filesystem::path(OutputDir+"/"+VectorFilename);
+      OutFile.open(OutFilePath.string().c_str(),std::ios::app);
+      OutFile << FileContent;
+      OutFile.close();
 
     }
 
@@ -1199,10 +1205,13 @@ bool IOManager::loadEventsFromFiles()
   unsigned int i=0;
 
   std::string CurrentFile;
+  boost::filesystem::path CurrentFilePath;
 
   while (IsOK && i<FilesToLoad.size())
   {
-    CurrentFile = _S(wxFileName(_U(FilesToLoad[i].c_str())).GetFullName());
+    CurrentFilePath = boost::filesystem::path(FilesToLoad[i]);
+    CurrentFile = CurrentFilePath.leaf();
+
     IsOK =  loadEventsFile(CurrentFile);
     i++;
   }
@@ -1227,15 +1236,14 @@ bool IOManager::loadEventsFile(std::string Filename)
   std::string UnitIDStr;
   std::string InfoKey, InfoValue;
 
-  std::string FullFilename = mp_RunEnv->getInputFullPath(Filename);
+  boost::filesystem::path FullFilename(mp_RunEnv->getInputFullPath(Filename));
 
-
-  if (wxFileExists(_U(FullFilename.c_str())))
+  if (boost::filesystem::exists(FullFilename))
   {
     TiXmlDocument Doc;
     TiXmlElement* Child, *Child2, *Child3;
 
-    if (Doc.LoadFile(FullFilename.c_str()))
+    if (Doc.LoadFile(FullFilename.string().c_str()))
     {
 
       TiXmlHandle DocHandle(&Doc);
@@ -1343,9 +1351,13 @@ bool IOManager::saveMessages()
     FileContents << ("WARNING: ") << openfluid::base::ExecutionMessages::FormatMessage(WMessages.at(i)) << std::endl;
   }
 
-  wxFile OutMsgsFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE).c_str()),wxFile::write_append);
-  OutMsgsFile.Write(_U(FileContents.str().c_str()));
-  OutMsgsFile.Close();
+  std::ofstream OutMsgFile;
+
+  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE));
+  OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::app);
+  OutMsgFile << FileContents.str();
+  OutMsgFile.close();
+
 
   return true;
 
@@ -1409,9 +1421,10 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
 
 
   // write file to disk
-  wxFile SimInfoFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str()),wxFile::write);
-  SimInfoFile.Write(_U(FileContents.str().c_str()));
-  SimInfoFile.Close();
+
+  std::ofstream SimInfoFile(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str(),std::ios::out);
+  SimInfoFile << FileContents.str();
+  SimInfoFile.close();
 
 
   // TODO clean this (delete)

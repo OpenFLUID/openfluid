@@ -17,8 +17,6 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <wx/datetime.h>
-
 #include "RuntimeEnv.h"
 #include "config.h"
 

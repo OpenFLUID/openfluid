@@ -25,7 +25,6 @@
 #include "openfluid-core.h"
 #include "openfluid-tools.h"
 #include "RuntimeEnv.h"
-#include <wx/arrstr.h>
 
 
 // =====================================================================

@@ -21,13 +21,14 @@
 #define __RUNTIMEENV_H__
 
 
-#include <wx/wx.h>
+
 #include <wx/datetime.h>
 #include "openfluid-tools.h"
 #include "openfluid-base.h"
 
 #include "AppTools.h"
 
+#include <boost/filesystem/path.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -107,9 +108,9 @@ class RuntimeEnvironment
 
 //    std::string getAppDir() const { return m_AppDir; };
 
-    std::string getInputFullPath(std::string Filename) const { return m_InputDir + _S(wxFILE_SEP_PATH) + Filename; };
+    std::string getInputFullPath(std::string Filename) const { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
 
-    std::string getOutputFullPath(std::string Filename) const { return m_OutputDir + _S(wxFILE_SEP_PATH) + Filename; };
+    std::string getOutputFullPath(std::string Filename) const { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     std::string getPluginFullPath(std::string Filename);
 

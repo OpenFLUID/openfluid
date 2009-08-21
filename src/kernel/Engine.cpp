@@ -25,12 +25,7 @@
 #include <iomanip>
 
 #include <math.h>
-
-#include <wx/regex.h>
-
-#include <wx/listimpl.cpp>
-
-
+#include <boost/filesystem.hpp>
 
 
 // =====================================================================
@@ -792,7 +787,9 @@ bool Engine::checkExtraFilesConsistency()
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
-      if (!wxFileExists(_U(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]).c_str())))
+
+      boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
+      if (!boost::filesystem::exists(ReqExtraFilePath))
       {
         throw openfluid::base::OFException("kernel","Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentFunction->Signature->ID + " not found");
         return false;
