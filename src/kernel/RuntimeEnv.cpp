@@ -26,10 +26,9 @@
 
 #include <iostream>
 
-RuntimeEnvironment::RuntimeEnvironment(std::string AppDir)
+RuntimeEnvironment::RuntimeEnvironment()
 {
 
-  m_AppDir = AppDir;
   m_UserDataDir = _S(wxStandardPaths::Get().GetUserDataDir()) + _S(wxFILE_SEP_PATH) + "engine";
 
   m_OutputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_OUTDIR;

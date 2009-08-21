@@ -59,7 +59,6 @@ class RuntimeEnvironment
     std::string m_OutputDir;
     std::string m_InputDir;
     std::string m_TraceDir;
-    std::string m_AppDir;
     std::string m_UserDataDir;
 
     std::vector<std::string> m_PlugsDirs;
@@ -95,11 +94,6 @@ class RuntimeEnvironment
     RuntimeEnvironment();
 
     /**
-      Constructor
-    */
-    RuntimeEnvironment(std::string AppDir);
-
-    /**
       Destructor
     */
     ~RuntimeEnvironment();
@@ -114,7 +108,7 @@ class RuntimeEnvironment
 
     void setDateTimeOutputDir();
 
-    std::string getAppDir() const { return m_AppDir; };
+//    std::string getAppDir() const { return m_AppDir; };
 
     std::string getInputFullPath(std::string Filename) const { return m_InputDir + _S(wxFILE_SEP_PATH) + Filename; };
 

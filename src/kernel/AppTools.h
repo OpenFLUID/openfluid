@@ -50,13 +50,6 @@
 
 
 /**
-  Get current program executable path
-  \return a std::string containing the path, empty if indetermined
-
-*/
-std::string GetExecutablePath();
-
-/**
   Get list of files with specified extension contained in the specified dir
   \param[in] DirToExplore the directory to explore
   \param[in] Ext the file extension

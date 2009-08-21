@@ -538,7 +538,7 @@ bool OpenFLUIDApp::OnInit()
 
   SetAppName(_U(OPENFLUID_APPNAME.c_str()));
 
-  mp_RunEnv = new RuntimeEnvironment(_S(wxPathOnly(_U(GetExecutablePath().c_str()))));
+  mp_RunEnv = new RuntimeEnvironment();
 
   mp_ExecMsgs = new openfluid::base::ExecutionMessages();
 
