@@ -322,7 +322,7 @@ bool Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message)
 {
 
-  // TODO check this
+  // TODO check this (method to check simulation vars production)
 /*
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsClassesIter;
   openfluid::core::UnitsList_t::const_iterator UnitsIter;
@@ -602,7 +602,7 @@ bool Engine::checkDataConsistency()
 {
 
   bool IsOK = true;
-  // TODO enable this
+  // TODO enable this (check data and var name against nomenclature)
 /*
   PluginsList::Node *FuncNode = NULL;
   openfluid::base::SignatureHandledData HData;
@@ -777,8 +777,6 @@ bool Engine::checkDataConsistency()
 
 bool Engine::checkExtraFilesConsistency()
 {
-  // TODO enable this
-
 
   PluginsList::iterator FuncIt;
   openfluid::base::SignatureHandledData HData;
@@ -973,21 +971,9 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
 
-
-
-
-  // TODO check that
-  //
-  /*if (mp_RunEnv->isTraceMode())
-  {
-    if (!mp_IOMan->prepareTraceDir(mp_CoreData)) return false;
-  }*/
-
   mp_IOMan->prepareOutputDir();
   if (mp_RunEnv->isWriteResults())
   {
-    // TODO delete this
-    //    if (!mp_IOMan->prepareOutputDir()) return false;
     mp_IOMan->prepareOutputs();
   }
 
@@ -1010,7 +996,7 @@ bool Engine::run()
 
 
   // Check for simulation vars production before init
-  // TODO enable this
+  // TODO enable this (vars production at before init)
   /*if (!checkSimulationVarsProduction(0, &ProdMessage))
   {
     throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation initilialization : " + std::string(ProdMessage.mb_str(wxConvUTF8)));
@@ -1063,7 +1049,7 @@ bool Engine::run()
 
   mp_ExecMsgs->resetWarningFlag();
 
-  // TODO check that
+  // TODO check this (vars production at after init)
   // check simulation vars production after init
   if (!checkSimulationVarsProduction(0,&ProdMessage))
   {
@@ -1161,9 +1147,6 @@ bool Engine::run()
       std::cout << "[OK] --" << std::endl << std::endl ;
     }
 
-
-    // TODO check that
-    //if (mp_RunEnv->isTraceMode()) mp_IOMan->saveTrace(mp_CoreData,mp_SimStatus->getCurrentStep(), mp_SimStatus->getCurrentTime());
 
   } while (mp_SimStatus->switchToNextStep());  // end time loop
 

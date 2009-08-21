@@ -585,13 +585,10 @@ bool OpenFLUIDApp::OnInit()
     // update of run environment information
 	if (Parser.Found(wxT("i"),&TmpStr)) mp_RunEnv->setInputDir(RemoveTrailingSlashes(_S(TmpStr)));
     if (Parser.Found(wxT("o"),&TmpStr)) mp_RunEnv->setOutputDir(RemoveTrailingSlashes(_S(TmpStr)));
-    if (Parser.Found(wxT("m"),&TmpStr)) mp_RunEnv->setTraceDir(RemoveTrailingSlashes(_S(TmpStr)));
     if (Parser.Found(wxT("a"))) mp_RunEnv->setDateTimeOutputDir();
     if (Parser.Found(wxT("c"))) mp_RunEnv->setClearOutputDir(true);
     if (Parser.Found(wxT("q"))) mp_RunEnv->setQuietRun(true);
     if (Parser.Found(wxT("s"))) mp_RunEnv->setWriteSimReport(false);
-    // TODO enable this?
-    //    if (Parser.Found(wxT("t"))) mp_RunEnv->setTraceMode(true);
     if (Parser.Found(wxT("v"))) mp_RunEnv->setVerboseRun(true);
     if (Parser.Found(wxT("z"))) mp_RunEnv->setWriteResults(false);
     if (Parser.Found(wxT("no-varname-check"))) mp_RunEnv->setCheckVarNames(false);
@@ -617,7 +614,6 @@ void OpenFLUIDApp::printEnvInfos()
   std::cout << "Functions search path(s):" << std::endl;
   for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
   if ((mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) && (mp_RunEnv->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
-  if (mp_RunEnv->isTraceMode()) std::cout << "Trace mode enabled" << std::endl;
   if (mp_RunEnv->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
   if (mp_RunEnv->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
   if (!mp_RunEnv->isCheckVarNames()) std::cout << "Variable names checking disabled" << std::endl;

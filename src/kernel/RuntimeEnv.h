@@ -58,7 +58,6 @@ class RuntimeEnvironment
   private:
     std::string m_OutputDir;
     std::string m_InputDir;
-    std::string m_TraceDir;
     std::string m_UserDataDir;
 
     std::vector<std::string> m_PlugsDirs;
@@ -72,8 +71,6 @@ class RuntimeEnvironment
     bool m_WriteResults;
 
     bool m_WriteSimReport;
-
-    bool m_EnableTrace;
 
     bool m_CheckVarNames;
 
@@ -120,12 +117,6 @@ class RuntimeEnvironment
 
     std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
 
-    std::string getTraceDir() const { return m_TraceDir; };
-
-    std::string getTraceFullPath(std::string Filename) const { return (m_TraceDir + _S(wxFILE_SEP_PATH) + Filename); };
-
-    void setTraceDir(const std::string TraceDir) { m_TraceDir = TraceDir; mp_FuncEnv->setValue("dir.trace",m_TraceDir); };
-
     bool isClearOutputDir() const { return m_ClearOutputDir; };
 
     void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir); };
@@ -145,10 +136,6 @@ class RuntimeEnvironment
     bool isWriteSimReport() const { return m_WriteSimReport; };
 
     void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
-
-    bool isTraceMode() const { return m_EnableTrace; };
-
-    void setTraceMode(bool Trace) { m_EnableTrace = Trace; mp_FuncEnv->setValue("mode.trace",m_EnableTrace); };
 
     bool isCheckVarNames() const { return m_CheckVarNames; };
 

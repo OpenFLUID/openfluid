@@ -33,7 +33,6 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   m_OutputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_OUTDIR;
   m_InputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_INDIR;
-  m_TraceDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_TRACEDIR;
 
 
   m_ClearOutputDir = false;
@@ -41,7 +40,6 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_VerboseRun = false;
   m_WriteResults = true;
   m_WriteSimReport = true;
-  m_EnableTrace = false;
   m_CheckVarNames = true;
 
   m_ProgressiveOutput = false;
@@ -50,14 +48,12 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   mp_FuncEnv->setValue("dir.input",m_InputDir);
   mp_FuncEnv->setValue("dir.output",m_OutputDir);
-  mp_FuncEnv->setValue("dir.trace",m_TraceDir);
 
   mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir);
   mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
   mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
   mp_FuncEnv->setValue("mode.saveresults",m_WriteResults);
   mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport);
-  mp_FuncEnv->setValue("mode.trace",m_EnableTrace);
   mp_FuncEnv->setValue("mode.checkvarnames",m_CheckVarNames);
 
 
