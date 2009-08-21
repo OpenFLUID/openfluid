@@ -70,7 +70,6 @@ std::string ExecutionMessages::FormatMessage(std::string Message)
 
   std::vector<std::string> Parts;
 
-  //Parts = SplitString(Message,";");
   openfluid::tools::TokenizeString(Message,Parts,";");
 
   Formatted = Parts[3] + " (message sent by " + Parts[0];
