@@ -27,6 +27,8 @@
 #include <dirent.h>
 #include <limits.h>
 #include <time.h>
+#include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "AppTools.h"
 #include <openfluid-tools.h>
@@ -40,30 +42,30 @@
 std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath, bool ExtIncludeDot)
 {
 
-
-  bool Continue;
   std::vector<std::string> FileList;
 
-  wxString FileRoot = wxT("*.");
-  if (ExtIncludeDot) FileRoot = wxT("*");
 
-  if (wxDirExists(_U(DirToExplore.c_str())))
+  std::string FileExt = Ext;
+  if (!ExtIncludeDot) FileExt = "."+Ext;
+
+  boost::filesystem::path PathToExplore(DirToExplore);
+
+  if (boost::filesystem::is_directory(PathToExplore))
   {
 
-    wxDir DirManager(_U(DirToExplore.c_str()));
+    boost::filesystem::directory_iterator it;
 
-    if (DirManager.IsOpened())
+    std::string FoundFile;
+
+    for (it = boost::filesystem::directory_iterator(PathToExplore);it != boost::filesystem::directory_iterator(); ++it)
     {
-      // listage des plugins presents
 
-      wxString FoundFile;
+      // lists files with specified extension
 
-      Continue = DirManager.GetFirst(&FoundFile,FileRoot+_U(Ext.c_str()));
-      while (Continue)
+      if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileExt))
       {
-        if (WithPath) FileList.push_back(DirToExplore+_S(wxFILE_SEP_PATH)+_S(FoundFile));
-        else FileList.push_back(_S(FoundFile));
-        Continue = DirManager.GetNext(&FoundFile);
+        if (WithPath) FileList.push_back(it->string());
+        else FileList.push_back(it->path().leaf());
       }
     }
   }
