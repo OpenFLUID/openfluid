@@ -24,7 +24,6 @@
 #include <time.h>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-#include "boost/date_time/posix_time/posix_time.hpp"
 
 #include "AppTools.h"
 #include <openfluid-tools.h>
@@ -84,37 +83,6 @@ std::vector<std::string> SplitString(const std::string StrToSplit, const std::st
   boost::split(SplitParts, StrToSplit, boost::is_any_of(SepString));
 
   return SplitParts;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-std::string GenerateSimulationID()
-{
-
-  std::string BaseStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  std::string IDStr = "";
-
-
-  boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
-  boost::gregorian::date today = now.date();
-
-
-  IDStr = boost::gregorian::to_iso_string(today) + "-";
-
-  srand(time(NULL));
-
-
-  for (int i=0;i<6;i++)
-  {
-    IDStr = IDStr + BaseStr[rand() % 26];
-  }
-
-
-  return IDStr;
-
 }
 
 

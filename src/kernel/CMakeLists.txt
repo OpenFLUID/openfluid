@@ -19,7 +19,7 @@ ADD_EXECUTABLE(openfluid-engine
                main.cpp
               )
 
-TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
 
 INSTALL(TARGETS openfluid-engine
         RUNTIME DESTINATION ${BIN_INSTALL_PATH} COMPONENT engine)

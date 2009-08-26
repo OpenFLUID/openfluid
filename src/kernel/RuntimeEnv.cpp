@@ -21,8 +21,9 @@
 #include "config.h"
 
 #include <wx/stdpaths.h>
-
 #include <iostream>
+#include <boost/filesystem/operations.hpp>
+
 
 RuntimeEnvironment::RuntimeEnvironment()
 {
@@ -77,8 +78,24 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_PlugsDirs.push_back(_S(wxStandardPaths::Get().GetPluginsDir()) + _S(wxFILE_SEP_PATH) + OPENFLUID_PLUGINS_SUBDIR);
   #endif
 
+  // set ignition date time
+  m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
 
 
+  // build simulation ID
+  std::string BaseStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  m_SimulationID = boost::gregorian::to_iso_string(m_IgnitionDateTime.date()) + "-";
+
+  srand(time(NULL));
+
+  for (int i=0;i<6;i++)
+  {
+    m_SimulationID = m_SimulationID + BaseStr[rand() % 26];
+  }
+
+
+  m_EffectiveSimulationDuration = boost::posix_time::time_duration();
 
 
 }
@@ -99,8 +116,7 @@ RuntimeEnvironment::~RuntimeEnvironment()
 
 void RuntimeEnvironment::setDateTimeOutputDir()
 {
-  wxDateTime Now = wxDateTime::Now();
-  m_OutputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + "OPENFLUID." + _S(Now.Format(wxT("%Y%m%d-%H%M%S"))) + ".OUT";
+  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + "OPENFLUID." + boost::posix_time::to_iso_string(m_IgnitionDateTime) + ".OUT").string();
 }
 
 
@@ -124,21 +140,19 @@ void RuntimeEnvironment::addExtraPluginsPaths(std::string ColonSeparatedPaths)
 std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
 {
   std::string PlugFullPath = "";
-  std::string TmpPath;
+  boost::filesystem::path TmpPath;
 
   unsigned int i = 0;
 
   while ((PlugFullPath.length() == 0) && (i<m_PlugsDirs.size()))
   {
 
-    TmpPath = m_PlugsDirs[i] + _S(wxFILE_SEP_PATH) + Filename;
+    TmpPath = boost::filesystem::path(m_PlugsDirs[i] + "/" + Filename);
 
-    if (wxFileExists(_U(TmpPath.c_str()))) PlugFullPath = TmpPath;
+    if (boost::filesystem::exists(TmpPath)) PlugFullPath = TmpPath.string();
 
     i++;
   }
-
-
 
   return PlugFullPath;
 }

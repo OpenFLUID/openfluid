@@ -25,10 +25,10 @@
 #include <fstream>
 #include <wx/wx.h>
 #include <wx/tokenzr.h>
-#include <wx/datetime.h>
 
 #include <boost/filesystem.hpp>
-
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 
 IOManager* IOManager::mp_Singleton = NULL;
 
@@ -160,7 +160,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
     if (Child != NULL)
     {
       Str = Child->GetText();
-      if (Str != "" && (Str.find(" ") == std::string::npos)) Config->SimulationID = Str;
+      if (Str != "" && (Str.find(" ") == std::string::npos)) mp_RunEnv->setSimulationID(Str);
     }
 
     // -------- Progressive output ----------------
@@ -952,7 +952,7 @@ std::string IOManager::generateOutputScalarsFileHeader(const std::string Simulat
 
   GeneratedHeader << CommentChar << " simulation ID: " << SimulationID << "\n"
   << CommentChar << " file: " << Filename << "\n"
-  << CommentChar << " date: " << _S(wxDateTime::Now().Format()) << "\n"
+  << CommentChar << " date: " << boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << "\n"
   << CommentChar << " unit: " << UnitClass << " #" << UnitID << "\n"
   << CommentChar << " scalar variables order (after date and time columns):";
 
@@ -979,7 +979,7 @@ std::string IOManager::generateOutputVectorFileHeader(std::string SimulationID, 
 
   GeneratedHeader << CommentChar << " simulation ID: " << SimulationID << "\n"
   << CommentChar << " file: " << Filename << "\n"
-  << CommentChar << " date: " << _S(wxDateTime::Now().Format()) << "\n"
+  << CommentChar << " date: " << boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << "\n"
   << CommentChar << " unit: " << UnitClass << " #" << UnitID << "\n"
   << CommentChar << " vector variable: " << VectorName << "\n"
   << CommentChar << " the vector values are ordered left to right, from index 0 to size-1 (after date and time columns)" << "\n" << "\n";
@@ -1368,7 +1368,7 @@ bool IOManager::saveMessages()
 // =====================================================================
 
 
-bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg)
+bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg)
 {
 
 
@@ -1397,8 +1397,8 @@ bool IOManager::saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::Simulat
     FileContents << std::endl;
   }
 
-  FileContents << ("Simulation ID: ") << ExSI.SimID << std::endl;
-  FileContents << ("Date: ") << _S(ExSI.StartTime.Format(wxT("%Y-%m-%d %H:%M:%S"))) << std::endl;
+  FileContents << ("Simulation ID: ") << mp_RunEnv->getSimulationID() << std::endl;
+  FileContents << ("Date: ") <<  boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << std::endl;
   FileContents << ("Computer: ") << _S(wxGetHostName()) << std::endl;
   FileContents << ("User: ") << _S(wxGetUserId()) << (" (") << _S(wxGetUserName()) << (")") << std::endl;
   FileContents << std::endl;

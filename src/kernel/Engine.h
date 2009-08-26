@@ -123,9 +123,9 @@ class Engine
 
     bool run();
 
-    bool saveResults(ExtraSimInfos ExSI);
+//    bool saveResults();
 
-    bool saveReports(ExtraSimInfos ExSI, std::string ErrorMsg);
+    bool saveReports(std::string ErrorMsg);
 
     bool saveMessages();
 

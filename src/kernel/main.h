@@ -20,14 +20,14 @@
 
 #include <wx/app.h>
 #include <wx/cmdline.h>
-#include <wx/datetime.h>
 
 #include "openfluid-base.h"
 #include "openfluid-core.h"
-
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "Engine.h"
 #include "PluginManager.h"
+#include "RuntimeEnv.h"
 
 
 // =====================================================================
@@ -71,18 +71,17 @@ class OpenFLUIDApp : public wxAppConsole
 
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
-    ExtraSimInfos m_ExSI;
-
     openfluid::core::CoreRepository* mp_CoreData;
 
     Engine *mp_Engine;
 
     PluginManager *mp_PlugMan;
 
-    wxDateTime m_TotalStartTime;
-    wxDateTime m_TotalEndTime;
-    wxDateTime m_EffectiveStartTime;
-    wxDateTime m_EffectiveEndTime;
+    boost::posix_time::ptime m_FullStartTime;
+    boost::posix_time::ptime m_FullEndTime;
+    boost::posix_time::ptime m_EffectiveStartTime;
+    boost::posix_time::ptime m_EffectiveEndTime;
+
 
     void printlnExecStatus();
 

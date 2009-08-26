@@ -143,8 +143,6 @@ Engine::Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::Execu
   mp_IOMan->setExecutionMessages(ExecMsgs);
   mp_IOMan->setRunEnvironment(RunEnv);
 
-  m_ModelConfig.SimulationID = "";
-
   mp_SimStatus = NULL;
 
 }
@@ -1237,10 +1235,10 @@ bool Engine::saveResults(ExtraSimInfos ExSI)
 // =====================================================================
 // =====================================================================
 
-bool Engine::saveReports(ExtraSimInfos ExSI, std::string ErrorMsg)
+bool Engine::saveReports(std::string ErrorMsg)
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveSimulationInfos(ExSI,(openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
+  return (mp_IOMan->saveSimulationInfos((openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
 }
 
 

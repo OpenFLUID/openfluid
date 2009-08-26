@@ -22,33 +22,17 @@
 
 
 
-#include <wx/datetime.h>
 #include "openfluid-tools.h"
 #include "openfluid-base.h"
 
 #include "AppTools.h"
 
 #include <boost/filesystem/path.hpp>
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-   Extra simulation info for post-simulation reporting
- */
-struct ExtraSimInfos
-{
-  wxDateTime StartTime;
-  wxTimeSpan RunTime;
-  std::string SimID;
-};
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 // =====================================================================
 // =====================================================================
-
-
 
 
 /**
@@ -83,6 +67,11 @@ class RuntimeEnvironment
 
     openfluid::base::FunctionEnvironment* mp_FuncEnv;
 
+    boost::posix_time::ptime m_IgnitionDateTime;
+
+    std::string m_SimulationID;
+
+    boost::posix_time::time_duration m_EffectiveSimulationDuration;
 
   public:
 
@@ -154,6 +143,15 @@ class RuntimeEnvironment
 
     unsigned int getProgressiveOutputPacket() const  { return m_ProgOutPacket; };
 
+    boost::posix_time::ptime getIgnitionDateTime() const { return m_IgnitionDateTime; };
+
+    std::string getSimulationID() const {return m_SimulationID; };
+
+    void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
+
+    boost::posix_time::time_duration getEffectiveSimulationDuration() const { return m_EffectiveSimulationDuration; };
+
+    void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration) { m_EffectiveSimulationDuration = TimeDuration; };
 };
 
 

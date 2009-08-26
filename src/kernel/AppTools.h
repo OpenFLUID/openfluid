@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 #include <openfluid-core.h>
-
+#include <wx/wx.h>
 
 // =====================================================================
 // =====================================================================
@@ -65,8 +65,6 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
   \return a wxArraySTring
 */
 std::vector<std::string> SplitString(const std::string StrToSplit, const std::string SepString,  bool ReturnsEmpty = false);
-
-std::string GenerateSimulationID();
 
 bool EmptyDirectoryRecursively(const std::string DirPath);
 

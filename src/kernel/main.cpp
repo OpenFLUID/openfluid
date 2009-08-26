@@ -67,9 +67,6 @@ bool OpenFLUIDApp::loadData()
 
   printlnExecStatus();
 
-  if (mp_Engine->getRunConfig().SimulationID != "") m_ExSI.SimID = mp_Engine->getRunConfig().SimulationID;
-  else m_ExSI.SimID = GenerateSimulationID();
-
   return ExecStatus;
 }
 
@@ -109,11 +106,11 @@ bool OpenFLUIDApp::runSimulation()
   std::cout << std::endl << "**** Running simulation ****" << std::endl;
   std::cout.flush();
 
-  m_EffectiveStartTime = wxDateTime::Now();
+  m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
 
   ExecStatus = mp_Engine->run();
 
-  m_EffectiveEndTime = wxDateTime::Now();
+  m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
 
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;
 //  else  std::cout << "**** Simulation aborted ****" << std::endl;
@@ -135,7 +132,7 @@ bool OpenFLUIDApp::saveSimulationReports(std::string ErrorMsg)
   std::cout << "* Saving simulation report... ";
   std::cout.flush();
 
-  ExecStatus = mp_Engine->saveReports(m_ExSI,ErrorMsg);
+  ExecStatus = mp_Engine->saveReports(ErrorMsg);
 
   std::cout << "[Done]" << std::endl;
 
@@ -225,7 +222,7 @@ void OpenFLUIDApp::printDataInfos()
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
   std::cout << std::endl;
-  std::cout << "Simulation ID: " << m_ExSI.SimID << std::endl;
+  std::cout << "Simulation ID: " << mp_RunEnv->getSimulationID() << std::endl;
   std::cout << std::endl;
 
 
@@ -631,8 +628,7 @@ int OpenFLUIDApp::OnRun()
 
     try
     {
-      m_TotalStartTime = wxDateTime::Now();
-      m_ExSI.StartTime = m_TotalStartTime;
+      m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
       mp_CoreData = openfluid::core::CoreRepository::getInstance();
       mp_CoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
@@ -661,9 +657,7 @@ int OpenFLUIDApp::OnRun()
       mp_ExecMsgs->resetWarningFlag();
 
 
-      wxTimeSpan EffSimTime = m_EffectiveEndTime.Subtract(m_EffectiveStartTime);
-      m_ExSI.RunTime = EffSimTime;
-
+      mp_RunEnv->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
 
       if (mp_RunEnv->isWriteSimReport())
@@ -673,18 +667,18 @@ int OpenFLUIDApp::OnRun()
       }
 
 
-      m_TotalEndTime = wxDateTime::Now();
+      m_FullEndTime = boost::posix_time::microsec_clock::local_time();
 
       if (mp_RunEnv->isWriteResults() || mp_RunEnv->isWriteSimReport()) std::cout << std::endl;
 
-      wxTimeSpan TotSimTime = m_TotalEndTime.Subtract(m_TotalStartTime);
+      boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
 
       printlnExecMessagesStats();
 
       std::cout << std::endl;
 
-      std::cout << "Simulation run time: " << _S(EffSimTime.Format(wxT("%Hh %Mm %Ss"))) << std::endl;
-      std::cout << "     Total run time: " << _S(TotSimTime.Format(wxT("%Hh %Mm %Ss"))) << std::endl;
+      std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(mp_RunEnv->getEffectiveSimulationDuration()) << std::endl;
+      std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
       std::cout << std::endl;
 
 

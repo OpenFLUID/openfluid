@@ -44,8 +44,6 @@ struct ModelConfig
 {
   int DeltaT;
 
-  std::string SimulationID;
-
   std::list<FunctionConfig> FuncConfigs;
 
 };
@@ -220,7 +218,7 @@ class IOManager
 
     bool saveMessages();
 
-    bool saveSimulationInfos(ExtraSimInfos ExSI, openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
+    bool saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
 
     bool prepareOutputDir();
 
