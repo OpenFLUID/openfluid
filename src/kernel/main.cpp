@@ -427,7 +427,7 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Patter
         std::cout << "      <domain>" << PlugContainers[i]->Signature->Domain << "</domain>" << std::endl;
         std::cout << "      <process>" << PlugContainers[i]->Signature->Process << "</process>" << std::endl;
         std::cout << "      <method>" << PlugContainers[i]->Signature->Method << "</method>" << std::endl;
-        std::cout << "     insertion du début du fichier  <description>" << PlugContainers[i]->Signature->Description << "</description>" << std::endl;
+        std::cout << "      <description>" << PlugContainers[i]->Signature->Description << "</description>" << std::endl;
         std::cout << "      <version number=\"" << PlugContainers[i]->Signature->Version << "\" sdk=\""<< PlugContainers[i]->Signature->SDKVersion << "\" devstatus=\"" << StatusStr << "\"/>" << std::endl;
         std::cout << "      <author name=\"" << PlugContainers[i]->Signature->Author
                   << "\" email=\"" << PlugContainers[i]->Signature->AuthorEmail << "\"/>" << std::endl;
