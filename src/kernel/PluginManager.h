@@ -58,9 +58,7 @@ class PluginManager
     RuntimeEnvironment* mp_RunEnv;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
-/*    openfluid::base::PluggableFunction *getPluggableFunction(std::string PluginFilename);*/
     PluginContainer *buildPluginContainer(std::string PluginFilename);
-
 
 
   public:
@@ -77,8 +75,6 @@ class PluginManager
     /**
       Lists available simulation functions
     */
-//    ArrayOfPluginsSignatures getAvailableFunctionsList();
-
     ArrayOfPluginsContainers getAvailableFunctions(const std::string Pattern = "");
 
 
@@ -88,11 +84,6 @@ class PluginManager
     PluginContainer *getPlugin(std::string PluginName,
                                openfluid::core::CoreRepository* CoreData);
 
-/*
-    openfluid::base::Function *getFunctionFromPlugin(std::string PluginName,
-                                          openfluid::base::ModuleTypeList ReqModType,
-                                          openfluid::base::FunctionTypeList ReqFuncType);
-*/
 
 };
 

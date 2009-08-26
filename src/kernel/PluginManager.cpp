@@ -46,14 +46,15 @@ PluginManager::~PluginManager()
 }
 
 
+// =====================================================================
+// =====================================================================
+
 
 PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
 {
   wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
   std::string PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
   PluginContainer* Plug = NULL;
-
-  //if (!wxFileExists(PluginFile)) throw openfluid::base::OFException("Function file "+ std::string(PluginFilename.mb_str(wxConvUTF8)) +"not found");
 
   // library loading
   if (PluginFile.length()>0 && PlugLib->Load(_U(PluginFile.c_str())))
@@ -105,37 +106,9 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
 }
 
 
-
 // =====================================================================
 // =====================================================================
-/*
-ArrayOfPluginsSignatures PluginManager::getAvailableFunctionsList()
-{
-  ArrayOfPluginsSignatures Signatures;
-  wxArrayString PluginsPaths = mp_RunEnv->getPluginsPaths();
-  wxArrayString PluginFiles;
-  wxArrayString TmpFiles;
-  int i,j;
 
-
-  for (i=0;i<PluginsPaths.GetCount();i++)
-  {
-    TmpFiles = GetFilesByExt(PluginsPaths[i],OPENFLUID_PLUGINS_EXT);
-    for (j=0;j<TmpFiles.GetCount();j++) PluginFiles.Add(TmpFiles[j]);
-  }
-
-
-  openfluid::base::PluggableFunction* CurrentPlug;
-
-  for (i=0;i<PluginFiles.GetCount();i++)
-  {
-    CurrentPlug = getPluggableFunction(PluginFiles[i]);
-    if (CurrentPlug != NULL) Signatures.Add(CurrentPlug->getSignature());
-  }
-
-  return Signatures;
-}
-*/
 
 ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string Pattern)
 {
@@ -175,10 +148,9 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string 
 }
 
 
-
-
 // =====================================================================
 // =====================================================================
+
 
 PluginContainer *PluginManager::getPlugin(std::string PluginName,
                                           openfluid::core::CoreRepository* CoreData)
