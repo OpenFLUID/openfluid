@@ -68,7 +68,7 @@ std::vector<std::string> SplitString(const std::string StrToSplit, const std::st
 
 std::string GenerateSimulationID();
 
-bool EmptyDirectoryRecursively(const char* DirPath);
+bool EmptyDirectoryRecursively(const std::string DirPath);
 
 std::string ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr);
 
