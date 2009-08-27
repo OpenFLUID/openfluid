@@ -1,7 +1,7 @@
 
   ADD_TEST(DisplayHelp "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
                        "-h")
-  SET_TESTS_PROPERTIES(DisplayHelp PROPERTIES PASS_REGULAR_EXPRESSION "Usage: openfluid-engine")  
+  SET_TESTS_PROPERTIES(DisplayHelp PROPERTIES PASS_REGULAR_EXPRESSION "openfluid-engine allowed options")  
 
   ADD_TEST(DisplayVersion "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
                        "--version")
@@ -15,7 +15,7 @@
   ADD_TEST(FunctionsReport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
                            "-r"
                            "-p${FUNCTIONS_OUTPUT_PATH}")
-
+  
 # matching functions reporting test : not working!
 #  ADD_TEST(FunctionsMatchReport "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine"
 #                                "-u tests.primitives"

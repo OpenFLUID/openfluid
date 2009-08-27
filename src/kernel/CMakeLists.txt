@@ -15,11 +15,12 @@ INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS})
 ADD_EXECUTABLE(openfluid-engine
                xml/tinystr.cpp xml/tinyxml.cpp xml/tinyxmlerror.cpp xml/tinyxmlparser.cpp
                AppTools.cpp RuntimeEnv.cpp
-               PluginManager.cpp IOMan.cpp Engine.cpp                 
+               PluginManager.cpp IOMan.cpp Engine.cpp
+               OpenFLUID.cpp             
                main.cpp
               )
 
-TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
+TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 INSTALL(TARGETS openfluid-engine
         RUNTIME DESTINATION ${BIN_INSTALL_PATH} COMPONENT engine)

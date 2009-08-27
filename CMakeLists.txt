@@ -25,7 +25,7 @@ FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(wxWidgets REQUIRED)
 FIND_PACKAGE(PythonInterp)
 FIND_PACKAGE(LATEX)
-FIND_PACKAGE(Boost REQUIRED COMPONENTS filesystem date_time)
+FIND_PACKAGE(Boost REQUIRED COMPONENTS filesystem date_time program_options)
 
 IF(wxWidgets_FOUND AND Boost_FOUND)
 

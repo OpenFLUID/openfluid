@@ -123,8 +123,6 @@ class Engine
 
     bool run();
 
-//    bool saveResults();
-
     bool saveReports(std::string ErrorMsg);
 
     bool saveMessages();
