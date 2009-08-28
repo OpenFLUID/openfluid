@@ -17,21 +17,8 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-
-#include "OpenFLUID.h"
-
-// =====================================================================
-// =====================================================================
-
-// Fake application to wxWidgets wxStandardPaths
 #include <wx/app.h>
-class FakeApp : public wxApp
-{
-  public:
-    bool OnInit() { SetAppName(_U(OPENFLUID_APPNAME.c_str())); return true; };
-    int OnRun() { return 0;};
-};
-IMPLEMENT_APP_NO_MAIN(FakeApp)
+#include "OpenFLUID.h"
 
 // =====================================================================
 // =====================================================================
@@ -40,7 +27,15 @@ IMPLEMENT_APP_NO_MAIN(FakeApp)
 int main(int argc, char **argv)
 {
 
-  wxInitialize();
+  // wxWidgets libraries initialization
+  if (!wxInitialize())
+  {
+    std::cout << std::endl << std::endl << "ERROR: wrong wx libs initialization" << std::endl;
+    std::cout << std::endl;
+    std::cout.flush();
+
+    return 127;
+  }
 
 
   int ReturnValue = 0;
@@ -69,6 +64,7 @@ int main(int argc, char **argv)
     ReturnValue = App.stopAppReturn("UNKNOWN ERROR");
   }
 
+  // wxWidgets libraries finalization
   wxUninitialize();
 
   return ReturnValue;
