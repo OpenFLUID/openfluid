@@ -21,7 +21,7 @@ namespace openfluid { namespace core {
 
 class StepsReservation
 {
-  private :
+  protected :
     static unsigned int Reserved;
 
   public :
