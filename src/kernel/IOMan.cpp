@@ -1427,38 +1427,6 @@ bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, st
   SimInfoFile.close();
 
 
-  // TODO clean this (delete)
-  /*
-
-    // ********** xml file **********
-    std::ostringstream XMLFileContents;
-
-    XMLFileContents << "<?xml version=\"1.0\" standalone=\"yes\"?>" << "\n";
-    XMLFileContents << "<openfluid>" << "\n";
-    XMLFileContents << "  <simreport>" << "\n";
-
-    if (ErrorMsg != ("")) XMLFileContents << ("    <error message=\"") << ErrorMsg << ("\" />") << ("\n");
-
-    if (WarningCount > 0)
-    {
-      XMLFileContents << ("    <warnings count=\"") << WarningCount << ("\">") << ("\n");
-      for (i=0; i<WarningCount;i++)
-      {
-        XMLFileContents << ("      <message text=\"") << FormatExecutionMessage(WMessages.at(i)) << ("\" />") << ("\n");
-      }
-      XMLFileContents << ("    </warnings>") << ("\n");
-    }
-    else XMLFileContents << ("    <warnings count=\"0\" />") << ("\n");
-
-    XMLFileContents << ("  </simreport>") << ("\n");
-    XMLFileContents << ("</openfluid>") << ("\n");
-
-    wxFile XMLSimInfoFile(_U(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str()) + wxT(".xml"),wxFile::write);
-    XMLSimInfoFile.Write(_U(XMLFileContents.str().c_str()));
-    XMLSimInfoFile.Close();
-   */
-
-
   return IsOK;
 }
 

@@ -58,11 +58,11 @@
 std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath = false, bool ExtIncludeDot = false);
 
 /**
-  Splits the passed string int a std::stringArray, splitted by the passed SepString
+  Splits the passed string into a std::string array, split using the given SepString
   \param[in] StrToSplit the string to split
   \param[in] SepString the string used to split
   \param[in] ReturnsEmpty if true, the empty strings are returned
-  \return a wxArraySTring
+  \return a vector of strings
 */
 std::vector<std::string> SplitString(const std::string StrToSplit, const std::string SepString,  bool ReturnsEmpty = false);
 

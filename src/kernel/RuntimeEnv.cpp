@@ -23,6 +23,7 @@
 #include <wx/stdpaths.h>
 #include <iostream>
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 
 
 RuntimeEnvironment::RuntimeEnvironment()
@@ -30,8 +31,8 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   m_UserDataDir = _S(wxStandardPaths::Get().GetUserDataDir()) + _S(wxFILE_SEP_PATH) + "engine";
 
-  m_OutputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_OUTDIR;
-  m_InputDir = m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_DEFAULT_INDIR;
+  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_OUTDIR).string();
+  m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_INDIR).string();
 
 
   m_ClearOutputDir = false;
@@ -57,16 +58,8 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
 
-  // when development mode (__DEVEL__),
-  // use the plugins built on the same development cycle (located in mainappdir/functions)
-  #ifdef __LINUX__
-  #ifdef __DEVEL__
-    m_PlugsDirs.Add(m_AppDir + wxFILE_SEP_PATH + OPENFLUID_PLUGINS_SUBDIR);
-  #endif
-  #endif
-
   // plugins search order: user directory then system directory
-  m_PlugsDirs.push_back(m_UserDataDir + _S(wxFILE_SEP_PATH) + OPENFLUID_PLUGINS_SUBDIR);
+  m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_PLUGINS_SUBDIR).string());
 
   #ifdef __LINUX__
   #ifndef __DEVEL__
