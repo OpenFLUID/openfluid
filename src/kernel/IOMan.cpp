@@ -1348,7 +1348,14 @@ bool IOManager::saveMessages()
 
   for (unsigned int i=0; i<WarningCount;i++)
   {
+    // TODO try to remove the following hack
+    // hack for mingw32
+#ifdef __MINGW32__
+    FileContents << ("WARNING: ") << WMessages.at(i) << std::endl;
+#else
     FileContents << ("WARNING: ") << openfluid::base::ExecutionMessages::FormatMessage(WMessages.at(i)) << std::endl;
+#endif
+
   }
 
   std::ofstream OutMsgFile;

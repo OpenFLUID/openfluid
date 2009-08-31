@@ -103,7 +103,7 @@ class RuntimeEnvironment
 
     std::string getPluginFullPath(std::string Filename);
 
-    void addExtraPluginsPaths(std::string ColonSeparatedPaths);
+    void addExtraPluginsPaths(std::string SemicolonSeparatedPaths);
 
     std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
 

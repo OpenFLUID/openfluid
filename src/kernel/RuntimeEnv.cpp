@@ -116,11 +116,11 @@ void RuntimeEnvironment::setDateTimeOutputDir()
 // =====================================================================
 // =====================================================================
 
-void RuntimeEnvironment::addExtraPluginsPaths(std::string ColonSeparatedPaths)
+void RuntimeEnvironment::addExtraPluginsPaths(std::string SemicolonSeparatedPaths)
 {
   std::vector<std::string> ExtraPaths;
 
-  ExtraPaths = SplitString(ColonSeparatedPaths,":");
+  ExtraPaths = SplitString(SemicolonSeparatedPaths,";");
 
   for (int i = ExtraPaths.size()-1 ; i>=0 ; i--) m_PlugsDirs.insert(m_PlugsDirs.begin(),1,RemoveTrailingSlashes(ExtraPaths[i]));
 }

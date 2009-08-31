@@ -19,7 +19,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <dirent.h>
 #include <limits.h>
 #include <time.h>
 #include <boost/filesystem.hpp>

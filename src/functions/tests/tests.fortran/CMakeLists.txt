@@ -6,7 +6,7 @@ IF(BUILD_FORTRAN_FUNCTIONS)
 
   ADD_LIBRARY(tests.fortran MODULE FortranFunc.cpp SbrFortran.f90)
   SET_TARGET_PROPERTIES(tests.fortran 
-                        PROPERTIES PREFIX "" SUFFIX "${CMAKE_SHARED_LIBRARY_SUFFIX}mpi" 
+                        PROPERTIES PREFIX "" SUFFIX "${FUNCTIONS_BINARY_EXTENSION}" 
                         LIBRARY_OUTPUT_DIRECTORY "${FUNCTIONS_OUTPUT_PATH}")
   TARGET_LINK_LIBRARIES(tests.fortran ofelib gfortran)
 

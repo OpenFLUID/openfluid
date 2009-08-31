@@ -45,7 +45,7 @@ const unsigned int OPENFLUID_RSDEFSFILE_COLNBR = 10;
 const unsigned int OPENFLUID_GUDEFSFILE_COLNBR = 4;
 
 // Plugins extension
-const std::string OPENFLUID_PLUGINS_EXT = "@CMAKE_SHARED_LIBRARY_SUFFIX@mpi";
+const std::string OPENFLUID_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
 
 // Plugins dirs
 const std::string OPENFLUID_PLUGINS_SUBDIR = "functions";

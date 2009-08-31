@@ -22,10 +22,10 @@ INCLUDE(CMake.in.config)
 INCLUDE(CMake.in.sub)
 
 FIND_PACKAGE(Doxygen)
-FIND_PACKAGE(wxWidgets REQUIRED)
+FIND_PACKAGE(wxWidgets REQUIRED base)
 FIND_PACKAGE(PythonInterp)
 FIND_PACKAGE(LATEX)
-FIND_PACKAGE(Boost REQUIRED COMPONENTS filesystem date_time program_options)
+FIND_PACKAGE(Boost REQUIRED COMPONENTS system filesystem date_time program_options)
 
 IF(wxWidgets_FOUND AND Boost_FOUND)
 
@@ -42,6 +42,8 @@ IF(wxWidgets_FOUND AND Boost_FOUND)
     SET(CMAKE_CXX_FLAGS "${MSYS_ADAPTED_CMAKE_CXX_FLAGS}")
   ENDIF(MSYS)
 
+
+  ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
 
   ADD_SUBDIRECTORY(src)
 
