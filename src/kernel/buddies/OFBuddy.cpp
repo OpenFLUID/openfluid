@@ -44,12 +44,12 @@ OpenFLUIDBuddy::~OpenFLUIDBuddy()
 
 bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
 {
-  // example inputdir=/usr/lib;outputdir=./toto;withfoo=1
+  // example inputdir=/usr/lib,outputdir=./toto,withfoo=1
 
   std::vector<std::string> OptsItems;
   std::vector<std::string> OptKeyValue;
 
-  OptsItems = SplitString(OptsStr,";");
+  OptsItems = SplitString(OptsStr,",");
 
   for (unsigned int i = 0; i<OptsItems.size();i++)
   {
@@ -57,7 +57,7 @@ bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
 
     if (OptKeyValue.size() == 2 )
     {
-      m_Options[OptKeyValue[0]] == OptKeyValue[1];
+      m_Options[OptKeyValue[0]] = OptKeyValue[1];
     }
     else
     {
@@ -70,5 +70,52 @@ bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
 }
 
 
+// =====================================================================
+// =====================================================================
 
+
+void OpenFLUIDBuddy::printlnOptions()
+{
+
+  std::map<std::string,std::string>::iterator it;
+
+  for (it = m_Options.begin();it != m_Options.end();++it)
+  {
+    std::cout << it->first << " : " << it->second << std::endl;
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDBuddy::displayHelp()
+{
+  std::map<std::string,std::string>::iterator it;
+
+  std::cout << "  Required options:" << std::endl;
+  if (m_RequiredOptionsHelp.size() ==  0)
+    std::cout << "    (none)" << std::endl;
+  else
+  {
+    for (it = m_RequiredOptionsHelp.begin();it != m_RequiredOptionsHelp.end();++it)
+    {
+      std::cout << "    " << it->first << " : " << it->second << std::endl;
+    }
+  }
+
+  std::cout << "  Other options:" << std::endl;
+  if (m_OtherOptionsHelp.size() ==  0)
+    std::cout << "    (none)" << std::endl;
+  else
+  {
+    for (it = m_OtherOptionsHelp.begin();it != m_OtherOptionsHelp.end();++it)
+    {
+      std::cout << "    " << it->first << " : " << it->second << std::endl;
+    }
+  }
+
+}
 

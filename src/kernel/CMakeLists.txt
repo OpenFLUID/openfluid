@@ -19,7 +19,7 @@ INCLUDE_DIRECTORIES(. ${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(openfluid-engine
                xml/tinystr.cpp xml/tinyxml.cpp xml/tinyxmlerror.cpp xml/tinyxmlparser.cpp
-               buddies/OFBuddy.cpp
+               buddies/OFBuddy.cpp buddies/NewFuncBuddy.cpp buddies/Func2DocBuddy.cpp
                AppTools.cpp RuntimeEnv.cpp
                PluginManager.cpp IOMan.cpp Engine.cpp
                OpenFLUID.cpp             

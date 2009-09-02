@@ -18,15 +18,17 @@
 */
 
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "openfluid-base.h"
+#include "openfluid-core.h"
 #include "Engine.h"
 #include "PluginManager.h"
 #include "RuntimeEnv.h"
 #include "config.h"
 
+#include "buddies/OFBuddy.h"
 
 
 // =====================================================================
@@ -37,9 +39,11 @@ class OpenFLUIDApp
 {
   private:
 
-    enum RunType { None, Simulation, InfoRequest, ToolMode };
+    enum RunType { None, Simulation, InfoRequest, Buddy };
 
     RunType m_RunType;
+
+    std::pair<std::string,std::string> m_BuddyToRun;
 
     RuntimeEnvironment m_RunEnv;
     openfluid::base::ExecutionMessages m_ExecMsgs;

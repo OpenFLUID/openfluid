@@ -24,7 +24,10 @@
 
 #include "AppTools.h"
 #include "OpenFLUID.h"
+#include "openfluid-base.h"
 
+#include "buddies/NewFuncBuddy.h"
+#include "buddies/Func2DocBuddy.h"
 
 // =====================================================================
 // =====================================================================
@@ -33,7 +36,8 @@ OpenFLUIDApp::OpenFLUIDApp()
 {
   m_RunType = None;
   mp_Engine = NULL;
-
+  m_BuddyToRun.first = "";
+  m_BuddyToRun.second = "";
 }
 
 
@@ -503,9 +507,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   boost::program_options::options_description OptionsDesc("openfluid-engine allowed options");
   OptionsDesc.add_options()
       ("auto-output-dir,a","generate automatic results output directory")
+      ("buddy,b",boost::program_options::value< std::string >(),"run specified OpenFLUID buddy")
+      ("buddyhelp",boost::program_options::value< std::string >(),"display help message for specified OpenFLUID buddy")
+      ("buddyopts",boost::program_options::value< std::string >(),"set options for specified OpenFLUID buddy")
       ("clean-output-dir,c","clean results output directory by removing existing files")
       ("functions-list,f","list available functions (do not run the model)")
-      ("help,h", "produce help message")
+      ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
       ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions research paths (colon separated)")
@@ -529,16 +536,50 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("help"))
   {
-      std::cout << OptionsDesc << std::endl;
-      m_RunType = None;
-      return;
+    std::cout << OptionsDesc << std::endl;
+    m_RunType = None;
+    return;
   }
+
+
+  if (OptionsVars.count("buddyhelp"))
+  {
+
+    OpenFLUIDBuddy* Buddy = NULL;
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new NewFunctionBuddy();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new Func2DocBuddy();
+
+    if (Buddy != NULL)
+    {
+      std::cout << "Options for buddy " + OptionsVars["buddyhelp"].as<std::string>() + ":" << std::endl;
+      Buddy->displayHelp();
+      delete Buddy;
+    }
+    else throw openfluid::base::OFException("Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
+    m_RunType = None;
+    return;
+  }
+
+
+  if (OptionsVars.count("buddy"))
+  {
+
+    m_BuddyToRun.first = OptionsVars["buddy"].as<std::string>();
+
+    if (OptionsVars.count("buddyopts"))
+    {
+      m_BuddyToRun.second = OptionsVars["buddyopts"].as<std::string>();
+    }
+    m_RunType = Buddy;
+    return;
+  }
+
 
   if (OptionsVars.count("version"))
   {
-      std::cout << FULL_VERSION << std::endl;
-      m_RunType = InfoRequest;
-      return;
+    std::cout << FULL_VERSION << std::endl;
+    m_RunType = InfoRequest;
+    return;
   }
 
   if (OptionsVars.count("functions-paths"))
@@ -635,6 +676,22 @@ void OpenFLUIDApp::run()
     runSimulation();
   }
 
+  if (m_RunType == Buddy)
+  {
+    OpenFLUIDBuddy* Buddy = NULL;
+    if (m_BuddyToRun.first == "newfunc" ) Buddy = new NewFunctionBuddy();
+    if (m_BuddyToRun.first == "newfunc" ) Buddy = new Func2DocBuddy();
+
+    if (Buddy != NULL)
+    {
+      Buddy->parseOptions(m_BuddyToRun.second);
+      Buddy->printlnOptions();
+      Buddy->run();
+      delete Buddy;
+    }
+    else throw openfluid::base::OFException("Buddy " + m_BuddyToRun.first + " does not exists");
+
+  }
 }
 
 

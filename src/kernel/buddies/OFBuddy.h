@@ -29,8 +29,11 @@
 
 class OpenFLUIDBuddy
 {
-  private:
+  protected:
     std::map<std::string,std::string> m_Options;
+
+    std::map<std::string,std::string> m_RequiredOptionsHelp;
+    std::map<std::string,std::string> m_OtherOptionsHelp;
 
   public:
     OpenFLUIDBuddy();
@@ -39,8 +42,11 @@ class OpenFLUIDBuddy
 
     bool parseOptions(std::string OptsStr);
 
-    virtual bool runBuddy() = 0;
+    void printlnOptions();
 
+    virtual bool run() = 0;
+
+    void displayHelp();
 };
 
 #endif // __OFBUDDY_H__
