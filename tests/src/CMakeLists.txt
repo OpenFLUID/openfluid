@@ -1,0 +1,7 @@
+
+
+FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
+
+
+ADD_SUBDIRECTORY(ofelib)
+ADD_SUBDIRECTORY(kernel)

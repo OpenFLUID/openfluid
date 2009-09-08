@@ -64,6 +64,8 @@ IF(wxWidgets_FOUND AND Boost_FOUND)
   CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
   CONFIGURE_FILE(enginewodev.cpack.in enginewodev.cpack @ONLY)
 
+
+  FILE(MAKE_DIRECTORY "${UNITTESTS_BINARY_PATH}")
   ADD_SUBDIRECTORY(tests)
   
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")

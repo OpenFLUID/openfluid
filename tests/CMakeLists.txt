@@ -1,4 +1,7 @@
 
+  ADD_SUBDIRECTORY(src)
+
+
   ADD_TEST(DisplayHelp "${EXECUTABLE_OUTPUT_PATH}/openfluid-engine" 
                        "-h")
   SET_TESTS_PROPERTIES(DisplayHelp PROPERTIES PASS_REGULAR_EXPRESSION "openfluid-engine allowed options")  
