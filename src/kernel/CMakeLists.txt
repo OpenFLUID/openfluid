@@ -25,6 +25,7 @@ ADD_EXECUTABLE(openfluid-engine
                OpenFLUID.cpp             
                main.cpp
               )
+SET_TARGET_PROPERTIES(openfluid-engine PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
 TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${wxWidgets_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
