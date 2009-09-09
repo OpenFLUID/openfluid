@@ -11,3 +11,7 @@ ADD_TEST(UnitTest-Unit "${EXECUTABLE_OUTPUT_PATH}/unittest_unit")
 ADD_EXECUTABLE(unittest_unitscoll UnitsColl_TEST.cpp)
 TARGET_LINK_LIBRARIES(unittest_unitscoll ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
 ADD_TEST(UnitTest-UnitsCollection "${EXECUTABLE_OUTPUT_PATH}/unittest_unitscoll")
+
+ADD_EXECUTABLE(unittest_datetime DateTime_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_datetime ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
+ADD_TEST(UnitTest-DateTime "${EXECUTABLE_OUTPUT_PATH}/unittest_datetime")
