@@ -25,7 +25,7 @@
 #include <vector>
 #include <string>
 #include <map>
-
+#include <iostream>
 
 class OpenFLUIDBuddy
 {
@@ -34,6 +34,10 @@ class OpenFLUIDBuddy
 
     std::map<std::string,std::string> m_RequiredOptionsHelp;
     std::map<std::string,std::string> m_OtherOptionsHelp;
+
+    void setOptionIfNotSet(std::string OptionName, std::string OptionValue);
+
+    std::string getYesNoFromOneZero(std::string VStr);
 
   public:
     OpenFLUIDBuddy();

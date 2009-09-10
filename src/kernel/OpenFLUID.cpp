@@ -680,12 +680,11 @@ void OpenFLUIDApp::run()
   {
     OpenFLUIDBuddy* Buddy = NULL;
     if (m_BuddyToRun.first == "newfunc" ) Buddy = new NewFunctionBuddy();
-    if (m_BuddyToRun.first == "newfunc" ) Buddy = new Func2DocBuddy();
+    if (m_BuddyToRun.first == "func2doc" ) Buddy = new Func2DocBuddy();
 
     if (Buddy != NULL)
     {
       Buddy->parseOptions(m_BuddyToRun.second);
-      Buddy->printlnOptions();
       Buddy->run();
       delete Buddy;
     }

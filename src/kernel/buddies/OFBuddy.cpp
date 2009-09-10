@@ -42,6 +42,29 @@ OpenFLUIDBuddy::~OpenFLUIDBuddy()
 // =====================================================================
 
 
+void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string OptionValue)
+{
+  if (m_Options.find(OptionName) == m_Options.end())
+  {
+    m_Options[OptionName] = OptionValue;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
+{
+  if (VStr == "1") return "yes";
+  else return "no";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
 {
   // example inputdir=/usr/lib,outputdir=./toto,withfoo=1
