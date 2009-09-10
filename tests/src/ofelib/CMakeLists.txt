@@ -15,3 +15,7 @@ ADD_TEST(UnitTest-UnitsCollection unittest_unitscoll)
 ADD_EXECUTABLE(unittest_datetime DateTime_TEST.cpp)
 TARGET_LINK_LIBRARIES(unittest_datetime ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
 ADD_TEST(UnitTest-DateTime unittest_datetime)
+
+ADD_EXECUTABLE(unittest_event DistributedEvent_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_event ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
+ADD_TEST(UnitTest-Event unittest_event)
