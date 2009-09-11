@@ -85,34 +85,19 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_PRODUCED_VAR("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
   DECLARE_PRODUCED_VAR("tests.prodscalar","TestUnits","produced scalar on TestUnits","");
-  DECLARE_SU_PRODUCED_VAR("tests.prodscalarSU",("produced scalar on SU"),"");
-  DECLARE_RS_PRODUCED_VAR("tests.prodscalarRS",("produced scalar on RS"),"");
-  DECLARE_GU_PRODUCED_VAR("tests.prodscalarGU",("produced scalar on GU"),"");
 
   DECLARE_UPDATED_VAR("tests.updscalar","TestUnits","updated scalar on TestUnits","");
-  DECLARE_GU_UPDATED_VAR("tests.updscalarGU",("updated scalar on SU"),"");
 
   DECLARE_REQUIRED_VAR("tests.reqvector[]","TestUnits","required vector on TestUnits","");
   DECLARE_REQUIRED_VAR("tests.reqscalar","TestUnits","required scalar on TestUnits","");
-  DECLARE_SU_REQUIRED_VAR("tests.reqvectorSU[]","required vector on SU","");
-  DECLARE_RS_REQUIRED_VAR("tests.reqvectorRS[]","required vector on RS","");
-  DECLARE_GU_REQUIRED_VAR("tests.reqvectorGU[]","required vector on GU","");
 
   DECLARE_USED_VAR("tests.usedscalar","TestUnits","used scalar on TestUnits","");
-  DECLARE_SU_USED_VAR("tests.usedvectorSU[]","used vector on SU","");
 
   DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","required input data A on TestUnits","m")
   DECLARE_USED_INPUTDATA("indataB","TestUnits","used input data B on TestUnits","mm/h")
 
-  DECLARE_SU_USED_INICOND("usediniSU","used initial condition on SU","")
-  DECLARE_SU_REQUIRED_PROPERTY("reqpropSU","required property on SU","")
-  DECLARE_RS_REQUIRED_PROPERTY("reqpropRS","required property on RS","")
-
-
   DECLARE_USED_EVENTS("TestUnits");
-  DECLARE_USED_SU_EVENTS;
   DECLARE_USED_EVENTS("FakeTestUnits");
-  DECLARE_USED_RS_EVENTS;
 
   DECLARE_USED_EXTRAFILE("test01.txt");
   DECLARE_USED_EXTRAFILE("test02.txt");
