@@ -51,6 +51,8 @@ class EventCollection
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period
+      If some events are already in the given collection, they are not deleted. Events matching the period are appended
+      at the end of the given collection
     */
     bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventCollection *Events);
 

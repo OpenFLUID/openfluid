@@ -23,3 +23,8 @@ ADD_EXECUTABLE(unittest_event DistributedEvent_TEST.cpp)
 TARGET_LINK_LIBRARIES(unittest_event ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
 SET_TARGET_PROPERTIES(unittest_event PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
 ADD_TEST(UnitTest-Event ${TEST_OUTPUT_PATH}/unittest_event)
+
+ADD_EXECUTABLE(unittest_eventscoll EventsColl_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_eventscoll ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
+SET_TARGET_PROPERTIES(unittest_eventscoll PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
+ADD_TEST(UnitTest-EventsCollection ${TEST_OUTPUT_PATH}/unittest_eventscoll)
