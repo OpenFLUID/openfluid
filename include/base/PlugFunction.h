@@ -167,7 +167,7 @@
   Macro for declaration of a loop processing events in an event collection
 */
 #define DECLARE_EVENT_COLLECTION_LOOP \
-  std::list<openfluid::core::DistributedEvent*>::iterator _M_EvListiter;
+  std::list<openfluid::core::Event*>::iterator _M_EvListiter;
 
 /**
   Macro for the beginning of a loop processing an event list from an event collection
@@ -478,7 +478,7 @@ class PluggableFunction
     void OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr,
                              openfluid::core::DateTime BeginDate,
                              openfluid::core::DateTime EndDate,
-                             openfluid::core::EventCollection* EventColl);
+                             openfluid::core::EventsCollection* Events);
 
 
     /**

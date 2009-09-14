@@ -115,8 +115,8 @@ bool EventsFunction::checkConsistency()
 bool EventsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
   openfluid::core::Unit* aUnit;
-  openfluid::core::EventCollection EvColl;
-  openfluid::core::DistributedEvent* Event;
+  openfluid::core::EventsCollection EvColl;
+  openfluid::core::Event* Event;
   std::string Info;
   DECLARE_UNITS_ORDERED_LOOP(5);
   DECLARE_EVENT_COLLECTION_LOOP;
@@ -144,9 +144,9 @@ bool EventsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInf
         OPENFLUID_RaiseError("tests.events","initializeRun()","wrong event number on TestUnit 1");
 
       BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
-        if (!(Event->isInfoEquals("when","before") &&
-              Event->isInfoEquals("where",1.0) &&
-              Event->isInfoEquals("numeric",1.13) &&
+        if (!(Event->isInfoEqual("when","before") &&
+              Event->isInfoEqual("where",1.0) &&
+              Event->isInfoEqual("numeric",1.13) &&
               Event->getInfoAsString("string",&Info) &&
               Info.substr(0,4) == "EADG"))
           OPENFLUID_RaiseError("tests.events","initializeRun()","wrong event info on TestUnit 1");
@@ -187,8 +187,8 @@ bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
 
   openfluid::core::Unit* aUnit;
-  openfluid::core::EventCollection EvColl;
-  openfluid::core::DistributedEvent* Event;
+  openfluid::core::EventsCollection EvColl;
+  openfluid::core::Event* Event;
   std::string Info;
   DECLARE_UNITS_ORDERED_LOOP(5);
   DECLARE_EVENT_COLLECTION_LOOP;
@@ -207,9 +207,9 @@ bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
     OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,&EvColl);
 
     BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
-      if (!(Event->isInfoEquals("when","during") &&
-            Event->isInfoEquals("where",double(aUnit->getID())) &&
-            Event->isInfoEquals("numeric",1.15) &&
+      if (!(Event->isInfoEqual("when","during") &&
+            Event->isInfoEqual("where",double(aUnit->getID())) &&
+            Event->isInfoEqual("numeric",1.15) &&
             Event->getInfoAsString("string",&Info) &&
             Info.substr(0,4) == "EADG"))
         OPENFLUID_RaiseError("tests.events","runStep()","wrong event info on some TestUnit");

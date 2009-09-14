@@ -40,7 +40,7 @@
 #include "core/UnitsColl.h"
 #include "core/InputData.h"
 #include "core/Variables.h"
-#include "core/EventCollection.h"
+#include "core/EventsColl.h"
 #include "core/TypeDefs.h"
 #include "core/DateTime.h"
 

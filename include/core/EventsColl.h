@@ -11,55 +11,55 @@
 
 
 /**
-  \file EventCollection.h
+  \file EventsColl.h
   \brief Header of distributed event collection management class
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
-#ifndef __EVENTCOLLECTION_H__
-#define __EVENTCOLLECTION_H__
+#ifndef __EVENTSCOLL_H__
+#define __EVENTSCOLL_H__
 
-#include "DistributedEvent.h"
+#include "Event.h"
 #include <list>
 
 
 namespace openfluid { namespace core {
 
-class DistributedEvent;
+class Event;
 
 
 /**
   \brief Class defining a collection of discrete events
 */
-class EventCollection
+class EventsCollection
 {
   private:
-    std::list<DistributedEvent*> m_Events;
+    std::list<Event*> m_Events;
 
   public:
-    EventCollection();
+    EventsCollection();
 
-    virtual ~EventCollection();
+    virtual ~EventsCollection();
 
 
     /**
       Inserts an event in the event collection, ordered by date
     */
-    bool addEvent(DistributedEvent* Ev);
+    bool addEvent(Event* Ev);
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period
       If some events are already in the given collection, they are not deleted. Events matching the period are appended
       at the end of the given collection
     */
-    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventCollection *Events);
+    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection *Events);
 
     /**
       Returns the event collection as a list
     */
-    std::list<DistributedEvent*>* getEventsList() { return &m_Events; };
+    std::list<Event*>* getEventsList() { return &m_Events; };
 
     /**
       Returns number of events in the event collection
@@ -80,4 +80,4 @@ class EventCollection
 
 
 
-#endif /* __EVENTCOLLECTION_H__*/
+#endif /* __EVENTSCOLL_H__*/

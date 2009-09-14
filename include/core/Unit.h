@@ -28,7 +28,7 @@
 #include "UnitsColl.h"
 #include "InputData.h"
 #include "Variables.h"
-#include "EventCollection.h"
+#include "EventsColl.h"
 
 namespace openfluid { namespace core {
 
@@ -94,7 +94,7 @@ class Unit
     Variables<ScalarValue> m_ScalarVariables;
     Variables<VectorValue> m_VectorVariables;
 
-    EventCollection m_Events;
+    EventsCollection m_Events;
 
 
   public:
@@ -166,9 +166,9 @@ class Unit
 
     const Variables<VectorValue>* getVectorVariables() const { return &m_VectorVariables; };
 
-    EventCollection* getEvents() { return &m_Events; };
+    EventsCollection* getEvents() { return &m_Events; };
 
-    const EventCollection* getEvents() const { return &m_Events; };
+    const EventsCollection* getEvents() const { return &m_Events; };
 
     void printSTDOUT();
 

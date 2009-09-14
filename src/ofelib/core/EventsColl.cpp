@@ -11,13 +11,13 @@
 
 
 /**
-  \file EventCollection.cpp
+  \file EventsColl.cpp
   \brief Implements distributed event collection management class
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include "EventCollection.h"
+#include "EventsColl.h"
 #include <iostream>
 
 namespace openfluid { namespace core
@@ -25,7 +25,7 @@ namespace openfluid { namespace core
 
 
 
-EventCollection::EventCollection()
+EventsCollection::EventsCollection()
 {
 }
 
@@ -34,7 +34,7 @@ EventCollection::EventCollection()
 // =====================================================================
 
 
-EventCollection::~EventCollection()
+EventsCollection::~EventsCollection()
 {
 }
 
@@ -43,7 +43,7 @@ EventCollection::~EventCollection()
 // =====================================================================
 
 
-bool EventCollection::addEvent(DistributedEvent* Ev)
+bool EventsCollection::addEvent(Event* Ev)
 {
 
 
@@ -69,7 +69,7 @@ bool EventCollection::addEvent(DistributedEvent* Ev)
       else
       {
         // event has to be inserted somewhere in the collection
-        std::list<DistributedEvent*>::iterator DEiter;
+        std::list<Event*>::iterator DEiter;
 
         for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
         {
@@ -92,11 +92,11 @@ bool EventCollection::addEvent(DistributedEvent* Ev)
 // =====================================================================
 
 
-bool EventCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
-    EventCollection *Events)
+bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
+    EventsCollection *Events)
 {
 
-  std::list<DistributedEvent*>::iterator DEiter;
+  std::list<Event*>::iterator DEiter;
 
   for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
   {
@@ -114,9 +114,9 @@ bool EventCollection::getEventsBetween(const DateTime BeginDate, const DateTime 
 // =====================================================================
 
 
-void EventCollection::println()
+void EventsCollection::println()
 {
-  std::list<DistributedEvent*>::iterator DEiter;
+  std::list<Event*>::iterator DEiter;
 
     for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
     {

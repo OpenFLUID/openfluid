@@ -430,9 +430,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 // =====================================================================
 
-void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventCollection* EventColl)
+void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventsCollection* Events)
 {
-  UnitPtr->getEvents()->getEventsBetween(BeginDate,EndDate,EventColl);
+  UnitPtr->getEvents()->getEventsBetween(BeginDate,EndDate,Events);
 }
 
 // =====================================================================

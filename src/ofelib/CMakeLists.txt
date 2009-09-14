@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 SET(OFELIB_CORE_CPP 
     core/Unit.cpp core/UnitsColl.cpp
-    core/DistributedEvent.cpp core/EventCollection.cpp
+    core/Event.cpp core/EventsColl.cpp
     core/DateTime.cpp
     core/CoreRepository.cpp
    )

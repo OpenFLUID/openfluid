@@ -1269,7 +1269,7 @@ bool IOManager::loadEventsFile(std::string Filename)
 
           if ((ZeDateStr != "") && (UnitClass != "") && (UnitIDStr != ""))
           {
-            openfluid::core::DistributedEvent *DEvent;
+            openfluid::core::Event *DEvent;
             openfluid::core::Unit* TheUnit;
             openfluid::core::UnitID_t ID;
 
@@ -1286,7 +1286,7 @@ bool IOManager::loadEventsFile(std::string Filename)
               {
                 ZeDate.setFromISOString(ZeDateStr);
 
-                DEvent = new openfluid::core::DistributedEvent(ZeDate);
+                DEvent = new openfluid::core::Event(ZeDate);
 
                 // read infos by event
 

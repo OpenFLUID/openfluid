@@ -34,10 +34,10 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::DistributedEvent Ev;
+  openfluid::core::Event Ev;
   BOOST_REQUIRE_EQUAL(Ev.getInfosCount(),0);
 
-  openfluid::core::DistributedEvent Ev2(openfluid::core::DateTime(2009,9,10,13,55,7));
+  openfluid::core::Event Ev2(openfluid::core::DateTime(2009,9,10,13,55,7));
   BOOST_REQUIRE_EQUAL(Ev2.getInfosCount(),0);
 }
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_infosoperations)
 {
-  openfluid::core::DistributedEvent Ev(openfluid::core::DateTime(2009,9,10,13,55,7));
+  openfluid::core::Event Ev(openfluid::core::DateTime(2009,9,10,13,55,7));
   std::string StrInfo;
   long LongInfo;
   double DoubleInfo;
@@ -60,11 +60,11 @@ BOOST_AUTO_TEST_CASE(check_infosoperations)
 
   BOOST_REQUIRE_EQUAL(Ev.getInfosCount(),3);
 
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExists("test1"),true);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExists("test2"),true);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExists("test3"),true);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExists("test4"),false);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExists("test"),false);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test1"),true);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test2"),true);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test3"),true);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test4"),false);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test"),false);
 
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test1",&StrInfo),true);
   BOOST_REQUIRE_EQUAL(StrInfo,"value");

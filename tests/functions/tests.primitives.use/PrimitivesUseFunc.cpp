@@ -230,7 +230,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   openfluid::core::VectorValue TheVector;
   openfluid::core::ScalarValue TheScalar;
   openfluid::core::ScalarValue TheInput;
-  openfluid::core::EventCollection TheEvents;
+  openfluid::core::EventsCollection TheEvents;
   DECLARE_UNITS_ORDERED_LOOP(1);
   std::string RunEnvStr;
   bool RunEnvBool;

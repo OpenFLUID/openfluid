@@ -17,8 +17,8 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __DISTRIBUTEDEVENT_H__
-#define __DISTRIBUTEDEVENT_H__
+#ifndef __EVENT_H__
+#define __EVENT_H__
 
 
 #include "TypeDefs.h"
@@ -35,7 +35,7 @@ namespace openfluid { namespace core {
   \li Key is the name given to the information
   \li Value is the value of the information and can be numeric or text information
 */
-class DistributedEvent
+class Event
 {
 
   private:
@@ -49,52 +49,52 @@ class DistributedEvent
     /**
       Default constructor
     */
-    DistributedEvent();
+    Event();
 
     /**
       Constructor
       \param[in] Date the date and time of the event
     */
-    DistributedEvent(DateTime Date);
+    Event(DateTime Date);
 
     /**
       Destructor
     */
-    ~DistributedEvent();
+    ~Event();
 
     /**
       Returns true if the information exists
       \param[in] Key the requested information key
     */
-    bool isInfoExists(std::string Key);
+    bool isInfoExist(std::string Key);
 
     /**
       Returns true if the information exists and equals the given string value
       \param[in] Key the requested information key
       \param[in] Value the requested value
     */
-    bool isInfoEquals(std::string Key, std::string Value);
+    bool isInfoEqual(std::string Key, std::string Value);
 
     /**
       Returns true if the information exists and equals the given long value
       \param[in] Key the requested information key
       \param[in] Value the requested value
     */
-    bool isInfoEquals(std::string Key, long Value);
+    bool isInfoEqual(std::string Key, long Value);
 
     /**
       Returns true if the information exists and equals the given double value
       \param[in] Key the requested information key
       \param[in] Value the requested value
     */
-    bool isInfoEquals(std::string Key, double Value);
+    bool isInfoEqual(std::string Key, double Value);
 
     /**
       Returns true if the information exists and equals the given ScalarValue value
       \param[in] Key the requested information key
       \param[in] Info the requested value
     */
-    bool isInfoEquals(std::string Key, ScalarValue *Info);
+    bool isInfoEqual(std::string Key, ScalarValue *Info);
 
     /**
       Returns the number of information
