@@ -186,10 +186,10 @@ bool EventsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInf
 bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
 
-  openfluid::core::Unit* aUnit;
+  openfluid::core::Unit *aUnit;
   openfluid::core::EventsCollection EvColl;
-  openfluid::core::Event* Event;
-  std::string Info;
+  openfluid::core::Event *Event, AddedEvent;
+  std::string Info, TmpStr;
   DECLARE_UNITS_ORDERED_LOOP(5);
   DECLARE_EVENT_COLLECTION_LOOP;
 
@@ -214,6 +214,24 @@ bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
             Info.substr(0,4) == "EADG"))
         OPENFLUID_RaiseError("tests.events","runStep()","wrong event info on some TestUnit");
     END_LOOP
+
+
+
+    bool FoundEvent = false;
+    AddedEvent = openfluid::core::Event(openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)));
+    openfluid::tools::ConvertValue(SimStatus->getTimeStep(),&TmpStr);
+    AddedEvent.addInfo("addingstep",TmpStr);
+
+    OPENFLUID_AppendEvent(aUnit,AddedEvent);
+
+    EvColl.clear();
+    OPENFLUID_GetEvents(aUnit,openfluid::core::DateTime(SimStatus->getCurrentTime()+SimStatus->getTimeStep()),openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)),&EvColl);
+
+    BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
+      if (Event->isInfoEqual("addingstep",TmpStr)) FoundEvent = true;
+    END_LOOP
+    if (!FoundEvent) OPENFLUID_RaiseError("tests.events","runStep()","added event not found");
+
   END_LOOP
 
   return true;

@@ -44,6 +44,33 @@
                               )
 
 
+  ADD_TEST(Integration-BuddyNewFuncHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddyhelp" "newfunc"
+                              )
+
+  ADD_TEST(Integration-BuddyNewFunc "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddy" "newfunc"
+                              )
+
+
+  ADD_TEST(Integration-BuddyConvertHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddyhelp" "convert"
+                              )
+
+  ADD_TEST(Integration-BuddyConvert "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddy" "convert"
+                              )
+
+  ADD_TEST(Integration-BuddyNewDatasetHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddyhelp" "newdataset"
+                              )
+
+  ADD_TEST(Integration-BuddyNewDataset "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddy" "newdataset"
+                              )
+
+
+
 #  ADD_TEST(BasicRunQuiet "${BIN_OUTPUT_PATH}/openfluid-engine" 
 #                    "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.BasicRun"
 #                    "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.BasicRunQuiet"                     

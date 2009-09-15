@@ -482,6 +482,16 @@ class PluggableFunction
 
 
     /**
+      Appends an event on a unit
+      \param[in] UnitPtr a Unit
+      \param[in] Event the event to append
+    */
+    void OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
+                               openfluid::core::Event Ev);
+
+
+
+    /**
       Returns true if the queried unit class exists
       \param[in] ClassName the queried class name
     */

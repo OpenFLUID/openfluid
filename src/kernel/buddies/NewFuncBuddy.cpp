@@ -18,6 +18,7 @@
  */
 
 #include "NewFuncBuddy.h"
+#include "openfluid-core.h"
 
 
 NewFunctionBuddy::NewFunctionBuddy() : OpenFLUIDBuddy()
@@ -47,6 +48,6 @@ NewFunctionBuddy::~NewFunctionBuddy()
 
 bool NewFunctionBuddy::run()
 {
-
-  return false;
+  throw openfluid::base::OFException("under construction");
+  return true;
 }
