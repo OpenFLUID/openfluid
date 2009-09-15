@@ -4,27 +4,27 @@ INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 
-ADD_EXECUTABLE(unittest_unit Unit_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_unit ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
-SET_TARGET_PROPERTIES(unittest_unit PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-ADD_TEST(UnitTest-Unit ${TEST_OUTPUT_PATH}/unittest_unit)
+ADD_UNITTEST(UnitTest-Unit unittest_unit Unit_TEST.cpp)
 
-ADD_EXECUTABLE(unittest_unitscoll UnitsColl_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_unitscoll ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
-SET_TARGET_PROPERTIES(unittest_unitscoll PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-ADD_TEST(UnitTest-UnitsCollection ${TEST_OUTPUT_PATH}/unittest_unitscoll)
+ADD_UNITTEST(UnitTest-UnitsCollection unittest_unitscoll UnitsColl_TEST.cpp)
 
-ADD_EXECUTABLE(unittest_datetime DateTime_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_datetime ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
-SET_TARGET_PROPERTIES(unittest_datetime PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-ADD_TEST(UnitTest-DateTime ${TEST_OUTPUT_PATH}/unittest_datetime)
+ADD_UNITTEST(UnitTest-DateTime unittest_datetime DateTime_TEST.cpp)
 
-ADD_EXECUTABLE(unittest_event DistributedEvent_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_event ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
-SET_TARGET_PROPERTIES(unittest_event PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-ADD_TEST(UnitTest-Event ${TEST_OUTPUT_PATH}/unittest_event)
+ADD_UNITTEST(UnitTest-Event unittest_event  DistributedEvent_TEST.cpp)
 
-ADD_EXECUTABLE(unittest_eventscoll EventsColl_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_eventscoll ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
-SET_TARGET_PROPERTIES(unittest_eventscoll PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-ADD_TEST(UnitTest-EventsCollection ${TEST_OUTPUT_PATH}/unittest_eventscoll)
+ADD_UNITTEST(UnitTest-EventsCollection unittest_eventscoll EventsColl_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-InputData unittest_inputdata InputData_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-Variable unittest_variable Variable_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-Vector unittest_vector Vector_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-CoreRepository unittest_corerepository CoreRepository_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-DTSerie unittest_dtserie DTSerie_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-SwissTools unittest_swisstools SwissTools_TEST.cpp)
+
+ADD_UNITTEST(UnitTest-ColTextParser unittest_coltextparser ColTextParser_TEST.cpp)
+
