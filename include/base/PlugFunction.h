@@ -487,7 +487,7 @@ class PluggableFunction
       \param[in] Event the event to append
     */
     void OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::Event Ev);
+                               openfluid::core::Event& Ev);
 
 
 

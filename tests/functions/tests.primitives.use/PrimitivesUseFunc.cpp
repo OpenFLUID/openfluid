@@ -231,6 +231,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   openfluid::core::ScalarValue TheScalar;
   openfluid::core::ScalarValue TheInput;
   openfluid::core::EventsCollection TheEvents;
+  openfluid::core::Event Ev;
   DECLARE_UNITS_ORDERED_LOOP(1);
   std::string RunEnvStr;
   bool RunEnvBool;
@@ -417,7 +418,9 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     if (TheEvents.getCount() > 0)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetEvents");
 
-    OPENFLUID_AppendEvent(TU,openfluid::core::Event(openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2))));
+
+    Ev = openfluid::core::Event(openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)));
+    OPENFLUID_AppendEvent(TU,Ev);
 
 
   END_LOOP

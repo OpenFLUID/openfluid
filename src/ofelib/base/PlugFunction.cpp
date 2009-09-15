@@ -438,9 +438,9 @@ void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, open
 // =====================================================================
 // =====================================================================
 
-void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,openfluid::core::Event Ev)
+void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,openfluid::core::Event& Ev)
 {
-  throw OFException("under construction");
+  UnitPtr->getEvents()->addEvent(&Ev);
 }
 // =====================================================================
 // =====================================================================
