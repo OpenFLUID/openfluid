@@ -24,13 +24,14 @@ ADD_TEST(Functions-Vector "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckVector" 
                               "-p${TEST_OUTPUT_PATH}")                              
 
-
-ADD_FUNCTION(tests.largevector.prod tests.largevector.prod ${TEST_OUTPUT_PATH})
-ADD_FUNCTION(tests.largevector.use tests.largevector.use ${TEST_OUTPUT_PATH})
-ADD_TEST(Functions-LargeVector "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLargeVector"
-                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLargeVector" 
-                              "-p${TEST_OUTPUT_PATH}")                              
+IF(TESTS_RUNHIGHLOAD)
+  ADD_FUNCTION(tests.largevector.prod tests.largevector.prod ${TEST_OUTPUT_PATH})
+  ADD_FUNCTION(tests.largevector.use tests.largevector.use ${TEST_OUTPUT_PATH})
+  ADD_TEST(Functions-LargeVector "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                                 "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLargeVector"
+                                 "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLargeVector" 
+                                 "-p${TEST_OUTPUT_PATH}")
+ENDIF(TESTS_RUNHIGHLOAD)                                                               
 
 
 

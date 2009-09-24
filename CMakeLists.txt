@@ -7,7 +7,6 @@
 # CPack components for packaging:
 # - engine : OpenFLUID-engine, with SDK and standard simulation functions  
 # - engine-wodev : OpenFLUID-engine, without SDK, and with standard simulation functions
-# - mhydas : Simulation functions of the MHYDAS model
 #
 #
 
@@ -16,9 +15,18 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 PROJECT(OpenFLUID-Engine CXX)
 
+INCLUDE(CTest)
 ENABLE_TESTING()
 
 INCLUDE(CMake.in.config)
+
+GET_FILENAME_COMPONENT(BUILDNAME_COMPILER ${CMAKE_CXX_COMPILER} NAME)
+SET(BUILDNAME ${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${BUILDNAME_COMPILER})
+
+SET (CTEST_INITIAL_CACHE "
+BUILDNAME:STRING=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${BUILDNAME_COMPILER}
+")
+
 INCLUDE(CMake.in.sub)
 
 FIND_PACKAGE(Doxygen)
@@ -67,7 +75,8 @@ IF(wxWidgets_FOUND AND Boost_FOUND)
 
   FILE(MAKE_DIRECTORY "${UNITTESTS_BINARY_PATH}")
   ADD_SUBDIRECTORY(tests)
-  
+
+  MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
   MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
   MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
@@ -80,6 +89,8 @@ ENDIF(wxWidgets_FOUND AND Boost_FOUND)
 # Doxygen-built docs for core developers
 
 IF(DOXYGEN AND BUILD_DOCFORDEV)
+  
+  MESSAGE(STATUS "Build Doxygen documentation for core developers : yes")
   
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/Doxyfile.docfordev.in ${PROJECT_BINARY_DIR}/Doxyfile.docfordev)
 
@@ -97,12 +108,16 @@ IF(DOXYGEN AND BUILD_DOCFORDEV)
     "${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/index.html" VERBATIM)
 
 
+ELSE(DOXYGEN AND BUILD_DOCFORDEV)
+  MESSAGE(STATUS "Build Doxygen documentation for core developers : no")
 ENDIF(DOXYGEN AND BUILD_DOCFORDEV)
 
 
 
 # Latex docs compilation
 IF (BUILD_LATEX_DOCS)
+  MESSAGE(STATUS "Build LaTeX documentation : yes")
+
 IF(PDFLATEX_COMPILER OR LATEX2HTML_CONVERTER)
    
   FILE(GLOB_RECURSE DOCFILES ${DOC_RESOURCES_DIR}/*.tex)
@@ -125,6 +140,8 @@ IF(PDFLATEX_COMPILER OR LATEX2HTML_CONVERTER)
   ENDIF(LATEX2HTML_CONVERTER)
   
 ENDIF(PDFLATEX_COMPILER  OR LATEX2HTML_CONVERTER)
+ELSE (BUILD_LATEX_DOCS)
+  MESSAGE(STATUS "Build LaTeX documentation : no")
 ENDIF (BUILD_LATEX_DOCS)
 
 
