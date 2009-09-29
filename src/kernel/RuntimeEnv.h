@@ -44,6 +44,7 @@ class RuntimeEnvironment
     std::string m_OutputDir;
     std::string m_InputDir;
     std::string m_UserDataDir;
+    std::string m_TempDir;
 
     std::vector<std::string> m_PlugsDirs;
 
@@ -95,7 +96,7 @@ class RuntimeEnvironment
 
     void setDateTimeOutputDir();
 
-//    std::string getAppDir() const { return m_AppDir; };
+    std::string getTempDir() const { return m_TempDir; };
 
     std::string getInputFullPath(std::string Filename) const { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
 

@@ -35,6 +35,8 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_INDIR).string();
 
 
+  m_TempDir = _S(wxStandardPaths::Get().GetTempDir());
+
   m_ClearOutputDir = false;
   m_QuietRun = false;
   m_VerboseRun = false;
@@ -48,6 +50,7 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   mp_FuncEnv->setValue("dir.input",m_InputDir);
   mp_FuncEnv->setValue("dir.output",m_OutputDir);
+  mp_FuncEnv->setValue("dir.temp",m_TempDir);
 
   mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir);
   mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
