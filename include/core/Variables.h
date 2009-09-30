@@ -47,7 +47,6 @@ class Variables
 
     bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
 
-
     std::vector<VariableName_t> getVariablesNames() const;
 
     unsigned int getVariableValuesCount(const VariableName_t aName) const;
@@ -164,7 +163,7 @@ bool Variables<T>::isVariableExist(const VariableName_t aName, const TimeStep_t 
   if (it != m_Data.end())
   {
     // the variable exist if the required step is -1 than the variable storage next step
-    return (aStep == (it->second.getNextStep()-1));
+    return (aStep <= (it->second.getNextStep()-1));
   }
   return false;
 
@@ -216,7 +215,7 @@ unsigned int Variables<T>::getVariableValuesCount(const VariableName_t aName) co
 
   it = m_Data.find(aName);
 
-  if (it = m_Data.end()) return -1;
+  if (it == m_Data.end()) return (-1);
 
   else return it->second.getNextStep();
 }
