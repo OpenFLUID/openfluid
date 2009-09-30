@@ -48,9 +48,36 @@
                               "--buddyhelp" "newfunc"
                               )
 
+  FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc")
+  CONFIGURE_FILE("${TESTS_DATASETS_PATH}/tests.buddy.newfunc/CMakeLists.txt.in" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc/CMakeLists.txt" @ONLY)
+    
   ADD_TEST(Integration-BuddyNewFunc "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "newfunc"
+                              "--buddyopts" "funcid=tests.buddy.newfunc,cppclass=NewFunctionUsingBuddy,outputdir=${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc,authorname=John Doe,authoremail=doe@foo.bar.org"
                               )
+
+  ADD_TEST(Integration-BuddyNewFuncConfigure "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_COMMAND}" "."
+                              )
+
+  ADD_TEST(Integration-BuddyNewFuncBuild "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_BUILD_TOOL}"
+                              )
+
+
+  ADD_TEST(Integration-BuddyNewFuncCheck "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                         "-r"
+                         "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc")
+  SET_TESTS_PROPERTIES(Integration-BuddyNewFuncCheck PROPERTIES PASS_REGULAR_EXPRESSION "tests.buddy.newfunc"
+                                                                PASS_REGULAR_EXPRESSION "John Doe"
+                                                                PASS_REGULAR_EXPRESSION "doe@foo.bar.org")  
+                       
+  ADD_TEST(Integration-BuddyNewFuncRun "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                                       "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckBuddyNewFunc"
+                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckBuddyNewFunc" 
+                                       "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc"
+                                       "-v")
+
 
 
   ADD_TEST(Integration-BuddyConvertHelp "${BIN_OUTPUT_PATH}/openfluid-engine"

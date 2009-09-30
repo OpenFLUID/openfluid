@@ -167,6 +167,7 @@ bool Func2DocBuddy::run()
 
 #else
   std::cout << "func2doc buddy only runs on unix systems." << std::endl;
+  return true;
 #endif
 
   throw openfluid::base::OFException("under construction");

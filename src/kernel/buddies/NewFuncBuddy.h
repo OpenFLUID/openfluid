@@ -25,6 +25,8 @@
 
 class NewFunctionBuddy : public OpenFLUIDBuddy
 {
+  private:
+    void writeFunctionCPP();
 
   public:
 
