@@ -57,7 +57,7 @@
                               )
 
   ADD_TEST(Integration-BuddyNewFuncConfigure "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_COMMAND}" "."
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}" "." 
                               )
 
   ADD_TEST(Integration-BuddyNewFuncBuild "${CMAKE_COMMAND}"
