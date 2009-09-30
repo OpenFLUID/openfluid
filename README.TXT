@@ -48,6 +48,6 @@ To build packages,
 OpenFLUID is property of 
 Institut National de La recherche Agronomique 
 and 
-SupAgro Montpellier
+Montpellier SupAgro
 Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
   
