@@ -89,6 +89,6 @@ ADD_TEST(Functions-ProgressiveOutput "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckProgOut" 
                         "-p${TEST_OUTPUT_PATH}")                              
                               
-
+ADD_FUNCTION(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})
 
 

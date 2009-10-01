@@ -86,7 +86,15 @@
 
   ADD_TEST(Integration-BuddyConvert "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
+                              "--buddyopts" "convmode=13_14,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V13,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
                               )
+
+  ADD_TEST(Integration-BuddyConvertCheck "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
+                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted13to14"
+                                       "-p" "${TEST_OUTPUT_PATH}"
+                              )
+
 
   ADD_TEST(Integration-BuddyNewDatasetHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "newdata"

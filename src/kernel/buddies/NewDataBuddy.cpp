@@ -43,6 +43,8 @@ NewDataBuddy::~NewDataBuddy()
 
 bool NewDataBuddy::run()
 {
+  std::cout << "Output directory: " << m_Options["outputdir"] << std::endl;
+
   throw openfluid::base::OFException("under construction");
 
   return true;

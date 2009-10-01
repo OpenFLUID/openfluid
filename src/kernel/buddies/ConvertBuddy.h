@@ -22,10 +22,22 @@
 #define __CONVERTBUDDY_H___
 
 #include "OFBuddy.h"
+#include "openfluid-core.h"
+
+#include <map>
 
 class ConvertBuddy : public OpenFLUIDBuddy
 {
   private:
+
+
+    void convert_13_14();
+    void convert_13_14_defs(std::string UnitClass);
+    void convert_13_14_data();
+    void convert_13_14_output();
+    void convert_13_14_model_run_events();
+
+    std::map<openfluid::core::UnitID_t,double> m_GUSurfaces;
 
   public:
 

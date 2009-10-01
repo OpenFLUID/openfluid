@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+    <model>
+      <function fileID="tests.fakefunction" />
+    
+  </model>
+</openfluid>
