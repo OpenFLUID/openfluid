@@ -89,11 +89,11 @@
                               )
 
   ADD_TEST(Integration-BuddyNewDatasetHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
-                              "--buddyhelp" "newdataset"
+                              "--buddyhelp" "newdata"
                               )
 
   ADD_TEST(Integration-BuddyNewDataset "${BIN_OUTPUT_PATH}/openfluid-engine"
-                              "--buddy" "newdataset"
+                              "--buddy" "newdata"
                               )
 
 

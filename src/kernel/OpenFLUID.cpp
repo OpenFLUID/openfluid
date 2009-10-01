@@ -28,6 +28,9 @@
 
 #include "buddies/NewFuncBuddy.h"
 #include "buddies/Func2DocBuddy.h"
+#include "buddies/NewDataBuddy.h"
+#include "buddies/ConvertBuddy.h"
+
 
 // =====================================================================
 // =====================================================================
@@ -548,6 +551,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     OpenFLUIDBuddy* Buddy = NULL;
     if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new NewFunctionBuddy();
     if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new Func2DocBuddy();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new ConvertBuddy();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new NewDataBuddy();
+
 
     if (Buddy != NULL)
     {
@@ -681,6 +687,8 @@ void OpenFLUIDApp::run()
     OpenFLUIDBuddy* Buddy = NULL;
     if (m_BuddyToRun.first == "newfunc" ) Buddy = new NewFunctionBuddy();
     if (m_BuddyToRun.first == "func2doc" ) Buddy = new Func2DocBuddy();
+    if (m_BuddyToRun.first == "convert" ) Buddy = new ConvertBuddy();
+    if (m_BuddyToRun.first == "newdata" ) Buddy = new NewDataBuddy();
 
     if (Buddy != NULL)
     {
