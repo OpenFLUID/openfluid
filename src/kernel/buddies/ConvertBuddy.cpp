@@ -191,7 +191,35 @@ void ConvertBuddy::convert_13_14_defs(std::string UnitClass)
 
 void ConvertBuddy::convert_13_14_data()
 {
-  throw openfluid::base::OFException("under construction");
+	std::vector<std::string> DataFiles = GetFilesByExt(m_Options["inputdir"],"ddata.xml",true);
+	std::string StrLine, FileContent;
+
+	for (unsigned int i=0;i<DataFiles.size();i++)
+	{
+		std::string CurrInFile = boost::filesystem::path(DataFiles[i]).leaf();
+		boost::filesystem::path CurrInPath(m_Options["inputdir"]+"/"+CurrInFile);
+		boost::filesystem::path CurrOutPath(m_Options["outputdir"]+"/"+CurrInFile);
+
+		boost::filesystem::remove(CurrOutPath);
+		std::ifstream InputFile(CurrInPath.string().c_str());
+
+		FileContent = "";
+		while(std::getline(InputFile,StrLine))
+		{
+		   FileContent = FileContent + StrLine;
+		}
+
+		InputFile.close();
+
+		// process of input file
+
+		std::ofstream OutputFile(CurrOutPath.string().c_str(),std::ios::out);
+    OutputFile << FileContent;
+    OutputFile.close();
+
+	}
+
+	throw openfluid::base::OFException("under construction");
 }
 
 // =====================================================================
