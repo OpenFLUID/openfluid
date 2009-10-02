@@ -21,6 +21,7 @@
 #ifndef __FUNC2DOCBUDDY_H___
 #define __FUNC2DOCBUDDY_H___
 
+#include <boost/filesystem/path.hpp>
 
 #include "OFBuddy.h"
 
@@ -31,6 +32,15 @@ class Func2DocBuddy : public OpenFLUIDBuddy
 
     std::string m_CPPFile;
     std::string m_LatexOutFile;
+
+    boost::filesystem::path m_InputDirPath;
+    boost::filesystem::path m_OutputDirPath;
+    boost::filesystem::path m_InputFilePath;
+    boost::filesystem::path m_CProcessedFilePath;
+
+    boost::filesystem::path m_CPreProcessorPath;
+
+    std::string m_ExtractedLatexDoc;
 
     std::string m_Title;
     std::string m_FuncName;
@@ -52,6 +62,14 @@ class Func2DocBuddy : public OpenFLUIDBuddy
     SignatureData_t m_Events;
     SignatureData_t m_ExtraFiles;
 
+
+    void copyDocDirectory();
+
+    void extractLatexDocFromCPP();
+
+    void cpreprocessCPP();
+
+    void processSignature();
 
     void generateLatex();
 
