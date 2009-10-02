@@ -64,5 +64,9 @@ const std::string FULL_VERSION = "@ENGINE_FULL_VERSION@";
 #define SVN_REV
 const std::string SVN_REVISION = "";
 
+// func2doc default template file path
+const std::string FUNCDOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@OFEFUNC2DOC_TPL_INSTALL_PATH@";  
+const std::string FUNCDOC_TPLFILE_NAME = "ofefunc2doc_tpl.tex";
+
 #endif
 
