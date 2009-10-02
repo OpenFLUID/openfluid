@@ -168,6 +168,35 @@ openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0
   return DT0;
 }
 
+// =====================================================================
+// =====================================================================
 
 
+void CopyDirectoryRecursively(const std::string SourceDir, const std::string IntoDir)
+{
+  boost::filesystem::path SourceDirPath(SourceDir);
+  boost::filesystem::path IntoDirPath(IntoDir);
+  boost::filesystem::path DestDirPath(IntoDir+"/"+SourceDirPath.leaf());
+
+
+  if (boost::filesystem::is_directory(DestDirPath)) boost::filesystem::remove_all(DestDirPath);
+
+  boost::filesystem::create_directory(DestDirPath);
+
+  boost::filesystem::directory_iterator it;
+
+  for (it = boost::filesystem::directory_iterator(SourceDirPath);it != boost::filesystem::directory_iterator(); ++it)
+  {
+
+    if (boost::filesystem::is_regular(it->status()))
+    {
+      boost::filesystem::copy_file(it->path(),boost::filesystem::path(DestDirPath.string()+"/"+it->path().leaf()));
+    }
+
+    if (boost::filesystem::is_directory(it->status()))
+    {
+      CopyDirectoryRecursively(it->path().string(),DestDirPath.string());
+    }
+  }
+}
 
