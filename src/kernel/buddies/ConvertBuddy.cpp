@@ -24,12 +24,13 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string.hpp>
 #include <fstream>
 
 
 ConvertBuddy::ConvertBuddy() : OpenFLUIDBuddy()
 {
-  m_RequiredOptionsHelp["conv"] = "Conversion mode";
+  m_RequiredOptionsHelp["convmode"] = "Conversion mode";
   m_RequiredOptionsHelp["inputdir"] = "Input directory for dataset to convert";
   m_RequiredOptionsHelp["outputdir"] = "Output directory for converted dataset";
 }
@@ -206,20 +207,32 @@ void ConvertBuddy::convert_13_14_data()
 		FileContent = "";
 		while(std::getline(InputFile,StrLine))
 		{
-		   FileContent = FileContent + StrLine;
+		   FileContent = FileContent + StrLine + "\n";
 		}
 
 		InputFile.close();
 
-		// process of input file
+    boost::algorithm::replace_all(FileContent,"<openfluid>","<openfluid>\n  <domain>");
+    boost::algorithm::replace_all(FileContent,"</openfluid>","  </domain>\n</openfluid>");
+
+    boost::algorithm::replace_all(FileContent,"<distridata","  <inputdata");
+    boost::algorithm::replace_all(FileContent,"</distridata","  </inputdata");
+
+    boost::algorithm::replace_all(FileContent,"datacat=\"ini\"","");
+    boost::algorithm::replace_all(FileContent,"datacat=\"param\"","");
+
+    boost::algorithm::replace_all(FileContent,"<columns","  <columns");
+    boost::algorithm::replace_all(FileContent,"</columns","  </columns");
+
+    boost::algorithm::replace_all(FileContent,"<data","  <data");
+    boost::algorithm::replace_all(FileContent,"</data","  </data");
+
 
 		std::ofstream OutputFile(CurrOutPath.string().c_str(),std::ios::out);
     OutputFile << FileContent;
     OutputFile.close();
 
 	}
-
-	throw openfluid::base::OFException("under construction");
 }
 
 // =====================================================================
@@ -227,7 +240,44 @@ void ConvertBuddy::convert_13_14_data()
 
 void ConvertBuddy::convert_13_14_output()
 {
-  throw openfluid::base::OFException("under construction");
+
+  boost::filesystem::path FileInPath(m_Options["inputdir"]+"/output.xml");
+  boost::filesystem::path FileOutPath(m_Options["outputdir"]+"/output.xml");
+
+  std::string StrLine, FileContent;
+
+  boost::filesystem::remove(FileOutPath);
+  std::ifstream InputFile(FileInPath.string().c_str());
+
+  FileContent = "";
+  while(std::getline(InputFile,StrLine))
+  {
+    FileContent = FileContent + StrLine + "\n";
+  }
+
+  InputFile.close();
+
+  boost::algorithm::replace_all(FileContent,"<autooutfiles","<files");
+  boost::algorithm::replace_all(FileContent,"</autooutfiles","</files");
+
+  boost::algorithm::replace_all(FileContent,"<SUout","<set unitsclass=\"SU\"");
+  boost::algorithm::replace_all(FileContent,"</SUout","</set");
+
+  boost::algorithm::replace_all(FileContent,"<RSout","<set unitsclass=\"RS\"");
+  boost::algorithm::replace_all(FileContent,"</RSout","</set");
+
+  boost::algorithm::replace_all(FileContent,"<GUout","<set unitsclass=\"GU\"");
+  boost::algorithm::replace_all(FileContent,"</GUout","</set");
+
+  boost::algorithm::replace_all(FileContent,"filesuffix=","name=");
+  boost::algorithm::replace_all(FileContent,"selection=","unitsIDs=");
+
+  std::ofstream OutputFile(FileOutPath.string().c_str(),std::ios::out);
+  OutputFile << FileContent;
+  OutputFile.close();
+
+
+
 }
 
 // =====================================================================
