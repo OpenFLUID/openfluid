@@ -307,7 +307,7 @@ bool Func2DocBuddy::run()
       else
       {
         std::cout << "!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. " << std::endl;
-        m_Options["pdf"] == "0";
+        m_Options["pdf"] = "0";
       }
   }
 
@@ -323,7 +323,7 @@ bool Func2DocBuddy::run()
       else
       {
         std::cout << "!! Latex2HTML converter not found. Skipped. " << std::endl;
-        m_Options["html"] == "0";
+        m_Options["html"] = "0";
       }
   }
 
