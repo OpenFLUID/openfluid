@@ -215,7 +215,7 @@ std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filen
   {
     std::vector<std::string> PATHItems;
 
-#ifdef __unix__
+#if defined __unix__ || defined __APPLE__
     PATHItems = SplitString(std::string(PATHEnvVar), ":", false);
 #endif
 
