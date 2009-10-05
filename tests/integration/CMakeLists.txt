@@ -17,9 +17,10 @@
   
 
   ADD_TEST(Integration-FunctionsMatchReport "${BIN_OUTPUT_PATH}/openfluid-engine"
-                                "-u" "tests.primitives.use"
+                                "-u" "tests.primitives.*"
                                 "-p${TEST_OUTPUT_PATH}")
-  SET_TESTS_PROPERTIES(Integration-FunctionsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives")  
+  SET_TESTS_PROPERTIES(Integration-FunctionsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.use")  
+  SET_TESTS_PROPERTIES(Integration-FunctionsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.prod")
                            
   
   ADD_TEST(Integration-FunctionsXMLReport "${BIN_OUTPUT_PATH}/openfluid-engine"
@@ -27,11 +28,11 @@
                               "-p${TEST_OUTPUT_PATH}")
   
 
-  ADD_TEST(Integration-OFEFunc2Doc "${BIN_OUTPUT_PATH}/ofefunc2doc" 
-                       "${CMAKE_SOURCE_DIR}/src/functions/tests/tests.ofefunc2doc/OFEFunc2DocFunc.cpp"
-                       "-t${CMAKE_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc_tpl.tex"
-                       "-o${TEST_OUTPUT_PATH}"
-                       "-p")                              
+#  ADD_TEST(Integration-OFEFunc2Doc "${BIN_OUTPUT_PATH}/ofefunc2doc" 
+#                       "${CMAKE_SOURCE_DIR}/src/functions/tests/tests.ofefunc2doc/OFEFunc2DocFunc.cpp"
+#                       "-t${CMAKE_SOURCE_DIR}/resources/ofefunc2doc/ofefunc2doc_tpl.tex"
+#                       "-o${TEST_OUTPUT_PATH}"
+#                       "-p")                              
 
 
   ADD_TEST(Integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
