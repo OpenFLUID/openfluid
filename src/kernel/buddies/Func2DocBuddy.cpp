@@ -304,7 +304,11 @@ bool Func2DocBuddy::run()
         m_BibtexPath = boost::filesystem::path(BibtexPaths[0]);
         std::cout << "Using Bibtex compiler: " << m_BibtexPath.string() << std::endl;
       }
-      else std::cout << "!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. " << std::endl;
+      else
+      {
+        std::cout << "!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. " << std::endl;
+        m_Options["pdf"] == "0";
+      }
   }
 
   if (m_Options["html"] == "1")
@@ -316,9 +320,12 @@ bool Func2DocBuddy::run()
         m_Latex2HTMLPath = boost::filesystem::path(Latex2HTMLPaths[0]);
         std::cout << "Using Latex2HTML converter: " << m_Latex2HTMLPath.string() << std::endl;
       }
-      else std::cout << "!! Latex2HTML converter not found. Skipped. " << std::endl;
+      else
+      {
+        std::cout << "!! Latex2HTML converter not found. Skipped. " << std::endl;
+        m_Options["html"] == "0";
+      }
   }
-
 
   m_InputFilePath = boost::filesystem::path(m_Options["inputcpp"]);
   m_OutputDirPath = boost::filesystem::path(m_Options["outputdir"]);
