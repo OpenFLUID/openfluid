@@ -18,6 +18,7 @@
 
 #include "FortranFunc.h"
 #include "openfluid-tools.h"
+#include <cmath>
 
 
 // =====================================================================
@@ -147,7 +148,7 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
   CALL_FSUBROUTINE(multrealvalue)(&DValue,&DMult,&DResult);
 
-  if (abs(DResult - (DValue*DMult)) > m_Precision)
+  if (std::abs(DResult - (DValue*DMult)) > m_Precision)
     OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealvalue)");
 
 
@@ -201,7 +202,7 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
   for (i=0; i < MDim1*MDim2;i++)
   {
-    if (abs(MResult[i] - (MValue[i] * MMult)) > m_Precision)
+    if (std::abs(MResult[i] - (MValue[i] * MMult)) > m_Precision)
       OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
   }
 
