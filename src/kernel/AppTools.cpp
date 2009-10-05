@@ -200,3 +200,37 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
   }
 }
 
+// =====================================================================
+// =====================================================================
+
+std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename)
+{
+
+  std::vector<std::string> FileLocations;
+  char *PATHEnvVar;
+
+  PATHEnvVar = std::getenv("PATH");
+
+  if (PATHEnvVar != NULL)
+  {
+    std::vector<std::string> PATHItems;
+
+#ifdef __unix__
+    PATHItems = SplitString(std::string(PATHEnvVar), ":", false);
+#endif
+
+#ifdef WIN32
+    PATHItems = SplitString(std::string(PATHEnvVar), ";", false);
+#endif
+
+    for (unsigned int i=0;i<PATHItems.size();i++)
+    {
+      boost::filesystem::path PathToTest(PATHItems[i]+"/"+Filename);
+      if (boost::filesystem::exists(PathToTest)) FileLocations.push_back(PathToTest.string());
+    }
+
+  }
+
+  return FileLocations;
+
+}

@@ -82,4 +82,6 @@ openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0
 
 void CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath);
 
+std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename);
+
 #endif
