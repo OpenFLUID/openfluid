@@ -157,4 +157,31 @@ std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
 // =====================================================================
 // =====================================================================
 
+void RuntimeEnvironment::setQuietRun(bool Quiet)
+{
+  m_QuietRun = Quiet;
+  mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
+
+  if (Quiet)
+  {
+    m_VerboseRun = !Quiet;
+    mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
+  }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+void RuntimeEnvironment::setVerboseRun(bool Verbose)
+{
+  m_VerboseRun = Verbose;
+  mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
+
+  if (Verbose)
+  {
+    m_QuietRun = !Verbose;
+    mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
+  }
+};
 

@@ -96,7 +96,7 @@ class RuntimeEnvironment
 
     void setDateTimeOutputDir();
 
-    std::string getTempDir() const { return m_TempDir; };
+    std::string getTempDir() const { return m_TempDir; mp_FuncEnv->setValue("dir.temp",m_OutputDir); };
 
     std::string getInputFullPath(std::string Filename) const { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
 
@@ -110,15 +110,15 @@ class RuntimeEnvironment
 
     bool isClearOutputDir() const { return m_ClearOutputDir; };
 
-    void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir); };
+    void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
     bool isQuietRun() const { return m_QuietRun; };
 
-    void setQuietRun(bool Quiet) { m_QuietRun = Quiet; m_VerboseRun = !Quiet; mp_FuncEnv->setValue("mode.quiet",m_QuietRun); mp_FuncEnv->setValue("mode.verbose",m_VerboseRun); };
+    void setQuietRun(bool Quiet);
 
     bool isVerboseRun() const { return m_VerboseRun; };
 
-    void setVerboseRun(bool Verbose) { m_VerboseRun = Verbose; m_QuietRun = !Verbose; mp_FuncEnv->setValue("mode.quiet",m_QuietRun); mp_FuncEnv->setValue("mode.verbose",m_VerboseRun); };
+    void setVerboseRun(bool Verbose);
 
     bool isWriteResults() const { return m_WriteResults; };
 

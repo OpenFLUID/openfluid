@@ -19,6 +19,7 @@ void TokenizeString(const std::string& StrToTokenize,
                     std::vector<std::string>& Tokens,
                     const std::string& Delimiters = " ")
 {
+  Tokens.clear();
 
   std::string::size_type LastPos = StrToTokenize.find_first_not_of(Delimiters, 0);
   std::string::size_type Pos = StrToTokenize.find_first_of(Delimiters, LastPos);
