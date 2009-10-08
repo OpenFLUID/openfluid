@@ -1,8 +1,17 @@
 
+INCLUDE(${wxWidgets_USE_FILE})
 
-INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include)
+INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src/kernel)
 INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
-ADD_UNITTEST(UnitTest-AppTools unittest_apptools AppTools_TEST.cpp)
 
-ADD_UNITTEST(UnitTest-RuntimeEnv unittest_runtimeenv RuntimeEnv_TEST.cpp)
+MACRO(ADD_UNITTEST_WITHWX TEST_NAME EXE_NAME)
+  ADD_EXECUTABLE(${EXE_NAME} ${ARGN})
+  TARGET_LINK_LIBRARIES(${EXE_NAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${wxWidgets_LIBRARIES} ofelib)
+  SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
+  ADD_TEST(${TEST_NAME} "${TEST_OUTPUT_PATH}/${EXE_NAME}")
+ENDMACRO(ADD_UNITTEST_WITHWX)
+
+ADD_UNITTEST_WITHWX(UnitTest-AppTools unittest_apptools AppTools_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
+
+ADD_UNITTEST_WITHWX(UnitTest-RuntimeEnv unittest_runtimeenv RuntimeEnv_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/RuntimeEnv.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
