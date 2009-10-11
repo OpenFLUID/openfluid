@@ -73,6 +73,8 @@ class Func2DocBuddy : public OpenFLUIDBuddy
 
     std::string extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag);
 
+    std::string toLatexFriendly(std::string Content);
+
     void copyDocDirectory();
 
     void extractLatexDocFromCPP();

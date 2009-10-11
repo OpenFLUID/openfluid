@@ -88,6 +88,25 @@ std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::st
 // =====================================================================
 
 
+std::string toLatexFriendly(std::string Content)
+{
+  boost::algorithm::replace_all(Content,"$","\$");
+  boost::algorithm::replace_all(Content,"_","\_");
+  boost::algorithm::replace_all(Content,"&","\&");
+  boost::algorithm::replace_all(Content,"%","\%");
+  boost::algorithm::replace_all(Content,"{","\{");
+  boost::algorithm::replace_all(Content,"}","\}");
+  boost::algorithm::replace_all(Content,"~","$\sim$");
+  boost::algorithm::replace_all(Content,"\\","$\backslash$");
+
+  return Content;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Func2DocBuddy::copyDocDirectory()
 {
   if (m_InputDirPath != m_OutputDirPath)
@@ -166,6 +185,8 @@ void Func2DocBuddy::cpreprocessCPP()
 void Func2DocBuddy::processSignature()
 {
   std::cout << "** Processing function signature...";
+
+  // TODO don't forget to use toLatexFriendly() when necessary
 
   std::cout << " done" << std::endl;
 
