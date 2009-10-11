@@ -63,6 +63,27 @@ Func2DocBuddy::~Func2DocBuddy()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag)
+{
+  std::string::size_type Index = Content.find(BeginTag);
+
+  if (Index != std::string::npos)
+  {
+    Content.erase(0,Index+BeginTag.length());
+    Index = Content.find(EndTag);
+    if (Index != std::string::npos) Content.erase(Index,Content.length()-Index);
+  }
+
+  return Content;
+
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -108,17 +129,7 @@ void Func2DocBuddy::extractLatexDocFromCPP()
 
   CPPFile.close();
 
-
-  std::string::size_type Index = CPPFileContent.find(m_BeginFunc2DocTag);
-
-  if (Index != std::string::npos)
-  {
-    CPPFileContent.erase(0,Index+m_BeginFunc2DocTag.length());
-    Index = CPPFileContent.find(m_EndFunc2DocTag);
-    if (Index != std::string::npos) CPPFileContent.erase(Index,CPPFileContent.length()-Index);
-  }
-
-  m_ExtractedLatexDoc = CPPFileContent;
+  m_ExtractedLatexDoc = extractBetweenTags(CPPFileContent,m_BeginFunc2DocTag,m_EndFunc2DocTag);
 
   std::cout << " done" << std::endl;
 

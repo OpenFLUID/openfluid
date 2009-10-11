@@ -71,6 +71,7 @@ class Func2DocBuddy : public OpenFLUIDBuddy
 //    SignatureData_t m_Events;
 //    SignatureData_t m_ExtraFiles;
 
+    std::string extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag);
 
     void copyDocDirectory();
 
