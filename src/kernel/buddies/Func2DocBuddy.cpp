@@ -90,13 +90,13 @@ std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::st
 
 std::string toLatexFriendly(std::string Content)
 {
-  boost::algorithm::replace_all(Content,"$","\$");
-  boost::algorithm::replace_all(Content,"_","\_");
-  boost::algorithm::replace_all(Content,"&","\&");
-  boost::algorithm::replace_all(Content,"%","\%");
-  boost::algorithm::replace_all(Content,"{","\{");
-  boost::algorithm::replace_all(Content,"}","\}");
-  boost::algorithm::replace_all(Content,"~","$\sim$");
+  boost::algorithm::replace_all(Content,"$","\\$");
+  boost::algorithm::replace_all(Content,"_","\\_");
+  boost::algorithm::replace_all(Content,"&","\\&");
+  boost::algorithm::replace_all(Content,"%","\\%");
+  boost::algorithm::replace_all(Content,"{","\\{");
+  boost::algorithm::replace_all(Content,"}","\\}");
+  boost::algorithm::replace_all(Content,"~","$\\sim$");
   boost::algorithm::replace_all(Content,"\\","$\backslash$");
 
   return Content;
@@ -252,6 +252,8 @@ void Func2DocBuddy::buildPDF()
 
   std::cout << "** Building PDF...";
 
+  chdir(m_OutputDirPath.string().c_str());
+
   std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
   std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_FuncID).string() + " > /dev/null";
 
@@ -284,6 +286,8 @@ void Func2DocBuddy::buildPDF()
 void Func2DocBuddy::buildHTML()
 {
   std::cout << "** Building HTML...";
+
+  chdir(m_OutputDirPath.string().c_str());
 
   std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string();
 

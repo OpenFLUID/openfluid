@@ -20,34 +20,20 @@
 /*
 <func2doc>
 
+\begin{center}
+\includegraphics[scale=0.4]{doc/images/openfluid_official.png}
+\end{center}
+
+
 This is the \LaTeX -style documentation of the OFEFunc2Doc test function.\\
 
-\section{What's that?}
+\input{doc/part1}
+\input{doc/part2}
 
-This documentation should be extracted using the ofefunc2doc tool.\\
-The ofefunc2doc tool analyzes your main \texttt{.cpp} file,
-then parses the signature
-and the documentation block delimited by the \texttt{<func2doc>} and \texttt{<$/$func2doc>} tags.
+\cite{Moussa2002b}
 
-\section{Some formulae}
-
-Just for fun...\\
-
-\[y&=&ax^{2}+bx+c\]
-
-\bigskip
-
-Famous...
-
-\[E&=&mc^2\]
-
-\bigskip
-
-More sophisticated...
-
-\[\delta y \over \delta x} &=& {{a\over b}\over c\]
-
-
+\bibliographystyle{plain}
+\bibliography{doc/bibliography/MHYDAS_OpenFLUID}
 
 </func2doc>
 
