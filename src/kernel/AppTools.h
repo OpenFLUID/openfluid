@@ -64,7 +64,7 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
   \param[in] ReturnsEmpty if true, the empty strings are returned
   \return a vector of strings
 */
-std::vector<std::string> SplitString(const std::string StrToSplit, const std::string SepString,  bool ReturnsEmpty = false);
+std::vector<std::string> SplitString(const std::string StrToSplit, const std::string Separators,  bool ReturnsEmpty = false);
 
 bool EmptyDirectoryRecursively(const std::string DirPath);
 

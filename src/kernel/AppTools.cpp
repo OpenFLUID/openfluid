@@ -72,14 +72,14 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> SplitString(const std::string StrToSplit, const std::string SepString, bool ReturnsEmpty)
+std::vector<std::string> SplitString(const std::string StrToSplit, const std::string Separators, bool ReturnsEmpty)
 {
   std::vector<std::string> SplitParts;
 
   boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
   if (ReturnsEmpty) TokCompress = boost::token_compress_off;
 
-  boost::split(SplitParts, StrToSplit, boost::is_any_of(SepString));
+  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators));
 
   return SplitParts;
 }
