@@ -740,8 +740,6 @@ bool Func2DocBuddy::run()
 
   if (m_Options["html"] == "1") buildHTML();
 
-  throw openfluid::base::OFException("under construction");
-
 #else
   std::cout << "func2doc buddy only runs on Unix/Linux and MacOSX systems." << std::endl;
   return true;
