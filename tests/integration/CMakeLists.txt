@@ -103,6 +103,13 @@
 
   ADD_TEST(Integration-BuddyNewDataset "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "newdata"
+                              "--buddyopts" "outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.NewData"
+                              )
+
+  ADD_TEST(Integration-BuddyNewDatasetCheck "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.NewData"
+                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NewData"
+                                       "-p" "${TEST_OUTPUT_PATH}"
                               )
 
 

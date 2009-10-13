@@ -21,11 +21,32 @@
 #ifndef __NEWDATABUDDY_H___
 #define __NEWDATABUDDY_H___
 
+
 #include "OFBuddy.h"
+#include <boost/filesystem/path.hpp>
+
 
 class NewDataBuddy : public OpenFLUIDBuddy
 {
   private:
+
+    boost::filesystem::path m_OutputDirPath;
+
+    std::string getXMLHeader();
+
+    std::string getXMLFooter();
+
+    void generateRunXML();
+
+    void generateModelXML();
+
+    void generateOutputXML();
+
+    void generateEventsXML();
+
+    void generateDDefXML();
+
+    void generateDDataXML();
 
   public:
 
