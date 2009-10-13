@@ -218,7 +218,7 @@ class OFEFunc2Latex:
             self.THE_OUTVARS.append(TmpList)
 
 
-        for VarType in ['PRODUCED_VAR','SU_UPDATED_VAR']:
+        for VarType in ['PRODUCED_VAR','UPDATED_VAR']:
           if (Line.startswith(VarType) == True) :
             p = re.compile(r'"([^"\\]|\\.)*"', re.VERBOSE)        
             iterator = p.finditer(Line)
