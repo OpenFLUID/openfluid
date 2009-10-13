@@ -51,8 +51,8 @@ class Func2DocBuddy : public OpenFLUIDBuddy
     std::string m_NewCommands;
     std::string m_FuncID;
     std::string m_FuncName;
-    std::string m_FuncAuthor;
-    std::string m_FuncEmail;
+    std::string m_FuncAuthorName;
+    std::string m_FuncAuthorEmail;
     std::string m_FuncDomain;
     std::string m_FuncDescription;
     std::string m_FuncData;
@@ -63,17 +63,25 @@ class Func2DocBuddy : public OpenFLUIDBuddy
     std::string m_EndFunc2DocTag;
 
 
-//    SignatureData_t m_InVars;
-//    SignatureData_t m_OutVars;
-//    SignatureData_t m_ModVars;
-//    SignatureData_t m_InData;
-//    SignatureData_t m_ParamsData;
-//    SignatureData_t m_Events;
-//    SignatureData_t m_ExtraFiles;
+    SignatureData_t m_InVars;
+    SignatureData_t m_OutVars;
+    SignatureData_t m_ModVars;
+    SignatureData_t m_InData;
+    SignatureData_t m_ParamsData;
+    SignatureData_t m_Events;
+    SignatureData_t m_ExtraFiles;
 
     std::string extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag);
 
     std::string toLatexFriendly(std::string Content);
+
+    void addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat);
+
+    void addLatexDataCatEnd(std::string& Content);
+
+    std::vector<std::string> extractSignatureLines();
+
+    std::vector<std::string> searchStringLitterals(std::string StrToParse);
 
     void copyDocDirectory();
 

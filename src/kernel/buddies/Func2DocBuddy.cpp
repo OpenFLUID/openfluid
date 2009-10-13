@@ -19,6 +19,8 @@
 
 
 #include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/regex.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <fstream>
@@ -26,6 +28,7 @@
 
 #include "Func2DocBuddy.h"
 #include "openfluid-core.h"
+#include "openfluid-tools.h"
 #include "config.h"
 #include "AppTools.h"
 
@@ -42,8 +45,8 @@ Func2DocBuddy::Func2DocBuddy() : OpenFLUIDBuddy()
   m_Title = "Unknown Title";
   m_FuncID = "unknown.id";
   m_FuncName = "Unknown Function Name";
-  m_FuncAuthor = "Unknown Function Author";
-  m_FuncEmail = "Unknown Function Author Email";
+  m_FuncAuthorName = "Unknown Function Author";
+  m_FuncAuthorEmail = "Unknown Function Author Email";
   m_FuncDomain = "Unknown Function Domain";
 
   m_BeginSignatureTag = "BEGIN_SIGNATURE_HOOK";
@@ -88,7 +91,7 @@ std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::st
 // =====================================================================
 
 
-std::string toLatexFriendly(std::string Content)
+std::string Func2DocBuddy::toLatexFriendly(std::string Content)
 {
   boost::algorithm::replace_all(Content,"$","\\$");
   boost::algorithm::replace_all(Content,"_","\\_");
@@ -100,6 +103,30 @@ std::string toLatexFriendly(std::string Content)
   boost::algorithm::replace_all(Content,"\\","$\backslash$");
 
   return Content;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Func2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat)
+{
+  std::string ColsNbrStr;
+  openfluid::tools::ConvertValue(ColsFormat.length(),&ColsNbrStr);
+
+  Content = Content + "\\begin{center}\\begin{small}"+"\n"+"\\begin{tabularx}{\\linewidth}{"+ColsFormat+"}"+"\n";
+  Content = Content + "\\multicolumn{"+ColsNbrStr+"}{l}{\\begin{large}\\textbf{"+Title+"}\\end{large}}\\\\"+"\n"+"\\hline"+"\n";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Func2DocBuddy::addLatexDataCatEnd(std::string& Content)
+{
+  Content = Content + "\\hline"+"\n"+"\\end{tabularx}"+"\n"+"\\end{small}\\end{center}"+"\n"+"\\smallskip"+"\n\n";
 }
 
 
@@ -177,16 +204,271 @@ void Func2DocBuddy::cpreprocessCPP()
 
 }
 
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> Func2DocBuddy::extractSignatureLines()
+{
+  std::ifstream CProcessedFile(m_CProcessedFilePath.string().c_str());
+
+  // check if file exists and if it is "openable"
+  if (!CProcessedFile)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
+
+  std::string StrLine  = "";
+  std::string FileContent = "";
+
+  // parse and loads file contents
+  while(std::getline(CProcessedFile,StrLine))
+  {
+    FileContent = FileContent + StrLine;
+  }
+
+  CProcessedFile.close();
+
+  std::string SignatureContent = extractBetweenTags(FileContent,m_BeginSignatureTag,m_EndSignatureTag);
+
+  std::vector<std::string> Lines;
+
+  boost::algorithm::split_regex(Lines, SignatureContent,boost::regex("DECLARE_"));
+
+  for (int i = 0; i < Lines.size(); i++)
+  {
+    boost::algorithm::trim(Lines[i]);
+    boost::algorithm::replace_all(Lines[i],"\n","");
+  }
+
+  return Lines;
+
+}
+
 
 // =====================================================================
 // =====================================================================
 
+std::vector<std::string> Func2DocBuddy::searchStringLitterals(std::string StrToParse)
+{
+  std::vector<std::string> FoundStrings;
+  std::string::const_iterator StrStart, StrEnd;
+  boost::regex Expression("\"([^\"\\\\]|\\\\.)*\"");
+
+  StrStart = StrToParse.begin();
+  StrEnd = StrToParse.end();
+
+  boost::sregex_token_iterator It(StrStart, StrEnd, Expression, 0);
+  boost::sregex_token_iterator EndIt;
+
+  for (; It != EndIt ; ++It)
+  {
+    std::string FoundStr = std::string(It->first, It->second);
+    FoundStr = FoundStr.substr(1,FoundStr.length()-2);
+    FoundStrings.push_back(FoundStr);
+  }
+
+  return FoundStrings;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 void Func2DocBuddy::processSignature()
 {
+  int i;
+  std::vector<std::string> LineParts;
+
+
   std::cout << "** Processing function signature...";
 
+
+  std::vector<std::string> Lines = extractSignatureLines();
+
+//  for (i=0; i< Lines.size();i++) std::cout << Lines[i] << std::endl;
+
   // TODO don't forget to use toLatexFriendly() when necessary
+
+  for (unsigned i=0; i< Lines.size();i++)
+  {
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_ID"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1)
+      {
+        m_FuncID = toLatexFriendly(LineParts[0]);
+        m_Title = m_FuncID;
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_NAME"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncName = toLatexFriendly(LineParts[0]);
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncDomain = toLatexFriendly(LineParts[0]);
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DESCRIPTION"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncDescription = toLatexFriendly(LineParts[0]);
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_AUTHORNAME"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncAuthorName = toLatexFriendly(LineParts[0]);
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_AUTHOREMAIL"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncAuthorEmail = toLatexFriendly(LineParts[0]);
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"FUNCTION_PARAM"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 3)
+      {
+        m_ParamsData[LineParts[0]].push_back(toLatexFriendly(LineParts[1]));
+        m_ParamsData[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_INPUTDATA"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_InData[LineParts[0]].push_back("required");
+        m_InData[LineParts[0]].push_back(LineParts[1]);
+        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"USED_INPUTDATA"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_InData[LineParts[0]].push_back("used");
+        m_InData[LineParts[0]].push_back(LineParts[1]);
+        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_VAR"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_InVars[LineParts[0]].push_back("required");
+        m_InVars[LineParts[0]].push_back("on step");
+        m_InVars[LineParts[0]].push_back(LineParts[1]);
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"USED_VAR"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_InVars[LineParts[0]].push_back("used");
+        m_InVars[LineParts[0]].push_back("on step");
+        m_InVars[LineParts[0]].push_back(LineParts[1]);
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_PREVVAR"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_InVars[LineParts[0]].push_back("required");
+        m_InVars[LineParts[0]].push_back("on prev. step");
+        m_InVars[LineParts[0]].push_back(LineParts[1]);
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"USED_PREVVAR"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_InVars[LineParts[0]].push_back("used");
+        m_InVars[LineParts[0]].push_back("on prev. step");
+        m_InVars[LineParts[0]].push_back(LineParts[1]);
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"PRODUCED_VAR"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_OutVars[LineParts[0]].push_back("produced");
+        m_OutVars[LineParts[0]].push_back(LineParts[1]);
+        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"UPDATED_VAR"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 4)
+      {
+        m_OutVars[LineParts[0]].push_back("updated");
+        m_OutVars[LineParts[0]].push_back(LineParts[1]);
+        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
+        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"USED_EVENTS"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1)
+      {
+        m_Events[LineParts[0]].clear();
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"USED_EXTRAFILE"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1)
+      {
+        m_ExtraFiles[LineParts[0]].push_back("used");
+      }
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_EXTRAFILE"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1)
+      {
+        m_ExtraFiles[LineParts[0]].push_back("required");
+      }
+    }
+
+
+  }
 
   std::cout << " done" << std::endl;
 
@@ -199,7 +481,7 @@ void Func2DocBuddy::processSignature()
 
 void Func2DocBuddy::generateLatex()
 {
-  std::cout << "** Generating latex file...";
+  std::cout << "** Generating latex file..."; std::cout.flush();
 
   // loading template
 
@@ -220,10 +502,75 @@ void Func2DocBuddy::generateLatex()
 
   TPLFile.close();
 
+
+  // generate Function Data
+
+  SignatureData_t::iterator it;
+
+  if (m_ParamsData.size() > 0)
+  {
+    addLatexDataCatBegin(m_FuncData,"Function parameter(s)","lXr");
+    for (it = m_ParamsData.begin(); it != m_ParamsData.end(); ++it)
+    {
+      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_FuncData);
+  }
+
+  if (m_InData.size() > 0)
+  {
+    addLatexDataCatBegin(m_FuncData,"Input data","lllXr");
+    for (it = m_InData.begin(); it != m_InData.end(); ++it)
+    {
+      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_FuncData);
+  }
+
+  if (m_InVars.size() > 0)
+  {
+    addLatexDataCatBegin(m_FuncData,"Required or used variable(s)","llllXr");
+    for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
+    {
+      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "&$" + it->second[4] + "$\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_FuncData);
+  }
+
+  if (m_OutVars.size() > 0)
+  {
+    addLatexDataCatBegin(m_FuncData,"Produced or updated variable(s)","lllXr");
+    for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
+    {
+      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_FuncData);
+  }
+
+  if (m_Events.size() > 0)
+  {
+    addLatexDataCatBegin(m_FuncData,"Used event(s)","l");
+    for (it = m_Events.begin(); it != m_Events.end(); ++it)
+    {
+      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_FuncData);
+  }
+
+  if (m_ExtraFiles.size() > 0)
+  {
+    addLatexDataCatBegin(m_FuncData,"Required or used extrafile(s)","lX");
+    for (it = m_ExtraFiles.begin(); it != m_ExtraFiles.end(); ++it)
+    {
+      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_FuncData);
+  }
+
   // replacing values
 
   boost::algorithm::replace_all(m_LatexOutFile,"#title#",m_Title);
-  boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_FuncAuthor);
+  boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_FuncAuthorName);
   boost::algorithm::replace_all(m_LatexOutFile,"#newcommands#",m_NewCommands);
   boost::algorithm::replace_all(m_LatexOutFile,"#name#",m_FuncName);
   boost::algorithm::replace_all(m_LatexOutFile,"#domain#",m_FuncDomain);
@@ -240,7 +587,7 @@ void Func2DocBuddy::generateLatex()
   OutputFile.close();
 
 
-  std::cout << " done" << std::endl;
+  std::cout << " done" << std::endl; std::cout.flush();
 }
 
 // =====================================================================
@@ -250,31 +597,30 @@ void Func2DocBuddy::generateLatex()
 void Func2DocBuddy::buildPDF()
 {
 
-  std::cout << "** Building PDF...";
+  std::cout << "** Building PDF..."; std::cout.flush();
 
   chdir(m_OutputDirPath.string().c_str());
 
   std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
   std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_FuncID).string() + " > /dev/null";
 
-  std::cout << " first pass...";
+  std::cout << " first pass..."; std::cout.flush();
 
-  std::cout << PDFCommandToRun << std::endl;
   system(PDFCommandToRun.c_str());
 
-  std::cout << " bibliography and references...";
+  std::cout << " bibliography and references..."; std::cout.flush();
 
   system(BibCommandToRun.c_str());
 
-  std::cout << " second pass...";
+  std::cout << " second pass..."; std::cout.flush();
 
   system(PDFCommandToRun.c_str());
 
-  std::cout << " third pass...";
+  std::cout << " third pass..."; std::cout.flush();
 
   system(PDFCommandToRun.c_str());
 
-  std::cout << " done" << std::endl;
+  std::cout << " done" << std::endl; std::cout.flush();
 
 }
 
@@ -285,7 +631,7 @@ void Func2DocBuddy::buildPDF()
 
 void Func2DocBuddy::buildHTML()
 {
-  std::cout << "** Building HTML...";
+  std::cout << "** Building HTML..."; std::cout.flush();
 
   chdir(m_OutputDirPath.string().c_str());
 
@@ -293,7 +639,7 @@ void Func2DocBuddy::buildHTML()
 
   system(CommandToRun.c_str());
 
-  std::cout << " done" << std::endl;
+  std::cout << " done" << std::endl; std::cout.flush();
 }
 
 
@@ -317,6 +663,7 @@ bool Func2DocBuddy::run()
   std::cout << "Generate PDF: " << getYesNoFromOneZero(m_Options["pdf"]) << std::endl;
   std::cout << "Generate HTML: " << getYesNoFromOneZero(m_Options["html"]) << std::endl;
 
+  std::cout.flush();
 
   std::vector<std::string> GCCPaths = GetFileLocationsUsingPATHEnvVar("gcc");
 
