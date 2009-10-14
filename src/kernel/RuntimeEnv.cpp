@@ -47,8 +47,10 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_TempDir = std::getenv("TEMP");
 #endif
 
-
   if (HomeDir == "") HomeDir = m_TempDir;
+
+  HomeDir = boost::filesystem::path(HomeDir).string();
+  m_TempDir = boost::filesystem::path(m_TempDir).string();
 
   m_UserDataDir = boost::filesystem::path(HomeDir+"/.openfluid/engine").string();
 
