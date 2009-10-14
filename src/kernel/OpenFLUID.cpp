@@ -377,7 +377,8 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 // =====================================================================
 // =====================================================================
 
-void OpenFLUIDApp::printEnvInfos()
+
+void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
   std::vector<std::string> FunctionsPaths = m_RunEnv.getPluginsPaths();
   unsigned int i;
@@ -386,6 +387,16 @@ void OpenFLUIDApp::printEnvInfos()
   if (m_RunEnv.isWriteResults() || m_RunEnv.isWriteSimReport()) std::cout << "Output dir: " << m_RunEnv.getOutputDir() << std::endl;
   std::cout << "Functions search path(s):" << std::endl;
   for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
+  if (ShowTemp) std::cout << "Temp dir: " << m_RunEnv.getTempDir() << std::endl;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printEnvInfos()
+{
+  printPaths(false);
   if ((m_RunEnv.isWriteResults() || m_RunEnv.isWriteSimReport()) && (m_RunEnv.isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
   if (m_RunEnv.isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
   if (m_RunEnv.isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
@@ -514,20 +525,21 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("buddyhelp",boost::program_options::value< std::string >(),"display help message for specified OpenFLUID buddy")
       ("buddyopts",boost::program_options::value< std::string >(),"set options for specified OpenFLUID buddy")
       ("clean-output-dir,c","clean results output directory by removing existing files")
-      ("functions-list,f","list available functions (do not run the model)")
+      ("functions-list,f","list available functions (do not run the simulation)")
       ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
+      ("no-varname-check","do not check variable name against nomenclature")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
       ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions research paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
-      ("functions-report,r","print a report of available functions, with details (do not run the model)")
+      ("functions-report,r","print a report of available functions, with details (do not run the simulation)")
       ("no-simreport,s","do not generate simulation report")
-      ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of functions matching the given wildcard-based pattern (do not run the model)")
+      ("show-paths","print the used paths (do not run the simulation)")
+      ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of functions matching the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
-      ("version","get version (do not run the model)")
-      ("xml-functions-report,x","print a report of available functions in xml format, with details (do not run the model)")
+      ("version","get version (do not run the simulation)")
+      ("xml-functions-report,x","print a report of available functions in xml format, with details (do not run the simulation)")
       ("no-result,z","do not write results files")
-      ("no-varname-check","do not check variable name against nomenclature")
   ;
 
   boost::program_options::variables_map OptionsVars;
@@ -636,6 +648,13 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   if (OptionsVars.count("auto-output-dir"))
   {
     m_RunEnv.setDateTimeOutputDir();
+  }
+
+  if (OptionsVars.count("show-paths"))
+  {
+    m_RunType = InfoRequest;
+    printPaths();
+    return;
   }
 
   if (OptionsVars.count("clean-output-dir"))

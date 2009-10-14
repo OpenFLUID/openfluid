@@ -20,7 +20,6 @@
 #include "RuntimeEnv.h"
 #include "config.h"
 
-#include <wx/stdpaths.h>
 #include <iostream>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
@@ -29,13 +28,33 @@
 RuntimeEnvironment::RuntimeEnvironment()
 {
 
-  m_UserDataDir = _S(wxStandardPaths::Get().GetUserDataDir()) + _S(wxFILE_SEP_PATH) + "engine";
+  std::string HomeDir = "";
+  m_TempDir = "";
+
+  char* TempDir;
+
+#if defined __unix__ || defined __APPLE__
+  HomeDir = std::getenv("HOME");
+  TempDir = std::getenv("TMPDIR");
+  if (TempDir == NULL ) TempDir = std::getenv("TMP");
+  if (TempDir == NULL ) TempDir = std::getenv("TEMP");
+  if (TempDir == NULL ) m_TempDir = "/tmp";
+  else m_TempDir = TempDir;
+#endif
+
+#if WIN32
+  HomeDir = std::getenv("USERPROFILE");
+  m_TempDir = std::getenv("TEMP");
+#endif
+
+
+  if (HomeDir == "") HomeDir = m_TempDir;
+
+  m_UserDataDir = boost::filesystem::path(HomeDir+"/.openfluid/engine").string();
 
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_OUTDIR).string();
   m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_INDIR).string();
 
-
-  m_TempDir = _S(wxStandardPaths::Get().GetTempDir());
 
   m_ClearOutputDir = false;
   m_QuietRun = false;
@@ -61,18 +80,14 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
 
-  // plugins search order: user directory then system directory
+  // plugins search order:
+  //   command line paths, then user directory, then system directory
+
   m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_PLUGINS_SUBDIR).string());
 
-  #ifdef __LINUX__
-  #ifndef __DEVEL__
+#if defined __unix__ || defined __APPLE__
   m_PlugsDirs.push_back(OPENFLUID_PLUGINS_STDSYSDIR);
-  #endif
-  #endif
-
-  #ifdef __WXMSW__
-  m_PlugsDirs.push_back(_S(wxStandardPaths::Get().GetPluginsDir()) + _S(wxFILE_SEP_PATH) + OPENFLUID_PLUGINS_SUBDIR);
-  #endif
+#endif
 
   // set ignition date time
   m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
@@ -123,7 +138,14 @@ void RuntimeEnvironment::addExtraPluginsPaths(std::string SemicolonSeparatedPath
 {
   std::vector<std::string> ExtraPaths;
 
+#if  defined __unix__ || defined __APPLE__
+  ExtraPaths = SplitString(SemicolonSeparatedPaths,":");
+#endif
+
+#if WIN32
   ExtraPaths = SplitString(SemicolonSeparatedPaths,";");
+#endif
+
 
   for (int i = ExtraPaths.size()-1 ; i>=0 ; i--) m_PlugsDirs.insert(m_PlugsDirs.begin(),1,RemoveTrailingSlashes(ExtraPaths[i]));
 }

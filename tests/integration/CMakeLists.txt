@@ -6,6 +6,11 @@
                        "--version")
   SET_TESTS_PROPERTIES(Integration-DisplayVersion PROPERTIES PASS_REGULAR_EXPRESSION ${ENGINE_FULL_VERSION})  
                        
+  ADD_TEST(Integration-ShowPaths "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                       "--show-paths"
+                       "-p" "foobar")  
+  SET_TESTS_PROPERTIES(Integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 foobar")
+  
   
   ADD_TEST(Integration-FunctionsList "${BIN_OUTPUT_PATH}/openfluid-engine" 
                          "-f"

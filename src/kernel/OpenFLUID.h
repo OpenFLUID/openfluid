@@ -61,6 +61,8 @@ class OpenFLUIDApp
 
     void printOpenFLUIDInfos();
 
+    void printPaths(bool ShowTemp = true);
+
     void printEnvInfos();
 
     void printPluginsList();
