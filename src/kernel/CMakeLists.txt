@@ -22,7 +22,8 @@ ADD_EXECUTABLE(openfluid-engine
                buddies/OFBuddy.cpp buddies/NewFuncBuddy.cpp buddies/Func2DocBuddy.cpp
                buddies/NewDataBuddy.cpp buddies/ConvertBuddy.cpp
                AppTools.cpp RuntimeEnv.cpp
-               PluginManager.cpp IOMan.cpp Engine.cpp
+               DynamicLib.cpp PluginManager.cpp 
+               IOMan.cpp Engine.cpp
                OpenFLUID.cpp             
                main.cpp
               )

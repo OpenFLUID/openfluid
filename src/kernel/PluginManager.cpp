@@ -17,10 +17,10 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <wx/dynlib.h>
 
 #include "config.h"
 
+#include "DynamicLib.h"
 #include "PluginManager.h"
 #include "AppTools.h"
 #include "base/OFException.h"
@@ -52,40 +52,41 @@ PluginManager::~PluginManager()
 
 PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
 {
-  wxDynamicLibrary *PlugLib = new wxDynamicLibrary();
   std::string PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
   PluginContainer* Plug = NULL;
 
+  DynamicLib *PlugLib = new DynamicLib(PluginFile);
+
   // library loading
-  if (PluginFile.length()>0 && PlugLib->Load(_U(PluginFile.c_str())))
+  if (PluginFile.length()>0 && PlugLib->load())
   {
     // TODO to develop
 
     Plug = new PluginContainer();
     Plug->Filename = PluginFile;
 
-    if (PlugLib->HasSymbol(wxT(PLUGSDKVERSION_PROC_NAME)))
+    if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
     {
       openfluid::base::GetSDKVersionProc SDKProc;
-      if ((SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->GetSymbol(wxT(PLUGSDKVERSION_PROC_NAME))));
+      if ((SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME)));
         Plug->SDKCompatible = (FULL_VERSION == SDKProc());
     }
 
     if (Plug->SDKCompatible)
     {
       // checks if the handle proc exists
-      if (PlugLib->HasSymbol(wxT(PLUGFUNCTION_PROC_NAME)) && PlugLib->HasSymbol(wxT(PLUGSIGNATURE_PROC_NAME)))
+      if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
       {
 
         // hooks the handle proc
-        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->GetSymbol(wxT(PLUGSIGNATURE_PROC_NAME));
+        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->getSymbol(PLUGSIGNATURE_PROC_NAME);
 
 
         if (SignProc != NULL)
         {
           Plug->Signature = SignProc();
 
-          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->GetSymbol(wxT(PLUGFUNCTION_PROC_NAME));
+          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->getSymbol(PLUGFUNCTION_PROC_NAME);
           if (PlugProc != NULL)
           {
             Plug->Function = PlugProc();
@@ -95,7 +96,8 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
         else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + PluginFilename);
 
         // unloads the library
-        //PlugLib->Unload();
+        //PlugLib->unload();
+        //delete PlugLib;
 
       }
     }
