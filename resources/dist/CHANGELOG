@@ -1,17 +1,37 @@
+1.4.1
+
+  * Introduced buddies tools : dataset conversion tools (1.3 to 1.4), function 
+    documentation (func2doc), generation of empty dataset , generation of 
+    function source code   
+  * Added methods to generate events from simulation functions
+  * Renamed DistributedEvent class into Event class  
+  * Added --show-paths command line option
+  * Removed links to wxWidgets libraries
+  * Introduced boost libraries 
+  * Introduced custom dynamic library loader
+  * Fixed some small bugs
+  * Cleaned some code
+  * Improved win32 and MacOSX compatibility  
+  * Added many tests, in order to improve software quality
+
+
+
 1.4.0
 
   * Introduced new "generic units" feature
   * Introduced new "progressive output" feature (on data and execution messages)
   * Modified data handling primitives (OPENFLUID_xxxx)
   * Modified declaration of functions signatures 
-  * Added macros for units lists loops, according to the "generic units" features
+  * Added macros for units lists loops, according to the "generic units" 
+    features
   * Added tool for floating point values equality check
   * Added string conversion methods in openfluid::tools
   * Removed PluggableFunction derivation from wxObject (obsolete)
   * Modified hash tables type (from wxHashMap to std::map)
   * Replaced wxString by std::string where possible
   * Updated ofefunc2doc tool, according to the new declaration of signatures
-  * Added functions reporting command line option, using wildcard-based pattern matching (-u, --matching-functions-report)
+  * Added functions reporting command line option, using wildcard-based pattern 
+    matching (-u, --matching-functions-report)
   * Added pkg-config config file for ofelib
   * Fixed memory allocation bug in Vector<T>
   * Fixed some minor bugs
@@ -46,8 +66,10 @@
 
   * Modified simulation period configuration, now with a begin and end date
   * Removed rain from required data for simulation
-  * Added simulation functions for distribution and interpolation of rain on SU and RS
-  * Modified existing simulation functions to take into account the new access method to rain  
+  * Added simulation functions for distribution and interpolation of rain 
+    on SU and RS
+  * Modified existing simulation functions to take into account the new access
+    method to rain  
   * Added detailed display command line option (--verbose, -v)
   * Updated TinyXML version (2.5.3)  
   * Fixed some bugs
@@ -68,21 +90,25 @@
 1.0-168
 
   * Fixed bug in the name of generated trace files (trace mode only)
-  * Fixed bug in error messages for distributed properties and initial conditions
+  * Fixed bug in error messages for distributed properties and initial
+    conditions
 
 
 
 0.7-163
 
-  * Fixed requirement of output.xml file even if results saving is disabled (-z command line option)
+  * Fixed requirement of output.xml file even if results saving is disabled
+    (-z command line option)
   * Added vector and scalar variables saving
-  * Modified output.xml syntax : "column" attribute is now replaced by "vars" attribute
+  * Modified output.xml syntax : "column" attribute is now replaced by 
+    "vars" attribute
 
 
 
 0.7-161
 
-  * Added development status (experimental, beta, stable) in reports (comand line options -r or -x)
+  * Added development status (experimental, beta, stable) in reports 
+  (comand line options -r or -x)
   * Cleaned signatures of standard simulation functions
   * Fixed case error in domain name of the HayamiRSGU function
   * Modified messages when wrong variable production (Engine)
@@ -93,13 +119,15 @@
 
   * Added save of vector variables in trace mode
   * Added HayamiRSGU simulation function
-  * Modified variables and simulation functions names, according to the brand new MHYDAS names nomenclature
+  * Modified variables and simulation functions names, according to the 
+    brand new MHYDAS names nomenclature
 
 
 
 0.7-153
 
-  * Fixed bug in column text file read method. Double empty lines at the end of files are not needed anymore
+  * Fixed bug in column text file read method. Double empty lines at the end 
+    of files are not needed anymore
 
 
 
@@ -161,9 +189,12 @@
   * Fixed output directory creation when only the simulation report is saved
   * Added variable production control during simulation
   * Removed display of warning messages for unfinished simulations
-  * Modified default user data dir, now $(HOME)/.mhydas/engine instead of $(HOME)/.mhydas
-  * Added checking consistency system, with extra files, rain and vars produced at a previous time step
-  * Modified simulation functions reports, according to consistency checking system modifications
+  * Modified default user data dir, now $(HOME)/.mhydas/engine 
+    instead of $(HOME)/.mhydas
+  * Added checking consistency system, with extra files, rain and 
+    vars produced at a previous time step
+  * Modified simulation functions reports, according to 
+    consistency checking system modifications
   * Modified stdplugs simulation functions, according to SDK modifications
 
 
@@ -171,7 +202,8 @@
 0.7-135
 
   * Modified mm/h to m/s rain intensity transformation method
-  * Modified model.xml file format, file and ID attributes of the function element are merged into a fileID attribute
+  * Modified model.xml file format, file and ID attributes of the function 
+    elements are merged into a fileID attribute
   * Modified domain of in signature of stdplugs
   * Modified filenames of simulation functions binaries
   * Modified XML output when using -x command line option
@@ -182,11 +214,13 @@
 
   * Modified simulation functions signatures according to SDK modifications
   * Added display of SDK version number used to buil the simulation functions
-  * Added -k and -v command line options for versions numbers (resp. SDK and application)
+  * Added -k and -v command line options for versions numbers
+    (resp. SDK and application)
   * Modified display output of -f command line option
   * Modified display output of -h command line option
   * Fixed very long time for saving warning messages
-  * Fixed the simulation report was always saved when an error occurs during simulation, even if --no-simreport option was used
+  * Fixed the simulation report was always saved when an error occurs during
+    simulation, even if --no-simreport option was used
   * Added -t command line option to enable trace mode
   * Added -m command line option to give a specific trace output directory
 
