@@ -26,8 +26,6 @@
 #include <boost/test/auto_unit_test.hpp>
 #include "RuntimeEnv.h"
 #include "openfluid-base.h"
-#include <wx/app.h>
-
 
 // =====================================================================
 // =====================================================================
@@ -35,10 +33,6 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  if (!wxInitialize())
-  {
-    BOOST_FAIL("Error initializing wx libs");
-  }
 
   RuntimeEnvironment RunEnv;
 
@@ -55,7 +49,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(RunEnv.isCheckVarNames(),true);
   BOOST_REQUIRE_NE(RunEnv.getSimulationID(),"");
 
-  wxUninitialize();
 }
 
 // =====================================================================
@@ -63,10 +56,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  if (!wxInitialize())
-  {
-    BOOST_FAIL("Error initializing wx libs");
-  }
 
   RuntimeEnvironment RunEnv;
 
@@ -157,9 +146,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.writereport",&BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,RunEnv.isWriteSimReport());
 
-
-
-  wxUninitialize();
 }
 
 // =====================================================================

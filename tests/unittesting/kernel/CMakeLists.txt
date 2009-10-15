@@ -1,7 +1,7 @@
 
 INCLUDE(${wxWidgets_USE_FILE})
 
-INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src/kernel)
+INCLUDE_DIRECTORIES(. ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src/kernel)
 INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 
@@ -14,4 +14,4 @@ ENDMACRO(ADD_UNITTEST_WITHWX)
 
 ADD_UNITTEST_WITHWX(UnitTest-AppTools unittest_apptools AppTools_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
 
-ADD_UNITTEST_WITHWX(UnitTest-RuntimeEnv unittest_runtimeenv RuntimeEnv_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/RuntimeEnv.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
+ADD_UNITTEST(UnitTest-RuntimeEnv unittest_runtimeenv RuntimeEnv_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/RuntimeEnv.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
