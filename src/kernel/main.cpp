@@ -17,7 +17,6 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <wx/app.h>
 #include "OpenFLUID.h"
 
 // =====================================================================
@@ -26,17 +25,6 @@
 
 int main(int argc, char **argv)
 {
-
-  // wxWidgets libraries initialization
-  if (!wxInitialize())
-  {
-    std::cout << std::endl << std::endl << "ERROR: wrong wx libs initialization" << std::endl;
-    std::cout << std::endl;
-    std::cout.flush();
-
-    return 127;
-  }
-
 
   int ReturnValue = 0;
 
@@ -63,9 +51,6 @@ int main(int argc, char **argv)
   {
     ReturnValue = App.stopAppReturn("UNKNOWN ERROR");
   }
-
-  // wxWidgets libraries finalization
-  wxUninitialize();
 
   return ReturnValue;
 }

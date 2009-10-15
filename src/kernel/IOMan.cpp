@@ -23,8 +23,6 @@
 #include "config.h"
 #include <sstream>
 #include <fstream>
-#include <wx/wx.h>
-#include <wx/tokenzr.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
