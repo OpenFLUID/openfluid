@@ -160,11 +160,11 @@ class IOManager
     std::string generateOuputFilename(const std::string UnitClass, const openfluid::core::UnitID_t UnitID,
                                    const std::string Suffix, const std::string VectorName = "");
 
-    std::string generateOutputScalarsFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
+    std::string generateOutputScalarsFileHeader(const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
                                              const std::string Filename, const std::vector<std::string> ScalarsNames,
                                              const std::string CommentChar);
 
-    std::string generateOutputVectorFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
+    std::string generateOutputVectorFileHeader(const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
                                             const std::string Filename, const std::string VectorName,
                                             const std::string CommentChar);
 

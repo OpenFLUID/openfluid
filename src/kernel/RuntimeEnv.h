@@ -48,6 +48,10 @@ class RuntimeEnvironment
 
     std::vector<std::string> m_PlugsDirs;
 
+    std::string m_UserID;
+
+    std::string m_HostName;
+
     bool m_ClearOutputDir;
 
     bool m_QuietRun;
@@ -153,6 +157,10 @@ class RuntimeEnvironment
     boost::posix_time::time_duration getEffectiveSimulationDuration() const { return m_EffectiveSimulationDuration; };
 
     void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration) { m_EffectiveSimulationDuration = TimeDuration; };
+
+    std::string getHostName() const {return m_HostName; };
+
+    std::string getUserID() const {return m_UserID; };
 };
 
 

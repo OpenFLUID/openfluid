@@ -81,8 +81,6 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       if (openfluid::tools::ConvertString(Str,&IntValue))
       {
         Config->DeltaT = int(IntValue);
-
-//        std::cerr << Config->DeltaT << std::endl;
       }
       else
       {
@@ -489,12 +487,8 @@ bool IOManager::loadInputDataFile(std::string Filename)
         {
           if (Child->Attribute("order") != NULL)
           {
-            wxStringTokenizer Tkz(_U(Child->Attribute("order")), wxT(";"));
 
-            while (Tkz.HasMoreTokens())
-            {
-              ColOrder.push_back(_S(Tkz.GetNextToken()));
-            }
+            ColOrder = SplitString(Child->Attribute("order"),";");
 
             // data
             if (ColOrder.size() > 0)
@@ -785,10 +779,10 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
     ScalarsFilename = generateOuputFilename(aUnit->getClass(),aUnit->getID(),NameSuffix);
 
     if (m_OutputConfig.FileSets[FileOutputIndex].Sets[OutputSetIndex].AllScalars)
-      FileContent = generateOutputScalarsFileHeader("unknown", aUnit->getClass(),aUnit->getID(),ScalarsFilename,
+      FileContent = generateOutputScalarsFileHeader(aUnit->getClass(),aUnit->getID(),ScalarsFilename,
           aUnit->getScalarVariables()->getVariablesNames(),CommentChar);
     else
-      FileContent = generateOutputScalarsFileHeader("unknown", aUnit->getClass(), aUnit->getID(),ScalarsFilename,
+      FileContent = generateOutputScalarsFileHeader(aUnit->getClass(), aUnit->getID(),ScalarsFilename,
           m_OutputConfig.FileSets[FileOutputIndex].Sets[OutputSetIndex].ScalarVariables,CommentChar);
 
     OutFilePath = boost::filesystem::path(OutputDir+"/"+ScalarsFilename);
@@ -814,7 +808,7 @@ bool IOManager::prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutp
 
       VectorFilename = generateOuputFilename(aUnit->getClass(),aUnit->getID(),NameSuffix,VarNames[j]);
 
-      FileContent = generateOutputVectorFileHeader("unknown", aUnit->getClass(), aUnit->getID(),VectorFilename,
+      FileContent = generateOutputVectorFileHeader(aUnit->getClass(), aUnit->getID(),VectorFilename,
           VarNames[j],CommentChar);
 
       OutFilePath = boost::filesystem::path(OutputDir+"/"+VectorFilename);
@@ -944,13 +938,14 @@ std::string IOManager::generateOuputFilename(const std::string UnitClass, const 
 // =====================================================================
 
 
-std::string IOManager::generateOutputScalarsFileHeader(const std::string SimulationID, const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
+std::string IOManager::generateOutputScalarsFileHeader(const openfluid::core::UnitClass_t UnitClass,
+    const openfluid::core::UnitID_t UnitID,
     const std::string Filename, const std::vector<std::string> ScalarsNames,
     const std::string CommentChar)
 {
   std::ostringstream GeneratedHeader;
 
-  GeneratedHeader << CommentChar << " simulation ID: " << SimulationID << "\n"
+  GeneratedHeader << CommentChar << " simulation ID: " << mp_RunEnv->getSimulationID() << "\n"
   << CommentChar << " file: " << Filename << "\n"
   << CommentChar << " date: " << boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << "\n"
   << CommentChar << " unit: " << UnitClass << " #" << UnitID << "\n"
@@ -971,13 +966,14 @@ std::string IOManager::generateOutputScalarsFileHeader(const std::string Simulat
 // =====================================================================
 
 
-std::string IOManager::generateOutputVectorFileHeader(std::string SimulationID, openfluid::core::UnitClass_t UnitClass, openfluid::core::UnitID_t UnitID,
+std::string IOManager::generateOutputVectorFileHeader(openfluid::core::UnitClass_t UnitClass,
+    openfluid::core::UnitID_t UnitID,
     std::string Filename, std::string VectorName,
     std::string CommentChar)
 {
   std::ostringstream GeneratedHeader;
 
-  GeneratedHeader << CommentChar << " simulation ID: " << SimulationID << "\n"
+  GeneratedHeader << CommentChar << " simulation ID: " << mp_RunEnv->getSimulationID() << "\n"
   << CommentChar << " file: " << Filename << "\n"
   << CommentChar << " date: " << boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << "\n"
   << CommentChar << " unit: " << UnitClass << " #" << UnitID << "\n"
@@ -1406,8 +1402,8 @@ bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, st
 
   FileContents << ("Simulation ID: ") << mp_RunEnv->getSimulationID() << std::endl;
   FileContents << ("Date: ") <<  boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << std::endl;
-  FileContents << ("Computer: ") << _S(wxGetHostName()) << std::endl;
-  FileContents << ("User: ") << _S(wxGetUserId()) << (" (") << _S(wxGetUserName()) << (")") << std::endl;
+  FileContents << ("Computer: ") << mp_RunEnv->getHostName() << std::endl;
+  FileContents << ("User: ") << mp_RunEnv->getUserID() << std::endl;
   FileContents << std::endl;
   FileContents << ("Input data set: ") << mp_RunEnv->getInputDir() << std::endl;
   FileContents << ("Output data set: ") << mp_RunEnv->getOutputDir()  << std::endl;

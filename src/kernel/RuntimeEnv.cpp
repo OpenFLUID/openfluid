@@ -25,29 +25,64 @@
 #include <boost/filesystem/path.hpp>
 
 
+#if defined __unix__ || defined __APPLE__
+  #include <unistd.h>
+#endif
+
 RuntimeEnvironment::RuntimeEnvironment()
 {
+  char* ChTempDir = NULL;
+  char* ChHomeDir = NULL;
+  char* ChUser = NULL;
 
   std::string HomeDir = "";
-  m_TempDir = "";
+  std::string UserID = "";
 
-  char* TempDir;
+  m_TempDir = "";
+  m_HostName = "(unknown)";
+  m_UserID = "(unknown)";
 
 #if defined __unix__ || defined __APPLE__
-  HomeDir = std::getenv("HOME");
-  TempDir = std::getenv("TMPDIR");
-  if (TempDir == NULL ) TempDir = std::getenv("TMP");
-  if (TempDir == NULL ) TempDir = std::getenv("TEMP");
-  if (TempDir == NULL ) m_TempDir = "/tmp";
-  else m_TempDir = TempDir;
+
+  char ChHostName[512];
+
+  ChTempDir = std::getenv("TMPDIR");
+  if (ChTempDir == NULL ) ChTempDir = std::getenv("TMP");
+  if (ChTempDir == NULL ) ChTempDir = std::getenv("TEMP");
+  if (ChTempDir == NULL ) m_TempDir = "/tmp";
+  else m_TempDir = ChTempDir;
+
+  ChHomeDir = std::getenv("HOME");
+  if (ChHomeDir == NULL) HomeDir = m_TempDir;
+  else HomeDir = ChHomeDir;
+
+  ChUser = std::getenv("USER");
+  if (ChUser != NULL) m_UserID = ChUser;
+
+  if (gethostname(ChHostName,512) == 0 )
+  {
+    m_HostName = ChHostName;
+  }
 #endif
 
 #if WIN32
-  HomeDir = std::getenv("USERPROFILE");
-  m_TempDir = std::getenv("TEMP");
+
+  char* ChHostName = NULL;
+
+  ChTempDir = std::getenv("TEMP");
+  if (ChTempDir != NULL ) m_TempDir = ChTempDir;
+
+  ChHomeDir = std::getenv("USERPROFILE");
+  if (ChHomeDir == NULL) HomeDir = m_TempDir;
+  else HomeDir = ChHomeDir;
+
+  ChUser = std::getenv("USERNAME");
+  if (ChUser != NULL) m_UserID = ChUser;
+
+  ChHostName= std::getenv("COMPUTERNAME");
+  if (ChHostName != NULL) m_HostName = ChHostName;
 #endif
 
-  if (HomeDir == "") HomeDir = m_TempDir;
 
   HomeDir = boost::filesystem::path(HomeDir).string();
   m_TempDir = boost::filesystem::path(m_TempDir).string();
