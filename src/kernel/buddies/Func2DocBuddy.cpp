@@ -188,6 +188,8 @@ void Func2DocBuddy::extractLatexDocFromCPP()
 
 void Func2DocBuddy::cpreprocessCPP()
 {
+#if defined __unix__ || defined __APPLE__
+
   std::cout << "** Preprocessing C++ file (using gcc)...";
 
   m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.leaf() + ".func2doc");
@@ -202,6 +204,7 @@ void Func2DocBuddy::cpreprocessCPP()
 
   std::cout << " done" << std::endl;
 
+#endif
 }
 
 // =====================================================================
@@ -596,6 +599,7 @@ void Func2DocBuddy::generateLatex()
 
 void Func2DocBuddy::buildPDF()
 {
+#if defined __unix__ || defined __APPLE__
 
   std::cout << "** Building PDF..."; std::cout.flush();
 
@@ -622,6 +626,7 @@ void Func2DocBuddy::buildPDF()
 
   std::cout << " done" << std::endl; std::cout.flush();
 
+#endif
 }
 
 
@@ -631,6 +636,8 @@ void Func2DocBuddy::buildPDF()
 
 void Func2DocBuddy::buildHTML()
 {
+#if defined __unix__ || defined __APPLE__
+
   std::cout << "** Building HTML..."; std::cout.flush();
 
   chdir(m_OutputDirPath.string().c_str());
@@ -640,6 +647,8 @@ void Func2DocBuddy::buildHTML()
   system(CommandToRun.c_str());
 
   std::cout << " done" << std::endl; std::cout.flush();
+
+#endif
 }
 
 
