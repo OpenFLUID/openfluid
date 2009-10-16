@@ -89,8 +89,8 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   m_UserDataDir = boost::filesystem::path(HomeDir+"/.openfluid/engine").string();
 
-  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_OUTDIR).string();
-  m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_DEFAULT_INDIR).string();
+  m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + CONFIG_DEFAULT_OUTDIR).string();
+  m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + CONFIG_DEFAULT_INDIR).string();
 
 
   m_ClearOutputDir = false;
@@ -120,10 +120,10 @@ RuntimeEnvironment::RuntimeEnvironment()
   // plugins search order:
   //   command line paths, then user directory, then system directory
 
-  m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + OPENFLUID_PLUGINS_SUBDIR).string());
+  m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + CONFIG_PLUGINS_SUBDIR).string());
 
 #if defined __unix__ || defined __APPLE__
-  m_PlugsDirs.push_back(OPENFLUID_PLUGINS_STDSYSDIR);
+  m_PlugsDirs.push_back(CONFIG_PLUGINS_STDSYSDIR);
 #endif
 
   // set ignition date time

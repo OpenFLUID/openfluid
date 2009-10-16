@@ -9,15 +9,15 @@
 #include <string>
 
 // Directories
-const std::string TESTS_OUTPUT_BINARY_DIR = "@TEST_OUTPUT_PATH@";
-const std::string TESTS_OUTPUT_DATA_DIR = "@TESTS_OUTPUTDATA_PATH@";
-const std::string TESTS_INPUT_DATASETS_DIR = "@TESTS_DATASETS_PATH@";
+const std::string CONFIGTESTS_OUTPUT_BINARY_DIR = "@TEST_OUTPUT_PATH@";
+const std::string CONFIGTESTS_OUTPUT_DATA_DIR = "@TESTS_OUTPUTDATA_PATH@";
+const std::string CONFIGTESTS_INPUT_DATASETS_DIR = "@TESTS_DATASETS_PATH@";
 
 // Plugins extension
-const std::string OPENFLUID_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
+const std::string CONFIGTESTS_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
 
 // Version
-const std::string FULL_VERSION = "@ENGINE_FULL_VERSION@";
+const std::string CONFIGTESTS_FULL_VERSION = "@ENGINE_FULL_VERSION@";
 
 
 #endif

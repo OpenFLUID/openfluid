@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  std::string LibToLoad = TESTS_OUTPUT_BINARY_DIR+"/tests.fakefunction"+OPENFLUID_PLUGINS_EXT;
+  std::string LibToLoad = CONFIGTESTS_OUTPUT_BINARY_DIR+"/tests.fakefunction"+CONFIGTESTS_PLUGINS_EXT;
   openfluid::base::GetSDKVersionProc SDKProc;
   openfluid::base::GetSignatureProc SignProc;
   openfluid::base::GetPluggableFunctionProc FuncProc;
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   SignProc = (openfluid::base::GetSignatureProc)DLib.getSymbol(PLUGSIGNATURE_PROC_NAME);
   FuncProc = (openfluid::base::GetPluggableFunctionProc)DLib.getSymbol(PLUGFUNCTION_PROC_NAME);
 
-  BOOST_REQUIRE_EQUAL(SDKProc(),FULL_VERSION);
+  BOOST_REQUIRE_EQUAL(SDKProc(),CONFIGTESTS_FULL_VERSION);
 
   PlugSignature = SignProc();
   PlugFunc = FuncProc();

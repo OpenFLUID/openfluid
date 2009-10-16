@@ -57,7 +57,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
   long IntValue;
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_RUNFILE).c_str()))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(CONFIG_RUNFILE).c_str()))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -69,7 +69,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Child == NULL)
     {
-      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Missing deltat.");
+      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Missing deltat.");
       return false;
     }
     else
@@ -82,7 +82,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       }
       else
       {
-        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Wrong deltat format.");
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Wrong deltat format.");
         return false;
       }
     }
@@ -93,7 +93,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Child == NULL)
     {
-      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Missing period.");
+      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Missing period.");
       return false;
     }
     else
@@ -109,13 +109,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         }
         else
         {
-          throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Wrong format of begin attribute for period.");
+          throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Wrong format of begin attribute for period.");
           return false;
         }
       }
       else
       {
-        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Missing begin attribute for period.");
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Missing begin attribute for period.");
         return false;
       }
 
@@ -130,13 +130,13 @@ bool IOManager::loadRunConfig(RunConfig* Config)
         }
         else
         {
-          throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Wrong format of end attribute for period.");
+          throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Wrong format of end attribute for period.");
           return false;
         }
       }
       else
       {
-        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Missing end attribute for period.");
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Missing end attribute for period.");
         return false;
       }
 
@@ -144,7 +144,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
 
     if (Config->EndDate < Config->BeginDate)
     {
-      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + OPENFLUID_DEFAULT_RUNFILE + ") error. Wrong simulation period definition.");
+      throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","Run config file (" + CONFIG_RUNFILE + ") error. Wrong simulation period definition.");
       return false;
     }
 
@@ -186,7 +186,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
       }
       else
       {
-        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","in run config file (" + OPENFLUID_DEFAULT_RUNFILE + "), error in progressive output parameters");
+        throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","in run config file (" + CONFIG_RUNFILE + "), error in progressive output parameters");
         return false;
       }
 
@@ -198,7 +198,7 @@ bool IOManager::loadRunConfig(RunConfig* Config)
   }
   else
   {
-    throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","in run config file (" + OPENFLUID_DEFAULT_RUNFILE + "), " + std::string(LoadDoc.ErrorDesc()));
+    throw openfluid::base::OFException("kernel","IOManager::loadRunConfig","in run config file (" + CONFIG_RUNFILE + "), " + std::string(LoadDoc.ErrorDesc()));
     return false;
   }
 
@@ -220,7 +220,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
 
   FunctionConfig* FConf;
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_MODELFILE).c_str()))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(CONFIG_MODELFILE).c_str()))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -264,7 +264,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
       }
       else
       {
-        throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in model config file (" + OPENFLUID_DEFAULT_MODELFILE + "), " + std::string(LoadDoc.ErrorDesc()));
+        throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in model config file (" + CONFIG_MODELFILE + "), " + std::string(LoadDoc.ErrorDesc()));
         return false;
       }
 
@@ -277,7 +277,7 @@ bool IOManager::loadModelConfig(ModelConfig* Config)
   else
   {
 
-    throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in model config file (" + OPENFLUID_DEFAULT_MODELFILE + "), " + std::string(LoadDoc.ErrorDesc()));
+    throw openfluid::base::OFException("kernel","IOManager::loadModelConfig","in model config file (" + CONFIG_MODELFILE + "), " + std::string(LoadDoc.ErrorDesc()));
     return false;
   }
 
@@ -628,7 +628,7 @@ bool IOManager::loadOutputConfig()
 
 
 
-  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(OPENFLUID_DEFAULT_OUTPUTCONFFILE).c_str()))
+  if (LoadDoc.LoadFile(mp_RunEnv->getInputFullPath(CONFIG_OUTPUTCONFFILE).c_str()))
   {
 
     TiXmlHandle DocHandle(&LoadDoc);
@@ -856,7 +856,7 @@ bool IOManager::prepareOutputDir()
 
   std::ofstream OutMsgFile;
 
-  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE));
+  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(CONFIG_OUTMSGSFILE));
   OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::out);
   OutMsgFile.close();
 
@@ -921,11 +921,11 @@ std::string IOManager::generateOuputFilename(const std::string UnitClass, const 
 
   if (VectorName == "")
   {
-    GeneratedName << ".scalars." << OPENFLUID_DEFAULT_OUPUTFILES_EXT;
+    GeneratedName << ".scalars." << CONFIG_OUTFILES_EXT;
   }
   else
   {
-    GeneratedName << ".vector." << VectorName<< "." << OPENFLUID_DEFAULT_OUPUTFILES_EXT;
+    GeneratedName << ".vector." << VectorName<< "." << CONFIG_OUTFILES_EXT;
   }
 
   return GeneratedName.str();
@@ -1354,7 +1354,7 @@ bool IOManager::saveMessages()
 
   std::ofstream OutMsgFile;
 
-  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_OUTMSGSFILE));
+  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(CONFIG_OUTMSGSFILE));
   OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::app);
   OutMsgFile << FileContents.str();
   OutMsgFile.close();
@@ -1423,7 +1423,7 @@ bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, st
 
   // write file to disk
 
-  std::ofstream SimInfoFile(mp_RunEnv->getOutputFullPath(OPENFLUID_DEFAULT_SIMINFOFILE).c_str(),std::ios::out);
+  std::ofstream SimInfoFile(mp_RunEnv->getOutputFullPath(CONFIG_SIMINFOFILE).c_str(),std::ios::out);
   SimInfoFile << FileContents.str();
   SimInfoFile.close();
 

@@ -86,7 +86,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   std::string VersionInfo = "OpenFLUID-engine v";
   std::string Whites = "";
 
-  VersionInfo = VersionInfo + FULL_VERSION;
+  VersionInfo = VersionInfo + CONFIG_FULL_VERSION;
 
   // centering the version number, using white spaces
   for (unsigned int i=0;i<((Width-VersionInfo.length())/2);i++) Whites = Whites + " ";
@@ -595,7 +595,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("version"))
   {
-    std::cout << FULL_VERSION << std::endl;
+    std::cout << CONFIG_FULL_VERSION << std::endl;
     m_RunType = InfoRequest;
     return;
   }

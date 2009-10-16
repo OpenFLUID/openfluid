@@ -69,7 +69,7 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
     {
       openfluid::base::GetSDKVersionProc SDKProc;
       if ((SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME)));
-        Plug->SDKCompatible = (FULL_VERSION == SDKProc());
+        Plug->SDKCompatible = (CONFIG_FULL_VERSION == SDKProc());
     }
 
     if (Plug->SDKCompatible)
@@ -123,7 +123,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string 
 
   for (i=0;i<PluginsPaths.size();i++)
   {
-    TmpFiles = GetFilesByExt(PluginsPaths[i],OPENFLUID_PLUGINS_EXT,false,true);
+    TmpFiles = GetFilesByExt(PluginsPaths[i],CONFIG_PLUGINS_EXT,false,true);
     for (j=0;j<TmpFiles.size();j++) PluginFiles.push_back(TmpFiles[j]);
   }
 
@@ -158,7 +158,7 @@ PluginContainer *PluginManager::getPlugin(std::string PluginName,
                                           openfluid::core::CoreRepository* CoreData)
 {
 
-  PluginContainer *Plug = buildPluginContainer(PluginName+OPENFLUID_PLUGINS_EXT);
+  PluginContainer *Plug = buildPluginContainer(PluginName+CONFIG_PLUGINS_EXT);
 
 
 
