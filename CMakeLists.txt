@@ -34,12 +34,10 @@ BUILDNAME:STRING=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${BUILDNAME_COMP
 INCLUDE(CMake.in.sub)
 
 FIND_PACKAGE(Doxygen)
-FIND_PACKAGE(wxWidgets REQUIRED base)
-FIND_PACKAGE(PythonInterp)
 FIND_PACKAGE(LATEX)
 FIND_PACKAGE(Boost REQUIRED COMPONENTS system filesystem date_time program_options regex)
 
-IF(wxWidgets_FOUND AND Boost_FOUND)
+IF(Boost_FOUND)
 
 
   FILE(MAKE_DIRECTORY "${LIB_OUTPUT_PATH}")
@@ -86,7 +84,7 @@ IF(wxWidgets_FOUND AND Boost_FOUND)
   MESSAGE(STATUS "Compiler flags added for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
   MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
 
-ENDIF(wxWidgets_FOUND AND Boost_FOUND)
+ENDIF(Boost_FOUND)
 
 
 # Doxygen-built docs for core developers
