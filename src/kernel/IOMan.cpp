@@ -1308,19 +1308,19 @@ bool IOManager::loadEventsFile(std::string Filename)
       else
       {
         IsOK = false;
-        throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file format error (" + Filename + ")");
+        throw openfluid::base::OFException("kernel","IOManager::loadEventsFile","Event file format error (" + Filename + ")");
       }
     }
     else
     {
       IsOK = false;
-      throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file error (" + Filename + ")");
+      throw openfluid::base::OFException("kernel","IOManager::loadEventsFile","Event file error (" + Filename + ")");
     }
   }
   else
   {
     IsOK = false;
-    throw openfluid::base::OFException("kernel","IOManager::loadDistributedEventsFile","Event file not found (" + Filename + ")");
+    throw openfluid::base::OFException("kernel","IOManager::loadEventsFile","Event file not found (" + Filename + ")");
   }
 
   return IsOK;
