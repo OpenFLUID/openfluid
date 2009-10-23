@@ -57,7 +57,7 @@ class DLLEXPORT ValueFactory;
 class DLLEXPORT CoreRepository;
 class DLLEXPORT Unit;
 class DLLEXPORT UnitsColl;
-class DLLEXPORT DistributedEvent;
+class DLLEXPORT Event;
 class DLLEXPORT EventCollection;
 class DLLEXPORT DateTime;
 
