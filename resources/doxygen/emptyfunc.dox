@@ -45,66 +45,21 @@ The best way to compile your simulation function is to use the makefile generate
   
 \section devfuncemptyexample_ssec Complete example 
 
-Example of an empty function, with the .h file, the .cpp file, and the makefile
-   
-Header File (.h)
+Example of an empty function (.cpp file and makefile)
+
+.cpp file
 \code
-#ifndef __EXAMPLEFUNC_H__
-#define __EXAMPLEFUNC_H__
 
 #include "openfluid-base.h"
 #include "openfluid-core.h"
 
+
 // =====================================================================
 // =====================================================================
+
 
 DECLARE_PLUGIN_HOOKS;
 
-// =====================================================================
-// =====================================================================
-
-class ExampleFunction : public openfluid::base::PluggableFunction
-{
-  private:
-
-  public:
-    /**
-      Constructor
-    */
-    ExampleFunction();
-
-    /**
-      Destructor
-    */
-    ~ExampleFunction();
-
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
-
-    bool prepareData();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
-};
-
-#endif  // __EXAMPLEFUNC_H__
-\endcode 
-
-
-
-Implementation file (.cpp)  
-\code
-
-#include "ExampleFunc.h"
-
-// =====================================================================
-// =====================================================================
-
-DEFINE_FUNCTION_HOOK(ExampleFunction);
 
 // =====================================================================
 // =====================================================================
@@ -125,77 +80,86 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 END_SIGNATURE_HOOK
 
+
 // =====================================================================
 // =====================================================================
 
-ExampleFunction::ExampleFunction()
-                : PluggableFunction()
+
+class ExampleFunction : public openfluid::base::PluggableFunction
 {
-  // here code for constructor
-}
+  private:
+
+  public:
+
+    ExampleFunction() : PluggableFunction()
+    {
+      // here code for constructor
+    }
+
+    // =====================================================================
+
+    ~ExampleFunction()
+    {
+      // here code for destructor
+    }
+
+    // =====================================================================
+	
+    bool initParams(openfluid::core::FuncParamsMap_t Params)
+    {
+      // here code for function parameters initialization
+      return true;
+    }
+
+    // =====================================================================
+    
+    bool prepareData()
+    {
+      // here code for data preparation befor consistency checking
+      return true;
+    }
+    
+    // =====================================================================
+
+    bool checkConsistency()
+    {
+      // here code for function consistency checking
+      return true;
+    }
+
+    // =====================================================================
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+    {
+      // here code for initialization just before the simulation
+      return true;
+    }
+
+    // =====================================================================
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+    {
+      // here code for each time step
+      return true;
+    }
+
+    // =====================================================================    
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+    {
+      // here code for finalization just after the simulation
+      return true;
+    }
+
+};
+
 
 // =====================================================================
 // =====================================================================
 
-ExampleFunction::~ExampleFunction()
-{
-  // here code for destructor
-}
 
-// =====================================================================
-// =====================================================================
+DEFINE_FUNCTION_HOOK(ExampleFunction);
 
-bool ExampleFunction::initParams(openfluid::core::FuncParamsMap_t Params)
-{
-  // here code for function parameters initialization
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool ExampleFunction::prepareData()
-{
-  // here code for data preparation befor consistency checking
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool ExampleFunction::checkConsistency()
-{
-  // here code for function consistency checking
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool ExampleFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-  // here code for initialization just before the simulation
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool ExampleFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
-{
-  // here code for each time step
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool ExampleFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-  // here code for finalization just after the simulation
-  return true;
-}
 \endcode 
  
 
@@ -204,8 +168,6 @@ Makefile
  
 \verbatim
 CPP = g++
-WXLIBS = $(shell wx-config --libs base)
-WXFLAGS = $(shell wx-config --cxxflags base)
 OPENFLUIDLIBS = $(shell openfluid-config --libs)
 OPENFLUIDFLAGS = $(shell openfluid-config --cflags)
 BINFILE = examplefunc
@@ -236,8 +198,8 @@ endif
 
 
 all:
-	$(CPP) -c $(SRCFILESROOT).cpp -o $(OBJPATH)/$(SRCFILESROOT).o -fPIC $(WXFLAGS) $(OPENFLUIDFLAGS)
-	$(CPP) $(OBJPATH)/$(SRCFILESROOT).o $(WXLIBS) $(OPENFLUIDLIBS) -o $(BINPATH)/$(BINFILE).$(PLUGEXT) -shared $(LDFLAGS)
+	$(CPP) -c $(SRCFILESROOT).cpp -o $(OBJPATH)/$(SRCFILESROOT).o -fPIC $(OPENFLUIDFLAGS)
+	$(CPP) $(OBJPATH)/$(SRCFILESROOT).o $(OPENFLUIDLIBS) -o $(BINPATH)/$(BINFILE).$(PLUGEXT) -shared $(LDFLAGS)
 
 clean:
 	rm -f $(BINPATH)/$(BINFILE).$(PLUGEXT)

@@ -337,7 +337,7 @@ The name of the accessed input data must match the name given in the standard in
 
 \section events_sec Access to discrete events
 
-A discrete event is defined in the class openfluid::core::DistributedEvent. It is defined by a date and a list of key-value information that can be accessed by methods proposed by the openfluid::core::DistributedEvent class.\n 
+A discrete event is defined in the class openfluid::core::Event. It is defined by a date and a list of key-value information that can be accessed by methods proposed by the openfluid::core::DistributedEvent class.\n 
 A collection of discrete events can be contained by an openfluid::core::EventCollection class.\n
 \n
 To get a collection of events occuring during a period on a given unit, you should use the \link openfluid::base::PluggableFunction::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink method. It returns an openfluid::core::EventCollection that can be processed.\n
@@ -356,8 +356,8 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   openfluid::core::Unit* SU;
   openfluid::core::EventCollection EvColl;
-  openfluid::core::DistributedEvent* Ev;
-  std::list<openfluid::core::DistributedEvent* > *EvList;
+  openfluid::core::Event* Ev;
+  std::list<openfluid::core::Event* > *EvList;
   openfluid::core::DateTime BTime, ETime;
   DECLARE_EVENT_COLLECTION_LOOP;
   DECLARE_UNITS_ORDERED_LOOP(1);
