@@ -48,6 +48,7 @@ Func2DocBuddy::Func2DocBuddy() : OpenFLUIDBuddy()
   m_FuncAuthorName = "Unknown Function Author";
   m_FuncAuthorEmail = "Unknown Function Author Email";
   m_FuncDomain = "Unknown Function Domain";
+  m_NewCommands = "";
 
   m_BeginSignatureTag = "BEGIN_SIGNATURE_HOOK";
   m_EndSignatureTag = "END_SIGNATURE_HOOK";
@@ -301,12 +302,14 @@ void Func2DocBuddy::processSignature()
         m_FuncID = toLatexFriendly(LineParts[0]);
         m_Title = m_FuncID;
       }
+      m_NewCommands = m_NewCommands + "\\newcommand{\\funcID}{"+m_FuncID+"}\n";
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_NAME"))
     {
       LineParts = searchStringLitterals(Lines[i]);
       if (LineParts.size() == 1) m_FuncName = toLatexFriendly(LineParts[0]);
+      m_NewCommands = m_NewCommands + "\\newcommand{\\funcNAME}{"+m_FuncName+"}\n";
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))

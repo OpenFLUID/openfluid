@@ -25,7 +25,7 @@
 \end{center}
 
 
-This is the \LaTeX -style documentation of the OFEFunc2Doc test function.\\
+This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME).\\
 
 \input{doc/part1}
 \input{doc/part2}
