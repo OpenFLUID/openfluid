@@ -160,4 +160,4 @@ class Event
 
 } } // namespace openfluid::core
 
-#endif /* __DISTRIBUTEDEVENT_H__ */
+#endif /* __EVENT_H__ */
