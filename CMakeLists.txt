@@ -57,7 +57,7 @@ IF(Boost_FOUND)
 
   ADD_SUBDIRECTORY(src)
 
-
+  # distribution files installation
   INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/copyright"
                 "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
                 "${CMAKE_SOURCE_DIR}/resources/dist/README"   
@@ -69,6 +69,13 @@ IF(Boost_FOUND)
                 "${CMAKE_SOURCE_DIR}/resources/dist/README"
                 "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
           DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine-wodev)
+
+  # examples installation
+  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/ressources/examples/src" 
+          DESTINATION "${EXAMPLES_SRC_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
+  
+  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/ressources/examples/datasets" 
+          DESTINATION "${EXAMPLES_DATA_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
 
 
   CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
@@ -119,28 +126,28 @@ ENDIF(DOXYGEN AND BUILD_DOCFORDEV)
 IF (BUILD_LATEX_DOCS)
   MESSAGE(STATUS "Build LaTeX documentation : yes")
 
-IF(PDFLATEX_COMPILER OR LATEX2HTML_CONVERTER)
+  IF(PDFLATEX_COMPILER OR LATEX2HTML_CONVERTER)
    
-  FILE(GLOB_RECURSE DOCFILES ${DOC_RESOURCES_DIR}/*.tex)
+    FILE(GLOB_RECURSE DOCFILES ${DOC_RESOURCES_DIR}/*.tex)
 
-  ADD_CUSTOM_COMMAND(
-    OUTPUT ${DOC_BUILD_DIR}
-    DEPENDS ${DOCFILES}                  
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${DOC_BUILD_DIR}
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${DOC_BUILD_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${DOC_RESOURCES_DIR}/ ${DOC_BUILD_DIR}
-   )
+    ADD_CUSTOM_COMMAND(
+      OUTPUT ${DOC_BUILD_DIR}
+      DEPENDS ${DOCFILES}                  
+      COMMAND ${CMAKE_COMMAND} -E remove_directory ${DOC_BUILD_DIR}
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${DOC_BUILD_DIR}
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${DOC_RESOURCES_DIR}/ ${DOC_BUILD_DIR}
+     )
    
   
-  IF(PDFLATEX_COMPILER)  
-    COMPILE_PDFLATEX_DOC(openfluid-engine_quickref_en ${DOCPDF_OUTPUT_PATH})
-  ENDIF(PDFLATEX_COMPILER)
+    IF(PDFLATEX_COMPILER)  
+      COMPILE_PDFLATEX_DOC(openfluid-engine_quickref_en ${DOCPDF_OUTPUT_PATH})
+    ENDIF(PDFLATEX_COMPILER)
   
-  IF(LATEX2HTML_CONVERTER)  
-    COMPILE_LATEX2HTML_DOC(openfluid-engine_quickref_en ${DOCHTML_OUTPUT_PATH})
-  ENDIF(LATEX2HTML_CONVERTER)
+    IF(LATEX2HTML_CONVERTER)  
+      COMPILE_LATEX2HTML_DOC(openfluid-engine_quickref_en ${DOCHTML_OUTPUT_PATH})
+    ENDIF(LATEX2HTML_CONVERTER)
   
-ENDIF(PDFLATEX_COMPILER  OR LATEX2HTML_CONVERTER)
+  ENDIF(PDFLATEX_COMPILER  OR LATEX2HTML_CONVERTER)
 ELSE (BUILD_LATEX_DOCS)
   MESSAGE(STATUS "Build LaTeX documentation : no")
 ENDIF (BUILD_LATEX_DOCS)

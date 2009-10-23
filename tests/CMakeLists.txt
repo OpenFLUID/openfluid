@@ -15,4 +15,6 @@ ADD_SUBDIRECTORY(integration)
 
 ADD_SUBDIRECTORY(functions)
 
+ADD_SUBDIRECTORY(examples)
+
                            
