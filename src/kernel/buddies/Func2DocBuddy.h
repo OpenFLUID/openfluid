@@ -51,6 +51,7 @@ class Func2DocBuddy : public OpenFLUIDBuddy
     std::string m_NewCommands;
     std::string m_FuncID;
     std::string m_FuncName;
+    std::string m_FuncVersion;
     std::string m_FuncAuthorName;
     std::string m_FuncAuthorEmail;
     std::string m_FuncDomain;

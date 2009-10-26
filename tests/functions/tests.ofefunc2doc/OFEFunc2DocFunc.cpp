@@ -25,7 +25,7 @@
 \end{center}
 
 
-This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME).\\
+This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME, version \funcVERSION).\\
 
 \input{doc/part1}
 \input{doc/part2}

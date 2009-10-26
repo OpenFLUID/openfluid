@@ -42,9 +42,10 @@ Func2DocBuddy::Func2DocBuddy() : OpenFLUIDBuddy()
   m_OtherOptionsHelp["tplfile"] = "path to template file";
 
 
-  m_Title = "Unknown Title";
+  m_Title = "Unknown title";
   m_FuncID = "unknown.id";
   m_FuncName = "Unknown Function Name";
+  m_FuncVersion = "Unknown version";
   m_FuncAuthorName = "Unknown Function Author";
   m_FuncAuthorEmail = "Unknown Function Author Email";
   m_FuncDomain = "Unknown Function Domain";
@@ -303,6 +304,19 @@ void Func2DocBuddy::processSignature()
         m_Title = m_FuncID;
       }
       m_NewCommands = m_NewCommands + "\\newcommand{\\funcID}{"+m_FuncID+"}\n";
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_VERSION"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncVersion = toLatexFriendly(LineParts[0]);
+      m_NewCommands = m_NewCommands + "\\newcommand{\\funcVERSION}{"+m_FuncVersion+"}\n";
+    }
+
+    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))
+    {
+      LineParts = searchStringLitterals(Lines[i]);
+      if (LineParts.size() == 1) m_FuncDomain = toLatexFriendly(LineParts[0]);
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_NAME"))
@@ -576,6 +590,7 @@ void Func2DocBuddy::generateLatex()
   // replacing values
 
   boost::algorithm::replace_all(m_LatexOutFile,"#title#",m_Title);
+  boost::algorithm::replace_all(m_LatexOutFile,"#version#",m_FuncVersion);
   boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_FuncAuthorName);
   boost::algorithm::replace_all(m_LatexOutFile,"#newcommands#",m_NewCommands);
   boost::algorithm::replace_all(m_LatexOutFile,"#name#",m_FuncName);
