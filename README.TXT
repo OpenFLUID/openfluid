@@ -8,7 +8,6 @@ The OpenFLUID-engine source tree is organized as follow
 - include : include files of the API
 - resources/dist : files to include in packages for distribution
 - resources/doxygen : doxygen files for API documentation
-- resources/ofefunc2doc : the ofefunc2doc tool (Python sources)
 - tests : data, sources and configuration for tests
 
 
