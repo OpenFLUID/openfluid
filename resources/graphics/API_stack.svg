@@ -36,9 +36,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.55232104"
-     inkscape:cx="238.56493"
-     inkscape:cy="299.75244"
+     inkscape:zoom="1.1046421"
+     inkscape:cx="107.12944"
+     inkscape:cy="319.74006"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false" />
@@ -144,7 +144,7 @@
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="156.43553"
+       x="197.93651"
        y="407.19171"
        id="text2420"
        sodipodi:linespacing="125%"
@@ -153,8 +153,8 @@
        inkscape:export-ydpi="78.353073"><tspan
          sodipodi:role="line"
          id="tspan2422"
-         x="156.43553"
-         y="407.19171">wxWidgets - base</tspan></text>
+         x="197.93651"
+         y="407.19171">Boost</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
@@ -527,5 +527,5 @@
            height="722.05872"
            x="-61.451805"
            y="61.451801" /></flowRegion><flowPara
-         id="flowPara2503"></flowPara></flowRoot>  </g>
+         id="flowPara2503" /></flowRoot>  </g>
 </svg>
