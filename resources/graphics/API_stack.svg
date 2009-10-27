@@ -520,7 +520,10 @@
     <flowRoot
        xml:space="preserve"
        id="flowRoot2497"
-       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"><flowRegion
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/resources/doxygen/API_stack.png"
+       inkscape:export-xdpi="78.353073"
+       inkscape:export-ydpi="78.353073"><flowRegion
          id="flowRegion2499"><rect
            id="rect2501"
            width="827.03888"
