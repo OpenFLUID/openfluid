@@ -76,32 +76,4 @@ INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/ofelib.pc"
 
 
 
-################### ofelib-dev doxygen documentation ###################
-
-IF(DOXYGEN)
-  
-  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/Doxyfile.in ${PROJECT_BINARY_DIR}/Doxyfile)
-
-  FILE(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_PATH})
-
-  # TODO A voir autrement    
-  CONFIGURE_FILE(${DOXYGEN_RESOURCES_DIR}/openfluid.png ${DOXYGEN_OUTPUT_PATH}/html/openfluid.png COPYONLY)
-  CONFIGURE_FILE(${DOXYGEN_RESOURCES_DIR}/API_stack.png ${DOXYGEN_OUTPUT_PATH}/html/API_stack.png COPYONLY)
-  
-  ADD_CUSTOM_COMMAND(
-    OUTPUT "${DOXYGEN_OUTPUT_PATH}/html/index.html"
-    DEPENDS "${PROJECT_BINARY_DIR}/Doxyfile"
-    COMMAND "${DOXYGEN}"
-    ARGS "${PROJECT_BINARY_DIR}/Doxyfile")
-
-  ADD_CUSTOM_TARGET(ofelib-doc ALL DEPENDS "${PROJECT_BINARY_DIR}/Doxyfile"
-    "${DOXYGEN_OUTPUT_PATH}/html/index.html" VERBATIM)
-
-
-  INSTALL(DIRECTORY "${DOXYGEN_OUTPUT_PATH}/"
-          DESTINATION "${OFELIBDEV_DOC_INSTALL_PATH}" COMPONENT engine)
-
-
-ENDIF(DOXYGEN)
-
 

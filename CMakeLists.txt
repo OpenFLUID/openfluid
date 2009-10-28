@@ -84,6 +84,8 @@ IF(Boost_FOUND)
   
   ADD_SUBDIRECTORY(tests)
 
+  ADD_SUBDIRECTORY(doc)
+
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
   MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
@@ -94,63 +96,7 @@ IF(Boost_FOUND)
 ENDIF(Boost_FOUND)
 
 
-# Doxygen-built docs for core developers
 
-IF(DOXYGEN AND BUILD_DOCFORDEV)
-  
-  MESSAGE(STATUS "Build Doxygen documentation for core developers : yes")
-  
-  CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/Doxyfile.docfordev.in ${PROJECT_BINARY_DIR}/Doxyfile.docfordev)
-
-  FILE(MAKE_DIRECTORY ${DOXYGEN_DOCFORDEV_OUTPUT_PATH})
-
-  CONFIGURE_FILE(${DOXYGEN_RESOURCES_DIR}/openfluid.png ${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/openfluid.png COPYONLY)
-  
-  ADD_CUSTOM_COMMAND(
-    OUTPUT "${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/index.html"
-    DEPENDS "${PROJECT_BINARY_DIR}/Doxyfile.docfordev"
-    COMMAND "${DOXYGEN}"
-    ARGS "${PROJECT_BINARY_DIR}/Doxyfile.docfordev")
-
-  ADD_CUSTOM_TARGET(docfordev-doc DEPENDS "${PROJECT_BINARY_DIR}/Doxyfile.docfordev"
-    "${DOXYGEN_DOCFORDEV_OUTPUT_PATH}/html/index.html" VERBATIM)
-
-
-ELSE(DOXYGEN AND BUILD_DOCFORDEV)
-  MESSAGE(STATUS "Build Doxygen documentation for core developers : no")
-ENDIF(DOXYGEN AND BUILD_DOCFORDEV)
-
-
-
-# Latex docs compilation
-IF (BUILD_LATEX_DOCS)
-  MESSAGE(STATUS "Build LaTeX documentation : yes")
-
-  IF(PDFLATEX_COMPILER OR LATEX2HTML_CONVERTER)
-   
-    FILE(GLOB_RECURSE DOCFILES ${DOC_RESOURCES_DIR}/*.tex)
-
-    ADD_CUSTOM_COMMAND(
-      OUTPUT ${DOC_BUILD_DIR}
-      DEPENDS ${DOCFILES}                  
-      COMMAND ${CMAKE_COMMAND} -E remove_directory ${DOC_BUILD_DIR}
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${DOC_BUILD_DIR}
-      COMMAND ${CMAKE_COMMAND} -E copy_directory ${DOC_RESOURCES_DIR}/ ${DOC_BUILD_DIR}
-     )
-   
-  
-    IF(PDFLATEX_COMPILER)  
-      COMPILE_PDFLATEX_DOC(openfluid-engine_quickref_en ${DOCPDF_OUTPUT_PATH})
-    ENDIF(PDFLATEX_COMPILER)
-  
-    IF(LATEX2HTML_CONVERTER)  
-      COMPILE_LATEX2HTML_DOC(openfluid-engine_quickref_en ${DOCHTML_OUTPUT_PATH})
-    ENDIF(LATEX2HTML_CONVERTER)
-  
-  ENDIF(PDFLATEX_COMPILER  OR LATEX2HTML_CONVERTER)
-ELSE (BUILD_LATEX_DOCS)
-  MESSAGE(STATUS "Build LaTeX documentation : no")
-ENDIF (BUILD_LATEX_DOCS)
 
 
 
