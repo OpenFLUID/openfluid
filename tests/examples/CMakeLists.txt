@@ -14,11 +14,15 @@
                               )
 
   ADD_TEST(Examples-Build "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/examples" "${CMAKE_BUILD_TOOL}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/examples" "${CMAKE_BUILD_TOOL}" 
                               )
 
   ADD_TEST(Examples-Install "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/examples" "${CMAKE_BUILD_TOOL}" "install"
                               )
                               
-                              
+  ADD_TEST(Examples-RunPrimitives "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                              "-i" "${EXAMPLES_DATASETS_PATH}/OPENFLUID.IN.PrimitivesExample"
+                              "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesExample" 
+                              "-p" "${TEST_OUTPUT_PATH}"
+                              )                              

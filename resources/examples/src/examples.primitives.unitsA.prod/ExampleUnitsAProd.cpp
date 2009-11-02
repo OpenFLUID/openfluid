@@ -19,8 +19,8 @@ DECLARE_PLUGIN_HOOKS;
 
 
 BEGIN_SIGNATURE_HOOK
-  DECLARE_SIGNATURE_ID(("examples.primitives.data.production"));
-  DECLARE_SIGNATURE_NAME(("Example of data production"));
+  DECLARE_SIGNATURE_ID(("examples.primitives.unitsA.prod"));
+  DECLARE_SIGNATURE_NAME(("Example of data production on units of class A"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
@@ -49,7 +49,7 @@ END_SIGNATURE_HOOK
 /**
 
 */
-class ExampleFunctionProduction : public openfluid::base::PluggableFunction
+class ExampleUnitsAProduction : public openfluid::base::PluggableFunction
 {
   private:
 
@@ -57,7 +57,7 @@ class ExampleFunctionProduction : public openfluid::base::PluggableFunction
   public:
 
   
-    ExampleFunctionProduction() : PluggableFunction()
+    ExampleUnitsAProduction() : PluggableFunction()
     {
   
   
@@ -68,7 +68,7 @@ class ExampleFunctionProduction : public openfluid::base::PluggableFunction
     // =====================================================================
   
   
-    ~ExampleFunctionProduction()
+    ~ExampleUnitsAProduction()
     {
   
   
@@ -149,5 +149,5 @@ class ExampleFunctionProduction : public openfluid::base::PluggableFunction
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(ExampleFunctionProduction);
+DEFINE_FUNCTION_HOOK(ExampleUnitsAProduction);
 

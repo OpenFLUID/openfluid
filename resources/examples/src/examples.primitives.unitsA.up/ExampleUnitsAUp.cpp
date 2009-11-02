@@ -19,8 +19,8 @@ DECLARE_PLUGIN_HOOKS;
 
 
 BEGIN_SIGNATURE_HOOK
-  DECLARE_SIGNATURE_ID(("examples.primitives.data.update"));
-  DECLARE_SIGNATURE_NAME(("Example of data update"));
+  DECLARE_SIGNATURE_ID(("examples.primitives.unitsA.up"));
+  DECLARE_SIGNATURE_NAME(("Example of data update on units of class A"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
@@ -49,7 +49,7 @@ END_SIGNATURE_HOOK
 /**
 
 */
-class ExampleFunctionUpdate : public openfluid::base::PluggableFunction
+class ExampleUnitsAUpdate : public openfluid::base::PluggableFunction
 {
   private:
 
@@ -57,7 +57,7 @@ class ExampleFunctionUpdate : public openfluid::base::PluggableFunction
   public:
 
   
-    ExampleFunctionUpdate() : PluggableFunction()
+    ExampleUnitsAUpdate() : PluggableFunction()
     {
   
   
@@ -68,7 +68,7 @@ class ExampleFunctionUpdate : public openfluid::base::PluggableFunction
     // =====================================================================
   
   
-    ~ExampleFunctionUpdate()
+    ~ExampleUnitsAUpdate()
     {
   
   
@@ -149,5 +149,5 @@ class ExampleFunctionUpdate : public openfluid::base::PluggableFunction
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(ExampleFunctionUpdate);
+DEFINE_FUNCTION_HOOK(ExampleUnitsAUpdate);
 
