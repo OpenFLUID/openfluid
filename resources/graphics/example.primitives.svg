@@ -48,11 +48,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.8514179"
-     inkscape:cx="367.36402"
-     inkscape:cy="528.64757"
+     inkscape:zoom="1.3447036"
+     inkscape:cx="314.31648"
+     inkscape:cy="604.27452"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g2664"
      showgrid="false" />
   <metadata
      id="metadata2452">
@@ -405,5 +405,629 @@
          x="172.40486"
          y="439.858"
          style="font-size:9.35625744px;fill:#1666c6;fill-opacity:1">B7</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 507.44124,338.78937 C 507.26596,374.72217 628.56107,419.59436 617.34303,445.01024"
+       id="path2690"
+       sodipodi:nodetypes="cs"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 508.23001,508.90049 C 480.91621,601.30928 388.72965,521.45037 400.57598,351.90486 C 414.68327,149.37416 509.99591,241.69429 524.00539,274.8991"
+       id="path3468"
+       sodipodi:nodetypes="csc"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 507.17833,508.9005 C 514.89073,549.04007 502.62099,572.35257 491.40295,597.76845"
+       id="path3470"
+       sodipodi:nodetypes="cs"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 598.6531,508.11173 C 577.44398,541.4153 504.17612,572.08965 492.95808,597.50553"
+       id="path3472"
+       sodipodi:nodetypes="cs"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 506.23478,341.15567 C 513.94718,381.29524 502.72913,421.96065 491.51109,447.37653"
+       id="path3474"
+       sodipodi:nodetypes="cs"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076" />
+    <g
+       id="g2664"
+       transform="translate(-13.382635,-9.4652253)">
+      <rect
+         ry="0"
+         rx="0"
+         y="286.60464"
+         x="492.40982"
+         height="62.262619"
+         width="152.02882"
+         id="rect2383"
+         style="fill:none;fill-opacity:1;stroke:#7f7f7f;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path3259"
+         d="M 508.87383,285.66992 C 508.87383,287.47674 508.83993,287.71568 505.64527,292.83008 C 502.55152,287.6134 502.41673,287.47674 502.41673,285.66992 C 502.41673,283.86312 503.86312,282.39672 505.64527,282.39672 C 507.42744,282.39672 508.87383,283.86312 508.87383,285.66992 z"
+         style="fill:#ff0029;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2502"
+         d="M 540.17845,285.66992 C 540.17845,287.47674 540.14455,287.71568 536.9499,292.83008 C 533.85615,287.6134 533.72135,287.47674 533.72135,285.66992 C 533.72135,283.86312 535.16774,282.39672 536.9499,282.39672 C 538.73206,282.39672 540.17845,283.86312 540.17845,285.66992 z"
+         style="fill:#ff0029;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2504"
+         d="M 571.48309,285.66992 C 571.48309,287.47674 571.44919,287.71568 568.25454,292.83008 C 565.16078,287.6134 565.02599,287.47674 565.02599,285.66992 C 565.02599,283.86312 566.47238,282.39672 568.25454,282.39672 C 570.0367,282.39672 571.48309,283.86312 571.48309,285.66992 z"
+         style="fill:#f8f500;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2506"
+         d="M 634.09236,285.66992 C 634.09236,287.47674 634.05846,287.71568 630.86381,292.83008 C 627.77006,287.6134 627.63527,287.47674 627.63527,285.66992 C 627.63527,283.86312 629.08166,282.39672 630.86381,282.39672 C 632.64597,282.39672 634.09236,283.86312 634.09236,285.66992 z"
+         style="fill:#001bff;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2508"
+         d="M 602.78774,285.66992 C 602.78774,287.47674 602.75384,287.71568 599.55919,292.83008 C 596.46543,287.6134 596.33064,287.47674 596.33064,285.66992 C 596.33064,283.86312 597.77703,282.39672 599.55919,282.39672 C 601.34135,282.39672 602.78774,283.86312 602.78774,285.66992 z"
+         style="fill:#f8f500;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3284"
+         y="298.9722"
+         x="503.86945"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="298.9722"
+           x="503.86945"
+           id="tspan3286"
+           sodipodi:role="line">R</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3288"
+         y="299.01871"
+         x="531.99127"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="299.01871"
+           x="531.99127"
+           id="tspan3290"
+           sodipodi:role="line">R-1</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3292"
+         y="298.99545"
+         x="566.91968"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="298.99545"
+           x="566.91968"
+           id="tspan3294"
+           sodipodi:role="line">U</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3296"
+         y="299.04193"
+         x="594.81165"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="299.04193"
+           x="594.81165"
+           id="tspan3298"
+           sodipodi:role="line">U-1</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3300"
+         y="299.16736"
+         x="627.46503"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="299.16736"
+           x="627.46503"
+           id="tspan3302"
+           sodipodi:role="line">Up</tspan></text>
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2520"
+         d="M 523.9044,347.23791 C 523.9044,349.04472 523.8705,349.28366 520.67585,354.39806 C 517.58209,349.18138 517.4473,349.04472 517.4473,347.23791 C 517.4473,345.4311 518.89369,343.9647 520.67585,343.9647 C 522.45801,343.9647 523.9044,345.4311 523.9044,347.23791 z"
+         style="fill:#7beb6e;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2522"
+         d="M 614.92315,347.23791 C 614.92315,349.04472 614.88925,349.28366 611.6946,354.39806 C 608.60084,349.18138 608.46605,349.04472 608.46605,347.23791 C 608.46605,345.4311 609.91245,343.9647 611.6946,343.9647 C 613.47676,343.9647 614.92315,345.4311 614.92315,347.23791 z"
+         style="fill:#001bff;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076" />
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3308"
+         y="339.4064"
+         x="519.73688"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="339.4064"
+           x="519.73688"
+           id="tspan3310"
+           sodipodi:role="line">P</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3316"
+         y="339.42966"
+         x="607.00861"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="339.42966"
+           x="607.00861"
+           id="tspan3318"
+           sodipodi:role="line">Up</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2453"
+         y="320.53766"
+         x="495.13611"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="320.53766"
+           x="495.13611"
+           id="tspan2455"
+           sodipodi:role="line">examples.primitives.unitsA.prod</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3478"
+         y="372.80981"
+         x="418.18793"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="372.80981"
+           x="418.18793"
+           id="tspan3480"
+           sodipodi:role="line">var3[A]</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3482"
+         y="403.46686"
+         x="483.16132"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="403.46686"
+           x="483.16132"
+           id="tspan3484"
+           sodipodi:role="line">var1[A]</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3486"
+         y="395.0593"
+         x="575.05182"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="395.0593"
+           x="575.05182"
+           id="tspan3488"
+           sodipodi:role="line">var2[A]</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3490"
+         y="555.32849"
+         x="579.29083"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="555.32849"
+           x="579.29083"
+           id="tspan3492"
+           sodipodi:role="line">var2[A]</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3494"
+         y="554.69971"
+         x="525.93573"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="554.69971"
+           x="525.93573"
+           id="tspan3496"
+           sodipodi:role="line">var3[A]</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3498"
+         y="701.93536"
+         x="482.95688"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"
+         inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+         inkscape:export-xdpi="115.58076"
+         inkscape:export-ydpi="115.58076"><tspan
+           style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="701.93536"
+           x="482.95688"
+           id="tspan3500"
+           sodipodi:role="line">var5[B]</tspan></text>
+    </g>
+    <g
+       id="g2638"
+       transform="translate(-8.0262548,-9.4652253)"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076">
+      <rect
+         ry="0"
+         rx="0"
+         y="455.87805"
+         x="487.05344"
+         height="62.262619"
+         width="152.02882"
+         id="rect3227"
+         style="fill:none;fill-opacity:1;stroke:#7f7f7f;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path3229"
+         d="M 503.51743,454.94334 C 503.51743,456.75015 503.48353,456.9891 500.28888,462.10349 C 497.19513,456.88681 497.06034,456.75015 497.06034,454.94334 C 497.06034,453.13653 498.50673,451.67013 500.28888,451.67013 C 502.07104,451.67013 503.51743,453.13653 503.51743,454.94334 z"
+         style="fill:#ff0029;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path3231"
+         d="M 534.82206,454.94334 C 534.82206,456.75015 534.78816,456.9891 531.59351,462.10349 C 528.49975,456.88681 528.36496,456.75015 528.36496,454.94334 C 528.36496,453.13653 529.81135,451.67013 531.59351,451.67013 C 533.37567,451.67013 534.82206,453.13653 534.82206,454.94334 z"
+         style="fill:#ff0029;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path3233"
+         d="M 566.12669,454.94334 C 566.12669,456.75015 566.09279,456.9891 562.89814,462.10349 C 559.80439,456.88681 559.6696,456.75015 559.6696,454.94334 C 559.6696,453.13653 561.11598,451.67013 562.89814,451.67013 C 564.6803,451.67013 566.12669,453.13653 566.12669,454.94334 z"
+         style="fill:#f8f500;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path3235"
+         d="M 628.73597,454.94334 C 628.73597,456.75015 628.70207,456.9891 625.50742,462.10349 C 622.41366,456.88681 622.27887,456.75015 622.27887,454.94334 C 622.27887,453.13653 623.72526,451.67013 625.50742,451.67013 C 627.28958,451.67013 628.73597,453.13653 628.73597,454.94334 z"
+         style="fill:#001bff;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path3237"
+         d="M 597.43134,454.94334 C 597.43134,456.75015 597.39744,456.9891 594.20279,462.10349 C 591.10904,456.88681 590.97425,456.75015 590.97425,454.94334 C 590.97425,453.13653 592.42064,451.67013 594.20279,451.67013 C 595.98495,451.67013 597.43134,453.13653 597.43134,454.94334 z"
+         style="fill:#f8f500;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3239"
+         y="468.12549"
+         x="498.50925"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="468.12549"
+           x="498.50925"
+           id="tspan3241"
+           sodipodi:role="line">R</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3243"
+         y="468.17194"
+         x="526.63104"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="468.17194"
+           x="526.63104"
+           id="tspan3245"
+           sodipodi:role="line">R-1</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3247"
+         y="468.14874"
+         x="561.55945"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="468.14874"
+           x="561.55945"
+           id="tspan3249"
+           sodipodi:role="line">U</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3251"
+         y="468.19519"
+         x="589.45142"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="468.19519"
+           x="589.45142"
+           id="tspan3253"
+           sodipodi:role="line">U-1</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3255"
+         y="468.32062"
+         x="622.1048"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="468.32062"
+           x="622.1048"
+           id="tspan3257"
+           sodipodi:role="line">Up</tspan></text>
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2546"
+         d="M 518.548,516.51132 C 518.548,518.31814 518.5141,518.55708 515.31945,523.67147 C 512.2257,518.45479 512.0909,518.31814 512.0909,516.51132 C 512.0909,514.70451 513.53729,513.23812 515.31945,513.23812 C 517.10161,513.23812 518.548,514.70451 518.548,516.51132 z"
+         style="fill:#7beb6e;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2548"
+         d="M 609.56676,516.51132 C 609.56676,518.31814 609.53285,518.55708 606.33821,523.67147 C 603.24445,518.45479 603.10966,518.31814 603.10966,516.51132 C 603.10966,514.70451 604.55605,513.23812 606.33821,513.23812 C 608.12037,513.23812 609.56676,514.70451 609.56676,516.51132 z"
+         style="fill:#001bff;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3264"
+         y="508.55966"
+         x="514.37671"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="508.55966"
+           x="514.37671"
+           id="tspan3266"
+           sodipodi:role="line">P</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3268"
+         y="508.58292"
+         x="601.64838"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="508.58292"
+           x="601.64838"
+           id="tspan3270"
+           sodipodi:role="line">Up</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text3272"
+         y="488.1145"
+         x="495.02914"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:8px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="488.1145"
+           x="495.02914"
+           id="tspan3274"
+           sodipodi:role="line">examples.primitives.unitsA.up</tspan></text>
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 507.60555,662.97332 C 502.1718,698.90613 510.41005,706.9691 499.19201,732.38498"
+       id="path3476"
+       sodipodi:nodetypes="cs"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076" />
+    <g
+       id="g2612"
+       transform="translate(-0.9935648,-9.4652253)"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
+       inkscape:export-xdpi="115.58076"
+       inkscape:export-ydpi="115.58076">
+      <rect
+         ry="0"
+         rx="0"
+         y="608.54974"
+         x="480.02075"
+         height="62.262619"
+         width="152.02882"
+         id="rect2556"
+         style="fill:none;fill-opacity:1;stroke:#7f7f7f;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2558"
+         d="M 496.48472,607.61509 C 496.48472,609.4219 496.45082,609.66085 493.25617,614.77524 C 490.16242,609.55856 490.02763,609.4219 490.02763,607.61509 C 490.02763,605.80828 491.47402,604.34188 493.25617,604.34188 C 495.03833,604.34188 496.48472,605.80828 496.48472,607.61509 z"
+         style="fill:#ff0029;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2560"
+         d="M 527.78935,607.61509 C 527.78935,609.4219 527.75545,609.66085 524.5608,614.77524 C 521.46704,609.55856 521.33225,609.4219 521.33225,607.61509 C 521.33225,605.80828 522.77864,604.34188 524.5608,604.34188 C 526.34296,604.34188 527.78935,605.80828 527.78935,607.61509 z"
+         style="fill:#ff0029;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2562"
+         d="M 559.09398,607.61509 C 559.09398,609.4219 559.06008,609.66085 555.86543,614.77524 C 552.77168,609.55856 552.63689,609.4219 552.63689,607.61509 C 552.63689,605.80828 554.08327,604.34188 555.86543,604.34188 C 557.64759,604.34188 559.09398,605.80828 559.09398,607.61509 z"
+         style="fill:#f8f500;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2564"
+         d="M 621.70326,607.61509 C 621.70326,609.4219 621.66936,609.66085 618.47471,614.77524 C 615.38095,609.55856 615.24616,609.4219 615.24616,607.61509 C 615.24616,605.80828 616.69255,604.34188 618.47471,604.34188 C 620.25687,604.34188 621.70326,605.80828 621.70326,607.61509 z"
+         style="fill:#001bff;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2566"
+         d="M 590.39863,607.61509 C 590.39863,609.4219 590.36473,609.66085 587.17008,614.77524 C 584.07633,609.55856 583.94154,609.4219 583.94154,607.61509 C 583.94154,605.80828 585.38793,604.34188 587.17008,604.34188 C 588.95224,604.34188 590.39863,605.80828 590.39863,607.61509 z"
+         style="fill:#f8f500;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2568"
+         y="620.68884"
+         x="491.47153"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="620.68884"
+           x="491.47153"
+           id="tspan2570"
+           sodipodi:role="line">R</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2572"
+         y="620.73529"
+         x="519.59332"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="620.73529"
+           x="519.59332"
+           id="tspan2574"
+           sodipodi:role="line">R-1</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2576"
+         y="620.7121"
+         x="554.52173"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="620.7121"
+           x="554.52173"
+           id="tspan2578"
+           sodipodi:role="line">U</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2580"
+         y="620.75854"
+         x="582.4137"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="620.75854"
+           x="582.4137"
+           id="tspan2582"
+           sodipodi:role="line">U-1</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2584"
+         y="620.88397"
+         x="615.06708"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="620.88397"
+           x="615.06708"
+           id="tspan2586"
+           sodipodi:role="line">Up</tspan></text>
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2588"
+         d="M 511.51529,669.18307 C 511.51529,670.98989 511.48139,671.22883 508.28674,676.34322 C 505.19299,671.12654 505.05819,670.98989 505.05819,669.18307 C 505.05819,667.37626 506.50458,665.90987 508.28674,665.90987 C 510.0689,665.90987 511.51529,667.37626 511.51529,669.18307 z"
+         style="fill:#7beb6e;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccssc"
+         id="path2590"
+         d="M 602.53405,669.18307 C 602.53405,670.98989 602.50014,671.22883 599.3055,676.34322 C 596.21174,671.12654 596.07695,670.98989 596.07695,669.18307 C 596.07695,667.37626 597.52334,665.90987 599.3055,665.90987 C 601.08766,665.90987 602.53405,667.37626 602.53405,669.18307 z"
+         style="fill:#001bff;fill-opacity:1;stroke:#7f7f7f;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2592"
+         y="661.12299"
+         x="507.33902"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="661.12299"
+           x="507.33902"
+           id="tspan2594"
+           sodipodi:role="line">P</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2596"
+         y="661.14624"
+         x="594.61066"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#7f7f7f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:6.31769896px;font-weight:bold;fill:#7f7f7f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="661.14624"
+           x="594.61066"
+           id="tspan2598"
+           sodipodi:role="line">Up</tspan></text>
+      <text
+         transform="scale(0.9992904,1.0007101)"
+         id="text2600"
+         y="640.67786"
+         x="482.51334"
+         style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:8px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="640.67786"
+           x="482.51334"
+           id="tspan2602"
+           sodipodi:role="line">examples.primitives.unitsB.prod</tspan></text>
+    </g>
   </g>
 </svg>

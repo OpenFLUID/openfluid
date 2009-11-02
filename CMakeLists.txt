@@ -71,20 +71,21 @@ IF(Boost_FOUND)
           DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine-wodev)
 
   # examples installation
-  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/ressources/examples/src" 
-          DESTINATION "${EXAMPLES_SRC_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
+  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/resources/examples/src" 
+          DESTINATION "${EXAMPLES_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
   
-  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/ressources/examples/datasets" 
-          DESTINATION "${EXAMPLES_DATA_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
-
-
-  CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
-  CONFIGURE_FILE(enginewodev.cpack.in enginewodev.cpack @ONLY)
+  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/resources/examples/datasets" 
+          DESTINATION "${EXAMPLES_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
 
   
   ADD_SUBDIRECTORY(tests)
 
   ADD_SUBDIRECTORY(doc)
+
+
+  CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
+  CONFIGURE_FILE(enginewodev.cpack.in enginewodev.cpack @ONLY)
+
 
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
