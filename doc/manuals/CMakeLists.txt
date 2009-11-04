@@ -4,6 +4,7 @@
 
     ADD_CUSTOM_COMMAND(
       OUTPUT ${MANUALS_DOC_BUILD_DIR}/openfluid-engine_quickref_en.tex
+      OUTPUT ${MANUALS_DOC_BUILD_DIR}
       DEPENDS ${DOCFILES}
       COMMAND ${CMAKE_COMMAND} -E remove_directory ${MANUALS_DOC_BUILD_DIR}
       COMMAND ${CMAKE_COMMAND} -E make_directory ${MANUALS_DOC_BUILD_DIR}
