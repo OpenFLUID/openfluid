@@ -33,11 +33,12 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME(("Jean-Christophe Fabre"));
   DECLARE_SIGNATURE_AUTHOREMAIL(("fabrejc@supagro.inra.fr"));
 
+  DECLARE_REQUIRED_PREVVAR("var3","unitsA","the variable 3","");
   
+  DECLARE_PRODUCED_VAR("var1","unitsA","the variable 1","");
+  DECLARE_PRODUCED_VAR("var2","unitsA","the variable 2","");
   
-  
-  
-  
+  DECLARE_REQUIRED_INPUTDATA("inivar1","unitsA","the input data inivar1","");
 
 END_SIGNATURE_HOOK
 
@@ -127,7 +128,26 @@ class ExampleUnitsAProduction : public openfluid::base::PluggableFunction
   
     bool runStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-  
+      openfluid::core::Unit* A;
+      openfluid::core::ScalarValue Value1;
+      DECLARE_UNITS_ORDERED_LOOP(25);
+
+
+      BEGIN_UNITS_ORDERED_LOOP(25,"unitsA",A)
+        if (SimStatus->isFirstStep())
+        {
+           OPENFLUID_GetInputData(A,"inivar1",&Value1);
+        }
+        else
+        {
+          OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep()-1,&Value1);
+          Value1 = Value1 + 2.0;
+        }
+
+        OPENFLUID_AppendVariable(A,"var1",Value1);
+        OPENFLUID_AppendVariable(A,"var2",1.5);
+      END_LOOP
+
       return true;
     }
   

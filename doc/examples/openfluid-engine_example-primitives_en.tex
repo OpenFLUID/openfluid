@@ -18,7 +18,9 @@ It aims at showing how values of variables are produced and used in a spatially 
 \bigskip
 \bigskip
 
-\section{Flux model}
+\section{Overview}
+
+\subsection{Flux model}
 
 \begin{floatingfigure}[right]{7cm}
 \includegraphics[scale=0.8]{openfluid-engine_example-primitives_en/model.png}
@@ -29,6 +31,10 @@ The flux model is composed of 3 simulations functions :\\
 \item examples.primitives.unitsA.up
 \item examples.primitives.unitsB.prod
 \end{itemize}
+
+\bigskip
+\bigskip
+
 The examples.primitives.unitsA.prod function produces values for 
 variable var1 and var2 on units of class A, and requires values for var3 on units of class A 
 on a previous time step.\\
@@ -41,11 +47,11 @@ The flux model is defined in the model.xml file.
 \bigskip
 \bigskip
 
-\section{Spatial domain}
+\subsection{Spatial domain}
 
-\begin{floatingfigure}[left]{8cm}
-\includegraphics[scale=0.6]{openfluid-engine_example-primitives_en/domain.png}
-\end{floatingfigure}
+%\begin{floatingfigure}[right]{8cm}
+\includegraphics[scale=0.5]{openfluid-engine_example-primitives_en/domain.png}
+%\end{floatingfigure}
 The spatial domain is composed of 13 units, distributed into 2 unit classes 
 (class A and class B). The connections between 
 units are defined for each unit independently, as "to" units. The process order 
@@ -56,10 +62,22 @@ where nodes are units and edges are connections between units.\\
 \bigskip
 \bigskip
 
-\section{Simulation}
+\subsection{Simulation}
+
+The simulation will run from January 1st, 2001, at 00:00:00 to January 15th, 2001, at 08:01:02.
+The fixed time step is 3600 seconds (1 hour). Progressive output is not enabled.\\
+\noindent The run configuration is defined in the run.xml file.\\
+
+\bigskip
+
+All variables of all unit classes (A and B) are saved in files. The output configuration is defined in the output.xml file.
+
+\section{Try this example}
+
+\subsection{Build}
+
 
 \subsection{Run}
 
-\subsection{Outputs}
 
 \end{document}

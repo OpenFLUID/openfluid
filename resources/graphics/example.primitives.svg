@@ -48,9 +48,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.3447036"
-     inkscape:cx="314.31648"
-     inkscape:cy="604.27452"
+     inkscape:zoom="2.6894072"
+     inkscape:cx="652.50186"
+     inkscape:cy="580.13736"
      inkscape:document-units="px"
      inkscape:current-layer="g2664"
      showgrid="false" />
@@ -415,7 +415,7 @@
        inkscape:export-ydpi="115.58076" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 508.23001,508.90049 C 480.91621,601.30928 388.72965,521.45037 400.57598,351.90486 C 414.68327,149.37416 509.99591,241.69429 524.00539,274.8991"
+       d="M 508.23001,508.90049 C 486.86548,621.75988 388.72965,521.45037 400.57598,351.90486 C 414.68327,149.37416 509.99591,241.69429 524.00539,274.8991"
        id="path3468"
        sodipodi:nodetypes="csc"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
@@ -423,7 +423,7 @@
        inkscape:export-ydpi="115.58076" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 507.17833,508.9005 C 514.89073,549.04007 502.62099,572.35257 491.40295,597.76845"
+       d="M 507.17833,508.9005 C 507.08232,550.89922 555.42073,573.46806 554.98574,599.25577"
        id="path3470"
        sodipodi:nodetypes="cs"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
@@ -431,7 +431,7 @@
        inkscape:export-ydpi="115.58076" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#6f6f6f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 598.6531,508.11173 C 577.44398,541.4153 504.17612,572.08965 492.95808,597.50553"
+       d="M 598.6531,508.11173 C 597.15093,548.48005 565.89976,573.20514 554.68172,598.62102"
        id="path3472"
        sodipodi:nodetypes="cs"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
@@ -684,31 +684,31 @@
       <text
          transform="scale(0.9992904,1.0007101)"
          id="text3490"
-         y="555.32849"
-         x="579.29083"
+         y="551.3313"
+         x="567.28241"
          style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
          xml:space="preserve"
          inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
          inkscape:export-xdpi="115.58076"
          inkscape:export-ydpi="115.58076"><tspan
            style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
-           y="555.32849"
-           x="579.29083"
+           y="551.3313"
+           x="567.28241"
            id="tspan3492"
            sodipodi:role="line">var2[A]</tspan></text>
       <text
          transform="scale(0.9992904,1.0007101)"
          id="text3494"
-         y="554.69971"
-         x="525.93573"
+         y="576.68427"
+         x="509.92444"
          style="font-size:5.41517067px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
          xml:space="preserve"
          inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/doc/examples/openfluid-engine_example-primitives_en/model.png"
          inkscape:export-xdpi="115.58076"
          inkscape:export-ydpi="115.58076"><tspan
            style="font-size:8px;font-weight:bold;fill:#6f6f6f;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
-           y="554.69971"
-           x="525.93573"
+           y="576.68427"
+           x="509.92444"
            id="tspan3496"
            sodipodi:role="line">var3[A]</tspan></text>
       <text

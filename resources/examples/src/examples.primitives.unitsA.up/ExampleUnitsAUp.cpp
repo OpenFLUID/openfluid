@@ -33,11 +33,11 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME(("Jean-Christophe Fabre"));
   DECLARE_SIGNATURE_AUTHOREMAIL(("fabrejc@supagro.inra.fr"));
 
+  DECLARE_REQUIRED_VAR("var1","unitsA","the variable 1","");
   
+  DECLARE_PRODUCED_VAR("var3","unitsA","the variable 3","");
   
-  
-  
-  
+  DECLARE_UPDATED_VAR("var2","unitsA","the variable 2","");
 
 END_SIGNATURE_HOOK
 
@@ -52,7 +52,7 @@ END_SIGNATURE_HOOK
 class ExampleUnitsAUpdate : public openfluid::base::PluggableFunction
 {
   private:
-
+    double m_Mult;
   
   public:
 
@@ -82,7 +82,8 @@ class ExampleUnitsAUpdate : public openfluid::base::PluggableFunction
     bool initParams(openfluid::core::FuncParamsMap_t Params)
     {
   
-  
+      m_Mult = 1.0;
+      OPENFLUID_GetFunctionParameter(Params,"gmult",&m_Mult);
       return true;
     }
   
@@ -127,6 +128,33 @@ class ExampleUnitsAUpdate : public openfluid::base::PluggableFunction
   
     bool runStep(const openfluid::base::SimulationStatus* SimStatus)
     {
+      openfluid::core::Unit* A;
+      openfluid::core::ScalarValue Value1, Value2;
+
+      DECLARE_UNITS_ORDERED_LOOP(17);
+
+
+      BEGIN_UNITS_ORDERED_LOOP(17,"unitsA",A)
+
+        OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep(),&Value1);
+
+
+        if (OPENFLUID_IsScalarVariableExist(A,"var2",SimStatus->getCurrentStep()))
+        {
+          OPENFLUID_GetVariable(A,"var2",SimStatus->getCurrentStep(),&Value2);
+          Value2 = Value2 * m_Mult;
+          OPENFLUID_SetVariable(A,"var2",SimStatus->getCurrentStep(),Value2);
+        }
+        else
+        {
+          OPENFLUID_RaiseWarning("examples.primitives.unitsA.up",SimStatus->getCurrentStep(),"var2 not present, init to value 1.0");
+          Value2 = 1.0;
+          OPENFLUID_AppendVariable(A,"var2",Value2);
+        }
+
+        OPENFLUID_AppendVariable(A,"var3",Value1+0.3);
+
+      END_LOOP
   
       return true;
     }

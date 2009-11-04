@@ -33,10 +33,10 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME(("Jean-Christophe Fabre"));
   DECLARE_SIGNATURE_AUTHOREMAIL(("fabrejc@supagro.inra.fr"));
 
+  DECLARE_USED_VAR("var2","unitsA","the variable 2","");
+  DECLARE_USED_VAR("var3","unitsA","the variable 3","");
   
-  
-  
-  
+  DECLARE_PRODUCED_VAR("var5","unitsB","the variable 5","");
   
 
 END_SIGNATURE_HOOK
@@ -127,7 +127,64 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
   
     bool runStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-  
+
+      openfluid::core::Unit *FromA, *FromB, *B;
+      openfluid::core::UnitsPtrList_t *FromAList, *FromBList;
+      openfluid::core::ScalarValue Value5, AuxValue;
+
+      DECLARE_UNITS_ORDERED_LOOP(1);
+      DECLARE_UNITS_LIST_LOOP(5);
+      DECLARE_UNITS_LIST_LOOP(18);
+
+      BEGIN_UNITS_ORDERED_LOOP(1,"unitsB",B)
+
+        Value5 = 0.0;
+        FromAList = NULL;
+        FromBList = NULL;
+
+        FromAList = B->getFromUnits("unitsA");
+
+        if (FromAList != NULL)
+        {
+          BEGIN_UNITS_LIST_LOOP(5,FromAList,FromA)
+
+            if (OPENFLUID_IsScalarVariableExist(FromA,"var2",SimStatus->getCurrentStep()))
+            {
+              OPENFLUID_GetVariable(FromA,"var2",SimStatus->getCurrentStep(),&AuxValue);
+              Value5 = Value5 + AuxValue;
+            }
+            else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod",SimStatus->getCurrentStep(),"var2 is not present, ignored");
+
+            if (OPENFLUID_IsScalarVariableExist(FromA,"var3",SimStatus->getCurrentStep()))
+            {
+              OPENFLUID_GetVariable(FromA,"var3",SimStatus->getCurrentStep(),&AuxValue);
+              Value5 = Value5 + AuxValue;
+            }
+            else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod",SimStatus->getCurrentStep(),"var3 is not present, ignored");
+
+          END_LOOP
+        }
+
+        if (!SimStatus->isFirstStep())
+        {
+          FromBList = B->getFromUnits("unitsB");
+
+          if (FromBList != NULL)
+          {
+            BEGIN_UNITS_LIST_LOOP(18,FromBList,FromB)
+
+              OPENFLUID_GetVariable(FromB,"var5",SimStatus->getCurrentStep()-1,&AuxValue);
+              Value5 = Value5 + AuxValue;
+
+            END_LOOP
+          }
+        }
+
+        OPENFLUID_AppendVariable(B,"var5",Value5);
+
+      END_LOOP
+
+
       return true;
     }
   
