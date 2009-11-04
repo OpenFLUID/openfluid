@@ -19,7 +19,6 @@ for the kernel:
   - ofelib 
   - C++ STL
   - boost (system, filesystem, program_options, date_time)
-  - wxWidgets (base only) 2.8.x
 
 For unit testing, the boost test framework is also required (unit_test_framework)
 

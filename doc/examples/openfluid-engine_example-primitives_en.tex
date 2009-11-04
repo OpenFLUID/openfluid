@@ -22,8 +22,8 @@ It aims at showing how values of variables are produced and used in a spatially 
 
 \subsection{Flux model}
 
-\begin{floatingfigure}[right]{7cm}
-\includegraphics[scale=0.8]{openfluid-engine_example-primitives_en/model.png}
+\begin{floatingfigure}[r]{6cm}
+\includegraphics[width=5cm]{openfluid-engine_example-primitives_en/model.png}
 \end{floatingfigure}
 The flux model is composed of 3 simulations functions :\\
 \begin{itemize}
@@ -31,10 +31,6 @@ The flux model is composed of 3 simulations functions :\\
 \item examples.primitives.unitsA.up
 \item examples.primitives.unitsB.prod
 \end{itemize}
-
-\bigskip
-\bigskip
-
 The examples.primitives.unitsA.prod function produces values for 
 variable var1 and var2 on units of class A, and requires values for var3 on units of class A 
 on a previous time step.\\
@@ -49,15 +45,17 @@ The flux model is defined in the model.xml file.
 
 \subsection{Spatial domain}
 
-%\begin{floatingfigure}[right]{8cm}
-\includegraphics[scale=0.5]{openfluid-engine_example-primitives_en/domain.png}
-%\end{floatingfigure}
 The spatial domain is composed of 13 units, distributed into 2 unit classes 
 (class A and class B). The connections between 
 units are defined for each unit independently, as "to" units. The process order 
 depends on these connections. This spatial domain is represented as a graph, 
 where nodes are units and edges are connections between units.\\
-\noindent The spatial domain is defined in *.ddef.xml file(s). 
+The spatial domain is defined in *.ddef.xml file(s). 
+
+\begin{center}
+\includegraphics[width=8cm]{openfluid-engine_example-primitives_en/domain.png}
+\end{center}
+
 
 \bigskip
 \bigskip
@@ -68,16 +66,67 @@ The simulation will run from January 1st, 2001, at 00:00:00 to January 15th, 200
 The fixed time step is 3600 seconds (1 hour). Progressive output is not enabled.\\
 \noindent The run configuration is defined in the run.xml file.\\
 
+\noindent All variables of all unit classes (A and B) are saved in files. The output
+configuration is defined in the output.xml file.
+
+\bigskip
 \bigskip
 
-All variables of all unit classes (A and B) are saved in files. The output configuration is defined in the output.xml file.
+\section{Run this example}
 
-\section{Try this example}
+In order to run this example, the following programs and libraries are required:
+\begin{itemize}
+\item CMake build system
+\item GCC compiler
+\item Boost libraries
+\item OpenFLUID-engine
+\end{itemize}
+
+\noindent All required operations will be executed through a command line terminal,
+and will be completed through 3 steps: configuration, build and run.
+
+\subsection{Configure}
+
+The configuration step will configure the build according to the used platform. 
+First of all, the config.in.cmake file for each simulation function should be 
+adapted, in order to install the resulting built functions in a place where the 
+openfluid engine program can reach them.\\
+
+\noindent The configuration of the build can be performed using one of the two
+following ways :
+\begin{itemize}
+\item in-source build : the build files will be mixed with the source files 
+\item out-of-source build : the build files will be separated from the source files,
+and placed into a choosen directory
+\end{itemize}
+ 
+
+\noindent For configuring an in-source build:\\
+1) run command \texttt{cmake .}\\
+
+\noindent For configuring an out-of-source build:\\
+1) make a subdirectory for build results (\texttt{\_build} for example)\\
+2) change current directory to this subdirectory\\
+3) run command \texttt{cmake ..}\\
+4) run command \texttt{make install}\\
 
 \subsection{Build}
 
+If the configuration step has passed, the command to launch the build is
+\texttt{make} when the GNU Make tools are used, or the corresponding command
+if another build system is used.\\
+If the installation destination has been configured, the \texttt{make install}
+command should be run (or the corresponding command).   
+
 
 \subsection{Run}
+
+In order to run a simulation using these example functions, the command to run is:\\
+\texttt{openfluid-engine -i /path/to/inputdata -o /path/to/outpudir}.\\
+
+\noindent In case of the example simulation functions are not installed in a standard path 
+searched by openfluid-engine, the \texttt{-p} command line option should be used 
+to add specific search paths. 
 
 
 \end{document}

@@ -1,7 +1,7 @@
 Requirements
 ============
 
-- wxWidgets 2.8.9+ (base only is required)
+- boost libraries (version depends on the boost version used at build) 
 
 
 Installation
@@ -14,11 +14,10 @@ If you use archive (.zip, .tar.gz, ...), copy files to the right places by hand.
 Usage
 =====
 
-Open a terminal and type the following command... 
+Open a terminal and type the following command to get help 
 
-			openfluid-engine -h
+   openfluid-engine -h
 
-... to get help on how to use openfluid-engine.
 
 Also refer to documentation available on the OpenFLUID-engine web site:
 https://www.umr-lisah.fr/openfluid/
