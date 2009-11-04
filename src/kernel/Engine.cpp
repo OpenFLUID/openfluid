@@ -511,7 +511,6 @@ bool Engine::checkModelConsistency()
 
   bool IsOK = true;
 
-
   PluginsList::iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
   PluginContainer* CurrentFunction;
@@ -519,10 +518,12 @@ bool Engine::checkModelConsistency()
 
 
   /* Variables processing order is important
-     1) required vars
-     2) produced vars
-     3) updated vars
-     4) required vars at t-1+
+     A) first pass
+        1) required vars
+        2) produced vars
+        3) updated vars
+     B) second pass
+        4) required vars at t-1+
   */
 
   FuncIter = m_Functions.begin();
@@ -532,24 +533,20 @@ bool Engine::checkModelConsistency()
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
 
-
     // checking required variables
     i = 0;
     while (IsOK && i < HData.RequiredVars.size())
     {
-
       IsOK = checkExistingVariable(HData.RequiredVars[i].DataName, HData.RequiredVars[i].UnitClass);
 
       if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredVars[i].DataName + " variable on " + HData.RequiredVars[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not previously created");
       else i++;
     }
 
-
     // checking variables to create (produced)
     i = 0;
     while (IsOK && i < HData.ProducedVars.size())
     {
-
       IsOK = createVariable(HData.ProducedVars[i].DataName, HData.ProducedVars[i].UnitClass,false);
 
       if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.ProducedVars[i].DataName + " variable on " + HData.ProducedVars[i].UnitClass + " produced by " + CurrentFunction->Signature->ID + " cannot be created because it is previously created");
@@ -560,24 +557,33 @@ bool Engine::checkModelConsistency()
     i = 0;
     while (IsOK && i < HData.UpdatedVars.size())
     {
-
       IsOK = createVariable(HData.UpdatedVars[i].DataName, HData.UpdatedVars[i].UnitClass,true);
 
       if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.UpdatedVars[i].DataName + " variable on " + HData.UpdatedVars[i].UnitClass + " updated by " + CurrentFunction->Signature->ID + " cannot be handled");
       else i++;
     }
 
+    FuncIter++;
+  }
+
+
+
+  FuncIter = m_Functions.begin();
+
+  while (FuncIter != m_Functions.end() && IsOK)
+  {
+    CurrentFunction = (*FuncIter);
+    HData = CurrentFunction->Signature->HandledData;
+
     // checking required variables at t-1+
     i = 0;
     while (IsOK && i < HData.RequiredPrevVars.size())
     {
-
       IsOK = checkExistingVariable(HData.RequiredPrevVars[i].DataName, HData.RequiredPrevVars[i].UnitClass);
 
-      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredVars[i].DataName + " variable on " + HData.RequiredPrevVars[i].UnitClass + "required by " + CurrentFunction->Signature->ID + " is not created");
+      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredPrevVars[i].DataName + " variable on " + HData.RequiredPrevVars[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not created");
       else i++;
     }
-
 
     FuncIter++;
   }
