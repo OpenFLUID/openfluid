@@ -679,7 +679,7 @@ bool Func2DocBuddy::run()
 {
 #if defined __unix__ || defined __APPLE__
 
-  setOptionIfNotSet("tplfile",CONFIG_FUNC2DOC_TPLFILE_PATH + "/" + CONFIG_FUNC2DOC_TPLFILE_PATH);
+  setOptionIfNotSet("tplfile",CONFIG_FUNC2DOC_TPLFILE_PATH + "/" + CONFIG_FUNC2DOC_TPLFILE_NAME);
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");
