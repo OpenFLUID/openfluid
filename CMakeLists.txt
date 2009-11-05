@@ -44,48 +44,15 @@ IF(Boost_FOUND)
   FILE(MAKE_DIRECTORY "${BIN_OUTPUT_PATH}")
   FILE(MAKE_DIRECTORY "${FUNCTIONS_DOC_OUTPUT_PATH}")
 
-  # hack for compiler flags semicolon problem with MSYS
-  IF(MSYS)
-    FOREACH(arg ${CMAKE_CXX_FLAGS})
-      SET(MSYS_ADAPTED_CMAKE_CXX_FLAGS "${MSYS_ADAPTED_CMAKE_CXX_FLAGS} ${arg}")
-    ENDFOREACH(arg ${CMAKE_CXX_FLAGS})
-    SET(CMAKE_CXX_FLAGS "${MSYS_ADAPTED_CMAKE_CXX_FLAGS}")
-  ENDIF(MSYS)
-
-
-  ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
-
   ADD_SUBDIRECTORY(src)
-
-  # distribution files installation
-  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/copyright"
-                "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
-                "${CMAKE_SOURCE_DIR}/resources/dist/README"   
-                "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
-          DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine)
-  
-  INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/dist/copyright"
-                "${CMAKE_SOURCE_DIR}/resources/dist/AUTHORS"
-                "${CMAKE_SOURCE_DIR}/resources/dist/README"
-                "${CMAKE_SOURCE_DIR}/resources/dist/CHANGELOG"
-          DESTINATION ${DOC_INSTALL_PATH} COMPONENT engine-wodev)
-
-  # examples installation
-  INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/resources/examples/src" 
-          DESTINATION "${EXAMPLES_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
-  
-  INSTALL(DIRECTORY "${EXAMPLES_DATASETS_PATH}" 
-          DESTINATION "${EXAMPLES_INSTALL_PATH}" COMPONENT engine PATTERN ".svn" EXCLUDE)
-
   
   ADD_SUBDIRECTORY(tests)
 
   ADD_SUBDIRECTORY(doc)
 
+  ADD_SUBDIRECTORY(resources)
 
-  CONFIGURE_FILE(engine.cpack.in engine.cpack @ONLY)
-  CONFIGURE_FILE(enginewodev.cpack.in enginewodev.cpack @ONLY)
-
+  ADD_SUBDIRECTORY(packs)
 
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
