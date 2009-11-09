@@ -35,7 +35,7 @@ For building Latex documents, required tools and packages are:
 - fonts: cmbright
 
 
-In order to build the binaries and to pack the application, CMake 2.6.x 
+In order to build the binaries and pack the application, CMake 2.6.x 
 is required.
 1) create a directory named "_build" (or any other name)
 2) "cd" to this directory
