@@ -6,11 +6,11 @@
 ##   INCLUDE(CTest)
 
 
-set(CTEST_PROJECT_NAME "OpenFLUID-Engine")
-set(CTEST_NIGHTLY_START_TIME "00:00:00 CEST")
+SET(CTEST_PROJECT_NAME "OpenFLUID-Engine")
+SET(CTEST_NIGHTLY_START_TIME "00:00:00 CEST")
 
-set(CTEST_DROP_METHOD "http")
-set(CTEST_DROP_SITE "www.umr-lisah.fr")
-set(CTEST_DROP_LOCATION "/cdash/submit.php?project=OpenFLUID-Engine")
-set(CTEST_DROP_SITE_CDASH TRUE)
+SET(CTEST_DROP_METHOD "http")
+SET(CTEST_DROP_SITE "www.umr-lisah.fr")
+SET(CTEST_DROP_LOCATION "/cdash/submit.php?project=OpenFLUID-Engine")
+SET(CTEST_DROP_SITE_CDASH TRUE)
 

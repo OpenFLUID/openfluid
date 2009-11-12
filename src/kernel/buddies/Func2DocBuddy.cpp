@@ -238,7 +238,7 @@ std::vector<std::string> Func2DocBuddy::extractSignatureLines()
 
   boost::algorithm::split_regex(Lines, SignatureContent,boost::regex("DECLARE_"));
 
-  for (int i = 0; i < Lines.size(); i++)
+  for (unsigned int i = 0; i < Lines.size(); i++)
   {
     boost::algorithm::trim(Lines[i]);
     boost::algorithm::replace_all(Lines[i],"\n","");
@@ -280,7 +280,7 @@ std::vector<std::string> Func2DocBuddy::searchStringLitterals(std::string StrToP
 
 void Func2DocBuddy::processSignature()
 {
-  int i;
+
   std::vector<std::string> LineParts;
 
 
@@ -289,9 +289,6 @@ void Func2DocBuddy::processSignature()
 
   std::vector<std::string> Lines = extractSignatureLines();
 
-//  for (i=0; i< Lines.size();i++) std::cout << Lines[i] << std::endl;
-
-  // TODO don't forget to use toLatexFriendly() when necessary
 
   for (unsigned i=0; i< Lines.size();i++)
   {
