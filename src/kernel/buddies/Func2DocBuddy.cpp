@@ -200,9 +200,11 @@ void Func2DocBuddy::cpreprocessCPP()
 
   std::string CommandToRun = m_CPreProcessorPath.string() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
 
-  system(CommandToRun.c_str());
-  if (!boost::filesystem::is_regular(m_CProcessedFilePath))
+  if (system(CommandToRun.c_str()) == 0)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
+
+  if (!boost::filesystem::is_regular(m_CProcessedFilePath))
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
 
   std::cout << " done" << std::endl;
 
@@ -618,26 +620,31 @@ void Func2DocBuddy::buildPDF()
 
   std::cout << "** Building PDF..."; std::cout.flush();
 
-  chdir(m_OutputDirPath.string().c_str());
+  if (chdir(m_OutputDirPath.string().c_str()) != 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
   std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_FuncID).string() + " > /dev/null";
 
   std::cout << " first pass..."; std::cout.flush();
 
-  system(PDFCommandToRun.c_str());
+  if (system(PDFCommandToRun.c_str()) == 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
   std::cout << " bibliography and references..."; std::cout.flush();
 
-  system(BibCommandToRun.c_str());
+  if (system(BibCommandToRun.c_str()) != 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running bibtex command");
 
   std::cout << " second pass..."; std::cout.flush();
 
-  system(PDFCommandToRun.c_str());
+  if (system(PDFCommandToRun.c_str()) == 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
   std::cout << " third pass..."; std::cout.flush();
 
-  system(PDFCommandToRun.c_str());
+  if (system(PDFCommandToRun.c_str()) == 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
   std::cout << " done" << std::endl; std::cout.flush();
 
@@ -655,11 +662,13 @@ void Func2DocBuddy::buildHTML()
 
   std::cout << "** Building HTML..."; std::cout.flush();
 
-  chdir(m_OutputDirPath.string().c_str());
+  if (chdir(m_OutputDirPath.string().c_str()) != 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string();
 
-  system(CommandToRun.c_str());
+  if (system(CommandToRun.c_str()) != 0)
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildHTML()","Error running latex2html command");
 
   std::cout << " done" << std::endl; std::cout.flush();
 
