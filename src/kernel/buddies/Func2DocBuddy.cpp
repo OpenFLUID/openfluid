@@ -618,6 +618,8 @@ void Func2DocBuddy::buildPDF()
 {
 #if defined __unix__ || defined __APPLE__
 
+  int ExpectedReturn;
+
   std::cout << "** Building PDF..."; std::cout.flush();
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
@@ -633,7 +635,13 @@ void Func2DocBuddy::buildPDF()
 
   std::cout << " bibliography and references..."; std::cout.flush();
 
-  if (system(BibCommandToRun.c_str()) != 0)
+  ExpectedReturn = 0;
+
+#ifdef __APPLE__
+  ExpectedReturn = 256;
+#endif
+
+  if (system(BibCommandToRun.c_str()) != ExpectedReturn)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running bibtex command");
 
   std::cout << " second pass..."; std::cout.flush();
