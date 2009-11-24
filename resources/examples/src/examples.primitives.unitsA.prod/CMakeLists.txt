@@ -4,8 +4,10 @@ INCLUDE(CMake.in.config)
 
 PROJECT(${FUNC_ID} CXX)
 
-FIND_PACKAGE(PkgConfig REQUIRED)
-PKG_CHECK_MODULES(ofelib ofelib)
+IF(NOT ofelib_FOUND)
+  FIND_PACKAGE(PkgConfig REQUIRED)
+  PKG_CHECK_MODULES(ofelib ofelib)
+ENDIF(NOT ofelib_FOUND)
 
 IF(ofelib_FOUND) 
 
