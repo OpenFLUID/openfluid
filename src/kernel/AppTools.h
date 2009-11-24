@@ -61,7 +61,7 @@ void printSTDOUT(std::vector<std::string> Strings, std::string Sep);
 
 openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep);
 
-void CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath);
+void CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
 std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename);
 

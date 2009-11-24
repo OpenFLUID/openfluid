@@ -145,7 +145,7 @@ void Func2DocBuddy::copyDocDirectory()
     if (boost::filesystem::is_directory(InputDocDirPath))
     {
       std::cout << "** Processing doc directory...";
-      CopyDirectoryRecursively(InputDocDirPath.string(),m_OutputDirPath.string());
+      CopyDirectoryRecursively(InputDocDirPath.string(),m_OutputDirPath.string(),true);
       std::cout << " done" << std::endl;
 
     }
