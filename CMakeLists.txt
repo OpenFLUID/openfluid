@@ -52,7 +52,7 @@ IF(Boost_FOUND)
 
   ADD_SUBDIRECTORY(resources)
 
-  ADD_SUBDIRECTORY(packs)
+  INCLUDE(CPack.in.config)
 
   MESSAGE(STATUS "Build version: ${ENGINE_FULL_VERSION}")
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
@@ -61,6 +61,7 @@ IF(Boost_FOUND)
   MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
   MESSAGE(STATUS "Compiler flags added for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
   MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
+
 
 ENDIF(Boost_FOUND)
 
