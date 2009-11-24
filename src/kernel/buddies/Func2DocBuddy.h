@@ -94,6 +94,8 @@ class Func2DocBuddy : public OpenFLUIDBuddy
 
     void generateLatex();
 
+    bool isErrorInPDFLatexLog();
+
     void buildPDF();
 
     void buildHTML();

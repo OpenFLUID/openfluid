@@ -70,7 +70,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHOREMAIL(("fabrejc@supagro.inra.fr"));
 
   DECLARE_FUNCTION_PARAM("testparam","a param just for test","kg/m3")
-  DECLARE_FUNCTION_PARAM("dummyp","a dummy param just for test","snail/m2")
+  DECLARE_FUNCTION_PARAM("dummy_param","a dummy param just for test","snail/m2")
 
   DECLARE_PRODUCED_VAR("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
   DECLARE_PRODUCED_VAR("tests.prodscalar","TestUnits","produced scalar on TestUnits","joker/batman");
@@ -84,6 +84,7 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","required input data A on TestUnits","m")
   DECLARE_USED_INPUTDATA("indataB","TestUnits","used input data B on TestUnits","mm/h")
+  DECLARE_USED_INPUTDATA("indata_CC","TestUnits","used input data CC on TestUnits","")
 
   DECLARE_USED_EVENTS("TestUnits");
   DECLARE_USED_EVENTS("FakeTestUnits");

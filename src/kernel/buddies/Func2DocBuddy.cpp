@@ -95,6 +95,7 @@ std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::st
 
 std::string Func2DocBuddy::toLatexFriendly(std::string Content)
 {
+  boost::algorithm::replace_all(Content,"\\","$\backslash$");
   boost::algorithm::replace_all(Content,"$","\\$");
   boost::algorithm::replace_all(Content,"_","\\_");
   boost::algorithm::replace_all(Content,"&","\\&");
@@ -102,7 +103,6 @@ std::string Func2DocBuddy::toLatexFriendly(std::string Content)
   boost::algorithm::replace_all(Content,"{","\\{");
   boost::algorithm::replace_all(Content,"}","\\}");
   boost::algorithm::replace_all(Content,"~","$\\sim$");
-  boost::algorithm::replace_all(Content,"\\","$\backslash$");
 
   return Content;
 }
@@ -531,7 +531,7 @@ void Func2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_FuncData,"Function parameter(s)","lXr");
     for (it = m_ParamsData.begin(); it != m_ParamsData.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
+      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_FuncData);
   }
@@ -541,7 +541,7 @@ void Func2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_FuncData,"Input data","lllXr");
     for (it = m_InData.begin(); it != m_InData.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_FuncData);
   }
@@ -551,7 +551,7 @@ void Func2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_FuncData,"Required or used variable(s)","llllXr");
     for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "&$" + it->second[4] + "$\\\\" + "\n";
+      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "&$" + it->second[4] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_FuncData);
   }
@@ -561,7 +561,7 @@ void Func2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_FuncData,"Produced or updated variable(s)","lllXr");
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_FuncData);
   }
@@ -571,7 +571,7 @@ void Func2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_FuncData,"Used event(s)","l");
     for (it = m_Events.begin(); it != m_Events.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}\\\\" + "\n";
+      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}\\\\" + "\n";
     }
     addLatexDataCatEnd(m_FuncData);
   }
@@ -581,7 +581,7 @@ void Func2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_FuncData,"Required or used extrafile(s)","lX");
     for (it = m_ExtraFiles.begin(); it != m_ExtraFiles.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + it->first + "}&" + it->second[0] + "\\\\" + "\n";
+      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "\\\\" + "\n";
     }
     addLatexDataCatEnd(m_FuncData);
   }
@@ -613,6 +613,33 @@ void Func2DocBuddy::generateLatex()
 // =====================================================================
 // =====================================================================
 
+bool Func2DocBuddy::isErrorInPDFLatexLog()
+{
+  boost::filesystem::path LogFilePath(m_OutputDirPath.string() + "/" + boost::filesystem::basename(m_OutputLatexFilePath) + ".log");
+
+  std::ifstream LogFile(LogFilePath.string().c_str());
+
+  // check if file exists and if it is "openable"
+  if (!LogFile) return true;
+
+  std::string LogFileContent = "";
+  std::string StrLine = "";
+
+  // parse and loads file contents
+  while(std::getline(LogFile,StrLine))
+  {
+    LogFileContent = LogFileContent + StrLine + "\n";
+  }
+
+  LogFile.close();
+
+  return (LogFileContent.find("Fatal error") != std::string::npos);
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 void Func2DocBuddy::buildPDF()
 {
@@ -631,6 +658,9 @@ void Func2DocBuddy::buildPDF()
   if (system(PDFCommandToRun.c_str()) == -1)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
+  if (isErrorInPDFLatexLog())
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+
   std::cout << " bibliography and references..."; std::cout.flush();
 
 
@@ -642,10 +672,16 @@ void Func2DocBuddy::buildPDF()
   if (system(PDFCommandToRun.c_str()) == -1)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
+  if (isErrorInPDFLatexLog())
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+
   std::cout << " third pass..."; std::cout.flush();
 
   if (system(PDFCommandToRun.c_str()) == -1)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+
+  if (isErrorInPDFLatexLog())
+    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   std::cout << " done" << std::endl; std::cout.flush();
 
@@ -666,7 +702,7 @@ void Func2DocBuddy::buildHTML()
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
-  std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string();
+  std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
     throw openfluid::base::OFException("kernel","Func2DocBuddy::buildHTML()","Error running latex2html command");
