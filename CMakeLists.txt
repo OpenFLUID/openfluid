@@ -35,7 +35,7 @@ INCLUDE(CMake.in.sub)
 
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)
-FIND_PACKAGE(Boost REQUIRED COMPONENTS system filesystem date_time program_options regex)
+FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex)
 
 IF(Boost_FOUND)
 
