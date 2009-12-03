@@ -68,9 +68,11 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
     if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
     {
       openfluid::base::GetSDKVersionProc SDKProc;
-      if ((SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME)));
-        Plug->SDKCompatible = (CONFIG_FULL_VERSION == SDKProc());
+      
+      SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
+      Plug->SDKCompatible = (CONFIG_FULL_VERSION == SDKProc());      
     }
+    else Plug->SDKCompatible = false;
 
     if (Plug->SDKCompatible)
     {
