@@ -1,6 +1,6 @@
 /**
 
-\page howitworks How it works?
+\page howitworks General information
 
 
 
@@ -64,8 +64,8 @@ This involves the following classes and structures:
 Simulation functions can handle discrete events, associated to homogeneous units. 
 This involves the following classes and structures:
 <ul>
-  <li>openfluid::core::DistributedEvent          
-  <li>openfluid::core::EventCollection  
+  <li>openfluid::core::Event          
+  <li>openfluid::core::EventsCollection  
 </ul>
 
   

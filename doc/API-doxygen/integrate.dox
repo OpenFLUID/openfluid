@@ -1,6 +1,6 @@
 /**
 
-\page integrate Developping the computational code
+\page integrate Writing the simulation function source code
 
 
 
@@ -386,9 +386,10 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 \endcode
 
 
-\section persist_sec Persistance of internal data
+\section persist_sec Persistance of simulation function status (internal data)
 
-It may be interesting to keep the status of some internal variable from the a time step to the next one. In this case, the values of these variables must be stored as class attributes (they are persistant during the whole life of the simulation function). In order to ease the storage of distributed values, data structures are available to associate a unit ID to a value. These data structures exists for different types :   
+In order to keep the status of the simulation function between calls (from the a time step to the next one), internal variables can be stored as class attributes. The class attributes are persistant during the whole life of the simulation function.\n
+To store distributed values, data structures are available to associate a unit ID to a value. These data structures exists for different types of data:   
 <ul>
 <li>\ref openfluid::core::IDFloatMap
 <li>\ref openfluid::core::IDDoubleMap
@@ -564,19 +565,6 @@ bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 \endcode
 
 \n
-The compilation process of linked fortran code runs in 3 steps:
-<ol>
-<li>separate compilation of Fortran source files (without linkage),
-<li>compilation of the simulation function,
-<li>full linkage of the object files (.o) into the simulation function plug-in.
-</ol>      
- \n
-<I>Modified 'all' target in makefile for compiling and linking:</I> 
- \code
- all:
-	gfortran -c $(GFLAGS) FSubr.f90
-	$(CPP) -c $(SRCFILESROOT).cpp -o $(OBJPATH)/$(SRCFILESROOT).o -fPIC $(WXFLAGS) $(OPENFLUIDFLAGS)
-	$(CPP) $(OBJPATH)/$(SRCFILESROOT).o FSubr.o $(WXLIBS) $(OPENFLUIDLIBS) -lgfortran -o $(BINPATH)/$(BINFILE).$(PLUGEXT) -shared $(LDFLAGS)
- \endcode
+The compilation and link of fortran source code is automatically done when adding fortran source files to the FUNC_FORTRAN variable in the CMake.in.config file (See \ref devfuncemptyexample_ssec).
  
 */
