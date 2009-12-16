@@ -6,7 +6,6 @@ The OpenFLUID-engine source tree is organized as follow
 - doc/API-doxygen : doxygen files for API documentation
 - doc/examples : latex sources of the examples documentation
 - include : include files of the API
-- packs : configuration files for packaging using CPack
 - resources/dist : files to include in packages for distribution
 - resources/examples : examples of simulation functions, with build system files
 - resources/func2doc : func2doc buddy resources files
@@ -45,13 +44,9 @@ is required.
 
 
 To build packages, 
-1) "cd" to the "build" directory
-2) run "cpack --config <config file>"
+1) "cd" to the "_build" directory
+2) run "cpack"
 
-<config file> can be:
-- engine.cpack to build the package with the main app and the ofelib library
-- enginewodev.cpack to build the package with the main appand the ofelib library,
-    but without the API included
 
 
 
