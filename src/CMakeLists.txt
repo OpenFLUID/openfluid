@@ -7,7 +7,5 @@ ADD_SUBDIRECTORY(ofelib)
 
 ADD_SUBDIRECTORY(kernel)
 
-ADD_SUBDIRECTORY(functions)
-
 
 
