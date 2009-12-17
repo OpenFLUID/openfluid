@@ -20,6 +20,17 @@
                            "-r"
                            "-p${TEST_OUTPUT_PATH}")
   
+  IF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0") 
+    ADD_TEST(integration-FunctionsReportEnvVar "${BIN_OUTPUT_PATH}/openfluid-engine" "-r")
+    SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES ENVIRONMENT "OPENFLUID_FUNCS_PATH=${TEST_OUTPUT_PATH}")                           
+    SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.use")  
+    SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.prod")    
+  ENDIF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0")
+
+  ADD_TEST(integration-FunctionsReportNoEnvVar "${BIN_OUTPUT_PATH}/openfluid-engine" "-r")                           
+  SET_TESTS_PROPERTIES(integration-FunctionsReportNoEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.use")  
+  SET_TESTS_PROPERTIES(integration-FunctionsReportNoEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.prod")
+  SET_TESTS_PROPERTIES(integration-FunctionsReportNoEnvVar PROPERTIES WILL_FAIL TRUE)        
 
   ADD_TEST(integration-FunctionsMatchReport "${BIN_OUTPUT_PATH}/openfluid-engine"
                                 "-u" "tests.primitives.*"

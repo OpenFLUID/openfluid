@@ -118,7 +118,17 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
   // plugins search order:
-  //   command line paths, then user directory, then system directory
+  //   command line paths, then environment var OPENFLUID_FUNCS_PATH, then user directory, then system directory
+
+  char *PATHEnvVar;
+
+  PATHEnvVar = std::getenv("OPENFLUID_FUNCS_PATH");
+
+  if (PATHEnvVar != NULL)
+  {
+    addExtraPluginsPaths(std::string(PATHEnvVar));
+  }
+
 
   m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + CONFIG_PLUGINS_SUBDIR).string());
 
