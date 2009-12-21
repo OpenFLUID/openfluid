@@ -43,6 +43,22 @@
                               "-x"
                               "-p${TEST_OUTPUT_PATH}")
   
+  ADD_TEST(integration-InputDoesNotExist "${BIN_OUTPUT_PATH}/openfluid-engine" "-i" "${CMAKE_BINARY_DIR}/path/does/not/exist")                           
+  SET_TESTS_PROPERTIES(integration-InputDoesNotExist PROPERTIES WILL_FAIL TRUE)
+
+  ADD_TEST(integration-InputWithNoModel "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.NoModel"
+                                        "-o" "${TESTS_DATASETS_PATH}/OPENFLUID.OUT.NoModel"
+                                        "-p" "${TEST_OUTPUT_PATH}")               
+  SET_TESTS_PROPERTIES(integration-InputWithNoModel PROPERTIES WILL_FAIL TRUE)
+
+
+  ADD_TEST(integration-InputWithNoRun "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.NoRun"
+                                        "-o" "${TESTS_DATASETS_PATH}/OPENFLUID.OUT.NoRun"
+                                        "-p" "${TEST_OUTPUT_PATH}")                           
+  SET_TESTS_PROPERTIES(integration-InputWithNoRun PROPERTIES WILL_FAIL TRUE)
+
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "func2doc"
@@ -122,4 +138,4 @@
                               )
 
 
-
+  
