@@ -67,7 +67,6 @@ openfluid::core::FuncParamsMap_t ModelReader::extractParamsFromNode(xmlNodePtr N
         if (xmlKey != NULL && xmlValue != NULL)
         {
           Params[(const char*)xmlKey] = (const char*)xmlValue;
-          std::cout << "param " << xmlKey << " " << xmlValue << std::endl;
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }
@@ -82,11 +81,32 @@ openfluid::core::FuncParamsMap_t ModelReader::extractParamsFromNode(xmlNodePtr N
 // =====================================================================
 // =====================================================================
 
+openfluid::core::FuncParamsMap_t ModelReader::mergeParams(const openfluid::core::FuncParamsMap_t& Params,
+                                                          const openfluid::core::FuncParamsMap_t& OverloadParams)
+{
+  openfluid::core::FuncParamsMap_t FinalParams = Params;
+
+  openfluid::core::FuncParamsMap_t::const_iterator it;
+
+  for (it=OverloadParams.begin();it!=OverloadParams.end();++it)
+  {
+    FinalParams[(*it).first] = (*it).second;
+  }
+
+  return FinalParams;
+}
+
+
+
+// =====================================================================
+// =====================================================================
 
 
 ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
 {
   ModelDescriptor MD;
+  FunctionDescriptor *FD;
+  GeneratorDescriptor *GD;
 
   openfluid::core::FuncParamsMap_t GlobalParams;
 
@@ -106,8 +126,6 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
     {
       if (xmlStrcmp(Curr->name,(const xmlChar*)"openfluid") == 0)
       {
-        std::cout << "openfluid" << std::endl;
-
         // first pass for global parameters
         CurrGParams = Curr->xmlChildrenNode;
         while (CurrGParams != NULL)
@@ -115,7 +133,6 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
 
           if (xmlStrcmp(CurrGParams->name,(const xmlChar*)"gparams") == 0)
           {
-            std::cout << "gparams" << std::endl;
             GlobalParams = extractParamsFromNode(CurrGParams);
           }
           CurrGParams = CurrGParams->next;
@@ -128,7 +145,6 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
 
           if (xmlStrcmp(CurrModel->name,(const xmlChar*)"model") == 0)
           {
-            std::cout << "model" << std::endl;
             CurrItem = CurrModel->xmlChildrenNode;
             while (CurrItem != NULL)
             {
@@ -139,12 +155,12 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
 
                 if (xmlFileID != NULL)
                 {
-                  extractParamsFromNode(CurrItem);
-                  MD.appendItem(new FunctionDescriptor((const char*)xmlFileID));
-                  std::cout << "added function" << std::endl;
+
+                  FD = new FunctionDescriptor((const char*)xmlFileID);
+                  FD->setParameters(mergeParams(GlobalParams,extractParamsFromNode(CurrItem)));
+                  MD.appendItem(FD);
                 }
 
-                std::cout << "function" << std::endl;
               }
 
               if (xmlStrcmp(CurrItem->name,(const xmlChar*)"generator") == 0)
@@ -163,13 +179,12 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
                   if (xmlStrcmp(xmlMethod,(const xmlChar*)"random") == 0) GenMethod = GeneratorDescriptor::Random;
                   if (xmlStrcmp(xmlMethod,(const xmlChar*)"interp") == 0) GenMethod = GeneratorDescriptor::Interp;
 
-                  MD.appendItem(new GeneratorDescriptor((const char*)xmlVarName,(const char*)xmlUnitClass,GenMethod));
-                  std::cout << "added generator" << std::endl;
+                  GD = new GeneratorDescriptor((const char*)xmlVarName,(const char*)xmlUnitClass,GenMethod);
+                  GD->setParameters(mergeParams(GlobalParams,extractParamsFromNode(CurrItem)));
+                  MD.appendItem(GD);
                 }
 
-                std::cout << "generator" << std::endl;
               }
-
 
               CurrItem = CurrItem->next;
             }
@@ -188,10 +203,6 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
   {
     throw openfluid::base::OFException("kernel","ModelReader::readFromFile","model config file (" + ModelFilePath + ") cannot be parsed");
   }
-
-
-  std::cout << "MD size:" << MD.getItems().size() << std::endl;
-
 
   return MD;
 }

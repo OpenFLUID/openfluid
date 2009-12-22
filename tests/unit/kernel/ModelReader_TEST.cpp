@@ -65,16 +65,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Interp);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),4);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["sources"],"sources.xml");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["distribution"],"sources.xml");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["distribution"],"distri.dat");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.01");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::PluggedFunction),true);
-  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getFileID(),"functionA");
+  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getFileID(),"tests.functionA");
   BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getParameters().size(),2);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.01");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),3);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"],"20");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.01");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
@@ -95,15 +95,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["min"],"20.53");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["max"],"50");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.01");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::PluggedFunction),true);
-  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getFileID(),"functionB");
+  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getFileID(),"tests.functionB");
   BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getParameters().size(),5);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"50");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.01");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["strparam"],"strvalue");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");

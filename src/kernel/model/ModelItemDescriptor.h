@@ -40,7 +40,9 @@ class ModelItemDescriptor
 
     virtual ~ModelItemDescriptor();
 
-    void setParameter(openfluid::core::FuncParamKey_t Key, openfluid::core::FuncParamKey_t Value);
+    void setParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value);
+
+    void setParameters(const openfluid::core::FuncParamsMap_t& Params);
 
     openfluid::core::FuncParamsMap_t getParameters() const;
 

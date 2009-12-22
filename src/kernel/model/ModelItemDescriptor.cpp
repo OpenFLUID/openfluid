@@ -44,11 +44,25 @@ ModelItemDescriptor::~ModelItemDescriptor()
 // =====================================================================
 
 
-void ModelItemDescriptor::setParameter(openfluid::core::FuncParamKey_t Key, openfluid::core::FuncParamKey_t Value)
+void ModelItemDescriptor::setParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value)
 {
   m_Params[Key] = Value;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelItemDescriptor::setParameters(const openfluid::core::FuncParamsMap_t& Params)
+{
+  openfluid::core::FuncParamsMap_t::const_iterator it;
+
+  for (it=Params.begin();it!=Params.end();++it)
+  {
+    m_Params[(*it).first] = (*it).second;
+  }
+}
 
 // =====================================================================
 // =====================================================================
