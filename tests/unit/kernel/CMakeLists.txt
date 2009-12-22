@@ -13,3 +13,7 @@ ADD_UNITTEST(unit-DynamicLib unittest_dynamiclib DynamicLib_TEST.cpp ${CMAKE_SOU
 IF(UNIX)
   TARGET_LINK_LIBRARIES(unittest_dynamiclib dl)
 ENDIF(UNIX)
+
+ADD_UNITTEST(unit-ModelDescriptor unittest_modeldesc ModelDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelItemDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/GeneratorDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/FunctionDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelDescriptor.cpp)
+
+ADD_UNITTEST(unit-ModelInstance unittest_modelinstance ModelInstance_TEST.cpp )
