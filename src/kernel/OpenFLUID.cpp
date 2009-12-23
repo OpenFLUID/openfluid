@@ -116,7 +116,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 void OpenFLUIDApp::printPluginsList()
 {
 
-  ArrayOfPluginsContainers PlugContainers = PluginManager(&m_ExecMsgs,&m_RunEnv).getAvailableFunctions();
+  ArrayOfPluginsContainers PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions();
 
   std::cout << "Available simulation functions:" << std::endl;
 
@@ -255,7 +255,7 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Pattern)
 {
 
-  ArrayOfPluginsContainers PlugContainers = PluginManager(&m_ExecMsgs,&m_RunEnv).getAvailableFunctions(Pattern);
+  ArrayOfPluginsContainers PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions(Pattern);
   std::string StatusStr;
 
 
@@ -413,7 +413,7 @@ void OpenFLUIDApp::runSimulation()
 
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
-  PluginManager PlugMan(&m_ExecMsgs,&m_RunEnv);
+  PluginManager PlugMan(&m_RunEnv);
 
   openfluid::core::CoreRepository* pCoreData = openfluid::core::CoreRepository::getInstance();
   pCoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());

@@ -31,10 +31,9 @@
 // =====================================================================
 
 
-PluginManager::PluginManager(openfluid::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv)
+PluginManager::PluginManager(RuntimeEnvironment* RunEnv)
 {
   mp_RunEnv = RunEnv;
-  mp_ExecMsgs = ExecMsgs;
 }
 
 // =====================================================================
@@ -68,9 +67,9 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
     if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
     {
       openfluid::base::GetSDKVersionProc SDKProc;
-      
+
       SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
-      Plug->SDKCompatible = (CONFIG_FULL_VERSION == SDKProc());      
+      Plug->SDKCompatible = (CONFIG_FULL_VERSION == SDKProc());
     }
     else Plug->SDKCompatible = false;
 
@@ -157,6 +156,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string 
 
 
 PluginContainer *PluginManager::getPlugin(std::string PluginName,
+                                          openfluid::base::ExecutionMessages* ExecMsgs,
                                           openfluid::core::CoreRepository* CoreData)
 {
 
@@ -167,7 +167,7 @@ PluginContainer *PluginManager::getPlugin(std::string PluginName,
   if (Plug != NULL)
   {
     Plug->Function->setDataRepository(CoreData);
-    Plug->Function->setExecutionMessages(mp_ExecMsgs);
+    Plug->Function->setExecutionMessages(ExecMsgs);
     Plug->Function->setFunctionEnvironment(mp_RunEnv->getFunctionEnvironment());
     return Plug;
   }

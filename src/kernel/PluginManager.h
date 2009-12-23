@@ -45,7 +45,6 @@ struct PluginContainer
 };
 
 
-typedef std::vector<openfluid::base::FunctionSignature*> ArrayOfPluginsSignatures;
 typedef std::vector<PluginContainer*> ArrayOfPluginsContainers;
 
 /**
@@ -56,7 +55,6 @@ class PluginManager
   private:
 
     RuntimeEnvironment* mp_RunEnv;
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
     PluginContainer *buildPluginContainer(std::string PluginFilename);
 
@@ -65,7 +63,7 @@ class PluginManager
     /**
       Constructor
     */
-    PluginManager(openfluid::base::ExecutionMessages* ExecMsgs, RuntimeEnvironment* RunEnv);
+    PluginManager(RuntimeEnvironment* RunEnv);
 
     /**
       Destructor
@@ -82,6 +80,7 @@ class PluginManager
       Returns function and function types
     */
     PluginContainer *getPlugin(std::string PluginName,
+                               openfluid::base::ExecutionMessages* ExecMsgs,
                                openfluid::core::CoreRepository* CoreData);
 
 

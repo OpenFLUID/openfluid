@@ -184,7 +184,7 @@ bool Engine::processConfig()
     FConf = &(*FuncIt);
 
     // instanciates and gets a pointer to the function
-    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,mp_CoreData);
+    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,mp_ExecMsgs,mp_CoreData);
 
     if (FuncToAdd != NULL)
     {
