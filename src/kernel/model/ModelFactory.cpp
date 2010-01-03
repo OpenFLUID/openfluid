@@ -11,21 +11,26 @@
 
 
 /**
-  \file ModelInstance.cpp
+  \file ModelFactory.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include "ModelInstance.h"
+#include "ModelFactory.h"
+
 
 // =====================================================================
 // =====================================================================
 
 
-ModelInstance::ModelInstance()
+ModelFactory::ModelFactory(openfluid::core::CoreRepository* CoreData,
+                           openfluid::base::ExecutionMessages* ExecMsgs,
+                           openfluid::base::FunctionEnvironment* FuncEnv)
 {
-
+  mp_CoreData = CoreData;
+  mp_ExecMsgs = ExecMsgs;
+  mp_FuncEnv = FuncEnv;
 }
 
 
@@ -33,12 +38,9 @@ ModelInstance::ModelInstance()
 // =====================================================================
 
 
-ModelInstance::~ModelInstance()
+ModelInstance* ModelFactory::buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const
 {
 
+  throw openfluid::base::OFException("under construction");
+  return NULL;
 }
-
-
-// =====================================================================
-// =====================================================================
-

@@ -18,10 +18,20 @@
  */
 
 
-#ifndef __MODELINSTANCE_H___
-#define __MODELINSTANCE_H___
+#ifndef __MODELINSTANCE_H__
+#define __MODELINSTANCE_H__
 
 
+class ModelInstance
+{
+  private:
 
+  public:
 
-#endif /* __MODELINSTANCE_H___ */
+    ModelInstance();
+
+    ~ModelInstance();
+
+};
+
+#endif /* __MODELINSTANCE_H__ */
