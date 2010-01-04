@@ -19,3 +19,15 @@ ADD_UNITTEST(unit-ModelInstance unittest_modelinstance ModelInstance_TEST.cpp )
 
 ADD_UNITTEST(unit-ModelReader unittest_modelreader ModelReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/ModelReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelItemDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/GeneratorDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/FunctionDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelDescriptor.cpp)
 TARGET_LINK_LIBRARIES(unittest_modelreader ${LIBXML2_LIBRARIES})
+
+ADD_UNITTEST(unit-RunReader unittest_runreader RunReader_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_runreader ${LIBXML2_LIBRARIES})
+
+ADD_UNITTEST(unit-OutputReader unittest_outputreader OutputReader_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_outputreader ${LIBXML2_LIBRARIES})
+
+ADD_UNITTEST(unit-DomainReader unittest_domainreader DomainReader_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_domainreader ${LIBXML2_LIBRARIES})
+
+ADD_UNITTEST(unit-InputDataReader unittest_inputdatareader InputDataReader_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_inputdatareader ${LIBXML2_LIBRARIES})

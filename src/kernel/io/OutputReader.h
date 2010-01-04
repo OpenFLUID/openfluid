@@ -11,8 +11,17 @@
 
 
 /**
-  \file OutputConfigReader.cpp
-  \brief Implements ...
+  \file OutputReader.h
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
+
+
+#ifndef __OUTPUTREADER_H___
+#define __OUTPUTREADER_H___
+
+
+
+
+#endif /* __OUTPUTREADER_H___ */
