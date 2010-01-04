@@ -41,9 +41,12 @@ const std::string CONFIG_FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
 const std::string CONFIG_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
 
 
+// install prefix
+const std::string CONFIG_INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
+
 // Plugins dirs
 const std::string CONFIG_PLUGINS_SUBDIR = "functions";
-const std::string CONFIG_PLUGINS_STDSYSDIR = "@CMAKE_INSTALL_PREFIX@/lib/openfluid/functions";
+const std::string CONFIG_PLUGINS_STDDIR = "lib/openfluid/functions";
 
 
 // Version information

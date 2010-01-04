@@ -118,10 +118,10 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
   // plugins search order:
-  //   command line paths, then environment var OPENFLUID_FUNCS_PATH, then user directory, then system directory
+  //   command line paths, then environment var OPENFLUID_FUNCS_PATH, then user directory, then install directory
 
+  // env var
   char *PATHEnvVar;
-
   PATHEnvVar = std::getenv("OPENFLUID_FUNCS_PATH");
 
   if (PATHEnvVar != NULL)
@@ -129,12 +129,22 @@ RuntimeEnvironment::RuntimeEnvironment()
     addExtraPluginsPaths(std::string(PATHEnvVar));
   }
 
-
+  // user dir
   m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + CONFIG_PLUGINS_SUBDIR).string());
 
-#if defined __unix__ || defined __APPLE__
-  m_PlugsDirs.push_back(CONFIG_PLUGINS_STDSYSDIR);
-#endif
+
+  // install path
+  std::string PluginsInstallPath = boost::filesystem::path(CONFIG_INSTALL_PREFIX + "/" + CONFIG_PLUGINS_STDDIR).string();
+  char *INSTALLEnvVar;
+
+  INSTALLEnvVar = std::getenv("OPENFLUID_INSTALL_PREFIX");
+
+  if (INSTALLEnvVar != NULL)
+  {
+    PluginsInstallPath = boost::filesystem::path(std::string(INSTALLEnvVar) + "/" + CONFIG_PLUGINS_STDDIR).string();
+  }
+
+  m_PlugsDirs.push_back(PluginsInstallPath);
 
   // set ignition date time
   m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
