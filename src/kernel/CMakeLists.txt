@@ -18,6 +18,8 @@ ADD_EXECUTABLE(openfluid-engine
                generators/FixedGenerator.cpp generators/RandomGenerator.cpp generators/InterpGenerator.cpp
                model/ModelItemDescriptor.cpp model/GeneratorDescriptor.cpp model/FunctionDescriptor.cpp
                model/ModelDescriptor.cpp model/ModelInstance.cpp model/ModelFactory.cpp
+               run/RunDescriptor.cpp
+               output/OutputDescriptor.cpp
                io/DomainReader.cpp io/InputDataReader.cpp io/ModelReader.cpp io/RunReader.cpp io/OutputReader.cpp 
                io/MessagesWriter.cpp io/SimReportWriter.cpp io/OutputsWriter.cpp 
                buddies/OFBuddy.cpp buddies/NewFuncBuddy.cpp buddies/Func2DocBuddy.cpp
