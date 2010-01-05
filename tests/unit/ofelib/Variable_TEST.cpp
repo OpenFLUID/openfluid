@@ -59,6 +59,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(Vars.createVariable("foo"),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),true);
+  BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",0),false);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",0.0),true);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",1.0),true);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",2.0),true);
