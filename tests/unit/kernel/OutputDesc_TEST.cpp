@@ -11,59 +11,36 @@
 
 
 /**
-  \file RunDescriptor.cpp
+  \file OutputDesc_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include "RunDescriptor.h"
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_outputdesc
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+
 
 // =====================================================================
 // =====================================================================
 
 
-RunDescriptor::RunDescriptor(int DeltaT,
-                             openfluid::core::DateTime BeginDate,
-                             openfluid::core::DateTime EndDate)
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  m_DeltaT = DeltaT;
-  m_BeginDate = BeginDate;
-  m_EndDate = EndDate;
-
-  m_SimID = "";
-  m_ProgOutKeep = 0;
-  m_ProgOutPacket = 0;
+  BOOST_FAIL("under construction");
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-RunDescriptor::~RunDescriptor()
+BOOST_AUTO_TEST_CASE(check_operations)
 {
-
+  BOOST_FAIL("under construction");
 }
 
-
 // =====================================================================
 // =====================================================================
-
-
-void RunDescriptor::setProgressiveOutput(const unsigned int Packet, const unsigned int Keep)
-{
-  m_ProgOutPacket = Packet;
-  m_ProgOutKeep = Keep;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool RunDescriptor::isProgressiveOutput() const
-{
-  return (m_ProgOutKeep > 0 && m_ProgOutPacket > 0);
-}
-

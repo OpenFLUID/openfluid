@@ -15,6 +15,10 @@ ENDIF(UNIX)
 
 ADD_UNITTEST(unit-ModelDescriptor unittest_modeldesc ModelDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelItemDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/GeneratorDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/FunctionDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelDescriptor.cpp)
 
+ADD_UNITTEST(unit-RunDescriptor unittest_rundesc RunDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/run/RunDescriptor.cpp)
+
+ADD_UNITTEST(unit-OutputDescriptor unittest_outputdesc OutputDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp)
+
 ADD_UNITTEST(unit-ModelInstance unittest_modelinstance ModelInstance_TEST.cpp )
 
 ADD_UNITTEST(unit-ModelReader unittest_modelreader ModelReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/ModelReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelItemDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/GeneratorDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/FunctionDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelDescriptor.cpp)
