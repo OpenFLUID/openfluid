@@ -24,6 +24,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
+#include "output/OutputDescriptor.h"
 
 // =====================================================================
 // =====================================================================
@@ -31,6 +32,10 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
+  OutputDescriptor OutDesc;
+
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets().size(),0);
+
   BOOST_FAIL("under construction");
 }
 

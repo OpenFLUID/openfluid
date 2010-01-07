@@ -17,7 +17,7 @@ ADD_UNITTEST(unit-ModelDescriptor unittest_modeldesc ModelDesc_TEST.cpp ${CMAKE_
 
 ADD_UNITTEST(unit-RunDescriptor unittest_rundesc RunDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/run/RunDescriptor.cpp)
 
-ADD_UNITTEST(unit-OutputDescriptor unittest_outputdesc OutputDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp)
+ADD_UNITTEST(unit-OutputDescriptor unittest_outputdesc OutputDesc_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputSetDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputFilesDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp)
 
 ADD_UNITTEST(unit-ModelInstance unittest_modelinstance ModelInstance_TEST.cpp )
 

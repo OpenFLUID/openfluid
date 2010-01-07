@@ -21,16 +21,22 @@
 #ifndef __OUTPUTDESCRIPTOR_H__
 #define __OUTPUTDESCRIPTOR_H__
 
+#include <vector>
+#include "OutputFilesDescriptor.h"
 
 class OutputDescriptor
 {
   private:
+
+    std::vector<OutputFilesDescriptor> m_FileSets;
 
   public:
 
     OutputDescriptor();
 
     ~OutputDescriptor();
+
+    std::vector<OutputFilesDescriptor>& getFileSets() {return m_FileSets; };
 
 };
 

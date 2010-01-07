@@ -11,21 +11,29 @@
 
 
 /**
-  \file OutputDescriptor.cpp
+  \file OutputSetDescriptor.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include "OutputDescriptor.h"
+#include "OutputSetDescriptor.h"
 
 // =====================================================================
 // =====================================================================
 
 
-OutputDescriptor::OutputDescriptor()
+OutputSetDescriptor::OutputSetDescriptor(std::string SetName, std::string UnitsClass)
 {
-  m_FileSets.clear();
+  m_Name = SetName;
+  m_UnitsClass = UnitsClass;
+
+  m_AllUnits = false;
+  m_UnitsID.clear();
+  m_AllScalars = false;
+  m_ScalarVariables.clear();
+  m_AllVectors = false;
+  m_VectorVariables.clear();
 }
 
 
@@ -33,7 +41,7 @@ OutputDescriptor::OutputDescriptor()
 // =====================================================================
 
 
-OutputDescriptor::~OutputDescriptor()
+OutputSetDescriptor::~OutputSetDescriptor()
 {
 
 }

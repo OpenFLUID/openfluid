@@ -11,21 +11,24 @@
 
 
 /**
-  \file OutputDescriptor.cpp
+  \file OutputFilesDescriptor.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include "OutputDescriptor.h"
+#include "OutputFilesDescriptor.h"
 
 // =====================================================================
 // =====================================================================
 
 
-OutputDescriptor::OutputDescriptor()
+OutputFilesDescriptor::OutputFilesDescriptor()
 {
-  m_FileSets.clear();
+  m_Sets.clear();
+  m_ColSeparator = "\t";
+  m_DateFormat = "%Y%m%dT%H%M%S";
+  m_CommentChar = "%";
 }
 
 
@@ -33,7 +36,7 @@ OutputDescriptor::OutputDescriptor()
 // =====================================================================
 
 
-OutputDescriptor::~OutputDescriptor()
+OutputFilesDescriptor::~OutputFilesDescriptor()
 {
 
 }
