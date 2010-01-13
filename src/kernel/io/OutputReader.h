@@ -21,7 +21,20 @@
 #ifndef __OUTPUTREADER_H___
 #define __OUTPUTREADER_H___
 
+#include "output/OutputDescriptor.h"
 
+class OutputReader
+{
+  private:
+
+  public:
+
+    OutputReader();
+
+    ~OutputReader();
+
+    OutputDescriptor readFromFile(std::string OutputFilePath);
+};
 
 
 #endif /* __OUTPUTREADER_H___ */

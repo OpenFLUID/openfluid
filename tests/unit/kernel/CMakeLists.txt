@@ -27,7 +27,7 @@ TARGET_LINK_LIBRARIES(unittest_modelreader ${LIBXML2_LIBRARIES})
 ADD_UNITTEST(unit-RunReader unittest_runreader RunReader_TEST.cpp)
 TARGET_LINK_LIBRARIES(unittest_runreader ${LIBXML2_LIBRARIES})
 
-ADD_UNITTEST(unit-OutputReader unittest_outputreader OutputReader_TEST.cpp)
+ADD_UNITTEST(unit-OutputReader unittest_outputreader OutputReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/OutputReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputSetDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputFilesDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp)
 TARGET_LINK_LIBRARIES(unittest_outputreader ${LIBXML2_LIBRARIES})
 
 ADD_UNITTEST(unit-DomainReader unittest_domainreader DomainReader_TEST.cpp)

@@ -16,3 +16,40 @@
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
+
+
+#include <libxml/parser.h>
+#include <iostream>
+#include "OutputReader.h"
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+OutputReader::OutputReader()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+OutputReader::~OutputReader()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+OutputDescriptor OutputReader::readFromFile(std::string OutputFilePath)
+{
+  throw openfluid::base::OFException("under construction");
+}
+

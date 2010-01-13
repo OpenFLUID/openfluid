@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="yes"?>
+
+  <output>
+
+    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
+    <!-- colsep default is \t -->
+    
+    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">     
+      <set name="full" unitsclass="XU" unitsIDs="*" vars="*" />      
+      <set name="2vars" unitsclass="YU" unitsIDs="*" vars="var1;var2[]" />      
+      <set name="3units" unitsclass="ZU" unitsIDs="5;197;73" vars="*" />      
+    </files>  
+
+    <files colsep=";" dtformat="%Y%m%dT%H%M%S" commentchar="#">     
+      <set name="full" unitsclass="KU" unitsIDs="*" vars="*" />      
+      <set name="3vars" unitsclass="LU" unitsIDs="*" vars="var1;var2[];var5" />      
+      <set name="2units" unitsclass="MU" unitsIDs="2;1" vars="*" />      
+    </files>  
+    
+  </output>
+</openfluid>
