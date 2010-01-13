@@ -91,7 +91,7 @@ void TokenizeString(const std::string& StrToTokenize,
 inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218
-  return ((std::abs(A - B)) <= (Epsilon * std::abs(A)));
+  return ((std::fabs(A - B)) <= (Epsilon * std::fabs(A)));
 }
 
 
@@ -112,7 +112,7 @@ inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218
-  return (((std::abs(A - B)) <= (Epsilon * std::abs(A))) && ((std::abs(A - B)) <= (Epsilon * std::abs(B))));
+  return (((std::fabs(A - B)) <= (Epsilon * std::fabs(A))) && ((std::fabs(A - B)) <= (Epsilon * std::fabs(B))));
 }
 
 
