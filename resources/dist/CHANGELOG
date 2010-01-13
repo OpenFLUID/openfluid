@@ -1,5 +1,7 @@
 1.4.2
+
   * Fixed major bug in OPENFLUID_Is*VariableExist() primitives
+  * Fixed bug in functions for comparison of floating point values
 
 
 
