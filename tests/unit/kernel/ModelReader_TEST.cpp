@@ -108,6 +108,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");
 
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_error_handling)
+{
+  ModelDescriptor ModelDesc;
 
   bool HasFailed;
 
