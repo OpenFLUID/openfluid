@@ -108,6 +108,116 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");
 
+
+  bool HasFailed;
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/modeldoesnotexist.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel1.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel3.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel3.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel4.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel5.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel6.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel7.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  HasFailed = false;
+  try
+  {
+    ModelDesc = ModelReader().readFromFile(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/wrongmodel8.xml").string());
+  }
+  catch (...)
+  {
+    HasFailed = true;
+  }
+  BOOST_REQUIRE_EQUAL(HasFailed,true);
+
 }
 
 

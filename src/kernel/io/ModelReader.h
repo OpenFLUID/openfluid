@@ -30,6 +30,8 @@ class ModelReader
 {
   private:
 
+    std::string m_CurrentFilePath;
+
     openfluid::core::FuncParamsMap_t extractParamsFromNode(xmlNodePtr NodePtr);
 
     openfluid::core::FuncParamsMap_t mergeParams(const openfluid::core::FuncParamsMap_t& Params,

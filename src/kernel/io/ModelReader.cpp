@@ -30,7 +30,7 @@
 
 ModelReader::ModelReader()
 {
-
+  m_CurrentFilePath = "";
 }
 
 
@@ -70,6 +70,8 @@ openfluid::core::FuncParamsMap_t ModelReader::extractParamsFromNode(xmlNodePtr N
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }
+        else
+          throw openfluid::base::OFException("kernel","ModelReader::extractParamsFromNode","missing name and/or param attribute(s) in parameter definition (" + m_CurrentFilePath + ")");
       }
       Curr = Curr->next;
     }
@@ -115,6 +117,8 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
   xmlNodePtr CurrGParams = NULL;
   xmlNodePtr CurrModel = NULL;
   xmlNodePtr CurrItem = NULL;
+
+  m_CurrentFilePath = ModelFilePath;
 
   Doc = xmlParseFile(ModelFilePath.c_str());
 
@@ -179,11 +183,15 @@ ModelDescriptor ModelReader::readFromFile(std::string ModelFilePath)
                   if (xmlStrcmp(xmlMethod,(const xmlChar*)"random") == 0) GenMethod = GeneratorDescriptor::Random;
                   if (xmlStrcmp(xmlMethod,(const xmlChar*)"interp") == 0) GenMethod = GeneratorDescriptor::Interp;
 
+                  if (GenMethod == GeneratorDescriptor::NoGenMethod)
+                    throw openfluid::base::OFException("kernel","ModelReader::readFromFile","unknown or missing generator method (" + ModelFilePath + ")");
+
                   GD = new GeneratorDescriptor((const char*)xmlVarName,(const char*)xmlUnitClass,GenMethod);
                   GD->setParameters(mergeParams(GlobalParams,extractParamsFromNode(CurrItem)));
                   MD.appendItem(GD);
                 }
-
+                else
+                  throw openfluid::base::OFException("kernel","ModelReader::readFromFile","missing attribute(s) in generator description (" + ModelFilePath + ")");
               }
 
               CurrItem = CurrItem->next;
