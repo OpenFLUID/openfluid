@@ -11,7 +11,7 @@
 
 
 /**
-  \file InputDataReader.cpp
+  \file EventsReader.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -21,7 +21,7 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_inputdatareader
+#define BOOST_TEST_MODULE unittest_eventsreader
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
@@ -45,7 +45,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_FAIL("under construction");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -53,4 +52,6 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
 {
   BOOST_FAIL("under construction");
 }
+
+
 

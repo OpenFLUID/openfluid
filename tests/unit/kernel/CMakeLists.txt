@@ -35,3 +35,6 @@ TARGET_LINK_LIBRARIES(unittest_domainreader ${LIBXML2_LIBRARIES})
 
 ADD_UNITTEST(unit-InputDataReader unittest_inputdatareader InputDataReader_TEST.cpp)
 TARGET_LINK_LIBRARIES(unittest_inputdatareader ${LIBXML2_LIBRARIES})
+
+ADD_UNITTEST(unit-EventsReader unittest_eventsreader EventsReader_TEST.cpp)
+TARGET_LINK_LIBRARIES(unittest_eventsreader ${LIBXML2_LIBRARIES})

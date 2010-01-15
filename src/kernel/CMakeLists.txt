@@ -21,7 +21,7 @@ ADD_EXECUTABLE(openfluid-engine
                model/ModelDescriptor.cpp model/ModelInstance.cpp model/ModelFactory.cpp
                run/RunDescriptor.cpp
                output/OutputSetDescriptor.cpp output/OutputFilesDescriptor.cpp output/OutputDescriptor.cpp
-               io/DomainReader.cpp io/InputDataReader.cpp io/ModelReader.cpp io/RunReader.cpp io/OutputReader.cpp 
+               io/DomainReader.cpp io/InputDataReader.cpp io/EventsReader.cpp io/ModelReader.cpp io/RunReader.cpp io/OutputReader.cpp 
                io/MessagesWriter.cpp io/SimReportWriter.cpp io/OutputsWriter.cpp 
                buddies/OFBuddy.cpp buddies/NewFuncBuddy.cpp buddies/Func2DocBuddy.cpp
                buddies/NewDataBuddy.cpp buddies/ConvertBuddy.cpp
