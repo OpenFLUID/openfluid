@@ -39,6 +39,8 @@ class RunDescriptor
 
   public:
 
+    RunDescriptor();
+
     RunDescriptor(int DeltaT,
                   openfluid::core::DateTime BeginDate,openfluid::core::DateTime EndDate);
 
@@ -46,9 +48,15 @@ class RunDescriptor
 
     openfluid::core::DateTime getBeginDate() const {return m_BeginDate; };
 
+    void setBeginDate(const openfluid::core::DateTime BeginDate) { m_BeginDate = BeginDate; };
+
     openfluid::core::DateTime getEndDate() const {return m_EndDate; };
 
+    void setEndDate(const openfluid::core::DateTime EndDate) { m_EndDate = EndDate; };
+
     int getDeltaT() const {return m_DeltaT; };
+
+    void setDeltaT(const int DeltaT) { m_DeltaT = DeltaT; };
 
     void setSimulationID(const std::string SimID) { m_SimID = SimID; };
 

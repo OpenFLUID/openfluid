@@ -24,7 +24,7 @@ ADD_UNITTEST(unit-ModelInstance unittest_modelinstance ModelInstance_TEST.cpp )
 ADD_UNITTEST(unit-ModelReader unittest_modelreader ModelReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/ModelReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelItemDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/GeneratorDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/FunctionDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelDescriptor.cpp)
 TARGET_LINK_LIBRARIES(unittest_modelreader ${LIBXML2_LIBRARIES})
 
-ADD_UNITTEST(unit-RunReader unittest_runreader RunReader_TEST.cpp)
+ADD_UNITTEST(unit-RunReader unittest_runreader RunReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/RunReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/run/RunDescriptor.cpp)
 TARGET_LINK_LIBRARIES(unittest_runreader ${LIBXML2_LIBRARIES})
 
 ADD_UNITTEST(unit-OutputReader unittest_outputreader OutputReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/OutputReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputSetDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputFilesDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp)

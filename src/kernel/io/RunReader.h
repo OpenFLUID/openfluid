@@ -22,6 +22,23 @@
 #define __RUNREADER_H___
 
 
+#include "run/RunDescriptor.h"
+
+
+class RunReader
+{
+  private:
+
+  public:
+
+    RunReader();
+
+    ~RunReader();
+
+    RunDescriptor readFromFile(std::string RunFilePath);
+
+
+};
 
 
 #endif /* __RUNREADER_H___ */
