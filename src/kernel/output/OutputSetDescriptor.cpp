@@ -29,7 +29,7 @@ OutputSetDescriptor::OutputSetDescriptor(std::string SetName, std::string UnitsC
   m_UnitsClass = UnitsClass;
 
   m_AllUnits = false;
-  m_UnitsID.clear();
+  m_UnitsIDs.clear();
   m_AllScalars = false;
   m_ScalarVariables.clear();
   m_AllVectors = false;

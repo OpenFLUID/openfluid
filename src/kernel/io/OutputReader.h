@@ -21,11 +21,19 @@
 #ifndef __OUTPUTREADER_H___
 #define __OUTPUTREADER_H___
 
+#include <libxml/tree.h>
+
 #include "output/OutputDescriptor.h"
 
 class OutputReader
 {
   private:
+
+    std::string m_CurrentFilePath;
+
+    OutputFilesDescriptor extractFilesDecriptorFromNode(xmlNodePtr NodePtr);
+
+    OutputSetDescriptor extractSetDecriptorFromNode(xmlNodePtr NodePtr);
 
   public:
 

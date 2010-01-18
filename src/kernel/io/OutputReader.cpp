@@ -30,7 +30,7 @@
 
 OutputReader::OutputReader()
 {
-
+  m_CurrentFilePath = "";
 }
 
 
@@ -48,8 +48,74 @@ OutputReader::~OutputReader()
 // =====================================================================
 
 
-OutputDescriptor OutputReader::readFromFile(std::string OutputFilePath)
+OutputFilesDescriptor OutputReader::extractFilesDecriptorFromNode(xmlNodePtr NodePtr)
 {
   throw openfluid::base::OFException("under construction");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+OutputSetDescriptor OutputReader::extractSetDecriptorFromNode(xmlNodePtr NodePtr)
+{
+  throw openfluid::base::OFException("under construction");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+OutputDescriptor OutputReader::readFromFile(std::string OutputFilePath)
+{
+  OutputDescriptor OD;
+
+  xmlDocPtr Doc = NULL;
+  xmlNodePtr Root = NULL;
+  xmlNodePtr CurrOutput = NULL;
+  xmlNodePtr CurrFiles = NULL;
+
+  m_CurrentFilePath = OutputFilePath;
+
+  Doc = xmlParseFile(OutputFilePath.c_str());
+
+  if (Doc != NULL)
+  {
+    Root =  xmlDocGetRootElement(Doc);
+
+    if (Root != NULL)
+    {
+      if (xmlStrcmp(Root->name,(const xmlChar*)"openfluid") == 0)
+      {
+        CurrOutput = Root->xmlChildrenNode;
+        while (CurrOutput != NULL)
+        {
+           if (xmlStrcmp(CurrOutput->name,(const xmlChar*)"output") == 0)
+           {
+             CurrFiles = CurrOutput->xmlChildrenNode;
+             while (CurrFiles != NULL)
+             {
+               if (xmlStrcmp(CurrFiles->name,(const xmlChar*)"files") == 0)
+               {
+                 OD.getFileSets().push_back(extractFilesDecriptorFromNode(CurrFiles));
+               }
+             }
+           }
+         }
+       }
+     }
+     else
+     {
+       throw openfluid::base::OFException("kernel","OutputReader::readFromFile","output config file (" + OutputFilePath + ") is empty");
+     }
+   }
+   else
+   {
+     throw openfluid::base::OFException("kernel","OutputReader::readFromFile","output config file (" + OutputFilePath + ") cannot be parsed");
+   }
+
+   return OD;
 }
 

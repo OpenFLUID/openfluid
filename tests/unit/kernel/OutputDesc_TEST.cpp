@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(OutSetDesc.getName(),"foo");
   BOOST_REQUIRE_EQUAL(OutSetDesc.getUnitsClass(),"TU");
   BOOST_REQUIRE_EQUAL(OutSetDesc.isAllUnits(),false);
-  BOOST_REQUIRE_EQUAL(OutSetDesc.getUnitsID().size(),0);
+  BOOST_REQUIRE_EQUAL(OutSetDesc.getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(OutSetDesc.isAllScalars(),false);
   BOOST_REQUIRE_EQUAL(OutSetDesc.getScalars().size(),0);
   BOOST_REQUIRE_EQUAL(OutSetDesc.isAllVectors(),false);
@@ -70,9 +70,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   OutSetDesc11.setAllScalars(true);
   OutSetDesc11.setAllVectors(true);
 
-  OutSetDesc12.getUnitsID().push_back(13);
-  OutSetDesc12.getUnitsID().push_back(33);
-  OutSetDesc12.getUnitsID().push_back(53);
+  OutSetDesc12.getUnitsIDs().push_back(13);
+  OutSetDesc12.getUnitsIDs().push_back(33);
+  OutSetDesc12.getUnitsIDs().push_back(53);
   OutSetDesc12.setAllScalars(true);
   OutSetDesc12.setAllVectors(true);
 
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].getName(),"OSD11");
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].getUnitsClass(),"TU1");
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].getUnitsID().size(),0);
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].isAllScalars(),true);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].getScalars().size(),0);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[0].isAllVectors(),true);
@@ -112,10 +112,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getName(),"OSD12");
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsClass(),"TU1");
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].isAllUnits(),false);
-  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsID().size(),3);
-  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsID()[0],13);
-  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsID()[1],33);
-  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsID()[2],53);
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsIDs().size(),3);
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsIDs()[0],13);
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsIDs()[1],33);
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getUnitsIDs()[2],53);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].isAllScalars(),true);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].getScalars().size(),0);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[0].getSets()[1].isAllVectors(),true);
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].getName(),"OSD21");
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].getUnitsClass(),"TU21");
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].getUnitsID().size(),0);
+  BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].isAllScalars(),false);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].getScalars().size(),3);
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets()[1].getSets()[0].getScalars()[0],"scalar1");
