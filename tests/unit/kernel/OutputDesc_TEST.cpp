@@ -74,8 +74,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   OutSetDesc11.setAllScalars(true);
   OutSetDesc11.setAllVectors(true);
 
-  OutSetDesc11.setName("OSD12");
-  OutSetDesc11.setUnitsClass("TU1");
+  OutSetDesc12.setName("OSD12");
+  OutSetDesc12.setUnitsClass("TU1");
 
   OutSetDesc12.getUnitsIDs().push_back(13);
   OutSetDesc12.getUnitsIDs().push_back(33);
@@ -83,8 +83,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   OutSetDesc12.setAllScalars(true);
   OutSetDesc12.setAllVectors(true);
 
-  OutSetDesc11.setName("OSD21");
-  OutSetDesc11.setUnitsClass("TU21");
+  OutSetDesc21.setName("OSD21");
+  OutSetDesc21.setUnitsClass("TU21");
 
   OutSetDesc21.setAllUnits(true);
   OutSetDesc21.getScalars().push_back("scalar1");
