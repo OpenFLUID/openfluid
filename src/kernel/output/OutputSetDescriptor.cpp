@@ -23,11 +23,10 @@
 // =====================================================================
 
 
-OutputSetDescriptor::OutputSetDescriptor(std::string SetName, std::string UnitsClass)
+OutputSetDescriptor::OutputSetDescriptor()
 {
-  m_Name = SetName;
-  m_UnitsClass = UnitsClass;
-
+  m_Name = "";
+  m_UnitsClass = "";
   m_AllUnits = false;
   m_UnitsIDs.clear();
   m_AllScalars = false;

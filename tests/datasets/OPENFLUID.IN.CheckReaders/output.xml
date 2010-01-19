@@ -16,6 +16,19 @@
       <set name="3vars" unitsclass="LU" unitsIDs="*" vars="var1;var2[];var5" />      
       <set name="2units" unitsclass="MU" unitsIDs="2;1" vars="*" />      
     </files>  
+
+    <files>     
+      <set name="full" unitsclass="UU" unitsIDs="*" vars="*" />      
+    </files>  
+
+    <files dtformat="iso">     
+      <set name="full" unitsclass="UU" unitsIDs="*" vars="*" />      
+    </files>  
+
+    <files dtformat="6cols">     
+      <set name="full" unitsclass="UU" unitsIDs="*" vars="*" />      
+    </files>  
+
     
   </output>
 </openfluid>

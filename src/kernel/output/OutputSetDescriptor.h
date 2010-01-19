@@ -40,11 +40,15 @@ class OutputSetDescriptor
 
   public:
 
-    OutputSetDescriptor(std::string SetName, std::string UnitsClass);
+    OutputSetDescriptor();
 
     ~OutputSetDescriptor();
 
+    void setName(const std::string Name) { m_Name = Name; };
+
     std::string getName() const { return m_Name; };
+
+    void setUnitsClass(const std::string UnitsClass)  { m_UnitsClass = UnitsClass; };
 
     std::string getUnitsClass() const { return m_UnitsClass; };
 

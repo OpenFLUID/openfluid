@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
 
-  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets().size(),2);
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets().size(),5);
 
 
 
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].isAllUnits(),true);
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].getScalars().size(),2);
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].getScalars()[0],"var1");
-  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].getScalars()[0],"var5");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].getScalars()[1],"var5");
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].isAllScalars(),false);
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].getVectors().size(),1);
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[1].getVectors()[0],"var2");
@@ -131,6 +131,20 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[2].isAllScalars(),true);
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[2].getVectors().size(),0);
   BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[1].getSets()[2].isAllVectors(),true);
+
+
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[2].getColSeparator(),"\t");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[2].getDateFormat(),"%Y%m%dT%H%M%S");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[2].getCommentChar(),"%");
+
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[3].getColSeparator(),"\t");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[3].getDateFormat(),"%Y%m%dT%H%M%S");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[3].getCommentChar(),"%");
+
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[4].getColSeparator(),"\t");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[4].getDateFormat(),"%Y\t%m\t%d\t%H\t%M\t%S");
+  BOOST_REQUIRE_EQUAL(OutputDesc.getFileSets()[4].getCommentChar(),"%");
+
 
 }
 

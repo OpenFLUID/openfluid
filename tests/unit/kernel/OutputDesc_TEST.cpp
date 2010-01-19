@@ -42,7 +42,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(OutFilesDesc.getDateFormat(),"%Y%m%dT%H%M%S");
   BOOST_REQUIRE_EQUAL(OutFilesDesc.getCommentChar(),"%");
 
-  OutputSetDescriptor OutSetDesc("foo","TU");
+  OutputSetDescriptor OutSetDesc;
+  OutSetDesc.setName("foo");
+  OutSetDesc.setUnitsClass("TU");
   BOOST_REQUIRE_EQUAL(OutSetDesc.getName(),"foo");
   BOOST_REQUIRE_EQUAL(OutSetDesc.getUnitsClass(),"TU");
   BOOST_REQUIRE_EQUAL(OutSetDesc.isAllUnits(),false);
@@ -62,19 +64,27 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   OutputFilesDescriptor OutFilesDesc1,OutFilesDesc2;
 
-  OutputSetDescriptor OutSetDesc11("OSD11","TU1"),OutSetDesc12("OSD12","TU1"),
-                      OutSetDesc21("OSD21","TU21");
+  OutputSetDescriptor OutSetDesc11, OutSetDesc12, OutSetDesc21;
 
+
+  OutSetDesc11.setName("OSD11");
+  OutSetDesc11.setUnitsClass("TU1");
 
   OutSetDesc11.setAllUnits(true);
   OutSetDesc11.setAllScalars(true);
   OutSetDesc11.setAllVectors(true);
+
+  OutSetDesc11.setName("OSD12");
+  OutSetDesc11.setUnitsClass("TU1");
 
   OutSetDesc12.getUnitsIDs().push_back(13);
   OutSetDesc12.getUnitsIDs().push_back(33);
   OutSetDesc12.getUnitsIDs().push_back(53);
   OutSetDesc12.setAllScalars(true);
   OutSetDesc12.setAllVectors(true);
+
+  OutSetDesc11.setName("OSD21");
+  OutSetDesc11.setUnitsClass("TU21");
 
   OutSetDesc21.setAllUnits(true);
   OutSetDesc21.getScalars().push_back("scalar1");
