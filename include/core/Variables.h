@@ -162,7 +162,7 @@ bool Variables<T>::isVariableExist(const VariableName_t aName, const TimeStep_t 
 
   if (it != m_Data.end())
   {
-    // the variable exist if the required step is stricly lesser than the variable storage next step
+    // the variable exist if the required step is strictly lesser than the variable storage next step
     return (aStep < it->second.getNextStep());
   }
   return false;
