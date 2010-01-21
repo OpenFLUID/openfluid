@@ -227,6 +227,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 {
   openfluid::core::Unit* TU;
   unsigned long VectorSize = 40;
+  unsigned long NewVectorSize = 5;
   openfluid::core::VectorValue TheVector;
   openfluid::core::ScalarValue TheScalar;
   openfluid::core::ScalarValue TheInput;
@@ -280,16 +281,22 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     // ====== Scalar ======
 
     OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
-
     if ((openfluid::core::UnitID_t)TheScalar != TU->getID())
       OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value (tests.scalar)");
 
+    OPENFLUID_SetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),(double)(TU->getID()*SimStatus->getCurrentStep()));
 
-    OPENFLUID_SetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),0);
+    if (SimStatus->getCurrentStep() > 0 )
+    {
+      OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep()-1,&TheScalar);
+      if (!openfluid::tools::IsCloseEnough(TheScalar,(double)(TU->getID()*(SimStatus->getCurrentStep()-1)),0.00001))
+        OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value at t-1 (tests.scalar)");
+    }
+
 
     OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
 
-    if (!openfluid::tools::IsCloseEnough(TheScalar,0,0.00001))
+    if (!openfluid::tools::IsCloseEnough(TheScalar,(double)(TU->getID()*SimStatus->getCurrentStep()),0.00001))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value after update (tests.scalar)");
 
 
@@ -355,7 +362,35 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     if (TheVector.getSize() != VectorSize)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size");
 
-    OPENFLUID_SetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),openfluid::core::VectorValue(VectorSize,0));
+    OPENFLUID_SetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),openfluid::core::VectorValue(NewVectorSize,SimStatus->getCurrentStep()));
+
+    OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
+    if (TheVector.getSize() != NewVectorSize)
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size after update");
+
+    if (!openfluid::tools::IsCloseEnough(TheVector[0],(double)SimStatus->getCurrentStep(),0.00001))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 0 after update");
+
+    if (!openfluid::tools::IsCloseEnough(TheVector[4],(double)SimStatus->getCurrentStep(),0.00001))
+      OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 4 after update");
+
+
+    if (SimStatus->getCurrentStep() > 0)
+    {
+      OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep()-1,&TheVector);
+
+      if (TheVector.getSize() != NewVectorSize)
+        OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size at t-1");
+
+      if (!openfluid::tools::IsCloseEnough(TheVector[0],(double)(SimStatus->getCurrentStep()-1),0.00001))
+        OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 0 at t-1");
+
+      if (!openfluid::tools::IsCloseEnough(TheVector[4],(double)(SimStatus->getCurrentStep()-1),0.00001))
+        OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 4 at t-1");
+
+    }
+
+
 
     if (!OPENFLUID_IsVariableExist(TU,"tests.vector"))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector)");
