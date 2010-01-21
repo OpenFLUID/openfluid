@@ -27,6 +27,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include "tests-config.h"
+#include "DomainReader.h"
 
 // =====================================================================
 // =====================================================================
@@ -34,7 +35,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  BOOST_FAIL("under construction");
+  DomainReader DM;
 }
 
 // =====================================================================
@@ -42,7 +43,30 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+
+  openfluid::core::CoreRepository* Data = openfluid::core::CoreRepository::getInstance();
+
+  DomainReader DR;
+
+  DR.loadDomainFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckReaders/domain").string(),Data);
+
+
+  BOOST_REQUIRE_EQUAL(Data->isUnitsClassExist("UnitsA"),true);
+  BOOST_REQUIRE_EQUAL(Data->isUnitsClassExist("UnitsB"),true);
+  BOOST_REQUIRE_EQUAL(Data->isUnitsClassExist("UnitsAA"),false);
+
+  BOOST_REQUIRE_EQUAL(Data->getUnits("UnitsA")->getList()->size(),8);
+  BOOST_REQUIRE_EQUAL(Data->getUnits("UnitsB")->getList()->size(),5);
+  BOOST_REQUIRE_EQUAL(Data->getUnits("UnitsABC")->getList()->size(),0);
+
+
   BOOST_FAIL("under construction");
 }
 
+// =====================================================================
+// =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_error_handling)
+{
+  BOOST_FAIL("under construction");
+}
