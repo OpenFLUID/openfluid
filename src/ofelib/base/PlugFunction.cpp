@@ -65,7 +65,11 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getScalarVariables()->getValue(VarName,Step,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Value for scalar variable "+ VarName +" does not exist");
+    {
+      std::string TimeStr;
+      openfluid::tools::ConvertValue(Step,&TimeStr);
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Value for scalar variable "+ VarName +" does not exist at time step "+ TimeStr);
+    }
   }
   else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");;
 }
@@ -79,7 +83,11 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVectorVariables()->getValue(VarName,Step,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Value for vector variable "+ VarName +" does not exist");
+    {
+      std::string TimeStr;
+      openfluid::tools::ConvertValue(Step,&TimeStr);
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Value for vector variable "+ VarName +" does not exist at time step "+ TimeStr);
+    }
   }
   else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");;
 }
