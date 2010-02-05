@@ -31,22 +31,32 @@ class GeneratorDescriptor : public ModelItemDescriptor
 
   private:
 
-    openfluid::core::VariableName_t m_VarName; // Generators only
+    openfluid::core::VariableName_t m_VarName;
 
-    openfluid::core::UnitClass_t m_UnitClass; // Generators only
+    openfluid::core::UnitClass_t m_UnitClass;
 
-    GeneratorMethod m_GenMethod; // Generators only
+    GeneratorMethod m_GenMethod;
+
+    unsigned int m_VarSize;
 
   public:
 
     GeneratorDescriptor(openfluid::core::VariableName_t VarName, openfluid::core::UnitClass_t UnitClass,
-                        GeneratorMethod GenMethod);
+                        GeneratorMethod GenMethod, unsigned int VarSize=1);
 
     openfluid::core::VariableName_t getVariableName() const;
 
     openfluid::core::UnitClass_t getUnitClass() const;
 
     GeneratorMethod getGeneratorMethod() const;
+
+    bool isVectorVariable() const { return (m_VarSize > 1); };
+
+    bool isScalarVariable() const { return (!isVectorVariable()); };
+
+    unsigned int getVariableSize() const { return m_VarSize; };
+
+
 };
 
 

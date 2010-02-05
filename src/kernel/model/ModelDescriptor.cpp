@@ -35,7 +35,7 @@ ModelDescriptor::ModelDescriptor()
 // =====================================================================
 
 
-const ModelDescriptor::ModelDescription_t& ModelDescriptor::getItems() const
+ModelDescriptor::ModelDescription_t& ModelDescriptor::getItems()
 {
   return (m_ModelDescription);
 }
@@ -45,7 +45,7 @@ const ModelDescriptor::ModelDescription_t& ModelDescriptor::getItems() const
 // =====================================================================
 
 
-void ModelDescriptor::appendItem(const ModelItemDescriptor *Item)
+void ModelDescriptor::appendItem(ModelItemDescriptor *Item)
 {
   m_ModelDescription.push_back(Item);
 }

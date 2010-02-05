@@ -24,18 +24,22 @@
 
 GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName,
                                          openfluid::core::UnitClass_t UnitClass,
-                                         GeneratorMethod GenMethod)
+                                         GeneratorMethod GenMethod, unsigned int VarSize)
                     : ModelItemDescriptor()
 {
   m_ModelItemType = Generator;
   m_VarName = VarName;
   m_UnitClass = UnitClass;
   m_GenMethod = GenMethod;
+  m_VarSize = VarSize;
+
+  if (m_VarSize < 1) m_VarSize = 1;
 }
 
 
 // =====================================================================
 // =====================================================================
+
 
 
 openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const

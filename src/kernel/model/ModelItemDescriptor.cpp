@@ -68,7 +68,7 @@ void ModelItemDescriptor::setParameters(const openfluid::core::FuncParamsMap_t& 
 // =====================================================================
 
 
-openfluid::core::FuncParamsMap_t ModelItemDescriptor::getParameters() const
+openfluid::core::FuncParamsMap_t ModelItemDescriptor::getParameters()
 {
   return m_Params;
 }

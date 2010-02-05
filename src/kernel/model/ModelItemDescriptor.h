@@ -44,7 +44,7 @@ class ModelItemDescriptor
 
     void setParameters(const openfluid::core::FuncParamsMap_t& Params);
 
-    openfluid::core::FuncParamsMap_t getParameters() const;
+    openfluid::core::FuncParamsMap_t getParameters();
 
     bool isType(ModelItemType MIType) const;
 };

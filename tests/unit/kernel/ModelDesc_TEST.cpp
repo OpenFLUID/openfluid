@@ -46,13 +46,15 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(GenDesc1.getVariableName(),"test.var");
   BOOST_REQUIRE_EQUAL(GenDesc1.getUnitClass(),"test.unitclass");
   BOOST_REQUIRE_EQUAL(GenDesc1.getGeneratorMethod(),GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(GenDesc1.getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(GenDesc1.getParameters().size(),0);
 
-  GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",GeneratorDescriptor::Interp);
+  GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",GeneratorDescriptor::Interp,13);
 
   BOOST_REQUIRE_EQUAL(GenDesc2.getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(GenDesc2.getUnitClass(),"test.unitclass2");
   BOOST_REQUIRE_EQUAL(GenDesc2.getGeneratorMethod(),GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(GenDesc2.getVariableSize(),13);
   BOOST_REQUIRE_EQUAL(GenDesc2.getParameters().size(),0);
 
   ModelDescriptor ModelDesc;
@@ -72,7 +74,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   FuncDesc.setParameter("param3","var3");
   FuncDesc.setParameter("param2","var22");
 
-  GeneratorDescriptor GenDesc1("test.var","test.unitclass",GeneratorDescriptor::Fixed);
+  GeneratorDescriptor GenDesc1("test.var","test.unitclass",GeneratorDescriptor::Fixed,7);
   GenDesc1.setParameter("fixedvalue","20.5");
 
   GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",GeneratorDescriptor::Interp);
@@ -102,6 +104,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"test.var");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"test.unitclass");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),7);
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->isScalarVariable(),false);
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->isVectorVariable(),true);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),1);
 
   it++;
@@ -114,6 +119,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"test.unitclass2");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->isScalarVariable(),true);
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->isVectorVariable(),false);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),2);
 
 }

@@ -27,7 +27,7 @@
 class ModelDescriptor
 {
   public:
-    typedef std::list<const ModelItemDescriptor*> ModelDescription_t;
+    typedef std::list<ModelItemDescriptor*> ModelDescription_t;
 
   private:
     ModelDescription_t m_ModelDescription;
@@ -35,9 +35,9 @@ class ModelDescriptor
   public:
     ModelDescriptor();
 
-    const ModelDescription_t& getItems() const;
+    ModelDescription_t& getItems();
 
-    void appendItem(const ModelItemDescriptor *Item);
+    void appendItem(ModelItemDescriptor *Item);
 
 };
 
