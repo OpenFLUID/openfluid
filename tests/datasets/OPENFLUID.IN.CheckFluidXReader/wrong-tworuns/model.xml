@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+ 	<model>
+
+        <gparams>
+          <param name="gparam1" value="100" />
+          <param name="gparam2" value="0.1" />
+        </gparams>
+
+		<generator varname="tests.generator.interp" unitclass="TU" method="interp">
+			<param name="sources" value="sources.xml" />
+			<param name="distribution" value="distri.dat" />
+		</generator>
+
+		<function fileID="tests.functionA" />
+
+		<generator varname="tests.generator.fixed" unitclass="TU"
+			method="fixed">
+			<param name="fixedvalue" value="20" />
+		</generator>
+
+
+		<generator varname="tests.generator.random" unitclass="TU"
+			method="random">
+			<param name="min" value="20.53" />
+			<param name="max" value="50" />
+		</generator>
+
+
+
+		<function fileID="tests.functionB">
+			<param name="strparam" value="strvalue" />
+			<param name="doubleparam" value="1.1" />
+			<param name="longparam" value="11" />
+			<param name="gparam1" value="50" />
+		</function>
+
+
+	</model>
+</openfluid>

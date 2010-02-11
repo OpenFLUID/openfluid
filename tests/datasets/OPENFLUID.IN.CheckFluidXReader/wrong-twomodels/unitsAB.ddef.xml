@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <domain>
+    <definition>
+
+      <!-- units of class A -->      
+      <unit class="unitsA" ID="8" pcsorder="3">
+        <to class="unitsB" ID="7" />
+      </unit>
+      <unit class="unitsA" ID="2" pcsorder="1">
+        <to class="unitsA" ID="9" />
+      </unit>
+
+      <!-- units of class B -->
+      <unit class="unitsB" ID="11" pcsorder="1">
+        <to class="unitsB" ID="3" />
+      </unit>
+
+    </definition>
+  </domain>
+</openfluid>
