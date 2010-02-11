@@ -22,8 +22,7 @@ ADD_EXECUTABLE(openfluid-engine
                run/RunDescriptor.cpp
                domain/UnitDescriptor.cpp domain/IDataDescriptor.cpp domain/EventDescriptor.cpp domain/DomainDescriptor.cpp
                output/OutputSetDescriptor.cpp output/OutputFilesDescriptor.cpp output/OutputDescriptor.cpp
-               io/FluidXReader.cpp
-               io/DomainReader.cpp io/InputDataReader.cpp io/EventsReader.cpp io/ModelReader.cpp io/RunReader.cpp io/OutputReader.cpp 
+               io/FluidXReader.cpp 
                io/MessagesWriter.cpp io/SimReportWriter.cpp io/OutputsWriter.cpp 
                buddies/OFBuddy.cpp buddies/NewFuncBuddy.cpp buddies/Func2DocBuddy.cpp
                buddies/NewDataBuddy.cpp buddies/ConvertBuddy.cpp

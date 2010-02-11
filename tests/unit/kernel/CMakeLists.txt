@@ -66,20 +66,3 @@ ADD_UNITTEST(unit-FluidXReader unittest_fluidxreader
              ${CMAKE_SOURCE_DIR}/src/kernel/io/FluidXReader.cpp)
 TARGET_LINK_LIBRARIES(unittest_fluidxreader ${LIBXML2_LIBRARIES})
 
-ADD_UNITTEST(unit-ModelReader unittest_modelreader ModelReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/ModelReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelItemDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/GeneratorDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/FunctionDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/model/ModelDescriptor.cpp)
-TARGET_LINK_LIBRARIES(unittest_modelreader ${LIBXML2_LIBRARIES})
-
-ADD_UNITTEST(unit-RunReader unittest_runreader RunReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/RunReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/run/RunDescriptor.cpp)
-TARGET_LINK_LIBRARIES(unittest_runreader ${LIBXML2_LIBRARIES})
-
-ADD_UNITTEST(unit-OutputReader unittest_outputreader OutputReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/OutputReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputSetDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputFilesDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
-TARGET_LINK_LIBRARIES(unittest_outputreader ${LIBXML2_LIBRARIES})
-
-ADD_UNITTEST(unit-DomainReader unittest_domainreader DomainReader_TEST.cpp ${CMAKE_SOURCE_DIR}/src/kernel/io/DomainReader.cpp ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
-TARGET_LINK_LIBRARIES(unittest_domainreader ${LIBXML2_LIBRARIES})
-
-ADD_UNITTEST(unit-InputDataReader unittest_inputdatareader InputDataReader_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_inputdatareader ${LIBXML2_LIBRARIES})
-
-ADD_UNITTEST(unit-EventsReader unittest_eventsreader EventsReader_TEST.cpp)
-TARGET_LINK_LIBRARIES(unittest_eventsreader ${LIBXML2_LIBRARIES})
