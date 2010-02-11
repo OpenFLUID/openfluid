@@ -23,6 +23,7 @@
 
 #include "FluidXReader.h"
 
+
 #include "openfluid-tools.h"
 #include "AppTools.h"
 
@@ -603,8 +604,6 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
       //   </data>
       // </inputdata>
 
-      if (xmlChildElementCount(NodePtr) != 2)
-        throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","wrong domain input data description (" + m_CurrentFile + ")");
 
       bool FoundData = false;
       bool FoundColOrder = false;
@@ -844,6 +843,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
   if (FluidXFilesToLoad.size() == 0)
     throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","no fluidx file found in directory " + DirPath);
 
+  std::sort(FluidXFilesToLoad.begin(),FluidXFilesToLoad.end());
 
   m_ModelDescriptor = ModelDescriptor();
   m_RunDescriptor = RunDescriptor();
