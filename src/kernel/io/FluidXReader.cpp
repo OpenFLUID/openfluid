@@ -307,6 +307,9 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
       xmlChar* xmlVarName= xmlGetProp(CurrNode,(const xmlChar*)"varname");
       xmlChar* xmlUnitClass= xmlGetProp(CurrNode,(const xmlChar*)"unitclass");
       xmlChar* xmlMethod= xmlGetProp(CurrNode,(const xmlChar*)"method");
+      xmlChar* xmlVarSize= xmlGetProp(CurrNode,(const xmlChar*)"varsize");
+      unsigned int VarSize = 1;
+
 
       if (xmlVarName != NULL && xmlUnitClass != NULL && xmlMethod != NULL)
       {
@@ -318,7 +321,13 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
         if (GenMethod == GeneratorDescriptor::NoGenMethod)
           throw openfluid::base::OFException("kernel","FluidXReader::extractModelFromNode","unknown or missing generator method (" + m_CurrentFile + ")");
 
-        GD = new GeneratorDescriptor((const char*)xmlVarName,(const char*)xmlUnitClass,GenMethod);
+        if (xmlVarSize != NULL)
+        {
+          if (!openfluid::tools::ConvertString(std::string((char*)xmlVarSize),&VarSize))
+            throw openfluid::base::OFException("kernel","FluidXReader::extractModelFromNode","wrong variable size format in generator (" + m_CurrentFile + ")");
+        }
+
+        GD = new GeneratorDescriptor((const char*)xmlVarName,(const char*)xmlUnitClass,GenMethod,VarSize);
         GD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(GD);
       }

@@ -72,6 +72,7 @@ void TestDataset(std::string DatasetPath)
   it = ModelItems.begin();
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.interp");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Interp);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),4);
@@ -90,6 +91,7 @@ void TestDataset(std::string DatasetPath)
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.fixed");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),11);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Fixed);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),3);
@@ -100,6 +102,7 @@ void TestDataset(std::string DatasetPath)
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.random");
+  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Random);
   BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),4);

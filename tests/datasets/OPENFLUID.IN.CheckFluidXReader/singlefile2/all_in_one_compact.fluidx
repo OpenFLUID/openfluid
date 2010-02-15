@@ -18,7 +18,7 @@
 		<function fileID="tests.functionA" />
 
 		<generator varname="tests.generator.fixed" unitclass="TU"
-			method="fixed">
+			method="fixed" varsize="11">
 			<param name="fixedvalue" value="20" />
 		</generator>
 
