@@ -22,6 +22,29 @@
 #define __RANDOMGENERATOR_H___
 
 
+#include "Generator.h"
+
+class RandomGenerator : public Generator
+{
+  private:
+    openfluid::core::ScalarValue m_Min;
+    openfluid::core::ScalarValue m_Max;
+
+  public:
+
+    RandomGenerator();
+
+    ~RandomGenerator();
+
+    bool checkConsistency();
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+};
 
 
 #endif /* __RANDOMGENERATOR_H___ */

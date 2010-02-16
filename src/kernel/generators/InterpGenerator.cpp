@@ -16,3 +16,70 @@
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
+
+
+
+#include "InterpGenerator.h"
+
+
+InterpGenerator::InterpGenerator() : Generator()
+{
+
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+InterpGenerator::~InterpGenerator()
+{
+
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool InterpGenerator::checkConsistency()
+{
+
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool InterpGenerator::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+
+  throw openfluid::base::OFException("under construction");
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool InterpGenerator::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+
+  return true;
+}
+

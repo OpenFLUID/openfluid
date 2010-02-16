@@ -16,7 +16,7 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
 
 ADD_EXECUTABLE(openfluid-engine
                xml/tinystr.cpp xml/tinyxml.cpp xml/tinyxmlerror.cpp xml/tinyxmlparser.cpp
-               generators/FixedGenerator.cpp generators/RandomGenerator.cpp generators/InterpGenerator.cpp
+               generators/Generator.cpp generators/FixedGenerator.cpp generators/RandomGenerator.cpp generators/InterpGenerator.cpp
                model/ModelItemDescriptor.cpp model/GeneratorDescriptor.cpp model/FunctionDescriptor.cpp
                model/ModelDescriptor.cpp model/ModelInstance.cpp model/ModelFactory.cpp
                run/RunDescriptor.cpp

@@ -22,6 +22,27 @@
 #define __INTERPGENERATOR_H___
 
 
+#include "Generator.h"
+
+class InterpGenerator : public Generator
+{
+  private:
+
+  public:
+
+    InterpGenerator();
+
+    ~InterpGenerator();
+
+    bool checkConsistency();
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+};
 
 
 #endif /* __INTERPGENERATOR_H___ */
