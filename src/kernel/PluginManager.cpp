@@ -49,10 +49,10 @@ PluginManager::~PluginManager()
 // =====================================================================
 
 
-PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
+ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilename)
 {
   std::string PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
-  PluginContainer* Plug = NULL;
+  ModelItemInstance* Plug = NULL;
 
   DynamicLib *PlugLib = new DynamicLib(PluginFile);
 
@@ -61,7 +61,7 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
   {
     // TODO to develop
 
-    Plug = new PluginContainer();
+    Plug = new ModelItemInstance();
     Plug->Filename = PluginFile;
 
     if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
@@ -113,9 +113,9 @@ PluginContainer *PluginManager::buildPluginContainer(std::string PluginFilename)
 // =====================================================================
 
 
-ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string Pattern)
+ArrayOfModelItemInstance PluginManager::getAvailableFunctions(const std::string Pattern)
 {
-  ArrayOfPluginsContainers PluginsContainers;
+  ArrayOfModelItemInstance PluginsContainers;
   std::vector<std::string> PluginsPaths = mp_RunEnv->getPluginsPaths();
   std::vector<std::string> PluginFiles;
   std::vector<std::string> TmpFiles;
@@ -129,7 +129,7 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string 
   }
 
 
-  PluginContainer* CurrentPlug;
+  ModelItemInstance* CurrentPlug;
 
   for (i=0;i<PluginFiles.size();i++)
   {
@@ -155,12 +155,12 @@ ArrayOfPluginsContainers PluginManager::getAvailableFunctions(const std::string 
 // =====================================================================
 
 
-PluginContainer *PluginManager::getPlugin(std::string PluginName,
+ModelItemInstance* PluginManager::getPlugin(std::string PluginName,
                                           openfluid::base::ExecutionMessages* ExecMsgs,
                                           openfluid::core::CoreRepository* CoreData)
 {
 
-  PluginContainer *Plug = buildPluginContainer(PluginName+CONFIG_PLUGINS_EXT);
+  ModelItemInstance* Plug = buildPluginContainer(PluginName+CONFIG_PLUGINS_EXT);
 
 
 

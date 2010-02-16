@@ -34,7 +34,7 @@
 // =====================================================================
 // =====================================================================
 
-typedef std::list<PluginContainer*> PluginsList;
+typedef std::list<ModelItemInstance*> PluginsList;
 
 
 /**

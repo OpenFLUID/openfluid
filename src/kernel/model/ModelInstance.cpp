@@ -42,3 +42,41 @@ ModelInstance::~ModelInstance()
 // =====================================================================
 // =====================================================================
 
+
+void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
+{
+  m_ModelItems.push_back(ItemInstance);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelInstance::clear()
+{
+  m_ModelItems.clear();
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelInstance::deleteItemsAndClear()
+{
+
+  std::list<ModelItemInstance*>::iterator it;
+
+  for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
+  {
+    if ((*it)->Function != NULL) delete (*it)->Function;
+    if ((*it)->Signature != NULL) delete (*it)->Signature;
+  }
+
+  clear();
+}
+
+
+

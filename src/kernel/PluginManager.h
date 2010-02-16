@@ -23,29 +23,12 @@
 
 #include "openfluid-base.h"
 #include "openfluid-core.h"
+#include "model/ModelItemInstance.h"
+
 #include "RuntimeEnv.h"
 
 
-struct PluginContainer
-{
-
-  std::string Filename;
-  bool SDKCompatible;
-  openfluid::base::FunctionSignature* Signature;
-  openfluid::base::PluggableFunction* Function;
-
-  PluginContainer()
-  {
-    Filename = "";
-    Signature = NULL;
-    Function = NULL;
-    SDKCompatible = false;
-  }
-
-};
-
-
-typedef std::vector<PluginContainer*> ArrayOfPluginsContainers;
+typedef std::vector<ModelItemInstance*> ArrayOfModelItemInstance;
 
 /**
   Management class for plugins
@@ -56,7 +39,7 @@ class PluginManager
 
     RuntimeEnvironment* mp_RunEnv;
 
-    PluginContainer *buildPluginContainer(std::string PluginFilename);
+    ModelItemInstance* buildPluginContainer(std::string PluginFilename);
 
 
   public:
@@ -73,13 +56,13 @@ class PluginManager
     /**
       Lists available simulation functions
     */
-    ArrayOfPluginsContainers getAvailableFunctions(const std::string Pattern = "");
+    ArrayOfModelItemInstance getAvailableFunctions(const std::string Pattern = "");
 
 
     /**
       Returns function and function types
     */
-    PluginContainer *getPlugin(std::string PluginName,
+    ModelItemInstance* getPlugin(std::string PluginName,
                                openfluid::base::ExecutionMessages* ExecMsgs,
                                openfluid::core::CoreRepository* CoreData);
 

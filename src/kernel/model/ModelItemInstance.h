@@ -11,41 +11,37 @@
 
 
 /**
-  \file ModelInstance.h
+  \file ModelItemInstance.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELINSTANCE_H__
-#define __MODELINSTANCE_H__
+#ifndef __MODELITEMINSTANCE_H___
+#define __MODELITEMINSTANCE_H___
 
+#include <string>
 
-#include "openfluid-core.h"
 #include "openfluid-base.h"
-#include "ModelItemInstance.h"
 
-class ModelInstance
+struct ModelItemInstance
 {
-  private:
 
-    std::list<ModelItemInstance*> m_ModelItems;
+  std::string Filename;
+  bool SDKCompatible;
+  openfluid::base::FunctionSignature* Signature;
+  openfluid::base::PluggableFunction* Function;
 
-  public:
-
-    ModelInstance();
-
-    ~ModelInstance();
-
-    void appendItem(ModelItemInstance* ItemInstance);
-
-    void clear();
-
-    void deleteItemsAndClear();
-
-    unsigned int getItemsCount() const { return m_ModelItems.size(); };
+  ModelItemInstance()
+  {
+    Filename = "";
+    Signature = NULL;
+    Function = NULL;
+    SDKCompatible = false;
+  }
 
 };
 
-#endif /* __MODELINSTANCE_H__ */
+
+#endif /* __MODELITEMINSTANCE_H___ */

@@ -116,7 +116,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 void OpenFLUIDApp::printPluginsList()
 {
 
-  ArrayOfPluginsContainers PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions();
+  ArrayOfModelItemInstance PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions();
 
   std::cout << "Available simulation functions:" << std::endl;
 
@@ -255,7 +255,7 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Pattern)
 {
 
-  ArrayOfPluginsContainers PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions(Pattern);
+  ArrayOfModelItemInstance PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions(Pattern);
   std::string StatusStr;
 
 

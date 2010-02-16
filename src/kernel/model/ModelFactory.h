@@ -23,21 +23,22 @@
 #include "openfluid-base.h"
 #include "ModelDescriptor.h"
 #include "ModelInstance.h"
+#include "PluginManager.h"
 
 class ModelFactory
 {
   private:
     openfluid::core::CoreRepository* mp_CoreData;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
-    openfluid::base::FunctionEnvironment* mp_FuncEnv;
+    PluginManager* mp_PlugMan;
 
   public:
 
     ModelFactory(openfluid::core::CoreRepository* CoreData,
                  openfluid::base::ExecutionMessages* ExecMsgs,
-                 openfluid::base::FunctionEnvironment* FuncEnv);
+                 PluginManager* PlugMan);
 
-     ModelInstance* buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const;
+    ModelInstance* buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const;
 
 };
 

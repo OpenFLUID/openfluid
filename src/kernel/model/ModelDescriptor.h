@@ -35,7 +35,9 @@ class ModelDescriptor
   public:
     ModelDescriptor();
 
-    ModelDescription_t& getItems();
+    ModelDescription_t& getItems() { return (m_ModelDescription); };
+
+    const ModelDescription_t& getItems() const { return (m_ModelDescription); };
 
     void appendItem(ModelItemDescriptor *Item);
 

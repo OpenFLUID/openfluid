@@ -35,16 +35,6 @@ ModelDescriptor::ModelDescriptor()
 // =====================================================================
 
 
-ModelDescriptor::ModelDescription_t& ModelDescriptor::getItems()
-{
-  return (m_ModelDescription);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelDescriptor::appendItem(ModelItemDescriptor *Item)
 {
   m_ModelDescription.push_back(Item);

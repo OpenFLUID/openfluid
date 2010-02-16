@@ -18,7 +18,8 @@ ADD_EXECUTABLE(openfluid-engine
                xml/tinystr.cpp xml/tinyxml.cpp xml/tinyxmlerror.cpp xml/tinyxmlparser.cpp
                generators/Generator.cpp generators/FixedGenerator.cpp generators/RandomGenerator.cpp generators/InterpGenerator.cpp
                model/ModelItemDescriptor.cpp model/GeneratorDescriptor.cpp model/FunctionDescriptor.cpp
-               model/ModelDescriptor.cpp model/ModelInstance.cpp model/ModelFactory.cpp
+               model/ModelDescriptor.cpp 
+               model/ModelItemInstance.cpp model/ModelInstance.cpp model/ModelFactory.cpp
                run/RunDescriptor.cpp
                domain/UnitDescriptor.cpp domain/IDataDescriptor.cpp domain/EventDescriptor.cpp domain/DomainDescriptor.cpp
                output/OutputSetDescriptor.cpp output/OutputFilesDescriptor.cpp output/OutputDescriptor.cpp

@@ -43,7 +43,7 @@
     _M_FuncIter = m_Functions.begin(); \
     while (_M_FuncIter != m_Functions.end() && statevar) \
     { \
-      PluginContainer* CurrentFunction = *_M_FuncIter; \
+      ModelItemInstance* CurrentFunction = *_M_FuncIter; \
       if (CurrentFunction != NULL) \
       { \
         if (mp_RunEnv->isVerboseRun()) \
@@ -84,7 +84,7 @@
     _M_FuncIter = m_Functions.begin(); \
     while (_M_FuncIter != m_Functions.end() && statevar) \
     { \
-      PluginContainer* CurrentFunction = *_M_FuncIter; \
+      ModelItemInstance* CurrentFunction = *_M_FuncIter; \
       if (CurrentFunction != NULL) \
       { \
         if (mp_RunEnv->isVerboseRun()) \
@@ -173,7 +173,7 @@ bool Engine::processConfig()
   std::list<FunctionConfig>::iterator FuncIt;
 
   FunctionConfig* FConf;
-  PluginContainer* FuncToAdd;
+  ModelItemInstance* FuncToAdd;
 
   m_Functions.clear();
 
@@ -513,7 +513,7 @@ bool Engine::checkModelConsistency()
 
   PluginsList::iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
-  PluginContainer* CurrentFunction;
+  ModelItemInstance* CurrentFunction;
   unsigned int i;
 
 
@@ -740,7 +740,7 @@ bool Engine::checkDataConsistency()
 
   PluginsList::iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
-  PluginContainer* CurrentFunction;
+  ModelItemInstance* CurrentFunction;
   unsigned int i;
 
 
@@ -779,7 +779,7 @@ bool Engine::checkExtraFilesConsistency()
 
   PluginsList::iterator FuncIt;
   openfluid::base::SignatureHandledData HData;
-  PluginContainer* CurrentFunction;
+  ModelItemInstance* CurrentFunction;
 
 
   // on each function
