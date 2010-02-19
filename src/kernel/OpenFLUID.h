@@ -45,7 +45,7 @@ class OpenFLUIDApp
 
     std::pair<std::string,std::string> m_BuddyToRun;
 
-    RuntimeEnvironment m_RunEnv;
+    RuntimeEnvironment* m_RunEnv;
     openfluid::base::ExecutionMessages m_ExecMsgs;
     Engine* mp_Engine;
 

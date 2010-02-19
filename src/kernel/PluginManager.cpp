@@ -27,13 +27,18 @@
 
 #include <iostream>
 
+
+
+PluginManager* PluginManager::mp_Singleton = NULL;
+
+
 // =====================================================================
 // =====================================================================
 
 
-PluginManager::PluginManager(RuntimeEnvironment* RunEnv)
+PluginManager::PluginManager()
 {
-  mp_RunEnv = RunEnv;
+
 }
 
 // =====================================================================
@@ -49,9 +54,20 @@ PluginManager::~PluginManager()
 // =====================================================================
 
 
+PluginManager* PluginManager::getInstance()
+{
+  if (mp_Singleton == NULL) mp_Singleton = new PluginManager();
+  return mp_Singleton;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilename)
 {
-  std::string PluginFile =  mp_RunEnv->getPluginFullPath(PluginFilename);
+  std::string PluginFile =  RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
   ModelItemInstance* Plug = NULL;
 
   DynamicLib *PlugLib = new DynamicLib(PluginFile);
@@ -116,7 +132,7 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
 ArrayOfModelItemInstance PluginManager::getAvailableFunctions(const std::string Pattern)
 {
   ArrayOfModelItemInstance PluginsContainers;
-  std::vector<std::string> PluginsPaths = mp_RunEnv->getPluginsPaths();
+  std::vector<std::string> PluginsPaths = RuntimeEnvironment::getInstance()->getPluginsPaths();
   std::vector<std::string> PluginFiles;
   std::vector<std::string> TmpFiles;
   unsigned int i,j;
@@ -168,7 +184,7 @@ ModelItemInstance* PluginManager::getPlugin(std::string PluginName,
   {
     Plug->Function->setDataRepository(CoreData);
     Plug->Function->setExecutionMessages(ExecMsgs);
-    Plug->Function->setFunctionEnvironment(mp_RunEnv->getFunctionEnvironment());
+    Plug->Function->setFunctionEnvironment(RuntimeEnvironment::getInstance()->getFunctionEnvironment());
     return Plug;
   }
 

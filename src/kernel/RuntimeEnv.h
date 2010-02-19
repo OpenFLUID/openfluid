@@ -41,6 +41,9 @@
 class RuntimeEnvironment
 {
   private:
+
+    static RuntimeEnvironment* mp_Singleton;
+
     std::string m_OutputDir;
     std::string m_InputDir;
     std::string m_UserDataDir;
@@ -78,12 +81,14 @@ class RuntimeEnvironment
 
     boost::posix_time::time_duration m_EffectiveSimulationDuration;
 
-  public:
-
     /**
       Default constructor
     */
     RuntimeEnvironment();
+
+  public:
+
+    static RuntimeEnvironment* getInstance();
 
     /**
       Destructor

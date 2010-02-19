@@ -29,6 +29,10 @@
   #include <unistd.h>
 #endif
 
+
+RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
+
+
 RuntimeEnvironment::RuntimeEnvironment()
 {
   char* ChTempDir = NULL;
@@ -168,14 +172,26 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 RuntimeEnvironment::~RuntimeEnvironment()
 {
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+RuntimeEnvironment* RuntimeEnvironment::getInstance()
+{
+  if (mp_Singleton == NULL) mp_Singleton = new RuntimeEnvironment();
+  return mp_Singleton;
+}
 
 
 // =====================================================================

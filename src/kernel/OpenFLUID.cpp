@@ -116,7 +116,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 void OpenFLUIDApp::printPluginsList()
 {
 
-  ArrayOfModelItemInstance PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions();
+  ArrayOfModelItemInstance PlugContainers = PluginManager::getInstance()->getAvailableFunctions();
 
   std::cout << "Available simulation functions:" << std::endl;
 
@@ -255,7 +255,7 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Pattern)
 {
 
-  ArrayOfModelItemInstance PlugContainers = PluginManager(&m_RunEnv).getAvailableFunctions(Pattern);
+  ArrayOfModelItemInstance PlugContainers = PluginManager::getInstance()->getAvailableFunctions(Pattern);
   std::string StatusStr;
 
 
@@ -357,7 +357,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
   if (mp_Engine != NULL) mp_Engine->saveMessages();
 
-  if (mp_Engine != NULL && m_RunEnv.isWriteSimReport())
+  if (mp_Engine != NULL && RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
@@ -380,14 +380,14 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> FunctionsPaths = m_RunEnv.getPluginsPaths();
+  std::vector<std::string> FunctionsPaths = RuntimeEnvironment::getInstance()->getPluginsPaths();
   unsigned int i;
 
-  std::cout << "Input dir: " << m_RunEnv.getInputDir() << std::endl;
-  if (m_RunEnv.isWriteResults() || m_RunEnv.isWriteSimReport()) std::cout << "Output dir: " << m_RunEnv.getOutputDir() << std::endl;
+  std::cout << "Input dir: " << RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
+  if (RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
   std::cout << "Functions search path(s):" << std::endl;
   for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
-  if (ShowTemp) std::cout << "Temp dir: " << m_RunEnv.getTempDir() << std::endl;
+  if (ShowTemp) std::cout << "Temp dir: " << RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
 }
 
 // =====================================================================
@@ -397,10 +397,10 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 void OpenFLUIDApp::printEnvInfos()
 {
   printPaths(false);
-  if ((m_RunEnv.isWriteResults() || m_RunEnv.isWriteSimReport()) && (m_RunEnv.isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
-  if (m_RunEnv.isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
-  if (m_RunEnv.isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
-  if (!m_RunEnv.isCheckVarNames()) std::cout << "Variable names checking disabled" << std::endl;
+  if ((RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) && (RuntimeEnvironment::getInstance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
+  if (RuntimeEnvironment::getInstance()->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
+  if (RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
+  if (!RuntimeEnvironment::getInstance()->isCheckVarNames()) std::cout << "Variable names checking disabled" << std::endl;
   std::cout << std::endl;
 }
 
@@ -413,12 +413,10 @@ void OpenFLUIDApp::runSimulation()
 
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
-  PluginManager PlugMan(&m_RunEnv);
-
   openfluid::core::CoreRepository* pCoreData = openfluid::core::CoreRepository::getInstance();
   pCoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
 
-  mp_Engine = new Engine(pCoreData,&m_ExecMsgs,&m_RunEnv,&PlugMan);
+  mp_Engine = new Engine(pCoreData,&m_ExecMsgs,RuntimeEnvironment::getInstance(),PluginManager::getInstance());
 
 
   printOpenFLUIDInfos();
@@ -439,7 +437,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Preparing data and checking consistency... "; std::cout.flush();
   mp_Engine->prepareDataAndCheckConsistency();
-  if (!m_RunEnv.isVerboseRun()) printlnExecStatus();
+  if (!RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
   else std::cout << std::endl;
   m_ExecMsgs.resetWarningFlag();
 
@@ -447,7 +445,7 @@ void OpenFLUIDApp::runSimulation()
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
   std::cout << std::endl;
-  std::cout << "Simulation ID: " << m_RunEnv.getSimulationID() << std::endl;
+  std::cout << "Simulation ID: " << RuntimeEnvironment::getInstance()->getSimulationID() << std::endl;
   std::cout << std::endl;
 
   std::cout << "Spatial domain: " << std::endl;
@@ -463,7 +461,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  if (m_RunEnv.isProgressiveOutput()) std::cout << "Progressive output enabled (Packet=" << m_RunEnv.getProgressiveOutputPacket() << ", Keep=" << m_RunEnv.getProgressiveOutputKeep() << ")" <<  std::endl;
+  if (RuntimeEnvironment::getInstance()->isProgressiveOutput()) std::cout << "Progressive output enabled (Packet=" << RuntimeEnvironment::getInstance()->getProgressiveOutputPacket() << ", Keep=" << RuntimeEnvironment::getInstance()->getProgressiveOutputKeep() << ")" <<  std::endl;
   else std::cout << "Progressive output disabled" << std::endl;
 
   std::cout << std::endl;
@@ -478,10 +476,10 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
   std::cout.flush();
   m_ExecMsgs.resetWarningFlag();
-  m_RunEnv.setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
+  RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
 
-  if (m_RunEnv.isWriteSimReport())
+  if (RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
@@ -492,7 +490,7 @@ void OpenFLUIDApp::runSimulation()
 
   m_FullEndTime = boost::posix_time::microsec_clock::local_time();
 
-  if (m_RunEnv.isWriteResults() || m_RunEnv.isWriteSimReport()) std::cout << std::endl;
+  if (RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
 
   boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
 
@@ -500,7 +498,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(m_RunEnv.getEffectiveSimulationDuration()) << std::endl;
+  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
   std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
   std::cout << std::endl;
 
@@ -602,7 +600,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("functions-paths"))
   {
-    m_RunEnv.addExtraPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
+    RuntimeEnvironment::getInstance()->addExtraPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
   }
 
 
@@ -637,17 +635,17 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("input-dir"))
   {
-    m_RunEnv.setInputDir(OptionsVars["input-dir"].as<std::string>());
+    RuntimeEnvironment::getInstance()->setInputDir(OptionsVars["input-dir"].as<std::string>());
   }
 
   if (OptionsVars.count("output-dir"))
   {
-    m_RunEnv.setOutputDir(OptionsVars["output-dir"].as<std::string>());
+    RuntimeEnvironment::getInstance()->setOutputDir(OptionsVars["output-dir"].as<std::string>());
   }
 
   if (OptionsVars.count("auto-output-dir"))
   {
-    m_RunEnv.setDateTimeOutputDir();
+    RuntimeEnvironment::getInstance()->setDateTimeOutputDir();
   }
 
   if (OptionsVars.count("show-paths"))
@@ -659,32 +657,32 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("clean-output-dir"))
   {
-    m_RunEnv.setClearOutputDir(true);
+    RuntimeEnvironment::getInstance()->setClearOutputDir(true);
   }
 
   if (OptionsVars.count("quiet"))
   {
-    m_RunEnv.setQuietRun(true);
+    RuntimeEnvironment::getInstance()->setQuietRun(true);
   }
 
   if (OptionsVars.count("verbose"))
   {
-    m_RunEnv.setVerboseRun(true);
+    RuntimeEnvironment::getInstance()->setVerboseRun(true);
   }
 
   if (OptionsVars.count("no-simreport"))
   {
-    m_RunEnv.setWriteSimReport(false);
+    RuntimeEnvironment::getInstance()->setWriteSimReport(false);
   }
 
   if (OptionsVars.count("no-result"))
   {
-    m_RunEnv.setWriteResults(false);
+    RuntimeEnvironment::getInstance()->setWriteResults(false);
   }
 
   if (OptionsVars.count("no-varname-check"))
   {
-    m_RunEnv.setCheckVarNames(false);
+    RuntimeEnvironment::getInstance()->setCheckVarNames(false);
   }
 
 }

@@ -34,20 +34,19 @@
 BOOST_AUTO_TEST_CASE(check_construction)
 {
 
-  RuntimeEnvironment RunEnv;
 
-  BOOST_REQUIRE_NE(RunEnv.getInputDir(),"");
-  BOOST_REQUIRE_NE(RunEnv.getOutputDir(),"");
-  BOOST_REQUIRE_NE(RunEnv.getTempDir(),"");
-  BOOST_REQUIRE_GT(RunEnv.getPluginsPaths().size(),0);
-  BOOST_REQUIRE_EQUAL(RunEnv.isClearOutputDir(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isQuietRun(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isWriteResults(),true);
-  BOOST_REQUIRE_EQUAL(RunEnv.isWriteSimReport(),true);
-  BOOST_REQUIRE_EQUAL(RunEnv.isProgressiveOutput(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isCheckVarNames(),true);
-  BOOST_REQUIRE_NE(RunEnv.getSimulationID(),"");
+  BOOST_REQUIRE_NE(RuntimeEnvironment::getInstance()->getInputDir(),"");
+  BOOST_REQUIRE_NE(RuntimeEnvironment::getInstance()->getOutputDir(),"");
+  BOOST_REQUIRE_NE(RuntimeEnvironment::getInstance()->getTempDir(),"");
+  BOOST_REQUIRE_GT(RuntimeEnvironment::getInstance()->getPluginsPaths().size(),0);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isClearOutputDir(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isVerboseRun(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isQuietRun(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteResults(),true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isProgressiveOutput(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isCheckVarNames(),true);
+  BOOST_REQUIRE_NE(RuntimeEnvironment::getInstance()->getSimulationID(),"");
 
 }
 
@@ -57,57 +56,55 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
 
-  RuntimeEnvironment RunEnv;
-
-  RunEnv.setInputDir("/foo/bar");
-  RunEnv.setOutputDir("/bar/foo/bar");
-  RunEnv.setOutputDir("/bar/foo/bar");
-  RunEnv.addExtraPluginsPaths("/bar/foo/foo/bar");
-  RunEnv.addExtraPluginsPaths("/bar/foo/foo/bar/bar/bar");
-  BOOST_REQUIRE_EQUAL(RunEnv.getInputDir(),"/foo/bar");
-  BOOST_REQUIRE_EQUAL(RunEnv.getOutputDir(),"/bar/foo/bar");
-  BOOST_REQUIRE_NE(RunEnv.getTempDir(),"");
-  BOOST_REQUIRE_GT(RunEnv.getPluginsPaths().size(),2);
+  RuntimeEnvironment::getInstance()->setInputDir("/foo/bar");
+  RuntimeEnvironment::getInstance()->setOutputDir("/bar/foo/bar");
+  RuntimeEnvironment::getInstance()->setOutputDir("/bar/foo/bar");
+  RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar");
+  RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->getInputDir(),"/foo/bar");
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->getOutputDir(),"/bar/foo/bar");
+  BOOST_REQUIRE_NE(RuntimeEnvironment::getInstance()->getTempDir(),"");
+  BOOST_REQUIRE_GT(RuntimeEnvironment::getInstance()->getPluginsPaths().size(),2);
 
 
-  RunEnv.setClearOutputDir(true);
-  BOOST_REQUIRE_EQUAL(RunEnv.isClearOutputDir(),true);
+  RuntimeEnvironment::getInstance()->setClearOutputDir(true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isClearOutputDir(),true);
 
-  RunEnv.setVerboseRun(true);
-  BOOST_REQUIRE_EQUAL(RunEnv.isVerboseRun(),true);
-  BOOST_REQUIRE_EQUAL(RunEnv.isQuietRun(),false);
+  RuntimeEnvironment::getInstance()->setVerboseRun(true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isVerboseRun(),true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isQuietRun(),false);
 
-  RunEnv.setVerboseRun(false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isQuietRun(),false);
+  RuntimeEnvironment::getInstance()->setVerboseRun(false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isVerboseRun(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isQuietRun(),false);
 
-  RunEnv.setVerboseRun(true);
-  RunEnv.setQuietRun(true);
-  BOOST_REQUIRE_EQUAL(RunEnv.isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isQuietRun(),true);
+  RuntimeEnvironment::getInstance()->setVerboseRun(true);
+  RuntimeEnvironment::getInstance()->setQuietRun(true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isVerboseRun(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isQuietRun(),true);
 
-  RunEnv.setVerboseRun(false);
-  RunEnv.setQuietRun(false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isQuietRun(),false);
+  RuntimeEnvironment::getInstance()->setVerboseRun(false);
+  RuntimeEnvironment::getInstance()->setQuietRun(false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isVerboseRun(),false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isQuietRun(),false);
 
-  RunEnv.setWriteResults(false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isWriteResults(),false);
+  RuntimeEnvironment::getInstance()->setWriteResults(false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteResults(),false);
 
-  RunEnv.setWriteSimReport(false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isWriteSimReport(),false);
+  RuntimeEnvironment::getInstance()->setWriteSimReport(false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteSimReport(),false);
 
-  RunEnv.setCheckVarNames(false);
-  BOOST_REQUIRE_EQUAL(RunEnv.isCheckVarNames(),false);
+  RuntimeEnvironment::getInstance()->setCheckVarNames(false);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isCheckVarNames(),false);
 
-  RunEnv.setProgressiveOutputKeep(23);
-  RunEnv.setProgressiveOutputPacket(2345);
-  BOOST_REQUIRE_EQUAL(RunEnv.isProgressiveOutput(),true);
-  BOOST_REQUIRE_EQUAL(RunEnv.getProgressiveOutputPacket(),2345);
-  BOOST_REQUIRE_EQUAL(RunEnv.getProgressiveOutputKeep(),23);
+  RuntimeEnvironment::getInstance()->setProgressiveOutputKeep(23);
+  RuntimeEnvironment::getInstance()->setProgressiveOutputPacket(2345);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isProgressiveOutput(),true);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->getProgressiveOutputPacket(),2345);
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->getProgressiveOutputKeep(),23);
 
-  RunEnv.setSimulationID("THESIMID-2");
-  BOOST_REQUIRE_EQUAL(RunEnv.getSimulationID(),"THESIMID-2");
+  RuntimeEnvironment::getInstance()->setSimulationID("THESIMID-2");
+  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->getSimulationID(),"THESIMID-2");
 
 
 
@@ -116,35 +113,35 @@ BOOST_AUTO_TEST_CASE(check_operations)
   bool BoolValue;
   std::string StrValue;
 
-  FuncEnv = RunEnv.getFunctionEnvironment();
+  FuncEnv = RuntimeEnvironment::getInstance()->getFunctionEnvironment();
   BOOST_REQUIRE(FuncEnv != NULL);
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("wrong.fake",&StrValue),false);
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("fake.wrong",&BoolValue),false);
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.input",&StrValue),true);
-  BOOST_REQUIRE_EQUAL(StrValue,RunEnv.getInputDir());
+  BOOST_REQUIRE_EQUAL(StrValue,RuntimeEnvironment::getInstance()->getInputDir());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.output",&StrValue),true);
-  BOOST_REQUIRE_EQUAL(StrValue,RunEnv.getOutputDir());
+  BOOST_REQUIRE_EQUAL(StrValue,RuntimeEnvironment::getInstance()->getOutputDir());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.temp",&StrValue),true);
-  BOOST_REQUIRE_EQUAL(StrValue,RunEnv.getTempDir());
+  BOOST_REQUIRE_EQUAL(StrValue,RuntimeEnvironment::getInstance()->getTempDir());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.clearoutputdir",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,RunEnv.isClearOutputDir());
+  BOOST_REQUIRE_EQUAL(BoolValue,RuntimeEnvironment::getInstance()->isClearOutputDir());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.quiet",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,RunEnv.isQuietRun());
+  BOOST_REQUIRE_EQUAL(BoolValue,RuntimeEnvironment::getInstance()->isQuietRun());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.verbose",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,RunEnv.isVerboseRun());
+  BOOST_REQUIRE_EQUAL(BoolValue,RuntimeEnvironment::getInstance()->isVerboseRun());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.saveresults",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,RunEnv.isWriteResults());
+  BOOST_REQUIRE_EQUAL(BoolValue,RuntimeEnvironment::getInstance()->isWriteResults());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.writereport",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,RunEnv.isWriteSimReport());
+  BOOST_REQUIRE_EQUAL(BoolValue,RuntimeEnvironment::getInstance()->isWriteSimReport());
 
 }
 

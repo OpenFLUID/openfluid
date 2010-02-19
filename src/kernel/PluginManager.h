@@ -37,21 +37,24 @@ class PluginManager
 {
   private:
 
-    RuntimeEnvironment* mp_RunEnv;
-
     ModelItemInstance* buildPluginContainer(std::string PluginFilename);
 
+    static PluginManager* mp_Singleton;
 
-  public:
     /**
       Constructor
     */
-    PluginManager(RuntimeEnvironment* RunEnv);
+    PluginManager();
+
+
+  public:
 
     /**
       Destructor
     */
     ~PluginManager();
+
+    static PluginManager* getInstance();
 
     /**
       Lists available simulation functions
