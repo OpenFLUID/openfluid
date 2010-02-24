@@ -60,7 +60,7 @@ OpenFLUIDApp::~OpenFLUIDApp()
 
 void OpenFLUIDApp::printlnExecStatus()
 {
-  if (m_ExecMsgs.isWarningFlag()) std::cout << "[Warning]" << std::endl;
+  if (mp_ExecMsgs->isWarningFlag()) std::cout << "[Warning]" << std::endl;
   else std::cout << "[OK]" << std::endl;
 
   std::cout.flush();
@@ -72,7 +72,7 @@ void OpenFLUIDApp::printlnExecStatus()
 
 void OpenFLUIDApp::printlnExecMessagesStats()
 {
-  std::cout << m_ExecMsgs.getWarningsCount() << " warning(s)" << std::endl;
+  std::cout << mp_ExecMsgs->getWarningsCount() << " warning(s)" << std::endl;
 }
 
 // =====================================================================
@@ -362,7 +362,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
     std::cout << "[Done]" << std::endl; std::cout.flush();
-    m_ExecMsgs.resetWarningFlag();
+    mp_ExecMsgs->resetWarningFlag();
   }
 
   std::cout << std::endl << Msg << std::endl;
@@ -415,8 +415,10 @@ void OpenFLUIDApp::runSimulation()
 
   openfluid::core::CoreRepository* pCoreData = openfluid::core::CoreRepository::getInstance();
   pCoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
+  mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
-  mp_Engine = new Engine(pCoreData,&m_ExecMsgs,RuntimeEnvironment::getInstance(),PluginManager::getInstance());
+
+  mp_Engine = new Engine(pCoreData,mp_ExecMsgs,RuntimeEnvironment::getInstance(),PluginManager::getInstance());
 
 
   printOpenFLUIDInfos();
@@ -426,20 +428,20 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "* Building model... "; std::cout.flush();
   mp_Engine->buildModel();
   printlnExecStatus();
-  m_ExecMsgs.resetWarningFlag();
+  mp_ExecMsgs->resetWarningFlag();
 
 
   std::cout << "* Loading data... "; std::cout.flush();
   mp_Engine->loadData();
   printlnExecStatus();
-  m_ExecMsgs.resetWarningFlag();
+  mp_ExecMsgs->resetWarningFlag();
 
 
   std::cout << "* Preparing data and checking consistency... "; std::cout.flush();
   mp_Engine->prepareDataAndCheckConsistency();
   if (!RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
   else std::cout << std::endl;
-  m_ExecMsgs.resetWarningFlag();
+  mp_ExecMsgs->resetWarningFlag();
 
 
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
@@ -475,7 +477,7 @@ void OpenFLUIDApp::runSimulation()
   m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
   std::cout.flush();
-  m_ExecMsgs.resetWarningFlag();
+  mp_ExecMsgs->resetWarningFlag();
   RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
 
@@ -484,7 +486,7 @@ void OpenFLUIDApp::runSimulation()
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
     std::cout << "[Done]" << std::endl; std::cout.flush();
-    m_ExecMsgs.resetWarningFlag();
+    mp_ExecMsgs->resetWarningFlag();
   }
 
 

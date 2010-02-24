@@ -42,6 +42,9 @@ class ExecutionMessages
 {
 
   private:
+
+    static ExecutionMessages* mp_Singleton;
+
     bool m_WarningFlag;
     bool m_ErrorFlag;
 
@@ -52,12 +55,15 @@ class ExecutionMessages
 
     void addWarning(std::string Sender, bool IsTimeStep, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg);
 
-  public:
 
     /**
       Constructor
-    */
+     */
     ExecutionMessages();
+
+  public:
+
+    static ExecutionMessages* getInstance();
 
     /**
       Destructor

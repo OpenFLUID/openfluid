@@ -46,7 +46,7 @@ class OpenFLUIDApp
     std::pair<std::string,std::string> m_BuddyToRun;
 
     RuntimeEnvironment* m_RunEnv;
-    openfluid::base::ExecutionMessages m_ExecMsgs;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
     Engine* mp_Engine;
 
     boost::posix_time::ptime m_FullStartTime;
