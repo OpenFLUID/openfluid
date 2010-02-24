@@ -187,13 +187,6 @@ class IOManager
 
     static IOManager* getInstance();
 
-/*    void setMemoryMonitor(openfluid::core::MemoryMonitor* MemMonitor) { mp_MemMon = MemMonitor; };
-
-    void setCoreRepository(openfluid::core::CoreRepository* Repository) { mp_Repository = Repository; };
-
-    void setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
-
-    void setRunEnvironment(RuntimeEnvironment* RunEnv) { mp_RunEnv = RunEnv; };*/
 
     bool loadRunConfig(RunConfig* Config);
 
