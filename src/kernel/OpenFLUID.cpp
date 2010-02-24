@@ -418,7 +418,7 @@ void OpenFLUIDApp::runSimulation()
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
 
-  mp_Engine = new Engine(pCoreData,mp_ExecMsgs,RuntimeEnvironment::getInstance(),PluginManager::getInstance());
+  mp_Engine = new Engine();
 
 
   printOpenFLUIDInfos();

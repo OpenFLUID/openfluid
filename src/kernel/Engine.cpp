@@ -123,25 +123,20 @@
 
 
 
-Engine::Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::ExecutionMessages* ExecMsgs,
-               RuntimeEnvironment* RunEnv, PluginManager* PlugMan)
+Engine::Engine()
 {
 
 
-  mp_CoreData = CoreData;
-  mp_ExecMsgs = ExecMsgs;
-  mp_RunEnv = RunEnv;
-  mp_PlugMan = PlugMan;
+  mp_CoreData = openfluid::core::CoreRepository::getInstance();
+  mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+  mp_RunEnv = RuntimeEnvironment::getInstance();
+  mp_PlugMan = PluginManager::getInstance();
 
   mp_MemMon = openfluid::core::MemoryMonitor::getInstance();
-
 
   m_Functions.clear();
 
   mp_IOMan = IOManager::getInstance();
-  mp_IOMan->setCoreRepository(CoreData);
-  mp_IOMan->setExecutionMessages(ExecMsgs);
-  mp_IOMan->setRunEnvironment(RunEnv);
 
   mp_SimStatus = NULL;
 

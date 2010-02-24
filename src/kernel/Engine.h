@@ -107,8 +107,7 @@ class Engine
     /**
       Constructor
     */
-    Engine(openfluid::core::CoreRepository* CoreData, openfluid::base::ExecutionMessages* ExecMsgs,
-           RuntimeEnvironment* RunEnv, PluginManager* PlugMan);
+    Engine();
 
     /**
       Destructor
