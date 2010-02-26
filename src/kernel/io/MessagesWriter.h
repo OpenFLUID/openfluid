@@ -22,6 +22,20 @@
 #define __MESSAGESWRITER_H___
 
 
+#include <string>
+
+class MessagesWriter
+{
+  private:
+
+  public:
+    MessagesWriter();
+
+    ~MessagesWriter();
+
+    static void saveToFile(std::string FilePath);
+
+};
 
 
 #endif /* __MESSAGESWRITER_H___ */

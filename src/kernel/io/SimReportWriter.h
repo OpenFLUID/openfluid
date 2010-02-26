@@ -21,6 +21,20 @@
 #ifndef __SIMREPORTWRITER_H___
 #define __SIMREPORTWRITER_H___
 
+#include <string>
+
+class SimulationReportWriter
+{
+  private:
+
+  public:
+    SimulationReportWriter();
+
+    ~SimulationReportWriter();
+
+    static void saveToFile(std::string FilePath,openfluid::base::SimulationInfo *SimInfo);
+
+};
 
 
 
