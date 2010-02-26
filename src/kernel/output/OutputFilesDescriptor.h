@@ -54,6 +54,7 @@ class OutputFilesDescriptor
 
     void setCommentChar(const std::string& CommentChar) { m_CommentChar = CommentChar; };
 
+    void fillUnitsPtr();
 
 };
 

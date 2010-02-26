@@ -33,6 +33,7 @@ class OutputSetDescriptor
     std::string m_UnitsClass;
     bool m_AllUnits;
     std::vector<openfluid::core::UnitID_t> m_UnitsIDs;
+    std::vector<openfluid::core::Unit*> m_UnitsPtr;
     bool m_AllScalars;
     std::vector<std::string> m_ScalarVariables;
     bool m_AllVectors;
@@ -58,6 +59,9 @@ class OutputSetDescriptor
 
     std::vector<openfluid::core::UnitID_t>& getUnitsIDs() { return m_UnitsIDs; };
 
+    std::vector<openfluid::core::Unit*>& getUnitsPtr() { return m_UnitsPtr; };
+
+
     void setAllScalars(bool AllScalars) { m_AllScalars = AllScalars; };
 
     bool isAllScalars() const {return m_AllScalars; };
@@ -70,6 +74,7 @@ class OutputSetDescriptor
 
     std::vector<std::string>& getVectors() { return m_VectorVariables; };
 
+    void fillUnitsPtr();
 };
 
 

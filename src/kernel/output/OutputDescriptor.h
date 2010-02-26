@@ -38,6 +38,9 @@ class OutputDescriptor
 
     std::vector<OutputFilesDescriptor>& getFileSets() {return m_FileSets; };
 
+    void fillUnitsPtr();
+
+
 };
 
 #endif /* __OUTPUTDESCRIPTOR_H__ */
