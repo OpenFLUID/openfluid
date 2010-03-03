@@ -1,3 +1,17 @@
+FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
+
+MACRO(ADD_INTEGRATIONTEST TEST_NAME EXE_NAME)
+  ADD_EXECUTABLE(${EXE_NAME} ${ARGN})
+  TARGET_LINK_LIBRARIES(${EXE_NAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ofelib)
+  SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
+  ADD_TEST(${TEST_NAME} "${TEST_OUTPUT_PATH}/${EXE_NAME}")
+ENDMACRO(ADD_INTEGRATIONTEST)
+
+
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(. ${CMAKE_BINARY_DIR})
+
+
   ADD_TEST(integration-DisplayHelp "${BIN_OUTPUT_PATH}/openfluid-engine" 
                        "-h")
   SET_TESTS_PROPERTIES(integration-DisplayHelp PROPERTIES PASS_REGULAR_EXPRESSION "openfluid-engine allowed options")  
@@ -58,6 +72,8 @@
                                         "-o" "${TESTS_DATASETS_PATH}/OPENFLUID.OUT.NoRun"
                                         "-p" "${TEST_OUTPUT_PATH}")                           
   SET_TESTS_PROPERTIES(integration-InputWithNoRun PROPERTIES WILL_FAIL TRUE)
+
+  ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
 
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
