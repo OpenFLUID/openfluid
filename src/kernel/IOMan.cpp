@@ -28,6 +28,11 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 
+
+#include "io/MessagesWriter.h"
+#include "io/SimReportWriter.h"
+#include "io/OutputsWriter.h"
+
 IOManager* IOManager::mp_Singleton = NULL;
 
 
@@ -1345,34 +1350,9 @@ bool IOManager::loadEventsFile(std::string Filename)
 
 bool IOManager::saveMessages()
 {
-  std::ostringstream FileContents;
-
-  std::vector<std::string> WMessages = mp_ExecMsgs->getWarningMsgs();
-
-  unsigned int WarningCount = mp_ExecMsgs->getWarningMsgs().size();
-
-  for (unsigned int i=0; i<WarningCount;i++)
-  {
-    // TODO try to remove the following hack
-    // hack for mingw32
-#ifdef __MINGW32__
-    FileContents << ("WARNING: ") << WMessages.at(i) << std::endl;
-#else
-    FileContents << ("WARNING: ") << openfluid::base::ExecutionMessages::FormatMessage(WMessages.at(i)) << std::endl;
-#endif
-
-  }
-
-  std::ofstream OutMsgFile;
-
-  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(CONFIG_OUTMSGSFILE));
-  OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::app);
-  OutMsgFile << FileContents.str();
-  OutMsgFile.close();
-
+  MessagesWriter::saveToFile(mp_RunEnv->getOutputFullPath(CONFIG_OUTMSGSFILE));
 
   return true;
-
 }
 
 
@@ -1382,63 +1362,8 @@ bool IOManager::saveMessages()
 
 bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg)
 {
+  SimulationReportWriter::saveToFile(mp_RunEnv->getOutputFullPath(CONFIG_SIMINFOFILE),SimInfo);
 
-
-  bool IsOK = true;
-
-
-  // TODO clean this
-  //int i;
-  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
-
-
-  // ********** text file **********
-
-  std::ostringstream FileContents;
-
-  FileContents << "************************************************************" << "\n";
-  FileContents << "*                                                          *\n";
-  FileContents << "*                     Simulation report                    *" << "\n";
-  FileContents << "*                                                          *\n";
-  FileContents << "************************************************************" << "\n";
-  FileContents << std::endl;
-
-  if (ErrorMsg != "")
-  {
-    FileContents << ErrorMsg << std::endl;
-    FileContents << std::endl;
-  }
-
-  FileContents << ("Simulation ID: ") << mp_RunEnv->getSimulationID() << std::endl;
-  FileContents << ("Date: ") <<  boost::posix_time::to_simple_string(mp_RunEnv->getIgnitionDateTime()) << std::endl;
-  FileContents << ("Computer: ") << mp_RunEnv->getHostName() << std::endl;
-  FileContents << ("User: ") << mp_RunEnv->getUserID() << std::endl;
-  FileContents << std::endl;
-  FileContents << ("Input data set: ") << mp_RunEnv->getInputDir() << std::endl;
-  FileContents << ("Output data set: ") << mp_RunEnv->getOutputDir()  << std::endl;
-  FileContents << std::endl;
-
-  FileContents << "Spatial domain:" << std::endl;
-  for (UnitsIt = mp_Repository->getUnits()->begin(); UnitsIt != mp_Repository->getUnits()->end();++UnitsIt )
-  {
-    FileContents << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
-  }
-
-  if (SimInfo != NULL)
-  {
-    FileContents << std::endl;
-    FileContents << ("Simulation period: ") << (SimInfo->getStartTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << std::endl;
-    FileContents << ("Time steps: ") << SimInfo->getStepsCount() << (" of ") << SimInfo->getTimeStep() << (" seconds") << std::endl;
-  }
-
-
-  // write file to disk
-
-  std::ofstream SimInfoFile(mp_RunEnv->getOutputFullPath(CONFIG_SIMINFOFILE).c_str(),std::ios::out);
-  SimInfoFile << FileContents.str();
-  SimInfoFile.close();
-
-
-  return IsOK;
+  return true;
 }
 
