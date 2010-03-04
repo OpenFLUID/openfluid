@@ -28,6 +28,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "openfluid-tools.h"
+
 
 // =====================================================================
 // =====================================================================
@@ -114,9 +116,26 @@ BOOST_AUTO_TEST_CASE(check_normaloutput)
   BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckMessages/messages.out").string(),
                                  boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckMessages/messages.out").string()));
 
+  std::string IDStr;
 
+  for (unsigned int i=1; i<13;i++)
+  {
+    openfluid::tools::ConvertValue(i,&IDStr);
 
-  BOOST_FAIL("under construction");
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),
+                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),4));
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),
+                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),4));
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),
+                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),4) == false);
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),
+                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),4) == false);
+
+  }
+
 }
 
 
@@ -126,9 +145,25 @@ BOOST_AUTO_TEST_CASE(check_normaloutput)
 
 BOOST_AUTO_TEST_CASE(check_progressiveoutput)
 {
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckManyMessages/messages.out").string(),
-                                 boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckManyMessages/messages.out").string()));
+  std::string IDStr;
 
+  std::string IDs[] = {"1","2","9","12"};
 
-  BOOST_FAIL("under construction");
+  for (unsigned int i=0; i<4;i++)
+  {
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),
+                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),4));
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),
+                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),4));
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),
+                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),4) == false);
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),
+                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),4) == false);
+
+  }
+
 }
