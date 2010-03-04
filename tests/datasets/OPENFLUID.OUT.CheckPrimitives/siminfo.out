@@ -1,0 +1,19 @@
+************************************************************
+*                                                          *
+*                     Simulation report                    *
+*                                                          *
+************************************************************
+
+Simulation ID: 20100225-ZYOQLK
+Date: 2010-Feb-25 14:26:25.529002
+Computer: lisah-mmonroe
+User: fabrejc
+
+Input data set: /home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/tests/datasets/OPENFLUID.IN.CheckPrimitives
+Output data set: /home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/_build/tests-output/OPENFLUID.OUT.CheckPrimitives
+
+Spatial domain:
+  - TestUnits, 12 units
+
+Simulation period: 2000-01-01 00:00:00 to 2000-01-01 06:00:00
+Time steps: 6 of 3600 seconds

@@ -1,0 +1,12 @@
+% simulation ID: 20100225-ZYOQLK
+% file: TestUnits6_full.scalars.out
+% date: 2010-Feb-25 14:26:25.529002
+% unit: TestUnits #6
+% scalar variables order (after date and time columns): tests.scalar
+
+2000 01 01 00 00 00 0
+2000 01 01 01 00 00 6
+2000 01 01 02 00 00 12
+2000 01 01 03 00 00 18
+2000 01 01 04 00 00 24
+2000 01 01 05 00 00 30
