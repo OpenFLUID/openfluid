@@ -329,7 +329,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
 In order to access to input data provided through standard input files, you can use the following methods. They are usable from \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink, \link openfluid::base::PluggableFunction::runStep runStep \endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink :  
 <ul>
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetInputData OPENFLUID_GetGetInputData \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetInputData OPENFLUID_GetInputData \endlink
 </ul>
 
 The name of the accessed input data must match the name given in the standard input files.
@@ -481,7 +481,7 @@ bool Myfunction::checkConsistency()
 
 The runtime environment are informations about the context during execution of the simulation : input and output directories, options passed to the kernel at runtime (verbose/quiet mode, ...)...
 
-They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_OPENFLUID_GetRunEnvironment \endlink method.
+They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_GetRunEnvironment \endlink method.
 
 \code
 bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
