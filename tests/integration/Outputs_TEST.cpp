@@ -20,7 +20,7 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE integrationtest_outputresults
+#define BOOST_TEST_MODULE integrationtest_outputs
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
@@ -83,6 +83,20 @@ bool CompareTextFiles(std::string FilePathA, std::string FilePathB,
 // =====================================================================
 // =====================================================================
 
+
+bool RunSimulation(std::string InputPath, std::string OutputPath)
+{
+
+  std::string CommandToRun = boost::filesystem::path(CONFIGTESTS_DISTBIN_DIR + "/openfluid-engine -i " + InputPath + " -o " + OutputPath + " -p " + CONFIGTESTS_OUTPUT_BINARY_DIR).string();
+  std::cout << CommandToRun << std::endl;
+
+  return (system(CommandToRun.c_str()) == 0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(check_comparetextfiles)
 {
   BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
@@ -111,28 +125,45 @@ BOOST_AUTO_TEST_CASE(check_comparetextfiles)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_normaloutput)
+BOOST_AUTO_TEST_CASE(check_outputsdirect)
 {
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckMessages/messages.out").string(),
-                                 boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckMessages/messages.out").string()));
+
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsDirect";
+  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsDirect";
+  std::string RefDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.REF.CheckOutputs";
+
+  BOOST_REQUIRE(RunSimulation(InputDir,OutputDir));
+
+
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/messages.out").string(),
+                                 boost::filesystem::path(RefDir+"/messages.out").string()));
+
 
   std::string IDStr;
 
-  for (unsigned int i=1; i<13;i++)
+  for (unsigned int i=1; i<8;i++)
   {
     openfluid::tools::ConvertValue(i,&IDStr);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),
-                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),4));
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),4));
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),
-                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),4));
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),4));
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),
-                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),4) == false);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.vector.tests.vector.out").string(),
-                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckPrimitives/TestUnits"+IDStr+"_full.scalars.out").string(),4) == false);
+  }
+
+  for (unsigned int i=1; i<6;i++)
+  {
+    openfluid::tools::ConvertValue((i*2),&IDStr);
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),4));
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),4));
+
 
   }
 
@@ -143,26 +174,45 @@ BOOST_AUTO_TEST_CASE(check_normaloutput)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_progressiveoutput)
+BOOST_AUTO_TEST_CASE(check_outputsprogressive)
 {
+
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsProgressive";
+  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsProgressive";
+  std::string RefDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.REF.CheckOutputs";
+
+  BOOST_REQUIRE(RunSimulation(InputDir,OutputDir));
+
+
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/messages.out").string(),
+                                 boost::filesystem::path(RefDir+"/messages.out").string()));
+
+
   std::string IDStr;
 
-  std::string IDs[] = {"1","2","9","12"};
-
-  for (unsigned int i=0; i<4;i++)
+  for (unsigned int i=1; i<8;i++)
   {
+    openfluid::tools::ConvertValue(i,&IDStr);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),
-                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),4));
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),4));
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),
-                                   boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),4));
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),4));
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),
-                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),4) == false);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.vector.tests.vector.out").string(),
-                                       boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.OUT.CheckProgOut/TestUnits"+IDs[i]+"_full.scalars.out").string(),4) == false);
+  }
+
+  for (unsigned int i=1; i<6;i++)
+  {
+    openfluid::tools::ConvertValue((i*2),&IDStr);
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),4));
+
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),4));
+
 
   }
 
