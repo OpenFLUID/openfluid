@@ -89,8 +89,10 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
     }
     else Plug->SDKCompatible = false;
 
+
     if (Plug->SDKCompatible)
     {
+
       // checks if the handle proc exists
       if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
       {
@@ -103,10 +105,17 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
         {
           Plug->Signature = SignProc();
 
+          if (Plug->Signature == NULL)
+            throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Signature from plugin file " + PluginFilename + " cannot be instanciated");
+
           openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->getSymbol(PLUGFUNCTION_PROC_NAME);
           if (PlugProc != NULL)
           {
             Plug->Function = PlugProc();
+
+            if (Plug->Function == NULL)
+              throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Function from plugin file " + PluginFilename + " cannot be instanciated");
+
           }
           else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find function in plugin file " + PluginFilename);
         }
@@ -117,6 +126,7 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
         //delete PlugLib;
 
       }
+      else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Format error in plugin file " + PluginFilename);
     }
   }
   else throw openfluid::base::OFException("kernel","PluginManager::buildPluginContainer","Unable to find plugin file " + PluginFilename);
@@ -180,7 +190,7 @@ ModelItemInstance* PluginManager::getPlugin(std::string PluginName,
 
 
 
-  if (Plug != NULL)
+  if (Plug != NULL && Plug->SDKCompatible)
   {
     Plug->Function->setDataRepository(CoreData);
     Plug->Function->setExecutionMessages(ExecMsgs);
@@ -189,7 +199,7 @@ ModelItemInstance* PluginManager::getPlugin(std::string PluginName,
   }
 
 
-  return Plug;
+  return NULL;
 }
 
 
