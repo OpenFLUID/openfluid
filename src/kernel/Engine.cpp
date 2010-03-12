@@ -165,17 +165,14 @@ bool Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 
 
 
-bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message)
+void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 {
 
-  // TODO check this (method to check simulation vars production)
-/*
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsClassesIter;
   openfluid::core::UnitsList_t::const_iterator UnitsIter;
   const openfluid::core::UnitsListByClassMap_t* AllUnits;
   const openfluid::core::UnitsList_t* UnitsList;
   std::vector<std::string> VarsNames;
-  unsigned int i;
 
   AllUnits = mp_CoreData->getUnits();
 
@@ -183,176 +180,19 @@ bool Engine::checkSimulationVarsProduction(int ExpectedVarsCount, std::string* M
   {
     UnitsList = UnitsClassesIter->second.getList();
 
-    for (UnitsIter = UnitsList->begin();UnitsIter !=UnitsList->end();++UnitsIter)
+    for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
-      //scalars
-      VarsNames = UnitsIter->getScalarVariables()->getVariablesNames();
-      for (i=0;i<VarsNames.size();i++)
-      {
-        if (UnitsIter->getScalarVariables()->getVariableValuesCount(VarsNames[i]) != ExpectedVarsCount) return false;
-      }
 
+      //scalars
+      if (!((*UnitsIter).getScalarVariables()->isAllVariablesCount(ExpectedVarsCount)))
+        throw openfluid::base::OFException("kernel","Engine::checkSimulationVarsProduction","Scalar variable production error");
 
       //vectors
+      if (!((*UnitsIter).getVectorVariables()->isAllVariablesCount(ExpectedVarsCount)))
+        throw openfluid::base::OFException("kernel","Engine::checkSimulationVarsProduction","Vector variable production error");
     }
 
   }
-*/
-  /*
-  openfluid::core::SurfaceUnit *SU;
-  openfluid::core::SUMap *SUsMap = mp_CoreData->getSpatialData()->getSUsCollection();
-  openfluid::core::SUMap::iterator SUiter;
-
-  openfluid::core::ReachSegment *RS;
-  openfluid::core::RSMap *RSsMap = mp_CoreData->getSpatialData()->getRSsCollection();
-  openfluid::core::RSMap::iterator RSiter;
-
-  openfluid::core::GroundwaterUnit *GU;
-  openfluid::core::GUMap *GUsMap = mp_CoreData->getSpatialData()->getGUsCollection();
-  openfluid::core::GUMap::iterator GUiter;
-
-  openfluid::core::SimulatedVarsMap *VarsMap;
-  openfluid::core::SimulatedVarsMap::iterator VMiter;
-
-  openfluid::core::SimulatedVectorVarsMap *VectVarsMap;
-  openfluid::core::SimulatedVectorVarsMap::iterator VVMiter;
-
-  (*Message) = wxT("");
-
-  // checking SUs
-  for(SUiter = SUsMap->begin(); SUiter != SUsMap->end(); ++SUiter)
-  {
-    VarsMap = SUiter->second->getSimulatedVars();
-    VMiter = VarsMap->begin();
-
-    for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
-    {
-      if (VMiter->second->size() != ExpectedVarsCount)
-      {
-        (*Message) = wxT("variable ") + VMiter->first + wxT(" on SU ") + wxString::Format(wxT("%d"),SUiter->first) +
-                     wxT(" has ") + wxString::Format(wxT("%d"),VMiter->second->size()) + wxT(" values but ") +
-                     wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
-        return false;  // checks correct vars count
-      }
-      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1)))
-      {
-        (*Message) = wxT("variable ") + VMiter->first + wxT(" on SU ") + wxString::Format(wxT("%d"),SUiter->first) +
-                     wxT(" is NaN");
-        return false; // checks if vars are not NaN
-      }
-
-    }
-
-
-    // vector vars
-    VectVarsMap = SUiter->second->getSimulatedVectorVars();
-    VVMiter = VectVarsMap->begin();
-
-    for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
-    {
-      if (VVMiter->second->size() != ExpectedVarsCount)
-      {
-        (*Message) = wxT("variable ") + VVMiter->first + wxT("[] on SU ") + wxString::Format(wxT("%d"),SUiter->first) +
-                     wxT(" has ") + wxString::Format(wxT("%d"),VVMiter->second->size()) + wxT(" values but ") +
-                     wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
-        return false;  // checks correct vars count
-      }
-    }
-
-
-
-  }
-
-
-  // checking RSs
-  for(RSiter = RSsMap->begin(); RSiter != RSsMap->end(); ++RSiter)
-  {
-    VarsMap = RSiter->second->getSimulatedVars();
-    VMiter = VarsMap->begin();
-
-    for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
-    {
-      if (VMiter->second->size() != ExpectedVarsCount)
-      {
-        (*Message) = wxT("variable ") + VMiter->first + wxT(" on RS ") + wxString::Format(wxT("%d"),RSiter->first) +
-                     wxT(" has ") + wxString::Format(wxT("%d"),VMiter->second->size()) + wxT(" values but ") +
-                     wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
-        return false;
-      }
-      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1)))
-      {
-        (*Message) = wxT("variable ") + VMiter->first + wxT(" on RS ") + wxString::Format(wxT("%d"),RSiter->first) +
-                     wxT(" is NaN");
-        return false;
-      }
-    }
-
-
-    // vector vars
-    VectVarsMap = RSiter->second->getSimulatedVectorVars();
-    VVMiter = VectVarsMap->begin();
-
-    for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
-    {
-      if (VVMiter->second->size() != ExpectedVarsCount)
-      {
-        (*Message) = wxT("variable ") + VVMiter->first + wxT("[] on RS ") + wxString::Format(wxT("%d"),RSiter->first) +
-                             wxT(" has ") + wxString::Format(wxT("%d"),VVMiter->second->size()) + wxT(" values but ") +
-                             wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
-        return false;  // checks correct vars count
-      }
-    }
-
-
-  }
-
-
-  // checking GUs
-  for(GUiter = GUsMap->begin(); GUiter != GUsMap->end(); ++GUiter)
-  {
-    VarsMap = GUiter->second->getSimulatedVars();
-    VMiter = VarsMap->begin();
-
-    for(VMiter = VarsMap->begin(); VMiter != VarsMap->end(); ++VMiter)
-    {
-      if (VMiter->second->size() != ExpectedVarsCount)
-      {
-        (*Message) = wxT("variable ") + VMiter->first + wxT(" on GU ") + wxString::Format(wxT("%d"),GUiter->first) +
-                             wxT(" has ") + wxString::Format(wxT("%d"),VMiter->second->size()) + wxT(" values but ") +
-                             wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
-        return false;
-      }
-      if (ExpectedVarsCount > 0 && isnan(VMiter->second->at(ExpectedVarsCount-1)))
-      {
-        (*Message) = wxT("variable ") + VMiter->first + wxT(" on GU ") + wxString::Format(wxT("%d"),GUiter->first) +
-                     wxT(" is NaN");
-        return false;
-      }
-
-    }
-
-
-    // vector vars
-    VectVarsMap = GUiter->second->getSimulatedVectorVars();
-    VVMiter = VectVarsMap->begin();
-
-    for(VVMiter = VectVarsMap->begin(); VVMiter != VectVarsMap->end(); ++VVMiter)
-    {
-      if (VVMiter->second->size() != ExpectedVarsCount)
-      {
-        (*Message) = wxT("variable ") + VVMiter->first + wxT("[] on GU ") + wxString::Format(wxT("%d"),GUiter->first) +
-                             wxT(" has ") + wxString::Format(wxT("%d"),VVMiter->second->size()) + wxT(" values but ") +
-                             wxString::Format(wxT("%d"),ExpectedVarsCount) + wxT(" were expected");
-        return false;  // checks correct vars count
-      }
-    }
-
-
-  }
-
-
-*/
-  return true;
 
 }
 
@@ -455,141 +295,6 @@ bool Engine::checkDataConsistency()
 {
 
   bool IsOK = true;
-  // TODO enable this (check data and var name against nomenclature)
-/*
-  PluginsList::Node *FuncNode = NULL;
-  openfluid::base::SignatureHandledData HData;
-  PluginContainer* CurrentFunction;
-
-  int i;
-
-
-
-  // check variable name against nomenclature
-  if (mp_RunEnv->isCheckVarNames())
-  {  std::list<FunctionConfig>::iterator FuncIt;
-
-  FunctionConfig* FConf;
-  PluginContainer* FuncToAdd;
-
-  m_Functions.clear();
-
-
-  // on each function
-  for (FuncIt = m_ModelConfig.FuncConfigs.begin(); FuncIt != m_ModelConfig.FuncConfigs.end(); ++FuncIt)
-  {
-    FConf = &(*FuncIt);
-
-
-    wxRegEx RegExp(wxT("[a-zA-Z,\\-]+\\.[a-zA-Z\\-]+\\.[a-zA-Z\\-\\#]+\\.[a-zA-Z\\-]+"));
-
-
-    FuncNode = m_Functions.GetFirst();
-    while (FuncNode && IsOK)
-    {
-
-      CurrentFunction = (PluginContainer*)FuncNode->GetData();
-      if (CurrentFunction != NULL)
-      {
-        HData = CurrentFunction->Signature->HandledData;
-
-
-        // produced vars
-        i = 0;
-        while (IsOK && i<HData.ProducedVars.size())
-        {
-          IsOK = RegExp.Matches(HData.ProducedVars[i].Name);
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.ProducedVars[i].Name) + " variable name does not match nomenclature");
-            return false;
-          }
-          i++;
-        }
-
-
-        // required vars
-        i = 0;
-        while (IsOK && i<HData.RequiredVars.size())
-        {
-          IsOK = RegExp.Matches(HData.RequiredVars[i].Name);
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredVars[i].Name) + " variable name does not match nomenclature");
-            return false;
-          }
-          i++;
-        }
-
-
-        // used vars
-        i = 0;
-        while (IsOK && i<HData.UsedVars.size())
-        {
-          IsOK = RegExp.Matches(HData.UsedVars[i].Name);
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.UsedVars[i].Name) + " variable name does not match nomenclature");
-            return false;
-          }
-          i++;
-        }
-
-        // updated
-        i = 0;
-        while (IsOK && i<HData.UpdatedVars.size())
-        {
-          IsOK = RegExp.Matches(HData.UpdatedVars[i].Name);
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.UpdatedVars[i].Name) + " variable name does not match nomenclature");
-            return false;
-          }
-          i++;
-        }
-
-        // required prev
-        i = 0;
-        while (IsOK && i<HData.RequiredPrevVars.size())
-        {
-          IsOK = RegExp.Matches(HData.RequiredPrevVars[i].Name);
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.RequiredPrevVars[i].Name) + " variable name does not match nomenclature");
-            return false;
-          }
-          i++;
-        }
-
-
-        // used prev
-        i = 0;
-        while (IsOK && i<HData.UsedPrevVars.size())
-        {
-          IsOK = RegExp.Matches(HData.UsedPrevVars[i].Name);
-
-          if (!IsOK)
-          {
-            throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",_S(HData.UsedPrevVars[i].Name) + " variable name does not match nomenclature");
-            return false;
-          }
-          i++;
-        }
-
-
-
-        FuncNode = FuncNode->GetNext();
-
-      }
-    }
-  }
-*/
-
 
 
   std::list<ModelItemInstance*>::const_iterator FuncIter;
@@ -935,12 +640,7 @@ bool Engine::run()
 
   // TODO check this (vars production at after init)
   // check simulation vars production after init
-  if (!checkSimulationVarsProduction(0,&ProdMessage))
-  {
-    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation first step: " + ProdMessage);
-    return false;
-  }
-
+  checkSimulationVarsProduction(0);
 
 
   // ============= runStep() =============
@@ -976,10 +676,7 @@ bool Engine::run()
       mp_ModelInstance->runStep(mp_SimStatus);
 
       // check simulation vars production at each time step
-      if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
-      {
-        throw openfluid::base::OFException("kernel","Engine::run",mp_SimStatus->getCurrentStep(),"Wrong simulation variable production : " + ProdMessage);
-      }
+      checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
     }
     catch (openfluid::base::OFException& E)
     {
@@ -1091,11 +788,7 @@ bool Engine::run()
 
 
   // check simulation vars production after finalize
-  if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
-  {
-    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production during run finalization");
-    return false;
-  }
+  checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
 
   // final progressive output
   mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getStepsCount()-1,true,&SaveReleaseBegin, &SaveReleaseEnd);

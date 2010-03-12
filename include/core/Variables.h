@@ -53,7 +53,7 @@ class Variables
 
     bool releaseMemory(TimeStep_t Step);
 
-
+    bool isAllVariablesCount(unsigned int Count) const;
 
 };
 
@@ -218,6 +218,21 @@ unsigned int Variables<T>::getVariableValuesCount(const VariableName_t aName) co
   if (it == m_Data.end()) return (-1);
 
   else return it->second.getNextStep();
+}
+
+// =====================================================================
+// =====================================================================
+
+template <class T>
+bool Variables<T>::isAllVariablesCount(unsigned int Count) const
+{
+  typename VariablesMap_t::const_iterator it;
+
+  for (it = m_Data.begin();it != m_Data.end();++it)
+  {
+    if (it->second.getNextStep() != Count) return false;
+  }
+  return true;
 }
 
 

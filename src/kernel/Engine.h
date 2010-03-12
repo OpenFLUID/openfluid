@@ -79,7 +79,7 @@ class Engine
      const ModelInstance* mp_ModelInstance;
 
 
-     bool checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message);
+     void checkSimulationVarsProduction(int ExpectedVarsCount);
 
      bool checkModelConsistency();
 
