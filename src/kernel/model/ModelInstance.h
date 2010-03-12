@@ -25,6 +25,7 @@
 #include "openfluid-core.h"
 #include "openfluid-base.h"
 #include "ModelItemInstance.h"
+#include "RuntimeEnv.h"
 
 class ModelInstance
 {
@@ -45,6 +46,18 @@ class ModelInstance
     void deleteItemsAndClear();
 
     unsigned int getItemsCount() const { return m_ModelItems.size(); };
+
+    const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
+
+    bool initParams() const;
+
+    bool prepareDataAndCheckConsistency() const;
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo) const;
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus) const;
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const;
 
 };
 

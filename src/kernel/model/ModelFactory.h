@@ -30,15 +30,12 @@ class ModelFactory
   private:
     openfluid::core::CoreRepository* mp_CoreData;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
-    PluginManager* mp_PlugMan;
 
   public:
 
-    ModelFactory(openfluid::core::CoreRepository* CoreData,
-                 openfluid::base::ExecutionMessages* ExecMsgs,
-                 PluginManager* PlugMan);
+    ModelFactory();
 
-    ModelInstance* buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const;
+    const ModelInstance* buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const;
 
 };
 

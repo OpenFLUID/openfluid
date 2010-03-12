@@ -28,13 +28,10 @@
 // =====================================================================
 
 
-ModelFactory::ModelFactory(openfluid::core::CoreRepository* CoreData,
-                           openfluid::base::ExecutionMessages* ExecMsgs,
-                           PluginManager* PlugMan)
+ModelFactory::ModelFactory()
 {
-  mp_CoreData = CoreData;
-  mp_ExecMsgs = ExecMsgs;
-  mp_PlugMan = PlugMan;
+  mp_CoreData = openfluid::core::CoreRepository::getInstance();
+  mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 }
 
 
@@ -42,11 +39,12 @@ ModelFactory::ModelFactory(openfluid::core::CoreRepository* CoreData,
 // =====================================================================
 
 
-ModelInstance* ModelFactory::buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const
+const ModelInstance* ModelFactory::buildInstanceFromDescriptor(const ModelDescriptor& Descriptor) const
 {
 
   ModelDescriptor::ModelDescription_t::const_iterator it;
   ModelInstance* MInstance = new ModelInstance();
+  ModelItemInstance* IInstance;
 
   for (it=Descriptor.getItems().begin();it!=Descriptor.getItems().end();++it)
   {
@@ -56,8 +54,9 @@ ModelInstance* ModelFactory::buildInstanceFromDescriptor(const ModelDescriptor& 
     if ((*it)->isType(ModelItemDescriptor::PluggedFunction))
     {
       // instanciation of a pluggeg simulation function using the plugin manager
-      MInstance->appendItem(mp_PlugMan->getPlugin(((FunctionDescriptor*)(*it))->getFileID(),
-                                                  mp_ExecMsgs,mp_CoreData));
+      IInstance = PluginManager::getInstance()->getPlugin(((FunctionDescriptor*)(*it))->getFileID(),mp_ExecMsgs,mp_CoreData);
+      IInstance->Params = (*it)->getParameters();
+      MInstance->appendItem(IInstance);
     }
 
     if ((*it)->isType(ModelItemDescriptor::Generator))
@@ -66,7 +65,7 @@ ModelInstance* ModelFactory::buildInstanceFromDescriptor(const ModelDescriptor& 
       GeneratorDescriptor* GenDesc = (GeneratorDescriptor*)(*it);
       Generator* GenInstance = NULL;
 
-      ModelItemInstance* IInstance = new ModelItemInstance();
+      IInstance = new ModelItemInstance();
       IInstance->SDKCompatible = true;
 
       openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();

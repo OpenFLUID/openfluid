@@ -24,12 +24,14 @@
 #include <string>
 
 #include "openfluid-base.h"
+#include "openfluid-core.h"
 
 struct ModelItemInstance
 {
 
   std::string Filename;
   bool SDKCompatible;
+  openfluid::core::FuncParamsMap_t Params;
   openfluid::base::FunctionSignature* Signature;
   openfluid::base::PluggableFunction* Function;
 
