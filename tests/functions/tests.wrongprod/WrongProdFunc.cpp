@@ -56,14 +56,14 @@ END_SIGNATURE_HOOK
 /**
 
 */
-class ProgressiveOutputFunction : public openfluid::base::PluggableFunction
+class WrongProductionFunction : public openfluid::base::PluggableFunction
 {
   private:
 
   public:
 
 
-  ProgressiveOutputFunction() : PluggableFunction()
+  WrongProductionFunction() : PluggableFunction()
   {
 
 
@@ -74,7 +74,7 @@ class ProgressiveOutputFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  ~ProgressiveOutputFunction()
+  ~WrongProductionFunction()
   {
 
 
@@ -164,5 +164,5 @@ class ProgressiveOutputFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(ProgressiveOutputFunction)
+DEFINE_FUNCTION_HOOK(WrongProductionFunction)
 
