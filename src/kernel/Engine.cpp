@@ -27,100 +27,14 @@
 #include <math.h>
 #include <boost/filesystem.hpp>
 
-
-// =====================================================================
-// =====================================================================
-
-#define DECLARE_FUNCTION_PARSER \
-    PluginsList::iterator _M_FuncIter;
-
-/**
-  Macro for parsing the functions list and calling the given method of each function of the list
-  \param[in] calledmethod the method to call on each function
-  \param[out] statevar the globalized return of the method calls
- */
-#define PARSE_FUNCTION_LIST(calledmethod,statevar) \
-    _M_FuncIter = m_Functions.begin(); \
-    while (_M_FuncIter != m_Functions.end() && statevar) \
-    { \
-      ModelItemInstance* CurrentFunction = *_M_FuncIter; \
-      if (CurrentFunction != NULL) \
-      { \
-        if (mp_RunEnv->isVerboseRun()) \
-        { \
-          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID; \
-          std::cout.flush(); \
-        } \
-        statevar = (statevar && CurrentFunction->Function->calledmethod); \
-        if (mp_RunEnv->isVerboseRun()) \
-        { \
-          if (!statevar) \
-          { \
-            std::cout << "  " << "[Error]";\
-            throw openfluid::base::OFException("kernel","Bad return value while calling function method"); \
-          }  \
-          else \
-          { \
-            if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
-            else std::cout << "  " << "[OK]"; \
-            mp_ExecMsgs->resetWarningFlag(); \
-          } \
-          std::cout.flush(); \
-        } \
-      } \
-      _M_FuncIter++; \
-    } \
-    if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
-
-
-/**
-  Macro for parsing the functions list and calling the given two methods of each function of the list
-  \param[in] calledmethod1 the first method to call on each function
-  \param[in] calledmethod2 the first method to call on each function
-  \param[out] statevar the globalized return of the method calls
- */
-
-#define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \
-    _M_FuncIter = m_Functions.begin(); \
-    while (_M_FuncIter != m_Functions.end() && statevar) \
-    { \
-      ModelItemInstance* CurrentFunction = *_M_FuncIter; \
-      if (CurrentFunction != NULL) \
-      { \
-        if (mp_RunEnv->isVerboseRun()) \
-        { \
-          std::cout << std::endl << std::setw(50) << CurrentFunction->Signature->ID; \
-          std::cout.flush(); \
-        } \
-        statevar = (statevar && (CurrentFunction->Function->calledmethod1 && CurrentFunction->Function->calledmethod2)); \
-        if (mp_RunEnv->isVerboseRun()) \
-        { \
-          if (!statevar) \
-          { \
-            std::cout << "  " << "[Error]";\
-            throw openfluid::base::OFException("kernel","Bad return value while calling function method"); \
-          }  \
-          else \
-          { \
-            if (mp_ExecMsgs->isWarningFlag()) std::cout << "  " << "[Warning]"; \
-            else std::cout << "  " << "[OK]"; \
-            mp_ExecMsgs->resetWarningFlag(); \
-          } \
-          std::cout.flush(); \
-        } \
-      } \
-      _M_FuncIter++; \
-    } \
-    if (mp_RunEnv->isVerboseRun()) std::cout << std::endl; std::cout.flush();
+#include "model/ModelFactory.h"
+#include "domain/DomainFactory.h"
 
 
 
 
 // =====================================================================
 // =====================================================================
-
-
-
 
 
 Engine::Engine()
@@ -133,8 +47,6 @@ Engine::Engine()
   mp_PlugMan = PluginManager::getInstance();
 
   mp_MemMon = openfluid::core::MemoryMonitor::getInstance();
-
-  m_Functions.clear();
 
   mp_IOMan = IOManager::getInstance();
 
@@ -150,60 +62,6 @@ Engine::~Engine()
 
 }
 
-// =====================================================================
-// =====================================================================
-
-
-
-
-bool Engine::processConfig()
-{
-  /** \internal
-
-    uses the PluginManager to
-      - load and parameterize functions
-  */
-
-
-  std::list<FunctionConfig>::iterator FuncIt;
-
-  FunctionConfig* FConf;
-  ModelItemInstance* FuncToAdd;
-
-  m_Functions.clear();
-
-
-  // on each function
-  for (FuncIt = m_ModelConfig.FuncConfigs.begin(); FuncIt != m_ModelConfig.FuncConfigs.end(); ++FuncIt)
-  {
-    FConf = &(*FuncIt);
-
-    // instanciates and gets a pointer to the function
-    FuncToAdd = mp_PlugMan->getPlugin(FConf->FileID,mp_ExecMsgs,mp_CoreData);
-
-    if (FuncToAdd != NULL)
-    {
-       if (FuncToAdd->Function->initParams(FConf->Params))
-       {
-         m_Functions.push_back(FuncToAdd);
-       }
-       else
-       {
-         throw openfluid::base::OFException("kernel","Engine::processConfig","Initializing params function error");
-         return false;
-       }
-
-    }
-    else
-    {
-      throw openfluid::base::OFException("kernel","Engine::processConfig","Loading function from plugin " + FConf->FileID);
-      return false;
-    }
-  }
-
-
-  return true;
-}
 
 // =====================================================================
 // =====================================================================
@@ -506,7 +364,8 @@ bool Engine::checkModelConsistency()
 
   bool IsOK = true;
 
-  PluginsList::iterator FuncIter;
+//  PluginsList::iterator FuncIter;
+  std::list<ModelItemInstance*>::const_iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
   ModelItemInstance* CurrentFunction;
   unsigned int i;
@@ -521,9 +380,9 @@ bool Engine::checkModelConsistency()
         4) required vars at t-1+
   */
 
-  FuncIter = m_Functions.begin();
+  FuncIter = mp_ModelInstance->getItems().begin();
 
-  while (FuncIter != m_Functions.end() && IsOK)
+  while (FuncIter != mp_ModelInstance->getItems().end() && IsOK)
   {
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
@@ -563,9 +422,9 @@ bool Engine::checkModelConsistency()
 
 
 
-  FuncIter = m_Functions.begin();
+  FuncIter = mp_ModelInstance->getItems().begin();
 
-  while (FuncIter != m_Functions.end() && IsOK)
+  while (FuncIter != mp_ModelInstance->getItems().end() && IsOK)
   {
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
@@ -733,15 +592,15 @@ bool Engine::checkDataConsistency()
 
 
 
-  PluginsList::iterator FuncIter;
+  std::list<ModelItemInstance*>::const_iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
   ModelItemInstance* CurrentFunction;
   unsigned int i;
 
 
-  FuncIter = m_Functions.begin();
+  FuncIter = mp_ModelInstance->getItems().begin();
 
-  while (FuncIter != m_Functions.end() && IsOK)
+  while (FuncIter != mp_ModelInstance->getItems().end() && IsOK)
   {
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
@@ -771,16 +630,15 @@ bool Engine::checkDataConsistency()
 
 bool Engine::checkExtraFilesConsistency()
 {
-
-  PluginsList::iterator FuncIt;
+  std::list<ModelItemInstance*>::const_iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
   ModelItemInstance* CurrentFunction;
 
 
   // on each function
-  for (FuncIt = m_Functions.begin(); FuncIt != m_Functions.end(); ++FuncIt)
+  for (FuncIter = mp_ModelInstance->getItems().begin(); FuncIter != mp_ModelInstance->getItems().end(); ++FuncIter)
   {
-    CurrentFunction = *FuncIt;
+    CurrentFunction = *FuncIter;
 
     HData = CurrentFunction->Signature->HandledData;
 
@@ -807,18 +665,11 @@ bool Engine::checkExtraFilesConsistency()
 
 bool Engine::buildModel()
 {
-  /** \internal
-
-    builds the model from the config file, calling:
-    - loadModelConfig() from mp_IOMan
-    - processConfig()
-    - plugFunctions
-
-  */
 
   try
   {
-    return (mp_IOMan->loadModelConfig(&m_ModelConfig) && processConfig());
+    ModelFactory MF = ModelFactory();
+    mp_ModelInstance = MF.buildInstanceFromDescriptor(m_ModelDesc);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -841,7 +692,7 @@ bool Engine::buildModel()
     }
     throw;
   }
-
+/*
   if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
   {
 
@@ -849,7 +700,8 @@ bool Engine::buildModel()
     else std::cout << std::setw(12) << "[OK]";
     std::cout.flush();
   }
-
+*/
+  return true;
 
 }
 
@@ -859,22 +711,61 @@ bool Engine::buildModel()
 
 bool Engine::loadData()
 {
-  bool IsOK;
 
-  IsOK =  mp_IOMan->loadRunConfig(&m_RunConfig);
+  mp_IOMan->loadInputs(m_ModelDesc, m_DomainDesc, m_RunDesc);
 
-  if (IsOK) IsOK = mp_IOMan->loadDomainFromFiles();
-
-  if (IsOK) IsOK = mp_IOMan->loadInputDataFromFiles();
-
-  if (IsOK) IsOK = mp_IOMan->loadEventsFromFiles();
-
-  if (IsOK && mp_RunEnv->isWriteResults()) IsOK = IsOK && mp_IOMan->loadOutputConfig();
-
-  return IsOK;
+  return true;
 
 }
 
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Engine::processRunConfiguration()
+{
+
+  if (m_RunDesc.isProgressiveOutput())
+  {
+    mp_RunEnv->setProgressiveOutputKeep(m_RunDesc.getProgressiveOutputKeep());
+    mp_RunEnv->setProgressiveOutputPacket(m_RunDesc.getProgressiveOutputPacket());
+    mp_MemMon->setPacketAndKeep(m_RunDesc.getProgressiveOutputPacket(),m_RunDesc.getProgressiveOutputKeep());
+  }
+
+  if (m_RunDesc.isSimulationID())
+  {
+    mp_RunEnv->setSimulationID(m_RunDesc.getSimulationID());
+  }
+
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Engine::buildSpatialDomain()
+{
+
+  DomainFactory DF = DomainFactory();
+
+  DF.buildDomainFromDescriptor(m_DomainDesc);
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool Engine::initParams()
+{
+  mp_ModelInstance->initParams();
+
+  return true;
+}
 
 // =====================================================================
 // =====================================================================
@@ -883,22 +774,21 @@ bool Engine::prepareDataAndCheckConsistency()
 {
 
   bool IsOK = true;
-  DECLARE_FUNCTION_PARSER;
-
 
   // check simulation functions count
 
-  if (m_Functions.size() == 0)
+  if (mp_ModelInstance->getItemsCount() == 0)
   {
     throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","No simulation function in model");
     return false;
   }
 
+
   // inits the simulation infos and status
 
-  mp_SimStatus = new openfluid::base::SimulationStatus(m_RunConfig.BeginDate,
-                                                      m_RunConfig.EndDate,
-                                                      m_RunConfig.DeltaT);
+  mp_SimStatus = new openfluid::base::SimulationStatus(m_RunDesc.getBeginDate(),
+                                                       m_RunDesc.getEndDate(),
+                                                       m_RunDesc.getDeltaT());
 
   if (mp_RunEnv->isProgressiveOutput())
   {
@@ -917,7 +807,6 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
-
   IsOK = checkDataConsistency();
   if (!IsOK)
   {
@@ -927,7 +816,7 @@ bool Engine::prepareDataAndCheckConsistency()
 
   try
   {
-    PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),IsOK);
+    mp_ModelInstance->prepareDataAndCheckConsistency();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -985,7 +874,6 @@ bool Engine::prepareDataAndCheckConsistency()
 bool Engine::run()
 {
   bool IsOK = true;
-  DECLARE_FUNCTION_PARSER;
 
   std::string ProdMessage;
   openfluid::core::TimeStep_t SaveReleaseBegin, SaveReleaseEnd;
@@ -1010,7 +898,7 @@ bool Engine::run()
 
   try
   {
-    PARSE_FUNCTION_LIST(initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK);
+    mp_ModelInstance->initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -1085,7 +973,7 @@ bool Engine::run()
 
     try
     {
-      PARSE_FUNCTION_LIST(runStep(mp_SimStatus),IsOK);
+      mp_ModelInstance->runStep(mp_SimStatus);
 
       // check simulation vars production at each time step
       if (!checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1,&ProdMessage))
@@ -1162,7 +1050,7 @@ bool Engine::run()
 
   try
   {
-    PARSE_FUNCTION_LIST(finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus),IsOK)
+    mp_ModelInstance->finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
   }
   catch (openfluid::base::OFException& E)
   {

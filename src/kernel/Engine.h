@@ -30,11 +30,12 @@
 #include "PluginManager.h"
 #include "RuntimeEnv.h"
 
+#include "model/ModelInstance.h"
+
+
 
 // =====================================================================
 // =====================================================================
-
-typedef std::list<ModelItemInstance*> PluginsList;
 
 
 /**
@@ -43,8 +44,6 @@ typedef std::list<ModelItemInstance*> PluginsList;
 class Engine
 {
   private:
-
-     PluginsList m_Functions;
 
      openfluid::core::CoreRepository* mp_CoreData;
 
@@ -69,22 +68,16 @@ class Engine
      */
      IOManager* mp_IOMan;
 
-     /**
-       Model configuration
-     */
-     ModelConfig m_ModelConfig;
 
-     /**
-       Run configuration
-     */
-     RunConfig m_RunConfig;
+     ModelDescriptor m_ModelDesc;
+
+     RunDescriptor m_RunDesc;
+
+     DomainDescriptor m_DomainDesc;
 
 
-     /**
-       Processes the config file, check the list of plugins to load,
-       loads them, registers params to pass and builds the processing list.
-     */
-     bool processConfig();
+     const ModelInstance* mp_ModelInstance;
+
 
      bool checkSimulationVarsProduction(int ExpectedVarsCount, std::string* Message);
 
@@ -116,7 +109,13 @@ class Engine
 
     bool buildModel();
 
+    bool buildSpatialDomain();
+
     bool loadData();
+
+    bool processRunConfiguration();
+
+    bool initParams();
 
     bool prepareDataAndCheckConsistency();
 
@@ -125,10 +124,6 @@ class Engine
     bool saveReports(std::string ErrorMsg);
 
     bool saveMessages();
-
-    ModelConfig getModelConfig() const { return m_ModelConfig; };
-
-    RunConfig getRunConfig() const { return m_RunConfig; };
 
     openfluid::base::SimulationInfo *getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };
 

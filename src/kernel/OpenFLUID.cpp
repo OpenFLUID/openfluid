@@ -425,15 +425,31 @@ void OpenFLUIDApp::runSimulation()
   printEnvInfos();
 
 
+  std::cout << "* Loading data... "; std::cout.flush();
+  mp_Engine->loadData();
+  printlnExecStatus();
+  mp_ExecMsgs->resetWarningFlag();
+
+  std::cout << "* Processing run configuration... "; std::cout.flush();
+  mp_Engine->processRunConfiguration();
+  printlnExecStatus();
+  mp_ExecMsgs->resetWarningFlag();
+
+  std::cout << "* Building spatial domain... "; std::cout.flush();
+  mp_Engine->buildSpatialDomain();
+  printlnExecStatus();
+  mp_ExecMsgs->resetWarningFlag();
+
+
   std::cout << "* Building model... "; std::cout.flush();
   mp_Engine->buildModel();
   printlnExecStatus();
   mp_ExecMsgs->resetWarningFlag();
 
-
-  std::cout << "* Loading data... "; std::cout.flush();
-  mp_Engine->loadData();
-  printlnExecStatus();
+  std::cout << "* Initializing parameters... "; std::cout.flush();
+  mp_Engine->initParams();
+  if (!RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
+  else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
 
