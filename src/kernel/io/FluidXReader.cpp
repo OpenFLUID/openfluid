@@ -876,6 +876,13 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
 
   propagateGlobalParamsInModel();
 
+
+  if (!m_RunConfigDefined)
+    throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","no run configuration found in directory " + DirPath);
+
+  if (!m_ModelDefined)
+    throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","no model found in directory " + DirPath);
+
 }
 
 
