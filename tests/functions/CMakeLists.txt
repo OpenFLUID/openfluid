@@ -91,11 +91,17 @@ ADD_TEST(functions-ProgressiveOutput "${BIN_OUTPUT_PATH}/openfluid-engine"
                               
 ADD_FUNCTION(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})
 
-ADD_FUNCTION(tests.wrongprod test.wrongprod ${TEST_OUTPUT_PATH})
+ADD_FUNCTION(tests.wrongprod tests.wrongprod ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-WrongProduction "${BIN_OUTPUT_PATH}/openfluid-engine" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckWrongProd"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckWrongProd" 
                         "-p${TEST_OUTPUT_PATH}")                              
 SET_TESTS_PROPERTIES(functions-WrongProduction PROPERTIES WILL_FAIL TRUE)        
 
+ADD_FUNCTION(tests.globalparams tests.globalparams ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-GlobalParams "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckGlobalParams"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckGlobalParams" 
+                        "-p${TEST_OUTPUT_PATH}")                              
+        
 
