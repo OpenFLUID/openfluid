@@ -1,5 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
+<domain>
   <calendar>
   
     <event name="" category="test" unitclass="TestUnits" unitID="1" date="1999-12-31 23:59:59">
@@ -67,4 +68,6 @@
     </event>    
     
   </calendar>
+  
+</domain>  
 </openfluid>

@@ -63,20 +63,25 @@ INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
 
   ADD_TEST(integration-InputWithNoModel "${BIN_OUTPUT_PATH}/openfluid-engine"
                                         "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.NoModel"
-                                        "-o" "${TESTS_DATASETS_PATH}/OPENFLUID.OUT.NoModel"
+                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NoModel"
                                         "-p" "${TEST_OUTPUT_PATH}")               
   SET_TESTS_PROPERTIES(integration-InputWithNoModel PROPERTIES WILL_FAIL TRUE)
 
 
   ADD_TEST(integration-InputWithNoRun "${BIN_OUTPUT_PATH}/openfluid-engine"
                                         "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.NoRun"
-                                        "-o" "${TESTS_DATASETS_PATH}/OPENFLUID.OUT.NoRun"
+                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NoRun"
                                         "-p" "${TEST_OUTPUT_PATH}")                           
   SET_TESTS_PROPERTIES(integration-InputWithNoRun PROPERTIES WILL_FAIL TRUE)
 
   ADD_FUNCTION(tests.outputs tests.outputs ${TEST_OUTPUT_PATH})
   ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
 
+  ADD_TEST(integration-Verbose "${BIN_OUTPUT_PATH}/openfluid-engine"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsDirect"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckVerbose"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-v")
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "func2doc"
