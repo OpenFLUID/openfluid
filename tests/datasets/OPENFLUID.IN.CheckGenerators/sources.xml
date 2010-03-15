@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <datasources>
+    <filesource ID="1" file="source1.dat" />
+    <filesource ID="2" file="source2.dat" />    
+  </datasources>
+</openfluid>
