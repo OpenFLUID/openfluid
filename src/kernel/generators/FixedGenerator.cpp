@@ -76,15 +76,15 @@ bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
   DECLARE_UNITS_ORDERED_LOOP(1);
 
-  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU)
+  BEGIN_UNITS_ORDERED_LOOP(1,m_GenDesc.getUnitClass(),LU)
 
     if (m_GenDesc.isVectorVariable())
     {
-      openfluid::core::VectorValue VV(m_VarSize,m_VarValue);
-      OPENFLUID_AppendVariable(LU,m_VarName,VV);
+      openfluid::core::VectorValue VV(m_GenDesc.getVariableSize(),m_VarValue);
+      OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),VV);
     }
     else
-      OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
+      OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),m_VarValue);
 
   END_LOOP
 

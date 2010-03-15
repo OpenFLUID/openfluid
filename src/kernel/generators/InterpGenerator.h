@@ -23,10 +23,18 @@
 
 
 #include "Generator.h"
+#include "openfluid-tools.h"
 
 class InterpGenerator : public Generator
 {
   private:
+    openfluid::tools::DistributeInterpolate m_DataPool;
+
+    bool m_IsMin;
+    bool m_IsMax;
+
+    double m_Min;
+    double m_Max;
 
   public:
 

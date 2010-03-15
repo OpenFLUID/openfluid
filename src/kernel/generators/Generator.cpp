@@ -21,9 +21,6 @@
 
 Generator::Generator() : PluggableFunction()
 {
-  m_UnitClass = "";
-  m_VarName = "";
-  m_VarSize = 1;
 
 }
 

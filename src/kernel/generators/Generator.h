@@ -30,10 +30,6 @@ class Generator : public openfluid::base::PluggableFunction
 {
   protected:
 
-    openfluid::core::UnitClass_t m_UnitClass;
-    openfluid::core::VariableName_t m_VarName;
-    unsigned int m_VarSize;
-
     GeneratorDescriptor m_GenDesc;
 
   public:
