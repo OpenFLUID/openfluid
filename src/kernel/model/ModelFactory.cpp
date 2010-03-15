@@ -85,14 +85,18 @@ const ModelInstance* ModelFactory::buildInstanceFromDescriptor(const ModelDescri
         GenInstance = new RandomGenerator();
 
       if (GenDesc->getGeneratorMethod() == GeneratorDescriptor::Interp)
+      {
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
         GenInstance = new InterpGenerator();
+      }
 
       if (GenInstance == NULL)
         throw openfluid::base::OFException("kernel","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
       GenInstance->setDataRepository(mp_CoreData);
       GenInstance->setExecutionMessages(mp_ExecMsgs);
-      GenInstance->setFunctionEnvironment(new openfluid::base::FunctionEnvironment);
+      GenInstance->setFunctionEnvironment(RuntimeEnvironment::getInstance()->getFunctionEnvironment());
       GenInstance->setDescriptor(*GenDesc);
       IInstance->Function = GenInstance;
       IInstance->Signature = Signature;
