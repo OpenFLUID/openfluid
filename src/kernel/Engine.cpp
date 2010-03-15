@@ -199,7 +199,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 // =====================================================================
 // =====================================================================
 
-bool Engine::checkModelConsistency()
+void Engine::checkModelConsistency()
 {
 
   bool IsOK = true;
@@ -282,8 +282,6 @@ bool Engine::checkModelConsistency()
     FuncIter++;
   }
 
-
-  return IsOK;
 }
 
 // =====================================================================
@@ -291,7 +289,7 @@ bool Engine::checkModelConsistency()
 
 
 
-bool Engine::checkDataConsistency()
+void Engine::checkDataConsistency()
 {
 
   bool IsOK = true;
@@ -324,16 +322,13 @@ bool Engine::checkDataConsistency()
     FuncIter++;
   }
 
-
-
-  return IsOK;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool Engine::checkExtraFilesConsistency()
+void Engine::checkExtraFilesConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
   openfluid::base::SignatureHandledData HData;
@@ -352,15 +347,9 @@ bool Engine::checkExtraFilesConsistency()
 
       boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
       if (!boost::filesystem::exists(ReqExtraFilePath))
-      {
         throw openfluid::base::OFException("kernel","Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentFunction->Signature->ID + " not found");
-        return false;
-      }
     }
-
-
   }
-  return true;
 }
 
 // =====================================================================
@@ -480,14 +469,6 @@ bool Engine::prepareDataAndCheckConsistency()
 
   bool IsOK = true;
 
-  // check simulation functions count
-
-  if (mp_ModelInstance->getItemsCount() == 0)
-  {
-    throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","No simulation function in model");
-    return false;
-  }
-
 
   // inits the simulation infos and status
 
@@ -505,17 +486,38 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
-  IsOK = checkModelConsistency();
-  if (!IsOK)
+
+  // check simulation functions count
+
+  try
   {
-    return false;
+    if (mp_ModelInstance->getItemsCount() == 0)
+      throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","No simulation function in model");
+
+    checkExtraFilesConsistency();
+
+    checkModelConsistency();
+
+    checkDataConsistency();
   }
-
-
-  IsOK = checkDataConsistency();
-  if (!IsOK)
+  catch (openfluid::base::OFException& E)
   {
-    return false;
+    if (!mp_RunEnv->isQuietRun())
+    {
+      if (!mp_RunEnv->isVerboseRun())
+      {
+        std::cout << std::setw(12) << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+      else
+      {
+        std::cout << "  " << "[Error]";
+        std::cout << std::endl << std::endl;
+        std::cout.flush();
+      }
+    }
+    throw;
   }
 
 
@@ -550,14 +552,6 @@ bool Engine::prepareDataAndCheckConsistency()
   {
     return false;
   }
-
-
-  IsOK = checkExtraFilesConsistency();
-  if (!IsOK)
-  {
-    return false;
-  }
-
 
 
 

@@ -81,11 +81,11 @@ class Engine
 
      void checkSimulationVarsProduction(int ExpectedVarsCount);
 
-     bool checkModelConsistency();
+     void checkModelConsistency();
 
-     bool checkDataConsistency();
+     void checkDataConsistency();
 
-     bool checkExtraFilesConsistency();
+     void checkExtraFilesConsistency();
 
      bool checkExistingVariable(openfluid::core::VariableName_t VarName,
                                 openfluid::core::UnitClass_t ClassName);
