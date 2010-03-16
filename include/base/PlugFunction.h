@@ -267,14 +267,35 @@ class PluggableFunction
                                openfluid::core::VectorValue *Value);
 
     /**
-      Gets a distributed property for a unit
+      Gets input data for a unit, as a double
       \param[in] UnitPtr a Unit
       \param[in] InputName the name of the requested property
       \param[out] Value the value of the requested property
     */
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
                                 openfluid::core::InputDataName_t InputName,
-                                openfluid::core::ScalarValue *Value);
+                                double *Value);
+
+    /**
+      Gets input data for a unit, as a long integer
+      \param[in] UnitPtr a Unit
+      \param[in] InputName the name of the requested property
+      \param[out] Value the value of the requested property
+    */
+    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                                openfluid::core::InputDataName_t InputName,
+                                long *Value);
+
+    /**
+      Gets input data for a unit, as a string
+      \param[in] UnitPtr a Unit
+      \param[in] InputName the name of the requested property
+      \param[out] Value the value of the requested property
+    */
+    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                                openfluid::core::InputDataName_t InputName,
+                                std::string *Value);
+
 
     /**
       Returns true if a distributed input data exists, false otherwise

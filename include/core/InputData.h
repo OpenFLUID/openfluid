@@ -36,6 +36,10 @@ class InputData
 
     bool getValue(const InputDataName_t aName, T *aValue);
 
+    bool getValueAsDouble(const InputDataName_t aName, double *aValue);
+
+    bool getValueAsLong(const InputDataName_t aName, long *aValue);
+
     bool isDataExist(const InputDataName_t aName) const;
 
     std::vector<InputDataName_t> getInputDataNames() const;
@@ -102,6 +106,51 @@ bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
 
 // =====================================================================
 // =====================================================================
+
+
+template <class T>
+bool InputData<T>::getValueAsDouble(const InputDataName_t aName, double *aValue)
+{
+  T TValue;
+  typename InputDataMap_t::iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+  {
+    // TODO Check if by reference is possible
+    TValue = it->second;
+
+    std::istringstream iss(TValue);
+    return !(iss >> (*aValue)).fail();
+  }
+  else return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+bool InputData<T>::getValueAsLong(const InputDataName_t aName, long *aValue)
+{
+  T TValue;
+  typename InputDataMap_t::iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+  {
+    // TODO Check if by reference is possible
+    TValue = it->second;
+
+    std::istringstream iss(TValue);
+    return !(iss >> (*aValue)).fail();
+  }
+  else return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 template <class T>
 bool InputData<T>::isDataExist(const InputDataName_t aName) const

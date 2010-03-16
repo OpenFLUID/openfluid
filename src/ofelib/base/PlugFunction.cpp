@@ -96,15 +96,44 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
 // =====================================================================
 // =====================================================================
 
-void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, openfluid::core::ScalarValue *Value)
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, double *Value)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->getValueAsDouble(InputName,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
+  }
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, long *Value)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->getValueAsLong(InputName,Value))
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
+  }
+  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, std::string *Value)
 {
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValue(InputName,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Value for input data "+ InputName +" does not exist");
+      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
   }
   else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
+
 
 // =====================================================================
 // =====================================================================

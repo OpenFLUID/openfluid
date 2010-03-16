@@ -230,7 +230,8 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   unsigned long NewVectorSize = 5;
   openfluid::core::VectorValue TheVector;
   openfluid::core::ScalarValue TheScalar;
-  openfluid::core::ScalarValue TheInput;
+  double TheInputDouble;
+  std::string TheInputStr;
   openfluid::core::EventsCollection TheEvents;
   openfluid::core::Event Ev;
   DECLARE_UNITS_ORDERED_LOOP(1);
@@ -455,15 +456,18 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsInputDataExist (wrongdata)");
 
 
-    TheInput = 0.0;
-    OPENFLUID_GetInputData(TU,"indataA",&TheInput);
-    if (!openfluid::tools::IsVeryClose(TheInput,1.1))
+    TheInputDouble = 0.0;
+    OPENFLUID_GetInputData(TU,"indataA",&TheInputDouble);
+    if (!openfluid::tools::IsVeryClose(TheInputDouble,1.1))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue)");
 
 
-    TheInput = 0.0;
-    OPENFLUID_GetInputData(TU,"indataB",&TheInput);
-    if (!openfluid::tools::IsVeryClose(TheInput,1.2))
+    TheInputStr = "";
+    OPENFLUID_GetInputData(TU,"indataB",&TheInputStr);
+    std::string RefStr;
+    openfluid::tools::ConvertValue(TU->getID(),&RefStr);
+    RefStr = "CODE"+RefStr;
+    if (TheInputStr != RefStr)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetInputData (indataB wrongvalue)");
 
 

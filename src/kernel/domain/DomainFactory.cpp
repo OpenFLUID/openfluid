@@ -124,7 +124,7 @@ void DomainFactory::buildDomainFromDescriptor(DomainDescriptor& Descriptor)
       int i,j;
       bool IsOK = true;
       long ID;
-      double Value;
+      openfluid::core::InputDataValue Value;
 
       // parses data in file and loads it in the input data table for each unit, ordered by columns
       i = 0;
@@ -141,7 +141,7 @@ void DomainFactory::buildDomainFromDescriptor(DomainDescriptor& Descriptor)
           {
             for (j=1;j<DataParser.getColsCount();j++)
             {
-              if (DataParser.getDoubleValue(i,j,&Value))
+              if (DataParser.getStringValue(i,j,&Value))
               {
                 TheUnit->getInputData()->setValue((*itIData).getColumnsOrder()[j-1],Value);
               }

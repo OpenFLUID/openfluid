@@ -98,6 +98,7 @@ typedef double ScalarValue;
  */
 typedef Vector<ScalarValue> VectorValue;
 
+typedef std::string InputDataValue;
 
 
 /**

@@ -89,7 +89,7 @@ class Unit
     LinkedUnitsListByClassMap_t m_ToUnits;
 //    UnitsListByClassMap_t m_AssociatedUnits;
 
-    InputData<ScalarValue> m_InputData;
+    InputData<InputDataValue> m_InputData;
 
     Variables<ScalarValue> m_ScalarVariables;
     Variables<VectorValue> m_VectorVariables;
@@ -154,9 +154,9 @@ class Unit
 
     const UnitsPtrList_t* getFromUnits(const UnitClass_t aClass) const;
 
-    InputData<ScalarValue>* getInputData()  { return &m_InputData; };
+    InputData<InputDataValue>* getInputData()  { return &m_InputData; };
 
-    const InputData<ScalarValue>* getInputData() const { return &m_InputData; };
+    const InputData<InputDataValue>* getInputData() const { return &m_InputData; };
 
     Variables<ScalarValue>* getScalarVariables() { return &m_ScalarVariables; };
 
