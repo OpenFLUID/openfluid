@@ -87,7 +87,8 @@ class Unit
 
     LinkedUnitsListByClassMap_t m_FromUnits;
     LinkedUnitsListByClassMap_t m_ToUnits;
-//    UnitsListByClassMap_t m_AssociatedUnits;
+    LinkedUnitsListByClassMap_t m_ParentUnits;
+    LinkedUnitsListByClassMap_t m_ChildrenUnits;
 
     InputData<InputDataValue> m_InputData;
 
@@ -136,6 +137,10 @@ class Unit
 
     bool addFromUnit(Unit* aUnit);
 
+    bool addParentUnit(Unit* aUnit);
+
+    bool addChildUnit(Unit* aUnit);
+
     /**
       Returns a list of units, of the requested class, connected to this unit.
       Returns NULL if no units of the requested class are connected to this unit.
@@ -153,6 +158,27 @@ class Unit
     UnitsPtrList_t* getFromUnits(const UnitClass_t aClass);
 
     const UnitsPtrList_t* getFromUnits(const UnitClass_t aClass) const;
+
+    /**
+      Returns a list of parent units of the requested class.
+      Returns NULL if this unit has no parent
+      \param[in] aClass the requested class
+    */
+    UnitsPtrList_t* getParentUnits(const UnitClass_t aClass);
+
+    const UnitsPtrList_t* getParentUnits(const UnitClass_t aClass) const;
+
+    /**
+      Returns a list of children units of the requested class.
+      Returns NULL if this unit has no child
+      \param[in] aClass the requested class
+    */
+    UnitsPtrList_t* getChildrenUnits(const UnitClass_t aClass);
+
+    const UnitsPtrList_t* getChildrenUnits(const UnitClass_t aClass) const;
+
+
+
 
     InputData<InputDataValue>* getInputData()  { return &m_InputData; };
 

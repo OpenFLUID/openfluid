@@ -47,7 +47,7 @@ void DomainFactory::buildDomainFromDescriptor(DomainDescriptor& Descriptor)
   std::list<UnitDescriptor>::iterator itUnits;
   std::list<openfluid::core::UnitClassID_t>::iterator itLinkedUnits;
 
-  openfluid::core::Unit *FromUnit, *ToUnit;
+  openfluid::core::Unit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
 
   // creating units
   for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
@@ -78,32 +78,30 @@ void DomainFactory::buildDomainFromDescriptor(DomainDescriptor& Descriptor)
     }
   }
 
-  // TODO linking "in" units
-  /*
+
+  // linking child units
   for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
   {
 
-    for (itLinkedUnits = (*itUnits).getUnitsIns().begin();itLinkedUnits != (*itUnits).getUnitsIns().end();++itLinkedUnits)
+    for (itLinkedUnits = (*itUnits).getUnitsParents().begin();itLinkedUnits != (*itUnits).getUnitsParents().end();++itLinkedUnits)
     {
-      FromUnit = Repository->getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
-      ToUnit = Repository->getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+      ChildUnit = Repository->getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ParentUnit = Repository->getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
-      if (ToUnit != NULL)
+      if (ParentUnit != NULL)
       {
-        FromUnit->addToUnit(ToUnit);
-        ToUnit->addFromUnit(FromUnit);
-        std::cout << "to added " << FromUnit->getClass() << FromUnit->getID() << " -> " << ToUnit->getClass() << ToUnit->getID() << std::endl;
+        ParentUnit->addChildUnit(ChildUnit);
+        ChildUnit->addParentUnit(ParentUnit);
       }
       else
       {
         std::ostringstream UnitStr;
-        UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
-        throw openfluid::base::OFException("kernel","DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
+        UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
+        throw openfluid::base::OFException("kernel","DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
       }
     }
   }
 
-*/
 
   Repository->sortUnitsByProcessOrder();
 

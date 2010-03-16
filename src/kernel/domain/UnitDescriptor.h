@@ -31,7 +31,7 @@ class UnitDescriptor
     openfluid::core::UnitClass_t m_UnitClass;
     openfluid::core::PcsOrd_t m_PcsOrder;
     std::list<openfluid::core::UnitClassID_t> m_UnitsTos;
-    std::list<openfluid::core::UnitClassID_t> m_UnitsIns;
+    std::list<openfluid::core::UnitClassID_t> m_UnitsParents;
 
   public:
 
@@ -48,7 +48,7 @@ class UnitDescriptor
 
     std::list<openfluid::core::UnitClassID_t>& getUnitsTos() { return m_UnitsTos; };
 
-    std::list<openfluid::core::UnitClassID_t>& getUnitsIns() { return m_UnitsIns; };
+    std::list<openfluid::core::UnitClassID_t>& getUnitsParents() { return m_UnitsParents; };
 
 };
 

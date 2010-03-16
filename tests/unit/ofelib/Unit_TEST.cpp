@@ -38,6 +38,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(TU.getProcessOrder(),3);
   BOOST_REQUIRE(TU.getFromUnits("TestFrom") == NULL);
   BOOST_REQUIRE(TU.getToUnits("TestTo") == NULL);
+  BOOST_REQUIRE(TU.getParentUnits("TestParent") == NULL);
+  BOOST_REQUIRE(TU.getChildrenUnits("TestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(TU.getEvents()->getCount(),0);
   BOOST_REQUIRE_EQUAL(TU.getInputData()->isDataExist("testidata"),false);
   BOOST_REQUIRE_EQUAL(TU.getScalarVariables()->isVariableExist("testsvar"),false);
@@ -53,6 +55,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(pTU->getProcessOrder(),3);
   BOOST_REQUIRE(pTU->getFromUnits("pTestFrom") == NULL);
   BOOST_REQUIRE(pTU->getToUnits("pTestTo") == NULL);
+  BOOST_REQUIRE(pTU->getParentUnits("pTestParent") == NULL);
+  BOOST_REQUIRE(pTU->getChildrenUnits("pTestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(pTU->getEvents()->getCount(),0);
   BOOST_REQUIRE_EQUAL(pTU->getInputData()->isDataExist("testidata"),false);
   BOOST_REQUIRE_EQUAL(pTU->getScalarVariables()->isVariableExist("testsvar"),false);
@@ -86,8 +90,10 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   TU.addToUnit(new openfluid::core::Unit("ToTest2",1,1));
   TU.addToUnit(new openfluid::core::Unit("ToTest2",2,1));
 
+  TU.addParentUnit(new openfluid::core::Unit("ParentTest",55,1));
 
-
+  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",1,1));
+  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",2,1));
 
   BOOST_REQUIRE(TU.getFromUnits("FromTest") != NULL);
   BOOST_REQUIRE(TU.getFromUnits("FromTest2") != NULL);
@@ -98,6 +104,12 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   BOOST_REQUIRE(TU.getToUnits("ToTest2") != NULL);
   BOOST_REQUIRE(TU.getToUnits("ToTest3") == NULL);
   BOOST_REQUIRE(TU.getFromUnits("ToTest") == NULL);
+
+  BOOST_REQUIRE(TU.getParentUnits("ParentTest") != NULL);
+  BOOST_REQUIRE(TU.getChildrenUnits("ChildrenTest") != NULL);
+  BOOST_REQUIRE(TU.getParentUnits("ToTest3") == NULL);
+  BOOST_REQUIRE(TU.getChildrenUnits("ToTest") == NULL);
+
 
   BOOST_REQUIRE_EQUAL(TU.getFromUnits("FromTest")->size(),3);
   BOOST_REQUIRE_EQUAL(TU.getFromUnits("FromTest2")->size(),2);
@@ -110,6 +122,12 @@ BOOST_AUTO_TEST_CASE(check_from_to)
 
   BOOST_REQUIRE_EQUAL(TU.getToUnits("ToTest")->front()->getID(),1);
   BOOST_REQUIRE_EQUAL(TU.getToUnits("ToTest")->back()->getID(),2);
+
+  BOOST_REQUIRE_EQUAL(TU.getParentUnits("ParentTest")->front()->getID(),55);
+
+  BOOST_REQUIRE_EQUAL(TU.getChildrenUnits("ChildrenTest")->front()->getID(),1);
+  BOOST_REQUIRE_EQUAL(TU.getChildrenUnits("ChildrenTest")->back()->getID(),2);
+
 
 }
 

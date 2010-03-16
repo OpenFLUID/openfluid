@@ -3,9 +3,12 @@
   <domain>
     <definition>
 
+      <unit class="unitsP" ID="1" pcsorder="1" />
+
       <!-- units of class A -->
       <unit class="unitsA" ID="3" pcsorder="1">
         <to class="unitsB" ID="11" />
+        <childof class="unitsP" ID="1" />
       </unit>
       <unit class="unitsA" ID="1" pcsorder="1">
         <to class="unitsB" ID="2" />

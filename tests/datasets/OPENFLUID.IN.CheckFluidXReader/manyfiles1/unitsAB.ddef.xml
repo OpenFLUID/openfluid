@@ -13,6 +13,7 @@
 
       <!-- units of class B -->
       <unit class="unitsB" ID="11" pcsorder="1">
+        <childof class="unitsP" ID="1" />
         <to class="unitsB" ID="3" />
       </unit>
 

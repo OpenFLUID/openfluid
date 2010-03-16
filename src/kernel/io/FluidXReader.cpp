@@ -542,9 +542,9 @@ void FluidXReader::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
             UnitDesc->getUnitsTos().push_back(extractUnitClassIDFromNode(CurrLinkNode));
           }
 
-          if (xmlStrcmp(CurrLinkNode->name,(const xmlChar*)"in") == 0)
+          if (xmlStrcmp(CurrLinkNode->name,(const xmlChar*)"childof") == 0)
           {
-            UnitDesc->getUnitsIns().push_back(extractUnitClassIDFromNode(CurrLinkNode));
+            UnitDesc->getUnitsParents().push_back(extractUnitClassIDFromNode(CurrLinkNode));
           }
 
           CurrLinkNode = CurrLinkNode->next;

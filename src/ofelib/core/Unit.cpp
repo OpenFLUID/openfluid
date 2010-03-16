@@ -67,14 +67,50 @@ bool Unit::addFromUnit(Unit* aUnit)
 // =====================================================================
 
 
+bool Unit::addParentUnit(Unit* aUnit)
+{
+  m_ParentUnits[aUnit->getClass()].push_back(aUnit);
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Unit::addChildUnit(Unit* aUnit)
+{
+  m_ChildrenUnits[aUnit->getClass()].push_back(aUnit);
+  return true;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
 const UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass) const
 {
-  LinkedUnitsListByClassMap_t::const_iterator it = m_ToUnits.find(aClass);
+  return const_cast<UnitsPtrList_t*>(getToUnits(aClass));
 
-  if (it != m_ToUnits.end())
-    return &(it->second);
-  else return NULL;
+}
 
+// =====================================================================
+// =====================================================================
+
+
+const UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass) const
+{
+  return const_cast<UnitsPtrList_t*>(getChildrenUnits(aClass));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const UnitsPtrList_t* Unit::getParentUnits(const UnitClass_t aClass) const
+{
+  return const_cast<UnitsPtrList_t*>(getParentUnits(aClass));
 
 }
 
@@ -84,12 +120,9 @@ const UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass) const
 
 const UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass) const
 {
-  LinkedUnitsListByClassMap_t::const_iterator it = m_FromUnits.find(aClass);
-
-  if (it != m_FromUnits.end())
-    return &(it->second);
-  else return NULL;
+  return const_cast<UnitsPtrList_t*>(getFromUnits(aClass));
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -119,6 +152,33 @@ UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass)
 
 // =====================================================================
 // =====================================================================
+
+
+UnitsPtrList_t* Unit::getParentUnits(const UnitClass_t aClass)
+{
+  LinkedUnitsListByClassMap_t::iterator it = m_ParentUnits.find(aClass);
+
+  if (it != m_ParentUnits.end())
+    return &(it->second);
+  else return NULL;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass)
+{
+  LinkedUnitsListByClassMap_t::iterator it = m_ChildrenUnits.find(aClass);
+
+  if (it != m_ChildrenUnits.end())
+    return &(it->second);
+  else return NULL;
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 void Unit::printSTDOUT()

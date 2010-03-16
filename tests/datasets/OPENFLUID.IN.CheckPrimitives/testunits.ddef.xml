@@ -2,23 +2,35 @@
 <openfluid>
   <domain>
     <definition>
+      <unit class="ParentTestUnits" ID="1" pcsorder="1" />
+      <unit class="ParentTestUnits" ID="2" pcsorder="1" />
+
       <unit class="TestUnits" ID="1" pcsorder="1">
+        <childof class="ParentTestUnits" ID="1" />
       </unit>
       <unit class="TestUnits" ID="2" pcsorder="2">
+        <childof class="ParentTestUnits" ID="2" />
       </unit>
       <unit class="TestUnits" ID="3" pcsorder="1">
+        <childof class="ParentTestUnits" ID="1" />
       </unit>
       <unit class="TestUnits" ID="4" pcsorder="3">
+        <childof class="ParentTestUnits" ID="2" />
       </unit>
       <unit class="TestUnits" ID="5" pcsorder="1">
+        <childof class="ParentTestUnits" ID="1" />
       </unit>
       <unit class="TestUnits" ID="6" pcsorder="2">
+        <childof class="ParentTestUnits" ID="2" />
       </unit>
       <unit class="TestUnits" ID="7" pcsorder="1">
+        <childof class="ParentTestUnits" ID="1" />
       </unit>
       <unit class="TestUnits" ID="8" pcsorder="2">
+        <childof class="ParentTestUnits" ID="2" />
       </unit>
       <unit class="TestUnits" ID="9" pcsorder="3">
+        <childof class="ParentTestUnits" ID="1" />
       </unit>
       <unit class="TestUnits" ID="10" pcsorder="2">
       </unit>

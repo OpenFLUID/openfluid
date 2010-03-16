@@ -244,16 +244,26 @@ void TestDataset(std::string DatasetPath)
 
   std::list<UnitDescriptor>::iterator UnitsIt;
 
-  BOOST_REQUIRE_EQUAL(FXR.getDomainDescriptor().getUnits().size(),13);
+  BOOST_REQUIRE_EQUAL(FXR.getDomainDescriptor().getUnits().size(),14);
 
   UnitsIt = FXR.getDomainDescriptor().getUnits().begin();
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(),"unitsP");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(),1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(),1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(),0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(),0);
+
+  UnitsIt++;
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(),"unitsA");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(),3);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(),1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(),1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().first,"unitsB");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().second,11);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsIns().size(),0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(),1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().first,"unitsP");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().second,1);
+
 
   UnitsIt++;
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitClass(),"unitsA");
@@ -262,7 +272,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(),1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().first,"unitsB");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().second,2);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsIns().size(),0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(),0);
 
   UnitsIt++;
   UnitsIt++;
@@ -277,7 +287,9 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(),1);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().first,"unitsB");
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().front().second,3);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsIns().size(),0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(),1);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().first,"unitsP");
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().front().second,1);
 
   UnitsIt++;
   UnitsIt++;
@@ -286,7 +298,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitID(),7);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getProcessOrder(),4);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(),0);
-  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsIns().size(),0);
+  BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(),0);
 
 
 
