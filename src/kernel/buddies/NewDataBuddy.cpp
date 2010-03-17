@@ -79,7 +79,7 @@ void NewDataBuddy::generateRunXML()
   Content << "  </run>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/run.xml");
+  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/run.fluidx");
 
   std::ofstream OutFile;
 
@@ -105,7 +105,7 @@ void NewDataBuddy::generateModelXML()
   Content << "  </model>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/model.xml");
+  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/model.fluidx");
 
   std::ofstream OutFile;
 
@@ -135,7 +135,7 @@ void NewDataBuddy::generateOutputXML()
   Content << "  </output>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/output.xml");
+  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/output.fluidx");
 
   std::ofstream OutFile;
 
@@ -153,26 +153,28 @@ void NewDataBuddy::generateEventsXML()
   std::ostringstream Content;
 
   Content << getXMLHeader() << std::endl;
-  Content << "  <calendar>" << std::endl;
+  Content << "  <domain>" << std::endl;
+  Content << "    <calendar>" << std::endl;
   Content << std::endl;
-  Content << "    <event name=\"\" category=\"example\" unitclass=\"unitsA\" unitID=\"1\" date=\"2001-01-18 12:25:33\">" << std::endl;
-  Content << "      <info key=\"when\" value=\"during\"/>" << std::endl;
-  Content << "      <info key=\"where\" value=\"1\"/>" << std::endl;
-  Content << "      <info key=\"numeric\" value=\"1.15\"/>" << std::endl;
-  Content << "      <info key=\"string\" value=\"EADGBE\"/>" << std::endl;
-  Content << "    </event>" << std::endl;
+  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsA\" unitID=\"1\" date=\"2001-01-18 12:25:33\">" << std::endl;
+  Content << "        <info key=\"when\" value=\"during\"/>" << std::endl;
+  Content << "        <info key=\"where\" value=\"1\"/>" << std::endl;
+  Content << "        <info key=\"numeric\" value=\"1.15\"/>" << std::endl;
+  Content << "        <info key=\"string\" value=\"EADGBE\"/>" << std::endl;
+  Content << "      </event>" << std::endl;
   Content << std::endl;
-  Content << "    <event name=\"\" category=\"example\" unitclass=\"unitsB\" unitID=\"1\" date=\"2001-05-01 06:00:17\">" << std::endl;
-  Content << "      <info key=\"when\" value=\"after\"/>" << std::endl;
-  Content << "      <info key=\"where\" value=\"12\"/>" << std::endl;
-  Content << "      <info key=\"numeric\" value=\"1.15\"/>" << std::endl;
-  Content << "      <info key=\"string\" value=\"EADGBE\"/>" << std::endl;
-  Content << "    </event>" << std::endl;
+  Content << "      <event name=\"\" category=\"example\" unitclass=\"unitsB\" unitID=\"1\" date=\"2001-05-01 06:00:17\">" << std::endl;
+  Content << "        <info key=\"when\" value=\"after\"/>" << std::endl;
+  Content << "        <info key=\"where\" value=\"12\"/>" << std::endl;
+  Content << "        <info key=\"numeric\" value=\"1.15\"/>" << std::endl;
+  Content << "        <info key=\"string\" value=\"EADGBE\"/>" << std::endl;
+  Content << "      </event>" << std::endl;
   Content << std::endl;
-  Content << "  </calendar>" << std::endl;
+  Content << "    </calendar>" << std::endl;
+  Content << "  </domain>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/eventsAandB.events.xml");
+  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/eventsAandB.events.fluidx");
 
   std::ofstream OutFile;
 
@@ -208,7 +210,7 @@ void NewDataBuddy::generateDDefXML()
   Content << "  </domain>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
-  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/unitsAandB.ddef.xml");
+  boost::filesystem::path FilePath(m_OutputDirPath.string()+"/unitsAandB.ddef.fluidx");
 
   std::ofstream OutFile;
 
@@ -231,19 +233,16 @@ void NewDataBuddy::generateDDataXML()
   ContentA.clear();
   ContentA << getXMLHeader() << std::endl;
   ContentA << "  <domain>" << std::endl;
-  ContentA << "    <inputdata unitclass=\"unitsA\">" << std::endl;
+  ContentA << "    <inputdata unitclass=\"unitsA\" colorder=\"foodata\" >" << std::endl;
   ContentA << std::endl;
-  ContentA << "      <columns order=\"foodata\" />" << std::endl;
-  ContentA << "      <data>" << std::endl;
   ContentA << "3 1.25" << std::endl;
   ContentA << "8 2.385" << std::endl;
-  ContentA << "      </data>" << std::endl;
   ContentA << std::endl;
   ContentA << "    </inputdata>" << std::endl;
   ContentA << "  </domain>" << std::endl;
   ContentA << getXMLFooter() << std::endl;
 
-  FilePath = boost::filesystem::path(m_OutputDirPath.string()+"/unitsA.ddata.xml");
+  FilePath = boost::filesystem::path(m_OutputDirPath.string()+"/unitsA.ddata.fluidx");
 
   OutFileA.open(FilePath.string().c_str(),std::ios::out);
   OutFileA << ContentA.str();
@@ -254,18 +253,15 @@ void NewDataBuddy::generateDDataXML()
   ContentB.clear();
   ContentB << getXMLHeader() << std::endl;
   ContentB << "  <domain>" << std::endl;
-  ContentB << "    <inputdata unitclass=\"unitsB\">" << std::endl;
+  ContentB << "    <inputdata unitclass=\"unitsB\" colorder=\"bardata;otherbardata\">" << std::endl;
   ContentB << std::endl;
-  ContentB << "      <columns order=\"bardata;otherbardata\" />" << std::endl;
-  ContentB << "      <data>" << std::endl;
   ContentB << "1 0.00035 185" << std::endl;
-  ContentB << "      </data>" << std::endl;
   ContentB << std::endl;
   ContentB << "    </inputdata>" << std::endl;
   ContentB << "  </domain>" << std::endl;
   ContentB << getXMLFooter() << std::endl;
 
-  FilePath = boost::filesystem::path(m_OutputDirPath.string()+"/unitsB.ddata.xml");
+  FilePath = boost::filesystem::path(m_OutputDirPath.string()+"/unitsB.ddata.fluidx");
 
   OutFileB.open(FilePath.string().c_str(),std::ios::out);
   OutFileB << ContentB.str();
