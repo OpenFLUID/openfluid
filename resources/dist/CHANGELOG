@@ -1,3 +1,26 @@
+1.5.0
+  * Added data generators to be used in models descriptions
+  * Introduced global parameters to be used in models descriptions
+  * Added ability to use strings and integers as input data
+  * Introduced parents/children relationships between spatial units
+  * Introduced FluidX format for input datasets, now with ability to use single 
+    or many files
+  * Added environment variable OPENFLUID_FUNCS_PATH (path to search for 
+    simulation functions) 
+  * Added environment variable OPENFLUID_INSTALL_PREFIX (overriding automatic 
+    prefix path, useful on win32 platforms)    
+  * Replaced TinyXML library with LibXML2  
+  * Refactored internal model description and model instance management
+  * Refactored internal IO management
+  * Refactored internal messaging management  
+  * Cleaned source code
+  * Improved development tests
+  * Fixed bug in comparison functions for floating point values
+  * Fixed bug in plugged simulation functions manager
+  * Fixed bug in variable existence checking methods      
+
+
+
 1.4.2
   * Fixed major bug in OPENFLUID_Is*VariableExist() primitives
 
