@@ -42,7 +42,7 @@ class OpenFLUIDBuddy
   public:
     OpenFLUIDBuddy();
 
-    ~OpenFLUIDBuddy();
+    virtual ~OpenFLUIDBuddy();
 
     bool parseOptions(std::string OptsStr);
 

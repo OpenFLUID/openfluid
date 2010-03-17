@@ -494,7 +494,7 @@ class PluggableFunction
       \param[in] UnitPtr a Unit
       \param[in] BeginDate the beginning of the time period
       \param[in] EndDate the ending of the time period
-      \param[out] EventColl the collection of event corresponding to the request
+      \param[out] Events the collection of event corresponding to the request
     */
     void OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr,
                              openfluid::core::DateTime BeginDate,
@@ -505,7 +505,7 @@ class PluggableFunction
     /**
       Appends an event on a unit
       \param[in] UnitPtr a Unit
-      \param[in] Event the event to append
+      \param[in] Ev the event to append
     */
     void OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
                                openfluid::core::Event& Ev);

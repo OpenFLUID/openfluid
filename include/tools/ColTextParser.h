@@ -78,7 +78,7 @@ class ColumnTextParser
     /**
       Parses a one-line delimiter-separated string to set contents
       ex: "147.2 18 15 25 36 51.3 25.1 15", for 4 columns
-      \param[in] Content the string to parse
+      \param[in] Contents the string to parse
       \param[in] ColumnsNbr the number of columns (for splitting the sting into lines)
       \return true if everything went fine
     */
