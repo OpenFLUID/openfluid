@@ -116,7 +116,7 @@ bool MessagesFunction::checkConsistency()
 bool MessagesFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
-  OPENFLUID_RaiseWarning("tests.messages, initializeRun()","Message from tests.messages function");
+  OPENFLUID_RaiseWarning("tests.messages","initializeRun()","Message from tests.messages function");
 
   return true;
 }
@@ -144,7 +144,7 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for (i = 0; i< m_RepeatMessages; i++)
     {
       openfluid::tools::ConvertValue((i+1),&RptStr);
-      OPENFLUID_RaiseWarning("tests.messages",SimStatus->getCurrentStep(),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
+      OPENFLUID_RaiseWarning("tests.messages","runStep()",SimStatus->getCurrentStep(),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
     }
 
   END_LOOP
@@ -160,7 +160,7 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 bool MessagesFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
 
-  OPENFLUID_RaiseWarning("tests.messages, finalizeRun()","Message from tests.messages function");
+  OPENFLUID_RaiseWarning("tests.messages","finalizeRun()","Message from tests.messages function");
 
   return true;
 }

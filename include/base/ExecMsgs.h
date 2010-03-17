@@ -28,6 +28,7 @@
 
 #include "core/TypeDefs.h"
 #include "tools/SwissTools.h"
+#include "base/Message.h"
 
 namespace openfluid { namespace base {
 
@@ -48,12 +49,12 @@ class ExecutionMessages
     bool m_WarningFlag;
     bool m_ErrorFlag;
 
-    std::vector<std::string> m_WarningMsgs;
+    std::vector<Message> m_WarningMsgs;
     std::string m_ErrorMsg;
 
     unsigned int m_RealWarningsCount;
 
-    void addWarning(std::string Sender, bool IsTimeStep, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg);
+    void addWarning(Message Msg);
 
 
     /**
@@ -70,26 +71,23 @@ class ExecutionMessages
     */
     ~ExecutionMessages();
 
-    void addWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Sender + "," + Source, 1, TimeStep, WarningMsg); };
+    void addWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Message(Sender,Source,TimeStep,WarningMsg)); };
 
-    void addWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Sender,1,TimeStep,WarningMsg); };
+    void addWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg) { addWarning(Message(Sender,"",TimeStep,WarningMsg)); };
 
-    void addWarning(std::string Sender, std::string Source, std::string WarningMsg) { addWarning(Sender + "," + Source,0,-1,WarningMsg); };
+    void addWarning(std::string Sender, std::string Source, std::string WarningMsg) { addWarning(Message(Sender,Source,WarningMsg)); };
 
-    void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Sender,0,-1,WarningMsg); };
+    void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Message(Sender,"",WarningMsg)); };
 
     void resetWarningFlag() { m_WarningFlag = false; };
 
     bool isWarningFlag() const { return m_WarningFlag; };
 
-    std::vector<std::string> getWarningMsgs() const { return m_WarningMsgs; };
+    std::vector<Message> getWarningMsgs() const { return m_WarningMsgs; };
 
     void doMemRelease() { m_WarningMsgs.clear(); };
 
     unsigned int getWarningsCount() { return m_RealWarningsCount; };
-
-    static std::string FormatMessage(std::string Message);
-
 
 };
 

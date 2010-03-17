@@ -543,6 +543,24 @@ class PluggableFunction
     void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
 
     /**
+      Raises a time-marked warning message to the kernel. This do not stops the simulation
+      \param[in] Sender the sender of the message
+      \param[in] Source the source of the message
+      \param[in] TimeStep the time step number when the message occurred
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg);
+
+    /**
+      Raises a warning message to the kernel. This do not stops the simulation
+      \param[in] Sender the sender of the message
+      \param[in] Source the source of the message
+      \param[in] Msg the content of the message
+    */
+    void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
+
+
+    /**
       Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
       \param[in] Sender the sender of the message
       \param[in] TimeStep the time step number when the message occurred

@@ -527,6 +527,26 @@ void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string M
 // =====================================================================
 
 
+void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg)
+{
+  mp_ExecMsgs->addWarning(Sender, Source, TimeStep,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
+{
+  mp_ExecMsgs->addWarning(Sender,Source, Msg);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
 void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg)
 {
   throw OFException(Sender,TimeStep,Msg);

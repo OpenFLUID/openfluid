@@ -11,6 +11,7 @@ SET(OFELIB_CORE_CPP
    )
 
 SET(OFELIB_BASE_CPP 
+    base/Message.cpp
     base/ExecMsgs.cpp
     base/FunctionEnv.cpp
     base/PlugFunction.cpp

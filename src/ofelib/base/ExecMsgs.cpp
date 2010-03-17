@@ -64,45 +64,14 @@ ExecutionMessages* ExecutionMessages::getInstance()
 // =====================================================================
 
 
-void ExecutionMessages::addWarning(std::string Sender, bool IsTimeStep, openfluid::core::TimeStep_t TimeStep, std::string WarningMsg)
+void ExecutionMessages::addWarning(Message Msg)
 {
   m_WarningFlag = true;
 
-  std::ostringstream OutStr;
-  OutStr << IsTimeStep << ";" << TimeStep;
-
-  m_WarningMsgs.push_back(Sender + ";" + OutStr.str() + ";" + WarningMsg);
+  m_WarningMsgs.push_back(Msg);
 
   m_RealWarningsCount++;
 }
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ExecutionMessages::FormatMessage(std::string Message)
-{
-  std::string Formatted = "";
-
-  std::vector<std::string> Parts;
-
-  openfluid::tools::TokenizeString(Message,Parts,";");
-
-  Formatted = Parts[3] + " (message sent by " + Parts[0];
-
-  if (Parts[1] != "0")
-  {
-    Formatted = Formatted + ", at step " + Parts[2];
-  }
-
-  Formatted = Formatted +")";
-
-  return Formatted;
-
-}
-
 
 
 } } // namespace openfluid::base

@@ -53,7 +53,7 @@ void MessagesWriter::saveToFile(std::string FilePath)
 
   openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
-  std::vector<std::string> WMessages = ExecMsgs->getWarningMsgs();
+  std::vector<openfluid::base::Message> WMessages = ExecMsgs->getWarningMsgs();
 
   unsigned int WarningCount = ExecMsgs->getWarningMsgs().size();
 
@@ -62,9 +62,9 @@ void MessagesWriter::saveToFile(std::string FilePath)
     // TODO try to remove the following hack
     // hack for mingw32
 #ifdef __MINGW32__
-    FileContents << ("WARNING: ") << WMessages.at(i) << std::endl;
+    FileContents << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << std::endl;
 #else
-    FileContents << ("WARNING: ") << openfluid::base::ExecutionMessages::FormatMessage(WMessages.at(i)) << std::endl;
+    FileContents << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << std::endl;
 #endif
 
   }
