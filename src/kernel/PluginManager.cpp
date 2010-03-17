@@ -75,8 +75,6 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
   // library loading
   if (PluginFile.length()>0 && PlugLib->load())
   {
-    // TODO to develop
-
     Plug = new ModelItemInstance();
     Plug->Filename = PluginFile;
 

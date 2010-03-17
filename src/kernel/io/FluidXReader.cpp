@@ -242,23 +242,6 @@ void FluidXReader::propagateGlobalParamsInModel()
     Item = (*itM);
 
     Item->setParameters(mergeParams(m_ModelGlobalParams,Item->getParameters()));
-
-
-    // TODO remove below for cleaning
-/*
-    std::cout << Item->getParameters().size() << std::endl;
-
-    for (itP = m_ModelGlobalParams.begin(); itP != m_ModelGlobalParams.end(); ++itP)
-    {
-      std::cout << "param to propagate: " << (*itP).first << "  " << (Item->getParameters().find((*itP).first) == Item->getParameters().end()) << std::endl;
-
-      if (Item->getParameters().find((*itP).first) != Item->getParameters().end())
-      {
-        Item->getParameters()[(*itP).first] = (*itP).second;
-        std::cout << "Propagated param : " << (*itP).first << " -> " << (*itP).second << std::endl;
-      }
-    }
-    */
   }
 }
 

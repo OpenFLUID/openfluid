@@ -97,7 +97,6 @@ bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
 
   if (it != m_Data.end())
   {
-    // TODO Check if by reference is possible
     *aValue = it->second;
     return true;
   }
@@ -116,7 +115,6 @@ bool InputData<T>::getValueAsDouble(const InputDataName_t aName, double *aValue)
 
   if (it != m_Data.end())
   {
-    // TODO Check if by reference is possible
     TValue = it->second;
 
     std::istringstream iss(TValue);
@@ -138,7 +136,6 @@ bool InputData<T>::getValueAsLong(const InputDataName_t aName, long *aValue)
 
   if (it != m_Data.end())
   {
-    // TODO Check if by reference is possible
     TValue = it->second;
 
     std::istringstream iss(TValue);

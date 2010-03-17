@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
                                       76);
 
   openfluid::core::DateTime PrevTime;
-  openfluid::core::TimeStep_t PrevStep;
+  openfluid::core::TimeStep_t PrevStep = 0;
 
   do
   {

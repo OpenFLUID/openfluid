@@ -163,20 +163,13 @@ bool ColumnTextParser::loadFromFile(std::string Filename)
   if (!boost::filesystem::exists(ColumnFilename)) return false;
   if (!FileContent) return false;
 
-  //  TODO check if this is interesting : if (LinesCount == 0) return false;
-
   // parse and loads file contents
   while(std::getline(FileContent,StrLine))
   {
     if (!isCommentLineStr(StrLine) && !isEmptyLineStr(StrLine)) m_Contents.push_back(tokenizeLine(StrLine));
   }
 
-  //  TODO check if this is required : process last line after the loop;
-  //  if (!isCommentLineStr(_S(StrLine)) && !isEmptyLineStr(_S(StrLine))) m_Contents.push_back(tokenizeLine(_S(StrLine)));
-
-
   return checkContents();
-
 }
 
 

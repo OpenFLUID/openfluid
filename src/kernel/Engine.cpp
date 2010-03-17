@@ -579,12 +579,8 @@ bool Engine::run()
 
 
   // Check for simulation vars production before init
-  // TODO enable this (vars production at before init)
-  /*if (!checkSimulationVarsProduction(0, &ProdMessage))
-  {
-    throw openfluid::base::OFException("kernel","Engine::run","Wrong simulation variable production before simulation initilialization : " + std::string(ProdMessage.mb_str(wxConvUTF8)));
-    return false;
-  }*/
+  checkSimulationVarsProduction(0);
+
 
   // ============= initializeRun() =============
 
@@ -632,7 +628,6 @@ bool Engine::run()
 
   mp_ExecMsgs->resetWarningFlag();
 
-  // TODO check this (vars production at after init)
   // check simulation vars production after init
   checkSimulationVarsProduction(0);
 
