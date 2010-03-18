@@ -8,7 +8,8 @@
   * Added environment variable OPENFLUID_FUNCS_PATH (path to search for 
     simulation functions) 
   * Added environment variable OPENFLUID_INSTALL_PREFIX (overriding automatic 
-    prefix path, useful on win32 platforms)    
+    prefix path, useful on win32 platforms)
+  * Updated console display    
   * Replaced TinyXML library with LibXML2  
   * Refactored internal model description and model instance management
   * Refactored internal IO management
