@@ -26,6 +26,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/algorithm/string.hpp>
 #include <fstream>
+#include <libxml/parser.h>
 
 
 ConvertBuddy::ConvertBuddy() : OpenFLUIDBuddy()
@@ -306,6 +307,120 @@ void ConvertBuddy::convert_13_14_model_run_events()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ConvertBuddy::convert_14_15_events()
+{
+  std::vector<std::string> EventsFiles = GetFilesByExt(m_Options["inputdir"],"events.xml",true);
+
+  for (unsigned int i=0;i<EventsFiles.size();i++)
+  {
+    std::string CurrInFile = boost::filesystem::path(EventsFiles[i]).leaf();
+    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(EventsFiles[i]),".fluidx").leaf();
+
+    std::ifstream InputFile(boost::filesystem::path(m_Options["inputdir"]+"/"+CurrInFile).string().c_str());
+    std::string FileContent = "";
+    std::string StrLine;
+
+    while(std::getline(InputFile,StrLine))
+    {
+       FileContent = FileContent + StrLine + "\n";
+    }
+
+    InputFile.close();
+
+    boost::algorithm::replace_all(FileContent,"<openfluid>","<openfluid>\n  <domain>");
+    boost::algorithm::replace_all(FileContent,"</openfluid>","  </domain>\n</openfluid>");
+
+    std::ofstream OutputFile(boost::filesystem::path(m_Options["outputdir"]+"/"+CurrOutFile).string().c_str(),std::ios::out);
+    OutputFile << FileContent;
+    OutputFile.close();
+
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ConvertBuddy::convert_14_15_data()
+{
+
+  std::vector<std::string> DataFiles = GetFilesByExt(m_Options["inputdir"],"ddata.xml",true);
+
+  for (unsigned int i=0;i<DataFiles.size();i++)
+  {
+
+    xmlDocPtr Doc = NULL;
+    xmlNodePtr Root = NULL;
+
+    Doc = xmlParseFile(DataFiles[i].c_str());
+
+    std::string CurrInFile = boost::filesystem::path(DataFiles[i]).leaf();
+    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(CurrInFile),".fluidx").string();
+
+    if (Doc != NULL)
+    {
+      Root =  xmlDocGetRootElement(Doc);
+
+      if (Root != NULL)
+      {
+        xmlSaveFile(boost::filesystem::path(m_Options["outputdir"]+"/"+CurrOutFile).string().c_str(),Doc);
+      }
+      else
+      {
+        throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","file " + DataFiles[i] + " is empty");
+      }
+    }
+    else
+    {
+      throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","file " + DataFiles[i] + " cannot be parsed");
+    }
+
+  }
+
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ConvertBuddy::copy_14_15_model_run_output_defs()
+{
+  boost::filesystem::remove(boost::filesystem::path(m_Options["outputdir"]+"/model.fluidx"));
+  boost::filesystem::copy_file(boost::filesystem::path(m_Options["inputdir"]+"/model.xml"),
+                               boost::filesystem::path(m_Options["outputdir"]+"/model.fluidx"));
+
+  boost::filesystem::remove(boost::filesystem::path(m_Options["outputdir"]+"/run.fluidx"));
+  boost::filesystem::copy_file(boost::filesystem::path(m_Options["inputdir"]+"/run.xml"),
+                               boost::filesystem::path(m_Options["outputdir"]+"/run.fluidx"));
+
+  boost::filesystem::remove(boost::filesystem::path(m_Options["outputdir"]+"/output.fluidx"));
+  boost::filesystem::copy_file(boost::filesystem::path(m_Options["inputdir"]+"/output.xml"),
+                               boost::filesystem::path(m_Options["outputdir"]+"/output.fluidx"));
+
+
+  std::vector<std::string> DefsFiles = GetFilesByExt(m_Options["inputdir"],"ddef.xml",true);
+
+  for (unsigned int i=0;i<DefsFiles.size();i++)
+  {
+    std::string CurrInFile = boost::filesystem::path(DefsFiles[i]).leaf();
+    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(CurrInFile),".fluidx").leaf();
+
+    boost::filesystem::remove(boost::filesystem::path(m_Options["outputdir"]+"/"+CurrOutFile));
+    boost::filesystem::copy_file(boost::filesystem::path(DefsFiles[i]),
+                                 boost::filesystem::path(m_Options["outputdir"]+"/"+CurrOutFile));
+  }
+
+
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -318,6 +433,17 @@ void ConvertBuddy::convert_13_14()
   convert_13_14_defs("GU");
   convert_13_14_data();
   convert_13_14_output();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ConvertBuddy::convert_14_15()
+{
+  copy_14_15_model_run_output_defs();
+  convert_14_15_data();
+  convert_14_15_events();
 }
 
 // =====================================================================
@@ -344,11 +470,20 @@ bool ConvertBuddy::run()
       throw openfluid::base::OFException("kernel","ConvertBuddy::run()","Could not create output directory ");
   }
 
+  bool FoundMode = false;
+
   if (m_Options["convmode"] == "13_14")
   {
     convert_13_14();
+    FoundMode = true;
   }
-  else throw openfluid::base::OFException("kernel","ConvertBuddy::run()","Unknown conversion mode");
+  if (m_Options["convmode"] == "14_15")
+  {
+    convert_14_15();
+    FoundMode = true;
+  }
+
+  if (!FoundMode) throw openfluid::base::OFException("kernel","ConvertBuddy::run()","Unknown conversion mode");
 
 
   return true;

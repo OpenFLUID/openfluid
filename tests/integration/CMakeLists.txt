@@ -82,6 +82,13 @@ INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckVerbose"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-v")
+  
+  ADD_TEST(integration-Quiet "${BIN_OUTPUT_PATH}/openfluid-engine"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsDirect"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckQuiet"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-q")
+                               
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "func2doc"
@@ -133,16 +140,29 @@ INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
                               "--buddyhelp" "convert"
                               )
 
-  ADD_TEST(integration-BuddyConvert "${BIN_OUTPUT_PATH}/openfluid-engine"
+  ADD_TEST(integration-BuddyConvert1314 "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=13_14,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V13,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
                               )
 
-  ADD_TEST(integration-BuddyConvertCheck "${BIN_OUTPUT_PATH}/openfluid-engine"
+  ADD_TEST(integration-BuddyConvert1314Check "${BIN_OUTPUT_PATH}/openfluid-engine"
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted13to14"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+
+
+  ADD_TEST(integration-BuddyConvert1415 "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddy" "convert"
+                              "--buddyopts" "convmode=14_15,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
+                              )
+
+  ADD_TEST(integration-BuddyConvert1415Check "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
+                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted14to15"
+                                       "-p" "${TEST_OUTPUT_PATH}"
+                              )
+
 
 
   ADD_TEST(integration-BuddyNewDataHelp "${BIN_OUTPUT_PATH}/openfluid-engine"

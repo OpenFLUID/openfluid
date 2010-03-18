@@ -36,8 +36,12 @@ class ConvertBuddy : public OpenFLUIDBuddy
     void convert_13_14_data();
     void convert_13_14_output();
     void convert_13_14_model_run_events();
-
     std::map<openfluid::core::UnitID_t,double> m_GUSurfaces;
+
+    void convert_14_15();
+    void convert_14_15_events();
+    void convert_14_15_data();
+    void copy_14_15_model_run_output_defs();
 
   public:
 
