@@ -1,4 +1,5 @@
 1.5.0
+
   * Added data generators to be used in models descriptions
   * Introduced global parameters to be used in models descriptions
   * Added ability to use strings and integers as input data
@@ -23,6 +24,7 @@
 
 
 1.4.2
+
   * Fixed major bug in OPENFLUID_Is*VariableExist() primitives
 
 
@@ -242,7 +244,7 @@
 0.7-132
 
   * Modified simulation functions signatures according to SDK modifications
-  * Added display of SDK version number used to buil the simulation functions
+  * Added display of SDK version number used to build the simulation functions
   * Added -k and -v command line options for versions numbers
     (resp. SDK and application)
   * Modified display output of -f command line option
