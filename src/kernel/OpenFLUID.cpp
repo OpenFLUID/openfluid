@@ -425,9 +425,9 @@ void OpenFLUIDApp::runSimulation()
   printEnvInfos();
 
 
-  std::cout << "* Loading data... "; std::cout.flush();
+  std::cout << "* Loading data... " << std::endl; std::cout.flush();
   mp_Engine->loadData();
-  printlnExecStatus();
+//  printlnExecStatus();
   mp_ExecMsgs->resetWarningFlag();
 
   std::cout << "* Processing run configuration... "; std::cout.flush();

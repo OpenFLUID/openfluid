@@ -56,7 +56,8 @@ void TestDataset(std::string DatasetPath)
 {
   FluidXReader FXR;
 
-  FXR.loadFromDirectory(DatasetPath);
+  boost::onullstream ONullStream;
+  FXR.loadFromDirectory(DatasetPath,ONullStream);
 
   // Model
   // ====================================================================
@@ -402,11 +403,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
 BOOST_AUTO_TEST_CASE(check_error_handling)
 {
   bool HasFailed;
+  boost::onullstream ONullStream;
 
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/pathdoesnotexist").string());
+    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/pathdoesnotexist").string(),ONullStream);
   }
   catch (...)
   {
@@ -418,7 +420,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-nofile").string());
+    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-nofile").string(),ONullStream);
   }
   catch (...)
   {
@@ -430,7 +432,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-twomodels").string());
+    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-twomodels").string(),std::cout);
   }
   catch (...)
   {
@@ -442,7 +444,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-runs").string());
+    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-runs").string(),std::cout);
   }
   catch (...)
   {

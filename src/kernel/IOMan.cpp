@@ -24,6 +24,7 @@
 #include <fstream>
 
 #include <boost/filesystem.hpp>
+#include <boost/iostreams/device/null.hpp>
 
 
 #include "io/MessagesWriter.h"
@@ -152,7 +153,7 @@ bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, st
 void IOManager::loadInputs(ModelDescriptor& ModelDesc, DomainDescriptor& DomainDesc,
                            RunDescriptor& RunDesc)
 {
-  m_FluidXData.loadFromDirectory(mp_RunEnv->getInputDir());
+  m_FluidXData.loadFromDirectory(mp_RunEnv->getInputDir(),std::cout);
 
   ModelDesc = m_FluidXData.getModelDescriptor();
   DomainDesc = m_FluidXData.getDomainDescriptor();

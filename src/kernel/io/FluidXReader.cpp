@@ -821,7 +821,7 @@ void FluidXReader::parseFile(std::string Filename)
 // =====================================================================
 
 
-void FluidXReader::loadFromDirectory(std::string DirPath)
+void FluidXReader::loadFromDirectory(std::string DirPath, std::ostream& OStream)
 {
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
@@ -854,7 +854,18 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
   {
     CurrentFilePath = boost::filesystem::path(FluidXFilesToLoad[i]);
     CurrentFile = CurrentFilePath.string();
-    parseFile(CurrentFile);
+    try
+    {
+      OStream << "    file: " << CurrentFilePath.leaf() << " ";
+      parseFile(CurrentFile);
+      OStream << "[OK]" << std::endl;
+
+    }
+    catch (...)
+    {
+      OStream << "[Error]" << std::endl;
+      throw;
+    }
   }
 
   propagateGlobalParamsInModel();

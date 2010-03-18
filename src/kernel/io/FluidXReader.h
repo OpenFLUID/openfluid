@@ -24,7 +24,6 @@
 #include <libxml/parser.h>
 #include <string>
 
-
 #include "output/OutputDescriptor.h"
 #include "run/RunDescriptor.h"
 #include "domain/DomainDescriptor.h"
@@ -36,6 +35,8 @@
 #include "output/OutputSetDescriptor.h"
 
 #include "openfluid-core.h"
+#include "openfluid-tools.h"
+
 
 
 
@@ -96,7 +97,7 @@ class FluidXReader
 
     ~FluidXReader();
 
-    void loadFromDirectory(std::string DirPath);
+    void loadFromDirectory(std::string DirPath, std::ostream& OStream);
 
     ModelDescriptor& getModelDescriptor() {return m_ModelDescriptor; };
 
