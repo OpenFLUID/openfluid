@@ -1,8 +1,6 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 
-
-
 SET(OFELIB_CORE_CPP 
     core/Unit.cpp core/UnitsColl.cpp
     core/Event.cpp core/EventsColl.cpp
@@ -21,14 +19,14 @@ SET(OFELIB_BASE_CPP
 SET(OFELIB_TOOLS_CPP 
     tools/ColTextParser.cpp tools/DataSrcFile.cpp
     tools/DTSerie.cpp tools/DistribInterp.cpp
-    tools/SwissTools.cpp
-    tools/tinystr.cpp tools/tinyxml.cpp tools/tinyxmlerror.cpp tools/tinyxmlparser.cpp    
+    tools/SwissTools.cpp    
 )
 
 
+ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
 ADD_DEFINITIONS(-DBUILDINGDLL)
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LIBXML2_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/core ${CMAKE_SOURCE_DIR}/include/base ${CMAKE_SOURCE_DIR}/include/tools)
 
 ADD_LIBRARY(ofelib SHARED ${OFELIB_CORE_CPP} ${OFELIB_BASE_CPP} ${OFELIB_TOOLS_CPP})
@@ -38,7 +36,8 @@ SET_TARGET_PROPERTIES(ofelib PROPERTIES VERSION "${ENGINE_VERSION_MAJOR}.${ENGIN
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
-TARGET_LINK_LIBRARIES(ofelib ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+TARGET_LINK_LIBRARIES(ofelib ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                             ${LIBXML2_LIBRARIES})
 
 
 
