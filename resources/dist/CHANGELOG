@@ -1,11 +1,13 @@
 1.5.0
 
-  * Added data generators to be used in models descriptions
-  * Introduced global parameters to be used in models descriptions
-  * Added ability to use strings and integers as input data
-  * Introduced parents/children relationships between spatial units
+  * Added data generators useable in models descriptions
+  * Introduced global parameters for models descriptions
+  * Added ability to use strings and integers as input data, in addition to 
+    double precision values
+  * Introduced parents/children relationships for spatial units
   * Introduced FluidX format for input datasets, now with ability to use single 
     or many files
+  * Introduced precision setting for output of floating point values   
   * Added environment variable OPENFLUID_FUNCS_PATH (path to search for 
     simulation functions) 
   * Added environment variable OPENFLUID_INSTALL_PREFIX (overriding automatic 
@@ -20,7 +22,7 @@
   * Fixed bug in comparison functions for floating point values
   * Fixed bug in plugged simulation functions manager
   * Fixed bug in variable existence checking methods      
-
+  * Fixed various small bugs
 
 
 1.4.2
