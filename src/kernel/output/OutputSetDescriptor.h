@@ -38,6 +38,7 @@ class OutputSetDescriptor
     std::vector<std::string> m_ScalarVariables;
     bool m_AllVectors;
     std::vector<std::string> m_VectorVariables;
+    unsigned int m_Precision;
 
   public:
 
@@ -52,6 +53,10 @@ class OutputSetDescriptor
     void setUnitsClass(const std::string UnitsClass)  { m_UnitsClass = UnitsClass; };
 
     std::string getUnitsClass() const { return m_UnitsClass; };
+
+    unsigned int getPrecision() const { return m_Precision; };
+
+    void setPrecision(const unsigned int Precision) { m_Precision = Precision; };
 
     void setAllUnits(bool AllUnits) { m_AllUnits = AllUnits; };
 

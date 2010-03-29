@@ -35,6 +35,7 @@ OutputSetDescriptor::OutputSetDescriptor()
   m_ScalarVariables.clear();
   m_AllVectors = false;
   m_VectorVariables.clear();
+  m_Precision = 5;
 }
 
 

@@ -51,13 +51,15 @@ class OutputsWriter
                                               openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
                                               openfluid::base::SimulationInfo *SimInfo,
                                               std::string DateFormat,
-                                              std::string ColSeparator);
+                                              std::string ColSeparator,
+                                              unsigned int Precision);
 
     static std::string generateOutputVectorFileContent(const openfluid::core::Unit* aUnit, const std::string VectorName,
                                               openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
                                               openfluid::base::SimulationInfo *SimInfo,
                                               std::string DateFormat,
-                                              std::string ColSeparator);
+                                              std::string ColSeparator,
+                                              unsigned int Precision);
 
     void saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
                             openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,

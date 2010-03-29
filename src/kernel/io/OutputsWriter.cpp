@@ -128,10 +128,13 @@ std::string OutputsWriter::generateOutputScalarsFileContent(const openfluid::cor
     openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
     openfluid::base::SimulationInfo *SimInfo,
     std::string DateFormat,
-    std::string ColSeparator)
+    std::string ColSeparator,
+    unsigned int Precision)
 {
   std::ostringstream GeneratedContent;
   openfluid::core::ScalarValue Value = 0;
+
+  GeneratedContent << std::fixed << std::setprecision(Precision);
 
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
@@ -161,10 +164,13 @@ std::string OutputsWriter::generateOutputVectorFileContent(const openfluid::core
     openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
     openfluid::base::SimulationInfo *SimInfo,
     std::string DateFormat,
-    std::string ColSeparator)
+    std::string ColSeparator,
+    unsigned int Precision)
 {
   std::ostringstream GeneratedContent;
   openfluid::core::VectorValue Value;
+
+  GeneratedContent << std::fixed << std::setprecision(Precision);
 
   for (unsigned int iStep = BeginStep; iStep <= EndStep; iStep++)
   {
@@ -220,14 +226,16 @@ void OutputsWriter::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOut
           BeginStep,EndStep,
           SimInfo,
           m_OutDesc.getFileSets()[FileOutputIndex].getDateFormat(),
-          ColSep);
+          ColSep,
+          m_OutDesc.getFileSets()[FileOutputIndex].getSets()[OutputSetIndex].getPrecision());
     else
       FileContent = generateOutputScalarsFileContent(aUnit,
           m_OutDesc.getFileSets()[FileOutputIndex].getSets()[OutputSetIndex].getScalars(),
           BeginStep,EndStep,
           SimInfo,
           m_OutDesc.getFileSets()[FileOutputIndex].getDateFormat(),
-          ColSep);
+          ColSep,
+          m_OutDesc.getFileSets()[FileOutputIndex].getSets()[OutputSetIndex].getPrecision());
 
     OutFilePath = boost::filesystem::path(m_DirPath+"/"+ScalarsFilename);
     OutFile.open(OutFilePath.string().c_str(),std::ios::app);
@@ -256,7 +264,8 @@ void OutputsWriter::saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOut
           BeginStep,EndStep,
           SimInfo,
           m_OutDesc.getFileSets()[FileOutputIndex].getDateFormat(),
-          ColSep);
+          ColSep,
+          m_OutDesc.getFileSets()[FileOutputIndex].getSets()[OutputSetIndex].getPrecision());
 
       OutFilePath = boost::filesystem::path(m_DirPath+"/"+VectorFilename);
       OutFile.open(OutFilePath.string().c_str(),std::ios::app);

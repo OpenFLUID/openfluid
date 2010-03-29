@@ -97,6 +97,7 @@ OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(xmlNodePtr NodePtr
   xmlChar* xmlUnitsClass = xmlGetProp(NodePtr,(const xmlChar*)"unitsclass");
   xmlChar* xmlUnitsIDs = xmlGetProp(NodePtr,(const xmlChar*)"unitsIDs");
   xmlChar* xmlVars = xmlGetProp(NodePtr,(const xmlChar*)"vars");
+  xmlChar* xmlPrec = xmlGetProp(NodePtr,(const xmlChar*)"precision");
 
 
   if (xmlName != NULL && xmlUnitsClass != NULL && xmlUnitsIDs != NULL && xmlVars != NULL)
@@ -144,6 +145,20 @@ OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(xmlNodePtr NodePtr
   }
   else
     throw openfluid::base::OFException("kernel","FluidXReader::extractSetDecriptorFromNode","wrong output set definition (" + m_CurrentFile + "). missing attribute?");
+
+
+  if (xmlPrec != NULL)
+  {
+    std::string PrecStr = std::string((const char*)xmlPrec);
+    unsigned int Prec = 5;
+
+    if (openfluid::tools::ConvertString(PrecStr,&Prec) && Prec>=0)
+    {
+      OSD.setPrecision(Prec);
+    }
+    else throw openfluid::base::OFException("kernel","FluidXReader::extractSetDecriptorFromNode","Wrong value format of precision in output set config (" + m_CurrentFile + ")");
+  }
+
 
   return OSD;
 

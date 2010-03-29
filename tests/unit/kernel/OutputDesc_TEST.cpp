@@ -53,6 +53,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(OutSetDesc.getScalars().size(),0);
   BOOST_REQUIRE_EQUAL(OutSetDesc.isAllVectors(),false);
   BOOST_REQUIRE_EQUAL(OutSetDesc.getVectors().size(),0);
+  BOOST_REQUIRE_EQUAL(OutSetDesc.getPrecision(),5);
 }
 
 // =====================================================================

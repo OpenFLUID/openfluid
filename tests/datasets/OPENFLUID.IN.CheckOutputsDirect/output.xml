@@ -6,7 +6,7 @@
     <!-- colsep default is \t -->
     <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">     
       <set name="fullA" unitsclass="UnitsA" unitsIDs="*" vars="*" />      
-      <set name="fullB" unitsclass="UnitsB" unitsIDs="*" vars="*" />
+      <set name="fullB" unitsclass="UnitsB" unitsIDs="*" vars="*" precision="3" />      
     </files>  
     
   </output>

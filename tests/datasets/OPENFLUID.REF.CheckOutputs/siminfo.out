@@ -4,13 +4,13 @@
 *                                                          *
 ************************************************************
 
-Simulation ID: 20100311-PPKMWO
-Date: 2010-Mar-11 09:25:55.297363
+Simulation ID: 20100329-XIEKLI
+Date: 2010-Mar-29 15:12:10.945298
 Computer: lisah-crampling
 User: fabrejc
 
-Input data set: /home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/tests/datasets/OPENFLUID.IN.CheckOutputsDirect/
-Output data set: /home/fabrejc/Labo/OpenFLUID/Production/workspace/Engine-trunk/tests/datasets/OPENFLUID.REF.CheckOutputs/
+Input data set: /home/fabrejc/Labo/OpenFLUID/Workspace/Engine-trunk/tests/datasets/OPENFLUID.IN.CheckOutputsDirect
+Output data set: /home/fabrejc/Labo/OpenFLUID/Workspace/Engine-trunk/_build/tests-output/OPENFLUID.OUT.CheckOutputsDirect
 
 Spatial domain:
   - UnitsA, 7 units
