@@ -4,10 +4,6 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LIBXML2_INCLUDE_DIR})
 
 
 
-ADD_UNITTEST(unit-AppTools unittest_apptools 
-             AppTools_TEST.cpp 
-             ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp)
-
 ADD_UNITTEST(unit-RuntimeEnv unittest_runtimeenv 
              RuntimeEnv_TEST.cpp 
              ${CMAKE_SOURCE_DIR}/src/kernel/RuntimeEnv.cpp 
@@ -31,13 +27,6 @@ ADD_UNITTEST(unit-RunDescriptor unittest_rundesc
              RunDesc_TEST.cpp
              ${CMAKE_SOURCE_DIR}/src/kernel/run/RunDescriptor.cpp)
 
-ADD_UNITTEST(unit-DomainDescriptor unittest_domaindesc 
-             DomainDesc_TEST.cpp 
-             ${CMAKE_SOURCE_DIR}/src/kernel/domain/UnitDescriptor.cpp
-             ${CMAKE_SOURCE_DIR}/src/kernel/domain/IDataDescriptor.cpp
-             ${CMAKE_SOURCE_DIR}/src/kernel/domain/EventDescriptor.cpp
-             ${CMAKE_SOURCE_DIR}/src/kernel/domain/DomainDescriptor.cpp
-             )
 
 ADD_UNITTEST(unit-OutputDescriptor unittest_outputdesc 
              OutputDesc_TEST.cpp
@@ -45,8 +34,6 @@ ADD_UNITTEST(unit-OutputDescriptor unittest_outputdesc
              ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputFilesDescriptor.cpp
              ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp)
 
-ADD_UNITTEST(unit-ModelInstance unittest_modelinstance 
-             ModelInstance_TEST.cpp )
 
 ADD_UNITTEST(unit-FluidXReader unittest_fluidxreader
              FluidXReader_TEST.cpp

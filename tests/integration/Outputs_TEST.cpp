@@ -38,8 +38,6 @@ bool CompareTextFiles(std::string FilePathA, std::string FilePathB,
                       int FromLine = -1, int ToLine = -1)
 {
 
-  //std::cout << FilePathA << "     " << FilePathB << std::endl;
-
   std::ifstream FileReader;
   std::vector<std::string> ContentA,ContentB;
   std::string StrLine;
@@ -56,15 +54,12 @@ bool CompareTextFiles(std::string FilePathA, std::string FilePathB,
   while(std::getline(FileReader,StrLine)) ContentB.push_back(StrLine);
   FileReader.close();
 
-  //std::cout << "READ!!" << std::endl;
-
 
   if (ContentA.size() == 0 && ContentB.size() == 0) return true;
 
   if (FromLine < 0) FromLine = 0;
   if (ToLine < 0) ToLine = ContentA.size()-1;
 
-  //std::cout << FL << " -> " << TL << std::endl;
 
   if (ToLine < FromLine) return false;
   if (ContentA.size() < FromLine || ContentB.size() < FromLine || ContentB.size() < ToLine)
@@ -128,8 +123,8 @@ BOOST_AUTO_TEST_CASE(check_comparetextfiles)
 BOOST_AUTO_TEST_CASE(check_outputsdirect)
 {
 
-  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsDirect";
-  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsDirect";
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsAtEnd";
+  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsAtEnd";
   std::string RefDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.REF.CheckOutputs";
 
   BOOST_REQUIRE(RunSimulation(InputDir,OutputDir));

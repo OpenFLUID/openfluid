@@ -33,9 +33,5 @@ ADD_UNITTEST(unit-SimStatus unittest_simstatus SimStatus_TEST.cpp)
 
 ADD_UNITTEST(unit-FunctionEnv unittest_functionenv FunctionEnv_TEST.cpp)
 
-ADD_UNITTEST(unit-DTSerie unittest_dtserie DTSerie_TEST.cpp)
-
 ADD_UNITTEST(unit-SwissTools unittest_swisstools SwissTools_TEST.cpp)
-
-ADD_UNITTEST(unit-ColTextParser unittest_coltextparser ColTextParser_TEST.cpp)
 

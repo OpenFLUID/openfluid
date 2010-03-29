@@ -78,13 +78,13 @@ INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
   ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
 
   ADD_TEST(integration-Verbose "${BIN_OUTPUT_PATH}/openfluid-engine"
-                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsDirect"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckVerbose"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-v")
   
   ADD_TEST(integration-Quiet "${BIN_OUTPUT_PATH}/openfluid-engine"
-                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsDirect"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckQuiet"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-q")
