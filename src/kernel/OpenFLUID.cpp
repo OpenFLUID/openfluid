@@ -400,7 +400,6 @@ void OpenFLUIDApp::printEnvInfos()
   if ((RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) && (RuntimeEnvironment::getInstance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
   if (RuntimeEnvironment::getInstance()->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
   if (RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
-  if (!RuntimeEnvironment::getInstance()->isCheckVarNames()) std::cout << "Variable names checking disabled" << std::endl;
   std::cout << std::endl;
 }
 
@@ -544,7 +543,6 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("functions-list,f","list available functions (do not run the simulation)")
       ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
-      ("no-varname-check","do not check variable name against nomenclature")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
       ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions research paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
@@ -696,11 +694,6 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   if (OptionsVars.count("no-result"))
   {
     RuntimeEnvironment::getInstance()->setWriteResults(false);
-  }
-
-  if (OptionsVars.count("no-varname-check"))
-  {
-    RuntimeEnvironment::getInstance()->setCheckVarNames(false);
   }
 
 }

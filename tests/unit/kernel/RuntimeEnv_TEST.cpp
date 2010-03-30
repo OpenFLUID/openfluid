@@ -45,7 +45,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteResults(),true);
   BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isProgressiveOutput(),false);
-  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isCheckVarNames(),true);
   BOOST_REQUIRE_NE(RuntimeEnvironment::getInstance()->getSimulationID(),"");
 
 }
@@ -93,9 +92,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   RuntimeEnvironment::getInstance()->setWriteSimReport(false);
   BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isWriteSimReport(),false);
-
-  RuntimeEnvironment::getInstance()->setCheckVarNames(false);
-  BOOST_REQUIRE_EQUAL(RuntimeEnvironment::getInstance()->isCheckVarNames(),false);
 
   RuntimeEnvironment::getInstance()->setProgressiveOutputKeep(23);
   RuntimeEnvironment::getInstance()->setProgressiveOutputPacket(2345);

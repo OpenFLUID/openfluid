@@ -102,7 +102,6 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_VerboseRun = false;
   m_WriteResults = true;
   m_WriteSimReport = true;
-  m_CheckVarNames = true;
 
   m_ProgressiveOutput = false;
 
@@ -117,8 +116,6 @@ RuntimeEnvironment::RuntimeEnvironment()
   mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
   mp_FuncEnv->setValue("mode.saveresults",m_WriteResults);
   mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport);
-  mp_FuncEnv->setValue("mode.checkvarnames",m_CheckVarNames);
-
 
 
   // plugins search order:

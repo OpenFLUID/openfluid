@@ -65,8 +65,6 @@ class RuntimeEnvironment
 
     bool m_WriteSimReport;
 
-    bool m_CheckVarNames;
-
     bool m_ProgressiveOutput;
 
     unsigned int m_ProgOutPacket;
@@ -136,10 +134,6 @@ class RuntimeEnvironment
     bool isWriteSimReport() const { return m_WriteSimReport; };
 
     void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
-
-    bool isCheckVarNames() const { return m_CheckVarNames; };
-
-    void setCheckVarNames(bool Check) { m_CheckVarNames = Check; mp_FuncEnv->setValue("mode.checkvarnames",m_CheckVarNames); };
 
     openfluid::base::FunctionEnvironment* getFunctionEnvironment() const { return mp_FuncEnv; };
 

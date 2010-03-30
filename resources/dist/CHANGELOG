@@ -12,6 +12,7 @@
     simulation functions) 
   * Added environment variable OPENFLUID_INSTALL_PREFIX (overriding automatic 
     prefix path, useful on win32 platforms)
+  * Removed variable names checking  
   * Updated console display    
   * Replaced TinyXML library with LibXML2  
   * Refactored internal model description and model instance management
