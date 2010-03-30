@@ -22,6 +22,9 @@
 #include <sstream>
 #include <fstream>
 #include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+
 
 
 NewFunctionBuddy::NewFunctionBuddy() : OpenFLUIDBuddy()
@@ -51,6 +54,16 @@ NewFunctionBuddy::~NewFunctionBuddy()
 void NewFunctionBuddy::writeFunctionCPP()
 {
   std::ostringstream CPPContent;
+  std::ostringstream FuncVersionStr;
+
+
+  boost::posix_time::ptime CurrentDate = boost::posix_time::second_clock::local_time();
+  boost::posix_time::time_facet* DateFacet = new boost::posix_time::time_facet();
+  DateFacet->format("%Y.%m");
+
+  FuncVersionStr.imbue(std::locale(std::locale::classic(), DateFacet));
+  FuncVersionStr << CurrentDate;
+
 
   CPPContent << "/**" << std::endl;
   CPPContent << "  \\file " << m_Options["cppclass"] << ".cpp" << std::endl;
@@ -77,7 +90,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "  DECLARE_SIGNATURE_NAME(\"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_DESCRIPTION(\"\");" << std::endl;
   CPPContent << "" << std::endl;
-  CPPContent << "  DECLARE_SIGNATURE_VERSION(\"1.0\");" << std::endl;
+  CPPContent << "  DECLARE_SIGNATURE_VERSION(\""+FuncVersionStr.str()+"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_SDKVERSION;" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);" << std::endl;
   CPPContent << "" << std::endl;
