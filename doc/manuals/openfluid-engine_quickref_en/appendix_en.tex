@@ -14,7 +14,6 @@
 \texttt{-f}, \verb?---?\texttt{functions-list}&list available functions (do not run the simulation)\\
 \texttt{-h}, \verb?---?\texttt{help}&display help message\\
 \texttt{-i}, \verb?---?\texttt{input-dir <arg>}&set dataset input directory\\
-\verb?---?\texttt{no-varname-check}&do not check variable name against nomenclature\\
 \texttt{-o}, \verb?---?\texttt{output-dir <arg>}&set results output directory\\
 \texttt{-p}, \verb?---?\texttt{functions-paths <arg>}&add extra functions research paths\\
 \texttt{-q}, \verb?---?\texttt{quiet}&quiet display during simulation run\\
@@ -32,11 +31,16 @@
 \section{Environment variables}
 
 The \texttt{openfluid-engine} program takes into account the following environment
-variables:
+variables (if they are set):
 \begin{itemize}
 \item \texttt{OPENFLUID\_FUNCS\_PATH}: extra search paths for \OFEname \ simulation functions. The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
+\item \texttt{OPENFLUID\_INSTALL\_PREFIX}: overrides automatic detection of install path, useful on Windows systems.
 \end{itemize}
 
+
+\section{File formats for \texttt{interp} data generator}
+
+\textbf{TODO}
 
 \section{Date-time formats used in outputs configuration}
 
@@ -57,42 +61,131 @@ For example, the nineteenth of April, two-thousand seven, at eleven hours, ten m
 \bigskip 
 \noindent List of available conversion specifications:
 \begin{center}
+\rowcolors[]{1}{gray!5}{gray!10}
 \begin{tabularx}{\linewidth}{lX}
-\%a & is replaced by the locale's abbreviated weekday name. \\
-\%A & is replaced by the locale's full weekday name. \\
-\%b & is replaced by the locale's abbreviated month name. \\
-\%B & is replaced by the locale's full month name. \\
-\%c & is replaced by the locale's appropriate date and time representation. \\
-\%C & is replaced by the century number (the year divided by 100 and truncated to an integer) as a decimal number [00-99]. \\
-\%d & is replaced by the day of the month as a decimal number [01,31]. \\
+\rowcolor{gray!30}\textbf{Format} & \textbf{Description} \\\hline
+\%a & locale's abbreviated weekday name. \\
+\%A & locale's full weekday name. \\
+\%b & locale's abbreviated month name. \\
+\%B & locale's full month name. \\
+\%c & locale's appropriate date and time representation. \\
+\%C & century number (the year divided by 100 and truncated to an integer) as a decimal number [00-99]. \\
+\%d & day of the month as a decimal number [01,31]. \\
 \%D & same as \%m/\%d/\%y. \\
-\%e & is replaced by the day of the month as a decimal number [1,31]; a single digit is preceded by a space. \\
+\%e & day of the month as a decimal number [1,31]; a single digit is preceded by a space. \\
 \%h & same as \%b. \\
-\%H & is replaced by the hour (24-hour clock) as a decimal number [00,23]. \\
-\%I & is replaced by the hour (12-hour clock) as a decimal number [01,12]. \\
-\%j & is replaced by the day of the year as a decimal number [001,366]. \\
-\%m & is replaced by the month as a decimal number [01,12]. \\
-\%M & is replaced by the minute as a decimal number [00,59]. \\
+\%H & hour (24-hour clock) as a decimal number [00,23]. \\
+\%I & hour (12-hour clock) as a decimal number [01,12]. \\
+\%j & day of the year as a decimal number [001,366]. \\
+\%m & month as a decimal number [01,12]. \\
+\%M & minute as a decimal number [00,59]. \\
 \%n & is replaced by a newline character. \\
-\%p & is replaced by the locale's equivalent of either a.m. or p.m. \\
-\%r & is replaced by the time in a.m. and p.m. notation; in the POSIX locale this is equivalent to \%I:\%M:\%S \%p. \\
-\%R & is replaced by the time in 24 hour notation (\%H:\%M). \\
-\%S & is replaced by the second as a decimal number [00,61]. \\
+\%p & locale's equivalent of either a.m. or p.m. \\
+\%r & time in a.m. and p.m. notation; in the POSIX locale this is equivalent to \%I:\%M:\%S \%p. \\
+\%R & time in 24 hour notation (\%H:\%M). \\
+\%S & second as a decimal number [00,61]. \\
 \%t & is replaced by a tab character. \\
-\%T & is replaced by the time (\%H:\%M:\%S). \\
-\%u & is replaced by the weekday as a decimal number [1,7], with 1 representing Monday. \\
-\%U & is replaced by the week number of the year (Sunday as the first day of the week) as a decimal number [00,53]. \\
-\%V & is replaced by the week number of the year (Monday as the first day of the week) as a decimal number [01,53]. If the week containing 1 January has four or more days in the new year, then it is considered week 1. Otherwise, it is the last week of the previous year, and the next week is week 1. \\
-\%w & is replaced by the weekday as a decimal number [0,6], with 0 representing Sunday. \\
-\%W & is replaced by the week number of the year (Monday as the first day of the week) as a decimal number [00,53]. All days in a new year preceding the first Monday are considered to be in week 0. \\
-\%x & is replaced by the locale's appropriate date representation. \\
-\%X & is replaced by the locale's appropriate time representation. \\
-\%y & is replaced by the year without century as a decimal number [00,99]. \\
-\%Y & is replaced by the year with century as a decimal number. \\
-\%Z & is replaced by the timezone name or abbreviation, or by no bytes if no timezone information exists. \\
-\%\% & is replaced by \%. \\
+\%T & time (\%H:\%M:\%S). \\
+\%u & weekday as a decimal number [1,7], with 1 representing Monday. \\
+\%U & week number of the year (Sunday as the first day of the week) as a decimal number [00,53]. \\
+\%V & week number of the year (Monday as the first day of the week) as a decimal number [01,53]. If the week containing 1 January has four or more days in the new year, then it is considered week 1. Otherwise, it is the last week of the previous year, and the next week is week 1. \\
+\%w & weekday as a decimal number [0,6], with 0 representing Sunday. \\
+\%W & week number of the year (Monday as the first day of the week) as a decimal number [00,53]. All days in a new year preceding the first Monday are considered to be in week 0. \\
+\%x & locale's appropriate date representation. \\
+\%X & locale's appropriate time representation. \\
+\%y & year without century as a decimal number [00,99]. \\
+\%Y & year with century as a decimal number. \\
+\%Z & timezone name or abbreviation, or by no bytes if no timezone information exists. \\
+\%\% & character \%. \\
 \end{tabularx}
 \end{center}
+
+\section{Example of an input dataset as a single FluidX file}
+
+\begin{lstlisting}[language=xml,frame=]
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+  <model>
+    <gparams>
+      <param name="gparam1" value="100" />
+      <param name="gparam2" value="0.1" />
+    </gparams>
+    <function fileID="example.functionA" />
+    <generator varname="example.generator.fixed" unitclass="EU1" method="fixed" varsize="11">
+      <param name="fixedvalue" value="20" />
+    </generator>
+    <generator varname="example.generator.random" unitclass="EU2" method="random">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+    </generator>
+    <function fileID="example.functionB">
+      <param name="param1" value="strvalue" />
+      <param name="param2" value="1.1" />
+      <param name="gparam1" value="50" />
+    </function>
+  </model>
+
+
+  <domain>
+
+    <definition>
+      <unit class="PU" ID="1" pcsorder="1" />
+      <unit class="EU1" ID="3" pcsorder="1">
+        <to class="EU1" ID="11" />
+        <childof class="PU" ID="1" />
+      </unit>
+      <unit class="EU1" ID="11" pcsorder="3">
+        <to class="EU2" ID="2" />
+      </unit>
+      <unit class="EU2" ID="2" pcsorder="1" />
+    </definition>
+
+    <inputdata unitclass="EU1" colorder="indataA">
+      3 1.1
+      11 7.5
+    </inputdata>
+    
+    <inputdata unitclass="EU2" colorder="indataB1;indataB3">
+      2 18 STRVALX
+    </inputdata>
+    
+    <calendar>
+      <event unitclass="EU1" unitID="11" date="1999-12-31 23:59:59">
+        <info key="when" value="before" />
+        <info key="where" value="1" />
+        <info key="var1" value="1.13" />
+        <info key="var2" value="EADGBE" />
+      </event>
+      <event unitclass="EU2" unitID="3" date="2000-02-05 12:37:51">
+        <info key="var3" value="152.27" />
+        <info key="var4" value="XYZ" />
+      </event>
+      <event unitclass="EU1" unitID="11" date="2000-02-25 12:00:00">
+        <info key="var1" value="1.15" />
+        <info key="var2" value="EADG" />
+      </event>
+    </calendar>
+    
+  </domain>
+
+
+  <run>
+    <deltat>3600</deltat>
+    <period begin="2000-01-01 00:00:00" end="2000-03-27 01:12:37" />
+    <progressout packet="10" keep="2" />
+  </run>
+
+
+  <output>
+    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">
+      <set name="testRS" unitsclass="RS" unitsIDs="51;232" vars="*" />
+      <set name="full" unitsclass="SU" unitsIDs="*" vars="*" precision="7" />
+    </files>
+  </output>
+
+</openfluid>
+\end{lstlisting}
 
 \bigskip 
 

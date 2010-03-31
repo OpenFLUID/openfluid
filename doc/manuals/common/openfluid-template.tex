@@ -1,4 +1,4 @@
-\usepackage{xcolor}
+\usepackage[table,svgnames]{xcolor}
 \usepackage{shadow}
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
@@ -9,6 +9,8 @@
 \usepackage{tikz}
 \usepackage{cmbright}
 \usepackage{listings}
+\usepackage{colortbl}
+
 
 
 % ============================================================================
@@ -22,9 +24,29 @@
 
 
 \definecolor{OFBlue}{HTML}{47617B}
-\definecolor{blockblue}{rgb}{0.85,0.90,1}
-\definecolor{blockred}{rgb}{1,0.85,0.85}
+\definecolor{noteblue}{rgb}{0.85,0.90,1}
+\definecolor{warnred}{rgb}{1,0.85,0.85}
+\definecolor{notebluetext}{RGB}{67,119,212}
+\definecolor{warnredtext}{rgb}{255,0,0}
 \definecolor{blockgrey}{gray}{0.85}
+\definecolor{blockcode}{gray}{90}
+
+
+
+%\begin{latexonly}
+\lstset{extendedchars=\true, inputencoding=utf8x, numbers=none,
+numberstyle=\tiny\sl, stepnumber=1, numbersep=5pt,
+showspaces=false, showstringspaces=false,
+basicstyle=\ttfamily\scriptsize, commentstyle=\ttfamily\color{gray},
+frame=tb}
+%framexleftmargin=10pt, framexrightmargin=10pt, framextopmargin=50pt,
+%framexbottommargin=10pt, backgroundcolor=\color{Lavender!50},
+% backgroundcolor=\color{gray!10},
+%\end{latexonly}
+
+\begin{htmlonly}
+\lstnewenvironment{myverbatim}{}{}
+\end{htmlonly}
 
 % ============================================================================
 
@@ -57,82 +79,17 @@
 
 }
 
-% ============================================================================
-
-
-\newcommand{\codeblock}[1]{
- \begin{latexonly}
- 	\colorbox{blockgrey}{
- 		\begin{minipage}[t]{1\linewidth}
-			\vspace{0.2em}
-         
-          \texttt{#1}
- 		\end{minipage}
- 	}
-\end{latexonly}
-}
-
-% ============================================================================
-
-\begin{htmlonly}
-\renewcommand{\codeblock}[1]{
-\begin{rawhtml}
-<BR>
-<TABLE WIDTH="100%" CELLPADDING="10"><TD BGCOLOR="#eeeeee" ALIGN="left" VALIGN="top">
-\end{rawhtml}
-	\texttt{#1}
-\begin{rawhtml}
-</TD></TR></TABLE><BR>
-\end{rawhtml}
-
-}
-\end{htmlonly}
-
-% ============================================================================
-
-
-\newcommand{\codeblockfromfile}[1]{
- \begin{latexonly}
- 	\colorbox{blockgrey}{
- 		\begin{minipage}[t]{1\linewidth}
-			\vspace{0.2em}
-         
-         {\footnotesize\verbatiminput{#1}\normalsize}
-          
- 		\end{minipage}
- 	}
-\end{latexonly}
-}
-
-% ============================================================================
-
-
-\begin{htmlonly}
-\renewcommand{\codeblockfromfile}[1]{
-\begin{rawhtml}
-<BR>
-<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD BGCOLOR="#eeeeee" ALIGN="left" VALIGN="middle">
-\end{rawhtml}
-	\verbatiminput{#1}
-\begin{rawhtml}
-</TD></TR></TABLE><BR>
-\end{rawhtml}
-
-}
-\end{htmlonly}
-
 
 % ============================================================================
 
 
 \newcommand{\noteblock}[1]{
 \begin{latexonly}
-	\colorbox{blockblue}{
-		\begin{minipage}[t]{1\linewidth}
-			\vspace{0.2em}
-			\sffamily{#1}
-		\end{minipage}
-	}
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\textcolor{notebluetext}{\textbf{Note:}} & {#1}
+\end{tabularx}
+\end{center}
 \end{latexonly}
 }
 
@@ -145,14 +102,12 @@
 \renewcommand{\noteblock}[1]{
 \begin{rawhtml}
 <BR>
-<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD BGCOLOR="#E6F0FF" ALIGN="left" VALIGN="middle">
+<FONT STYLE="color : blue; text-decoration : underline;">Note:</FONT>
 \end{rawhtml}
 	\sffamily{#1}
 \begin{rawhtml}
-</TD></TR>
-</TABLE><BR>
+<BR>
 \end{rawhtml}
-
 }
 \end{htmlonly}
 
@@ -162,12 +117,11 @@
 
 \newcommand{\warnblock}[1]{
 \begin{latexonly}
-	\colorbox{blockred}{
-		\begin{minipage}[t]{1\linewidth}
-			\vspace{0.2em}
-			{\sffamily{#1}}
-		\end{minipage}
-	}
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\textcolor{warnredtext}{\textbf{Warning:}} & {#1}
+\end{tabularx}
+\end{center}
 \end{latexonly}
 }
 
@@ -178,14 +132,12 @@
 \renewcommand{\warnblock}[1]{
 \begin{rawhtml}
 <BR>
-<TABLE WIDTH="100%" CELLPADDING="10"><TR><TD ALIGN="left" VALIGN="middle" BGCOLOR="#FFE6E6">
+<FONT STYLE="color : red; text-decoration : underline;">Warning:</FONT>
 \end{rawhtml}
 	\sffamily{#1}
 \begin{rawhtml}
-<BR></TD></TR>
-</TABLE><BR>
+<BR>
 \end{rawhtml}
-
 }
 \end{htmlonly}
 

@@ -115,7 +115,7 @@ Buddies are small tools that help scientific developers in order to complete the
 \noindent Options are given to buddies through a comma-separated list of \texttt{key=value} arguments, using the \verb?--?\texttt{buddyopts} command line option.\\
 
 \noindent General usage is:\\
-\codeblock{openfluid-engine --buddy buddyname --buddyopts abuddyopt=avalue,
+\texttt{openfluid-engine --buddy buddyname --buddyopts abuddyopt=avalue,
 anotherbuddyopt=anothervalue}
 
 \subsection{func2doc}
@@ -146,8 +146,8 @@ The \texttt{func2doc} buddy is available on UNIX only systems (Linux, MacOSX).
 \bigskip
 
 \noindent Usage example:\\
-\codeblock{openfluid-engine --buddy func2doc --buddyopts inputcpp=/path/to/cppfile.cpp,
-outputdir=/path/to/outputdir,pdf=1}
+\texttt{openfluid-engine --buddy func2doc --buddyopts
+inputcpp=/path/to/cppfile.cpp, outputdir=/path/to/outputdir,pdf=1}
 
 
 \subsection{newfunc}
@@ -176,8 +176,8 @@ The \texttt{newfunc} buddy generate a skeleton source code of a simulation funct
 \bigskip
 
 \noindent Usage example:\\
-\codeblock{openfluid-engine --buddy newfunc --buddyopts funcid=domain.subdomain.process.method,
-outputdir=/path/to/outputdir}
+\texttt{openfluid-engine --buddy newfunc --buddyopts
+funcid=domain.subdomain.process.method, outputdir=/path/to/outputdir}
 
 
 \subsection{newdata}
@@ -196,18 +196,20 @@ The \texttt{newdata} buddy generate a skeleton dataset.
 \bigskip
 
 \noindent Usage example:\\
-\codeblock{openfluid-engine --buddy newdata --buddyopts outputdir=/path/to/outputdir}
+\texttt{openfluid-engine --buddy newdata --buddyopts
+outputdir=/path/to/outputdir}
 
 \subsection{convert}
 
-The \texttt{convert} buddy converts a dataset from a specific version format to another one. Currently, conversion is only possible from 1.3.x format to 1.4.x format. 
+The \texttt{convert} buddy converts a dataset from a specific version format to another one.
+Currently, conversion is possible from 1.3.x format to 1.4.x format, and from 1.4.x format to 1.5.x format 
 
 \bigskip
 
 \noindent Required options:
 \begin{center}
 \begin{tabularx}{\linewidth}{lX} 
-\texttt{convmode}&Conversion mode. Available modes are: \texttt{13\_14}\\
+\texttt{convmode}&Conversion mode. Available modes are: \texttt{13\_14}, \texttt{13\_15}\\
 \texttt{inputdir}&Input directory for dataset to convert\\ 
 \texttt{outputdir}&Output directory for converted dataset\\
 \end{tabularx}
@@ -216,7 +218,7 @@ The \texttt{convert} buddy converts a dataset from a specific version format to 
 \bigskip
 
 \noindent Usage example:\\
-\codeblock{openfluid-engine --buddy convert --buddyopts convmode=13\_14,
+\texttt{openfluid-engine --buddy convert --buddyopts convmode=13\_14,
 inputdir=/path/to/inputdir,outputdir=/path/to/outputdir}
 
 
