@@ -48,6 +48,9 @@ class Unit;
 */
 typedef std::list<Unit*> UnitsPtrList_t;
 
+/**
+  Type for a map associating a unit class to a list of pointers on Unit
+*/
 typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
 
 /**
@@ -96,7 +99,6 @@ class Unit
     Variables<VectorValue> m_VectorVariables;
 
     EventsCollection m_Events;
-
 
   public:
 
