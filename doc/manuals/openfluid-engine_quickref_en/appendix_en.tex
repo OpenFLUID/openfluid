@@ -38,9 +38,6 @@ variables (if they are set):
 \end{itemize}
 
 
-\section{File formats for \texttt{interp} data generator}
-
-\textbf{TODO}
 
 \section{Date-time formats used in outputs configuration}
 
@@ -100,6 +97,7 @@ For example, the nineteenth of April, two-thousand seven, at eleven hours, ten m
 \end{tabularx}
 \end{center}
 
+
 \section{Example of an input dataset as a single FluidX file}
 
 \begin{lstlisting}[language=xml,frame=]
@@ -112,10 +110,12 @@ For example, the nineteenth of April, two-thousand seven, at eleven hours, ten m
       <param name="gparam2" value="0.1" />
     </gparams>
     <function fileID="example.functionA" />
-    <generator varname="example.generator.fixed" unitclass="EU1" method="fixed" varsize="11">
+    <generator varname="example.generator.fixed" unitclass="EU1"
+               method="fixed" varsize="11">
       <param name="fixedvalue" value="20" />
     </generator>
-    <generator varname="example.generator.random" unitclass="EU2" method="random">
+    <generator varname="example.generator.random" unitclass="EU2" 
+               method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
@@ -188,6 +188,61 @@ For example, the nineteenth of April, two-thousand seven, at eleven hours, ten m
 \end{lstlisting}
 
 \bigskip 
+
+\section{File formats for \texttt{interp} data generator}
+
+\subsection{Sources}
+The sources file format is an XML based format which defines a list of sources
+files associated to an unique ID.\\
+\noindent The sources must be defined in a section delimited by the
+\texttt{<datasources>} tag, inside an \texttt{<openfluid>} tag and must be
+structured following these rules:
+\begin{itemize}
+  \item Inside the \texttt{<datasources>} tag, there must be a set of
+  \texttt{<filesource>} tags
+  \item Each \texttt{<filesource>} tag must bring an \texttt{ID}
+  attribute giving the identifier of source, and an \texttt{file}
+  attribute giving the name of the file containing the source of data. The files
+  must be placed in the input directory of the simulation.
+\end{itemize}
+
+\begin{lstlisting}[language=xml,title=\footnotesize\textit{example of a sources list file}]
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ 
+ <datasources>
+    <filesource ID="1" file="source1.dat" />
+    <filesource ID="2" file="source2.dat" />    
+  </datasources>
+  
+</openfluid>
+\end{lstlisting}
+
+\bigskip
+An associated source data file is a seven columns text file, containing a serie
+of values in time. The six first columns are the date using the following format
+\texttt{YYYY MM DD HH MM SS}. The 7$^{th}$ column is the value itself.
+
+ \begin{lstlisting}[language=,title=\footnotesize\textit{example of a source data file}]
+1999 12 31 12 00 00	-1.0
+1999 12 31 23 00 00	-5.0
+2000 01 01 00 30 00	-15.0
+2000 01 01 00 40 00	-5.0
+2000 01 01 01 30 00	-15.0
+\end{lstlisting}
+
+
+\subsection{Distribution}
+
+A distribution file is a two column file associating a unit ID
+(1$^{st}$column) to a source ID (2$^{nd}$column).
+\begin{lstlisting}[language=,title=\footnotesize\textit{example of distribution file}] <?xml version="1.0" standalone="yes"?> 1 1
+2 2
+3 1
+4 2
+5 1
+\end{lstlisting}
+
 
 \section{Useful links}
 

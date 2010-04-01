@@ -21,14 +21,15 @@ inclosed into an \textit{openfluid} section defined by the \texttt{<openfluid>}
 tag.
 
 \begin{lstlisting}[language=xml,title=\footnotesize\textit{summary view of the
-XML tree for FluidX files}] <?xml version="1.0" standalone="yes"?> <openfluid>
+XML tree for FluidX files}] <?xml version="1.0" standalone="yes"?>
+<openfluid>
 
   <model>
     <!-- here is the model definition -->
   </model>
 
   <domain>
-    <!-- here is the spatial domain definition and associated data -->   
+    <!-- here is the spatial domain definition, associated data and events -->   
   </domain>
 
   <output>
@@ -48,18 +49,20 @@ XML tree for FluidX files}] <?xml version="1.0" standalone="yes"?> <openfluid>
 
 \subsection{Model}
 
-The flux model is defined by an ordered set of data generators and simulations functions that will be plugged to the \OFEname \ kernel.
-It defines the model for the simulation. It can also include a global
-parameters section which applies to all simulation functions and generators.
-The global parameters may be overridden by local parameters of
-simulation functions or generators.\\
+The flux model is defined by an ordered set of data generators and simulations
+functions that will be plugged to the \OFEname \ kernel. It defines the model
+for the simulation. It can also include a global parameters section which
+applies to all simulation functions and generators. The global parameters may
+be overridden by local parameters of simulation functions or generators.\\
 \noindent The flux model must be defined in a section delimited by the
 \texttt{<model>} tag, and must be structured following these rules:
 \begin{itemize}
-  \item Inside the \texttt{<model>} tag, there must be a set of \texttt{<function>}, \texttt{<generator>} and \texttt{<gparams>} tags 
-  \item Each \texttt{<function>} tag must bring a \texttt{<fileID>} attr\item ibute giving
-  the identifier of the simulation function; the value of the \texttt{fileID} attribute must match the file name (without extension)
-  of a reachable and pluggable simulation function.
+  \item Inside the \texttt{<model>} tag, there must be a set of
+  \texttt{<function>}, \texttt{<generator>} and \texttt{<gparams>} tags
+  \item Each \texttt{<function>} tag must bring a \texttt{fileID} attribute giving
+  the identifier of the simulation function; the value of the \texttt{fileID}
+  attribute must match the file name (without extension) of a reachable and
+  pluggable simulation function.
   \item Each \texttt{<function>} tag may include zero to many \texttt{<param>} tags giving
   parameters to the function. Each \texttt{<param>} tag must bring a \texttt{name} attribute giving
   the name of the parameter and a \texttt{value} attribute giving the value of the parameter. These parameters can be scalar or vector of integer values, floating point values, string values. In case of vector, the values of the vector are separated by a ; (semicolon).
@@ -68,7 +71,7 @@ simulation functions or generators.\\
   unit class of the produced variable, a \texttt{method} attribute giving the 
   method used to produce the variable (\texttt{fixed} for constant value,
   \texttt{random} for random value in a range, \texttt{interp} for an
-  interpolated value from a given data serie). An optional \texttt{<varsize>}
+  interpolated value from given data series). An optional \texttt{<varsize>}
   attribute can be set in order to produce a vector variable instead of a scalar variable.
   \item Each \texttt{<generator>} tag may include zero to many \texttt{<param>}
   tags giving parameters to the generator. Each \texttt{<param>} tag must bring
@@ -143,7 +146,7 @@ tag, and must be structured following these rules:
   \texttt{<unit>} tags
   \item Each \texttt{<unit>} tag must bring an \texttt{ID} attribute giving
   the identifier of the unit, a \texttt{class} attribute giving the class of
-  the unit, a \texttt{<pcsorder>} attribute giving the process order in the
+  the unit, a \texttt{pcsorder} attribute giving the process order in the
   class of the unit
   \item Each \texttt{<unit>} tag may include zero or many \texttt{<to>} tags giving
   the outgoing connections to other units. Each \texttt{<to>} tag must bring an
@@ -190,7 +193,8 @@ tag, and must be structured following these rules:
 \begin{itemize}
   \item The \texttt{<inputdata>} tag must bring a \texttt{unitclass}
   attribute giving the unit class to which input data must be attached, and a
-  \texttt{<colorder>} giving the order of the contained column-formatted data
+  \texttt{colorder} attribute giving the order of the contained column-formatted
+  data
   \item Inside the \texttt{<inputdata>} tag, there must be the input data as 
   row-column text. As a rule, the first column is the ID of the unit in the class
   given through the the \texttt{unitclass} attribute of \texttt{<inputdata>}
@@ -240,7 +244,7 @@ tag, and must be structured following these rules:
   \item Inside the \texttt{<calendar>} tag, there must be a set of \texttt{<event>} tags 
   \item Each \texttt{<event>} tag must bring a \texttt{unitID} and a 
   \texttt{unitclass} attribute giving the unit on which occurs the event, a 
-  \texttt{<date>} attribute giving the date and time of the event. The date
+  \texttt{date} attribute giving the date and time of the event. The date
   format must be "YYYY-MM-DD hh:mm:ss". The \texttt{<event>} tag may bring a
   \texttt{name} attribute and a a \texttt{category} attribute, but they are
   actually ignored.
