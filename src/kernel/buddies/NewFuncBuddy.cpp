@@ -57,12 +57,13 @@ void NewFunctionBuddy::writeFunctionCPP()
   std::ostringstream FuncVersionStr;
 
 
-  boost::posix_time::ptime CurrentDate = boost::posix_time::second_clock::local_time();
-  boost::posix_time::time_facet* DateFacet = new boost::posix_time::time_facet();
-  DateFacet->format("%Y.%m");
+  unsigned short Year = (boost::posix_time::second_clock::local_time().date().year() % 100);
+  unsigned short Month = (unsigned short)(boost::posix_time::second_clock::local_time().date().month());
 
-  FuncVersionStr.imbue(std::locale(std::locale::classic(), DateFacet));
-  FuncVersionStr << CurrentDate;
+
+  FuncVersionStr << Year << ".";
+  if (Month < 10) FuncVersionStr << "0";
+  FuncVersionStr << Month;
 
 
   CPPContent << "/**" << std::endl;
