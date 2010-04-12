@@ -1,17 +1,5 @@
 
 
-  # distribution files installation
-  INSTALL(FILES "dist/copyright"
-                "dist/AUTHORS"
-                "dist/README"   
-                "dist/CHANGELOG"
-          DESTINATION ${DOC_INSTALL_PATH})
-  
-  INSTALL(FILES "dist/copyright"
-                "dist/AUTHORS"
-                "dist/README"
-                "dist/CHANGELOG"
-          DESTINATION ${DOC_INSTALL_PATH})
 
   # examples installation
   INSTALL(DIRECTORY "examples/src" 

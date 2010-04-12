@@ -1,8 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<openfluid>
-  <datasources>
-    <filesource ID="3" file="ROG3.txt" />
-    <filesource ID="4" file="ROG4.txt" />
-    <filesource ID="5" file="ROG5.txt" />
-  </datasources>
-</openfluid>

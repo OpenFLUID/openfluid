@@ -23,6 +23,7 @@ for the kernel:
   - ofelib 
   - C++ STL
   - boost (system, filesystem, program_options, date_time)
+  - libxml2
 
 For unit testing, the boost test framework is also required (unit_test_framework)
 
@@ -47,12 +48,4 @@ To build packages,
 1) "cd" to the "_build" directory
 2) run "cpack"
 
-
-
-
-OpenFLUID is property of 
-Institut National de La recherche Agronomique 
-and 
-Montpellier SupAgro
-Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
   

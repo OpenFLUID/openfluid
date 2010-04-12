@@ -58,6 +58,20 @@ IF(Boost_FOUND)
 
   INCLUDE(CPack.in.config)
 
+
+  INSTALL(FILES "COPYING"
+                "AUTHORS"
+                "README"   
+                "CHANGELOG"
+          DESTINATION ${DOC_INSTALL_PATH})
+  
+  INSTALL(FILES "COPYING"
+                "AUTHORS"
+                "README"
+                "CHANGELOG"
+          DESTINATION ${DOC_INSTALL_PATH})
+
+
   MESSAGE(STATUS "Build version: ${ENGINE_FULL_VERSION}")
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
