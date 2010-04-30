@@ -734,6 +734,32 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::runBuddy()
+{
+  mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+
+  OpenFLUIDBuddy* Buddy = NULL;
+  if (m_BuddyToRun.first == "newfunc" ) Buddy = new NewFunctionBuddy();
+  if (m_BuddyToRun.first == "func2doc" ) Buddy = new Func2DocBuddy();
+  if (m_BuddyToRun.first == "convert" ) Buddy = new ConvertBuddy();
+  if (m_BuddyToRun.first == "newdata" ) Buddy = new NewDataBuddy();
+
+  if (Buddy != NULL)
+  {
+    Buddy->parseOptions(m_BuddyToRun.second);
+    Buddy->run();
+    delete Buddy;
+  }
+  else throw openfluid::base::OFException("Buddy " + m_BuddyToRun.first + " does not exists");
+
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -748,20 +774,7 @@ void OpenFLUIDApp::run()
 
   if (m_RunType == Buddy)
   {
-    OpenFLUIDBuddy* Buddy = NULL;
-    if (m_BuddyToRun.first == "newfunc" ) Buddy = new NewFunctionBuddy();
-    if (m_BuddyToRun.first == "func2doc" ) Buddy = new Func2DocBuddy();
-    if (m_BuddyToRun.first == "convert" ) Buddy = new ConvertBuddy();
-    if (m_BuddyToRun.first == "newdata" ) Buddy = new NewDataBuddy();
-
-    if (Buddy != NULL)
-    {
-      Buddy->parseOptions(m_BuddyToRun.second);
-      Buddy->run();
-      delete Buddy;
-    }
-    else throw openfluid::base::OFException("Buddy " + m_BuddyToRun.first + " does not exists");
-
+    runBuddy();
   }
 }
 

@@ -114,6 +114,10 @@ class OpenFLUIDApp
     */
     void runSimulation();
 
+    /**
+      Runs buddy
+    */
+    void runBuddy();
 
 
   public:
