@@ -63,6 +63,7 @@
 #include <boost/algorithm/string.hpp>
 #include <fstream>
 #include <libxml/parser.h>
+#include <libxml/xpath.h>
 
 
 ConvertBuddy::ConvertBuddy() : OpenFLUIDBuddy()
@@ -405,6 +406,41 @@ void ConvertBuddy::convert_14_15_data()
 
       if (Root != NULL)
       {
+        xmlXPathInit();
+        xmlXPathContextPtr XPathCtxt = xmlXPathNewContext(Doc);
+        xmlNodePtr XPathNode;
+        xmlChar* xmlColumns;
+        xmlXPathObjectPtr XPathRes;
+        xmlNodePtr InputdataNode;
+
+        // processing of inputdata tag
+        XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/domain/inputdata", XPathCtxt);
+        if (XPathRes == NULL || XPathRes->nodesetval->nodeNr != 1)
+          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <inputdata>");
+        InputdataNode = XPathRes->nodesetval->nodeTab[0];
+
+
+        // processing of columns tag
+        XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/domain/inputdata/columns", XPathCtxt);
+        if (XPathRes == NULL || XPathRes->nodesetval->nodeNr != 1)
+          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <columns>");
+        XPathNode = XPathRes->nodesetval->nodeTab[0];
+
+        xmlColumns = xmlGetProp(XPathNode,(const xmlChar*)"order");
+        if (xmlColumns == NULL)
+          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", missing order attribute in <columns>");
+        xmlSetProp(InputdataNode,(const xmlChar*)"colorder",xmlColumns);
+
+
+        // processing of data tag
+        XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/domain/inputdata/data/text()", XPathCtxt);
+        if (XPathRes == NULL || XPathRes->nodesetval->nodeNr != 1)
+          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <data>");
+        XPathNode = XPathRes->nodesetval->nodeTab[0];
+        xmlNodeSetContent(InputdataNode,xmlNodeGetContent(XPathNode));
+
+        xmlXPathFreeContext(XPathCtxt);
+
         xmlSaveFile(boost::filesystem::path(m_Options["outputdir"]+"/"+CurrOutFile).string().c_str(),Doc);
       }
       else
