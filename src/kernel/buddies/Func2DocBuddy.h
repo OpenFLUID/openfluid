@@ -99,6 +99,7 @@ class Func2DocBuddy : public OpenFLUIDBuddy
     std::string m_BeginFunc2DocTag;
     std::string m_EndFunc2DocTag;
 
+    std::string m_HTMLPackageLatexCommand;
 
     SignatureData_t m_InVars;
     SignatureData_t m_OutVars;

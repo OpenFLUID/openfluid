@@ -87,6 +87,9 @@ Func2DocBuddy::Func2DocBuddy() : OpenFLUIDBuddy()
   m_FuncDomain = "Unknown Function Domain";
   m_NewCommands = "";
 
+  m_HTMLPackageLatexCommand = "";
+
+
   m_BeginSignatureTag = "BEGIN_SIGNATURE_HOOK";
   m_EndSignatureTag = "END_SIGNATURE_HOOK";
   m_BeginFunc2DocTag = "<func2doc>";
@@ -624,6 +627,7 @@ void Func2DocBuddy::generateLatex()
 
   // replacing values
 
+  boost::algorithm::replace_all(m_LatexOutFile,"#htmlpackage#",m_HTMLPackageLatexCommand);
   boost::algorithm::replace_all(m_LatexOutFile,"#title#",m_Title);
   boost::algorithm::replace_all(m_LatexOutFile,"#version#",m_FuncVersion);
   boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_FuncAuthorName);
@@ -803,6 +807,8 @@ bool Func2DocBuddy::run()
   if (m_Options["html"] == "1")
   {
     std::vector<std::string> Latex2HTMLPaths = GetFileLocationsUsingPATHEnvVar("latex2html");
+
+    m_HTMLPackageLatexCommand = "\\usepackage{html}";
 
     if (Latex2HTMLPaths.size() > 0)
       {
