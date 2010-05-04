@@ -589,7 +589,7 @@ bool Engine::prepareDataAndCheckConsistency()
     return false;
   }
 
-
+  mp_IOMan->initOutputs();
 
   mp_IOMan->prepareOutputDir();
   if (mp_RunEnv->isWriteResults())

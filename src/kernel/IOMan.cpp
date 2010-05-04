@@ -133,6 +133,17 @@ bool IOManager::prepareOutputDir()
   return true;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void IOManager::initOutputs()
+{
+  mp_OutputsWriter = new OutputsWriter(mp_RunEnv->getOutputDir(),m_FluidXData.getOutputDescriptor());
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -140,9 +151,7 @@ bool IOManager::prepareOutputDir()
 
 bool IOManager::prepareOutputs()
 {
-
   mp_OutputsWriter->prepareDirectory();
-
   return true;
 }
 
@@ -153,7 +162,6 @@ bool IOManager::prepareOutputs()
 
 bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep)
 {
-
   mp_OutputsWriter->saveToDirectory(CurrentStep,SimInfo,WithoutKeep);
 
   return true;
@@ -195,5 +203,4 @@ void IOManager::loadInputs(ModelDescriptor& ModelDesc, DomainDescriptor& DomainD
   DomainDesc = m_FluidXData.getDomainDescriptor();
   RunDesc = m_FluidXData.getRunDescriptor();
 
-  mp_OutputsWriter = new OutputsWriter(mp_RunEnv->getOutputDir(),m_FluidXData.getOutputDescriptor());
 }

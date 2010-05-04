@@ -435,30 +435,23 @@ void OutputsWriter::saveToDirectory(openfluid::core::TimeStep_t CurrentStep, ope
 {
   openfluid::core::UnitsList_t* Units;
   openfluid::core::UnitsList_t::iterator UnitIt;
-
-
   openfluid::core::TimeStep_t BeginStep, EndStep;
+
   openfluid::core::MemoryMonitor::getInstance()->getMemoryReleaseRange(CurrentStep,WithoutKeep,&BeginStep,&EndStep);
 
 
   for (unsigned int i=0; i< m_OutDesc.getFileSets().size();i++)
   {
-
-
     for (unsigned int j=0; j< m_OutDesc.getFileSets()[i].getSets().size();j++)
     {
-
       if (m_OutDesc.getFileSets()[i].getSets()[j].isAllUnits())
       {
-
-
         Units = openfluid::core::CoreRepository::getInstance()->getUnits(m_OutDesc.getFileSets()[i].getSets()[j].getUnitsClass())->getList();
 
         for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
         {
           saveUnitFileOutput(&(*UnitIt),i,j,BeginStep,EndStep,SimInfo);
         }
-
       }
       else
       {
@@ -468,8 +461,6 @@ void OutputsWriter::saveToDirectory(openfluid::core::TimeStep_t CurrentStep, ope
         }
       }
     }
-
-
   }
 }
 

@@ -67,40 +67,6 @@
 // =====================================================================
 // =====================================================================
 
-/**
-  Structure storing the config of a function, read from the xml model file
-*/
-struct FunctionConfig
-{
-  std::string FileID;  // Plug-in fileID (filename without ext)
-  openfluid::core::FuncParamsMap_t Params;  // Function parameters set
-};
-
-
-struct ModelConfig
-{
-  int DeltaT;
-
-  std::list<FunctionConfig> FuncConfigs;
-
-};
-
-
-struct RunConfig
-{
-  int DeltaT;
-
-  std::string SimulationID;
-
-  openfluid::core::DateTime BeginDate;
-
-  openfluid::core::DateTime EndDate;
-
-};
-
-// =====================================================================
-// =====================================================================
-
 
 class IOManager
 {
@@ -130,6 +96,7 @@ class IOManager
     void loadInputs(ModelDescriptor& ModelDesc, DomainDescriptor& DomainDesc,
                     RunDescriptor& RunDesc);
 
+    void initOutputs();
 
     bool prepareOutputs();
 
