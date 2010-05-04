@@ -4,11 +4,6 @@
 # Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 #
 #
-# CPack components for packaging:
-# - engine : OpenFLUID-engine, with SDK and standard simulation functions  
-# - engine-wodev : OpenFLUID-engine, without SDK, and with standard simulation functions
-#
-#
 
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
@@ -33,14 +28,14 @@ BUILDNAME:STRING=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${BUILDNAME_COMP
 
 INCLUDE(CMake.in.sub)
 
+FIND_PACKAGE(PkgConfig REQUIRED)
+FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex)
+PKG_CHECK_MODULES(LibXML2 REQUIRED libxml-2.0)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)
-FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex)
-FIND_PACKAGE(LibXml2)
 
 
-IF(Boost_FOUND)
-
+IF(Boost_FOUND AND LibXML2_FOUND)
 
   FILE(MAKE_DIRECTORY "${LIB_OUTPUT_PATH}")
   FILE(MAKE_DIRECTORY "${BIN_OUTPUT_PATH}")
@@ -81,7 +76,7 @@ IF(Boost_FOUND)
   MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
 
 
-ENDIF(Boost_FOUND)
+ENDIF(Boost_FOUND AND LibXML2_FOUND)
 
 
 

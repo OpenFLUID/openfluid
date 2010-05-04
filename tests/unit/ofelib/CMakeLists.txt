@@ -1,7 +1,10 @@
 
 
-INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(. ${CMAKE_SOURCE_DIR}/include
+                    ${Boost_INCLUDE_DIRS}
+                    ${LibXML2_INCLUDE_DIRS})
+
+LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 ADD_UNITTEST(unit-MemMonitor unittest_memmonitor MemMonitor_TEST.cpp)
 

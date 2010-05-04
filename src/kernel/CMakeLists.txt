@@ -4,7 +4,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 ADD_DEFINITIONS(-DOFELIB_MAJORVER=${ENGINE_VERSION_MAJOR})
 ADD_DEFINITIONS(-DOFELIB_MINORVER=${ENGINE_VERSION_MINOR})
 ADD_DEFINITIONS(-DOFELIB_REVISION=${ENGINE_VERSION_PATCH})
-ADD_DEFINITIONS(${LIBXML2_DEFINITIONS})
+ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/config.h)
 
@@ -12,7 +12,9 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}/model ${CMAKE_CURRENT_SOURCE_DIR}/run ${CMAKE_CURRENT_SOURCE_DIR}/output
                     ${CMAKE_SOURCE_DIR}/include 
                     ${Boost_INCLUDE_DIRS}
-                    ${LIBXML2_INCLUDE_DIR})
+                    ${LibXML2_INCLUDE_DIRS})
+
+LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 ADD_EXECUTABLE(openfluid-engine
                generators/Generator.cpp generators/FixedGenerator.cpp generators/RandomGenerator.cpp generators/InterpGenerator.cpp
@@ -38,7 +40,7 @@ SET_TARGET_PROPERTIES(openfluid-engine PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BI
 TARGET_LINK_LIBRARIES(openfluid-engine ofelib ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                                        ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                                        ${Boost_REGEX_LIBRARY}
-                                       ${LIBXML2_LIBRARIES})
+                                       ${LibXML2_LIBRARIES})
 IF(UNIX)
   TARGET_LINK_LIBRARIES(openfluid-engine dl)
 ENDIF(UNIX)

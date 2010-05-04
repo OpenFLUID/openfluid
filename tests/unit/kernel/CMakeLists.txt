@@ -1,8 +1,11 @@
 
-INCLUDE_DIRECTORIES(. ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src/kernel ${CMAKE_SOURCE_DIR}/src/kernel/model ${CMAKE_SOURCE_DIR}/src/kernel/io)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LIBXML2_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(. ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/include 
+                      ${CMAKE_SOURCE_DIR}/src/kernel ${CMAKE_SOURCE_DIR}/src/kernel/model 
+                      ${CMAKE_SOURCE_DIR}/src/kernel/io)
 
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
 
+LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 ADD_UNITTEST(unit-RuntimeEnv unittest_runtimeenv 
              RuntimeEnv_TEST.cpp 
@@ -51,5 +54,6 @@ ADD_UNITTEST(unit-FluidXReader unittest_fluidxreader
              ${CMAKE_SOURCE_DIR}/src/kernel/output/OutputDescriptor.cpp
              ${CMAKE_SOURCE_DIR}/src/kernel/AppTools.cpp
              ${CMAKE_SOURCE_DIR}/src/kernel/io/FluidXReader.cpp)
-TARGET_LINK_LIBRARIES(unittest_fluidxreader ${LIBXML2_LIBRARIES})
+
+TARGET_LINK_LIBRARIES(unittest_fluidxreader ${LibXML2_LIBRARIES})
 
