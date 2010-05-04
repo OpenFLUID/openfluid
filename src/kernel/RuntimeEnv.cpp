@@ -82,6 +82,14 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_HostName = "(unknown)";
   m_UserID = "(unknown)";
 
+  // default directories
+  // UNIX:
+  //  Temp directory : using TMPDIR, TMP or TEMP env. var.
+  //  User directory for Openfluid : using HOME env. var. + .openfluid/engine suffix
+  // WIN32:
+  //  Temp directory : using TEMP env. var.
+  //  User directory for Openfluid : using APPDATA env. var. + openfluid/engine suffix
+
 #if defined __unix__ || defined __APPLE__
 
   char ChHostName[512];
@@ -112,7 +120,7 @@ RuntimeEnvironment::RuntimeEnvironment()
   ChTempDir = std::getenv("TEMP");
   if (ChTempDir != NULL ) m_TempDir = ChTempDir;
 
-  ChHomeDir = std::getenv("USERPROFILE");
+  ChHomeDir = std::getenv("APPDATA");
   if (ChHomeDir == NULL) HomeDir = m_TempDir;
   else HomeDir = ChHomeDir;
 
@@ -127,7 +135,13 @@ RuntimeEnvironment::RuntimeEnvironment()
   HomeDir = boost::filesystem::path(HomeDir).string();
   m_TempDir = boost::filesystem::path(m_TempDir).string();
 
+#if WIN32
+  m_UserDataDir = boost::filesystem::path(HomeDir+"/openfluid/engine").string();
+#endif
+
+#if defined __unix__ || defined __APPLE__
   m_UserDataDir = boost::filesystem::path(HomeDir+"/.openfluid/engine").string();
+#endif
 
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + CONFIG_DEFAULT_OUTDIR).string();
   m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + CONFIG_DEFAULT_INDIR).string();
@@ -155,7 +169,10 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
   // plugins search order:
-  //   command line paths, then environment var OPENFLUID_FUNCS_PATH, then user directory, then install directory
+  //  1) command line paths,
+  //  2) environment var OPENFLUID_FUNCS_PATH
+  //  3) user directory,
+  //  4) install directory
 
   // env var
   char *PATHEnvVar;
