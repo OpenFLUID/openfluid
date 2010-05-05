@@ -11,12 +11,23 @@
 
 
 // App Name
-const std::string CONFIG_APPNAME = "openfluid";
+const std::string CONFIG_APPNAME = "@OPENFLUID_MAIN_NAME@";
+
+// Relative openfluid engine directory
+const std::string CONFIG_ENGINE_RELDIR = "@OPENFLUID_ENGINE_RELDIR@";
 
 
 // Default directories
-const std::string CONFIG_DEFAULT_INDIR = "OPENFLUID.IN";
-const std::string CONFIG_DEFAULT_OUTDIR = "OPENFLUID.OUT";
+const std::string CONFIG_DEFAULT_INDIR = "@OPENFLUID_ENGINE_INPUTDIR@";
+const std::string CONFIG_DEFAULT_OUTDIR = "@OPENFLUID_ENGINE_OUTPUTDIR@";
+
+
+// Install prefix
+const std::string CONFIG_INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
+
+// Plugins dirs
+const std::string CONFIG_PLUGINS_SUBDIR = "@OPENFLUID_ENGINE_FUNCSDIR@";
+const std::string CONFIG_PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_ENGINE_FUNCSDIR@";
 
 
 // Default files
@@ -39,14 +50,6 @@ const std::string CONFIG_FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
 
 // Plugins extension
 const std::string CONFIG_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
-
-
-// install prefix
-const std::string CONFIG_INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
-
-// Plugins dirs
-const std::string CONFIG_PLUGINS_SUBDIR = "functions";
-const std::string CONFIG_PLUGINS_STDDIR = "lib/openfluid/functions";
 
 
 // Version information
