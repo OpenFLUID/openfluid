@@ -12,6 +12,8 @@
     simulation functions) 
   * Added environment variable OPENFLUID_INSTALL_PREFIX (overriding automatic 
     prefix path, useful on win32 platforms)
+  * Updated OpenFLUID user directory on win32 platforms,
+    now %APPDATA%\openfluid\engine (OPENFLUID.IN, OPENFLUID.OUT, functions)   
   * Removed variable names checking  
   * Updated console display    
   * Replaced TinyXML library with LibXML2  
