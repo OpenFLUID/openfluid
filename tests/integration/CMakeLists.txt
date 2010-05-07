@@ -76,6 +76,14 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                         "-p" "${TEST_OUTPUT_PATH}")                           
   SET_TESTS_PROPERTIES(integration-InputWithNoRun PROPERTIES WILL_FAIL TRUE)
 
+
+  ADD_TEST(integration-MissingFunction "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.MissingFunc"
+                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingFunc"
+                                        "-p" "${TEST_OUTPUT_PATH}")               
+  SET_TESTS_PROPERTIES(integration-MissingFunction PROPERTIES WILL_FAIL TRUE)
+
+
   ADD_FUNCTION(tests.outputs tests.outputs ${TEST_OUTPUT_PATH})
   ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
 

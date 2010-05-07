@@ -87,78 +87,6 @@ END_SIGNATURE_HOOK
 // =====================================================================
 
 
-LoopsFunction::LoopsFunction()
-                : PluggableFunction()
-{
-
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-LoopsFunction::~LoopsFunction()
-{
-
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool LoopsFunction::initParams(openfluid::core::FuncParamsMap_t Params)
-{
-
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool LoopsFunction::prepareData()
-{
-
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool LoopsFunction::checkConsistency()
-{
-
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
-{
-
 /*
   Tests are based on the following spatial domain,
   with classes TestUnits (TU) and OtherUnits (OU),
@@ -220,6 +148,179 @@ TU.1         TU.2
 
 */
 
+// =====================================================================
+// =====================================================================
+
+LoopsFunction::LoopsFunction()
+                : PluggableFunction()
+{
+
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+LoopsFunction::~LoopsFunction()
+{
+
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool LoopsFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+{
+
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool LoopsFunction::prepareData()
+{
+
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool LoopsFunction::checkConsistency()
+{
+
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+
+  openfluid::core::Unit* CurrentUnit;
+  const openfluid::core::UnitsListByClassMap_t* UnitsByClass;
+  const openfluid::core::UnitsList_t* UnitsList;
+  const openfluid::core::UnitsPtrList_t* ToUnitsPtrList;
+  const openfluid::core::UnitsPtrList_t* FromUnitsPtrList;
+  std::vector<openfluid::core::UnitClass_t> ClassVector;
+
+  openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
+  openfluid::core::UnitsList_t::const_iterator itUnitsList;
+  openfluid::core::UnitsPtrList_t::const_iterator itToUnitsPtrList;
+  openfluid::core::UnitsPtrList_t::const_iterator itFromUnitsPtrList;
+
+
+
+  UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_CoreData->getUnits());
+
+  std::cout << std::endl;
+  std::cout.flush();
+
+  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
+  {
+    ClassVector.push_back((*itUnitsClass).first);
+  }
+
+  // To List
+  std::cout << " -------  To  ------- " << std::endl;
+  std::cout.flush();
+
+  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
+  {
+
+    UnitsList = const_cast<openfluid::core::UnitsList_t*>(((*itUnitsClass).second).getList());
+
+    for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
+    {
+      CurrentUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+
+      std::string SrcClassStr = CurrentUnit->getClass();
+      std::string SrcIDStr = "";
+      openfluid::tools::ConvertValue(CurrentUnit->getID(),&SrcIDStr);
+
+      for (unsigned int i=0;i<ClassVector.size();i++)
+      {
+        ToUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->getToUnits(ClassVector[i]));
+
+        if (ToUnitsPtrList != NULL)
+        {
+          std::string DestClassStr = ClassVector[i];
+
+          for (itToUnitsPtrList=ToUnitsPtrList->begin();itToUnitsPtrList!=ToUnitsPtrList->end();++itToUnitsPtrList)
+          {
+            std::string DestIDStr = "";
+            openfluid::tools::ConvertValue((*itToUnitsPtrList)->getID(),&DestIDStr);
+            std::cout << SrcClassStr << "#" << SrcIDStr << " --> "<< DestClassStr << "#" << DestIDStr << std::endl;
+            std::cout.flush();
+          }
+        }
+      }
+    }
+  }
+
+  // From List
+  std::cout << " -------  From  ------- " << std::endl;
+  std::cout.flush();
+
+  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
+  {
+
+    UnitsList = const_cast<openfluid::core::UnitsList_t*>(((*itUnitsClass).second).getList());
+
+    for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
+    {
+      CurrentUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+
+      std::string SrcClassStr = CurrentUnit->getClass();
+      std::string SrcIDStr = "";
+      openfluid::tools::ConvertValue(CurrentUnit->getID(),&SrcIDStr);
+
+      for (unsigned int i=0;i<ClassVector.size();i++)
+      {
+        FromUnitsPtrList = const_cast<openfluid::core::UnitsPtrList_t*>(CurrentUnit->getFromUnits(ClassVector[i]));
+
+        if (FromUnitsPtrList != NULL)
+        {
+          std::string DestClassStr = ClassVector[i];
+
+          for (itFromUnitsPtrList=FromUnitsPtrList->begin();itFromUnitsPtrList!=FromUnitsPtrList->end();++itFromUnitsPtrList)
+          {
+            std::string DestIDStr = "";
+            openfluid::tools::ConvertValue((*itFromUnitsPtrList)->getID(),&DestIDStr);
+            std::cout << SrcClassStr << "#" << SrcIDStr << " <-- "<< DestClassStr << "#" << DestIDStr << std::endl;
+            std::cout.flush();
+          }
+        }
+      }
+    }
+
+
+  }
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
 
   openfluid::core::Unit *TU = NULL;
   openfluid::core::Unit *OU = NULL;
@@ -228,6 +329,7 @@ TU.1         TU.2
   openfluid::core::UnitsPtrList_t *ToList = NULL;
   openfluid::core::UnitsPtrList_t *FromList = NULL;
   unsigned int CountInside;
+  bool LoopIsOK;
 
   DECLARE_UNITS_ORDERED_LOOP(11)
   DECLARE_UNITS_ORDERED_LOOP(1)
@@ -253,11 +355,14 @@ TU.1         TU.2
 
   // ===== unit class =====
 
+  LoopIsOK = false;
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+    LoopIsOK = true;
     if (TU->getClass() != "TestUnits")
       OPENFLUID_RaiseError("tests.loops","runStep()","wrong units class");
   END_LOOP
-
+  if (!LoopIsOK)
+    OPENFLUID_RaiseError("tests.loops","runStep()","Loop is not OK #1");
 
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)

@@ -109,6 +109,11 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_from_to)
 {
+  const openfluid::core::UnitsPtrList_t* FromUnits;
+  const openfluid::core::UnitsPtrList_t* ToUnits;
+  openfluid::core::UnitsPtrList_t::const_iterator itUnits;
+  unsigned int UnitsCount;
+
 
   openfluid::core::Unit TU("Test",35,17);
 
@@ -153,11 +158,33 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   BOOST_REQUIRE_EQUAL(TU.getFromUnits("FromTest")->front()->getID(),23);
   BOOST_REQUIRE_EQUAL(TU.getFromUnits("FromTest")->back()->getID(),21);
 
+  FromUnits = TU.getFromUnits("FromTest");
+  UnitsCount = 0;
+  for (itUnits=FromUnits->begin();itUnits!=FromUnits->end();++itUnits)
+  {
+    BOOST_REQUIRE_EQUAL((*itUnits)->getClass(),"FromTest");
+    BOOST_REQUIRE((*itUnits)->getFromUnits("FakeFrom") == NULL);
+    UnitsCount++;
+  }
+  BOOST_REQUIRE_EQUAL(UnitsCount,3);
+
+
   BOOST_REQUIRE_EQUAL(TU.getToUnits("ToTest")->size(),2);
   BOOST_REQUIRE_EQUAL(TU.getToUnits("ToTest2")->size(),2);
 
   BOOST_REQUIRE_EQUAL(TU.getToUnits("ToTest")->front()->getID(),1);
   BOOST_REQUIRE_EQUAL(TU.getToUnits("ToTest")->back()->getID(),2);
+
+  ToUnits = TU.getToUnits("ToTest");
+  UnitsCount = 0;
+  for (itUnits=ToUnits->begin();itUnits!=ToUnits->end();++itUnits)
+  {
+    BOOST_REQUIRE_EQUAL((*itUnits)->getClass(),"ToTest");
+    BOOST_REQUIRE((*itUnits)->getToUnits("FakeTo") == NULL);
+    UnitsCount++;
+  }
+  BOOST_REQUIRE_EQUAL(UnitsCount,2);
+
 
   BOOST_REQUIRE_EQUAL(TU.getParentUnits("ParentTest")->front()->getID(),55);
 
