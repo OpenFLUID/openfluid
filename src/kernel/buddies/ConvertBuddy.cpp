@@ -68,7 +68,7 @@
 
 ConvertBuddy::ConvertBuddy() : OpenFLUIDBuddy()
 {
-  m_RequiredOptionsHelp["convmode"] = "Conversion mode. Available modes are: 13_14";
+  m_RequiredOptionsHelp["convmode"] = "Conversion mode. Available modes are: 13_14, 14_15";
   m_RequiredOptionsHelp["inputdir"] = "Input directory for dataset to convert";
   m_RequiredOptionsHelp["outputdir"] = "Output directory for converted dataset";
 }
