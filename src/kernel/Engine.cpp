@@ -745,7 +745,10 @@ bool Engine::run()
     {
       mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getCurrentStep(),false,&SaveReleaseBegin, &SaveReleaseEnd);
       std::cout << std::endl << " -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
-      mp_IOMan->saveOutputs(mp_SimStatus->getCurrentStep(),(openfluid::base::SimulationInfo*)mp_SimStatus,false);
+      if (mp_RunEnv->isWriteResults())
+      {
+        mp_IOMan->saveOutputs(mp_SimStatus->getCurrentStep(),(openfluid::base::SimulationInfo*)mp_SimStatus,false);
+      }
       mp_IOMan->saveMessages();
       mp_CoreData->doMemRelease(mp_SimStatus->getCurrentStep(),false);
       mp_ExecMsgs->doMemRelease();
@@ -818,7 +821,10 @@ bool Engine::run()
   // final progressive output
   mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getStepsCount()-1,true,&SaveReleaseBegin, &SaveReleaseEnd);
   std::cout << std::endl << "  -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
-  mp_IOMan->saveOutputs(mp_SimStatus->getStepsCount()-1,(openfluid::base::SimulationInfo*)mp_SimStatus,true);
+  if (mp_RunEnv->isWriteResults())
+  {
+    mp_IOMan->saveOutputs(mp_SimStatus->getStepsCount()-1,(openfluid::base::SimulationInfo*)mp_SimStatus,true);
+  }
   mp_IOMan->saveMessages();
   mp_CoreData->doMemRelease(mp_SimStatus->getStepsCount()-1,true);
   mp_ExecMsgs->doMemRelease();
