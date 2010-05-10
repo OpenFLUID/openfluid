@@ -123,14 +123,18 @@ class Engine
 
      void checkExtraFilesConsistency();
 
-     bool checkExistingVariable(openfluid::core::VariableName_t VarName,
-                                openfluid::core::UnitClass_t ClassName);
+     void checkExistingVariable(openfluid::core::VariableName_t VarName,
+                                openfluid::core::UnitClass_t ClassName,
+                                std::string FunctionName);
 
-     bool createVariable(openfluid::core::VariableName_t VarName,
-                         openfluid::core::UnitClass_t ClassName, bool UpdateMode);
+     void createVariable(openfluid::core::VariableName_t VarName,
+                         openfluid::core::UnitClass_t ClassName,
+                         bool UpdateMode,
+                         std::string FunctionName);
 
-     bool checkExistingInputData(openfluid::core::InputDataName_t DataName,
-                                 openfluid::core::UnitClass_t ClassName);
+     void checkExistingInputData(openfluid::core::InputDataName_t DataName,
+                                 openfluid::core::UnitClass_t ClassName,
+                                 std::string FunctionName);
 
   public:
     /**

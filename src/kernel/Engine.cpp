@@ -103,42 +103,49 @@ Engine::~Engine()
 // =====================================================================
 
 
-bool Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
-                                   openfluid::core::UnitClass_t ClassName)
+void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
+                                   openfluid::core::UnitClass_t ClassName,
+                                   std::string FunctionName)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
   if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
-  else return false;
+  else throw openfluid::base::OFException("kernel","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + FunctionName);
 
   bool Status = true;
+
   UnitIter = UnitList->begin();
-  while (Status && (UnitIter != UnitList->end()))
+  while (UnitIter != UnitList->end())
   {
     if (IsVectorNamedVariable(VarName)) Status = (*UnitIter).getVectorVariables()->isVariableExist(GetVectorNamedVariableName(VarName));
     else Status = (*UnitIter).getScalarVariables()->isVariableExist(VarName);
+
+    if (!Status)
+      throw openfluid::base::OFException("kernel","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionName + " is not previously created");
+
     ++UnitIter;
   }
 
-  return Status;
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool Engine::createVariable(openfluid::core::VariableName_t VarName,
+void Engine::createVariable(openfluid::core::VariableName_t VarName,
                             openfluid::core::UnitClass_t ClassName,
-                            bool UpdateMode)
+                            bool UpdateMode,
+                            std::string FunctionName)
 {
   openfluid::core::UnitsList_t::iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
   if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
-  else return false;
+  else throw openfluid::base::OFException("kernel","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + FunctionName);
 
   bool Status = true;
 
@@ -146,24 +153,24 @@ bool Engine::createVariable(openfluid::core::VariableName_t VarName,
   if (!UpdateMode)
   {
     UnitIter = UnitList->begin();
-    while (Status && (UnitIter != UnitList->end()))
+    while (UnitIter != UnitList->end())
     {
       if (IsVectorNamedVariable(VarName)) Status = !((*UnitIter).getVectorVariables()->isVariableExist(GetVectorNamedVariableName(VarName)));
       else Status = !((*UnitIter).getScalarVariables()->isVariableExist(VarName));
+
+      if (!Status)
+        throw openfluid::base::OFException("kernel","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionName + " cannot be created because it is previously created");
+
       ++UnitIter;
     }
   }
 
-  if (Status)
+  for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
-    for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
-    {
-      if (IsVectorNamedVariable(VarName)) (*UnitIter).getVectorVariables()->createVariable(GetVectorNamedVariableName(VarName));
-      else (*UnitIter).getScalarVariables()->createVariable(VarName);
-    }
+    if (IsVectorNamedVariable(VarName)) (*UnitIter).getVectorVariables()->createVariable(GetVectorNamedVariableName(VarName));
+    else (*UnitIter).getScalarVariables()->createVariable(VarName);
   }
 
-  return Status;
 }
 
 // =====================================================================
@@ -171,8 +178,9 @@ bool Engine::createVariable(openfluid::core::VariableName_t VarName,
 
 
 
-bool Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
-                                    openfluid::core::UnitClass_t ClassName)
+void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
+                                    openfluid::core::UnitClass_t ClassName,
+                                    std::string FunctionName)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
@@ -180,7 +188,7 @@ bool Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 
   UnitList = NULL;
   if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
-  else return false;
+  else throw openfluid::base::OFException("kernel","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + FunctionName);
 
   bool Status = true;
 
@@ -188,11 +196,11 @@ bool Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
   while (Status && (UnitIter != UnitList->end()))
   {
     Status = (*UnitIter).getInputData()->isDataExist(DataName);
+    if (!Status)
+      throw openfluid::base::OFException("kernel","Engine::checkExistingInputData",DataName + " input data on " + ClassName + " required by " + FunctionName + " is not available");
+
     ++UnitIter;
   }
-
-
-  return Status;
 }
 
 
@@ -264,34 +272,26 @@ void Engine::checkModelConsistency()
     HData = CurrentFunction->Signature->HandledData;
 
     // checking required variables
-    i = 0;
-    while (IsOK && i < HData.RequiredVars.size())
-    {
-      IsOK = checkExistingVariable(HData.RequiredVars[i].DataName, HData.RequiredVars[i].UnitClass);
-
-      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredVars[i].DataName + " variable on " + HData.RequiredVars[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not previously created");
-      else i++;
-    }
+    for (i=0;i< HData.RequiredVars.size();i++)
+      checkExistingVariable(HData.RequiredVars[i].DataName,
+                            HData.RequiredVars[i].UnitClass,
+                            CurrentFunction->Signature->ID);
 
     // checking variables to create (produced)
-    i = 0;
-    while (IsOK && i < HData.ProducedVars.size())
-    {
-      IsOK = createVariable(HData.ProducedVars[i].DataName, HData.ProducedVars[i].UnitClass,false);
 
-      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.ProducedVars[i].DataName + " variable on " + HData.ProducedVars[i].UnitClass + " produced by " + CurrentFunction->Signature->ID + " cannot be created because it is previously created");
-      else i++;
-    }
+    for (i=0;i< HData.ProducedVars.size();i++)
+      createVariable(HData.ProducedVars[i].DataName,
+                     HData.ProducedVars[i].UnitClass,
+                     false,
+                     CurrentFunction->Signature->ID);
+
 
     // checking variables to update
-    i = 0;
-    while (IsOK && i < HData.UpdatedVars.size())
-    {
-      IsOK = createVariable(HData.UpdatedVars[i].DataName, HData.UpdatedVars[i].UnitClass,true);
-
-      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.UpdatedVars[i].DataName + " variable on " + HData.UpdatedVars[i].UnitClass + " updated by " + CurrentFunction->Signature->ID + " cannot be handled");
-      else i++;
-    }
+    for (i=0;i<HData.UpdatedVars.size();i++)
+      createVariable(HData.UpdatedVars[i].DataName,
+                     HData.UpdatedVars[i].UnitClass,
+                     true,
+                     CurrentFunction->Signature->ID);
 
     FuncIter++;
   }
@@ -306,14 +306,10 @@ void Engine::checkModelConsistency()
     HData = CurrentFunction->Signature->HandledData;
 
     // checking required variables at t-1+
-    i = 0;
-    while (IsOK && i < HData.RequiredPrevVars.size())
-    {
-      IsOK = checkExistingVariable(HData.RequiredPrevVars[i].DataName, HData.RequiredPrevVars[i].UnitClass);
-
-      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkModelConsistency",HData.RequiredPrevVars[i].DataName + " variable on " + HData.RequiredPrevVars[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not created");
-      else i++;
-    }
+    for (i=0;i< HData.RequiredPrevVars.size();i++)
+      checkExistingVariable(HData.RequiredPrevVars[i].DataName,
+                            HData.RequiredPrevVars[i].UnitClass,
+                            CurrentFunction->Signature->ID);
 
     FuncIter++;
   }
@@ -346,15 +342,11 @@ void Engine::checkDataConsistency()
 
 
     // checking required input data
-    i = 0;
-    while (IsOK && i < HData.RequiredInput.size())
-    {
+    for(i=0; i < HData.RequiredInput.size();i++)
+      checkExistingInputData(HData.RequiredInput[i].DataName,
+          HData.RequiredInput[i].UnitClass,
+          CurrentFunction->Signature->ID);
 
-      IsOK = checkExistingInputData(HData.RequiredInput[i].DataName, HData.RequiredInput[i].UnitClass);
-
-      if (!IsOK) throw openfluid::base::OFException("kernel","Engine::checkDataConsistency",HData.RequiredInput[i].DataName + " input data on " + HData.RequiredInput[i].UnitClass + " required by " + CurrentFunction->Signature->ID + " is not available");
-      else i++;
-    }
     FuncIter++;
   }
 
