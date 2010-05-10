@@ -84,7 +84,7 @@ class IOManager
 
     OutputsWriter* mp_OutputsWriter;
 
-    FluidXReader m_FluidXData;
+    FluidXReader* mp_FluidXData;
 
     IOManager();
 
@@ -92,6 +92,8 @@ class IOManager
   public:
 
     static IOManager* getInstance();
+
+    ~IOManager();
 
     void loadInputs(ModelDescriptor& ModelDesc, DomainDescriptor& DomainDesc,
                     RunDescriptor& RunDesc);
@@ -108,6 +110,7 @@ class IOManager
 
     bool prepareOutputDir();
 
+    void clearFluidXData();
 
 
 };

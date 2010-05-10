@@ -82,8 +82,20 @@ IOManager::IOManager()
   mp_RunEnv = RuntimeEnvironment::getInstance();
 
   mp_OutputsWriter = NULL;
+  mp_FluidXData = NULL;
 
 };
+
+
+// =====================================================================
+// =====================================================================
+
+
+IOManager::~IOManager()
+{
+  delete mp_OutputsWriter;
+  delete mp_FluidXData;
+}
 
 // =====================================================================
 // =====================================================================
@@ -140,7 +152,7 @@ bool IOManager::prepareOutputDir()
 
 void IOManager::initOutputs()
 {
-  mp_OutputsWriter = new OutputsWriter(mp_RunEnv->getOutputDir(),m_FluidXData.getOutputDescriptor());
+  mp_OutputsWriter = new OutputsWriter(mp_RunEnv->getOutputDir(),mp_FluidXData->getOutputDescriptor());
 }
 
 
@@ -197,10 +209,27 @@ bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, st
 void IOManager::loadInputs(ModelDescriptor& ModelDesc, DomainDescriptor& DomainDesc,
                            RunDescriptor& RunDesc)
 {
-  m_FluidXData.loadFromDirectory(mp_RunEnv->getInputDir(),std::cout);
+  if (mp_FluidXData != NULL) delete mp_FluidXData;
 
-  ModelDesc = m_FluidXData.getModelDescriptor();
-  DomainDesc = m_FluidXData.getDomainDescriptor();
-  RunDesc = m_FluidXData.getRunDescriptor();
+  mp_FluidXData = new FluidXReader();
+
+  mp_FluidXData->loadFromDirectory(mp_RunEnv->getInputDir(),std::cout);
+
+  ModelDesc = mp_FluidXData->getModelDescriptor();
+  DomainDesc = mp_FluidXData->getDomainDescriptor();
+  RunDesc = mp_FluidXData->getRunDescriptor();
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void IOManager::clearFluidXData()
+{
+  delete mp_FluidXData;
+  mp_FluidXData = NULL;
+}
+
+

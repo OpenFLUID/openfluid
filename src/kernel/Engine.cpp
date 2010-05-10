@@ -598,6 +598,8 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
+  mp_IOMan->clearFluidXData();
+
   return true;
 }
 
