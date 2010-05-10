@@ -501,7 +501,13 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "Simulation ID: " << RuntimeEnvironment::getInstance()->getSimulationID() << std::endl;
   std::cout << std::endl;
 
-  std::cout << "Spatial domain: " << std::endl;
+  unsigned int UnitsCount = 0;
+  for (UnitsIt = pCoreData->getUnits()->begin(); UnitsIt != pCoreData->getUnits()->end();++UnitsIt )
+  {
+    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
+  }
+
+  std::cout << "Spatial domain, " << UnitsCount << " units :"<< std::endl;
   for (UnitsIt = pCoreData->getUnits()->begin(); UnitsIt != pCoreData->getUnits()->end();++UnitsIt )
   {
     std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
