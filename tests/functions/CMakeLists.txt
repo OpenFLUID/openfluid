@@ -69,7 +69,14 @@ ADD_TEST(functions-ManyMessages "${BIN_OUTPUT_PATH}/openfluid-engine"
                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckManyMessages" 
                              "-p${TEST_OUTPUT_PATH}"
                              "-z")                              
-                         
+
+
+ADD_FUNCTION(tests.parseunits tests.parseunits ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-ManyUnits "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                             "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckManyUnits"
+                             "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckManyUnits" 
+                             "-p${TEST_OUTPUT_PATH}")                              
+             
                          
 ADD_FUNCTION(tests.ofefunc2doc tests.ofefunc2doc ${TEST_OUTPUT_PATH})
 
