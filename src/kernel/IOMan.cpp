@@ -60,8 +60,6 @@
 #include <fstream>
 
 #include <boost/filesystem.hpp>
-#include <boost/iostreams/device/null.hpp>
-
 
 #include "io/MessagesWriter.h"
 #include "io/SimReportWriter.h"
