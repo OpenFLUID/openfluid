@@ -53,7 +53,7 @@
 
 
 #include "FortranFunc.h"
-#include "openfluid-tools.h"
+#include <openfluid/tools.hpp>
 #include <cmath>
 
 

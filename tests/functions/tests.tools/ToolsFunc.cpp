@@ -52,9 +52,9 @@
 */
 
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
-#include "openfluid-tools.h"
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
+#include <openfluid/tools.hpp>
 #include <boost/filesystem.hpp>
 
 // =====================================================================

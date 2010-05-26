@@ -47,21 +47,19 @@
 
 
 /**
-  \file DistributedEvent_TEST.cpp
+  \file CoreRepository_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_event
+#define BOOST_TEST_MODULE unittest_corerepository
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
-#include "openfluid-core.h"
+#include <openfluid/core.hpp>
 
 
 // =====================================================================
@@ -70,68 +68,98 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::Event Ev;
-  BOOST_REQUIRE_EQUAL(Ev.getInfosCount(),0);
+  openfluid::core::CoreRepository* Repos;
+  openfluid::core::MemoryMonitor* MemMon;
 
-  openfluid::core::Event Ev2(openfluid::core::DateTime(2009,9,10,13,55,7));
-  BOOST_REQUIRE_EQUAL(Ev2.getInfosCount(),0);
+  Repos = openfluid::core::CoreRepository::getInstance();
+  MemMon = openfluid::core::MemoryMonitor::getInstance();
+  MemMon->setPacketAndKeep(500,10);
+  Repos->setMemoryMonitor(MemMon);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-BOOST_AUTO_TEST_CASE(check_infosoperations)
+BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::Event Ev(openfluid::core::DateTime(2009,9,10,13,55,7));
-  std::string StrInfo;
-  long LongInfo;
-  double DoubleInfo;
-  openfluid::core::ScalarValue ScalarValueInfo;
+  openfluid::core::CoreRepository* Repos;
+  openfluid::core::MemoryMonitor* MemMon;
+  int i, PcsOrder;
+  openfluid::core::UnitsCollection* UnitsColl;
+  openfluid::core::UnitsList_t::iterator UnitsIt, PrevUnitsIt;
+  openfluid::core::Unit* U;
 
 
-  Ev.addInfo("test1","value");
-  Ev.addInfo("test2","18");
-  Ev.addInfo("test3","25.2");
+  Repos = openfluid::core::CoreRepository::getInstance();
+  MemMon = openfluid::core::MemoryMonitor::getInstance();
+  MemMon->setPacketAndKeep(500,10);
+  Repos->setMemoryMonitor(MemMon);
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfosCount(),3);
+  for (i=1;i<=250;i++)
+  {
+    PcsOrder = (i%7)+1;
+    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder));
+  }
 
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test1"),true);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test2"),true);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test3"),true);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test4"),false);
-  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test"),false);
+  for (i=1;i<=7325;i++)
+  {
+    PcsOrder = (i%31)+1;
+    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder));
+  }
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test1",&StrInfo),true);
-  BOOST_REQUIRE_EQUAL(StrInfo,"value");
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test2",&StrInfo),true);
-  BOOST_REQUIRE_EQUAL(StrInfo,"18");
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test3",&StrInfo),true);
-  BOOST_REQUIRE_EQUAL(StrInfo,"25.2");
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test",&StrInfo),false);
+  Repos->sortUnitsByProcessOrder();
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test1",&LongInfo),false);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test2",&LongInfo),true);
-  BOOST_REQUIRE_EQUAL(LongInfo,18);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test3",&LongInfo),true);
-  BOOST_REQUIRE_EQUAL(LongInfo,25);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test",&LongInfo),false);
+  // *** Units count and process order
+  UnitsColl = Repos->getUnits("UnitClassA");
+  BOOST_REQUIRE_EQUAL(UnitsColl->getList()->size(),250);
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test1",&DoubleInfo),false);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test2",&DoubleInfo),true);
-  BOOST_REQUIRE_CLOSE(DoubleInfo,18.0,0.1);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test3",&DoubleInfo),true);
-  BOOST_REQUIRE_CLOSE(DoubleInfo,25.2,0.1);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test",&DoubleInfo),false);
+  PrevUnitsIt = UnitsColl->getList()->begin();
+  for (UnitsIt = UnitsColl->getList()->begin(); UnitsIt != UnitsColl->getList()->end();++UnitsIt)
+  {
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test1",&ScalarValueInfo),false);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test2",&ScalarValueInfo),true);
-  BOOST_REQUIRE_CLOSE(ScalarValueInfo,18.0,0.1);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test3",&ScalarValueInfo),true);
-  BOOST_REQUIRE_CLOSE(ScalarValueInfo,25.2,0.1);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test",&ScalarValueInfo),false);
+    if (UnitsIt != UnitsColl->getList()->begin())
+    {
+      BOOST_REQUIRE_GE(UnitsIt->getProcessOrder(),PrevUnitsIt->getProcessOrder());
+    }
+    PrevUnitsIt = UnitsIt;
+  }
+
+  UnitsColl = Repos->getUnits("UnitClassB");
+  BOOST_REQUIRE_EQUAL(UnitsColl->getList()->size(),7325);
+
+  PrevUnitsIt = UnitsColl->getList()->begin();
+  for (UnitsIt = UnitsColl->getList()->begin(); UnitsIt != UnitsColl->getList()->end();++UnitsIt)
+  {
+
+    if (UnitsIt != UnitsColl->getList()->begin())
+    {
+      BOOST_REQUIRE_GE(UnitsIt->getProcessOrder(),PrevUnitsIt->getProcessOrder());
+    }
+    PrevUnitsIt = UnitsIt;
+  }
+
+
+  // *** existing classes
+  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("UnitClassA"),true);
+  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("UnitClassB"),true);
+  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("WrongClass"),false);
+
+
+  // *** existing units
+  BOOST_REQUIRE(Repos->getUnit("UnitClassA",17) != NULL);
+  BOOST_REQUIRE(Repos->getUnit("UnitClassA",1000) == NULL);
+  U = Repos->getUnit("UnitClassA",17);
+  BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassA");
+  BOOST_REQUIRE_EQUAL(U->getID(),17);
+
+  BOOST_REQUIRE(Repos->getUnit("UnitClassB",1333) != NULL);
+  BOOST_REQUIRE(Repos->getUnit("UnitClassB",10000) == NULL);
+  U = Repos->getUnit("UnitClassB",1333);
+  BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassB");
+  BOOST_REQUIRE_EQUAL(U->getID(),1333);
+
+  BOOST_REQUIRE(Repos->getUnit("WrongClass",1) == NULL);
 }
 
 // =====================================================================
 // =====================================================================
-

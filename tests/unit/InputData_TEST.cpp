@@ -47,21 +47,21 @@
 
 
 /**
-  \file SSerieValues_TEST.cpp
+  \file InputData_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_sserievalues
+#define BOOST_TEST_MODULE unittest_inputdata
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include "openfluid-core.h"
+#include <openfluid/core.hpp>
+#include <vector>
 
 
 // =====================================================================
@@ -70,9 +70,9 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::StepSerieOfValues<double> SSerie;
+  openfluid::core::InputData<openfluid::core::ScalarValue> IDataDouble;
 
-  BOOST_REQUIRE_EQUAL(SSerie.getNextStep(),0);
+  openfluid::core::InputData<openfluid::core::InputDataValue> IDataStr;
 }
 
 // =====================================================================
@@ -80,41 +80,53 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::StepSerieOfValues<double> SSerie;
-  double Value;
+  openfluid::core::InputData<openfluid::core::ScalarValue> IData;
+  openfluid::core::ScalarValue Value;
+  std::vector<openfluid::core::InputDataName_t> Names;
 
-  BOOST_REQUIRE_EQUAL(SSerie.getNextStep(),0);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_1",2.0),true);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_2",3.2),true);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_3",4.3),true);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_3",2.0),false);
 
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(1.1),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(2.2),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(3.3),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(4.4),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(5.5),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(6.6),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(7.7),true);
+  BOOST_REQUIRE_EQUAL(IData.getValue("idata_1",&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,2.0,0.001);
 
-  BOOST_REQUIRE_EQUAL(SSerie.getNextStep(),7);
+  BOOST_REQUIRE_EQUAL(IData.getValue("idata_2",&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,3.2,0.001);
+  BOOST_REQUIRE_EQUAL(IData.getValue("idata_3",&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,4.3,0.001);
 
-  BOOST_REQUIRE_EQUAL(SSerie.getValue(7,&Value),false);
+  BOOST_REQUIRE_EQUAL(IData.getValue("idata_4",&Value),false);
 
-  BOOST_REQUIRE_EQUAL(SSerie.getValue(3,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,4.4,0.001);
+  Names = IData.getInputDataNames();
+  BOOST_REQUIRE_EQUAL(Names.size(),3);
 
-  BOOST_REQUIRE_EQUAL(SSerie.modifyValue(3,44.0),true);
-  BOOST_REQUIRE_EQUAL(SSerie.getValue(3,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,44.0,0.001);
 
-  BOOST_REQUIRE_EQUAL(SSerie.deleteValues(3),true);
-  BOOST_REQUIRE_EQUAL(SSerie.getValue(3,&Value),false);
-  BOOST_REQUIRE_NE(SSerie.getValue(3,&Value),true);
 
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(10.1),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(20.2),true);
-  BOOST_REQUIRE_EQUAL(SSerie.appendValue(30.3),true);
+  openfluid::core::InputData<openfluid::core::InputDataValue> IDataStr;
+  openfluid::core::InputDataValue IDValue;
+  openfluid::core::ScalarValue DoubleValue;
 
-  BOOST_REQUIRE_EQUAL(SSerie.deleteValues(8),true);
+  BOOST_REQUIRE_EQUAL(IDataStr.setValue("idata_1","CODEA"),true);
+  BOOST_REQUIRE_EQUAL(IDataStr.setValue("idata_3","3.5"),true);
+  BOOST_REQUIRE_EQUAL(IDataStr.setValue("idata_3","CODEC"),false);
+
+  BOOST_REQUIRE_EQUAL(IDataStr.getValue("idata_1",&IDValue),true);
+  BOOST_REQUIRE_EQUAL(IDValue,"CODEA");
+
+  BOOST_REQUIRE_EQUAL(IDataStr.getValue("idata_2",&IDValue),false);
+
+  BOOST_REQUIRE_EQUAL(IDataStr.getValue("idata_3",&IDValue),true);
+  BOOST_REQUIRE_EQUAL(IDValue,"3.5");
+  BOOST_REQUIRE_EQUAL(IDataStr.getValueAsDouble("idata_3",&DoubleValue),true);
+  BOOST_REQUIRE_CLOSE(DoubleValue,3.5,0.001);
+
+  BOOST_REQUIRE_EQUAL(IDataStr.getValue("idata_4",&IDValue),false);
+
+  Names = IDataStr.getInputDataNames();
+  BOOST_REQUIRE_EQUAL(Names.size(),2);
+
+
 
 }
-
-// =====================================================================
-// =====================================================================

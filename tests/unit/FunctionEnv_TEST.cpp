@@ -47,7 +47,7 @@
 
 
 /**
-  \file CoreRepository_TEST.cpp
+  \file FunctionEnv_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -56,10 +56,11 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_corerepository
+#define BOOST_TEST_MODULE unittest_functionenv
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-core.h"
+#include <openfluid/core.hpp>
+#include <openfluid/base.hpp>
 
 
 // =====================================================================
@@ -68,13 +69,13 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::CoreRepository* Repos;
-  openfluid::core::MemoryMonitor* MemMon;
+  openfluid::base::FunctionEnvironment FuncEnv;
+  bool BoolValue;
+  std::string StrValue;
 
-  Repos = openfluid::core::CoreRepository::getInstance();
-  MemMon = openfluid::core::MemoryMonitor::getInstance();
-  MemMon->setPacketAndKeep(500,10);
-  Repos->setMemoryMonitor(MemMon);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakebool",&BoolValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakestring",&StrValue),false);
+
 }
 
 // =====================================================================
@@ -82,83 +83,42 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::CoreRepository* Repos;
-  openfluid::core::MemoryMonitor* MemMon;
-  int i, PcsOrder;
-  openfluid::core::UnitsCollection* UnitsColl;
-  openfluid::core::UnitsList_t::iterator UnitsIt, PrevUnitsIt;
-  openfluid::core::Unit* U;
+  openfluid::base::FunctionEnvironment FuncEnv;
+  bool BoolValue;
+  std::string StrValue;
 
 
-  Repos = openfluid::core::CoreRepository::getInstance();
-  MemMon = openfluid::core::MemoryMonitor::getInstance();
-  MemMon->setPacketAndKeep(500,10);
-  Repos->setMemoryMonitor(MemMon);
 
-  for (i=1;i<=250;i++)
-  {
-    PcsOrder = (i%7)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder));
-  }
+  BOOST_REQUIRE_EQUAL(FuncEnv.setValue("bool1",true),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool1",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(BoolValue,true);
 
-  for (i=1;i<=7325;i++)
-  {
-    PcsOrder = (i%31)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder));
-  }
+  BOOST_REQUIRE_EQUAL(FuncEnv.setValue("bool1",false),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool1",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(BoolValue,false);
 
-  Repos->sortUnitsByProcessOrder();
+  BOOST_REQUIRE_EQUAL(FuncEnv.setValue("bool2",false),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool2",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(BoolValue,false);
 
-  // *** Units count and process order
-  UnitsColl = Repos->getUnits("UnitClassA");
-  BOOST_REQUIRE_EQUAL(UnitsColl->getList()->size(),250);
-
-  PrevUnitsIt = UnitsColl->getList()->begin();
-  for (UnitsIt = UnitsColl->getList()->begin(); UnitsIt != UnitsColl->getList()->end();++UnitsIt)
-  {
-
-    if (UnitsIt != UnitsColl->getList()->begin())
-    {
-      BOOST_REQUIRE_GE(UnitsIt->getProcessOrder(),PrevUnitsIt->getProcessOrder());
-    }
-    PrevUnitsIt = UnitsIt;
-  }
-
-  UnitsColl = Repos->getUnits("UnitClassB");
-  BOOST_REQUIRE_EQUAL(UnitsColl->getList()->size(),7325);
-
-  PrevUnitsIt = UnitsColl->getList()->begin();
-  for (UnitsIt = UnitsColl->getList()->begin(); UnitsIt != UnitsColl->getList()->end();++UnitsIt)
-  {
-
-    if (UnitsIt != UnitsColl->getList()->begin())
-    {
-      BOOST_REQUIRE_GE(UnitsIt->getProcessOrder(),PrevUnitsIt->getProcessOrder());
-    }
-    PrevUnitsIt = UnitsIt;
-  }
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakebool",&BoolValue),false);
 
 
-  // *** existing classes
-  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("UnitClassA"),true);
-  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("UnitClassB"),true);
-  BOOST_REQUIRE_EQUAL(Repos->isUnitsClassExist("WrongClass"),false);
 
+  BOOST_REQUIRE_EQUAL(FuncEnv.setValue("str1",std::string("first string")),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str1",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(StrValue,"first string");
 
-  // *** existing units
-  BOOST_REQUIRE(Repos->getUnit("UnitClassA",17) != NULL);
-  BOOST_REQUIRE(Repos->getUnit("UnitClassA",1000) == NULL);
-  U = Repos->getUnit("UnitClassA",17);
-  BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassA");
-  BOOST_REQUIRE_EQUAL(U->getID(),17);
+  BOOST_REQUIRE_EQUAL(FuncEnv.setValue("str1",std::string("string one")),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str1",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(StrValue,"string one");
 
-  BOOST_REQUIRE(Repos->getUnit("UnitClassB",1333) != NULL);
-  BOOST_REQUIRE(Repos->getUnit("UnitClassB",10000) == NULL);
-  U = Repos->getUnit("UnitClassB",1333);
-  BOOST_REQUIRE_EQUAL(U->getClass(),"UnitClassB");
-  BOOST_REQUIRE_EQUAL(U->getID(),1333);
+  BOOST_REQUIRE_EQUAL(FuncEnv.setValue("str2",std::string("string 2")),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str2",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(StrValue,"string 2");
 
-  BOOST_REQUIRE(Repos->getUnit("WrongClass",1) == NULL);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakestring",&StrValue),false);
+
 }
 
 // =====================================================================

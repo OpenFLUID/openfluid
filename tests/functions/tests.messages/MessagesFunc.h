@@ -54,8 +54,8 @@
 #ifndef __MESSAGESFUNC_H__
 #define __MESSAGESFUNC_H__
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
 // =====================================================================

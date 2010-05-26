@@ -47,7 +47,7 @@
 
 
 /**
-  \file DynamicLib_TEST.cpp
+  \file EventsColl_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -57,13 +57,11 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_dynamiclib
+#define BOOST_TEST_MODULE unittest_eventscoll
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include "tests-config.h"
-#include "DynamicLib.h"
-#include "openfluid-base.h"
+#include <openfluid/core.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -71,61 +69,57 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  DynamicLib DLib("");
+  openfluid::core::EventsCollection EvColl, EvColl2;
+  BOOST_REQUIRE_EQUAL(EvColl.getCount(),0);
 
-  BOOST_REQUIRE_EQUAL(DLib.isLoaded(),false);
-  BOOST_REQUIRE_EQUAL(DLib.getLibName(),"");
-
-  DynamicLib DLib2("foo/bar");
-
-  BOOST_REQUIRE_EQUAL(DLib2.isLoaded(),false);
-  BOOST_REQUIRE_EQUAL(DLib2.getLibName(),boost::filesystem::path("foo/bar").string());
+  EvColl.getEventsBetween(openfluid::core::DateTime(1979,1,1,0,0,0),openfluid::core::DateTime(2019,1,1,0,0,0),&EvColl2);
+  BOOST_REQUIRE_EQUAL(EvColl2.getCount(),0);
 }
 
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  std::string LibToLoad = CONFIGTESTS_OUTPUT_BINARY_DIR+"/tests.fakefunction"+CONFIGTESTS_PLUGINS_EXT;
-  openfluid::base::GetSDKVersionProc SDKProc;
-  openfluid::base::GetSignatureProc SignProc;
-  openfluid::base::GetPluggableFunctionProc FuncProc;
 
-  openfluid::base::PluggableFunction* PlugFunc;
-  openfluid::base::FunctionSignature* PlugSignature;
+  openfluid::core::EventsCollection EvColl, EvColl2;
+  openfluid::core::Event* Ev;
 
-  DynamicLib DLib(LibToLoad);
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(1999,1,1,6,0,0));
+  Ev->addInfo("test1","1");
+  Ev->addInfo("test2","2");
+  EvColl.addEvent(Ev);
 
-  BOOST_REQUIRE_EQUAL(DLib.getLibName(),boost::filesystem::path(LibToLoad).string());
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(2003,2,5,6,0,0));
+  Ev->addInfo("test11","11");
+  Ev->addInfo("test22","22");
+  EvColl.addEvent(Ev);
 
-  DLib.load();
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(2023,2,5,6,0,0));
+  Ev->addInfo("test111","111");
+  Ev->addInfo("test222","222");
+  Ev->addInfo("test333","333");
+  EvColl.addEvent(Ev);
 
-  BOOST_REQUIRE_EQUAL(DLib.isLoaded(),true);
-
-  BOOST_REQUIRE_EQUAL(DLib.hasSymbol("foobar"),false);
-  BOOST_REQUIRE_EQUAL(DLib.hasSymbol(PLUGSDKVERSION_PROC_NAME),true);
-  BOOST_REQUIRE_EQUAL(DLib.hasSymbol(PLUGSIGNATURE_PROC_NAME),true);
-  BOOST_REQUIRE_EQUAL(DLib.hasSymbol(PLUGFUNCTION_PROC_NAME),true);
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(2010,7,31,16,30,0));
+  Ev->addInfo("specialthing","wedding");
+  EvColl.addEvent(Ev);
 
 
-  SDKProc = (openfluid::base::GetSDKVersionProc)DLib.getSymbol(PLUGSDKVERSION_PROC_NAME);
-  SignProc = (openfluid::base::GetSignatureProc)DLib.getSymbol(PLUGSIGNATURE_PROC_NAME);
-  FuncProc = (openfluid::base::GetPluggableFunctionProc)DLib.getSymbol(PLUGFUNCTION_PROC_NAME);
+  BOOST_REQUIRE_EQUAL(EvColl.getEventsList()->size(),4);
 
-  BOOST_REQUIRE_EQUAL(SDKProc(),CONFIGTESTS_FULL_VERSION);
+  EvColl2.clear();
+  EvColl.getEventsBetween(openfluid::core::DateTime(1979,1,1,0,0,0),openfluid::core::DateTime(2019,1,1,0,0,0),&EvColl2);
+  BOOST_REQUIRE_EQUAL(EvColl2.getCount(),3);
 
-  PlugSignature = SignProc();
-  PlugFunc = FuncProc();
+  EvColl2.clear();
+  EvColl.getEventsBetween(openfluid::core::DateTime(2010,1,1,0,0,0),openfluid::core::DateTime(2010,12,31,23,59,59),&EvColl2);
+  BOOST_REQUIRE_EQUAL(EvColl2.getCount(),1);
 
-  BOOST_REQUIRE(PlugSignature != NULL);
-  BOOST_REQUIRE(PlugFunc != NULL);
+  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front()->isInfoEqual("specialthing","wedding"),true);
+  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front()->isInfoExist("test333"),false);
 
-  BOOST_REQUIRE_EQUAL(PlugSignature->ID,"tests.fakefunction");
-
-  DLib.unload();
-
-  BOOST_REQUIRE_EQUAL(DLib.isLoaded(),false);
 
 
 }

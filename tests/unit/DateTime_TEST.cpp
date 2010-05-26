@@ -60,7 +60,7 @@
 #define BOOST_TEST_MODULE unittest_datetime
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-core.h"
+#include <openfluid/core.hpp>
 
 
 // =====================================================================

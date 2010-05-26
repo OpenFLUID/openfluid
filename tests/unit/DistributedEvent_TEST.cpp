@@ -47,19 +47,21 @@
 
 
 /**
-  \file ExecMsgs_TEST.cpp
+  \file DistributedEvent_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_execmsgs
+#define BOOST_TEST_MODULE unittest_event
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-base.h"
+#include <boost/test/floating_point_comparison.hpp>
+#include <openfluid/core.hpp>
 
 
 // =====================================================================
@@ -68,41 +70,68 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),0);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningMsgs().size(),0);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
+  openfluid::core::Event Ev;
+  BOOST_REQUIRE_EQUAL(Ev.getInfosCount(),0);
 
+  openfluid::core::Event Ev2(openfluid::core::DateTime(2009,9,10,13,55,7));
+  BOOST_REQUIRE_EQUAL(Ev2.getInfosCount(),0);
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
+
+BOOST_AUTO_TEST_CASE(check_infosoperations)
 {
-
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender",1,"Warning message #1");
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),1);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),true);
-  openfluid::base::ExecutionMessages::getInstance()->resetWarningFlag();
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),1);
-
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender","Warning message #2");
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender",std::string("Source"),1,"Warning message #3");
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),true);
-  openfluid::base::ExecutionMessages::getInstance()->resetWarningFlag();
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),3);
-  openfluid::base::ExecutionMessages::getInstance()->doMemRelease();
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningMsgs().size(),0);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
-
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender","Source","Warning message #4");
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),4);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningMsgs().size(),1);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),true);
+  openfluid::core::Event Ev(openfluid::core::DateTime(2009,9,10,13,55,7));
+  std::string StrInfo;
+  long LongInfo;
+  double DoubleInfo;
+  openfluid::core::ScalarValue ScalarValueInfo;
 
 
+  Ev.addInfo("test1","value");
+  Ev.addInfo("test2","18");
+  Ev.addInfo("test3","25.2");
+
+  BOOST_REQUIRE_EQUAL(Ev.getInfosCount(),3);
+
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test1"),true);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test2"),true);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test3"),true);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test4"),false);
+  BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test"),false);
+
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test1",&StrInfo),true);
+  BOOST_REQUIRE_EQUAL(StrInfo,"value");
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test2",&StrInfo),true);
+  BOOST_REQUIRE_EQUAL(StrInfo,"18");
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test3",&StrInfo),true);
+  BOOST_REQUIRE_EQUAL(StrInfo,"25.2");
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test",&StrInfo),false);
+
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test1",&LongInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test2",&LongInfo),true);
+  BOOST_REQUIRE_EQUAL(LongInfo,18);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test3",&LongInfo),true);
+  BOOST_REQUIRE_EQUAL(LongInfo,25);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test",&LongInfo),false);
+
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test1",&DoubleInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test2",&DoubleInfo),true);
+  BOOST_REQUIRE_CLOSE(DoubleInfo,18.0,0.1);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test3",&DoubleInfo),true);
+  BOOST_REQUIRE_CLOSE(DoubleInfo,25.2,0.1);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test",&DoubleInfo),false);
+
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test1",&ScalarValueInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test2",&ScalarValueInfo),true);
+  BOOST_REQUIRE_CLOSE(ScalarValueInfo,18.0,0.1);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test3",&ScalarValueInfo),true);
+  BOOST_REQUIRE_CLOSE(ScalarValueInfo,25.2,0.1);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test",&ScalarValueInfo),false);
 }
+
+// =====================================================================
+// =====================================================================
+

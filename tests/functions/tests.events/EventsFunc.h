@@ -54,8 +54,8 @@
 #ifndef __EVENTSFUNC_H__
 #define __EVENTSFUNC_H__
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
 // =====================================================================

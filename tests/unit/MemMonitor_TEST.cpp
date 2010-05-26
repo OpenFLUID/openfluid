@@ -47,7 +47,7 @@
 
 
 /**
-  \file SwissTools_TEST.cpp
+  \file MemMonitor_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -57,66 +57,65 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_swisstools
+#define BOOST_TEST_MODULE unittest_memmonitor
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-tools.h"
+#include <openfluid/core.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_operations)
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  std::string Str;
-  bool BoolValue;
-  double DoubleValue;
-  std::vector<std::string> StrArray;
+  openfluid::core::MemoryMonitor *MM;
 
-  Str = "0.01";
-  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&DoubleValue),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::IsVeryClose(DoubleValue,0.01),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::IsVeryClose(DoubleValue,0.02),false);
+  MM = openfluid::core::MemoryMonitor::getInstance();
 
-  Str = "abcd";
-  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&BoolValue),false);
-
-  Str = "1";
-  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(1,true);
-  BOOST_REQUIRE_EQUAL(0,false);
-
-  DoubleValue = 0.25;
-  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertValue(DoubleValue,&Str),true);
-  BOOST_REQUIRE_EQUAL(Str,"0.25");
-
-
-  Str = "aaa;bbbb;ccccc";
-  openfluid::tools::TokenizeString(Str,StrArray,";");
-  BOOST_REQUIRE_EQUAL(StrArray.size(),3);
-  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
-  BOOST_REQUIRE_EQUAL(StrArray[1],"bbbb");
-  BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
-  openfluid::tools::TokenizeString(Str,StrArray,"-");
-  BOOST_REQUIRE_EQUAL(StrArray.size(),1);
-
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("*","foobar"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("*foobar","foobar"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("?foobar","foobar"),false);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("*bar","foobar"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*","foobar"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*","fobar"),false);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo?","foobar"),false);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo???","foobar"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foobarfoo"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foofoo"),true);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foobarfo"),false);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo?foo","foobarfoo"),false);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo???foo","foobarfoo"),true);
-
+  BOOST_REQUIRE_EQUAL(MM->getPacket(),0);
+  BOOST_REQUIRE_EQUAL(MM->getKeep(),0);
+  BOOST_REQUIRE_EQUAL(MM->getLastMemoryRelease(),-1);
 }
 
 // =====================================================================
 // =====================================================================
 
+
+void check_operation_withparams(unsigned int Packet, unsigned int Keep, unsigned int StepsCount)
+{
+  openfluid::core::MemoryMonitor *MM;
+
+  MM = openfluid::core::MemoryMonitor::getInstance();
+  MM->setPacketAndKeep(Packet,Keep);
+  MM->setLastMemoryRelease(Keep-1);
+
+  BOOST_REQUIRE_EQUAL(MM->getPacket(),Packet);
+  BOOST_REQUIRE_EQUAL(MM->getKeep(),Keep);
+  BOOST_REQUIRE_EQUAL(MM->getLastMemoryRelease(),-1);
+
+  for (unsigned int i = 0; i < StepsCount; i++)
+  {
+    if (MM->isMemReleaseStep(i))
+    {
+      BOOST_REQUIRE_EQUAL(i-MM->getLastMemoryRelease(),MM->getPacket()+MM->getKeep());
+      BOOST_REQUIRE_NE(MM->getLastMemoryRelease(),i-MM->getKeep());
+      MM->setLastMemoryRelease(i);
+      BOOST_REQUIRE_EQUAL(MM->getLastMemoryRelease(),i-MM->getKeep());
+    }
+    else
+    {
+      BOOST_REQUIRE_NE(i-MM->getLastMemoryRelease(),MM->getPacket()+MM->getKeep());
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(check_operations)
+{
+  check_operation_withparams(500,10,10000);
+  check_operation_withparams(1,1,10000);
+  check_operation_withparams(5000,100,100);
+}
+
+// =====================================================================
+// =====================================================================

@@ -47,7 +47,7 @@
 
 
 /**
-  \file EventsColl_TEST.cpp
+  \file SwissTools_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -57,24 +57,11 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_eventscoll
+#define BOOST_TEST_MODULE unittest_swisstools
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-core.h"
+#include <openfluid/tools.hpp>
 
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_construction)
-{
-  openfluid::core::EventsCollection EvColl, EvColl2;
-  BOOST_REQUIRE_EQUAL(EvColl.getCount(),0);
-
-  EvColl.getEventsBetween(openfluid::core::DateTime(1979,1,1,0,0,0),openfluid::core::DateTime(2019,1,1,0,0,0),&EvColl2);
-  BOOST_REQUIRE_EQUAL(EvColl2.getCount(),0);
-}
 
 // =====================================================================
 // =====================================================================
@@ -82,47 +69,54 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+  std::string Str;
+  bool BoolValue;
+  double DoubleValue;
+  std::vector<std::string> StrArray;
 
-  openfluid::core::EventsCollection EvColl, EvColl2;
-  openfluid::core::Event* Ev;
+  Str = "0.01";
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&DoubleValue),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::IsVeryClose(DoubleValue,0.01),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::IsVeryClose(DoubleValue,0.02),false);
 
-  Ev = new openfluid::core::Event(openfluid::core::DateTime(1999,1,1,6,0,0));
-  Ev->addInfo("test1","1");
-  Ev->addInfo("test2","2");
-  EvColl.addEvent(Ev);
+  Str = "abcd";
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&BoolValue),false);
 
-  Ev = new openfluid::core::Event(openfluid::core::DateTime(2003,2,5,6,0,0));
-  Ev->addInfo("test11","11");
-  Ev->addInfo("test22","22");
-  EvColl.addEvent(Ev);
+  Str = "1";
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(1,true);
+  BOOST_REQUIRE_EQUAL(0,false);
 
-  Ev = new openfluid::core::Event(openfluid::core::DateTime(2023,2,5,6,0,0));
-  Ev->addInfo("test111","111");
-  Ev->addInfo("test222","222");
-  Ev->addInfo("test333","333");
-  EvColl.addEvent(Ev);
-
-  Ev = new openfluid::core::Event(openfluid::core::DateTime(2010,7,31,16,30,0));
-  Ev->addInfo("specialthing","wedding");
-  EvColl.addEvent(Ev);
+  DoubleValue = 0.25;
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertValue(DoubleValue,&Str),true);
+  BOOST_REQUIRE_EQUAL(Str,"0.25");
 
 
-  BOOST_REQUIRE_EQUAL(EvColl.getEventsList()->size(),4);
+  Str = "aaa;bbbb;ccccc";
+  openfluid::tools::TokenizeString(Str,StrArray,";");
+  BOOST_REQUIRE_EQUAL(StrArray.size(),3);
+  BOOST_REQUIRE_EQUAL(StrArray[0],"aaa");
+  BOOST_REQUIRE_EQUAL(StrArray[1],"bbbb");
+  BOOST_REQUIRE_EQUAL(StrArray[2],"ccccc");
+  openfluid::tools::TokenizeString(Str,StrArray,"-");
+  BOOST_REQUIRE_EQUAL(StrArray.size(),1);
 
-  EvColl2.clear();
-  EvColl.getEventsBetween(openfluid::core::DateTime(1979,1,1,0,0,0),openfluid::core::DateTime(2019,1,1,0,0,0),&EvColl2);
-  BOOST_REQUIRE_EQUAL(EvColl2.getCount(),3);
-
-  EvColl2.clear();
-  EvColl.getEventsBetween(openfluid::core::DateTime(2010,1,1,0,0,0),openfluid::core::DateTime(2010,12,31,23,59,59),&EvColl2);
-  BOOST_REQUIRE_EQUAL(EvColl2.getCount(),1);
-
-  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front()->isInfoEqual("specialthing","wedding"),true);
-  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front()->isInfoExist("test333"),false);
-
-
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("*","foobar"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("*foobar","foobar"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("?foobar","foobar"),false);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("*bar","foobar"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*","foobar"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*","fobar"),false);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo?","foobar"),false);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo???","foobar"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foobarfoo"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foofoo"),true);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foobarfo"),false);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo?foo","foobarfoo"),false);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo???foo","foobarfoo"),true);
 
 }
 
 // =====================================================================
 // =====================================================================
+

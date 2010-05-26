@@ -73,8 +73,8 @@ typedef boost::onullstream onullstream_type;
 #endif
 
 
-#include "tests-config.h"
-#include "FluidXReader.h"
+#include <tests-config.hpp>
+#include <openfluid/io.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -82,7 +82,7 @@ typedef boost::onullstream onullstream_type;
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  FluidXReader FXR;
+  openfluid::io::FluidXReader FXR;
 }
 
 // =====================================================================
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 void TestDataset(std::string DatasetPath)
 {
-  FluidXReader FXR;
+  openfluid::io::FluidXReader FXR;
 
   boost::onullstream ONullStream;
   FXR.loadFromDirectory(DatasetPath,ONullStream);
@@ -98,66 +98,66 @@ void TestDataset(std::string DatasetPath)
   // Model
   // ====================================================================
 
-  ModelDescriptor::ModelDescription_t ModelItems;
+  openfluid::base::ModelDescriptor::ModelDescription_t ModelItems;
 
   ModelItems = FXR.getModelDescriptor().getItems();
 
   BOOST_REQUIRE_EQUAL(ModelItems.size(),5);
 
-  ModelDescriptor::ModelDescription_t::iterator it;
+  openfluid::base::ModelDescriptor::ModelDescription_t::iterator it;
 
   it = ModelItems.begin();
-  BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.interp");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),1);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Interp);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),4);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["sources"],"sources.xml");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["distribution"],"distri.dat");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.interp");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),4);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["sources"],"sources.xml");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["distribution"],"distri.dat");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::PluggedFunction),true);
-  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getFileID(),"tests.functionA");
-  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getParameters().size(),2);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),"tests.functionA");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),2);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.fixed");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),11);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Fixed);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),3);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"],"20");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.fixed");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableSize(),11);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),3);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"],"20");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::Generator),true);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.random");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getVariableSize(),1);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getGeneratorMethod(),GeneratorDescriptor::Random);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters().size(),4);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["min"],"20.53");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["max"],"50");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableName(),"tests.generator.random");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Random);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),4);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["min"],"20.53");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["max"],"50");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(ModelItemDescriptor::PluggedFunction),true);
-  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getFileID(),"tests.functionB");
-  BOOST_REQUIRE_EQUAL(((FunctionDescriptor*)(*it))->getParameters().size(),5);
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"50");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["strparam"],"strvalue");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
-  BOOST_REQUIRE_EQUAL(((GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction),true);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),"tests.functionB");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),5);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"50");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["strparam"],"strvalue");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");
 
 
 
@@ -284,7 +284,7 @@ void TestDataset(std::string DatasetPath)
   // Domain definition
   // ====================================================================
 
-  std::list<UnitDescriptor>::iterator UnitsIt;
+  std::list<openfluid::base::UnitDescriptor>::iterator UnitsIt;
 
   BOOST_REQUIRE_EQUAL(FXR.getDomainDescriptor().getUnits().size(),14);
 
@@ -347,7 +347,7 @@ void TestDataset(std::string DatasetPath)
   // Domain input data
   // ====================================================================
 
-  std::list<InputDataDescriptor>::iterator IDataIt;
+  std::list<openfluid::base::InputDataDescriptor>::iterator IDataIt;
 
   BOOST_REQUIRE_EQUAL(FXR.getDomainDescriptor().getInputData().size(),3);
 
@@ -375,7 +375,7 @@ void TestDataset(std::string DatasetPath)
   // Domain calendar
   // ====================================================================
 
-  std::list<EventDescriptor>::iterator EventIt;
+  std::list<openfluid::base::EventDescriptor>::iterator EventIt;
 
   BOOST_REQUIRE_EQUAL(FXR.getDomainDescriptor().getEvents().size(),10);
 
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/pathdoesnotexist").string(),ONullStream);
+    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/pathdoesnotexist").string(),ONullStream);
   }
   catch (...)
   {
@@ -461,7 +461,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-nofile").string(),ONullStream);
+    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-nofile").string(),ONullStream);
   }
   catch (...)
   {
@@ -473,7 +473,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-twomodels").string(),std::cout);
+    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-twomodels").string(),std::cout);
   }
   catch (...)
   {
@@ -485,7 +485,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-runs").string(),std::cout);
+    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-runs").string(),std::cout);
   }
   catch (...)
   {

@@ -54,8 +54,8 @@
 #ifndef __LOOPSFUNC_H__
 #define __LOOPSFUNC_H__
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
 // =====================================================================

@@ -47,20 +47,21 @@
 
 
 /**
-  \file Vector_TEST.cpp
+  \file SimStatus_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_vector
+#define BOOST_TEST_MODULE unittest_simstatus
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
-#include "openfluid-core.h"
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
 // =====================================================================
@@ -69,54 +70,55 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::Vector<double> V1,V4;
-  openfluid::core::Vector<double> V2(5);
-  openfluid::core::Vector<double> V3(50000,12.3);
+  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
+                                    openfluid::core::DateTime(2001,1,1,0,0,0),
+                                    60);
 
-  BOOST_REQUIRE_EQUAL(V1.size(),0);
-  BOOST_REQUIRE_EQUAL(V2.size(),5);
-  BOOST_REQUIRE_EQUAL(V3.size(),50000);
 
-  BOOST_REQUIRE_CLOSE(V3.at(17564),12.3,0.0001);
-  BOOST_REQUIRE_CLOSE(V3.at(0),12.3,0.0001);
-  BOOST_REQUIRE_CLOSE(V3.at(49999),12.3,0.0001);
+  BOOST_REQUIRE(SimStatus.getStartTime() == openfluid::core::DateTime(2000,1,1,0,0,0));
+  BOOST_REQUIRE(SimStatus.getEndTime() == openfluid::core::DateTime(2001,1,1,0,0,0));
+  BOOST_REQUIRE_EQUAL(SimStatus.getTimeStep(),60);
 
-  V4 = openfluid::core::Vector<double>(V3);
-  BOOST_REQUIRE_CLOSE(V4.at(17564),12.3,0.0001);
-  BOOST_REQUIRE_CLOSE(V4.at(0),12.3,0.0001);
-  BOOST_REQUIRE_CLOSE(V4.at(49999),12.3,0.0001);
+
+  BOOST_REQUIRE_EQUAL(SimStatus.isFirstStep(),true);
+  BOOST_REQUIRE_EQUAL(SimStatus.isLastStep(),false);
+  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),0);
+  BOOST_REQUIRE(SimStatus.getCurrentTime() == openfluid::core::DateTime(2000,1,1,0,0,0));
 
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operationss)
+BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::Vector<double> V1(10,12.3);
-  openfluid::core::Vector<double> V2,V3;
+  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
+                                      openfluid::core::DateTime(2001,1,1,0,0,0),
+                                      76);
 
-  BOOST_REQUIRE_EQUAL(V1.getSize(),10);
+  openfluid::core::DateTime PrevTime;
+  openfluid::core::TimeStep_t PrevStep = 0;
 
-  V1[1] = -5.18;
-  V1.setElement(3,12345.6789);
-  BOOST_REQUIRE_CLOSE(V1[1],-5.18,0.0001);
-  BOOST_REQUIRE_CLOSE(V1.at(3),12345.6789,0.0001);
+  do
+  {
+    if (!SimStatus.isFirstStep())
+    {
+      BOOST_REQUIRE(SimStatus.getCurrentTime() == (PrevTime + SimStatus.getTimeStep()));
+      BOOST_REQUIRE(SimStatus.getCurrentStep() == (PrevStep + 1));
+    }
 
-  V2.setData(V1.getData(),V1.getSize());
-  BOOST_REQUIRE_EQUAL(V2.getSize(),10);
-  BOOST_REQUIRE_CLOSE(V2.at(1),-5.18,0.0001);
-  BOOST_REQUIRE_CLOSE(V2.getElement(3),12345.6789,0.0001);
+    PrevTime = SimStatus.getCurrentTime();
+    PrevStep = SimStatus.getCurrentStep();
 
-  V3 = V2;
-  BOOST_REQUIRE_EQUAL(V3.getSize(),10);
-  BOOST_REQUIRE_CLOSE(V3.at(1),-5.18,0.0001);
-  BOOST_REQUIRE_CLOSE(V3.getElement(3),12345.6789,0.0001);
+    if (SimStatus.isLastStep())
+    {
+      BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),SimStatus.getStepsCount()-1);
+      BOOST_REQUIRE((SimStatus.getCurrentTime()+SimStatus.getTimeStep()) >= SimStatus.getEndTime());
+    }
 
-  V3.clear();
-  BOOST_REQUIRE_EQUAL(V3.getSize(),0);
+  } while (SimStatus.switchToNextStep());
+
 }
 
 // =====================================================================
 // =====================================================================
-

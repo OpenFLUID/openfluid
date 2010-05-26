@@ -47,96 +47,82 @@
 
 
 /**
-  \file UnitsColl_TEST.cpp
+  \file RunDesc_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_unitscoll
+#define BOOST_TEST_MODULE unittest_rundesc
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-core.h"
 
+#include <openfluid/base/RunDescriptor.hpp>
+
+// =====================================================================
+// =====================================================================
 
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::UnitsCollection* pUC = NULL;
+  openfluid::base::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
 
-  pUC = new openfluid::core::UnitsCollection();
+  BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
 
-  BOOST_REQUIRE_EQUAL(pUC->getList()->size(),0);
-  BOOST_REQUIRE(pUC->getUnit(1) == NULL);
+  BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getDay(),7);
+  BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getHour(),16);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getDay(),9);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getHour(),12);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getMinute(),0);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
+  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),false);
+  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),false);
+  BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"");
 
-  delete pUC;
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-BOOST_AUTO_TEST_CASE(check_populate)
+BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::UnitsCollection* pUC = NULL;
+  openfluid::base::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
 
-  pUC = new openfluid::core::UnitsCollection();
+  RunDesc.setSimulationID("testID");
+  RunDesc.setProgressiveOutput(20,5);
 
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",1,1)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",2,1)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",5,1)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",4,2)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",17,1)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",4,3)),false);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",17,3)),false);
+  BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
+  BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getDay(),7);
+  BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getHour(),16);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getDay(),9);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getHour(),12);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getMinute(),0);
+  BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
+  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),true);
+  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputPacket(),20);
+  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputKeep(),5);
+  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
+  BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"testID");
 
+  RunDesc.setSimulationID("gotcha");
+  RunDesc.setProgressiveOutput(1179,53);
 
-  BOOST_REQUIRE_EQUAL(pUC->getList()->size(),5);
+  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),true);
+  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputPacket(),1179);
+  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputKeep(),53);
+  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
+  BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"gotcha");
 
-  BOOST_REQUIRE(pUC->getUnit(1) != NULL);
-  BOOST_REQUIRE(pUC->getUnit(17) != NULL);
-  BOOST_REQUIRE(pUC->getUnit(9) == NULL);
+  RunDesc.setSimulationID("");
+  RunDesc.setProgressiveOutput(0,0);
 
-  delete pUC;
+  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),false);
+  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),false);
+
 }
-
 
 // =====================================================================
 // =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_sortbypcsorder)
-{
-  openfluid::core::UnitsCollection* pUC = NULL;
-  openfluid::core::PcsOrd_t LastOrd;
-  openfluid::core::UnitsList_t::iterator it;
-
-  pUC = new openfluid::core::UnitsCollection();
-
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",1,1)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",2,5)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",5,2)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",4,7)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",17,3)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",13,1)),true);
-  BOOST_REQUIRE_EQUAL(pUC->addUnit(openfluid::core::Unit("Test",15,2)),true);
-
-  pUC->sortByProcessOrder();
-
-
-  LastOrd = 0;
-  for (it=pUC->getList()->begin();it!=pUC->getList()->end();++it)
-  {
-    BOOST_REQUIRE_GE(it->getProcessOrder(),LastOrd);
-    LastOrd = it->getProcessOrder();
-  }
-
-
-  delete pUC;
-}
-

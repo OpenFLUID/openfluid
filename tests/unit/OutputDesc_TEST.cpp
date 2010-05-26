@@ -60,7 +60,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
-#include "output/OutputDescriptor.h"
+#include <openfluid/base/OutputDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -68,17 +68,17 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  OutputDescriptor OutDesc;
+  openfluid::base::OutputDescriptor OutDesc;
 
   BOOST_REQUIRE_EQUAL(OutDesc.getFileSets().size(),0);
 
-  OutputFilesDescriptor OutFilesDesc;
+  openfluid::base::OutputFilesDescriptor OutFilesDesc;
   BOOST_REQUIRE_EQUAL(OutFilesDesc.getSets().size(),0);
   BOOST_REQUIRE_EQUAL(OutFilesDesc.getColSeparator(),"\t");
   BOOST_REQUIRE_EQUAL(OutFilesDesc.getDateFormat(),"%Y%m%dT%H%M%S");
   BOOST_REQUIRE_EQUAL(OutFilesDesc.getCommentChar(),"%");
 
-  OutputSetDescriptor OutSetDesc;
+  openfluid::base::OutputSetDescriptor OutSetDesc;
   OutSetDesc.setName("foo");
   OutSetDesc.setUnitsClass("TU");
   BOOST_REQUIRE_EQUAL(OutSetDesc.getName(),"foo");
@@ -97,11 +97,11 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  OutputDescriptor OutDesc;
+  openfluid::base::OutputDescriptor OutDesc;
 
-  OutputFilesDescriptor OutFilesDesc1,OutFilesDesc2;
+  openfluid::base::OutputFilesDescriptor OutFilesDesc1,OutFilesDesc2;
 
-  OutputSetDescriptor OutSetDesc11, OutSetDesc12, OutSetDesc21;
+  openfluid::base::OutputSetDescriptor OutSetDesc11, OutSetDesc12, OutSetDesc21;
 
 
   OutSetDesc11.setName("OSD11");

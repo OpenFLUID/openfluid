@@ -60,11 +60,11 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
-#include "tests-config.h"
+#include <tests-config.hpp>
 #include <iostream>
 #include <fstream>
 
-#include "openfluid-tools.h"
+#include <openfluid/tools.hpp>
 
 
 // =====================================================================

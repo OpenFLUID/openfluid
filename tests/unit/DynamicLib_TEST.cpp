@@ -47,7 +47,7 @@
 
 
 /**
-  \file SimStatus_TEST.cpp
+  \file DynamicLib_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -57,12 +57,13 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_simstatus
+#define BOOST_TEST_MODULE unittest_dynamiclib
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include "openfluid-base.h"
-#include "openfluid-core.h"
-
+#include <boost/filesystem/path.hpp>
+#include <tests-config.hpp>
+#include <openfluid/machine/DynamicLib.hpp>
+#include <openfluid/base.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -70,21 +71,15 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
-                                    openfluid::core::DateTime(2001,1,1,0,0,0),
-                                    60);
+  openfluid::machine::DynamicLib DLib("");
 
+  BOOST_REQUIRE_EQUAL(DLib.isLoaded(),false);
+  BOOST_REQUIRE_EQUAL(DLib.getLibName(),"");
 
-  BOOST_REQUIRE(SimStatus.getStartTime() == openfluid::core::DateTime(2000,1,1,0,0,0));
-  BOOST_REQUIRE(SimStatus.getEndTime() == openfluid::core::DateTime(2001,1,1,0,0,0));
-  BOOST_REQUIRE_EQUAL(SimStatus.getTimeStep(),60);
+  openfluid::machine::DynamicLib DLib2("foo/bar");
 
-
-  BOOST_REQUIRE_EQUAL(SimStatus.isFirstStep(),true);
-  BOOST_REQUIRE_EQUAL(SimStatus.isLastStep(),false);
-  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),0);
-  BOOST_REQUIRE(SimStatus.getCurrentTime() == openfluid::core::DateTime(2000,1,1,0,0,0));
-
+  BOOST_REQUIRE_EQUAL(DLib2.isLoaded(),false);
+  BOOST_REQUIRE_EQUAL(DLib2.getLibName(),boost::filesystem::path("foo/bar").string());
 }
 
 // =====================================================================
@@ -92,31 +87,46 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
-                                      openfluid::core::DateTime(2001,1,1,0,0,0),
-                                      76);
+  std::string LibToLoad = CONFIGTESTS_OUTPUT_BINARY_DIR+"/tests.fakefunction"+CONFIGTESTS_PLUGINS_EXT;
+  openfluid::base::GetSDKVersionProc SDKProc;
+  openfluid::base::GetSignatureProc SignProc;
+  openfluid::base::GetPluggableFunctionProc FuncProc;
 
-  openfluid::core::DateTime PrevTime;
-  openfluid::core::TimeStep_t PrevStep = 0;
+  openfluid::base::PluggableFunction* PlugFunc;
+  openfluid::base::FunctionSignature* PlugSignature;
 
-  do
-  {
-    if (!SimStatus.isFirstStep())
-    {
-      BOOST_REQUIRE(SimStatus.getCurrentTime() == (PrevTime + SimStatus.getTimeStep()));
-      BOOST_REQUIRE(SimStatus.getCurrentStep() == (PrevStep + 1));
-    }
+  openfluid::machine::DynamicLib DLib(LibToLoad);
 
-    PrevTime = SimStatus.getCurrentTime();
-    PrevStep = SimStatus.getCurrentStep();
+  BOOST_REQUIRE_EQUAL(DLib.getLibName(),boost::filesystem::path(LibToLoad).string());
 
-    if (SimStatus.isLastStep())
-    {
-      BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),SimStatus.getStepsCount()-1);
-      BOOST_REQUIRE((SimStatus.getCurrentTime()+SimStatus.getTimeStep()) >= SimStatus.getEndTime());
-    }
+  DLib.load();
 
-  } while (SimStatus.switchToNextStep());
+  BOOST_REQUIRE_EQUAL(DLib.isLoaded(),true);
+
+  BOOST_REQUIRE_EQUAL(DLib.hasSymbol("foobar"),false);
+  BOOST_REQUIRE_EQUAL(DLib.hasSymbol(PLUGSDKVERSION_PROC_NAME),true);
+  BOOST_REQUIRE_EQUAL(DLib.hasSymbol(PLUGSIGNATURE_PROC_NAME),true);
+  BOOST_REQUIRE_EQUAL(DLib.hasSymbol(PLUGFUNCTION_PROC_NAME),true);
+
+
+  SDKProc = (openfluid::base::GetSDKVersionProc)DLib.getSymbol(PLUGSDKVERSION_PROC_NAME);
+  SignProc = (openfluid::base::GetSignatureProc)DLib.getSymbol(PLUGSIGNATURE_PROC_NAME);
+  FuncProc = (openfluid::base::GetPluggableFunctionProc)DLib.getSymbol(PLUGFUNCTION_PROC_NAME);
+
+  BOOST_REQUIRE_EQUAL(SDKProc(),CONFIGTESTS_FULL_VERSION);
+
+  PlugSignature = SignProc();
+  PlugFunc = FuncProc();
+
+  BOOST_REQUIRE(PlugSignature != NULL);
+  BOOST_REQUIRE(PlugFunc != NULL);
+
+  BOOST_REQUIRE_EQUAL(PlugSignature->ID,"tests.fakefunction");
+
+  DLib.unload();
+
+  BOOST_REQUIRE_EQUAL(DLib.isLoaded(),false);
+
 
 }
 
