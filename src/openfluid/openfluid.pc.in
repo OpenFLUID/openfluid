@@ -7,5 +7,5 @@ Name: ofelib
 Description: OpenFLUID engine library
 Version: @ENGINE_FULL_VERSION@
 Libs: -L${libdir} -lopenfluid-base -lopenfluid-buddies -lopenfluid-core
- -lopenfluid-engine -lopenfluid-io -lopenfluid-tools
+ -lopenfluid-io -lopenfluid-machine -lopenfluid-tools
 Cflags: -I${includedir} -DOFELIB_VERSION=@ENGINE_FULL_VERSION@
