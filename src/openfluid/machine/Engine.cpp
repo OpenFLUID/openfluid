@@ -60,13 +60,13 @@
 #include <math.h>
 #include <boost/filesystem.hpp>
 
-#include <openfluid/engine/Engine.hpp>
+#include <openfluid/machine/Engine.hpp>
 #include <openfluid/tools.hpp>
-#include <openfluid/engine/ModelFactory.hpp>
-#include <openfluid/engine/DomainFactory.hpp>
+#include <openfluid/machine/ModelFactory.hpp>
+#include <openfluid/machine/DomainFactory.hpp>
 
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 // =====================================================================

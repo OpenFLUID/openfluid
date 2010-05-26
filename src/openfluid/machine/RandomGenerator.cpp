@@ -56,9 +56,9 @@
 
 #include <boost/random.hpp>
 
-#include <openfluid/engine/RandomGenerator.hpp>
+#include <openfluid/machine/RandomGenerator.hpp>
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 RandomGenerator::RandomGenerator() : Generator()

@@ -56,14 +56,14 @@
 
 #include <openfluid/config.hpp>
 
-#include <openfluid/engine/DynamicLib.hpp>
-#include <openfluid/engine/PluginManager.hpp>
+#include <openfluid/machine/DynamicLib.hpp>
+#include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/base/OFException.hpp>
 
 #include <iostream>
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 PluginManager* PluginManager::mp_Singleton = NULL;

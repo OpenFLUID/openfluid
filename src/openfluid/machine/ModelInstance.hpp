@@ -60,10 +60,10 @@
 
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
-#include <openfluid/engine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 class ModelInstance

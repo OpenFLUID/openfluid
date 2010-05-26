@@ -2,18 +2,15 @@
 
 ADD_DEFINITIONS(-DBUILDINGDLL)
 
-INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
-
-
 ADD_SUBDIRECTORY(base)
 ADD_SUBDIRECTORY(buddies)
 ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(engine)
+ADD_SUBDIRECTORY(machine)
 ADD_SUBDIRECTORY(io)
 ADD_SUBDIRECTORY(tools)
 
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp engine.hpp io.hpp tools.hpp dllexport.hpp  
+INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp dllexport.hpp  
         DESTINATION ${INCLUDE_INSTALL_PATH})
        
 CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)

@@ -47,39 +47,45 @@
 
 
 /**
-  \file ModelFactory.h
+  \file FixedGenerator.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
-#ifndef __MODELFACTORY_HPP__
-#define __MODELFACTORY_HPP__
-
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/engine/ModelInstance.hpp>
-#include <openfluid/engine/PluginManager.hpp>
 
 
-namespace openfluid { namespace engine {
+#ifndef __FIXEDGENERATOR_HPP__
+#define __FIXEDGENERATOR_HPP__
+
+#include <openfluid/machine/Generator.hpp>
+
+namespace openfluid { namespace machine {
 
 
-class ModelFactory
+class FixedGenerator : public Generator
 {
   private:
-    openfluid::core::CoreRepository* mp_CoreData;
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
+
+    openfluid::core::ScalarValue m_VarValue;
 
   public:
 
-    ModelFactory();
+    FixedGenerator();
 
-    const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const;
+    ~FixedGenerator();
+
+    bool checkConsistency();
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
-
 
 } } //namespaces
 
 
-#endif /* __MODELFACTORY_H__ */
+
+#endif /* __FIXEDGENERATOR_H___ */

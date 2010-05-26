@@ -47,12 +47,44 @@
 
 
 /**
-  \file ModelItemInstance.cpp
-  \brief Implements ...
+  \file Generator.h
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/engine/ModelItemInstance.hpp>
+
+#ifndef __GENERATOR_HPP__
+#define __GENERATOR_HPP__
+
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
+namespace openfluid { namespace machine {
+
+class Generator : public openfluid::base::PluggableFunction
+{
+  protected:
+
+    openfluid::base::GeneratorDescriptor m_GenDesc;
+
+  public:
+
+    Generator();
+
+    ~Generator();
+
+    void setDescriptor(openfluid::base::GeneratorDescriptor GenDesc) { m_GenDesc = GenDesc; };
+
+    bool initParams(openfluid::core::FuncParamsMap_t Params) { return true; };
+
+    bool prepareData()  { return true; };
+
+};
+
+} } //namespaces
+
+
+
+#endif /* __GENERATOR_H___ */

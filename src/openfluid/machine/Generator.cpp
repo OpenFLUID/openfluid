@@ -47,36 +47,21 @@
 
 
 /**
-  \file DynamicLib.cpp
+  \file Generator.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/engine/DynamicLib.hpp>
-#include <openfluid/base.hpp>
-
-#if defined __unix__ || defined __APPLE__
-#include <dlfcn.h>
-#endif
-
-#if WIN32
-#include <windows.h>
-#endif
+#include <openfluid/machine/Generator.hpp>
 
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
-// =====================================================================
-// =====================================================================
-
-
-DynamicLib::DynamicLib(const std::string& LibName)
+Generator::Generator() : PluggableFunction()
 {
-  m_IsLoaded = false;
-  m_LibPath = boost::filesystem::path(LibName);
-  m_LibHandle = NULL;
+
 }
 
 
@@ -84,101 +69,11 @@ DynamicLib::DynamicLib(const std::string& LibName)
 // =====================================================================
 
 
-DynamicLib::~DynamicLib()
-{
-  unload();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool DynamicLib::load()
+Generator::~Generator()
 {
 
-  if (isLoaded()) unload();
 
-#if defined __unix__ || defined __APPLE__
-  m_LibHandle = dlopen(m_LibPath.string().c_str(), RTLD_LAZY);
-#endif
-
-#ifdef WIN32
-  m_LibHandle = (void*)LoadLibrary(m_LibPath.string().c_str());
-#endif
-
-  return m_LibHandle != NULL;
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DynamicLib::unload()
-{
-
-  if (isLoaded())
-  {
-#if defined __unix__ || defined __APPLE__
-    dlclose(m_LibHandle);
-#endif
-
-#ifdef WIN32
-    FreeLibrary((HINSTANCE)m_LibHandle);
-#endif
-  }
-
-  m_LibHandle = NULL;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool DynamicLib::hasSymbol(const std::string& Name)
-{
-  if (isLoaded())
-  {
-#if defined __unix__ || defined __APPLE__
-    return (dlsym(m_LibHandle, Name.c_str()) != NULL);
-#endif
-
-#ifdef WIN32
-  return ((void*)GetProcAddress((HINSTANCE)m_LibHandle,Name.c_str()) != NULL);
-#endif
-  }
-
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void* DynamicLib::getSymbol(const std::string& Name) const
-{
-
-  if (isLoaded())
-  {
-#if defined __unix__ || defined __APPLE__
-    return (dlsym(m_LibHandle, Name.c_str()));
-#endif
-
-#ifdef WIN32
-    return ((void*)GetProcAddress((HINSTANCE)m_LibHandle,Name.c_str()));
-#endif
-  }
-
-  return NULL;
-}
-
-
-// =====================================================================
-// =====================================================================
 
 } } //namespaces
-
 

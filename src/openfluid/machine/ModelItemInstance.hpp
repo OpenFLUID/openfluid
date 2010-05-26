@@ -47,41 +47,42 @@
 
 
 /**
-  \file RandomGenerator.h
+  \file ModelItemInstance.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __RANDOMGENERATOR_HPP__
-#define __RANDOMGENERATOR_HPP__
+#ifndef __MODELITEMINSTANCE_HPP__
+#define __MODELITEMINSTANCE_HPP__
+
+#include <string>
+
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
-#include <openfluid/engine/Generator.hpp>
-
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
-class RandomGenerator : public Generator
+
+struct ModelItemInstance
 {
-  private:
-    openfluid::core::ScalarValue m_Min;
-    openfluid::core::ScalarValue m_Max;
 
-  public:
+  std::string Filename;
+  bool SDKCompatible;
+  openfluid::core::FuncParamsMap_t Params;
+  openfluid::base::FunctionSignature* Signature;
+  openfluid::base::PluggableFunction* Function;
 
-    RandomGenerator();
-
-    ~RandomGenerator();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+  ModelItemInstance()
+  {
+    Filename = "";
+    Signature = NULL;
+    Function = NULL;
+    SDKCompatible = false;
+  }
 
 };
 
@@ -89,5 +90,4 @@ class RandomGenerator : public Generator
 } } //namespaces
 
 
-
-#endif /* __RANDOMGENERATOR_H___ */
+#endif /* __MODELITEMINSTANCE_H___ */

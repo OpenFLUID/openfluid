@@ -47,33 +47,40 @@
 
 
 /**
-  \file Generator.cpp
-  \brief Implements ...
+  \file engine.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/engine/Generator.hpp>
+
+#ifndef __MACHINE_HPP___
+#define __MACHINE_HPP___
 
 
-namespace openfluid { namespace engine {
+#ifdef __WIN32__
+  #ifdef BUILDINGDLL
+    #define DLLEXPORT __declspec(dllexport)
+  #else
+    #define DLLEXPORT __declspec(dllimport)
+  #endif
+#else
+  #define DLLEXPORT
+#endif
 
 
-Generator::Generator() : PluggableFunction()
-{
+#include <openfluid/machine/DomainFactory.hpp>
+#include <openfluid/machine/DynamicLib.hpp>
+#include <openfluid/machine/Engine.hpp>
+#include <openfluid/machine/FixedGenerator.hpp>
+#include <openfluid/machine/Generator.hpp>
+#include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/machine/ModelFactory.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/RandomGenerator.hpp>
 
-}
 
 
-// =====================================================================
-// =====================================================================
-
-
-Generator::~Generator()
-{
-
-
-}
-
-} } //namespaces
-
+#endif /* __MACHINE_HPP___ */

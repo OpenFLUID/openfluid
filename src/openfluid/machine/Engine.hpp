@@ -61,11 +61,11 @@
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/io/IOMan.hpp>
-#include <openfluid/engine/PluginManager.hpp>
+#include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/engine/ModelInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 // =====================================================================

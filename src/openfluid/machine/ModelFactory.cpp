@@ -53,15 +53,15 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/engine/ModelFactory.hpp>
+#include <openfluid/machine/ModelFactory.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/engine/FixedGenerator.hpp>
-#include <openfluid/engine/RandomGenerator.hpp>
-#include <openfluid/engine/InterpGenerator.hpp>
+#include <openfluid/machine/FixedGenerator.hpp>
+#include <openfluid/machine/RandomGenerator.hpp>
+#include <openfluid/machine/InterpGenerator.hpp>
 
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 // =====================================================================

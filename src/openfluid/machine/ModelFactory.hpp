@@ -47,33 +47,34 @@
 
 
 /**
-  \file DomainFactory.h
+  \file ModelFactory.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
+#ifndef __MODELFACTORY_HPP__
+#define __MODELFACTORY_HPP__
+
+#include <openfluid/core.hpp>
+#include <openfluid/base.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
 
 
-
-#ifndef __DOMAINFACTORY_HPP__
-#define __DOMAINFACTORY_HPP__
+namespace openfluid { namespace machine {
 
 
-#include <openfluid/base/DomainDescriptor.hpp>
-
-
-namespace openfluid { namespace engine {
-
-
-class DomainFactory
+class ModelFactory
 {
   private:
+    openfluid::core::CoreRepository* mp_CoreData;
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
 
   public:
 
-    DomainFactory();
+    ModelFactory();
 
-    void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor);
+    const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const;
 
 };
 
@@ -81,4 +82,4 @@ class DomainFactory
 } } //namespaces
 
 
-#endif /* __DOMAINFACTORY_H___ */
+#endif /* __MODELFACTORY_H__ */

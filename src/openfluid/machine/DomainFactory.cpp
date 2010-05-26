@@ -53,13 +53,13 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/engine/DomainFactory.hpp>
+#include <openfluid/machine/DomainFactory.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/tools.hpp>
 
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 // =====================================================================

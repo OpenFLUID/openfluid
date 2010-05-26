@@ -47,47 +47,12 @@
 
 
 /**
-  \file ModelItemInstance.h
-  \brief Header of ...
+  \file ModelItemInstance.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#ifndef __MODELITEMINSTANCE_HPP__
-#define __MODELITEMINSTANCE_HPP__
-
-#include <string>
-
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 
-namespace openfluid { namespace engine {
-
-
-
-struct ModelItemInstance
-{
-
-  std::string Filename;
-  bool SDKCompatible;
-  openfluid::core::FuncParamsMap_t Params;
-  openfluid::base::FunctionSignature* Signature;
-  openfluid::base::PluggableFunction* Function;
-
-  ModelItemInstance()
-  {
-    Filename = "";
-    Signature = NULL;
-    Function = NULL;
-    SDKCompatible = false;
-  }
-
-};
-
-
-} } //namespaces
-
-
-#endif /* __MODELITEMINSTANCE_H___ */

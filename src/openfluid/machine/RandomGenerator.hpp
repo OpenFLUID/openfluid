@@ -47,51 +47,47 @@
 
 
 /**
-  \file DynamicLib.h
+  \file RandomGenerator.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __DYNAMICLIB_HPP__
-#define __DYNAMICLIB_HPP__
+#ifndef __RANDOMGENERATOR_HPP__
+#define __RANDOMGENERATOR_HPP__
 
-#include <boost/filesystem/path.hpp>
 
-namespace openfluid { namespace engine {
+#include <openfluid/machine/Generator.hpp>
 
-class DynamicLib
+namespace openfluid { namespace machine {
+
+
+class RandomGenerator : public Generator
 {
   private:
-
-    void* m_LibHandle;
-
-    boost::filesystem::path m_LibPath;
-
-    bool m_IsLoaded;
+    openfluid::core::ScalarValue m_Min;
+    openfluid::core::ScalarValue m_Max;
 
   public:
 
-    DynamicLib(const std::string& LibName);
+    RandomGenerator();
 
-    ~DynamicLib();
+    ~RandomGenerator();
 
-    std::string getLibName() const { return m_LibPath.string(); }
+    bool checkConsistency();
 
-    bool load();
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    void unload();
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool hasSymbol(const std::string& Name);
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    void* getSymbol(const std::string& Name) const;
-
-    bool isLoaded() const { return m_LibHandle != NULL; }
 };
+
 
 } } //namespaces
 
 
 
-#endif /* __DYNAMICLIB_H___ */
+#endif /* __RANDOMGENERATOR_H___ */

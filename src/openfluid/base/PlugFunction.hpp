@@ -80,18 +80,18 @@
 #include <openfluid/base/FuncSignature.hpp>
 
 
-//// compilation directives for shared libs linkage
-//#ifdef WIN32
-//  #ifdef BUILDPLUGDLL
-//    #define DLLIMPORT __declspec(dllexport)
-//  #else
-//    #define DLLIMPORT __declspec(dllimport)
-//  #endif
-//  #define CALL __stdcall
-//#else
-//  #define DLLIMPORT
-//  #define CALL
-//#endif
+// compilation directives for shared libs linkage
+#ifdef WIN32
+  #ifdef BUILDPLUGDLL
+    #define DLLIMPORT __declspec(dllexport)
+  #else
+    #define DLLIMPORT __declspec(dllimport)
+  #endif
+  #define CALL __stdcall
+#else
+  #define DLLIMPORT
+  #define CALL
+#endif
 
 
 #define STRINGIFY(x) XSTRINGIFY(x)

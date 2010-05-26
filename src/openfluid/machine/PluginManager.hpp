@@ -47,52 +47,73 @@
 
 
 /**
-  \file InterpGenerator.h
-  \brief Header of ...
+  \file PluginManager.h
+  \brief header of the plugins management class
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __INTERPGENERATOR_HPP__
-#define __INTERPGENERATOR_HPP__
+#ifndef __PLUGINMANAGER_HPP__
+#define __PLUGINMANAGER_HPP__
+
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
+namespace openfluid { namespace machine {
 
 
-#include <openfluid/engine/Generator.hpp>
-#include <openfluid/tools.hpp>
+typedef std::vector<ModelItemInstance*> ArrayOfModelItemInstance;
 
-namespace openfluid { namespace engine {
-
-
-class InterpGenerator : public Generator
+/**
+  Management class for plugins
+*/
+class PluginManager
 {
   private:
-    openfluid::tools::DistributeInterpolate m_DataPool;
 
-    bool m_IsMin;
-    bool m_IsMax;
+    ModelItemInstance* buildPluginContainer(std::string PluginFilename);
 
-    double m_Min;
-    double m_Max;
+    static PluginManager* mp_Singleton;
+
+    /**
+      Constructor
+    */
+    PluginManager();
+
 
   public:
 
-    InterpGenerator();
+    /**
+      Destructor
+    */
+    ~PluginManager();
 
-    ~InterpGenerator();
+    static PluginManager* getInstance();
 
-    bool checkConsistency();
+    /**
+      Lists available simulation functions
+    */
+    ArrayOfModelItemInstance getAvailableFunctions(const std::string Pattern = "");
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+    /**
+      Returns function and function types
+    */
+    ModelItemInstance* getPlugin(std::string PluginName,
+                               openfluid::base::ExecutionMessages* ExecMsgs,
+                               openfluid::core::CoreRepository* CoreData);
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
+
 
 } } //namespaces
 
 
+#endif
 
-#endif /* __INTERPGENERATOR_H___ */
+
+

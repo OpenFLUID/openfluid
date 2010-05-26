@@ -47,44 +47,51 @@
 
 
 /**
-  \file Generator.h
+  \file DynamicLib.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __GENERATOR_HPP__
-#define __GENERATOR_HPP__
+#ifndef __DYNAMICLIB_HPP__
+#define __DYNAMICLIB_HPP__
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <boost/filesystem/path.hpp>
 
+namespace openfluid { namespace machine {
 
-namespace openfluid { namespace engine {
-
-class Generator : public openfluid::base::PluggableFunction
+class DynamicLib
 {
-  protected:
+  private:
 
-    openfluid::base::GeneratorDescriptor m_GenDesc;
+    void* m_LibHandle;
+
+    boost::filesystem::path m_LibPath;
+
+    bool m_IsLoaded;
 
   public:
 
-    Generator();
+    DynamicLib(const std::string& LibName);
 
-    ~Generator();
+    ~DynamicLib();
 
-    void setDescriptor(openfluid::base::GeneratorDescriptor GenDesc) { m_GenDesc = GenDesc; };
+    std::string getLibName() const { return m_LibPath.string(); }
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params) { return true; };
+    bool load();
 
-    bool prepareData()  { return true; };
+    void unload();
 
+    bool hasSymbol(const std::string& Name);
+
+    void* getSymbol(const std::string& Name) const;
+
+    bool isLoaded() const { return m_LibHandle != NULL; }
 };
 
 } } //namespaces
 
 
 
-#endif /* __GENERATOR_H___ */
+#endif /* __DYNAMICLIB_H___ */

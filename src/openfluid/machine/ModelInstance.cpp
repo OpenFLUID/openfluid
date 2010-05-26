@@ -53,10 +53,10 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/engine/ModelInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
-namespace openfluid { namespace engine {
+namespace openfluid { namespace machine {
 
 
 #define DECLARE_FUNCTION_PARSER \

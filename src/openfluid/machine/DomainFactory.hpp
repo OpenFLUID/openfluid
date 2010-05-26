@@ -47,45 +47,38 @@
 
 
 /**
-  \file FixedGenerator.h
+  \file DomainFactory.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __FIXEDGENERATOR_HPP__
-#define __FIXEDGENERATOR_HPP__
 
-#include <openfluid/engine/Generator.hpp>
-
-namespace openfluid { namespace engine {
+#ifndef __DOMAINFACTORY_HPP__
+#define __DOMAINFACTORY_HPP__
 
 
-class FixedGenerator : public Generator
+#include <openfluid/base/DomainDescriptor.hpp>
+
+
+namespace openfluid { namespace machine {
+
+
+class DomainFactory
 {
   private:
 
-    openfluid::core::ScalarValue m_VarValue;
-
   public:
 
-    FixedGenerator();
+    DomainFactory();
 
-    ~FixedGenerator();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor);
 
 };
+
 
 } } //namespaces
 
 
-
-#endif /* __FIXEDGENERATOR_H___ */
+#endif /* __DOMAINFACTORY_H___ */
