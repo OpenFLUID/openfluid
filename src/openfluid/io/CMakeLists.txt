@@ -17,10 +17,12 @@ SET_TARGET_PROPERTIES(openfluid-io PROPERTIES VERSION "${ENGINE_VERSION_MAJOR}.$
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
 TARGET_LINK_LIBRARIES(openfluid-io 
-                      openfluid-tools
+                      openfluid-base
                       openfluid-core
+                      openfluid-tools
                       ${LibXML2_LIBRARIES}                      
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_DATE_TIME_LIBRARY})
 
 
 
