@@ -111,8 +111,8 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << " */" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "#include \"openfluid-base.h\"" << std::endl;
-  CPPContent << "#include \"openfluid-core.h\"" << std::endl;
+  CPPContent << "#include <openfluid/base.hpp>" << std::endl;
+  CPPContent << "#include <openfluid/core.hpp>" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
