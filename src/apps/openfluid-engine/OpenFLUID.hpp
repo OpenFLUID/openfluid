@@ -57,14 +57,14 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
-#include "Engine.h"
-#include "PluginManager.h"
-#include "RuntimeEnv.h"
-#include "config.h"
+#include <openfluid/base.hpp>
+#include <openfluid/buddies.hpp>
+#include <openfluid/core.hpp>
+#include <openfluid/machine.hpp>
+#include <openfluid/io.hpp>
+#include <openfluid/tools.hpp>
+#include <openfluid/config.hpp>
 
-#include "buddies/OFBuddy.h"
 
 
 // =====================================================================
@@ -81,9 +81,9 @@ class OpenFLUIDApp
 
     std::pair<std::string,std::string> m_BuddyToRun;
 
-    RuntimeEnvironment* m_RunEnv;
+    openfluid::base::RuntimeEnvironment* m_RunEnv;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
-    Engine* mp_Engine;
+    openfluid::machine::Engine* mp_Engine;
 
     boost::posix_time::ptime m_FullStartTime;
     boost::posix_time::ptime m_FullEndTime;

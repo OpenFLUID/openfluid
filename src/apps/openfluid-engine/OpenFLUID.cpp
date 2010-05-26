@@ -58,14 +58,8 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include "AppTools.h"
-#include "OpenFLUID.h"
-#include "openfluid-base.h"
+#include "OpenFLUID.hpp"
 
-#include "buddies/NewFuncBuddy.h"
-#include "buddies/Func2DocBuddy.h"
-#include "buddies/NewDataBuddy.h"
-#include "buddies/ConvertBuddy.h"
 
 
 // =====================================================================
@@ -122,7 +116,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   std::string VersionInfo = "OpenFLUID-engine v";
   std::string Whites = "";
 
-  VersionInfo = VersionInfo + CONFIG_FULL_VERSION;
+  VersionInfo = VersionInfo + openfluid::config::FULL_VERSION;
 
   // centering the version number, using white spaces
   for (unsigned int i=0;i<((Width-VersionInfo.length())/2);i++) Whites = Whites + " ";
@@ -152,7 +146,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 void OpenFLUIDApp::printPluginsList()
 {
 
-  ArrayOfModelItemInstance PlugContainers = PluginManager::getInstance()->getAvailableFunctions();
+  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
 
   std::cout << "Available simulation functions:" << std::endl;
 
@@ -164,7 +158,7 @@ void OpenFLUIDApp::printPluginsList()
     {
       boost::filesystem::path TmpPath(PlugContainers[i]->Filename);
       TmpPath = boost::filesystem::change_extension(TmpPath,"");
-      std::cout << "  - " << ReplaceEmptyString(TmpPath.leaf(),"(unknown simulation function)") << std::endl;
+      std::cout << "  - " << openfluid::tools::ReplaceEmptyString(TmpPath.leaf(),"(unknown simulation function)") << std::endl;
       OneAtLeast = true;
     }
   }
@@ -291,7 +285,7 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Pattern)
 {
 
-  ArrayOfModelItemInstance PlugContainers = PluginManager::getInstance()->getAvailableFunctions(Pattern);
+  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(Pattern);
   std::string StatusStr;
 
 
@@ -337,17 +331,17 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Patter
       else
       {
         std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-        std::cout << "   - Name: " << ReplaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
+        std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
         std::cout << "   - File: " << PlugContainers[i]->Filename << std::endl;
-        std::cout << "   - Domain: " << ReplaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
-        std::cout << "   - Process: " << ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
-        std::cout << "   - Method: " << ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
-        std::cout << "   - Description: " << ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
-        std::cout << "   - Version: " << ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
+        std::cout << "   - Domain: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
+        std::cout << "   - Process: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
+        std::cout << "   - Method: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
+        std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
+        std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
         std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->SDKVersion <<  std::endl;
         std::cout << "   - Development status: " << StatusStr <<  std::endl;
-        std::cout << "   - Author(s): " << ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
-        std::cout << "   - Author(s) email(s) : " << ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
+        std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
+        std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
         std::cout << "   - Handled data" << std::endl;
         printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "),IsXMLFormat);
 
@@ -393,7 +387,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
   if (mp_Engine != NULL) mp_Engine->saveMessages();
 
-  if (mp_Engine != NULL && RuntimeEnvironment::getInstance()->isWriteSimReport())
+  if (mp_Engine != NULL && openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
@@ -416,14 +410,14 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> FunctionsPaths = RuntimeEnvironment::getInstance()->getPluginsPaths();
+  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
   unsigned int i;
 
-  std::cout << "Input dir: " << RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
-  if (RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
   std::cout << "Functions search path(s):" << std::endl;
   for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
-  if (ShowTemp) std::cout << "Temp dir: " << RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
+  if (ShowTemp) std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
 }
 
 // =====================================================================
@@ -433,9 +427,9 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 void OpenFLUIDApp::printEnvInfos()
 {
   printPaths(false);
-  if ((RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) && (RuntimeEnvironment::getInstance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
-  if (RuntimeEnvironment::getInstance()->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
-  if (RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
+  if ((openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) && (openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
   std::cout << std::endl;
 }
 
@@ -453,7 +447,7 @@ void OpenFLUIDApp::runSimulation()
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
 
-  mp_Engine = new Engine();
+  mp_Engine = new openfluid::machine::Engine();
 
 
   printOpenFLUIDInfos();
@@ -483,14 +477,14 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Initializing parameters... "; std::cout.flush();
   mp_Engine->initParams();
-  if (!RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
+  if (!openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
   else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
 
   std::cout << "* Preparing data and checking consistency... "; std::cout.flush();
   mp_Engine->prepareDataAndCheckConsistency();
-  if (!RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
+  if (!openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
   else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
@@ -498,7 +492,7 @@ void OpenFLUIDApp::runSimulation()
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
   std::cout << std::endl;
-  std::cout << "Simulation ID: " << RuntimeEnvironment::getInstance()->getSimulationID() << std::endl;
+  std::cout << "Simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << std::endl;
   std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
@@ -520,7 +514,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  if (RuntimeEnvironment::getInstance()->isProgressiveOutput()) std::cout << "Progressive output enabled (Packet=" << RuntimeEnvironment::getInstance()->getProgressiveOutputPacket() << ", Keep=" << RuntimeEnvironment::getInstance()->getProgressiveOutputKeep() << ")" <<  std::endl;
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isProgressiveOutput()) std::cout << "Progressive output enabled (Packet=" << openfluid::base::RuntimeEnvironment::getInstance()->getProgressiveOutputPacket() << ", Keep=" << openfluid::base::RuntimeEnvironment::getInstance()->getProgressiveOutputKeep() << ")" <<  std::endl;
   else std::cout << "Progressive output disabled" << std::endl;
 
   std::cout << std::endl;
@@ -535,10 +529,10 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
   std::cout.flush();
   mp_ExecMsgs->resetWarningFlag();
-  RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
+  openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
 
-  if (RuntimeEnvironment::getInstance()->isWriteSimReport())
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
@@ -549,7 +543,7 @@ void OpenFLUIDApp::runSimulation()
 
   m_FullEndTime = boost::posix_time::microsec_clock::local_time();
 
-  if (RuntimeEnvironment::getInstance()->isWriteResults() || RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
 
   boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
 
@@ -557,7 +551,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
+  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
   std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
   std::cout << std::endl;
 
@@ -616,11 +610,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   if (OptionsVars.count("buddyhelp"))
   {
 
-    OpenFLUIDBuddy* Buddy = NULL;
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new NewFunctionBuddy();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new Func2DocBuddy();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new ConvertBuddy();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new NewDataBuddy();
+    openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new openfluid::buddies::NewFunctionBuddy();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy();
 
 
     if (Buddy != NULL)
@@ -651,14 +645,14 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("version"))
   {
-    std::cout << CONFIG_FULL_VERSION << std::endl;
+    std::cout << openfluid::config::FULL_VERSION << std::endl;
     m_RunType = InfoRequest;
     return;
   }
 
   if (OptionsVars.count("functions-paths"))
   {
-    RuntimeEnvironment::getInstance()->addExtraPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
   }
 
 
@@ -693,17 +687,17 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("input-dir"))
   {
-    RuntimeEnvironment::getInstance()->setInputDir(OptionsVars["input-dir"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::getInstance()->setInputDir(OptionsVars["input-dir"].as<std::string>());
   }
 
   if (OptionsVars.count("output-dir"))
   {
-    RuntimeEnvironment::getInstance()->setOutputDir(OptionsVars["output-dir"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(OptionsVars["output-dir"].as<std::string>());
   }
 
   if (OptionsVars.count("auto-output-dir"))
   {
-    RuntimeEnvironment::getInstance()->setDateTimeOutputDir();
+    openfluid::base::RuntimeEnvironment::getInstance()->setDateTimeOutputDir();
   }
 
   if (OptionsVars.count("show-paths"))
@@ -715,27 +709,27 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("clean-output-dir"))
   {
-    RuntimeEnvironment::getInstance()->setClearOutputDir(true);
+    openfluid::base::RuntimeEnvironment::getInstance()->setClearOutputDir(true);
   }
 
   if (OptionsVars.count("quiet"))
   {
-    RuntimeEnvironment::getInstance()->setQuietRun(true);
+    openfluid::base::RuntimeEnvironment::getInstance()->setQuietRun(true);
   }
 
   if (OptionsVars.count("verbose"))
   {
-    RuntimeEnvironment::getInstance()->setVerboseRun(true);
+    openfluid::base::RuntimeEnvironment::getInstance()->setVerboseRun(true);
   }
 
   if (OptionsVars.count("no-simreport"))
   {
-    RuntimeEnvironment::getInstance()->setWriteSimReport(false);
+    openfluid::base::RuntimeEnvironment::getInstance()->setWriteSimReport(false);
   }
 
   if (OptionsVars.count("no-result"))
   {
-    RuntimeEnvironment::getInstance()->setWriteResults(false);
+    openfluid::base::RuntimeEnvironment::getInstance()->setWriteResults(false);
   }
 
 }
@@ -749,11 +743,11 @@ void OpenFLUIDApp::runBuddy()
 {
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
-  OpenFLUIDBuddy* Buddy = NULL;
-  if (m_BuddyToRun.first == "newfunc" ) Buddy = new NewFunctionBuddy();
-  if (m_BuddyToRun.first == "func2doc" ) Buddy = new Func2DocBuddy();
-  if (m_BuddyToRun.first == "convert" ) Buddy = new ConvertBuddy();
-  if (m_BuddyToRun.first == "newdata" ) Buddy = new NewDataBuddy();
+  openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
+  if (m_BuddyToRun.first == "newfunc" ) Buddy = new openfluid::buddies::NewFunctionBuddy();
+  if (m_BuddyToRun.first == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy();
+  if (m_BuddyToRun.first == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy();
+  if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy();
 
   if (Buddy != NULL)
   {

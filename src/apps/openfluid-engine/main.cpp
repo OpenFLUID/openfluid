@@ -53,7 +53,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include "OpenFLUID.h"
+#include "OpenFLUID.hpp"
 
 // =====================================================================
 // =====================================================================
