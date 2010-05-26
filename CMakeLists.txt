@@ -45,11 +45,11 @@ IF(Boost_FOUND AND LibXML2_FOUND)
 
   CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_BINARY_DIR}/CTestCustom.cmake COPYONLY)
   
-  ADD_SUBDIRECTORY(tests)
+#  ADD_SUBDIRECTORY(tests)
 
-  ADD_SUBDIRECTORY(doc)
+#  ADD_SUBDIRECTORY(doc)
 
-  ADD_SUBDIRECTORY(resources)
+#  ADD_SUBDIRECTORY(resources)
 
   INCLUDE(CPack.in.config)
 

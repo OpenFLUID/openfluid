@@ -1,0 +1,31 @@
+
+
+
+FILE(GLOB OPENFLUID_BASE_CPP *.cpp)
+FILE(GLOB OPENFLUID_BASE_HPP *.hpp)
+
+
+ADD_LIBRARY(openfluid-base SHARED ${OPENFLUID_BASE_CPP} ${OPENFLUID_BASE_HPP})
+
+SET_TARGET_PROPERTIES(openfluid-base PROPERTIES VERSION "${ENGINE_VERSION_MAJOR}.${ENGINE_VERSION_MINOR}" 
+                                        SOVERSION "${ENGINE_VERSION_MAJOR}.${ENGINE_VERSION_MINOR}.${ENGINE_VERSION_PATCH}"
+                                        LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+
+TARGET_LINK_LIBRARIES(openfluid-base
+                      openfluid-core)
+#                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+#                             ${LibXML2_LIBRARIES})
+
+
+
+INSTALL(TARGETS openfluid-base
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+   
+
+INSTALL(FILES ${OPENFLUID_BASE_HPP} DESTINATION ${INCLUDE_INSTALL_PATH}/base)
+
+   
