@@ -19,7 +19,7 @@ Open a terminal and type the following command to get help
    openfluid-engine -h
 
 
-Also refer to documentation available on the OpenFLUID-engine web site:
+Also refer to documentation available on the OpenFLUID web site:
 https://www.umr-lisah.fr/openfluid/
 
 

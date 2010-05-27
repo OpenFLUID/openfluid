@@ -88,10 +88,10 @@ RuntimeEnvironment::RuntimeEnvironment()
   // default directories
   // UNIX:
   //  Temp directory : using TMPDIR, TMP or TEMP env. var.
-  //  User directory for Openfluid : using HOME env. var. + .openfluid/engine suffix
+  //  User directory for Openfluid : using HOME env. var. + .openfluid suffix
   // WIN32:
   //  Temp directory : using TEMP env. var.
-  //  User directory for Openfluid : using APPDATA env. var. + openfluid/engine suffix
+  //  User directory for Openfluid : using APPDATA env. var. + openfluid suffix
 
 #if defined __unix__ || defined __APPLE__
 

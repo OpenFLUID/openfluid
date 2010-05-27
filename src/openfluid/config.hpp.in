@@ -57,7 +57,7 @@ namespace openfluid { namespace config {
 // App Name
 const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
 
-// Relative openfluid engine directory
+// Relative openfluid directory
 const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
 
 

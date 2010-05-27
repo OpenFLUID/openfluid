@@ -1,4 +1,4 @@
-################### ofelib-dev doxygen documentation ###################
+################### openfluid api documentation ###################
 
 IF(DOXYGEN)
   
@@ -16,11 +16,11 @@ IF(DOXYGEN)
     COMMAND "${DOXYGEN}"
     ARGS "${PROJECT_BINARY_DIR}/API-Doxyfile")
 
-  ADD_CUSTOM_TARGET(ofelib-doc ALL DEPENDS "${PROJECT_BINARY_DIR}/API-Doxyfile"
+  ADD_CUSTOM_TARGET(openfluid-api-doc ALL DEPENDS "${PROJECT_BINARY_DIR}/API-Doxyfile"
     "${APIDOC_OUTPUT_PATH}/html/index.html" VERBATIM)
 
 
   INSTALL(DIRECTORY "${APIDOC_OUTPUT_PATH}/"
-          DESTINATION "${OFELIBDEV_DOC_INSTALL_PATH}" COMPONENT engine)
+          DESTINATION "${API_DOC_INSTALL_PATH}")
 
 ENDIF(DOXYGEN)

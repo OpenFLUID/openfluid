@@ -1,5 +1,5 @@
 #
-# CMake build for OpenFLUID-engine
+# CMake build for OpenFLUID
 #
 # Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 #
@@ -8,7 +8,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
-PROJECT(OpenFLUID-Engine CXX)
+PROJECT(OpenFLUID CXX)
 
 INCLUDE(CTest)
 ENABLE_TESTING()

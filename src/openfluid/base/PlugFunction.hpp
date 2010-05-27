@@ -56,7 +56,7 @@
   \li define its own signature
   \li define a class inherited from the PluggableFunction class.
 
-  To be linked to the OpenFLUID-engine kernel, the simulation function must have two hooks declarations.
+  To be linked to an OpenFLUID application, the simulation function must have two hooks declarations.
   \code
   extern "C"
   {

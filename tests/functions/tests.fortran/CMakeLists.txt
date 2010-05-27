@@ -8,6 +8,6 @@ IF(BUILD_FORTRAN_FUNCTIONS)
   SET_TARGET_PROPERTIES(tests.fortran 
                         PROPERTIES PREFIX "" SUFFIX "${FUNCTIONS_BINARY_EXTENSION}" 
                         LIBRARY_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-  TARGET_LINK_LIBRARIES(tests.fortran ofelib gfortran)
+  TARGET_LINK_LIBRARIES(tests.fortran openfluid-base openfluid-core gfortran)
 
 ENDIF(BUILD_FORTRAN_FUNCTIONS)
