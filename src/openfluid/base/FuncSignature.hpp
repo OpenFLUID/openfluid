@@ -68,7 +68,7 @@
   openfluid::base::FunctionSignature* GetPlugSignature() \
   { \
     openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature(); \
-    Signature->setSDKVersion(STRINGIFY(OFELIB_VERSION));
+    Signature->setSDKVersion(STRINGIFY(OPENFLUID_VERSION));
 
 
 /**
@@ -136,7 +136,7 @@
 /**
   Macro for declaration of SDK version used to build the function
 */
-#define DECLARE_SIGNATURE_SDKVERSION Signature->setSDKVersion(STRINGIFY(OFELIB_VERSION));
+#define DECLARE_SIGNATURE_SDKVERSION Signature->setSDKVersion(STRINGIFY(OPENFLUID_VERSION));
 
 // =====================================================================
 // =====================================================================

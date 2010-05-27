@@ -9,7 +9,7 @@
                               "-Dofelib_LIBRARY_DIRS=${LIB_OUTPUT_PATH}"
                               "-Dofelib_LIBRARIES=-L${LIB_OUTPUT_PATH} -lofelib"
                               "-Dofelib_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/include"
-                              "-Dofelib_VERSION=${ENGINE_FULL_VERSION}"
+                              "-Dofelib_VERSION=${FULL_VERSION}"
                               "-DINSTALL_PATH=${TEST_OUTPUT_PATH}"                              
                               "${CMAKE_SOURCE_DIR}/resources/examples/src" 
                               )

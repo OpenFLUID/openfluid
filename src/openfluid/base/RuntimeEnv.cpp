@@ -139,11 +139,11 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_TempDir = boost::filesystem::path(m_TempDir).string();
 
 #if WIN32
-  m_UserDataDir = boost::filesystem::path(HomeDir+"/"+openfluid::config::ENGINE_RELDIR).string();
+  m_UserDataDir = boost::filesystem::path(HomeDir+"/"+openfluid::config::RELATIVEDIR).string();
 #endif
 
 #if defined __unix__ || defined __APPLE__
-  m_UserDataDir = boost::filesystem::path(HomeDir+"/."+openfluid::config::ENGINE_RELDIR).string();
+  m_UserDataDir = boost::filesystem::path(HomeDir+"/."+openfluid::config::RELATIVEDIR).string();
 #endif
 
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_OUTDIR).string();

@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME = @DOXYGEN_PROJECT_NAME@
-PROJECT_NUMBER = @ENGINE_FULL_VERSION@
+PROJECT_NUMBER = @FULL_VERSION@
 OUTPUT_DIRECTORY = @APIDOC_OUTPUT_PATH@
 CREATE_SUBDIRS = NO
 OUTPUT_LANGUAGE = English

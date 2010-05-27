@@ -142,7 +142,7 @@
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
   std::string GetPlugSDKVersion() \
   { \
-    return std::string(STRINGIFY(OFELIB_VERSION)); \
+    return std::string(STRINGIFY(OPENFLUID_VERSION)); \
   } \
   \
   openfluid::base::PluggableFunction* GetPlugFunction() \

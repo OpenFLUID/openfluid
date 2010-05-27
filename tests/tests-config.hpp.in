@@ -19,7 +19,7 @@ const std::string CONFIGTESTS_DISTBIN_DIR = "@BIN_OUTPUT_PATH@";
 const std::string CONFIGTESTS_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
 
 // Version
-const std::string CONFIGTESTS_FULL_VERSION = "@ENGINE_FULL_VERSION@";
+const std::string CONFIGTESTS_FULL_VERSION = "@FULL_VERSION@";
 
 
 #endif

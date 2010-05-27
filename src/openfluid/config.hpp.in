@@ -15,20 +15,20 @@ namespace openfluid { namespace config {
 const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
 
 // Relative openfluid engine directory
-const std::string ENGINE_RELDIR = "@OPENFLUID_ENGINE_RELDIR@";
+const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
 
 
 // Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_ENGINE_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_ENGINE_OUTPUTDIR@";
+const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
+const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
 
 
 // Install prefix
 const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
 
 // Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_ENGINE_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_ENGINE_FUNCSDIR@";
+const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
+const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
 
 
 // Default files
@@ -54,11 +54,11 @@ const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
 
 
 // Version information
-const std::string MAJOR_VERSION = "@ENGINE_VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@ENGINE_VERSION_MINOR@";
-const std::string PATCH_VERSION = "@ENGINE_VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@ENGINE_VERSION_STATUS@";
-const std::string FULL_VERSION = "@ENGINE_FULL_VERSION@";
+const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
+const std::string MINOR_VERSION = "@VERSION_MINOR@";
+const std::string PATCH_VERSION = "@VERSION_PATCH@";
+const std::string RELEASE_STATUS = "@VERSION_STATUS@";
+const std::string FULL_VERSION = "@FULL_VERSION@";
 
 
 } } //namespaces
