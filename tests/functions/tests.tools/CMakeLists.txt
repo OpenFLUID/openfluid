@@ -1,7 +1,7 @@
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-ADD_LIBRARY(tests.tools  MODULE ToolsFunc.cpp)
+ADD_LIBRARY(tests.tools MODULE ToolsFunc.cpp)
 
 SET_TARGET_PROPERTIES(tests.tools 
                       PROPERTIES PREFIX "" SUFFIX "${FUNCTIONS_BINARY_EXTENSION}" 

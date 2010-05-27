@@ -1,12 +1,4 @@
-
-
-FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS}
-                    "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src/tests")
-                    
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
-                    
+                   
 
 MACRO(ADD_UNITTEST TEST_NAME EXE_NAME)
   ADD_EXECUTABLE(${EXE_NAME} ${ARGN})

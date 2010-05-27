@@ -269,7 +269,7 @@ void RuntimeEnvironment::addExtraPluginsPaths(std::string SemicolonSeparatedPath
 #endif
 
 #if WIN32
-  ExtraPaths = SplitString(SemicolonSeparatedPaths,";");
+  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths,";");
 #endif
 
 

@@ -109,9 +109,9 @@ inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
   \param[out] Tokens the resulting tokens
   \param[in] Delimiters the string delimiter
 */
-void TokenizeString(const std::string& StrToTokenize,
-                    std::vector<std::string>& Tokens,
-                    const std::string& Delimiters);
+void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
+                              std::vector<std::string>& Tokens,
+                              const std::string& Delimiters);
 
 // =====================================================================
 // =====================================================================
@@ -159,7 +159,7 @@ inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
 // =====================================================================
 
 
-bool WildcardMatching(const std::string Pattern, const std::string Str);
+bool DLLEXPORT WildcardMatching(const std::string Pattern, const std::string Str);
 
 
 
@@ -174,7 +174,7 @@ bool WildcardMatching(const std::string Pattern, const std::string Str);
   \param[in] Ext the file extension
   \param[in] WithPath return full path with file name if true, file name only otherwise
 */
-std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath = false, bool ExtIncludeDot = false);
+std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath = false, bool ExtIncludeDot = false);
 
 /**
   Splits the passed string into a std::string array, split using the given SepString
@@ -183,27 +183,25 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
   \param[in] ReturnsEmpty if true, the empty strings are returned
   \return a vector of strings
 */
-std::vector<std::string> SplitString(const std::string StrToSplit, const std::string Separators,  bool ReturnsEmpty = false);
+std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit, const std::string Separators,  bool ReturnsEmpty = false);
 
-bool EmptyDirectoryRecursively(const std::string DirPath);
+bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
-std::string ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr);
+std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr);
 
-bool IsVectorNamedVariable(std::string Name);
+bool DLLEXPORT IsVectorNamedVariable(std::string Name);
 
-std::string GetVectorNamedVariableName(std::string Name);
+std::string DLLEXPORT GetVectorNamedVariableName(std::string Name);
 
-std::string RemoveTrailingSlashes(std::string Str);
+std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
 
-void printSTDOUT(std::vector<std::string> Strings, std::string Sep);
+void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);
 
-openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep);
+openfluid::core::DateTime DLLEXPORT GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep);
 
-void CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
+void DLLEXPORT CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
-std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename);
-
-
+std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::string Filename);
 
 
 } } //namespaces

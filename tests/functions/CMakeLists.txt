@@ -79,7 +79,8 @@ ADD_TEST(functions-ManyUnits "${BIN_OUTPUT_PATH}/openfluid-engine"
 ADD_FUNCTION(tests.ofefunc2doc tests.ofefunc2doc ${TEST_OUTPUT_PATH})
 
 
-ADD_SUBDIRECTORY(tests.tools tests.tools)
+#ADD_SUBDIRECTORY(tests.tools tests.tools)
+ADD_FUNCTION(tests.tools tests.tools ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Tools "${BIN_OUTPUT_PATH}/openfluid-engine" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckTools"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckTools" 
