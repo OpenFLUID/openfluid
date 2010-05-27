@@ -58,13 +58,14 @@
 #define __OUTPUTDESCRIPTOR_HPP__
 
 #include <vector>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base/OutputFilesDescriptor.hpp>
 
 
 namespace openfluid { namespace base {
 
 
-class OutputDescriptor
+class DLLEXPORT OutputDescriptor
 {
   private:
 

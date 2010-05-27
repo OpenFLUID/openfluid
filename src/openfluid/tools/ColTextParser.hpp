@@ -59,6 +59,7 @@
 
 #include <vector>
 #include <string>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace tools {
 
@@ -66,7 +67,7 @@ namespace openfluid { namespace tools {
 /**
   Class for column file management and handling
 */
-class ColumnTextParser
+class DLLEXPORT ColumnTextParser
 {
 
   protected:

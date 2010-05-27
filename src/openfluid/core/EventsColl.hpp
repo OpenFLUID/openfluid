@@ -65,7 +65,7 @@
 
 namespace openfluid { namespace core {
 
-class Event;
+class DLLEXPORT Event;
 
 
 /**

@@ -60,7 +60,7 @@
 #include <libxml/parser.h>
 #include <string>
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/base.hpp>
@@ -68,7 +68,7 @@
 namespace openfluid { namespace io {
 
 
-class FluidXReader
+class DLLEXPORT FluidXReader
 {
   private:
 

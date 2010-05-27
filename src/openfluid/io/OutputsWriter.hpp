@@ -58,6 +58,7 @@
 #define __OUTPUTSWRITER_HPP__
 
 #include <string>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 
@@ -65,7 +66,7 @@
 namespace openfluid { namespace io {
 
 
-class OutputsWriter
+class DLLEXPORT OutputsWriter
 {
   private:
 

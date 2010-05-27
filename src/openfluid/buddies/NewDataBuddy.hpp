@@ -57,7 +57,7 @@
 #ifndef __NEWDATABUDDY_H___
 #define __NEWDATABUDDY_H___
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
 #include <boost/filesystem/path.hpp>
 
@@ -65,7 +65,7 @@
 namespace openfluid { namespace buddies {
 
 
-class NewDataBuddy : public OpenFLUIDBuddy
+class DLLEXPORT NewDataBuddy : public OpenFLUIDBuddy
 {
   private:
 

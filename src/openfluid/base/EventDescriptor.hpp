@@ -57,13 +57,14 @@
 #ifndef __EVENTDESCRIPTOR_HPP__
 #define __EVENTDESCRIPTOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 
 namespace openfluid { namespace base {
 
 
-class EventDescriptor
+class DLLEXPORT EventDescriptor
 {
   private:
     openfluid::core::UnitClass_t m_UnitClass;

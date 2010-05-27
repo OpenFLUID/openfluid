@@ -51,7 +51,9 @@
 
 
 #include <iostream>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base/OFException.hpp>
+
 
 namespace openfluid { namespace core {
 

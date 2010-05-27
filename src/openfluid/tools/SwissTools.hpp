@@ -61,6 +61,7 @@
 #include <sstream>
 #include <cmath>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 namespace openfluid { namespace tools {

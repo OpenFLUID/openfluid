@@ -57,7 +57,7 @@
 #ifndef __MODELINSTANCE_HPP__
 #define __MODELINSTANCE_HPP__
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -66,7 +66,7 @@
 namespace openfluid { namespace machine {
 
 
-class ModelInstance
+class DLLEXPORT ModelInstance
 {
   private:
 

@@ -63,11 +63,12 @@
 #include <map>
 #include <iostream>
 
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace buddies {
 
 
-class OpenFLUIDBuddy
+class DLLEXPORT OpenFLUIDBuddy
 {
   protected:
     std::map<std::string,std::string> m_Options;

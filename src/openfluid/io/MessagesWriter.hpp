@@ -59,12 +59,12 @@
 
 
 #include <string>
-
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace io {
 
 
-class MessagesWriter
+class DLLEXPORT MessagesWriter
 {
   private:
 

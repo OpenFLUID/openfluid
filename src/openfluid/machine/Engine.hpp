@@ -58,6 +58,7 @@
 #define __ENGINE_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/io/IOMan.hpp>
@@ -75,7 +76,7 @@ namespace openfluid { namespace machine {
 /**
   Computation engine class
 */
-class Engine
+class DLLEXPORT Engine
 {
   private:
 

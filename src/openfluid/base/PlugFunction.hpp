@@ -73,6 +73,7 @@
 #define __PLUGFUNCTION_HPP__
 
 #include <string>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
@@ -241,7 +242,7 @@ namespace openfluid { namespace base {
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class PluggableFunction
+class DLLEXPORT PluggableFunction
 {
 
   private:

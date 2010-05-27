@@ -57,16 +57,6 @@
 #ifndef __IO_HPP___
 #define __IO_HPP___
 
-#ifdef __WIN32__
-  #ifdef BUILDINGDLL
-    #define DLLEXPORT __declspec(dllexport)
-  #else
-    #define DLLEXPORT __declspec(dllimport)
-  #endif
-#else
-  #define DLLEXPORT
-#endif
-
 
 #include <openfluid/io/FluidXReader.hpp>
 #include <openfluid/io/IOMan.hpp>

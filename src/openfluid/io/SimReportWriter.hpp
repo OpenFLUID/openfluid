@@ -58,12 +58,13 @@
 #define __SIMREPORTWRITER_HPP__
 
 #include <string>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace io {
 
 
-class SimulationReportWriter
+class DLLEXPORT SimulationReportWriter
 {
   private:
 

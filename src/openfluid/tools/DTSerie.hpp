@@ -58,10 +58,13 @@
 #define __DTSERIE_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <list>
 
+
 namespace openfluid { namespace tools {
+
 
 struct TimePair
 {
@@ -86,7 +89,7 @@ struct IndexedSerie
 /**
   Class for management of a time ordered serie of data (ScalarValue)
 */
-class DateTimeSerie
+class DLLEXPORT DateTimeSerie
 {
   private:
     std::list<TimePair> m_Data;

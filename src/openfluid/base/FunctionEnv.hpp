@@ -59,7 +59,7 @@
 #ifndef __FUNCTIONENV_HPP__
 #define __FUNCTIONENV_HPP__
 
-
+#include <openfluid/dllexport.hpp>
 #include <map>
 #include <string>
 
@@ -70,7 +70,7 @@ namespace openfluid { namespace base {
   Class containing execution environment information for funtions
   \endif
 */
-class FunctionEnvironment
+class DLLEXPORT FunctionEnvironment
 {
   private:
 

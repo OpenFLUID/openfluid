@@ -58,16 +58,6 @@
 #define __MACHINE_HPP___
 
 
-#ifdef __WIN32__
-  #ifdef BUILDINGDLL
-    #define DLLEXPORT __declspec(dllexport)
-  #else
-    #define DLLEXPORT __declspec(dllimport)
-  #endif
-#else
-  #define DLLEXPORT
-#endif
-
 
 #include <openfluid/machine/DomainFactory.hpp>
 #include <openfluid/machine/DynamicLib.hpp>

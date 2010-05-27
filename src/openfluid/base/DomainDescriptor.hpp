@@ -57,6 +57,7 @@
 #ifndef __DOMAINDESCRIPTOR_HPP__
 #define __DOMAINDESCRIPTOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base/UnitDescriptor.hpp>
 #include <openfluid/base/IDataDescriptor.hpp>
 #include <openfluid/base/EventDescriptor.hpp>
@@ -65,7 +66,7 @@
 namespace openfluid { namespace base {
 
 
-class DomainDescriptor
+class DLLEXPORT DomainDescriptor
 {
   private:
 

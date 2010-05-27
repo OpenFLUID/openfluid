@@ -58,6 +58,7 @@
 #define __SIMSTATUS_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 
@@ -67,7 +68,7 @@ namespace openfluid { namespace base {
 /**
   Class giving static information on simulation
 */
-class SimulationInfo
+class DLLEXPORT SimulationInfo
 {
   protected:
     openfluid::core::DateTime m_StartTime;
@@ -126,7 +127,7 @@ class SimulationInfo
 /**
   Class giving dynamic information on simulation
 */
-class SimulationStatus : public SimulationInfo
+class DLLEXPORT SimulationStatus : public SimulationInfo
 {
   private:
 

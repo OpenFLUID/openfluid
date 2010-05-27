@@ -57,13 +57,14 @@
 #ifndef __UNITDESCRIPTOR_H___
 #define __UNITDESCRIPTOR_H___
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 
 namespace openfluid { namespace base {
 
 
-class UnitDescriptor
+class DLLEXPORT UnitDescriptor
 {
   private:
 

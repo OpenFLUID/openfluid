@@ -59,13 +59,14 @@
 
 #include <boost/filesystem/path.hpp>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
 
 
 namespace openfluid { namespace buddies {
 
 
-class Func2DocBuddy : public OpenFLUIDBuddy
+class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy
 {
   private:
     typedef std::map< std::string,std::vector<std::string> > SignatureData_t;

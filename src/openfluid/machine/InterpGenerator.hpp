@@ -57,14 +57,14 @@
 #ifndef __INTERPGENERATOR_HPP__
 #define __INTERPGENERATOR_HPP__
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/tools.hpp>
 
 namespace openfluid { namespace machine {
 
 
-class InterpGenerator : public Generator
+class DLLEXPORT InterpGenerator : public Generator
 {
   private:
     openfluid::tools::DistributeInterpolate m_DataPool;

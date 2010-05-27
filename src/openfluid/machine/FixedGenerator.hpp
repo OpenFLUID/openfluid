@@ -57,12 +57,13 @@
 #ifndef __FIXEDGENERATOR_HPP__
 #define __FIXEDGENERATOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
 
 namespace openfluid { namespace machine {
 
 
-class FixedGenerator : public Generator
+class DLLEXPORT FixedGenerator : public Generator
 {
   private:
 

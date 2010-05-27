@@ -57,7 +57,7 @@
 #ifndef __DISTRIBINTERP_HPP__
 #define __DISTRIBINTERP_HPP__
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/tools/DTSerie.hpp>
 #include <openfluid/tools/DataSrcFile.hpp>
@@ -82,7 +82,7 @@ enum SeriePreprocess
 /**
   Class for time interpolation and spatial distribution of data
 */
-class DistributeInterpolate
+class DLLEXPORT DistributeInterpolate
 {
 
   private:

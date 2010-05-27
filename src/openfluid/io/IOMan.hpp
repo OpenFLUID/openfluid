@@ -57,6 +57,7 @@
 #ifndef __IOMAN_HPP__
 #define __IOMAN_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/tools.hpp>
@@ -69,7 +70,7 @@ namespace openfluid { namespace io {
 // =====================================================================
 
 
-class IOManager
+class DLLEXPORT IOManager
 {
 
   private:

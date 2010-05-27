@@ -57,13 +57,13 @@
 #ifndef __RANDOMGENERATOR_HPP__
 #define __RANDOMGENERATOR_HPP__
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
 
 namespace openfluid { namespace machine {
 
 
-class RandomGenerator : public Generator
+class DLLEXPORT RandomGenerator : public Generator
 {
   private:
     openfluid::core::ScalarValue m_Min;

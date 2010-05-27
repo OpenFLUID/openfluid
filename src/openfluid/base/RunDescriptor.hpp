@@ -57,11 +57,12 @@
 #ifndef __RUNDESCRIPTOR_HPP__
 #define __RUNDESCRIPTOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 namespace openfluid { namespace base {
 
-class RunDescriptor
+class DLLEXPORT RunDescriptor
 {
   private:
     int m_DeltaT;

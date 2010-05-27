@@ -61,7 +61,7 @@
 #include <vector>
 #include <map>
 #include <string>
-
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace tools {
 
@@ -69,7 +69,7 @@ typedef std::map<int,std::string> IDDataSourcesMap;
 /**
   Class for managing data sources files
 */
-class DataSourcesFile
+class DLLEXPORT DataSourcesFile
 {
   private:
     bool m_Loaded;

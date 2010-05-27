@@ -57,12 +57,14 @@
 #ifndef __MODELITEMDESCRIPTOR_HPP__
 #define __MODELITEMDESCRIPTOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
+
 
 namespace openfluid { namespace base {
 
 
-class ModelItemDescriptor
+class DLLEXPORT ModelItemDescriptor
 {
   public:
     enum ModelItemType { NoModelItemType, PluggedFunction, Generator };

@@ -57,6 +57,7 @@
 #ifndef __PLUGINMANAGER_HPP__
 #define __PLUGINMANAGER_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -70,7 +71,7 @@ typedef std::vector<ModelItemInstance*> ArrayOfModelItemInstance;
 /**
   Management class for plugins
 */
-class PluginManager
+class DLLEXPORT PluginManager
 {
   private:
 

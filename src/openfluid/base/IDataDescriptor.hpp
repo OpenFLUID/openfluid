@@ -57,12 +57,13 @@
 #ifndef __IDATADESCRIPTOR_HPP__
 #define __IDATADESCRIPTOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 namespace openfluid { namespace base {
 
 
-class InputDataDescriptor
+class DLLEXPORT InputDataDescriptor
 {
   private:
 

@@ -57,13 +57,14 @@
 #ifndef __GENERATORDESCRIPTOR_HPP__
 #define __GENERATORDESCRIPTOR_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base/ModelItemDescriptor.hpp>
 
 namespace openfluid { namespace base {
 
 
-class GeneratorDescriptor : public ModelItemDescriptor
+class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 {
   public:
     enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp };

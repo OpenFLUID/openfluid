@@ -60,12 +60,13 @@
 
 #include <vector>
 #include <string>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 namespace openfluid { namespace base {
 
 
-class OutputSetDescriptor
+class DLLEXPORT OutputSetDescriptor
 {
   private:
 

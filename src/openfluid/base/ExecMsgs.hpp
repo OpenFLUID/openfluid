@@ -62,6 +62,7 @@
 #include <string>
 #include <vector>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/base/Message.hpp>
@@ -76,7 +77,7 @@ namespace openfluid { namespace base {
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
   \endif
 */
-class ExecutionMessages
+class DLLEXPORT ExecutionMessages
 {
 
   private:

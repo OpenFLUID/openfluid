@@ -55,6 +55,7 @@
 #ifndef __MODELFACTORY_HPP__
 #define __MODELFACTORY_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
@@ -64,7 +65,7 @@
 namespace openfluid { namespace machine {
 
 
-class ModelFactory
+class DLLEXPORT ModelFactory
 {
   private:
     openfluid::core::CoreRepository* mp_CoreData;

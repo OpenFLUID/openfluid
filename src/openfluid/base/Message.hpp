@@ -57,6 +57,7 @@
 #ifndef __MESSAGE_HPP__
 #define __MESSAGE_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
 
@@ -64,7 +65,7 @@
 namespace openfluid { namespace base {
 
 
-class Message
+class DLLEXPORT Message
 {
   private:
     std::string m_Sender;

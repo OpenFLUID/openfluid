@@ -57,6 +57,7 @@
 #ifndef __CONVERTBUDDY_HPP__
 #define __CONVERTBUDDY_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
 #include <openfluid/core.hpp>
 
@@ -66,7 +67,7 @@
 namespace openfluid { namespace buddies {
 
 
-class ConvertBuddy : public OpenFLUIDBuddy
+class DLLEXPORT ConvertBuddy : public OpenFLUIDBuddy
 {
   private:
 

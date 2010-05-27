@@ -63,11 +63,12 @@
 #include <string>
 #include <sstream>
 
+#include <openfluid/dllexport.hpp>
+
 namespace openfluid { namespace base {
 
 
-
-class OFException : public std::exception
+class DLLEXPORT OFException : public std::exception
 {
   private:
       std::string m_FullMsg;

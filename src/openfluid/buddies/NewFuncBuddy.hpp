@@ -57,13 +57,14 @@
 #ifndef __NEWFUNCBUDDY_HPP__
 #define __NEWFUNCBUDDY_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
 
 
 namespace openfluid { namespace buddies {
 
 
-class NewFunctionBuddy : public OpenFLUIDBuddy
+class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
 {
   private:
     void writeFunctionCPP();

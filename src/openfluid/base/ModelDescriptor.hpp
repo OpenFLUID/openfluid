@@ -59,11 +59,12 @@
 
 #include <list>
 #include <openfluid/base/ModelItemDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace base {
 
 
-class ModelDescriptor
+class DLLEXPORT ModelDescriptor
 {
   public:
     typedef std::list<ModelItemDescriptor*> ModelDescription_t;

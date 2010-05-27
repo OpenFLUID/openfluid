@@ -59,13 +59,14 @@
 #define __DOMAINFACTORY_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base/DomainDescriptor.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-class DomainFactory
+class DLLEXPORT DomainFactory
 {
   private:
 

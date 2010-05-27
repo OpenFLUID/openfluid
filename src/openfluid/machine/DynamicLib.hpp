@@ -57,11 +57,12 @@
 #ifndef __DYNAMICLIB_HPP__
 #define __DYNAMICLIB_HPP__
 
+#include <openfluid/dllexport.hpp>
 #include <boost/filesystem/path.hpp>
 
 namespace openfluid { namespace machine {
 
-class DynamicLib
+class DLLEXPORT DynamicLib
 {
   private:
 

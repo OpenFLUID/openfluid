@@ -57,7 +57,7 @@
 #define __RUNTIMEENV_HPP__
 
 
-
+#include <openfluid/dllexport.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/base/FunctionEnv.hpp>
 
@@ -76,7 +76,7 @@ namespace openfluid { namespace base {
 /**
 
 */
-class RuntimeEnvironment
+class DLLEXPORT RuntimeEnvironment
 {
   private:
 
