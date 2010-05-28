@@ -78,15 +78,25 @@ bool CompareTextFiles(std::string FilePathA, std::string FilePathB,
   std::vector<std::string> ContentA,ContentB;
   std::string StrLine;
 
+  std::cerr << "comparing " << FilePathA << " and "<< FilePathB << std::endl; std::cerr.flush();
+
   //File A
   FileReader.open(FilePathA.c_str());
-  if (!FileReader) return false;
+  if (!FileReader)
+  {
+    std::cerr << "error : cannot read file " << FilePathA << std::endl; std::cerr.flush();
+    return false;
+  }
   while(std::getline(FileReader,StrLine)) ContentA.push_back(StrLine);
   FileReader.close();
 
   //File B
   FileReader.open(FilePathB.c_str());
-  if (!FileReader) return false;
+  if (!FileReader)
+  {
+    std::cerr << "error : cannot read file " << FilePathA << std::endl; std::cerr.flush();
+    return false;
+  }
   while(std::getline(FileReader,StrLine)) ContentB.push_back(StrLine);
   FileReader.close();
 
@@ -97,13 +107,24 @@ bool CompareTextFiles(std::string FilePathA, std::string FilePathB,
   if (ToLine < 0) ToLine = ContentA.size()-1;
 
 
-  if (ToLine < FromLine) return false;
-  if (ContentA.size() < FromLine || ContentB.size() < FromLine || ContentB.size() < ToLine)
+  if (ToLine < FromLine)
+  {
+    std::cerr << "error : begin line is greater than end line" << std::endl; std::cerr.flush();
     return false;
+  }
+  if (ContentA.size() < FromLine || ContentB.size() < FromLine || ContentB.size() < ToLine)
+  {
+    std::cerr << "error : line counts are different" << std::endl; std::cerr.flush();
+    return false;
+  }
 
   for (unsigned int i=FromLine;i<=ToLine;i++)
   {
-    if (ContentA[i] != ContentB[i]) return false;
+    if (ContentA[i] != ContentB[i])
+    {
+      std::cerr << "error : there are differences at line #" << (i+1) << std::endl; std::cerr.flush();
+      return false;
+    }
   }
 
   return true;
@@ -130,26 +151,26 @@ bool RunSimulation(std::string InputPath, std::string OutputPath)
 
 BOOST_AUTO_TEST_CASE(check_comparetextfiles)
 {
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
-                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string()));
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
+                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string()));
 
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
-                                   boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Variables.h").string()) == false);
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
+                                   boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Variables.hp").string()) == false);
 
 
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
-                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),5));
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
+                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),5));
 
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
-                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),18,97));
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
+                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),18,97));
 
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
-                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Variables.h").string(),2,5));
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
+                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Variables.hpp").string(),2,5));
 
   BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/does/not/exists").string(),
-                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string()) == false);
+                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string()) == false);
 
-  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/include/core/Unit.h").string(),
+  BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
                                  boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/does/not/exists").string()) == false);
 }
 
@@ -219,6 +240,7 @@ BOOST_AUTO_TEST_CASE(check_outputsprogressive)
                                  boost::filesystem::path(RefDir+"/messages.out").string()));
 
 
+
   std::string IDStr;
 
   for (unsigned int i=1; i<8;i++)
@@ -234,6 +256,7 @@ BOOST_AUTO_TEST_CASE(check_outputsprogressive)
 
   }
 
+
   for (unsigned int i=1; i<6;i++)
   {
     openfluid::tools::ConvertValue((i*2),&IDStr);
@@ -244,7 +267,7 @@ BOOST_AUTO_TEST_CASE(check_outputsprogressive)
     BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),
                                    boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),4));
 
-
   }
+
 
 }
