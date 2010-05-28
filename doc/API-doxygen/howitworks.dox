@@ -6,11 +6,11 @@
 
 \section genorg_ssec General organization
  
-The OpenFLUID-engine library features are gathered together into the openfluid namespace, which is splitted into three parts: 
+The OpenFLUID libraries features are gathered together into the openfluid namespace, which is splitted into three parts: 
 <ul>
-  <li>openfluid::core, defined in openfluid-core.h, gathers all the classes for the shared data between the kernel and the functions, and between the functions themselves
-  <li>openfluid::base, defined in openfluid-base.h, gathers all the classes for the dynamic linking between the kernel and the functions, and in particular the openfluid::base::PluggableFunction class
-  <li>openfluid::tools, defined in openfluid-tools.h, gathers tools available to process data, to build structures, to read files, ...
+  <li>openfluid::core, defined in openfluid/core.hpp, gathers all the classes for the shared data between the OpenFLUID framework and the functions, and between the functions themselves
+  <li>openfluid::base, defined in openfluid/base.hpp, gathers all the classes for the dynamic linking between the OpenFLUID framework  and the functions, and in particular the openfluid::base::PluggableFunction class
+  <li>openfluid::tools, defined in openfluid/tools.hpp, gathers tools available to process data, to build structures, to read files, ...
 </ul>
 
 \n
@@ -29,9 +29,9 @@ This library mainly rely on three external libraries:
 
 \section feat_sec Features 
  
-\subsection featplug_ssec Plug-in/kernel software architecture
+\subsection featplug_ssec plug-in/framework software architecture
 
-The Openfluid-engine provides a plugin interface for creating functions that can be handled by the kernel.\n
+The OpenFLUID framework provides a plugin interface for creating functions that can be handled by any OpenFLUID software application.\n
 This involves the following classes and structures: 
 <ul>
   <li>openfluid::base::PluggableFunction 
@@ -41,7 +41,7 @@ This involves the following classes and structures:
  
 \subsection featstruct_ssec Spatio-temporal data structure 
 
-In order to store and manage all the data handled to represent the spatial domain and the simulation information, the OpenFLUID-engine library defines a data structure for spatio-temporal data management.\n
+In order to store and manage all the data handled to represent the spatial domain and the simulation information, the OpenFLUID framework defines a data structure for spatio-temporal data management.\n
 This involves the following class: 
 <ul>
   <li>openfluid::core::Unit

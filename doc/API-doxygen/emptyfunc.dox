@@ -5,7 +5,7 @@
 
 A simulation function must contain two parts :
 <ul>
-  <li>A signature, giving information about the function, and used by the kernel to identify functions
+  <li>A signature, giving information about the function, and used by the framework to identify functions
   <li>A C++ class, which must inherit from openfluid::base::PluggableFunction, defining essential methods 
 </ul>
 These two parts should be developped in the .h and .cpp files. They should be compiled through a makefile.
@@ -15,7 +15,9 @@ An rough simulation function source code can be automatically generated through 
 
 \section emptysignature_sec Writing the signature
 
-The function signature is a set of information given to the kernel. With this information, the kernel can evaluate the simulation function, have information on what it does, and dynamically associate it.\n
+The function signature is a set of information about the content and behaviour of the simulation function.
+With this information, the OpenFLUID framework can evaluate the simulation function, have information on what it does,
+and dynamically load it.\n
 The informations included in the signature are : 
 <ul>
 <li> Identification
@@ -33,8 +35,8 @@ The signature is declared and implemented in the .h file, and begin with the #BE
 
 \section emptycompile_ssec Compiling the function
 
-The OpenFLUID-engine simulation functions must be compiled using the gcc C++ compiler (g++) and must be linked to the OpenFLUID library (ofelib).\n
-The "pkg-config ofelib" command gives the correct option to pass to the compiler:
+The OpenFLUID simulation functions must be compiled using the gcc C++ compiler (g++) and must be linked to the OpenFLUID libraries.\n
+The "pkg-config openfluid" command gives the correct option to pass to the compiler:
 <ul>
   <li>--libs returns linker options
   <li>--cflags returns compilation flags
@@ -169,18 +171,22 @@ CMakeLists.txt
 \verbatim
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
+PROJECT(${FUNC_ID} CXX)
+
 INCLUDE(CMake.in.config)
 
-PROJECT(${FUNC_ID} CXX)
+ENABLE_TESTING()
+
 
 
 # =========================================================================
 #   checking libraries and tools
 # =========================================================================
-IF(NOT ofelib_FOUND)
+
+IF(NOT openfluid_FOUND)
   FIND_PACKAGE(PkgConfig REQUIRED)
-  PKG_CHECK_MODULES(ofelib REQUIRED ofelib)
-ENDIF(NOT ofelib_FOUND)
+  PKG_CHECK_MODULES(openfluid REQUIRED openfluid)
+ENDIF(NOT openfluid_FOUND)
 
 IF(NOT NOFUNC2DOC)
   FIND_PACKAGE(LATEX)
@@ -188,16 +194,18 @@ ENDIF(NOT NOFUNC2DOC)
 
 
 # =========================================================================
-#   headers dirs for wx, ofelib, and other libraries
+#   headers dirs for wx and other libraries
 # =========================================================================
-INCLUDE_DIRECTORIES(${ofelib_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${openfluid_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${FUNC_INCLUDE_DIRS})
 
+LINK_DIRECTORIES(${openfluid_LIBRARY_DIRS})
 
 
 # =========================================================================   
 #   process fortran source files if present
 # ========================================================================= 
+
 IF(FUNC_FORTRAN)
   ENABLE_LANGUAGE(Fortran)
   SET(CMAKE_Fortran_FLAGS_RELEASE "-funroll-all-loops -fno-f2c -O3")
@@ -211,8 +219,8 @@ ENDIF(FUNC_FORTRAN)
 # =========================================================================
 
 ADD_LIBRARY(${FUNC_ID} MODULE ${FUNC_CPP} ${FUNC_FORTRAN})
-ADD_DEFINITIONS(-DOFELIB_VERSION=${ofelib_VERSION})
-ADD_DEFINITIONS(${ofelib_CFLAGS})
+ADD_DEFINITIONS(-DOPENFLUID_VERSION=${openfluid_VERSION})
+ADD_DEFINITIONS(${openfluid_CFLAGS})
 ADD_DEFINITIONS(${FUNC_DEFINITIONS})
 SET_TARGET_PROPERTIES(${FUNC_ID} PROPERTIES PREFIX "" SUFFIX "${CMAKE_SHARED_LIBRARY_SUFFIX}mpi")
 
@@ -220,14 +228,19 @@ IF(MSYS)
   SET_TARGET_PROPERTIES(${FUNC_ID} PROPERTIES LINK_FLAGS "-shared")
 ENDIF(MSYS)
   
-TARGET_LINK_LIBRARIES(${FUNC_ID} ${ofelib_LIBRARIES} ${wxWidgets_LIBRARIES} ${FORTRAN_LINK_LIBS} ${FUNC_LINK_LIBS})
+TARGET_LINK_LIBRARIES(${FUNC_ID} ${openfluid_LIBRARIES} ${FORTRAN_LINK_LIBS} ${FUNC_LINK_LIBS})
 
 
 
 # =========================================================================
 #   function documentation
 # =========================================================================
-IF(PDFLATEX_COMPILER)
+
+IF(REPOS_NOFUNC2DOC)
+ SET(NOFUNC2DOC 1)
+ENDIF(REPOS_NOFUNC2DOC)
+
+IF(PDFLATEX_COMPILER AND NOT NOFUNC2DOC)
 
   LIST(GET FUNC_CPP 0 CPP_FOR_DOC)
 
@@ -235,30 +248,66 @@ IF(PDFLATEX_COMPILER)
     SET(DOCS_OUTPUT_PATH "${PROJECT_BINARY_DIR}")
   ENDIF(NOT DOCS_OUTPUT_PATH)
 
+
+  IF(NOT FUNC2DOC_TPLFILE)
+    SET(FUNC2DOC_TPLFILE "/usr/share/openfluid/func2doc/template/func2doc_tpl.tex")
+  ENDIF(NOT FUNC2DOC_TPLFILE)
+
   # latex command for doc build
   ADD_CUSTOM_COMMAND(
     OUTPUT "${DOCS_OUTPUT_PATH}/${FUNC_ID}.pdf"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${CPP_FOR_DOC}"
     COMMAND "openfluid-engine"
-    ARGS "--buddy" "func2doc" "--buddyopts" "inputcpp=${CMAKE_CURRENT_SOURCE_DIR}/${CPP_FOR_DOC},outputdir=${DOCS_OUTPUT_PATH},tplfile=/usr/share/openfluid/engine/func2doc/template/func2doc_tpl.tex,pdf=1"     
+    ARGS "--buddy" "func2doc" "--buddyopts" "inputcpp=${CMAKE_CURRENT_SOURCE_DIR}/${CPP_FOR_DOC},outputdir=${DOCS_OUTPUT_PATH},tplfile=${FUNC2DOC_TPLFILE},pdf=1"     
   )
 
   ADD_CUSTOM_TARGET(${FUNC_ID}-doc ALL DEPENDS "${DOCS_OUTPUT_PATH}/${FUNC_ID}.pdf")
 
-ENDIF(PDFLATEX_COMPILER)
+ENDIF(PDFLATEX_COMPILER AND NOT NOFUNC2DOC)
+
+
+
+# =========================================================================
+#   function tests
+# =========================================================================  
+
+IF(REPOS_BUILD)
+  SET(FUNCMPI_DIR ${LIBRARY_OUTPUT_PATH})
+  SET(FUNCTEST_OUTPUT_DIR ${REPOS_TESTS_OUTPUTDATA_PATH})
+ELSE(REPOS_BUILD)
+  SET(FUNCMPI_DIR ${PROJECT_BINARY_DIR})
+  SET(FUNCTEST_OUTPUT_DIR ${PROJECT_BINARY_DIR}/tests-output)  
+  FILE(MAKE_DIRECTORY "${FUNCTEST_OUTPUT_DIR}")
+ENDIF(REPOS_BUILD)
+
+FOREACH(currtest ${TESTS_DATASETS})
+  ADD_TEST(${FUNC_ID}-${currtest} "openfluid-engine"
+                            "-i" "${CMAKE_CURRENT_SOURCE_DIR}/tests/${currtest}.IN"
+                            "-o" "${FUNCTEST_OUTPUT_DIR}/${currtest}.OUT"
+                            "-p" "${FUNCMPI_DIR}")
+  MESSAGE(STATUS "Added function test ${FUNC_ID}-${currtest}")                            
+ENDFOREACH(currtest ${TESTS_DATASETS})
 
 
 
 # =========================================================================
 #   install directives
-# =========================================================================  
+# =========================================================================
+
+IF(NOT USER_FUNCTIONS_INSTALL_PATH)
+ SET(USER_FUNCTIONS_INSTALL_PATH "$ENV{HOME}/.openfluid/functions")
+ IF(WIN32)
+   SET(USER_FUNCTIONS_INSTALL_PATH "$ENV{APPDATA}/openfluid/functions") 
+ ENDIF(WIN32)
+ENDIF(NOT USER_FUNCTIONS_INSTALL_PATH)
+
 IF(REPOS_INSTALL_COMPONENT)
   INSTALL(TARGETS ${FUNC_ID} DESTINATION ${REPOS_FUNCTIONS_INSTALL_PATH} COMPONENT ${REPOS_INSTALL_COMPONENT})
-  IF(PDFLATEX_COMPILER)
+  IF(PDFLATEX_COMPILER AND NOT NOFUNC2DOC)
     INSTALL(FILES "${DOCS_OUTPUT_PATH}/${FUNC_ID}.pdf" DESTINATION ${REPOS_FUNCDOCS_INSTALL_PATH} COMPONENT ${REPOS_INSTALL_COMPONENT})
-  ENDIF(PDFLATEX_COMPILER)
+  ENDIF(PDFLATEX_COMPILER AND NOT NOFUNC2DOC) 
 ELSE(REPOS_INSTALL_COMPONENT)
-  INSTALL(TARGETS ${FUNC_ID} DESTINATION "$ENV{HOME}/.openfluid/engine/functions")
+  INSTALL(TARGETS ${FUNC_ID} DESTINATION "${USER_FUNCTIONS_INSTALL_PATH}")
 ENDIF(REPOS_INSTALL_COMPONENT) 
 \endverbatim 
  
@@ -287,7 +336,17 @@ SET(FUNC_FORTRAN )
 #SET(FUNC_LINK_LIBS ${sqlite3_LIBRARIES})
 
 # definitions to add at compile time  (example below with a testdef definition)
-#SET(FUNC_DEFINITIONS "-Dtestdef=1") 
+#SET(FUNC_DEFINITIONS "-Dtestdef=1")
+
+# set this if you do not want automatic build of func2doc documentation
+#SET(NOFUNC2DOC 1)
+
+# set this if you do want to use a specific func2doc template when using func2doc
+#SET(FUNC2DOC_TPLFILE "${CMAKE_CURRENT_SOURCE_DIR}/path/to/template")
+
+# set this if you do want to include tests
+#SET(TESTS_DATASETS test01 test02)
+  
 \endverbatim
 
 */

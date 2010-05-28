@@ -1,12 +1,15 @@
 /** 
-\mainpage OpenFLUID-engine library API
+\mainpage OpenFLUID API
  
 \n 
  
 \section oview_sec Overview
 
 
-The OpenFLUID-engine library is part of the OpenFLUID-engine Source Development Kit (SDK) which also compounds an Eclipse-based Integrated Development Environment (IDE) and the documentation. It is used by the OpenFLUID-engine kernel and to develop simulation functions that can be used in flux models.  
+The OpenFLUID API is part of the OpenFLUID Source Development Kit (SDK) 
+which also compounds an Eclipse-based Integrated Development Environment (IDE) 
+and the documentation. It is used by the OpenFLUID software applications,
+and also to develop simulation functions that can be used in models.  
 
 
 
