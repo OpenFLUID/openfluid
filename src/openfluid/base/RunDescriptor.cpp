@@ -83,12 +83,13 @@ RunDescriptor::RunDescriptor(int DeltaT,
                              openfluid::core::DateTime BeginDate,
                              openfluid::core::DateTime EndDate)
 {
-  RunDescriptor();
-
   m_DeltaT = DeltaT;
   m_BeginDate = BeginDate;
   m_EndDate = EndDate;
 
+  m_SimID = "";
+  m_ProgOutKeep = 0;
+  m_ProgOutPacket = 0;
 }
 
 
