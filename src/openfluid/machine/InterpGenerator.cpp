@@ -90,19 +90,19 @@ bool InterpGenerator::checkConsistency()
   if (m_GenDesc.getParameters()["thresholdmin"] != "")
   {
     if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["thresholdmin"],&m_Min))
-      throw openfluid::base::OFException("kernel","InterpGenerator::checkConsistency","wrong format for threshold min value");
+      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","wrong format for threshold min value");
     m_IsMin = true;
   }
 
   if (m_GenDesc.getParameters()["thresholdmax"] != "")
   {
     if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["thresholdmax"],&m_Max))
-      throw openfluid::base::OFException("kernel","InterpGenerator::checkConsistency","wrong format for threshold max value");
+      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","wrong format for threshold max value");
     m_IsMax = true;
   }
 
   if (m_IsMin && m_IsMax && m_Min > m_Max)
-    throw openfluid::base::OFException("kernel","InterpGenerator::checkConsistency","threshold max value must be greater or equal to threshold min value for generator");
+    throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","threshold max value must be greater or equal to threshold min value for generator");
 
 
   return true;
@@ -148,7 +148,7 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
     if (m_DataPool.getValue(ID,SimStatus->getCurrentStep(),&CurrentValue))
     {
       if (boost::math::isnan(CurrentValue))
-        throw openfluid::base::OFException("kernel","InterpGenerator::runStep","interpolated value for variable " + m_GenDesc.getVariableName() + " is NaN");
+        throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","interpolated value for variable " + m_GenDesc.getVariableName() + " is NaN");
 
       if (m_IsMax && CurrentValue > m_IsMax) CurrentValue = m_Max;
       if (m_IsMin && CurrentValue < m_IsMin) CurrentValue = m_Min;
@@ -163,7 +163,7 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
         OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),CurrentValue);
     }
     else
-      throw openfluid::base::OFException("kernel","InterpGenerator::runStep","error interpolating value for variable " + m_GenDesc.getVariableName());
+      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","error interpolating value for variable " + m_GenDesc.getVariableName());
 
 
   END_LOOP;

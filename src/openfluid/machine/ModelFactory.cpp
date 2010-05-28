@@ -89,7 +89,7 @@ const ModelInstance* ModelFactory::buildInstanceFromDescriptor(const openfluid::
   for (it=Descriptor.getItems().begin();it!=Descriptor.getItems().end();++it)
   {
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::NoModelItemType))
-      throw openfluid::base::OFException("kernel","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
+      throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
     {
@@ -132,7 +132,7 @@ const ModelInstance* ModelFactory::buildInstanceFromDescriptor(const openfluid::
       }
 
       if (GenInstance == NULL)
-        throw openfluid::base::OFException("kernel","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
+        throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
       GenInstance->setDataRepository(mp_CoreData);
       GenInstance->setExecutionMessages(mp_ExecMsgs);

@@ -182,7 +182,7 @@ std::string OutputsWriter::generateOutputScalarsFileContent(const openfluid::cor
     {
 
       if (!aUnit->getScalarVariables()->getValue(ScalarsNames[iVar],iStep,&Value))
-        throw openfluid::base::OFException("kernel","IOManager::generateOutputScalarsFileContent",iStep,"value not found for variable " + ScalarsNames[iVar]);
+        throw openfluid::base::OFException("OpenFLUID framework","IOManager::generateOutputScalarsFileContent",iStep,"value not found for variable " + ScalarsNames[iVar]);
       GeneratedContent << ColSeparator << Value;
     }
 
@@ -216,7 +216,7 @@ std::string OutputsWriter::generateOutputVectorFileContent(const openfluid::core
 
 
     if (!aUnit->getVectorVariables()->getValue(VectorName,iStep,&Value))
-      throw openfluid::base::OFException("kernel","IOManager::generateOutputVectorFileContent",iStep,"value not found for vector variable " + VectorName);
+      throw openfluid::base::OFException("OpenFLUID framework","IOManager::generateOutputVectorFileContent",iStep,"value not found for vector variable " + VectorName);
 
     for (unsigned long iVal = 0 ; iVal < Value.getSize(); iVal++ )
     {

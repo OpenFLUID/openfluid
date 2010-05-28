@@ -106,7 +106,7 @@ void OutputSetDescriptor::fillUnitsPtr()
     {
       std::string UnitIDStr;
       openfluid::tools::ConvertValue(m_UnitsIDs[i],&UnitIDStr);
-      throw openfluid::base::OFException("kernel","OutputSetDescriptor::fillUnitsPtr()","unit #" + UnitIDStr + " not found in class " + m_UnitsClass);
+      throw openfluid::base::OFException("OpenFLUID framework","OutputSetDescriptor::fillUnitsPtr()","unit #" + UnitIDStr + " not found in class " + m_UnitsClass);
     }
     else
       m_UnitsPtr[i] = UPtr;

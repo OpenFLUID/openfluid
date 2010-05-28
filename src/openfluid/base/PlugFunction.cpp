@@ -99,10 +99,10 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
     {
       std::string TimeStr;
       openfluid::tools::ConvertValue(Step,&TimeStr);
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Value for scalar variable "+ VarName +" does not exist at time step "+ TimeStr);
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Value for scalar variable "+ VarName +" does not exist at time step "+ TimeStr);
     }
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");;
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");;
 }
 
 
@@ -117,10 +117,10 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr, op
     {
       std::string TimeStr;
       openfluid::tools::ConvertValue(Step,&TimeStr);
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Value for vector variable "+ VarName +" does not exist at time step "+ TimeStr);
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Value for vector variable "+ VarName +" does not exist at time step "+ TimeStr);
     }
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");;
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");;
 }
 
 
@@ -132,9 +132,9 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValueAsDouble(InputName,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -146,9 +146,9 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValueAsLong(InputName,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -160,9 +160,9 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValue(InputName,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -175,7 +175,7 @@ bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPt
   {
     return UnitPtr->getInputData()->isDataExist(InputName);
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");;
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");;
 
   return false;
 }
@@ -261,9 +261,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getScalarVariables()->appendValue(VarName,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for scalar variable "+ VarName);
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for scalar variable "+ VarName);
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");;
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");;
 }
 
 // =====================================================================
@@ -275,9 +275,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVectorVariables()->appendValue(VarName,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for vector variable "+ VarName);
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for vector variable "+ VarName);
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 // =====================================================================
@@ -291,9 +291,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getScalarVariables()->modifyValue(VarName,Step,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Error setting value for scalar variable "+ VarName);
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting value for scalar variable "+ VarName);
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
 
 }
 
@@ -306,9 +306,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVectorVariables()->modifyValue(VarName,Step,Value))
-      throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Error setting value for vector variable "+ VarName);
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting value for vector variable "+ VarName);
   }
-  else throw OFException("ofelib","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
 
 }
 

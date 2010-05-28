@@ -85,7 +85,7 @@ namespace openfluid { namespace machine {
           if (!statevar) \
           { \
             std::cout << "  " << "[Error]";\
-            throw openfluid::base::OFException("kernel","Bad return value while calling function method"); \
+            throw openfluid::base::OFException("OpenFLUID framework","Bad return value while calling function method"); \
           }  \
           else \
           { \
@@ -126,7 +126,7 @@ namespace openfluid { namespace machine {
           if (!statevar) \
           { \
             std::cout << "  " << "[Error]";\
-            throw openfluid::base::OFException("kernel","Bad return value while calling function method"); \
+            throw openfluid::base::OFException("OpenFLUID framework","Bad return value while calling function method"); \
           }  \
           else \
           { \

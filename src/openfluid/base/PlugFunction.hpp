@@ -173,7 +173,7 @@
 */
 #define BEGIN_UNITS_ORDERED_LOOP(loopid,unitclass,unit) \
   if (!mp_CoreData->isUnitsClassExist(unitclass)) \
-    throw openfluid::base::OFException("ofelib","BEGIN_UNITS_ORDERED_LOOP","Unit class " + std::string(unitclass) + " does not exists"); \
+    throw openfluid::base::OFException("OpenFLUID framework","BEGIN_UNITS_ORDERED_LOOP","Unit class " + std::string(unitclass) + " does not exists"); \
   _M_##loopid##_UList = mp_CoreData->getUnits(unitclass)->getList(); \
   for (_M_##loopid##_ordit = _M_##loopid##_UList->begin();_M_##loopid##_ordit != _M_##loopid##_UList->end();++_M_##loopid##_ordit) \
   { \

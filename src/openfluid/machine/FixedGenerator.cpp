@@ -84,10 +84,10 @@ bool FixedGenerator::checkConsistency()
   if (m_GenDesc.getParameters().find("fixedvalue") != m_GenDesc.getParameters().end())
   {
     if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["fixedvalue"],&m_VarValue))
-      throw openfluid::base::OFException("kernel","FixedGenerator::checkConsistency","wrong fixedvalue format for generator");
+      throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","wrong fixedvalue format for generator");
   }
   else
-    throw openfluid::base::OFException("kernel","FixedGenerator::checkConsistency","missing value for generator");
+    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","missing value for generator");
 
   return true;
 }

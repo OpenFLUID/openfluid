@@ -89,23 +89,23 @@ bool RandomGenerator::checkConsistency()
   if (m_GenDesc.getParameters().find("min") != m_GenDesc.getParameters().end())
   {
     if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["min"],&m_Min))
-      throw openfluid::base::OFException("kernel","RandomGenerator::checkConsistency","wrong format for min value");
+      throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::checkConsistency","wrong format for min value");
   }
   else
-    throw openfluid::base::OFException("kernel","FixedGenerator::checkConsistency","missing min value for generator");
+    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","missing min value for generator");
 
 
   if (m_GenDesc.getParameters().find("max") != m_GenDesc.getParameters().end())
   {
     if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["max"],&m_Max))
-      throw openfluid::base::OFException("kernel","RandomGenerator::checkConsistency","wrong format for max value");
+      throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::checkConsistency","wrong format for max value");
   }
   else
-    throw openfluid::base::OFException("kernel","FixedGenerator::checkConsistency","missing max value for generator");
+    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","missing max value for generator");
 
 
   if ( m_Min > m_Max)
-    throw openfluid::base::OFException("kernel","FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
+    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
 
   return true;
 }

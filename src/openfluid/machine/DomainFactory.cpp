@@ -111,7 +111,7 @@ void DomainFactory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor&
       {
         std::ostringstream UnitStr;
         UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
-        throw openfluid::base::OFException("kernel","DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
+        throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
       }
     }
   }
@@ -135,7 +135,7 @@ void DomainFactory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor&
       {
         std::ostringstream UnitStr;
         UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
-        throw openfluid::base::OFException("kernel","DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
+        throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
       }
     }
   }
@@ -192,11 +192,11 @@ void DomainFactory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor&
           i++;
         }
         else
-          throw openfluid::base::OFException("kernel","DomainFactory::buildDomainFromDescriptor","Input data format error");
+          throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Input data format error");
       }
     }
     else
-      throw openfluid::base::OFException("kernel","DomainFactory::buildDomainFromDescriptor","Error in input data, cannot be parsed");
+      throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in input data, cannot be parsed");
 
   }
 

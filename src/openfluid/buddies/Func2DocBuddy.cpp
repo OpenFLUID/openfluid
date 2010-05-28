@@ -206,7 +206,7 @@ void Func2DocBuddy::extractLatexDocFromCPP()
 
   // check if file exists and if it is "openable"
   if (!CPPFile)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
 
   std::string StrLine  = "";
   std::string CPPFileContent = "";
@@ -243,10 +243,10 @@ void Func2DocBuddy::cpreprocessCPP()
   std::string CommandToRun = m_CPreProcessorPath.string() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
 
   if (!boost::filesystem::is_regular(m_CProcessedFilePath))
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
 
   std::cout << " done" << std::endl;
 
@@ -263,7 +263,7 @@ std::vector<std::string> Func2DocBuddy::extractSignatureLines()
 
   // check if file exists and if it is "openable"
   if (!CProcessedFile)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
 
   std::string StrLine  = "";
   std::string FileContent = "";
@@ -550,7 +550,7 @@ void Func2DocBuddy::generateLatex()
 
   // check if file exists and if it is "openable"
   if (!TPLFile)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::generateLatex()","Could not open template file");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::generateLatex()","Could not open template file");
 
   std::string StrLine  = "";
   m_LatexOutFile = "";
@@ -691,7 +691,7 @@ void Func2DocBuddy::buildPDF()
   std::cout << "** Building PDF..."; std::cout.flush();
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
   std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_FuncID).string() + " > /dev/null";
@@ -699,32 +699,32 @@ void Func2DocBuddy::buildPDF()
   std::cout << " first pass..."; std::cout.flush();
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   std::cout << " bibliography and references..."; std::cout.flush();
 
 
   if (system(BibCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running bibtex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running bibtex command");
 
   std::cout << " second pass..."; std::cout.flush();
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   std::cout << " third pass..."; std::cout.flush();
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   std::cout << " done" << std::endl; std::cout.flush();
 
@@ -743,12 +743,12 @@ void Func2DocBuddy::buildHTML()
   std::cout << "** Building HTML..."; std::cout.flush();
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::buildHTML()","Error running latex2html command");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildHTML()","Error running latex2html command");
 
   std::cout << " done" << std::endl; std::cout.flush();
 
@@ -785,7 +785,7 @@ bool Func2DocBuddy::run()
     m_CPreProcessorPath = boost::filesystem::path(GCCPaths[0]);
     std::cout << "Using C preprocessor: " << m_CPreProcessorPath.string() << std::endl;
   }
-  else throw openfluid::base::OFException("kernel","Func2DocBuddy::run()","C preprocessor (gcc) not found");
+  else throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::run()","C preprocessor (gcc) not found");
 
 
   if (m_Options["pdf"] == "1")
@@ -829,11 +829,11 @@ bool Func2DocBuddy::run()
   m_OutputDirPath = boost::filesystem::path(m_Options["outputdir"]);
 
   if (!boost::filesystem::exists(m_InputFilePath))
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::run()","Input file does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::run()","Input file does not exist");
 
   m_TplFilePath = boost::filesystem::path(m_Options["tplfile"]);
   if (!boost::filesystem::exists(m_TplFilePath))
-    throw openfluid::base::OFException("kernel","Func2DocBuddy::run()","Template file does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::run()","Template file does not exist");
 
   if (!boost::filesystem::is_directory(m_OutputDirPath)) boost::filesystem::create_directories(m_OutputDirPath);
 

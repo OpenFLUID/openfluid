@@ -269,14 +269,14 @@ bool NewFunctionBuddy::run()
   boost::filesystem::path OutputDirPath(m_Options["outputdir"]);
 
   if (m_Options["funcid"] == "")
-      throw openfluid::base::OFException("kernel","NewFuncBuddy::run()","No function ID");
+      throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","No function ID");
 
   if (m_Options["cppclass"] == "")
-      throw openfluid::base::OFException("kernel","NewFuncBuddy::run()","No function C++ class");
+      throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","No function C++ class");
 
 
   if (!boost::filesystem::exists(OutputDirPath))
-    throw openfluid::base::OFException("kernel","NewFuncBuddy::run()","Output directory does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","Output directory does not exist");
 
 
 

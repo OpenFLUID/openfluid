@@ -124,7 +124,7 @@ void ConvertBuddy::convert_13_14_defs(std::string UnitClass)
   }
 
   if (ColCount == 0)
-    throw openfluid::base::OFException("kernel","ConvertBuddy::convert_13_14_defs()","Wrong unit class");
+    throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_13_14_defs()","Wrong unit class");
 
 
   if (boost::filesystem::exists(InputFilePath))
@@ -153,7 +153,7 @@ void ConvertBuddy::convert_13_14_defs(std::string UnitClass)
           if (ToID >= 0)
           {
             if (!FileParser.getDoubleValue(CurrentLine,1,&Surf))
-              throw openfluid::base::OFException("kernel","ConvertBuddy::convert_13_14_defs()","Wrong surface format ("+InputFilePath.string()+")");
+              throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_13_14_defs()","Wrong surface format ("+InputFilePath.string()+")");
 
             if (m_GUSurfaces.find(ToID) == m_GUSurfaces.end()) m_GUSurfaces[ToID] = 0.0;
             m_GUSurfaces[ToID] = m_GUSurfaces[ToID] + Surf;
@@ -208,7 +208,7 @@ void ConvertBuddy::convert_13_14_defs(std::string UnitClass)
       }
     }
     else
-      throw openfluid::base::OFException("kernel","ConvertBuddy::convert_13_14_defs()","Cannot open or wrong file format ("+InputFilePath.string()+")");
+      throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_13_14_defs()","Cannot open or wrong file format ("+InputFilePath.string()+")");
 
   }
 
@@ -418,26 +418,26 @@ void ConvertBuddy::convert_14_15_data()
         // processing of inputdata tag
         XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/domain/inputdata", XPathCtxt);
         if (XPathRes == NULL || XPathRes->nodesetval->nodeNr != 1)
-          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <inputdata>");
+          throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <inputdata>");
         InputdataNode = XPathRes->nodesetval->nodeTab[0];
 
 
         // processing of columns tag
         XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/domain/inputdata/columns", XPathCtxt);
         if (XPathRes == NULL || XPathRes->nodesetval->nodeNr != 1)
-          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <columns>");
+          throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <columns>");
         XPathNode = XPathRes->nodesetval->nodeTab[0];
 
         xmlColumns = xmlGetProp(XPathNode,(const xmlChar*)"order");
         if (xmlColumns == NULL)
-          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", missing order attribute in <columns>");
+          throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", missing order attribute in <columns>");
         xmlSetProp(InputdataNode,(const xmlChar*)"colorder",xmlColumns);
 
 
         // processing of data tag
         XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/domain/inputdata/data/text()", XPathCtxt);
         if (XPathRes == NULL || XPathRes->nodesetval->nodeNr != 1)
-          throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <data>");
+          throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_14_15_data","wrong file format in" + DataFiles[i] + ", wrong, duplicate or missing <data>");
         XPathNode = XPathRes->nodesetval->nodeTab[0];
         xmlNodeSetContent(InputdataNode,xmlNodeGetContent(XPathNode));
 
@@ -447,12 +447,12 @@ void ConvertBuddy::convert_14_15_data()
       }
       else
       {
-        throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","file " + DataFiles[i] + " is empty");
+        throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_14_15_data","file " + DataFiles[i] + " is empty");
       }
     }
     else
     {
-      throw openfluid::base::OFException("kernel","ConvertBuddy::convert_14_15_data","file " + DataFiles[i] + " cannot be parsed");
+      throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_14_15_data","file " + DataFiles[i] + " cannot be parsed");
     }
 
   }
@@ -536,12 +536,12 @@ bool ConvertBuddy::run()
 
 
   if (!boost::filesystem::exists(InputDirPath))
-    throw openfluid::base::OFException("kernel","ConvertBuddy::run()","Input directory not found");
+    throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::run()","Input directory not found");
 
   if (!boost::filesystem::exists(OutputDirPath))
   {
     if (!boost::filesystem::create_directories(OutputDirPath))
-      throw openfluid::base::OFException("kernel","ConvertBuddy::run()","Could not create output directory ");
+      throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::run()","Could not create output directory ");
   }
 
   bool FoundMode = false;
@@ -557,7 +557,7 @@ bool ConvertBuddy::run()
     FoundMode = true;
   }
 
-  if (!FoundMode) throw openfluid::base::OFException("kernel","ConvertBuddy::run()","Unknown conversion mode");
+  if (!FoundMode) throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::run()","Unknown conversion mode");
 
 
   return true;

@@ -112,7 +112,7 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
 
   UnitList = NULL;
   if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("kernel","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + FunctionName);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + FunctionName);
 
   bool Status = true;
 
@@ -123,7 +123,7 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
     else Status = (*UnitIter).getScalarVariables()->isVariableExist(VarName);
 
     if (!Status)
-      throw openfluid::base::OFException("kernel","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionName + " is not previously created");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionName + " is not previously created");
 
     ++UnitIter;
   }
@@ -145,7 +145,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
 
   UnitList = NULL;
   if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("kernel","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + FunctionName);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + FunctionName);
 
   bool Status = true;
 
@@ -159,7 +159,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
       else Status = !((*UnitIter).getScalarVariables()->isVariableExist(VarName));
 
       if (!Status)
-        throw openfluid::base::OFException("kernel","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionName + " cannot be created because it is previously created");
+        throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionName + " cannot be created because it is previously created");
 
       ++UnitIter;
     }
@@ -188,7 +188,7 @@ void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 
   UnitList = NULL;
   if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("kernel","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + FunctionName);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + FunctionName);
 
   bool Status = true;
 
@@ -197,7 +197,7 @@ void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
   {
     Status = (*UnitIter).getInputData()->isDataExist(DataName);
     if (!Status)
-      throw openfluid::base::OFException("kernel","Engine::checkExistingInputData",DataName + " input data on " + ClassName + " required by " + FunctionName + " is not available");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData",DataName + " input data on " + ClassName + " required by " + FunctionName + " is not available");
 
     ++UnitIter;
   }
@@ -229,11 +229,11 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 
       //scalars
       if (!((*UnitsIter).getScalarVariables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::OFException("kernel","Engine::checkSimulationVarsProduction","Scalar variable production error");
+        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkSimulationVarsProduction","Scalar variable production error");
 
       //vectors
       if (!((*UnitsIter).getVectorVariables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::OFException("kernel","Engine::checkSimulationVarsProduction","Vector variable production error");
+        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkSimulationVarsProduction","Vector variable production error");
     }
 
   }
@@ -375,7 +375,7 @@ void Engine::checkExtraFilesConsistency()
 
       boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
       if (!boost::filesystem::exists(ReqExtraFilePath))
-        throw openfluid::base::OFException("kernel","Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentFunction->Signature->ID + " not found");
+        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentFunction->Signature->ID + " not found");
     }
   }
 }
@@ -520,7 +520,7 @@ bool Engine::prepareDataAndCheckConsistency()
   try
   {
     if (mp_ModelInstance->getItemsCount() == 0)
-      throw openfluid::base::OFException("kernel","Engine::prepareDataAndCheckConsistency","No simulation function in model");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::prepareDataAndCheckConsistency","No simulation function in model");
 
     checkExtraFilesConsistency();
 

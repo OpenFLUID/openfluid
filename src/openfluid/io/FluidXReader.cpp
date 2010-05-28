@@ -154,7 +154,7 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
       for (unsigned int i=0;i<StrArray.size();i++)
       {
         if (openfluid::tools::ConvertString(StrArray[i],&UID)) OSD.getUnitsIDs().push_back(UID);
-        else throw openfluid::base::OFException("kernel","FluidXReader::extractSetDecriptorFromNode","Wrong format of units IDs in output set config (" + m_CurrentFile + ")");
+        else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractSetDecriptorFromNode","Wrong format of units IDs in output set config (" + m_CurrentFile + ")");
       }
     }
 
@@ -180,7 +180,7 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
 
   }
   else
-    throw openfluid::base::OFException("kernel","FluidXReader::extractSetDecriptorFromNode","wrong output set definition (" + m_CurrentFile + "). missing attribute?");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractSetDecriptorFromNode","wrong output set definition (" + m_CurrentFile + "). missing attribute?");
 
 
   if (xmlPrec != NULL)
@@ -192,7 +192,7 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
     {
       OSD.setPrecision(Prec);
     }
-    else throw openfluid::base::OFException("kernel","FluidXReader::extractSetDecriptorFromNode","Wrong value format of precision in output set config (" + m_CurrentFile + ")");
+    else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractSetDecriptorFromNode","Wrong value format of precision in output set config (" + m_CurrentFile + ")");
   }
 
 
@@ -246,7 +246,7 @@ openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr 
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }
-        else throw openfluid::base::OFException("kernel","FluidXReader::extractParamsFromNode","missing name and/or param attribute(s) in parameter definition (" + m_CurrentFile + ")");
+        else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractParamsFromNode","missing name and/or param attribute(s) in parameter definition (" + m_CurrentFile + ")");
       }
       Curr = Curr->next;
     }
@@ -305,7 +305,7 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
 {
 
   if (m_ModelDefined)
-    throw openfluid::base::OFException("kernel","FluidXReader::extractModelFromNode","duplicate model definition (" + m_CurrentFile + ")");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","duplicate model definition (" + m_CurrentFile + ")");
 
   openfluid::base::FunctionDescriptor* FD;
   openfluid::base::GeneratorDescriptor* GD;
@@ -356,12 +356,12 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
           GenMethod = openfluid::base::GeneratorDescriptor::Interp;
 
         if (GenMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)
-          throw openfluid::base::OFException("kernel","FluidXReader::extractModelFromNode","unknown or missing generator method (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","unknown or missing generator method (" + m_CurrentFile + ")");
 
         if (xmlVarSize != NULL)
         {
           if (!openfluid::tools::ConvertString(std::string((char*)xmlVarSize),&VarSize))
-            throw openfluid::base::OFException("kernel","FluidXReader::extractModelFromNode","wrong variable size format in generator (" + m_CurrentFile + ")");
+            throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","wrong variable size format in generator (" + m_CurrentFile + ")");
         }
 
         GD = new openfluid::base::GeneratorDescriptor((const char*)xmlVarName,(const char*)xmlUnitClass,GenMethod,VarSize);
@@ -369,7 +369,7 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
         m_ModelDescriptor.appendItem(GD);
       }
       else
-        throw openfluid::base::OFException("kernel","FluidXReader::extractModelFromNode","missing attribute(s) in generator description (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","missing attribute(s) in generator description (" + m_CurrentFile + ")");
     }
 
     CurrNode = CurrNode->next;
@@ -388,7 +388,7 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
 {
 
   if (m_RunConfigDefined)
-    throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","duplicate run configuration (" + m_CurrentFile + ")");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","duplicate run configuration (" + m_CurrentFile + ")");
 
 
   bool FoundDeltaT = false;
@@ -413,23 +413,23 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
           m_RunDescriptor.setBeginDate(ReadDate);
         }
         else
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","wrong format for begin date of period (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for begin date of period (" + m_CurrentFile + ")");
 
         if (ReadDate.setFromISOString(std::string((char*)xmlEnd)))
         {
           m_RunDescriptor.setEndDate(ReadDate);
         }
         else
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","wrong format for end date of period (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for end date of period (" + m_CurrentFile + ")");
 
         FoundPeriod = true;
 
         if (!(m_RunDescriptor.getEndDate() > m_RunDescriptor.getBeginDate()))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","end date must be strictly greater than begin date for period (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","end date must be strictly greater than begin date for period (" + m_CurrentFile + ")");
 
       }
       else
-        throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","missing begin and/or end attributes for period tag (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","missing begin and/or end attributes for period tag (" + m_CurrentFile + ")");
 
     }
 
@@ -445,14 +445,14 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
 
 
         if (!openfluid::tools::ConvertString(ReadDeltaTStr,&DeltaT))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","empty or wrong value for deltat (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","empty or wrong value for deltat (" + m_CurrentFile + ")");
 
         m_RunDescriptor.setDeltaT(DeltaT);
         FoundDeltaT = true;
 
       }
       else
-        throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","deltat tag is empty (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","deltat tag is empty (" + m_CurrentFile + ")");
     }
 
     if (xmlStrcmp(CurrNode->name,(const xmlChar*)"progressout") == 0)
@@ -465,23 +465,23 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
         unsigned int ReadPacket, ReadKeep;
 
         if (!openfluid::tools::ConvertString(std::string((char*)xmlPacket),&ReadPacket))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","wrong format for packet attribute for progressout tag (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for packet attribute for progressout tag (" + m_CurrentFile + ")");
 
         if (!openfluid::tools::ConvertString(std::string((char*)xmlKeep),&ReadKeep))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","wrong format for keep attribute for progressout tag (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for keep attribute for progressout tag (" + m_CurrentFile + ")");
 
 
         if (!(ReadPacket > ReadKeep))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","packet must be strictly greater than keep for progressout (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","packet must be strictly greater than keep for progressout (" + m_CurrentFile + ")");
 
         if (!(ReadKeep > 0))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","keep must be strictly greater than 0 for progressout (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","keep must be strictly greater than 0 for progressout (" + m_CurrentFile + ")");
 
         m_RunDescriptor.setProgressiveOutput(ReadPacket,ReadKeep);
 
       }
       else
-        throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","missing keep and/or packet attribute(s) for progressout tag (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","missing keep and/or packet attribute(s) for progressout tag (" + m_CurrentFile + ")");
 
     }
 
@@ -501,10 +501,10 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
 
 
   if (!FoundPeriod)
-    throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","run period not found (" + m_CurrentFile + ")");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","run period not found (" + m_CurrentFile + ")");
 
   if (!FoundDeltaT)
-    throw openfluid::base::OFException("kernel","FluidXReader::extractRunFromNode","deltat not found (" + m_CurrentFile + ")");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","deltat not found (" + m_CurrentFile + ")");
 
   m_RunConfigDefined = true;
 
@@ -526,11 +526,11 @@ openfluid::core::UnitClassID_t FluidXReader::extractUnitClassIDFromNode(xmlNodeP
     openfluid::core::UnitID_t UnitID;
 
     if (!openfluid::tools::ConvertString(std::string((char*)xmlUnitID),&UnitID))
-      throw openfluid::base::OFException("kernel","FluidXReader::extractUnitsLinkFromNode","wrong format for ID in unit definition (" + m_CurrentFile + ")");
+      throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractUnitsLinkFromNode","wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
     return std::make_pair(std::string((char*)xmlUnitClass),UnitID);
   }
-  else throw openfluid::base::OFException("kernel","FluidXReader::extractUnitsLinkFromNode","missing or wrong attribute(s) in units link definition (" + m_CurrentFile + ")");
+  else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractUnitsLinkFromNode","missing or wrong attribute(s) in units link definition (" + m_CurrentFile + ")");
 
 }
 
@@ -561,10 +561,10 @@ void FluidXReader::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
         UnitDesc->getUnitClass().assign((char*)xmlUnitClass);
 
         if (!openfluid::tools::ConvertString(std::string((char*)xmlUnitID),&UnitID))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractDomainDefinitionFromNode","wrong format for ID in unit definition (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainDefinitionFromNode","wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
         if (!openfluid::tools::ConvertString(std::string((char*)xmlPcsOrd),&PcsOrder))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractDomainDefinitionFromNode","wrong format for process order in unit definition (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainDefinitionFromNode","wrong format for process order in unit definition (" + m_CurrentFile + ")");
 
         UnitDesc->getProcessOrder() = PcsOrder;
         UnitDesc->getUnitID() = UnitID;
@@ -590,7 +590,7 @@ void FluidXReader::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
         m_DomainDescriptor.getUnits().push_back(*UnitDesc);
 
       }
-      else throw openfluid::base::OFException("kernel","FluidXReader::extractDomainDefinitionFromNode","missing or wrong attribute(s) in unit definition (" + m_CurrentFile + ")");
+      else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainDefinitionFromNode","missing or wrong attribute(s) in unit definition (" + m_CurrentFile + ")");
     }
     CurrNode = CurrNode->next;
   }
@@ -627,7 +627,7 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
       ColOrder = openfluid::tools::SplitString(std::string((char*)xmlColOrder),";");
 
       if (ColOrder.size() == 0)
-        throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","wrong or empty colorder attribute in domain input data (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","wrong or empty colorder attribute in domain input data (" + m_CurrentFile + ")");
 
       IDataDesc.getColumnsOrder() = ColOrder;
 
@@ -636,7 +636,7 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
       if (xmlDataBlob != NULL)
         IDataDesc.getDataBlob().assign((char*)xmlDataBlob);
       else
-        throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","wrong or empty data content in domain input data (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","wrong or empty data content in domain input data (" + m_CurrentFile + ")");
 
     }
     else
@@ -666,14 +666,14 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
           xmlChar* xmlOrder= xmlGetProp(CurrNode,(const xmlChar*)"order");
 
           if (xmlOrder == NULL)
-            throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","missing or wrong order attribute for columns tag in domain input data (" + m_CurrentFile + ")");
+            throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","missing or wrong order attribute for columns tag in domain input data (" + m_CurrentFile + ")");
 
           std::vector<std::string> Order;
 
           Order = openfluid::tools::SplitString(std::string((char*)xmlOrder),";");
 
           if (Order.size() == 0)
-            throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","wrong or empty order attribute for columns tag for domain input data (" + m_CurrentFile + ")");
+            throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","wrong or empty order attribute for columns tag for domain input data (" + m_CurrentFile + ")");
 
           IDataDesc.getColumnsOrder() = Order;
 
@@ -694,14 +694,14 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
 
 
       if (!(FoundColOrder && FoundData))
-         throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","missing or wrong domain input data format (" + m_CurrentFile + ")");
+         throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","missing or wrong domain input data format (" + m_CurrentFile + ")");
 
     }
 
     m_DomainDescriptor.getInputData().push_back(IDataDesc);
 
   }
-  else throw openfluid::base::OFException("kernel","FluidXReader::extractDomainInputdataFromNode","missing or wrong unitclass attribute(s) in domain input data (" + m_CurrentFile + ")");
+  else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","missing or wrong unitclass attribute(s) in domain input data (" + m_CurrentFile + ")");
 
 
 }
@@ -732,12 +732,12 @@ void FluidXReader::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
         openfluid::core::UnitID_t UnitID;
 
         if (!openfluid::tools::ConvertString(std::string((char*)xmlUnitID),&UnitID))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractDomainCalendarFromNode","wrong format for unit ID in event (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainCalendarFromNode","wrong format for unit ID in event (" + m_CurrentFile + ")");
 
         openfluid::core::DateTime EventDate;
 
         if (!EventDate.setFromISOString(std::string((char*)xmlDate)))
-          throw openfluid::base::OFException("kernel","FluidXReader::extractDomainCalendarFromNode","wrong format for date in event (" + m_CurrentFile + ")");
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainCalendarFromNode","wrong format for date in event (" + m_CurrentFile + ")");
 
 
         EvDesc.getUnitClass().assign((char*)xmlUnitClass);
@@ -757,7 +757,7 @@ void FluidXReader::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
             {
               EvDesc.getEvent().addInfo(std::string((char*)xmlKey),std::string((char*)xmlValue));
             }
-            else throw openfluid::base::OFException("kernel","FluidXReader::extractDomainCalendarFromNode","wrong or missing attribute(s) in domain calendar event info (" + m_CurrentFile + ")");
+            else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainCalendarFromNode","wrong or missing attribute(s) in domain calendar event info (" + m_CurrentFile + ")");
           }
 
           CurrInfoNode = CurrInfoNode->next;
@@ -766,7 +766,7 @@ void FluidXReader::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
         m_DomainDescriptor.getEvents().push_back(EvDesc);
 
       }
-      else throw openfluid::base::OFException("kernel","FluidXReader::extractDomainCalendarFromNode","wrong or missing attribute(s) in domain calendar event (" + m_CurrentFile + ")");
+      else throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainCalendarFromNode","wrong or missing attribute(s) in domain calendar event (" + m_CurrentFile + ")");
 
     }
 
@@ -860,12 +860,12 @@ void FluidXReader::parseFile(std::string Filename)
     }
     else
     {
-      throw openfluid::base::OFException("kernel","FluidXReader::parseFile","file " + m_CurrentFile + " is empty");
+      throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::parseFile","file " + m_CurrentFile + " is empty");
     }
   }
   else
   {
-    throw openfluid::base::OFException("kernel","FluidXReader::parseFile","file " + m_CurrentFile + " cannot be parsed");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::parseFile","file " + m_CurrentFile + " cannot be parsed");
   }
 
 }
@@ -879,7 +879,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath, std::ostream& OStream)
 {
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
-    throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","directory " + DirPath + "does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","directory " + DirPath + "does not exist");
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"fluidx",true);
   std::vector<std::string> XMLFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"xml",true);
@@ -887,7 +887,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath, std::ostream& OStream)
   FluidXFilesToLoad.insert(FluidXFilesToLoad.end(),XMLFilesToLoad.begin(),XMLFilesToLoad.end());
 
   if (FluidXFilesToLoad.size() == 0)
-    throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","no fluidx file found in directory " + DirPath);
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","no fluidx file found in directory " + DirPath);
 
   std::sort(FluidXFilesToLoad.begin(),FluidXFilesToLoad.end());
 
@@ -926,10 +926,10 @@ void FluidXReader::loadFromDirectory(std::string DirPath, std::ostream& OStream)
 
 
   if (!m_RunConfigDefined)
-    throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","no run configuration found in directory " + DirPath);
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","no run configuration found in directory " + DirPath);
 
   if (!m_ModelDefined)
-    throw openfluid::base::OFException("kernel","FluidXReader::loadFromDirectory","no model found in directory " + DirPath);
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","no model found in directory " + DirPath);
 
 }
 

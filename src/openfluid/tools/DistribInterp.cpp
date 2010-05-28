@@ -111,7 +111,7 @@ bool DistributeInterpolate::loadAndPrepareData()
 
   if (!m_Configured)
   {
-    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Distributed interpolator not configured");
+    throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadAndPrepareData","Distributed interpolator not configured");
     return false;
   }
 
@@ -122,7 +122,7 @@ bool DistributeInterpolate::loadAndPrepareData()
 
   if (!DSFile.load(DSFilePath.string()) && DSFile.getIDs().size() <= 1)
   {
-    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading file " + m_DataSourcesFilename);
+    throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadAndPrepareData","Error loading file " + m_DataSourcesFilename);
     return false;
   }
   else
@@ -136,7 +136,7 @@ bool DistributeInterpolate::loadAndPrepareData()
       SourcefilePath = boost::filesystem::path(m_DataDir + "/" + DSFile.getSource(IDs[i]));
       if (!boost::filesystem::exists(SourcefilePath))
       {
-        throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading "+ DSFile.getSource(IDs[i]) + " file as data source");
+        throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadAndPrepareData","Error loading "+ DSFile.getSource(IDs[i]) + " file as data source");
         return false;
       }
       else
@@ -164,7 +164,7 @@ bool DistributeInterpolate::loadAndPrepareData()
           {
             delete Serie;
             delete InterpolatedSerie;
-            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error interpolating data from file " + DSFile.getSource(IDs[i]));
+            throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadAndPrepareData","Error interpolating data from file " + DSFile.getSource(IDs[i]));
             return false;
           }
         }
@@ -172,7 +172,7 @@ bool DistributeInterpolate::loadAndPrepareData()
         {
           delete Serie;
           delete InterpolatedSerie;
-          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadAndPrepareData","Error loading data from file " + DSFile.getSource(IDs[i]));
+          throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadAndPrepareData","Error loading data from file " + DSFile.getSource(IDs[i]));
           return false;
         }
       }
@@ -304,26 +304,26 @@ bool DistributeInterpolate::loadDistributionAndDistribute(std::string FilePath)
           }
           else
           {
-            throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", data source ID not found");
+            throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", data source ID not found");
             return false;
           }
         }
         else
         {
-          throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", format error");
+          throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", format error");
           return false;
         }
       }
     }
     else
     {
-      throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", file not found or format error");
+      throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadDistributionAndDistribute","Error in distribution file " + m_DistributionFilename + ", file not found or format error");
       return false;
     }
   }
   else
   {
-    throw openfluid::base::OFException("ofelib","DistributeInterpolate::loadDistributionAndDistribute","Distribution file " + m_DistributionFilename + " not found");
+    throw openfluid::base::OFException("OpenFLUID framework","DistributeInterpolate::loadDistributionAndDistribute","Distribution file " + m_DistributionFilename + " not found");
     return false;
   }
   return true;

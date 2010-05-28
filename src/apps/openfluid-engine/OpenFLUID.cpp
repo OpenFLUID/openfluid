@@ -623,7 +623,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       Buddy->displayHelp();
       delete Buddy;
     }
-    else throw openfluid::base::OFException("Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
+    else throw openfluid::base::OFException("openfluid-engine","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
     m_RunType = None;
     return;
   }
@@ -755,7 +755,7 @@ void OpenFLUIDApp::runBuddy()
     Buddy->run();
     delete Buddy;
   }
-  else throw openfluid::base::OFException("Buddy " + m_BuddyToRun.first + " does not exists");
+  else throw openfluid::base::OFException("openfluid-engine","Buddy " + m_BuddyToRun.first + " does not exists");
 
 }
 
