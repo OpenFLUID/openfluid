@@ -164,7 +164,7 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
       else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Format error in plugin file " + PluginFilename);
     }
   }
-  else throw openfluid::base::OFException(/*"kernel"*/strrchr(__FILE__,'/') ? strrchr(__FILE__,'/')+1 : __FILE__,/*"PluginManager::buildPluginContainer"*/ __FUNCTION__,"Unable to find plugin file " + PluginFilename);
+  else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Unable to find plugin file " + PluginFilename);
 
   return Plug;
 }
