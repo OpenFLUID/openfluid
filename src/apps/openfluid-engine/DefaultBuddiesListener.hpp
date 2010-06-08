@@ -80,7 +80,6 @@ class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
           std::cout << "    " << it->first << " : " << it->second << std::endl;
         }
       }
-
     }
 
 
@@ -93,28 +92,33 @@ class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
     virtual void onInfo(const std::string& Message)
     {
       std::cout << Message << std::endl;
+      std::cout.flush();
     };
 
     virtual void onStageCompleted(const std::string& Message)
     {
       std::cout << Message << std::endl;
+      std::cout.flush();
     };
 
     virtual void onSubstageCompleted(const std::string& Message)
     {
       std::cout << Message;
+      std::cout.flush();
     };
 
     virtual void onHelpRequired(const std::map<std::string,std::string>& OptionsHelp)
     {
       std::cout << "  Required options:" << std::endl;
       displayOptionsHelp(OptionsHelp);
+      std::cout.flush();
     };
 
     virtual void onHelpOthers(const std::map<std::string,std::string>& OptionsHelp)
     {
       std::cout << "  Other options:" << std::endl;
       displayOptionsHelp(OptionsHelp);
+      std::cout.flush();
     };
 
 
