@@ -47,83 +47,91 @@
 
 
 /**
-  \if DOCFORDEV
-  \file FunctionEnv.h
-  \brief Header of function environment management class
+  \file EnvProperties.cpp
+  \brief implementation file for function environment
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
 */
 
 
-#ifndef __FUNCTIONENV_HPP__
-#define __FUNCTIONENV_HPP__
+#include <openfluid/base/EnvProperties.hpp>
 
-#include <openfluid/dllexport.hpp>
-#include <map>
-#include <string>
 
 namespace openfluid { namespace base {
 
-/**
-  \if DOCFORDEV
-  Class containing execution environment information for funtions
-  \endif
-*/
-class DLLEXPORT FunctionEnvironment
+
+EnvironmentProperties::EnvironmentProperties()
 {
-  private:
-
-    typedef std::map<std::string,bool> KeyBoolMap_t;
-    typedef std::map<std::string,std::string> KeyStringMap_t;
-
-    KeyBoolMap_t m_BoolValues;
-    KeyStringMap_t m_StringValues;
-
-  public:
-
-    /**
-      Constructor
-    */
-    FunctionEnvironment();
-
-    /**
-      Destructor
-    */
-    virtual ~FunctionEnvironment();
-
-    /**
-      Assigns a boolean value to the corresponding key
-
-      \return true if the assignment is correct
-    */
-    bool setValue(std::string Key, bool Value);
-
-    /**
-      Assigns a string value to the corresponding key
-
-      \return true if the assignment is correct
-    */
-    bool setValue(std::string Key, std::string Value);
-
-    /**
-      Gets the boolean value assigned to the key
-
-      \return true if the value exists as a boolean
-    */
-    bool getValue(std::string Key, bool *Value) const;
-
-    /**
-      Gets the string value assigned to the key
-
-      \return true if the value exists as a string
-    */
-    bool getValue(std::string Key, std::string *Value) const;
 
 
-};
+}
+
+// =====================================================================
+// =====================================================================
+
+EnvironmentProperties::~EnvironmentProperties()
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool EnvironmentProperties::setValue(std::string Key, bool Value)
+{
+  m_BoolValues[Key] = Value;
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool EnvironmentProperties::setValue(std::string Key, std::string Value)
+{
+  m_StringValues[Key] = Value;
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool EnvironmentProperties::getValue(std::string Key, bool *Value) const
+{
+  KeyBoolMap_t::const_iterator it = m_BoolValues.find(Key);
+
+  if (it != m_BoolValues.end())
+  {
+    *Value = it->second;
+    return true;
+  }
+  else return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool EnvironmentProperties::getValue(std::string Key, std::string *Value) const
+{
+  KeyStringMap_t::const_iterator it = m_StringValues.find(Key);
+
+  if (it != m_StringValues.end())
+  {
+    *Value = it->second;
+    return true;
+  }
+  else return false;
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 } } // namespaces
 
-#endif /* __FUNCTIONENV_HPP__ */
+

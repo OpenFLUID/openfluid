@@ -60,7 +60,9 @@ namespace openfluid { namespace machine {
 
 
 #define DECLARE_FUNCTION_PARSER \
-    std::list<ModelItemInstance*>::const_iterator _M_FuncIter;
+    std::list<ModelItemInstance*>::const_iterator _M_FuncIter; \
+    bool _M_IsVerbose = false; \
+    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&_M_IsVerbose);
 
 /**
   Macro for parsing the functions list and calling the given method of each function of the list
@@ -74,13 +76,13 @@ namespace openfluid { namespace machine {
       ModelItemInstance* _M_CurrentFunction = *_M_FuncIter; \
       if (_M_CurrentFunction != NULL) \
       { \
-        if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) \
+        if (_M_IsVerbose) \
         { \
           std::cout << std::endl << std::setw(50) << _M_CurrentFunction->Signature->ID; \
           std::cout.flush(); \
         } \
         statevar = (statevar && _M_CurrentFunction->Function->calledmethod); \
-        if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) \
+        if (_M_IsVerbose) \
         { \
           if (!statevar) \
           { \
@@ -98,7 +100,7 @@ namespace openfluid { namespace machine {
       } \
       _M_FuncIter++; \
     } \
-    if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << std::endl; std::cout.flush();
+    if (_M_IsVerbose) std::cout << std::endl; std::cout.flush();
 
 
 /**
@@ -115,13 +117,13 @@ namespace openfluid { namespace machine {
       ModelItemInstance* _M_CurrentFunction = *_M_FuncIter; \
       if (_M_CurrentFunction != NULL) \
       { \
-        if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) \
+        if (_M_IsVerbose) \
         { \
           std::cout << std::endl << std::setw(50) << _M_CurrentFunction->Signature->ID; \
           std::cout.flush(); \
         } \
         statevar = (statevar && (_M_CurrentFunction->Function->calledmethod1 && _M_CurrentFunction->Function->calledmethod2)); \
-        if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) \
+        if (_M_IsVerbose) \
         { \
           if (!statevar) \
           { \
@@ -139,7 +141,7 @@ namespace openfluid { namespace machine {
       } \
       _M_FuncIter++; \
     } \
-    if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << std::endl; std::cout.flush();
+    if (_M_IsVerbose) std::cout << std::endl; std::cout.flush();
 
 
 

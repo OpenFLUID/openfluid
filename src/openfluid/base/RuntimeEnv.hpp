@@ -59,7 +59,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools.hpp>
-#include <openfluid/base/FunctionEnv.hpp>
+#include <openfluid/base/EnvProperties.hpp>
 
 
 #include <boost/filesystem/path.hpp>
@@ -109,7 +109,9 @@ class DLLEXPORT RuntimeEnvironment
 
     unsigned int m_ProgOutKeep;
 
-    openfluid::base::FunctionEnvironment* mp_FuncEnv;
+    openfluid::base::EnvironmentProperties* mp_FuncEnv;
+
+    openfluid::base::EnvironmentProperties m_ExtraProperties;
 
     boost::posix_time::ptime m_IgnitionDateTime;
 
@@ -131,21 +133,26 @@ class DLLEXPORT RuntimeEnvironment
     */
     ~RuntimeEnvironment();
 
-    void setInputDir(const std::string InputDir) { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
+    void setInputDir(const std::string InputDir)
+      { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
 
     std::string getInputDir() const { return m_InputDir; };
 
-    void setOutputDir(const std::string OutputDir) { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
+    void setOutputDir(const std::string OutputDir)
+      { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
 
     std::string getOutputDir() const { return m_OutputDir; };
 
     void setDateTimeOutputDir();
 
-    std::string getTempDir() const { return m_TempDir; mp_FuncEnv->setValue("dir.temp",m_OutputDir); };
+    std::string getTempDir() const
+      { return m_TempDir; mp_FuncEnv->setValue("dir.temp",m_OutputDir); };
 
-    std::string getInputFullPath(std::string Filename) const { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
+    std::string getInputFullPath(std::string Filename) const
+      { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
 
-    std::string getOutputFullPath(std::string Filename) const { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
+    std::string getOutputFullPath(std::string Filename) const
+      { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     std::string getPluginFullPath(std::string Filename);
 
@@ -153,47 +160,52 @@ class DLLEXPORT RuntimeEnvironment
 
     std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
 
+    openfluid::base::EnvironmentProperties& getExtraProperties()
+      { return m_ExtraProperties; };
+
     bool isClearOutputDir() const { return m_ClearOutputDir; };
 
-    void setClearOutputDir(bool ClearDir) { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
+    void setClearOutputDir(bool ClearDir)
+      { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
-    bool isQuietRun() const { return m_QuietRun; };
+    bool isWriteResults() const
+      { return m_WriteResults; };
 
-    void setQuietRun(bool Quiet);
-
-    bool isVerboseRun() const { return m_VerboseRun; };
-
-    void setVerboseRun(bool Verbose);
-
-    bool isWriteResults() const { return m_WriteResults; };
-
-    void setWriteResults(bool WriteIt) { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
+    void setWriteResults(bool WriteIt)
+      { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
 
     bool isWriteSimReport() const { return m_WriteSimReport; };
 
-    void setWriteSimReport(bool WriteIt) { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
+    void setWriteSimReport(bool WriteIt)
+      { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
 
-    openfluid::base::FunctionEnvironment* getFunctionEnvironment() const { return mp_FuncEnv; };
+    openfluid::base::EnvironmentProperties* getFunctionEnvironment() const
+      { return mp_FuncEnv; };
 
     bool isProgressiveOutput() const { return m_ProgressiveOutput; };
 
-    void setProgressiveOutputKeep(unsigned int Keep)  { m_ProgressiveOutput = true; m_ProgOutKeep = Keep; };
+    void setProgressiveOutputKeep(unsigned int Keep)
+      { m_ProgressiveOutput = true; m_ProgOutKeep = Keep; };
 
-    void setProgressiveOutputPacket(unsigned int Packet)  { m_ProgressiveOutput = true; m_ProgOutPacket = Packet; };
+    void setProgressiveOutputPacket(unsigned int Packet)
+      { m_ProgressiveOutput = true; m_ProgOutPacket = Packet; };
 
     unsigned int getProgressiveOutputKeep() const { return m_ProgOutKeep; };
 
     unsigned int getProgressiveOutputPacket() const  { return m_ProgOutPacket; };
 
-    boost::posix_time::ptime getIgnitionDateTime() const { return m_IgnitionDateTime; };
+    boost::posix_time::ptime getIgnitionDateTime() const
+      { return m_IgnitionDateTime; };
 
     std::string getSimulationID() const {return m_SimulationID; };
 
     void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
 
-    boost::posix_time::time_duration getEffectiveSimulationDuration() const { return m_EffectiveSimulationDuration; };
+    boost::posix_time::time_duration getEffectiveSimulationDuration() const
+      { return m_EffectiveSimulationDuration; };
 
-    void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration) { m_EffectiveSimulationDuration = TimeDuration; };
+    void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration)
+      { m_EffectiveSimulationDuration = TimeDuration; };
 
     std::string getHostName() const {return m_HostName; };
 

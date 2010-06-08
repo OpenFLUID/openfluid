@@ -59,12 +59,14 @@
 
 
 #include <openfluid/base/DomainDescriptor.hpp>
+#include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/EventDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/base/FuncSignature.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
 #include <openfluid/base/IDataDescriptor.hpp>
+#include <openfluid/base/Listener.hpp>
 #include <openfluid/base/Message.hpp>
 #include <openfluid/base/ModelDescriptor.hpp>
 #include <openfluid/base/ModelItemDescriptor.hpp>
@@ -78,7 +80,6 @@
 #include <openfluid/base/SIFactors.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/UnitDescriptor.hpp>
-#include <openfluid/base/Listener.hpp>
 
 
 #endif /* __BASE_HPP___ */

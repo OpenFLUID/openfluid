@@ -77,7 +77,7 @@
 #include <openfluid/core.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FunctionEnv.hpp>
+#include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/FuncSignature.hpp>
 
 
@@ -262,7 +262,7 @@ class DLLEXPORT PluggableFunction
     /**
       Function execution environmentAdd
     */
-    const openfluid::base::FunctionEnvironment* mp_FunctionEnv;
+    const openfluid::base::EnvironmentProperties* mp_FunctionEnv;
 
 
     /**
@@ -660,7 +660,7 @@ class DLLEXPORT PluggableFunction
 
     void setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
-    void setFunctionEnvironment(openfluid::base::FunctionEnvironment* FuncEnv) { mp_FunctionEnv = FuncEnv; };
+    void setFunctionEnvironment(openfluid::base::EnvironmentProperties* FuncEnv) { mp_FunctionEnv = FuncEnv; };
 
 
     /**

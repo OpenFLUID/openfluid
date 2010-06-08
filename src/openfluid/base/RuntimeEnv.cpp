@@ -158,7 +158,7 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   m_ProgressiveOutput = false;
 
-  mp_FuncEnv = new openfluid::base::FunctionEnvironment();
+  mp_FuncEnv = new openfluid::base::EnvironmentProperties();
 
   mp_FuncEnv->setValue("dir.input",m_InputDir);
   mp_FuncEnv->setValue("dir.output",m_OutputDir);
@@ -301,7 +301,7 @@ std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
   return PlugFullPath;
 }
 
-
+/*
 // =====================================================================
 // =====================================================================
 
@@ -332,7 +332,7 @@ void RuntimeEnvironment::setVerboseRun(bool Verbose)
     mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
   }
 };
-
+*/
 
 } } //namespaces
 

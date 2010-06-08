@@ -69,7 +69,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::FunctionEnvironment FuncEnv;
+  openfluid::base::EnvironmentProperties FuncEnv;
   bool BoolValue;
   std::string StrValue;
 
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::base::FunctionEnvironment FuncEnv;
+  openfluid::base::EnvironmentProperties FuncEnv;
   bool BoolValue;
   std::string StrValue;
 

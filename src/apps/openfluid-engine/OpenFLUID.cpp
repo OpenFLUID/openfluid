@@ -429,10 +429,16 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 
 void OpenFLUIDApp::printEnvInfos()
 {
+  bool IsVerbose = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  bool IsQuiet = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
+
+
   printPaths(false);
   if ((openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) && (openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir())) std::cout << "Output dir cleared before data saving" << std::endl;
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun()) std::cout << "Quiet mode enabled" << std::endl;
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) std::cout << "Verbose mode enabled" << std::endl;
+  if (IsQuiet) std::cout << "Quiet mode enabled" << std::endl;
+  if (IsVerbose) std::cout << "Verbose mode enabled" << std::endl;
   std::cout << std::endl;
 }
 
@@ -442,6 +448,10 @@ void OpenFLUIDApp::printEnvInfos()
 
 void OpenFLUIDApp::runSimulation()
 {
+  bool IsVerbose = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  bool IsQuiet = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
 
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
@@ -451,13 +461,13 @@ void OpenFLUIDApp::runSimulation()
   openfluid::machine::MachineListener* MListener;
 
 
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun())
+  if (IsQuiet)
   {
     MListener = new openfluid::machine::MachineListener();
   }
   else
   {
-    if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun())
+    if (IsVerbose)
     {
       MListener = new VerboseMachineListener();
     }
@@ -495,14 +505,14 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Initializing parameters... "; std::cout.flush();
   mp_Engine->initParams();
-  if (!openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
+  if (!IsVerbose) printlnExecStatus();
   else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
 
   std::cout << "* Preparing data and checking consistency... "; std::cout.flush();
   mp_Engine->prepareDataAndCheckConsistency();
-  if (!openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun()) printlnExecStatus();
+  if (!IsVerbose) printlnExecStatus();
   else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
@@ -733,12 +743,14 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("quiet"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setQuietRun(true);
+    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.quiet",true);
+    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.verbose",false);
   }
 
   if (OptionsVars.count("verbose"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setVerboseRun(true);
+    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.verbose",true);
+    openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().setValue("display.quiet",false);
   }
 
   if (OptionsVars.count("no-simreport"))

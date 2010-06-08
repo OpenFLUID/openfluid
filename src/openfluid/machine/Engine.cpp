@@ -389,6 +389,10 @@ void Engine::checkExtraFilesConsistency()
 
 bool Engine::buildModel()
 {
+  bool IsVerbose = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  bool IsQuiet = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
 
   try
   {
@@ -398,9 +402,9 @@ bool Engine::buildModel()
   catch (openfluid::base::OFException& E)
   {
 
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
-      if (!mp_RunEnv->isVerboseRun())
+      if (!IsVerbose)
       {
         std::cout << std::setw(12) << "[Error]";
         std::cout << std::endl << std::endl;
@@ -496,6 +500,10 @@ bool Engine::initParams()
 
 bool Engine::prepareDataAndCheckConsistency()
 {
+  bool IsVerbose = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  bool IsQuiet = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
 
   bool IsOK = true;
 
@@ -532,9 +540,9 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
-      if (!mp_RunEnv->isVerboseRun())
+      if (!IsVerbose)
       {
         std::cout << std::setw(12) << "[Error]";
         std::cout << std::endl << std::endl;
@@ -557,9 +565,9 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
-      if (!mp_RunEnv->isVerboseRun())
+      if (!IsVerbose)
       {
         std::cout << std::setw(12) << "[Error]";
         std::cout << std::endl << std::endl;
@@ -605,6 +613,11 @@ bool Engine::prepareDataAndCheckConsistency()
 bool Engine::run()
 {
   bool IsOK = true;
+  bool IsVerbose = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  bool IsQuiet = false;
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
+
 
   std::string ProdMessage;
   openfluid::core::TimeStep_t SaveReleaseBegin, SaveReleaseEnd;
@@ -616,7 +629,7 @@ bool Engine::run()
 
   // ============= initializeRun() =============
 
-  if (!mp_RunEnv->isQuietRun())
+  if (!IsQuiet)
   {
     std::cout << std::endl;
     std::cout << std::setw(16) << "Initialize...";
@@ -629,9 +642,9 @@ bool Engine::run()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
-      if (!mp_RunEnv->isVerboseRun())
+      if (!IsVerbose)
       {
         std::cout << std::setw(12) << "[Error]";
         std::cout << std::endl << std::endl;
@@ -648,7 +661,7 @@ bool Engine::run()
     throw;
   }
 
-  if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
+  if (!IsQuiet && !IsVerbose)
   {
     if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
     else std::cout << std::setw(12) << "[OK]";
@@ -667,7 +680,7 @@ bool Engine::run()
   // ============= runStep() =============
 
 
-  if (!mp_RunEnv->isQuietRun())
+  if (!IsQuiet)
   {
     std::cout << std::endl;
     std::cout << std::setw(10) << "Time step";
@@ -683,7 +696,7 @@ bool Engine::run()
 
   do // time loop
   {
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
       std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
       std::cout << std::setw(25) << mp_SimStatus->getCurrentTime().getAsISOString();
@@ -702,9 +715,9 @@ bool Engine::run()
     catch (openfluid::base::OFException& E)
     {
 
-      if (!mp_RunEnv->isQuietRun())
+      if (!IsQuiet)
       {
-        if (!mp_RunEnv->isVerboseRun())
+        if (!IsVerbose)
         {
           std::cout << std::setw(12) << "[Error]";
           std::cout << std::endl << std::endl;
@@ -721,7 +734,7 @@ bool Engine::run()
       throw;
     }
 
-    if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
+    if (!IsQuiet && !IsVerbose)
     {
 
       if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
@@ -730,7 +743,7 @@ bool Engine::run()
     }
 
 
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
       std::cout << std::endl;
       std::cout.flush();
@@ -763,7 +776,7 @@ bool Engine::run()
 
   // ============= finalizeRun() =============
 
-  if (!mp_RunEnv->isQuietRun())
+  if (!IsQuiet)
   {
     std::cout << std::setw(16) << "Finalize...";
     std::cout.flush();
@@ -775,9 +788,9 @@ bool Engine::run()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!mp_RunEnv->isQuietRun())
+    if (!IsQuiet)
     {
-      if (!mp_RunEnv->isVerboseRun())
+      if (!IsVerbose)
       {
         std::cout << std::setw(12) << "[Error]";
         std::cout << std::endl << std::endl;
@@ -795,7 +808,7 @@ bool Engine::run()
   }
 
 
-  if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
+  if (!IsQuiet && !IsVerbose)
   {
     if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
     else std::cout << std::setw(12) << "[OK]";
@@ -803,7 +816,7 @@ bool Engine::run()
     std::cout.flush();
   }
 
-  if (!mp_RunEnv->isQuietRun())
+  if (!IsQuiet)
   {
     std::cerr << std::endl;
   }

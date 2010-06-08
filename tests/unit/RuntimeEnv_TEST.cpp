@@ -75,8 +75,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),"");
   BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size(),0);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun(),false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isProgressiveOutput(),false);
@@ -104,24 +102,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::RuntimeEnvironment::getInstance()->setClearOutputDir(true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir(),true);
 
-  openfluid::base::RuntimeEnvironment::getInstance()->setVerboseRun(true);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun(),true);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun(),false);
-
-  openfluid::base::RuntimeEnvironment::getInstance()->setVerboseRun(false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun(),false);
-
-  openfluid::base::RuntimeEnvironment::getInstance()->setVerboseRun(true);
-  openfluid::base::RuntimeEnvironment::getInstance()->setQuietRun(true);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun(),true);
-
-  openfluid::base::RuntimeEnvironment::getInstance()->setVerboseRun(false);
-  openfluid::base::RuntimeEnvironment::getInstance()->setQuietRun(false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun(),false);
-
   openfluid::base::RuntimeEnvironment::getInstance()->setWriteResults(false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults(),false);
 
@@ -140,7 +120,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
 
-  openfluid::base::FunctionEnvironment* FuncEnv;
+  openfluid::base::EnvironmentProperties* FuncEnv;
   bool BoolValue;
   std::string StrValue;
 
@@ -161,12 +141,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.clearoutputdir",&BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir());
-
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.quiet",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun());
-
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.verbose",&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun());
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.saveresults",&BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults());
