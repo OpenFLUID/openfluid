@@ -62,8 +62,7 @@
 
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/tools.hpp>
-#include <openfluid/machine/ModelFactory.hpp>
-#include <openfluid/machine/DomainFactory.hpp>
+#include <openfluid/machine/Factory.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -396,7 +395,7 @@ bool Engine::buildModel()
 
   try
   {
-    ModelFactory MF = ModelFactory();
+    Factory MF = Factory();
     mp_ModelInstance = MF.buildInstanceFromDescriptor(m_ModelDesc);
   }
   catch (openfluid::base::OFException& E)
@@ -478,7 +477,7 @@ bool Engine::processRunConfiguration()
 bool Engine::buildSpatialDomain()
 {
 
-  DomainFactory DF = DomainFactory();
+  Factory DF = Factory();
 
   DF.buildDomainFromDescriptor(m_DomainDesc);
 

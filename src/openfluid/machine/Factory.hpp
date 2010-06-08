@@ -47,13 +47,17 @@
 
 
 /**
-  \file ModelFactory.h
+  \file DomainFactory.h
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
-#ifndef __MODELFACTORY_HPP__
-#define __MODELFACTORY_HPP__
+
+
+
+#ifndef __FACTORY_HPP__
+#define __FACTORY_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
@@ -65,7 +69,7 @@
 namespace openfluid { namespace machine {
 
 
-class DLLEXPORT ModelFactory
+class DLLEXPORT Factory
 {
   private:
     openfluid::core::CoreRepository* mp_CoreData;
@@ -73,9 +77,12 @@ class DLLEXPORT ModelFactory
 
   public:
 
-    ModelFactory();
+    Factory();
+
+    void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor);
 
     const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const;
+
 
 };
 
@@ -83,4 +90,4 @@ class DLLEXPORT ModelFactory
 } } //namespaces
 
 
-#endif /* __MODELFACTORY_H__ */
+#endif /* __FACTORY_HPP__ */

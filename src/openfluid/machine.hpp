@@ -59,13 +59,12 @@
 
 
 
-#include <openfluid/machine/DomainFactory.hpp>
+#include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
-#include <openfluid/machine/ModelFactory.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/PluginManager.hpp>

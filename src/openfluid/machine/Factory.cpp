@@ -47,18 +47,19 @@
 
 
 /**
-  \file ModelFactory.cpp
+  \file DomainFactory.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/machine/ModelFactory.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/core.hpp>
+#include <openfluid/base.hpp>
+#include <openfluid/tools.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -68,7 +69,7 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-ModelFactory::ModelFactory()
+Factory::Factory()
 {
   mp_CoreData = openfluid::core::CoreRepository::getInstance();
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
@@ -79,7 +80,157 @@ ModelFactory::ModelFactory()
 // =====================================================================
 
 
-const ModelInstance* ModelFactory::buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const
+void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor)
+{
+//  openfluid::core::CoreRepository* Repository = openfluid::core::CoreRepository::getInstance();
+//  openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+
+  // ============== Domain definition ==============
+
+  std::list<openfluid::base::UnitDescriptor>::iterator itUnits;
+  std::list<openfluid::core::UnitClassID_t>::iterator itLinkedUnits;
+
+  openfluid::core::Unit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
+
+  // creating units
+  for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
+  {
+    mp_CoreData->addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),(*itUnits).getUnitID(),(*itUnits).getProcessOrder()));
+  }
+
+  // linking to units
+  for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
+  {
+
+    for (itLinkedUnits = (*itUnits).getUnitsTos().begin();itLinkedUnits != (*itUnits).getUnitsTos().end();++itLinkedUnits)
+    {
+      FromUnit = mp_CoreData->getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ToUnit = mp_CoreData->getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+
+      if (ToUnit != NULL)
+      {
+        FromUnit->addToUnit(ToUnit);
+        ToUnit->addFromUnit(FromUnit);
+      }
+      else
+      {
+        std::ostringstream UnitStr;
+        UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
+        throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
+      }
+    }
+  }
+
+
+  // linking child units
+  for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
+  {
+
+    for (itLinkedUnits = (*itUnits).getUnitsParents().begin();itLinkedUnits != (*itUnits).getUnitsParents().end();++itLinkedUnits)
+    {
+      ChildUnit = mp_CoreData->getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ParentUnit = mp_CoreData->getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+
+      if (ParentUnit != NULL)
+      {
+        ParentUnit->addChildUnit(ChildUnit);
+        ChildUnit->addParentUnit(ParentUnit);
+      }
+      else
+      {
+        std::ostringstream UnitStr;
+        UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
+        throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
+      }
+    }
+  }
+
+
+  mp_CoreData->sortUnitsByProcessOrder();
+
+
+
+  // ============== Input Data ==============
+
+
+  std::list<openfluid::base::InputDataDescriptor>::iterator itIData;
+
+  for (itIData = Descriptor.getInputData().begin();itIData != Descriptor.getInputData().end();++itIData)
+  {
+    openfluid::tools::ColumnTextParser DataParser("%");
+
+    if (DataParser.setFromString((*itIData).getDataBlob(),(*itIData).getColumnsOrder().size()+1))
+    {
+      openfluid::core::Unit* TheUnit;
+      int i,j;
+      bool IsOK = true;
+      long ID;
+      openfluid::core::InputDataValue Value;
+
+      // parses data in file and loads it in the input data table for each unit, ordered by columns
+      i = 0;
+      while (i<DataParser.getLinesCount() && IsOK)
+      {
+        IsOK = DataParser.getLongValue(i,0,&ID);
+
+        if (IsOK)
+        {
+
+          TheUnit = mp_CoreData->getUnit((*itIData).getUnitsClass(),(openfluid::core::UnitID_t)ID);
+
+          if (TheUnit != NULL)
+          {
+            for (j=1;j<DataParser.getColsCount();j++)
+            {
+              if (DataParser.getStringValue(i,j,&Value))
+              {
+                TheUnit->getInputData()->setValue((*itIData).getColumnsOrder()[j-1],Value);
+              }
+            }
+          }
+          else
+          {
+            std::string TmpStr;
+            openfluid::tools::ConvertValue(ID,&TmpStr);
+            mp_ExecMsgs->addWarning("DomainFactory::buildDomainFromDescriptor",(*itIData).getUnitsClass() + " " + TmpStr + " does not exist in input data");
+          }
+          i++;
+        }
+        else
+          throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Input data format error");
+      }
+    }
+    else
+      throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in input data, cannot be parsed");
+
+  }
+
+  // ============== Events ==============
+
+
+  std::list<openfluid::base::EventDescriptor>::iterator itEvent;
+  openfluid::core::Unit* EventUnit;
+
+  for (itEvent = Descriptor.getEvents().begin();itEvent != Descriptor.getEvents().end();++itEvent)
+  {
+
+    EventUnit = mp_CoreData->getUnit((*itEvent).getUnitClass(),(*itEvent).getUnitID());
+
+    if (EventUnit != NULL)
+    {
+      EventUnit->getEvents()->addEvent(&((*itEvent).getEvent()));
+    }
+
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const
 {
 
   openfluid::base::ModelDescriptor::ModelDescription_t::const_iterator it;
