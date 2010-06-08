@@ -68,9 +68,9 @@ namespace openfluid { namespace io {
 // =====================================================================
 
 
-FluidXReader::FluidXReader()
+FluidXReader::FluidXReader(openfluid::io::IOListener* Listener)
 {
-
+  mp_Listener = Listener;
 }
 
 
@@ -875,7 +875,7 @@ void FluidXReader::parseFile(std::string Filename)
 // =====================================================================
 
 
-void FluidXReader::loadFromDirectory(std::string DirPath, std::ostream& OStream)
+void FluidXReader::loadFromDirectory(std::string DirPath)
 {
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
@@ -910,14 +910,16 @@ void FluidXReader::loadFromDirectory(std::string DirPath, std::ostream& OStream)
     CurrentFile = CurrentFilePath.string();
     try
     {
-      OStream << "    file: " << CurrentFilePath.leaf() << " ";
+      //OStream << "    file: " << CurrentFilePath.leaf() << " ";
+      mp_Listener->onFileLoad(CurrentFilePath.leaf());
       parseFile(CurrentFile);
-      OStream << "[OK]" << std::endl;
+      mp_Listener->onFileLoaded(openfluid::base::Listener::OK);
+      //OStream << "[OK]" << std::endl;
 
     }
     catch (...)
     {
-      OStream << "[Error]" << std::endl;
+      mp_Listener->onFileLoaded(openfluid::base::Listener::ERROR);
       throw;
     }
   }

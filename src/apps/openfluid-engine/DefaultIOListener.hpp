@@ -47,39 +47,52 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file DefaultIOListener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#ifndef __DEFAULTIOLISTENER_HPP__
+#define __DEFAULTIOLISTENER_HPP__
 
 
-namespace openfluid { namespace buddies {
+#include <openfluid/io/IOListener.hpp>
+#include <iostream>
+
+// =====================================================================
+// =====================================================================
 
 
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+class DefaultIOListener : public openfluid::io::IOListener
 {
   private:
-    void writeFunctionCPP();
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    DefaultIOListener() {};
 
-    ~NewFunctionBuddy();
+    ~DefaultIOListener() {};
 
-    bool run();
+    void onFileLoad(std::string Filename)
+    {
+      std::cout << "    file: " << Filename << " ";
+    };
+
+    void onFileLoaded(openfluid::base::Listener::Status Status)
+    {
+      if (Status == openfluid::base::Listener::OK)
+        std::cout << "[OK]" << std::endl;
+
+      if (Status == openfluid::base::Listener::WARNING)
+        std::cout << "[Warning]" << std::endl;
+
+      if (Status == openfluid::base::Listener::ERROR)
+        std::cout << "[Error]" << std::endl;
+    };
 
 };
 
 
-} } //namespaces
-
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __DEFAULTIOLISTENER_HPP__ */

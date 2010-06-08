@@ -73,10 +73,9 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-Engine::Engine()
+Engine::Engine(openfluid::machine::MachineListener* MachineListener,
+               openfluid::io::IOListener* IOListener)
 {
-
-
   mp_CoreData = openfluid::core::CoreRepository::getInstance();
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
@@ -85,9 +84,12 @@ Engine::Engine()
   mp_MemMon = openfluid::core::MemoryMonitor::getInstance();
 
   mp_IOMan = openfluid::io::IOManager::getInstance();
+  mp_IOMan->setListener(IOListener);
+
+  mp_Listener = MachineListener;
+  if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
 
   mp_SimStatus = NULL;
-
 }
 
 // =====================================================================

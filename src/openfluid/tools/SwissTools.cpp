@@ -258,10 +258,10 @@ std::string RemoveTrailingSlashes(std::string Str)
 // =====================================================================
 // =====================================================================
 
-void printSTDOUT(std::vector<std::string> Strings, std::string Sep)
+void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostream& OStream)
 {
-  for (unsigned int i=0; i< Strings.size(); i++) std::cout << Strings[i] << Sep;
-  std::cout << std::endl;
+  for (unsigned int i=0; i< Strings.size(); i++) OStream << Strings[i] << Sep;
+  OStream << std::endl;
 }
 
 // =====================================================================

@@ -64,6 +64,7 @@
 #include <openfluid/core.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/base.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 namespace openfluid { namespace io {
 
@@ -78,6 +79,7 @@ class DLLEXPORT FluidXReader
 
     bool m_ModelDefined;
 
+    openfluid::io::IOListener* mp_Listener;
 
     openfluid::base::ModelDescriptor m_ModelDescriptor;
 
@@ -121,11 +123,11 @@ class DLLEXPORT FluidXReader
 
   public:
 
-    FluidXReader();
+    FluidXReader(openfluid::io::IOListener* Listener);
 
     ~FluidXReader();
 
-    void loadFromDirectory(std::string DirPath, std::ostream& OStream);
+    void loadFromDirectory(std::string DirPath);
 
     openfluid::base::ModelDescriptor& getModelDescriptor() {return m_ModelDescriptor; };
 

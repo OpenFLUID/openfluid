@@ -364,22 +364,22 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 // =====================================================================
 // =====================================================================
 
-void ColumnTextParser::coutContents()
+void ColumnTextParser::streamContents(std::ostream& OStream)
 {
-  std::cout << "" << std::endl;
+  OStream << "" << std::endl;
   int i,j;
 
   for (i=0;i<m_LinesCount;i++)
   {
     for (j=0;j<m_ColsCount;j++)
     {
-      std::cout << getValue(i,j) << "\t";
+      OStream << getValue(i,j) << "\t";
 
     }
-    std::cout.flush();
+    OStream.flush();
 
   }
-  std::cout << "" << std::endl;
+  OStream << "" << std::endl;
 }
 
 

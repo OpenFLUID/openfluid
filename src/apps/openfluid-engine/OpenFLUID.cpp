@@ -59,7 +59,10 @@
 #include <boost/filesystem.hpp>
 
 #include "OpenFLUID.hpp"
-
+#include "DefaultIOListener.hpp"
+#include "DefaultMachineListener.hpp"
+#include "VerboseMachineListener.hpp"
+#include "DefaultBuddiesListener.hpp"
 
 
 // =====================================================================
@@ -445,9 +448,24 @@ void OpenFLUIDApp::runSimulation()
   openfluid::core::CoreRepository* pCoreData = openfluid::core::CoreRepository::getInstance();
   pCoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+  openfluid::machine::MachineListener* MListener;
 
 
-  mp_Engine = new openfluid::machine::Engine();
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isQuietRun())
+  {
+    MListener = new openfluid::machine::MachineListener();
+  }
+  else
+  {
+    if (openfluid::base::RuntimeEnvironment::getInstance()->isVerboseRun())
+    {
+      MListener = new VerboseMachineListener();
+    }
+    else MListener = new DefaultMachineListener();
+  }
+
+
+  mp_Engine = new openfluid::machine::Engine(MListener,new DefaultIOListener());
 
 
   printOpenFLUIDInfos();
@@ -611,16 +629,17 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   {
 
     openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new openfluid::buddies::NewFunctionBuddy();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy();
+    openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new openfluid::buddies::NewFunctionBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
 
 
     if (Buddy != NULL)
     {
       std::cout << "Options for buddy " + OptionsVars["buddyhelp"].as<std::string>() + ":" << std::endl;
-      Buddy->displayHelp();
+      Buddy->invokeHelp();
       delete Buddy;
     }
     else throw openfluid::base::OFException("openfluid-engine","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
@@ -744,10 +763,11 @@ void OpenFLUIDApp::runBuddy()
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
   openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
-  if (m_BuddyToRun.first == "newfunc" ) Buddy = new openfluid::buddies::NewFunctionBuddy();
-  if (m_BuddyToRun.first == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy();
-  if (m_BuddyToRun.first == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy();
-  if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy();
+  openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
+  if (m_BuddyToRun.first == "newfunc" ) Buddy = new openfluid::buddies::NewFunctionBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
 
   if (Buddy != NULL)
   {

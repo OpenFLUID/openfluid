@@ -61,9 +61,11 @@
 namespace openfluid { namespace buddies {
 
 
-OpenFLUIDBuddy::OpenFLUIDBuddy()
+OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener)
 {
+  mp_Listener = Listener;
 
+  if (mp_Listener == NULL) mp_Listener = new openfluid::buddies::BuddiesListener();
 }
 
 
@@ -136,14 +138,14 @@ bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
 // =====================================================================
 
 
-void OpenFLUIDBuddy::printlnOptions()
+void OpenFLUIDBuddy::streamOptions(std::ostream& OStream)
 {
 
   std::map<std::string,std::string>::iterator it;
 
   for (it = m_Options.begin();it != m_Options.end();++it)
   {
-    std::cout << it->first << " : " << it->second << std::endl;
+    OStream << it->first << " : " << it->second << std::endl;
   }
 
 }
@@ -153,32 +155,10 @@ void OpenFLUIDBuddy::printlnOptions()
 // =====================================================================
 
 
-void OpenFLUIDBuddy::displayHelp()
+void OpenFLUIDBuddy::invokeHelp()
 {
-  std::map<std::string,std::string>::iterator it;
-
-  std::cout << "  Required options:" << std::endl;
-  if (m_RequiredOptionsHelp.size() ==  0)
-    std::cout << "    (none)" << std::endl;
-  else
-  {
-    for (it = m_RequiredOptionsHelp.begin();it != m_RequiredOptionsHelp.end();++it)
-    {
-      std::cout << "    " << it->first << " : " << it->second << std::endl;
-    }
-  }
-
-  std::cout << "  Other options:" << std::endl;
-  if (m_OtherOptionsHelp.size() ==  0)
-    std::cout << "    (none)" << std::endl;
-  else
-  {
-    for (it = m_OtherOptionsHelp.begin();it != m_OtherOptionsHelp.end();++it)
-    {
-      std::cout << "    " << it->first << " : " << it->second << std::endl;
-    }
-  }
-
+  mp_Listener->onHelpRequired(m_RequiredOptionsHelp);
+  mp_Listener->onHelpOthers(m_OtherOptionsHelp);
 }
 
 

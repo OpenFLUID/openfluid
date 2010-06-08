@@ -145,7 +145,7 @@ class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy
 
   public:
 
-    Func2DocBuddy();
+    Func2DocBuddy(openfluid::buddies::BuddiesListener* Listener);
 
     ~Func2DocBuddy();
 

@@ -85,6 +85,7 @@ IOManager::IOManager()
   mp_OutputsWriter = NULL;
   mp_FluidXData = NULL;
 
+  mp_Listener = new openfluid::io::IOListener();
 };
 
 
@@ -108,8 +109,22 @@ IOManager* IOManager::getInstance()
   return mp_Singleton;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+void IOManager::setListener(openfluid::io::IOListener* Listener)
+{
+  mp_Listener = Listener;
+  if (mp_Listener == NULL) mp_Listener = new openfluid::io::IOListener();
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 
 
 bool IOManager::prepareOutputDir()
@@ -213,9 +228,9 @@ void IOManager::loadInputs(openfluid::base::ModelDescriptor& ModelDesc,
 {
   if (mp_FluidXData != NULL) delete mp_FluidXData;
 
-  mp_FluidXData = new FluidXReader();
+  mp_FluidXData = new FluidXReader(mp_Listener);
 
-  mp_FluidXData->loadFromDirectory(mp_RunEnv->getInputDir(),std::cout);
+  mp_FluidXData->loadFromDirectory(mp_RunEnv->getInputDir());
 
   ModelDesc = mp_FluidXData->getModelDescriptor();
   DomainDesc = mp_FluidXData->getDomainDescriptor();

@@ -176,7 +176,7 @@ class DLLEXPORT ColumnTextParser
     */
     int getColsCount() const { return m_ColsCount;};
 
-    void coutContents();
+    void streamContents(std::ostream& OStream);
 
 };
 

@@ -63,6 +63,6 @@
 #include <openfluid/buddies/NewDataBuddy.hpp>
 #include <openfluid/buddies/NewFuncBuddy.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
-
+#include <openfluid/buddies/BuddiesListener.hpp>
 
 #endif /* __BUDDIES_HPP___ */

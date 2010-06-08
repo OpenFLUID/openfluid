@@ -78,6 +78,7 @@
 #include <openfluid/base/SIFactors.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/UnitDescriptor.hpp>
+#include <openfluid/base/Listener.hpp>
 
 
 #endif /* __BASE_HPP___ */

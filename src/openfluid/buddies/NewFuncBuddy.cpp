@@ -64,7 +64,8 @@
 namespace openfluid { namespace buddies {
 
 
-NewFunctionBuddy::NewFunctionBuddy() : OpenFLUIDBuddy()
+NewFunctionBuddy::NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener) :
+                  OpenFLUIDBuddy(Listener)
 {
   m_RequiredOptionsHelp["funcid"] = "ID of the function";
   m_RequiredOptionsHelp["cppclass"] = "C++ class name of the function";
@@ -259,12 +260,12 @@ bool NewFunctionBuddy::run()
 
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
 
-  std::cout << "Function ID: " << m_Options["funcid"] << std::endl;
-  std::cout << "Function C++ class: " << m_Options["cppclass"] << std::endl;
-  std::cout << "Output directory: " << m_Options["outputdir"] << std::endl;
-  std::cout << "Function filename: " << m_Options["funcid"] << ".cpp" << std::endl;
-  std::cout << "Author name: " << m_Options["authorname"] << std::endl;
-  std::cout << "Author email: " << m_Options["authoremail"] << std::endl;
+  mp_Listener->onInfo("Function ID: " + m_Options["funcid"]);
+  mp_Listener->onInfo("Function C++ class: " + m_Options["cppclass"]);
+  mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
+  mp_Listener->onInfo("Function filename: " + m_Options["funcid"] + ".cpp");
+  mp_Listener->onInfo("Author name: " + m_Options["authorname"]);
+  mp_Listener->onInfo("Author email: " + m_Options["authoremail"]);
 
   boost::filesystem::path OutputDirPath(m_Options["outputdir"]);
 

@@ -68,7 +68,8 @@
 namespace openfluid { namespace buddies {
 
 
-ConvertBuddy::ConvertBuddy() : OpenFLUIDBuddy()
+ConvertBuddy::ConvertBuddy(openfluid::buddies::BuddiesListener* Listener) :
+              OpenFLUIDBuddy(Listener)
 {
   m_RequiredOptionsHelp["convmode"] = "Conversion mode. Available modes are: 13_14, 14_15";
   m_RequiredOptionsHelp["inputdir"] = "Input directory for dataset to convert";
@@ -527,9 +528,9 @@ void ConvertBuddy::convert_14_15()
 bool ConvertBuddy::run()
 {
 
-  std::cout << "Conversion mode: " << m_Options["convmode"] << std::endl;
-  std::cout << "Input directory: " << m_Options["inputdir"] << std::endl;
-  std::cout << "Output directory: " << m_Options["outputdir"] << std::endl;
+  mp_Listener->onInfo("Conversion mode: " + m_Options["convmode"]);
+  mp_Listener->onInfo("Input directory: " + m_Options["inputdir"]);
+  mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
 
   boost::filesystem::path InputDirPath(m_Options["inputdir"]);
   boost::filesystem::path OutputDirPath(m_Options["outputdir"]);

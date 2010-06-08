@@ -47,39 +47,53 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file BuddiesListener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
+#ifndef __BUDDIESLISTENER_HPP__
+#define __BUDDIESLISTENER_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
-
+#include <openfluid/base/Listener.hpp>
+#include <string>
+#include <map>
 
 namespace openfluid { namespace buddies {
 
+// =====================================================================
+// =====================================================================
 
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+
+class DLLEXPORT BuddiesListener : public openfluid::base::Listener
 {
   private:
-    void writeFunctionCPP();
+
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    BuddiesListener() {};
 
-    ~NewFunctionBuddy();
+    virtual ~BuddiesListener() {};
 
-    bool run();
+    virtual void onInfo(const std::string& /*Message*/) {};
+
+    virtual void onStageCompleted(const std::string& /*Message*/) {};
+
+    virtual void onSubstageCompleted(const std::string& /*Message*/) {};
+
+    virtual void onHelpRequired(const std::map<std::string,std::string>& /*OptionsHelp*/) {};
+
+    virtual void onHelpOthers(const std::map<std::string,std::string>& /*OptionsHelp*/) {};
+
+
 
 };
 
 
 } } //namespaces
 
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __BUDDIESLISTENER_HPP__ */

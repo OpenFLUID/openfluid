@@ -47,39 +47,49 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file IOListener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
+#ifndef __IOLISTENER_HPP__
+#define __IOLISTENER_HPP__
+
+#include <string>
+#include <iostream>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#include <openfluid/base/Listener.hpp>
+
+namespace openfluid { namespace io {
+
+// =====================================================================
+// =====================================================================
 
 
-namespace openfluid { namespace buddies {
-
-
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+class DLLEXPORT IOListener : public openfluid::base::Listener
 {
   private:
-    void writeFunctionCPP();
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    IOListener() {};
 
-    ~NewFunctionBuddy();
+    virtual ~IOListener() {};
 
-    bool run();
+    virtual void onLoad() {};
+
+    virtual void onLoaded(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onFileLoad(std::string /*Filename*/) {};
+
+    virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/) {};
 
 };
 
 
 } } //namespaces
 
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __IOLISTENER_HPP__ */

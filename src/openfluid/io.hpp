@@ -63,6 +63,7 @@
 #include <openfluid/io/MessagesWriter.hpp>
 #include <openfluid/io/OutputsWriter.hpp>
 #include <openfluid/io/SimReportWriter.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 
 #endif /* __IO_HPP___ */

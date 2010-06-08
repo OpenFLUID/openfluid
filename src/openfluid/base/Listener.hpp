@@ -47,39 +47,40 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file Listener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
+#ifndef __LISTENER_HPP__
+#define __LISTENER_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+
+namespace openfluid { namespace base {
+
+// =====================================================================
+// =====================================================================
 
 
-namespace openfluid { namespace buddies {
-
-
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+class DLLEXPORT Listener
 {
   private:
-    void writeFunctionCPP();
+
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    enum Status {OK, WARNING, ERROR};
 
-    ~NewFunctionBuddy();
+    Listener() {};
 
-    bool run();
+    virtual ~Listener() {};
 
 };
 
 
 } } //namespaces
 
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __LISTENER_HPP__ */

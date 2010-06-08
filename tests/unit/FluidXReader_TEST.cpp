@@ -82,7 +82,7 @@ typedef boost::onullstream onullstream_type;
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::io::FluidXReader FXR;
+  openfluid::io::FluidXReader FXR(openfluid::io::IOListener());
 }
 
 // =====================================================================
@@ -90,10 +90,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 void TestDataset(std::string DatasetPath)
 {
-  openfluid::io::FluidXReader FXR;
+  openfluid::io::FluidXReader FXR = openfluid::io::FluidXReader(new openfluid::io::IOListener());
 
   boost::onullstream ONullStream;
-  FXR.loadFromDirectory(DatasetPath,ONullStream);
+  FXR.loadFromDirectory(DatasetPath);
 
   // Model
   // ====================================================================
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/pathdoesnotexist").string(),ONullStream);
+    openfluid::io::FluidXReader(new openfluid::io::IOListener()).loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/pathdoesnotexist").string());
   }
   catch (...)
   {
@@ -461,7 +461,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-nofile").string(),ONullStream);
+    openfluid::io::FluidXReader(new openfluid::io::IOListener()).loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-nofile").string());
   }
   catch (...)
   {
@@ -473,7 +473,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-twomodels").string(),std::cout);
+    openfluid::io::FluidXReader(new openfluid::io::IOListener()).loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-twomodels").string());
   }
   catch (...)
   {
@@ -485,7 +485,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
   HasFailed = false;
   try
   {
-    openfluid::io::FluidXReader().loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-runs").string(),std::cout);
+    openfluid::io::FluidXReader(new openfluid::io::IOListener()).loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXReader/wrong-runs").string());
   }
   catch (...)
   {

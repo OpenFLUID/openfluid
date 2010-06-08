@@ -64,6 +64,7 @@
 #include <iostream>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/buddies/BuddiesListener.hpp>
 
 namespace openfluid { namespace buddies {
 
@@ -80,18 +81,20 @@ class DLLEXPORT OpenFLUIDBuddy
 
     std::string getYesNoFromOneZero(std::string VStr);
 
+    openfluid::buddies::BuddiesListener* mp_Listener;
+
   public:
-    OpenFLUIDBuddy();
+    OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener);
 
     virtual ~OpenFLUIDBuddy();
 
     bool parseOptions(std::string OptsStr);
 
-    void printlnOptions();
+    void streamOptions(std::ostream& OStream);
 
     virtual bool run() = 0;
 
-    void displayHelp();
+    void invokeHelp();
 };
 
 

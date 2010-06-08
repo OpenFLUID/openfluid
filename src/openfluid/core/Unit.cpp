@@ -211,17 +211,17 @@ UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass)
 
 
 
-void Unit::printSTDOUT()
+void Unit::streamContents(std::ostream& OStream)
 {
   UnitsPtrList_t::iterator IDIt;
   LinkedUnitsListByClassMap_t::iterator ClassIt;
   UnitsPtrList_t UnitsList;
 
-  std::cout << m_Class << " #"<< m_ID << " (order: " << m_PcsOrder << ")";
+  OStream << m_Class << " #"<< m_ID << " (order: " << m_PcsOrder << ")";
 
   if (m_ToUnits.size() > 0 )
   {
-    std::cout << " To[";
+    OStream << " To[";
 
     for (ClassIt=m_ToUnits.begin();ClassIt!=m_ToUnits.end();++ClassIt)
     {
@@ -230,16 +230,16 @@ void Unit::printSTDOUT()
 
      for (IDIt=UnitsList.begin();IDIt!=UnitsList.end();++IDIt)
       {
-        std::cout << "(" << (*IDIt)->getClass() << "," <<  (*IDIt)->getID() << ") ";
+       OStream << "(" << (*IDIt)->getClass() << "," <<  (*IDIt)->getID() << ") ";
       }
 
     }
-    std::cout << "] ";
+    OStream << "] ";
   }
 
   if (m_FromUnits.size() > 0 )
   {
-    std::cout << " From[";
+    OStream << " From[";
 
     for (ClassIt=m_FromUnits.begin();ClassIt!=m_FromUnits.end();++ClassIt)
     {
@@ -248,14 +248,14 @@ void Unit::printSTDOUT()
 
      for (IDIt=UnitsList.begin();IDIt!=UnitsList.end();++IDIt)
       {
-        std::cout << "(" << (*IDIt)->getClass() << "," <<  (*IDIt)->getID() << ") ";
+       OStream << "(" << (*IDIt)->getClass() << "," <<  (*IDIt)->getID() << ") ";
       }
 
     }
-    std::cout << "] ";
+    OStream << "] ";
   }
 
-  std::cout << std::endl;
+  OStream << std::endl;
 }
 
 

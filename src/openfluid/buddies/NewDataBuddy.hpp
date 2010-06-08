@@ -89,7 +89,7 @@ class DLLEXPORT NewDataBuddy : public OpenFLUIDBuddy
 
   public:
 
-    NewDataBuddy();
+    NewDataBuddy(openfluid::buddies::BuddiesListener* Listener);
 
     ~NewDataBuddy();
 

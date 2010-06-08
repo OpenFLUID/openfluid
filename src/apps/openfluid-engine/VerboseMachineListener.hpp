@@ -47,39 +47,35 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file VerboseMachineListener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#ifndef __VERBOSEMACHINELISTENER_HPP__
+#define __VERBOSEMACHINELISTENER_HPP__
 
 
-namespace openfluid { namespace buddies {
+#include "DefaultMachineListener.hpp"
+#include <iostream>
+
+// =====================================================================
+// =====================================================================
 
 
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+class VerboseMachineListener : public DefaultMachineListener
 {
   private:
-    void writeFunctionCPP();
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    VerboseMachineListener() {};
 
-    ~NewFunctionBuddy();
-
-    bool run();
+    ~VerboseMachineListener() {};
 
 };
 
 
-} } //namespaces
-
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __VERBOSEMACHINELISTENER_HPP__ */

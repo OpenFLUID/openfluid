@@ -96,7 +96,7 @@ class DLLEXPORT CoreRepository
 
     bool isUnitsClassExist(UnitClass_t UnitClass) const;
 
-    void printSTDOUT();
+    void streamContents(std::ostream& OStream);
 
 //    bool isMemReleaseStep(TimeStep_t Step);
 

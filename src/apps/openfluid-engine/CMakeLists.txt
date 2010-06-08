@@ -8,6 +8,9 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 
 ADD_EXECUTABLE(openfluid-engine
+               DefaultIOListener.hpp 
+               DefaultBuddiesListener.hpp 
+               DefaultMachineListener.hpp VerboseMachineListener.hpp 
                OpenFLUID.cpp OpenFLUID.hpp             
                main.cpp
               )

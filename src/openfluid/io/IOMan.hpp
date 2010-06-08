@@ -88,6 +88,8 @@ class DLLEXPORT IOManager
 
     FluidXReader* mp_FluidXData;
 
+    openfluid::io::IOListener* mp_Listener;
+
     IOManager();
 
 
@@ -96,6 +98,9 @@ class DLLEXPORT IOManager
     static IOManager* getInstance();
 
     ~IOManager();
+
+    // TODO To remove when removing singleton pattern
+    void setListener(openfluid::io::IOListener* Listener);
 
     void loadInputs(openfluid::base::ModelDescriptor& ModelDesc,
                     openfluid::base::DomainDescriptor& DomainDesc,

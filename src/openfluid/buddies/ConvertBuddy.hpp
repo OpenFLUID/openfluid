@@ -86,7 +86,7 @@ class DLLEXPORT ConvertBuddy : public OpenFLUIDBuddy
 
   public:
 
-    ConvertBuddy();
+    ConvertBuddy(openfluid::buddies::BuddiesListener* Listener);
 
     ~ConvertBuddy();
 

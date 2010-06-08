@@ -174,7 +174,7 @@ bool CoreRepository::sortUnitsByProcessOrder()
 // =====================================================================
 
 
-void CoreRepository::printSTDOUT()
+void CoreRepository::streamContents(std::ostream& OStream)
 {
   UnitsListByClassMap_t::iterator ClassIt;
 
@@ -184,25 +184,25 @@ void CoreRepository::printSTDOUT()
 
   if (m_PcsOrderedUnitsByClass.size() == 0)
   {
-    std::cout << "No unit" << std::endl;
+    OStream << "No unit" << std::endl;
     return;
   }
 
   for (ClassIt = m_PcsOrderedUnitsByClass.begin();ClassIt != m_PcsOrderedUnitsByClass.end();++ClassIt)
   {
-    std::cout << "** Units class : " << ClassIt->first << " **" << std::endl;
+    OStream << "** Units class : " << ClassIt->first << " **" << std::endl;
 
 
     Units = (ClassIt->second).getList();
 
     for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
     {
-      UnitIt->printSTDOUT();
+      UnitIt->streamContents(OStream);
     }
 
 
   }
-  std::cout << std::endl;
+  OStream << std::endl;
 }
 
 
@@ -253,7 +253,6 @@ bool CoreRepository::doMemRelease(TimeStep_t Step,bool WithoutKeep)
 
 bool CoreRepository::releaseMemory(TimeStep_t Step)
 {
-//  std::cout << "Releasing memory from " << (mp_MemMonitor->getLastMemoryRelease() +1) << " to " << Step << std::endl;
 
   UnitsListByClassMap_t::iterator ClassIt;
 
@@ -268,7 +267,6 @@ bool CoreRepository::releaseMemory(TimeStep_t Step)
 
     for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
     {
-//      std::cout << UnitIt->getClass() << UnitIt->getID() << std::endl;std::cout.flush();
       UnitIt->getScalarVariables()->releaseMemory(Step);
       UnitIt->getVectorVariables()->releaseMemory(Step);
     }

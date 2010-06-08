@@ -47,39 +47,79 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file CLIBuddiesListener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#ifndef __DEFAULTBUDDIESLISTENER_HPP__
+#define __DEFAULTBUDDIESLISTENER_HPP__
 
 
-namespace openfluid { namespace buddies {
+#include <openfluid/buddies/BuddiesListener.hpp>
+#include <iostream>
+
+// =====================================================================
+// =====================================================================
 
 
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
 {
   private:
-    void writeFunctionCPP();
+    void displayOptionsHelp(const std::map<std::string,std::string>& Options)
+    {
+      std::map<std::string,std::string>::const_iterator it;
+      if (Options.size() ==  0)
+        std::cout << "    (none)" << std::endl;
+      else
+      {
+        for (it = Options.begin();it != Options.end();++it)
+        {
+          std::cout << "    " << it->first << " : " << it->second << std::endl;
+        }
+      }
+
+    }
+
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    DefaultBuddiesListener() {};
 
-    ~NewFunctionBuddy();
+    ~DefaultBuddiesListener() {};
 
-    bool run();
+    virtual void onInfo(const std::string& Message)
+    {
+      std::cout << Message << std::endl;
+    };
+
+    virtual void onStageCompleted(const std::string& Message)
+    {
+      std::cout << Message << std::endl;
+    };
+
+    virtual void onSubstageCompleted(const std::string& Message)
+    {
+      std::cout << Message;
+    };
+
+    virtual void onHelpRequired(const std::map<std::string,std::string>& OptionsHelp)
+    {
+      std::cout << "  Required options:" << std::endl;
+      displayOptionsHelp(OptionsHelp);
+    };
+
+    virtual void onHelpOthers(const std::map<std::string,std::string>& OptionsHelp)
+    {
+      std::cout << "  Other options:" << std::endl;
+      displayOptionsHelp(OptionsHelp);
+    };
+
+
 
 };
 
 
-} } //namespaces
-
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __DEFAULTBUDDIESLISTENER_HPP__ */

@@ -65,6 +65,8 @@
 #include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -110,6 +112,7 @@ class DLLEXPORT Engine
 
      openfluid::base::DomainDescriptor m_DomainDesc;
 
+     MachineListener* mp_Listener;
 
      const ModelInstance* mp_ModelInstance;
 
@@ -139,7 +142,8 @@ class DLLEXPORT Engine
     /**
       Constructor
     */
-    Engine();
+    Engine(openfluid::machine::MachineListener* MachineListener,
+           openfluid::io::IOListener* IOListener);
 
     /**
       Destructor

@@ -99,7 +99,7 @@ class DLLEXPORT StepSerieOfValues : public StepsReservation
 
     unsigned int getNextStep() const;
 
-    void displayStatus();
+    void displayStatus(std::ostream& OStream);
 
 };
 
@@ -210,15 +210,15 @@ unsigned int StepSerieOfValues<T>::getNextStep() const
 
 
 template <class T>
-void StepSerieOfValues<T>::displayStatus()
+void StepSerieOfValues<T>::displayStatus(std::ostream& OStream)
 {
-  std::cout << "-- StepSerieOfValues status --"<< std::endl;
-  std::cout << "   Reserved : " << Reserved << std::endl;
-  std::cout << "   Size : " << m_Data.size() << std::endl;
-  std::cout << "   Element size : " << sizeof(T) << std::endl;
-  std::cout << "   BaseStepIndex : " << m_BaseStepIndex << std::endl;
-  std::cout << "   Current storage step : " << m_NextStep-1 << std::endl;
-  std::cout << "------------------------------"<< std::endl;
+  OStream << "-- StepSerieOfValues status --"<< std::endl;
+  OStream << "   Reserved : " << Reserved << std::endl;
+  OStream << "   Size : " << m_Data.size() << std::endl;
+  OStream << "   Element size : " << sizeof(T) << std::endl;
+  OStream << "   BaseStepIndex : " << m_BaseStepIndex << std::endl;
+  OStream << "   Current storage step : " << m_NextStep-1 << std::endl;
+  OStream << "------------------------------"<< std::endl;
 }
 
 

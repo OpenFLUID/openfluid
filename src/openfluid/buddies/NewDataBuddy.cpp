@@ -63,7 +63,8 @@
 namespace openfluid { namespace buddies {
 
 
-NewDataBuddy::NewDataBuddy() : OpenFLUIDBuddy()
+NewDataBuddy::NewDataBuddy(openfluid::buddies::BuddiesListener* Listener) :
+              OpenFLUIDBuddy(Listener)
 {
   m_RequiredOptionsHelp["outputdir"] = "Output directory for generated dataset";
 }
@@ -314,7 +315,7 @@ void NewDataBuddy::generateDDataXML()
 
 bool NewDataBuddy::run()
 {
-  std::cout << "Output directory: " << m_Options["outputdir"] << std::endl;
+  mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
 
   m_OutputDirPath = boost::filesystem::path(m_Options["outputdir"]);
 

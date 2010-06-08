@@ -70,6 +70,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
+#include <openfluid/machine/MachineListener.hpp>
 
 
 

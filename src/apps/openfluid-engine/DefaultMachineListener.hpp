@@ -47,39 +47,35 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  \file DefaultMachineListener.hpp
+  \brief header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __NEWFUNCBUDDY_HPP__
-#define __NEWFUNCBUDDY_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#ifndef __DEFAULTMACHINELISTENER_HPP__
+#define __DEFAULTMACHINELISTENER_HPP__
 
 
-namespace openfluid { namespace buddies {
+#include <openfluid/machine/MachineListener.hpp>
+#include <iostream>
+
+// =====================================================================
+// =====================================================================
 
 
-class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
+class DefaultMachineListener : public openfluid::machine::MachineListener
 {
   private:
-    void writeFunctionCPP();
 
   public:
 
-    NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener);
+    DefaultMachineListener() {};
 
-    ~NewFunctionBuddy();
-
-    bool run();
+    ~DefaultMachineListener() {};
 
 };
 
 
-} } //namespaces
-
-#endif /* __NEWFUNCBUDDY_HPP__ */
+#endif /* __DEFAULTMACHINELISTENER_HPP__ */

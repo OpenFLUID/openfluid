@@ -236,7 +236,7 @@ class DLLEXPORT Unit
 
     const EventsCollection* getEvents() const { return &m_Events; };
 
-    void printSTDOUT();
+    void streamContents(std::ostream& OStream);
 
 };
 
