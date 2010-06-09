@@ -454,18 +454,8 @@ bool Engine::loadData()
 bool Engine::processRunConfiguration()
 {
 
-  if (m_RunDesc.isProgressiveOutput())
-  {
-    mp_RunEnv->setProgressiveOutputKeep(m_RunDesc.getProgressiveOutputKeep());
-    mp_RunEnv->setProgressiveOutputPacket(m_RunDesc.getProgressiveOutputPacket());
-    mp_MemMon->setPacketAndKeep(m_RunDesc.getProgressiveOutputPacket(),m_RunDesc.getProgressiveOutputKeep());
-  }
-
-  if (m_RunDesc.isSimulationID())
-  {
-    mp_RunEnv->setSimulationID(m_RunDesc.getSimulationID());
-  }
-
+  Factory REF = Factory();
+  REF.fillRunEnvironmentFromDescriptor(m_RunDesc);
 
   return true;
 }
@@ -509,13 +499,14 @@ bool Engine::prepareDataAndCheckConsistency()
 
   // inits the simulation infos and status
 
-  mp_SimStatus = new openfluid::base::SimulationStatus(m_RunDesc.getBeginDate(),
-                                                       m_RunDesc.getEndDate(),
-                                                       m_RunDesc.getDeltaT());
+  mp_SimStatus = new openfluid::base::SimulationStatus(mp_RunEnv->getSimulationStartTime(),
+                                                       mp_RunEnv->getSimulationEndTime(),
+                                                       mp_RunEnv->getSimulationTimeStep());
 
   if (mp_RunEnv->isProgressiveOutput())
   {
-    mp_MemMon->setPacketAndKeep(mp_RunEnv->getProgressiveOutputPacket(),mp_RunEnv->getProgressiveOutputKeep());
+    mp_MemMon->setPacketAndKeep(mp_RunEnv->getProgressiveOutputPacket(),
+                                mp_RunEnv->getProgressiveOutputKeep());
   }
   else
   {

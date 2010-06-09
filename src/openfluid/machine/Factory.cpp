@@ -73,6 +73,7 @@ Factory::Factory()
 {
   mp_CoreData = openfluid::core::CoreRepository::getInstance();
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+  mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
 }
 
 
@@ -298,6 +299,28 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
   }
 
   return MInstance;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& Descriptor)
+{
+  mp_RunEnv->setSimulationTimeInformation(Descriptor.getBeginDate(),Descriptor.getEndDate(),
+                                          Descriptor.getDeltaT());
+
+  if (Descriptor.isProgressiveOutput())
+  {
+    mp_RunEnv->setProgressiveOutputKeep(Descriptor.getProgressiveOutputKeep());
+    mp_RunEnv->setProgressiveOutputPacket(Descriptor.getProgressiveOutputPacket());
+  }
+
+  if (Descriptor.isSimulationID())
+  {
+    mp_RunEnv->setSimulationID(Descriptor.getSimulationID());
+  }
+
 }
 
 

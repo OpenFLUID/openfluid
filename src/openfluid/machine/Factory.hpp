@@ -74,6 +74,7 @@ class DLLEXPORT Factory
   private:
     openfluid::core::CoreRepository* mp_CoreData;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::base::RuntimeEnvironment* mp_RunEnv;
 
   public:
 
@@ -83,6 +84,7 @@ class DLLEXPORT Factory
 
     const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const;
 
+    void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& Descriptor);
 
 };
 

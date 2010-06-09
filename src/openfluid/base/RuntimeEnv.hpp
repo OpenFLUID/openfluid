@@ -95,10 +95,6 @@ class DLLEXPORT RuntimeEnvironment
 
     bool m_ClearOutputDir;
 
-    bool m_QuietRun;
-
-    bool m_VerboseRun;
-
     bool m_WriteResults;
 
     bool m_WriteSimReport;
@@ -118,6 +114,13 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_SimulationID;
 
     boost::posix_time::time_duration m_EffectiveSimulationDuration;
+
+    openfluid::core::DateTime m_StartTime;
+
+    openfluid::core::DateTime m_EndTime;
+
+    // TODO set correct type for time step
+    int m_TimeStep;
 
     /**
       Default constructor
@@ -210,6 +213,23 @@ class DLLEXPORT RuntimeEnvironment
     std::string getHostName() const {return m_HostName; };
 
     std::string getUserID() const {return m_UserID; };
+
+    void setSimulationTimeInformation(openfluid::core::DateTime StartTime,
+                                      openfluid::core::DateTime EndTime,
+                                      int TimeStep);
+
+    openfluid::core::DateTime getSimulationStartTime() const
+      { return m_StartTime; };
+
+    openfluid::core::DateTime getSimulationEndTime() const
+      { return m_EndTime; };
+
+    // TODO set correct type for time step
+    int getSimulationTimeStep() const
+      { return m_TimeStep; };
+
+
+
 };
 
 

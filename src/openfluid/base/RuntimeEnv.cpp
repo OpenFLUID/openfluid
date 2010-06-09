@@ -151,12 +151,12 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
   m_ClearOutputDir = false;
-  m_QuietRun = false;
-  m_VerboseRun = false;
   m_WriteResults = true;
   m_WriteSimReport = true;
 
   m_ProgressiveOutput = false;
+
+  m_TimeStep = 0;
 
   mp_FuncEnv = new openfluid::base::EnvironmentProperties();
 
@@ -165,8 +165,6 @@ RuntimeEnvironment::RuntimeEnvironment()
   mp_FuncEnv->setValue("dir.temp",m_TempDir);
 
   mp_FuncEnv->setValue("mode.cleanoutput",m_ClearOutputDir);
-  mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
-  mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
   mp_FuncEnv->setValue("mode.saveresults",m_WriteResults);
   mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport);
 
@@ -301,38 +299,21 @@ std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
   return PlugFullPath;
 }
 
-/*
+
 // =====================================================================
 // =====================================================================
 
-void RuntimeEnvironment::setQuietRun(bool Quiet)
+
+void RuntimeEnvironment::setSimulationTimeInformation(openfluid::core::DateTime StartTime,
+                                                      openfluid::core::DateTime EndTime,
+                                                      int TimeStep)
 {
-  m_QuietRun = Quiet;
-  mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
-
-  if (Quiet)
-  {
-    m_VerboseRun = !Quiet;
-    mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
-  }
-};
+  m_StartTime = StartTime;
+  m_EndTime = EndTime;
+  m_TimeStep = TimeStep;
+}
 
 
-// =====================================================================
-// =====================================================================
-
-void RuntimeEnvironment::setVerboseRun(bool Verbose)
-{
-  m_VerboseRun = Verbose;
-  mp_FuncEnv->setValue("mode.verbose",m_VerboseRun);
-
-  if (Verbose)
-  {
-    m_QuietRun = !Verbose;
-    mp_FuncEnv->setValue("mode.quiet",m_QuietRun);
-  }
-};
-*/
 
 } } //namespaces
 
