@@ -248,7 +248,7 @@ bool PrimitivesUseFunction::checkConsistency()
 // =====================================================================
 
 
-bool PrimitivesUseFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool PrimitivesUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
@@ -306,8 +306,8 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   if (OPENFLUID_GetRunEnvironment("wrong.str",&RunEnvStr))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.str)");
 
-  RunEnvBool = true;
-  if (!OPENFLUID_GetRunEnvironment("mode.verbose",&RunEnvBool))
+  RunEnvBool = false;
+  if (OPENFLUID_GetRunEnvironment("mode.verbose",&RunEnvBool))
    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose)");
 
   if (RunEnvBool) OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (mode.verbose is true)");
@@ -558,7 +558,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 // =====================================================================
 
 
-bool PrimitivesUseFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool PrimitivesUseFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
