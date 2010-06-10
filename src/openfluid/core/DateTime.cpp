@@ -259,7 +259,7 @@ void DateTime::updateRawTimeFromYMDHMS()
 // =====================================================================
 
 
-rawtime_t DateTime::getRawTime()
+rawtime_t DateTime::getRawTime() const
 {
 
 
@@ -272,7 +272,7 @@ rawtime_t DateTime::getRawTime()
 // =====================================================================
 
 
-std::string DateTime::getAsISOString()
+std::string DateTime::getAsISOString() const
 {
 
   char pCh[80];
@@ -290,7 +290,7 @@ std::string DateTime::getAsISOString()
 // =====================================================================
 // =====================================================================
 
-std::string  DateTime::getAsString(std::string Format)
+std::string  DateTime::getAsString(std::string Format) const
 {
 
   char pCh[80];
@@ -311,7 +311,7 @@ std::string  DateTime::getAsString(std::string Format)
 // =====================================================================
 
 
-std::string DateTime::getDateAsISOString()
+std::string DateTime::getDateAsISOString() const
 {
 
   char pCh[80];
@@ -333,7 +333,7 @@ std::string DateTime::getDateAsISOString()
 // =====================================================================
 
 
-std::string DateTime::getTimeAsISOString()
+std::string DateTime::getTimeAsISOString() const
 {
 
   char pCh[80];
@@ -410,7 +410,7 @@ DateTime& DateTime::operator =(const DateTime &Right)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::operator ==(const DateTime &Right)
+bool DateTime::operator ==(const DateTime &Right) const
 {
   return (m_RawTime == Right.m_RawTime);
 }
@@ -418,7 +418,7 @@ bool DateTime::operator ==(const DateTime &Right)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::operator !=(const DateTime &Right)
+bool DateTime::operator !=(const DateTime &Right) const
 {
   return (m_RawTime != Right.m_RawTime);
 }
@@ -426,7 +426,7 @@ bool DateTime::operator !=(const DateTime &Right)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::operator >(const DateTime &Right)
+bool DateTime::operator >(const DateTime &Right) const
 {
   return (m_RawTime > Right.m_RawTime);
 }
@@ -434,7 +434,7 @@ bool DateTime::operator >(const DateTime &Right)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::operator >=(const DateTime &Right)
+bool DateTime::operator >=(const DateTime &Right) const
 {
   return (m_RawTime >= Right.m_RawTime);
 }
@@ -442,7 +442,7 @@ bool DateTime::operator >=(const DateTime &Right)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::operator <(const DateTime &Right)
+bool DateTime::operator <(const DateTime &Right) const
 {
   return (m_RawTime < Right.m_RawTime);
 }
@@ -450,7 +450,7 @@ bool DateTime::operator <(const DateTime &Right)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::operator <=(const DateTime &Right)
+bool DateTime::operator <=(const DateTime &Right) const
 {
   return (m_RawTime <= Right.m_RawTime);
 }
@@ -518,7 +518,7 @@ bool DateTime::isValidDateTime(int Year, int Month, int Day, int Hour, int Minut
 // =====================================================================
 // =====================================================================
 
-bool DateTime::isSameDate(DateTime DT)
+bool DateTime::isSameDate(DateTime DT) const
 {
   return (((m_TM.tm_year+1900) ==  DT.getYear()) &&
           ((m_TM.tm_mon+1) == DT.getMonth()) &&
@@ -528,7 +528,7 @@ bool DateTime::isSameDate(DateTime DT)
 // =====================================================================
 // =====================================================================
 
-bool DateTime::isSameTime(DateTime DT)
+bool DateTime::isSameTime(DateTime DT) const
 {
   return (((m_TM.tm_hour) ==  DT.getHour()) &&
           ((m_TM.tm_min) == DT.getMinute()) &&

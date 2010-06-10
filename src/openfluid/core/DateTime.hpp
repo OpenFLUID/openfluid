@@ -245,34 +245,34 @@ class DLLEXPORT DateTime
       Returns date-time in raw format (number of seconds since first day of 4713 BC)
       \return a rawtime_t
     */
-    rawtime_t getRawTime();
+    rawtime_t getRawTime() const;
 
 
     /**
       Returns date-time as string, using format YYYT-MM-DD hh:mm:ss
       \return a string
     */
-    std::string getAsISOString();
+    std::string getAsISOString() const;
 
     /**
       Returns date-time as string, using strftime() format string
       \param[in] Format strftime()-like format string
       \return a string
     */
-    std::string getAsString(std::string Format);
+    std::string getAsString(std::string Format) const;
 
 
     /**
       Returns date as string, using format YYYY-MM-DD
       \return a string
     */
-    std::string getDateAsISOString();
+    std::string getDateAsISOString() const;
 
     /**
       Returns time as string, using format hh:mm:ss
       \return a string
     */
-    std::string getTimeAsISOString();
+    std::string getTimeAsISOString() const;
 
 
     /**
@@ -309,32 +309,32 @@ class DLLEXPORT DateTime
     /**
       Equal operator
     */
-    bool operator ==(const DateTime &Right);
+    bool operator ==(const DateTime &Right) const;
 
     /**
       Difference operator
     */
-    bool operator !=(const DateTime &Right);
+    bool operator !=(const DateTime &Right) const;
 
     /**
       Greater than operator
     */
-    bool operator >(const DateTime &Right);
+    bool operator >(const DateTime &Right) const;
 
     /**
       Greater than or equal operator
     */
-    bool operator >=(const DateTime &Right);
+    bool operator >=(const DateTime &Right) const;
 
     /**
       Lower than operator
     */
-    bool operator <(const DateTime &Right);
+    bool operator <(const DateTime &Right) const;
 
     /**
       Lower than or equal operator
     */
-    bool operator <=(const DateTime &Right);
+    bool operator <=(const DateTime &Right) const;
 
     /**
       Add operator
@@ -404,12 +404,12 @@ class DLLEXPORT DateTime
     /**
       Returns true if the given date is the same, without comparing time parts
     */
-    bool isSameDate(DateTime DT);
+    bool isSameDate(DateTime DT) const;
 
     /**
       Returns true if the given time is the same, without comparing dates
     */
-    bool isSameTime(DateTime DT);
+    bool isSameTime(DateTime DT) const;
 
 };
 
