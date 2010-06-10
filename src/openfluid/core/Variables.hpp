@@ -80,6 +80,8 @@ class DLLEXPORT Variables
 
     bool getValue(const VariableName_t aName, const TimeStep_t aStep, T *aValue) const;
 
+    bool getCurrentValue(const VariableName_t aName, T *aValue) const;
+
     bool isVariableExist(const VariableName_t aName) const;
 
     bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
@@ -177,8 +179,28 @@ bool Variables<T>::getValue(const VariableName_t aName, const TimeStep_t aStep, 
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+template <class T>
+bool Variables<T>::getCurrentValue(const VariableName_t aName, T* aValue) const
+{
+
+  typename VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+  {
+    return it->second.getCurrentValue(aValue);
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
 
 template <class T>
 bool Variables<T>::isVariableExist(const VariableName_t aName) const

@@ -93,6 +93,8 @@ class DLLEXPORT StepSerieOfValues : public StepsReservation
 
     bool getValue(const unsigned int StepNbr,T* Value) const;
 
+    bool getCurrentValue(T* Value) const;
+
     bool modifyValue(const unsigned int StepNbr, T Value);
 
     bool appendValue(const T Value);
@@ -161,6 +163,19 @@ bool StepSerieOfValues<T>::getValue(const unsigned int StepNbr,T* Value) const
   if (StepNbr < m_BaseStepIndex || StepNbr-m_BaseStepIndex >= m_Data.size()) return false;
 
   *Value = m_Data[StepNbr-m_BaseStepIndex];
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+template <class T>
+bool StepSerieOfValues<T>::getCurrentValue(T* Value) const
+{
+
+  *Value = m_Data.back();
 
   return true;
 }
