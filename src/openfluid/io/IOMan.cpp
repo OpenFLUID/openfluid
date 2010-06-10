@@ -179,7 +179,7 @@ void IOManager::initOutputs()
 
 bool IOManager::prepareOutputs()
 {
-  mp_OutputsWriter->prepareDirectory();
+  if (mp_OutputsWriter != NULL) mp_OutputsWriter->prepareDirectory();
   return true;
 }
 
@@ -188,9 +188,9 @@ bool IOManager::prepareOutputs()
 // =====================================================================
 
 
-bool IOManager::saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep)
+bool IOManager::saveOutputs(const openfluid::core::DateTime& CurrentDT)
 {
-  mp_OutputsWriter->saveToDirectory(CurrentStep,SimInfo,WithoutKeep);
+  if (mp_OutputsWriter != NULL) mp_OutputsWriter->saveToDirectory(CurrentDT);
 
   return true;
 }
@@ -249,6 +249,15 @@ void IOManager::clearFluidXData()
   mp_FluidXData = NULL;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void IOManager::closeOutputs()
+{
+  if (mp_OutputsWriter != NULL) mp_OutputsWriter->closeFiles();
+}
 
 } } //namespaces
 

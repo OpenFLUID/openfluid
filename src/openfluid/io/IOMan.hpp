@@ -110,13 +110,15 @@ class DLLEXPORT IOManager
 
     bool prepareOutputs();
 
-    bool saveOutputs(openfluid::core::TimeStep_t CurrentStep, openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep);
+    bool saveOutputs(const openfluid::core::DateTime& CurrentDT);
 
     bool saveMessages();
 
     bool saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
 
     bool prepareOutputDir();
+
+    void closeOutputs();
 
     void clearFluidXData();
 

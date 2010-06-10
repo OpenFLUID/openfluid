@@ -47,88 +47,92 @@
 
 
 /**
-  \file OutputSetDescriptor.h
-  \brief Header of ...
+  \file OutputsFileWriter.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __OUTPUTSETDESCRIPTOR_HPP__
-#define __OUTPUTSETDESCRIPTOR_HPP__
+
+#include <openfluid/io/OutputsFileWriter.hpp>
+#include <openfluid/config.hpp>
+#include <openfluid/tools.hpp>
 
 
-#include <vector>
-#include <string>
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-
-namespace openfluid { namespace base {
+namespace openfluid { namespace io {
 
 
-class DLLEXPORT OutputSetDescriptor
+unsigned int OutputsFileWriter::BufferSize = openfluid::config::DEFAULT_OUTFILES_BUFFER;
+
+
+// =====================================================================
+// =====================================================================
+
+
+OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
+                                     const openfluid::core::UnitClass_t UnitClass,
+                                     const openfluid::core::UnitID_t UnitID,
+                                     const std::string CommentChar,
+                                     const std::string DateFormat,
+                                     const std::string ColSeparator,
+                                     const unsigned int Precision)
 {
-  private:
+  m_DirPath = DirPath;
+  m_CommentChar = CommentChar;
+  m_DateFormat = DateFormat;
+  m_ColSeparator = ColSeparator;
+  m_Precision = Precision;
 
-    std::string m_Name;
-    std::string m_UnitsClass;
-    bool m_AllUnits;
-    std::vector<openfluid::core::UnitID_t> m_UnitsIDs;
-    std::vector<openfluid::core::Unit*> m_UnitsPtr;
-    bool m_AllScalars;
-    std::vector<std::string> m_ScalarVariables;
-    bool m_AllVectors;
-    std::vector<std::string> m_VectorVariables;
-    unsigned int m_Precision;
+  m_OutFilename.clear();
+  mp_Buffer = new char[BufferSize];
+  m_OutFile.rdbuf()->pubsetbuf(mp_Buffer,BufferSize);
 
-  public:
+  mp_Unit = openfluid::core::CoreRepository::getInstance()->getUnit(UnitClass,UnitID);
 
-    OutputSetDescriptor();
+  if (mp_Unit == NULL)
+  {
+    std::string UnitIDStr;
+    openfluid::tools::ConvertValue(UnitID,&UnitIDStr);
+    throw openfluid::base::OFException("OpenFLUID framework","OutputsFileWriter::OutputsFileWriter",
+                                       "Unit " + UnitClass + "#" + UnitIDStr + " does not exist");
+  }
 
-    ~OutputSetDescriptor();
-
-    void setName(const std::string Name) { m_Name = Name; };
-
-    std::string getName() const { return m_Name; };
-
-    void setUnitsClass(const std::string UnitsClass)  { m_UnitsClass = UnitsClass; };
-
-    std::string getUnitsClass() const { return m_UnitsClass; };
-
-    unsigned int getPrecision() const { return m_Precision; };
-
-    void setPrecision(const unsigned int Precision) { m_Precision = Precision; };
-
-    void setAllUnits(bool AllUnits) { m_AllUnits = AllUnits; };
-
-    bool isAllUnits() const {return m_AllUnits; };
-
-    std::vector<openfluid::core::UnitID_t>& getUnitsIDs() { return m_UnitsIDs; };
-
-    const std::vector<openfluid::core::UnitID_t>& getUnitsIDs() const { return m_UnitsIDs; };
-
-    std::vector<openfluid::core::Unit*>& getUnitsPtr() { return m_UnitsPtr; };
+}
 
 
-    void setAllScalars(bool AllScalars) { m_AllScalars = AllScalars; };
-
-    bool isAllScalars() const {return m_AllScalars; };
-
-    std::vector<std::string>& getScalars() { return m_ScalarVariables; };
-
-    const std::vector<std::string>& getScalars() const { return m_ScalarVariables; };
-
-    void setAllVectors(bool AllVectors) { m_AllVectors = AllVectors; };
-
-    bool isAllVectors() const {return m_AllVectors; };
-
-    std::vector<std::string>& getVectors() { return m_VectorVariables; };
-
-    const std::vector<std::string>& getVectors() const { return m_VectorVariables; };
-};
+// =====================================================================
+// =====================================================================
 
 
-} } // namespaces
+
+OutputsFileWriter::~OutputsFileWriter()
+{
+  delete [] mp_Buffer;
+}
 
 
-#endif /* __OUTPUTSETDESCRIPTOR_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+void OutputsFileWriter::closeFile()
+{
+  m_OutFile.close();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsFileWriter::flushFile()
+{
+  m_OutFile.flush();
+}
+
+
+
+} } //namespaces
+
+

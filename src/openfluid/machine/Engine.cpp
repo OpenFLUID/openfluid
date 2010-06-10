@@ -739,15 +739,17 @@ bool Engine::run()
       std::cout.flush();
     }
 
+    if (mp_RunEnv->isWriteResults())
+    {
+      mp_IOMan->saveOutputs(mp_SimStatus->getCurrentTime());
+    }
+
+
     // progressive output
     if (mp_RunEnv->isProgressiveOutput() && mp_MemMon->isMemReleaseStep(mp_SimStatus->getCurrentStep()))
     {
       mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getCurrentStep(),false,&SaveReleaseBegin, &SaveReleaseEnd);
-      std::cout << std::endl << " -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
-      if (mp_RunEnv->isWriteResults())
-      {
-        mp_IOMan->saveOutputs(mp_SimStatus->getCurrentStep(),(openfluid::base::SimulationInfo*)mp_SimStatus,false);
-      }
+      std::cout << std::endl << " -- Releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
       mp_IOMan->saveMessages();
       mp_CoreData->doMemRelease(mp_SimStatus->getCurrentStep(),false);
       mp_ExecMsgs->doMemRelease();
@@ -819,16 +821,12 @@ bool Engine::run()
 
   // final progressive output
   mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getStepsCount()-1,true,&SaveReleaseBegin, &SaveReleaseEnd);
-  std::cout << std::endl << "  -- Saving outputs and releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
-  if (mp_RunEnv->isWriteResults())
-  {
-    mp_IOMan->saveOutputs(mp_SimStatus->getStepsCount()-1,(openfluid::base::SimulationInfo*)mp_SimStatus,true);
-  }
+  std::cout << std::endl << "  -- Releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
+  mp_IOMan->closeOutputs();
   mp_IOMan->saveMessages();
   mp_CoreData->doMemRelease(mp_SimStatus->getStepsCount()-1,true);
   mp_ExecMsgs->doMemRelease();
   std::cout << "[OK] --" << std::endl << std::endl ;
-
 
   return IsOK;
 }
@@ -837,22 +835,11 @@ bool Engine::run()
 // =====================================================================
 // =====================================================================
 
-/*
-bool Engine::saveResults(ExtraSimInfos ExSI)
-{
-  mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveOutputs(m_RunConfig, mp_SimStatus->getStepsCount(),ExSI));
-}
-*/
-// =====================================================================
-// =====================================================================
-
 bool Engine::saveReports(std::string ErrorMsg)
 {
   mp_ExecMsgs->resetWarningFlag();
   return (mp_IOMan->saveSimulationInfos((openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
 }
-
 
 
 // =====================================================================
@@ -864,6 +851,17 @@ bool Engine::saveMessages()
   mp_ExecMsgs->resetWarningFlag();
   return (mp_IOMan->saveMessages());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Engine::closeOutputs()
+{
+  mp_IOMan->closeOutputs();
+}
+
 
 } } //namespaces
 

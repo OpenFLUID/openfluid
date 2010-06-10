@@ -81,15 +81,5 @@ OutputFilesDescriptor::~OutputFilesDescriptor()
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-void OutputFilesDescriptor::fillUnitsPtr()
-{
-  for (unsigned int i = 0; i < m_Sets.size() ; i++) m_Sets[i].fillUnitsPtr();
-}
-
-
 } } // namespaces
 

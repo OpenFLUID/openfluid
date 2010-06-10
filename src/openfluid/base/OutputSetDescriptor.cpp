@@ -88,33 +88,6 @@ OutputSetDescriptor::~OutputSetDescriptor()
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-void OutputSetDescriptor::fillUnitsPtr()
-{
-  openfluid::core::Unit* UPtr;
-
-  m_UnitsPtr.resize(m_UnitsIDs.size(), NULL);
-
-  for (unsigned int i = 0; i < m_UnitsIDs.size() ; i++)
-  {
-    UPtr = openfluid::core::CoreRepository::getInstance()->getUnit(m_UnitsClass,m_UnitsIDs[i]);
-
-    if (UPtr == NULL)
-    {
-      std::string UnitIDStr;
-      openfluid::tools::ConvertValue(m_UnitsIDs[i],&UnitIDStr);
-      throw openfluid::base::OFException("OpenFLUID framework","OutputSetDescriptor::fillUnitsPtr()","unit #" + UnitIDStr + " not found in class " + m_UnitsClass);
-    }
-    else
-      m_UnitsPtr[i] = UPtr;
-
-  }
-
-}
-
 
 } } // namespaces
 

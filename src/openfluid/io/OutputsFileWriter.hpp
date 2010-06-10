@@ -45,67 +45,71 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+/**
+  \file OutputsFileWriter.hpp
+  \brief Header of ...
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
-
-
-#include <string>
-
-namespace openfluid { namespace config {
-
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
-
-// Relative openfluid directory
-const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-// Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
+#ifndef __OUTPUTSFILEWRITER_HPP__
+#define __OUTPUTSFILEWRITER_HPP__
+
+#include <fstream>
+#include <openfluid/core.hpp>
 
 
-// Install prefix
-const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
-
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
+namespace openfluid { namespace io {
 
 
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER = 2048;
+class OutputsFileWriter
+{
+
+  protected:
+
+    static unsigned int BufferSize;
+    char* mp_Buffer;
+    std::ofstream m_OutFile;
+    std::string m_OutFilename;
+    std::string m_DirPath;
+    std::string m_CommentChar;
+    std::string m_DateFormat;
+    std::string m_ColSeparator;
+    unsigned int m_Precision;
+    openfluid::core::Unit* mp_Unit;
 
 
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
+  public:
+
+    OutputsFileWriter(const std::string DirPath,
+                      const openfluid::core::UnitClass_t UnitClass,
+                      const openfluid::core::UnitID_t UnitID,
+                      const std::string CommentChar,
+                      const std::string DateFormat,
+                      const std::string ColSeparator,
+                      const unsigned int Precision);
+
+    virtual ~OutputsFileWriter();
+
+    static unsigned int getBufferSize() { return BufferSize; };
+
+    static void setBufferSize(const unsigned int aBufferSize) { BufferSize = aBufferSize; };
+
+    virtual void initializeFile() = 0;
+
+    virtual void saveCurrentDataToFile(const openfluid::core::DateTime& CurrentTime) = 0;
+
+    void closeFile();
+
+    void flushFile();
 
 
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
 
-
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
-
-
-// Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
-const std::string FULL_VERSION = "@FULL_VERSION@";
+};
 
 
 } } //namespaces
 
-#endif
 
+#endif /* __OUTPUTSFILEWRITER_HPP___ */

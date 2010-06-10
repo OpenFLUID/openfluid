@@ -83,6 +83,8 @@ class DLLEXPORT OutputFilesDescriptor
 
     std::vector<OutputSetDescriptor>& getSets() { return m_Sets; };
 
+    const std::vector<OutputSetDescriptor>& getSets() const { return m_Sets; };
+
     std::string getColSeparator() const { return m_ColSeparator; };
 
     void setColSeparator(const std::string& ColSep) { m_ColSeparator = ColSep; };
@@ -94,8 +96,6 @@ class DLLEXPORT OutputFilesDescriptor
     std::string getCommentChar() const { return m_CommentChar; };
 
     void setCommentChar(const std::string& CommentChar) { m_CommentChar = CommentChar; };
-
-    void fillUnitsPtr();
 
 };
 

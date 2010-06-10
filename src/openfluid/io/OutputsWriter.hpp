@@ -61,7 +61,8 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
-
+#include <openfluid/io/ScalarOutputsFileWriter.hpp>
+#include <openfluid/io/VectorOutputsFileWriter.hpp>
 
 namespace openfluid { namespace io {
 
@@ -73,39 +74,9 @@ class DLLEXPORT OutputsWriter
     std::string m_DirPath;
     openfluid::base::OutputDescriptor m_OutDesc;
 
+    std::list<OutputsFileWriter*> m_Files;
 
-    static std::string generateOuputFilename(const std::string UnitClass, const openfluid::core::UnitID_t UnitID,
-                                   const std::string Suffix, const std::string VectorName = "");
-
-    static std::string generateOutputScalarsFileHeader(const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
-                                             const std::string Filename, const std::vector<std::string> ScalarsNames,
-                                             const std::string CommentChar);
-
-    static std::string generateOutputVectorFileHeader(const openfluid::core::UnitClass_t UnitClass, const openfluid::core::UnitID_t UnitID,
-                                            const std::string Filename, const std::string VectorName,
-                                            const std::string CommentChar);
-
-
-    static std::string generateOutputScalarsFileContent(const openfluid::core::Unit* aUnit,
-                                              const std::vector<std::string> ScalarsNames,
-                                              openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
-                                              openfluid::base::SimulationInfo *SimInfo,
-                                              std::string DateFormat,
-                                              std::string ColSeparator,
-                                              unsigned int Precision);
-
-    static std::string generateOutputVectorFileContent(const openfluid::core::Unit* aUnit, const std::string VectorName,
-                                              openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
-                                              openfluid::base::SimulationInfo *SimInfo,
-                                              std::string DateFormat,
-                                              std::string ColSeparator,
-                                              unsigned int Precision);
-
-    void saveUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex,
-                            openfluid::core::TimeStep_t& BeginStep, openfluid::core::TimeStep_t& EndStep,
-                            openfluid::base::SimulationInfo *SimInfo);
-
-    void prepareUnitFileOutput(openfluid::core::Unit* aUnit, int FileOutputIndex, int OutputSetIndex);
+    void buildFilesList(const std::string& DirPath, const openfluid::base::OutputDescriptor& OutDesc);
 
 
   public:
@@ -115,8 +86,9 @@ class DLLEXPORT OutputsWriter
 
     void prepareDirectory();
 
-    void saveToDirectory(openfluid::core::TimeStep_t CurrentStep,
-                         openfluid::base::SimulationInfo *SimInfo, bool WithoutKeep);
+    void saveToDirectory(const openfluid::core::DateTime& CurrentDT);
+
+    void closeFiles();
 
 };
 

@@ -79,8 +79,7 @@ class DLLEXPORT OutputDescriptor
 
     std::vector<OutputFilesDescriptor>& getFileSets() {return m_FileSets; };
 
-    void fillUnitsPtr();
-
+    const std::vector<OutputFilesDescriptor>& getFileSets() const {return m_FileSets; };
 
 };
 
@@ -88,3 +87,4 @@ class DLLEXPORT OutputDescriptor
 } } // namespaces
 
 #endif /* __OUTPUTDESCRIPTOR_HPP__ */
+

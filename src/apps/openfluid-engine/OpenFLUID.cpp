@@ -392,6 +392,9 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
   if (mp_Engine != NULL && openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
+    std::cout << "* Closing outputs... "; std::cout.flush();
+    mp_Engine->closeOutputs();
+    std::cout << "[Done]" << std::endl; std::cout.flush();
     std::cout << "* Saving simulation report... "; std::cout.flush();
     mp_Engine->saveReports("");
     std::cout << "[Done]" << std::endl; std::cout.flush();
