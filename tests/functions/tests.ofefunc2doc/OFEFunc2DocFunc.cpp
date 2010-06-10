@@ -159,7 +159,7 @@ OFEFunc2DocFunction::~OFEFunc2DocFunction()
 // =====================================================================
 
 
-bool OFEFunc2DocFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool OFEFunc2DocFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
   return true;
@@ -193,7 +193,7 @@ bool OFEFunc2DocFunction::checkConsistency()
 // =====================================================================
 
 
-bool OFEFunc2DocFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool OFEFunc2DocFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
@@ -204,7 +204,7 @@ bool OFEFunc2DocFunction::initializeRun(const openfluid::base::SimulationInfo* S
 // =====================================================================
 
 
-bool OFEFunc2DocFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool OFEFunc2DocFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
 
   return true;
@@ -214,7 +214,7 @@ bool OFEFunc2DocFunction::runStep(const openfluid::base::SimulationStatus* SimSt
 // =====================================================================
 
 
-bool OFEFunc2DocFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool OFEFunc2DocFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 

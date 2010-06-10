@@ -285,7 +285,7 @@ void Vector<T>::setData(T* Data, unsigned long Size)
 template <class T>
 T Vector<T>::getElement(unsigned long Index) const
 {
-  if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::getElement","element access range error");
+  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::getElement","element access range error");
   return m_Data[Index];
 }
 
@@ -296,7 +296,7 @@ T Vector<T>::getElement(unsigned long Index) const
 template <class T>
 void Vector<T>::setElement(unsigned long Index, T Element)
 {
-  if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::setElement","element access range error");
+  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::setElement","element access range error");
   m_Data[Index] = Element;
 }
 
@@ -308,7 +308,7 @@ void Vector<T>::setElement(unsigned long Index, T Element)
 template <class T>
 T& Vector<T>::operator[](unsigned long Index)
 {
-  if (Index < 0 || Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::operator[]","element access range error");
+  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::operator[]","element access range error");
   return m_Data[Index];
 }
 

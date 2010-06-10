@@ -174,7 +174,7 @@ LoopsFunction::~LoopsFunction()
 // =====================================================================
 
 
-bool LoopsFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool LoopsFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
 
@@ -209,7 +209,7 @@ bool LoopsFunction::checkConsistency()
 // =====================================================================
 
 
-bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   openfluid::core::Unit* CurrentUnit;
@@ -319,7 +319,7 @@ bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo
 // =====================================================================
 
 
-bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
 
   openfluid::core::Unit *TU = NULL;
@@ -467,7 +467,7 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool LoopsFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool LoopsFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 

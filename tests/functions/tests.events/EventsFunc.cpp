@@ -113,7 +113,7 @@ EventsFunction::~EventsFunction()
 // =====================================================================
 
 
-bool EventsFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool EventsFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
 
@@ -277,7 +277,7 @@ bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool EventsFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool EventsFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 

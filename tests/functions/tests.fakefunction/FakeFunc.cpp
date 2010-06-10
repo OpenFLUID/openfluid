@@ -115,7 +115,7 @@ class FakeFunction : public openfluid::base::PluggableFunction
     // =====================================================================
 
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params)
+    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
     {
 
       return true;
@@ -147,7 +147,7 @@ class FakeFunction : public openfluid::base::PluggableFunction
     // =====================================================================
 
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+    bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
     {
 
       return true;
@@ -157,7 +157,7 @@ class FakeFunction : public openfluid::base::PluggableFunction
     // =====================================================================
 
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+    bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
     {
 
       return true;
@@ -167,7 +167,7 @@ class FakeFunction : public openfluid::base::PluggableFunction
     // =====================================================================
 
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
     {
 
       return true;
