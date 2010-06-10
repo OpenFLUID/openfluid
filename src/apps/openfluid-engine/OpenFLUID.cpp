@@ -396,7 +396,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
     mp_Engine->closeOutputs();
     std::cout << "[Done]" << std::endl; std::cout.flush();
     std::cout << "* Saving simulation report... "; std::cout.flush();
-    mp_Engine->saveReports("");
+    mp_Engine->saveReports();
     std::cout << "[Done]" << std::endl; std::cout.flush();
     mp_ExecMsgs->resetWarningFlag();
   }
@@ -566,7 +566,7 @@ void OpenFLUIDApp::runSimulation()
   if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
     std::cout << "* Saving simulation report... "; std::cout.flush();
-    mp_Engine->saveReports("");
+    mp_Engine->saveReports();
     std::cout << "[Done]" << std::endl; std::cout.flush();
     mp_ExecMsgs->resetWarningFlag();
   }

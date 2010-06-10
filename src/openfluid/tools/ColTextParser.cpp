@@ -294,7 +294,7 @@ std::string ColumnTextParser::getValue(unsigned int Line, unsigned int Column)
 {
   std::vector<std::string> LineString = getValues(Line);
 
-  if (LineString.size()!=0 && Column < LineString.size())
+  if (!LineString.empty() && Column < LineString.size())
   {
     return LineString.at(Column);
   }

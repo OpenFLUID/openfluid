@@ -186,7 +186,7 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
   if (xmlPrec != NULL)
   {
     std::string PrecStr = std::string((const char*)xmlPrec);
-    unsigned int Prec = 5;
+    int Prec = 5;
 
     if (openfluid::tools::ConvertString(PrecStr,&Prec) && Prec>=0)
     {
@@ -626,7 +626,7 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
 
       ColOrder = openfluid::tools::SplitString(std::string((char*)xmlColOrder),";");
 
-      if (ColOrder.size() == 0)
+      if (ColOrder.empty())
         throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","wrong or empty colorder attribute in domain input data (" + m_CurrentFile + ")");
 
       IDataDesc.getColumnsOrder() = ColOrder;

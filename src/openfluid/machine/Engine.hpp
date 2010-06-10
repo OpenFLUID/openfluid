@@ -164,7 +164,7 @@ class DLLEXPORT Engine
 
     bool run();
 
-    bool saveReports(std::string ErrorMsg);
+    bool saveReports();
 
     bool saveMessages();
 

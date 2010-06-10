@@ -97,7 +97,7 @@ bool FixedGenerator::checkConsistency()
 // =====================================================================
 
 
-bool FixedGenerator::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool FixedGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   return true;
@@ -107,7 +107,7 @@ bool FixedGenerator::initializeRun(const openfluid::base::SimulationInfo* SimInf
 // =====================================================================
 
 
-bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
 
   openfluid::core::Unit* LU;
@@ -133,7 +133,7 @@ bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool FixedGenerator::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool FixedGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   return true;

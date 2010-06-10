@@ -212,7 +212,7 @@ bool IOManager::saveMessages()
 // =====================================================================
 
 
-bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg)
+bool IOManager::saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo)
 {
   SimulationReportWriter::saveToFile(mp_RunEnv->getOutputFullPath(openfluid::config::SIMINFOFILE),SimInfo);
 

@@ -78,7 +78,7 @@ class DLLEXPORT Generator : public openfluid::base::PluggableFunction
 
     void setDescriptor(openfluid::base::GeneratorDescriptor GenDesc) { m_GenDesc = GenDesc; };
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params) { return true; };
+    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/) { return true; };
 
     bool prepareData()  { return true; };
 

@@ -835,10 +835,10 @@ bool Engine::run()
 // =====================================================================
 // =====================================================================
 
-bool Engine::saveReports(std::string ErrorMsg)
+bool Engine::saveReports()
 {
   mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveSimulationInfos((openfluid::base::SimulationInfo*)mp_SimStatus,ErrorMsg));
+  return (mp_IOMan->saveSimulationInfos((openfluid::base::SimulationInfo*)mp_SimStatus));
 }
 
 

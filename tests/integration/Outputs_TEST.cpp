@@ -101,7 +101,7 @@ bool CompareTextFiles(std::string FilePathA, std::string FilePathB,
   FileReader.close();
 
 
-  if (ContentA.size() == 0 && ContentB.size() == 0) return true;
+  if (ContentA.empty() && ContentB.empty()) return true;
 
   if (FromLine < 0) FromLine = 0;
   if (ToLine < 0) ToLine = ContentA.size()-1;

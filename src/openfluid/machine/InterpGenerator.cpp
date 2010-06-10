@@ -176,7 +176,7 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool InterpGenerator::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool InterpGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   return true;

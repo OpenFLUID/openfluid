@@ -115,7 +115,7 @@ bool RandomGenerator::checkConsistency()
 // =====================================================================
 
 
-bool RandomGenerator::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool RandomGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
@@ -126,7 +126,7 @@ bool RandomGenerator::initializeRun(const openfluid::base::SimulationInfo* SimIn
 // =====================================================================
 
 
-bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
 
   openfluid::core::Unit* LU;
@@ -159,7 +159,7 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool RandomGenerator::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool RandomGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   return true;

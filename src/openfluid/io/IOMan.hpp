@@ -114,7 +114,7 @@ class DLLEXPORT IOManager
 
     bool saveMessages();
 
-    bool saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo, std::string ErrorMsg);
+    bool saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo);
 
     bool prepareOutputDir();
 
