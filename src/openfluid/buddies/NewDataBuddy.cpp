@@ -116,6 +116,10 @@ void NewDataBuddy::generateRunXML()
   Content << "    <!-- time step example -->" << std::endl;
   Content << "    <deltat>3600</deltat>" << std::endl;
   Content << std::endl;
+  Content << "    <!-- buffers example -->" << std::endl;
+  Content << "    <valuesbuffer steps=\"50\" />" << std::endl;
+  Content << "    <filesbuffer kbytes=\"8\" />" << std::endl;
+  Content << std::endl;
   Content << "  </run>" << std::endl;
   Content << getXMLFooter() << std::endl;
 
