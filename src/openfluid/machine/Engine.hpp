@@ -162,8 +162,6 @@ class DLLEXPORT Engine
 
     bool saveReports();
 
-    bool saveMessages();
-
     void closeOutputs();
 
     openfluid::base::SimulationInfo *getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };

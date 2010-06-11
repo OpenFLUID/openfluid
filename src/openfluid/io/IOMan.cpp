@@ -82,6 +82,7 @@ IOManager::IOManager()
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
 
   mp_OutputsWriter = NULL;
+  mp_MessagesWriter = NULL;
   mp_FluidXData = NULL;
 
   mp_Listener = new openfluid::io::IOListener();
@@ -168,6 +169,7 @@ bool IOManager::prepareOutputDir()
 void IOManager::initOutputs()
 {
   mp_OutputsWriter = new OutputsWriter(mp_RunEnv->getOutputDir(),mp_FluidXData->getOutputDescriptor());
+  mp_MessagesWriter = new MessagesWriter(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
 }
 
 
@@ -179,6 +181,7 @@ void IOManager::initOutputs()
 bool IOManager::prepareOutputs()
 {
   if (mp_OutputsWriter != NULL) mp_OutputsWriter->prepareDirectory();
+  if (mp_MessagesWriter != NULL) mp_MessagesWriter->initializeFile();
   return true;
 }
 
@@ -190,18 +193,7 @@ bool IOManager::prepareOutputs()
 bool IOManager::saveOutputs(const openfluid::core::DateTime& CurrentDT)
 {
   if (mp_OutputsWriter != NULL) mp_OutputsWriter->saveToDirectory(CurrentDT);
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool IOManager::saveMessages()
-{
-  MessagesWriter::saveToFile(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
+  if (mp_MessagesWriter != NULL) mp_MessagesWriter->saveToFile(true);
 
   return true;
 }
@@ -256,6 +248,8 @@ void IOManager::clearFluidXData()
 void IOManager::closeOutputs()
 {
   if (mp_OutputsWriter != NULL) mp_OutputsWriter->closeFiles();
+  if (mp_MessagesWriter != NULL) mp_MessagesWriter->closeFile(true);
+
 }
 
 } } //namespaces

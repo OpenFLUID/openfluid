@@ -63,6 +63,7 @@
 #include <openfluid/tools.hpp>
 #include <openfluid/io/FluidXReader.hpp>
 #include <openfluid/io/OutputsWriter.hpp>
+#include <openfluid/io/MessagesWriter.hpp>
 
 namespace openfluid { namespace io {
 
@@ -84,6 +85,7 @@ class DLLEXPORT IOManager
     bool m_ClearedOuputDir;
 
     OutputsWriter* mp_OutputsWriter;
+    MessagesWriter* mp_MessagesWriter;
 
     FluidXReader* mp_FluidXData;
 
@@ -110,8 +112,6 @@ class DLLEXPORT IOManager
     bool prepareOutputs();
 
     bool saveOutputs(const openfluid::core::DateTime& CurrentDT);
-
-    bool saveMessages();
 
     bool saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo);
 

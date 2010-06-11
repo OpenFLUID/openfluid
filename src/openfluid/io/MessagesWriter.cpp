@@ -67,9 +67,12 @@ namespace openfluid { namespace io {
 // =====================================================================
 
 
-MessagesWriter::MessagesWriter()
+MessagesWriter::MessagesWriter(std::string FilePath)
 {
+  m_OutFilename = FilePath;
 
+  mp_Buffer = new char[m_BufferSize];
+  m_OutFile.rdbuf()->pubsetbuf(mp_Buffer,m_BufferSize);
 }
 
 
@@ -79,7 +82,7 @@ MessagesWriter::MessagesWriter()
 
 MessagesWriter::~MessagesWriter()
 {
-
+  delete [] mp_Buffer;
 }
 
 
@@ -87,17 +90,22 @@ MessagesWriter::~MessagesWriter()
 // =====================================================================
 
 
-void MessagesWriter::saveToFile(std::string FilePath)
+void MessagesWriter::initializeFile()
+{
+  m_OutFile.open(m_OutFilename.c_str(),std::ios::out);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void MessagesWriter::saveToFile(bool WithFlush)
 {
   openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
   unsigned int WarningCount = ExecMsgs->getWarningMsgs().size();
 
   if (WarningCount > 0)
   {
-    std::ofstream OutMsgFile;
-
-    OutMsgFile.open(FilePath.c_str(),std::ios::app);
-
     std::vector<openfluid::base::Message> WMessages = ExecMsgs->getWarningMsgs();
 
     for (unsigned int i=0; i<WarningCount;i++)
@@ -105,15 +113,27 @@ void MessagesWriter::saveToFile(std::string FilePath)
       // TODO try to remove the following hack
       // hack for mingw32
 #ifdef __MINGW32__
-      OutMsgFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
+      m_OutFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
 #else
-      OutMsgFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
+      m_OutFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
 #endif
 
     }
-
-    OutMsgFile.close();
   }
+
+  if (WithFlush) ExecMsgs->doMemRelease();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MessagesWriter::closeFile(bool WithFlush)
+{
+  saveToFile(WithFlush);
+  m_OutFile.close();
+
 }
 
 } } //namespaces

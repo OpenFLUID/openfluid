@@ -60,6 +60,7 @@
 
 #include <string>
 #include <openfluid/dllexport.hpp>
+#include <fstream>
 
 namespace openfluid { namespace io {
 
@@ -67,14 +68,22 @@ namespace openfluid { namespace io {
 class DLLEXPORT MessagesWriter
 {
   private:
+    char* mp_Buffer;
+    static const unsigned int m_BufferSize = 512000;
+
+    std::ofstream m_OutFile;
+    std::string m_OutFilename;
 
   public:
-    MessagesWriter();
+    MessagesWriter(std::string FilePath);
 
     ~MessagesWriter();
 
-    static void saveToFile(std::string FilePath);
+    void initializeFile();
 
+    void saveToFile(bool WithFlush = false);
+
+    void closeFile(bool WithFlush = false);
 };
 
 

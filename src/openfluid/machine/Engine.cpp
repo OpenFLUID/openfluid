@@ -741,10 +741,6 @@ bool Engine::run()
       mp_IOMan->saveOutputs(mp_SimStatus->getCurrentTime());
     }
 
-    // saving messages
-    mp_IOMan->saveMessages();
-    mp_ExecMsgs->doMemRelease();
-
 
   } while (mp_SimStatus->switchToNextStep());  // end time loop
 
@@ -809,9 +805,6 @@ bool Engine::run()
 
   // final save
   mp_IOMan->closeOutputs();
-  mp_IOMan->saveMessages();
-  mp_ExecMsgs->doMemRelease();
-
 
   return IsOK;
 }
@@ -824,17 +817,6 @@ bool Engine::saveReports()
 {
   mp_ExecMsgs->resetWarningFlag();
   return (mp_IOMan->saveSimulationInfos((openfluid::base::SimulationInfo*)mp_SimStatus));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool Engine::saveMessages()
-{
-  mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveMessages());
 }
 
 

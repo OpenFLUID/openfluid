@@ -388,7 +388,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
   printlnExecMessagesStats();
 
-  if (mp_Engine != NULL) mp_Engine->saveMessages();
+  if (mp_Engine != NULL) mp_Engine->closeOutputs();
 
   if (mp_Engine != NULL && openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
