@@ -45,77 +45,34 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file MemMonitor_TEST.cpp
-  \brief Implements ...
+  \file ValuesBufferProperties.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_memmonitor
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <openfluid/core.hpp>
+#ifndef __VALUESBUFFERPROPERTIES_HPP__
+#define __VALUESBUFFERPROPERTIES_HPP__
 
+namespace openfluid { namespace core {
 
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_construction)
+class ValuesBufferProperties
 {
-  openfluid::core::MemoryMonitor *MM;
+  protected:
+    static unsigned int BufferSize;
 
-  MM = openfluid::core::MemoryMonitor::getInstance();
+  public:
+    static unsigned int getBufferSize() { return BufferSize; };
 
-  BOOST_REQUIRE_EQUAL(MM->getPacket(),0);
-  BOOST_REQUIRE_EQUAL(MM->getKeep(),0);
-  BOOST_REQUIRE_EQUAL(MM->getLastMemoryRelease(),-1);
-}
+    static void setBufferSize(const unsigned int aBufferSize) { BufferSize = aBufferSize; };
 
-// =====================================================================
-// =====================================================================
+};
 
 
-void check_operation_withparams(unsigned int Packet, unsigned int Keep, unsigned int StepsCount)
-{
-  openfluid::core::MemoryMonitor *MM;
+} } // namespaces
 
-  MM = openfluid::core::MemoryMonitor::getInstance();
-  MM->setPacketAndKeep(Packet,Keep);
-  MM->setLastMemoryRelease(Keep-1);
 
-  BOOST_REQUIRE_EQUAL(MM->getPacket(),Packet);
-  BOOST_REQUIRE_EQUAL(MM->getKeep(),Keep);
-  BOOST_REQUIRE_EQUAL(MM->getLastMemoryRelease(),-1);
 
-  for (unsigned int i = 0; i < StepsCount; i++)
-  {
-    if (MM->isMemReleaseStep(i))
-    {
-      BOOST_REQUIRE_EQUAL(i-MM->getLastMemoryRelease(),MM->getPacket()+MM->getKeep());
-      BOOST_REQUIRE_NE(MM->getLastMemoryRelease(),i-MM->getKeep());
-      MM->setLastMemoryRelease(i);
-      BOOST_REQUIRE_EQUAL(MM->getLastMemoryRelease(),i-MM->getKeep());
-    }
-    else
-    {
-      BOOST_REQUIRE_NE(i-MM->getLastMemoryRelease(),MM->getPacket()+MM->getKeep());
-    }
-  }
-}
-
-BOOST_AUTO_TEST_CASE(check_operations)
-{
-  check_operation_withparams(500,10,10000);
-  check_operation_withparams(1,1,10000);
-  check_operation_withparams(5000,100,100);
-}
-
-// =====================================================================
-// =====================================================================
+#endif /* __VALUESBUFFERPROPERTIES_HPP__ */

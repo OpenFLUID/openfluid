@@ -52,7 +52,6 @@
 
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/MemMonitor.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -70,17 +69,11 @@ class DLLEXPORT CoreRepository
 
     static CoreRepository* mp_Singleton;
 
-    MemoryMonitor* mp_MemMonitor;
-
     CoreRepository();
-
-    bool releaseMemory(TimeStep_t Step);
 
   public:
 
     static CoreRepository* getInstance();
-
-    void setMemoryMonitor(MemoryMonitor* MemMonitor) { mp_MemMonitor = MemMonitor; };
 
     bool addUnit(const Unit aUnit);
 
@@ -97,12 +90,6 @@ class DLLEXPORT CoreRepository
     bool isUnitsClassExist(UnitClass_t UnitClass) const;
 
     void streamContents(std::ostream& OStream);
-
-//    bool isMemReleaseStep(TimeStep_t Step);
-
-//    bool getMemReleaseRange(TimeStep_t* BeginStep, TimeStep_t* EndStep);
-
-    bool doMemRelease(TimeStep_t Step, bool WithoutKeep);
 
 };
 

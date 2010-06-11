@@ -95,10 +95,6 @@ class DLLEXPORT Engine
      */
      PluginManager* mp_PlugMan;
 
-     /**
-       Memory monitor
-     */
-     openfluid::core::MemoryMonitor* mp_MemMon;
 
      /**
        IOManager

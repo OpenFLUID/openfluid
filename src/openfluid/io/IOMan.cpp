@@ -77,7 +77,6 @@ IOManager* IOManager::mp_Singleton = NULL;
 
 IOManager::IOManager()
 {
-  mp_MemMon = openfluid::core::MemoryMonitor::getInstance();
   mp_Repository = openfluid::core::CoreRepository::getInstance();
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();

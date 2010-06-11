@@ -47,75 +47,94 @@
 
 
 /**
-  \file MessagesWriter.cpp
+  \file SSerieValues_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/io/MessagesWriter.hpp>
-#include <openfluid/base.hpp>
-#include <fstream>
-
-
-namespace openfluid { namespace io {
-
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_sserievalues
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/floating_point_comparison.hpp>
+#include <openfluid/core/ValuesBuffer.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-MessagesWriter::MessagesWriter()
+BOOST_AUTO_TEST_CASE(check_construction)
 {
+  openfluid::core::ValuesBuffer<double> VBuffer;
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getNextStep(),0);
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_operations)
+{
+
+  openfluid::core::ValuesBufferProperties::setBufferSize(5);
+  openfluid::core::ValuesBuffer<double> VBuffer;
+  double Value;
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getNextStep(),0);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(1.1),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(2.2),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(3.3),true);
+
+  // tstep    0   1   2
+  // buffer |1.1|2.2|3.3|
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,3.3,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(4.4),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(5.5),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(6.6),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(7.7),true);
+
+  // tstep    2   3   4   5   6
+  // buffer |3.3|4.4|5.5|6.6|7.7|
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getNextStep(),7);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getCurrentValue(&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,7.7,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(0,&Value),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(7,&Value),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(1,&Value),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&Value),true);
+
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,4.4,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(3,44.0),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,44.0,0.001);
+
+
+/*  BOOST_REQUIRE_EQUAL(VBuffer.deleteValues(3),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&Value),false);
+  BOOST_REQUIRE_NE(VBuffer.getValue(3,&Value),true);*/
+
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(10.1),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(20.2),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.appendValue(30.3),true);
+
+//  BOOST_REQUIRE_EQUAL(VBuffer.deleteValues(8),true);
 
 }
 
-
 // =====================================================================
 // =====================================================================
-
-
-MessagesWriter::~MessagesWriter()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MessagesWriter::saveToFile(std::string FilePath)
-{
-  openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
-  unsigned int WarningCount = ExecMsgs->getWarningMsgs().size();
-
-  if (WarningCount > 0)
-  {
-    std::ofstream OutMsgFile;
-
-    OutMsgFile.open(FilePath.c_str(),std::ios::app);
-
-    std::vector<openfluid::base::Message> WMessages = ExecMsgs->getWarningMsgs();
-
-    for (unsigned int i=0; i<WarningCount;i++)
-    {
-      // TODO try to remove the following hack
-      // hack for mingw32
-#ifdef __MINGW32__
-      OutMsgFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
-#else
-      OutMsgFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
-#endif
-
-    }
-
-    OutMsgFile.close();
-  }
-}
-
-} } //namespaces
-
-

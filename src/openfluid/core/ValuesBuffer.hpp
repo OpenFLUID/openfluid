@@ -45,51 +45,44 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+/**
+  \file ValuesBuffer.hpp
+  \brief Header of ...
 
-#ifndef __SSERIEVALUES_H__
-#define __SSERIEVALUES_H__
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#include <vector>
-#include <iostream>
+#ifndef __VALUESBUFFER_HPP__
+#define __VALUESBUFFER_HPP__
+
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/ValuesBufferProperties.hpp>
+#include <boost/circular_buffer.hpp>
 
+#include <iostream>
 
 namespace openfluid { namespace core {
 
-class DLLEXPORT StepsReservation
-{
-  protected :
-    static unsigned int Reserved;
-
-  public :
-    static unsigned int getReservation() { return Reserved; };
-
-    static void setReservation(unsigned int aReservation) { Reserved = aReservation; };
-
-
-};
-
 
 template <class T>
-class DLLEXPORT StepSerieOfValues : public StepsReservation
+class DLLEXPORT ValuesBuffer : public ValuesBufferProperties
 {
 
   private:
-
-    unsigned int m_BaseStepIndex;
-    std::vector<T> m_Data;
+    boost::circular_buffer<T> m_Data;
 
     unsigned int m_NextStep;
+
+    bool TranslateStepNbrToIndex(const unsigned int& StepNbr,
+                                 unsigned int& Index) const;
 
   public:
 
 
-    StepSerieOfValues();
+    ValuesBuffer();
 
-    ~StepSerieOfValues();
-
-    bool deleteValues(const unsigned int UntilStepNbr);
+    ~ValuesBuffer();
 
     bool getValue(const unsigned int StepNbr,T* Value) const;
 
@@ -110,15 +103,13 @@ class DLLEXPORT StepSerieOfValues : public StepsReservation
 // =====================================================================
 
 template <class T>
-StepSerieOfValues<T>::StepSerieOfValues()
+ValuesBuffer<T>::ValuesBuffer()
 {
 
-  m_BaseStepIndex = 0;
   m_NextStep = 0;
 
+  m_Data.set_capacity(BufferSize);
   m_Data.clear();
-  m_Data.reserve(Reserved);
-  m_Data.clear();
 
 }
 
@@ -126,30 +117,57 @@ StepSerieOfValues<T>::StepSerieOfValues()
 // =====================================================================
 
 template <class T>
-StepSerieOfValues<T>::~StepSerieOfValues()
+ValuesBuffer<T>::~ValuesBuffer()
 {
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+template <class T>
+bool ValuesBuffer<T>::TranslateStepNbrToIndex(const unsigned int& StepNbr,
+                                              unsigned int& Index ) const
+{
+  if (m_NextStep < BufferSize)
+  {
+    if (StepNbr < m_NextStep)
+    {
+      Index = StepNbr;
+      return true;
+    }
+  }
+  else
+  {
+    int StepsDelta = m_NextStep - StepNbr -1;
+
+    if (StepsDelta < BufferSize && StepsDelta >= 0)
+    {
+      Index = BufferSize - StepsDelta -1;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
 // =====================================================================
 // =====================================================================
 
 
 template <class T>
-bool StepSerieOfValues<T>::deleteValues(const unsigned int UntilStepNbr)
+bool ValuesBuffer<T>::getValue(const unsigned int StepNbr,T* Value) const
 {
-  // compute the real index of UntilStepNbr in m_Data
-  unsigned int RealEnd = UntilStepNbr - m_BaseStepIndex +1;
+  unsigned int Index;
 
-  if (RealEnd < 0) return false;
-
-  m_Data.erase(m_Data.begin(),m_Data.begin()+RealEnd);
-  m_Data.reserve(Reserved);
-
-  // compute the new BaseIndex
-  m_BaseStepIndex = UntilStepNbr+1;
-
-  return true;
+  if (TranslateStepNbrToIndex(StepNbr,Index))
+  {
+    *Value = m_Data[Index];
+    return true;
+  }
+  return false;
 }
 
 
@@ -157,22 +175,7 @@ bool StepSerieOfValues<T>::deleteValues(const unsigned int UntilStepNbr)
 // =====================================================================
 
 template <class T>
-bool StepSerieOfValues<T>::getValue(const unsigned int StepNbr,T* Value) const
-{
-
-  if (StepNbr < m_BaseStepIndex || StepNbr-m_BaseStepIndex >= m_Data.size()) return false;
-
-  *Value = m_Data[StepNbr-m_BaseStepIndex];
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-template <class T>
-bool StepSerieOfValues<T>::getCurrentValue(T* Value) const
+bool ValuesBuffer<T>::getCurrentValue(T* Value) const
 {
 
   *Value = m_Data.back();
@@ -185,13 +188,16 @@ bool StepSerieOfValues<T>::getCurrentValue(T* Value) const
 // =====================================================================
 
 template <class T>
-bool StepSerieOfValues<T>::modifyValue(const unsigned int StepNbr, T Value)
+bool ValuesBuffer<T>::modifyValue(const unsigned int StepNbr, T Value)
 {
-  if (StepNbr < m_BaseStepIndex) return false;
+  unsigned int Index;
 
-  m_Data[StepNbr-m_BaseStepIndex] = Value;
-
-  return true;
+  if (TranslateStepNbrToIndex(StepNbr,Index))
+  {
+    m_Data[Index] = Value;
+    return true;
+  }
+  return false;
 }
 
 
@@ -199,7 +205,7 @@ bool StepSerieOfValues<T>::modifyValue(const unsigned int StepNbr, T Value)
 // =====================================================================
 
 template <class T>
-bool StepSerieOfValues<T>::appendValue(const T Value)
+bool ValuesBuffer<T>::appendValue(const T Value)
 {
 
   m_Data.push_back(Value);
@@ -214,7 +220,7 @@ bool StepSerieOfValues<T>::appendValue(const T Value)
 
 
 template <class T>
-unsigned int StepSerieOfValues<T>::getNextStep() const
+unsigned int ValuesBuffer<T>::getNextStep() const
 {
   return m_NextStep;
 }
@@ -225,13 +231,12 @@ unsigned int StepSerieOfValues<T>::getNextStep() const
 
 
 template <class T>
-void StepSerieOfValues<T>::displayStatus(std::ostream& OStream)
+void ValuesBuffer<T>::displayStatus(std::ostream& OStream)
 {
-  OStream << "-- StepSerieOfValues status --"<< std::endl;
-  OStream << "   Reserved : " << Reserved << std::endl;
+  OStream << "-- ValuesBuffer status --"<< std::endl;
+  OStream << "   BufferSize : " << BufferSize << std::endl;
   OStream << "   Size : " << m_Data.size() << std::endl;
   OStream << "   Element size : " << sizeof(T) << std::endl;
-  OStream << "   BaseStepIndex : " << m_BaseStepIndex << std::endl;
   OStream << "   Current storage step : " << m_NextStep-1 << std::endl;
   OStream << "------------------------------"<< std::endl;
 }
@@ -241,8 +246,9 @@ void StepSerieOfValues<T>::displayStatus(std::ostream& OStream)
 // =====================================================================
 
 
+
 } } // namespaces
 
 
 
-#endif /* __SSERIEVALUES_H__ */
+#endif /* __VALUESBUFFER_HPP__ */

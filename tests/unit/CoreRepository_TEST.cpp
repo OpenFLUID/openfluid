@@ -69,12 +69,8 @@
 BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::core::CoreRepository* Repos;
-  openfluid::core::MemoryMonitor* MemMon;
 
   Repos = openfluid::core::CoreRepository::getInstance();
-  MemMon = openfluid::core::MemoryMonitor::getInstance();
-  MemMon->setPacketAndKeep(500,10);
-  Repos->setMemoryMonitor(MemMon);
 }
 
 // =====================================================================
@@ -83,7 +79,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::core::CoreRepository* Repos;
-  openfluid::core::MemoryMonitor* MemMon;
   int i, PcsOrder;
   openfluid::core::UnitsCollection* UnitsColl;
   openfluid::core::UnitsList_t::iterator UnitsIt, PrevUnitsIt;
@@ -91,9 +86,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   Repos = openfluid::core::CoreRepository::getInstance();
-  MemMon = openfluid::core::MemoryMonitor::getInstance();
-  MemMon->setPacketAndKeep(500,10);
-  Repos->setMemoryMonitor(MemMon);
 
   for (i=1;i<=250;i++)
   {

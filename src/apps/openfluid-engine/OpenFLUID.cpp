@@ -459,7 +459,6 @@ void OpenFLUIDApp::runSimulation()
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
   openfluid::core::CoreRepository* pCoreData = openfluid::core::CoreRepository::getInstance();
-  pCoreData->setMemoryMonitor(openfluid::core::MemoryMonitor::getInstance());
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
   openfluid::machine::MachineListener* MListener;
 

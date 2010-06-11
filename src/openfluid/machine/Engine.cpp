@@ -63,6 +63,7 @@
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/machine/Factory.hpp>
+#include <openfluid/core/ValuesBuffer.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -79,8 +80,6 @@ Engine::Engine(openfluid::machine::MachineListener* MachineListener,
   mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   mp_PlugMan = PluginManager::getInstance();
-
-  mp_MemMon = openfluid::core::MemoryMonitor::getInstance();
 
   mp_IOMan = openfluid::io::IOManager::getInstance();
   mp_IOMan->setListener(IOListener);
@@ -505,14 +504,12 @@ bool Engine::prepareDataAndCheckConsistency()
 
   if (mp_RunEnv->isProgressiveOutput())
   {
-    mp_MemMon->setPacketAndKeep(mp_RunEnv->getProgressiveOutputPacket(),
-                                mp_RunEnv->getProgressiveOutputKeep());
+    openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getProgressiveOutputPacket());
   }
   else
   {
-    mp_MemMon->setPacketAndKeep(mp_SimStatus->getStepsCount(),1);
+    openfluid::core::ValuesBufferProperties::setBufferSize(mp_SimStatus->getStepsCount());
   }
-
 
 
   // check simulation functions count
@@ -744,18 +741,9 @@ bool Engine::run()
       mp_IOMan->saveOutputs(mp_SimStatus->getCurrentTime());
     }
 
-
-    // progressive output
-    if (mp_RunEnv->isProgressiveOutput() && mp_MemMon->isMemReleaseStep(mp_SimStatus->getCurrentStep()))
-    {
-      mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getCurrentStep(),false,&SaveReleaseBegin, &SaveReleaseEnd);
-      std::cout << std::endl << " -- Releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
-      mp_IOMan->saveMessages();
-      mp_CoreData->doMemRelease(mp_SimStatus->getCurrentStep(),false);
-      mp_ExecMsgs->doMemRelease();
-      mp_MemMon->setLastMemoryRelease(mp_SimStatus->getCurrentStep());
-      std::cout << "[OK] --" << std::endl << std::endl ;
-    }
+    // saving messages
+    mp_IOMan->saveMessages();
+    mp_ExecMsgs->doMemRelease();
 
 
   } while (mp_SimStatus->switchToNextStep());  // end time loop
@@ -819,14 +807,11 @@ bool Engine::run()
   // check simulation vars production after finalize
   checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
 
-  // final progressive output
-  mp_MemMon->getMemoryReleaseRange(mp_SimStatus->getStepsCount()-1,true,&SaveReleaseBegin, &SaveReleaseEnd);
-  std::cout << std::endl << "  -- Releasing memory (" << SaveReleaseBegin << " -> " << SaveReleaseEnd << ") "; std::cout.flush();
+  // final save
   mp_IOMan->closeOutputs();
   mp_IOMan->saveMessages();
-  mp_CoreData->doMemRelease(mp_SimStatus->getStepsCount()-1,true);
   mp_ExecMsgs->doMemRelease();
-  std::cout << "[OK] --" << std::endl << std::endl ;
+
 
   return IsOK;
 }

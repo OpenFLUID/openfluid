@@ -51,7 +51,7 @@
 
 
 #include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/SSerieValues.hpp>
+#include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace core {
@@ -62,7 +62,7 @@ class DLLEXPORT Variables
 {
   private :
 
-    typedef std::map<VariableName_t,StepSerieOfValues<T> > VariablesMap_t;
+    typedef std::map<VariableName_t,ValuesBuffer<T> > VariablesMap_t;
     VariablesMap_t m_Data;
 
 
@@ -89,8 +89,6 @@ class DLLEXPORT Variables
     std::vector<VariableName_t> getVariablesNames() const;
 
     unsigned int getVariableValuesCount(const VariableName_t aName) const;
-
-    bool releaseMemory(TimeStep_t Step);
 
     bool isAllVariablesCount(unsigned int Count) const;
 
@@ -251,20 +249,6 @@ std::vector<VariableName_t> Variables<T>::getVariablesNames() const
 // =====================================================================
 // =====================================================================
 
-template <class T>
-bool Variables<T>::releaseMemory(TimeStep_t Step)
-{
-  typename VariablesMap_t::iterator it;
-
-  for (it = m_Data.begin();it != m_Data.end();++it)
-  {
-    it->second.deleteValues(Step);
-  }
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
 
 template <class T>
 unsigned int Variables<T>::getVariableValuesCount(const VariableName_t aName) const

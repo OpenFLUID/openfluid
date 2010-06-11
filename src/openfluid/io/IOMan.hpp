@@ -77,7 +77,6 @@ class DLLEXPORT IOManager
 
     static IOManager* mp_Singleton;
 
-    openfluid::core::MemoryMonitor* mp_MemMon;
     openfluid::core::CoreRepository* mp_Repository;
     openfluid::base::ExecutionMessages* mp_ExecMsgs;
     openfluid::base::RuntimeEnvironment* mp_RunEnv;

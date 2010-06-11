@@ -59,11 +59,14 @@
 
 
 #include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/io/IOListener.hpp>
 #include <openfluid/io/IOMan.hpp>
 #include <openfluid/io/MessagesWriter.hpp>
 #include <openfluid/io/OutputsWriter.hpp>
+#include <openfluid/io/OutputsFileWriter.hpp>
+#include <openfluid/io/ScalarOutputsFileWriter.hpp>
 #include <openfluid/io/SimReportWriter.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/io/VectorOutputsFileWriter.hpp>
 
 
 #endif /* __IO_HPP___ */

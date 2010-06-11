@@ -63,12 +63,11 @@
 #include <openfluid/core/Event.hpp>
 #include <openfluid/core/EventsColl.hpp>
 #include <openfluid/core/InputData.hpp>
-#include <openfluid/core/MemMonitor.hpp>
-#include <openfluid/core/SSerieValues.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/UnitsColl.hpp>
 #include <openfluid/core/ValueFactory.hpp>
+#include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/Vector.hpp>
 

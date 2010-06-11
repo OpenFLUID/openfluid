@@ -70,6 +70,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
+  openfluid::core::ValuesBufferProperties::setBufferSize(5);
   openfluid::core::Variables<double> Vars;
   double Value;
 
@@ -83,6 +84,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+  openfluid::core::ValuesBufferProperties::setBufferSize(5);
   openfluid::core::Variables<double> Vars;
   double Value;
 
@@ -126,12 +128,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("bar"),true);
 
-  BOOST_REQUIRE_EQUAL(Vars.releaseMemory(2),true);
-  BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",0),true);
-  BOOST_REQUIRE_EQUAL(Vars.getValue("foo",0,&Value),false);
-  BOOST_REQUIRE_EQUAL(Vars.getValue("foo",2,&Value),false);
-  BOOST_REQUIRE_EQUAL(Vars.getValue("foo",3,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,34.5,0.001);
+
 }
 
 // =====================================================================

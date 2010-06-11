@@ -54,9 +54,6 @@ namespace openfluid { namespace core {
 
 
 CoreRepository* CoreRepository::mp_Singleton = NULL;
-unsigned int StepsReservation::Reserved = 0;
-MemoryMonitor* MemoryMonitor::mp_Singleton = NULL;
-
 
 
 // =====================================================================
@@ -203,79 +200,6 @@ void CoreRepository::streamContents(std::ostream& OStream)
 
   }
   OStream << std::endl;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-/*
-bool CoreRepository::getMemReleaseRange(TimeStep_t LastStep, TimeStep_t* BeginStep, TimeStep_t* EndStep)
-{
-  *BeginStep = m_LastMemToDiskStep+1;
-  *EndStep = m_LastMemToDiskStep+Packet;
-  if (*EndStep > LastStep) *EndStep = LastStep;
-  return true;
-}
-*/
-
-// =====================================================================
-// =====================================================================
-
-
-bool CoreRepository::doMemRelease(TimeStep_t Step,bool WithoutKeep)
-{
-  if (mp_MemMonitor->isMemReleaseStep(Step))
-  {
-    releaseMemory(Step-mp_MemMonitor->getKeep());
-//    m_LastMemToDiskStep = Step-Keep;
-    return true;
-  }
-  else
-  {
-    if (WithoutKeep)
-    {
-      releaseMemory(Step);
-//      m_LastMemToDiskStep = Step;
-      return true;
-    }
-  }
-
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool CoreRepository::releaseMemory(TimeStep_t Step)
-{
-
-  UnitsListByClassMap_t::iterator ClassIt;
-
-  UnitsList_t* Units;
-  UnitsList_t::iterator UnitIt;
-
-
-  for (ClassIt = m_PcsOrderedUnitsByClass.begin();ClassIt != m_PcsOrderedUnitsByClass.end();++ClassIt)
-  {
-
-    Units = (ClassIt->second).getList();
-
-    for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
-    {
-      UnitIt->getScalarVariables()->releaseMemory(Step);
-      UnitIt->getVectorVariables()->releaseMemory(Step);
-    }
-
-
-  }
-
-
-  return true;
 }
 
 
