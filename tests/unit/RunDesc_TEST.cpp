@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getHour(),12);
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getMinute(),0);
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
-  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),false);
+  BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),false);
   BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),false);
   BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"");
 
@@ -92,7 +92,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
 
   RunDesc.setSimulationID("testID");
-  RunDesc.setProgressiveOutput(20,5);
+  RunDesc.setValuesBufferSize(20);
+  RunDesc.setFilesBufferSizeInKB(5);
 
   BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
   BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getDay(),7);
@@ -101,25 +102,23 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getHour(),12);
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getMinute(),0);
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
-  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),true);
-  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputPacket(),20);
-  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputKeep(),5);
+  BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),true);
+  BOOST_REQUIRE_EQUAL(RunDesc.getValuesBufferSize(),20);
+  BOOST_REQUIRE_EQUAL(RunDesc.getFilesBufferSizeInKB(),5);
   BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"testID");
 
   RunDesc.setSimulationID("gotcha");
-  RunDesc.setProgressiveOutput(1179,53);
+  RunDesc.setValuesBufferSize(1179);
+  RunDesc.setFilesBufferSizeInKB(53);
 
-  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),true);
-  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputPacket(),1179);
-  BOOST_REQUIRE_EQUAL(RunDesc.getProgressiveOutputKeep(),53);
+  BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),true);
+  BOOST_REQUIRE_EQUAL(RunDesc.getValuesBufferSize(),1179);
+  BOOST_REQUIRE_EQUAL(RunDesc.getFilesBufferSizeInKB(),53);
   BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"gotcha");
 
   RunDesc.setSimulationID("");
-  RunDesc.setProgressiveOutput(0,0);
-
-  BOOST_REQUIRE_EQUAL(RunDesc.isProgressiveOutput(),false);
   BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),false);
 
 }

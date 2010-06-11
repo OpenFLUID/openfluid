@@ -154,7 +154,9 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_WriteResults = true;
   m_WriteSimReport = true;
 
-  m_ProgressiveOutput = false;
+  m_FilesBufferSize = openfluid::config::DEFAULT_OUTFILES_BUFFER_KB*1024;
+  m_ValuesBufferSize = 0;
+  m_IsUserValuesBufferSize = false;
 
   m_TimeStep = 0;
 

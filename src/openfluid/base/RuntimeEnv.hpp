@@ -99,11 +99,11 @@ class DLLEXPORT RuntimeEnvironment
 
     bool m_WriteSimReport;
 
-    bool m_ProgressiveOutput;
+    unsigned int m_ValuesBufferSize;
 
-    unsigned int m_ProgOutPacket;
+    bool m_IsUserValuesBufferSize;
 
-    unsigned int m_ProgOutKeep;
+    unsigned int m_FilesBufferSize;
 
     openfluid::base::EnvironmentProperties* mp_FuncEnv;
 
@@ -185,17 +185,6 @@ class DLLEXPORT RuntimeEnvironment
     openfluid::base::EnvironmentProperties* getFunctionEnvironment() const
       { return mp_FuncEnv; };
 
-    bool isProgressiveOutput() const { return m_ProgressiveOutput; };
-
-    void setProgressiveOutputKeep(unsigned int Keep)
-      { m_ProgressiveOutput = true; m_ProgOutKeep = Keep; };
-
-    void setProgressiveOutputPacket(unsigned int Packet)
-      { m_ProgressiveOutput = true; m_ProgOutPacket = Packet; };
-
-    unsigned int getProgressiveOutputKeep() const { return m_ProgOutKeep; };
-
-    unsigned int getProgressiveOutputPacket() const  { return m_ProgOutPacket; };
 
     boost::posix_time::ptime getIgnitionDateTime() const
       { return m_IgnitionDateTime; };
@@ -228,7 +217,19 @@ class DLLEXPORT RuntimeEnvironment
     int getSimulationTimeStep() const
       { return m_TimeStep; };
 
+    void setValuesBufferSize(const unsigned int StepsNbr)
+      {m_ValuesBufferSize = StepsNbr; m_IsUserValuesBufferSize = true;};
 
+    unsigned int getValuesBufferSize() const
+      { return m_ValuesBufferSize; };
+
+    bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
+
+    void setFilesBufferSize(const unsigned int Bytes)
+      {m_FilesBufferSize = Bytes; };
+
+    unsigned int getFilesBufferSize() const
+      { return m_FilesBufferSize; };
 
 };
 

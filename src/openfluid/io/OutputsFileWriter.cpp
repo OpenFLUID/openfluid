@@ -63,7 +63,7 @@
 namespace openfluid { namespace io {
 
 
-unsigned int OutputsFileWriter::BufferSize = openfluid::config::DEFAULT_OUTFILES_BUFFER;
+unsigned int OutputsFileWriter::BufferSize = (openfluid::config::DEFAULT_OUTFILES_BUFFER_KB * 1024);
 
 
 // =====================================================================

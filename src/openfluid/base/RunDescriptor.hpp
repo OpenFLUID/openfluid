@@ -72,8 +72,10 @@ class DLLEXPORT RunDescriptor
     openfluid::core::DateTime m_BeginDate;
     openfluid::core::DateTime m_EndDate;
 
-    unsigned int m_ProgOutPacket;
-    unsigned int m_ProgOutKeep;
+    unsigned int m_ValuesBufferSize;
+    bool m_IsUserValuesBufferSize;
+    unsigned int m_FilesBufferSizeInKB;
+
 
 
   public:
@@ -103,14 +105,16 @@ class DLLEXPORT RunDescriptor
 
     bool isSimulationID() const { return (m_SimID != ""); };
 
-    void setProgressiveOutput(const unsigned int Packet, const unsigned int Keep);
+    void setValuesBufferSize(const unsigned int StepsNbr)
+       {m_ValuesBufferSize = StepsNbr;  m_IsUserValuesBufferSize = true; };
 
-    bool isProgressiveOutput() const;
+    bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
 
-    unsigned int getProgressiveOutputPacket() const { return m_ProgOutPacket; };
+    unsigned int getValuesBufferSize() const { return m_ValuesBufferSize; };
 
-    unsigned int getProgressiveOutputKeep() const { return m_ProgOutKeep; };
+    void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
 
+    unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
 
 };
 

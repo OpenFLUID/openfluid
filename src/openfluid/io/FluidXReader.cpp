@@ -455,34 +455,38 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
         throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","deltat tag is empty (" + m_CurrentFile + ")");
     }
 
-    if (xmlStrcmp(CurrNode->name,(const xmlChar*)"progressout") == 0)
+    if (xmlStrcmp(CurrNode->name,(const xmlChar*)"valuesbuffer") == 0)
     {
-      xmlChar* xmlPacket= xmlGetProp(CurrNode,(const xmlChar*)"packet");
-      xmlChar* xmlKeep= xmlGetProp(CurrNode,(const xmlChar*)"keep");
+      xmlChar* xmlSteps= xmlGetProp(CurrNode,(const xmlChar*)"steps");
 
-      if (xmlKeep != NULL && xmlPacket != NULL)
+      if (xmlSteps != NULL)
       {
-        unsigned int ReadPacket, ReadKeep;
+        unsigned int ReadSteps;
 
-        if (!openfluid::tools::ConvertString(std::string((char*)xmlPacket),&ReadPacket))
-          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for packet attribute for progressout tag (" + m_CurrentFile + ")");
+        if (!openfluid::tools::ConvertString(std::string((char*)xmlSteps),&ReadSteps))
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for steps attribute for valuesbuffer tag (" + m_CurrentFile + ")");
 
-        if (!openfluid::tools::ConvertString(std::string((char*)xmlKeep),&ReadKeep))
-          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for keep attribute for progressout tag (" + m_CurrentFile + ")");
-
-
-        if (!(ReadPacket > ReadKeep))
-          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","packet must be strictly greater than keep for progressout (" + m_CurrentFile + ")");
-
-        if (!(ReadKeep > 0))
-          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","keep must be strictly greater than 0 for progressout (" + m_CurrentFile + ")");
-
-        m_RunDescriptor.setProgressiveOutput(ReadPacket,ReadKeep);
-
+        m_RunDescriptor.setValuesBufferSize(ReadSteps);
       }
       else
-        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","missing keep and/or packet attribute(s) for progressout tag (" + m_CurrentFile + ")");
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","missing steps attribute for valuesbuffer tag (" + m_CurrentFile + ")");
+    }
 
+    if (xmlStrcmp(CurrNode->name,(const xmlChar*)"filesbuffer") == 0)
+    {
+      xmlChar* xmlKBytes= xmlGetProp(CurrNode,(const xmlChar*)"kbytes");
+
+      if (xmlKBytes != NULL)
+      {
+        unsigned int ReadKBytes;
+
+        if (!openfluid::tools::ConvertString(std::string((char*)xmlKBytes),&ReadKBytes))
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","wrong format for kbytes attribute for filesbuffer tag (" + m_CurrentFile + ")");
+
+        m_RunDescriptor.setFilesBufferSizeInKB(ReadKBytes);
+      }
+      else
+        throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","missing kbytes attribute for filesbuffer tag (" + m_CurrentFile + ")");
     }
 
     if (xmlStrcmp(CurrNode->name,(const xmlChar*)"simid") == 0)

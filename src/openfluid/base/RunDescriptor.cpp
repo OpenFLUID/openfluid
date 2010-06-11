@@ -54,6 +54,7 @@
  */
 
 #include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace base {
@@ -70,8 +71,9 @@ RunDescriptor::RunDescriptor()
   m_EndDate = openfluid::core::DateTime();
 
   m_SimID = "";
-  m_ProgOutKeep = 0;
-  m_ProgOutPacket = 0;
+  m_FilesBufferSizeInKB = openfluid::config::DEFAULT_OUTFILES_BUFFER_KB;
+  m_IsUserValuesBufferSize = false;
+  m_ValuesBufferSize = 0;
 }
 
 
@@ -88,8 +90,9 @@ RunDescriptor::RunDescriptor(int DeltaT,
   m_EndDate = EndDate;
 
   m_SimID = "";
-  m_ProgOutKeep = 0;
-  m_ProgOutPacket = 0;
+  m_FilesBufferSizeInKB = openfluid::config::DEFAULT_OUTFILES_BUFFER_KB;
+  m_IsUserValuesBufferSize = false;
+  m_ValuesBufferSize = 0;
 }
 
 
@@ -101,26 +104,6 @@ RunDescriptor::~RunDescriptor()
 
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void RunDescriptor::setProgressiveOutput(const unsigned int Packet, const unsigned int Keep)
-{
-  m_ProgOutPacket = Packet;
-  m_ProgOutKeep = Keep;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool RunDescriptor::isProgressiveOutput() const
-{
-  return (m_ProgOutKeep > 0 && m_ProgOutPacket > 0);
-}
 
 
 } } // namespaces

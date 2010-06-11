@@ -2,7 +2,7 @@
 <openfluid>
   <run>
     <deltat>537</deltat>
-    <progressout packet="5000" keep="5" />    
+    <valuesbuffer steps="5000" />    
     <period begin="2000-01-01 00:00:00" end="2000-06-30 23:59:59" />
   </run>
 </openfluid>

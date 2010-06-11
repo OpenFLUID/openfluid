@@ -80,7 +80,7 @@ const std::string RUNFILE = "run.xml";
 const std::string OUTPUTCONFFILE = "output.xml";
 const std::string SIMINFOFILE = "siminfo.out";
 const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER = 2048;
+const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
 
 
 // Default file extensions

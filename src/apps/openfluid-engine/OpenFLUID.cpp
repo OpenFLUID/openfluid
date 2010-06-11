@@ -544,8 +544,10 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isProgressiveOutput()) std::cout << "Progressive output enabled (Packet=" << openfluid::base::RuntimeEnvironment::getInstance()->getProgressiveOutputPacket() << ", Keep=" << openfluid::base::RuntimeEnvironment::getInstance()->getProgressiveOutputKeep() << ")" <<  std::endl;
-  else std::cout << "Progressive output disabled" << std::endl;
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize())
+    std::cout << "Buffers for variables set to " << openfluid::base::RuntimeEnvironment::getInstance()->getValuesBufferSize() << " time steps" <<  std::endl;
+  else std::cout << "Buffers for variables set to full simulation" << std::endl;
+  std::cout << "Buffers for output files set to " << openfluid::base::RuntimeEnvironment::getInstance()->getFilesBufferSize() << " bytes" << std::endl;
 
   std::cout << std::endl;
 

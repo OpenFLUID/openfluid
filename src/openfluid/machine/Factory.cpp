@@ -310,11 +310,12 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& D
   mp_RunEnv->setSimulationTimeInformation(Descriptor.getBeginDate(),Descriptor.getEndDate(),
                                           Descriptor.getDeltaT());
 
-  if (Descriptor.isProgressiveOutput())
+  if (Descriptor.isUserValuesBufferSize())
   {
-    mp_RunEnv->setProgressiveOutputKeep(Descriptor.getProgressiveOutputKeep());
-    mp_RunEnv->setProgressiveOutputPacket(Descriptor.getProgressiveOutputPacket());
+    mp_RunEnv->setValuesBufferSize(Descriptor.getValuesBufferSize());
   }
+
+  mp_RunEnv->setFilesBufferSize(Descriptor.getFilesBufferSizeInKB()*1024);
 
   if (Descriptor.isSimulationID())
   {

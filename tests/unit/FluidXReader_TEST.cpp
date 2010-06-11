@@ -275,9 +275,9 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE(FXR.getRunDescriptor().getEndDate() == openfluid::core::DateTime(2005,11,30,6,53,7));
   BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().isSimulationID(),true);
   BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().getSimulationID(),"testrun");
-  BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().isProgressiveOutput(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().getProgressiveOutputPacket(),100);
-  BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().getProgressiveOutputKeep(),5);
+  BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().isUserValuesBufferSize(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().getValuesBufferSize(),100);
+  BOOST_REQUIRE_EQUAL(FXR.getRunDescriptor().getFilesBufferSizeInKB(),2);
 
 
 

@@ -502,9 +502,9 @@ bool Engine::prepareDataAndCheckConsistency()
                                                        mp_RunEnv->getSimulationEndTime(),
                                                        mp_RunEnv->getSimulationTimeStep());
 
-  if (mp_RunEnv->isProgressiveOutput())
+  if (mp_RunEnv->isUserValuesBufferSize())
   {
-    openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getProgressiveOutputPacket());
+    openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getValuesBufferSize());
   }
   else
   {
@@ -607,7 +607,6 @@ bool Engine::run()
 
 
   std::string ProdMessage;
-  openfluid::core::TimeStep_t SaveReleaseBegin, SaveReleaseEnd;
 
 
   // Check for simulation vars production before init
