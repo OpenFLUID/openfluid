@@ -175,7 +175,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    bool initParams(openfluid::core::FuncParamsMap_t Params)" << std::endl;
+  CPPContent << "    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << "" << std::endl;
   CPPContent << "      return true;" << std::endl;
@@ -207,7 +207,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)" << std::endl;
+  CPPContent << "    bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
   CPPContent << "      return true;" << std::endl;
@@ -217,7 +217,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    bool runStep(const openfluid::base::SimulationStatus* SimStatus)" << std::endl;
+  CPPContent << "    bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
   CPPContent << "      return true;" << std::endl;
@@ -227,7 +227,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)" << std::endl;
+  CPPContent << "    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
   CPPContent << "      return true;" << std::endl;
