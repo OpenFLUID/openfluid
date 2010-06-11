@@ -113,7 +113,7 @@ VectorProdFunction::~VectorProdFunction()
 // =====================================================================
 
 
-bool VectorProdFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool VectorProdFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
 
@@ -148,7 +148,7 @@ bool VectorProdFunction::checkConsistency()
 // =====================================================================
 
 
-bool VectorProdFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool VectorProdFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
@@ -159,7 +159,7 @@ bool VectorProdFunction::initializeRun(const openfluid::base::SimulationInfo* Si
 // =====================================================================
 
 
-bool VectorProdFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool VectorProdFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
   openfluid::core::Unit* TU;
   long VectorSize = 40;
@@ -184,7 +184,7 @@ bool VectorProdFunction::runStep(const openfluid::base::SimulationStatus* SimSta
 // =====================================================================
 
 
-bool VectorProdFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool VectorProdFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 

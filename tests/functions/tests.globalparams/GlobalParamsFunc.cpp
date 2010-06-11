@@ -184,7 +184,7 @@ class GlobalParamsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
   {
 
 
@@ -195,7 +195,7 @@ class GlobalParamsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
   {
 
     return true;
@@ -205,7 +205,7 @@ class GlobalParamsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
   {
 
 

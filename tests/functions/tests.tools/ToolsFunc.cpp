@@ -159,7 +159,7 @@ ToolsFunction::~ToolsFunction()
 // =====================================================================
 
 
-bool ToolsFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool ToolsFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
   return true;
@@ -193,7 +193,7 @@ bool ToolsFunction::checkConsistency()
 // =====================================================================
 
 
-bool ToolsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool ToolsFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   openfluid::tools::ColumnTextParser CTParser("#");
@@ -240,7 +240,7 @@ bool ToolsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo
 // =====================================================================
 
 
-bool ToolsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool ToolsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
 
   return true;
@@ -250,7 +250,7 @@ bool ToolsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 // =====================================================================
 
 
-bool ToolsFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool ToolsFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   return true;

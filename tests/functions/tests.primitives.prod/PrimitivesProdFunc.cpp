@@ -114,7 +114,7 @@ PrimitivesProdFunction::~PrimitivesProdFunction()
 // =====================================================================
 
 
-bool PrimitivesProdFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool PrimitivesProdFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
 
@@ -149,7 +149,7 @@ bool PrimitivesProdFunction::checkConsistency()
 // =====================================================================
 
 
-bool PrimitivesProdFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool PrimitivesProdFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
@@ -240,7 +240,7 @@ bool PrimitivesProdFunction::runStep(const openfluid::base::SimulationStatus* Si
 // =====================================================================
 
 
-bool PrimitivesProdFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool PrimitivesProdFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 

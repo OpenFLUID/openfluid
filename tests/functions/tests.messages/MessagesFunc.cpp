@@ -149,7 +149,7 @@ bool MessagesFunction::checkConsistency()
 // =====================================================================
 
 
-bool MessagesFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool MessagesFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   OPENFLUID_RaiseWarning("tests.messages","initializeRun()","Message from tests.messages function");
@@ -193,7 +193,7 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 // =====================================================================
 
 
-bool MessagesFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool MessagesFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   OPENFLUID_RaiseWarning("tests.messages","finalizeRun()","Message from tests.messages function");

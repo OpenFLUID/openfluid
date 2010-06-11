@@ -113,7 +113,7 @@ VectorUseFunction::~VectorUseFunction()
 // =====================================================================
 
 
-bool VectorUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool VectorUseFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
 
@@ -148,7 +148,7 @@ bool VectorUseFunction::checkConsistency()
 // =====================================================================
 
 
-bool VectorUseFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool VectorUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
@@ -186,7 +186,7 @@ bool VectorUseFunction::runStep(const openfluid::base::SimulationStatus* SimStat
 // =====================================================================
 
 
-bool VectorUseFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool VectorUseFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 
