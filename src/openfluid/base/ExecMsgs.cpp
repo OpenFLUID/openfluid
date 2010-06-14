@@ -47,10 +47,10 @@
 
 
 /**
-  \file
-  \brief implements of ...
+  @file
+  @brief implements of ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

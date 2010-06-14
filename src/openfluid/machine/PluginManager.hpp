@@ -47,10 +47,9 @@
 
 
 /**
-  \file PluginManager.h
-  \brief header of the plugins management class
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

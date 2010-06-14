@@ -47,10 +47,10 @@
 
 
 /**
-  \file DateTime.cpp
-  \brief Implements date-time management class
+  @file
+  @brief Implements date-time management class
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -167,7 +167,7 @@ void DateTime::updateYMDHMSFromRawTime()
 {
 
 
-  /** \internal
+  /** @internal
 
     http://en.wikipedia.org/wiki/Talk:Julian_day
 
@@ -216,7 +216,7 @@ void DateTime::updateYMDHMSFromRawTime()
 
 void DateTime::updateRawTimeFromYMDHMS()
 {
-  /** \internal
+  /** @internal
 
     Uses the julian day formula from
     Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968).

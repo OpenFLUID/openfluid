@@ -47,10 +47,9 @@
 
 
 /**
-  \file OpenFLUID.h
-  \brief header of OpenFLUID application
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

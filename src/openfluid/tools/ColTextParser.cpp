@@ -47,10 +47,10 @@
 
 
 /**
-  \file ColFileParser.cpp
-  \brief implements column file parser
+  @file
+  @brief implements column file parser
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -213,7 +213,7 @@ bool ColumnTextParser::loadFromFile(std::string Filename)
 
 bool ColumnTextParser::setFromString(std::string Contents, unsigned int ColumnsNbr)
 {
-  /** \internal
+  /** @internal
 
     The string is tokenized.
     The number of tokens must be modulo number of columns

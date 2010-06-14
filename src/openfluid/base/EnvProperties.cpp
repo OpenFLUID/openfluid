@@ -47,10 +47,10 @@
 
 
 /**
-  \file EnvProperties.cpp
-  \brief implementation file for function environment
+  @file
+  @brief implementation file for function environment
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

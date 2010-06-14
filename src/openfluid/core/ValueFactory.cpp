@@ -47,9 +47,9 @@
 
 
 /**
-  \file
-  \brief
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @file
+  @brief
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

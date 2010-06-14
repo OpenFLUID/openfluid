@@ -46,10 +46,9 @@
 */
 
 /**
-  \file ValuesBufferProperties.hpp
-  \brief Header of ...
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 

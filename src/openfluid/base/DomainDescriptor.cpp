@@ -47,10 +47,10 @@
 
 
 /**
-  \file DomainDescriptor.cpp
-  \brief Implements ...
+  @file
+  @brief Implements ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 

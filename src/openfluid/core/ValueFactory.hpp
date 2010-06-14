@@ -47,11 +47,9 @@
 
 
 /**
-  \if DOCFORDEV
-  \file ValueFactory.hpp
-  \brief header of ValueFactory class
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
+  @file
+
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -65,11 +63,9 @@
 namespace openfluid { namespace core {
 
 /**
-  \if DOCFORDEV
-  \brief Class for numerical values conversions and manipulations
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 template <class T>
 class DLLEXPORT ValueFactory

@@ -47,10 +47,10 @@
 
 
 /**
-  \file NewFuncBuddy.cpp
-  \brief Implements the "new function" buddy
+  @file
+  @brief Implements the "new function" buddy
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #include <openfluid/buddies/NewFuncBuddy.hpp>
@@ -105,10 +105,10 @@ void NewFunctionBuddy::writeFunctionCPP()
 
 
   CPPContent << "/**" << std::endl;
-  CPPContent << "  \\file " << m_Options["cppclass"] << ".cpp" << std::endl;
-  CPPContent << "  \\brief Implements " << m_Options["cppclass"] << std::endl;
+  CPPContent << "  @file" << std::endl;
+  CPPContent << "  @brief Implements " << m_Options["cppclass"] << std::endl;
   CPPContent << "" << std::endl;
-  CPPContent << "  \\author " << m_Options["authorname"] << " <" << m_Options["authoremail"] << ">" << std::endl;
+  CPPContent << "  @author " << m_Options["authorname"] << " <" << m_Options["authoremail"] << ">" << std::endl;
   CPPContent << " */" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;

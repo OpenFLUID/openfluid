@@ -47,10 +47,10 @@
 
 
 /**
-  \file Event.cpp
-  \brief implements distributed event definition class
+  @file
+  @brief implements distributed event definition class
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

@@ -47,10 +47,9 @@
 
 
 /**
-  \file EnvProperties.h
-  \brief Header of function environment management class
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -64,9 +63,7 @@
 namespace openfluid { namespace base {
 
 /**
-  \if DOCFORDEV
   Class containing execution environment information for funtions
-  \endif
 */
 class DLLEXPORT EnvironmentProperties
 {
@@ -93,28 +90,28 @@ class DLLEXPORT EnvironmentProperties
     /**
       Assigns a boolean value to the corresponding key
 
-      \return true if the assignment is correct
+      @return true if the assignment is correct
     */
     bool setValue(std::string Key, bool Value);
 
     /**
       Assigns a string value to the corresponding key
 
-      \return true if the assignment is correct
+      @return true if the assignment is correct
     */
     bool setValue(std::string Key, std::string Value);
 
     /**
       Gets the boolean value assigned to the key
 
-      \return true if the value exists as a boolean
+      @return true if the value exists as a boolean
     */
     bool getValue(std::string Key, bool *Value) const;
 
     /**
       Gets the string value assigned to the key
 
-      \return true if the value exists as a string
+      @return true if the value exists as a string
     */
     bool getValue(std::string Key, std::string *Value) const;
 

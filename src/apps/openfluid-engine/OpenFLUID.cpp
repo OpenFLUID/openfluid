@@ -47,10 +47,10 @@
 
 
 /**
-  \file OpenFLUID.cpp
-  \brief implements OpenFLUID application
+  @file
+  @brief implements OpenFLUID application
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include <iostream>

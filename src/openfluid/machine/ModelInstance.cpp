@@ -47,10 +47,10 @@
 
 
 /**
-  \file ModelInstance.cpp
-  \brief Implements ...
+  @file
+  @brief Implements ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #include <openfluid/machine/ModelInstance.hpp>
@@ -66,8 +66,8 @@ namespace openfluid { namespace machine {
 
 /**
   Macro for parsing the functions list and calling the given method of each function of the list
-  \param[in] calledmethod the method to call on each function
-  \param[out] statevar the globalized return of the method calls
+  @param[in] calledmethod the method to call on each function
+  @param[out] statevar the globalized return of the method calls
  */
 #define PARSE_FUNCTION_LIST(calledmethod,statevar) \
     _M_FuncIter = m_ModelItems.begin(); \
@@ -105,9 +105,9 @@ namespace openfluid { namespace machine {
 
 /**
   Macro for parsing the functions list and calling the given two methods of each function of the list
-  \param[in] calledmethod1 the first method to call on each function
-  \param[in] calledmethod2 the first method to call on each function
-  \param[out] statevar the globalized return of the method calls
+  @param[in] calledmethod1 the first method to call on each function
+  @param[in] calledmethod2 the first method to call on each function
+  @param[out] statevar the globalized return of the method calls
  */
 
 #define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,statevar) \

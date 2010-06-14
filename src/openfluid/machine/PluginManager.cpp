@@ -47,10 +47,10 @@
 
 
 /**
-  \file PluginManager.cpp
-  \brief implements the plugins management class
+  @file
+  @brief implements the plugins management class
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

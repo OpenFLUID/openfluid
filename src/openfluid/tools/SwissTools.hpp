@@ -47,9 +47,9 @@
 
 
 /**
-  \file SwissTools.h
-  \brief Header for general purpose tools.
-  \author JC.Fabre <fabrejc@supagro.inra.fr>
+  @file
+
+  @author JC.Fabre <fabrejc@supagro.inra.fr>
 */
 
 
@@ -68,9 +68,9 @@ namespace openfluid { namespace tools {
 
 /**
   Template function for string to other type conversion
-  \param[in] StrToConvert the string to convert
-  \param[out] Converted the result of the conversion
-  \return true if the conversion is correct
+  @param[in] StrToConvert the string to convert
+  @param[out] Converted the result of the conversion
+  @return true if the conversion is correct
 */
 template<typename T>
 inline bool ConvertString(const std::string& StrToConvert, T* Converted)
@@ -84,9 +84,9 @@ inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 
 /**
   Template function for value to string conversion
-  \param[in] ValueToConvert the value to convert
-  \param[out] StrConverted the result of the conversion
-  \return true if the conversion is correct
+  @param[in] ValueToConvert the value to convert
+  @param[out] StrConverted the result of the conversion
+  @return true if the conversion is correct
 */
 template<typename T>
 inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
@@ -105,9 +105,9 @@ inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
 
 /**
   Function for tokenizing string into a vector of tokens
-  \param[in] StrToTokenize the string to tokenize
-  \param[out] Tokens the resulting tokens
-  \param[in] Delimiters the string delimiter
+  @param[in] StrToTokenize the string to tokenize
+  @param[out] Tokens the resulting tokens
+  @param[in] Delimiters the string delimiter
 */
 void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
                               std::vector<std::string>& Tokens,
@@ -120,12 +120,12 @@ void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
 /**
   Function for testing equality between two double precision floats,
   using the "close enough" method.
-  \param[in] A the firts term of the equality
-  \param[in] B the firts term of the equality
-  \param[in] Epsilon the comparison tolerance factor
+  @param[in] A the firts term of the equality
+  @param[in] B the firts term of the equality
+  @param[in] Epsilon the comparison tolerance factor
 
-  \see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
-  \see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
+  @see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
+  @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
 inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 {
@@ -141,12 +141,12 @@ inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 /**
   Function for testing equality between two double precision floats,
   using the "very close" method.
-  \param[in] A the firts term of the equality
-  \param[in] B the firts term of the equality
-  \param[in] Epsilon the comparison tolerance factor
+  @param[in] A the firts term of the equality
+  @param[in] B the firts term of the equality
+  @param[in] Epsilon the comparison tolerance factor
 
-  \see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
-  \see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
+  @see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
+  @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
 inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
 {
@@ -170,20 +170,26 @@ bool DLLEXPORT WildcardMatching(const std::string Pattern, const std::string Str
 
 /**
   Get list of files with specified extension contained in the specified dir
-  \param[in] DirToExplore the directory to explore
-  \param[in] Ext the file extension
-  \param[in] WithPath return full path with file name if true, file name only otherwise
+  @param[in] DirToExplore the directory to explore
+  @param[in] Ext the file extension
+  @param[in] WithPath return full path with file name if true, file name only otherwise
+  @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
 */
-std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore, const std::string Ext, bool WithPath = false, bool ExtIncludeDot = false);
+std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
+                                                 const std::string Ext,
+                                                 bool WithPath = false,
+                                                 bool ExtIncludeDot = false);
 
 /**
   Splits the passed string into a std::string array, split using the given SepString
-  \param[in] StrToSplit the string to split
-  \param[in] SepString the string used to split
-  \param[in] ReturnsEmpty if true, the empty strings are returned
-  \return a vector of strings
+  @param[in] StrToSplit the string to split
+  @param[in] Separators the string of separators used to split the string
+  @param[in] ReturnsEmpty if true, the empty strings are returned
+  @return a vector of strings
 */
-std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit, const std::string Separators,  bool ReturnsEmpty = false);
+std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit,
+                                               const std::string Separators,
+                                               bool ReturnsEmpty = false);
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 

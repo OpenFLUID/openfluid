@@ -47,10 +47,9 @@
 
 
 /**
-  \file SimStatus.h
-  \brief Header of simulation status management class
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -96,28 +95,28 @@ class DLLEXPORT SimulationInfo
     /**
       Returns the value of a time step (in seconds)
 
-      \return the number of second in a time step
+      @return the number of second in a time step
     */
     int getTimeStep() const { return m_TimeStep; };
 
     /**
       Returns the number of time step for the simulation
 
-      \return the number of time steps
+      @return the number of time steps
     */
     unsigned int getStepsCount() const { return m_StepsCount; };
 
     /**
       Returns the date and time of the beginning of the simulation
 
-      \return the DateTime of the beginning of the simulation
+      @return the DateTime of the beginning of the simulation
     */
     openfluid::core::DateTime getStartTime() const { return m_StartTime; };
 
     /**
       Returns the date and time of the ending of the simulation
 
-      \return the DateTime of the ending of the simulation
+      @return the DateTime of the ending of the simulation
     */
     openfluid::core::DateTime getEndTime() const { return m_EndTime; };
 
@@ -159,14 +158,14 @@ class DLLEXPORT SimulationStatus : public SimulationInfo
     /**
       Returns the current time step of the simulation
 
-      \return the current time step number
+      @return the current time step number
     */
     unsigned int getCurrentStep() const { return m_CurrentStep; };
 
     /**
       Returns the current time of the simulation
 
-      \return the current time
+      @return the current time
     */
     openfluid::core::DateTime getCurrentTime() const { return m_CurrentTime; };
 

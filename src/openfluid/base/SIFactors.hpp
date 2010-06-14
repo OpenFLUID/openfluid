@@ -47,11 +47,9 @@
 
 
 /**
-  \if DOCFORDEV
-  \file SIFactors.h
-  \brief Header containing factors for values conversion
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
+  @file
+
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

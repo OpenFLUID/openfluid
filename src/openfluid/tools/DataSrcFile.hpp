@@ -47,10 +47,9 @@
 
 
 /**
-  \file DataSrcFile.h
-  \brief Header of class for managing data sources files
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

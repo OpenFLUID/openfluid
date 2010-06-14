@@ -47,10 +47,9 @@
 
 
 /**
-  \file OFBuddy.h
-  \brief header of OpenFLUIDBuddy class ...
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 

@@ -47,10 +47,9 @@
 
 
 /**
-  \file DistribInterp.h
-  \brief Header of class for time interpolation and spatial distribution of data
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

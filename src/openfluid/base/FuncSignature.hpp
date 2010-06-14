@@ -47,10 +47,9 @@
 
 
 /**
-  \file FuncSignature.h
-  \brief Header of function signature definition
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __FUNCSIGNATURE_H__
@@ -144,9 +143,9 @@
 
 /**
   Macro for declaration of a function parameter
-  \param[in] name name of the parameter
-  \param[in] description description of the parameter
-  \param[in] unit unit of the parameter. Could be an empty string if there is no unit
+  @param[in] name name of the parameter
+  @param[in] description description of the parameter
+  @param[in] unit unit of the parameter. Could be an empty string if there is no unit
 */
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
   Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem((name),(""),description,unit));
@@ -159,30 +158,30 @@
 
 /**
   Macro for declaration of a produced variable
-  \param[in] name name of the variable
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the variable
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+  @param[in] name name of the variable
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the variable
+  @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_PRODUCED_VAR(name,uclass,description,unit) \
   Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an updated variable
-  \param[in] name name of the variable
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the variable
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+  @param[in] name name of the variable
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the variable
+  @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_UPDATED_VAR(name,uclass,description,unit) \
   Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required variable
-  \param[in] name name of the variable
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the variable
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+  @param[in] name name of the variable
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the variable
+  @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_VAR(name,uclass,description,unit) \
   Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
@@ -191,20 +190,20 @@
 
 /**
   Macro for declaration of a required variable, using a value produced on a previous time step
-  \param[in] name name of the variable
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the variable
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+  @param[in] name name of the variable
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the variable
+  @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_PREVVAR(name,uclass,description,unit) \
   Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an used variable
-  \param[in] name name of the variable
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the variable
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+  @param[in] name name of the variable
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the variable
+  @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_VAR(name,uclass,description,unit) \
   Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
@@ -212,50 +211,50 @@
 
 /**
   Macro for declaration of an used variable, using a value produced on a previous time step
-  \param[in] name name of the variable
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the variable
-  \param[in] unit unit of the variable. Could be an empty string if there is no unit
+  @param[in] name name of the variable
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the variable
+  @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_PREVVAR(name,uclass,description,unit) \
   Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required input data
-  \param[in] name name of the property
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the property
-  \param[in] unit unit of the property. Could be an empty string if there is no unit
+  @param[in] name name of the property
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the property
+  @param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_INPUTDATA(name,uclass,description,unit) \
   Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used input data
-  \param[in] name name of the property
-  \param[in] uclass class of the concerned units
-  \param[in] description description of the property
-  \param[in] unit unit of the property. Could be an empty string if there is no unit
+  @param[in] name name of the property
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the property
+  @param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_INPUTDATA(name,uclass,description,unit) \
   Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of used events
-  \param[in] uclass class of the concerned units
+  @param[in] uclass class of the concerned units
 */
 #define DECLARE_USED_EVENTS(uclass) Signature->HandledData.UsedEventsOnUnits.push_back(uclass);
 
 /**
   Macro for declaration of required file
-  \param[in] name name of the file
+  @param[in] name name of the file
 */
 #define DECLARE_REQUIRED_EXTRAFILE(name) \
   Signature->HandledData.RequiredExtraFiles.push_back(name);
 
 /**
   Macro for declaration of used file
-  \param[in] name name of the file
+  @param[in] name name of the file
 */
 #define DECLARE_USED_EXTRAFILE(name) \
   Signature->HandledData.UsedExtraFiles.push_back(name);
@@ -302,9 +301,7 @@ enum FuncStatus_t
 // =====================================================================
 // =====================================================================
 /**
-  \if DOCFORDEV
   Structure for storage of the definition of data handled by the function.
-  \endif
 */
 struct SignatureHandledDataItem
 {
@@ -333,9 +330,7 @@ struct SignatureHandledDataItem
 };
 
 /**
-  \if DOCFORDEV
   Structure for storage of the definition of the data handled by the function. This is part of the signature.
-  \endif
 */
 struct SignatureHandledData
 {
@@ -373,10 +368,8 @@ struct SignatureHandledData
 
 
 /**
-  \if DOCFORDEV
   Structure encapsulating the plugin signature,
   returned from the plugin to the host app for registering
-  \endif
 */
 struct FunctionSignature
 {

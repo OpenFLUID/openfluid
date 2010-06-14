@@ -47,10 +47,9 @@
 
 
 /**
-  \file DateTime.h
-  \brief header of date-time management class
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -72,24 +71,24 @@ namespace openfluid { namespace core {
 typedef unsigned long long rawtime_t;
 
 /**
-  \brief Class for management of date and time information.
+  @brief Class for management of date and time information.
 
   Class for management of date and time information. It includes arithmetics and comparisons operations.
 
   Sources:
-  \li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968). http://www.decimaltime.hynes.net/index.html
-  \li http://en.wikipedia.org/wiki/Julian_day
+  @li Fliegel, H. F. and van Flandern, T. C. (1968). Communications of the ACM, Vol. 11, No. 10 (October, 1968). http://www.decimaltime.hynes.net/index.html
+  @li http://en.wikipedia.org/wiki/Julian_day
 
   <BR>
 
   <I>Example : creating a date</I>
-  \code
+  @code
   openfluid::core::DateTime aDate(2009,01,25,12,05,00);
-  \endcode
+  @endcode
 
 
   <I>Example : adding time span to a date</I>
-  \code
+  @code
   // adding 45 seconds
   aDate.addSeconds(45);
 
@@ -101,21 +100,21 @@ typedef unsigned long long rawtime_t;
 
   // adding 60 days
   aDate.addSeconds(openfluid::core::DateTime::Days(60));
-  \endcode
+  @endcode
 
 
   <I>Example : subtracting time span to a date</I>
-  \code
+  @code
   // subtracting 10 seconds
   aDate.subtractSeconds(10);
 
   // subtracting 30 days
   aDate.subtractSeconds(openfluid::core::DateTime::Days(30));
-  \endcode
+  @endcode
 
 
   <I>Example : getting difference in seconds between two dates</I>
-  \code
+  @code
   openfluid::core::DateTime FirstDate(2009,01,25,12,05,00);
   openfluid::core::DateTime SecondDate(2009,02,28,00,00,00);
 
@@ -127,7 +126,7 @@ typedef unsigned long long rawtime_t;
     std::cout << "The difference between the two dates is greater than 60 days" << std::end;
   else
     std::cout << "The difference between the two dates is lesser than 60 days" << std::end;
-  \endcode
+  @endcode
 
 
 */
@@ -136,8 +135,7 @@ class DLLEXPORT DateTime
   private:
 
     /**
-      \if DOCFORDEV
-      The tm struct contains:
+          The tm struct contains:
         int tm_sec;
         int tm_min;
         int tm_hour;
@@ -147,8 +145,7 @@ class DLLEXPORT DateTime
         int tm_wday;
         int tm_yday;
         int tm_isdst
-        \endif
-    */
+          */
 
     /**
       The date and time stored as broken down structure
@@ -207,70 +204,70 @@ class DLLEXPORT DateTime
 
     /**
       Returns Year (4 digits)
-      \return an int
+      @return an int
     */
     int getYear() const {return (m_TM.tm_year+1900); };
 
     /**
       Retourns Month [1-12]
-      \return an int
+      @return an int
     */
     int getMonth() const {return (m_TM.tm_mon+1) ;};
 
     /**
       Returns Day [1-31]
-      \return an int
+      @return an int
     */
     int getDay() const {return m_TM.tm_mday;};
 
     /**
       Returns Hour  [0-23]
-      \return an int
+      @return an int
     */
     int getHour() const {return m_TM.tm_hour;};
 
     /**
       Returns Minute [0-59]
-      \return an int
+      @return an int
     */
     int getMinute() const {return m_TM.tm_min;};
 
     /**
       Returns Second [0-59]
-      \return an int
+      @return an int
     */
     int getSecond() const {return m_TM.tm_sec;};
 
     /**
       Returns date-time in raw format (number of seconds since first day of 4713 BC)
-      \return a rawtime_t
+      @return a rawtime_t
     */
     rawtime_t getRawTime() const;
 
 
     /**
       Returns date-time as string, using format YYYT-MM-DD hh:mm:ss
-      \return a string
+      @return a string
     */
     std::string getAsISOString() const;
 
     /**
       Returns date-time as string, using strftime() format string
-      \param[in] Format strftime()-like format string
-      \return a string
+      @param[in] Format strftime()-like format string
+      @return a string
     */
     std::string getAsString(std::string Format) const;
 
 
     /**
       Returns date as string, using format YYYY-MM-DD
-      \return a string
+      @return a string
     */
     std::string getDateAsISOString() const;
 
     /**
       Returns time as string, using format hh:mm:ss
-      \return a string
+      @return a string
     */
     std::string getTimeAsISOString() const;
 

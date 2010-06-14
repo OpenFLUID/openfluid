@@ -47,10 +47,10 @@
 
 
 /**
-  \file PlugFunction.cpp
-  \brief implementation file for generic pluggable function interface definition
+  @file
+  @brief implementation file for generic pluggable function interface definition
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include <iostream>

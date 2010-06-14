@@ -47,10 +47,9 @@
 
 
 /**
-  \file EventsColl.h
-  \brief Header of distributed event collection management class
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -69,7 +68,7 @@ class DLLEXPORT Event;
 
 
 /**
-  \brief Class defining a collection of discrete events
+  @brief Class defining a collection of discrete events
 */
 class DLLEXPORT EventsCollection
 {

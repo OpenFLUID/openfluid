@@ -47,10 +47,9 @@
 
 
 /**
-  \file PlugFunction.h
-  \brief Header of generic pluggable function interface definition
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 
   Every simulation function must :
   \li define its own signature
@@ -138,7 +137,7 @@
 
 /**
   Macro for definition of function hook
-  \param[in] pluginclassname The name of the class to instanciate
+  @param[in] pluginclassname The name of the class to instanciate
 */
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
   std::string GetPlugSDKVersion() \
@@ -158,7 +157,7 @@
 
 /**
   Macro for declaration of a loop processing all units of a class, following their process order
-  \param[in] loopid ID of the loop
+  @param[in] loopid ID of the loop
 */
 #define DECLARE_UNITS_ORDERED_LOOP(loopid) \
   openfluid::core::UnitsList_t::iterator _M_##loopid##_ordit;\
@@ -167,9 +166,9 @@
 
 /**
   Macro for the beginning of a loop processing all units of a class, following their process order
-  \param[in] loopid ID of the loop, must match declaration
-  \param[in] unitclass name of the unit class
-  \param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
+  @param[in] loopid ID of the loop, must match declaration
+  @param[in] unitclass name of the unit class
+  @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
 */
 #define BEGIN_UNITS_ORDERED_LOOP(loopid,unitclass,unit) \
   if (!mp_CoreData->isUnitsClassExist(unitclass)) \
@@ -182,7 +181,7 @@
 
 /**
   Macro for declaration of a loop processing a list of units
-  \param[in] loopid ID of the loop
+  @param[in] loopid ID of the loop
 */
 #define DECLARE_UNITS_LIST_LOOP(loopid) \
   openfluid::core::UnitsPtrList_t::iterator _M_##loopid##_lstit;\
@@ -190,9 +189,9 @@
 
 /**
   Macro for the beginning of a loop processing a list of units
-  \param[in] loopid ID of the loop, must match declaration
-  \param[in] ulist pointer to a list of openfluid::core::Unit
-  \param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
+  @param[in] loopid ID of the loop, must match declaration
+  @param[in] ulist pointer to a list of openfluid::core::Unit
+  @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
 */
 #define BEGIN_UNITS_LIST_LOOP(loopid,ulist,unit) \
   for(_M_##loopid##_lstit=ulist->begin(); _M_##loopid##_lstit != ulist->end(); _M_##loopid##_lstit++) \
@@ -208,8 +207,8 @@
 
 /**
   Macro for the beginning of a loop processing an event list from an event collection
-  \param[in] evlist pointer to a list of events
-  \param[out] evobj the current processed event
+  @param[in] evlist pointer to a list of events
+  @param[out] evobj the current processed event
 */
 #define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
   for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
@@ -234,13 +233,13 @@ namespace openfluid { namespace base {
 
 
 /**
-  \brief Abstract class for plugin interface
+  @brief Abstract class for plugin interface
 
   Abstract class for plugin interface, defining the minimal structure for a
   simulation function \n
   All simulation functions must inherit from this class.
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 class DLLEXPORT PluggableFunction
 {
@@ -281,10 +280,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets the distributed variable value for a unit at a time step
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the requested variable
-      \param[in] Step the time step for the value of the requested variable
-      \param[out] Value the value of the requested variable (scalar)
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Value the value of the requested variable (scalar)
     */
     void OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
@@ -293,10 +292,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets the distributed variable value for a unit at a time step
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the requested variable
-      \param[in] Step the time step for the value of the requested variable
-      \param[out] Value the value of the requested variable (vector)
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Value the value of the requested variable (vector)
     */
     void OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
@@ -305,9 +304,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets input data for a unit, as a double
-      \param[in] UnitPtr a Unit
-      \param[in] InputName the name of the requested property
-      \param[out] Value the value of the requested property
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
     */
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
                                 openfluid::core::InputDataName_t InputName,
@@ -315,9 +314,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets input data for a unit, as a long integer
-      \param[in] UnitPtr a Unit
-      \param[in] InputName the name of the requested property
-      \param[out] Value the value of the requested property
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
     */
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
                                 openfluid::core::InputDataName_t InputName,
@@ -325,9 +324,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets input data for a unit, as a string
-      \param[in] UnitPtr a Unit
-      \param[in] InputName the name of the requested property
-      \param[out] Value the value of the requested property
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
     */
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
                                 openfluid::core::InputDataName_t InputName,
@@ -336,8 +335,8 @@ class DLLEXPORT PluggableFunction
 
     /**
       Returns true if a distributed input data exists, false otherwise
-      \param[in] UnitPtr a Unit
-      \param[in] InputName the name of the queried variable
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the queried variable
     */
     bool OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr,
                                     openfluid::core::InputDataName_t InputName);
@@ -346,24 +345,24 @@ class DLLEXPORT PluggableFunction
 
     /**
       Returns true if a distributed variable exists, false otherwise (searches both scalar and vector variables)
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the requested variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
     */
     bool OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr,
                                     openfluid::core::VariableName_t VarName);
 
     /**
       Returns true if a distributed scalar variable exists, false otherwise
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the requested variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
     */
     bool OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr,
                                           openfluid::core::VariableName_t VarName);
 
     /**
       Returns true if a distributed vector variable exists, false otherwise
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the requested variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
     */
     bool OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr,
                                           openfluid::core::VariableName_t VarName);
@@ -371,9 +370,9 @@ class DLLEXPORT PluggableFunction
 
    /**
       Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise (searches both scalar and vector variables)
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the requested variable
-      \param[in] Step the time step for the value of the variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the variable
     */
     bool OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr,
                                     openfluid::core::VariableName_t VarName,
@@ -381,9 +380,9 @@ class DLLEXPORT PluggableFunction
 
     /**
        Returns true if a distributed scalar variable exists and if a value has been set for the given step, false otherwise
-       \param[in] UnitPtr a Unit
-       \param[in] VarName the name of the requested variable
-       \param[in] Step the time step for the value of the variable
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] Step the time step for the value of the variable
     */
     bool OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr,
                                           openfluid::core::VariableName_t VarName,
@@ -391,9 +390,9 @@ class DLLEXPORT PluggableFunction
 
     /**
        Returns true if a distributed vector variable exists and if a value has been set for the given step, false otherwise
-       \param[in] UnitPtr a Unit
-       \param[in] VarName the name of the requested variable
-       \param[in] Step the time step for the value of the variable
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] Step the time step for the value of the variable
     */
     bool OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr,
                                           openfluid::core::VariableName_t VarName,
@@ -401,9 +400,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Appends a distributed scalar variable value for a unit at the end of the previously added values for this variable
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the variable
-      \param[in] Value the added value of the variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Value the added value of the variable
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                   openfluid::core::VariableName_t VarName,
@@ -411,9 +410,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Appends a distributed vector variable value for a unit at the end of the previously added values for this variable
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the variable
-      \param[in] Value the added value of the variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Value the added value of the variable
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                   openfluid::core::VariableName_t VarName,
@@ -421,10 +420,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Sets a distributed scalar variable value for a unit at a time step
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the variable
-      \param[in] Step the time step for the value of the variable
-      \param[in] Value the added value of the variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Value the added value of the variable
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
@@ -433,10 +432,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Sets a distributed vector variable value for a unit at a time step
-      \param[in] UnitPtr a Unit
-      \param[in] VarName the name of the variable
-      \param[in] Step the time step for the value of the variable
-      \param[in] Value the added value of the variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Value the added value of the variable
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
@@ -445,9 +444,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter from the parameters set, as a double
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Value the value of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -455,9 +454,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter value from the parameters set, as a long int
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Value the value of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -465,9 +464,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter from the parameters set, as a float
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Value the value of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -475,9 +474,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter value from the parameters set, as an int
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Value the value of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -485,9 +484,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter value from the parameters set, as a string
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Value the value of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -495,9 +494,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of strings
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Values the vector of values of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Values the vector of values of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -506,9 +505,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of doubles
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Values the vector of values of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Values the vector of values of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -517,9 +516,9 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of long ints
-      \param[in] Params the parameters set for the simulation function
-      \param[in] ParamName the name of the requested parameter
-      \param[out] Values the vector of values of the requested parameter
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Values the vector of values of the requested parameter
     */
     bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
                                         openfluid::core::FuncParamKey_t ParamName,
@@ -528,10 +527,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Gets discrete events happening on a unit during a time period
-      \param[in] UnitPtr a Unit
-      \param[in] BeginDate the beginning of the time period
-      \param[in] EndDate the ending of the time period
-      \param[out] Events the collection of event corresponding to the request
+      @param[in] UnitPtr a Unit
+      @param[in] BeginDate the beginning of the time period
+      @param[in] EndDate the ending of the time period
+      @param[out] Events the collection of event corresponding to the request
     */
     void OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr,
                              openfluid::core::DateTime BeginDate,
@@ -541,8 +540,8 @@ class DLLEXPORT PluggableFunction
 
     /**
       Appends an event on a unit
-      \param[in] UnitPtr a Unit
-      \param[in] Ev the event to append
+      @param[in] UnitPtr a Unit
+      @param[in] Ev the event to append
     */
     void OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
                                openfluid::core::Event& Ev);
@@ -551,96 +550,96 @@ class DLLEXPORT PluggableFunction
 
     /**
       Returns true if the queried unit class exists
-      \param[in] ClassName the queried class name
+      @param[in] ClassName the queried class name
     */
     bool OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName);
 
     /**
       Returns the number of units of the class if the queried unit class exists
-      \param[in] ClassName the queried class name
-      \param[out] UnitsCount the queried class name
-      \return false if the unit class does not exist
+      @param[in] ClassName the queried class name
+      @param[out] UnitsCount the queried class name
+      @return false if the unit class does not exist
     */
     bool OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t ClassName, unsigned int *UnitsCount);
 
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation
-      \param[in] Sender the sender of the message
-      \param[in] TimeStep the time step number when the message occurred
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] TimeStep the time step number when the message occurred
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg);
 
     /**
       Raises a warning message to the kernel. This do not stops the simulation
-      \param[in] Sender the sender of the message
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation
-      \param[in] Sender the sender of the message
-      \param[in] Source the source of the message
-      \param[in] TimeStep the time step number when the message occurred
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] Source the source of the message
+      @param[in] TimeStep the time step number when the message occurred
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg);
 
     /**
       Raises a warning message to the kernel. This do not stops the simulation
-      \param[in] Sender the sender of the message
-      \param[in] Source the source of the message
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] Source the source of the message
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
 
 
     /**
       Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
-      \param[in] Sender the sender of the message
-      \param[in] TimeStep the time step number when the message occurred
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] TimeStep the time step number when the message occurred
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseError(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      \param[in] Sender the sender of the message
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseError(std::string Sender, std::string Msg);
 
     /**
       Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
-      \param[in] Sender the sender of the message
-      \param[in] Source of the message (location in the sender)
-      \param[in] TimeStep the time step number when the message occurred
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] Source of the message (location in the sender)
+      @param[in] TimeStep the time step number when the message occurred
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseError(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      \param[in] Sender the sender of the message
-      \param[in] Source of the message (location in the sender)
-      \param[in] Msg the content of the message
+      @param[in] Sender the sender of the message
+      @param[in] Source of the message (location in the sender)
+      @param[in] Msg the content of the message
     */
     void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
 
 
     /**
       Gets an environment string value associated to a Key
-      \param[in] Key the sender of the message
-      \param[out] Value the value associated with the environment key
+      @param[in] Key the sender of the message
+      @param[out] Value the value associated with the environment key
     */
     bool OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value);
 
     /**
       Gets an environment boolean value associated to a Key
-      \param[in] Key the sender of the message
-      \param[out] Value the value associated with the environment key
+      @param[in] Key the sender of the message
+      @param[out] Value the value associated with the environment key
     */
     bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Value);
 

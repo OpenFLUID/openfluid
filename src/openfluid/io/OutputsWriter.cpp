@@ -47,10 +47,10 @@
 
 
 /**
-  \file OutputsWriter.cpp
-  \brief Implements ...
+  @file
+  @brief Implements ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #include <openfluid/io/OutputsWriter.hpp>

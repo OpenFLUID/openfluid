@@ -47,10 +47,9 @@
 
 
 /**
-  \file TypeDefs.h
-  \brief header of data types definition
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __TYPEDEFS_H__
@@ -110,10 +109,10 @@ typedef double ScalarValue;
 
 /**
  Type definition for vector values. This type is based on the openfluid::core::Vector template.
- \sa openfluid::core::Vector
+ @sa openfluid::core::Vector
 
  <i>usage examples:</i>
- \code
+ @code
   // create an empty vector
   openfluid::core::VectorValue TmpValue;
 
@@ -130,7 +129,7 @@ typedef double ScalarValue;
 
   // set or modify the value 15 at index 3
   TmpValue.setElement(3,15);
- \endcode
+ @endcode
 
  */
 typedef Vector<ScalarValue> VectorValue;

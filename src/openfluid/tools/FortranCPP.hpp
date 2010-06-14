@@ -47,22 +47,22 @@
 
 
 /**
-  \file FortranCPP.h
-  \brief Header for macros to call fortran code.
-  \author JC.Fabre <fabrejc@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr>
+  @file
+
+  @author JC.Fabre <fabrejc@supagro.inra.fr>, C.Dagès <dages@supagro.inra.fr>
 
 
-  \see http://www-h.eng.cam.ac.uk/help/tpl/languages/mixinglanguages.html
-  \see http://www.neurophys.wisc.edu/comp/docs/notes/not017.html
-  \see http://www.yolinux.com/TUTORIALS/LinuxTutorialMixingFortranAndC.html
-  \see http://arnholm.org/software/cppf77/cppf77.htm
-  \see http://www.aei.mpg.de/~jthorn/c2f.html
+  @see http://www-h.eng.cam.ac.uk/help/tpl/languages/mixinglanguages.html
+  @see http://www.neurophys.wisc.edu/comp/docs/notes/not017.html
+  @see http://www.yolinux.com/TUTORIALS/LinuxTutorialMixingFortranAndC.html
+  @see http://arnholm.org/software/cppf77/cppf77.htm
+  @see http://www.aei.mpg.de/~jthorn/c2f.html
 
   Below are examples of C++ simulation function calling Fortran subroutines.
 
 
   fortran source code:
-  \code
+  @code
 subroutine multrealvalue(value,mult,result)
 
 implicit none
@@ -168,11 +168,11 @@ end do
 return
 end
 
-\endcode
+@endcode
 
 
 C++ code calling fortran subroutines:
-\code
+@code
 BEGIN_EXTERN_FORTRAN
   EXTERN_FSUBROUTINE(multrealvalue)(FREAL8*,FREAL8*,FREAL8*);
   EXTERN_FSUBROUTINE(multintvalue)(FINT*,FINT*,FINT*);
@@ -240,7 +240,7 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
   return true;
 }
 
-\endcode
+@endcode
 
 */
 
@@ -269,25 +269,25 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
 /**
   Macro for declaration of an external fortran function
-  \param[in] x the name of the function
+  @param[in] x the name of the function
 */
 #define EXTERN_FFUNCTION(x) x##_
 
 /**
   Macro for calling an external fortran function
-  \param[in] x the name of the function
+  @param[in] x the name of the function
 */
 #define CALL_FFUNCTION(x) x##_
 
 /**
   Macro for declaration of an external fortran subroutine
-  \param[in] x the name of the subroutine
+  @param[in] x the name of the subroutine
 */
 #define EXTERN_FSUBROUTINE(x) void x##_
 
 /**
   Macro for calling an external fortran subroutine
-  \param[in] x the name of the subroutine
+  @param[in] x the name of the subroutine
 */
 #define CALL_FSUBROUTINE(x) x##_
 
@@ -298,29 +298,29 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
 /**
   Macro for declaration of an external fortran90 function in a module
-  \param[in] x the name of the module
-  \param[in] y the name of the function
+  @param[in] x the name of the module
+  @param[in] y the name of the function
 */
 #define EXTERN_FMODFUNCTION(x,y) __##x##__##y
 
 /**
   Macro for calling an external fortran90 function in a module
-  \param[in] x the name of the module
-  \param[in] y the name of the function
+  @param[in] x the name of the module
+  @param[in] y the name of the function
 */
 #define CALL_FMODFUNCTION(x,y) __##x##__##y
 
 /**
   Macro for declaration of an external fortran90 subroutine in a module
-  \param[in] x the name of the module
-  \param[in] y the name of the subroutine
+  @param[in] x the name of the module
+  @param[in] y the name of the subroutine
 */
 #define EXTERN_FMODSUBROUTINE(x,y) void __##x##__##y
 
 /**
   Macro for calling an external fortran90 subroutine in a module
-  \param[in] x the name of the module
-  \param[in] y the name of the subroutine
+  @param[in] x the name of the module
+  @param[in] y the name of the subroutine
 */
 #define CALL_FMODSUBROUTINE(x,y) __##x##__##y
 

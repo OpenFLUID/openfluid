@@ -47,12 +47,9 @@
 
 
 /**
-  \if DOCFORDEV
-  \file OFException.hpp
-  \brief Header of class managing exception
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

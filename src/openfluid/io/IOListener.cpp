@@ -47,10 +47,10 @@
 
 
 /**
-  \file MachineListener.cpp
-  \brief implements ...
+  @file
+  @brief implements ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 #include <openfluid/io/IOListener.hpp>

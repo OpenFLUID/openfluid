@@ -47,10 +47,10 @@
 
 
 /**
-  \file EventsColl.cpp
-  \brief Implements distributed event collection management class
+  @file
+  @brief Implements distributed event collection management class
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #include <openfluid/core/EventsColl.hpp>

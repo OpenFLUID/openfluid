@@ -47,10 +47,9 @@
 
 
 /**
-  \file NewFuncBuddy.h
-  \brief Header of the "new function" buddy
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 

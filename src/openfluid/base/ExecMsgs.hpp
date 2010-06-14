@@ -47,12 +47,9 @@
 
 
 /**
-  \if DOCFORDEV
-  \file ExecMsgs.h
-  \brief Header of class managing execution messages
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
@@ -71,11 +68,9 @@
 namespace openfluid { namespace base {
 
 /**
-  \if DOCFORDEV
   Class for managin messages during execution
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-  \endif
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 class DLLEXPORT ExecutionMessages
 {

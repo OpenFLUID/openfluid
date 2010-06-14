@@ -47,10 +47,10 @@
 
 
 /**
-  \file DTSerie.cpp
-  \brief
+  @file
+  @brief
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 

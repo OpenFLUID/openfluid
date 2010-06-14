@@ -47,10 +47,9 @@
 
 
 /**
-  \file Event.h
-  \brief Header of distributed event definition class
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 #ifndef __EVENT_HPP__
@@ -67,11 +66,11 @@ namespace openfluid { namespace core {
 
 
 /**
-  \brief Class defining  a discrete event, including attached information
+  @brief Class defining  a discrete event, including attached information
 
   Each event attached information is represented by a Key-Value couple :
-  \li Key is the name given to the information
-  \li Value is the value of the information and can be numeric or text information
+  @li Key is the name given to the information
+  @li Value is the value of the information and can be numeric or text information
 */
 class DLLEXPORT Event
 {
@@ -91,7 +90,7 @@ class DLLEXPORT Event
 
     /**
       Constructor
-      \param[in] Date the date and time of the event
+      @param[in] Date the date and time of the event
     */
     Event(DateTime Date);
 
@@ -102,35 +101,35 @@ class DLLEXPORT Event
 
     /**
       Returns true if the information exists
-      \param[in] Key the requested information key
+      @param[in] Key the requested information key
     */
     bool isInfoExist(std::string Key);
 
     /**
       Returns true if the information exists and equals the given string value
-      \param[in] Key the requested information key
-      \param[in] Value the requested value
+      @param[in] Key the requested information key
+      @param[in] Value the requested value
     */
     bool isInfoEqual(std::string Key, std::string Value);
 
     /**
       Returns true if the information exists and equals the given long value
-      \param[in] Key the requested information key
-      \param[in] Value the requested value
+      @param[in] Key the requested information key
+      @param[in] Value the requested value
     */
     bool isInfoEqual(std::string Key, long Value);
 
     /**
       Returns true if the information exists and equals the given double value
-      \param[in] Key the requested information key
-      \param[in] Value the requested value
+      @param[in] Key the requested information key
+      @param[in] Value the requested value
     */
     bool isInfoEqual(std::string Key, double Value);
 
     /**
       Returns true if the information exists and equals the given ScalarValue value
-      \param[in] Key the requested information key
-      \param[in] Info the requested value
+      @param[in] Key the requested information key
+      @param[in] Info the requested value
     */
     bool isInfoEqual(std::string Key, ScalarValue *Info);
 
@@ -151,41 +150,41 @@ class DLLEXPORT Event
 
     /**
       Gets an information as a string
-      \param[in] Key the requested information key
-      \param[out] Info the value corresponding to the requested key
-      \return true if the key exists and the conversion to the requested type is correct
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
     */
     bool getInfoAsString(std::string Key, std::string *Info);
 
     /**
       Gets an information as a long integer
-      \param[in] Key the requested information key
-      \param[out] Info the value corresponding to the requested key
-      \return true if the key exists and the conversion to the requested type is correct
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
     */
     bool getInfoAsLong(std::string Key, long *Info);
 
     /**
       Gets an information as a double
-      \param[in] Key the requested information key
-      \param[out] Info the value corresponding to the requested key
-      \return true if the key exists and the conversion to the requested type is correct
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
     */
     bool getInfoAsDouble(std::string Key, double *Info);
 
     /**
       Gets an information as a ScalarValue
-      \param[in] Key the requested information key
-      \param[out] Info the value corresponding to the requested key
-      \return true if the key exists and the conversion to the requested type is correct
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
     */
     bool getInfoAsScalarValue(std::string Key, ScalarValue *Info);
 
     /**
       Adds an information to the event
-      \param[in] Key the key of the added information
-      \param[in] Info the value of the added information
-      \return true if the adding is correct (key does not already exists)
+      @param[in] Key the key of the added information
+      @param[in] Info the value of the added information
+      @return true if the adding is correct (key does not already exists)
     */
     bool addInfo(std::string Key, std::string Info);
 

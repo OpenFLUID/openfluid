@@ -47,10 +47,9 @@
 
 
 /**
-  \file Listener.hpp
-  \brief header of ...
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
