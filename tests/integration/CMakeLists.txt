@@ -230,5 +230,22 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
 
-
+  ADD_TEST(integration-MinimalRun "${BIN_OUTPUT_PATH}/openfluid-minimal"
+                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
+                                  "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalRun"
+                                  "${TEST_OUTPUT_PATH}"
+                              )
+  
+  ADD_TEST(integration-MinimalFailsArgs "${BIN_OUTPUT_PATH}/openfluid-minimal"
+                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
+                                  "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalFailsArgs"
+                              )
+  SET_TESTS_PROPERTIES(integration-MinimalFailsArgs PROPERTIES WILL_FAIL TRUE)
+                              
+  ADD_TEST(integration-MinimalFailsInput "${BIN_OUTPUT_PATH}/openfluid-minimal"
+                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.doesnotexist"
+                                  "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalFailsInput"
+                                  "${TEST_OUTPUT_PATH}"
+                              )                              
+  SET_TESTS_PROPERTIES(integration-MinimalFailsInput PROPERTIES WILL_FAIL TRUE)
   
