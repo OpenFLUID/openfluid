@@ -1,6 +1,13 @@
 
-ADD_SUBDIRECTORY(openfluid-engine)
-ADD_SUBDIRECTORY(openfluid-minimal)
-#ADD_SUBDIRECTORY(openfluid-builder)
 
+
+ADD_SUBDIRECTORY(openfluid-minimal)
+
+IF(BUILD_APP_ENGINE)
+  ADD_SUBDIRECTORY(openfluid-engine)
+ENDIF(BUILD_APP_ENGINE)
+
+IF(BUILD_APP_BUILDER)
+  ADD_SUBDIRECTORY(openfluid-builder)
+ENDIF(BUILD_APP_BUILDER)
 

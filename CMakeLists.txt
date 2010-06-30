@@ -5,7 +5,6 @@
 #
 #
 
-
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 PROJECT(OpenFLUID CXX)
@@ -67,16 +66,30 @@ IF(Boost_FOUND AND LibXML2_FOUND)
           DESTINATION ${DOC_INSTALL_PATH})
 
 
-  MESSAGE(STATUS "Build version: ${FULL_VERSION}")
+  MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
   MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
-  MESSAGE(STATUS "Compiler flags: ${CMAKE_CXX_FLAGS}")
-  MESSAGE(STATUS "Compiler flags added for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
-  MESSAGE(STATUS "Compiler flags added for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
+  MESSAGE(STATUS "Compiler flags for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
+  MESSAGE(STATUS "Compiler flags for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
+  MESSAGE(STATUS "Build openfluid-minimal application : yes")
 
+  IF(BUILD_APP_ENGINE)
+    MESSAGE(STATUS "Build openfluid-engine application : yes")  
+  ELSE(BUILD_APP_ENGINE)
+    MESSAGE(STATUS "Build openfluid-engine application : no")  
+  ENDIF(BUILD_APP_ENGINE)
 
+  IF(BUILD_APP_BUILDER)
+    MESSAGE(STATUS "Build openfluid-builder application : yes")  
+  ELSE(BUILD_APP_BUILDER)
+    MESSAGE(STATUS "Build openfluid-builder application : no")  
+  ENDIF(BUILD_APP_BUILDER)
+
+  
+  
 ENDIF(Boost_FOUND AND LibXML2_FOUND)
+
 
 
 
