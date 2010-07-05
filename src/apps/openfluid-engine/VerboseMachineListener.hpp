@@ -68,11 +68,122 @@ class VerboseMachineListener : public DefaultMachineListener
 {
   private:
 
+    void displayFunctionStatus(const openfluid::base::Listener::Status& Status)
+    {
+      switch (Status)
+      {
+        case openfluid::machine::MachineListener::ERROR :
+          std::cout << std::setw(12) << "[Error]";
+          break;
+        case openfluid::machine::MachineListener::OK :
+          std::cout << std::setw(12) << "[OK]";
+          break;
+        case openfluid::machine::MachineListener::WARNING :
+          std::cout << std::setw(12) << "[Warning]";
+          break;
+      }
+
+      std::cout << std::endl;
+      std::cout.flush();
+
+    };
+
   public:
 
     VerboseMachineListener() {};
 
     ~VerboseMachineListener() {};
+
+
+    virtual void onFunctionInitParams(const std::string& FunctionID)
+    {
+      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout.flush();
+    };
+
+    virtual void onFunctionInitParamsDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*FunctionID*/)
+    {
+      displayFunctionStatus(Status);
+    };
+
+    virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
+    virtual void onFunctionPrepareData(const std::string& FunctionID)
+    {
+      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout.flush();
+    };
+
+
+    virtual void onFunctionPrepareDataDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*FunctionID*/)
+    {
+      displayFunctionStatus(Status);
+    };
+
+    virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
+    virtual void onFunctionCheckConsistency(const std::string& FunctionID)
+    {
+      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout.flush();
+    };
+
+
+    virtual void onFunctionCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*FunctionID*/)
+    {
+      displayFunctionStatus(Status);
+    };
+
+    virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
+    virtual void onFunctionInitializeRun(const std::string& FunctionID)
+    {
+      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout.flush();
+    };
+
+
+    virtual void onFunctionInitializeRunDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*FunctionID*/)
+    {
+      displayFunctionStatus(Status);
+    };
+
+    virtual void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
+    virtual void onFunctionRunStep(const std::string& FunctionID)
+    {
+      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout.flush();
+    };
+
+
+    virtual void onFunctionRunStepDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*FunctionID*/)
+    {
+      displayFunctionStatus(Status);
+    };
+
+    virtual void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
+    virtual void onFunctionFinalizeRun(const std::string& FunctionID)
+    {
+      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout.flush();
+    };
+
+
+    virtual void onFunctionFinalizeRunDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*FunctionID*/)
+    {
+      displayFunctionStatus(Status);
+    };
+
+    virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
 
 };
 

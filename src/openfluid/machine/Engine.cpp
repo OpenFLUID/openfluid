@@ -387,46 +387,21 @@ void Engine::checkExtraFilesConsistency()
 
 bool Engine::buildModel()
 {
-  bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
-  bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
 
   try
   {
     Factory MF = Factory();
-    mp_ModelInstance = MF.buildInstanceFromDescriptor(m_ModelDesc);
+    mp_ModelInstance = MF.buildInstanceFromDescriptor(m_ModelDesc, mp_Listener);
   }
   catch (openfluid::base::OFException& E)
   {
 
-    if (!IsQuiet)
-    {
-      if (!IsVerbose)
-      {
-        std::cout << std::setw(12) << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-      else
-      {
-        std::cout << "  " << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-
-      }
-    }
+    mp_Listener->onModelBuildDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
-/*
-  if (!mp_RunEnv->isQuietRun() && !mp_RunEnv->isVerboseRun())
-  {
 
-    if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-    else std::cout << std::setw(12) << "[OK]";
-    std::cout.flush();
-  }
-*/
+  mp_Listener->onModelBuildDone(openfluid::machine::MachineListener::OK);
+
   return true;
 
 }
@@ -466,11 +441,23 @@ bool Engine::processRunConfiguration()
 bool Engine::buildSpatialDomain()
 {
 
-  Factory DF = Factory();
+  try
+  {
+    Factory DF = Factory();
+    DF.buildDomainFromDescriptor(m_DomainDesc);
+  }
+  catch (openfluid::base::OFException& E)
+  {
 
-  DF.buildDomainFromDescriptor(m_DomainDesc);
+    mp_Listener->onLandscapeBuildDone(openfluid::machine::MachineListener::ERROR);
+    throw;
+  }
+
+  mp_Listener->onLandscapeBuildDone(openfluid::machine::MachineListener::OK);
 
   return true;
+
+
 }
 
 // =====================================================================
@@ -478,7 +465,20 @@ bool Engine::buildSpatialDomain()
 
 bool Engine::initParams()
 {
-  mp_ModelInstance->initParams();
+
+  mp_Listener->onInitParams();
+  try
+  {
+    mp_ModelInstance->initParams();
+  }
+  catch (openfluid::base::OFException& E)
+  {
+    mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::ERROR);
+    throw;
+  }
+  if (mp_ExecMsgs->isWarningFlag())  mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::WARNING);
+  else mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::OK);
+  mp_ExecMsgs->resetWarningFlag();
 
   return true;
 }
@@ -527,24 +527,9 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!IsQuiet)
-    {
-      if (!IsVerbose)
-      {
-        std::cout << std::setw(12) << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-      else
-      {
-        std::cout << "  " << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-    }
+    mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
-
 
   try
   {
@@ -552,21 +537,7 @@ bool Engine::prepareDataAndCheckConsistency()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!IsQuiet)
-    {
-      if (!IsVerbose)
-      {
-        std::cout << std::setw(12) << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-      else
-      {
-        std::cout << "  " << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-    }
+    mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
@@ -588,6 +559,8 @@ bool Engine::prepareDataAndCheckConsistency()
 
 
   mp_IOMan->clearFluidXData();
+
+  mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
 
   return true;
 }
@@ -615,12 +588,7 @@ bool Engine::run()
 
   // ============= initializeRun() =============
 
-  if (!IsQuiet)
-  {
-    std::cout << std::endl;
-    std::cout << std::setw(16) << "Initialize...";
-    std::cout.flush();
-  }
+  mp_Listener->onInitializeRun();
 
   try
   {
@@ -628,33 +596,12 @@ bool Engine::run()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!IsQuiet)
-    {
-      if (!IsVerbose)
-      {
-        std::cout << std::setw(12) << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-      else
-      {
-        std::cout << "  " << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-
-      }
-    }
+    mp_Listener->onInitializeRunDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
-  if (!IsQuiet && !IsVerbose)
-  {
-    if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-    else std::cout << std::setw(12) << "[OK]";
-    std::cout << std::endl;
-    std::cout.flush();
-
-  }
+  if (mp_ExecMsgs->isWarningFlag()) mp_Listener->onInitializeRunDone(openfluid::machine::MachineListener::WARNING);
+  else mp_Listener->onInitializeRunDone(openfluid::machine::MachineListener::OK);
 
 
   mp_ExecMsgs->resetWarningFlag();
@@ -666,28 +613,13 @@ bool Engine::run()
   // ============= runStep() =============
 
 
-  if (!IsQuiet)
-  {
-    std::cout << std::endl;
-    std::cout << std::setw(10) << "Time step";
-    std::cout << std::setw(18) << "Real time";
-    std::cout << std::setw(17) << "Status";
-    std::cout << std::endl;
-    std::cout << std::setw(10) << "---------";
-    std::cout << std::setw(18) << "---------";
-    std::cout << std::setw(17) << "------";
-    std::cout << std::endl;
-    std::cout.flush();
-  }
+
+  mp_Listener->onBeforeRunSteps();
 
   do // time loop
   {
-    if (!IsQuiet)
-    {
-      std::cout << std::setw(8) << mp_SimStatus->getCurrentStep();
-      std::cout << std::setw(25) << mp_SimStatus->getCurrentTime().getAsISOString();
-      std::cout.flush();
-    }
+
+    mp_Listener->onRunStep(mp_SimStatus);
 
     mp_ExecMsgs->resetWarningFlag();
 
@@ -700,40 +632,13 @@ bool Engine::run()
     }
     catch (openfluid::base::OFException& E)
     {
-
-      if (!IsQuiet)
-      {
-        if (!IsVerbose)
-        {
-          std::cout << std::setw(12) << "[Error]";
-          std::cout << std::endl << std::endl;
-          std::cout.flush();
-        }
-        else
-        {
-          std::cout << "  " << "[Error]";
-          std::cout << std::endl << std::endl;
-          std::cout.flush();
-
-        }
-      }
+      mp_Listener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
       throw;
     }
 
-    if (!IsQuiet && !IsVerbose)
-    {
 
-      if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-      else std::cout << std::setw(12) << "[OK]";
-      std::cout.flush();
-    }
-
-
-    if (!IsQuiet)
-    {
-      std::cout << std::endl;
-      std::cout.flush();
-    }
+    if (mp_ExecMsgs->isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
+    mp_Listener->onRunStepDone(openfluid::machine::MachineListener::OK);
 
     if (mp_RunEnv->isWriteResults())
     {
@@ -744,18 +649,14 @@ bool Engine::run()
   } while (mp_SimStatus->switchToNextStep());  // end time loop
 
 
-  std::cout << std::endl;
+  mp_Listener->onAfterRunSteps();
 
   mp_ExecMsgs->resetWarningFlag();
 
 
   // ============= finalizeRun() =============
 
-  if (!IsQuiet)
-  {
-    std::cout << std::setw(16) << "Finalize...";
-    std::cout.flush();
-  }
+  mp_Listener->onFinalizeRun();
 
   try
   {
@@ -763,41 +664,16 @@ bool Engine::run()
   }
   catch (openfluid::base::OFException& E)
   {
-    if (!IsQuiet)
-    {
-      if (!IsVerbose)
-      {
-        std::cout << std::setw(12) << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-      }
-      else
-      {
-        std::cout << "  " << "[Error]";
-        std::cout << std::endl << std::endl;
-        std::cout.flush();
-
-      }
-    }
+    mp_Listener->onFinalizeRunDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
 
-  if (!IsQuiet && !IsVerbose)
-  {
-    if (mp_ExecMsgs->isWarningFlag()) std::cout << std::setw(12) << "[Warning]";
-    else std::cout << std::setw(12) << "[OK]";
-    std::cout << std::endl;
-    std::cout.flush();
-  }
+  if (mp_ExecMsgs->isWarningFlag())     mp_Listener->onFinalizeRunDone(openfluid::machine::MachineListener::WARNING);
+  else mp_Listener->onFinalizeRunDone(openfluid::machine::MachineListener::OK);
 
-  if (!IsQuiet)
-  {
-    std::cerr << std::endl;
-  }
 
   mp_ExecMsgs->resetWarningFlag();
-
 
   // check simulation vars production after finalize
   checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);

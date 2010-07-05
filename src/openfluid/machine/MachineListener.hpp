@@ -78,6 +78,14 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
 
     virtual ~MachineListener() {};
 
+    virtual void onModelBuild() {};
+
+    virtual void onModelBuildDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
+    virtual void onLandscapeBuild() {};
+
+    virtual void onLandscapeBuildDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
     virtual void onInitParams() {};
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/) {};
@@ -114,17 +122,18 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
     virtual void onFunctionInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/,
                                           const std::string& /*FunctionID*/) {};
 
+    virtual void onBeforeRunSteps() {};
+
     virtual void onRunStep(const openfluid::base::SimulationStatus* /*SimStatus*/) {};
 
-    virtual void onRunStepDone(const openfluid::base::SimulationStatus* /*SimStatus*/,
-                               const openfluid::base::Listener::Status& /*Status*/) {};
+    virtual void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionRunStep(const openfluid::base::SimulationStatus* /*SimStatus*/,
-                                   const std::string& /*FunctionID*/) {};
+    virtual void onFunctionRunStep(const std::string& /*FunctionID*/) {};
 
-    virtual void onFunctionRunStepDone(const openfluid::base::SimulationStatus* /*SimStatus*/,
-                                       const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*FunctionID*/) {};
+    virtual void onFunctionRunStepDone(const openfluid::base::Listener::Status& /*Status*/,
+                                       const std::string& /*FunctionID*/) {};
+
+    virtual void onAfterRunSteps() {};
 
     virtual void onFinalizeRun() {};
 

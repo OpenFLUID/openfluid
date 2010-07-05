@@ -231,11 +231,12 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 // =====================================================================
 
 
-const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const
+const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor,
+                                                          openfluid::machine::MachineListener* Listener) const
 {
 
   openfluid::base::ModelDescriptor::ModelDescription_t::const_iterator it;
-  ModelInstance* MInstance = new ModelInstance();
+  ModelInstance* MInstance = new ModelInstance(Listener);
   ModelItemInstance* IInstance;
 
   for (it=Descriptor.getItems().begin();it!=Descriptor.getItems().end();++it)

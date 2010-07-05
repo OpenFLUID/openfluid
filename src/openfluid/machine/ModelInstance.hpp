@@ -60,6 +60,7 @@
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/MachineListener.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -70,10 +71,11 @@ class DLLEXPORT ModelInstance
   private:
 
     std::list<ModelItemInstance*> m_ModelItems;
+    openfluid::machine::MachineListener* mp_Listener;
 
   public:
 
-    ModelInstance();
+    ModelInstance(openfluid::machine::MachineListener* Listener);
 
     ~ModelInstance();
 

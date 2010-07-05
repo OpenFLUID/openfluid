@@ -496,26 +496,20 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
   mp_Engine->buildSpatialDomain();
-  printlnExecStatus();
   mp_ExecMsgs->resetWarningFlag();
 
 
   std::cout << "* Building model... "; std::cout.flush();
   mp_Engine->buildModel();
-  printlnExecStatus();
   mp_ExecMsgs->resetWarningFlag();
 
   std::cout << "* Initializing parameters... "; std::cout.flush();
   mp_Engine->initParams();
-  if (!IsVerbose) printlnExecStatus();
-  else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
 
   std::cout << "* Preparing data and checking consistency... "; std::cout.flush();
   mp_Engine->prepareDataAndCheckConsistency();
-  if (!IsVerbose) printlnExecStatus();
-  else std::cout << std::endl;
   mp_ExecMsgs->resetWarningFlag();
 
 

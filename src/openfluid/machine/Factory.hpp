@@ -81,7 +81,8 @@ class DLLEXPORT Factory
 
     void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor);
 
-    const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor) const;
+    const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor,
+                                                     openfluid::machine::MachineListener* Listener) const;
 
     void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& Descriptor);
 

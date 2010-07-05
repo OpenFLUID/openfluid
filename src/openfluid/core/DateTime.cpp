@@ -139,8 +139,6 @@ bool DateTime::setFromISOString(std::string DateTimeStr)
   // scan of the input string to break it down
   sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec);
 
-//  std::cout << Year << " " << Month << " " << Day << " " << Hour << " " << Min << " " << Sec << std::endl;
-
   return set(Year, Month, Day, Hour, Min, Sec);
 
 }

@@ -68,11 +68,149 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 {
   private:
 
+    void displayStatus(const openfluid::base::Listener::Status& Status)
+    {
+      switch (Status)
+      {
+        case openfluid::machine::MachineListener::ERROR :
+          std::cout << " [Error]";
+          break;
+        case openfluid::machine::MachineListener::OK :
+          std::cout << " [OK]";
+          break;
+        case openfluid::machine::MachineListener::WARNING :
+          std::cout << " [Warning]";
+          break;
+      }
+
+      std::cout << std::endl;
+      std::cout.flush();
+
+    };
+
+    void displayStatusWithLeftMargin(const openfluid::base::Listener::Status& Status)
+    {
+      switch (Status)
+      {
+        case openfluid::machine::MachineListener::ERROR :
+          std::cout << std::setw(12) << "[Error]";
+          break;
+        case openfluid::machine::MachineListener::OK :
+          std::cout << std::setw(12) << "[OK]";
+          break;
+        case openfluid::machine::MachineListener::WARNING :
+          std::cout << std::setw(12) << "[Warning]";
+          break;
+      }
+
+      std::cout << std::endl;
+      std::cout.flush();
+
+    };
+
   public:
 
     DefaultMachineListener() {};
 
     ~DefaultMachineListener() {};
+
+    virtual void onModelBuild() {};
+
+    virtual void onModelBuildDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+    virtual void onLandscapeBuild() {};
+
+    virtual void onLandscapeBuildDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+    virtual void onInitParams() {};
+
+    virtual void onInitParamsDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+
+    virtual void onPrepareData() {};
+
+    virtual void onPrepareDataDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+
+    virtual void onCheckConsistency() {};
+
+    virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+
+    virtual void onInitializeRun()
+    {
+      std::cout << std::endl;
+      std::cout << std::setw(16) << "Initialize...";
+      std::cout.flush();
+    };
+
+    virtual void onInitializeRunDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+
+    virtual void onBeforeRunSteps()
+    {
+      std::cout << std::endl;
+      std::cout << std::setw(10) << "Time step";
+      std::cout << std::setw(18) << "Real time";
+      std::cout << std::setw(17) << "Status";
+      std::cout << std::endl;
+      std::cout << std::setw(10) << "---------";
+      std::cout << std::setw(18) << "---------";
+      std::cout << std::setw(17) << "------";
+      std::cout << std::endl;
+      std::cout.flush();
+    };
+
+    virtual void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
+    {
+      std::cout << std::setw(8) << SimStatus->getCurrentStep();
+      std::cout << std::setw(25) << SimStatus->getCurrentTime().getAsISOString();
+      std::cout.flush();
+    };
+
+    virtual void onRunStepDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatusWithLeftMargin(Status);
+    };
+
+
+    virtual void onAfterRunSteps()
+    {
+      std::cout << std::endl;
+    };
+
+    virtual void onFinalizeRun()
+    {
+      std::cout << std::setw(16) << "Finalize...";
+      std::cout.flush();
+
+    };
+
+    virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+      std::cout << std::endl;
+
+    };
+
 
 };
 
