@@ -269,6 +269,13 @@ class DLLEXPORT PluggableFunction
     */
     openfluid::core::FuncParamsMap_t m_ParamsMap;
 
+
+    static bool IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
+                                  const openfluid::core::UnitID_t& ID);
+
+    static std::string generateDotEdge(std::string SrcClass, std::string SrcID,
+                                       std::string DestClass, std::string DestID,
+                                       std::string Options);
   protected:
 
     // TODO check if const
@@ -331,6 +338,36 @@ class DLLEXPORT PluggableFunction
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
                                 openfluid::core::InputDataName_t InputName,
                                 std::string *Value);
+
+    /**
+      Sets input data for a unit, as a double
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the set property
+      @param[in] Value the value of the set property
+    */
+    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t& InputName,
+                                const double& Value);
+
+    /**
+      Sets input data for a unit, as a long integer
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the set property
+      @param[in] Value the value of the set property
+    */
+    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t& InputName,
+                                const long& Value);
+
+    /**
+      Sets input data for a unit, as a string
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the set property
+      @param[out] Value the value of the set property
+    */
+    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t& InputName,
+                                const std::string& Value);
 
 
     /**
@@ -554,14 +591,162 @@ class DLLEXPORT PluggableFunction
     */
     bool OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName);
 
+
+    /**
+      Returns true if the queried unit exists
+      @param[in] ClassName the class of the queried unit
+      @param[in] ID the ID of the queried unit
+    */
+    bool OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t ClassName,
+                               openfluid::core::UnitID_t ID);
+
+    /**
+      Returns the total number of units
+      @param[out] UnitsCount the queried class name
+    */
+    void OPENFLUID_GetUnitsCount(unsigned int& UnitsCount);
+
     /**
       Returns the number of units of the class if the queried unit class exists
       @param[in] ClassName the queried class name
       @param[out] UnitsCount the queried class name
       @return false if the unit class does not exist
     */
-    bool OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t ClassName, unsigned int *UnitsCount);
+    bool OPENFLUID_GetUnitsCount(const openfluid::core::UnitClass_t ClassName,
+                                 unsigned int& UnitsCount);
 
+
+    /**
+      Returns a pointer to the queried unit if exists
+      @param[in] ClassName the queried class name
+      @param[in] ID the queried unit ID
+      @param[out] UnitPtr a pointer to the requested Unit, NULL if the unit does not exist
+      @return false if the unit does not exist
+    */
+    bool OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+                           const openfluid::core::UnitID_t& ID,
+                           openfluid::core::Unit* aUnit);
+
+    openfluid::core::Unit* OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+                                             const openfluid::core::UnitID_t& ID);
+
+    /**
+      Adds a unit to the set of units if not already exists
+      @param[in] ClassName class name of the added unit
+      @param[in] ID ID of the added unit
+    */
+    void OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName,
+                           openfluid::core::UnitID_t ID,
+                           openfluid::core::PcsOrd_t PcsOrder);
+
+    /**
+      Adds a from-to connection between two units
+      @param[in] ClassNameFrom class name of the "from" unit
+      @param[in] IDFrom ID of the "from" unit
+      @param[in] ClassNameFrom class name of the "to" unit
+      @param[in] IDFrom ID of the "to" unit
+      @return false if the unit connection already exists
+    */
+    bool OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+                                       openfluid::core::UnitID_t IDFrom,
+                                       openfluid::core::UnitClass_t ClassNameTo,
+                                       openfluid::core::UnitID_t IDTo);
+    /**
+      Adds a from-to connection between two units
+      @param[in] FromUnit pointer to the "from" unit
+      @param[in] ToUnit pointer to the "to" unit
+      @return false if the connection already exists
+    */
+    bool OPENFLUID_AddFromToConnection(openfluid::core::Unit* FromUnit,
+                                       openfluid::core::Unit* ToUnit);
+
+    /**
+      Adds a child-parent connection between two units
+      @param[in] ClassNameFrom class name of the "child" unit
+      @param[in] IDFrom ID of the "child" unit
+      @param[in] ClassNameFrom class name of the "parent" unit
+      @param[in] IDFrom ID of the "parent" unit
+      @return false if the connection already exists
+    */
+    bool OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+                                            openfluid::core::UnitID_t IDChild,
+                                            openfluid::core::UnitClass_t ClassNameParent,
+                                            openfluid::core::UnitID_t IDParent);
+
+    /**
+      Adds a child-parent connection between two units
+      @param[in] ChildUnit pointer to the "child" unit
+      @param[in] ToUnit pointer to the "parent" unit
+      @return false if the connection already exists
+    */
+    bool OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
+                                            openfluid::core::Unit* ParentUnit);
+
+    /**
+      Returns true if a given unit is connected "to" another unit
+      @param[in] aUnit the given unit
+      @param[in] ClassNameTo the class name of the other unit to test
+      @param[in] IDTo the ID of the other unit to test
+      @return true if the given unit is connected "to" the other unit
+    */
+    bool OPENFLUID_IsUnitConnectedTo(openfluid::core::Unit* aUnit,
+                                     const openfluid::core::UnitClass_t& ClassNameTo,
+                                     const openfluid::core::UnitID_t& IDTo);
+
+
+    /**
+      Returns true if a given unit is connected "from" another unit
+      @param[in] aUnit the given unit
+      @param[in] ClassNameFrom the class name of the other unit to test
+      @param[in] IDFrom the ID of the other unit to test
+      @return true if the given unit is connected "from" the other unit
+    */
+    bool OPENFLUID_IsUnitConnectedFrom(openfluid::core::Unit* aUnit,
+                                       const openfluid::core::UnitClass_t& ClassNameFrom,
+                                       const openfluid::core::UnitID_t& IDFrom);
+
+
+    /**
+      Returns true if a given unit is "a child of" another unit
+      @param[in] aUnit the given unit
+      @param[in] ClassNameParent the class name of the other unit to test
+      @param[in] IDParent the ID of the other unit to test
+      @return true if the given unit is "a child of" the other unit
+    */
+    bool OPENFLUID_IsUnitChildOf(openfluid::core::Unit* aUnit,
+                                 const openfluid::core::UnitClass_t& ClassNameParent,
+                                 const openfluid::core::UnitID_t& IDParent);
+
+
+    /**
+      Returns true if a given unit is "parent of" another unit
+      @param[in] aUnit the given unit
+      @param[in] ClassNameChild the class name of the other unit to test
+      @param[in] IDChild the ID of the other unit to test
+      @return true if the given unit is "parent of" the other unit
+    */
+    bool OPENFLUID_IsUnitParentOf(openfluid::core::Unit* aUnit,
+                                  const openfluid::core::UnitClass_t& ClassNameChild,
+                                  const openfluid::core::UnitID_t& IDChild);
+
+
+    /**
+      Builds a ColsNbr x RowsNbr unix matrix with bi-directionnal connections
+      @param[in] UnitsClass the name of units class
+      @param[in] ColsNbr the number of units on the X axis
+      @param[in] RowsNbr the number of units on the Y axis
+    */
+    void OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitClass_t& UnitsClass,
+                                    const unsigned int& ColsNbr,
+                                    const unsigned int& RowsNbr);
+
+
+    /**
+      Exports the graph of the landscape representation as a graphviz dot file.
+      The file is saved in the output directory of the simulation.
+      @param[in] Filename the name of the export file
+    */
+    void OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& Filename);
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation

@@ -66,7 +66,6 @@ class DLLEXPORT CoreRepository
 
     UnitsListByClassMap_t m_PcsOrderedUnitsByClass;
 
-
     static CoreRepository* mp_Singleton;
 
     CoreRepository();

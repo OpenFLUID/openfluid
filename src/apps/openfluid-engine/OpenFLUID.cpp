@@ -231,6 +231,22 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix, bool IsXMLFormat)
+{
+  unsigned int i;
+  if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
+    std::cout << Suffix << "Global units graph updates: " << HandledUnitsGraph.UpdatedUnitsGraph << std::endl;
+
+  for (i=0;i<HandledUnitsGraph.UpdatedUnitsClass.size();i++)
+  {
+    std::cout << Suffix << "Units graph update on class " << HandledUnitsGraph.UpdatedUnitsClass[i].UnitsClass << ": " << HandledUnitsGraph.UpdatedUnitsClass[i].Description << std::endl;
+  }
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -272,7 +288,6 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
         else std::cout << ", ";
       }
     }
-
 
     for (i=0;i<HandledData.RequiredExtraFiles.size();i++) std::cout << Suffix << "Required extra file : " << HandledData.RequiredExtraFiles[i] << std::endl;
     for (i=0;i<HandledData.UsedExtraFiles.size();i++) std::cout << Suffix << "Used extra file : " << HandledData.UsedExtraFiles[i] << std::endl;
@@ -347,6 +362,8 @@ void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Patter
         std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
         std::cout << "   - Handled data" << std::endl;
         printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "),IsXMLFormat);
+        std::cout << "   - Handled units graph" << std::endl;
+        printPluginsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "),IsXMLFormat);
 
       }
 

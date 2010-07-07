@@ -51,10 +51,10 @@
   @brief implementation file for generic pluggable function interface definition
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
 #include <iostream>
-
+#include <fstream>
 #include <openfluid/base/PlugFunction.hpp>
 #include <openfluid/base/OFException.hpp>
 
@@ -84,6 +84,40 @@ PluggableFunction::~PluggableFunction()
 {
 
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
+                                          const openfluid::core::UnitID_t& ID)
+{
+  if (UnitsList == NULL) return false;
+
+  bool Found = false;
+  openfluid::core::UnitsPtrList_t::const_iterator UnitsIt = UnitsList->begin();
+
+  while (!Found && UnitsIt != UnitsList->end())
+  {
+    if ((*UnitsIt)->getID() == ID) Found = true;
+    UnitsIt++;
+  }
+
+  return Found;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string PluggableFunction::generateDotEdge(std::string SrcClass, std::string SrcID,
+                                               std::string DestClass, std::string DestID,
+                                               std::string Options)
+{
+  return "\""+SrcClass+" #"+SrcID+"\" -> \""+DestClass+" #"+DestID+"\"" + Options;
 }
 
 
@@ -168,6 +202,58 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
 
 // =====================================================================
 // =====================================================================
+
+
+void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::InputDataName_t& InputName,
+                                               const double& Value)
+{
+  std::string StrValue;
+
+  if (openfluid::tools::ConvertValue(Value,&StrValue))
+    OPENFLUID_SetInputData(UnitPtr, InputName,StrValue);
+  else
+    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to format double value for input data "+ InputName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::InputDataName_t& InputName,
+                                               const long& Value)
+{
+  std::string StrValue;
+
+  if (openfluid::tools::ConvertValue(Value,&StrValue))
+    OPENFLUID_SetInputData(UnitPtr, InputName,StrValue);
+  else
+    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to format long value for input data "+ InputName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::InputDataName_t& InputName,
+                                               const std::string& Value)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,Value))
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set string value for input data "+ InputName);
+  }
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName)
 {
@@ -377,13 +463,13 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 {
   std::string TmpStr;
 
-    if (Params.find(ParamName) != Params.end())
-    {
-      TmpStr = Params[ParamName];
-      return openfluid::tools::ConvertString<int>(TmpStr,Value);
+  if (Params.find(ParamName) != Params.end())
+  {
+    TmpStr = Params[ParamName];
+    return openfluid::tools::ConvertString<int>(TmpStr,Value);
 
-    }
-    else return false;
+  }
+  else return false;
 }
 
 
@@ -412,22 +498,22 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<std::string> *Values)
 {
-	std::string TmpStr;
+  std::string TmpStr;
 
-	std::vector<std::string> Tokens;
+  std::vector<std::string> Tokens;
 
-	if (Params.find(ParamName) != Params.end())
-	{
-		TmpStr = Params[ParamName];
+  if (Params.find(ParamName) != Params.end())
+  {
+    TmpStr = Params[ParamName];
 
-		openfluid::tools::TokenizeString(TmpStr,Tokens,";");
+    openfluid::tools::TokenizeString(TmpStr,Tokens,";");
 
-		(*Values).clear();
+    (*Values).clear();
     for (unsigned int i=0;i<Tokens.size();i++) (*Values).push_back(Tokens[i]);
 
-		return true;
-	}
-	else return false;
+    return true;
+  }
+  else return false;
 
 }
 
@@ -510,6 +596,18 @@ void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,ope
 {
   UnitPtr->getEvents()->addEvent(&Ev);
 }
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t ClassName,
+                                              openfluid::core::UnitID_t ID)
+{
+  return (mp_CoreData->getUnit(ClassName,ID) != NULL);
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -523,11 +621,13 @@ bool PluggableFunction::OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t 
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t ClassName, unsigned int *UnitsCount)
+bool PluggableFunction::OPENFLUID_GetUnitsCount(const openfluid::core::UnitClass_t ClassName,
+                                                unsigned int& UnitsCount)
 {
+  UnitsCount = 0;
   if (mp_CoreData->isUnitsClassExist(ClassName))
   {
-    *UnitsCount = mp_CoreData->getUnits(ClassName)->getList()->size();
+    UnitsCount = mp_CoreData->getUnits(ClassName)->getList()->size();
     return true;
   }
   else return false;
@@ -536,6 +636,457 @@ bool PluggableFunction::OPENFLUID_GetUnitsCount(openfluid::core::UnitClass_t Cla
 
 // =====================================================================
 // =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetUnitsCount(unsigned int& UnitsCount)
+{
+  UnitsCount = 0;
+  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
+
+  for (UnitsIt = mp_CoreData->getUnits()->begin(); UnitsIt != mp_CoreData->getUnits()->end();++UnitsIt )
+  {
+    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+                                          const openfluid::core::UnitID_t& ID,
+                                          openfluid::core::Unit* aUnit)
+{
+  aUnit =  const_cast<openfluid::core::Unit*>(mp_CoreData->getUnit(ClassName,ID));
+  return (aUnit != NULL);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Unit* PluggableFunction::OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+                                                            const openfluid::core::UnitID_t& ID)
+{
+  return mp_CoreData->getUnit(ClassName,ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName,
+                                          openfluid::core::UnitID_t ID,
+                                          openfluid::core::PcsOrd_t PcsOrder)
+{
+  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder)))
+   throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddUnit","Error adding unit");
+
+  mp_CoreData->sortUnitsByProcessOrder();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+                                                      openfluid::core::UnitID_t IDFrom,
+                                                      openfluid::core::UnitClass_t ClassNameTo,
+                                                      openfluid::core::UnitID_t IDTo)
+{
+  openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
+  openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
+
+  return OPENFLUID_AddFromToConnection(FromUnit, ToUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_AddFromToConnection(openfluid::core::Unit* FromUnit,
+                                                      openfluid::core::Unit* ToUnit)
+{
+  if (FromUnit != NULL || ToUnit != NULL)
+  {
+    return (FromUnit->addToUnit(ToUnit) && ToUnit->addFromUnit(FromUnit));
+  }
+  else
+    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddFromToConnection","Error adding from-to connection");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+bool PluggableFunction::OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+                                                           openfluid::core::UnitID_t IDChild,
+                                                           openfluid::core::UnitClass_t ClassNameParent,
+                                                           openfluid::core::UnitID_t IDParent)
+{
+  openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
+  openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
+
+  return OPENFLUID_AddChildParentConnection(ChildUnit, ParentUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
+                                                           openfluid::core::Unit* ParentUnit)
+{
+  if (ChildUnit != NULL || ParentUnit != NULL)
+  {
+    return (ChildUnit->addParentUnit(ParentUnit) && ParentUnit->addChildUnit(ChildUnit));
+  }
+  else
+    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddChildParentConnection","Error adding child-parent connection");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool PluggableFunction::OPENFLUID_IsUnitConnectedTo(openfluid::core::Unit* aUnit,
+                                                    const openfluid::core::UnitClass_t& ClassNameTo,
+                                                    const openfluid::core::UnitID_t& IDTo)
+{
+  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameTo)) return false;
+  return IsUnitIDInPtrList(aUnit->getToUnits(ClassNameTo),IDTo);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_IsUnitConnectedFrom(openfluid::core::Unit* aUnit,
+                                                      const openfluid::core::UnitClass_t& ClassNameFrom,
+                                                      const openfluid::core::UnitID_t& IDFrom)
+{
+  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameFrom)) return false;
+  return IsUnitIDInPtrList(aUnit->getFromUnits(ClassNameFrom),IDFrom);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_IsUnitChildOf(openfluid::core::Unit* aUnit,
+                                                const openfluid::core::UnitClass_t& ClassNameParent,
+                                                const openfluid::core::UnitID_t& IDParent)
+{
+  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameParent)) return false;
+  return IsUnitIDInPtrList(aUnit->getParentUnits(ClassNameParent),IDParent);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_IsUnitParentOf(openfluid::core::Unit* aUnit,
+                                                 const openfluid::core::UnitClass_t& ClassNameChild,
+                                                 const openfluid::core::UnitID_t& IDChild)
+{
+  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameChild)) return false;
+  return IsUnitIDInPtrList(aUnit->getChildrenUnits(ClassNameChild),IDChild);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitClass_t& UnitsClass,
+                                                   const unsigned int& ColsNbr,
+                                                   const unsigned int& RowsNbr)
+{
+  openfluid::core::UnitID_t CurrID = 0;
+  openfluid::core::UnitID_t ToID = 0;
+
+  for (unsigned int i=0; i<RowsNbr;i++)
+  {
+    for (unsigned int j=0; j<ColsNbr;j++)
+    {
+      CurrID = 1+((ColsNbr*i)+j);
+      OPENFLUID_AddUnit(UnitsClass,CurrID,1);
+    }
+  }
+
+  for (unsigned int i=0; i<RowsNbr;i++)
+  {
+    for (unsigned int j=0; j<ColsNbr;j++)
+    {
+      CurrID = 1+((ColsNbr*i)+j);
+
+      if (i == 0)
+      {
+        // top
+
+        if (j == 0)
+        {
+          // top-left
+          ToID = CurrID+1;
+          OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          ToID = CurrID+ColsNbr;
+          OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+        }
+        else
+        {
+          if (j == ColsNbr-1)
+          {
+            // top-right
+            ToID = CurrID-1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          }
+          else
+          {
+            // top-center
+            ToID = CurrID-1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          }
+        }
+
+      }
+      else
+      {
+        if (i == RowsNbr-1)
+        {
+          // bottom
+
+          if (j == 0)
+          {
+            // bottom-left
+            ToID = CurrID+1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID-ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+          }
+          else
+          {
+            if (j == ColsNbr-1)
+            {
+              // bottom-right
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            }
+            else
+            {
+              // bottom-center
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+            }
+          }
+
+        }
+        else
+        {
+          // middle
+
+          if (j == 0)
+          {
+            // middle-left
+            ToID = CurrID+1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID-ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          }
+          else
+          {
+            if (j == ColsNbr-1)
+            {
+              // middle-right
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            }
+            else
+            {
+              // middle-center
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            }
+          }
+
+
+        }
+      }
+    }
+  }
+
+//  throw openfluid::base::OFException("PluggableFunction::OPENFLUID_BuildUnitsMatrix : under construction");
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& Filename)
+{
+
+  std::ofstream DotFile;
+  std::string OutputDir;
+  const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_CoreData->getUnits();
+  const openfluid::core::UnitsList_t* UnitsList = NULL;
+  std::vector<openfluid::core::UnitClass_t> ClassVector;
+  openfluid::core::Unit* TheUnit;
+
+  openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
+  openfluid::core::UnitsList_t::const_iterator itUnitsList;
+
+  OPENFLUID_GetRunEnvironment("dir.output",&OutputDir);
+
+  DotFile.open(std::string(OutputDir+"/"+Filename).c_str());
+
+  DotFile << "digraph landscape {" << "\n";
+  DotFile << std::endl;
+  DotFile << "label = \"Graph representation of the landscape\";" << "\n";
+  DotFile << "fontsize = 24;" << "\n";
+  DotFile << "\n";
+
+
+  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
+  {
+    ClassVector.push_back((*itUnitsClass).first);
+
+    UnitsList=((*itUnitsClass).second).getList();
+
+    for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
+    {
+      TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+      std::string SrcClassStr = TheUnit->getClass();
+      std::string SrcIDStr = "";
+      openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);
+      DotFile << "\""+SrcClassStr+" #"+SrcIDStr+"\";" << "\n";
+    }
+
+  }
+
+  DotFile << "\n";
+
+  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
+  {
+
+    UnitsList=((*itUnitsClass).second).getList();
+
+    for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
+    {
+      TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+      std::string SrcClassStr = TheUnit->getClass();
+      std::string SrcIDStr = "";
+      openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);
+
+      for (unsigned int i=0;i<ClassVector.size();i++)
+      {
+        const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getToUnits(ClassVector[i]));
+
+        if (ToUnits != NULL)
+        {
+          std::string DestClassStr = ClassVector[i];
+          openfluid::core::UnitsPtrList_t::const_iterator itToUnits;
+
+          for (itToUnits=ToUnits->begin();itToUnits!=ToUnits->end();++itToUnits)
+          {
+            std::string DestIDStr = "";
+            openfluid::tools::ConvertValue((*itToUnits)->getID(),&DestIDStr);
+
+            DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"") << "\n";
+
+          }
+        }
+
+        const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getParentUnits(ClassVector[i]));
+
+        if (ParentUnits != NULL)
+        {
+          std::string DestClassStr = ClassVector[i];
+          openfluid::core::UnitsPtrList_t::const_iterator itParentUnits;
+
+          for (itParentUnits=ParentUnits->begin();itParentUnits!=ParentUnits->end();++itParentUnits)
+          {
+            std::string DestIDStr = "";
+            openfluid::tools::ConvertValue((*itParentUnits)->getID(),&DestIDStr);
+
+            DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"[arrowhead=odiamond,color=grey,style=dashed]") << "\n";
+
+          }
+        }
+
+      }
+
+    }
+
+  }
+
+  DotFile << "\n";
+  DotFile << "}" << "\n";
+
+  DotFile.close();
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 

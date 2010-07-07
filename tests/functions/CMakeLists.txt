@@ -45,6 +45,11 @@ ADD_TEST(functions-Primitives "${BIN_OUTPUT_PATH}/openfluid-engine"
                            "-p${TEST_OUTPUT_PATH}")                              
 
 
+ADD_FUNCTION(tests.landprimitives tests.landprimitives ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-LandPrimitives "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLandPrimitives"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLandPrimitives" 
+                           "-p${TEST_OUTPUT_PATH}")
 
 
 

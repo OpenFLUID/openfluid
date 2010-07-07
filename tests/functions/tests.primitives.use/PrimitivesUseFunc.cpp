@@ -288,13 +288,13 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   if (OPENFLUID_IsUnitClassExist("unknown"))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsUnitClassExist (unknown)");
 
-  if (!OPENFLUID_GetUnitsCount("TestUnits",&UnitsCount) || UnitsCount != 12)
+  if (!OPENFLUID_GetUnitsCount("TestUnits",UnitsCount) || UnitsCount != 12)
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_getUnitsCount or count value (TestUnits)");
 
-  if (!OPENFLUID_GetUnitsCount("ParentTestUnits",&UnitsCount)|| UnitsCount != 2)
+  if (!OPENFLUID_GetUnitsCount("ParentTestUnits",UnitsCount)|| UnitsCount != 2)
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_getUnitsCount (ParentTestUnits)");
 
-  if (OPENFLUID_GetUnitsCount("unknown",&UnitsCount))
+  if (OPENFLUID_GetUnitsCount("unknown",UnitsCount))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_getUnitsCount (unknown)");
 
 

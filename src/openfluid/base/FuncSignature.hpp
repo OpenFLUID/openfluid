@@ -245,6 +245,25 @@
 */
 #define DECLARE_USED_EVENTS(uclass) Signature->HandledData.UsedEventsOnUnits.push_back(uclass);
 
+
+
+/**
+  Macro for declaration of units graph modification
+  @param[in] description description of modification
+
+*/
+#define DECLARE_UPDATED_UNITSGRAPH(description) Signature->HandledUnitsGraph.UpdatedUnitsGraph = (description);
+
+
+/**
+  Macro for declaration of units class creation or update
+  @param[in] uclass name of the created or updated class
+  @param[in] description description of the updated class
+
+*/
+#define DECLARE_UPDATED_UNITSCLASS(uclass,description) Signature->HandledUnitsGraph.UpdatedUnitsClass.push_back(openfluid::base::SignatureHandledUnitsClassItem(uclass,description));
+
+
 /**
   Macro for declaration of required file
   @param[in] name name of the file
@@ -306,9 +325,9 @@ enum FuncStatus_t
 struct SignatureHandledDataItem
 {
   std::string DataName;
-  openfluid::core::UnitClass_t UnitClass; // "SU", "RS", "GU", or empty if none
+  openfluid::core::UnitClass_t UnitClass;
   std::string Description;
-  std::string DataUnit; // empty if none, "?" if unknown
+  std::string DataUnit;
 
   SignatureHandledDataItem()
   {
@@ -328,6 +347,31 @@ struct SignatureHandledDataItem
   }
 
 };
+
+
+/**
+  Structure for storage of the definition of spatial units handled by the function.
+*/
+struct SignatureHandledUnitsClassItem
+{
+  openfluid::core::UnitClass_t UnitsClass;
+  std::string Description;
+
+  SignatureHandledUnitsClassItem()
+  {
+    UnitsClass = "";
+    Description = "";
+  }
+
+  SignatureHandledUnitsClassItem(openfluid::core::UnitClass_t UClass,
+                           std::string DDescription)
+  {
+    UnitsClass = UClass;
+    Description = DDescription;
+  }
+
+};
+
 
 /**
   Structure for storage of the definition of the data handled by the function. This is part of the signature.
@@ -361,8 +405,22 @@ struct SignatureHandledData
 
   SignatureHandledData()
   {
+
   }
 
+};
+
+
+struct SignatureHandledUnitsGraph
+{
+    std::string UpdatedUnitsGraph;
+
+    std::vector<SignatureHandledUnitsClassItem> UpdatedUnitsClass;
+
+    SignatureHandledUnitsGraph()
+    {
+      UpdatedUnitsGraph.clear();
+    }
 };
 
 
@@ -433,6 +491,12 @@ struct FunctionSignature
     Handled data
   */
   SignatureHandledData HandledData;
+
+  /**
+    Handled units graph
+   */
+  SignatureHandledUnitsGraph HandledUnitsGraph;
+
 
   FunctionSignature()
   {

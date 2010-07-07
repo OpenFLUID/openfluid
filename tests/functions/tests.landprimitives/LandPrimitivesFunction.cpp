@@ -1,0 +1,288 @@
+/**
+  @file
+  @brief Implements LandPrimitivesFunction
+
+  @author  <>
+ */
+
+
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
+
+
+// =====================================================================
+// =====================================================================
+
+
+DECLARE_PLUGIN_HOOKS
+
+
+BEGIN_SIGNATURE_HOOK
+
+  DECLARE_SIGNATURE_ID("tests.landprimitives");
+  DECLARE_SIGNATURE_NAME("");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION("10.07");
+  DECLARE_SIGNATURE_SDKVERSION;
+  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+
+  DECLARE_SIGNATURE_DOMAIN("");
+  DECLARE_SIGNATURE_PROCESS("");
+  DECLARE_SIGNATURE_METHOD("");
+  DECLARE_SIGNATURE_AUTHORNAME("");
+  DECLARE_SIGNATURE_AUTHOREMAIL("");
+
+  DECLARE_UPDATED_UNITSGRAPH("Created units graph from scratch");
+  DECLARE_UPDATED_UNITSCLASS("VU","Units class for virtual units, parents of OU and TU units");
+  DECLARE_UPDATED_UNITSCLASS("TU","Test Units class");
+  DECLARE_UPDATED_UNITSCLASS("OU","Other Units class");
+  DECLARE_UPDATED_UNITSCLASS("MU","Matrix Units class");
+END_SIGNATURE_HOOK
+
+
+// =====================================================================
+// =====================================================================
+
+
+class LandPrimitivesFunction : public openfluid::base::PluggableFunction
+{
+  private:
+
+  public:
+
+
+    LandPrimitivesFunction() : PluggableFunction()
+    {
+
+
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    ~LandPrimitivesFunction()
+    {
+
+
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
+    {
+
+      return true;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    bool prepareData()
+    {
+
+ /*
+      TU.1         TU.2
+        |            |
+        -->  TU.22 <--
+               |
+               --> TU.18
+                     |
+          TU.52 --> OU.5 <-- OU.13
+                     |
+                     --> OU.25
+
+       VU1 <-> VU2
+
+   with:
+   TU1, TU2, TU22, TU18 are children of VU1
+   TU52, OU5, OU13, OU25 are children of VU2
+*/
+      OPENFLUID_AddUnit("VU",1,1);
+      OPENFLUID_AddUnit("VU",2,2);
+      OPENFLUID_AddUnit("TU",1,1);
+      OPENFLUID_AddUnit("TU",2,1);
+      OPENFLUID_AddUnit("TU",22,2);
+      OPENFLUID_AddUnit("TU",18,3);
+      OPENFLUID_AddUnit("TU",52,1);
+      OPENFLUID_AddUnit("OU",5,4);
+      OPENFLUID_AddUnit("OU",13,1);
+      OPENFLUID_AddUnit("OU",25,5);
+
+      OPENFLUID_AddFromToConnection("VU",1,"VU",2);
+      OPENFLUID_AddFromToConnection("VU",2,"VU",1);
+      OPENFLUID_AddFromToConnection("TU",1,"TU",22);
+      OPENFLUID_AddFromToConnection("TU",2,"TU",22);
+      OPENFLUID_AddFromToConnection("TU",22,"TU",18);
+      OPENFLUID_AddFromToConnection("TU",18,"OU",5);
+      OPENFLUID_AddFromToConnection("TU",52,"OU",5);
+      OPENFLUID_AddFromToConnection("OU",13,"OU",5);
+      OPENFLUID_AddFromToConnection("OU",5,"OU",25);
+
+      OPENFLUID_AddChildParentConnection("TU",1,"VU",1);
+      OPENFLUID_AddChildParentConnection("TU",2,"VU",1);
+      OPENFLUID_AddChildParentConnection("TU",22,"VU",1);
+      OPENFLUID_AddChildParentConnection("TU",18,"VU",1);
+      OPENFLUID_AddChildParentConnection("TU",52,"VU",2);
+      OPENFLUID_AddChildParentConnection("OU",5,"VU",2);
+      OPENFLUID_AddChildParentConnection("OU",13,"VU",2);
+      OPENFLUID_AddChildParentConnection("OU",25,"VU",2);
+
+
+      unsigned int Cols = 5;
+      unsigned int Rows = 7;
+      OPENFLUID_BuildUnitsMatrix("MU",Cols,Rows);
+
+
+      unsigned int UnitsCount;
+
+      OPENFLUID_GetUnitsCount("VU",UnitsCount);
+      if (UnitsCount != 2)
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect number of VU units");
+
+      OPENFLUID_GetUnitsCount("TU",UnitsCount);
+      if (UnitsCount != 5)
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect number of TU units");
+
+      OPENFLUID_GetUnitsCount("OU",UnitsCount);
+      if (UnitsCount != 3)
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect number of OU units");
+
+      OPENFLUID_GetUnitsCount("MU",UnitsCount);
+      if (UnitsCount != (Cols*Rows))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect number of MU units");
+
+
+      OPENFLUID_GetUnitsCount(UnitsCount);
+      if (UnitsCount != (10+Cols*Rows))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect total number of units");
+
+
+      openfluid::core::Unit* CurrentUnit = NULL;
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",1);
+      if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection for unit TU#1");
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",2);
+      if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection for unit TU#2");
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",2);
+      if (OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",522))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection for unit TU#2 (522)");
+
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",22);
+      if (!OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",1) || !OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection for unit TU#22");
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",18);
+      if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection for unit TU#18");
+
+      CurrentUnit = OPENFLUID_GetUnit("OU",5);
+      if (!OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",18))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection for unit OU#5");
+
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",1);
+      if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect parent-child connection for unit TU#1");
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",22);
+      if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect parent-child connection for unit TU#22");
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",18);
+      if (OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect parent-child connection for unit TU#18");
+
+      CurrentUnit = OPENFLUID_GetUnit("OU",5);
+      if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect parent-child connection for unit OU#5");
+
+
+      openfluid::core::Unit* TU;
+      DECLARE_UNITS_ORDERED_LOOP(1);
+
+
+      BEGIN_UNITS_ORDERED_LOOP(1,"TU", TU)
+        OPENFLUID_SetInputData(TU,"indatadbl",double(TU->getID())*0.1);
+        OPENFLUID_SetInputData(TU,"indatastr","C0DE1");
+      END_LOOP
+
+
+      return true;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    bool checkConsistency()
+    {
+
+      return true;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+    {
+      openfluid::core::Unit* TU;
+      DECLARE_UNITS_ORDERED_LOOP(1);
+      double DblValue;
+      std::string StrValue;
+
+      BEGIN_UNITS_ORDERED_LOOP(1,"TU", TU)
+        OPENFLUID_GetInputData(TU,"indatadbl",&DblValue);
+        if (!openfluid::tools::IsVeryClose(double(TU->getID())*0.1,DblValue))
+          OPENFLUID_RaiseError("tests.landprimitives","inputdata error for indatadbl");
+
+        OPENFLUID_GetInputData(TU,"indatastr",&StrValue);
+        if (StrValue != "C0DE1")
+          OPENFLUID_RaiseError("tests.landprimitives","inputdata error for indatastr");
+
+      END_LOOP
+
+      return true;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+    {
+
+      return true;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+    {
+      OPENFLUID_ExportUnitsGraphAsDotFile("landgraph.dot");
+      return true;
+    }
+
+};
+
+// =====================================================================
+// =====================================================================
+
+DEFINE_FUNCTION_HOOK(LandPrimitivesFunction)
+
