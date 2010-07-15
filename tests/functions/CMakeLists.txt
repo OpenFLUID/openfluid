@@ -97,10 +97,10 @@ ADD_TEST(functions-Events "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckEvents" 
                         "-p${TEST_OUTPUT_PATH}")                              
 
-ADD_FUNCTION(tests.progout tests.progout ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-ProgressiveOutput "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckProgOut"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckProgOut" 
+ADD_FUNCTION(tests.outbuffers tests.outbuffers ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-Buffers "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsBuffers"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckOutputsBuffers" 
                         "-p${TEST_OUTPUT_PATH}")                              
                               
 ADD_FUNCTION(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})

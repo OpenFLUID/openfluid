@@ -47,7 +47,7 @@
 
 
 /**
-  \file ProgOutFunc.cpp
+  \file OutBufFunc.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -69,8 +69,8 @@ DECLARE_PLUGIN_HOOKS
 
 
 BEGIN_SIGNATURE_HOOK
-  DECLARE_SIGNATURE_ID(("tests.progout"));
-  DECLARE_SIGNATURE_NAME(("test function for progressive output"));
+  DECLARE_SIGNATURE_ID(("tests.outbuffers"));
+  DECLARE_SIGNATURE_NAME(("test function for buffers"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
@@ -91,14 +91,14 @@ END_SIGNATURE_HOOK
 /**
 
 */
-class ProgressiveOutputFunction : public openfluid::base::PluggableFunction
+class OutputsBuffersFunction : public openfluid::base::PluggableFunction
 {
   private:
 
   public:
 
 
-  ProgressiveOutputFunction() : PluggableFunction()
+  OutputsBuffersFunction() : PluggableFunction()
   {
 
 
@@ -109,7 +109,7 @@ class ProgressiveOutputFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  ~ProgressiveOutputFunction()
+  ~OutputsBuffersFunction()
   {
 
 
@@ -203,5 +203,5 @@ class ProgressiveOutputFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(ProgressiveOutputFunction)
+DEFINE_FUNCTION_HOOK(OutputsBuffersFunction)
 

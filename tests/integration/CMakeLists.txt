@@ -111,21 +111,37 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                         "-p" "${TEST_OUTPUT_PATH}")               
   SET_TESTS_PROPERTIES(integration-DuplicateVariable PROPERTIES WILL_FAIL TRUE)
 
-  ADD_FUNCTION(tests.outputs tests.outputs ${TEST_OUTPUT_PATH})
-  ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
+
 
   ADD_TEST(integration-Verbose "${BIN_OUTPUT_PATH}/openfluid-engine"
-                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
-                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckVerbose"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsDefaultBuffers"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Verbose"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-v")
   
   ADD_TEST(integration-Quiet "${BIN_OUTPUT_PATH}/openfluid-engine"
-                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
-                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckQuiet"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsModifiedBuffers"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Quiet"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-q")
                                
+
+
+  ADD_FUNCTION(tests.outputs tests.outputs ${TEST_OUTPUT_PATH})
+  ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
+
+  ADD_TEST(integration-CheckOutputsDefaultBuffers "${BIN_OUTPUT_PATH}/openfluid-engine"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsDefaultBuffers"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckOutputsDefaultBuffers"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-v")
+  
+  ADD_TEST(integration-CheckOutputsModifiedBuffers "${BIN_OUTPUT_PATH}/openfluid-engine"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsModifiedBuffers"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckOutputsModifiedBuffers"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-q")
+
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "func2doc"
@@ -231,7 +247,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               )
 
   ADD_TEST(integration-MinimalRun "${BIN_OUTPUT_PATH}/openfluid-minimal"
-                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsAtEnd"
+                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckPrimitives"
                                   "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalRun"
                                   "${TEST_OUTPUT_PATH}"
                               )

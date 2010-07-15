@@ -4,7 +4,7 @@
     <model>
 
    
-      <function fileID="tests.progout" />       
+      <function fileID="tests.outbuffers" />       
       
   </model>
 </openfluid>

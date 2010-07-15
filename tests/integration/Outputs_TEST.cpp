@@ -177,11 +177,11 @@ BOOST_AUTO_TEST_CASE(check_comparetextfiles)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_outputsdirect)
+BOOST_AUTO_TEST_CASE(check_outputsdefaultbuf)
 {
 
-  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsAtEnd";
-  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsAtEnd";
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsDefaultBuffers";
+  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsDefaultBuffers";
   std::string RefDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.REF.CheckOutputs";
 
   BOOST_REQUIRE(RunSimulation(InputDir,OutputDir));
@@ -226,11 +226,11 @@ BOOST_AUTO_TEST_CASE(check_outputsdirect)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_outputsprogressive)
+BOOST_AUTO_TEST_CASE(check_outputsmodifiedbuf)
 {
 
-  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsProgressive";
-  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsProgressive";
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckOutputsModifiedBuffers";
+  std::string OutputDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckOutputsModifiedBuffers";
   std::string RefDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.REF.CheckOutputs";
 
   BOOST_REQUIRE(RunSimulation(InputDir,OutputDir));
