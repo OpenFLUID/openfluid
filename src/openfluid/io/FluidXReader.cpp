@@ -883,7 +883,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
 {
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
-    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","directory " + DirPath + "does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","directory " + DirPath + " does not exist");
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"fluidx",true);
   std::vector<std::string> XMLFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"xml",true);
