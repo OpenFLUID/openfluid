@@ -117,7 +117,7 @@ void SimulationReportWriter::saveToFile(std::string FilePath,openfluid::base::Si
   FileContents << std::endl;
 
   FileContents << "Spatial domain:" << std::endl;
-  for (UnitsIt = Repository->getUnits()->begin(); UnitsIt != Repository->getUnits()->end();++UnitsIt )
+  for (UnitsIt = Repository->getUnitsByClass()->begin(); UnitsIt != Repository->getUnitsByClass()->end();++UnitsIt )
   {
     FileContents << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
   }

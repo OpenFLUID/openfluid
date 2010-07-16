@@ -226,7 +226,7 @@ bool LoopsFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimIn
 
 
 
-  UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_CoreData->getUnits());
+  UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_CoreData->getUnitsByClass());
 
   std::cout << std::endl;
   std::cout.flush();
@@ -324,6 +324,7 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
 
   openfluid::core::Unit *TU = NULL;
   openfluid::core::Unit *OU = NULL;
+  openfluid::core::Unit *ZU = NULL;
   openfluid::core::Unit *ToUnit = NULL;
   openfluid::core::Unit *FromUnit = NULL;
   openfluid::core::UnitsPtrList_t *ToList = NULL;
@@ -335,7 +336,7 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
   DECLARE_UNITS_ORDERED_LOOP(1)
   DECLARE_UNITS_ORDERED_LOOP(2)
   DECLARE_UNITS_LIST_LOOP(1)
-
+  DECLARE_GLOBAL_UNITS_ORDERED_LOOP(10)
 
 
   // ===== loop inside loop =====
@@ -429,7 +430,7 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
   // ===== process order =====
 
   unsigned int LastPcsOrd;
-  std::string LastStr, CurrentStr, IDStr;
+  std::string LastStr, CurrentStr, IDStr, ClassStr;
 
   LastPcsOrd = 0;
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
@@ -459,6 +460,18 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
   END_LOOP
 
 
+  LastPcsOrd = 0;
+  BEGIN_GLOBAL_UNITS_ORDERED_LOOP(10,ZU)
+
+    if (ZU->getProcessOrder() < LastPcsOrd)
+    {
+      openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
+      openfluid::tools::ConvertValue(ZU->getProcessOrder(),&CurrentStr);
+      openfluid::tools::ConvertValue(ZU->getID(),&IDStr);
+      ClassStr = ZU->getClass();
+    }
+    LastPcsOrd = ZU->getProcessOrder();
+  END_LOOP
 
   return true;
 }

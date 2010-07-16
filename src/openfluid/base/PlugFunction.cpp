@@ -643,7 +643,7 @@ void PluggableFunction::OPENFLUID_GetUnitsCount(unsigned int& UnitsCount)
   UnitsCount = 0;
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
-  for (UnitsIt = mp_CoreData->getUnits()->begin(); UnitsIt != mp_CoreData->getUnits()->end();++UnitsIt )
+  for (UnitsIt = mp_CoreData->getUnitsByClass()->begin(); UnitsIt != mp_CoreData->getUnitsByClass()->end();++UnitsIt )
   {
     UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
   }
@@ -985,7 +985,7 @@ void PluggableFunction::OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& F
 
   std::ofstream DotFile;
   std::string OutputDir;
-  const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_CoreData->getUnits();
+  const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_CoreData->getUnitsByClass();
   const openfluid::core::UnitsList_t* UnitsList = NULL;
   std::vector<openfluid::core::UnitClass_t> ClassVector;
   openfluid::core::Unit* TheUnit;

@@ -83,7 +83,7 @@ class DLLEXPORT UnitsCollection
 
     Unit* getUnit(UnitID_t aUnitID);
 
-    bool addUnit(Unit aUnit);
+    Unit* addUnit(Unit aUnit);
 
     void sortByProcessOrder();
 

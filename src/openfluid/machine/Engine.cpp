@@ -218,7 +218,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   const openfluid::core::UnitsList_t* UnitsList;
   std::vector<std::string> VarsNames;
 
-  AllUnits = mp_CoreData->getUnits();
+  AllUnits = mp_CoreData->getUnitsByClass();
 
   for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
   {

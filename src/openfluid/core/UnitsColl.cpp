@@ -104,13 +104,13 @@ Unit* UnitsCollection::getUnit(UnitID_t aUnitID)
 
 
 
-bool UnitsCollection::addUnit(Unit aUnit)
+Unit* UnitsCollection::addUnit(Unit aUnit)
 {
 
   if (getUnit(aUnit.getID()) == NULL)
   {
     m_Data.push_back(aUnit);
-    return true;
+    return &(m_Data.back());
   }
   else return false;
 }

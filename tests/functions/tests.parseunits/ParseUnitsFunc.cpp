@@ -180,7 +180,7 @@ class ParseUnitsFunction : public openfluid::base::PluggableFunction
 
 
 
-    UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_CoreData->getUnits());
+    UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_CoreData->getUnitsByClass());
 /*
     std::cout << std::endl;
     std::cout.flush();

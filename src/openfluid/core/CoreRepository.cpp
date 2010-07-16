@@ -55,6 +55,18 @@ namespace openfluid { namespace core {
 
 CoreRepository* CoreRepository::mp_Singleton = NULL;
 
+// =====================================================================
+// =====================================================================
+
+
+struct SortUnitsPtrByProcessOrder
+{
+  bool operator ()(Unit*& U1,Unit*& U2) const
+  {
+    return (U1->getProcessOrder() <= U2->getProcessOrder());
+  }
+
+};
 
 // =====================================================================
 // =====================================================================
@@ -84,8 +96,13 @@ CoreRepository* CoreRepository::getInstance()
 
 bool CoreRepository::addUnit(Unit aUnit)
 {
-
-  return m_PcsOrderedUnitsByClass[aUnit.getClass()].addUnit(aUnit);
+  Unit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addUnit(aUnit);
+  if (TheUnit != NULL)
+  {
+    m_PcsOrderedUnitsGlobal.push_back(TheUnit);
+    return true;
+  }
+  return false;
 }
 
 
@@ -157,12 +174,15 @@ bool CoreRepository::sortUnitsByProcessOrder()
   UnitsListByClassMap_t::iterator it;
   UnitsCollection* Units;
 
-
+  // sort primary units structures
   for (it = m_PcsOrderedUnitsByClass.begin();it != m_PcsOrderedUnitsByClass.end();++it)
   {
     Units = &(it->second);
     Units->sortByProcessOrder();
   }
+
+  // sort global units structure
+  m_PcsOrderedUnitsGlobal.sort(SortUnitsPtrByProcessOrder());
 
   return true;
 }

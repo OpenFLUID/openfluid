@@ -235,7 +235,7 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 // =====================================================================
 
 
-void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix, bool IsXMLFormat)
+void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix, bool /*IsXMLFormat*/)
 {
   unsigned int i;
   if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
@@ -537,13 +537,13 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
-  for (UnitsIt = pCoreData->getUnits()->begin(); UnitsIt != pCoreData->getUnits()->end();++UnitsIt )
+  for (UnitsIt = pCoreData->getUnitsByClass()->begin(); UnitsIt != pCoreData->getUnitsByClass()->end();++UnitsIt )
   {
     UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
   }
 
   std::cout << "Spatial domain, " << UnitsCount << " units :"<< std::endl;
-  for (UnitsIt = pCoreData->getUnits()->begin(); UnitsIt != pCoreData->getUnits()->end();++UnitsIt )
+  for (UnitsIt = pCoreData->getUnitsByClass()->begin(); UnitsIt != pCoreData->getUnitsByClass()->end();++UnitsIt )
   {
     std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
   }

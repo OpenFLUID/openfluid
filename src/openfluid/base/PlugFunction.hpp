@@ -165,6 +165,15 @@
 
 
 /**
+  Macro for declaration of a loop processing all units, following their process order
+  @param[in] loopid ID of the loop
+*/
+#define DECLARE_GLOBAL_UNITS_ORDERED_LOOP(loopid) \
+  openfluid::core::UnitsPtrList_t::iterator _M_##loopid##_ordit;\
+  openfluid::core::UnitsPtrList_t* _M_##loopid##_GUList;
+
+
+/**
   Macro for the beginning of a loop processing all units of a class, following their process order
   @param[in] loopid ID of the loop, must match declaration
   @param[in] unitclass name of the unit class
@@ -177,6 +186,18 @@
   for (_M_##loopid##_ordit = _M_##loopid##_UList->begin();_M_##loopid##_ordit != _M_##loopid##_UList->end();++_M_##loopid##_ordit) \
   { \
     unit = &(*_M_##loopid##_ordit);
+
+
+/**
+  Macro for the beginning of a loop processing all units, following their process order
+  @param[in] loopid ID of the loop, must match declaration
+  @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
+*/
+#define BEGIN_GLOBAL_UNITS_ORDERED_LOOP(loopid,unit) \
+  _M_##loopid##_GUList = mp_CoreData->getUnitsGlobally(); \
+  for (_M_##loopid##_ordit = _M_##loopid##_GUList->begin();_M_##loopid##_ordit != _M_##loopid##_GUList->end();++_M_##loopid##_ordit) \
+  { \
+    unit = (*_M_##loopid##_ordit);
 
 
 /**
