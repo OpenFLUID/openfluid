@@ -321,7 +321,7 @@ void Engine::checkModelConsistency()
 
 
 
-void Engine::checkDataConsistency()
+void Engine::checkInputDataConsistency()
 {
 
   bool IsOK = true;
@@ -463,7 +463,7 @@ bool Engine::buildSpatialDomain()
 // =====================================================================
 // =====================================================================
 
-bool Engine::initParams()
+void Engine::initParams()
 {
 
   mp_Listener->onInitParams();
@@ -480,21 +480,33 @@ bool Engine::initParams()
   else mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::OK);
   mp_ExecMsgs->resetWarningFlag();
 
-  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void Engine::prepareData()
+{
+  try
+  {
+    mp_ModelInstance->prepareData();
+  }
+  catch (openfluid::base::OFException& E)
+  {
+    mp_Listener->onPrepareDataDone(openfluid::machine::MachineListener::ERROR);
+    throw;
+  }
+
+  mp_Listener->onPrepareDataDone(openfluid::machine::MachineListener::OK);
+
 }
 
 // =====================================================================
 // =====================================================================
 
-bool Engine::prepareDataAndCheckConsistency()
+void Engine::checkConsistency()
 {
-  bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
-  bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
-
-  bool IsOK = true;
-
 
   // inits the simulation infos and status
 
@@ -517,23 +529,24 @@ bool Engine::prepareDataAndCheckConsistency()
   try
   {
     if (mp_ModelInstance->getItemsCount() == 0)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::prepareDataAndCheckConsistency","No simulation function in model");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkConsistency","No simulation function in model");
 
     checkExtraFilesConsistency();
 
     checkModelConsistency();
 
-    checkDataConsistency();
+    checkInputDataConsistency();
   }
   catch (openfluid::base::OFException& E)
   {
     mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
+
 
   try
   {
-    mp_ModelInstance->prepareDataAndCheckConsistency();
+    mp_ModelInstance->checkConsistency();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -542,12 +555,6 @@ bool Engine::prepareDataAndCheckConsistency()
   }
 
 
-
-
-  if (!IsOK)
-  {
-    return false;
-  }
 
   mp_IOMan->initOutputs();
 
@@ -557,12 +564,11 @@ bool Engine::prepareDataAndCheckConsistency()
     mp_IOMan->prepareOutputs();
   }
 
-
   mp_IOMan->clearFluidXData();
 
-  mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
 
-  return true;
+
+  mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
 }
 
 
@@ -570,21 +576,13 @@ bool Engine::prepareDataAndCheckConsistency()
 // =====================================================================
 
 
-bool Engine::run()
+void Engine::run()
 {
-  bool IsOK = true;
-  bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
-  bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
-
 
   std::string ProdMessage;
 
-
   // Check for simulation vars production before init
   checkSimulationVarsProduction(0);
-
 
   // ============= initializeRun() =============
 
@@ -681,7 +679,6 @@ bool Engine::run()
   // final save
   mp_IOMan->closeOutputs();
 
-  return IsOK;
 }
 
 

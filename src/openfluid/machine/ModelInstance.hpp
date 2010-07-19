@@ -91,7 +91,9 @@ class DLLEXPORT ModelInstance
 
     bool initParams() const;
 
-    bool prepareDataAndCheckConsistency() const;
+    bool prepareData() const;
+
+    bool checkConsistency() const;
 
     bool initializeRun(const openfluid::base::SimulationInfo* SimInfo) const;
 

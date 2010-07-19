@@ -205,12 +205,27 @@ bool ModelInstance::initParams() const
 // =====================================================================
 
 
-bool ModelInstance::prepareDataAndCheckConsistency() const
+bool ModelInstance::prepareData() const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST_TWO(prepareData(),checkConsistency(),CheckConsistency,IsOK);
+  PARSE_FUNCTION_LIST(prepareData(),PrepareData,IsOK);
+
+  return IsOK;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ModelInstance::checkConsistency() const
+{
+  DECLARE_FUNCTION_PARSER;
+  bool IsOK = true;
+
+  PARSE_FUNCTION_LIST(checkConsistency(),CheckConsistency,IsOK);
 
   return IsOK;
 }

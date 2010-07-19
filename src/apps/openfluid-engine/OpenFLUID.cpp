@@ -503,7 +503,6 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
   mp_Engine->loadData();
-//  printlnExecStatus();
   mp_ExecMsgs->resetWarningFlag();
 
   std::cout << "* Processing run configuration... "; std::cout.flush();
@@ -525,8 +524,13 @@ void OpenFLUIDApp::runSimulation()
   mp_ExecMsgs->resetWarningFlag();
 
 
-  std::cout << "* Preparing data and checking consistency... "; std::cout.flush();
-  mp_Engine->prepareDataAndCheckConsistency();
+  std::cout << "* Preparing data... "; std::cout.flush();
+  mp_Engine->prepareData();
+  mp_ExecMsgs->resetWarningFlag();
+
+
+  std::cout << "* Checking consistency... "; std::cout.flush();
+  mp_Engine->checkConsistency();
   mp_ExecMsgs->resetWarningFlag();
 
 

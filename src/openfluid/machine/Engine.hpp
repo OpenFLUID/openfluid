@@ -116,7 +116,7 @@ class DLLEXPORT Engine
 
      void checkModelConsistency();
 
-     void checkDataConsistency();
+     void checkInputDataConsistency();
 
      void checkExtraFilesConsistency();
 
@@ -153,11 +153,13 @@ class DLLEXPORT Engine
 
     bool processRunConfiguration();
 
-    bool initParams();
+    void initParams();
 
-    bool prepareDataAndCheckConsistency();
+    void prepareData();
 
-    bool run();
+    void checkConsistency();
+
+    void run();
 
     bool saveReports();
 

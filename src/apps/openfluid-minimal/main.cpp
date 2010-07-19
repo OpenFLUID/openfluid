@@ -97,7 +97,8 @@ int main(int argc, char **argv)
     Engine->buildModel();
 
     Engine->initParams();
-    Engine->prepareDataAndCheckConsistency();
+    Engine->prepareData();
+    Engine->checkConsistency();
     Engine->run();
     Engine->saveReports();
 
