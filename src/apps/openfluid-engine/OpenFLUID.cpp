@@ -507,7 +507,6 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Processing run configuration... "; std::cout.flush();
   mp_Engine->processRunConfiguration();
-  printlnExecStatus();
   mp_ExecMsgs->resetWarningFlag();
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
