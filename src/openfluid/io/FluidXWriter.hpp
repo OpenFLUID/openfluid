@@ -45,49 +45,71 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file FluidXWriter.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
 
 
-#ifndef __MODELITEMINSTANCE_HPP__
-#define __MODELITEMINSTANCE_HPP__
+#ifndef __FLUIDXWRITER_HPP__
+#define __FLUIDXWRITER_HPP__
 
+
+#include <list>
 #include <string>
-
-#include <openfluid/base.hpp>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
+#include <openfluid/base.hpp>
+#include <openfluid/machine.hpp>
 
 
-namespace openfluid { namespace machine {
+namespace openfluid { namespace io {
 
 
-
-struct ModelItemInstance
+class DLLEXPORT FluidXWriter
 {
-  std::string Filename;
-  bool SDKCompatible;
-  openfluid::core::FuncParamsMap_t Params;
-  openfluid::base::FunctionSignature* Signature;
-  openfluid::base::PluggableFunction* Function;
-  openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
+  private:
 
-  ModelItemInstance()
-  {
-    Filename = "";
-    Signature = NULL;
-    Function = NULL;
-    SDKCompatible = false;
-    ItemType = openfluid::base::ModelItemDescriptor::NoModelItemType;
-  }
+    std::string m_ModelStr;
+    std::string m_RunStr;
+    std::string m_DomainStr;
+    std::string m_OutputStr;
+
+    std::string m_IndentStr;
+
+    openfluid::io::IOListener* mp_Listener;
+
+    void prepareOutputDir(std::string DirPath);
+
+    std::string getGeneratorMethodAsStr(openfluid::base::GeneratorDescriptor::GeneratorMethod Method) const;
+
+    std::string getParamsAsStr(const openfluid::core::FuncParamsMap_t& Params) const;
+
+  public:
+
+
+    FluidXWriter(openfluid::io::IOListener* Listener);
+
+    ~FluidXWriter();
+
+    void setModelToWrite(openfluid::machine::ModelInstance* MInstance);
+
+    void setRunConfigurationToWrite(openfluid::base::RunDescriptor& RDescriptor);
+
+    void setDomainToWrite(const openfluid::core::CoreRepository* CoreData);
+
+    void setOutputConfigurationToWrite(openfluid::base::OutputDescriptor& ODescriptor);
+
+    void WriteToManyFiles(std::string DirPath);
+
+    void WriteToSingleFile(std::string FilePath);
 
 };
 
+} } // namespaces
 
-} } //namespaces
 
+#endif /* __FLUIDXWRITER_HPP__ */
 
-#endif /* __MODELITEMINSTANCE_H___ */

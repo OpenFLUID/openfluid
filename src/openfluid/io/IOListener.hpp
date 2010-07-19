@@ -86,6 +86,15 @@ class DLLEXPORT IOListener : public openfluid::base::Listener
 
     virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/) {};
 
+    virtual void onWrite() {};
+
+    virtual void onWritten(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onFileWrite(std::string /*Filename*/) {};
+
+    virtual void onFileWritten(openfluid::base::Listener::Status /*Status*/) {};
+
+
 };
 
 

@@ -48,46 +48,73 @@
 
 /**
   @file
+  @brief implements main
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
-
-
-#ifndef __MODELITEMINSTANCE_HPP__
-#define __MODELITEMINSTANCE_HPP__
-
-#include <string>
+*/
 
 #include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/machine.hpp>
+#include <openfluid/io.hpp>
+
+#include <tests-config.hpp>
 
 
-namespace openfluid { namespace machine {
-
-
-
-struct ModelItemInstance
+int main()
 {
-  std::string Filename;
-  bool SDKCompatible;
-  openfluid::core::FuncParamsMap_t Params;
-  openfluid::base::FunctionSignature* Signature;
-  openfluid::base::PluggableFunction* Function;
-  openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
-
-  ModelItemInstance()
+  try
   {
-    Filename = "";
-    Signature = NULL;
-    Function = NULL;
-    SDKCompatible = false;
-    ItemType = openfluid::base::ModelItemDescriptor::NoModelItemType;
+    std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXWriter";
+    std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckFluidXWriterSingle";
+    std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckFluidXWriterMany";
+    std::string PlugsDir = CONFIGTESTS_OUTPUT_BINARY_DIR;
+
+
+    openfluid::base::ExecutionMessages* ExecMsgs;
+    openfluid::base::RuntimeEnvironment* RunEnv;
+    openfluid::core::CoreRepository* CoreRepos;
+    openfluid::io::FluidXReader Reader(NULL);
+    openfluid::io::FluidXWriter Writer(NULL);
+    openfluid::machine::Factory Factory;
+    const openfluid::machine::ModelInstance* MInstance;
+
+    ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+    RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+    CoreRepos = openfluid::core::CoreRepository::getInstance();
+
+    RunEnv->addExtraPluginsPaths(PlugsDir);
+
+    Reader.loadFromDirectory(InputDir);
+
+    Factory.buildDomainFromDescriptor(Reader.getDomainDescriptor());
+    MInstance = Factory.buildInstanceFromDescriptor(Reader.getModelDescriptor(),NULL);
+
+    Writer.setDomainToWrite(CoreRepos);
+    Writer.setModelToWrite(const_cast<openfluid::machine::ModelInstance*>(MInstance));
+    Writer.setRunConfigurationToWrite(Reader.getRunDescriptor());
+    Writer.setOutputConfigurationToWrite(Reader.getOutputDescriptor());
+
+    Writer.WriteToManyFiles(OutputDirMany);
+    Writer.WriteToSingleFile(OutputDirSingle+"/all.fluidx");
+
+    return 0;
+  }
+  catch (openfluid::base::OFException& E)
+  {
+    std::cerr << "ERROR: " + std::string(E.what()) << std::endl;
+  }
+  catch (std::bad_alloc& E)
+  {
+    std::cerr << "MEMORY ALLOCATION ERROR: " + std::string(E.what()) + ". Possibly not enough memory available" << std::endl;
+  }
+  catch (std::exception& E)
+  {
+    std::cerr << "SYSTEM ERROR: " + std::string(E.what()) << std::endl;
+  }
+  catch (...)
+  {
+    std::cerr << "UNKNOWN ERROR" << std::endl;
   }
 
-};
-
-
-} } //namespaces
-
-
-#endif /* __MODELITEMINSTANCE_H___ */
+  return 127;
+}

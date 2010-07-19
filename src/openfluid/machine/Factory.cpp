@@ -252,6 +252,7 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
       // instanciation of a pluggeg simulation function using the plugin manager
       IInstance = PluginManager::getInstance()->getPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),mp_ExecMsgs,mp_CoreData);
       IInstance->Params = (*it)->getParameters();
+      IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
       MInstance->appendItem(IInstance);
     }
 
@@ -263,6 +264,8 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
 
       IInstance = new ModelItemInstance();
       IInstance->SDKCompatible = true;
+      IInstance->Params = (*it)->getParameters();
+      IInstance->ItemType = openfluid::base::ModelItemDescriptor::Generator;
 
       openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
 

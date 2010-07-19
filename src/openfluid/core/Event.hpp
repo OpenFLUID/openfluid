@@ -74,10 +74,11 @@ namespace openfluid { namespace core {
 */
 class DLLEXPORT Event
 {
+  public:
+    typedef std::map<std::string, std::string> EventInfosMap_t;
 
   private:
 	  DateTime m_Date;
-    typedef std::map<std::string, std::string> EventInfosMap_t;
 
 	  EventInfosMap_t m_Infos;
 

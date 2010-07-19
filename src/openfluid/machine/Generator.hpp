@@ -81,6 +81,8 @@ class DLLEXPORT Generator : public openfluid::base::PluggableFunction
 
     bool prepareData()  { return true; };
 
+    const openfluid::base::GeneratorDescriptor& getDescriptor() const { return m_GenDesc; };
+
 };
 
 } } //namespaces
