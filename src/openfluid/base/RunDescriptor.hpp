@@ -75,7 +75,7 @@ class DLLEXPORT RunDescriptor
     bool m_IsUserValuesBufferSize;
     unsigned int m_FilesBufferSizeInKB;
 
-
+   bool m_Filled;
 
   public:
 
@@ -114,6 +114,10 @@ class DLLEXPORT RunDescriptor
     void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
 
     unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
+
+    bool isFilled() const { return m_Filled; };
+
+    void setFilled(const bool Filled) { m_Filled = Filled; };
 
 };
 

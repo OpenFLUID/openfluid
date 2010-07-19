@@ -385,7 +385,7 @@ void Engine::checkExtraFilesConsistency()
 
 
 
-bool Engine::buildModel()
+void Engine::buildModel()
 {
 
   try
@@ -402,21 +402,17 @@ bool Engine::buildModel()
 
   mp_Listener->onModelBuildDone(openfluid::machine::MachineListener::OK);
 
-  return true;
-
 }
 
 
 // =====================================================================
 // =====================================================================
 
-bool Engine::loadData()
+void Engine::loadData()
 {
 
   mp_IOMan->loadInputs(m_ModelDesc, m_DomainDesc, m_RunDesc);
 
-  return true;
-
 }
 
 
@@ -425,20 +421,29 @@ bool Engine::loadData()
 // =====================================================================
 
 
-bool Engine::processRunConfiguration()
+void Engine::processRunConfiguration()
 {
+  try
+  {
+    Factory REF = Factory();
+    REF.fillRunEnvironmentFromDescriptor(m_RunDesc);
+  }
+  catch (openfluid::base::OFException& E)
+  {
 
-  Factory REF = Factory();
-  REF.fillRunEnvironmentFromDescriptor(m_RunDesc);
+    mp_Listener->onRunConfigurationDone(openfluid::machine::MachineListener::ERROR);
+    throw;
+  }
 
-  return true;
+  mp_Listener->onRunConfigurationDone(openfluid::machine::MachineListener::OK);
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool Engine::buildSpatialDomain()
+void Engine::buildSpatialDomain()
 {
 
   try
@@ -454,8 +459,6 @@ bool Engine::buildSpatialDomain()
   }
 
   mp_Listener->onLandscapeBuildDone(openfluid::machine::MachineListener::OK);
-
-  return true;
 
 
 }

@@ -74,6 +74,8 @@ RunDescriptor::RunDescriptor()
   m_FilesBufferSizeInKB = openfluid::config::DEFAULT_OUTFILES_BUFFER_KB;
   m_IsUserValuesBufferSize = false;
   m_ValuesBufferSize = 0;
+
+  m_Filled = false;
 }
 
 

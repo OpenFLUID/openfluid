@@ -86,6 +86,10 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
 
     virtual void onLandscapeBuildDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
+    virtual void onRunConfiguration() {};
+
+    virtual void onRunConfigurationDone(const openfluid::base::Listener::Status& /*Status*/) {};
+
     virtual void onInitParams() {};
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/) {};

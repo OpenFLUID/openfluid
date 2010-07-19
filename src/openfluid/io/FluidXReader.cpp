@@ -305,7 +305,7 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
 {
 
   if (m_ModelDefined)
-    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","duplicate model definition (" + m_CurrentFile + ")");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","Duplicate model definition (" + m_CurrentFile + ")");
 
   openfluid::base::FunctionDescriptor* FD;
   openfluid::base::GeneratorDescriptor* GD;
@@ -388,7 +388,7 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
 {
 
   if (m_RunConfigDefined)
-    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","duplicate run configuration (" + m_CurrentFile + ")");
+    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractRunFromNode","Duplicate run configuration (" + m_CurrentFile + ")");
 
 
   bool FoundDeltaT = false;
@@ -512,6 +512,7 @@ void FluidXReader::extractRunFromNode(xmlNodePtr NodePtr)
 
   m_RunConfigDefined = true;
 
+  m_RunDescriptor.setFilled(true);
 
 }
 
@@ -929,13 +930,6 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
   }
 
   propagateGlobalParamsInModel();
-
-
-  if (!m_RunConfigDefined)
-    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","no run configuration found in directory " + DirPath);
-
-  if (!m_ModelDefined)
-    throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","no model found in directory " + DirPath);
 
 }
 

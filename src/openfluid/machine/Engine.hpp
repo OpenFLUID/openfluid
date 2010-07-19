@@ -145,13 +145,13 @@ class DLLEXPORT Engine
     */
     ~Engine();
 
-    bool buildModel();
+    void buildModel();
 
-    bool buildSpatialDomain();
+    void buildSpatialDomain();
 
-    bool loadData();
+    void loadData();
 
-    bool processRunConfiguration();
+    void processRunConfiguration();
 
     void initParams();
 

@@ -128,6 +128,14 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
       displayStatus(Status);
     };
 
+    virtual void onRunConfiguration() {};
+
+    virtual void onRunConfigurationDone(const openfluid::base::Listener::Status& Status)
+    {
+      displayStatus(Status);
+    };
+
+
     virtual void onInitParams() {};
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& Status)

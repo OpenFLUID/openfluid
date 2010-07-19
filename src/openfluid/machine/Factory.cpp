@@ -239,6 +239,9 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
   ModelInstance* MInstance = new ModelInstance(Listener);
   ModelItemInstance* IInstance;
 
+  if (Descriptor.getItems().empty())
+    throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulation function in model");
+
   for (it=Descriptor.getItems().begin();it!=Descriptor.getItems().end();++it)
   {
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::NoModelItemType))
@@ -308,6 +311,10 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
 
 void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& Descriptor)
 {
+  if (!Descriptor.isFilled())
+    throw openfluid::base::OFException("OpenFLUID framework","Factory::fillRunEnvironmentFromDescriptor","Wrong or undefined run configuration");
+
+
   mp_RunEnv->setSimulationTimeInformation(Descriptor.getBeginDate(),Descriptor.getEndDate(),
                                           Descriptor.getDeltaT());
 
