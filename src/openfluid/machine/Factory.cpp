@@ -96,7 +96,10 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
   // creating units
   for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
   {
-    mp_CoreData->addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),(*itUnits).getUnitID(),(*itUnits).getProcessOrder()));
+    mp_CoreData->addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),
+                                               (*itUnits).getUnitID(),
+                                               (*itUnits).getProcessOrder(),
+                                               openfluid::core::Unit::DESCRIPTOR));
   }
 
   // linking to units

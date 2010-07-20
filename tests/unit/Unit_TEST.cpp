@@ -67,7 +67,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::Unit TU("Test",25,3);
+  openfluid::core::Unit TU("Test",25,3,openfluid::core::Unit::UNKNOWN);
 
   BOOST_REQUIRE_EQUAL(TU.getClass(),"Test");
   BOOST_REQUIRE_EQUAL(TU.getID(),25);
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::core::Unit* pTU = NULL;
 
-  pTU = new openfluid::core::Unit("pTest",25,3);
+  pTU = new openfluid::core::Unit("pTest",25,3,openfluid::core::Unit::UNKNOWN);
 
   BOOST_REQUIRE_EQUAL(pTU->getClass(),"pTest");
   BOOST_REQUIRE_EQUAL(pTU->getID(),25);
@@ -115,26 +115,26 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   unsigned int UnitsCount;
 
 
-  openfluid::core::Unit TU("Test",35,17);
+  openfluid::core::Unit TU("Test",35,17,openfluid::core::Unit::UNKNOWN);
 
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",23,1));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",2,5));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",21,5));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest",23,1,openfluid::core::Unit::UNKNOWN));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest",2,5,openfluid::core::Unit::UNKNOWN));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest",21,5,openfluid::core::Unit::UNKNOWN));
 
-  TU.addFromUnit(new openfluid::core::Unit("FromTest2",1,1));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest2",2,1));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest2",1,1,openfluid::core::Unit::UNKNOWN));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest2",2,1,openfluid::core::Unit::UNKNOWN));
 
 
-  TU.addToUnit(new openfluid::core::Unit("ToTest",1,1));
-  TU.addToUnit(new openfluid::core::Unit("ToTest",2,1));
+  TU.addToUnit(new openfluid::core::Unit("ToTest",1,1,openfluid::core::Unit::UNKNOWN));
+  TU.addToUnit(new openfluid::core::Unit("ToTest",2,1,openfluid::core::Unit::UNKNOWN));
 
-  TU.addToUnit(new openfluid::core::Unit("ToTest2",1,1));
-  TU.addToUnit(new openfluid::core::Unit("ToTest2",2,1));
+  TU.addToUnit(new openfluid::core::Unit("ToTest2",1,1,openfluid::core::Unit::UNKNOWN));
+  TU.addToUnit(new openfluid::core::Unit("ToTest2",2,1,openfluid::core::Unit::UNKNOWN));
 
-  TU.addParentUnit(new openfluid::core::Unit("ParentTest",55,1));
+  TU.addParentUnit(new openfluid::core::Unit("ParentTest",55,1,openfluid::core::Unit::UNKNOWN));
 
-  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",1,1));
-  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",2,1));
+  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",1,1,openfluid::core::Unit::UNKNOWN));
+  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",2,1,openfluid::core::Unit::UNKNOWN));
 
   BOOST_REQUIRE(TU.getFromUnits("FromTest") != NULL);
   BOOST_REQUIRE(TU.getFromUnits("FromTest2") != NULL);

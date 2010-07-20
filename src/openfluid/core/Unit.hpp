@@ -121,6 +121,9 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
 */
 class DLLEXPORT Unit
 {
+  public:
+    enum  InstanciationType { DESCRIPTOR, SIMULATION, UNKNOWN };
+
   private:
     UnitID_t m_ID;
     UnitClass_t m_Class;
@@ -138,6 +141,8 @@ class DLLEXPORT Unit
 
     EventsCollection m_Events;
 
+    InstanciationType m_InstType;
+
   public:
 
     /*
@@ -146,7 +151,8 @@ class DLLEXPORT Unit
       @param[in] anID the ID of the unit
       @param[in] aPcsOrder the process order of the unit
         */
-    Unit(const UnitClass_t aClass, const UnitID_t anID, const PcsOrd_t aPcsOrder);
+    Unit(const UnitClass_t aClass, const UnitID_t anID,
+         const PcsOrd_t aPcsOrder, const InstanciationType InstType);
 
     /*
           Destructor
@@ -168,6 +174,9 @@ class DLLEXPORT Unit
       Returns the class of the unit
     */
     UnitClass_t getClass() const { return m_Class; };
+
+    InstanciationType getIntanceType() const { return m_InstType; };
+
 
     bool addToUnit(Unit* aUnit);
 

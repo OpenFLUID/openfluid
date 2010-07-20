@@ -55,11 +55,13 @@ namespace openfluid { namespace core {
 // =====================================================================
 
 
-Unit::Unit(const UnitClass_t aClass, const UnitID_t anID, const PcsOrd_t aPcsOrder)
+Unit::Unit(const UnitClass_t aClass, const UnitID_t anID,
+           const PcsOrd_t aPcsOrder, const InstanciationType InstType)
 {
   m_Class = aClass;
   m_ID = anID;
   m_PcsOrder = aPcsOrder;
+  m_InstType = InstType;
 }
 
 

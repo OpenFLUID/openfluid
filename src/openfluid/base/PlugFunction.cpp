@@ -682,7 +682,7 @@ void PluggableFunction::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName
                                           openfluid::core::UnitID_t ID,
                                           openfluid::core::PcsOrd_t PcsOrder)
 {
-  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder)))
+  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::Unit::SIMULATION)))
    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddUnit","Error adding unit");
 
   mp_CoreData->sortUnitsByProcessOrder();

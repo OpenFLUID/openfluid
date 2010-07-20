@@ -90,13 +90,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
   for (i=1;i<=250;i++)
   {
     PcsOrder = (i%7)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder));
+    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder,openfluid::core::Unit::UNKNOWN));
   }
 
   for (i=1;i<=7325;i++)
   {
     PcsOrder = (i%31)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder));
+    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder,openfluid::core::Unit::UNKNOWN));
   }
 
   Repos->sortUnitsByProcessOrder();
