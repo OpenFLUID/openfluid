@@ -296,11 +296,14 @@ exchange time step, and the optionnal progressive output parameters.\\
   \texttt{end} attributes, giving the dates of the beginning and the end of the
   simulation period. The dates formats for these attributes must be
   \texttt{YYYY-MM-DD hh:mm:ss}
-  \item Inside the \texttt{<run>} tag, there may be a \texttt{<progressout>}
-  tag giving the configuration for the progressive output mode. This
-  \texttt{<progressout>} tag must bring a \texttt{packet} attribute giving the
-  size (in number of time steps) of the saved packets, and a \texttt{keep}
-  attribute giving the number of time steps kept in memory.
+  \item Inside the \texttt{<run>} tag, there may be a \texttt{<valuesbuffer>}
+  tag for the number of time steps kept in memory. The number of step is given
+  through a \texttt{steps} attribute. If not present, all values are kept in memory.
+  \item Inside the \texttt{<run>} tag, there may be a \texttt{<filesbuffer>}
+  tag for the size of the memory buffer for each file of results. The size is given
+  in kilobytes through a \texttt{kbytes} attribute. If not present, the default value 
+  is 2KB.
+
 \end{itemize}
 
 \begin{lstlisting}[language=xml,title=\footnotesize\textit{example}]
@@ -311,7 +314,8 @@ exchange time step, and the optionnal progressive output parameters.\\
     <deltat>3600</deltat>
     <period begin="2000-01-01 00:00:00" end="2000-03-27 01:12:37" />
     
-    <progressout packet="10" keep="2" />
+    <valuesbuffer steps="10" />
+    <filesbuffer kbytes="8" />
     
   </run>
 </openfluid>

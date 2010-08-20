@@ -295,9 +295,9 @@ ENDFOREACH(currtest ${TESTS_DATASETS})
 # =========================================================================
 
 IF(NOT USER_FUNCTIONS_INSTALL_PATH)
- SET(USER_FUNCTIONS_INSTALL_PATH "$ENV{HOME}/.openfluid/functions")
+ SET(USER_FUNCTIONS_INSTALL_PATH "$ENV{HOME}/.openfluid/engine/functions")
  IF(WIN32)
-   SET(USER_FUNCTIONS_INSTALL_PATH "$ENV{APPDATA}/openfluid/functions") 
+   SET(USER_FUNCTIONS_INSTALL_PATH "$ENV{APPDATA}/openfluid/engine/functions") 
  ENDIF(WIN32)
 ENDIF(NOT USER_FUNCTIONS_INSTALL_PATH)
 
@@ -317,26 +317,26 @@ CMake.in.config
  
 \verbatim
 # function ID
-SET(FUNC_ID example.func)
+SET(FUNC_ID )
 
-# list of CPP files. the func2doc tag should be contained in the first one
-SET(FUNC_CPP ExampleFunc.cpp)
+# list of CPP files. the func2doc tag must be contained in the first one
+SET(FUNC_CPP )
 
 # list of Fortran files, if any
 SET(FUNC_FORTRAN )
 
-# packages to find and/or to check (example below with sqlite3) 
+# packages to find and/or to check (example below with sqlite3)
 #FIND_PACKAGE(PkgConfig REQUIRED)
 #PKG_CHECK_MODULES(sqlite3 REQUIRED sqlite3)
 
-# directories to include for function compilation  example below with sqlite3)
+# dirs to include for function compilation (example below with sqlite3)
 #SET(FUNC_INCLUDE_DIRS ${sqlite3_INCLUDE_DIRS})
 
 # libraries to link for function build (example below with sqlite3)
 #SET(FUNC_LINK_LIBS ${sqlite3_LIBRARIES})
 
-# definitions to add at compile time  (example below with a testdef definition)
-#SET(FUNC_DEFINITIONS "-Dtestdef=1")
+# definitions to add at compile time (example below with a test definition)
+#SET(FUNC_DEFINITIONS "-Dtestfunc")
 
 # set this if you do not want automatic build of func2doc documentation
 #SET(NOFUNC2DOC 1)
@@ -346,7 +346,6 @@ SET(FUNC_FORTRAN )
 
 # set this if you do want to include tests
 #SET(TESTS_DATASETS test01 test02)
-  
 \endverbatim
 
 */

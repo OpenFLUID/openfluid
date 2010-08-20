@@ -9,7 +9,7 @@ IF(DOXYGEN)
   # TODO A voir autrement    
   CONFIGURE_FILE(openfluid.png ${APIDOC_OUTPUT_PATH}/html/openfluid.png COPYONLY)
   CONFIGURE_FILE(API_stack.png ${APIDOC_OUTPUT_PATH}/html/API_stack.png COPYONLY)
-  
+    
   ADD_CUSTOM_COMMAND(
     OUTPUT "${APIDOC_OUTPUT_PATH}/html/index.html"
     DEPENDS "${PROJECT_BINARY_DIR}/API-Doxyfile"
