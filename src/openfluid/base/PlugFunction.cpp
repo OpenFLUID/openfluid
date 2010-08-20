@@ -693,6 +693,24 @@ void PluggableFunction::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName
 // =====================================================================
 
 
+void PluggableFunction::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassName,
+                                             openfluid::core::UnitID_t ID)
+{
+
+  openfluid::core::Unit* TheUnit = mp_CoreData->getUnit(ClassName,ID);
+
+  if (TheUnit == NULL)
+    OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_DeleteUnit","error deleting unit");
+
+  mp_CoreData->deleteUnit(TheUnit);
+
+  mp_CoreData->sortUnitsByProcessOrder();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 bool PluggableFunction::OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
                                                       openfluid::core::UnitID_t IDFrom,
                                                       openfluid::core::UnitClass_t ClassNameTo,
@@ -725,6 +743,35 @@ bool PluggableFunction::OPENFLUID_AddFromToConnection(openfluid::core::Unit* Fro
 // =====================================================================
 
 
+bool PluggableFunction::OPENFLUID_RemoveFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+                                                         openfluid::core::UnitID_t IDFrom,
+                                                         openfluid::core::UnitClass_t ClassNameTo,
+                                                         openfluid::core::UnitID_t IDTo)
+{
+  openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
+  openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
+
+  return OPENFLUID_RemoveFromToConnection(FromUnit, ToUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_RemoveFromToConnection(openfluid::core::Unit* FromUnit,
+                                                         openfluid::core::Unit* ToUnit)
+{
+  if (FromUnit == NULL || ToUnit == NULL)
+    throw OFException("OpenFLUID framework","CoreRepository::removeFromToConnection","Error removing from-to connection");
+  else
+    return mp_CoreData->removeFromToConnection(FromUnit,ToUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool PluggableFunction::OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
                                                            openfluid::core::UnitID_t IDChild,
@@ -751,6 +798,36 @@ bool PluggableFunction::OPENFLUID_AddChildParentConnection(openfluid::core::Unit
   }
   else
     throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddChildParentConnection","Error adding child-parent connection");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_RemoveChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+                                                           openfluid::core::UnitID_t IDChild,
+                                                           openfluid::core::UnitClass_t ClassNameParent,
+                                                           openfluid::core::UnitID_t IDParent)
+{
+  openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
+  openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
+
+  return OPENFLUID_RemoveChildParentConnection(ChildUnit, ParentUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_RemoveChildParentConnection(openfluid::core::Unit* ChildUnit,
+                                                           openfluid::core::Unit* ParentUnit)
+{
+  if (ChildUnit == NULL || ParentUnit == NULL)
+    throw OFException("OpenFLUID framework","CoreRepository::removeChildParentConnection","Error removing child-parent connection");
+  else
+    return mp_CoreData->removeChildParentConnection(ChildUnit,ParentUnit);
 }
 
 

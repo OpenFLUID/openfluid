@@ -219,6 +219,63 @@ class LandPrimitivesFunction : public openfluid::base::PluggableFunction
       END_LOOP
 
 
+
+
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",2);
+
+      if (CurrentUnit == NULL)
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect unit TU#2 before deletion");
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",22);
+      if (!OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection before deletion of unit TU#2");
+
+
+      CurrentUnit = OPENFLUID_GetUnit("VU",1);
+      if (!OPENFLUID_IsUnitParentOf(CurrentUnit,"TU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect parent-child connection before deletion of unit TU#2");
+
+
+      OPENFLUID_DeleteUnit("TU",2);
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",2);
+      if (CurrentUnit != NULL)
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect deletion for unit TU#2");
+
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",22);
+      if (OPENFLUID_IsUnitConnectedFrom(CurrentUnit,"TU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection after deletion of unit TU#2");
+
+      CurrentUnit = OPENFLUID_GetUnit("VU",1);
+      if (OPENFLUID_IsUnitParentOf(CurrentUnit,"TU",2))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect parent-child connection after deletion of unit TU#2");
+
+
+
+      CurrentUnit = OPENFLUID_GetUnit("OU",13);
+
+      if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect from-to connection between units OU#13 and OU#5 before removing");
+
+      OPENFLUID_RemoveFromToConnection("OU",13,"OU",5);
+
+      if (OPENFLUID_IsUnitConnectedTo(CurrentUnit,"OU",5))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect removing of from-to connection between units OU#13 and OU#5");
+
+
+      CurrentUnit = OPENFLUID_GetUnit("TU",18);
+
+      if (!OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect child-parent connection between units TU#18 and VU#1 before removing");
+
+      OPENFLUID_RemoveChildParentConnection("TU",18,"VU",1);
+
+      if (OPENFLUID_IsUnitChildOf(CurrentUnit,"VU",1))
+        OPENFLUID_RaiseError("tests.landprimitives","incorrect removing of child-parent connection between units TU#18 and VU#1");
+
+
       return true;
     }
 

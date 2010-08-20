@@ -297,6 +297,9 @@ class DLLEXPORT PluggableFunction
     static std::string generateDotEdge(std::string SrcClass, std::string SrcID,
                                        std::string DestClass, std::string DestID,
                                        std::string Options);
+
+
+
   protected:
 
     // TODO check if const
@@ -661,6 +664,16 @@ class DLLEXPORT PluggableFunction
                            openfluid::core::PcsOrd_t PcsOrder);
 
     /**
+      Deletes a unit from the set of units if exists
+      @param[in] ClassName class name of the removed unit
+      @param[in] ID ID of the added unit
+      @return true if the unit has been correctly deleted
+    */
+    void OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassName,
+                              openfluid::core::UnitID_t ID);
+
+
+    /**
       Adds a from-to connection between two units
       @param[in] ClassNameFrom class name of the "from" unit
       @param[in] IDFrom ID of the "from" unit
@@ -672,6 +685,7 @@ class DLLEXPORT PluggableFunction
                                        openfluid::core::UnitID_t IDFrom,
                                        openfluid::core::UnitClass_t ClassNameTo,
                                        openfluid::core::UnitID_t IDTo);
+
     /**
       Adds a from-to connection between two units
       @param[in] FromUnit pointer to the "from" unit
@@ -680,6 +694,29 @@ class DLLEXPORT PluggableFunction
     */
     bool OPENFLUID_AddFromToConnection(openfluid::core::Unit* FromUnit,
                                        openfluid::core::Unit* ToUnit);
+
+    /**
+      Removes a from-to connection between two units
+      @param[in] ClassNameFrom class name of the "from" unit
+      @param[in] IDFrom ID of the "from" unit
+      @param[in] ClassNameFrom class name of the "to" unit
+      @param[in] IDFrom ID of the "to" unit
+      @return false if the unit connection does not exist
+    */
+    bool OPENFLUID_RemoveFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+                                          openfluid::core::UnitID_t IDFrom,
+                                          openfluid::core::UnitClass_t ClassNameTo,
+                                          openfluid::core::UnitID_t IDTo);
+
+    /**
+      Removes a from-to connection between two units
+      @param[in] FromUnit pointer to the "from" unit
+      @param[in] ToUnit pointer to the "to" unit
+      @return false if the connection does not exist
+    */
+    bool OPENFLUID_RemoveFromToConnection(openfluid::core::Unit* FromUnit,
+                                          openfluid::core::Unit* ToUnit);
+
 
     /**
       Adds a child-parent connection between two units
@@ -702,6 +739,29 @@ class DLLEXPORT PluggableFunction
     */
     bool OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
                                             openfluid::core::Unit* ParentUnit);
+
+
+    /**
+      Removes a child-parent connection between two units
+      @param[in] ClassNameFrom class name of the "child" unit
+      @param[in] IDFrom ID of the "child" unit
+      @param[in] ClassNameFrom class name of the "parent" unit
+      @param[in] IDFrom ID of the "parent" unit
+      @return false if the connection does not exist
+    */
+    bool OPENFLUID_RemoveChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+                                                openfluid::core::UnitID_t IDChild,
+                                                openfluid::core::UnitClass_t ClassNameParent,
+                                                openfluid::core::UnitID_t IDParent);
+
+    /**
+      Removes a child-parent connection between two units
+      @param[in] ChildUnit pointer to the "child" unit
+      @param[in] ToUnit pointer to the "parent" unit
+      @return false if the connection does not exist
+    */
+    bool OPENFLUID_RemoveChildParentConnection(openfluid::core::Unit* ChildUnit,
+                                                openfluid::core::Unit* ParentUnit);
 
     /**
       Returns true if a given unit is connected "to" another unit

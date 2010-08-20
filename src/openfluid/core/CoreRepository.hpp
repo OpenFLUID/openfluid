@@ -72,11 +72,22 @@ class DLLEXPORT CoreRepository
 
     CoreRepository();
 
+    static bool removeUnitFromList(UnitsPtrList_t* UnitsList,
+                                   const UnitID_t& UnitID);
+
   public:
 
     static CoreRepository* getInstance();
 
     bool addUnit(const Unit aUnit);
+
+    bool deleteUnit(Unit* aUnit);
+
+    bool removeFromToConnection(Unit* FromUnit,
+                                Unit* ToUnit);
+
+    bool removeChildParentConnection(Unit* ChildUnit,
+                                     Unit* ParentUnit);
 
     bool sortUnitsByProcessOrder();
 

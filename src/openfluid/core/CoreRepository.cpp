@@ -80,6 +80,29 @@ CoreRepository::CoreRepository()
 // =====================================================================
 // =====================================================================
 
+bool CoreRepository::removeUnitFromList(UnitsPtrList_t* UnitsList,
+                                        const UnitID_t& UnitID)
+{
+
+  UnitsPtrList_t::iterator UnitsIt;
+  bool Found = false;
+
+  UnitsIt = UnitsList->begin();
+  while (UnitsIt!=UnitsList->end() && !Found)
+  {
+    Found = ((*UnitsIt)->getID() == UnitID);
+
+    if (Found) UnitsList->erase(UnitsIt);
+    else ++UnitsIt;
+  }
+
+  return Found;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 CoreRepository* CoreRepository::getInstance()
 {
@@ -103,6 +126,127 @@ bool CoreRepository::addUnit(Unit aUnit)
     return true;
   }
   return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool CoreRepository::deleteUnit(Unit* aUnit)
+{
+
+  std::vector<openfluid::core::UnitClass_t> ClassVector;
+
+
+  openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
+
+  for (itUnitsClass=m_PcsOrderedUnitsByClass.begin();itUnitsClass!=m_PcsOrderedUnitsByClass.end();++itUnitsClass)
+    ClassVector.push_back((*itUnitsClass).first);
+
+
+  // remove all connections
+
+  UnitsPtrList_t* UnitsList;
+
+  for (unsigned int i = 0; i < ClassVector.size(); i++)
+  {
+    // from
+    UnitsList = aUnit->getFromUnits(ClassVector[i]);
+    while (UnitsList !=NULL && !UnitsList->empty())
+      removeFromToConnection(UnitsList->front(),aUnit);
+
+    // to
+    UnitsList = aUnit->getToUnits(ClassVector[i]);
+    while (UnitsList !=NULL && !UnitsList->empty())
+      removeFromToConnection(aUnit, UnitsList->front());
+
+    // children
+    UnitsList = aUnit->getChildrenUnits(ClassVector[i]);
+    while (UnitsList !=NULL && !UnitsList->empty())
+      removeChildParentConnection(UnitsList->front(),aUnit);
+
+    // parent
+    UnitsList = aUnit->getParentUnits(ClassVector[i]);
+    while (UnitsList !=NULL && !UnitsList->empty())
+      removeChildParentConnection(aUnit, UnitsList->front());
+
+  }
+
+
+
+  // remove unit pointer from the list global list
+
+  UnitsPtrList_t::iterator UnitsIt;
+  bool Found = false;
+
+  UnitsIt = m_PcsOrderedUnitsGlobal.begin();
+  while (UnitsIt!=m_PcsOrderedUnitsGlobal.end() && !Found)
+  {
+    Found = ((*UnitsIt)->getID() == aUnit->getID() && (*UnitsIt)->getClass() == aUnit->getClass());
+
+    if (Found) m_PcsOrderedUnitsGlobal.erase(UnitsIt);
+    else ++UnitsIt;
+  }
+
+
+
+  // remove unit object from the "by class" list
+
+  UnitsListByClassMap_t::iterator it;
+  Found = false;
+
+  it = m_PcsOrderedUnitsByClass.find(aUnit->getClass());
+
+  if (it != m_PcsOrderedUnitsByClass.end())
+  {
+    UnitsList_t* UnitsBase = it->second.getList();
+    UnitsList_t::iterator UnitsBaseIt;
+
+    UnitsBaseIt = UnitsBase->begin();
+    while (UnitsBaseIt!=UnitsBase->end() && !Found)
+    {
+      Found = ((*UnitsBaseIt).getID() == aUnit->getID() && (*UnitsBaseIt).getClass() == aUnit->getClass());
+
+      if (Found) UnitsBase->erase(UnitsBaseIt);
+      else ++UnitsBaseIt;
+    }
+  }
+
+
+  return Found;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool CoreRepository::removeFromToConnection(Unit* FromUnit,
+                                            Unit* ToUnit)
+{
+  if (FromUnit != NULL && ToUnit != NULL)
+  {
+    return (removeUnitFromList(FromUnit->getToUnits(ToUnit->getClass()),ToUnit->getID()) &&
+            removeUnitFromList(ToUnit->getFromUnits(FromUnit->getClass()),FromUnit->getID()));
+  }
+  else return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool CoreRepository::removeChildParentConnection(Unit* ChildUnit,
+                                                 Unit* ParentUnit)
+{
+  if (ChildUnit != NULL && ParentUnit != NULL)
+  {
+    return (removeUnitFromList(ChildUnit->getParentUnits(ParentUnit->getClass()),ParentUnit->getID()) &&
+            removeUnitFromList(ParentUnit->getChildrenUnits(ChildUnit->getClass()),ChildUnit->getID()));
+  }
+  else return false;
 }
 
 
