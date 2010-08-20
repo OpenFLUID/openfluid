@@ -1,3 +1,21 @@
+1.6.0~beta1
+
+  * Refactored framework architecture
+  * Introduced global process order (transverse to units classes)
+  * Added primitives methods in order to modify the spatial domain graph
+  * Added primitives methods in order to add input data 
+    from simulation functions
+  * Removed "progressive output" feature, replaced by circular memory manager 
+    and files buffers 
+  * Refactored structure for outputs savings
+  * Added actions listeners
+  * Added FluidXWriter feature for writing FluidX files from an instanciated
+    simulation   
+  * Cleaned and reorganized source code
+  * Fixed some bugs
+
+
+
 1.5.0
 
   * Added data generators useable in models descriptions
