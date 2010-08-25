@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="350.59195"
+   height="149.99998"
+   id="svg4289"
+   sodipodi:version="0.32"
+   inkscape:version="0.47pre4 r22446"
+   sodipodi:docname="openfluid_official.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
+  <defs
+     id="defs4291">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective4297" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="311.21536"
+     inkscape:cy="6.4835413"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1274"
+     inkscape:window-height="879"
+     inkscape:window-x="0"
+     inkscape:window-y="94"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata4294">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-129.22101,-374.16996)">
+    <text
+       transform="scale(0.9999201,1.0000799)"
+       xml:space="preserve"
+       style="font-size:10.18379974px;font-style:normal;font-weight:normal;fill:#47617b;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="195.52649"
+       y="473.06421"
+       id="text2526"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307"><tspan
+         sodipodi:role="line"
+         id="tspan2528"
+         x="195.52649"
+         y="473.06421"
+         style="font-size:35.96802521px;font-weight:bold;fill:#47617b;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">OpenFLUID</tspan></text>
+    <path
+       style="fill:none;stroke:#917c6f;stroke-width:5.262043;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 264.88043,430.82373 c 15.60919,-33.79385 18.86729,-46.69448 32.55064,-46.7739 12.52085,-0.0686 24.45265,44.27743 51.70562,51.1747 22.73734,5.75442 51.64657,3.50703 80.7998,3.20229 l 18.76997,-28.41789"
+       id="path2530"
+       sodipodi:nodetypes="csscc"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <path
+       style="fill:#ffc85f;fill-opacity:1;stroke:#ffffff;stroke-width:1.50344062;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 427.66532,417.05001 25.79451,-0.35859 c 0.7183,-0.80968 0.76284,-2.02242 0.68393,-3.35423 0,0 11.77255,7.29364 11.7766,9.15096 0.004,1.82162 -13.2745,8.56205 -13.2745,8.56205 0.60309,-1.98838 0.78978,-2.15414 0.57267,-3.53161 l -30.92585,0.55905 c -4.77774,1.10419 4.28378,-8.29834 5.37264,-11.02763 z"
+       id="path2532"
+       sodipodi:nodetypes="ccczcccc"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#4f75d1;stroke-width:6.76548481;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 343.74985,417.15919 c 19.74183,-24.04121 17.53804,16.32152 36.07133,-6.37498"
+       id="path2534"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <path
+       sodipodi:nodetypes="cccccc"
+       id="path2536"
+       d="m 327.53066,395.48649 c -2.55012,-12.82169 12.11004,-20.62535 22.11477,-21.31653 -1.39218,12.01886 -11.70466,20.62039 -20.27578,22.51022 -0.90923,1.87644 -1.69994,3.50793 -2.60917,5.38428 -1.91806,-1.03046 -1.13695,-0.14812 -3.05502,-1.17875 1.27508,-1.79972 2.55004,-3.59936 3.8252,-5.39922 z"
+       style="fill:#4fcd4f;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <g
+       id="g2538"
+       transform="matrix(0.84309271,0,0,0.84872686,167.38842,-357.25587)"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307">
+      <path
+         style="fill:#999999;fill-opacity:1;stroke:none"
+         d="m 266.60926,899.93203 31.32996,0.13311 0,2.92837 -10.40634,0 -1.03709,8.96643 3.1664,15.30472 -4.96932,0 -2.54185,-11.16388 -2.42746,11.16388 -4.96932,0 3.05203,-15.30472 -1.32153,-8.96643 -9.87548,0 0,-3.06148 z"
+         id="path2540"
+         sodipodi:nodetypes="cccccccccccccc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:#999999;fill-opacity:1;stroke:none"
+         id="path2542"
+         sodipodi:cx="289.57562"
+         sodipodi:cy="890.17102"
+         sodipodi:rx="4.8809376"
+         sodipodi:ry="4.8809376"
+         d="m 294.45656,890.17102 c 0,2.69567 -2.18527,4.88094 -4.88094,4.88094 -2.69566,0 -4.88094,-2.18527 -4.88094,-4.88094 0,-2.69567 2.18528,-4.88094 4.88094,-4.88094 2.69567,0 4.88094,2.18527 4.88094,4.88094 z"
+         transform="matrix(0.8317647,0,0,0.8317647,41.348904,154.79385)" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:11.32354832px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="129.16858"
+       y="518.54706"
+       id="text2570"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307"
+       transform="scale(0.99766567,1.0023398)"><tspan
+         sodipodi:role="line"
+         id="tspan2572"
+         x="129.16858"
+         y="518.54706"
+         style="font-size:20.75984001px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#86ae39;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial Bold">for Modelling Fluxes in Landscapes</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.32354832px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="260.75766"
+       y="497.57318"
+       id="text3344"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307"
+       transform="scale(0.99766567,1.0023398)"><tspan
+         sodipodi:role="line"
+         id="tspan3346"
+         x="260.75766"
+         y="497.57318"
+         style="font-size:20.75984001px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#86ae39;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial Bold">Software Environment</tspan></text>
+  </g>
+</svg>

@@ -97,13 +97,17 @@ BuilderApp::BuilderApp(int argc, char** argv)
 
     Gtk::AboutDialog * DialogBox = 0;
     mp_Builder->get_widget("DialogAbout",DialogBox);
-    DialogBox->set_comments("\nOpenFLUID v" + openfluid::config::FULL_VERSION
-                            + "\nSoftware Environment for Modelling Fluxes in Landscapes"
+    DialogBox->set_comments("OpenFLUID v" + openfluid::config::FULL_VERSION
                             + "\n\nLISAH, Montpellier, France");
 
     createActions();
 
     createDock();
+
+
+    // set icon for all windows
+    Glib::RefPtr<Gdk::Pixbuf> OF_logo = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/openfluid_image_only.svg",BUILDER_RESOURCE_PATH));
+    mp_MainWindow->set_default_icon(OF_logo);
 
     // set main window size (have to set glade.window.visible=false to make this work)
     int MonitorWidth = Gdk::Screen::get_default()->get_width();
@@ -111,6 +115,7 @@ BuilderApp::BuilderApp(int argc, char** argv)
 
     mp_MainWindow->set_default_size(MonitorWidth-(MonitorWidth*0.1),
                                     MonitorHeight-(MonitorHeight*0.1));
+
 
     mp_MainWindow->show_all_children();
 

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="271.93985"
+   height="89.892067"
+   id="svg4289"
+   sodipodi:version="0.32"
+   inkscape:version="0.47pre4 r22446"
+   sodipodi:docname="openfluid_image_only.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
+  <defs
+     id="defs4291">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective4297" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="147.39483"
+     inkscape:cy="-123.0109"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1274"
+     inkscape:window-height="879"
+     inkscape:window-x="0"
+     inkscape:window-y="94"
+     inkscape:window-maximized="0"
+     inkscape:snap-bbox="true"
+     inkscape:snap-page="false" />
+  <metadata
+     id="metadata4294">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-306.18635,-324.66847)">
+    <path
+       style="fill:none;stroke:#917c6f;stroke-width:7.00000048;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 309.68635,400.03394 c 20.76462,-44.95533 25.09881,-62.1168 43.30153,-62.22246 16.65626,-0.0913 32.52893,58.90145 68.78307,68.07677 30.24709,7.655 68.70453,4.66533 107.48656,4.25994 l 24.96936,-37.80379"
+       id="path2530"
+       sodipodi:nodetypes="csscc"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <path
+       style="fill:#ffc85f;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 526.2362,381.71101 34.31398,-0.47702 c 0.95556,-1.0771 1.0148,-2.69039 0.90984,-4.46207 0,0 15.6608,9.7026 15.66619,12.17336 0.005,2.42326 -17.65883,11.38993 -17.65883,11.38993 0.80227,-2.64511 1.05062,-2.86561 0.76181,-4.69803 l -41.14011,0.74369 c -6.35574,1.46888 5.69863,-11.03913 7.14712,-14.66986 z"
+       id="path2532"
+       sodipodi:nodetypes="ccczcccc"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#4f75d1;stroke-width:9.00000286;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 414.60494,381.85626 c 26.2622,-31.98158 23.33054,21.71222 47.98505,-8.48052"
+       id="path2534"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <path
+       sodipodi:nodetypes="cccccc"
+       id="path2536"
+       d="m 393.02884,353.02546 c -3.39239,-17.05645 16.10976,-27.43752 29.41888,-28.35699 -1.85199,15.98848 -15.5705,27.43093 -26.97251,29.94494 -1.20953,2.49619 -2.26139,4.66653 -3.47093,7.16261 -2.55156,-1.3708 -1.51247,-0.19704 -4.06404,-1.56807 1.69621,-2.39414 3.39227,-4.78816 5.0886,-7.18249 z"
+       style="fill:#4fcd4f;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307" />
+    <g
+       id="g2538"
+       transform="matrix(1.1215514,0,0,1.1290457,179.99444,-648.33381)"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Management/Logo/logo_template_ott.png"
+       inkscape:export-xdpi="290.05307"
+       inkscape:export-ydpi="290.05307">
+      <path
+         style="fill:#999999;fill-opacity:1;stroke:none"
+         d="m 266.60926,899.93203 31.32996,0.13311 0,2.92837 -10.40634,0 -1.03709,8.96643 3.1664,15.30472 -4.96932,0 -2.54185,-11.16388 -2.42746,11.16388 -4.96932,0 3.05203,-15.30472 -1.32153,-8.96643 -9.87548,0 0,-3.06148 z"
+         id="path2540"
+         sodipodi:nodetypes="cccccccccccccc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:#999999;fill-opacity:1;stroke:none"
+         id="path2542"
+         sodipodi:cx="289.57562"
+         sodipodi:cy="890.17102"
+         sodipodi:rx="4.8809376"
+         sodipodi:ry="4.8809376"
+         d="m 294.45656,890.17102 c 0,2.69567 -2.18527,4.88094 -4.88094,4.88094 -2.69566,0 -4.88094,-2.18527 -4.88094,-4.88094 0,-2.69567 2.18528,-4.88094 4.88094,-4.88094 2.69567,0 4.88094,2.18527 4.88094,4.88094 z"
+         transform="matrix(0.8317647,0,0,0.8317647,41.348904,154.79385)" />
+    </g>
+  </g>
+</svg>

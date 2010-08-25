@@ -5,7 +5,6 @@
   <object class="GtkWindow" id="MainWindow">
     <property name="title">OpenFLUID Builder</property>
     <property name="window_position">center</property>
-    <property name="icon">OF_logo.bmp</property>
     <child>
       <object class="GtkVBox" id="MainContainer">
         <property name="visible">True</property>
@@ -456,7 +455,7 @@ C&#xE9;cile Dag&#xE8;s &lt;dages@supagro.inra.fr&gt;
 Xavier Louchart &lt;louchart@supagro.inra.fr&gt;
 Roger Moussa &lt;moussa@supagro.inra.fr&gt;
 Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
-    <property name="logo">OF_logo.bmp</property>
+    <property name="logo">openfluid_official_50pc.svg</property>
     <property name="wrap_license">True</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
@@ -642,7 +641,7 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
             <child>
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
-                <property name="pixbuf">OF_logo.bmp</property>
+                <property name="pixbuf">openfluid_official_75pc.svg</property>
               </object>
               <packing>
                 <property name="position">0</property>
