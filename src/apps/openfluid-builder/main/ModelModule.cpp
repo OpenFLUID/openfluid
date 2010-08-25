@@ -114,5 +114,5 @@ ModelModule::~ModelModule()
 
 void ModelModule::actionCheckModel()
 {
-  std::cout << "ici action test model" << std::endl;
+
 }

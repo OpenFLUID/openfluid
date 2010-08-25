@@ -111,5 +111,5 @@ void DomainModule::createActions()
 
 void DomainModule::actionCheckDomain()
 {
-  std::cout << "Ici action test domain" << std::endl;
+
 }

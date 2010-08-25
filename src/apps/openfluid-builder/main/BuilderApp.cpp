@@ -302,16 +302,12 @@ void BuilderApp::createDock()
 
 void BuilderApp::actionNewEmpty()
 {
-  std::cout << "ici nouveau" << std::endl;
-
   if(mp_Project)
   {
-    std::cout << "déjà projet ouvert" << std::endl;
     actionClose();
   }
 
   createProject();
-
 }
 
 
@@ -321,10 +317,7 @@ void BuilderApp::actionNewEmpty()
 
 void BuilderApp::actionNewFrom()
 {
-  std::cout << "ici nouveau dérivé" << std::endl;
-
   actionNewEmpty();
-
 }
 
 
@@ -400,7 +393,6 @@ void BuilderApp::actionOpen()
 
 void BuilderApp::actionSave()
 {
-  std::cout << "ici save" << std::endl;
 //  mp_Layout_manager->save_to_file(builderconfig::RESOURCE_PATH+"/default_layout.xml");
 }
 
@@ -411,7 +403,7 @@ void BuilderApp::actionSave()
 
 void BuilderApp::actionSaveAs()
 {
-  std::cout << "ici save as" << std::endl;
+
 }
 
 
@@ -421,10 +413,7 @@ void BuilderApp::actionSaveAs()
 
 void BuilderApp::actionClose()
 {
-  std::cout << "ici close - demander enregistrement" << std::endl;
-
-  deleteProject();
-
+  deleteProject(); // ask for saving
 }
 
 
@@ -434,9 +423,8 @@ void BuilderApp::actionClose()
 
 void BuilderApp::actionQuit()
 {
-  std::cout << "ici quit - demander validation ?" << std::endl;
   actionClose();
-  Gtk::Main::quit();
+  Gtk::Main::quit(); // ask for confirmation ?
 }
 
 // =====================================================================
@@ -445,7 +433,7 @@ void BuilderApp::actionQuit()
 
 void BuilderApp::actionCheckProject()
 {
-  std::cout << "ici check project" << std::endl;
+
 }
 
 
@@ -455,7 +443,7 @@ void BuilderApp::actionCheckProject()
 
 void BuilderApp::actionRun()
 {
-  std::cout << "ici run" << std::endl;
+
 }
 
 
@@ -465,7 +453,7 @@ void BuilderApp::actionRun()
 
 void BuilderApp::actionProperties()
 {
-  std::cout << "ici properties" << std::endl;
+
 }
 
 
@@ -475,7 +463,7 @@ void BuilderApp::actionProperties()
 
 void BuilderApp::actionPreferences()
 {
-  std::cout << "ici preferences" << std::endl;
+
 }
 
 
@@ -521,7 +509,7 @@ void BuilderApp::actionLayoutManager()
 
 void BuilderApp::actionPlugins()
 {
-  std::cout << "ici plugins" << std::endl;
+
 }
 
 
@@ -531,7 +519,7 @@ void BuilderApp::actionPlugins()
 
 void BuilderApp::actionDoc()
 {
-  std::cout << "ici doc" << std::endl;
+
 }
 
 
@@ -541,7 +529,7 @@ void BuilderApp::actionDoc()
 
 void BuilderApp::actionDemo()
 {
-  std::cout << "ici demo" << std::endl;
+
 }
 
 

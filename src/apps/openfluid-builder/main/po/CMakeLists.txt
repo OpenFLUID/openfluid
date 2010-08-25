@@ -3,8 +3,6 @@
 IF(BUILDER_NLS_ENABLE)
 
     FIND_PROGRAM(MSGFMT_EXECUTABLE msgfmt)
-
-#    ADD_CUSTOM_TARGET(i18n ALL COMMENT "Building i18n messages.")
     
     FILE(GLOB Builder_PO_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.po)
     

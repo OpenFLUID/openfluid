@@ -144,5 +144,5 @@ void BuilderProject::reorderDockItems()
 
 void BuilderProject::actionDefaultLayout()
 {
-  std::cout << "ici default layout de Project" << std::endl;
+
 }
