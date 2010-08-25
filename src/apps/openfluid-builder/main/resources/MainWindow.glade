@@ -1,0 +1,694 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="MainWindow">
+    <property name="title">OpenFLUID Builder</property>
+    <property name="window_position">center</property>
+    <property name="icon">OF_logo.bmp</property>
+    <child>
+      <object class="GtkVBox" id="MainContainer">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkMenuBar" id="MainMenuBar">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkMenuItem" id="MenuFile">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_File</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="SubMenuFile">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemNew">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_New</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu1">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkMenuItem" id="MenuItemNewEmpty">
+                                <property name="visible">True</property>
+                                <property name="use_action_appearance">True</property>
+                                <property name="related_action">ActionNewEmpty</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="MenuItemNewFrom">
+                                <property name="visible">True</property>
+                                <property name="use_action_appearance">True</property>
+                                <property name="related_action">ActionNewFrom</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemOpen">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionOpen</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="MenuItemSeparator2">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemSave">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionSave</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemSaveAs">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionSaveAs</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemClose">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionClose</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemQuit">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionQuit</property>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="MenuEdit">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Edit</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="SubMenuEdit">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemPreferences">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionPreferences</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemExtensions">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionExtensions</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="MenuProject">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Project</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu2">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemCheckProject">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionCheckProject</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemRun">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionRun</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem1">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemProperties">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionProperties</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="MenuView">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_View</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu3">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemDefaultLayout">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionDefaultLayout</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemLayoutManager">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionLayoutManager</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="MenuHelp">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Help</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="SubMenuHelp">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemDemo">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionDemo</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemDoc">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionDoc</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem3">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="MenuItemAbout">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionAbout</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="MainToolBarContainer">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkHandleBox" id="handlebox1">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkToolbar" id="MainToolBar">
+                    <property name="visible">True</property>
+                    <property name="show_arrow">False</property>
+                    <child>
+                      <object class="GtkToolButton" id="ToolButtonNewEmpty">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionNewEmpty</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="ToolButtonNewFrom">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionNewFrom</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="ToolButtonOpen">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionOpen</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="ToolButtonSave">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionSave</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorToolItem" id="toolbutton1">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="ToolButtonCheckProject">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionCheckProject</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="ToolButtonRun">
+                        <property name="visible">True</property>
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">ActionRun</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorToolItem" id="sep">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="ProjectContainer">
+            <property name="visible">True</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="MainStatusBar">
+            <property name="visible">True</property>
+            <property name="spacing">2</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAction" id="ActionQuit">
+    <property name="stock_id">gtk-quit</property>
+  </object>
+  <object class="GtkAction" id="ActionNewEmpty">
+    <property name="stock_id">gtk-new</property>
+  </object>
+  <object class="GtkAction" id="ActionOpen">
+    <property name="stock_id">gtk-open</property>
+  </object>
+  <object class="GtkAction" id="ActionSave">
+    <property name="stock_id">gtk-save</property>
+  </object>
+  <object class="GtkAction" id="ActionSaveAs">
+    <property name="stock_id">gtk-save-as</property>
+  </object>
+  <object class="GtkAction" id="ActionClose">
+    <property name="stock_id">gtk-close</property>
+  </object>
+  <object class="GtkAction" id="ActionCheckProject">
+    <property name="stock_id">gtk-ok</property>
+  </object>
+  <object class="GtkAction" id="ActionProperties">
+    <property name="stock_id">gtk-properties</property>
+  </object>
+  <object class="GtkAction" id="ActionPreferences">
+    <property name="stock_id">gtk-preferences</property>
+  </object>
+  <object class="GtkAction" id="ActionRun">
+    <property name="stock_id">gtk-execute</property>
+  </object>
+  <object class="GtkAction" id="ActionExtensions"/>
+  <object class="GtkAction" id="ActionDefaultLayout"/>
+  <object class="GtkAction" id="ActionHomePage"/>
+  <object class="GtkAction" id="ActionDoc"/>
+  <object class="GtkAction" id="ActionDemo"/>
+  <object class="GtkAction" id="ActionAbout"/>
+  <object class="GtkAboutDialog" id="DialogAbout">
+    <property name="border_width">5</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">OpenFLUID Builder</property>
+    <property name="version">0.0.0</property>
+    <property name="copyright">Copyright (c) 2007-2010 INRA-Montpellier SupAgro</property>
+    <property name="website">http://www.umr-lisah.fr/openfluid</property>
+    <property name="license">== GNU General Public License Usage ==
+
+OpenFLUID is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+OpenFLUID is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with OpenFLUID.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+
+In addition, as a special exception, INRA gives You the additional right to dynamically link the code of OpenFLUID with code not covered under the GNU General Public License ("Non-GPL Code") and to distribute linked combinations including the two, subject to the limitations in this paragraph. Non-GPL Code permitted under this exception must only link to the code of OpenFLUID dynamically through the OpenFLUID libraries interfaces, and only for building OpenFLUID plugins. The files of Non-GPL Code may be link to the OpenFLUID libraries without causing the resulting work to be covered by the GNU General Public License. You must obey the GNU General Public License in all respects for all of the OpenFLUID code and other code used in conjunction with OpenFLUID except the Non-GPL Code covered by this exception. If you modify this OpenFLUID, you may extend this exception to your version of the file, but you are not obligated to do so. If you do not wish to provide this exception without modification, you must delete this exception statement from your version and license this OpenFLUID solely under the GPL without exception.
+
+
+== Other Usage ==
+
+Other Usage means a use of OpenFLUID that is inconsistent with the GPL license, and requires a written agreement between You and INRA.
+Licensees for Other Usage of OpenFLUID may use this file in accordance with the terms contained in the written agreement between You and INRA.</property>
+    <property name="authors">OpenFLUID Engine
+Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
+
+
+
+MAIN DEVELOPER
+==============
+
+Jean-Christophe Fabre &lt;fabrejc@supagro.inra.fr&gt;
+
+
+
+CONTRIBUTORS
+============
+
+Mehdi Benghabrit &lt;benghabrit.mehdi@gmail.com&gt;
+C&#xE9;cile Dag&#xE8;s &lt;dages@supagro.inra.fr&gt;
+Xavier Louchart &lt;louchart@supagro.inra.fr&gt;
+Roger Moussa &lt;moussa@supagro.inra.fr&gt;
+Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
+    <property name="logo">OF_logo.bmp</property>
+    <property name="wrap_license">True</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox2">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area2">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkFileChooserDialog" id="DialogOpen">
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Open an existing project</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <property name="action">select-folder</property>
+    <property name="create_folders">False</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="LabelDialogOpen">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Choose the input directory</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMessageDialog" id="DialogError">
+    <property name="border_width">5</property>
+    <property name="type">popup</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">normal</property>
+    <property name="message_type">error</property>
+    <property name="buttons">close</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox5">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area5">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAction" id="ActionCloseHomePage"/>
+  <object class="GtkAction" id="ActionNewFrom">
+    <property name="label">dummy</property>
+  </object>
+  <object class="GtkAction" id="ActionLayoutManager">
+    <property name="label">dummy</property>
+  </object>
+  <object class="GtkViewport" id="ViewportHome">
+    <property name="visible">True</property>
+    <property name="border_width">5</property>
+    <property name="resize_mode">queue</property>
+    <child>
+      <object class="GtkHBox" id="hbox1">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkVBox" id="vbox1">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label" translatable="yes">button</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">ActionNewEmpty</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button3">
+                <property name="label" translatable="yes">button</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">ActionNewFrom</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button4">
+                <property name="label" translatable="yes">button</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">ActionOpen</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button5">
+                <property name="label" translatable="yes">button</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">ActionDemo</property>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkViewport" id="viewport1">
+                <property name="visible">True</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="HomePage">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage" id="image1">
+                <property name="visible">True</property>
+                <property name="pixbuf">OF_logo.bmp</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label8">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Here some explanations, links, common actions...</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="visible">True</property>
+                <property name="xscale">0</property>
+                <property name="yscale">0</property>
+                <child>
+                  <object class="GtkLinkButton" id="linkbutton1">
+                    <property name="label">http://www.umr-lisah.fr/openfluid/</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">none</property>
+                    <property name="uri">http://www.umr-lisah.fr/openfluid/</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

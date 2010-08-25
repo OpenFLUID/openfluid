@@ -1,0 +1,275 @@
+# Spanish translations for PACKAGE package.
+# Copyright (C) 2010 2007-2010 INRA-Montpellier SupAgro
+# This file is distributed under the same license as the PACKAGE package.
+# Aline LIBRES <libres@supagro.inra.fr>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
+"POT-Creation-Date: 2010-08-25 14:02+0200\n"
+"PO-Revision-Date: 2010-07-23 16:04+0200\n"
+"Last-Translator: Aline LIBRES <libres@supagro.inra.fr>\n"
+"Language-Team: Spanish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: BuilderApp.cpp:177
+msgid "Empty"
+msgstr ""
+
+#: BuilderApp.cpp:178
+msgid "From..."
+msgstr ""
+
+#: BuilderApp.cpp:179
+msgid "_Open..."
+msgstr ""
+
+#: BuilderApp.cpp:181
+msgid "Save _As..."
+msgstr ""
+
+#: BuilderApp.cpp:182
+msgid "Project Properties..."
+msgstr ""
+
+#: BuilderApp.cpp:183
+msgid "OpenFLUID Builder Preferences..."
+msgstr ""
+
+#: BuilderApp.cpp:186
+msgid "Check Project"
+msgstr ""
+
+#: BuilderApp.cpp:187
+msgid "Run Simulation"
+msgstr ""
+
+#: BuilderApp.cpp:188
+msgid "Default Layout"
+msgstr ""
+
+#: BuilderApp.cpp:189
+msgid "Layout Manager"
+msgstr ""
+
+#: BuilderApp.cpp:190
+msgid "Extensions"
+msgstr ""
+
+#: BuilderApp.cpp:191
+msgid "Documentation"
+msgstr ""
+
+#: BuilderApp.cpp:192
+msgid "Demo Project"
+msgstr ""
+
+#: BuilderApp.cpp:193
+msgid "_About OpenFLUID Builder"
+msgstr ""
+
+#: BuilderApp.cpp:195
+msgid "Create new empty project"
+msgstr ""
+
+#: BuilderApp.cpp:196
+msgid "Create new project from an existing one"
+msgstr ""
+
+#: BuilderApp.cpp:197 resources/MainWindow.glade:487
+msgid "Open an existing project"
+msgstr ""
+
+#: BuilderApp.cpp:198
+msgid "Save project"
+msgstr ""
+
+#: BuilderApp.cpp:199
+msgid "Check project"
+msgstr ""
+
+#: BuilderApp.cpp:200
+msgid "Run simulation"
+msgstr ""
+
+#: BuilderApp.cpp:254
+msgid "%1Home"
+msgstr ""
+
+#: DomainModule.cpp:70 resources/Domain.glade:20
+msgid "_Domain"
+msgstr ""
+
+#: DomainModule.cpp:71
+msgid "Domain"
+msgstr ""
+
+#: DomainModule.cpp:96 DomainModule.cpp:97
+msgid "Check Domain"
+msgstr ""
+
+#: ModelModule.cpp:71 resources/Model.glade:391
+msgid "_Model"
+msgstr ""
+
+#: ModelModule.cpp:72
+msgid "Model"
+msgstr ""
+
+#: ModelModule.cpp:89 ModelModule.cpp:90
+msgid "Check Model"
+msgstr ""
+
+#: resources/Domain.glade:11
+msgid "I am the Domain Module"
+msgstr ""
+
+#: resources/Domain.glade:48
+msgid "Action Test"
+msgstr ""
+
+#: resources/MainWindow.glade:19
+msgid "_File"
+msgstr ""
+
+#: resources/MainWindow.glade:27
+msgid "_New"
+msgstr ""
+
+#: resources/MainWindow.glade:103
+msgid "_Edit"
+msgstr ""
+
+#: resources/MainWindow.glade:129
+msgid "_Project"
+msgstr ""
+
+#: resources/MainWindow.glade:167
+msgid "_View"
+msgstr ""
+
+#: resources/MainWindow.glade:193
+msgid "_Help"
+msgstr ""
+
+#: resources/MainWindow.glade:503
+msgid "Choose the input directory"
+msgstr ""
+
+#: resources/MainWindow.glade:569
+msgid "Home Page"
+msgstr ""
+
+#: resources/MainWindow.glade:590
+msgid "Here some explanations, links, common actions..."
+msgstr ""
+
+#: resources/Model.glade:27
+msgid "Available functions"
+msgstr ""
+
+#: resources/Model.glade:84
+msgid "Signature"
+msgstr ""
+
+#: resources/Model.glade:111
+msgid "Parameters"
+msgstr ""
+
+#: resources/Model.glade:139
+msgid "Variables"
+msgstr ""
+
+#: resources/Model.glade:167
+msgid "Events"
+msgstr ""
+
+#: resources/Model.glade:195
+msgid "Extra files"
+msgstr ""
+
+#: resources/Model.glade:228
+msgid "Model structure"
+msgstr ""
+
+#: resources/Model.glade:245
+msgid "tools"
+msgstr ""
+
+#: resources/Model.glade:276
+msgid "List"
+msgstr ""
+
+#: resources/Model.glade:293
+msgid "Graph"
+msgstr ""
+
+#: resources/Model.glade:331
+msgid "Model Parameters"
+msgstr ""
+
+#: resources/Model.glade:366
+msgid "Global parameters"
+msgstr ""
+
+#: resources/Results.glade:16 ResultsModule.cpp:71
+msgid "Results"
+msgstr ""
+
+#: resources/Simulation.glade:47
+msgid "Data exchange time step"
+msgstr ""
+
+#: resources/Simulation.glade:76
+msgid "seconds"
+msgstr ""
+
+#: resources/Simulation.glade:124
+msgid "Simulation period"
+msgstr ""
+
+#: resources/Simulation.glade:146
+msgid "begin"
+msgstr ""
+
+#: resources/Simulation.glade:187
+msgid "end"
+msgstr ""
+
+#: resources/Simulation.glade:262
+msgid ""
+"Progressive output mode\n"
+"<i>(can be empty)</i>"
+msgstr ""
+
+#: resources/Simulation.glade:282
+msgid "Size (in number of time steps) of the saved packets"
+msgstr ""
+
+#: resources/Simulation.glade:308
+msgid "Number of time steps kept in memory"
+msgstr ""
+
+#: resources/Simulation.glade:338
+msgid "<b>Run Configuration</b>"
+msgstr ""
+
+#: resources/Simulation.glade:453
+msgid "<b>Output Configuration</b>"
+msgstr ""
+
+#: ResultsModule.cpp:70
+msgid "_Results"
+msgstr ""
+
+#: SimulationModule.cpp:70
+msgid "_Simulation"
+msgstr ""
+
+#: SimulationModule.cpp:71
+msgid "Simulation"
+msgstr ""

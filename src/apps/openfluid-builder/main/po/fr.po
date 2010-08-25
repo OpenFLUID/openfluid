@@ -1,0 +1,326 @@
+# French translations for PACKAGE package.
+# Copyright (C) 2010 2007-2010 INRA-Montpellier SupAgro
+# This file is distributed under the same license as the PACKAGE package.
+# Aline LIBRES <libres@supagro.inra.fr>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
+"POT-Creation-Date: 2010-08-25 14:02+0200\n"
+"PO-Revision-Date: 2010-08-24 13:49+0100\n"
+"Last-Translator: Aline Libres <libres@supagro.inra.fr>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: BuilderApp.cpp:177
+msgid "Empty"
+msgstr "Vide"
+
+#: BuilderApp.cpp:178
+msgid "From..."
+msgstr "À partir de..."
+
+#: BuilderApp.cpp:179
+msgid "_Open..."
+msgstr "_Ouvrir..."
+
+#: BuilderApp.cpp:181
+msgid "Save _As..."
+msgstr "Enregistrer _sous..."
+
+#: BuilderApp.cpp:182
+msgid "Project Properties..."
+msgstr "Propriétés du projet..."
+
+#: BuilderApp.cpp:183
+msgid "OpenFLUID Builder Preferences..."
+msgstr "Préférences d'OpenFLUID Builder..."
+
+#: BuilderApp.cpp:186
+msgid "Check Project"
+msgstr "Vérifier le Projet"
+
+#: BuilderApp.cpp:187
+msgid "Run Simulation"
+msgstr "Lancer la Simulation"
+
+#: BuilderApp.cpp:188
+msgid "Default Layout"
+msgstr "Layout par défaut"
+
+#: BuilderApp.cpp:189
+msgid "Layout Manager"
+msgstr "Gestionnaire de mise en page"
+
+#: BuilderApp.cpp:190
+msgid "Extensions"
+msgstr "Extensions"
+
+#: BuilderApp.cpp:191
+msgid "Documentation"
+msgstr "Documentation"
+
+#: BuilderApp.cpp:192
+msgid "Demo Project"
+msgstr "Projet démo"
+
+#: BuilderApp.cpp:193
+msgid "_About OpenFLUID Builder"
+msgstr "À _propos d'OpenFLUID Builder"
+
+#: BuilderApp.cpp:195
+msgid "Create new empty project"
+msgstr "Créer un nouveau projet vide"
+
+#: BuilderApp.cpp:196
+msgid "Create new project from an existing one"
+msgstr "Créer un nouveau projet à partir d'un autre"
+
+#: BuilderApp.cpp:197 resources/MainWindow.glade:487
+msgid "Open an existing project"
+msgstr "Ouvrir un projet existant"
+
+#: BuilderApp.cpp:198
+msgid "Save project"
+msgstr "Enregistrer le projet"
+
+#: BuilderApp.cpp:199
+msgid "Check project"
+msgstr "Vérifier le projet"
+
+#: BuilderApp.cpp:200
+msgid "Run simulation"
+msgstr "Lancer la simulation"
+
+#: BuilderApp.cpp:254
+msgid "%1Home"
+msgstr "%1Accueil"
+
+#: DomainModule.cpp:70 resources/Domain.glade:20
+msgid "_Domain"
+msgstr "_Domaine"
+
+#: DomainModule.cpp:71
+msgid "Domain"
+msgstr "Domaine"
+
+#: DomainModule.cpp:96 DomainModule.cpp:97
+msgid "Check Domain"
+msgstr "Vérifier le domaine"
+
+#: ModelModule.cpp:71 resources/Model.glade:391
+msgid "_Model"
+msgstr "_Modèle"
+
+#: ModelModule.cpp:72
+msgid "Model"
+msgstr "Modèle"
+
+#: ModelModule.cpp:89 ModelModule.cpp:90
+msgid "Check Model"
+msgstr "Vérifier le modèle"
+
+#: resources/Domain.glade:11
+msgid "I am the Domain Module"
+msgstr "Je suis le Module Domaine"
+
+#: resources/Domain.glade:48
+msgid "Action Test"
+msgstr "Action Test in french"
+
+#: resources/MainWindow.glade:19
+msgid "_File"
+msgstr "_Fichier"
+
+#: resources/MainWindow.glade:27
+msgid "_New"
+msgstr "_Nouveau"
+
+#: resources/MainWindow.glade:103
+msgid "_Edit"
+msgstr "_Édition"
+
+#: resources/MainWindow.glade:129
+msgid "_Project"
+msgstr "_Projet"
+
+#: resources/MainWindow.glade:167
+msgid "_View"
+msgstr "_Affichage"
+
+#: resources/MainWindow.glade:193
+msgid "_Help"
+msgstr "Aid_e"
+
+#: resources/MainWindow.glade:503
+msgid "Choose the input directory"
+msgstr "Choisir le répertoire d'entrée"
+
+#: resources/MainWindow.glade:569
+msgid "Home Page"
+msgstr "Page d'Accueil"
+
+#: resources/MainWindow.glade:590
+msgid "Here some explanations, links, common actions..."
+msgstr "Ici des explications, des liens, des actions courantes..."
+
+#: resources/Model.glade:27
+msgid "Available functions"
+msgstr "Fonctions disponibles"
+
+#: resources/Model.glade:84
+msgid "Signature"
+msgstr "Signature"
+
+#: resources/Model.glade:111
+msgid "Parameters"
+msgstr "Paramètres"
+
+#: resources/Model.glade:139
+msgid "Variables"
+msgstr "Variables"
+
+#: resources/Model.glade:167
+msgid "Events"
+msgstr "Évènements"
+
+#: resources/Model.glade:195
+msgid "Extra files"
+msgstr "Fichiers extra"
+
+#: resources/Model.glade:228
+msgid "Model structure"
+msgstr "Structure du modèle"
+
+#: resources/Model.glade:245
+msgid "tools"
+msgstr "outils"
+
+#: resources/Model.glade:276
+msgid "List"
+msgstr "Liste"
+
+#: resources/Model.glade:293
+msgid "Graph"
+msgstr "Graphique"
+
+#: resources/Model.glade:331
+msgid "Model Parameters"
+msgstr "Paramètres du modèle"
+
+#: resources/Model.glade:366
+msgid "Global parameters"
+msgstr "Paramètres globaux"
+
+#: resources/Results.glade:16 ResultsModule.cpp:71
+msgid "Results"
+msgstr "Résultats"
+
+#: resources/Simulation.glade:47
+msgid "Data exchange time step"
+msgstr "Pas de temps d'échange de données"
+
+#: resources/Simulation.glade:76
+msgid "seconds"
+msgstr "secondes"
+
+#: resources/Simulation.glade:124
+msgid "Simulation period"
+msgstr "Période de simulation"
+
+#: resources/Simulation.glade:146
+msgid "begin"
+msgstr "début"
+
+#: resources/Simulation.glade:187
+msgid "end"
+msgstr "fin"
+
+#: resources/Simulation.glade:262
+msgid ""
+"Progressive output mode\n"
+"<i>(can be empty)</i>"
+msgstr ""
+
+#: resources/Simulation.glade:282
+msgid "Size (in number of time steps) of the saved packets"
+msgstr "Taille (en nombre de pas de temps) des paquets enregistrés"
+
+#: resources/Simulation.glade:308
+msgid "Number of time steps kept in memory"
+msgstr "Nombre de pas de temps gardés en mémoire"
+
+#: resources/Simulation.glade:338
+msgid "<b>Run Configuration</b>"
+msgstr "Configuration de l'exécution"
+
+#: resources/Simulation.glade:453
+msgid "<b>Output Configuration</b>"
+msgstr "Configuration des sorties"
+
+#: ResultsModule.cpp:70
+msgid "_Results"
+msgstr "_Résultats"
+
+#: SimulationModule.cpp:70
+msgid "_Simulation"
+msgstr "_Simulation"
+
+#: SimulationModule.cpp:71
+msgid "Simulation"
+msgstr "Simulation"
+
+#~ msgid "%1Results"
+#~ msgstr "%1Résultats"
+
+#~ msgid "Second Item"
+#~ msgstr "Deuxième Item"
+
+#~ msgid "Close this page"
+#~ msgstr "Fermer cette page"
+
+#~ msgid "I am the Model Module"
+#~ msgstr "Je suis le Module Modèle"
+
+#~ msgid "Domain Action Test"
+#~ msgstr "Action Test Domaine"
+
+#~ msgid "proceed Domain test action"
+#~ msgstr "lancer l'action test Domaine"
+
+#~ msgid "Model Action Test"
+#~ msgstr "Action Test Modèle"
+
+#~ msgid "proceed Model test action"
+#~ msgstr "lancer l'action test Modèle"
+
+#~ msgid "_Nouveau"
+#~ msgstr "_Nouveau"
+
+#~ msgid "New derived..."
+#~ msgstr "Nouveau dérivé..."
+
+#~ msgid "Create a new derived project"
+#~ msgstr "Créer un nouveau projet dérivé"
+
+#~ msgid "Create a new derived project%1"
+#~ msgstr "Créer un nouveau projet dérivé%1"
+
+#, fuzzy
+#~ msgid "Save project as..."
+#~ msgstr "Enregistrer le projet"
+
+#~ msgid "Create a new derived projectTOTO %1"
+#~ msgstr "Créer un nouveau projet dérivéTTT %1"
+
+#, fuzzy
+#~ msgid "Check the project"
+#~ msgstr "Vérifier le Projet"
+
+#, fuzzy
+#~ msgid "Run the simulation"
+#~ msgstr "Lancer la Simulation"

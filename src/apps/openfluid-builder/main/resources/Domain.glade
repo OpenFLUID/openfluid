@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkViewport" id="ViewportDomain">
+    <property name="visible">True</property>
+    <property name="resize_mode">queue</property>
+    <child>
+      <object class="GtkLabel" id="label1">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">I am the Domain Module</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenuBar" id="MenuBarDomain">
+    <property name="visible">True</property>
+    <child>
+      <object class="GtkMenuItem" id="MenuItemDomain">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">_Domain</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="MenuDomain">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkMenuItem" id="MenuItemCheckDomain">
+                <property name="visible">True</property>
+                <property name="related_action">ActionCheckDomain</property>
+                <property name="use_action_appearance">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAction" id="ActionCheckDomain">
+    <property name="label">dummy</property>
+  </object>
+  <object class="GtkToolbar" id="ToolBarDomain">
+    <property name="visible">True</property>
+    <property name="show_arrow">False</property>
+    <child>
+      <object class="GtkToolButton" id="toolbutton1">
+        <property name="visible">True</property>
+        <property name="related_action">ActionCheckDomain</property>
+        <property name="use_action_appearance">True</property>
+        <property name="label" translatable="yes">Action Test</property>
+        <property name="use_underline">True</property>
+        <property name="stock_id">gtk-dnd-multiple</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="homogeneous">True</property>
+      </packing>
+    </child>
+  </object>
+</interface>
