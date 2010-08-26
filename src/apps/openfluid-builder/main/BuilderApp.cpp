@@ -752,6 +752,9 @@ void BuilderApp::deleteProject()
   for(unsigned int i=0 ; i<m_ProjectActions.size() ; i++)
     m_ProjectActions[i]->set_sensitive(false);
 
+  if(!mp_DockItemHome->is_visible())
+    mp_DockItemHome->show_item();
+
   delete mp_Project;
   mp_Project = 0;
 
