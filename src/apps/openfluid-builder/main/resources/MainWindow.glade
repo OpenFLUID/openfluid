@@ -31,15 +31,15 @@
                             <child>
                               <object class="GtkMenuItem" id="MenuItemNewEmpty">
                                 <property name="visible">True</property>
-                                <property name="use_action_appearance">True</property>
                                 <property name="related_action">ActionNewEmpty</property>
+                                <property name="use_action_appearance">True</property>
                               </object>
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="MenuItemNewFrom">
                                 <property name="visible">True</property>
-                                <property name="use_action_appearance">True</property>
                                 <property name="related_action">ActionNewFrom</property>
+                                <property name="use_action_appearance">True</property>
                               </object>
                             </child>
                           </object>
@@ -49,8 +49,8 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemOpen">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionOpen</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
@@ -61,15 +61,15 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemSave">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionSave</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="MenuItemSaveAs">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionSaveAs</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
@@ -80,15 +80,15 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemClose">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionClose</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="MenuItemQuit">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionQuit</property>
+                        <property name="use_action_appearance">True</property>
                         <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -107,15 +107,15 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemPreferences">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionPreferences</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="MenuItemExtensions">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionExtensions</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                   </object>
@@ -133,15 +133,15 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemCheckProject">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionCheckProject</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="MenuItemRun">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionRun</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
@@ -152,8 +152,8 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemProperties">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionProperties</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                   </object>
@@ -171,15 +171,15 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemDefaultLayout">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionDefaultLayout</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="MenuItemLayoutManager">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionLayoutManager</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                   </object>
@@ -197,15 +197,15 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemDemo">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionDemo</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="MenuItemDoc">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionDoc</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                     <child>
@@ -216,8 +216,8 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemAbout">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionAbout</property>
+                        <property name="use_action_appearance">True</property>
                       </object>
                     </child>
                   </object>
@@ -243,8 +243,8 @@
                     <child>
                       <object class="GtkToolButton" id="ToolButtonNewEmpty">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionNewEmpty</property>
+                        <property name="use_action_appearance">True</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -255,8 +255,8 @@
                     <child>
                       <object class="GtkToolButton" id="ToolButtonNewFrom">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionNewFrom</property>
+                        <property name="use_action_appearance">True</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -267,8 +267,8 @@
                     <child>
                       <object class="GtkToolButton" id="ToolButtonOpen">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionOpen</property>
+                        <property name="use_action_appearance">True</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -279,8 +279,8 @@
                     <child>
                       <object class="GtkToolButton" id="ToolButtonSave">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionSave</property>
+                        <property name="use_action_appearance">True</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -300,8 +300,8 @@
                     <child>
                       <object class="GtkToolButton" id="ToolButtonCheckProject">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionCheckProject</property>
+                        <property name="use_action_appearance">True</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -312,8 +312,8 @@
                     <child>
                       <object class="GtkToolButton" id="ToolButtonRun">
                         <property name="visible">True</property>
-                        <property name="use_action_appearance">True</property>
                         <property name="related_action">ActionRun</property>
+                        <property name="use_action_appearance">True</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -406,7 +406,9 @@
   <object class="GtkAction" id="ActionDefaultLayout"/>
   <object class="GtkAction" id="ActionHomePage"/>
   <object class="GtkAction" id="ActionDoc"/>
-  <object class="GtkAction" id="ActionDemo"/>
+  <object class="GtkAction" id="ActionDemo">
+    <property name="stock_id">gtk-info</property>
+  </object>
   <object class="GtkAction" id="ActionAbout"/>
   <object class="GtkAboutDialog" id="DialogAbout">
     <property name="border_width">5</property>
@@ -551,140 +553,183 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
       </object>
     </child>
   </object>
-  <object class="GtkAction" id="ActionCloseHomePage"/>
   <object class="GtkAction" id="ActionNewFrom">
     <property name="label">dummy</property>
   </object>
-  <object class="GtkAction" id="ActionLayoutManager">
-    <property name="label">dummy</property>
-  </object>
+  <object class="GtkAction" id="ActionLayoutManager"/>
   <object class="GtkViewport" id="ViewportHome">
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="resize_mode">queue</property>
     <child>
-      <object class="GtkHBox" id="hbox1">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkVBox" id="BoxHomeHead">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
+            <property name="spacing">10</property>
             <child>
-              <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="related_action">ActionNewEmpty</property>
-              </object>
-              <packing>
-                <property name="position">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton" id="button3">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="related_action">ActionNewFrom</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton" id="button4">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="related_action">ActionOpen</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button5">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="related_action">ActionDemo</property>
-              </object>
-              <packing>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkViewport" id="viewport1">
-                <property name="visible">True</property>
-                <property name="resize_mode">queue</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">4</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">20</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="HomePage">
+          <object class="GtkHSeparator" id="hseparator1">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox1">
+            <property name="visible">True</property>
             <child>
-              <object class="GtkImage" id="image1">
+              <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
-                <property name="pixbuf">openfluid_official_75pc.svg</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkVButtonBox" id="ButtonBoxHome">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">4</property>
+                    <property name="homogeneous">True</property>
+                    <property name="layout_style">start</property>
+                    <child>
+                      <object class="GtkButton" id="ButtonHomeNewEmpty">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="related_action">ActionNewEmpty</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="related_action">ActionNewFrom</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="related_action">ActionOpen</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="related_action">ActionDemo</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">10</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">10</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkVSeparator" id="vseparator1">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label8">
+              <object class="GtkVBox" id="hbox">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Here some explanations, links, common actions...</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="xpad">10</property>
+                    <property name="ypad">10</property>
+                    <property name="label" translatable="yes">Recent projects</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="xpad">30</property>
+                    <property name="ypad">10</property>
+                    <property name="label" translatable="yes">No recent project</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="position">2</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkAlignment" id="alignment5">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkLinkButton" id="linkbutton1">
-                    <property name="label">http://www.umr-lisah.fr/openfluid/</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="relief">none</property>
-                    <property name="uri">http://www.umr-lisah.fr/openfluid/</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

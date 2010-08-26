@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2010-08-25 14:02+0200\n"
-"PO-Revision-Date: 2010-08-24 13:49+0100\n"
+"POT-Creation-Date: 2010-08-26 19:19+0200\n"
+"PO-Revision-Date: 2010-08-26 19:19+0100\n"
 "Last-Translator: Aline Libres <libres@supagro.inra.fr>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,7 @@ msgstr "Créer un nouveau projet vide"
 msgid "Create new project from an existing one"
 msgstr "Créer un nouveau projet à partir d'un autre"
 
-#: BuilderApp.cpp:197 resources/MainWindow.glade:487
+#: BuilderApp.cpp:197 resources/MainWindow.glade:486
 msgid "Open an existing project"
 msgstr "Ouvrir un projet existant"
 
@@ -96,7 +96,11 @@ msgstr "Vérifier le projet"
 msgid "Run simulation"
 msgstr "Lancer la simulation"
 
-#: BuilderApp.cpp:254
+#: BuilderApp.cpp:201
+msgid "Open demo project"
+msgstr "Ouvrir le projet de démo"
+
+#: BuilderApp.cpp:255
 msgid "%1Home"
 msgstr "%1Accueil"
 
@@ -132,41 +136,41 @@ msgstr "Je suis le Module Domaine"
 msgid "Action Test"
 msgstr "Action Test in french"
 
-#: resources/MainWindow.glade:19
+#: resources/MainWindow.glade:18
 msgid "_File"
 msgstr "_Fichier"
 
-#: resources/MainWindow.glade:27
+#: resources/MainWindow.glade:26
 msgid "_New"
 msgstr "_Nouveau"
 
-#: resources/MainWindow.glade:103
+#: resources/MainWindow.glade:102
 msgid "_Edit"
 msgstr "_Édition"
 
-#: resources/MainWindow.glade:129
+#: resources/MainWindow.glade:128
 msgid "_Project"
 msgstr "_Projet"
 
-#: resources/MainWindow.glade:167
+#: resources/MainWindow.glade:166
 msgid "_View"
 msgstr "_Affichage"
 
-#: resources/MainWindow.glade:193
+#: resources/MainWindow.glade:192
 msgid "_Help"
 msgstr "Aid_e"
 
-#: resources/MainWindow.glade:503
+#: resources/MainWindow.glade:502
 msgid "Choose the input directory"
 msgstr "Choisir le répertoire d'entrée"
 
-#: resources/MainWindow.glade:569
-msgid "Home Page"
-msgstr "Page d'Accueil"
+#: resources/MainWindow.glade:701
+msgid "Recent projects"
+msgstr "Projets récents"
 
-#: resources/MainWindow.glade:590
-msgid "Here some explanations, links, common actions..."
-msgstr "Ici des explications, des liens, des actions courantes..."
+#: resources/MainWindow.glade:719
+msgid "No recent project"
+msgstr "Pas de projet récent"
 
 #: resources/Model.glade:27
 msgid "Available functions"
@@ -273,6 +277,19 @@ msgstr "_Simulation"
 #: SimulationModule.cpp:71
 msgid "Simulation"
 msgstr "Simulation"
+
+#~ msgid "dummy"
+#~ msgstr "test !!"
+
+#, fuzzy
+#~ msgid "_Information"
+#~ msgstr "_Domaine"
+
+#~ msgid "Home Page"
+#~ msgstr "Page d'Accueil"
+
+#~ msgid "Here some explanations, links, common actions..."
+#~ msgstr "Ici des explications, des liens, des actions courantes..."
 
 #~ msgid "%1Results"
 #~ msgstr "%1Résultats"

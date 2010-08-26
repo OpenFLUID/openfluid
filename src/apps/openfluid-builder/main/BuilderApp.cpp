@@ -95,26 +95,15 @@ BuilderApp::BuilderApp(int argc, char** argv)
     mp_Builder->get_widget("MainToolBarContainer",mp_MainToolBarContainer);
     mp_Builder->get_widget("ProjectContainer",mp_ProjectContainer);
 
-    Gtk::AboutDialog * DialogBox = 0;
-    mp_Builder->get_widget("DialogAbout",DialogBox);
-    DialogBox->set_comments("OpenFLUID v" + openfluid::config::FULL_VERSION
-                            + "\n\nLISAH, Montpellier, France");
-
     createActions();
 
     createDock();
 
+    setMainWindowProperties();
 
-    // set icon for all windows
-    Glib::RefPtr<Gdk::Pixbuf> OF_logo = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/openfluid_image_only.svg",BUILDER_RESOURCE_PATH));
-    mp_MainWindow->set_default_icon(OF_logo);
+    setHomePanelProperties();
 
-    // set main window size (have to set glade.window.visible=false to make this work)
-    int MonitorWidth = Gdk::Screen::get_default()->get_width();
-    int MonitorHeight = Gdk::Screen::get_default()->get_height();
-
-    mp_MainWindow->set_default_size(MonitorWidth-(MonitorWidth*0.1),
-                                    MonitorHeight-(MonitorHeight*0.1));
+    setAboutBoxProperties();
 
 
     mp_MainWindow->show_all_children();
@@ -209,6 +198,7 @@ void BuilderApp::createActions()
   ActionSave->set_tooltip(_("Save project"));
   ActionCheckProject->set_tooltip(_("Check project"));
   ActionRun->set_tooltip(_("Run simulation"));
+  ActionDemo->set_tooltip(_("Open demo project"));
 
   ActionNewEmpty->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionNewEmpty));
   ActionNewFrom->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionNewFrom));
@@ -292,6 +282,124 @@ void BuilderApp::createDock()
   gdl_dock_placeholder_new("ph2", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_BOTTOM, FALSE);
   gdl_dock_placeholder_new("ph3", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_LEFT, FALSE);
   gdl_dock_placeholder_new("ph4", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_RIGHT, FALSE);
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderApp::setMainWindowProperties()
+{
+  // set icon for all windows
+
+  Glib::RefPtr<Gdk::Pixbuf> OF_logo = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/openfluid_image_only.svg",BUILDER_RESOURCE_PATH));
+
+  mp_MainWindow->set_default_icon(OF_logo);
+
+
+  // set main window size (have to set glade.window.visible=false to make this work)
+
+  int MonitorWidth = Gdk::Screen::get_default()->get_width();
+  int MonitorHeight = Gdk::Screen::get_default()->get_height();
+
+  mp_MainWindow->set_default_size(MonitorWidth-(MonitorWidth*0.1),
+      MonitorHeight-(MonitorHeight*0.1));
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderApp::setAboutBoxProperties()
+{
+  Gtk::AboutDialog * DialogBox = 0;
+
+  mp_Builder->get_widget("DialogAbout",DialogBox);
+
+  DialogBox->set_comments("OpenFLUID v" + openfluid::config::FULL_VERSION
+      + "\n\nLISAH, Montpellier, France");
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderApp::setHomePanelProperties()
+{
+
+  // Buttons for common actions
+
+  Gtk::ButtonBox * ButtonBoxHome = 0;
+
+  mp_Builder->get_widget("ButtonBoxHome",ButtonBoxHome);
+
+  Gtk::Box_Helpers::BoxList ButtonList = ButtonBoxHome->children();
+
+  for(Gtk::Box_Helpers::BoxList::iterator it = ButtonList.begin(); it != ButtonList.end(); ++it)
+  {
+    Gtk::Button * Button = (Gtk::Button *)(it->get_widget());
+
+    Button->set_size_request(350,65);
+
+    Button->remove(); // remove existing automatic added default label
+
+
+    Gtk::HBox * BoxInsideButton = Gtk::manage(new Gtk::HBox());
+
+    Gtk::Image * Image = Gtk::manage(new Gtk::Image(Button->get_action()->get_stock_id(),
+                                                    Gtk::ICON_SIZE_DIALOG));
+
+    Gtk::Label * Label = Gtk::manage(new Gtk::Label(Button->get_action()->get_tooltip(),
+                                                    Gtk::ALIGN_LEFT));
+
+    Label->set_line_wrap(true);
+
+
+    BoxInsideButton->pack_start(*Image, false, false, 10);
+
+    BoxInsideButton->pack_start(*Label);
+
+
+    Button->add(*BoxInsideButton);
+  }  // end Buttons
+
+
+  // Home "head" panel
+
+  Gtk::Box * BoxHomeHead = 0;
+
+  mp_Builder->get_widget("BoxHomeHead",BoxHomeHead);
+
+
+      // Openfluid image
+
+  Glib::RefPtr<Gdk::Pixbuf> PixBuf = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/openfluid_official.svg",BUILDER_RESOURCE_PATH),
+                                                                    320, -1, true);
+
+  Gtk::Image * Image = Gtk::manage(new Gtk::Image(PixBuf));
+
+  BoxHomeHead->pack_start(*Image, false, 10);
+
+      // Openfluid version
+
+  Gtk::Label * LabelVersion = Gtk::manage(new Gtk::Label("OpenFLUID v" + openfluid::config::FULL_VERSION
+        + "\n\nLISAH, Montpellier, France"));
+
+  BoxHomeHead->pack_start(*LabelVersion, false, 10);
+
+      // Openfluid web link
+
+  Gtk::Label * LabelLink = Gtk::manage(new Gtk::Label());
+
+  LabelLink->set_markup("<a href=\"http://www.umr-lisah.fr/openfluid/\">http://www.umr-lisah.fr/openfluid/</a>");
+
+  BoxHomeHead->pack_start(*LabelLink, false, 10);
 
 }
 

@@ -111,6 +111,12 @@ class BuilderApp
 
     void createDock();
 
+    void setMainWindowProperties();
+
+    void setAboutBoxProperties();
+
+    void setHomePanelProperties();
+
 
     void actionNewEmpty();
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2010-08-25 14:02+0200\n"
+"POT-Creation-Date: 2010-08-26 19:19+0200\n"
 "PO-Revision-Date: 2010-07-23 16:04+0200\n"
 "Last-Translator: Aline LIBRES <libres@supagro.inra.fr>\n"
 "Language-Team: Spanish\n"
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Create new project from an existing one"
 msgstr ""
 
-#: BuilderApp.cpp:197 resources/MainWindow.glade:487
+#: BuilderApp.cpp:197 resources/MainWindow.glade:486
 msgid "Open an existing project"
 msgstr ""
 
@@ -96,7 +96,11 @@ msgstr ""
 msgid "Run simulation"
 msgstr ""
 
-#: BuilderApp.cpp:254
+#: BuilderApp.cpp:201
+msgid "Open demo project"
+msgstr ""
+
+#: BuilderApp.cpp:255
 msgid "%1Home"
 msgstr ""
 
@@ -132,40 +136,40 @@ msgstr ""
 msgid "Action Test"
 msgstr ""
 
-#: resources/MainWindow.glade:19
+#: resources/MainWindow.glade:18
 msgid "_File"
 msgstr ""
 
-#: resources/MainWindow.glade:27
+#: resources/MainWindow.glade:26
 msgid "_New"
 msgstr ""
 
-#: resources/MainWindow.glade:103
+#: resources/MainWindow.glade:102
 msgid "_Edit"
 msgstr ""
 
-#: resources/MainWindow.glade:129
+#: resources/MainWindow.glade:128
 msgid "_Project"
 msgstr ""
 
-#: resources/MainWindow.glade:167
+#: resources/MainWindow.glade:166
 msgid "_View"
 msgstr ""
 
-#: resources/MainWindow.glade:193
+#: resources/MainWindow.glade:192
 msgid "_Help"
 msgstr ""
 
-#: resources/MainWindow.glade:503
+#: resources/MainWindow.glade:502
 msgid "Choose the input directory"
 msgstr ""
 
-#: resources/MainWindow.glade:569
-msgid "Home Page"
+#: resources/MainWindow.glade:701
+msgid "Recent projects"
 msgstr ""
 
-#: resources/MainWindow.glade:590
-msgid "Here some explanations, links, common actions..."
+#: resources/MainWindow.glade:719
+msgid "No recent project"
 msgstr ""
 
 #: resources/Model.glade:27
