@@ -53,8 +53,6 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <iostream>
-#include <fstream>
 #include <openfluid/base/PlugFunction.hpp>
 #include <openfluid/base/OFException.hpp>
 
@@ -73,8 +71,8 @@ PluggableFunction::PluggableFunction()
   mp_InternalCoreData = NULL;
 
   mp_ExecMsgs = NULL;
-
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -82,8 +80,23 @@ PluggableFunction::PluggableFunction()
 
 PluggableFunction::~PluggableFunction()
 {
+  OPENFLUID_Logger.close();
+}
+
+// =====================================================================
+// =====================================================================
 
 
+void PluggableFunction::initLogger()
+{
+
+  std::string LogFile;
+  std::string LogDir;
+
+  mp_FunctionEnv->getValue("dir.output",&LogDir);
+  LogFile = boost::filesystem::path(LogDir + "/" + m_FunctionID + ".log").string();
+
+  OPENFLUID_Logger.open(LogFile.c_str());
 }
 
 

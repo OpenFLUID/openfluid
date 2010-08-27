@@ -72,12 +72,17 @@
 #define __PLUGFUNCTION_HPP__
 
 #include <string>
+
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/base/StdoutFileOStream.hpp>
+
 
 
 // compilation directives for shared libs linkage
@@ -252,7 +257,6 @@ namespace openfluid { namespace base {
 
 
 
-
 /**
   @brief Abstract class for plugin interface
 
@@ -289,6 +293,11 @@ class DLLEXPORT PluggableFunction
       Function parameters
     */
     openfluid::core::FuncParamsMap_t m_ParamsMap;
+
+    /**
+      Function ID
+    */
+    openfluid::base::FuncID_t m_FunctionID;
 
 
     static bool IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
@@ -910,6 +919,9 @@ class DLLEXPORT PluggableFunction
     bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Value);
 
 
+    StdoutAndFileOutputStream OPENFLUID_Logger;
+
+
   public:
     /**
       Constructor
@@ -926,6 +938,10 @@ class DLLEXPORT PluggableFunction
     void setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
 
     void setFunctionEnvironment(openfluid::base::EnvironmentProperties* FuncEnv) { mp_FunctionEnv = FuncEnv; };
+
+    void setFunctionID(const openfluid::base::FuncID_t& FuncID) { m_FunctionID = FuncID; };
+
+    void initLogger();
 
 
     /**

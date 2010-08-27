@@ -47,39 +47,45 @@
 
 
 /**
-  @file
+  \file DualOStream_TEST.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
-
-
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SIFactors.hpp>
-#include <openfluid/base/SimStatus.hpp>
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_stdoutfileostream
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
+
+#include <tests-config.hpp>
+
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __BASE_HPP___ */
+BOOST_AUTO_TEST_CASE(check_construction)
+{
+  openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger1.log");
+
+  openfluid::base::StdoutAndFileOutputStream OStream2;
+  OStream2.open(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger2.log");
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_operations)
+{
+  openfluid::base::StdoutAndFileOutputStream OStream(CONFIGTESTS_OUTPUT_DATA_DIR+"/checklogger3.log");
+
+  OStream.get() << "Hello World!" << std::endl;
+
+  OStream.getStdout() << "stdout only" << std::endl;
+
+  OStream.getFile() << "file only" << std::endl;
+}
+

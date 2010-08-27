@@ -28,7 +28,7 @@ BUILDNAME:STRING=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${BUILDNAME_COMP
 INCLUDE(CMake.in.sub)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
-FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex)
+FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex iostreams)
 PKG_CHECK_MODULES(LibXML2 REQUIRED libxml-2.0)
 FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)

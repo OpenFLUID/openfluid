@@ -47,39 +47,106 @@
 
 
 /**
-  @file
+  \file StdoutFileOStream.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
-
-
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SIFactors.hpp>
-#include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
 
 
-#endif /* __BASE_HPP___ */
+namespace openfluid { namespace base {
+
+
+// =====================================================================
+// =====================================================================
+
+
+StdoutAndFileOutputStream::StdoutAndFileOutputStream()
+{
+  mp_LoggerDevice = NULL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+StdoutAndFileOutputStream::StdoutAndFileOutputStream(std::string LogFilePath)
+{
+  mp_LoggerDevice = NULL;
+
+  open(LogFilePath);
+  tieStreams();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+StdoutAndFileOutputStream::~StdoutAndFileOutputStream()
+{
+  if (mp_LoggerDevice != NULL)
+  {
+    flush();
+    close();
+    delete mp_LoggerDevice;
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void StdoutAndFileOutputStream::tieStreams()
+{
+
+  if (mp_LoggerDevice == NULL)
+  {
+    mp_LoggerDevice = new TeeDevice(std::cout, m_FileLogger);
+    m_Logger.open(*mp_LoggerDevice);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool StdoutAndFileOutputStream::open(std::string LogFilePath)
+{
+  m_FileLogger.open(LogFilePath.c_str());
+  if (m_FileLogger.is_open()) tieStreams();
+  return m_FileLogger.is_open();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void StdoutAndFileOutputStream::close()
+{
+  m_Logger.close();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void StdoutAndFileOutputStream::flush()
+{
+  m_Logger.flush();
+}
+
+
+
+} }  // namespaces
+
+
+

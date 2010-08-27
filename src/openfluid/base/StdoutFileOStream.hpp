@@ -45,41 +45,84 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file StdoutFileOStream.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
+#ifndef __STDOUTFILEOSTREAM_HPP__
+#define __STDOUTFILEOSTREAM_HPP__
+
+#include <iostream>
+#include <fstream>
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/device/null.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/iostreams/tee.hpp>
+#include <boost/iostreams/device/file.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
 
 
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SIFactors.hpp>
-#include <openfluid/base/SimStatus.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-#endif /* __BASE_HPP___ */
+namespace openfluid { namespace base {
+
+
+class DLLEXPORT StdoutAndFileOutputStream
+{
+  private:
+
+    typedef boost::iostreams::tee_device<std::ostream,std::ofstream> TeeDevice;
+
+
+  public:
+
+    typedef boost::iostreams::stream<TeeDevice> TeeStream;
+
+
+  private:
+
+    TeeDevice* mp_LoggerDevice;
+
+    std::ofstream m_FileLogger;
+
+    TeeStream m_Logger;
+
+    void tieStreams();
+
+
+  public:
+
+    StdoutAndFileOutputStream();
+
+    StdoutAndFileOutputStream(std::string LogFilePath);
+
+    ~StdoutAndFileOutputStream();
+
+    std::ofstream& getFile() { return m_FileLogger; };
+
+    std::ostream& getStdout() { return std::cout; };
+
+    TeeStream& get() { return m_Logger; };
+
+    bool open(std::string LogFilePath);
+
+    void close();
+
+    void flush();
+
+    bool isOpened() const { return m_FileLogger.is_open(); };
+
+};
+
+
+
+
+} }  // namespaces
+
+
+#endif /* __STDOUTFILEOSTREAM_HPP__ */

@@ -124,3 +124,8 @@ ADD_TEST(functions-Generators "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckGenerators" 
                         "-p${TEST_OUTPUT_PATH}" "-v")                              
 
+ADD_FUNCTION(tests.logger tests.logger ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-Logger "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLogger"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLogger" 
+                        "-p${TEST_OUTPUT_PATH}")                              
