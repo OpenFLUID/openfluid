@@ -86,7 +86,6 @@ BuilderProject::~BuilderProject()
   for(DockItemsPtrByNameMap_t::const_iterator it = m_DockItems.begin() ; it != m_DockItems.end() ; ++it)
   {
     it->second->hide_item();
-    //  it->second->unbind();
     delete it->second;
   }
 
@@ -127,22 +126,30 @@ void BuilderProject::addModule(ModuleInterface * Module, Glib::ustring ModuleNam
 // =====================================================================
 
 
-void BuilderProject::reorderDockItems()
+void BuilderProject::actionDefaultLayout(LayoutType Layout)
 {
-  m_DockItems["simulation"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_BOTTOM);
-  m_DockItems["results"]->dock_to(*(m_DockItems["simulation"]), Gdl::DOCK_BOTTOM);
-  m_DockItems["domain"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_RIGHT);
+    // Default layout, base for others
 
-  m_DockItems["simulation"]->iconify_item();
-  m_DockItems["results"]->iconify_item();
-}
+      m_DockItems["simulation"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_BOTTOM);
+      m_DockItems["results"]->dock_to(*(m_DockItems["simulation"]), Gdl::DOCK_BOTTOM);
+      m_DockItems["domain"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_RIGHT);
 
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderProject::actionDefaultLayout()
-{
-
+  switch(Layout)
+  {
+    case PreSimulation:
+      m_DockItems["simulation"]->iconify_item();
+      m_DockItems["results"]->iconify_item();
+      break;
+    case PostSimulation:
+      m_DockItems["model"]->iconify_item();
+      m_DockItems["domain"]->iconify_item();
+      m_DockItems["simulation"]->iconify_item();
+      break;
+    case AllTabbed:
+      m_DockItems["domain"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_CENTER);
+      m_DockItems["simulation"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_CENTER);
+      m_DockItems["results"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_CENTER);
+      break;
+    default:;
+  }
 }

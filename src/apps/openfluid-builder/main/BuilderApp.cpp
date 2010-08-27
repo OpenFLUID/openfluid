@@ -94,6 +94,7 @@ BuilderApp::BuilderApp(int argc, char** argv)
     mp_Builder->get_widget("MainToolBar",mp_MainToolBar);
     mp_Builder->get_widget("MainToolBarContainer",mp_MainToolBarContainer);
     mp_Builder->get_widget("ProjectContainer",mp_ProjectContainer);
+    mp_Builder->get_widget("ViewportHome",mp_HomeContainer);
 
     createActions();
 
@@ -149,7 +150,9 @@ void BuilderApp::createActions()
   Glib::RefPtr<Gtk::Action> ActionRun;
   Glib::RefPtr<Gtk::Action> ActionProperties;
   // View actions
-  Glib::RefPtr<Gtk::Action> ActionDefaultLayout;
+  Glib::RefPtr<Gtk::Action> ActionDefaultLayoutPre;
+  Glib::RefPtr<Gtk::Action> ActionDefaultLayoutPost;
+  Glib::RefPtr<Gtk::Action> ActionDefaultLayoutAllTabbed;
   Glib::RefPtr<Gtk::Action> ActionLayoutManager;
   // Help actions
   Glib::RefPtr<Gtk::Action> ActionDoc;
@@ -167,7 +170,9 @@ void BuilderApp::createActions()
   ActionQuit = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionQuit"));
   ActionCheckProject = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionCheckProject"));
   ActionRun = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionRun"));
-  ActionDefaultLayout = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionDefaultLayout"));
+  ActionDefaultLayoutPre = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionDefaultLayoutPre"));
+  ActionDefaultLayoutPost = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionDefaultLayoutPost"));
+  ActionDefaultLayoutAllTabbed = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionDefaultLayoutAllTabbed"));
   ActionLayoutManager  = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionLayoutManager"));
   ActionExtensions = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionExtensions"));
   ActionDoc = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionDoc"));
@@ -185,7 +190,9 @@ void BuilderApp::createActions()
 //  ActionQuit->set_label(); //existing default translations in gtk-stock
   ActionCheckProject->set_label(_("Check Project"));
   ActionRun->set_label(_("Run Simulation"));
-  ActionDefaultLayout->set_label(_("Default Layout"));
+  ActionDefaultLayoutPre->set_label(_("Pre-simulation"));
+  ActionDefaultLayoutPost->set_label(_("Post-simulation"));
+  ActionDefaultLayoutAllTabbed->set_label(_("All tabbed"));
   ActionLayoutManager->set_label(_("Layout Manager"));
   ActionExtensions->set_label(_("Extensions"));
   ActionDoc->set_label(_("Documentation"));
@@ -212,7 +219,9 @@ void BuilderApp::createActions()
   ActionQuit->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionQuit));
   ActionCheckProject->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionCheckProject));
   ActionRun->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionRun));
-  ActionDefaultLayout->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionDefaultLayout));
+  ActionDefaultLayoutPre->signal_activate().connect(sigc::bind<BuilderProject::LayoutType>(sigc::mem_fun(*this,&BuilderApp::actionDefaultLayout),BuilderProject::PreSimulation));
+  ActionDefaultLayoutPost->signal_activate().connect(sigc::bind<BuilderProject::LayoutType>(sigc::mem_fun(*this,&BuilderApp::actionDefaultLayout),BuilderProject::PostSimulation));
+  ActionDefaultLayoutAllTabbed->signal_activate().connect(sigc::bind<BuilderProject::LayoutType>(sigc::mem_fun(*this,&BuilderApp::actionDefaultLayout),BuilderProject::AllTabbed));
   ActionLayoutManager->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionLayoutManager));
   ActionExtensions->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionPlugins));
   ActionDoc->signal_activate().connect(sigc::mem_fun(*this,&BuilderApp::actionDoc));
@@ -229,6 +238,9 @@ void BuilderApp::createActions()
   m_ProjectActions.push_back(ActionClose);
   m_ProjectActions.push_back(ActionCheckProject);
   m_ProjectActions.push_back(ActionRun);
+  m_ProjectActions.push_back(ActionDefaultLayoutPre);
+  m_ProjectActions.push_back(ActionDefaultLayoutPost);
+  m_ProjectActions.push_back(ActionDefaultLayoutAllTabbed);
 
   for(unsigned int i=0 ; i<m_ProjectActions.size() ; i++)
     m_ProjectActions[i]->set_sensitive(false);
@@ -250,22 +262,7 @@ void BuilderApp::createDock()
   // create DockBar
   Gdl::DockBar * MainDockBar = new Gdl::DockBar(*mp_MainDock);
 
-  // create Home DockItem
-  mp_DockItemHome = new Gdl::DockItem("Home",
-                        Glib::ustring::compose(_("%1Home"),"  "),
-                        Gtk::Stock::HOME,
-                        Gdl::DOCK_ITEM_BEH_NORMAL | Gdl::DOCK_ITEM_BEH_CANT_CLOSE);
-
-  // get glade widget
-  Gtk::Container * ContainerHome = 0;
-  mp_Builder->get_widget("ViewportHome",ContainerHome);
-
-
-  // fill DockItem with widget
-  mp_DockItemHome->add(*ContainerHome);
-
-  // fill Dock with DockItem
-  mp_MainDock->add_item(*mp_DockItemHome,Gdl::DOCK_TOP);
+  createDockItemHome();
 
   // fill top-level box widget with dock elements
   mp_ProjectContainer->pack_start(*MainDockBar,false,false);
@@ -275,7 +272,7 @@ void BuilderApp::createDock()
   DockMaster->property_switcher_style() = Gdl::SWITCHER_STYLE_TABS;
 
   // create Layout Manager
-  mp_Layout_manager = Gdl::DockLayout::create(*mp_MainDock);
+  mp_LayoutManager = Gdl::DockLayout::create(*mp_MainDock);
 
   // create placeholders
   gdl_dock_placeholder_new("ph1", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_TOP, FALSE);
@@ -285,6 +282,25 @@ void BuilderApp::createDock()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+void BuilderApp::createDockItemHome()
+{
+  mp_DockItemHome = new Gdl::DockItem("Home",
+      Glib::ustring::compose(_("%1Home"),"  "),
+      Gtk::Stock::HOME,
+      Gdl::DOCK_ITEM_BEH_NORMAL | Gdl::DOCK_ITEM_BEH_CANT_CLOSE);
+
+
+  // fill DockItem with widget
+  mp_DockItemHome->add(*mp_HomeContainer);
+
+  // fill Dock with DockItem
+  mp_MainDock->add_item(*mp_DockItemHome,Gdl::DOCK_TOP);
+
+}
 
 // =====================================================================
 // =====================================================================
@@ -579,25 +595,48 @@ void BuilderApp::actionPreferences()
 // =====================================================================
 
 
-void BuilderApp::actionDefaultLayout()
+void BuilderApp::actionDefaultLayout(BuilderProject::LayoutType Layout)
 {
-//  if(mp_Project)
-//    mp_Project->actionDefaultLayout();
-//  else
-//  {
-  // to hide an iconified item, show it, then hide it
-//      Glib::ListHandle<Gdl::DockItem *> myList = mp_MainDock->get_named_items();
-//      for(Glib::ListHandle<Gdl::DockItem *>::const_iterator it = myList.begin(); it != myList.end(); ++it)
-//      {
-//        Gdl::DockItem * item = *it;
-//        if(!item->is_visible())
-//
-//        item->show_item();
-//        item->hide_item();
-//      }
-//      mp_Layout_manager->load_from_file(builderconfig::RESOURCE_PATH+"/default_layout.xml");
-//      mp_Layout_manager->load_layout("__default__");
-//  }
+  if(mp_Project)
+  {
+    // first "de-iconify" all
+
+    Glib::ListHandle<Gdl::DockItem *> ItemList = mp_MainDock->get_named_items();
+
+    for(Glib::ListHandle<Gdl::DockItem *>::const_iterator it = ItemList.begin(); it != ItemList.end(); ++it)
+    {
+      Gdl::DockItem * Item = *it;
+      Item->show_item();
+      Item->hide_item();
+    }
+
+
+    // "re-"add Home item at right place
+
+    mp_MainDock->add_item(*mp_DockItemHome,Gdl::DOCK_TOP);
+
+
+    // "re"-add Top item at right place
+
+    Gdl::DockItem * DockItemTop = mp_Project->getTopDockItem();
+
+    mp_MainDock->add_item(*DockItemTop,Gdl::DOCK_BOTTOM);
+
+
+    // reorder all
+
+    if(Layout == BuilderProject::AllTabbed)
+    {
+      DockItemTop->dock_to(*mp_DockItemHome,Gdl::DOCK_CENTER);
+    }
+    else
+    {
+      mp_DockItemHome->iconify_item();
+    }
+
+    mp_Project->actionDefaultLayout(Layout);
+  }
+
 }
 
 
@@ -607,7 +646,7 @@ void BuilderApp::actionDefaultLayout()
 
 void BuilderApp::actionLayoutManager()
 {
-  mp_Layout_manager->run_manager();
+  mp_LayoutManager->run_manager();
 }
 
 
@@ -667,16 +706,14 @@ void BuilderApp::createProject()
 {
   mp_Project = new BuilderProject();
 
-  mp_MainDock->add_item(*(mp_Project->getTopDockItem()),Gdl::DOCK_BOTTOM);
-
-  mp_Project->reorderDockItems();
+  actionDefaultLayout(BuilderProject::PreSimulation);
 
 
-  typedef std::map<Glib::ustring,ModuleInterface *> ModulesPtrByNameMap_t;
+  // add modules elements
 
-  ModulesPtrByNameMap_t Modules = mp_Project->getModules();
+  BuilderProject::ModulesPtrByNameMap_t Modules = mp_Project->getModules();
 
-  for(ModulesPtrByNameMap_t::const_iterator it = Modules.begin() ; it!= Modules.end() ; ++it)
+  for(BuilderProject::ModulesPtrByNameMap_t::const_iterator it = Modules.begin() ; it!= Modules.end() ; ++it)
   {
     ModuleInterface * Module = it->second;
 
@@ -708,7 +745,6 @@ void BuilderApp::createProject()
 
   }
 
-  mp_DockItemHome->iconify_item();
 
   for(unsigned int i=0 ; i<m_ProjectActions.size() ; i++)
     m_ProjectActions[i]->set_sensitive(true);
@@ -722,11 +758,11 @@ void BuilderApp::createProject()
 
 void BuilderApp::deleteProject()
 {
-  typedef std::map<Glib::ustring,ModuleInterface *> ModulesPtrByNameMap_t;
+  // delete modules elements
 
-  ModulesPtrByNameMap_t Modules = mp_Project->getModules();
+  BuilderProject::ModulesPtrByNameMap_t Modules = mp_Project->getModules();
 
-  for(ModulesPtrByNameMap_t::const_iterator it = Modules.begin() ; it!= Modules.end() ; ++it)
+  for(BuilderProject::ModulesPtrByNameMap_t::const_iterator it = Modules.begin() ; it!= Modules.end() ; ++it)
   {
     ModuleInterface * Module = it->second;
 

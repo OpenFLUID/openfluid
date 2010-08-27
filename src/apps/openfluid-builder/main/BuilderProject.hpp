@@ -77,12 +77,16 @@
 
 class BuilderProject
 {
-  private:
+  public:
+
+    enum LayoutType { AllTabbed, PreSimulation, PostSimulation };
 
     typedef std::map<Glib::ustring,ModuleInterface *> ModulesPtrByNameMap_t;
 
     typedef std::map<Glib::ustring,Gdl::DockItem *> DockItemsPtrByNameMap_t;
 
+
+  private:
 
     openfluid::base::RuntimeEnvironment * mp_RunEnv;
 
@@ -94,6 +98,9 @@ class BuilderProject
     ModulesPtrByNameMap_t m_Modules;
 
     DockItemsPtrByNameMap_t m_DockItems;
+
+
+    LayoutType m_LayoutType;
 
 
     void addModule(ModuleInterface *, Glib::ustring ModuleName);
@@ -111,9 +118,7 @@ class BuilderProject
     ModulesPtrByNameMap_t getModules()
         { return m_Modules; }
 
-    void reorderDockItems();
-
-    void actionDefaultLayout();
+    void actionDefaultLayout(LayoutType Layout);
 
 };
 

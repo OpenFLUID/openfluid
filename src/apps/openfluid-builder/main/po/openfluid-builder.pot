@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenFLUID Builder 0.0.0\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2010-08-26 19:19+0200\n"
+"POT-Creation-Date: 2010-08-27 18:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,91 +16,99 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: BuilderApp.cpp:177
+#: BuilderApp.cpp:182
 msgid "Empty"
 msgstr ""
 
-#: BuilderApp.cpp:178
+#: BuilderApp.cpp:183
 msgid "From..."
 msgstr ""
 
-#: BuilderApp.cpp:179
+#: BuilderApp.cpp:184
 msgid "_Open..."
 msgstr ""
 
-#: BuilderApp.cpp:181
+#: BuilderApp.cpp:186
 msgid "Save _As..."
 msgstr ""
 
-#: BuilderApp.cpp:182
+#: BuilderApp.cpp:187
 msgid "Project Properties..."
 msgstr ""
 
-#: BuilderApp.cpp:183
+#: BuilderApp.cpp:188
 msgid "OpenFLUID Builder Preferences..."
 msgstr ""
 
-#: BuilderApp.cpp:186
+#: BuilderApp.cpp:191
 msgid "Check Project"
 msgstr ""
 
-#: BuilderApp.cpp:187
+#: BuilderApp.cpp:192
 msgid "Run Simulation"
 msgstr ""
 
-#: BuilderApp.cpp:188
-msgid "Default Layout"
-msgstr ""
-
-#: BuilderApp.cpp:189
-msgid "Layout Manager"
-msgstr ""
-
-#: BuilderApp.cpp:190
-msgid "Extensions"
-msgstr ""
-
-#: BuilderApp.cpp:191
-msgid "Documentation"
-msgstr ""
-
-#: BuilderApp.cpp:192
-msgid "Demo Project"
-msgstr ""
-
 #: BuilderApp.cpp:193
-msgid "_About OpenFLUID Builder"
+msgid "Pre-simulation"
+msgstr ""
+
+#: BuilderApp.cpp:194
+msgid "Post-simulation"
 msgstr ""
 
 #: BuilderApp.cpp:195
-msgid "Create new empty project"
+msgid "All tabbed"
 msgstr ""
 
 #: BuilderApp.cpp:196
-msgid "Create new project from an existing one"
+msgid "Layout Manager"
 msgstr ""
 
-#: BuilderApp.cpp:197 resources/MainWindow.glade:486
-msgid "Open an existing project"
+#: BuilderApp.cpp:197
+msgid "Extensions"
 msgstr ""
 
 #: BuilderApp.cpp:198
-msgid "Save project"
+msgid "Documentation"
 msgstr ""
 
 #: BuilderApp.cpp:199
-msgid "Check project"
+msgid "Demo Project"
 msgstr ""
 
 #: BuilderApp.cpp:200
+msgid "_About OpenFLUID Builder"
+msgstr ""
+
+#: BuilderApp.cpp:202
+msgid "Create new empty project"
+msgstr ""
+
+#: BuilderApp.cpp:203
+msgid "Create new project from an existing one"
+msgstr ""
+
+#: BuilderApp.cpp:204 resources/MainWindow.glade:511
+msgid "Open an existing project"
+msgstr ""
+
+#: BuilderApp.cpp:205
+msgid "Save project"
+msgstr ""
+
+#: BuilderApp.cpp:206
+msgid "Check project"
+msgstr ""
+
+#: BuilderApp.cpp:207
 msgid "Run simulation"
 msgstr ""
 
-#: BuilderApp.cpp:201
+#: BuilderApp.cpp:208
 msgid "Open demo project"
 msgstr ""
 
-#: BuilderApp.cpp:255
+#: BuilderApp.cpp:292
 msgid "%1Home"
 msgstr ""
 
@@ -116,7 +124,7 @@ msgstr ""
 msgid "Check Domain"
 msgstr ""
 
-#: ModelModule.cpp:71 resources/Model.glade:391
+#: ModelModule.cpp:71 resources/Model.glade:389
 msgid "_Model"
 msgstr ""
 
@@ -156,68 +164,72 @@ msgstr ""
 msgid "_View"
 msgstr ""
 
-#: resources/MainWindow.glade:192
+#: resources/MainWindow.glade:174
+msgid "Default Layout"
+msgstr ""
+
+#: resources/MainWindow.glade:217
 msgid "_Help"
 msgstr ""
 
-#: resources/MainWindow.glade:502
+#: resources/MainWindow.glade:527
 msgid "Choose the input directory"
 msgstr ""
 
-#: resources/MainWindow.glade:701
+#: resources/MainWindow.glade:734
 msgid "Recent projects"
 msgstr ""
 
-#: resources/MainWindow.glade:719
+#: resources/MainWindow.glade:752
 msgid "No recent project"
 msgstr ""
 
-#: resources/Model.glade:27
-msgid "Available functions"
-msgstr ""
-
-#: resources/Model.glade:84
+#: resources/Model.glade:74
 msgid "Signature"
 msgstr ""
 
-#: resources/Model.glade:111
+#: resources/Model.glade:101
 msgid "Parameters"
 msgstr ""
 
-#: resources/Model.glade:139
+#: resources/Model.glade:129
 msgid "Variables"
 msgstr ""
 
-#: resources/Model.glade:167
+#: resources/Model.glade:157
 msgid "Events"
 msgstr ""
 
-#: resources/Model.glade:195
+#: resources/Model.glade:185
 msgid "Extra files"
 msgstr ""
 
-#: resources/Model.glade:228
-msgid "Model structure"
+#: resources/Model.glade:208
+msgid "<b>Available functions</b>"
 msgstr ""
 
-#: resources/Model.glade:245
+#: resources/Model.glade:235
 msgid "tools"
 msgstr ""
 
-#: resources/Model.glade:276
+#: resources/Model.glade:266
 msgid "List"
 msgstr ""
 
-#: resources/Model.glade:293
+#: resources/Model.glade:283
 msgid "Graph"
 msgstr ""
 
-#: resources/Model.glade:331
-msgid "Model Parameters"
+#: resources/Model.glade:305
+msgid "<b>Model structure</b>"
 msgstr ""
 
-#: resources/Model.glade:366
+#: resources/Model.glade:355
 msgid "Global parameters"
+msgstr ""
+
+#: resources/Model.glade:371
+msgid "<b>Model Parameters</b>"
 msgstr ""
 
 #: resources/Results.glade:16 ResultsModule.cpp:71

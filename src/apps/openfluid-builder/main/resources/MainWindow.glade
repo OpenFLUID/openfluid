@@ -171,8 +171,33 @@
                     <child>
                       <object class="GtkMenuItem" id="MenuItemDefaultLayout">
                         <property name="visible">True</property>
-                        <property name="related_action">ActionDefaultLayout</property>
-                        <property name="use_action_appearance">True</property>
+                        <property name="label" translatable="yes">Default Layout</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu4">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem2">
+                                <property name="visible">True</property>
+                                <property name="related_action">ActionDefaultLayoutPre</property>
+                                <property name="use_action_appearance">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem4">
+                                <property name="visible">True</property>
+                                <property name="related_action">ActionDefaultLayoutPost</property>
+                                <property name="use_action_appearance">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem5">
+                                <property name="visible">True</property>
+                                <property name="related_action">ActionDefaultLayoutAllTabbed</property>
+                                <property name="use_action_appearance">True</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <child>
@@ -622,6 +647,8 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -634,6 +661,8 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -646,6 +675,8 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -658,6 +689,8 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">3</property>
                       </packing>
                     </child>
@@ -735,4 +768,7 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
       </object>
     </child>
   </object>
+  <object class="GtkAction" id="ActionDefaultLayoutPre"/>
+  <object class="GtkAction" id="ActionDefaultLayoutPost"/>
+  <object class="GtkAction" id="ActionDefaultLayoutAllTabbed"/>
 </interface>

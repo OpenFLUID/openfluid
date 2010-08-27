@@ -91,6 +91,8 @@ class BuilderApp
 
     Gtk::Box * mp_ProjectContainer;
 
+    Gtk::Container * mp_HomeContainer;
+
 
     // Docking elements
 
@@ -98,8 +100,7 @@ class BuilderApp
 
     Gdl::DockItem * mp_DockItemHome;
 
-    Glib::RefPtr<Gdl::DockLayout> mp_Layout_manager;
-
+    Glib::RefPtr<Gdl::DockLayout> mp_LayoutManager;
 
 
     std::vector<Glib::RefPtr<Gtk::Action> > m_ProjectActions;
@@ -110,6 +111,8 @@ class BuilderApp
     void createActions();
 
     void createDock();
+
+    void createDockItemHome();
 
     void setMainWindowProperties();
 
@@ -140,7 +143,7 @@ class BuilderApp
 
     void actionPreferences();
 
-    void actionDefaultLayout();
+    void actionDefaultLayout(BuilderProject::LayoutType Layout);
 
     void actionLayoutManager();
 
