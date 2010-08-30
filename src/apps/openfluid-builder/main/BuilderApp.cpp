@@ -339,6 +339,10 @@ void BuilderApp::setAboutBoxProperties()
   DialogBox->set_comments("OpenFLUID v" + openfluid::config::FULL_VERSION
       + "\n\nLISAH, Montpellier, France");
 
+  Glib::RefPtr<Gdk::Pixbuf> PixBuf = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,OPENFLUID_LOGO_FILE),
+                                                                      230, -1, true);
+  DialogBox->set_logo(PixBuf);
+
 }
 
 
@@ -395,7 +399,7 @@ void BuilderApp::setHomePanelProperties()
 
       // Openfluid image
 
-  Glib::RefPtr<Gdk::Pixbuf> PixBuf = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/openfluid_official.svg",BUILDER_RESOURCE_PATH),
+  Glib::RefPtr<Gdk::Pixbuf> PixBuf = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,OPENFLUID_LOGO_FILE),
                                                                     320, -1, true);
 
   Gtk::Image * Image = Gtk::manage(new Gtk::Image(PixBuf));

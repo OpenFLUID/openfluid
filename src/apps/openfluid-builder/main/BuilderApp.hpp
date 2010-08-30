@@ -66,6 +66,7 @@
 
 
 #define MAINWINDOW_UI_FILE "MainWindow.glade"
+#define OPENFLUID_LOGO_FILE "openfluid_official.svg"
 
 
 // =====================================================================
