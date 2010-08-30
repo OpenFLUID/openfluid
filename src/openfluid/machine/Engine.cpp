@@ -88,6 +88,9 @@ Engine::Engine(openfluid::machine::MachineListener* MachineListener,
   if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
 
   mp_SimStatus = NULL;
+
+  mp_IOMan->prepareOutputDir();
+
 }
 
 // =====================================================================
@@ -380,9 +383,9 @@ void Engine::checkExtraFilesConsistency()
   }
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 void Engine::buildModel()
@@ -561,15 +564,13 @@ void Engine::checkConsistency()
 
   mp_IOMan->initOutputs();
 
-  mp_IOMan->prepareOutputDir();
   if (mp_RunEnv->isWriteResults())
   {
     mp_IOMan->prepareOutputs();
   }
 
+
   mp_IOMan->clearFluidXData();
-
-
 
   mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
 }

@@ -135,7 +135,7 @@ bool IOManager::prepareOutputDir()
 
   if (!boost::filesystem::exists(OutputDirPath))
   {
-    boost::filesystem::create_directory(OutputDirPath);
+    boost::filesystem::create_directories(OutputDirPath);
     if (!boost::filesystem::exists(OutputDirPath))
       throw openfluid::base::OFException("OpenFLUID framework","IOManager::prepareOutputDir","Error creating output directory");
 

@@ -82,13 +82,14 @@ int main(int argc, char **argv)
 
     ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-    Engine = new openfluid::machine::Engine(new openfluid::machine::MachineListener(),
-                                            new openfluid::io::IOListener());
-
 
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
     RunEnv->addExtraPluginsPaths(PlugsDir);
+
+
+    Engine = new openfluid::machine::Engine(new openfluid::machine::MachineListener(),
+                                                new openfluid::io::IOListener());
 
     Engine->loadData();
     Engine->processRunConfiguration();
@@ -101,7 +102,6 @@ int main(int argc, char **argv)
     Engine->checkConsistency();
     Engine->run();
     Engine->saveReports();
-
 
     delete Engine;
 
