@@ -120,6 +120,9 @@ class LoggerFunction : public openfluid::base::PluggableFunction
   bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
   {
 
+    OPENFLUID_Logger.get() << "This is a message to bost file and console" << std::endl;
+    OPENFLUID_Logger.getFile() << "This is a message to file only" << std::endl;
+    OPENFLUID_Logger.getStdout() << "This is a message to console only" << std::endl;
 
     return true;
   }
@@ -187,8 +190,6 @@ class LoggerFunction : public openfluid::base::PluggableFunction
   bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
   {
 
-    OPENFLUID_Logger.get() << "This is the end" << std::endl;
-    OPENFLUID_Logger.getFile() << "This is the end in file only" << std::endl;
     return true;
   }
 

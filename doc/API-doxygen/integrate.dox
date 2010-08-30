@@ -486,6 +486,84 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 }
 \endcode
 
+\section envir_sec Access to runtime environment
+
+The runtime environment are informations about the context during execution of
+the simulation : input and output directories, options passed to
+the OpenFLUID application at runtime (verbose/quiet mode, ...)...
+
+They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_GetRunEnvironment \endlink method.
+
+\code
+bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+  std::string InputDir;
+
+  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
+
+  // the current input directory is now available through the InputDir local variable 
+
+  return true;
+}
+\endcode
+
+
+The keys for requesting runtime environment information are:
+<ul>
+<li>dir.input [string] : the current input directory
+<li>dir.output [string] : the current output directory
+<li>dir.temp [string] : the dirrectory for temporary files
+<li>mode.cleanoutput [boolean] : cleaning output dir before data saving is enabled/disabled
+<li>mode.saveresults [boolean] : result saving in output directory is enabled/disabled
+<li>mode.writereport [boolean] : simulation report saving is enabled/disabled
+</ul>
+
+
+\section logmsgs_sec Log messages from simulation functions
+
+Simulation functions can log messages to both console display and files using 
+the \link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger feature\endlink:
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger.getFile() \endlink
+to log messages to file only
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger.getStdout() \endlink
+to log messages to console only
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger.get() \endlink
+to log messages to file and console.
+</ul>
+
+
+The messages logged to files are put in a file named with the ID of the 
+simulation function suffixed by .log, placed in the simulation output directory.
+
+
+The OpenFLUID_Logger facility is the recommended way to log messages. Please avoid using std::cout
+or similar C++ facilities.   
+
+ 
+
+\code
+ bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+{
+  openfluid::core::Unit* TU;
+  DECLARE_UNITS_ORDERED_LOOP(1);
+
+
+  OPENFLUID_Logger.get() << "This is a message to bost file and console" << std::endl;
+  OPENFLUID_Logger.getFile() << "This is a message to file only" << std::endl;
+  OPENFLUID_Logger.getStdout() << "This is a message to console only" << std::endl;
+
+
+  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+    OPENFLUID_Logger.get() << "TestUnits " << TU->getID() << std::endl;
+  END_LOOP
+
+  return true;
+}
+\endcode
+
+
+ 
 
 \section warnerr_sec Raise warnings and errors
 
@@ -526,37 +604,6 @@ bool Myfunction::checkConsistency()
 \endcode 
 
 
-\section envir_sec Access runtime environment
-
-The runtime environment are informations about the context during execution of
-the simulation : input and output directories, options passed to
-the OpenFLUID application at runtime (verbose/quiet mode, ...)...
-
-They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_GetRunEnvironment \endlink method.
-
-\code
-bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-  std::string InputDir;
-
-  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
-
-  // the current input directory is now available through the InputDir local variable 
-
-  return true;
-}
-\endcode
-
-
-The keys for requesting runtime environment information are:
-<ul>
-<li>dir.input [string] : the current input directory
-<li>dir.output [string] : the current output directory
-<li>dir.temp [string] : the dirrectory for temporary files
-<li>mode.cleanoutput [boolean] : cleaning output dir before data saving is enabled/disabled
-<li>mode.saveresults [boolean] : result saving in output directory is enabled/disabled
-<li>mode.writereport [boolean] : simulation report saving is enabled/disabled
-</ul>
 
 \section tools_sec Available tools
 
