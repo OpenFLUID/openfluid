@@ -77,6 +77,8 @@ class DomainModule : public ModuleInterface
 
   private:
 
+    openfluid::core::CoreRepository * mp_CoreData;
+
     void createActions();
 
     void actionCheckDomain();

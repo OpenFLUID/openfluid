@@ -52,6 +52,7 @@
 
   \author Aline LIBRES <libres@supagro.inra.fr>
  */
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/io.hpp>
 
@@ -62,18 +63,56 @@
 // =====================================================================
 
 
-BuilderProject::BuilderProject()
+BuilderProject::BuilderProject(Glib::ustring FolderIn)
+//  : openfluid::machine::Engine(new openfluid::machine::MachineListener(),
+//        new openfluid::io::IOListener())
 {
-      mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
-      mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-      mp_Engine = new openfluid::machine::Engine(new openfluid::machine::MachineListener(),
-          new openfluid::io::IOListener());
+  if(FolderIn!="")
+  {
+//    mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
-      addModule(new ModelModule(),"model");
-      addModule(new DomainModule(),"domain");
-      addModule(new SimulationModule(),"simulation");
-      addModule(new ResultsModule(),"results");
+    mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+    mp_Listener = new openfluid::machine::MachineListener();
 
+    mp_Engine = new openfluid::machine::Engine(mp_Listener,
+        new openfluid::io::IOListener());
+
+    mp_RunEnv->setInputDir(FolderIn);
+    mp_RunEnv->setOutputDir(Glib::ustring::compose("%1/OUT",FolderIn));
+
+
+    std::cout << mp_RunEnv->getInputDir() << std::endl;
+    std::cout << mp_RunEnv->getOutputDir() << std::endl;
+
+
+    //  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+    //  unsigned int i;
+    //
+    //  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
+    //  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+    //  std::cout << "Functions search path(s):" << std::endl;
+    //  for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
+    //  std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
+
+    std::cout << "* Loading data... " << std::endl;
+    mp_Engine->loadData();
+
+    std::cout << "* Processing run configuration... " << std::endl;
+    mp_Engine->processRunConfiguration();
+
+    std::cout << "* Building spatial domain... " << std::endl;
+    mp_Engine->buildSpatialDomain();
+
+    std::cout << "* Building model... " << std::endl;
+    mp_Engine->buildModel();
+
+  }
+    addModule(new ModelModule(),"model");
+    addModule(new DomainModule(),"domain");
+    addModule(new SimulationModule(),"simulation");
+    addModule(new ResultsModule(),"results");
+
+    m_ProjectChecked = false;
 }
 
 
@@ -93,6 +132,12 @@ BuilderProject::~BuilderProject()
   {
     delete it->second;
   }
+
+//  delete mp_RunEnv;
+//  delete mp_Listener;
+//  delete mp_Engine;
+//  delete mp_ExecMsgs;
+
 }
 
 
@@ -153,3 +198,96 @@ void BuilderProject::actionDefaultLayout(LayoutType Layout)
     default:;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProject::actionCheckProject()
+{
+  // !! delete existing variables from previous checkConsistency !
+  try
+  {
+    std::cout << "* Initializing parameters... " << std::endl;
+    mp_Engine->initParams();
+
+    std::cout << "* Preparing data... " << std::endl;
+    mp_Engine->prepareData();
+
+    std::cout << "* Checking consistency... " << std::endl;
+    mp_Engine->checkConsistency();
+
+    m_ProjectChecked = true;
+  }
+  catch(openfluid::base::OFException& E)
+  {
+    std::cerr << E.what() << std::endl;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProject::actionRun()
+{
+  if(!m_ProjectChecked)
+    actionCheckProject();
+
+
+  // !! delete existing variable values from previous run !
+
+
+  std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
+                    << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
+                    << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
+
+  std::cout << std::endl;
+
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize())
+    std::cout << "Buffers for variables set to " << openfluid::base::RuntimeEnvironment::getInstance()->getValuesBufferSize() << " time steps" <<  std::endl;
+  else std::cout << "Buffers for variables set to full simulation" << std::endl;
+  std::cout << "Buffers for output files set to " << openfluid::base::RuntimeEnvironment::getInstance()->getFilesBufferSize() << " bytes" << std::endl;
+
+  std::cout << std::endl;
+
+  std::cout.flush();
+
+  std::cout << std::endl << "**** Running simulation ****" << std::endl;
+  std::cout.flush();
+
+  boost::posix_time::ptime m_FullStartTime = boost::posix_time::microsec_clock::local_time();
+
+  boost::posix_time::ptime m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
+  mp_Engine->run();
+  boost::posix_time::ptime m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
+  std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
+  std::cout.flush();
+
+  openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
+
+
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
+  {
+    std::cout << "* Saving simulation report... "; std::cout.flush();
+    mp_Engine->saveReports();
+    std::cout << "[Done]" << std::endl; std::cout.flush();
+//    mp_ExecMsgs->resetWarningFlag();
+  }
+
+
+  boost::posix_time::ptime m_FullEndTime = boost::posix_time::microsec_clock::local_time();
+
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
+
+  boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
+
+  std::cout << std::endl;
+
+  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
+  std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
+  std::cout << std::endl;
+}
+

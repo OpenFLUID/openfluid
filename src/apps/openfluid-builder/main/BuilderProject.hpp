@@ -62,7 +62,7 @@
 
 #include <openfluid/base.hpp>
 #include <openfluid/machine.hpp>
-#include <openfluid/config.hpp>
+//#include <openfluid/config.hpp>
 
 #include "ModuleInterface.hpp"
 #include "DomainModule.hpp"
@@ -75,7 +75,7 @@
 // =====================================================================
 
 
-class BuilderProject
+class BuilderProject// : public openfluid::machine::Engine
 {
   public:
 
@@ -90,9 +90,11 @@ class BuilderProject
 
     openfluid::base::RuntimeEnvironment * mp_RunEnv;
 
-    openfluid::base::ExecutionMessages * mp_ExecMsgs;
+//    openfluid::base::ExecutionMessages * mp_ExecMsgs;
 
     openfluid::machine::Engine * mp_Engine;
+
+    openfluid::machine::MachineListener * mp_Listener;
 
 
     ModulesPtrByNameMap_t m_Modules;
@@ -103,12 +105,15 @@ class BuilderProject
     LayoutType m_LayoutType;
 
 
+    bool m_ProjectChecked;
+
+
     void addModule(ModuleInterface *, Glib::ustring ModuleName);
 
 
   public:
 
-    BuilderProject();
+    BuilderProject(Glib::ustring FolderIn);
 
     ~BuilderProject();
 
@@ -119,6 +124,10 @@ class BuilderProject
         { return m_Modules; }
 
     void actionDefaultLayout(LayoutType Layout);
+
+    void actionCheckProject();
+
+    void actionRun();
 
 };
 

@@ -157,9 +157,11 @@ class BuilderApp
     void actionAbout();
 
 
-    void createProject();
+    void createProject(Glib::ustring FolderIn="");
 
     void deleteProject();
+
+    void onDialogNewFromCbToggled(Gtk::CheckButton* Cb,std::vector<Gtk::CheckButton*> CbDepends);
 
 
   public:

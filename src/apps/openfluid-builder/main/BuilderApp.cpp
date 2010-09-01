@@ -121,6 +121,7 @@ BuilderApp::BuilderApp(int argc, char** argv)
 BuilderApp::~BuilderApp()
 {
   delete mp_MainWindow; // delete all child widgets created with manage() or get_widget()
+  delete mp_Project;
 }
 
 
@@ -445,7 +446,66 @@ void BuilderApp::actionNewEmpty()
 
 void BuilderApp::actionNewFrom()
 {
-  actionNewEmpty();
+  if(mp_Project)
+  {
+    actionClose();
+  }
+
+  Gtk::Dialog * DialogNewFrom = 0;
+  Gtk::FileChooserWidget * FileChooser = 0;
+  Gtk::CheckButton * CbModel = 0;
+  Gtk::CheckButton * CbModelParameters = 0;
+  Gtk::CheckButton * CbDomain = 0;
+  Gtk::CheckButton * CbDomainInputData = 0;;
+  Gtk::CheckButton * CbDomainEvents = 0;
+  Gtk::CheckButton * CbConfig = 0;
+  Gtk::CheckButton * CbConfigRun = 0;
+  Gtk::CheckButton * CbConfigOutput = 0;
+
+  mp_Builder->get_widget("DialogNewFrom",DialogNewFrom);
+  mp_Builder->get_widget("FileChooserDialogNewFrom",FileChooser);
+  mp_Builder->get_widget("CbModel",CbModel);
+  mp_Builder->get_widget("CbModelParameters",CbModelParameters);
+  mp_Builder->get_widget("CbDomain",CbDomain);
+  mp_Builder->get_widget("CbDomainInputData",CbDomainInputData);
+  mp_Builder->get_widget("CbDomainEvents",CbDomainEvents);
+  mp_Builder->get_widget("CbConfig",CbConfig);
+  mp_Builder->get_widget("CbConfigRun",CbConfigRun);
+  mp_Builder->get_widget("CbConfigOutput",CbConfigOutput);
+
+  /* TODO: set default folder from Preferences */
+  FileChooser->set_current_folder(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()+"/..");
+
+  std::vector<Gtk::CheckButton*> CbModelDepends;
+  std::vector<Gtk::CheckButton*> CbDomainDepends;
+  std::vector<Gtk::CheckButton*> CbConfigDepends;
+
+  CbModelDepends.push_back(CbModelParameters);
+  CbDomainDepends.push_back(CbDomainInputData);
+  CbDomainDepends.push_back(CbDomainEvents);
+  CbConfigDepends.push_back(CbConfigRun);
+  CbConfigDepends.push_back(CbConfigOutput);
+
+  CbModel->signal_toggled().connect(sigc::bind<Gtk::CheckButton*,std::vector<Gtk::CheckButton*> >
+                                      (sigc::mem_fun(*this,&BuilderApp::onDialogNewFromCbToggled),CbModel,CbModelDepends)
+                                      );
+  CbDomain->signal_toggled().connect(sigc::bind<Gtk::CheckButton*,std::vector<Gtk::CheckButton*> >
+                                      (sigc::mem_fun(*this,&BuilderApp::onDialogNewFromCbToggled),CbDomain,CbDomainDepends)
+                                      );
+  CbConfig->signal_toggled().connect(sigc::bind<Gtk::CheckButton*,std::vector<Gtk::CheckButton*> >
+                                      (sigc::mem_fun(*this,&BuilderApp::onDialogNewFromCbToggled),CbConfig,CbConfigDepends)
+                                      );
+
+  CbModel->set_active(true);
+  CbDomain->set_active(true);
+  CbConfig->set_active(true);
+
+  if(DialogNewFrom->run() == Gtk::RESPONSE_OK)
+  {
+    createProject(FileChooser->get_filename()/*, NEW */);
+  }
+
+  DialogNewFrom->hide();
 }
 
 
@@ -455,63 +515,20 @@ void BuilderApp::actionNewFrom()
 
 void BuilderApp::actionOpen()
 {
-  Glib::ustring Folder ="";
+  Gtk::FileChooserDialog  DialogOpen(_("Select existing project folder"),Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
-  Gtk::FileChooserDialog * DialogOpen;
-  mp_Builder->get_widget("DialogOpen",DialogOpen);
+  /* TODO: set default folder from Preferences */
+  DialogOpen.set_current_folder(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()+"/..");
 
-  // add Buttons before the first show() call, because glade's buttons don't work in FileChooserDialog
-  if(! DialogOpen->is_realized())
+  DialogOpen.add_button(Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL);
+  DialogOpen.add_button(Gtk::Stock::OPEN,Gtk::RESPONSE_OK);
+
+  if(DialogOpen.run() == Gtk::RESPONSE_OK)
   {
-    DialogOpen->add_button(Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL);
-    DialogOpen->add_button(Gtk::Stock::OPEN,Gtk::RESPONSE_OK);
-    /* TODO: set default folder from Preferences */
-    DialogOpen->set_current_folder(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()+"/..");
+    createProject(DialogOpen.get_filename());
   }
 
-  int ok = 0;
-
-  while(ok == 0)
-  {
-    int response = DialogOpen->run();
-
-    if(response == Gtk::RESPONSE_DELETE_EVENT || response == Gtk::RESPONSE_CANCEL)
-    {
-      DialogOpen->hide();
-      ok =1;
-    }
-    else if (response == Gtk::RESPONSE_OK)
-    {
-      // TODO: Change FileChooserDialog action from "Select folder" to "Open" ? (Gnome Bug 593385)
-      Folder = DialogOpen->get_filename();
-
-      if(Folder != "")
-      {
-        //      DialogOpen->hide();
-        try
-        {
-          mp_Project = new BuilderProject();
-          DialogOpen->hide();
-
-          createProject();
-          ok = 1;
-        }
-        catch (openfluid::base::OFException& E)
-        {
-          Gtk::MessageDialog * DialogError = 0;
-          mp_Builder->get_widget("DialogError",DialogError);
-          DialogError->set_message(E.what());
-
-          if(DialogError->run())
-          {
-            DialogError->hide();
-            delete DialogError; // utile ?
-          }
-        }
-      }
-    }
-  }
-
+  DialogOpen.hide();
 }
 
 
@@ -561,7 +578,7 @@ void BuilderApp::actionQuit()
 
 void BuilderApp::actionCheckProject()
 {
-
+  mp_Project->actionCheckProject();
 }
 
 
@@ -571,7 +588,7 @@ void BuilderApp::actionCheckProject()
 
 void BuilderApp::actionRun()
 {
-
+  mp_Project->actionRun();
 }
 
 
@@ -693,11 +710,7 @@ void BuilderApp::actionAbout()
   Gtk::Dialog * DialogAbout;
   mp_Builder->get_widget("DialogAbout",DialogAbout);
 
-  DialogAbout->show();
-
-  int response = DialogAbout->run();
-
-  if(response == Gtk::RESPONSE_DELETE_EVENT || response == Gtk::RESPONSE_CANCEL)
+  if(DialogAbout->run())
     DialogAbout->hide();
 }
 
@@ -706,52 +719,65 @@ void BuilderApp::actionAbout()
 // =====================================================================
 
 
-void BuilderApp::createProject()
+void BuilderApp::createProject(Glib::ustring FolderIn)
 {
-  mp_Project = new BuilderProject();
-
-  actionDefaultLayout(BuilderProject::PreSimulation);
-
-
-  // add modules elements
-
-  BuilderProject::ModulesPtrByNameMap_t Modules = mp_Project->getModules();
-
-  for(BuilderProject::ModulesPtrByNameMap_t::const_iterator it = Modules.begin() ; it!= Modules.end() ; ++it)
+  try
   {
-    ModuleInterface * Module = it->second;
+    mp_Project = new BuilderProject(FolderIn);
 
-    // add Menu to MenuBar
-    if(Gtk::Menu * Menu = Module->getMenu())
+    actionDefaultLayout(BuilderProject::PreSimulation);
+
+
+    // add modules elements
+
+    BuilderProject::ModulesPtrByNameMap_t Modules = mp_Project->getModules();
+
+    for(BuilderProject::ModulesPtrByNameMap_t::const_iterator it = Modules.begin() ; it!= Modules.end() ; ++it)
     {
-      Menu->detach(); // detach the Menu from glade's MenuBar
+      ModuleInterface * Module = it->second;
 
-      Gtk::Menu_Helpers::MenuList::iterator It = mp_MainMenuBar->items().end();
+      // add Menu to MenuBar
+      if(Gtk::Menu * Menu = Module->getMenu())
+      {
+        Menu->detach(); // detach the Menu from glade's MenuBar
 
-      It --; It --; // to put the Menu at 2d next-to-last position in MenuBar
+        Gtk::Menu_Helpers::MenuList::iterator It = mp_MainMenuBar->items().end();
 
-      mp_MainMenuBar->items().insert(It,Gtk::Menu_Helpers::MenuElem(Module->getModuleName(), *Menu));
+        It --; It --; // to put the Menu at 2d next-to-last position in MenuBar
+
+        mp_MainMenuBar->items().insert(It,Gtk::Menu_Helpers::MenuElem(Module->getModuleName(), *Menu));
+      }
+
+      // add ToolBar to a HandleBox
+      if(Gtk::Toolbar * ToolBar = Module->getToolBar())
+      {
+        Gtk::HandleBox * HandleBox = new Gtk::HandleBox();
+
+        HandleBox->add(*ToolBar);
+
+        mp_MainToolBarContainer->pack_start(*HandleBox,false,false);
+
+        HandleBox->set_visible(true);
+
+        ToolBar->set_show_arrow(false);
+      }
+
     }
 
-    // add ToolBar to a HandleBox
-    if(Gtk::Toolbar * ToolBar = Module->getToolBar())
-    {
-      Gtk::HandleBox * HandleBox = new Gtk::HandleBox();
 
-      HandleBox->add(*ToolBar);
-
-      mp_MainToolBarContainer->pack_start(*HandleBox,false,false);
-
-      HandleBox->set_visible(true);
-
-      ToolBar->set_show_arrow(false);
-    }
+    for(unsigned int i=0 ; i<m_ProjectActions.size() ; i++)
+      m_ProjectActions[i]->set_sensitive(true);
 
   }
+  catch (openfluid::base::OFException& E)
+  {
+    Gtk::MessageDialog DialogError(E.what(),false,Gtk::MESSAGE_ERROR);
 
-
-  for(unsigned int i=0 ; i<m_ProjectActions.size() ; i++)
-    m_ProjectActions[i]->set_sensitive(true);
+    if(DialogError.run())
+    {
+      DialogError.hide();
+    }
+  }
 
 }
 
@@ -798,4 +824,18 @@ void BuilderApp::deleteProject()
   delete mp_Project;
   mp_Project = 0;
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderApp::onDialogNewFromCbToggled(Gtk::CheckButton* Cb,std::vector<Gtk::CheckButton*> CbDepends)
+{
+  for(unsigned int i=0 ; i<CbDepends.size() ; i++)
+  {
+    CbDepends[i]->set_sensitive(Cb->get_active());
+    CbDepends[i]->set_active(Cb->get_active());
+  }
 }
