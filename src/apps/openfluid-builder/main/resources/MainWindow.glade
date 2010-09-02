@@ -699,7 +699,6 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
   <object class="GtkAction" id="ActionDefaultLayoutPost"/>
   <object class="GtkAction" id="ActionDefaultLayoutAllTabbed"/>
   <object class="GtkDialog" id="DialogNewFrom">
-    <property name="border_width">5</property>
     <property name="title" translatable="yes">Create a new derivated project</property>
     <property name="default_width">800</property>
     <property name="default_height">500</property>
@@ -710,7 +709,6 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
         <child>
           <object class="GtkHPaned" id="hpaned1">
             <property name="visible">True</property>
@@ -718,30 +716,23 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
             <child>
               <object class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
+                <property name="border_width">3</property>
                 <property name="label_xalign">0.5</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkAlignment" id="alignment7">
+                  <object class="GtkFileChooserWidget" id="FileChooserDialogNewFrom">
                     <property name="visible">True</property>
-                    <property name="top_padding">5</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">5</property>
-                    <property name="right_padding">5</property>
-                    <child>
-                      <object class="GtkFileChooserWidget" id="FileChooserDialogNewFrom">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <property name="action">select-folder</property>
-                        <property name="create_folders">False</property>
-                        <property name="show_hidden">True</property>
-                      </object>
-                    </child>
+                    <property name="border_width">5</property>
+                    <property name="orientation">vertical</property>
+                    <property name="show_hidden">True</property>
+                    <property name="create_folders">False</property>
+                    <property name="action">select-folder</property>
                   </object>
                 </child>
                 <child type="label">
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="xpad">2</property>
+                    <property name="xpad">3</property>
                     <property name="label" translatable="yes">&lt;b&gt;Select existing project folder&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
@@ -755,166 +746,159 @@ Emmanuel Tarrou &lt;macmanuch@hotmail.fr&gt;</property>
             <child>
               <object class="GtkFrame" id="frame2">
                 <property name="visible">True</property>
+                <property name="border_width">3</property>
                 <property name="label_xalign">0.5</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkAlignment" id="alignment1">
+                  <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
-                    <property name="top_padding">5</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">5</property>
-                    <property name="right_padding">5</property>
+                    <property name="border_width">5</property>
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkVBox" id="vbox3">
+                      <object class="GtkCheckButton" id="CbModel">
+                        <property name="label" translatable="yes">Model</property>
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment2">
+                        <property name="visible">True</property>
+                        <property name="top_padding">5</property>
+                        <property name="bottom_padding">20</property>
+                        <property name="left_padding">20</property>
                         <child>
-                          <object class="GtkCheckButton" id="CbModel">
-                            <property name="label" translatable="yes">Model</property>
+                          <object class="GtkCheckButton" id="CbModelParameters">
+                            <property name="label" translatable="yes">Parameters</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                           </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkAlignment" id="alignment2">
-                            <property name="visible">True</property>
-                            <property name="top_padding">5</property>
-                            <property name="bottom_padding">20</property>
-                            <property name="left_padding">20</property>
-                            <child>
-                              <object class="GtkCheckButton" id="CbModelParameters">
-                                <property name="label" translatable="yes">Parameters</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="draw_indicator">True</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkCheckButton" id="CbDomain">
-                            <property name="label" translatable="yes">Domain</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="draw_indicator">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkAlignment" id="alignment3">
-                            <property name="visible">True</property>
-                            <property name="top_padding">5</property>
-                            <property name="left_padding">20</property>
-                            <child>
-                              <object class="GtkCheckButton" id="CbDomainInputData">
-                                <property name="label" translatable="yes">Input data</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="draw_indicator">True</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkAlignment" id="alignment4">
-                            <property name="visible">True</property>
-                            <property name="bottom_padding">20</property>
-                            <property name="left_padding">20</property>
-                            <child>
-                              <object class="GtkCheckButton" id="CbDomainEvents">
-                                <property name="label" translatable="yes">Events</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="draw_indicator">True</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkCheckButton" id="CbConfig">
-                            <property name="label" translatable="yes">Simulation Configuration</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="draw_indicator">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkAlignment" id="alignment5">
-                            <property name="visible">True</property>
-                            <property name="top_padding">5</property>
-                            <property name="left_padding">20</property>
-                            <child>
-                              <object class="GtkCheckButton" id="CbConfigRun">
-                                <property name="label" translatable="yes">Run</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="draw_indicator">True</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkAlignment" id="alignment6">
-                            <property name="visible">True</property>
-                            <property name="left_padding">20</property>
-                            <child>
-                              <object class="GtkCheckButton" id="CbConfigOutput">
-                                <property name="label" translatable="yes">Output</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="draw_indicator">True</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">7</property>
-                          </packing>
                         </child>
                       </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="CbDomain">
+                        <property name="label" translatable="yes">Domain</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment3">
+                        <property name="visible">True</property>
+                        <property name="top_padding">5</property>
+                        <property name="left_padding">20</property>
+                        <child>
+                          <object class="GtkCheckButton" id="CbDomainInputData">
+                            <property name="label" translatable="yes">Input data</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment4">
+                        <property name="visible">True</property>
+                        <property name="bottom_padding">20</property>
+                        <property name="left_padding">20</property>
+                        <child>
+                          <object class="GtkCheckButton" id="CbDomainEvents">
+                            <property name="label" translatable="yes">Events</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="CbConfig">
+                        <property name="label" translatable="yes">Simulation Configuration</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment5">
+                        <property name="visible">True</property>
+                        <property name="top_padding">5</property>
+                        <property name="left_padding">20</property>
+                        <child>
+                          <object class="GtkCheckButton" id="CbConfigRun">
+                            <property name="label" translatable="yes">Run</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment6">
+                        <property name="visible">True</property>
+                        <property name="left_padding">20</property>
+                        <child>
+                          <object class="GtkCheckButton" id="CbConfigOutput">
+                            <property name="label" translatable="yes">Output</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">7</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
                 <child type="label">
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
-                    <property name="xpad">2</property>
+                    <property name="xpad">3</property>
                     <property name="label" translatable="yes">&lt;b&gt;Select elements to keep&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
