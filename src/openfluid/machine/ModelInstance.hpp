@@ -61,6 +61,7 @@
 #include <openfluid/base.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -71,11 +72,15 @@ class DLLEXPORT ModelInstance
   private:
 
     std::list<ModelItemInstance*> m_ModelItems;
+
     openfluid::machine::MachineListener* mp_Listener;
+
+    openfluid::machine::SimulationBlob& m_SimulationBlob;
 
   public:
 
-    ModelInstance(openfluid::machine::MachineListener* Listener);
+    ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
+                  openfluid::machine::MachineListener* Listener);
 
     ~ModelInstance();
 
@@ -88,6 +93,8 @@ class DLLEXPORT ModelInstance
     unsigned int getItemsCount() const { return m_ModelItems.size(); };
 
     const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
+
+    void initLoggers() const;
 
     bool initParams() const;
 

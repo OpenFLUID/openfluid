@@ -62,7 +62,8 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 
 namespace openfluid { namespace io {
@@ -94,11 +95,11 @@ class DLLEXPORT FluidXWriter
 
     ~FluidXWriter();
 
-    void setModelToWrite(openfluid::machine::ModelInstance* MInstance);
+    void setModelToWrite(openfluid::machine::ModelInstance& MInstance);
 
     void setRunConfigurationToWrite(openfluid::base::RunDescriptor& RDescriptor);
 
-    void setDomainToWrite(const openfluid::core::CoreRepository* CoreData);
+    void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
 
     void setOutputConfigurationToWrite(openfluid::base::OutputDescriptor& ODescriptor);
 

@@ -83,9 +83,9 @@ namespace openfluid { namespace machine {
         }  \
         else \
         { \
-          if (openfluid::base::ExecutionMessages::getInstance()->isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
+          if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
           else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
-          openfluid::base::ExecutionMessages::getInstance()->resetWarningFlag(); \
+          m_SimulationBlob.getExecutionMessages().resetWarningFlag(); \
         } \
       } \
       _M_FuncIter++; \
@@ -129,7 +129,9 @@ namespace openfluid { namespace machine {
 
 
 
-ModelInstance::ModelInstance(openfluid::machine::MachineListener* Listener)
+ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
+                             openfluid::machine::MachineListener* Listener)
+             : m_SimulationBlob(SimulationBlob)
 {
   mp_Listener = Listener;
   if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
@@ -189,6 +191,23 @@ void ModelInstance::deleteItemsAndClear()
 // =====================================================================
 // =====================================================================
 
+
+void ModelInstance::initLoggers() const
+{
+  std::list<ModelItemInstance*>::const_iterator FuncIter;
+
+  FuncIter = m_ModelItems.begin();
+  while (FuncIter != m_ModelItems.end())
+  {
+    (*FuncIter)->Function->initLogger();
+    FuncIter++;
+  }
+}
+
+
+
+// =====================================================================
+// =====================================================================
 
 bool ModelInstance::initParams() const
 {

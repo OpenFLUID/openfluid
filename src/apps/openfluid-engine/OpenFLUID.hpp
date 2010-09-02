@@ -81,7 +81,7 @@ class OpenFLUIDApp
     std::pair<std::string,std::string> m_BuddyToRun;
 
     openfluid::base::RuntimeEnvironment* m_RunEnv;
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::machine::SimulationBlob m_SimBlob;
     openfluid::machine::Engine* mp_Engine;
 
     boost::posix_time::ptime m_FullStartTime;

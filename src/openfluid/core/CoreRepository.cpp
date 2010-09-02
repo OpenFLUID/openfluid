@@ -53,8 +53,6 @@ namespace openfluid { namespace core {
 
 
 
-CoreRepository* CoreRepository::mp_Singleton = NULL;
-
 // =====================================================================
 // =====================================================================
 
@@ -98,18 +96,6 @@ bool CoreRepository::removeUnitFromList(UnitsPtrList_t* UnitsList,
 
   return Found;
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-CoreRepository* CoreRepository::getInstance()
-{
-  if (mp_Singleton == NULL) mp_Singleton = new CoreRepository();
-  return mp_Singleton;
-}
-
 
 
 

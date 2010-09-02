@@ -65,23 +65,14 @@
 namespace openfluid { namespace machine {
 
 
-// =====================================================================
-// =====================================================================
-
-
-Factory::Factory()
-{
-  mp_CoreData = openfluid::core::CoreRepository::getInstance();
-  mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
-  mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-}
-
 
 // =====================================================================
 // =====================================================================
 
 
-void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor)
+void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor,
+                                        openfluid::base::ExecutionMessages& ExecMsgs,
+                                        openfluid::core::CoreRepository& CoreRepos)
 {
 //  openfluid::core::CoreRepository* Repository = openfluid::core::CoreRepository::getInstance();
 //  openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
@@ -96,7 +87,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
   // creating units
   for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
   {
-    mp_CoreData->addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),
+    CoreRepos.addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),
                                                (*itUnits).getUnitID(),
                                                (*itUnits).getProcessOrder(),
                                                openfluid::core::Unit::DESCRIPTOR));
@@ -108,8 +99,8 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 
     for (itLinkedUnits = (*itUnits).getUnitsTos().begin();itLinkedUnits != (*itUnits).getUnitsTos().end();++itLinkedUnits)
     {
-      FromUnit = mp_CoreData->getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
-      ToUnit = mp_CoreData->getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+      FromUnit = CoreRepos.getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ToUnit = CoreRepos.getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
       if (ToUnit != NULL)
       {
@@ -132,8 +123,8 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 
     for (itLinkedUnits = (*itUnits).getUnitsParents().begin();itLinkedUnits != (*itUnits).getUnitsParents().end();++itLinkedUnits)
     {
-      ChildUnit = mp_CoreData->getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
-      ParentUnit = mp_CoreData->getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+      ChildUnit = CoreRepos.getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ParentUnit = CoreRepos.getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
       if (ParentUnit != NULL)
       {
@@ -150,7 +141,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
   }
 
 
-  mp_CoreData->sortUnitsByProcessOrder();
+  CoreRepos.sortUnitsByProcessOrder();
 
 
 
@@ -180,7 +171,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
         if (IsOK)
         {
 
-          TheUnit = mp_CoreData->getUnit((*itIData).getUnitsClass(),(openfluid::core::UnitID_t)ID);
+          TheUnit = CoreRepos.getUnit((*itIData).getUnitsClass(),(openfluid::core::UnitID_t)ID);
 
           if (TheUnit != NULL)
           {
@@ -196,7 +187,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
           {
             std::string TmpStr;
             openfluid::tools::ConvertValue(ID,&TmpStr);
-            mp_ExecMsgs->addWarning("DomainFactory::buildDomainFromDescriptor",(*itIData).getUnitsClass() + " " + TmpStr + " does not exist in input data");
+            ExecMsgs.addWarning("DomainFactory::buildDomainFromDescriptor",(*itIData).getUnitsClass() + " " + TmpStr + " does not exist in input data");
           }
           i++;
         }
@@ -218,7 +209,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
   for (itEvent = Descriptor.getEvents().begin();itEvent != Descriptor.getEvents().end();++itEvent)
   {
 
-    EventUnit = mp_CoreData->getUnit((*itEvent).getUnitClass(),(*itEvent).getUnitID());
+    EventUnit = CoreRepos.getUnit((*itEvent).getUnitClass(),(*itEvent).getUnitID());
 
     if (EventUnit != NULL)
     {
@@ -234,18 +225,20 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 // =====================================================================
 
 
-const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor,
-                                                          openfluid::machine::MachineListener* Listener) const
+void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
+                                          SimulationBlob& SimBlob,
+                                          ModelInstance& MInstance)
 {
 
   openfluid::base::ModelDescriptor::ModelDescription_t::const_iterator it;
-  ModelInstance* MInstance = new ModelInstance(Listener);
   ModelItemInstance* IInstance;
 
-  if (Descriptor.getItems().empty())
+
+  if (ModelDesc.getItems().empty())
     throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulation function in model");
 
-  for (it=Descriptor.getItems().begin();it!=Descriptor.getItems().end();++it)
+
+  for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
   {
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::NoModelItemType))
       throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
@@ -253,15 +246,15 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
     {
       // instanciation of a pluggeg simulation function using the plugin manager
-      IInstance = PluginManager::getInstance()->getPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),mp_ExecMsgs,mp_CoreData);
+      IInstance = PluginManager::getInstance()->getPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),&(SimBlob.getExecutionMessages()),&(SimBlob.getCoreRepository()));
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
-      MInstance->appendItem(IInstance);
+      MInstance.appendItem(IInstance);
     }
 
-    if ((*it)->isType(openfluid::base::ModelItemDescriptor::Generator))
+      if ((*it)->isType(openfluid::base::ModelItemDescriptor::Generator))
     {
-      // instanciation of a data generator
+        // instanciation of a data generator
       openfluid::base::GeneratorDescriptor* GenDesc = (openfluid::base::GeneratorDescriptor*)(*it);
       Generator* GenInstance = NULL;
 
@@ -270,9 +263,11 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::Generator;
 
+
       openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
 
       Signature->ID = "(generator)";
+
 
       std::string VarName = GenDesc->getVariableName();
       if (GenDesc->isVectorVariable()) VarName = VarName + "[]";
@@ -296,46 +291,65 @@ const ModelInstance* Factory::buildInstanceFromDescriptor(const openfluid::base:
       if (GenInstance == NULL)
         throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
-      GenInstance->setDataRepository(mp_CoreData);
-      GenInstance->setExecutionMessages(mp_ExecMsgs);
+      GenInstance->setDataRepository(&(SimBlob.getCoreRepository()));
+      GenInstance->setExecutionMessages(&(SimBlob.getExecutionMessages()));
       GenInstance->setFunctionEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
       GenInstance->setDescriptor(*GenDesc);
       IInstance->Function = GenInstance;
       IInstance->Signature = Signature;
 
-      MInstance->appendItem(IInstance);
+      MInstance.appendItem(IInstance);
     }
 
   }
 
-  return MInstance;
 }
 
 
 // =====================================================================
 // =====================================================================
 
-void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& Descriptor)
+
+void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& RunDesc)
 {
-  if (!Descriptor.isFilled())
+  if (!RunDesc.isFilled())
     throw openfluid::base::OFException("OpenFLUID framework","Factory::fillRunEnvironmentFromDescriptor","Wrong or undefined run configuration");
 
 
-  mp_RunEnv->setSimulationTimeInformation(Descriptor.getBeginDate(),Descriptor.getEndDate(),
-                                          Descriptor.getDeltaT());
+  openfluid::base::RuntimeEnvironment::getInstance()->setSimulationTimeInformation(RunDesc.getBeginDate(),RunDesc.getEndDate(),
+      RunDesc.getDeltaT());
 
-  if (Descriptor.isUserValuesBufferSize())
+  if (RunDesc.isUserValuesBufferSize())
   {
-    mp_RunEnv->setValuesBufferSize(Descriptor.getValuesBufferSize());
+    openfluid::base::RuntimeEnvironment::getInstance()->setValuesBufferSize(RunDesc.getValuesBufferSize());
   }
 
-  mp_RunEnv->setFilesBufferSize(Descriptor.getFilesBufferSizeInKB()*1024);
+  openfluid::base::RuntimeEnvironment::getInstance()->setFilesBufferSize(RunDesc.getFilesBufferSizeInKB()*1024);
 
-  if (Descriptor.isSimulationID())
+  if (RunDesc.isSimulationID())
   {
-    mp_RunEnv->setSimulationID(Descriptor.getSimulationID());
+    openfluid::base::RuntimeEnvironment::getInstance()->setSimulationID(RunDesc.getSimulationID());
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Factory::buildSimulationBlobFromDescriptors(openfluid::base::DomainDescriptor& DomainDesc,
+    openfluid::base::RunDescriptor& RunDesc,
+    openfluid::base::OutputDescriptor& OutDesc,
+    SimulationBlob& SimBlob)
+{
+  buildDomainFromDescriptor(DomainDesc,SimBlob.getExecutionMessages(),SimBlob.getCoreRepository());
+
+  SimBlob.getRunDescriptor() = RunDesc;
+
+  SimBlob.getOutputDescriptor() = OutDesc;
+
+  fillRunEnvironmentFromDescriptor(RunDesc);
 }
 
 

@@ -68,9 +68,11 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),0);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningMsgs().size(),0);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
+  openfluid::base::ExecutionMessages* ExecMsgs = new openfluid::base::ExecutionMessages();
+
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),0);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningMsgs().size(),0);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),false);
 
 }
 
@@ -79,30 +81,31 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+  openfluid::base::ExecutionMessages* ExecMsgs = new openfluid::base::ExecutionMessages();
 
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender",1,"Warning message #1");
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),1);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),true);
-  openfluid::base::ExecutionMessages::getInstance()->resetWarningFlag();
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),1);
+  ExecMsgs->addWarning("Sender",1,"Warning message #1");
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),1);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),true);
+  ExecMsgs->resetWarningFlag();
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),1);
 
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender","Warning message #2");
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender",std::string("Source"),1,"Warning message #3");
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),true);
-  openfluid::base::ExecutionMessages::getInstance()->resetWarningFlag();
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),3);
-  openfluid::base::ExecutionMessages::getInstance()->doMemRelease();
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),3);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningMsgs().size(),0);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),false);
+  ExecMsgs->addWarning("Sender","Warning message #2");
+  ExecMsgs->addWarning("Sender",std::string("Source"),1,"Warning message #3");
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),true);
+  ExecMsgs->resetWarningFlag();
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),3);
+  ExecMsgs->doMemRelease();
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningMsgs().size(),0);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),false);
 
-  openfluid::base::ExecutionMessages::getInstance()->addWarning("Sender","Source","Warning message #4");
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningsCount(),4);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->getWarningMsgs().size(),1);
-  BOOST_REQUIRE_EQUAL(openfluid::base::ExecutionMessages::getInstance()->isWarningFlag(),true);
+  ExecMsgs->addWarning("Sender","Source","Warning message #4");
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningsCount(),4);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->getWarningMsgs().size(),1);
+  BOOST_REQUIRE_EQUAL(ExecMsgs->isWarningFlag(),true);
 
 
 }

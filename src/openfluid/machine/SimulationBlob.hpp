@@ -45,75 +45,58 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
-  @brief implements main
+  \file SimulationBlob.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
+
+#ifndef __SIMULATIONBLOB_HPP__
+#define __SIMULATIONBLOB_HPP__
+
+#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
-#include <openfluid/io.hpp>
 
-#include <tests-config.hpp>
+namespace openfluid { namespace machine {
 
-
-int main()
+class DLLEXPORT SimulationBlob
 {
-  try
-  {
-    std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.CheckFluidXWriter";
-    std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckFluidXWriterSingle";
-    std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.CheckFluidXWriterMany";
-    std::string PlugsDir = CONFIGTESTS_OUTPUT_BINARY_DIR;
+  private:
+
+    openfluid::core::CoreRepository m_CoreRepos;
+
+    openfluid::base::RunDescriptor m_RunDescriptor;
+
+    openfluid::base::OutputDescriptor m_OutputDescriptor;
+
+    openfluid::base::ExecutionMessages m_ExecMessages;
+
+  public:
+
+    SimulationBlob();
+
+    ~SimulationBlob();
+
+    openfluid::core::CoreRepository& getCoreRepository() { return m_CoreRepos; };
+
+    openfluid::base::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
+
+    openfluid::base::OutputDescriptor& getOutputDescriptor() {return  m_OutputDescriptor; };
+
+    openfluid::base::ExecutionMessages& getExecutionMessages() {return  m_ExecMessages; };
 
 
-    openfluid::base::RuntimeEnvironment* RunEnv;
-    openfluid::io::FluidXReader Reader(NULL);
-    openfluid::io::FluidXWriter Writer(NULL);
-    openfluid::machine::SimulationBlob SBlob;
-    openfluid::machine::ModelInstance MInstance(SBlob,NULL);
 
-    RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+};
 
-    RunEnv->addExtraPluginsPaths(PlugsDir);
 
-    Reader.loadFromDirectory(InputDir);
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(Reader.getDomainDescriptor(),
-        Reader.getRunDescriptor(),
-        Reader.getOutputDescriptor(),
-        SBlob);
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(Reader.getModelDescriptor(),SBlob, MInstance);
 
-    Writer.setDomainToWrite(SBlob.getCoreRepository());
-    Writer.setModelToWrite(const_cast<openfluid::machine::ModelInstance&>(MInstance));
-    Writer.setRunConfigurationToWrite(Reader.getRunDescriptor());
-    Writer.setOutputConfigurationToWrite(Reader.getOutputDescriptor());
+} } //namespaces
 
-    Writer.WriteToManyFiles(OutputDirMany);
-    Writer.WriteToSingleFile(OutputDirSingle+"/all.fluidx");
 
-    return 0;
-  }
-  catch (openfluid::base::OFException& E)
-  {
-    std::cerr << "ERROR: " + std::string(E.what()) << std::endl;
-  }
-  catch (std::bad_alloc& E)
-  {
-    std::cerr << "MEMORY ALLOCATION ERROR: " + std::string(E.what()) + ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::exception& E)
-  {
-    std::cerr << "SYSTEM ERROR: " + std::string(E.what()) << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "UNKNOWN ERROR" << std::endl;
-  }
 
-  return 127;
-}
+
+#endif /* __SIMULATIONBLOB_HPP__ */

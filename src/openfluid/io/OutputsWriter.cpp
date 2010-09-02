@@ -65,10 +65,14 @@
 namespace openfluid { namespace io {
 
 
-OutputsWriter::OutputsWriter(const std::string DirPath, const openfluid::base::OutputDescriptor& OutDesc)
+OutputsWriter::OutputsWriter(const std::string DirPath,
+                             const openfluid::base::OutputDescriptor& OutDesc,
+                             openfluid::core::CoreRepository& CoreRepos)
+             : m_CoreRepos(CoreRepos)
 {
   m_DirPath = DirPath;
   m_OutDesc = OutDesc;
+
 
   buildFilesList(DirPath,OutDesc);
 }
@@ -112,23 +116,29 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
         openfluid::core::UnitsList_t* Units;
         openfluid::core::UnitsList_t::iterator UnitIt;
 
+        Units = m_CoreRepos.getUnits(OutDesc.getFileSets()[i].getSets()[j].getUnitsClass())->getList();
 
-        Units = openfluid::core::CoreRepository::getInstance()->getUnits(OutDesc.getFileSets()[i].getSets()[j].getUnitsClass())->getList();
 
-        for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
+        if (Units != NULL)
         {
-          UnitsClassIDs.push_back(make_pair(UnitIt->getClass(),UnitIt->getID()));
+          for (UnitIt = Units->begin();UnitIt != Units->end();++UnitIt)
+          {
+            UnitsClassIDs.push_back(make_pair(UnitIt->getClass(),UnitIt->getID()));
+          }
         }
       }
       else
       {
         for (unsigned int iUnits = 0; iUnits < OutDesc.getFileSets()[i].getSets()[j].getUnitsIDs().size();iUnits++)
         {
-          UnitsClassIDs.push_back(make_pair(OutDesc.getFileSets()[i].getSets()[j].getUnitsClass(),
-              OutDesc.getFileSets()[i].getSets()[j].getUnitsIDs()[iUnits]));
+          openfluid::core::UnitClassID_t ClassID = make_pair(OutDesc.getFileSets()[i].getSets()[j].getUnitsClass(),
+                                                             OutDesc.getFileSets()[i].getSets()[j].getUnitsIDs()[iUnits]);
+          if (m_CoreRepos.getUnit(ClassID.first,ClassID.second) != NULL)
+          {
+              UnitsClassIDs.push_back(ClassID);
+          }
         }
       }
-
 
 
       for (unsigned int jUnits = 0; jUnits < UnitsClassIDs.size(); jUnits++)
@@ -137,15 +147,13 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
         VariablesNames.clear();
 
         if (OutDesc.getFileSets()[i].getSets()[j].isAllScalars())
-
-          VariablesNames = openfluid::core::CoreRepository::getInstance()->getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getScalarVariables()->getVariablesNames();
+          VariablesNames = m_CoreRepos.getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getScalarVariables()->getVariablesNames();
         else
           VariablesNames = OutDesc.getFileSets()[i].getSets()[j].getScalars();
 
         if (!VariablesNames.empty())
         {
-
-          SWriter = new openfluid::io::ScalarOutputsFileWriter(DirPath,
+          SWriter = new openfluid::io::ScalarOutputsFileWriter(DirPath, m_CoreRepos,
               UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second,
               OutDesc.getFileSets()[i].getSets()[j].getName(),
               OutDesc.getFileSets()[i].getCommentChar(),
@@ -163,7 +171,7 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
         VariablesNames.clear();
 
         if (OutDesc.getFileSets()[i].getSets()[j].isAllVectors())
-          VariablesNames = openfluid::core::CoreRepository::getInstance()->getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getVectorVariables()->getVariablesNames();
+          VariablesNames = m_CoreRepos.getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getVectorVariables()->getVariablesNames();
         else
           VariablesNames = OutDesc.getFileSets()[i].getSets()[j].getVectors();
 
@@ -171,7 +179,7 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
         {
           for (unsigned int n = 0; n < VariablesNames.size(); n++)
           {
-            VWriter = new openfluid::io::VectorOutputsFileWriter(DirPath,
+            VWriter = new openfluid::io::VectorOutputsFileWriter(DirPath,m_CoreRepos,
                 UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second,
                 VariablesNames[n],
                 OutDesc.getFileSets()[i].getSets()[j].getName(),

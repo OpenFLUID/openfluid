@@ -55,7 +55,6 @@
 
 
 #include <openfluid/io/MessagesWriter.hpp>
-#include <openfluid/base.hpp>
 #include <fstream>
 
 
@@ -99,14 +98,13 @@ void MessagesWriter::initializeFile()
 // =====================================================================
 
 
-void MessagesWriter::saveToFile(bool WithFlush)
+void MessagesWriter::saveToFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush)
 {
-  openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
-  unsigned int WarningCount = ExecMsgs->getWarningMsgs().size();
+  unsigned int WarningCount = ExecMsgs.getWarningMsgs().size();
 
   if (WarningCount > 0)
   {
-    std::vector<openfluid::base::Message> WMessages = ExecMsgs->getWarningMsgs();
+    std::vector<openfluid::base::Message> WMessages = ExecMsgs.getWarningMsgs();
 
     for (unsigned int i=0; i<WarningCount;i++)
     {
@@ -121,7 +119,7 @@ void MessagesWriter::saveToFile(bool WithFlush)
     }
   }
 
-  if (WithFlush) ExecMsgs->doMemRelease();
+  if (WithFlush) ExecMsgs.doMemRelease();
 }
 
 
@@ -129,9 +127,9 @@ void MessagesWriter::saveToFile(bool WithFlush)
 // =====================================================================
 
 
-void MessagesWriter::closeFile(bool WithFlush)
+void MessagesWriter::closeFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush)
 {
-  saveToFile(WithFlush);
+  saveToFile(ExecMsgs, WithFlush);
   m_OutFile.close();
 
 }

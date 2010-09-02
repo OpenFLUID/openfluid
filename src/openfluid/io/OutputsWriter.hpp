@@ -71,15 +71,20 @@ class DLLEXPORT OutputsWriter
   private:
 
     std::string m_DirPath;
+
     openfluid::base::OutputDescriptor m_OutDesc;
 
     std::list<OutputsFileWriter*> m_Files;
+
+    openfluid::core::CoreRepository& m_CoreRepos;
 
     void buildFilesList(const std::string& DirPath, const openfluid::base::OutputDescriptor& OutDesc);
 
 
   public:
-    OutputsWriter(const std::string DirPath, const openfluid::base::OutputDescriptor& OutDesc);
+    OutputsWriter(const std::string DirPath,
+                  const openfluid::base::OutputDescriptor& OutDesc,
+                  openfluid::core::CoreRepository& CoreRepos);
 
     ~OutputsWriter();
 

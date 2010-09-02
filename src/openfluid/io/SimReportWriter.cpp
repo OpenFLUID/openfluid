@@ -88,11 +88,11 @@ SimulationReportWriter::~SimulationReportWriter()
 // =====================================================================
 
 
-void SimulationReportWriter::saveToFile(std::string FilePath,openfluid::base::SimulationInfo *SimInfo)
+void SimulationReportWriter::saveToFile(std::string FilePath,openfluid::base::SimulationInfo *SimInfo,
+                                        const openfluid::core::CoreRepository& CoreRepos)
 {
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
   openfluid::base::RuntimeEnvironment* RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-  openfluid::core::CoreRepository* Repository = openfluid::core::CoreRepository::getInstance();
 
 
   // ********** text file **********
@@ -117,7 +117,7 @@ void SimulationReportWriter::saveToFile(std::string FilePath,openfluid::base::Si
   FileContents << std::endl;
 
   FileContents << "Spatial domain:" << std::endl;
-  for (UnitsIt = Repository->getUnitsByClass()->begin(); UnitsIt != Repository->getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
   {
     FileContents << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
   }

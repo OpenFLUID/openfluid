@@ -71,6 +71,7 @@ unsigned int OutputsFileWriter::BufferSize = (openfluid::config::DEFAULT_OUTFILE
 
 
 OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
+                                     openfluid::core::CoreRepository& CoreRepos,
                                      const openfluid::core::UnitClass_t UnitClass,
                                      const openfluid::core::UnitID_t UnitID,
                                      const std::string CommentChar,
@@ -88,7 +89,7 @@ OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
   mp_Buffer = new char[BufferSize];
   m_OutFile.rdbuf()->pubsetbuf(mp_Buffer,BufferSize);
 
-  mp_Unit = openfluid::core::CoreRepository::getInstance()->getUnit(UnitClass,UnitID);
+  mp_Unit = CoreRepos.getUnit(UnitClass,UnitID);
 
   if (mp_Unit == NULL)
   {

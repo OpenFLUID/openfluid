@@ -77,8 +77,6 @@ class DLLEXPORT ExecutionMessages
 
   private:
 
-    static ExecutionMessages* mp_Singleton;
-
     bool m_WarningFlag;
     bool m_ErrorFlag;
 
@@ -90,14 +88,12 @@ class DLLEXPORT ExecutionMessages
     void addWarning(Message Msg);
 
 
+  public:
+
     /**
       Constructor
      */
     ExecutionMessages();
-
-  public:
-
-    static ExecutionMessages* getInstance();
 
     /**
       Destructor
@@ -120,7 +116,7 @@ class DLLEXPORT ExecutionMessages
 
     void doMemRelease() { m_WarningMsgs.clear(); };
 
-    unsigned int getWarningsCount() { return m_RealWarningsCount; };
+    unsigned int getWarningsCount() const { return m_RealWarningsCount; };
 
 };
 

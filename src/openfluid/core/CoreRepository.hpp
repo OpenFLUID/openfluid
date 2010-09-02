@@ -68,16 +68,12 @@ class DLLEXPORT CoreRepository
 
     UnitsPtrList_t m_PcsOrderedUnitsGlobal;
 
-    static CoreRepository* mp_Singleton;
-
-    CoreRepository();
-
     static bool removeUnitFromList(UnitsPtrList_t* UnitsList,
                                    const UnitID_t& UnitID);
 
   public:
 
-    static CoreRepository* getInstance();
+    CoreRepository();
 
     bool addUnit(const Unit aUnit);
 

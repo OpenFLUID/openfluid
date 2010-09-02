@@ -231,7 +231,6 @@ ModelItemInstance* PluginManager::getPlugin(std::string PluginName,
     Plug->Function->setExecutionMessages(ExecMsgs);
     Plug->Function->setFunctionEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
     Plug->Function->setFunctionID(Plug->Signature->ID);
-    Plug->Function->initLogger();
     return Plug;
   }
 

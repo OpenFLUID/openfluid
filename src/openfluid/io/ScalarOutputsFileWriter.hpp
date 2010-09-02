@@ -69,6 +69,7 @@ class ScalarOutputsFileWriter : public OutputsFileWriter
   public:
 
     ScalarOutputsFileWriter(const std::string DirPath,
+                            openfluid::core::CoreRepository& CoreRepos,
                             const openfluid::core::UnitClass_t UnitClass,
                             const openfluid::core::UnitID_t UnitID,
                             const std::string FileSuffix,

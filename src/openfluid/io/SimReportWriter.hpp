@@ -72,7 +72,8 @@ class DLLEXPORT SimulationReportWriter
 
     ~SimulationReportWriter();
 
-    static void saveToFile(std::string FilePath,openfluid::base::SimulationInfo *SimInfo);
+    static void saveToFile(std::string FilePath,openfluid::base::SimulationInfo *SimInfo,
+                           const openfluid::core::CoreRepository& CoreRepos);
 
 };
 

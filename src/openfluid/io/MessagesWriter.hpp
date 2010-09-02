@@ -59,6 +59,7 @@
 
 #include <string>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/base.hpp>
 #include <fstream>
 
 namespace openfluid { namespace io {
@@ -80,9 +81,9 @@ class DLLEXPORT MessagesWriter
 
     void initializeFile();
 
-    void saveToFile(bool WithFlush = false);
+    void saveToFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush = false);
 
-    void closeFile(bool WithFlush = false);
+    void closeFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush = false);
 };
 
 

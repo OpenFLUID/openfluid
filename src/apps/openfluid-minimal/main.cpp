@@ -76,26 +76,36 @@ int main(int argc, char **argv)
       throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdir>");
 
 
-    openfluid::base::ExecutionMessages* ExecMsgs;
+
     openfluid::machine::Engine* Engine;
+    openfluid::machine::SimulationBlob SBlob;
     openfluid::base::RuntimeEnvironment* RunEnv;
+    openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
+    openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
+    openfluid::machine::ModelInstance Model(SBlob,MachineListen);
+    openfluid::io::FluidXReader FXReader(IOListen);
 
-    ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
     RunEnv->addExtraPluginsPaths(PlugsDir);
 
 
-    Engine = new openfluid::machine::Engine(new openfluid::machine::MachineListener(),
-                                                new openfluid::io::IOListener());
+    FXReader.loadFromDirectory(InputDir);
 
-    Engine->loadData();
-    Engine->processRunConfiguration();
 
-    Engine->buildSpatialDomain();
-    Engine->buildModel();
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
+                                                                    FXReader.getRunDescriptor(),
+                                                                    FXReader.getOutputDescriptor(),
+                                                                    SBlob);
+
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
+                                                                  SBlob,
+                                                                  Model);
+
+
+    Engine = new openfluid::machine::Engine(SBlob, Model, MachineListen, IOListen);
 
     Engine->initParams();
     Engine->prepareData();

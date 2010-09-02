@@ -127,15 +127,15 @@ std::string FluidXWriter::getParamsAsStr(const openfluid::core::FuncParamsMap_t&
 // =====================================================================
 
 
-void FluidXWriter::setModelToWrite(openfluid::machine::ModelInstance* MInstance)
+void FluidXWriter::setModelToWrite(openfluid::machine::ModelInstance& MInstance)
 {
-  if (MInstance->getItemsCount() > 0)
+  if (MInstance.getItemsCount() > 0)
   {
     std::ostringstream Contents;
 
     Contents << m_IndentStr << "<model>\n";
 
-    const std::list<openfluid::machine::ModelItemInstance*> Items = MInstance->getItems();
+    const std::list<openfluid::machine::ModelItemInstance*> Items = MInstance.getItems();
     std::list<openfluid::machine::ModelItemInstance*>::const_iterator itFuncs;
 
     for (itFuncs=Items.begin();itFuncs!=Items.end();++itFuncs)
@@ -198,9 +198,9 @@ void FluidXWriter::setRunConfigurationToWrite(openfluid::base::RunDescriptor& RD
 // =====================================================================
 
 
-void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository* CoreData)
+void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository& CoreData)
 {
-  if (!CoreData->getUnitsGlobally()->empty())
+  if (!CoreData.getUnitsGlobally()->empty())
   {
     std::ostringstream Contents;
 
@@ -208,7 +208,7 @@ void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository* CoreD
 
     Contents << m_IndentStr << m_IndentStr << "<definition>\n";
 
-    const openfluid::core::UnitsListByClassMap_t* UnitsByClass = CoreData->getUnitsByClass();
+    const openfluid::core::UnitsListByClassMap_t* UnitsByClass = CoreData.getUnitsByClass();
     const openfluid::core::UnitsList_t* UnitsList = NULL;
     const openfluid::core::UnitsPtrList_t* AllUnitsPtrList = NULL;
     openfluid::core::UnitsPtrList_t::const_iterator itAllUnits;
@@ -329,7 +329,7 @@ void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository* CoreD
 
     Contents << m_IndentStr << m_IndentStr << "<calendar>\n";
 
-    AllUnitsPtrList = CoreData->getUnitsGlobally();
+    AllUnitsPtrList = CoreData.getUnitsGlobally();
     for (itAllUnits = AllUnitsPtrList->begin();itAllUnits != AllUnitsPtrList->end();++itAllUnits)
     {
       if ((*itAllUnits)->getEvents()->getCount() > 0)

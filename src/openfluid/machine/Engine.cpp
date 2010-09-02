@@ -64,6 +64,7 @@
 #include <openfluid/tools.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/core/ValuesBuffer.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -73,24 +74,30 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-Engine::Engine(openfluid::machine::MachineListener* MachineListener,
+Engine::Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
+               openfluid::machine::MachineListener* MachineListener,
                openfluid::io::IOListener* IOListener)
+       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance)
 {
-  mp_CoreData = openfluid::core::CoreRepository::getInstance();
-  mp_ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
+
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-  mp_PlugMan = PluginManager::getInstance();
 
-  mp_IOMan = openfluid::io::IOManager::getInstance();
-  mp_IOMan->setListener(IOListener);
+  mp_OutputsWriter = NULL;
+  mp_MessagesWriter = NULL;
 
-  mp_Listener = MachineListener;
-  if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
+
+  mp_MachineListener = MachineListener;
+  if (mp_MachineListener == NULL) mp_MachineListener = new openfluid::machine::MachineListener();
+
+  mp_IOListener = IOListener;
+  if (mp_IOListener == NULL) mp_IOListener = new openfluid::io::IOListener();
+
 
   mp_SimStatus = NULL;
 
-  mp_IOMan->prepareOutputDir();
 
+  prepareOutputDir();
+  m_ModelInstance.initLoggers();
 }
 
 // =====================================================================
@@ -98,7 +105,10 @@ Engine::Engine(openfluid::machine::MachineListener* MachineListener,
 
 Engine::~Engine()
 {
+  closeOutputs();
 
+  delete mp_OutputsWriter;
+  delete mp_MessagesWriter;
 }
 
 
@@ -114,7 +124,7 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
   else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + FunctionName);
 
   bool Status = true;
@@ -147,7 +157,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
   else throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + FunctionName);
 
   bool Status = true;
@@ -190,7 +200,7 @@ void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 
 
   UnitList = NULL;
-  if (mp_CoreData->isUnitsClassExist(ClassName)) UnitList = mp_CoreData->getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
   else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + FunctionName);
 
   bool Status = true;
@@ -221,7 +231,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   const openfluid::core::UnitsList_t* UnitsList;
   std::vector<std::string> VarsNames;
 
-  AllUnits = mp_CoreData->getUnitsByClass();
+  AllUnits = m_SimulationBlob.getCoreRepository().getUnitsByClass();
 
   for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
   {
@@ -267,9 +277,9 @@ void Engine::checkModelConsistency()
         4) required vars at t-1+
   */
 
-  FuncIter = mp_ModelInstance->getItems().begin();
+  FuncIter = m_ModelInstance.getItems().begin();
 
-  while (FuncIter != mp_ModelInstance->getItems().end() && IsOK)
+  while (FuncIter != m_ModelInstance.getItems().end() && IsOK)
   {
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
@@ -301,9 +311,9 @@ void Engine::checkModelConsistency()
 
 
 
-  FuncIter = mp_ModelInstance->getItems().begin();
+  FuncIter = m_ModelInstance.getItems().begin();
 
-  while (FuncIter != mp_ModelInstance->getItems().end() && IsOK)
+  while (FuncIter != m_ModelInstance.getItems().end() && IsOK)
   {
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
@@ -336,9 +346,9 @@ void Engine::checkInputDataConsistency()
   unsigned int i;
 
 
-  FuncIter = mp_ModelInstance->getItems().begin();
+  FuncIter = m_ModelInstance.getItems().begin();
 
-  while (FuncIter != mp_ModelInstance->getItems().end() && IsOK)
+  while (FuncIter != m_ModelInstance.getItems().end() && IsOK)
   {
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
@@ -367,7 +377,7 @@ void Engine::checkExtraFilesConsistency()
 
 
   // on each function
-  for (FuncIter = mp_ModelInstance->getItems().begin(); FuncIter != mp_ModelInstance->getItems().end(); ++FuncIter)
+  for (FuncIter = m_ModelInstance.getItems().begin(); FuncIter != m_ModelInstance.getItems().end(); ++FuncIter)
   {
     CurrentFunction = *FuncIter;
 
@@ -388,103 +398,95 @@ void Engine::checkExtraFilesConsistency()
 // =====================================================================
 
 
-void Engine::buildModel()
+void Engine::prepareOutputDir()
 {
 
-  try
+  boost::filesystem::path OutputDirPath(mp_RunEnv->getOutputDir());
+
+
+  if (!boost::filesystem::exists(OutputDirPath))
   {
-    Factory MF = Factory();
-    mp_ModelInstance = MF.buildInstanceFromDescriptor(m_ModelDesc, mp_Listener);
+    boost::filesystem::create_directories(OutputDirPath);
+    if (!boost::filesystem::exists(OutputDirPath))
+      throw openfluid::base::OFException("OpenFLUID framework","IOManager::prepareOutputDir","Error creating output directory");
+
   }
-  catch (openfluid::base::OFException& E)
+  else
   {
-
-    mp_Listener->onModelBuildDone(openfluid::machine::MachineListener::ERROR);
-    throw;
+    if (mp_RunEnv->isClearOutputDir())
+    {
+      openfluid::tools::EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().c_str());
+    }
   }
 
-  mp_Listener->onModelBuildDone(openfluid::machine::MachineListener::OK);
 
+  // create empty message file
+
+  std::ofstream OutMsgFile;
+
+  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
+  OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::out);
+  OutMsgFile.close();
+
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+void Engine::prepareOutputs()
+{
+  if (mp_OutputsWriter != NULL) mp_OutputsWriter->prepareDirectory();
+  if (mp_MessagesWriter != NULL) mp_MessagesWriter->initializeFile();
 }
 
 
 // =====================================================================
 // =====================================================================
 
-void Engine::loadData()
+
+void Engine::saveOutputs(const openfluid::core::DateTime& CurrentDT)
 {
-
-  mp_IOMan->loadInputs(m_ModelDesc, m_DomainDesc, m_RunDesc);
-
+  if (mp_OutputsWriter != NULL) mp_OutputsWriter->saveToDirectory(CurrentDT);
+  if (mp_MessagesWriter != NULL) mp_MessagesWriter->saveToFile(m_SimulationBlob.getExecutionMessages(),true);
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
 
-void Engine::processRunConfiguration()
+void Engine::saveSimulationInfos()
 {
-  try
-  {
-    Factory REF = Factory();
-    REF.fillRunEnvironmentFromDescriptor(m_RunDesc);
-  }
-  catch (openfluid::base::OFException& E)
-  {
-
-    mp_Listener->onRunConfigurationDone(openfluid::machine::MachineListener::ERROR);
-    throw;
-  }
-
-  mp_Listener->onRunConfigurationDone(openfluid::machine::MachineListener::OK);
-
+  openfluid::io::SimulationReportWriter::saveToFile(mp_RunEnv->getOutputFullPath(openfluid::config::SIMINFOFILE),
+                                                    (openfluid::base::SimulationInfo*)mp_SimStatus,
+                                                    m_SimulationBlob.getCoreRepository());
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void Engine::buildSpatialDomain()
-{
-
-  try
-  {
-    Factory DF = Factory();
-    DF.buildDomainFromDescriptor(m_DomainDesc);
-  }
-  catch (openfluid::base::OFException& E)
-  {
-
-    mp_Listener->onLandscapeBuildDone(openfluid::machine::MachineListener::ERROR);
-    throw;
-  }
-
-  mp_Listener->onLandscapeBuildDone(openfluid::machine::MachineListener::OK);
-
-
-}
 
 // =====================================================================
 // =====================================================================
+
 
 void Engine::initParams()
 {
 
-  mp_Listener->onInitParams();
+  mp_MachineListener->onInitParams();
   try
   {
-    mp_ModelInstance->initParams();
+    m_ModelInstance.initParams();
   }
   catch (openfluid::base::OFException& E)
   {
-    mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
-  if (mp_ExecMsgs->isWarningFlag())  mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::WARNING);
-  else mp_Listener->onInitParamsDone(openfluid::machine::MachineListener::OK);
-  mp_ExecMsgs->resetWarningFlag();
+  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::WARNING);
+  else mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::OK);
+  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
 }
 
@@ -496,15 +498,15 @@ void Engine::prepareData()
 {
   try
   {
-    mp_ModelInstance->prepareData();
+    m_ModelInstance.prepareData();
   }
   catch (openfluid::base::OFException& E)
   {
-    mp_Listener->onPrepareDataDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
-  mp_Listener->onPrepareDataDone(openfluid::machine::MachineListener::OK);
+  mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::OK);
 
 }
 
@@ -534,7 +536,7 @@ void Engine::checkConsistency()
 
   try
   {
-    if (mp_ModelInstance->getItemsCount() == 0)
+    if (m_ModelInstance.getItemsCount() == 0)
       throw openfluid::base::OFException("OpenFLUID framework","Engine::checkConsistency","No simulation function in model");
 
     checkExtraFilesConsistency();
@@ -545,34 +547,32 @@ void Engine::checkConsistency()
   }
   catch (openfluid::base::OFException& E)
   {
-    mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
 
   try
   {
-    mp_ModelInstance->checkConsistency();
+    m_ModelInstance.checkConsistency();
   }
   catch (openfluid::base::OFException& E)
   {
-    mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
 
 
-  mp_IOMan->initOutputs();
+  mp_OutputsWriter = new openfluid::io::OutputsWriter(mp_RunEnv->getOutputDir(),const_cast<openfluid::base::OutputDescriptor&>(m_SimulationBlob.getOutputDescriptor()),
+                                                      m_SimulationBlob.getCoreRepository());
+  mp_MessagesWriter = new openfluid::io::MessagesWriter(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
 
-  if (mp_RunEnv->isWriteResults())
-  {
-    mp_IOMan->prepareOutputs();
-  }
+  if (mp_RunEnv->isWriteResults()) prepareOutputs();
 
 
-  mp_IOMan->clearFluidXData();
 
-  mp_Listener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
+  mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
 }
 
 
@@ -590,23 +590,23 @@ void Engine::run()
 
   // ============= initializeRun() =============
 
-  mp_Listener->onInitializeRun();
+  mp_MachineListener->onInitializeRun();
 
   try
   {
-    mp_ModelInstance->initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
+    m_ModelInstance.initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
   }
   catch (openfluid::base::OFException& E)
   {
-    mp_Listener->onInitializeRunDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
-  if (mp_ExecMsgs->isWarningFlag()) mp_Listener->onInitializeRunDone(openfluid::machine::MachineListener::WARNING);
-  else mp_Listener->onInitializeRunDone(openfluid::machine::MachineListener::OK);
+  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::WARNING);
+  else mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::OK);
 
 
-  mp_ExecMsgs->resetWarningFlag();
+  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
   // check simulation vars production after init
   checkSimulationVarsProduction(0);
@@ -616,72 +616,68 @@ void Engine::run()
 
 
 
-  mp_Listener->onBeforeRunSteps();
+  mp_MachineListener->onBeforeRunSteps();
 
   do // time loop
   {
 
-    mp_Listener->onRunStep(mp_SimStatus);
+    mp_MachineListener->onRunStep(mp_SimStatus);
 
-    mp_ExecMsgs->resetWarningFlag();
+    m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
     try
     {
-      mp_ModelInstance->runStep(mp_SimStatus);
+      m_ModelInstance.runStep(mp_SimStatus);
 
       // check simulation vars production at each time step
       checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
     }
     catch (openfluid::base::OFException& E)
     {
-      mp_Listener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
+      mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
       throw;
     }
 
 
-    if (mp_ExecMsgs->isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
-    mp_Listener->onRunStepDone(openfluid::machine::MachineListener::OK);
+    if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
+    mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::OK);
 
-    if (mp_RunEnv->isWriteResults())
-    {
-      mp_IOMan->saveOutputs(mp_SimStatus->getCurrentTime());
-    }
-
+    if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentTime());
 
   } while (mp_SimStatus->switchToNextStep());  // end time loop
 
 
-  mp_Listener->onAfterRunSteps();
+  mp_MachineListener->onAfterRunSteps();
 
-  mp_ExecMsgs->resetWarningFlag();
+  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
 
   // ============= finalizeRun() =============
 
-  mp_Listener->onFinalizeRun();
+  mp_MachineListener->onFinalizeRun();
 
   try
   {
-    mp_ModelInstance->finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
+    m_ModelInstance.finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
   }
   catch (openfluid::base::OFException& E)
   {
-    mp_Listener->onFinalizeRunDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
 
 
-  if (mp_ExecMsgs->isWarningFlag())     mp_Listener->onFinalizeRunDone(openfluid::machine::MachineListener::WARNING);
-  else mp_Listener->onFinalizeRunDone(openfluid::machine::MachineListener::OK);
+  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::WARNING);
+  else mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::OK);
 
 
-  mp_ExecMsgs->resetWarningFlag();
+  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
   // check simulation vars production after finalize
   checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
 
   // final save
-  mp_IOMan->closeOutputs();
+  closeOutputs();
 
 }
 
@@ -689,10 +685,10 @@ void Engine::run()
 // =====================================================================
 // =====================================================================
 
-bool Engine::saveReports()
+void Engine::saveReports()
 {
-  mp_ExecMsgs->resetWarningFlag();
-  return (mp_IOMan->saveSimulationInfos((openfluid::base::SimulationInfo*)mp_SimStatus));
+  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+  saveSimulationInfos();
 }
 
 
@@ -702,7 +698,9 @@ bool Engine::saveReports()
 
 void Engine::closeOutputs()
 {
-  mp_IOMan->closeOutputs();
+  if (mp_OutputsWriter != NULL) mp_OutputsWriter->closeFiles();
+  if (mp_MessagesWriter != NULL) mp_MessagesWriter->closeFile(m_SimulationBlob.getExecutionMessages(),true);
+
 }
 
 

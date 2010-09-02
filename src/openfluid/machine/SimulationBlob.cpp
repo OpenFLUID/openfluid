@@ -47,83 +47,34 @@
 
 
 /**
-  @file
+  \file SimulationBlob.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
-
-
-#ifndef __IOMAN_HPP__
-#define __IOMAN_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/io/FluidXReader.hpp>
-#include <openfluid/io/OutputsWriter.hpp>
-#include <openfluid/io/MessagesWriter.hpp>
-
-namespace openfluid { namespace io {
-
-// =====================================================================
-// =====================================================================
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-class DLLEXPORT IOManager
+#include <openfluid/machine/SimulationBlob.hpp>
+
+namespace openfluid { namespace machine {
+
+
+SimulationBlob::SimulationBlob()
 {
 
-  private:
-
-    static IOManager* mp_Singleton;
-
-    openfluid::core::CoreRepository* mp_Repository;
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
-    openfluid::base::RuntimeEnvironment* mp_RunEnv;
-
-    bool m_ClearedOuputDir;
-
-    OutputsWriter* mp_OutputsWriter;
-    MessagesWriter* mp_MessagesWriter;
-
-    FluidXReader* mp_FluidXData;
-
-    openfluid::io::IOListener* mp_Listener;
-
-    IOManager();
+}
 
 
-  public:
-
-    static IOManager* getInstance();
-
-    ~IOManager();
-
-    // TODO To remove when removing singleton pattern
-    void setListener(openfluid::io::IOListener* Listener);
-
-    void loadInputs(openfluid::base::ModelDescriptor& ModelDesc,
-                    openfluid::base::DomainDescriptor& DomainDesc,
-                    openfluid::base::RunDescriptor& RunDesc);
-
-    void initOutputs();
-
-    bool prepareOutputs();
-
-    bool saveOutputs(const openfluid::core::DateTime& CurrentDT);
-
-    bool saveSimulationInfos(openfluid::base::SimulationInfo *SimInfo);
-
-    bool prepareOutputDir();
-
-    void closeOutputs();
-
-    void clearFluidXData();
+// =====================================================================
+// =====================================================================
 
 
-};
+SimulationBlob::~SimulationBlob()
+{
+
+}
+
 
 
 } } //namespaces
 
-#endif /* __IOMAN_HPP__ */

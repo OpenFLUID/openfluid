@@ -64,6 +64,7 @@ namespace openfluid { namespace io {
 
 
 ScalarOutputsFileWriter::ScalarOutputsFileWriter(const std::string DirPath,
+                                                 openfluid::core::CoreRepository& CoreRepos,
                                                  const openfluid::core::UnitClass_t UnitClass,
                                                  const openfluid::core::UnitID_t UnitID,
                                                  const std::string FileSuffix,
@@ -71,8 +72,8 @@ ScalarOutputsFileWriter::ScalarOutputsFileWriter(const std::string DirPath,
                                                  const std::string DateFormat,
                                                  const std::string ColSeparator,
                                                  const unsigned int Precision)
-                         : OutputsFileWriter(DirPath,UnitClass,UnitID,CommentChar,
-                                             DateFormat, ColSeparator, Precision)
+                         : OutputsFileWriter(DirPath,CoreRepos, UnitClass,UnitID,
+                                             CommentChar, DateFormat, ColSeparator, Precision)
 {
   std::string UnitIDStr;
   openfluid::tools::ConvertValue(mp_Unit->getID(),&UnitIDStr);

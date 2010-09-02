@@ -70,21 +70,23 @@ namespace openfluid { namespace machine {
 
 class DLLEXPORT Factory
 {
-  private:
-    openfluid::core::CoreRepository* mp_CoreData;
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
-    openfluid::base::RuntimeEnvironment* mp_RunEnv;
-
   public:
 
-    Factory();
+    static void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor,
+                                          openfluid::base::ExecutionMessages& ExecMsgs,
+                                          openfluid::core::CoreRepository& CoreRepos);
 
-    void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor);
 
-    const ModelInstance* buildInstanceFromDescriptor(const openfluid::base::ModelDescriptor& Descriptor,
-                                                     openfluid::machine::MachineListener* Listener) const;
+    static void buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
+                                            SimulationBlob& SimBlob,
+                                            ModelInstance& MInstance);
 
-    void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& Descriptor);
+    static void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& RunDescr);
+
+    static void buildSimulationBlobFromDescriptors(openfluid::base::DomainDescriptor& DomainDesc,
+                                                   openfluid::base::RunDescriptor& RunDesc,
+                                                   openfluid::base::OutputDescriptor& OutDesc,
+                                                   SimulationBlob& SimBlob);
 
 };
 

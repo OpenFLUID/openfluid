@@ -68,6 +68,7 @@ class VectorOutputsFileWriter : public OutputsFileWriter
   public:
 
     VectorOutputsFileWriter(const std::string DirPath,
+                            openfluid::core::CoreRepository& CoreRepos,
                             const openfluid::core::UnitClass_t UnitClass,
                             const openfluid::core::UnitID_t UnitID,
                             const openfluid::core::VariableName_t VarName,

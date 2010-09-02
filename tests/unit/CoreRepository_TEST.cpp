@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::core::CoreRepository* Repos;
 
-  Repos = openfluid::core::CoreRepository::getInstance();
+  Repos = new openfluid::core::CoreRepository();
 }
 
 // =====================================================================
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::core::Unit* U;
 
 
-  Repos = openfluid::core::CoreRepository::getInstance();
+  Repos = new openfluid::core::CoreRepository();
 
   for (i=1;i<=250;i++)
   {

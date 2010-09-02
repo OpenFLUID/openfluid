@@ -59,8 +59,6 @@
 namespace openfluid { namespace base {
 
 
-ExecutionMessages* ExecutionMessages::mp_Singleton = NULL;
-
 
 // =====================================================================
 // =====================================================================
@@ -82,17 +80,6 @@ ExecutionMessages::ExecutionMessages()
 ExecutionMessages::~ExecutionMessages()
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ExecutionMessages* ExecutionMessages::getInstance()
-{
-  if (mp_Singleton == NULL) mp_Singleton = new ExecutionMessages();
-  return mp_Singleton;
 }
 
 

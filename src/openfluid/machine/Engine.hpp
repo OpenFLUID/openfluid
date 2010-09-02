@@ -60,12 +60,12 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
-#include <openfluid/io/IOMan.hpp>
+#include <openfluid/io.hpp>
 #include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -81,35 +81,24 @@ class DLLEXPORT Engine
 {
   private:
 
-     openfluid::core::CoreRepository* mp_CoreData;
+     SimulationBlob& m_SimulationBlob;
 
      openfluid::base::RuntimeEnvironment* mp_RunEnv;
 
-     openfluid::base::ExecutionMessages* mp_ExecMsgs;
-
      openfluid::base::SimulationStatus* mp_SimStatus;
 
-     /**
-       Plugin manager
-     */
-     PluginManager* mp_PlugMan;
 
 
-     /**
-       IOManager
-     */
-     openfluid::io::IOManager* mp_IOMan;
+     MachineListener* mp_MachineListener;
 
+     openfluid::io::IOListener* mp_IOListener;
 
-     openfluid::base::ModelDescriptor m_ModelDesc;
+     ModelInstance& m_ModelInstance;
 
-     openfluid::base::RunDescriptor m_RunDesc;
+     openfluid::io::OutputsWriter* mp_OutputsWriter;
 
-     openfluid::base::DomainDescriptor m_DomainDesc;
+     openfluid::io::MessagesWriter* mp_MessagesWriter;
 
-     MachineListener* mp_Listener;
-
-     const ModelInstance* mp_ModelInstance;
 
 
      void checkSimulationVarsProduction(int ExpectedVarsCount);
@@ -133,11 +122,24 @@ class DLLEXPORT Engine
                                  openfluid::core::UnitClass_t ClassName,
                                  std::string FunctionName);
 
+     void prepareOutputDir();
+
+     void initOutputs();
+
+     void prepareOutputs();
+
+     void saveOutputs(const openfluid::core::DateTime& CurrentDT);
+
+     void saveSimulationInfos();
+
+
+
   public:
     /**
       Constructor
     */
-    Engine(openfluid::machine::MachineListener* MachineListener,
+    Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
+           openfluid::machine::MachineListener* MachineListener,
            openfluid::io::IOListener* IOListener);
 
     /**
@@ -145,13 +147,6 @@ class DLLEXPORT Engine
     */
     ~Engine();
 
-    void buildModel();
-
-    void buildSpatialDomain();
-
-    void loadData();
-
-    void processRunConfiguration();
 
     void initParams();
 
@@ -161,7 +156,7 @@ class DLLEXPORT Engine
 
     void run();
 
-    bool saveReports();
+    void saveReports();
 
     void closeOutputs();
 
@@ -174,6 +169,7 @@ class DLLEXPORT Engine
 
 
 #endif
+
 
 
 
