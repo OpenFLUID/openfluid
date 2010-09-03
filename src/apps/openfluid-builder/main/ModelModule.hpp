@@ -59,6 +59,8 @@
 
 #include <gtkmm.h>
 
+#include <openfluid/machine.hpp>
+
 #include "ModuleInterface.hpp"
 
 
@@ -70,7 +72,7 @@ class ModelModule : public ModuleInterface
 {
   public:
 
-    ModelModule();
+    ModelModule(openfluid::machine::ModelInstance & Model);
 
     ~ModelModule();
 

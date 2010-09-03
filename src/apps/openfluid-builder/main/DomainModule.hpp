@@ -59,6 +59,8 @@
 
 #include <gtkmm.h>
 
+#include <openfluid/core.hpp>
+
 #include "ModuleInterface.hpp"
 
 
@@ -71,7 +73,7 @@ class DomainModule : public ModuleInterface
 
   public:
 
-    DomainModule();
+    DomainModule(openfluid::core::CoreRepository & CoreRepos);
 
     ~DomainModule();
 

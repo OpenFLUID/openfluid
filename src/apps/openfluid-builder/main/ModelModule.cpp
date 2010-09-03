@@ -65,7 +65,7 @@
 // =====================================================================
 
 
-ModelModule::ModelModule()
+ModelModule::ModelModule(openfluid::machine::ModelInstance & Model)
 : ModuleInterface("Model.glade", "ViewportModel", "MenuModel", "ToolBarModel")
 {
   m_ModuleName = _("_Model");
@@ -74,7 +74,21 @@ ModelModule::ModelModule()
 
   createActions();
 
+  Gtk::Label * Label = 0;
+  mp_Builder->get_widget("label8",Label);
 
+  //List functions
+  Label->set_text(Glib::ustring::compose("%1 functions : ",Model.getItemsCount()));
+
+  const std::list<openfluid::machine::ModelItemInstance*> Functions = Model.getItems();
+
+  std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
+
+  for(it=Functions.begin() ; it!=Functions.end() ; ++it)
+  {
+    openfluid::machine::ModelItemInstance * Function = *it;
+    Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose(" - %1",Function->Signature->ID));
+  }
 
 }
 
@@ -97,6 +111,8 @@ void ModelModule::createActions()
   ActionCheckModel->set_stock_id(*CheckStockId);
 
   m_Actions.push_back(ActionCheckModel);
+
+
 }
 
 

@@ -90,11 +90,17 @@ class BuilderProject// : public openfluid::machine::Engine
 
     openfluid::base::RuntimeEnvironment * mp_RunEnv;
 
+    openfluid::machine::SimulationBlob m_SimBlob;
+
 //    openfluid::base::ExecutionMessages * mp_ExecMsgs;
 
     openfluid::machine::Engine * mp_Engine;
 
     openfluid::machine::MachineListener * mp_Listener;
+
+    openfluid::io::IOListener * mp_IOListener;
+
+    openfluid::machine::ModelInstance * mp_Model;
 
 
     ModulesPtrByNameMap_t m_Modules;

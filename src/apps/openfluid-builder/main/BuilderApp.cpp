@@ -514,6 +514,11 @@ void BuilderApp::actionNewFrom()
 
 void BuilderApp::actionOpen()
 {
+  if(mp_Project)
+  {
+    actionClose();
+  }
+
   Gtk::FileChooserDialog  DialogOpen(_("Select existing project folder"),Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
   /* TODO: set default folder from Preferences */
