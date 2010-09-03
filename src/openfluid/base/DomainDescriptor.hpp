@@ -82,11 +82,11 @@ class DLLEXPORT DomainDescriptor
 
     ~DomainDescriptor();
 
-    std::list<UnitDescriptor>& getUnits() { return m_DefDescriptor; };
+    inline std::list<UnitDescriptor>& getUnits() { return m_DefDescriptor; };
 
-    std::list<InputDataDescriptor>& getInputData() { return m_IDataDescriptor; };
+    inline std::list<InputDataDescriptor>& getInputData() { return m_IDataDescriptor; };
 
-    std::list<EventDescriptor>& getEvents() { return m_EventsDescriptor; };
+    inline std::list<EventDescriptor>& getEvents() { return m_EventsDescriptor; };
 
 
 };

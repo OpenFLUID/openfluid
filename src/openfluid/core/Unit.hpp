@@ -162,20 +162,20 @@ class DLLEXPORT Unit
     /**
       Returns the process order of the unit
     */
-    unsigned int getProcessOrder() const { return m_PcsOrder; };
+    inline unsigned int getProcessOrder() const { return m_PcsOrder; };
 
     /**
       Returns the ID of the unit
     */
-    UnitID_t getID() const { return m_ID; };
+    inline UnitID_t getID() const { return m_ID; };
 
 
     /**
       Returns the class of the unit
     */
-    UnitClass_t getClass() const { return m_Class; };
+    inline UnitClass_t getClass() const { return m_Class; };
 
-    InstanciationType getIntanceType() const { return m_InstType; };
+    inline InstanciationType getIntanceType() const { return m_InstType; };
 
 
     bool addToUnit(Unit* aUnit);
@@ -225,21 +225,21 @@ class DLLEXPORT Unit
 
 
 
-    InputData<InputDataValue>* getInputData()  { return &m_InputData; };
+    inline InputData<InputDataValue>* getInputData()  { return &m_InputData; };
 
-    const InputData<InputDataValue>* getInputData() const { return &m_InputData; };
+    inline const InputData<InputDataValue>* getInputData() const { return &m_InputData; };
 
-    Variables<ScalarValue>* getScalarVariables() { return &m_ScalarVariables; };
+    inline Variables<ScalarValue>* getScalarVariables() { return &m_ScalarVariables; };
 
-    const Variables<ScalarValue>* getScalarVariables() const { return &m_ScalarVariables; };
+    inline const Variables<ScalarValue>* getScalarVariables() const { return &m_ScalarVariables; };
 
-    Variables<VectorValue>* getVectorVariables() { return &m_VectorVariables; };
+    inline Variables<VectorValue>* getVectorVariables() { return &m_VectorVariables; };
 
-    const Variables<VectorValue>* getVectorVariables() const { return &m_VectorVariables; };
+    inline const Variables<VectorValue>* getVectorVariables() const { return &m_VectorVariables; };
 
-    EventsCollection* getEvents() { return &m_Events; };
+    inline EventsCollection* getEvents() { return &m_Events; };
 
-    const EventsCollection* getEvents() const { return &m_Events; };
+    inline const EventsCollection* getEvents() const { return &m_Events; };
 
     void streamContents(std::ostream& OStream);
 

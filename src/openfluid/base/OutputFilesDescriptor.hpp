@@ -80,21 +80,21 @@ class DLLEXPORT OutputFilesDescriptor
 
     ~OutputFilesDescriptor();
 
-    std::vector<OutputSetDescriptor>& getSets() { return m_Sets; };
+    inline std::vector<OutputSetDescriptor>& getSets() { return m_Sets; };
 
-    const std::vector<OutputSetDescriptor>& getSets() const { return m_Sets; };
+    inline const std::vector<OutputSetDescriptor>& getSets() const { return m_Sets; };
 
-    std::string getColSeparator() const { return m_ColSeparator; };
+    inline std::string getColSeparator() const { return m_ColSeparator; };
 
-    void setColSeparator(const std::string& ColSep) { m_ColSeparator = ColSep; };
+    inline void setColSeparator(const std::string& ColSep) { m_ColSeparator = ColSep; };
 
-    std::string getDateFormat() const { return m_DateFormat; };
+    inline std::string getDateFormat() const { return m_DateFormat; };
 
-    void setDateFormat(const std::string& DateFormat) { m_DateFormat = DateFormat; };
+    inline void setDateFormat(const std::string& DateFormat) { m_DateFormat = DateFormat; };
 
-    std::string getCommentChar() const { return m_CommentChar; };
+    inline std::string getCommentChar() const { return m_CommentChar; };
 
-    void setCommentChar(const std::string& CommentChar) { m_CommentChar = CommentChar; };
+    inline void setCommentChar(const std::string& CommentChar) { m_CommentChar = CommentChar; };
 
 };
 

@@ -96,12 +96,12 @@ class DLLEXPORT EventsCollection
     /**
       Returns the event collection as a list
     */
-    std::list<Event*>* getEventsList() { return &m_Events; };
+    inline std::list<Event*>* getEventsList() { return &m_Events; };
 
     /**
       Returns number of events in the event collection
     */
-    int getCount() const { return m_Events.size(); };
+    inline int getCount() const { return m_Events.size(); };
 
     /**
       Clears the event collection

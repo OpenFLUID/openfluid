@@ -86,38 +86,40 @@ class DLLEXPORT RunDescriptor
 
     ~RunDescriptor();
 
-    openfluid::core::DateTime getBeginDate() const {return m_BeginDate; };
+    inline openfluid::core::DateTime getBeginDate() const {return m_BeginDate; };
 
-    void setBeginDate(const openfluid::core::DateTime BeginDate) { m_BeginDate = BeginDate; };
+    inline void setBeginDate(const openfluid::core::DateTime BeginDate) { m_BeginDate = BeginDate; };
 
-    openfluid::core::DateTime getEndDate() const {return m_EndDate; };
+    inline openfluid::core::DateTime getEndDate() const {return m_EndDate; };
 
-    void setEndDate(const openfluid::core::DateTime EndDate) { m_EndDate = EndDate; };
+    inline void setEndDate(const openfluid::core::DateTime EndDate) { m_EndDate = EndDate; };
 
-    int getDeltaT() const {return m_DeltaT; };
+    inline int getDeltaT() const {return m_DeltaT; };
 
-    void setDeltaT(const int DeltaT) { m_DeltaT = DeltaT; };
+    inline void setDeltaT(const int DeltaT) { m_DeltaT = DeltaT; };
 
-    void setSimulationID(const std::string SimID) { m_SimID = SimID; };
+    inline void setSimulationID(const std::string SimID) { m_SimID = SimID; };
 
-    std::string getSimulationID() const { return m_SimID; };
+    inline std::string getSimulationID() const { return m_SimID; };
 
-    bool isSimulationID() const { return (m_SimID != ""); };
+    inline bool isSimulationID() const { return (m_SimID != ""); };
 
-    void setValuesBufferSize(const unsigned int StepsNbr)
-       {m_ValuesBufferSize = StepsNbr;  m_IsUserValuesBufferSize = true; };
+    inline void setValuesBufferSize(const unsigned int StepsNbr)
+    {
+      m_ValuesBufferSize = StepsNbr;  m_IsUserValuesBufferSize = true;
+    };
 
-    bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
+    inline bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
 
-    unsigned int getValuesBufferSize() const { return m_ValuesBufferSize; };
+    inline unsigned int getValuesBufferSize() const { return m_ValuesBufferSize; };
 
-    void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
+    inline void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
 
-    unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
+    inline unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
 
-    bool isFilled() const { return m_Filled; };
+    inline bool isFilled() const { return m_Filled; };
 
-    void setFilled(const bool Filled) { m_Filled = Filled; };
+    inline void setFilled(const bool Filled) { m_Filled = Filled; };
 
 };
 

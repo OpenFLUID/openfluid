@@ -75,11 +75,11 @@ class DLLEXPORT EventDescriptor
 
     ~EventDescriptor();
 
-    openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
+    inline openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
 
-    openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
+    inline openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
 
-    openfluid::core::Event& getEvent() { return m_Event; };
+    inline openfluid::core::Event& getEvent() { return m_Event; };
 
 };
 

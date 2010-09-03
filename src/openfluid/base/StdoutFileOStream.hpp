@@ -103,11 +103,11 @@ class DLLEXPORT StdoutAndFileOutputStream
 
     ~StdoutAndFileOutputStream();
 
-    std::ofstream& getFile() { return m_FileLogger; };
+    inline std::ofstream& getFile() { return m_FileLogger; };
 
-    std::ostream& getStdout() { return std::cout; };
+    inline std::ostream& getStdout() { return std::cout; };
 
-    TeeStream& get() { return m_Logger; };
+    inline TeeStream& get() { return m_Logger; };
 
     bool open(std::string LogFilePath);
 
@@ -115,7 +115,7 @@ class DLLEXPORT StdoutAndFileOutputStream
 
     void flush();
 
-    bool isOpened() const { return m_FileLogger.is_open(); };
+    inline bool isOpened() const { return m_FileLogger.is_open(); };
 
 };
 

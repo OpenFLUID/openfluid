@@ -116,7 +116,7 @@ class DLLEXPORT DateTimeSerie
 
     bool createIndexedSerie(IndexedSerie *ISerie);
 
-    int getCount();
+    inline int getCount();
 
 };
 

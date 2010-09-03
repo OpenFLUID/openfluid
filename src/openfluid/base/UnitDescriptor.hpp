@@ -80,15 +80,15 @@ class DLLEXPORT UnitDescriptor
     ~UnitDescriptor();
 
 
-    openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
+    inline openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
 
-    openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
+    inline openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
 
-    openfluid::core::PcsOrd_t& getProcessOrder() { return m_PcsOrder; };
+    inline openfluid::core::PcsOrd_t& getProcessOrder() { return m_PcsOrder; };
 
-    std::list<openfluid::core::UnitClassID_t>& getUnitsTos() { return m_UnitsTos; };
+    inline std::list<openfluid::core::UnitClassID_t>& getUnitsTos() { return m_UnitsTos; };
 
-    std::list<openfluid::core::UnitClassID_t>& getUnitsParents() { return m_UnitsParents; };
+    inline std::list<openfluid::core::UnitClassID_t>& getUnitsParents() { return m_UnitsParents; };
 
 };
 

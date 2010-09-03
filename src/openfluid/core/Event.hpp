@@ -137,17 +137,17 @@ class DLLEXPORT Event
     /**
       Returns the number of information
     */
-    int getInfosCount() { return m_Infos.size(); }
+    inline int getInfosCount() { return m_Infos.size(); }
 
     /**
       Returns all the informations as an EventInfosMap
     */
-    EventInfosMap_t getInfos() { return m_Infos; }
+    inline EventInfosMap_t getInfos() { return m_Infos; }
 
     /**
       Returns the date and time of the event
     */
-    DateTime getDateTime() { return m_Date; }
+    inline DateTime getDateTime() { return m_Date; }
 
     /**
       Gets an information as a string

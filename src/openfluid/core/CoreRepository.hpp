@@ -93,11 +93,11 @@ class DLLEXPORT CoreRepository
 
     const UnitsCollection* getUnits(UnitClass_t UnitClass) const;
 
-    const UnitsListByClassMap_t* getUnitsByClass() const { return &m_PcsOrderedUnitsByClass; };
+    inline const UnitsListByClassMap_t* getUnitsByClass() const { return &m_PcsOrderedUnitsByClass; };
 
-    const UnitsPtrList_t* getUnitsGlobally() const { return &m_PcsOrderedUnitsGlobal; };
+    inline const UnitsPtrList_t* getUnitsGlobally() const { return &m_PcsOrderedUnitsGlobal; };
 
-    UnitsPtrList_t* getUnitsGlobally() { return &m_PcsOrderedUnitsGlobal; };
+    inline UnitsPtrList_t* getUnitsGlobally() { return &m_PcsOrderedUnitsGlobal; };
 
     bool isUnitsClassExist(UnitClass_t UnitClass) const;
 

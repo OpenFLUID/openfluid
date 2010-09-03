@@ -87,9 +87,9 @@ class DLLEXPORT UnitsCollection
 
     void sortByProcessOrder();
 
-    const UnitsList_t* getList() const { return &m_Data; };
+    inline const UnitsList_t* getList() const { return &m_Data; };
 
-    UnitsList_t* getList() { return &m_Data; };
+    inline UnitsList_t* getList() { return &m_Data; };
 
 };
 

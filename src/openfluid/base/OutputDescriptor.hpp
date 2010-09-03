@@ -76,9 +76,9 @@ class DLLEXPORT OutputDescriptor
 
     ~OutputDescriptor();
 
-    std::vector<OutputFilesDescriptor>& getFileSets() {return m_FileSets; };
+    inline std::vector<OutputFilesDescriptor>& getFileSets() {return m_FileSets; };
 
-    const std::vector<OutputFilesDescriptor>& getFileSets() const {return m_FileSets; };
+    inline const std::vector<OutputFilesDescriptor>& getFileSets() const {return m_FileSets; };
 
 };
 

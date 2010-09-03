@@ -167,13 +167,13 @@ class DLLEXPORT ColumnTextParser
       Returns the number of lines
       @return the number of lines
     */
-    int getLinesCount() const { return m_LinesCount;};
+    inline int getLinesCount() const { return m_LinesCount;};
 
     /**
       Returns the number of columns
       @return the number of columns
     */
-    int getColsCount() const { return m_ColsCount;};
+    inline int getColsCount() const { return m_ColsCount;};
 
     void streamContents(std::ostream& OStream);
 

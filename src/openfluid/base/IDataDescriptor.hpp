@@ -79,11 +79,11 @@ class DLLEXPORT InputDataDescriptor
 
     ~InputDataDescriptor();
 
-    openfluid::core::UnitClass_t& getUnitsClass() { return m_UnitsClass; };
+    inline openfluid::core::UnitClass_t& getUnitsClass() { return m_UnitsClass; };
 
-    std::vector<std::string>& getColumnsOrder() { return m_ColumnsOrder; };
+    inline std::vector<std::string>& getColumnsOrder() { return m_ColumnsOrder; };
 
-    std::string& getDataBlob() { return m_DataBlob; };
+    inline std::string& getDataBlob() { return m_DataBlob; };
 
 };
 

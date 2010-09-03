@@ -79,13 +79,21 @@ class DLLEXPORT SimulationBlob
 
     ~SimulationBlob();
 
-    openfluid::core::CoreRepository& getCoreRepository() { return m_CoreRepos; };
+    inline openfluid::core::CoreRepository& getCoreRepository() { return m_CoreRepos; };
 
-    openfluid::base::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
+    inline openfluid::base::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
 
-    openfluid::base::OutputDescriptor& getOutputDescriptor() {return  m_OutputDescriptor; };
+    inline openfluid::base::OutputDescriptor& getOutputDescriptor() {return  m_OutputDescriptor; };
 
-    openfluid::base::ExecutionMessages& getExecutionMessages() {return  m_ExecMessages; };
+    inline openfluid::base::ExecutionMessages& getExecutionMessages() {return  m_ExecMessages; };
+
+    inline const openfluid::core::CoreRepository& getCoreRepository() const { return m_CoreRepos; };
+
+    inline const openfluid::base::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
+
+    inline const openfluid::base::OutputDescriptor& getOutputDescriptor() const {return  m_OutputDescriptor; };
+
+    inline const openfluid::base::ExecutionMessages& getExecutionMessages() const {return  m_ExecMessages; };
 
 
 

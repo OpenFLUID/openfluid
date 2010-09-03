@@ -74,9 +74,9 @@ class DLLEXPORT ModelDescriptor
   public:
     ModelDescriptor();
 
-    ModelDescription_t& getItems() { return (m_ModelDescription); };
+    inline ModelDescription_t& getItems() { return (m_ModelDescription); };
 
-    const ModelDescription_t& getItems() const { return (m_ModelDescription); };
+    inline const ModelDescription_t& getItems() const { return (m_ModelDescription); };
 
     void appendItem(ModelItemDescriptor *Item);
 

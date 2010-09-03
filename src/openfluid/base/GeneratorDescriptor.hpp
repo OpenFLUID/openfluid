@@ -91,11 +91,11 @@ class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorMethod getGeneratorMethod() const;
 
-    bool isVectorVariable() const { return (m_VarSize > 1); };
+    inline bool isVectorVariable() const { return (m_VarSize > 1); };
 
-    bool isScalarVariable() const { return (!isVectorVariable()); };
+    inline bool isScalarVariable() const { return (!isVectorVariable()); };
 
-    unsigned int getVariableSize() const { return m_VarSize; };
+    inline unsigned int getVariableSize() const { return m_VarSize; };
 
 
 };

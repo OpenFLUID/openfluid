@@ -138,7 +138,7 @@ class DLLEXPORT RuntimeEnvironment
     void setInputDir(const std::string InputDir)
       { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
 
-    std::string getInputDir() const { return m_InputDir; };
+    inline std::string getInputDir() const { return m_InputDir; };
 
     void setOutputDir(const std::string OutputDir)
       { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
@@ -147,36 +147,36 @@ class DLLEXPORT RuntimeEnvironment
 
     void setDateTimeOutputDir();
 
-    std::string getTempDir() const
+    inline std::string getTempDir() const
       { return m_TempDir; mp_FuncEnv->setValue("dir.temp",m_OutputDir); };
 
     std::string getInputFullPath(std::string Filename) const
       { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
 
-    std::string getOutputFullPath(std::string Filename) const
+    inline std::string getOutputFullPath(std::string Filename) const
       { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     std::string getPluginFullPath(std::string Filename);
 
     void addExtraPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
+    inline std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
 
-    openfluid::base::EnvironmentProperties& getExtraProperties()
+    inline openfluid::base::EnvironmentProperties& getExtraProperties()
       { return m_ExtraProperties; };
 
-    bool isClearOutputDir() const { return m_ClearOutputDir; };
+    inline bool isClearOutputDir() const { return m_ClearOutputDir; };
 
-    void setClearOutputDir(bool ClearDir)
+    inline void setClearOutputDir(bool ClearDir)
       { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
-    bool isWriteResults() const
+    inline bool isWriteResults() const
       { return m_WriteResults; };
 
     void setWriteResults(bool WriteIt)
       { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
 
-    bool isWriteSimReport() const { return m_WriteSimReport; };
+    inline bool isWriteSimReport() const { return m_WriteSimReport; };
 
     void setWriteSimReport(bool WriteIt)
       { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
@@ -188,7 +188,7 @@ class DLLEXPORT RuntimeEnvironment
     boost::posix_time::ptime getIgnitionDateTime() const
       { return m_IgnitionDateTime; };
 
-    std::string getSimulationID() const {return m_SimulationID; };
+    inline std::string getSimulationID() const {return m_SimulationID; };
 
     void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
 
@@ -219,7 +219,7 @@ class DLLEXPORT RuntimeEnvironment
     void setValuesBufferSize(const unsigned int StepsNbr)
       {m_ValuesBufferSize = StepsNbr; m_IsUserValuesBufferSize = true;};
 
-    unsigned int getValuesBufferSize() const
+    inline unsigned int getValuesBufferSize() const
       { return m_ValuesBufferSize; };
 
     bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
@@ -227,7 +227,7 @@ class DLLEXPORT RuntimeEnvironment
     void setFilesBufferSize(const unsigned int Bytes)
       {m_FilesBufferSize = Bytes; };
 
-    unsigned int getFilesBufferSize() const
+    inline unsigned int getFilesBufferSize() const
       { return m_FilesBufferSize; };
 
 };

@@ -86,7 +86,7 @@ class DLLEXPORT DataSourcesFile
 
     bool load(std::string Filename);
 
-    std::vector<int> getIDs();
+    inline std::vector<int> getIDs() const { return m_IDs; };
 
     std::string getSource(int ID);
 

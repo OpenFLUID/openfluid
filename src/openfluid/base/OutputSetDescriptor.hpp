@@ -86,44 +86,44 @@ class DLLEXPORT OutputSetDescriptor
 
     ~OutputSetDescriptor();
 
-    void setName(const std::string Name) { m_Name = Name; };
+    inline void setName(const std::string Name) { m_Name = Name; };
 
-    std::string getName() const { return m_Name; };
+    inline std::string getName() const { return m_Name; };
 
-    void setUnitsClass(const std::string UnitsClass)  { m_UnitsClass = UnitsClass; };
+    inline void setUnitsClass(const std::string UnitsClass)  { m_UnitsClass = UnitsClass; };
 
-    std::string getUnitsClass() const { return m_UnitsClass; };
+    inline std::string getUnitsClass() const { return m_UnitsClass; };
 
-    unsigned int getPrecision() const { return m_Precision; };
+    inline unsigned int getPrecision() const { return m_Precision; };
 
-    void setPrecision(const unsigned int Precision) { m_Precision = Precision; };
+    inline void setPrecision(const unsigned int Precision) { m_Precision = Precision; };
 
-    void setAllUnits(bool AllUnits) { m_AllUnits = AllUnits; };
+    inline void setAllUnits(bool AllUnits) { m_AllUnits = AllUnits; };
 
-    bool isAllUnits() const {return m_AllUnits; };
+    inline bool isAllUnits() const {return m_AllUnits; };
 
-    std::vector<openfluid::core::UnitID_t>& getUnitsIDs() { return m_UnitsIDs; };
+    inline std::vector<openfluid::core::UnitID_t>& getUnitsIDs() { return m_UnitsIDs; };
 
-    const std::vector<openfluid::core::UnitID_t>& getUnitsIDs() const { return m_UnitsIDs; };
+    inline const std::vector<openfluid::core::UnitID_t>& getUnitsIDs() const { return m_UnitsIDs; };
 
-    std::vector<openfluid::core::Unit*>& getUnitsPtr() { return m_UnitsPtr; };
+    inline std::vector<openfluid::core::Unit*>& getUnitsPtr() { return m_UnitsPtr; };
 
 
-    void setAllScalars(bool AllScalars) { m_AllScalars = AllScalars; };
+    inline void setAllScalars(bool AllScalars) { m_AllScalars = AllScalars; };
 
-    bool isAllScalars() const {return m_AllScalars; };
+    inline bool isAllScalars() const {return m_AllScalars; };
 
-    std::vector<std::string>& getScalars() { return m_ScalarVariables; };
+    inline std::vector<std::string>& getScalars() { return m_ScalarVariables; };
 
-    const std::vector<std::string>& getScalars() const { return m_ScalarVariables; };
+    inline const std::vector<std::string>& getScalars() const { return m_ScalarVariables; };
 
-    void setAllVectors(bool AllVectors) { m_AllVectors = AllVectors; };
+    inline void setAllVectors(bool AllVectors) { m_AllVectors = AllVectors; };
 
-    bool isAllVectors() const {return m_AllVectors; };
+    inline bool isAllVectors() const {return m_AllVectors; };
 
-    std::vector<std::string>& getVectors() { return m_VectorVariables; };
+    inline std::vector<std::string>& getVectors() { return m_VectorVariables; };
 
-    const std::vector<std::string>& getVectors() const { return m_VectorVariables; };
+    inline const std::vector<std::string>& getVectors() const { return m_VectorVariables; };
 };
 
 

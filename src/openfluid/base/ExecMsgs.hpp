@@ -108,15 +108,15 @@ class DLLEXPORT ExecutionMessages
 
     void addWarning(std::string Sender, std::string WarningMsg) { addWarning(Message(Sender,"",WarningMsg)); };
 
-    void resetWarningFlag() { m_WarningFlag = false; };
+    inline void resetWarningFlag() { m_WarningFlag = false; };
 
-    bool isWarningFlag() const { return m_WarningFlag; };
+    inline bool isWarningFlag() const { return m_WarningFlag; };
 
-    std::vector<Message> getWarningMsgs() const { return m_WarningMsgs; };
+    inline std::vector<Message> getWarningMsgs() const { return m_WarningMsgs; };
 
-    void doMemRelease() { m_WarningMsgs.clear(); };
+    inline void doMemRelease() { m_WarningMsgs.clear(); };
 
-    unsigned int getWarningsCount() const { return m_RealWarningsCount; };
+    inline unsigned int getWarningsCount() const { return m_RealWarningsCount; };
 
 };
 
