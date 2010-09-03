@@ -80,21 +80,21 @@ DomainModule::DomainModule()
 
 
   // List units
-  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
-
-  mp_CoreData = openfluid::core::CoreRepository::getInstance();
-  unsigned int UnitsCount = 0;
-  for (UnitsIt = mp_CoreData->getUnitsByClass()->begin(); UnitsIt != mp_CoreData->getUnitsByClass()->end();++UnitsIt )
-  {
-    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
-  }
-
-  Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose("%1 units : ",UnitsCount));
-
-  for (UnitsIt = mp_CoreData->getUnitsByClass()->begin(); UnitsIt != mp_CoreData->getUnitsByClass()->end();++UnitsIt )
-  {
-    Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose(" - %1, %2 units",UnitsIt->first,UnitsIt->second.getList()->size()));
-  }
+//  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
+//
+//  mp_CoreData = openfluid::core::CoreRepository::getInstance();
+//  unsigned int UnitsCount = 0;
+//  for (UnitsIt = mp_CoreData->getUnitsByClass()->begin(); UnitsIt != mp_CoreData->getUnitsByClass()->end();++UnitsIt )
+//  {
+//    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
+//  }
+//
+//  Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose("%1 units : ",UnitsCount));
+//
+//  for (UnitsIt = mp_CoreData->getUnitsByClass()->begin(); UnitsIt != mp_CoreData->getUnitsByClass()->end();++UnitsIt )
+//  {
+//    Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose(" - %1, %2 units",UnitsIt->first,UnitsIt->second.getList()->size()));
+//  }
 
 }
 

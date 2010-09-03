@@ -66,29 +66,37 @@
 
 ModuleInterface::ModuleInterface(Glib::ustring FileName, Glib::ustring ContainerName, Glib::ustring MenuName, Glib::ustring ToolBarName)
 {
-    try
+  try
+  {
+    mp_Builder = Gtk::Builder::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,FileName));
+  }
+  catch (const Glib::FileError & E)
+  {
+    std::cerr << E.what() << std::endl;
+  }
+
+  if(ContainerName != "")
+    mp_Builder->get_widget(ContainerName, mp_Container);
+  else
+    mp_Container = 0;
+
+  if(MenuName != "")
+    mp_Builder->get_widget(MenuName, mp_Menu);
+  else
+    mp_Menu = 0;
+
+  if(ToolBarName != "")
+  {
+    Gtk::Toolbar * ToolBar = 0;
+    mp_Builder->get_widget(ToolBarName, ToolBar);
+
+    // while items exist
+    while(Gtk::ToolItem * ToolItem = ToolBar->get_nth_item(0))
     {
-      mp_Builder = Gtk::Builder::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,FileName));
+      m_ToolItems.push_back(ToolItem);
+      ToolBar->remove(*ToolItem);
     }
-    catch (const Glib::FileError & E)
-    {
-      std::cerr << E.what() << std::endl;
-    }
-
-    if(ContainerName != "")
-      mp_Builder->get_widget(ContainerName, mp_Container);
-    else
-      mp_Container = 0;
-
-    if(MenuName != "")
-      mp_Builder->get_widget(MenuName, mp_Menu);
-    else
-      mp_Menu = 0;
-
-    if(ToolBarName != "")
-      mp_Builder->get_widget(ToolBarName, mp_ToolBar);
-    else
-      mp_ToolBar = 0;
+  }
 
 }
 
@@ -101,7 +109,6 @@ ModuleInterface::~ModuleInterface()
 {
   delete mp_Container;
   delete mp_Menu;
-  delete mp_ToolBar;
 }
 
 

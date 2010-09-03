@@ -256,117 +256,105 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="MainToolBarContainer">
+          <object class="GtkToolbar" id="MainToolBar">
             <property name="visible">True</property>
+            <property name="show_arrow">False</property>
             <child>
-              <object class="GtkHandleBox" id="handlebox1">
+              <object class="GtkToolButton" id="ToolButtonNewEmpty">
                 <property name="visible">True</property>
-                <child>
-                  <object class="GtkToolbar" id="MainToolBar">
-                    <property name="visible">True</property>
-                    <property name="show_arrow">False</property>
-                    <child>
-                      <object class="GtkToolButton" id="ToolButtonNewEmpty">
-                        <property name="visible">True</property>
-                        <property name="related_action">ActionNewEmpty</property>
-                        <property name="use_action_appearance">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolButton" id="ToolButtonNewFrom">
-                        <property name="visible">True</property>
-                        <property name="related_action">ActionNewFrom</property>
-                        <property name="use_action_appearance">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolButton" id="ToolButtonOpen">
-                        <property name="visible">True</property>
-                        <property name="related_action">ActionOpen</property>
-                        <property name="use_action_appearance">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolButton" id="ToolButtonSave">
-                        <property name="visible">True</property>
-                        <property name="related_action">ActionSave</property>
-                        <property name="use_action_appearance">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorToolItem" id="toolbutton1">
-                        <property name="visible">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolButton" id="ToolButtonCheckProject">
-                        <property name="visible">True</property>
-                        <property name="related_action">ActionCheckProject</property>
-                        <property name="use_action_appearance">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolButton" id="ToolButtonRun">
-                        <property name="visible">True</property>
-                        <property name="related_action">ActionRun</property>
-                        <property name="use_action_appearance">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorToolItem" id="sep">
-                        <property name="visible">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
+                <property name="related_action">ActionNewEmpty</property>
+                <property name="use_action_appearance">True</property>
+                <property name="label" translatable="yes">_Nouveau</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-new</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ToolButtonNewFrom">
+                <property name="visible">True</property>
+                <property name="related_action">ActionNewFrom</property>
+                <property name="use_action_appearance">True</property>
+                <property name="label" translatable="yes">dummy</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ToolButtonOpen">
+                <property name="visible">True</property>
+                <property name="related_action">ActionOpen</property>
+                <property name="use_action_appearance">True</property>
+                <property name="label" translatable="yes">_Ouvrir</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-open</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ToolButtonSave">
+                <property name="visible">True</property>
+                <property name="related_action">ActionSave</property>
+                <property name="use_action_appearance">True</property>
+                <property name="label" translatable="yes">_Enregistrer</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-save</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="toolbutton1">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ToolButtonCheckProject">
+                <property name="visible">True</property>
+                <property name="related_action">ActionCheckProject</property>
+                <property name="use_action_appearance">True</property>
+                <property name="label" translatable="yes">_Valider</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-ok</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ToolButtonRun">
+                <property name="visible">True</property>
+                <property name="related_action">ActionRun</property>
+                <property name="use_action_appearance">True</property>
+                <property name="label" translatable="yes">E_x&#xE9;cuter</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-execute</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">1</property>
           </packing>
         </child>

@@ -88,8 +88,6 @@ class BuilderApp
 
     Gtk::Toolbar * mp_MainToolBar;
 
-    Gtk::HBox * mp_MainToolBarContainer;
-
     Gtk::Box * mp_ProjectContainer;
 
     Gtk::Container * mp_HomeContainer;

@@ -92,7 +92,6 @@ BuilderApp::BuilderApp(int argc, char** argv)
   {
     mp_Builder->get_widget("MainMenuBar",mp_MainMenuBar);
     mp_Builder->get_widget("MainToolBar",mp_MainToolBar);
-    mp_Builder->get_widget("MainToolBarContainer",mp_MainToolBarContainer);
     mp_Builder->get_widget("ProjectContainer",mp_ProjectContainer);
     mp_Builder->get_widget("ViewportHome",mp_HomeContainer);
 
@@ -748,18 +747,19 @@ void BuilderApp::createProject(Glib::ustring FolderIn)
         mp_MainMenuBar->items().insert(It,Gtk::Menu_Helpers::MenuElem(Module->getModuleName(), *Menu));
       }
 
-      // add ToolBar to a HandleBox
-      if(Gtk::Toolbar * ToolBar = Module->getToolBar())
+      // add ToolItems
+      std::vector<Gtk::ToolItem *> ToolItems = Module->getToolItems();
+
+      if(!ToolItems.empty())
       {
-        Gtk::HandleBox * HandleBox = new Gtk::HandleBox();
+        mp_MainToolBar->add(*(Gtk::manage(new Gtk::SeparatorToolItem())));
 
-        HandleBox->add(*ToolBar);
+        for(unsigned int i=0 ; i<ToolItems.size() ; i++)
+        {
+          mp_MainToolBar->add(*(ToolItems[i]));
+        }
 
-        mp_MainToolBarContainer->pack_start(*HandleBox,false,false);
-
-        HandleBox->set_visible(true);
-
-        ToolBar->set_show_arrow(false);
+        mp_MainToolBar->show_all();
       }
 
     }
@@ -806,10 +806,22 @@ void BuilderApp::deleteProject()
       mp_MainMenuBar->items().erase(--It);
     }
 
-    // delete ToolBar HandleBox
-    if(Gtk::Toolbar * ToolBar = Module->getToolBar())
+    // remove ToolItems
+    std::vector<Gtk::ToolItem *> ToolItems = Module->getToolItems();
+
+    if(!ToolItems.empty())
     {
-      mp_MainToolBarContainer->remove(*(ToolBar->get_parent()));
+      for(unsigned int i=0 ; i<ToolItems.size() ; i++)
+      {
+        mp_MainToolBar->remove(*(ToolItems[i]));
+      }
+
+    }
+
+    // remove remaining separators
+    while(Gtk::SeparatorToolItem * Sep = dynamic_cast<Gtk::SeparatorToolItem *>(mp_MainToolBar->get_nth_item(mp_MainToolBar->get_n_items()-1)))
+    {
+      mp_MainToolBar->remove(*Sep);
     }
 
   }

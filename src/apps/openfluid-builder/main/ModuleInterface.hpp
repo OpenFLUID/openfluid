@@ -78,7 +78,7 @@ class ModuleInterface
 
     Gtk::Menu * getMenu() { return mp_Menu; };
 
-    Gtk::Toolbar * getToolBar() { return mp_ToolBar; };
+    std::vector<Gtk::ToolItem *> getToolItems() { return m_ToolItems; };
 
     Glib::ustring getModuleName() { return m_ModuleName; };
 
@@ -97,7 +97,7 @@ class ModuleInterface
 
     Gtk::Menu * mp_Menu;
 
-    Gtk::Toolbar * mp_ToolBar;
+    std::vector<Gtk::ToolItem *> m_ToolItems;
 
     Glib::ustring m_ModuleName;
 
