@@ -115,7 +115,11 @@ class DLLEXPORT StdoutAndFileOutputStream
 
     void flush();
 
+#if defined WIN32
+    inline bool isOpened() { return m_FileLogger.is_open(); };
+#elif defined __unix__ || defined __APPLE__
     inline bool isOpened() const { return m_FileLogger.is_open(); };
+#endif
 
 };
 
