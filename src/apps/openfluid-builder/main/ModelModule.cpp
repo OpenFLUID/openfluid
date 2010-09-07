@@ -74,10 +74,14 @@ ModelModule::ModelModule(openfluid::machine::ModelInstance & Model)
 
   createActions();
 
+  mp_ModelAvailFct = new ModelAvailFct(mp_Builder);
+
+
+  //List functions
+
   Gtk::Label * Label = 0;
   mp_Builder->get_widget("label8",Label);
 
-  //List functions
   Label->set_text(Glib::ustring::compose("%1 functions : ",Model.getItemsCount()));
 
   const std::list<openfluid::machine::ModelItemInstance*> Functions = Model.getItems();
@@ -112,7 +116,6 @@ void ModelModule::createActions()
 
   m_Actions.push_back(ActionCheckModel);
 
-
 }
 
 
@@ -134,3 +137,6 @@ void ModelModule::actionCheckModel()
 {
 
 }
+
+
+

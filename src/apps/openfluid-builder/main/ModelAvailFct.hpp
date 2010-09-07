@@ -46,45 +46,95 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file ModelAvailFct.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
+#ifndef __MODELAVAILFCT_HPP__
+#define __MODELAVAILFCT_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
-
 
 // =====================================================================
 // =====================================================================
 
 
-class ModelModule : public ModuleInterface
+class ModelAvailFct
 {
   public:
 
-    ModelModule(openfluid::machine::ModelInstance & Model);
+    ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
-    ~ModelModule();
+    ~ModelAvailFct();
 
   private:
 
-    ModelAvailFct * mp_ModelAvailFct;
+    Gtk::TreeView * mp_TreeViewAvailFct;
 
-    void createActions();
+    Glib::RefPtr<Gtk::TreeStore> mp_TreeModelAvailFct;
 
-    void actionCheckModel();
+    // Tree Model columns
+    class ModelColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+      ModelColumns()
+        { add(m_FunctionType);  add(m_FunctionId); add(m_FunctionName); add(m_FunctionDescription);
+          add(m_FunctionVersion); add(m_FunctionSDKVersion); add(m_FunctionStatus); add(m_FunctionDomain);
+          add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail); }
+
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionType;
+
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionId;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionName;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionDescription;
+
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionVersion;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionSDKVersion;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionStatus;
+
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionDomain;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionProcess;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionMethod;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorName;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorEmail;
+    };
+
+    ModelColumns m_Columns;
+
+
+    Gtk::Notebook * mp_NotebookAvailFct;
+
+    Gtk::Label * mp_LabelAvailFctId;
+    Gtk::Label * mp_LabelAvailFctName;
+    Gtk::Label * mp_LabelAvailFctDescription;
+
+    Gtk::Label * mp_LabelAvailFctVersion;
+    Gtk::Label * mp_LabelAvailFctSDKVersion;
+    Gtk::Label * mp_LabelAvailFctStatus;
+
+    Gtk::Label * mp_LabelAvailFctDomain;
+    Gtk::Label * mp_LabelAvailFctProcess;
+    Gtk::Label * mp_LabelAvailFctMethod;
+    Gtk::Label * mp_LabelAvailFctAuthorName;
+    Gtk::Label * mp_LabelAvailFctAuthorEmail;
+
+    bool isFunctionRowSelectable(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
+
+    void onAvalaibleFunctionSelected();
 
 };
 
-#endif /* __MODELMODULE_HPP__ */
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
+#endif /* __MODELAVAILFCT_HPP__ */
