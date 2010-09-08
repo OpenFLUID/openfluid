@@ -1,4 +1,4 @@
-1.6.0~beta1
+1.6.0~rc1
 
   * Refactored framework architecture
   * Introduced global process order (transverse to units classes)
