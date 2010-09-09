@@ -75,57 +75,88 @@ class ModelAvailFct
   private:
 
     Gtk::TreeView * mp_TreeViewAvailFct;
+    Gtk::TreeView * mp_TreeViewFctVars;
 
     Glib::RefPtr<Gtk::TreeStore> mp_TreeModelAvailFct;
 
-    // Tree Model columns
+    // Available functions tree model columns
     class ModelColumns : public Gtk::TreeModel::ColumnRecord
     {
       public:
       ModelColumns()
-        { add(m_FunctionType);  add(m_FunctionId); add(m_FunctionName); add(m_FunctionDescription);
-          add(m_FunctionVersion); add(m_FunctionSDKVersion); add(m_FunctionStatus); add(m_FunctionDomain);
-          add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail); }
-
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionType;
+        { add(m_FunctionId); add(m_FunctionName); add(m_FunctionPath); add(m_FunctionDescription);
+          add(m_FunctionVersion); add(m_FunctionStatusStr);add(m_FunctionStatusIcon); add(m_FunctionDomain);
+          add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail);
+          add(m_FunctionParams); add(m_FunctionProducedVars); add(m_FunctionUpdatedVars);
+          add(m_FunctionRequiredVars); add(m_FunctionUsedVars); add(m_FunctionRequiredPrevVars);
+          add(m_FunctionUsedPrevVars);}
 
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionId;
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionName;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionPath;
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionDescription;
 
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionVersion;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionSDKVersion;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionStatus;
+      Gtk::TreeModelColumn<Glib::ustring> m_FunctionStatusStr;
+      Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_FunctionStatusIcon;
 
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionDomain;
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionProcess;
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionMethod;
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorName;
       Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorEmail;
+
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionParams;
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionProducedVars;
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionUpdatedVars;
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionRequiredVars;
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionUsedVars;
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionRequiredPrevVars;
+      Gtk::TreeModelColumn<std::vector<openfluid::base::SignatureHandledDataItem> > m_FunctionUsedPrevVars;
+
     };
+
 
     ModelColumns m_Columns;
 
 
-    Gtk::Notebook * mp_NotebookAvailFct;
+    // Functions Variables tree model columns
+    class ModelColumnsVariables : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+      ModelColumnsVariables()
+      { add(m_FctVarName); add(m_FctVarUnit);
+        add(m_FctVarUnitClass); add(m_FctVarDesc); }
+
+      Gtk::TreeModelColumn<Glib::ustring> m_FctVarName;
+      Gtk::TreeModelColumn<Glib::ustring> m_FctVarUnit;
+      Gtk::TreeModelColumn<Glib::ustring> m_FctVarUnitClass;
+      Gtk::TreeModelColumn<Glib::ustring> m_FctVarDesc;
+     };
+
+    ModelColumnsVariables m_ColumnsVar;
 
     Gtk::Label * mp_LabelAvailFctId;
     Gtk::Label * mp_LabelAvailFctName;
+    Gtk::Label * mp_LabelAvailFctPath;
     Gtk::Label * mp_LabelAvailFctDescription;
-
     Gtk::Label * mp_LabelAvailFctVersion;
-    Gtk::Label * mp_LabelAvailFctSDKVersion;
     Gtk::Label * mp_LabelAvailFctStatus;
-
     Gtk::Label * mp_LabelAvailFctDomain;
     Gtk::Label * mp_LabelAvailFctProcess;
     Gtk::Label * mp_LabelAvailFctMethod;
     Gtk::Label * mp_LabelAvailFctAuthorName;
     Gtk::Label * mp_LabelAvailFctAuthorEmail;
 
+    Gtk::Table * mp_TableAvailFctParams;
+    Gtk::Label * mp_LabelAvailFctParamsEmpty;
+
+
     bool isFunctionRowSelectable(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
 
     void onAvalaibleFunctionSelected();
+
+    void createFctVarsTree(Glib::RefPtr<Gtk::TreeStore> TreeModel, Glib::ustring Title, std::vector<openfluid::base::SignatureHandledDataItem> Vars);
 
 };
 

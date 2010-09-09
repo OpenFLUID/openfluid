@@ -57,6 +57,9 @@
 #include <boost/filesystem.hpp>
 
 #include <openfluid/machine.hpp>
+#include <openfluid/base.hpp>
+
+#include "builderconfig.hpp"
 
 #include "ModelAvailFct.hpp"
 
@@ -68,13 +71,13 @@
 ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 {
   GladeBuilder->get_widget("TreeViewAvailFct",mp_TreeViewAvailFct);
-  GladeBuilder->get_widget("NotebookAvailFct",mp_NotebookAvailFct);
+  GladeBuilder->get_widget("TreeViewFctVars",mp_TreeViewFctVars);
 
   GladeBuilder->get_widget("LabelAvailFctId",mp_LabelAvailFctId);
   GladeBuilder->get_widget("LabelAvailFctName",mp_LabelAvailFctName);
+  GladeBuilder->get_widget("LabelAvailFctPath",mp_LabelAvailFctPath);
   GladeBuilder->get_widget("LabelAvailFctDescription",mp_LabelAvailFctDescription);
   GladeBuilder->get_widget("LabelAvailFctVersion",mp_LabelAvailFctVersion);
-  GladeBuilder->get_widget("LabelAvailFctSDKVersion",mp_LabelAvailFctSDKVersion);
   GladeBuilder->get_widget("LabelAvailFctStatus",mp_LabelAvailFctStatus);
   GladeBuilder->get_widget("LabelAvailFctDomain",mp_LabelAvailFctDomain);
   GladeBuilder->get_widget("LabelAvailFctProcess",mp_LabelAvailFctProcess);
@@ -82,13 +85,22 @@ ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
   GladeBuilder->get_widget("LabelAvailFctAuthorName",mp_LabelAvailFctAuthorName);
   GladeBuilder->get_widget("LabelAvailFctAuthorEmail",mp_LabelAvailFctAuthorEmail);
 
+  GladeBuilder->get_widget("TableAvailFctParams",mp_TableAvailFctParams);
+
+  Glib::RefPtr<Gdk::Pixbuf> IconRed = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,"red.svg"),8,-1,true);
+  Glib::RefPtr<Gdk::Pixbuf> IconOrange = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,"orange.svg"),8,-1,true);
+  Glib::RefPtr<Gdk::Pixbuf> IconGreen = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,"green.svg"),8,-1,true);
+
+  mp_LabelAvailFctParamsEmpty = new Gtk::Label(_("(none)"));
 
   //Create the Tree model
   mp_TreeModelAvailFct = Gtk::TreeStore::create(m_Columns);
 
   // Add rows to the tree model
+      // Simulation functions rows
   Gtk::TreeModel::Row SimulFctRow = *(mp_TreeModelAvailFct->append());
-  SimulFctRow[m_Columns.m_FunctionType] = _("Simulation Functions");
+
+  SimulFctRow[m_Columns.m_FunctionId] = _("Simulation Functions");
 
   openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
 
@@ -96,96 +108,90 @@ ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
   {
     if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
     {
-      boost::filesystem::path TmpPath(PlugContainers[i]->Filename);
-      TmpPath = boost::filesystem::change_extension(TmpPath,"");
+      Gtk::TreeModel::Row Row = *(mp_TreeModelAvailFct->append(SimulFctRow.children()));
 
-      Glib::ustring StatusStr="";
+      Row[m_Columns.m_FunctionId] = PlugContainers[i]->Signature->ID;
+      Row[m_Columns.m_FunctionName] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)"));
+      Row[m_Columns.m_FunctionPath] = ((boost::filesystem::path)PlugContainers[i]->Filename).parent_path().string();
+
+      Row[m_Columns.m_FunctionDescription] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)"));
+      Row[m_Columns.m_FunctionVersion] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)"));
+
+      Row[m_Columns.m_FunctionDomain] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)"));
+      Row[m_Columns.m_FunctionProcess] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)"));
+      Row[m_Columns.m_FunctionMethod] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)"));
+      Row[m_Columns.m_FunctionAuthorName] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)"));
+      Row[m_Columns.m_FunctionAuthorEmail] = openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)"));
+
       switch(PlugContainers[i]->Signature->Status)
       {
-        case openfluid::base::EXPERIMENTAL: StatusStr = "Experimental";
+        case openfluid::base::EXPERIMENTAL:
+          Row[m_Columns.m_FunctionStatusStr] = "Experimental";
+          Row[m_Columns.m_FunctionStatusIcon] = IconRed;
         break;
-        case openfluid::base::BETA: StatusStr = "Beta";
+
+        case openfluid::base::BETA:
+          Row[m_Columns.m_FunctionStatusStr] = "Beta";
+          Row[m_Columns.m_FunctionStatusIcon] = IconOrange;
         break;
-        case openfluid::base::STABLE: StatusStr = "Stable";
+
+        case openfluid::base::STABLE:
+          Row[m_Columns.m_FunctionStatusStr] = "Stable";
+          Row[m_Columns.m_FunctionStatusIcon] = IconGreen;
         break;
+
+        default:
+          Row[m_Columns.m_FunctionStatusStr] = "(unknown)";
       }
 
-      Gtk::TreeModel::Row Row = *(mp_TreeModelAvailFct->append(SimulFctRow.children()));
-      Row[m_Columns.m_FunctionType] = "";
-      Row[m_Columns.m_FunctionId] = openfluid::tools::ReplaceEmptyString(TmpPath.leaf(),"(unknown simulation function)");
-      Row[m_Columns.m_FunctionName] = PlugContainers[i]->Signature->Name;
-      Row[m_Columns.m_FunctionDescription] = PlugContainers[i]->Signature->Description;
-      Row[m_Columns.m_FunctionVersion] = PlugContainers[i]->Signature->Version;
-      Row[m_Columns.m_FunctionSDKVersion] = PlugContainers[i]->Signature->SDKVersion;
-      Row[m_Columns.m_FunctionStatus] = StatusStr;
-      Row[m_Columns.m_FunctionDomain] = PlugContainers[i]->Signature->Domain;
-      Row[m_Columns.m_FunctionProcess] = PlugContainers[i]->Signature->Process;
-      Row[m_Columns.m_FunctionMethod] = PlugContainers[i]->Signature->Method;
-      Row[m_Columns.m_FunctionAuthorName] = PlugContainers[i]->Signature->Author;
-      Row[m_Columns.m_FunctionAuthorEmail] = PlugContainers[i]->Signature->AuthorEmail;
-
-      openfluid::core::FuncParamsMap_t Params = PlugContainers[i]->Params;
-      openfluid::core::FuncParamsMap_t::const_iterator ParamIt;
-      for (ParamIt = Params.begin() ; ParamIt != Params.end() ; ++ ParamIt)
-      {
-
-        std::cout << ParamIt->first << std::endl;
-      }
+      Row[m_Columns.m_FunctionParams] = PlugContainers[i]->Signature->HandledData.FunctionParams;
+      Row[m_Columns.m_FunctionProducedVars] = PlugContainers[i]->Signature->HandledData.ProducedVars;
+      Row[m_Columns.m_FunctionUpdatedVars] = PlugContainers[i]->Signature->HandledData.UpdatedVars;
+      Row[m_Columns.m_FunctionRequiredVars] = PlugContainers[i]->Signature->HandledData.RequiredVars;
+      Row[m_Columns.m_FunctionUsedVars] = PlugContainers[i]->Signature->HandledData.UsedVars;
+      Row[m_Columns.m_FunctionRequiredPrevVars] = PlugContainers[i]->Signature->HandledData.RequiredPrevVars;
+      Row[m_Columns.m_FunctionUsedPrevVars] = PlugContainers[i]->Signature->HandledData.UsedPrevVars;
     }
   }
+      // Generators rows
+  Gtk::TreeModel::Row GeneratorFctRow = *(mp_TreeModelAvailFct->append());
 
-  // Add rows to the tree model, by Domain
-  //  typedef std::map<Glib::ustring, openfluid::machine::ArrayOfModelItemInstance> PlugByDomain_t;
-  //  PlugByDomain_t PlugByDomain;
+  GeneratorFctRow[m_Columns.m_FunctionId] = _("Generators");
 
-  //  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
-  //
-  //  for (unsigned int i=0;i<PlugContainers.size();i++)
-  //  {
-  //    if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
-  //      PlugByDomain[PlugContainers[i]->Signature->Domain].push_back(PlugContainers[i]);
-  //  }
-  //
-  //  for (PlugByDomain_t::const_iterator it = PlugByDomain.begin() ; it != PlugByDomain.end() ; ++it)
-  //  {
-  //    Gtk::TreeModel::Row DomainRow = *(mp_TreeModelAvailFct->append(SimulFctRow.children()));
-  //    DomainRow[m_Columns.m_FunctionType] = "";
-  //    DomainRow[m_Columns.m_FunctionDomain] = it->first;
-  //    DomainRow[m_Columns.m_FunctionId] = "";
-  //    DomainRow[m_Columns.m_FunctionName] = "";
-  //
-  //    for(unsigned int i=0 ; i<it->second.size() ; i++)
-  //    {
-  //      Gtk::TreeModel::Row Row = *(mp_TreeModelAvailFct->append(DomainRow.children()));
-  //
-  //      boost::filesystem::path TmpPath(it->second[i]->Filename);
-  //      TmpPath = boost::filesystem::change_extension(TmpPath,"");
-  //
-  //      Row[m_Columns.m_FunctionType] = "";
-  //      Row[m_Columns.m_FunctionDomain] = "";
-  //      Row[m_Columns.m_FunctionId] = openfluid::tools::ReplaceEmptyString(TmpPath.leaf(),"(unknown simulation function)");
-  //      Row[m_Columns.m_FunctionName] = it->second[i]->Signature->Name;
-  //    }
-  //  }
+  Gtk::TreeModel::Row Row;
+
+  Row = *(mp_TreeModelAvailFct->append(GeneratorFctRow.children()));
+  Row[m_Columns.m_FunctionId] = "Fixed Generator";
+
+  Row = *(mp_TreeModelAvailFct->append(GeneratorFctRow.children()));
+  Row[m_Columns.m_FunctionId] = "Random Generator";
+
+  Row = *(mp_TreeModelAvailFct->append(GeneratorFctRow.children()));
+  Row[m_Columns.m_FunctionId] = "Interp Generator";
 
 
   // Attach the tree model to the tree view
   mp_TreeViewAvailFct->set_model(mp_TreeModelAvailFct);
 
   // Add columns to the tree view
-  typedef std::pair<Glib::ustring,Gtk::TreeModelColumn<Glib::ustring> > ColumnPair_t;
-  std::vector<ColumnPair_t> Columns;
-  Columns.push_back(std::make_pair("Type",m_Columns.m_FunctionType));
-  Columns.push_back(std::make_pair("Id",m_Columns.m_FunctionId));
-  Columns.push_back(std::make_pair("Domain",m_Columns.m_FunctionDomain));
+  Gtk::TreeView::Column * ColumnId = Gtk::manage(new Gtk::TreeView::Column("Id"));
 
-  for (unsigned int i=0 ; i < Columns.size() ; i++)
-  {
-    mp_TreeViewAvailFct->append_column(Columns[i].first, Columns[i].second);
-    Gtk::TreeView::Column * Column = mp_TreeViewAvailFct->get_column(i);
-    Column->set_sort_column(Columns[i].second);
-    Column->set_resizable();
-  }
+  ColumnId->pack_start(m_Columns.m_FunctionStatusIcon,false);
+  ColumnId->pack_start(m_Columns.m_FunctionId);
+
+  mp_TreeViewAvailFct->append_column(*ColumnId);
+
+  mp_TreeViewAvailFct->append_column("Domain",m_Columns.m_FunctionDomain);
+
+  mp_TreeViewAvailFct->get_column(0)->set_sort_column(m_Columns.m_FunctionId);
+  mp_TreeViewAvailFct->get_column(1)->set_sort_column(m_Columns.m_FunctionDomain);
+
+  mp_TreeViewAvailFct->get_column(0)->set_resizable();
+  mp_TreeViewAvailFct->get_column(1)->set_resizable();
+
+  mp_TreeViewAvailFct->get_column(0)->set_reorderable();
+  mp_TreeViewAvailFct->get_column(1)->set_reorderable();
+
 
   Glib::RefPtr<Gtk::TreeSelection> TreeSelection = mp_TreeViewAvailFct->get_selection();
 
@@ -196,7 +202,6 @@ ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 
   mp_TreeViewAvailFct->expand_all();
 
-  mp_TreeModelAvailFct->set_sort_column(m_Columns.m_FunctionId,Gtk::SORT_ASCENDING);
 
   // Select first available function
   Gtk::TreeModel::iterator sub = mp_TreeModelAvailFct->children()[0]->children()[0];
@@ -212,7 +217,7 @@ ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 
 ModelAvailFct::~ModelAvailFct()
 {
-
+  delete mp_LabelAvailFctParamsEmpty; // not managed
 }
 
 
@@ -228,19 +233,103 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
   {
     Gtk::TreeModel::Row row = *iter;
 
+    // Update selected function Signature
+
     mp_LabelAvailFctId->set_text(row[m_Columns.m_FunctionId]);
     mp_LabelAvailFctName->set_text(row[m_Columns.m_FunctionName]);
+    mp_LabelAvailFctPath->set_text(row[m_Columns.m_FunctionPath]);
     mp_LabelAvailFctDescription->set_text(row[m_Columns.m_FunctionDescription]);
 
     mp_LabelAvailFctVersion->set_text(row[m_Columns.m_FunctionVersion]);
-    mp_LabelAvailFctSDKVersion->set_text(row[m_Columns.m_FunctionSDKVersion]);
-    mp_LabelAvailFctStatus->set_text(row[m_Columns.m_FunctionStatus]);
+    mp_LabelAvailFctStatus->set_text(row[m_Columns.m_FunctionStatusStr]);
 
     mp_LabelAvailFctDomain->set_text(row[m_Columns.m_FunctionDomain]);
     mp_LabelAvailFctProcess->set_text(row[m_Columns.m_FunctionProcess]);
     mp_LabelAvailFctMethod->set_text(row[m_Columns.m_FunctionMethod]);
     mp_LabelAvailFctAuthorName->set_text(row[m_Columns.m_FunctionAuthorName]);
     mp_LabelAvailFctAuthorEmail->set_text(row[m_Columns.m_FunctionAuthorEmail]);
+
+
+    // Update selected function Params
+
+    Gtk::Container * ContainerAvailFctParams = mp_TableAvailFctParams->get_parent();
+
+    ContainerAvailFctParams->remove(*mp_TableAvailFctParams);
+
+    delete mp_TableAvailFctParams;
+
+    std::vector<openfluid::base::SignatureHandledDataItem> Params = row[m_Columns.m_FunctionParams];
+
+    if(Params.empty())
+    {
+      mp_TableAvailFctParams = Gtk::manage(new Gtk::Table(1,1));
+
+      mp_TableAvailFctParams->attach(*mp_LabelAvailFctParamsEmpty,0,1,0,1);
+    }
+    else
+    {
+      mp_TableAvailFctParams = Gtk::manage(new Gtk::Table(Params.size()*2+1,2, false));
+      mp_TableAvailFctParams->set_border_width(3);
+      mp_TableAvailFctParams->set_col_spacings(3);
+
+      mp_TableAvailFctParams->attach(*Gtk::manage(new Gtk::HSeparator()),0,2,0,1,Gtk::FILL|Gtk::EXPAND,Gtk::FILL);
+
+      for(unsigned int i=0 ; i<Params.size() ; i++)
+      {
+        Glib::ustring LabelParamStr = Glib::ustring::compose("%1 (%2) :",Params[i].DataName, Params[i].DataUnit);
+
+        Gtk::Label * LabelParam = Gtk::manage(new Gtk::Label(LabelParamStr,0,0));
+        Gtk::Label * LabelParamDesc = Gtk::manage(new Gtk::Label(Params[i].Description,0,0));
+
+        mp_TableAvailFctParams->attach(*LabelParam,0,1,i*2+1,i*2+2,Gtk::FILL|Gtk::EXPAND,Gtk::FILL);
+        mp_TableAvailFctParams->attach(*LabelParamDesc,1,2,i*2+1,i*2+2,Gtk::FILL|Gtk::EXPAND,Gtk::FILL);
+        mp_TableAvailFctParams->attach(*Gtk::manage(new Gtk::HSeparator()),0,2,i*2+2,i*2+3,Gtk::FILL|Gtk::EXPAND,Gtk::FILL);
+      }
+    }
+
+    ContainerAvailFctParams->add(*mp_TableAvailFctParams);
+
+    ContainerAvailFctParams->show_all_children();
+
+
+    // Update selection function Variables
+
+      //Create the Tree model
+    Glib::RefPtr<Gtk::TreeStore> TreeModelFctVars = Gtk::TreeStore::create(m_ColumnsVar);
+
+      // Add rows to the tree model
+    createFctVarsTree(TreeModelFctVars,_("Produced"),row[m_Columns.m_FunctionProducedVars]);
+    createFctVarsTree(TreeModelFctVars,_("Updated"),row[m_Columns.m_FunctionUpdatedVars]);
+    createFctVarsTree(TreeModelFctVars,_("Required"),row[m_Columns.m_FunctionRequiredVars]);
+    createFctVarsTree(TreeModelFctVars,_("Used"),row[m_Columns.m_FunctionUsedVars]);
+    createFctVarsTree(TreeModelFctVars,_("Required t-1"),row[m_Columns.m_FunctionRequiredPrevVars]);
+    createFctVarsTree(TreeModelFctVars,_("Used t-1"),row[m_Columns.m_FunctionUsedPrevVars]);
+
+      // Attach the tree model to the tree view
+    mp_TreeViewFctVars->unset_model();
+    mp_TreeViewFctVars->set_model(TreeModelFctVars);
+
+      // Add columns to the tree view
+    mp_TreeViewFctVars->remove_all_columns();
+    mp_TreeViewFctVars->append_column(_("Name"),m_ColumnsVar.m_FctVarName);
+    mp_TreeViewFctVars->append_column(_("Unit Class"),m_ColumnsVar.m_FctVarUnitClass);
+    mp_TreeViewFctVars->append_column(_("Unit"),m_ColumnsVar.m_FctVarUnit);
+    mp_TreeViewFctVars->append_column(_("Description"),m_ColumnsVar.m_FctVarDesc);
+
+    mp_TreeViewFctVars->get_column(0)->set_sort_column(m_ColumnsVar.m_FctVarName);
+    mp_TreeViewFctVars->get_column(1)->set_sort_column(m_ColumnsVar.m_FctVarUnitClass);
+
+    mp_TreeViewFctVars->get_column(0)->set_resizable();
+    mp_TreeViewFctVars->get_column(1)->set_resizable();
+    mp_TreeViewFctVars->get_column(2)->set_resizable();
+    mp_TreeViewFctVars->get_column(3)->set_resizable();
+
+    mp_TreeViewFctVars->get_column(0)->set_reorderable();
+    mp_TreeViewFctVars->get_column(1)->set_reorderable();
+    mp_TreeViewFctVars->get_column(2)->set_reorderable();
+    mp_TreeViewFctVars->get_column(3)->set_reorderable();
+
+    mp_TreeViewFctVars->expand_all();
   }
 
 }
@@ -255,4 +344,29 @@ bool ModelAvailFct::isFunctionRowSelectable(const Glib::RefPtr<Gtk::TreeModel>& 
   const Gtk::TreeModel::iterator it = model->get_iter(path);
 
   return it->children().empty(); // only allow leaf nodes to be selected
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelAvailFct::createFctVarsTree(Glib::RefPtr<Gtk::TreeStore> TreeModel, Glib::ustring Title, std::vector<openfluid::base::SignatureHandledDataItem> Vars)
+{
+  if(!Vars.empty())
+  {
+    Gtk::TreeModel::Row TopRow = *(TreeModel->append());
+
+    TopRow[m_ColumnsVar.m_FctVarName] = Title;
+
+    for (unsigned int i=0 ; i<Vars.size() ; i++)
+    {
+      Gtk::TreeModel::Row Row = *(TreeModel->append(TopRow.children()));
+
+      Row[m_ColumnsVar.m_FctVarName] = Vars[i].DataName;
+      Row[m_ColumnsVar.m_FctVarUnit] = Vars[i].DataUnit;
+      Row[m_ColumnsVar.m_FctVarUnitClass] = Vars[i].UnitClass;
+      Row[m_ColumnsVar.m_FctVarDesc] = Vars[i].Description;
+    }
+  }
 }
