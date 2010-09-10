@@ -1,0 +1,22 @@
+/**
+
+\page misc Miscellaneous informations
+
+
+
+\section tools_sec Available tools
+
+The tools have been developped to help function developpers in the set up of data processing or numerical computation. They are available in the namespace openfluid::tools.
+To get more information on theses tools and how to you use it, your are invited to browse the header files (.h) provided with the SDK.    
+
+This involves the following classes and functions (non-exhaustive list): 
+<ul>
+  <li>openfluid::tools::ColumnTextParser
+  <li>openfluid::tools::DateTimeSerie
+  <li>openfluid::tools::DistributeInterpolate    
+  <li>openfluid::tools::IsCloseEnough    
+  <li>openfluid::tools::IsVeryClose    
+</ul>
+
+
+*/

@@ -1,0 +1,72 @@
+/**
+
+\page space Handling space
+
+\section spaceparsing_sec Parsing the spatial domain
+
+The spatial domain is represented by units different classes defined by the users.
+Each unit carries self information that can be exploited through accessor methods (see classes docs),
+and also input data and simulation variables that can be exploited through special
+methods (see \ref funcparams_sec and \ref propini_sec).\n  
+
+The spatial domain can be parsed using the macros intended for handling spatial entities.\n
+
+To parse units of a specific class, you can use:
+<ul>
+<li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
+<li>#BEGIN_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
+</ul>
+
+
+To parse all units of the graph, you can use:
+<ul>
+<li>#DECLARE_GLOBAL_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of the graph, 
+<li>#BEGIN_GLOBAL_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
+</ul>
+
+
+To parse a specific list of units, you can use:
+<ul>
+<li>#DECLARE_UNITS_LIST_LOOP to declare a loop on a list of \link openfluid::core::Unit Unit \endlink, 
+<li>#BEGIN_UNITS_LIST_LOOP to begin, #END_LOOP to end </ul>
+\n
+\code
+bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+  openfluid::core::Unit* SU;
+  openfluid::core::Unit* UU;
+  openfluid::core::Unit* UpSU;
+  openfluid::core::UnitsPtrList_t* UpSUsList;
+
+  DECLARE_UNITS_ORDERED_LOOP(1);
+  DECLARE_UNITS_LIST_LOOP(25);
+  DECLARE_GLOBAL_UNITS_ORDERED_LOOP(10)
+  
+
+  BEGIN_UNITS_ORDERED_LOOP(1,"SU",SU)
+
+    UpSUsList = SU->getFromUnits("SU");
+
+    BEGIN_UNITS_LIST_LOOP(25,UpSUsList,UpSU)
+      OPENFLUID_GetVariable(UpSU,"water.surf.Q.downstream-su",CurrentStep-1,&TmpValue);
+    END_LOOP
+    
+  END_LOOP;
+  
+  
+  BEGIN_GLOBAL_UNITS_ORDERED_LOOP(10,UU)
+  
+    // do something here with UU pointer
+    
+  END_LOOP
+  
+  
+}
+\endcode
+
+
+\section spacemod_sec Modifying the spatial domain graph
+
+<I><B>TODO</B></I>
+
+*/

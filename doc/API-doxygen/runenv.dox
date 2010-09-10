@@ -1,0 +1,39 @@
+/**
+
+\page runenv Access to runtime environment
+
+
+
+The runtime environment are informations about the context during execution of
+the simulation : input and output directories, options passed to
+the OpenFLUID application at runtime (verbose/quiet mode, ...)...
+
+They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_GetRunEnvironment \endlink method.
+
+\code
+bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+{
+  std::string InputDir;
+
+  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
+
+  // the current input directory is now available through the InputDir local variable 
+
+  return true;
+}
+\endcode
+
+
+The keys for requesting runtime environment information are:
+<ul>
+<li>dir.input [string] : the current input directory
+<li>dir.output [string] : the current output directory
+<li>dir.temp [string] : the dirrectory for temporary files
+<li>mode.cleanoutput [boolean] : cleaning output dir before data saving is enabled/disabled
+<li>mode.saveresults [boolean] : result saving in output directory is enabled/disabled
+<li>mode.writereport [boolean] : simulation report saving is enabled/disabled
+</ul>
+
+
+
+*/

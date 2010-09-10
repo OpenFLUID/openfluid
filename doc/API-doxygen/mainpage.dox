@@ -3,26 +3,30 @@
  
 \n 
  
-\section oview_sec Overview
 
-
-The OpenFLUID API is part of the OpenFLUID Source Development Kit (SDK) 
-which also compounds an Eclipse-based Integrated Development Environment (IDE) 
-and the documentation. It is used by the OpenFLUID software applications,
-and also to develop simulation functions that can be used in models.  
-
-
+The OpenFLUID API includes all available features provided by the OpenFLUID libraries that can be used
+to build OpenFLUID software applications and to develop simulation functions.  
 
 \n
 \n 
    
-\section usage_sec Usage   
-   
-The howto-use-it documentation of this library is splitted in three parts:
+Along with the technical information, this API documentation contains specific parts about simulation function development: 
 <ul>
-  <li> the \subpage howitworks page which gives the general organization and features of the library     
-  <li> the \subpage emptyfunc page which explains how to create an empty simulation function
-  <li> the \subpage integrate page which details how to integrate your own code and how to access to simulation data and information 
+  <li> the \subpage howitworks part giving the general organization and features of the library     
+  <li> the \subpage emptyfunc part explaining how to create an empty simulation function
+  <li> the parts for integration of your own code and how to access to simulation data and information
+  <ul>
+  <li>\subpage signature
+  <li>\subpage classoview
+  <li>\subpage space
+  <li>\subpage time
+  <li>\subpage simvardata
+  <li>\subpage internaldata  
+  <li>\subpage warnerrorlog
+  <li>\subpage runenv
+  <li>\subpage fortran
+  <li>\subpage misc    
+  </ul> 
 </ul>   
 
 \n
