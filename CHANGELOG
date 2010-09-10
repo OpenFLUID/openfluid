@@ -8,6 +8,7 @@
   * Removed "progressive output" feature, replaced by circular memory manager 
     and files buffers 
   * Refactored structure for outputs savings
+  * Added log system for simulation functions messages
   * Added actions listeners
   * Added FluidXWriter feature for writing FluidX files from an instanciated
     simulation   
