@@ -64,9 +64,130 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 }
 \endcode
 
+\n
 
 \section spacemod_sec Modifying the spatial domain graph
 
-<I><B>TODO</B></I>
+The spatial domain graph can be defined statically through the input dataset.
+It can also be defined and modified dynamically, during simulations, through primitives allowing to 
+create and delete spatial units, and also to add and remove connections between these
+spatial units.\n
+For better use of simulation functions which modify the spatial domain graph, 
+please fill the signature with the correct directives. See \ref signdatalandgraph_ssec signature.
+
+\n
+
+\subsection spacemodunits_ssec Creating and deleting spatial units
+
+Spatial units can be created and deleted dynamically, whenever during simulations. However, it is really 
+tricky to perform it once the simulation has started (for modelling consistency reasons).
+
+In order to create and delete units, you can use the following methods:
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_AddUnit OPENFLUID_AddUnit \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_DeleteUnit OPENFLUID_DeleteUnit \endlink
+</ul>
+
+\n
+
+\subsection spacemodconns_ssec Adding and removing spatial connections
+
+Connections between spatial units can be of two types:
+<ul>
+<li>"From-To" connections, linking spatial units topologically. These connections are usually "fluxes" connections.
+<li>"Parent-Child" connections, linking units hierarchically.
+</ul>
+
+In order to add and remove connections, you can use the following methods, whenever during simulations:
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_AddFromToConnection OPENFLUID_AddFromToConnection \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_AddChildParentConnection OPENFLUID_AddChildParentConnection \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_RemoveFromToConnection OPENFLUID_RemoveFromToConnection \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_RemoveChildParentConnection OPENFLUID_RemoveChildParentConnection \endlink
+</ul>
+
+\code
+bool prepareData()
+{
+
+ /*
+      TU.1         TU.2
+        |            |
+        -->  TU.22 <--
+               |
+               --> TU.18
+                     |
+          TU.52 --> OU.5 <-- OU.13
+                     |
+                     --> OU.25
+
+       VU1 <-> VU2
+
+   with:
+   TU1, TU2, TU22, TU18 are children of VU1
+   TU52, OU5, OU13, OU25 are children of VU2
+*/
+
+  OPENFLUID_AddUnit("VU",1,1);
+  OPENFLUID_AddUnit("VU",2,2);
+  OPENFLUID_AddUnit("TU",1,1);
+  OPENFLUID_AddUnit("TU",2,1);
+  OPENFLUID_AddUnit("TU",22,2);
+  OPENFLUID_AddUnit("TU",18,3);
+  OPENFLUID_AddUnit("TU",52,1);
+  OPENFLUID_AddUnit("OU",5,4);
+  OPENFLUID_AddUnit("OU",13,1);
+  OPENFLUID_AddUnit("OU",25,5);
+
+  OPENFLUID_AddFromToConnection("VU",1,"VU",2);
+  OPENFLUID_AddFromToConnection("VU",2,"VU",1);
+  OPENFLUID_AddFromToConnection("TU",1,"TU",22);
+  OPENFLUID_AddFromToConnection("TU",2,"TU",22);
+  OPENFLUID_AddFromToConnection("TU",22,"TU",18);
+  OPENFLUID_AddFromToConnection("TU",18,"OU",5);
+  OPENFLUID_AddFromToConnection("TU",52,"OU",5);
+  OPENFLUID_AddFromToConnection("OU",13,"OU",5);
+  OPENFLUID_AddFromToConnection("OU",5,"OU",25);
+
+  OPENFLUID_AddChildParentConnection("TU",1,"VU",1);
+  OPENFLUID_AddChildParentConnection("TU",2,"VU",1);
+  OPENFLUID_AddChildParentConnection("TU",22,"VU",1);
+  OPENFLUID_AddChildParentConnection("TU",18,"VU",1);
+  OPENFLUID_AddChildParentConnection("TU",52,"VU",2);
+  OPENFLUID_AddChildParentConnection("OU",5,"VU",2);
+  OPENFLUID_AddChildParentConnection("OU",13,"VU",2);
+  OPENFLUID_AddChildParentConnection("OU",25,"VU",2);
+      
+  return true;
+}
+\endcode
+
+\n
+
+\subsection spacemodquery_ssec Querying the spatial domain graph
+
+The spatial domain graph can be queried, whenever during simulations, in order to get
+informations about spatial units and connections.
+
+You can use the following methods:
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitExist OPENFLUID_IsUnitExist \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitClassExist OPENFLUID_IsUnitClassExist \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_GetUnitsCount OPENFLUID_GetUnitsCount \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitConnectedTo OPENFLUID_IsUnitConnectedTo \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitConnectedFrom OPENFLUID_IsUnitConnectedFrom \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitChildOf OPENFLUID_IsUnitChildOf \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitParentOf OPENFLUID_IsUnitParentOf \endlink
+</ul>
+
+\n
+
+\subsection spacemodgen_ssec Generating spatial domain graphs automatically
+
+Generators can help to automatically build a spatial domain graph, or to extend an existing one.\n
+The following spatial domain generators are available:
+<ul>
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_BuildUnitsMatrix OPENFLUID_BuildUnitsMatrix \endlink
+</ul>
 
 */
