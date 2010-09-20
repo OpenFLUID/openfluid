@@ -78,6 +78,8 @@ class ModelAvailFct
                     ExtraFiles = 5,
                     SpatialUnits = 6 };
 
+    enum GeneratorType { Fixed, Random, Interp, MaxGeneratorType/*for iter only*/ };
+
   public:
 
     ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder);
@@ -85,18 +87,6 @@ class ModelAvailFct
     ~ModelAvailFct();
 
   private:
-
-    Gtk::Notebook * mp_NotebookAvailFct;
-
-    Glib::RefPtr<Gtk::TreeStore> mp_TreeModelAvailFct;
-
-    Gtk::TreeView * mp_TreeViewAvailFct;
-    Gtk::TreeView * mp_TreeViewFctParameters;
-    Gtk::TreeView * mp_TreeViewFctInputData;
-    Gtk::TreeView * mp_TreeViewFctVars;
-    Gtk::TreeView * mp_TreeViewFctEvents;
-    Gtk::TreeView * mp_TreeViewFctExtraFiles;
-    Gtk::TreeView * mp_TreeViewFctUnitsGraph;
 
     // Available functions tree model columns
     class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -129,8 +119,20 @@ class ModelAvailFct
       Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnit;
     };
 
-
     ModelColumns m_Columns;
+
+    Glib::RefPtr<Gtk::TreeStore> mp_TreeModelAvailFct;
+
+    Gtk::TreeView * mp_TreeViewAvailFct;
+    Gtk::TreeView * mp_TreeViewFctParameters;
+    Gtk::TreeView * mp_TreeViewFctInputData;
+    Gtk::TreeView * mp_TreeViewFctVars;
+    Gtk::TreeView * mp_TreeViewFctEvents;
+    Gtk::TreeView * mp_TreeViewFctExtraFiles;
+    Gtk::TreeView * mp_TreeViewFctUnitsGraph;
+
+    Gtk::Table * mp_TableSignatureFunction;
+    Gtk::Table * mp_TableSignatureGenerator;
 
     Gtk::Label * mp_LabelAvailFctId;
     Gtk::Label * mp_LabelAvailFctName;
@@ -143,6 +145,12 @@ class ModelAvailFct
     Gtk::Label * mp_LabelAvailFctMethod;
     Gtk::Label * mp_LabelAvailFctAuthorName;
     Gtk::Label * mp_LabelAvailFctAuthorEmail;
+
+    Gtk::Label * mp_LabelGeneratorId;
+    Gtk::Label * mp_LabelGeneratorName;
+    Gtk::Label * mp_LabelGeneratorDescription;
+
+    Gtk::Notebook * mp_NotebookAvailFct;
 
     void createMainTreeModel();
 

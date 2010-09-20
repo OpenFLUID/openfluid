@@ -70,8 +70,6 @@
 
 ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 {
-  GladeBuilder->get_widget("NotebookAvailFct",mp_NotebookAvailFct);
-
   GladeBuilder->get_widget("TreeViewAvailFct",mp_TreeViewAvailFct);
   GladeBuilder->get_widget("TreeViewFctParameters",mp_TreeViewFctParameters);
   GladeBuilder->get_widget("TreeViewFctInputData",mp_TreeViewFctInputData);
@@ -79,6 +77,9 @@ ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
   GladeBuilder->get_widget("TreeViewFctEvents",mp_TreeViewFctEvents);
   GladeBuilder->get_widget("TreeViewFctExtraFiles",mp_TreeViewFctExtraFiles);
   GladeBuilder->get_widget("TreeViewFctUnitsGraph",mp_TreeViewFctUnitsGraph);
+
+  GladeBuilder->get_widget("TableSignatureFunction",mp_TableSignatureFunction);
+  GladeBuilder->get_widget("TableSignatureGenerator",mp_TableSignatureGenerator);
 
   GladeBuilder->get_widget("LabelAvailFctId",mp_LabelAvailFctId);
   GladeBuilder->get_widget("LabelAvailFctName",mp_LabelAvailFctName);
@@ -92,10 +93,19 @@ ModelAvailFct::ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder)
   GladeBuilder->get_widget("LabelAvailFctAuthorName",mp_LabelAvailFctAuthorName);
   GladeBuilder->get_widget("LabelAvailFctAuthorEmail",mp_LabelAvailFctAuthorEmail);
 
+  GladeBuilder->get_widget("LabelGeneratorId",mp_LabelGeneratorId);
+  GladeBuilder->get_widget("LabelGeneratorName",mp_LabelGeneratorName);
+  GladeBuilder->get_widget("LabelGeneratorDescription",mp_LabelGeneratorDescription);
+
+  GladeBuilder->get_widget("NotebookAvailFct",mp_NotebookAvailFct);
+
   // Glade's bug ? Doesn't display last menu label text
   Gtk::Notebook * NB = dynamic_cast<Gtk::Notebook*>(mp_TreeViewFctUnitsGraph->get_parent()->get_parent());
   int PageNum = NB->page_num(*(mp_TreeViewFctUnitsGraph->get_parent()));
   NB->set_menu_label_text(*(NB->get_nth_page(PageNum)),NB->get_tab_label_text(*(NB->get_nth_page(PageNum))));
+
+  mp_TableSignatureFunction->set_visible(true);
+  mp_TableSignatureGenerator->set_visible(false);
 
   createMainTreeModel();
 
@@ -291,13 +301,116 @@ void ModelAvailFct::createMainTreeModel()
 
   setRowTitle(&RowGeneratorTitle,"Generators",Generators, false);
 
-  Glib::ustring TheGenerators[3] = { "Fixed Generator", "Random Generator", "Interp Generator" };
-  for(int i=0 ; i<3 ; i++)
+  for(int i=0 ; i<MaxGeneratorType ; i++)
   {
     Gtk::TreeModel::Row RowGenerator = *(mp_TreeModelAvailFct->append(RowGeneratorTitle.children()));
-    RowGenerator[m_Columns.m_Id] = TheGenerators[i];
+
     RowGenerator[m_Columns.m_Type] = Generators;
     RowGenerator[m_Columns.m_IsTitle] = false;
+
+    // Generator common parameters
+
+    Gtk::TreeModel::Row RowGeneratorParametersTitle = *(mp_TreeModelAvailFct->append(RowGenerator.children()));
+
+    setRowTitle(&RowGeneratorParametersTitle,"Parameters",Parameters,false);
+
+
+    Gtk::TreeModel::Row RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+    RowGeneratorParameters[m_Columns.m_Id] = "Varname";
+    RowGeneratorParameters[m_Columns.m_Description] = "Name of the produced variable";
+    RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+    RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+    RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+
+    RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+    RowGeneratorParameters[m_Columns.m_Id] = "Unitclass";
+    RowGeneratorParameters[m_Columns.m_Description] = "Unit class of the produced variable";
+    RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+    RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+    RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+
+    RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+    RowGeneratorParameters[m_Columns.m_Id] = "Varsize";
+    RowGeneratorParameters[m_Columns.m_Description] = "Optionnal : to produce a vector variable instead of a scala variable";
+    RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+    RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+    RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+    // Generator specific parameters
+
+    switch(static_cast<GeneratorType>(i))
+    {
+      case Fixed :
+
+        RowGenerator[m_Columns.m_Id] = "Fixed";
+        RowGenerator[m_Columns.m_FunctionName] = "Fixed Generator";
+        RowGenerator[m_Columns.m_Description] = "Generates a constant value";
+
+        RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+        RowGeneratorParameters[m_Columns.m_Id] = "Fixed value";
+        RowGeneratorParameters[m_Columns.m_Description] = "Value to produce";
+        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+        RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+        break;
+
+      case Random :
+
+        RowGenerator[m_Columns.m_Id] = "Random";
+        RowGenerator[m_Columns.m_FunctionName] = "Random Generator";
+        RowGenerator[m_Columns.m_Description] = "Generates a random value in a range";
+
+        RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+        RowGeneratorParameters[m_Columns.m_Id] = "Min";
+        RowGeneratorParameters[m_Columns.m_Description] = "Lower bound of the random range for the value to produce";
+        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+        RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+        RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+        RowGeneratorParameters[m_Columns.m_Id] = "Max";
+        RowGeneratorParameters[m_Columns.m_Description] = "Upper bound of the random range for the value to produce";
+        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+        RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+        break;
+
+      case Interp :
+
+        RowGenerator[m_Columns.m_Id] = "Interp";
+        RowGenerator[m_Columns.m_FunctionName] = "Interpolation Generator";
+        RowGenerator[m_Columns.m_Description] = "Generates an interpolated value from given data series";
+
+        RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+        RowGeneratorParameters[m_Columns.m_Id] = "Sources";
+        RowGeneratorParameters[m_Columns.m_Description] = "Data sources filename for the value to produce";
+        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+        RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+        RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
+
+        RowGeneratorParameters[m_Columns.m_Id] = "Distribution";
+        RowGeneratorParameters[m_Columns.m_Description] = "Distribution filename for the value to produce";
+        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
+        RowGeneratorParameters[m_Columns.m_IsTitle] = false;
+
+        break;
+
+      default:;
+    }
   }
 
 }
@@ -346,7 +459,6 @@ void ModelAvailFct::createAvailableFunctionsTreeView()
    ColumnId->pack_start(m_Columns.m_Id);
 
    mp_TreeViewAvailFct->append_column(*ColumnId);
-
 
    mp_TreeViewAvailFct->append_column("Domain",m_Columns.m_FunctionDomain);
 
@@ -536,13 +648,22 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 
     Gtk::TreeModel::Row row = *iter;
 
-    mp_LabelAvailFctId->set_text(row[m_Columns.m_Id]);
-    mp_LabelAvailFctName->set_text(row[m_Columns.m_FunctionName]);
-
     if(row[m_Columns.m_Type] == SimulationFunctions)
     {
-      mp_LabelAvailFctPath->set_text(row[m_Columns.m_FunctionPath]);
+      if(mp_TableSignatureGenerator->is_visible())
+      {
+        Gtk::Container * ContainerTable = mp_TableSignatureGenerator->get_parent();
+        mp_TableSignatureGenerator->hide_all();
+        ContainerTable->remove(*mp_TableSignatureGenerator);
+        ContainerTable->add(*mp_TableSignatureFunction);
+        mp_TableSignatureFunction->show_all();
+      }
+
+      mp_LabelAvailFctId->set_text(row[m_Columns.m_Id]);
+      mp_LabelAvailFctName->set_text(row[m_Columns.m_FunctionName]);
       mp_LabelAvailFctDescription->set_text(row[m_Columns.m_Description]);
+
+      mp_LabelAvailFctPath->set_text(row[m_Columns.m_FunctionPath]);
 
       mp_LabelAvailFctVersion->set_text(row[m_Columns.m_FunctionVersion]);
       mp_LabelAvailFctStatus->set_text(row[m_Columns.m_FunctionStatusStr]);
@@ -552,21 +673,57 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
       mp_LabelAvailFctMethod->set_text(row[m_Columns.m_FunctionMethod]);
       mp_LabelAvailFctAuthorName->set_text(row[m_Columns.m_FunctionAuthorName]);
       mp_LabelAvailFctAuthorEmail->set_text(row[m_Columns.m_FunctionAuthorEmail]);
+
+      // Update selected function HandleData panels
+
+      Gtk::TreePath FunctionPath(iter);
+
+      FunctionPath.down();
+
+      setHandleDataPanel(Parameters,mp_TreeViewFctParameters,1,FunctionPath);
+      setHandleDataPanel(InputData,mp_TreeViewFctInputData,2,FunctionPath);
+      setHandleDataPanel(Variables,mp_TreeViewFctVars,2,FunctionPath);
+      setHandleDataPanel(Events,mp_TreeViewFctEvents,1,FunctionPath);
+      setHandleDataPanel(ExtraFiles,mp_TreeViewFctExtraFiles,2,FunctionPath);
+      setHandleDataPanel(SpatialUnits,mp_TreeViewFctUnitsGraph,2,FunctionPath);
+
+      // Show all notebook tabs
+      for(unsigned int i=2 ; i<mp_NotebookAvailFct->pages().size() ; i++)
+        mp_NotebookAvailFct->get_nth_page(i)->show();
+
+    }
+
+    else if(row[m_Columns.m_Type] == Generators)
+    {
+      if(mp_TableSignatureFunction->is_visible())
+      {
+        Gtk::Container * ContainerTable = mp_TableSignatureFunction->get_parent();
+        mp_TableSignatureFunction->hide_all();
+        ContainerTable->remove(*mp_TableSignatureFunction);
+        ContainerTable->add(*mp_TableSignatureGenerator);
+        mp_TableSignatureGenerator->show_all();
+      }
+
+      mp_LabelGeneratorId->set_text(row[m_Columns.m_Id]);
+      mp_LabelGeneratorName->set_text(row[m_Columns.m_FunctionName]);
+      mp_LabelGeneratorDescription->set_text(row[m_Columns.m_Description]);
+
+      // Update selected generator Parameters panels
+
+      Gtk::TreePath FunctionPath(iter);
+
+      FunctionPath.down();
+
+      setHandleDataPanel(Parameters,mp_TreeViewFctParameters,1,FunctionPath);
+
+      // Hide unused notebook tabs, just keep first (Signature) and second (Parameters)
+      for(unsigned int i=2 ; i<mp_NotebookAvailFct->pages().size() ; i++)
+        mp_NotebookAvailFct->get_nth_page(i)->hide();
+
     }
 
 
-    // Update selected function HandleData panels
 
-    Gtk::TreePath FunctionPath(iter);
-
-    FunctionPath.down();
-
-    setHandleDataPanel(Parameters,mp_TreeViewFctParameters,1,FunctionPath);
-    setHandleDataPanel(InputData,mp_TreeViewFctInputData,2,FunctionPath);
-    setHandleDataPanel(Variables,mp_TreeViewFctVars,2,FunctionPath);
-    setHandleDataPanel(Events,mp_TreeViewFctEvents,1,FunctionPath);
-    setHandleDataPanel(ExtraFiles,mp_TreeViewFctExtraFiles,2,FunctionPath);
-    setHandleDataPanel(SpatialUnits,mp_TreeViewFctUnitsGraph,2,FunctionPath);
   }
 
 }
@@ -658,7 +815,7 @@ void ModelAvailFct::toggleEmptyTreeView(Gtk::TreeView * TreeView, RowType Type, 
   {
     ScrolledWindow->remove();
 
-    Gtk::Label * LabelEmpty = Gtk::manage(new Gtk::Label());//,0.1,0.1));
+    Gtk::Label * LabelEmpty = Gtk::manage(new Gtk::Label());
 
     LabelEmpty->set_markup(_("<i>(None)</i>"));
     LabelEmpty->set_alignment(0,0);
