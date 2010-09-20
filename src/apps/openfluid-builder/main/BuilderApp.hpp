@@ -58,7 +58,6 @@
 
 
 #include <gtkmm.h>
-#include <gdlmm.h>
 #include <gdl/gdl.h>
 
 #include "BuilderProject.hpp"
@@ -95,11 +94,11 @@ class BuilderApp
 
     // Docking elements
 
-    Gdl::Dock * mp_MainDock;
+    GtkWidget * mp_MainDock;
 
-    Gdl::DockItem * mp_DockItemHome;
+    GtkWidget * mp_DockItemHome;
 
-    Glib::RefPtr<Gdl::DockLayout> mp_LayoutManager;
+    GdlDockLayout * mp_DockLayout;
 
 
     std::vector<Glib::RefPtr<Gtk::Action> > m_ProjectActions;

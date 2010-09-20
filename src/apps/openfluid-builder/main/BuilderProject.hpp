@@ -58,7 +58,7 @@
 
 
 #include <gtkmm.h>
-#include <gdlmm.h>
+#include <gdl/gdl.h>
 
 #include <openfluid/base.hpp>
 #include <openfluid/machine.hpp>
@@ -83,7 +83,7 @@ class BuilderProject// : public openfluid::machine::Engine
 
     typedef std::map<Glib::ustring,ModuleInterface *> ModulesPtrByNameMap_t;
 
-    typedef std::map<Glib::ustring,Gdl::DockItem *> DockItemsPtrByNameMap_t;
+    typedef std::map<Glib::ustring,GtkWidget *> DockItemsPtrByNameMap_t;
 
 
   private:
@@ -123,7 +123,7 @@ class BuilderProject// : public openfluid::machine::Engine
 
     ~BuilderProject();
 
-    Gdl::DockItem * getTopDockItem()
+    GtkWidget * getTopDockItem()
         { return m_DockItems["model"]; }
 
     ModulesPtrByNameMap_t getModules()

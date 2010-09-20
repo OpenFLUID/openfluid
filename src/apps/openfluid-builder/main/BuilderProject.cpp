@@ -120,8 +120,9 @@ BuilderProject::~BuilderProject()
 {
   for(DockItemsPtrByNameMap_t::const_iterator it = m_DockItems.begin() ; it != m_DockItems.end() ; ++it)
   {
-    it->second->hide_item();
-    delete it->second;
+    gdl_dock_item_hide_item(GDL_DOCK_ITEM(it->second));
+
+    gtk_widget_destroy(it->second);
   }
 
   for(ModulesPtrByNameMap_t::const_iterator it = m_Modules.begin() ; it != m_Modules.end() ; ++it)
@@ -148,12 +149,10 @@ void BuilderProject::addModule(ModuleInterface * Module, Glib::ustring ModuleNam
   const Glib::ustring & RefModuleName = Module->getModuleName();
   const Glib::ustring & RefModuleLongName = "  " + Module->getModuleLongName();
   const Gtk::StockID & RefStockId = *(Module->getStockId());
-  Gdl::DockItem * DockItem = new Gdl::DockItem(RefModuleName,
-                                  RefModuleLongName,
-                                  RefStockId,
-                                  Gdl::DOCK_ITEM_BEH_NORMAL | Gdl::DOCK_ITEM_BEH_CANT_CLOSE);
-  DockItem->add(*Container);
 
+  GtkWidget * DockItem = gdl_dock_item_new_with_stock(RefModuleName.c_str(),RefModuleLongName.c_str(),RefStockId.get_c_str(),GDL_DOCK_ITEM_BEH_CANT_CLOSE);
+
+  gtk_container_add (GTK_CONTAINER(DockItem), GTK_WIDGET(Container->gobj()));
 
    //TODO: check if moduleName exists before insert
   m_DockItems[ModuleName] = DockItem;
@@ -171,25 +170,25 @@ void BuilderProject::actionDefaultLayout(LayoutType Layout)
 {
     // Default layout, base for others
 
-      m_DockItems["simulation"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_BOTTOM);
-      m_DockItems["results"]->dock_to(*(m_DockItems["simulation"]), Gdl::DOCK_BOTTOM);
-      m_DockItems["domain"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_RIGHT);
+  gdl_dock_item_dock_to(GDL_DOCK_ITEM (m_DockItems["simulation"]), GDL_DOCK_ITEM (m_DockItems["model"]), GDL_DOCK_BOTTOM, -1);
+  gdl_dock_item_dock_to(GDL_DOCK_ITEM (m_DockItems["results"]), GDL_DOCK_ITEM (m_DockItems["simulation"]), GDL_DOCK_BOTTOM, -1);
+  gdl_dock_item_dock_to(GDL_DOCK_ITEM (m_DockItems["domain"]), GDL_DOCK_ITEM (m_DockItems["model"]), GDL_DOCK_RIGHT, -1);
 
   switch(Layout)
   {
     case PreSimulation:
-      m_DockItems["simulation"]->iconify_item();
-      m_DockItems["results"]->iconify_item();
+      gdl_dock_item_iconify_item(GDL_DOCK_ITEM (m_DockItems["simulation"]));
+      gdl_dock_item_iconify_item(GDL_DOCK_ITEM (m_DockItems["results"]));
       break;
     case PostSimulation:
-      m_DockItems["model"]->iconify_item();
-      m_DockItems["domain"]->iconify_item();
-      m_DockItems["simulation"]->iconify_item();
+      gdl_dock_item_iconify_item(GDL_DOCK_ITEM (m_DockItems["model"]));
+      gdl_dock_item_iconify_item(GDL_DOCK_ITEM (m_DockItems["domain"]));
+      gdl_dock_item_iconify_item(GDL_DOCK_ITEM (m_DockItems["simulation"]));
       break;
     case AllTabbed:
-      m_DockItems["domain"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_CENTER);
-      m_DockItems["simulation"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_CENTER);
-      m_DockItems["results"]->dock_to(*(m_DockItems["model"]), Gdl::DOCK_CENTER);
+      gdl_dock_item_dock_to(GDL_DOCK_ITEM (m_DockItems["domain"]), GDL_DOCK_ITEM (m_DockItems["model"]), GDL_DOCK_CENTER, -1);
+      gdl_dock_item_dock_to(GDL_DOCK_ITEM (m_DockItems["simulation"]), GDL_DOCK_ITEM (m_DockItems["model"]), GDL_DOCK_CENTER, -1);
+      gdl_dock_item_dock_to(GDL_DOCK_ITEM (m_DockItems["results"]), GDL_DOCK_ITEM (m_DockItems["model"]), GDL_DOCK_CENTER, -1);
       break;
     default:;
   }

@@ -254,31 +254,29 @@ void BuilderApp::createActions()
 
 void BuilderApp::createDock()
 {
-  Gdl::init();
-
   // create Dock
-  mp_MainDock = new Gdl::Dock;
+  mp_MainDock = gdl_dock_new();
+
+  // create Layout Manager
+  mp_DockLayout = gdl_dock_layout_new(GDL_DOCK(mp_MainDock));
 
   // create DockBar
-  Gdl::DockBar * MainDockBar = new Gdl::DockBar(*mp_MainDock);
+  GtkWidget * DockBar = gdl_dock_bar_new(GDL_DOCK(mp_MainDock));
 
   createDockItemHome();
 
   // fill top-level box widget with dock elements
-  mp_ProjectContainer->pack_start(*MainDockBar,false,false);
-  mp_ProjectContainer->pack_end(*mp_MainDock);
+  mp_ProjectContainer->pack_start(*Glib::wrap(DockBar),false,false);
+  mp_ProjectContainer->pack_end(*Glib::wrap(mp_MainDock));
 
-  Glib::RefPtr<Gdl::DockMaster> DockMaster = mp_MainDock->property_master();
-  DockMaster->property_switcher_style() = Gdl::SWITCHER_STYLE_TABS;
-
-  // create Layout Manager
-  mp_LayoutManager = Gdl::DockLayout::create(*mp_MainDock);
+  GdlDockMaster * DockMaster = GDL_DOCK_OBJECT_GET_MASTER(mp_MainDock);
+  g_object_set(DockMaster, "switcher-style", GDL_SWITCHER_STYLE_TABS, NULL);
 
   // create placeholders
-  gdl_dock_placeholder_new("ph1", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_TOP, FALSE);
-  gdl_dock_placeholder_new("ph2", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_BOTTOM, FALSE);
-  gdl_dock_placeholder_new("ph3", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_LEFT, FALSE);
-  gdl_dock_placeholder_new("ph4", GDL_DOCK_OBJECT((*mp_MainDock).gobj()), GDL_DOCK_RIGHT, FALSE);
+  gdl_dock_placeholder_new("ph1", GDL_DOCK_OBJECT(mp_MainDock), GDL_DOCK_TOP, FALSE);
+  gdl_dock_placeholder_new("ph2", GDL_DOCK_OBJECT(mp_MainDock), GDL_DOCK_BOTTOM, FALSE);
+  gdl_dock_placeholder_new("ph3", GDL_DOCK_OBJECT(mp_MainDock), GDL_DOCK_LEFT, FALSE);
+  gdl_dock_placeholder_new("ph4", GDL_DOCK_OBJECT(mp_MainDock), GDL_DOCK_RIGHT, FALSE);
 
 }
 
@@ -288,17 +286,13 @@ void BuilderApp::createDock()
 
 void BuilderApp::createDockItemHome()
 {
-  mp_DockItemHome = new Gdl::DockItem("Home",
-      Glib::ustring::compose(_("%1Home"),"  "),
-      Gtk::Stock::HOME,
-      Gdl::DOCK_ITEM_BEH_NORMAL | Gdl::DOCK_ITEM_BEH_CANT_CLOSE);
-
+  mp_DockItemHome = gdl_dock_item_new_with_stock("Home",Glib::ustring::compose(_("%1Home"),"  ").c_str(),GTK_STOCK_HOME, GDL_DOCK_ITEM_BEH_CANT_CLOSE);
 
   // fill DockItem with widget
-  mp_DockItemHome->add(*mp_HomeContainer);
+  gtk_container_add(GTK_CONTAINER(mp_DockItemHome), GTK_WIDGET(mp_HomeContainer->gobj()));
 
   // fill Dock with DockItem
-  mp_MainDock->add_item(*mp_DockItemHome,Gdl::DOCK_TOP);
+  gdl_dock_add_item(GDL_DOCK(mp_MainDock), GDL_DOCK_ITEM(mp_DockItemHome), GDL_DOCK_TOP);
 
 }
 
@@ -626,39 +620,38 @@ void BuilderApp::actionDefaultLayout(BuilderProject::LayoutType Layout)
   {
     // first "de-iconify" all
 
-    Glib::ListHandle<Gdl::DockItem *> ItemList = mp_MainDock->get_named_items();
+    GList * ItemListC = gdl_dock_get_named_items(GDL_DOCK(mp_MainDock));
 
-    for(Glib::ListHandle<Gdl::DockItem *>::const_iterator it = ItemList.begin(); it != ItemList.end(); ++it)
+    for(unsigned int i=0 ; i<g_list_length(ItemListC) ; i++)
     {
-      Gdl::DockItem * Item = *it;
-      Item->show_item();
-      Item->hide_item();
+      if(GDL_DOCK_ITEM_ICONIFIED(GDL_DOCK_ITEM(g_list_nth_data(ItemListC,i))))
+          gdl_dock_item_show_item(GDL_DOCK_ITEM(g_list_nth_data(ItemListC,i)));
+      gdl_dock_item_hide_item(GDL_DOCK_ITEM(g_list_nth_data(ItemListC,i)));
     }
 
 
-    // "re-"add Home item at right place
+    // "re-add" Home item at right place
 
-    mp_MainDock->add_item(*mp_DockItemHome,Gdl::DOCK_TOP);
+    gdl_dock_add_item(GDL_DOCK(mp_MainDock), GDL_DOCK_ITEM(mp_DockItemHome), GDL_DOCK_TOP);
 
 
-    // "re"-add Top item at right place
+    // "re-add" Top item at right place
 
-    Gdl::DockItem * DockItemTop = mp_Project->getTopDockItem();
+    GtkWidget * DockItemTop = mp_Project->getTopDockItem();
 
-    mp_MainDock->add_item(*DockItemTop,Gdl::DOCK_BOTTOM);
+    gdl_dock_add_item(GDL_DOCK (mp_MainDock), GDL_DOCK_ITEM(DockItemTop), GDL_DOCK_BOTTOM);
 
 
     // reorder all
 
     if(Layout == BuilderProject::AllTabbed)
     {
-      DockItemTop->dock_to(*mp_DockItemHome,Gdl::DOCK_CENTER);
+      gdl_dock_item_dock_to(GDL_DOCK_ITEM(DockItemTop), GDL_DOCK_ITEM(mp_DockItemHome), GDL_DOCK_CENTER, -1);
     }
     else
     {
-      mp_DockItemHome->iconify_item();
+      gdl_dock_item_iconify_item(GDL_DOCK_ITEM(mp_DockItemHome));
     }
-
     mp_Project->actionDefaultLayout(Layout);
   }
 
@@ -671,7 +664,7 @@ void BuilderApp::actionDefaultLayout(BuilderProject::LayoutType Layout)
 
 void BuilderApp::actionLayoutManager()
 {
-  mp_LayoutManager->run_manager();
+  gdl_dock_layout_run_manager (mp_DockLayout);
 }
 
 
@@ -835,8 +828,8 @@ void BuilderApp::deleteProject()
   for(unsigned int i=0 ; i<m_ProjectActions.size() ; i++)
     m_ProjectActions[i]->set_sensitive(false);
 
-  if(!mp_DockItemHome->is_visible())
-    mp_DockItemHome->show_item();
+  if(!Glib::wrap(mp_DockItemHome)->is_visible())
+    gdl_dock_item_show_item(GDL_DOCK_ITEM (mp_DockItemHome));
 
   delete mp_Project;
   mp_Project = 0;
