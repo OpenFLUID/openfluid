@@ -13,17 +13,16 @@ ADD_SUBDIRECTORY(po)
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
-PKG_CHECK_MODULES(GTKMM REQUIRED gtkmm-2.4)
-PKG_CHECK_MODULES(GDLMM REQUIRED gdlmm-1.0)
 
 ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
+
 INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
-                    ${GTKMM_INCLUDE_DIRS}
-                    ${GDLMM_INCLUDE_DIRS})
+                    ${GTKMM_INCLUDE_DIRS})
+                    
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
-                 ${GTKMM_LIBRARY_DIRS}
-                 ${GDLMM_LIBRARY_DIRS})
+                 ${GTKMM_LIBRARY_DIRS})
+
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
@@ -31,7 +30,8 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 FILE(GLOB OPENFLUID_BUILDER_CPP *.cpp)
 FILE(GLOB OPENFLUID_BUILDER_HPP *.hpp)
 
-ADD_EXECUTABLE(openfluid-builder  ${OPENFLUID_BUILDER_CPP} ${OPENFLUID_BUILDER_HPP})
+
+ADD_EXECUTABLE(openfluid-builder ${OPENFLUID_BUILDER_CPP} ${OPENFLUID_BUILDER_HPP})
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
@@ -41,14 +41,14 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
                       ${GTKMM_LIBRARIES}
-                      ${GDLMM_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
                       openfluid-io
                       openfluid-tools
-                      openfluid-builderext)
+                      openfluid-builderext
+                      openfluid-builder-gdl)
 
 
 # comment to skip install - think to comment local params in CMake.in.local.config before install

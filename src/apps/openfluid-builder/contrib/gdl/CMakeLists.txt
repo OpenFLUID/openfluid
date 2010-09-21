@@ -1,0 +1,15 @@
+
+ENABLE_LANGUAGE(C)
+
+FILE(GLOB GDL_C *.c)
+
+ADD_DEFINITIONS(-DGETTEXT_PACKAGE="openfluid-builder")
+ADD_DEFINITIONS(-DGDL_UIDIR="")
+
+
+INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
+                    ${GTKMM_INCLUDE_DIRS}
+                    )
+
+
+ADD_LIBRARY(openfluid-builder-gdl STATIC ${GDL_C})
