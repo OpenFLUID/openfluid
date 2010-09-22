@@ -18,7 +18,6 @@ TARGET_LINK_LIBRARIES(openfluid-minimal
 #                      ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
                       openfluid-base
-                      openfluid-buddies
                       openfluid-core
                       openfluid-machine
                       openfluid-io
