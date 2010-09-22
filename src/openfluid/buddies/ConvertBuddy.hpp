@@ -83,6 +83,9 @@ class DLLEXPORT ConvertBuddy : public OpenFLUIDBuddy
     void convert_14_15_data();
     void copy_14_15_model_run_output_defs();
 
+    void convert_15_16();
+    void convert_15_16_file(std::string Filename);
+
   public:
 
     ConvertBuddy(openfluid::buddies::BuddiesListener* Listener);

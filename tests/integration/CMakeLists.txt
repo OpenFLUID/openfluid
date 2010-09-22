@@ -238,6 +238,27 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
 
+  ADD_TEST(integration-BuddyConvert1516 "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddy" "convert"
+                              "--buddyopts" "convmode=15_16,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
+                              )
+
+  ADD_TEST(integration-BuddyConvert1516Check "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
+                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16"
+                                       "-p" "${TEST_OUTPUT_PATH}"
+                              )
+
+  ADD_TEST(integration-BuddyConvert1516wBuff "${BIN_OUTPUT_PATH}/openfluid-engine"
+                              "--buddy" "convert"
+                              "--buddyopts" "convmode=15_16,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
+                              )
+
+  ADD_TEST(integration-BuddyConvert1516wBuffCheck "${BIN_OUTPUT_PATH}/openfluid-engine"
+                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
+                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16wBuff"
+                                       "-p" "${TEST_OUTPUT_PATH}"
+                              )
 
 
   ADD_TEST(integration-BuddyNewDataHelp "${BIN_OUTPUT_PATH}/openfluid-engine"

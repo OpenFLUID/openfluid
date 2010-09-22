@@ -60,6 +60,7 @@
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
 #include <fstream>
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
@@ -525,6 +526,77 @@ void ConvertBuddy::convert_14_15()
 // =====================================================================
 
 
+void ConvertBuddy::convert_15_16_file(std::string Filename)
+{
+
+  xmlDocPtr Doc = NULL;
+  xmlNodePtr Root = NULL;
+
+  std::string InputFilePath = boost::filesystem::path(m_Options["inputdir"]+"/"+Filename).string();
+  std::string OutputFilePath = boost::filesystem::path(m_Options["outputdir"]+"/"+Filename).string();
+
+  Doc = xmlParseFile(InputFilePath.c_str());
+
+
+  if (Doc != NULL)
+  {
+    Root =  xmlDocGetRootElement(Doc);
+
+    if (Root != NULL)
+    {
+      xmlXPathInit();
+      xmlXPathContextPtr XPathCtxt = xmlXPathNewContext(Doc);
+      xmlXPathObjectPtr XPathRes;
+      xmlNodePtr ProgressOutNode;
+
+      // processing of inputdata tag
+      XPathRes = xmlXPathEvalExpression((const xmlChar*)"/openfluid/run/progressout", XPathCtxt);
+      if (XPathRes != NULL && XPathRes->nodesetval->nodeNr == 1)
+      {
+        ProgressOutNode = XPathRes->nodesetval->nodeTab[0];
+        xmlNodeSetName(ProgressOutNode,(const xmlChar*)"valuesbuffer");
+
+        xmlChar* KeepValue = xmlGetProp(ProgressOutNode,(const xmlChar*)"keep");
+        if (KeepValue != NULL)
+          xmlSetProp(ProgressOutNode,(const xmlChar*)"steps",KeepValue);
+        else
+          throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_15_16_file","wrong format for file " + Filename);
+        xmlUnsetProp(ProgressOutNode,(const xmlChar*)"packet");
+
+      }
+
+      xmlXPathFreeContext(XPathCtxt);
+
+    }
+    xmlSaveFile(OutputFilePath.c_str(),Doc);
+  }
+  else
+  {
+    throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::convert_15_16_file","file " + Filename + " cannot be parsed");
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ConvertBuddy::convert_15_16()
+{
+  std::vector<std::string> FluidXFilesToConvert = openfluid::tools::GetFilesByExt(m_Options["inputdir"],"fluidx");
+  std::vector<std::string> XMLFilesToConvert = openfluid::tools::GetFilesByExt(m_Options["inputdir"],"xml");
+
+  FluidXFilesToConvert.insert(FluidXFilesToConvert.end(),XMLFilesToConvert.begin(),XMLFilesToConvert.end());
+
+  for (unsigned int i=0;i<FluidXFilesToConvert.size();i++)
+    convert_15_16_file(FluidXFilesToConvert[i]);
+}
+
+
+// =====================================================================
+// =====================================================================
+
 bool ConvertBuddy::run()
 {
 
@@ -557,6 +629,11 @@ bool ConvertBuddy::run()
     convert_14_15();
     FoundMode = true;
   }
+  if (m_Options["convmode"] == "15_16")
+  {
+    convert_15_16();
+    FoundMode = true;
+  }
 
   if (!FoundMode) throw openfluid::base::OFException("OpenFLUID framework","ConvertBuddy::run()","Unknown conversion mode");
 
@@ -566,4 +643,5 @@ bool ConvertBuddy::run()
 
 
 } } //namespaces
+
 
