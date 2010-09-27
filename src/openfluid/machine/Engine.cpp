@@ -477,7 +477,7 @@ void Engine::initParams()
   mp_MachineListener->onInitParams();
   try
   {
-    m_ModelInstance.initParams();
+    m_ModelInstance.call_initParams();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -498,7 +498,7 @@ void Engine::prepareData()
 {
   try
   {
-    m_ModelInstance.prepareData();
+    m_ModelInstance.call_prepareData();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -554,7 +554,7 @@ void Engine::checkConsistency()
 
   try
   {
-    m_ModelInstance.checkConsistency();
+    m_ModelInstance.call_checkConsistency();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -594,7 +594,7 @@ void Engine::run()
 
   try
   {
-    m_ModelInstance.initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
+    m_ModelInstance.call_initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
   }
   catch (openfluid::base::OFException& E)
   {
@@ -627,7 +627,7 @@ void Engine::run()
 
     try
     {
-      m_ModelInstance.runStep(mp_SimStatus);
+      m_ModelInstance.call_runStep(mp_SimStatus);
 
       // check simulation vars production at each time step
       checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
@@ -658,7 +658,7 @@ void Engine::run()
 
   try
   {
-    m_ModelInstance.finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
+    m_ModelInstance.call_finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
   }
   catch (openfluid::base::OFException& E)
   {

@@ -162,20 +162,43 @@ void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 // =====================================================================
 
 
-void ModelInstance::clear()
+void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Position)
 {
-  m_ModelItems.clear();
+  if (Position < m_ModelItems.size())
+  {
+    std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
+    for (unsigned int i = 0; i< Position; i++) ++it;
+    m_ModelItems.insert(it,ItemInstance);
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem","Bad index of item to insert");
+
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
 
-void ModelInstance::deleteItemsAndClear()
+void ModelInstance::deleteItem(unsigned int Position)
 {
+  if (Position < m_ModelItems.size())
+  {
+    std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
+    for (unsigned int i = 0; i< Position; i++) ++it;
+    m_ModelItems.erase(it);
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::deleteItem","Bad index of item to delete");
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelInstance::clear()
+{
   std::list<ModelItemInstance*>::iterator it;
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
@@ -184,8 +207,9 @@ void ModelInstance::deleteItemsAndClear()
     if ((*it)->Signature != NULL) delete (*it)->Signature;
   }
 
-  clear();
+  m_ModelItems.clear();
 }
+
 
 
 // =====================================================================
@@ -209,7 +233,7 @@ void ModelInstance::initLoggers() const
 // =====================================================================
 // =====================================================================
 
-bool ModelInstance::initParams() const
+bool ModelInstance::call_initParams() const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
@@ -224,7 +248,7 @@ bool ModelInstance::initParams() const
 // =====================================================================
 
 
-bool ModelInstance::prepareData() const
+bool ModelInstance::call_prepareData() const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
@@ -239,7 +263,7 @@ bool ModelInstance::prepareData() const
 // =====================================================================
 
 
-bool ModelInstance::checkConsistency() const
+bool ModelInstance::call_checkConsistency() const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
@@ -254,7 +278,7 @@ bool ModelInstance::checkConsistency() const
 // =====================================================================
 
 
-bool ModelInstance::initializeRun(const openfluid::base::SimulationInfo* SimInfo) const
+bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* SimInfo) const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
@@ -269,7 +293,7 @@ bool ModelInstance::initializeRun(const openfluid::base::SimulationInfo* SimInfo
 // =====================================================================
 
 
-bool ModelInstance::runStep(const openfluid::base::SimulationStatus* SimStatus) const
+bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimStatus) const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
@@ -284,7 +308,7 @@ bool ModelInstance::runStep(const openfluid::base::SimulationStatus* SimStatus) 
 // =====================================================================
 
 
-bool ModelInstance::finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const
+bool ModelInstance::call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const
 {
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;

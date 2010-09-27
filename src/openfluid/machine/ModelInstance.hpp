@@ -86,9 +86,20 @@ class DLLEXPORT ModelInstance
 
     void appendItem(ModelItemInstance* ItemInstance);
 
-    void clear();
+    /**
+      Insert a ModelItemInstance before the given postion (positions starts at index 0)
+      @param[in] ItemInstance the ModelItemInstance to insert
+      @param[in] Position the position
+    */
+    void insertItem(ModelItemInstance* ItemInstance, unsigned int Position);
 
-    void deleteItemsAndClear();
+    /**
+      Delete the ModelItemInstance located at the given postion (positions starts at index 0), and remove it from the ModelInstance
+      @param[in] Position the position
+    */
+    void deleteItem(unsigned int Position);
+
+    void clear();
 
     unsigned int getItemsCount() const { return m_ModelItems.size(); };
 
@@ -96,17 +107,17 @@ class DLLEXPORT ModelInstance
 
     void initLoggers() const;
 
-    bool initParams() const;
+    bool call_initParams() const;
 
-    bool prepareData() const;
+    bool call_prepareData() const;
 
-    bool checkConsistency() const;
+    bool call_checkConsistency() const;
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo) const;
+    bool call_initializeRun(const openfluid::base::SimulationInfo* SimInfo) const;
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus) const;
+    bool call_runStep(const openfluid::base::SimulationStatus* SimStatus) const;
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const;
+    bool call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const;
 
 };
 
