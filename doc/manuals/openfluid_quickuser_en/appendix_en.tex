@@ -1,0 +1,271 @@
+\chapter{Appendix}
+
+
+
+\section{Command line options}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\texttt{-a}, \verb?---?\texttt{auto-output-dir}&generate automatic results output directory\\
+\texttt{-b}, \verb?---?\texttt{buddy <arg>}&run specified OpenFLUID buddy\\
+\verb?---?\texttt{buddyhelp <arg>}&display help message for specified OpenFLUID buddy\\
+\verb?---?\texttt{buddyopts <arg>}&set options for specified OpenFLUID buddy\\
+\texttt{-c}, \verb?---?\texttt{clean-output-dir}&clean results output directory by removing existing files\\
+\texttt{-f}, \verb?---?\texttt{functions-list}&list available functions (do not run the simulation)\\
+\texttt{-h}, \verb?---?\texttt{help}&display help message\\
+\texttt{-i}, \verb?---?\texttt{input-dir <arg>}&set dataset input directory\\
+\texttt{-o}, \verb?---?\texttt{output-dir <arg>}&set results output directory\\
+\texttt{-p}, \verb?---?\texttt{functions-paths <arg>}&add extra functions research paths\\
+\texttt{-q}, \verb?---?\texttt{quiet}&quiet display during simulation run\\
+\texttt{-r}, \verb?---?\texttt{functions-report}&print a report of available functions, with details (do not run the simulation)\\
+\texttt{-s}, \verb?---?\texttt{no-simreport}&do not generate simulation report\\
+\verb?---?\texttt{show-paths}&print the used paths (do not run the simulation)\\
+\texttt{-u}, \verb?---?\texttt{matching-functions-report <arg>}&print a report of functions matching the given wildcard-based pattern (do not run the simulation)\\
+\texttt{-v}, \verb?---?\texttt{verbose}&verbose display during simulation\\
+\verb?---?\texttt{version}&get version (do not run the simulation)\\
+\texttt{-x}, \verb?---?\texttt{xml-functions-report}&print a report of available functions in xml format, with details (do not run the simulation)\\
+\texttt{-z}, \verb?---?\texttt{no-result}&do not write results files\\
+\end{tabularx}
+\end{center}
+
+\section{Environment variables}
+
+The \OFname \ framework takes into account the following environment
+variables (if they are set):
+\begin{itemize}
+\item \texttt{OPENFLUID\_FUNCS\_PATH}: extra search paths for \OFname \ simulation functions. The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
+\item \texttt{OPENFLUID\_INSTALL\_PREFIX}: overrides automatic detection of install path, useful on Windows systems.
+\end{itemize}
+
+
+
+\section{Date-time formats used in outputs configuration}
+
+The output.xml file can use the ANSI strftime() standards formats for date time, through a format string. 
+The format string consists of zero or more conversion specifications and ordinary characters.
+A conversion specification consists of a \% character and a terminating conversion character that determines the conversion specification's behaviour.
+All ordinary characters (including the terminating null byte) are copied unchanged into the array.
+
+\bigskip
+
+For example, the nineteenth of April, two-thousand seven, at eleven hours, ten minutes and twenty-five seconds formatted using different format strings:
+\begin{itemize}
+\item "\verb|%d/%m/%Y %H:%M:%S|" will give "\verb|19/04/2007 10:11:25|"
+\item "\verb|%Y-%m-%d %H.%M|" will give "\verb|2007-04-19 10.11|"
+\item "\verb|%Y\t%m\t%d\t%H\t%M\t%S|" will give "\verb|2007	04	19	10	11	25|"
+\end{itemize}
+
+\bigskip 
+\noindent List of available conversion specifications:
+\begin{center}
+\rowcolors[]{1}{gray!5}{gray!10}
+\begin{tabularx}{\linewidth}{lX}
+\rowcolor{gray!30}\textbf{Format} & \textbf{Description} \\\hline
+\%a & locale's abbreviated weekday name. \\
+\%A & locale's full weekday name. \\
+\%b & locale's abbreviated month name. \\
+\%B & locale's full month name. \\
+\%c & locale's appropriate date and time representation. \\
+\%C & century number (the year divided by 100 and truncated to an integer) as a decimal number [00-99]. \\
+\%d & day of the month as a decimal number [01,31]. \\
+\%D & same as \%m/\%d/\%y. \\
+\%e & day of the month as a decimal number [1,31]; a single digit is preceded by a space. \\
+\%h & same as \%b. \\
+\%H & hour (24-hour clock) as a decimal number [00,23]. \\
+\%I & hour (12-hour clock) as a decimal number [01,12]. \\
+\%j & day of the year as a decimal number [001,366]. \\
+\%m & month as a decimal number [01,12]. \\
+\%M & minute as a decimal number [00,59]. \\
+\%n & is replaced by a newline character. \\
+\%p & locale's equivalent of either a.m. or p.m. \\
+\%r & time in a.m. and p.m. notation; in the POSIX locale this is equivalent to \%I:\%M:\%S \%p. \\
+\%R & time in 24 hour notation (\%H:\%M). \\
+\%S & second as a decimal number [00,61]. \\
+\%t & is replaced by a tab character. \\
+\%T & time (\%H:\%M:\%S). \\
+\%u & weekday as a decimal number [1,7], with 1 representing Monday. \\
+\%U & week number of the year (Sunday as the first day of the week) as a decimal number [00,53]. \\
+\%V & week number of the year (Monday as the first day of the week) as a decimal number [01,53]. If the week containing 1 January has four or more days in the new year, then it is considered week 1. Otherwise, it is the last week of the previous year, and the next week is week 1. \\
+\%w & weekday as a decimal number [0,6], with 0 representing Sunday. \\
+\%W & week number of the year (Monday as the first day of the week) as a decimal number [00,53]. All days in a new year preceding the first Monday are considered to be in week 0. \\
+\%x & locale's appropriate date representation. \\
+\%X & locale's appropriate time representation. \\
+\%y & year without century as a decimal number [00,99]. \\
+\%Y & year with century as a decimal number. \\
+\%Z & timezone name or abbreviation, or by no bytes if no timezone information exists. \\
+\%\% & character \%. \\
+\end{tabularx}
+\end{center}
+
+
+\section{Example of an input dataset as a single FluidX file}
+
+\begin{lstlisting}[language=xml,frame=]
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+  <model>
+    <gparams>
+      <param name="gparam1" value="100" />
+      <param name="gparam2" value="0.1" />
+    </gparams>
+    <function fileID="example.functionA" />
+    <generator varname="example.generator.fixed" unitclass="EU1"
+               method="fixed" varsize="11">
+      <param name="fixedvalue" value="20" />
+    </generator>
+    <generator varname="example.generator.random" unitclass="EU2" 
+               method="random">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+    </generator>
+    <function fileID="example.functionB">
+      <param name="param1" value="strvalue" />
+      <param name="param2" value="1.1" />
+      <param name="gparam1" value="50" />
+    </function>
+  </model>
+
+
+  <domain>
+
+    <definition>
+      <unit class="PU" ID="1" pcsorder="1" />
+      <unit class="EU1" ID="3" pcsorder="1">
+        <to class="EU1" ID="11" />
+        <childof class="PU" ID="1" />
+      </unit>
+      <unit class="EU1" ID="11" pcsorder="3">
+        <to class="EU2" ID="2" />
+      </unit>
+      <unit class="EU2" ID="2" pcsorder="1" />
+    </definition>
+
+    <inputdata unitclass="EU1" colorder="indataA">
+      3 1.1
+      11 7.5
+    </inputdata>
+    
+    <inputdata unitclass="EU2" colorder="indataB1;indataB3">
+      2 18 STRVALX
+    </inputdata>
+    
+    <calendar>
+      <event unitclass="EU1" unitID="11" date="1999-12-31 23:59:59">
+        <info key="when" value="before" />
+        <info key="where" value="1" />
+        <info key="var1" value="1.13" />
+        <info key="var2" value="EADGBE" />
+      </event>
+      <event unitclass="EU2" unitID="3" date="2000-02-05 12:37:51">
+        <info key="var3" value="152.27" />
+        <info key="var4" value="XYZ" />
+      </event>
+      <event unitclass="EU1" unitID="11" date="2000-02-25 12:00:00">
+        <info key="var1" value="1.15" />
+        <info key="var2" value="EADG" />
+      </event>
+    </calendar>
+    
+  </domain>
+
+
+  <run>
+    <deltat>3600</deltat>
+    <period begin="2000-01-01 00:00:00" end="2000-03-27 01:12:37" />
+    <valuesbuffer steps="50" />
+    <filesbuffer kbytes="8" />
+  </run>
+
+
+  <output>
+    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">
+      <set name="testRS" unitsclass="RS" unitsIDs="51;232" vars="*" />
+      <set name="full" unitsclass="SU" unitsIDs="*" vars="*" precision="7" />
+    </files>
+  </output>
+
+</openfluid>
+\end{lstlisting}
+
+\bigskip 
+
+\section{File formats for \texttt{interp} data generator}
+
+\subsection{Sources}
+The sources file format is an XML based format which defines a list of sources
+files associated to an unique ID.\\
+\noindent The sources must be defined in a section delimited by the
+\texttt{<datasources>} tag, inside an \texttt{<openfluid>} tag and must be
+structured following these rules:
+\begin{itemize}
+  \item Inside the \texttt{<datasources>} tag, there must be a set of
+  \texttt{<filesource>} tags
+  \item Each \texttt{<filesource>} tag must bring an \texttt{ID}
+  attribute giving the identifier of source, and an \texttt{file}
+  attribute giving the name of the file containing the source of data. The files
+  must be placed in the input directory of the simulation.
+\end{itemize}
+
+\begin{lstlisting}[language=xml,title=\footnotesize\textit{example of a sources list file}]
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ 
+ <datasources>
+    <filesource ID="1" file="source1.dat" />
+    <filesource ID="2" file="source2.dat" />    
+  </datasources>
+  
+</openfluid>
+\end{lstlisting}
+
+\bigskip
+An associated source data file is a seven columns text file, containing a serie
+of values in time. The six first columns are the date using the following format
+\texttt{YYYY MM DD HH MM SS}. The 7$^{th}$ column is the value itself.
+
+ \begin{lstlisting}[language=,title=\footnotesize\textit{example of a source data file}]
+1999 12 31 12 00 00	-1.0
+1999 12 31 23 00 00	-5.0
+2000 01 01 00 30 00	-15.0
+2000 01 01 00 40 00	-5.0
+2000 01 01 01 30 00	-15.0
+\end{lstlisting}
+
+
+\subsection{Distribution}
+
+A distribution file is a two column file associating a unit ID
+(1$^{st}$column) to a source ID (2$^{nd}$column).
+\begin{lstlisting}[language=,title=\footnotesize\textit{example of distribution file}] <?xml version="1.0" standalone="yes"?> 1 1
+2 2
+3 1
+4 2
+5 1
+\end{lstlisting}
+
+
+\section{Useful links}
+
+\subsection{OpenFLUID project}
+
+\begin{itemize}
+  \item OpenFLUID web site : \textcolor{blue}{\url{http://www.umr-lisah.fr/openfluid/}}  
+  \item OpenFLUID web community : \textcolor{blue}{\url{http://www.umr-lisah.fr/openfluid/community/}}
+  \item OpenFLUID on SourceSup (software forge): \textcolor{blue}{\url{https://sourcesup.cru.fr/projects/openfluid/}} 
+\end{itemize}
+
+
+\subsection{External tools}
+
+\begin{itemize}
+  \item Geany : \textcolor{blue}{\url{http://www.geany.org/}}
+  \item Gnuplot : \textcolor{blue}{\url{http://www.gnuplot.info/}}
+  \item GRASS GIS : \textcolor{blue}{\url{http://grass.itc.it/}}
+  \item jEdit : \textcolor{blue}{\url{http://www.jedit.org/}}
+  \item Octave : \textcolor{blue}{\url{http://www.gnu.org/software/octave/}}
+  \item QGIS : \textcolor{blue}{\url{http://www.qgis.org/}}
+  \item R : \textcolor{blue}{\url{http://www.r-project.org/}}
+  \item Scilab : \textcolor{blue}{\url{http://www.scilab.org/}} 
+\end{itemize}   
+
