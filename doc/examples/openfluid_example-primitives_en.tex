@@ -23,7 +23,7 @@ It aims at showing how values of variables are produced and used in a spatially 
 \subsection{Flux model}
 
 \begin{floatingfigure}[r]{6cm}
-\includegraphics[width=5cm]{openfluid-engine_example-primitives_en/model.png}
+\includegraphics[width=5cm]{openfluid_example-primitives_en/model.png}
 \end{floatingfigure}
 The flux model is composed of 3 simulations functions :\\
 \begin{itemize}
@@ -53,7 +53,7 @@ where nodes are units and edges are connections between units.\\
 The spatial domain is defined in *.ddef.xml file(s). 
 
 \begin{center}
-\includegraphics[width=8cm]{openfluid-engine_example-primitives_en/domain.png}
+\includegraphics[width=8cm]{openfluid_example-primitives_en/domain.png}
 \end{center}
 
 
@@ -79,7 +79,7 @@ In order to run this example, the following programs and libraries are required:
 \item CMake build system
 \item GCC compiler
 \item Boost libraries
-\item OpenFLUID-engine
+\item OpenFLUID
 \end{itemize}
 
 \noindent All required operations will be executed through a command line terminal,
@@ -90,7 +90,7 @@ and will be completed through 3 steps: configuration, build and run.
 The configuration step will configure the build according to the used platform. 
 First of all, the config.in.cmake file for each simulation function should be 
 adapted, in order to install the resulting built functions in a place where the 
-openfluid engine program can reach them.\\
+openfluid-engine program can reach them.\\
 
 \noindent The configuration of the build can be performed using one of the two
 following ways :
