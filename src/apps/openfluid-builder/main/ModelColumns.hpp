@@ -46,82 +46,71 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file ModelColumns.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
-
+#ifndef __MODELCOLUMNS_HPP__
+#define __MODELCOLUMNS_HPP__
 
 #include <gtkmm.h>
 
 #include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-class ModelModule : public ModuleInterface
+class ModelColumns : public Gtk::TreeModel::ColumnRecord
 {
   public:
 
-    ModelModule(openfluid::machine::ModelInstance & Model, openfluid::machine::SimulationBlob & SimBlob);
+  // each RowType 1<7 has a tab in Notebook of Available functions (page num is RowType value)
+  enum RowType {  SimulationFunctions = 100,
+                  Generators = 200,
+                  Parameters = 1,
+                  InputData = 2,
+                  Variables = 3,
+                  Events = 4,
+                  ExtraFiles = 5,
+                  SpatialUnits = 6 };
 
-    ~ModelModule();
-
-
-  private:
-
-    Gtk::TreeView * mp_TreeViewUsedFct;
-
-    Gtk::Image * mp_ImageModelUsedFctTrash;
-
-    Gtk::Notebook * mp_NotebookParams;
-
-
-    openfluid::machine::ModelInstance & m_Model;
-
-    openfluid::machine::SimulationBlob & m_SimBlob;
+  enum GeneratorType { Fixed, Random, Interp, MaxGeneratorType/*for iter only*/ };
 
 
-    ModelAvailFct * mp_ModelAvailFct;
+  ModelColumns()
+    { add(m_Type); add(m_IsTitle); add(m_Id); add(m_FunctionName); add(m_FunctionPath); add(m_Description);
+    add(m_FunctionVersion); add(m_FunctionStatusStr);add(m_FunctionStatusIcon); add(m_FunctionDomain);
+    add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail);
+    add(m_HandleDataUnitClass); add(m_HandleDataUnit); add(m_ModelItemInstance); }
 
-    ModelColumns m_Columns;
+  Gtk::TreeModelColumn<RowType> m_Type;
+  Gtk::TreeModelColumn<bool> m_IsTitle;
 
-    Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
+  Gtk::TreeModelColumn<Glib::ustring> m_Id;
+  Gtk::TreeModelColumn<Glib::ustring> m_Description;
 
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionName;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionPath;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionVersion;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionStatusStr;
+  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_FunctionStatusIcon;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionDomain;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionProcess;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionMethod;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorName;
+  Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorEmail;
 
-    void createActions();
+  Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnitClass;
+  Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnit;
 
-    void createModelUsedFct();
-
-    void setDragAndDropManagement();
-
-    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& context,
-        Gtk::SelectionData& selection_data, guint info, guint time,
-        Gtk::TreeView * TreeViewSource);
-
-    void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-        const Gtk::SelectionData& selection_data, guint info, guint time,
-        Gtk::TreeView * TreeViewDest);
-
-    void onUsedFctRowDeleted(const Gtk::TreeModel::Path& Path);
-
-    void addParamTab(openfluid::machine::ModelItemInstance & Function, int Position=-2);
-
-    bool onEntryFocusOut(GdkEventFocus * Even, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function);
-
-    void actionCheckModel();
+  Gtk::TreeModelColumn<openfluid::machine::ModelItemInstance *> m_ModelItemInstance;
 
 };
 
-#endif /* __MODELMODULE_HPP__ */
+
+#endif /* __MODELCOLUMNS_HPP__ */

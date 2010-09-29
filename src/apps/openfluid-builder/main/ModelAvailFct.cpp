@@ -146,7 +146,7 @@ void ModelAvailFct::createMainTreeModel()
 
   Gtk::TreeModel::Row RowFctTitle = *(mp_TreeModelAvailFct->append());
 
-  setRowTitle(&RowFctTitle,"Simulation Functions",SimulationFunctions);
+  setRowTitle(&RowFctTitle,"Simulation Functions",ModelColumns::SimulationFunctions);
 
   openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
   for (unsigned int i=0;i<PlugContainers.size();i++)
@@ -155,7 +155,9 @@ void ModelAvailFct::createMainTreeModel()
     {
       Gtk::TreeModel::Row RowFct = *(mp_TreeModelAvailFct->append(RowFctTitle.children()));
 
-      RowFct[m_Columns.m_Type] = SimulationFunctions;
+      RowFct[m_Columns.m_ModelItemInstance] = PlugContainers[i];
+
+      RowFct[m_Columns.m_Type] = ModelColumns::SimulationFunctions;
       RowFct[m_Columns.m_IsTitle] = false;
 
       RowFct[m_Columns.m_Id] = PlugContainers[i]->Signature->ID;
@@ -193,96 +195,96 @@ void ModelAvailFct::createMainTreeModel()
       }
 
       // Simulation functions Parameters
-      createHandleDataTreeRows(&RowFct,"Parameters",Parameters,PlugContainers[i]->Signature->HandledData.FunctionParams,false);
+      createHandleDataTreeRows(&RowFct,"Parameters",ModelColumns::Parameters,PlugContainers[i]->Signature->HandledData.FunctionParams,false);
 
       // Simulation functions Input Data
       Gtk::TreeModel::Row RowFctInputDataTitle = *(mp_TreeModelAvailFct->append(RowFct.children()));
 
-      setRowTitle(&RowFctInputDataTitle,"Input Data",InputData,false);
+      setRowTitle(&RowFctInputDataTitle,"Input Data",ModelColumns::InputData,false);
 
-      createHandleDataTreeRows(&RowFctInputDataTitle,"Required",InputData,PlugContainers[i]->Signature->HandledData.RequiredInput);
-      createHandleDataTreeRows(&RowFctInputDataTitle,"Used",InputData,PlugContainers[i]->Signature->HandledData.UsedInput);
+      createHandleDataTreeRows(&RowFctInputDataTitle,"Required",ModelColumns::InputData,PlugContainers[i]->Signature->HandledData.RequiredInput);
+      createHandleDataTreeRows(&RowFctInputDataTitle,"Used",ModelColumns::InputData,PlugContainers[i]->Signature->HandledData.UsedInput);
 
 
       // Simulation functions Variables
       Gtk::TreeModel::Row RowFctVariablesTitle = *(mp_TreeModelAvailFct->append(RowFct.children()));
 
-      setRowTitle(&RowFctVariablesTitle,"Variables",Variables,false);
+      setRowTitle(&RowFctVariablesTitle,"Variables",ModelColumns::Variables,false);
 
-      createHandleDataTreeRows(&RowFctVariablesTitle,"Produced",Variables,PlugContainers[i]->Signature->HandledData.ProducedVars);
-      createHandleDataTreeRows(&RowFctVariablesTitle,"Updated",Variables,PlugContainers[i]->Signature->HandledData.UpdatedVars);
-      createHandleDataTreeRows(&RowFctVariablesTitle,"Required",Variables,PlugContainers[i]->Signature->HandledData.RequiredVars);
-      createHandleDataTreeRows(&RowFctVariablesTitle,"Used",Variables,PlugContainers[i]->Signature->HandledData.UsedVars);
-      createHandleDataTreeRows(&RowFctVariablesTitle,"Required t-1",Variables,PlugContainers[i]->Signature->HandledData.RequiredPrevVars);
-      createHandleDataTreeRows(&RowFctVariablesTitle,"Used t-1",Variables,PlugContainers[i]->Signature->HandledData.UsedPrevVars);
+      createHandleDataTreeRows(&RowFctVariablesTitle,"Produced",ModelColumns::Variables,PlugContainers[i]->Signature->HandledData.ProducedVars);
+      createHandleDataTreeRows(&RowFctVariablesTitle,"Updated",ModelColumns::Variables,PlugContainers[i]->Signature->HandledData.UpdatedVars);
+      createHandleDataTreeRows(&RowFctVariablesTitle,"Required",ModelColumns::Variables,PlugContainers[i]->Signature->HandledData.RequiredVars);
+      createHandleDataTreeRows(&RowFctVariablesTitle,"Used",ModelColumns::Variables,PlugContainers[i]->Signature->HandledData.UsedVars);
+      createHandleDataTreeRows(&RowFctVariablesTitle,"Required t-1",ModelColumns::Variables,PlugContainers[i]->Signature->HandledData.RequiredPrevVars);
+      createHandleDataTreeRows(&RowFctVariablesTitle,"Used t-1",ModelColumns::Variables,PlugContainers[i]->Signature->HandledData.UsedPrevVars);
 
       // Simulation functions Events
       Gtk::TreeModel::Row RowFctEventsTitle = *(mp_TreeModelAvailFct->append(RowFct.children()));
 
-      setRowTitle(&RowFctEventsTitle,"Events",Events, false);
+      setRowTitle(&RowFctEventsTitle,"Events",ModelColumns::Events, false);
 
       std::vector<std::string> TheEvents = PlugContainers[i]->Signature->HandledData.UsedEventsOnUnits;
       for(unsigned int j=0 ; j<TheEvents.size() ; j++)
       {
         Gtk::TreeModel::Row RowEvents = *(mp_TreeModelAvailFct->append(RowFctEventsTitle.children()));
         RowEvents[m_Columns.m_HandleDataUnitClass] = TheEvents[j];
-        RowEvents[m_Columns.m_Type] = Events;
+        RowEvents[m_Columns.m_Type] = ModelColumns::Events;
         RowEvents[m_Columns.m_IsTitle] = false;
       }
 
       // Simulation functions Extra Files
       Gtk::TreeModel::Row RowFctExtraFilesTitle = *(mp_TreeModelAvailFct->append(RowFct.children()));
 
-      setRowTitle(&RowFctExtraFilesTitle,"Extra Files",ExtraFiles, false);
+      setRowTitle(&RowFctExtraFilesTitle,"Extra Files",ModelColumns::ExtraFiles, false);
 
       // -- Required Extra Files
       Gtk::TreeModel::Row RowFctExtraFilesRequiredTitle = *(mp_TreeModelAvailFct->append(RowFctExtraFilesTitle.children()));
 
-      setRowTitle(&RowFctExtraFilesRequiredTitle,"Required",ExtraFiles);
+      setRowTitle(&RowFctExtraFilesRequiredTitle,"Required",ModelColumns::ExtraFiles);
 
       std::vector<std::string> RequiredExtraFiles = PlugContainers[i]->Signature->HandledData.RequiredExtraFiles;
       for(unsigned int j=0 ; j<RequiredExtraFiles.size() ; j++)
       {
         Gtk::TreeModel::Row RowExtraFileRequired = *(mp_TreeModelAvailFct->append(RowFctExtraFilesRequiredTitle.children()));
         RowExtraFileRequired[m_Columns.m_Id] = RequiredExtraFiles[j];
-        RowExtraFileRequired[m_Columns.m_Type] = ExtraFiles;
+        RowExtraFileRequired[m_Columns.m_Type] = ModelColumns::ExtraFiles;
         RowExtraFileRequired[m_Columns.m_IsTitle] = false;
       }
 
       // -- Used Extra Files
       Gtk::TreeModel::Row RowFctExtraFilesUsedTitle = *(mp_TreeModelAvailFct->append(RowFctExtraFilesTitle.children()));
 
-      setRowTitle(&RowFctExtraFilesUsedTitle,"Used",ExtraFiles);
+      setRowTitle(&RowFctExtraFilesUsedTitle,"Used",ModelColumns::ExtraFiles);
 
       std::vector<std::string> UsedExtraFiles = PlugContainers[i]->Signature->HandledData.UsedExtraFiles;
       for(unsigned int j=0 ; j<UsedExtraFiles.size() ; j++)
       {
         Gtk::TreeModel::Row RowExtraFileUsed = *(mp_TreeModelAvailFct->append(RowFctExtraFilesUsedTitle.children()));
         RowExtraFileUsed[m_Columns.m_Id] = UsedExtraFiles[j];
-        RowExtraFileUsed[m_Columns.m_Type] = ExtraFiles;
+        RowExtraFileUsed[m_Columns.m_Type] = ModelColumns::ExtraFiles;
         RowExtraFileUsed[m_Columns.m_IsTitle] = false;
       }
 
       // Simulation functions Spatial Units Graph
       Gtk::TreeModel::Row RowFctSpatialUnitsGraphTitle = *(mp_TreeModelAvailFct->append(RowFct.children()));
 
-      setRowTitle(&RowFctSpatialUnitsGraphTitle,"Spatial Units",SpatialUnits, false);
+      setRowTitle(&RowFctSpatialUnitsGraphTitle,"Spatial Units",ModelColumns::SpatialUnits, false);
 
       // -- Updated Units Graph
       Gtk::TreeModel::Row RowFctUnitsGraphTitle = *(mp_TreeModelAvailFct->append(RowFctSpatialUnitsGraphTitle.children()));
 
-      setRowTitle(&RowFctUnitsGraphTitle,"Updated Units Graph",SpatialUnits);
+      setRowTitle(&RowFctUnitsGraphTitle,"Updated Units Graph",ModelColumns::SpatialUnits);
 
       Gtk::TreeModel::Row RowFctUnitsGraph = *(mp_TreeModelAvailFct->append(RowFctUnitsGraphTitle.children()));
       RowFctUnitsGraph[m_Columns.m_Description] = PlugContainers[i]->Signature->HandledUnitsGraph.UpdatedUnitsGraph;
-      RowFctUnitsGraph[m_Columns.m_Type] = SpatialUnits;
+      RowFctUnitsGraph[m_Columns.m_Type] = ModelColumns::SpatialUnits;
       RowFctUnitsGraph[m_Columns.m_IsTitle] = false;
 
 
       // -- Updated Units Classes
       Gtk::TreeModel::Row RowFctUnitsClassesTitle = *(mp_TreeModelAvailFct->append(RowFctSpatialUnitsGraphTitle.children()));
 
-      setRowTitle(&RowFctUnitsClassesTitle,"Updated Units Classes",SpatialUnits);
+      setRowTitle(&RowFctUnitsClassesTitle,"Updated Units Classes",ModelColumns::SpatialUnits);
 
       std::vector<openfluid::base::SignatureHandledUnitsClassItem> UpdatedUnitsClasses = PlugContainers[i]->Signature->HandledUnitsGraph.UpdatedUnitsClass;
       for(unsigned int j=0 ; j<UpdatedUnitsClasses.size() ; j++)
@@ -290,7 +292,7 @@ void ModelAvailFct::createMainTreeModel()
         Gtk::TreeModel::Row RowFctUnitsClass = *(mp_TreeModelAvailFct->append(RowFctUnitsClassesTitle.children()));
         RowFctUnitsClass[m_Columns.m_HandleDataUnitClass] = UpdatedUnitsClasses[j].UnitsClass;
         RowFctUnitsClass[m_Columns.m_Description] = UpdatedUnitsClasses[j].Description;
-        RowFctUnitsClass[m_Columns.m_Type] = SpatialUnits;
+        RowFctUnitsClass[m_Columns.m_Type] = ModelColumns::SpatialUnits;
         RowFctUnitsClass[m_Columns.m_IsTitle] = false;
       }
     }
@@ -299,27 +301,27 @@ void ModelAvailFct::createMainTreeModel()
   // 1. Generators rows
   Gtk::TreeModel::Row RowGeneratorTitle = *(mp_TreeModelAvailFct->append());
 
-  setRowTitle(&RowGeneratorTitle,"Generators",Generators, false);
+  setRowTitle(&RowGeneratorTitle,"Generators",ModelColumns::Generators, false);
 
-  for(int i=0 ; i<MaxGeneratorType ; i++)
+  for(int i=0 ; i<ModelColumns::MaxGeneratorType ; i++)
   {
     Gtk::TreeModel::Row RowGenerator = *(mp_TreeModelAvailFct->append(RowGeneratorTitle.children()));
 
-    RowGenerator[m_Columns.m_Type] = Generators;
+    RowGenerator[m_Columns.m_Type] = ModelColumns::Generators;
     RowGenerator[m_Columns.m_IsTitle] = false;
 
     // Generator common parameters
 
     Gtk::TreeModel::Row RowGeneratorParametersTitle = *(mp_TreeModelAvailFct->append(RowGenerator.children()));
 
-    setRowTitle(&RowGeneratorParametersTitle,"Parameters",Parameters,false);
+    setRowTitle(&RowGeneratorParametersTitle,"Parameters",ModelColumns::Parameters,false);
 
 
     Gtk::TreeModel::Row RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
     RowGeneratorParameters[m_Columns.m_Id] = "Varname";
     RowGeneratorParameters[m_Columns.m_Description] = "Name of the produced variable";
-    RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+    RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
     RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
     RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
@@ -328,7 +330,7 @@ void ModelAvailFct::createMainTreeModel()
 
     RowGeneratorParameters[m_Columns.m_Id] = "Unitclass";
     RowGeneratorParameters[m_Columns.m_Description] = "Unit class of the produced variable";
-    RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+    RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
     RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
     RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
@@ -336,16 +338,16 @@ void ModelAvailFct::createMainTreeModel()
     RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
     RowGeneratorParameters[m_Columns.m_Id] = "Varsize";
-    RowGeneratorParameters[m_Columns.m_Description] = "Optionnal : to produce a vector variable instead of a scala variable";
-    RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+    RowGeneratorParameters[m_Columns.m_Description] = "Optionnal : to produce a vector variable instead of a scalar variable";
+    RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
     RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
     RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
     // Generator specific parameters
 
-    switch(static_cast<GeneratorType>(i))
+    switch(static_cast<ModelColumns::GeneratorType>(i))
     {
-      case Fixed :
+      case ModelColumns::Fixed :
 
         RowGenerator[m_Columns.m_Id] = "Fixed";
         RowGenerator[m_Columns.m_FunctionName] = "Fixed Generator";
@@ -353,15 +355,15 @@ void ModelAvailFct::createMainTreeModel()
 
         RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
-        RowGeneratorParameters[m_Columns.m_Id] = "Fixed value";
+        RowGeneratorParameters[m_Columns.m_Id] = "fixedvalue";
         RowGeneratorParameters[m_Columns.m_Description] = "Value to produce";
-        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
         RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
         RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
         break;
 
-      case Random :
+      case ModelColumns::Random :
 
         RowGenerator[m_Columns.m_Id] = "Random";
         RowGenerator[m_Columns.m_FunctionName] = "Random Generator";
@@ -369,23 +371,23 @@ void ModelAvailFct::createMainTreeModel()
 
         RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
-        RowGeneratorParameters[m_Columns.m_Id] = "Min";
+        RowGeneratorParameters[m_Columns.m_Id] = "min";
         RowGeneratorParameters[m_Columns.m_Description] = "Lower bound of the random range for the value to produce";
-        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
         RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
         RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
         RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
-        RowGeneratorParameters[m_Columns.m_Id] = "Max";
+        RowGeneratorParameters[m_Columns.m_Id] = "max";
         RowGeneratorParameters[m_Columns.m_Description] = "Upper bound of the random range for the value to produce";
-        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
         RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
         RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
         break;
 
-      case Interp :
+      case ModelColumns::Interp :
 
         RowGenerator[m_Columns.m_Id] = "Interp";
         RowGenerator[m_Columns.m_FunctionName] = "Interpolation Generator";
@@ -393,17 +395,17 @@ void ModelAvailFct::createMainTreeModel()
 
         RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
-        RowGeneratorParameters[m_Columns.m_Id] = "Sources";
+        RowGeneratorParameters[m_Columns.m_Id] = "sources";
         RowGeneratorParameters[m_Columns.m_Description] = "Data sources filename for the value to produce";
-        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
         RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
         RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
         RowGeneratorParameters = *(mp_TreeModelAvailFct->append(RowGeneratorParametersTitle.children()));
 
-        RowGeneratorParameters[m_Columns.m_Id] = "Distribution";
+        RowGeneratorParameters[m_Columns.m_Id] = "distribution";
         RowGeneratorParameters[m_Columns.m_Description] = "Distribution filename for the value to produce";
-        RowGeneratorParameters[m_Columns.m_Type] = Parameters;
+        RowGeneratorParameters[m_Columns.m_Type] = ModelColumns::Parameters;
         RowGeneratorParameters[m_Columns.m_HandleDataUnit] = "-";
         RowGeneratorParameters[m_Columns.m_IsTitle] = false;
 
@@ -430,12 +432,12 @@ void ModelAvailFct::createAvailableFunctionsTreeModel()
 
   // Define types to set visible
 
-  std::vector<RowType> TypesToSetVisible;
+  std::vector<ModelColumns::RowType> TypesToSetVisible;
 
-  TypesToSetVisible.push_back(SimulationFunctions);
-  TypesToSetVisible.push_back(Generators);
+  TypesToSetVisible.push_back(ModelColumns::SimulationFunctions);
+  TypesToSetVisible.push_back(ModelColumns::Generators);
 
-  TreeJustFilterAvailFct->set_visible_func(sigc::bind<std::vector<RowType> >(sigc::mem_fun(*this,&ModelAvailFct::isRowVisible),TypesToSetVisible));
+  TreeJustFilterAvailFct->set_visible_func(sigc::bind<std::vector<ModelColumns::RowType> >(sigc::mem_fun(*this,&ModelAvailFct::isRowVisible),TypesToSetVisible));
 
   // Create sortable model
   Glib::RefPtr<Gtk::TreeModelSort> TreeFilterAvailFct = Gtk::TreeModelSort::create(TreeJustFilterAvailFct);
@@ -482,6 +484,7 @@ void ModelAvailFct::createAvailableFunctionsTreeView()
 
    if(sub)
      TreeSelection->select(sub);
+
 }
 
 
@@ -573,7 +576,7 @@ void ModelAvailFct::setTreeViewProperties(Gtk::TreeView * TreeView)
 // =====================================================================
 
 
-void ModelAvailFct::createHandleDataTreeRows(Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle)
+void ModelAvailFct::createHandleDataTreeRows(Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle)
 {
 
   Gtk::TreeModel::Row RowTitle = *(mp_TreeModelAvailFct->append((*PrevRow).children()));
@@ -600,7 +603,7 @@ void ModelAvailFct::createHandleDataTreeRows(Gtk::TreeModel::Row * PrevRow, Glib
 // =====================================================================
 
 
-void ModelAvailFct::setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, RowType Type, bool /*ShowTitle*/)
+void ModelAvailFct::setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool /*ShowTitle*/)
 {
   (*Row)[m_Columns.m_Id] = Title;
   (*Row)[m_Columns.m_Type] = Type;
@@ -612,7 +615,7 @@ void ModelAvailFct::setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, 
 // =====================================================================
 
 
-bool ModelAvailFct::isRowVisible(const Gtk::TreeModel::const_iterator& Iter, std::vector<RowType> Type)
+bool ModelAvailFct::isRowVisible(const Gtk::TreeModel::const_iterator& Iter, std::vector<ModelColumns::RowType> Type)
 {
   Gtk::TreeModel::Row row = *Iter;
 
@@ -648,7 +651,7 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 
     Gtk::TreeModel::Row row = *iter;
 
-    if(row[m_Columns.m_Type] == SimulationFunctions)
+    if(row[m_Columns.m_Type] == ModelColumns::SimulationFunctions)
     {
       if(mp_TableSignatureGenerator->is_visible())
       {
@@ -680,12 +683,12 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 
       FunctionPath.down();
 
-      setHandleDataPanel(Parameters,mp_TreeViewFctParameters,1,FunctionPath);
-      setHandleDataPanel(InputData,mp_TreeViewFctInputData,2,FunctionPath);
-      setHandleDataPanel(Variables,mp_TreeViewFctVars,2,FunctionPath);
-      setHandleDataPanel(Events,mp_TreeViewFctEvents,1,FunctionPath);
-      setHandleDataPanel(ExtraFiles,mp_TreeViewFctExtraFiles,2,FunctionPath);
-      setHandleDataPanel(SpatialUnits,mp_TreeViewFctUnitsGraph,2,FunctionPath);
+      setHandleDataPanel(ModelColumns::Parameters,mp_TreeViewFctParameters,1,FunctionPath);
+      setHandleDataPanel(ModelColumns::InputData,mp_TreeViewFctInputData,2,FunctionPath);
+      setHandleDataPanel(ModelColumns::Variables,mp_TreeViewFctVars,2,FunctionPath);
+      setHandleDataPanel(ModelColumns::Events,mp_TreeViewFctEvents,1,FunctionPath);
+      setHandleDataPanel(ModelColumns::ExtraFiles,mp_TreeViewFctExtraFiles,2,FunctionPath);
+      setHandleDataPanel(ModelColumns::SpatialUnits,mp_TreeViewFctUnitsGraph,2,FunctionPath);
 
       // Show all notebook tabs
       for(unsigned int i=2 ; i<mp_NotebookAvailFct->pages().size() ; i++)
@@ -693,7 +696,7 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 
     }
 
-    else if(row[m_Columns.m_Type] == Generators)
+    else if(row[m_Columns.m_Type] == ModelColumns::Generators)
     {
       if(mp_TableSignatureFunction->is_visible())
       {
@@ -714,18 +717,13 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 
       FunctionPath.down();
 
-      setHandleDataPanel(Parameters,mp_TreeViewFctParameters,1,FunctionPath);
+      setHandleDataPanel(ModelColumns::Parameters,mp_TreeViewFctParameters,1,FunctionPath);
 
       // Hide unused notebook tabs, just keep first (Signature) and second (Parameters)
       for(unsigned int i=2 ; i<mp_NotebookAvailFct->pages().size() ; i++)
         mp_NotebookAvailFct->get_nth_page(i)->hide();
-
     }
-
-
-
   }
-
 }
 
 
@@ -733,14 +731,14 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 // =====================================================================
 
 
-void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gtk::TreePath * Path, RowType Type)
+void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gtk::TreePath * Path, ModelColumns::RowType Type)
 {
   // Create child model
   Glib::RefPtr<Gtk::TreeModelFilter> TreeJustFilter = Gtk::TreeModelFilter::create(mp_TreeModelAvailFct,*Path);
 
-  std::vector<RowType> TypesToSetVisible(1,Type);
+  std::vector<ModelColumns::RowType> TypesToSetVisible(1,Type);
 
-  TreeJustFilter->set_visible_func(sigc::bind<std::vector<RowType> >(sigc::mem_fun(*this,&ModelAvailFct::isRowVisible),TypesToSetVisible));
+  TreeJustFilter->set_visible_func(sigc::bind<std::vector<ModelColumns::RowType> >(sigc::mem_fun(*this,&ModelAvailFct::isRowVisible),TypesToSetVisible));
 
 
   // Make child model model sortable
@@ -764,7 +762,7 @@ void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gt
 // =====================================================================
 
 
-void ModelAvailFct::setHandleDataPanel(RowType Type, Gtk::TreeView * TreeView, int LeafValuesDepth, Gtk::TreePath & FunctionPath)
+void ModelAvailFct::setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, int LeafValuesDepth, Gtk::TreePath & FunctionPath)
 {
   bool Empty = true;
 
@@ -804,7 +802,7 @@ void ModelAvailFct::setHandleDataPanel(RowType Type, Gtk::TreeView * TreeView, i
 // =====================================================================
 
 
-void ModelAvailFct::toggleEmptyTreeView(Gtk::TreeView * TreeView, RowType Type, bool TypeIsEmpty)
+void ModelAvailFct::toggleEmptyTreeView(Gtk::TreeView * TreeView, ModelColumns::RowType Type, bool TypeIsEmpty)
 {
   Gtk::ScrolledWindow * ScrolledWindow = dynamic_cast<Gtk::ScrolledWindow *>(mp_NotebookAvailFct->get_nth_page(Type));
 

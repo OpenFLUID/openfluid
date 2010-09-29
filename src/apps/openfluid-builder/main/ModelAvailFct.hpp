@@ -59,6 +59,8 @@
 
 #include <gtkmm.h>
 
+#include "ModelColumns.hpp"
+
 
 // =====================================================================
 // =====================================================================
@@ -66,58 +68,17 @@
 
 class ModelAvailFct
 {
-  private:
-
-    // each RowType 1<7 has a tab in mp_NotebookAvailFct (page is RowType value)
-    enum RowType {  SimulationFunctions = 100,
-                    Generators = 200,
-                    Parameters = 1,
-                    InputData = 2,
-                    Variables = 3,
-                    Events = 4,
-                    ExtraFiles = 5,
-                    SpatialUnits = 6 };
-
-    enum GeneratorType { Fixed, Random, Interp, MaxGeneratorType/*for iter only*/ };
-
   public:
 
     ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
     ~ModelAvailFct();
 
+    Gtk::TreeView * getTreeViewAvailFct()
+        { return mp_TreeViewAvailFct; }
+
+
   private:
-
-    // Available functions tree model columns
-    class ModelColumns : public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-      ModelColumns()
-        { add(m_Type); add(m_IsTitle); add(m_Id); add(m_FunctionName); add(m_FunctionPath); add(m_Description);
-          add(m_FunctionVersion); add(m_FunctionStatusStr);add(m_FunctionStatusIcon); add(m_FunctionDomain);
-          add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail);
-          add(m_HandleDataUnitClass); add(m_HandleDataUnit); }
-
-      Gtk::TreeModelColumn<RowType> m_Type;
-      Gtk::TreeModelColumn<bool> m_IsTitle;
-
-      Gtk::TreeModelColumn<Glib::ustring> m_Id;
-      Gtk::TreeModelColumn<Glib::ustring> m_Description;
-
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionName;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionPath;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionVersion;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionStatusStr;
-      Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_FunctionStatusIcon;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionDomain;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionProcess;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionMethod;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorName;
-      Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorEmail;
-
-      Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnitClass;
-      Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnit;
-    };
 
     ModelColumns m_Columns;
 
@@ -152,6 +113,7 @@ class ModelAvailFct
 
     Gtk::Notebook * mp_NotebookAvailFct;
 
+
     void createMainTreeModel();
 
     void createAvailableFunctionsTreeModel();
@@ -162,32 +124,24 @@ class ModelAvailFct
 
     void setTreeViewProperties(Gtk::TreeView * TreeView);
 
-    void createHandleDataTreeRows(Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
+    void createHandleDataTreeRows(Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
 
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, RowType Type, bool ShowTitle = true);
+    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
 
-    bool isRowVisible(const Gtk::TreeModel::const_iterator& Iter, std::vector<RowType> Type);
+    bool isRowVisible(const Gtk::TreeModel::const_iterator& Iter, std::vector<ModelColumns::RowType> Type);
 
     bool isFunctionRowSelectable(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
 
     void onAvalaibleFunctionSelected();
 
-    void createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gtk::TreePath * Path, RowType Type);
+    void createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gtk::TreePath * Path, ModelColumns::RowType Type);
 
     /**
      * @param LeafValuesDepth Number of levels from FunctionPath to leaf values (1 or 2)
      * */
-    void setHandleDataPanel(RowType Type, Gtk::TreeView * TreeView, int LeafValuesDepth, Gtk::TreePath & FunctionPath);
+    void setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, int LeafValuesDepth, Gtk::TreePath & FunctionPath);
 
-    void toggleEmptyTreeView(Gtk::TreeView * TreeView, RowType Type, bool TypeIsEmpty);
+    void toggleEmptyTreeView(Gtk::TreeView * TreeView, ModelColumns::RowType Type, bool TypeIsEmpty);
 };
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-
 
 #endif /* __MODELAVAILFCT_HPP__ */

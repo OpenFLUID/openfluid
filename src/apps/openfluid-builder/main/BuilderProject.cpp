@@ -103,7 +103,7 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
     mp_Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
   }
 
-  addModule(new ModelModule(*mp_Model),"model");
+  addModule(new ModelModule(*mp_Model,m_SimBlob),"model");
   addModule(new DomainModule(m_SimBlob.getCoreRepository()),"domain");
   addModule(new SimulationModule(),"simulation");
   addModule(new ResultsModule(),"results");
