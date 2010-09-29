@@ -134,12 +134,9 @@ class ModelAvailFct
 
     void onAvalaibleFunctionSelected();
 
-    void createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gtk::TreePath * Path, ModelColumns::RowType Type);
+    void createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, const Gtk::TreeRow & TreeRow, ModelColumns::RowType Type);
 
-    /**
-     * @param LeafValuesDepth Number of levels from FunctionPath to leaf values (1 or 2)
-     * */
-    void setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, int LeafValuesDepth, Gtk::TreePath & FunctionPath);
+    void setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, const Gtk::TreeRow & FunctionIter);
 
     void toggleEmptyTreeView(Gtk::TreeView * TreeView, ModelColumns::RowType Type, bool TypeIsEmpty);
 };

@@ -643,13 +643,18 @@ bool ModelAvailFct::isFunctionRowSelectable(const Glib::RefPtr<Gtk::TreeModel>& 
 
 void ModelAvailFct::onAvalaibleFunctionSelected()
 {
-  Gtk::TreeModel::iterator iter = mp_TreeViewAvailFct->get_selection()->get_selected();
+  Glib::RefPtr<Gtk::TreeModelSort> TreeModelSort = Glib::RefPtr<Gtk::TreeModelSort>::cast_dynamic(mp_TreeViewAvailFct->get_model());
+  Glib::RefPtr<Gtk::TreeModelFilter> TreeModelFilter = Glib::RefPtr<Gtk::TreeModelFilter>::cast_dynamic(TreeModelSort->get_model());
 
-  if(iter)
+  Gtk::TreeIter IterFilterSort = mp_TreeViewAvailFct->get_selection()->get_selected();
+  Gtk::TreeIter IterFilter = TreeModelSort->convert_iter_to_child_iter(IterFilterSort);
+  Gtk::TreeIter Iter = TreeModelFilter->convert_iter_to_child_iter(IterFilter);
+
+  if(Iter)
   {
     // Update selected function Signature panel
 
-    Gtk::TreeModel::Row row = *iter;
+    Gtk::TreeModel::Row row = *Iter;
 
     if(row[m_Columns.m_Type] == ModelColumns::SimulationFunctions)
     {
@@ -678,22 +683,15 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
       mp_LabelAvailFctAuthorEmail->set_text(row[m_Columns.m_FunctionAuthorEmail]);
 
       // Update selected function HandleData panels
-
-      Gtk::TreePath FunctionPath(iter);
-
-      FunctionPath.down();
-
-      setHandleDataPanel(ModelColumns::Parameters,mp_TreeViewFctParameters,1,FunctionPath);
-      setHandleDataPanel(ModelColumns::InputData,mp_TreeViewFctInputData,2,FunctionPath);
-      setHandleDataPanel(ModelColumns::Variables,mp_TreeViewFctVars,2,FunctionPath);
-      setHandleDataPanel(ModelColumns::Events,mp_TreeViewFctEvents,1,FunctionPath);
-      setHandleDataPanel(ModelColumns::ExtraFiles,mp_TreeViewFctExtraFiles,2,FunctionPath);
-      setHandleDataPanel(ModelColumns::SpatialUnits,mp_TreeViewFctUnitsGraph,2,FunctionPath);
+      setHandleDataPanel(ModelColumns::Parameters,mp_TreeViewFctParameters,*(row.children()[0]));
+      setHandleDataPanel(ModelColumns::InputData,mp_TreeViewFctInputData,*(row.children()[1]));
+      setHandleDataPanel(ModelColumns::Variables,mp_TreeViewFctVars,*(row.children()[2]));
+      setHandleDataPanel(ModelColumns::Events,mp_TreeViewFctEvents,*(row.children()[3]));
+      setHandleDataPanel(ModelColumns::ExtraFiles,mp_TreeViewFctExtraFiles,*(row.children()[4]));
+      setHandleDataPanel(ModelColumns::SpatialUnits,mp_TreeViewFctUnitsGraph,*(row.children()[5]));
 
       // Show all notebook tabs
-      for(unsigned int i=2 ; i<mp_NotebookAvailFct->pages().size() ; i++)
-        mp_NotebookAvailFct->get_nth_page(i)->show();
-
+      mp_NotebookAvailFct->show_all_children();
     }
 
     else if(row[m_Columns.m_Type] == ModelColumns::Generators)
@@ -712,14 +710,9 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
       mp_LabelGeneratorDescription->set_text(row[m_Columns.m_Description]);
 
       // Update selected generator Parameters panels
+      setHandleDataPanel(ModelColumns::Parameters,mp_TreeViewFctParameters,*(row.children()[0]));
 
-      Gtk::TreePath FunctionPath(iter);
-
-      FunctionPath.down();
-
-      setHandleDataPanel(ModelColumns::Parameters,mp_TreeViewFctParameters,1,FunctionPath);
-
-      // Hide unused notebook tabs, just keep first (Signature) and second (Parameters)
+      // Hide unused notebook tabs, just keep first one (Signature) and second one (Parameters)
       for(unsigned int i=2 ; i<mp_NotebookAvailFct->pages().size() ; i++)
         mp_NotebookAvailFct->get_nth_page(i)->hide();
     }
@@ -731,10 +724,12 @@ void ModelAvailFct::onAvalaibleFunctionSelected()
 // =====================================================================
 
 
-void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gtk::TreePath * Path, ModelColumns::RowType Type)
+void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, const Gtk::TreeRow & TreeRow, ModelColumns::RowType Type)
 {
+  Gtk::TreePath TreePath = Gtk::TreePath(TreeRow);
+
   // Create child model
-  Glib::RefPtr<Gtk::TreeModelFilter> TreeJustFilter = Gtk::TreeModelFilter::create(mp_TreeModelAvailFct,*Path);
+  Glib::RefPtr<Gtk::TreeModelFilter> TreeJustFilter = Gtk::TreeModelFilter::create(mp_TreeModelAvailFct,TreePath);
 
   std::vector<ModelColumns::RowType> TypesToSetVisible(1,Type);
 
@@ -747,13 +742,10 @@ void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gt
 
   TreeView->set_model(TreeFilterSort);
 
-  // Have to be set after each model change
+  // Has to be set after each model change
   TreeView->set_search_column(m_Columns.m_Id);
 
   TreeView->expand_all();
-
-
-  Path->next();
 
 }
 
@@ -762,37 +754,35 @@ void ModelAvailFct::createSelectedFunctionTreeModel(Gtk::TreeView * TreeView, Gt
 // =====================================================================
 
 
-void ModelAvailFct::setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, int LeafValuesDepth, Gtk::TreePath & FunctionPath)
+void ModelAvailFct::setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, const Gtk::TreeRow & FunctionIter)
 {
   bool Empty = true;
 
-  if(LeafValuesDepth == 1)
-    Empty = mp_TreeModelAvailFct->get_iter(FunctionPath)->children().empty();
-
-  else if(LeafValuesDepth == 2)
+  if(!FunctionIter->children().empty())
   {
-    for(unsigned int i=0 ; i< mp_TreeModelAvailFct->get_iter(FunctionPath)->children().size() ; i++)
+    for(unsigned int i=0 ; i<FunctionIter->children().size() ; i++)
     {
-      if(!mp_TreeModelAvailFct->get_iter(FunctionPath)->children()[i]->children().empty())
+      if((*FunctionIter->children()[i])[m_Columns.m_IsTitle])
       {
-        Empty = false;
-        break;
-      }
-    }
-  }
-  else
-    std::cerr << "Error ModelAvailFct::setHandleDataPanel : LeafValuesDeep can only be 1 or 2." << std::endl;
+        if(!FunctionIter->children()[i]->children().empty())
+        {
+          Empty = false;
+          break;
+        }
 
+      }
+      else
+        Empty = false;
+    }
+
+  }
 
   if(Empty)
-  {
     toggleEmptyTreeView(TreeView,Type,true);
-    FunctionPath.next();
-  }
   else
   {
     toggleEmptyTreeView(TreeView,Type,false);
-    createSelectedFunctionTreeModel(TreeView,&FunctionPath,Type);
+    createSelectedFunctionTreeModel(TreeView,FunctionIter,Type);
   }
 
 }
