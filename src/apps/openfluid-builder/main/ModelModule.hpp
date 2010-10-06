@@ -61,9 +61,11 @@
 
 #include <openfluid/machine.hpp>
 #include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 #include "ModuleInterface.hpp"
 #include "ModelAvailFct.hpp"
+#include "ModelUsedFct.hpp"
 
 
 // =====================================================================
@@ -81,44 +83,19 @@ class ModelModule : public ModuleInterface
 
   private:
 
-    Gtk::TreeView * mp_TreeViewUsedFct;
-
-    Gtk::Image * mp_ImageModelUsedFctTrash;
-
-    Gtk::Notebook * mp_NotebookParams;
-
-
     openfluid::machine::ModelInstance & m_Model;
 
     openfluid::machine::SimulationBlob & m_SimBlob;
 
 
-    ModelAvailFct * mp_ModelAvailFct;
-
     ModelColumns m_Columns;
 
-    Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
+    ModelAvailFct * mp_ModelAvailFct;
+
+    ModelUsedFct * mp_ModelUsedFct;
 
 
     void createActions();
-
-    void createModelUsedFct();
-
-    void setDragAndDropManagement();
-
-    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& context,
-        Gtk::SelectionData& selection_data, guint info, guint time,
-        Gtk::TreeView * TreeViewSource);
-
-    void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-        const Gtk::SelectionData& selection_data, guint info, guint time,
-        Gtk::TreeView * TreeViewDest);
-
-    void onUsedFctRowDeleted(const Gtk::TreeModel::Path& Path);
-
-    void addParamTab(openfluid::machine::ModelItemInstance & Function, int Position=-2);
-
-    bool onEntryFocusOut(GdkEventFocus * Even, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function);
 
     void actionCheckModel();
 

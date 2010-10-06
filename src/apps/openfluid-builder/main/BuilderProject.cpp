@@ -93,7 +93,7 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
         m_SimBlob,
         *mp_Model);
 
-    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener,mp_IOListener);
+//    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener,mp_IOListener);
 
 
 
@@ -199,11 +199,14 @@ void BuilderProject::actionDefaultLayout(LayoutType Layout)
 // =====================================================================
 
 
-void BuilderProject::actionCheckProject()
+bool BuilderProject::actionCheckProject()
 {
   // !! delete existing variables from previous checkConsistency !
   try
   {
+    std::cout << "* Creating Engine... " << std::endl;
+    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener,mp_IOListener);
+
     std::cout << "* Initializing parameters... " << std::endl;
     mp_Engine->initParams();
 
@@ -213,11 +216,13 @@ void BuilderProject::actionCheckProject()
     std::cout << "* Checking consistency... " << std::endl;
     mp_Engine->checkConsistency();
 
-    m_ProjectChecked = true;
+//    m_ProjectChecked = true;
+    return true;
   }
   catch(openfluid::base::OFException& E)
   {
     std::cerr << E.what() << std::endl;
+    return false;
   }
 }
 
@@ -228,8 +233,11 @@ void BuilderProject::actionCheckProject()
 
 void BuilderProject::actionRun()
 {
-  if(!m_ProjectChecked)
-    actionCheckProject();
+//  if(!m_ProjectChecked)
+//  try
+//  {
+    if(actionCheckProject())
+    {
 
 // !! delete existing variable values from previous run !
 
@@ -272,6 +280,11 @@ void BuilderProject::actionRun()
   std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
   std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
   std::cout << std::endl;
+//  }
+//  catch(openfluid::base::OFException& E)
+//  {
+//    std::cerr << E.what() << std::endl;
+  }
 
 }
 

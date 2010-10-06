@@ -53,7 +53,6 @@
   \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-
 #include "BuilderHelper.hpp"
 
 
@@ -82,3 +81,4 @@ Gtk::StockID * BuilderHelper::createIconStockId(Glib::ustring FilePath, Glib::us
   return StockId;
 
 }
+

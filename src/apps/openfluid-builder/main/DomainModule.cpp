@@ -65,7 +65,7 @@
 // =====================================================================
 
 DomainModule::DomainModule(openfluid::core::CoreRepository & CoreRepos)
-  : ModuleInterface("Domain.glade", "ViewportDomain", "MenuDomain", "ToolBarDomain")
+  : ModuleInterface("Domain.glade", "ViewportDomain", "MenuDomain", "ToolBarDomain","")
 {
   m_ModuleName = _("_Domain");
   m_ModuleLongName = _("Domain");

@@ -92,6 +92,7 @@ BuilderApp::BuilderApp(int argc, char** argv)
   {
     mp_Builder->get_widget("MainMenuBar",mp_MainMenuBar);
     mp_Builder->get_widget("MainToolBar",mp_MainToolBar);
+    mp_Builder->get_widget("MainStatusBar",mp_MainStatusBar);
     mp_Builder->get_widget("ProjectContainer",mp_ProjectContainer);
     mp_Builder->get_widget("ViewportHome",mp_HomeContainer);
 
@@ -104,7 +105,6 @@ BuilderApp::BuilderApp(int argc, char** argv)
     setHomePanelProperties();
 
     setAboutBoxProperties();
-
 
     mp_MainWindow->show_all_children();
 
@@ -760,6 +760,13 @@ void BuilderApp::createProject(Glib::ustring FolderIn)
         mp_MainToolBar->show_all();
       }
 
+      // add Status widgets
+      if(Gtk::Widget * StatusBarWidget = Module->getStatusBarWidget())
+      {
+        mp_MainStatusBar->pack_start(*StatusBarWidget,false,false);
+        mp_MainStatusBar->show_all_children();
+      }
+
     }
 
 
@@ -821,6 +828,10 @@ void BuilderApp::deleteProject()
     {
       mp_MainToolBar->remove(*Sep);
     }
+
+    // remove StatusBar widget
+    if(Gtk::Widget * StatusBarWidget = Module->getStatusBarWidget())
+      mp_MainStatusBar->remove(*StatusBarWidget);
 
   }
 

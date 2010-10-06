@@ -70,7 +70,7 @@ class ModuleInterface
 {
   public:
 
-    ModuleInterface(Glib::ustring FileName, Glib::ustring ContainerName, Glib::ustring MenuName, Glib::ustring ToolBarName);
+    ModuleInterface(Glib::ustring FileName, Glib::ustring ContainerName, Glib::ustring MenuName, Glib::ustring ToolBarName, Glib::ustring StatusBarWidgetName);
 
     virtual ~ModuleInterface();
 
@@ -79,6 +79,8 @@ class ModuleInterface
     Gtk::Menu * getMenu() { return mp_Menu; };
 
     std::vector<Gtk::ToolItem *> getToolItems() { return m_ToolItems; };
+
+    Gtk::Widget * getStatusBarWidget() { return mp_StatusBarWidget; };
 
     Glib::ustring getModuleName() { return m_ModuleName; };
 
@@ -98,6 +100,8 @@ class ModuleInterface
     Gtk::Menu * mp_Menu;
 
     std::vector<Gtk::ToolItem *> m_ToolItems;
+
+    Gtk::Widget * mp_StatusBarWidget;
 
     Glib::ustring m_ModuleName;
 

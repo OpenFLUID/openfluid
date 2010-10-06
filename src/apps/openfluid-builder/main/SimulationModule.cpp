@@ -65,7 +65,7 @@
 // =====================================================================
 
 SimulationModule::SimulationModule()
-  : ModuleInterface("Simulation.glade", "ViewportSimulation", "", "")
+  : ModuleInterface("Simulation.glade", "ViewportSimulation", "", "", "")
 {
   m_ModuleName = _("_Simulation");
   m_ModuleLongName = _("Simulation");

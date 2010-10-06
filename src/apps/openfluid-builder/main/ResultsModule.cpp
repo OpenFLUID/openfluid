@@ -65,7 +65,7 @@
 // =====================================================================
 
 ResultsModule::ResultsModule()
-  : ModuleInterface("Results.glade", "ViewportResults", "", "")
+  : ModuleInterface("Results.glade", "ViewportResults", "", "", "")
 {
   m_ModuleName = _("_Results");
   m_ModuleLongName = _("Results");

@@ -46,131 +46,86 @@
 */
 
 /**
- \file BuilderApp.hpp
+ \file ModelUsedFct.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __BUILDERAPP_HPP__
-#define __BUILDERAPP_HPP__
+#ifndef __MODELUSEDFCT_HPP__
+#define __MODELUSEDFCT_HPP__
 
 
 #include <gtkmm.h>
-#include <gdl/gdl.h>
 
-#include "BuilderProject.hpp"
-#include "ModuleInterface.hpp"
+#include <openfluid/machine.hpp>
+#include <openfluid/base.hpp>
 
-
-#define MAINWINDOW_UI_FILE "MainWindow.glade"
-#define OPENFLUID_LOGO_FILE "openfluid_official.svg"
+#include "ModelColumns.hpp"
+//#include "ModelStatus.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-class BuilderApp
+class ModelUsedFct
 {
-  private:
-
-    Glib::RefPtr<Gtk::Builder> mp_Builder;
-
-
-    // App top container elements
-
-    Gtk::Window * mp_MainWindow;
-
-    Gtk::MenuBar * mp_MainMenuBar;
-
-    Gtk::Toolbar * mp_MainToolBar;
-
-//    Gtk::Statusbar * mp_MainStatusBar;
-    Gtk::Box * mp_MainStatusBar;
-
-    Gtk::Box * mp_ProjectContainer;
-
-    Gtk::Container * mp_HomeContainer;
-
-
-    // Docking elements
-
-    GtkWidget * mp_MainDock;
-
-    GtkWidget * mp_DockItemHome;
-
-    GdlDockLayout * mp_DockLayout;
-
-
-    std::vector<Glib::RefPtr<Gtk::Action> > m_ProjectActions;
-
-    BuilderProject * mp_Project;
-
-
-    void createActions();
-
-    void createDock();
-
-    void createDockItemHome();
-
-    void setMainWindowProperties();
-
-    void setAboutBoxProperties();
-
-    void setHomePanelProperties();
-
-
-    void actionNewEmpty();
-
-    void actionNewFrom();
-
-    void actionOpen();
-
-    void actionSave();
-
-    void actionSaveAs();
-
-    void actionClose();
-
-    void actionQuit();
-
-    void actionCheckProject();
-
-    void actionRun();
-
-    void actionProperties();
-
-    void actionPreferences();
-
-    void actionDefaultLayout(BuilderProject::LayoutType Layout);
-
-    void actionLayoutManager();
-
-    void actionPlugins();
-
-    void actionDoc();
-
-    void actionDemo();
-
-    void actionAbout();
-
-
-    void createProject(Glib::ustring FolderIn="");
-
-    void deleteProject();
-
-    void onDialogNewFromCbToggled(Gtk::CheckButton* Cb,std::vector<Gtk::CheckButton*> CbDepends);
-
-
   public:
 
-    BuilderApp(int argc, char** argv);
+    ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ModelInstance & ModelInstance, openfluid::machine::SimulationBlob & SimBlob);
 
-    ~BuilderApp();
+    ~ModelUsedFct();
+
+//    Gtk::Widget * getStatusWidget()
+//      { return mp_Status; };
+
+    void checkModel();
+
+
+  private:
+
+    openfluid::machine::ModelInstance & m_ModelInstance;
+
+    openfluid::machine::SimulationBlob & m_SimBlob;
+
+    ModelColumns m_Columns;
+
+//    ModelStatus * mp_Status;
+
+    Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
+
+    Gtk::TreeView * mp_TreeViewUsedFct;
+
+    Gtk::Image * mp_ImageModelUsedFctTrash;
+
+    Gtk::Notebook * mp_NotebookParams;
+
+
+    Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct();
+
+    void initTreeViewUsedFct(std::list<Gtk::TargetEntry> ListTargets);
+
+    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& /*context*/,
+        Gtk::SelectionData& selection_data, guint /*info*/, guint /*time*/);
+
+    void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
+        const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
+
+    void addAFunction(Glib::ustring Selection_Data, Gtk::TreeModel::Row & Row);
+
+    void moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeModel::iterator & IterDest);
+
+    void deleteAFunction(const Gtk::TreeModel::Path& Path);
+
+    openfluid::machine::ModelItemInstance * createAModelItemInstance(openfluid::base::ModelItemDescriptor::ModelItemType ItemType, Glib::ustring ItemId);
+
+    Gtk::Widget * createParamTab(openfluid::machine::ModelItemInstance & Function, int Position);
+
+    bool onEntryFocusOut(GdkEventFocus * Event, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function);
 
 };
 
 
-#endif /* __BUILDERAPP_HPP__ */
+#endif /* __MODELUSEDFCT_HPP__ */

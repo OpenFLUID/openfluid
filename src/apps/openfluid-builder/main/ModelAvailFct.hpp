@@ -82,7 +82,8 @@ class ModelAvailFct
 
     ModelColumns m_Columns;
 
-    Glib::RefPtr<Gtk::TreeStore> mp_TreeModelAvailFct;
+    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+    Glib::RefPtr<Gtk::TreeModelSort> mp_TreeModelAvailFct;
 
     Gtk::TreeView * mp_TreeViewAvailFct;
     Gtk::TreeView * mp_TreeViewFctParameters;
@@ -114,17 +115,17 @@ class ModelAvailFct
     Gtk::Notebook * mp_NotebookAvailFct;
 
 
-    void createMainTreeModel();
+    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel();
 
-    void createAvailableFunctionsTreeModel();
+    Glib::RefPtr<Gtk::TreeModelSort> createAvailableFunctionsTreeModel(Glib::RefPtr<Gtk::TreeStore> ModelBase);
 
-    void createAvailableFunctionsTreeView();
+    void initAvailableFunctionsTreeView();
 
-    void createSelectedFunctionTreeViews();
+    void initSelectedFunctionTreeViews();
 
     void setTreeViewProperties(Gtk::TreeView * TreeView);
 
-    void createHandleDataTreeRows(Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
+    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
 
     void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
 
@@ -139,6 +140,9 @@ class ModelAvailFct
     void setHandleDataPanel(ModelColumns::RowType Type, Gtk::TreeView * TreeView, const Gtk::TreeRow & FunctionIter);
 
     void toggleEmptyTreeView(Gtk::TreeView * TreeView, ModelColumns::RowType Type, bool TypeIsEmpty);
+
+    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& /*context*/,
+        Gtk::SelectionData& selection_data, guint /*info*/, guint /*time*/);
 };
 
 #endif /* __MODELAVAILFCT_HPP__ */

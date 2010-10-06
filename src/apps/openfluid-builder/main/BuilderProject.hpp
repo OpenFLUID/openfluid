@@ -131,7 +131,7 @@ class BuilderProject// : public openfluid::machine::Engine
 
     void actionDefaultLayout(LayoutType Layout);
 
-    void actionCheckProject();
+    bool actionCheckProject();
 
     void actionRun();
 

@@ -64,7 +64,7 @@
 // =====================================================================
 
 
-ModuleInterface::ModuleInterface(Glib::ustring FileName, Glib::ustring ContainerName, Glib::ustring MenuName, Glib::ustring ToolBarName)
+ModuleInterface::ModuleInterface(Glib::ustring FileName, Glib::ustring ContainerName, Glib::ustring MenuName, Glib::ustring ToolBarName, Glib::ustring StatusBarWidgetName)
 {
   try
   {
@@ -97,6 +97,11 @@ ModuleInterface::ModuleInterface(Glib::ustring FileName, Glib::ustring Container
       ToolBar->remove(*ToolItem);
     }
   }
+
+  if(StatusBarWidgetName != "")
+      mp_Builder->get_widget(StatusBarWidgetName, mp_StatusBarWidget);
+    else
+      mp_StatusBarWidget = 0;
 
 }
 
