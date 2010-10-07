@@ -74,7 +74,17 @@ ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::m
   GladeBuilder->get_widget("ImageModelUsedFctTrash",mp_ImageModelUsedFctTrash);
   GladeBuilder->get_widget("NotebookParams",mp_NotebookParams);
 
-//  mp_Status = new ModelStatus();
+  mp_Status = new StatusInterface(_("Model Status"));
+
+  mp_StatusParamsValues = new StatusItemInterface(_("Params values"));
+
+  StatusItemInterface * Statustest = new StatusItemInterface(_("Test"));
+
+  mp_Status->addAStatusItem(mp_StatusParamsValues);
+
+  mp_Status->addAStatusItem(Statustest, true);
+
+
 
   mp_TreeModelUsedFct = createTreeModelUsedFct();
 
@@ -98,8 +108,8 @@ ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::m
 
 ModelUsedFct::~ModelUsedFct()
 {
-//  delete mp_Status;
-//  mp_Status = 0;
+  delete mp_Status;
+  mp_Status = 0;
 }
 
 
@@ -505,7 +515,7 @@ void ModelUsedFct::checkModel()
 
   std::list<openfluid::machine::ModelItemInstance *>::const_iterator it;
 
-//  mp_Status->clearErrorParamsValue();
+  mp_StatusParamsValues->clearErrorValues();
 
   std::cout << "Check :" << std::endl;
 
@@ -515,16 +525,26 @@ void ModelUsedFct::checkModel()
 
     // Display used functions list for information
     std::cout << "-" << ItemInstance->Signature->ID << std::endl;
+    /* TODO: display WarningsMsgs */
+    try
+    {
+      ItemInstance->Function->initLogger();
+    }
+    catch(openfluid::base::OFException& E)
+    {
+      std::cerr << E.what() << std::endl;
+      continue;
+    }
 
-//    try
-//    {
-//      ItemInstance->Function->initParams(ItemInstance->Params);
-//    }
-//    catch(openfluid::base::OFException& E)
-//    {
-//      mp_Status->appendErrorParamsValue(Glib::ustring::compose("%1 : %2",ItemInstance->Signature->ID,E.what()));
-//      continue;
-//    }
+    try
+    {
+      ItemInstance->Function->initParams(ItemInstance->Params);
+    }
+    catch(openfluid::base::OFException& E)
+    {
+      mp_StatusParamsValues->appendErrorValue(Glib::ustring::compose("%1 : %2",ItemInstance->Signature->ID,E.what()));
+      continue;
+    }
   }
 
 }

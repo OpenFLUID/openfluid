@@ -47,42 +47,52 @@
 
 
 /**
-  \file ModelModule.cpp
+  \file StatusItemInterface.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+
 #include <iostream>
 
 #include <glibmm/i18n.h>
 
-#include "BuilderHelper.hpp"
-#include "ModelModule.hpp"
+#include "builderconfig.hpp"
+
+#include "StatusItemInterface.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelModule::ModelModule(openfluid::machine::ModelInstance & Model, openfluid::machine::SimulationBlob & SimBlob)
-: ModuleInterface("Model.glade", "ViewportModel", "MenuModel", "ToolBarModel", /*"StatusBarWidgetModel"*/""),
-  m_Model(Model), m_SimBlob(SimBlob)
+StatusItemInterface::StatusItemInterface(Glib::ustring LabelTxt) : Gtk::HBox(false,5),
+m_StatusError(Ok)
 {
-  m_ModuleName = _("_Model");
-  m_ModuleLongName = _("Model");
-  mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "model-base.svg", "builder-model-base");
+  Glib::RefPtr<Gdk::Pixbuf> PixbufRed = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,"red.svg"),8,-1,true);
+  Glib::RefPtr<Gdk::Pixbuf> PixbufGreen = Gdk::Pixbuf::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,"green.svg"),8,-1,true);
 
-  createActions();
+  mp_IconRed = Gtk::manage(new Gtk::Image(PixbufRed));
+  mp_IconGreen = Gtk::manage(new Gtk::Image(PixbufGreen));
 
-  // create Available functions panel
-  mp_ModelAvailFct = new ModelAvailFct(mp_Builder);
+  mp_EventBox = Gtk::manage(new Gtk::EventBox());
 
-  // create Used functions panel
-  mp_ModelUsedFct = new ModelUsedFct(mp_Builder,m_Model,m_SimBlob);
+  mp_Arrow = Gtk::manage(new Gtk::Arrow(Gtk::ARROW_DOWN,Gtk::SHADOW_NONE));
 
-  // get StatusBar
-  mp_StatusBarWidget = mp_ModelUsedFct->getStatusWidget();
+  mp_MenuError = Gtk::manage(new Gtk::Menu());
+
+
+  mp_EventBox->add(*mp_Arrow);
+
+
+  pack_start(*mp_IconGreen);
+
+  pack_start(*Gtk::manage(new Gtk::Label(LabelTxt)));
+
+
+  mp_EventBox->signal_button_press_event().connect(
+      sigc::mem_fun(*this,&StatusItemInterface::on_button_press_event));
 
 }
 
@@ -91,37 +101,8 @@ ModelModule::ModelModule(openfluid::machine::ModelInstance & Model, openfluid::m
 // =====================================================================
 
 
-ModelModule::~ModelModule()
+StatusItemInterface::~StatusItemInterface()
 {
-  /*TODO: delete custom objects */
-//  delete mp_StatusBarWidget;
-  delete mp_ModelAvailFct;
-  delete mp_ModelUsedFct;
-
-  mp_StatusBarWidget = 0;
-  mp_ModelAvailFct = 0;
-  mp_ModelUsedFct = 0;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelModule::createActions()
-{
-  // create action
-  Glib::RefPtr<Gtk::Action> ActionCheckModel;
-  ActionCheckModel = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionCheckModel"));
-  ActionCheckModel->set_label(_("Check Model"));
-  ActionCheckModel->set_tooltip(_("Check Model"));
-  ActionCheckModel->signal_activate().connect(sigc::mem_fun(*this,&ModelModule::actionCheckModel));
-
-  // add customized icons
-  Gtk::StockID * CheckStockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "check-model.svg", "builder-model-check");
-  ActionCheckModel->set_stock_id(*CheckStockId);
-
-  m_Actions.push_back(ActionCheckModel);
 
 }
 
@@ -130,8 +111,71 @@ void ModelModule::createActions()
 // =====================================================================
 
 
-void ModelModule::actionCheckModel()
+void StatusItemInterface::appendErrorValue(Glib::ustring Errors)
 {
-  mp_ModelUsedFct->checkModel();
+  if(m_StatusError == Ok)
+    setStatus(Error);
+
+  mp_MenuError->items().push_back(Gtk::Menu_Helpers::MenuElem(Errors));
+
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void StatusItemInterface::setStatus(Status NewStatus)
+{
+  if(NewStatus == m_StatusError)
+    return;
+
+  if(NewStatus == Error)
+  {
+    remove(*mp_IconGreen);
+    pack_start(*mp_IconRed);
+    reorder_child(*mp_IconRed,0);
+
+    pack_end(*mp_EventBox);
+
+    m_StatusError = Error;
+  }
+  else if(NewStatus == Ok)
+  {
+    remove(*mp_IconRed);
+    pack_start(*mp_IconGreen);
+    reorder_child(*mp_IconGreen,0);
+
+    remove(*mp_EventBox);
+
+    m_StatusError = Ok;
+  }
+
+  show_all_children();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void StatusItemInterface::clearErrorValues()
+{
+  mp_MenuError->items().clear();
+
+  setStatus(Ok);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool StatusItemInterface::on_button_press_event(GdkEventButton * Event)
+{
+  if(m_StatusError == Error)
+    mp_MenuError->popup(Event->button,Event->time);
+
+  return true;
+}

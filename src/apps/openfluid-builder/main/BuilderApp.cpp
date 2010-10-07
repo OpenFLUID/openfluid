@@ -763,7 +763,7 @@ void BuilderApp::createProject(Glib::ustring FolderIn)
       // add Status widgets
       if(Gtk::Widget * StatusBarWidget = Module->getStatusBarWidget())
       {
-        mp_MainStatusBar->pack_start(*StatusBarWidget,false,false);
+        mp_MainStatusBar->pack_start(*StatusBarWidget,false,false,10);
         mp_MainStatusBar->show_all_children();
       }
 

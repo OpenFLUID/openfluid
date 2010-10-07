@@ -47,7 +47,7 @@
 
 
 /**
-  \file ModelModule.cpp
+  \file StatusInterface.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
@@ -57,32 +57,25 @@
 
 #include <glibmm/i18n.h>
 
-#include "BuilderHelper.hpp"
-#include "ModelModule.hpp"
+#include "StatusInterface.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelModule::ModelModule(openfluid::machine::ModelInstance & Model, openfluid::machine::SimulationBlob & SimBlob)
-: ModuleInterface("Model.glade", "ViewportModel", "MenuModel", "ToolBarModel", /*"StatusBarWidgetModel"*/""),
-  m_Model(Model), m_SimBlob(SimBlob)
+StatusInterface::StatusInterface(Glib::ustring LabelTxt) : Gtk::VBox(false,0)
 {
-  m_ModuleName = _("_Model");
-  m_ModuleLongName = _("Model");
-  mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "model-base.svg", "builder-model-base");
+  Gtk::Label * MainLabel = Gtk::manage(new Gtk::Label(LabelTxt));
 
-  createActions();
+  mp_HBoxInner =  Gtk::manage(new Gtk::HBox(false,10));
 
-  // create Available functions panel
-  mp_ModelAvailFct = new ModelAvailFct(mp_Builder);
 
-  // create Used functions panel
-  mp_ModelUsedFct = new ModelUsedFct(mp_Builder,m_Model,m_SimBlob);
+  pack_start(*MainLabel,false,false);
 
-  // get StatusBar
-  mp_StatusBarWidget = mp_ModelUsedFct->getStatusWidget();
+  pack_start(*Gtk::manage(new Gtk::HSeparator()),false,false);
+
+  pack_start(*mp_HBoxInner);
 
 }
 
@@ -91,37 +84,8 @@ ModelModule::ModelModule(openfluid::machine::ModelInstance & Model, openfluid::m
 // =====================================================================
 
 
-ModelModule::~ModelModule()
+StatusInterface::~StatusInterface()
 {
-  /*TODO: delete custom objects */
-//  delete mp_StatusBarWidget;
-  delete mp_ModelAvailFct;
-  delete mp_ModelUsedFct;
-
-  mp_StatusBarWidget = 0;
-  mp_ModelAvailFct = 0;
-  mp_ModelUsedFct = 0;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelModule::createActions()
-{
-  // create action
-  Glib::RefPtr<Gtk::Action> ActionCheckModel;
-  ActionCheckModel = Glib::RefPtr<Gtk::Action>::cast_dynamic(mp_Builder->get_object("ActionCheckModel"));
-  ActionCheckModel->set_label(_("Check Model"));
-  ActionCheckModel->set_tooltip(_("Check Model"));
-  ActionCheckModel->signal_activate().connect(sigc::mem_fun(*this,&ModelModule::actionCheckModel));
-
-  // add customized icons
-  Gtk::StockID * CheckStockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "check-model.svg", "builder-model-check");
-  ActionCheckModel->set_stock_id(*CheckStockId);
-
-  m_Actions.push_back(ActionCheckModel);
 
 }
 
@@ -130,8 +94,9 @@ void ModelModule::createActions()
 // =====================================================================
 
 
-void ModelModule::actionCheckModel()
+void StatusInterface::addAStatusItem(Widget * Item, bool IsLastItem)
 {
-  mp_ModelUsedFct->checkModel();
+  mp_HBoxInner->pack_start(*Item);
+  if(! IsLastItem)
+    mp_HBoxInner->pack_start(*Gtk::manage(new Gtk::VSeparator));
 }
-

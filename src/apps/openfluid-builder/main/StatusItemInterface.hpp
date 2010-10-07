@@ -46,89 +46,59 @@
 */
 
 /**
- \file ModelUsedFct.hpp
+ \file StatusItemInterface.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELUSEDFCT_HPP__
-#define __MODELUSEDFCT_HPP__
+#ifndef __STATUSITEMINTERFACE_HPP__
+#define __STATUSITEMINTERFACE_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-
-#include "ModelColumns.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
-
 
 // =====================================================================
 // =====================================================================
 
 
-class ModelUsedFct
+class StatusItemInterface : public Gtk::HBox
 {
+  private:
+
+    enum Status { Error, Ok };
+
+
   public:
 
-    ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ModelInstance & ModelInstance, openfluid::machine::SimulationBlob & SimBlob);
+    StatusItemInterface(Glib::ustring LabelTxt);
 
-    ~ModelUsedFct();
+    /*virtual */~StatusItemInterface();
 
-    Gtk::Widget * getStatusWidget()
-      { return mp_Status; };
+    void appendErrorValue(Glib::ustring Errors);
 
-    void checkModel();
+    void clearErrorValues();
 
 
   private:
 
-    openfluid::machine::ModelInstance & m_ModelInstance;
+    Gtk::Menu * mp_MenuError;
 
-    openfluid::machine::SimulationBlob & m_SimBlob;
+    Gtk::Image * mp_IconRed;
+    Gtk::Image * mp_IconGreen;
 
-    ModelColumns m_Columns;
+    Gtk::Arrow * mp_Arrow;
 
-    StatusInterface * mp_Status;
+    Gtk::EventBox * mp_EventBox;
 
-    StatusItemInterface * mp_StatusParamsValues;
-
-    Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
-
-    Gtk::TreeView * mp_TreeViewUsedFct;
-
-    Gtk::Image * mp_ImageModelUsedFctTrash;
-
-    Gtk::Notebook * mp_NotebookParams;
+    Status m_StatusError;
 
 
-    Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct();
+    void setStatus(Status NewStatus);
 
-    void initTreeViewUsedFct(std::list<Gtk::TargetEntry> ListTargets);
-
-    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& /*context*/,
-        Gtk::SelectionData& selection_data, guint /*info*/, guint /*time*/);
-
-    void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-        const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
-
-    void addAFunction(Glib::ustring Selection_Data, Gtk::TreeModel::Row & Row);
-
-    void moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeModel::iterator & IterDest);
-
-    void deleteAFunction(const Gtk::TreeModel::Path& Path);
-
-    openfluid::machine::ModelItemInstance * createAModelItemInstance(openfluid::base::ModelItemDescriptor::ModelItemType ItemType, Glib::ustring ItemId);
-
-    Gtk::Widget * createParamTab(openfluid::machine::ModelItemInstance & Function, int Position);
-
-    bool onEntryFocusOut(GdkEventFocus * Event, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function);
-
+    bool on_button_press_event(GdkEventButton* Event);
 };
 
-
-#endif /* __MODELUSEDFCT_HPP__ */
+#endif /* __STATUSITEMINTERFACE_HPP__ */

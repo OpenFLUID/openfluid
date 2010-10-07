@@ -46,89 +46,39 @@
 */
 
 /**
- \file ModelUsedFct.hpp
+ \file StatusInterface.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELUSEDFCT_HPP__
-#define __MODELUSEDFCT_HPP__
+#ifndef __STATUSINTERFACE_HPP__
+#define __STATUSINTERFACE_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-
-#include "ModelColumns.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
-
 
 // =====================================================================
 // =====================================================================
 
 
-class ModelUsedFct
+class StatusInterface : public Gtk::VBox
 {
   public:
 
-    ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ModelInstance & ModelInstance, openfluid::machine::SimulationBlob & SimBlob);
+    StatusInterface(Glib::ustring LabelTxt);
 
-    ~ModelUsedFct();
+    ~StatusInterface();
 
-    Gtk::Widget * getStatusWidget()
-      { return mp_Status; };
-
-    void checkModel();
-
+    void addAStatusItem(Widget * Item, bool IsLastItem = false);
 
   private:
 
-    openfluid::machine::ModelInstance & m_ModelInstance;
-
-    openfluid::machine::SimulationBlob & m_SimBlob;
-
-    ModelColumns m_Columns;
-
-    StatusInterface * mp_Status;
-
-    StatusItemInterface * mp_StatusParamsValues;
-
-    Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
-
-    Gtk::TreeView * mp_TreeViewUsedFct;
-
-    Gtk::Image * mp_ImageModelUsedFctTrash;
-
-    Gtk::Notebook * mp_NotebookParams;
-
-
-    Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct();
-
-    void initTreeViewUsedFct(std::list<Gtk::TargetEntry> ListTargets);
-
-    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& /*context*/,
-        Gtk::SelectionData& selection_data, guint /*info*/, guint /*time*/);
-
-    void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-        const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
-
-    void addAFunction(Glib::ustring Selection_Data, Gtk::TreeModel::Row & Row);
-
-    void moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeModel::iterator & IterDest);
-
-    void deleteAFunction(const Gtk::TreeModel::Path& Path);
-
-    openfluid::machine::ModelItemInstance * createAModelItemInstance(openfluid::base::ModelItemDescriptor::ModelItemType ItemType, Glib::ustring ItemId);
-
-    Gtk::Widget * createParamTab(openfluid::machine::ModelItemInstance & Function, int Position);
-
-    bool onEntryFocusOut(GdkEventFocus * Event, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function);
+    Gtk::HBox * mp_HBoxInner;
 
 };
 
 
-#endif /* __MODELUSEDFCT_HPP__ */
+#endif /* __STATUSINTERFACE_HPP__ */
