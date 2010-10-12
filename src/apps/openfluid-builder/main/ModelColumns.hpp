@@ -86,7 +86,7 @@ class ModelColumns : public Gtk::TreeModel::ColumnRecord
     { add(m_Type); add(m_IsTitle); add(m_Id); add(m_FunctionName); add(m_FunctionPath); add(m_Description);
     add(m_FunctionVersion); add(m_FunctionStatusStr);add(m_FunctionStatusIcon); add(m_FunctionDomain);
     add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail);
-    add(m_HandleDataUnitClass); add(m_HandleDataUnit); add(m_ModelItemInstance); add(m_NotebookParamsPage); }
+    add(m_HandleDataUnitClass); add(m_HandleDataUnit); add(m_UsedParams); add(m_NotebookParamsPage); }
 
   Gtk::TreeModelColumn<RowType> m_Type;
   Gtk::TreeModelColumn<bool> m_IsTitle;
@@ -108,7 +108,7 @@ class ModelColumns : public Gtk::TreeModel::ColumnRecord
   Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnitClass;
   Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnit;
 
-  Gtk::TreeModelColumn<openfluid::machine::ModelItemInstance *> m_ModelItemInstance;
+  Gtk::TreeModelColumn<openfluid::core::FuncParamsMap_t> m_UsedParams;
 
   Gtk::TreeModelColumn<Gtk::Widget *> m_NotebookParamsPage;
 

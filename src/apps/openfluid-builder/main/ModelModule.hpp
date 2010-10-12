@@ -66,6 +66,8 @@
 #include "ModuleInterface.hpp"
 #include "ModelAvailFct.hpp"
 #include "ModelUsedFct.hpp"
+#include "StatusInterface.hpp"
+#include "StatusItemInterface.hpp"
 
 
 // =====================================================================
@@ -76,17 +78,19 @@ class ModelModule : public ModuleInterface
 {
   public:
 
-    ModelModule(openfluid::machine::ModelInstance & Model, openfluid::machine::SimulationBlob & SimBlob);
+    ModelModule(openfluid::machine::ModelInstance & Model);
 
     ~ModelModule();
+
+    openfluid::base::ModelDescriptor * getModelDescriptor();
+
+    //    void actionCheckModel();
+    bool checkModule(openfluid::machine::ModelInstance * ModelInstance);
 
 
   private:
 
-    openfluid::machine::ModelInstance & m_Model;
-
-    openfluid::machine::SimulationBlob & m_SimBlob;
-
+    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
 
     ModelColumns m_Columns;
 
@@ -94,10 +98,20 @@ class ModelModule : public ModuleInterface
 
     ModelUsedFct * mp_ModelUsedFct;
 
+    StatusItemInterface * mp_StatusParamsValues;
+
 
     void createActions();
 
-    void actionCheckModel();
+    openfluid::machine::ArrayOfModelItemInstance createGeneratorContainers();
+
+    openfluid::machine::ModelItemInstance * createGeneratorInstance(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+
+    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::machine::ArrayOfModelItemInstance PlugContainers, openfluid::machine::ArrayOfModelItemInstance GeneratorContainers);
+
+    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
+
+    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
 
 };
 

@@ -77,14 +77,7 @@ BuilderApp::BuilderApp(int argc, char** argv)
 
   mp_Project = 0;
 
-  try
-  {
-    mp_Builder = Gtk::Builder::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,MAINWINDOW_UI_FILE));
-  }
-  catch (const Glib::FileError & E)
-  {
-    std::cerr << E.what() << std::endl;
-  }
+  mp_Builder = Gtk::Builder::create_from_file(Glib::ustring::compose("%1/%2",BUILDER_RESOURCE_PATH,MAINWINDOW_UI_FILE));
 
   mp_Builder->get_widget("MainWindow",mp_MainWindow);
 

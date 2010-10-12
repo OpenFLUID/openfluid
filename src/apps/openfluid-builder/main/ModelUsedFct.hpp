@@ -63,8 +63,6 @@
 #include <openfluid/base.hpp>
 
 #include "ModelColumns.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
 
 
 // =====================================================================
@@ -75,27 +73,18 @@ class ModelUsedFct
 {
   public:
 
-    ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ModelInstance & ModelInstance, openfluid::machine::SimulationBlob & SimBlob);
+    ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ArrayOfModelItemInstance AllFctContainers, openfluid::machine::ModelInstance & ModelInstance);
 
     ~ModelUsedFct();
 
-    Gtk::Widget * getStatusWidget()
-      { return mp_Status; };
-
-    void checkModel();
+    openfluid::base::ModelDescriptor * getModelDescriptor();
 
 
   private:
 
-    openfluid::machine::ModelInstance & m_ModelInstance;
-
-    openfluid::machine::SimulationBlob & m_SimBlob;
+    openfluid::machine::ArrayOfModelItemInstance m_AllFctContainers;
 
     ModelColumns m_Columns;
-
-    StatusInterface * mp_Status;
-
-    StatusItemInterface * mp_StatusParamsValues;
 
     Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
 
@@ -106,7 +95,7 @@ class ModelUsedFct
     Gtk::Notebook * mp_NotebookParams;
 
 
-    Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct();
+    Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct(openfluid::machine::ModelInstance & ModelInstance);
 
     void initTreeViewUsedFct(std::list<Gtk::TargetEntry> ListTargets);
 
@@ -116,17 +105,20 @@ class ModelUsedFct
     void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
         const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
 
-    void addAFunction(Glib::ustring Selection_Data, Gtk::TreeModel::Row & Row);
+    void addAFunction(Glib::ustring Id, Gtk::TreeModel::Row & RowDest);
 
     void moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeModel::iterator & IterDest);
 
     void deleteAFunction(const Gtk::TreeModel::Path& Path);
 
-    openfluid::machine::ModelItemInstance * createAModelItemInstance(openfluid::base::ModelItemDescriptor::ModelItemType ItemType, Glib::ustring ItemId);
+    Gtk::Widget * createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position);
 
-    Gtk::Widget * createParamTab(openfluid::machine::ModelItemInstance & Function, int Position);
+    bool onEntryFocusOut(GdkEventFocus * Event, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
 
-    bool onEntryFocusOut(GdkEventFocus * Event, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function);
+    void onCheckToggled(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::CheckButton * Check, Gtk::TreeModel::Row Row);
+
+    /* Temporary function, to be removed - Print to console used functions list information */
+    void tempCheckModel();
 
 };
 

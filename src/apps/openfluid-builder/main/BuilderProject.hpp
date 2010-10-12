@@ -62,7 +62,6 @@
 
 #include <openfluid/base.hpp>
 #include <openfluid/machine.hpp>
-//#include <openfluid/config.hpp>
 
 #include "ModuleInterface.hpp"
 #include "DomainModule.hpp"
@@ -75,7 +74,7 @@
 // =====================================================================
 
 
-class BuilderProject// : public openfluid::machine::Engine
+class BuilderProject
 {
   public:
 
@@ -111,10 +110,10 @@ class BuilderProject// : public openfluid::machine::Engine
     LayoutType m_LayoutType;
 
 
-    bool m_ProjectChecked;
-
 
     void addModule(ModuleInterface *, Glib::ustring ModuleName);
+
+    ModuleInterface * getModule(Glib::ustring ModuleName);
 
 
   public:

@@ -70,7 +70,7 @@ class ModelAvailFct
 {
   public:
 
-    ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder);
+    ModelAvailFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, Glib::RefPtr<Gtk::TreeStore> MainTreeModel);
 
     ~ModelAvailFct();
 
@@ -115,8 +115,6 @@ class ModelAvailFct
     Gtk::Notebook * mp_NotebookAvailFct;
 
 
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel();
-
     Glib::RefPtr<Gtk::TreeModelSort> createAvailableFunctionsTreeModel(Glib::RefPtr<Gtk::TreeStore> ModelBase);
 
     void initAvailableFunctionsTreeView();
@@ -124,10 +122,6 @@ class ModelAvailFct
     void initSelectedFunctionTreeViews();
 
     void setTreeViewProperties(Gtk::TreeView * TreeView);
-
-    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
-
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
 
     bool isRowVisible(const Gtk::TreeModel::const_iterator& Iter, std::vector<ModelColumns::RowType> Type);
 

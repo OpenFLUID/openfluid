@@ -57,8 +57,7 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
+#include "openfluid/base.hpp"
 
 #include "ModelUsedFct.hpp"
 
@@ -67,26 +66,14 @@
 // =====================================================================
 
 
-ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ModelInstance & ModelInstance, openfluid::machine::SimulationBlob & SimBlob)
-: m_ModelInstance(ModelInstance), m_SimBlob(SimBlob)
+ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ArrayOfModelItemInstance AllFctContainers, openfluid::machine::ModelInstance & ModelInstance)
+: m_AllFctContainers(AllFctContainers)
 {
   GladeBuilder->get_widget("TreeViewUsedFct",mp_TreeViewUsedFct);
   GladeBuilder->get_widget("ImageModelUsedFctTrash",mp_ImageModelUsedFctTrash);
   GladeBuilder->get_widget("NotebookParams",mp_NotebookParams);
 
-  mp_Status = new StatusInterface(_("Model Status"));
-
-  mp_StatusParamsValues = new StatusItemInterface(_("Params values"));
-
-  StatusItemInterface * Statustest = new StatusItemInterface(_("Test"));
-
-  mp_Status->addAStatusItem(mp_StatusParamsValues);
-
-  mp_Status->addAStatusItem(Statustest, true);
-
-
-
-  mp_TreeModelUsedFct = createTreeModelUsedFct();
+  mp_TreeModelUsedFct = createTreeModelUsedFct(ModelInstance);
 
   mp_TreeViewUsedFct->set_model(mp_TreeModelUsedFct);
 
@@ -108,8 +95,7 @@ ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::m
 
 ModelUsedFct::~ModelUsedFct()
 {
-  delete mp_Status;
-  mp_Status = 0;
+
 }
 
 
@@ -117,11 +103,11 @@ ModelUsedFct::~ModelUsedFct()
 // =====================================================================
 
 
-Glib::RefPtr<Gtk::ListStore> ModelUsedFct::createTreeModelUsedFct()
+Glib::RefPtr<Gtk::ListStore> ModelUsedFct::createTreeModelUsedFct(openfluid::machine::ModelInstance & ModelInstance)
 {
   Glib::RefPtr<Gtk::ListStore> TreeModelUsedFct = Gtk::ListStore::create(m_Columns);
 
-  const std::list<openfluid::machine::ModelItemInstance*> ItemInstances = m_ModelInstance.getItems();
+  const std::list<openfluid::machine::ModelItemInstance*> ItemInstances = ModelInstance.getItems();
 
   std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
 
@@ -133,9 +119,26 @@ Glib::RefPtr<Gtk::ListStore> ModelUsedFct::createTreeModelUsedFct()
 
     RowIInstance[m_Columns.m_Id] = ItemInstance->Signature->ID;
 
-    RowIInstance[m_Columns.m_ModelItemInstance] = ItemInstance;
+    RowIInstance[m_Columns.m_UsedParams] = ItemInstance->Params;
 
-    RowIInstance[m_Columns.m_NotebookParamsPage] = createParamTab(*ItemInstance,-1);
+    if(ItemInstance->ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
+      RowIInstance[m_Columns.m_Type] = ModelColumns::SimulationFunctions;
+    else if(ItemInstance->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+      RowIInstance[m_Columns.m_Type] = ModelColumns::Generators;
+
+    std::vector<openfluid::base::SignatureHandledDataItem> AvailParams;
+
+    for(unsigned int i=0 ; i<m_AllFctContainers.size() ; i++)
+    {
+      if(m_AllFctContainers[i]->Signature->ID == ItemInstance->Signature->ID)
+      {
+        AvailParams = m_AllFctContainers[i]->Signature->HandledData.FunctionParams;
+
+        RowIInstance[m_Columns.m_NotebookParamsPage] = createParamTab(RowIInstance,AvailParams,-1);
+
+        break;
+      }
+    }
   }
 
   TreeModelUsedFct->signal_row_deleted().connect(
@@ -214,7 +217,7 @@ void ModelUsedFct::onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& 
 
     addAFunction(selection_data.get_text(),RowDest);
 
-    mp_TreeViewUsedFct->get_selection()->select(RowDest);
+    mp_TreeViewUsedFct->get_selection()->select(*RowDest);
   }
 
   else if(context->get_action() == Gdk::ACTION_MOVE) // it's a move within used functions list
@@ -247,49 +250,37 @@ void ModelUsedFct::onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& 
 // =====================================================================
 
 
-void ModelUsedFct::addAFunction(Glib::ustring Selection_Data, Gtk::TreeModel::Row & Row)
+void ModelUsedFct::addAFunction(Glib::ustring Id, Gtk::TreeModel::Row & RowDest)
 {
-  // Get data for the new function
+  unsigned int Index = *(mp_TreeModelUsedFct->get_path(RowDest).begin());
 
-  std::vector<Glib::ustring> SplitTxt;
+  for(unsigned int i=0 ; i<m_AllFctContainers.size() ; i++)
+  {
+    if(m_AllFctContainers[i]->Signature->ID == Id)
+    {
+      RowDest[m_Columns.m_Id] = Id;
 
-  boost::algorithm::split(SplitTxt, Selection_Data, boost::is_any_of(std::string("[]")));
+      if(m_AllFctContainers[i]->ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
+        RowDest[m_Columns.m_Type] = ModelColumns::SimulationFunctions;
+      else if(m_AllFctContainers[i]->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+        RowDest[m_Columns.m_Type] = ModelColumns::Generators;
 
-  int Type = boost::lexical_cast<int>(SplitTxt[1]);
-  Glib::ustring Id = SplitTxt[2];
+      std::vector<openfluid::base::SignatureHandledDataItem> AvailParams = m_AllFctContainers[i]->Signature->HandledData.FunctionParams;
 
-  unsigned int Index = *(mp_TreeModelUsedFct->get_path(Row).begin());
+      openfluid::core::FuncParamsMap_t UsedParam;
 
+      for(unsigned int j=0 ; j<AvailParams.size() ; j++)
+        UsedParam[AvailParams[j].DataName] = "";
 
-  // Add to ModelInstance (create a new Item and add it)
+      RowDest[m_Columns.m_UsedParams] = UsedParam;
 
-  openfluid::machine::ModelItemInstance * IInstance = 0;
+      RowDest[m_Columns.m_NotebookParamsPage] = createParamTab(RowDest,AvailParams,Index+1);
 
-  if(Type == ModelColumns::SimulationFunctions)
-    IInstance = createAModelItemInstance(openfluid::base::ModelItemDescriptor::PluggedFunction, Id);
-  else if(Type == ModelColumns::Generators)
-    IInstance = createAModelItemInstance(openfluid::base::ModelItemDescriptor::Generator, Id);
+      break;
+    }
+  }
 
-  if(Index < m_ModelInstance.getItemsCount())
-    m_ModelInstance.insertItem(IInstance,Index);
-  else
-    m_ModelInstance.appendItem(IInstance);
-
-
-  // Add to TreeModel (set values to the newly created row)
-
-  Row[m_Columns.m_ModelItemInstance] = IInstance;
-
-  Row[m_Columns.m_Id] = IInstance->Signature->ID;
-
-
-  // Add to Notebook
-
-  Row[m_Columns.m_NotebookParamsPage] = createParamTab(*IInstance,Index+1);
-
-
-  checkModel();
-
+  tempCheckModel();
 }
 
 
@@ -304,24 +295,6 @@ void ModelUsedFct::moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeMo
   mp_TreeModelUsedFct->move(IterSrc,IterDest);// move to the end of the list if IterDest is null
 
 
-  // Move in ModelInstance (clear it and repopulate it from new ordered list)
-
-  const std::list<openfluid::machine::ModelItemInstance *> ItemInstances = m_ModelInstance.getItems();
-
-  // to replace m_ModelInstance.clear() which crashes
-  while(m_ModelInstance.getItemsCount() != 0)
-    m_ModelInstance.deleteItem(0);
-
-  Gtk::TreeModel::Children Children = mp_TreeModelUsedFct->children();
-
-  for(Gtk::TreeModel::Children::iterator TheIter = Children.begin() ; TheIter != Children.end() ; ++TheIter)
-  {
-    openfluid::machine::ModelItemInstance * IInstance = (*TheIter).get_value(m_Columns.m_ModelItemInstance);
-
-    m_ModelInstance.appendItem(IInstance);
-  }
-
-
   // Move in Notebook
 
   int Index = mp_TreeModelUsedFct->get_path(IterSrc)[0] +1 ; // index of the row in the new reordered list + the first Notebook page
@@ -331,7 +304,7 @@ void ModelUsedFct::moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeMo
   mp_NotebookParams->set_current_page(Index);
 
 
-  checkModel();
+  tempCheckModel();
 }
 
 
@@ -343,11 +316,10 @@ void ModelUsedFct::deleteAFunction(const Gtk::TreeModel::Path& Path)
 {
   unsigned int Index = *Path.get_indices().begin();
 
-  m_ModelInstance.deleteItem(Index);
-
   mp_NotebookParams->remove_page(Index+1);
 
-  checkModel();
+  tempCheckModel();
+
 }
 
 
@@ -355,124 +327,57 @@ void ModelUsedFct::deleteAFunction(const Gtk::TreeModel::Path& Path)
 // =====================================================================
 
 
-openfluid::machine::ModelItemInstance * ModelUsedFct::createAModelItemInstance(openfluid::base::ModelItemDescriptor::ModelItemType ItemType, Glib::ustring ItemId)
+Gtk::Widget * ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position)
 {
-  openfluid::machine::ModelItemInstance * IInstance = 0;
-
-  if(ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
-  {
-    IInstance = openfluid::machine::PluginManager::getInstance()->getPlugin(ItemId.c_str(),&(m_SimBlob.getExecutionMessages()),&(m_SimBlob.getCoreRepository()));
-
-    IInstance->ItemType = ItemType;
-  }
-
-  else if(ItemType == openfluid::base::ModelItemDescriptor::Generator)
-  {
-//    openfluid::base::GeneratorDescriptor* GenDesc = (openfluid::base::GeneratorDescriptor*)(*it);
-    openfluid::machine::Generator * GenInstance = 0;
-
-    IInstance = new openfluid::machine::ModelItemInstance();
-    IInstance->SDKCompatible = true;
-    IInstance->ItemType = ItemType;
-
-    openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
-
-    Signature->ID = Glib::ustring::compose("(generator)%1",ItemId);
-
-    //    std::string VarName = GenDesc->getVariableName();
-    //    if (GenDesc->isVectorVariable()) VarName = VarName + "[]";
-    //
-    //    Signature->ID = "(generator)"+VarName;
-    //    Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem(VarName,GenDesc->getUnitClass(),"",""));
-
-    Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("Varname","","",""));
-    Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("Unitclass","","",""));
-    Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("Varsize","","",""));
-    //    if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Fixed)
-    if(ItemId == "Fixed")
-    {
-      GenInstance = new openfluid::machine::FixedGenerator();
-      Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("fixedvalue","","",""));
-    }
-    //    if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Random)
-    else if(ItemId == "Random")
-    {
-      GenInstance = new openfluid::machine::RandomGenerator();
-      Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("min","","",""));
-      Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("max","","",""));
-    }
-    //    if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Interp)
-    else if(ItemId == "Interp")
-    {
-      //      Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-      //      Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
-      GenInstance = new openfluid::machine::InterpGenerator();
-      Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("sources","","",""));
-      Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("distribution","","",""));
-    }
-
-    //    if (GenInstance == NULL)
-    //      throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
-
-    GenInstance->setDataRepository(&(m_SimBlob.getCoreRepository()));
-    GenInstance->setExecutionMessages(&(m_SimBlob.getExecutionMessages()));
-    GenInstance->setFunctionEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
-    //    GenInstance->setDescriptor(*GenDesc);
-    IInstance->Function = GenInstance;
-    IInstance->Signature = Signature;
-  }
-
-  return IInstance;
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget * ModelUsedFct::createParamTab(openfluid::machine::ModelItemInstance & Function, int Position)
-{
-  Glib::ustring Id = Function.Signature->ID;
+  Glib::ustring Id = Row[m_Columns.m_Id];
 
   Gtk::Table * TableParams = Gtk::manage(new Gtk::Table());
 
   TableParams->set_spacings(5);
 
-
-  std::vector<openfluid::base::SignatureHandledDataItem> Params = Function.Signature->HandledData.FunctionParams;
-  //  openfluid::core::FuncParamsMap_t Params = Function.Params;
-
-  for(unsigned int i=0 ; i<Params.size() ; i++)
+  for(unsigned int i=0 ; i<AvailParams.size() ; i++)
   {
-    Gtk::Label * Label = Gtk::manage(new Gtk::Label(Params[i].DataName,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+    Gtk::CheckButton * Check = Gtk::manage(new Gtk::CheckButton());
 
-    Label->set_visible(true);
-
-    TableParams->attach(*Label,0,1,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    Gtk::Label * Label = Gtk::manage(new Gtk::Label(AvailParams[i].DataName,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
 
     Gtk::Entry * Entry = Gtk::manage(new Gtk::Entry());
 
-    Entry->set_text(Function.Params[Params[i].DataName]);
+    Gtk::Label * Unit = Gtk::manage(new Gtk::Label(AvailParams[i].DataUnit,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
 
-    Entry->set_visible(true);
+    Check->set_active(true);
 
-    TableParams->attach(*Entry,1,2,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    openfluid::core::FuncParamsMap_t UsedParams = Row[m_Columns.m_UsedParams];
+
+    if(UsedParams.find(AvailParams[i].DataName) != UsedParams.end())
+      Entry->set_text(UsedParams[AvailParams[i].DataName]);
+
+    Check->signal_toggled().connect(
+        sigc::bind<Glib::ustring,Gtk::Entry *,Gtk::CheckButton *,Gtk::TreeModel::Row>(
+            sigc::mem_fun(*this,&ModelUsedFct::onCheckToggled),
+            AvailParams[i].DataName,Entry,Check,Row));
 
     Entry->signal_focus_out_event().connect(
-        sigc::bind<Glib::ustring,Gtk::Entry *,openfluid::machine::ModelItemInstance &>(
+        sigc::bind<Glib::ustring,Gtk::Entry *,Gtk::TreeModel::Row>(
             sigc::mem_fun(*this,&ModelUsedFct::onEntryFocusOut),
-            Params[i].DataName,Entry,Function));
+            AvailParams[i].DataName,Entry,Row));
 
-    Gtk::Label * Unit = Gtk::manage(new Gtk::Label(Params[i].DataUnit,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+    if(Row[m_Columns.m_Type] == ModelColumns::Generators)
+      Check->set_visible(false);
+    else
+      Check->set_visible(true);
 
+    Label->set_visible(true);
+    Entry->set_visible(true);
     Unit->set_visible(true);
 
-    TableParams->attach(*Unit,2,3,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    TableParams->attach(*Check,0,1,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    TableParams->attach(*Label,1,2,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    TableParams->attach(*Entry,2,3,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    TableParams->attach(*Unit,3,4,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
 
     TableParams->set_visible(true);
   }
-
 
   // Add a page, even if no parameter (to keep synchro with used functions list).
   // In this case, we insert an empty widget to create a hidden page.
@@ -493,12 +398,18 @@ Gtk::Widget * ModelUsedFct::createParamTab(openfluid::machine::ModelItemInstance
 // =====================================================================
 
 
-bool ModelUsedFct::onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring ParamName, Gtk::Entry * Entry, openfluid::machine::ModelItemInstance & Function)
+bool ModelUsedFct::onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row)
 {
-  if(Function.Params[ParamName] != Entry->get_text())
+  openfluid::core::FuncParamsMap_t UsedParams = Row[m_Columns.m_UsedParams];
+
+  // if param doesn't exist we create it, otherwise we update it if necessary
+  if(UsedParams.find(ParamName) == UsedParams.end() || UsedParams[ParamName] != Entry->get_text())
   {
-    Function.Params[ParamName] = Entry->get_text();
-    checkModel();
+    UsedParams[ParamName] = Entry->get_text();
+
+    Row[m_Columns.m_UsedParams] = UsedParams;
+
+    tempCheckModel();
   }
 
   return true;
@@ -509,43 +420,84 @@ bool ModelUsedFct::onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring Para
 // =====================================================================
 
 
-void ModelUsedFct::checkModel()
+void ModelUsedFct::onCheckToggled(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::CheckButton * Check, Gtk::TreeModel::Row Row)
 {
-  const std::list<openfluid::machine::ModelItemInstance *> ItemInstances = m_ModelInstance.getItems();
+  Entry->set_sensitive(Check->get_active());
 
-  std::list<openfluid::machine::ModelItemInstance *>::const_iterator it;
-
-  mp_StatusParamsValues->clearErrorValues();
-
-  std::cout << "Check :" << std::endl;
-
-  for(it=ItemInstances.begin() ; it!=ItemInstances.end() ; ++it)
+  if(Check->get_active())
+    onEntryFocusOut(0,ParamName,Entry,Row);
+  else
   {
-    openfluid::machine::ModelItemInstance * ItemInstance = *it;
+    openfluid::core::FuncParamsMap_t UsedParams = Row[m_Columns.m_UsedParams];
 
-    // Display used functions list for information
-    std::cout << "-" << ItemInstance->Signature->ID << std::endl;
-    /* TODO: display WarningsMsgs */
-    try
+    UsedParams.erase(ParamName);
+
+    Row[m_Columns.m_UsedParams] = UsedParams;
+  }
+
+  tempCheckModel();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::ModelDescriptor * ModelUsedFct::getModelDescriptor()
+{
+  openfluid::base::ModelDescriptor * ModelDesc = new openfluid::base::ModelDescriptor();
+
+  Gtk::TreeModel::Children Functions = mp_TreeModelUsedFct->children();
+  Gtk::TreeModel::Children::iterator it;
+
+  for(it=Functions.begin() ; it!=Functions.end() ; ++it)
+  {
+    openfluid::base::ModelItemDescriptor * ItemDesc = 0;
+
+    if((*it).get_value(m_Columns.m_Type) == ModelColumns::SimulationFunctions)
     {
-      ItemInstance->Function->initLogger();
+      ItemDesc = new openfluid::base::FunctionDescriptor((*it).get_value(m_Columns.m_Id));
     }
-    catch(openfluid::base::OFException& E)
+    else if((*it).get_value(m_Columns.m_Type) == ModelColumns::Generators)
     {
-      std::cerr << E.what() << std::endl;
-      continue;
+      /* TODO: test Generator params before creating GeneratorDesc */
+      ItemDesc = new openfluid::base::GeneratorDescriptor();
     }
 
-    try
+    if(ItemDesc)
     {
-      ItemInstance->Function->initParams(ItemInstance->Params);
+      ItemDesc->setParameters((*it).get_value(m_Columns.m_UsedParams));
+      ModelDesc->appendItem(ItemDesc);
     }
-    catch(openfluid::base::OFException& E)
-    {
-      mp_StatusParamsValues->appendErrorValue(Glib::ustring::compose("%1 : %2",ItemInstance->Signature->ID,E.what()));
-      continue;
-    }
+
+  }
+
+  return ModelDesc;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelUsedFct::tempCheckModel()
+{
+  std::cout << "-------- checking : " << std::endl;
+
+  Gtk::TreeModel::Children Functions = mp_TreeModelUsedFct->children();
+
+  Gtk::TreeModel::Children::iterator it;
+
+  for(it=Functions.begin() ; it!=Functions.end() ; ++it)
+  {
+    std::cout << "- " << (*it).get_value(m_Columns.m_Id) << std::endl;
+
+    openfluid::core::FuncParamsMap_t Params = (*it).get_value(m_Columns.m_UsedParams);
+
+    openfluid::core::FuncParamsMap_t::iterator it2;
+
+    for(it2=Params.begin() ; it2 != Params.end(); ++it2)
+      std::cout << "   * " << it2->first << " : -" << it2->second << "-" << std::endl;
   }
 
 }
-

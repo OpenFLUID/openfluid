@@ -65,16 +65,44 @@
 
 int main (int argc, char** argv)
 {
-  // Native Language Support setup
-  if(BUILDER_NLS_ENABLE)
+  try
   {
-    setlocale(LC_ALL, "");
-    bindtextdomain(BUILDER_NLS_PACKAGE, BUILDER_NLS_LOCALEDIR);
-    bind_textdomain_codeset(BUILDER_NLS_PACKAGE, "UTF-8");
-    textdomain(BUILDER_NLS_PACKAGE);
-  }
+    // Native Language Support setup
+    if(BUILDER_NLS_ENABLE)
+    {
+      setlocale(LC_ALL, "");
+      bindtextdomain(BUILDER_NLS_PACKAGE, BUILDER_NLS_LOCALEDIR);
+      bind_textdomain_codeset(BUILDER_NLS_PACKAGE, "UTF-8");
+      textdomain(BUILDER_NLS_PACKAGE);
+    }
 
-  BuilderApp BuilderApp(argc,argv);
+    BuilderApp BuilderApp(argc,argv);
+
+  }
+  catch (openfluid::base::OFException & E)
+  {
+    std::cerr << "ERREUR: " << E.what() << std::endl;
+  }
+  catch (std::bad_alloc & E)
+  {
+    std::cerr << "ERREUR: " << E.what() << ". Possibly not enough memory available" << std::endl;
+  }
+  catch (std::exception & E)
+  {
+    std::cerr << "ERREUR: " << E.what() << std::endl;
+  }
+  catch(const Glib::FileError & E)
+  {
+    std::cerr << "ERREUR: " << E.what() << std::endl;
+  }
+  catch(Gdk::PixbufError & E)
+  {
+    std::cerr << "ERREUR: " << E.what() << std::endl;
+  }
+  catch (...)
+  {
+    std::cerr << "ERREUR: " << "Unknown Error" << std::endl;
+  }
 
   return 0;
 }

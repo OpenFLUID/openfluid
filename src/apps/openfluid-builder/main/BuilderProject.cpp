@@ -52,6 +52,8 @@
 
   \author Aline LIBRES <libres@supagro.inra.fr>
  */
+
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/io.hpp>
@@ -64,12 +66,12 @@
 
 
 BuilderProject::BuilderProject(Glib::ustring FolderIn)
-//  : openfluid::machine::Engine(new openfluid::machine::MachineListener(),
-//        new openfluid::io::IOListener())
 {
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   mp_Listener = new openfluid::machine::MachineListener();
   mp_IOListener = new openfluid::io::IOListener();
+
+  openfluid::machine::ModelInstance * Model = 0;
 
   if(FolderIn!="")
   {
@@ -80,35 +82,40 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
     openfluid::io::FluidXReader FXReader(mp_IOListener);
     FXReader.loadFromDirectory(FolderIn);
 
-
     std::cout << "* Building Blob... " << std::endl;
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
         FXReader.getRunDescriptor(),
         FXReader.getOutputDescriptor(),
         m_SimBlob);
 
-    std::cout << "* Building model... " << std::endl;
-    mp_Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
+    std::cout << "* Building original model... " << std::endl;
+    Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
-        m_SimBlob,
-        *mp_Model);
-
-//    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener,mp_IOListener);
-
-
-
+        m_SimBlob, *Model);
   }
   else
   {
-    mp_Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
+    openfluid::base::RunDescriptor m_RunDescriptor = openfluid::base::RunDescriptor(120,
+        openfluid::core::DateTime(2000,01,01,00,00,00),
+        openfluid::core::DateTime(2000,01,01,06,00,00));
+
+    openfluid::base::OutputDescriptor m_OutputDescriptor = openfluid::base::OutputDescriptor();
+    openfluid::base::DomainDescriptor m_DomainDescriptor = openfluid::base::DomainDescriptor();
+
+    std::cout << "* Building Blob... " << std::endl;
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(m_DomainDescriptor,
+        m_RunDescriptor, m_OutputDescriptor,
+        m_SimBlob);
+
+    std::cout << "* Building original model... " << std::endl;
+    Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
   }
 
-  addModule(new ModelModule(*mp_Model,m_SimBlob),"model");
+  addModule(new ModelModule(*Model),"model");
   addModule(new DomainModule(m_SimBlob.getCoreRepository()),"domain");
   addModule(new SimulationModule(),"simulation");
   addModule(new ResultsModule(),"results");
 
-  m_ProjectChecked = false;
 }
 
 
@@ -130,10 +137,13 @@ BuilderProject::~BuilderProject()
     delete it->second;
   }
 
+//  if(mp_Engine)
+//    delete mp_Engine;
 //  delete mp_RunEnv;
 //  delete mp_Listener;
 //  delete mp_Engine;
 //  delete mp_ExecMsgs;
+//  delete mp_Model;
 
 }
 
@@ -161,6 +171,18 @@ void BuilderProject::addModule(ModuleInterface * Module, Glib::ustring ModuleNam
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+ModuleInterface * BuilderProject::getModule(Glib::ustring ModuleName)
+{
+  if(m_Modules.find(ModuleName) != m_Modules.end())
+    return m_Modules[ModuleName];
+  else
+    throw openfluid::base::OFException("BuilderProject::getModule","Wrong ModuleName");
+}
 
 // =====================================================================
 // =====================================================================
@@ -201,29 +223,64 @@ void BuilderProject::actionDefaultLayout(LayoutType Layout)
 
 bool BuilderProject::actionCheckProject()
 {
-  // !! delete existing variables from previous checkConsistency !
+  bool IsOk = true;
+
+  ModelModule * ModelMod = 0;
+
   try
   {
+    ModelMod = static_cast<ModelModule*>(getModule("model"));
+
+    std::cout << "* Building model before execution... " << std::endl;
+    mp_Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(*(ModelMod->getModelDescriptor()),
+        m_SimBlob, *mp_Model);
+    std::cout << "...Model created" << std::endl;
+
     std::cout << "* Creating Engine... " << std::endl;
-    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener,mp_IOListener);
-
-    std::cout << "* Initializing parameters... " << std::endl;
-    mp_Engine->initParams();
-
-    std::cout << "* Preparing data... " << std::endl;
-    mp_Engine->prepareData();
-
-    std::cout << "* Checking consistency... " << std::endl;
-    mp_Engine->checkConsistency();
-
-//    m_ProjectChecked = true;
-    return true;
+    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener, mp_IOListener);
+    std::cout << "...Engine created" << std::endl;
   }
   catch(openfluid::base::OFException& E)
   {
     std::cerr << E.what() << std::endl;
+
+    if(mp_Model)
+    {
+      delete mp_Model;
+      mp_Model = 0;
+    }
+//    if(mp_Engine)
+//    {
+//      delete mp_Engine;
+//      mp_Engine = 0;
+//    }
     return false;
   }
+
+  // !! delete existing variables from previous checkConsistency !
+
+  // Initializing parameters
+  if(! ModelMod->checkModule(mp_Model))
+    IsOk = false;
+
+  try
+  {
+    std::cout << "* Preparing data... " << std::endl;
+    mp_Engine->prepareData();
+    std::cout << "...Data prepared" << std::endl;
+
+    std::cout << "* Checking consistency... " << std::endl;
+    mp_Engine->checkConsistency();
+    std::cout << "...Consistency checked" << std::endl;
+  }
+  catch(openfluid::base::OFException& E)
+  {
+    std::cerr << E.what() << std::endl;
+    IsOk = false;
+  }
+
+  return IsOk;
 }
 
 
@@ -233,58 +290,62 @@ bool BuilderProject::actionCheckProject()
 
 void BuilderProject::actionRun()
 {
-//  if(!m_ProjectChecked)
-//  try
-//  {
-    if(actionCheckProject())
-    {
-
-// !! delete existing variable values from previous run !
-
-  std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
-                << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
-                << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
-
-  std::cout << std::endl;
-
-  std::cout << std::endl << "**** Running simulation ****" << std::endl;
-  boost::posix_time::ptime m_FullStartTime = boost::posix_time::microsec_clock::local_time();
-  std::cout.flush();
-  boost::posix_time::ptime m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
-  mp_Engine->run();
-  boost::posix_time::ptime m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
-  std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
-  std::cout.flush();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
-  openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
-
-
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
+  if(actionCheckProject())
   {
-    std::cout << "* Saving simulation report... "; std::cout.flush();
-    mp_Engine->saveReports();
-    std::cout << "[Done]" << std::endl; std::cout.flush();
+    // !! delete existing variable values from previous run !
+
+    std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
+                    << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
+                    << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
+
+    std::cout << std::endl;
+
+    std::cout << std::endl << "**** Running simulation ****" << std::endl;
+    boost::posix_time::ptime m_FullStartTime = boost::posix_time::microsec_clock::local_time();
+    std::cout.flush();
+    boost::posix_time::ptime m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
+    mp_Engine->run();
+    boost::posix_time::ptime m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
+    std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
+    std::cout.flush();
     m_SimBlob.getExecutionMessages().resetWarningFlag();
+    openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
+
+
+    if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
+    {
+      std::cout << "* Saving simulation report... "; std::cout.flush();
+      mp_Engine->saveReports();
+      std::cout << "[Done]" << std::endl; std::cout.flush();
+      m_SimBlob.getExecutionMessages().resetWarningFlag();
+    }
+
+
+    boost::posix_time::ptime m_FullEndTime = boost::posix_time::microsec_clock::local_time();
+
+    if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
+
+    boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
+
+
+    std::cout << std::endl;
+
+    std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
+    std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
+    std::cout << std::endl;
+
   }
 
-
-  boost::posix_time::ptime m_FullEndTime = boost::posix_time::microsec_clock::local_time();
-
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
-
-  boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
-
-
-  std::cout << std::endl;
-
-  std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
-  std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
-  std::cout << std::endl;
-//  }
-//  catch(openfluid::base::OFException& E)
+  if(mp_Model)
+  {
+    delete mp_Model;
+    mp_Model = 0;
+  }
+//  if(mp_Engine)
 //  {
-//    std::cerr << E.what() << std::endl;
-  }
+//    delete mp_Engine;
+//    mp_Engine = 0;
+//  }
 
 }
 

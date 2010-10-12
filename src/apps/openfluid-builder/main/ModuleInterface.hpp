@@ -59,6 +59,8 @@
 
 #include <gtkmm.h>
 
+#include <openfluid/machine.hpp>
+
 #include "builderconfig.hpp"
 
 
@@ -89,6 +91,8 @@ class ModuleInterface
     Gtk::StockID * getStockId() { return mp_StockId; };
 
     std::vector<Glib::RefPtr<Gtk::Action> > getActions() { return m_Actions; };
+
+    virtual bool checkModule() { return true; };
 
 
   protected:
