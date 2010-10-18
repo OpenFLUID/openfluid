@@ -13,8 +13,8 @@ IF(BUILD_FORTRAN_FUNCTIONS)
   ENABLE_LANGUAGE(Fortran)
   ADD_SUBDIRECTORY(tests.fortran)  
   ADD_TEST(functions-Fortran "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckFortran"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckFortran" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Fortran"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran" 
                         "-p${TEST_OUTPUT_PATH}")  
 ENDIF(BUILD_FORTRAN_FUNCTIONS)
 
@@ -22,16 +22,16 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
 ADD_FUNCTION(tests.vector.prod tests.vector.prod ${TEST_OUTPUT_PATH})
 ADD_FUNCTION(tests.vector.use tests.vector.use ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Vector "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckVector"
-                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckVector" 
+                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Vector"
+                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Vector" 
                               "-p${TEST_OUTPUT_PATH}")                              
 
 IF(TESTS_RUNHIGHLOAD)
   ADD_FUNCTION(tests.largevector.prod tests.largevector.prod ${TEST_OUTPUT_PATH})
   ADD_FUNCTION(tests.largevector.use tests.largevector.use ${TEST_OUTPUT_PATH})
   ADD_TEST(functions-LargeVector "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                                 "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLargeVector"
-                                 "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLargeVector" 
+                                 "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.LargeVector"
+                                 "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LargeVector" 
                                  "-p${TEST_OUTPUT_PATH}")
 ENDIF(TESTS_RUNHIGHLOAD)                                                               
 
@@ -40,15 +40,15 @@ ENDIF(TESTS_RUNHIGHLOAD)
 ADD_FUNCTION(tests.primitives.prod tests.primitives.prod ${TEST_OUTPUT_PATH})
 ADD_FUNCTION(tests.primitives.use tests.primitives.use ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Primitives "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckPrimitives"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckPrimitives" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Primitives"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives" 
                            "-p${TEST_OUTPUT_PATH}")                              
 
 
 ADD_FUNCTION(tests.landprimitives tests.landprimitives ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-LandPrimitives "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLandPrimitives"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLandPrimitives" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.LandPrimitives"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LandPrimitives" 
                            "-p${TEST_OUTPUT_PATH}")
 
 
@@ -56,28 +56,28 @@ ADD_TEST(functions-LandPrimitives "${BIN_OUTPUT_PATH}/openfluid-engine"
 
 ADD_FUNCTION(tests.loops tests.loops ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Loops "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLoops"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLoops" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Loops"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Loops" 
                         "-p${TEST_OUTPUT_PATH}")                              
 
 
 
 ADD_FUNCTION(tests.messages tests.messages ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Messages "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckMessages"
-                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckMessages" 
+                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Messages"
+                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Messages" 
                          "-p${TEST_OUTPUT_PATH}")
 ADD_TEST(functions-ManyMessages "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                             "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckManyMessages"
-                             "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckManyMessages" 
+                             "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyMessages"
+                             "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyMessages" 
                              "-p${TEST_OUTPUT_PATH}"
                              "-z")                              
 
 
 ADD_FUNCTION(tests.parseunits tests.parseunits ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-ManyUnits "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                             "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckManyUnits"
-                             "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckManyUnits" 
+                             "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyUnits"
+                             "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyUnits" 
                              "-p${TEST_OUTPUT_PATH}")                              
              
                          
@@ -86,46 +86,46 @@ ADD_FUNCTION(tests.ofefunc2doc tests.ofefunc2doc ${TEST_OUTPUT_PATH})
 
 ADD_FUNCTION(tests.tools tests.tools ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Tools "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckTools"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckTools" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Tools"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Tools" 
                         "-p${TEST_OUTPUT_PATH}")
 
 
 ADD_FUNCTION(tests.events tests.events ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Events "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckEvents"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckEvents" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Events"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Events" 
                         "-p${TEST_OUTPUT_PATH}")                              
 
 ADD_FUNCTION(tests.outbuffers tests.outbuffers ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Buffers "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckOutputsBuffers"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckOutputsBuffers" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.OutputsBuffers"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.OutputsBuffers" 
                         "-p${TEST_OUTPUT_PATH}")                              
                               
 ADD_FUNCTION(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})
 
 ADD_FUNCTION(tests.wrongprod tests.wrongprod ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-WrongProduction "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckWrongProd"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckWrongProd" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.WrongProd"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.WrongProd" 
                         "-p${TEST_OUTPUT_PATH}")                              
 SET_TESTS_PROPERTIES(functions-WrongProduction PROPERTIES WILL_FAIL TRUE)        
 
 ADD_FUNCTION(tests.globalparams tests.globalparams ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-GlobalParams "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckGlobalParams"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckGlobalParams" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.GlobalParams"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GlobalParams" 
                         "-p${TEST_OUTPUT_PATH}")                              
         
 ADD_FUNCTION(tests.generators tests.generators ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Generators "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckGenerators"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckGenerators" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Generators"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Generators" 
                         "-p${TEST_OUTPUT_PATH}" "-v")                              
 
 ADD_FUNCTION(tests.logger tests.logger ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Logger "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CheckLogger"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CheckLogger" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Logger"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Logger" 
                         "-p${TEST_OUTPUT_PATH}")                              
