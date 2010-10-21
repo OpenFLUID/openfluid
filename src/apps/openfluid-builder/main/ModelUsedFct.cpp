@@ -73,6 +73,8 @@ ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::m
   GladeBuilder->get_widget("ImageModelUsedFctTrash",mp_ImageModelUsedFctTrash);
   GladeBuilder->get_widget("NotebookParams",mp_NotebookParams);
 
+  mp_ModelGlobalParams = new ModelGlobalParams(GladeBuilder);
+
   mp_TreeModelUsedFct = createTreeModelUsedFct(ModelInstance);
 
   mp_TreeViewUsedFct->set_model(mp_TreeModelUsedFct);
@@ -86,6 +88,9 @@ ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::m
 
   // Make the trash a DnD dest (for move from the used functions listview)
   mp_ImageModelUsedFctTrash->drag_dest_set(ListTargets,Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_MOVE);
+  mp_ImageModelUsedFctTrash->signal_drag_data_received().connect(
+          sigc::mem_fun(*this,&ModelUsedFct::onTrashDragDataReceived));
+
 }
 
 
@@ -95,7 +100,7 @@ ModelUsedFct::ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::m
 
 ModelUsedFct::~ModelUsedFct()
 {
-
+  delete mp_ModelGlobalParams;
 }
 
 
@@ -134,15 +139,12 @@ Glib::RefPtr<Gtk::ListStore> ModelUsedFct::createTreeModelUsedFct(openfluid::mac
       {
         AvailParams = m_AllFctContainers[i]->Signature->HandledData.FunctionParams;
 
-        RowIInstance[m_Columns.m_NotebookParamsPage] = createParamTab(RowIInstance,AvailParams,-1);
+        createParamTab(RowIInstance,AvailParams,-1);
 
         break;
       }
     }
   }
-
-  TreeModelUsedFct->signal_row_deleted().connect(
-      sigc::mem_fun(*this, &ModelUsedFct::deleteAFunction));
 
   return TreeModelUsedFct;
 }
@@ -179,7 +181,7 @@ void ModelUsedFct::initTreeViewUsedFct(std::list<Gtk::TargetEntry> ListTargets)
 void ModelUsedFct::onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& /*context*/,
     Gtk::SelectionData& selection_data, guint /*info*/, guint /*time*/)
 {
-  // dummy function, used to make this DnD source being recognized (for drop to trash)
+  //empty but necessary to make drop to trash works
   selection_data.set("text/plain","");
 }
 
@@ -274,7 +276,7 @@ void ModelUsedFct::addAFunction(Glib::ustring Id, Gtk::TreeModel::Row & RowDest)
 
       RowDest[m_Columns.m_UsedParams] = UsedParam;
 
-      RowDest[m_Columns.m_NotebookParamsPage] = createParamTab(RowDest,AvailParams,Index+1);
+      createParamTab(RowDest,AvailParams,Index+1);
 
       break;
     }
@@ -311,14 +313,35 @@ void ModelUsedFct::moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeMo
 // =====================================================================
 // =====================================================================
 
-
-void ModelUsedFct::deleteAFunction(const Gtk::TreeModel::Path& Path)
+void ModelUsedFct::removeSelectedUsedFunction()
 {
-  unsigned int Index = *Path.get_indices().begin();
+  Gtk::TreeIter Iter = mp_TreeViewUsedFct->get_selection()->get_selected();
 
-  mp_NotebookParams->remove_page(Index+1);
+    if(Iter)
+    {
+      Gtk::TreeRow Row = *Iter;
+
+      mp_NotebookParams->remove_page(*Row[m_Columns.m_NotebookParamsPage]);
+
+      mp_ModelGlobalParams->removeParamRequest(Row[m_Columns.m_GlobalParamsLabels]);
+    }
 
   tempCheckModel();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelUsedFct::onTrashDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int /*x*/, int /*y*/,
+    const Gtk::SelectionData& /*selection_data*/, guint /*info*/, guint time)
+{
+  std::cout << "onTrashDragDataReceived" << std::endl;
+
+  removeSelectedUsedFunction();
+
+  context->drag_finish(true,true,time);
 
 }
 
@@ -327,13 +350,15 @@ void ModelUsedFct::deleteAFunction(const Gtk::TreeModel::Path& Path)
 // =====================================================================
 
 
-Gtk::Widget * ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position)
+void ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position)
 {
   Glib::ustring Id = Row[m_Columns.m_Id];
 
   Gtk::Table * TableParams = Gtk::manage(new Gtk::Table());
 
   TableParams->set_spacings(5);
+
+  std::vector<Gtk::Label *> GlobalParamsLabels;
 
   for(unsigned int i=0 ; i<AvailParams.size() ; i++)
   {
@@ -344,6 +369,8 @@ Gtk::Widget * ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<
     Gtk::Entry * Entry = Gtk::manage(new Gtk::Entry());
 
     Gtk::Label * Unit = Gtk::manage(new Gtk::Label(AvailParams[i].DataUnit,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+
+    Gtk::Label * LabelGlobal = Gtk::manage(new Gtk::Label("",Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
 
     Check->set_active(true);
 
@@ -365,18 +392,26 @@ Gtk::Widget * ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<
     if(Row[m_Columns.m_Type] == ModelColumns::Generators)
       Check->set_visible(false);
     else
+    {
       Check->set_visible(true);
+
+      mp_ModelGlobalParams->addParamRequest(AvailParams[i].DataName,AvailParams[i].DataUnit,LabelGlobal);
+    }
 
     Label->set_visible(true);
     Entry->set_visible(true);
     Unit->set_visible(true);
+    LabelGlobal->set_visible(true);
 
     TableParams->attach(*Check,0,1,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
     TableParams->attach(*Label,1,2,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
     TableParams->attach(*Entry,2,3,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
     TableParams->attach(*Unit,3,4,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
+    TableParams->attach(*LabelGlobal,4,5,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
 
     TableParams->set_visible(true);
+
+    GlobalParamsLabels.push_back(LabelGlobal);
   }
 
   // Add a page, even if no parameter (to keep synchro with used functions list).
@@ -389,7 +424,8 @@ Gtk::Widget * ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<
 
   mp_NotebookParams->set_current_page(Index);
 
-  return TableParams;
+  Row[m_Columns.m_NotebookParamsPage] = TableParams;
+  Row[m_Columns.m_GlobalParamsLabels] = GlobalParamsLabels;
 
 }
 
@@ -466,7 +502,18 @@ openfluid::base::ModelDescriptor * ModelUsedFct::getModelDescriptor()
 
     if(ItemDesc)
     {
-      ItemDesc->setParameters((*it).get_value(m_Columns.m_UsedParams));
+      openfluid::core::FuncParamsMap_t UsedParams = (*it).get_value(m_Columns.m_UsedParams);
+
+      openfluid::core::FuncParamsMap_t::iterator It;
+
+      for(It=UsedParams.begin() ; It!=UsedParams.end() ; ++It)
+      {
+        if(It->second == "")
+          It->second = mp_ModelGlobalParams->getGlobalParamValue(It->first);
+      }
+
+      ItemDesc->setParameters(UsedParams);
+
       ModelDesc->appendItem(ItemDesc);
     }
 
@@ -482,22 +529,24 @@ openfluid::base::ModelDescriptor * ModelUsedFct::getModelDescriptor()
 
 void ModelUsedFct::tempCheckModel()
 {
-  std::cout << "-------- checking : " << std::endl;
+//  std::cout << "-------- checking Functions used: " << std::endl;
+//
+//  Gtk::TreeModel::Children Functions = mp_TreeModelUsedFct->children();
+//
+//  Gtk::TreeModel::Children::iterator it;
+//
+//  for(it=Functions.begin() ; it!=Functions.end() ; ++it)
+//  {
+//    std::cout << "- " << (*it).get_value(m_Columns.m_Id) << std::endl;
+//
+//    openfluid::core::FuncParamsMap_t Params = (*it).get_value(m_Columns.m_UsedParams);
+//
+//    openfluid::core::FuncParamsMap_t::iterator it2;
+//
+//    for(it2=Params.begin() ; it2 != Params.end(); ++it2)
+//      std::cout << "   * " << it2->first << " : -" << it2->second << "-" << std::endl;
+//  }
 
-  Gtk::TreeModel::Children Functions = mp_TreeModelUsedFct->children();
-
-  Gtk::TreeModel::Children::iterator it;
-
-  for(it=Functions.begin() ; it!=Functions.end() ; ++it)
-  {
-    std::cout << "- " << (*it).get_value(m_Columns.m_Id) << std::endl;
-
-    openfluid::core::FuncParamsMap_t Params = (*it).get_value(m_Columns.m_UsedParams);
-
-    openfluid::core::FuncParamsMap_t::iterator it2;
-
-    for(it2=Params.begin() ; it2 != Params.end(); ++it2)
-      std::cout << "   * " << it2->first << " : -" << it2->second << "-" << std::endl;
-  }
+//  mp_ModelGlobalParams->tempCheckModel();
 
 }

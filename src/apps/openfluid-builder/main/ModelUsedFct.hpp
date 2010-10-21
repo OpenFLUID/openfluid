@@ -63,6 +63,7 @@
 #include <openfluid/base.hpp>
 
 #include "ModelColumns.hpp"
+#include "ModelGlobalParams.hpp"
 
 
 // =====================================================================
@@ -79,9 +80,6 @@ class ModelUsedFct
 
     openfluid::base::ModelDescriptor * getModelDescriptor();
 
-
-  private:
-
     openfluid::machine::ArrayOfModelItemInstance m_AllFctContainers;
 
     ModelColumns m_Columns;
@@ -94,6 +92,7 @@ class ModelUsedFct
 
     Gtk::Notebook * mp_NotebookParams;
 
+    ModelGlobalParams * mp_ModelGlobalParams;
 
     Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct(openfluid::machine::ModelInstance & ModelInstance);
 
@@ -105,15 +104,18 @@ class ModelUsedFct
     void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
         const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
 
+    void onTrashDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
+        const Gtk::SelectionData& /*selection_data*/, guint /*info*/, guint time);
+
     void addAFunction(Glib::ustring Id, Gtk::TreeModel::Row & RowDest);
 
     void moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeModel::iterator & IterDest);
 
-    void deleteAFunction(const Gtk::TreeModel::Path& Path);
+    void removeSelectedUsedFunction();
 
-    Gtk::Widget * createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position);
+    void createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position);
 
-    bool onEntryFocusOut(GdkEventFocus * Event, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
+    bool onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
 
     void onCheckToggled(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::CheckButton * Check, Gtk::TreeModel::Row Row);
 

@@ -46,75 +46,91 @@
 */
 
 /**
- \file ModelColumns.hpp
+ \file ModelGlobalParams.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELCOLUMNS_HPP__
-#define __MODELCOLUMNS_HPP__
+#ifndef __MODELGLOBALPARAMS_HPP__
+#define __MODELGLOBALPARAMS_HPP__
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-
 
 // =====================================================================
 // =====================================================================
 
 
-class ModelColumns : public Gtk::TreeModel::ColumnRecord
+class ModelGlobalParams
 {
   public:
 
-  // each RowType 1<7 has a tab in Notebook of Available functions (page num is RowType value)
-  enum RowType {  SimulationFunctions = 100,
-                  Generators = 200,
-                  Parameters = 1,
-                  InputData = 2,
-                  Variables = 3,
-                  Events = 4,
-                  ExtraFiles = 5,
-                  SpatialUnits = 6 };
+    ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
-  enum GeneratorType { Fixed, Random, Interp, MaxGeneratorType/*for iter only*/ };
+    ~ModelGlobalParams();
+
+    void addParamRequest(Glib::ustring ParamId, Glib::ustring ParamUnit, Gtk::Label * GlobalLabel);
+
+    void removeParamRequest(std::vector<Gtk::Label *> GlobalParamsLabels);
+
+    Glib::ustring getGlobalParamValue(Glib::ustring ParamId/*, Glib::ustring ParamUnit*/);
+
+    /* Temporary function, to be removed - Print to console used functions list information */
+    void tempCheckModel();
+
+  private:
+
+     class GlobalAvailColumns : public Gtk::TreeModel::ColumnRecord
+     {
+       public:
+
+       GlobalAvailColumns()
+       { add(m_Id); add(m_Unit); add(m_Labels); add(m_IsNotUsed); add(m_TableRowWidgets); add(m_Value); }
+
+       Gtk::TreeModelColumn<Glib::ustring> m_Id;
+       Gtk::TreeModelColumn<Glib::ustring> m_Unit;
+       Gtk::TreeModelColumn<std::vector<Gtk::Label *> > m_Labels;
+       Gtk::TreeModelColumn<bool> m_IsNotUsed; //and not the opposite, because of TreeModel::set_visible_column()
+       Gtk::TreeModelColumn<std::vector<Gtk::Widget *> > m_TableRowWidgets;
+       Gtk::TreeModelColumn<Glib::ustring> m_Value;
+     };
+
+     GlobalAvailColumns m_GlobalAvailColumns;
+
+     Gtk::ComboBox * mp_Combo;
+
+     Gtk::Table * mp_Table;
+
+     Glib::RefPtr<Gtk::TreeStore> mp_TreeModelParams;
+
+     Glib::RefPtr<Gtk::TreeModelFilter> mp_TreeModelFilterCombo;
 
 
-  ModelColumns()
-    { add(m_Type); add(m_IsTitle); add(m_Id); add(m_FunctionName); add(m_FunctionPath); add(m_Description);
-    add(m_FunctionVersion); add(m_FunctionStatusStr);add(m_FunctionStatusIcon); add(m_FunctionDomain);
-    add(m_FunctionProcess); add(m_FunctionMethod); add(m_FunctionAuthorName); add(m_FunctionAuthorEmail);
-    add(m_HandleDataUnitClass); add(m_HandleDataUnit); add(m_UsedParams); add(m_NotebookParamsPage);
-    add(m_GlobalParamsLabels); }
+     Gtk::TreeIter getParamIter(Glib::ustring ParamId, Glib::ustring ParamUnit="");
 
-  Gtk::TreeModelColumn<RowType> m_Type;
-  Gtk::TreeModelColumn<bool> m_IsTitle;
+     void setGlobalParamUsed(Gtk::TreeRowReference RefRow);
 
-  Gtk::TreeModelColumn<Glib::ustring> m_Id;
-  Gtk::TreeModelColumn<Glib::ustring> m_Description;
+     void setGlobalParamUnused(Gtk::TreeRowReference RefRow);
 
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionName;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionPath;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionVersion;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionStatusStr;
-  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_FunctionStatusIcon;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionDomain;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionProcess;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionMethod;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorName;
-  Gtk::TreeModelColumn<Glib::ustring> m_FunctionAuthorEmail;
+     void removeGlobalParams(std::vector<Gtk::TreeRowReference> ParamsToDel);
 
-  Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnitClass;
-  Gtk::TreeModelColumn<Glib::ustring> m_HandleDataUnit;
+     void createTableRowWidgets(Gtk::TreeRowReference RefParam);
 
-  Gtk::TreeModelColumn<openfluid::core::FuncParamsMap_t> m_UsedParams;
+     void removeTableRowWidgets(Gtk::TreeModel::iterator & Iter);
 
-  Gtk::TreeModelColumn<Gtk::Widget *> m_NotebookParamsPage;
-  Gtk::TreeModelColumn<std::vector<Gtk::Label *> > m_GlobalParamsLabels;
+     void updateComboState();
+
+     void setGlobalLabelValue(Gtk::Label * GlobalLabel, Glib::ustring GlobalValue);
+
+     void onButtonAddClicked();
+
+     void onButtonSupprClicked(Gtk::TreeRowReference RowRef);
+
+     bool onEntryFocusOut(GdkEventFocus * /*Event*/, Gtk::Entry * Entry, Gtk::TreeRowReference RefRow);
 
 };
 
 
-#endif /* __MODELCOLUMNS_HPP__ */
+#endif /* __MODELGLOBALPARAMS_HPP__ */

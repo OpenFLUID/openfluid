@@ -98,6 +98,7 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
     openfluid::base::RunDescriptor m_RunDescriptor = openfluid::base::RunDescriptor(120,
         openfluid::core::DateTime(2000,01,01,00,00,00),
         openfluid::core::DateTime(2000,01,01,06,00,00));
+    m_RunDescriptor.setFilled(true);
 
     openfluid::base::OutputDescriptor m_OutputDescriptor = openfluid::base::OutputDescriptor();
     openfluid::base::DomainDescriptor m_DomainDescriptor = openfluid::base::DomainDescriptor();
@@ -235,6 +236,22 @@ bool BuilderProject::actionCheckProject()
     mp_Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(*(ModelMod->getModelDescriptor()),
         m_SimBlob, *mp_Model);
+    //------
+//    std::cout << "******** MODEL ************" << std::endl;
+//    std::list<openfluid::machine::ModelItemInstance*> Fcts = mp_Model->getItems();
+//    std::list<openfluid::machine::ModelItemInstance*>::iterator ItFct;
+//    for(ItFct=Fcts.begin() ; ItFct!=Fcts.end() ; ++ItFct)
+//    {
+//      openfluid::machine::ModelItemInstance* IInstance = *ItFct;
+//      std::cout << "- " << IInstance->Signature->ID << std::endl;
+//
+//      openfluid::core::FuncParamsMap_t Params = IInstance->Function->m_ParamsMap;
+//      openfluid::core::FuncParamsMap_t::iterator ItParam;
+//      for(ItParam=Params.begin() ; ItParam!=Params.end() ; ++ItParam)
+//        std::cout << "  * " << ItParam->first << " : " << ItParam->second << std::endl;
+//    }
+//    std::cout << "***************************" << std::endl;
+    //------
     std::cout << "...Model created" << std::endl;
 
     std::cout << "* Creating Engine... " << std::endl;

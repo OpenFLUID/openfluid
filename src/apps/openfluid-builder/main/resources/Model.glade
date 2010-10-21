@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
@@ -9,12 +9,10 @@
       <object class="GtkVPaned" id="vpaned1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVPaned" id="vpaned3">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
@@ -715,7 +713,7 @@
                         <property name="tab_pos">bottom</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow2">
-                            <property name="height_request">200</property>
+                            <property name="height_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -768,11 +766,9 @@
                         <child>
                           <object class="GtkVBox" id="vbox1">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkVBox" id="vbox2">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -841,17 +837,83 @@
                 <property name="scrollable">True</property>
                 <property name="enable_popup">True</property>
                 <child>
-                  <object class="GtkVBox" id="vbox10">
+                  <object class="GtkVBox" id="BoxGlobalParams">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
-                      <placeholder/>
+                      <object class="GtkLabel" id="label31">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Add a global parameter :</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkHBox" id="hbox3">
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkComboBox" id="ComboGlobal">
+                            <property name="width_request">150</property>
+                            <property name="visible">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="ButtonAddGlobal">
+                            <property name="label" translatable="yes">Add</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkHSeparator" id="hseparator18">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkTable" id="TableGlobal">
+                        <property name="visible">True</property>
+                        <property name="n_columns">4</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
@@ -1080,7 +1142,6 @@
   <object class="GtkVBox" id="StatusBarWidgetModel">
     <property name="visible">True</property>
     <property name="border_width">3</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="label8">
         <property name="visible">True</property>
