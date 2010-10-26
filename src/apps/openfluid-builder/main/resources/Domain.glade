@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -9,7 +9,6 @@
       <object class="GtkVPaned" id="vpaned1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame" id="frame2">
             <property name="visible">True</property>
@@ -17,10 +16,9 @@
             <property name="label_xalign">0</property>
             <property name="shadow_type">in</property>
             <child>
-              <object class="GtkVBox" id="vbox7">
+              <object class="GtkVBox" id="VBoxInfos">
                 <property name="visible">True</property>
                 <property name="border_width">5</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -44,23 +42,16 @@
                         <property name="can_focus">True</property>
                         <property name="tab_pos">bottom</property>
                         <child>
-                          <object class="GtkVBox" id="vbox8">
+                          <object class="GtkScrolledWindow" id="scrolledwindow1">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
                             <child>
-                              <object class="GtkLabel" id="label1">
+                              <object class="GtkTreeView" id="TreeViewUnits">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">I am the Domain Module</property>
+                                <property name="can_focus">True</property>
                               </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
                             </child>
                           </object>
                         </child>
@@ -135,17 +126,16 @@
                     <property name="scrollable">True</property>
                     <property name="enable_popup">True</property>
                     <child>
-                      <object class="GtkVBox" id="vbox1">
+                      <object class="GtkScrolledWindow" id="scrolledwindow2">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
+                          <object class="GtkTreeView" id="TreeViewInputData">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </object>
                         </child>
                       </object>
                     </child>
@@ -161,7 +151,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -189,7 +178,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <placeholder/>
                         </child>

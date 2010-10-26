@@ -958,8 +958,8 @@
             <child>
               <object class="GtkMenuItem" id="MenuItemCheckModel">
                 <property name="visible">True</property>
-                <property name="related_action">ActionCheckModel</property>
                 <property name="use_action_appearance">True</property>
+                <property name="related_action">ActionCheckModel</property>
               </object>
             </child>
           </object>
@@ -975,8 +975,8 @@
     <child>
       <object class="GtkToolButton" id="toolbutton1">
         <property name="visible">True</property>
-        <property name="related_action">ActionCheckModel</property>
         <property name="use_action_appearance">True</property>
+        <property name="related_action">ActionCheckModel</property>
         <property name="use_underline">True</property>
       </object>
       <packing>

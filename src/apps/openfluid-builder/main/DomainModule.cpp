@@ -71,26 +71,40 @@ DomainModule::DomainModule(openfluid::core::CoreRepository & CoreRepos)
   m_ModuleLongName = _("Domain");
   mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "domain-base.svg", "builder-domain-base");
 
+  mp_Builder->get_widget("VBoxInfos",mp_VBoxInfos);
+  mp_Builder->get_widget("TreeViewUnits",mp_TreeViewUnits);
+  mp_Builder->get_widget("TreeViewInputData",mp_TreeViewInputData);
+
   createActions();
 
-  Gtk::Label * Label = 0;
-  mp_Builder->get_widget("label1",Label);
+  mp_MainTreeModel = createMainTreeModel(CoreRepos);
 
-  // List units
-  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
+  mp_TreeViewUnits->set_model(mp_MainTreeModel);
+  mp_TreeViewInputData->set_model(mp_MainTreeModel);
 
-  unsigned int UnitsCount = 0;
-  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
-  {
-    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
-  }
+  initTreeViewUnits();
+  initTreeViewInputData();
 
-  Label->set_text(Glib::ustring::compose("%1 units : ",UnitsCount));
 
-  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
-  {
-    Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose(" - %1, %2 units",UnitsIt->first,UnitsIt->second.getList()->size()));
-  }
+
+//  Gtk::Label * Label = 0;
+//  mp_Builder->get_widget("label1",Label);
+//
+//  // List units
+//  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
+//
+//  unsigned int UnitsCount = 0;
+//  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
+//  {
+//    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
+//  }
+//
+//  Label->set_text(Glib::ustring::compose("%1 units : ",UnitsCount));
+//
+//  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
+//  {
+//    Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose(" - %1, %2 units",UnitsIt->first,UnitsIt->second.getList()->size()));
+//  }
 
 }
 
@@ -122,6 +136,146 @@ void DomainModule::createActions()
   ActionCheckDomain->set_stock_id(*CheckStockId);
 
   m_Actions.push_back(ActionCheckDomain);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel(openfluid::core::CoreRepository & CoreRepos)
+{
+  initInputDataMap(CoreRepos);
+
+  Glib::RefPtr<Gtk::TreeStore> MainTreeModel = Gtk::TreeStore::create(m_DomainColumns);
+
+  openfluid::core::UnitsListByClassMap_t Units = *CoreRepos.getUnitsByClass();
+  openfluid::core::UnitsListByClassMap_t::iterator ItUnits;
+
+  for(ItUnits=Units.begin() ; ItUnits!=Units.end() ; ++ItUnits)
+  {
+    Gtk::TreeRow RowUnitClass = *(MainTreeModel->append());
+
+    RowUnitClass[m_DomainColumns.m_UnitClass] = ItUnits->first;
+
+    openfluid::core::UnitsList_t UnitsOfClass = *ItUnits->second.getList();
+    openfluid::core::UnitsList_t::iterator ItUnitsOfClass;
+
+    for(ItUnitsOfClass=UnitsOfClass.begin() ; ItUnitsOfClass!=UnitsOfClass.end() ; ++ItUnitsOfClass)
+    {
+      Gtk::TreeRow RowUnit = *(MainTreeModel->append(RowUnitClass->children()));
+
+      RowUnit[m_DomainColumns.m_Id] = ItUnitsOfClass->getID();
+      RowUnit[m_DomainColumns.m_PcsOrder] = ItUnitsOfClass->getProcessOrder();
+      RowUnit[m_DomainColumns.m_Unit] = &*ItUnitsOfClass; //?
+
+      openfluid::core::InputData<openfluid::core::InputDataValue> IData = *ItUnitsOfClass->getInputData();
+
+      InputDataMap_t::iterator ItDataMap;
+
+      for(ItDataMap=m_DomainColumns.m_InputDataMap.begin() ; ItDataMap!=m_DomainColumns.m_InputDataMap.end() ; ++ItDataMap)
+      {
+        Glib::ustring DataName = ItDataMap->first;
+
+        if(IData.isDataExist(DataName))
+        {
+          std::string Val;
+
+          IData.getValue(DataName,&Val);
+
+          RowUnit.set_value(*(ItDataMap->second),Val);
+        }
+      }
+    }
+
+  }
+
+  MainTreeModel->set_sort_column(m_DomainColumns.m_Id,Gtk::SORT_ASCENDING);
+
+  return MainTreeModel;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainModule::initInputDataMap(openfluid::core::CoreRepository & CoreRepos)
+{
+  // 1. Get all InputDataNames
+
+  openfluid::core::UnitsPtrList_t UnitsPtr = *CoreRepos.getUnitsGlobally();
+  openfluid::core::UnitsPtrList_t::iterator ItUnitsPtr;
+
+  for(ItUnitsPtr=UnitsPtr.begin() ; ItUnitsPtr!=UnitsPtr.end() ; ++ItUnitsPtr)
+  {
+    std::vector<openfluid::core::InputDataName_t> DataNames = (*ItUnitsPtr)->getInputData()->getInputDataNames();
+
+    for(unsigned int i=0 ; i<DataNames.size() ; i++)
+    {
+      m_DomainColumns.m_InputDataMap[DataNames[i]];
+    }
+  }
+
+
+  // 2. Create one TreeModelColumn for each InputDataName
+
+  InputDataMap_t::iterator ItDataMap;
+
+  for(ItDataMap=m_DomainColumns.m_InputDataMap.begin() ; ItDataMap!=m_DomainColumns.m_InputDataMap.end() ; ++ItDataMap)
+  {
+    Gtk::TreeModelColumn<std::string> * Col = new Gtk::TreeModelColumn<std::string>();
+
+    m_DomainColumns.add(*Col);
+
+    ItDataMap->second = Col;
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainModule::initTreeViewUnits()
+{
+  mp_TreeViewUnits->append_column("Unit class",m_DomainColumns.m_UnitClass);
+  mp_TreeViewUnits->set_search_column(m_DomainColumns.m_UnitClass);
+  mp_TreeViewUnits->get_column(0)->set_sort_column(m_DomainColumns.m_UnitClass);
+
+  mp_TreeViewUnits->append_column("Id",m_DomainColumns.m_Id);
+  mp_TreeViewUnits->get_column(1)->set_sort_column(m_DomainColumns.m_Id);
+
+  mp_TreeViewUnits->append_column_editable("Process order",m_DomainColumns.m_PcsOrder/*,"%i"*/);
+  mp_TreeViewUnits->get_column(2)->set_sort_column(m_DomainColumns.m_PcsOrder);
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainModule::initTreeViewInputData()
+{
+
+  mp_TreeViewInputData->append_column("Unit class",m_DomainColumns.m_UnitClass);
+  mp_TreeViewInputData->set_search_column(m_DomainColumns.m_UnitClass);
+  mp_TreeViewInputData->get_column(0)->set_sort_column(m_DomainColumns.m_UnitClass);
+
+  mp_TreeViewInputData->append_column("Id",m_DomainColumns.m_Id);
+  mp_TreeViewInputData->get_column(1)->set_sort_column(m_DomainColumns.m_Id);
+
+
+  InputDataMap_t::iterator ItDataMap;
+
+  for(ItDataMap=m_DomainColumns.m_InputDataMap.begin() ; ItDataMap!=m_DomainColumns.m_InputDataMap.end() ; ++ItDataMap)
+  {
+    int ColNb = mp_TreeViewInputData->append_column_editable(ItDataMap->first,*ItDataMap->second);
+    mp_TreeViewInputData->get_column(ColNb-1)->set_sort_column(*ItDataMap->second);
+  }
+
 }
 
 

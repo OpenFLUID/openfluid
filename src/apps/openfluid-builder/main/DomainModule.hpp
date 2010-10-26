@@ -70,7 +70,6 @@
 
 class DomainModule : public ModuleInterface
 {
-
   public:
 
     DomainModule(openfluid::core::CoreRepository & CoreRepos);
@@ -79,9 +78,43 @@ class DomainModule : public ModuleInterface
 
   private:
 
+    typedef std::map<Glib::ustring,Gtk::TreeModelColumn<std::string> * > InputDataMap_t;
+
+    class DomainColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+
+      DomainColumns()
+      { add(m_UnitClass); add(m_Id); add(m_PcsOrder); add(m_Unit); }
+
+      Gtk::TreeModelColumn<Glib::ustring> m_UnitClass;
+      Gtk::TreeModelColumn<int> m_Id;
+      Gtk::TreeModelColumn<int> m_PcsOrder;
+      Gtk::TreeModelColumn<openfluid::core::Unit *> m_Unit;
+
+      InputDataMap_t m_InputDataMap;
+
+    };
+
+    DomainColumns m_DomainColumns;
+
     openfluid::core::CoreRepository * mp_CoreData;
 
+    Gtk::Box * mp_VBoxInfos;
+    Gtk::TreeView * mp_TreeViewUnits;
+    Gtk::TreeView * mp_TreeViewInputData;
+
+    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+
     void createActions();
+
+    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::core::CoreRepository & CoreRepos);
+
+    void initInputDataMap(openfluid::core::CoreRepository & CoreRepos);
+
+    void initTreeViewUnits();
+
+    void initTreeViewInputData();
 
     void actionCheckDomain();
 
