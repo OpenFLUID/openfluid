@@ -72,6 +72,8 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
   mp_IOListener = new openfluid::io::IOListener();
 
   openfluid::machine::ModelInstance * Model = 0;
+  openfluid::machine::SimulationBlob * SimBlob = 0;
+  SimBlob = new openfluid::machine::SimulationBlob();
 
   if(FolderIn!="")
   {
@@ -82,38 +84,41 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
     openfluid::io::FluidXReader FXReader(mp_IOListener);
     FXReader.loadFromDirectory(FolderIn);
 
-    std::cout << "* Building Blob... " << std::endl;
+    m_RunDesc = FXReader.getRunDescriptor();
+    m_OutputDesc = FXReader.getOutputDescriptor();
+
+    std::cout << "* Building original Blob... " << std::endl;
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
-        FXReader.getRunDescriptor(),
-        FXReader.getOutputDescriptor(),
-        m_SimBlob);
+        m_RunDesc,
+        m_OutputDesc,
+        *SimBlob);
 
     std::cout << "* Building original model... " << std::endl;
-    Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
+    Model = new openfluid::machine::ModelInstance(*SimBlob,mp_Listener);
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
-        m_SimBlob, *Model);
+        *SimBlob, *Model);
   }
   else
   {
-    openfluid::base::RunDescriptor m_RunDescriptor = openfluid::base::RunDescriptor(120,
+    m_RunDesc = openfluid::base::RunDescriptor(120,
         openfluid::core::DateTime(2000,01,01,00,00,00),
         openfluid::core::DateTime(2000,01,01,06,00,00));
-    m_RunDescriptor.setFilled(true);
+    m_RunDesc.setFilled(true);
 
-    openfluid::base::OutputDescriptor m_OutputDescriptor = openfluid::base::OutputDescriptor();
+    m_OutputDesc = openfluid::base::OutputDescriptor();
     openfluid::base::DomainDescriptor m_DomainDescriptor = openfluid::base::DomainDescriptor();
 
-    std::cout << "* Building Blob... " << std::endl;
+    std::cout << "* Building original Blob... " << std::endl;
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(m_DomainDescriptor,
-        m_RunDescriptor, m_OutputDescriptor,
-        m_SimBlob);
+        m_RunDesc, m_OutputDesc,
+        *SimBlob);
 
     std::cout << "* Building original model... " << std::endl;
-    Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
+    Model = new openfluid::machine::ModelInstance(*SimBlob,mp_Listener);
   }
 
   addModule(new ModelModule(*Model),"model");
-  addModule(new DomainModule(m_SimBlob.getCoreRepository()),"domain");
+  addModule(new DomainModule(SimBlob->getCoreRepository()),"domain");
   addModule(new SimulationModule(),"simulation");
   addModule(new ResultsModule(),"results");
 
@@ -227,15 +232,91 @@ bool BuilderProject::actionCheckProject()
   bool IsOk = true;
 
   ModelModule * ModelMod = 0;
+  DomainModule * DomainMod = 0;
 
   try
   {
+    DomainMod = static_cast<DomainModule*>(getModule("domain"));
+
+    std::cout << "* Building Blob before execution... " << std::endl;
+    mp_SimBlob = new openfluid::machine::SimulationBlob();
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*(DomainMod->getDomainDescriptorWOIData()),
+        m_RunDesc,
+        m_OutputDesc,
+        *mp_SimBlob);
+    DomainMod->setInputData(mp_SimBlob->getCoreRepository());
+
+    //--------
+//    std::cout << "******** DOMAIN ************" << std::endl;
+//    const openfluid::core::UnitsListByClassMap_t * Units = mp_SimBlob->getCoreRepository().getUnitsByClass();
+//    openfluid::core::UnitsListByClassMap_t::const_iterator ItUnits;
+//    for(ItUnits=Units->begin() ; ItUnits!=Units->end() ; ++ItUnits)
+//    {
+//      std::cout << ItUnits->first << std::endl;
+//
+//      openfluid::core::UnitsList_t * UUnits = mp_SimBlob->getCoreRepository().getUnits(ItUnits->first) ->getList();
+//      openfluid::core::UnitsList_t::iterator ItUUnits;
+//      for(ItUUnits=UUnits->begin() ; ItUUnits!=UUnits->end() ; ++ItUUnits)
+//      {
+//        // Unit
+//        std::cout << "id:" << ItUUnits->getID() << " pcsorder:" << ItUUnits->getProcessOrder() << std::endl;
+//
+//        // Parents & Tos
+//        openfluid::core::UnitsListByClassMap_t::const_iterator ItClasses;
+//        for(ItClasses=Units->begin() ; ItClasses!=Units->end() ; ++ItClasses)
+//        {
+//          openfluid::core::UnitsPtrList_t * Parents = ItUUnits->getParentUnits(ItClasses->first);
+//          openfluid::core::UnitsPtrList_t * Tos = ItUUnits->getToUnits(ItClasses->first);
+//
+//          openfluid::core::UnitsPtrList_t::iterator ItParents;
+//          openfluid::core::UnitsPtrList_t::iterator ItTos;
+//
+//          std::cout << "**Parents of class " << ItClasses->first << " : ";
+//          if(Parents)
+//          {
+//            std::cout << std::endl;
+//            for(ItParents=Parents->begin() ; ItParents!=Parents->end() ; ++ItParents)
+//              std::cout << "   " << (*ItParents)->getClass() << " " << (*ItParents)->getID() << std::endl;
+//          }
+//          else
+//            std::cout << "none" << std::endl;
+//
+//          std::cout << "**Tos of class " << ItClasses->first << " : ";
+//          if(Tos)
+//          {
+//            std::cout << std::endl;
+//            for(ItTos=Tos->begin() ; ItTos!=Tos->end() ; ++ItTos)
+//              std::cout << "   " << (*ItTos)->getClass() << " " << (*ItTos)->getID() << std::endl;
+//          }
+//          else
+//            std::cout << "none" << std::endl;
+//        }
+//
+//        // Input Data
+//        std::cout << "**Input Data :" << std::endl;
+//        std::vector<std::string> IDataNames = ItUUnits->getInputData()->getInputDataNames();
+//        for(unsigned int i=0 ; i<IDataNames.size() ; i++)
+//        {
+//          if(ItUUnits->getInputData()->isDataExist(IDataNames[i]))
+//          {
+//            std::string Val;
+//            ItUUnits->getInputData()->getValue(IDataNames[i],&Val);
+//            std::cout << "   " << IDataNames[i] << ":" << Val << std::endl;
+//          }
+//        }
+//      }
+//    }
+//        std::cout << "***************************" << std::endl;
+    //--------
+    std::cout << "...Blob created" << std::endl;
+
+
     ModelMod = static_cast<ModelModule*>(getModule("model"));
 
     std::cout << "* Building model before execution... " << std::endl;
-    mp_Model = new openfluid::machine::ModelInstance(m_SimBlob,mp_Listener);
+    mp_Model = new openfluid::machine::ModelInstance(*mp_SimBlob,mp_Listener);
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(*(ModelMod->getModelDescriptor()),
-        m_SimBlob, *mp_Model);
+        *mp_SimBlob, *mp_Model);
     //------
 //    std::cout << "******** MODEL ************" << std::endl;
 //    std::list<openfluid::machine::ModelItemInstance*> Fcts = mp_Model->getItems();
@@ -255,7 +336,7 @@ bool BuilderProject::actionCheckProject()
     std::cout << "...Model created" << std::endl;
 
     std::cout << "* Creating Engine... " << std::endl;
-    mp_Engine = new openfluid::machine::Engine(m_SimBlob, *mp_Model, mp_Listener, mp_IOListener);
+    mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_Model, mp_Listener, mp_IOListener);
     std::cout << "...Engine created" << std::endl;
   }
   catch(openfluid::base::OFException& E)
@@ -266,6 +347,11 @@ bool BuilderProject::actionCheckProject()
     {
       delete mp_Model;
       mp_Model = 0;
+    }
+    if(mp_SimBlob)
+    {
+      delete mp_SimBlob;
+      mp_SimBlob = 0;
     }
 //    if(mp_Engine)
 //    {
@@ -311,52 +397,63 @@ void BuilderProject::actionRun()
   {
     // !! delete existing variable values from previous run !
 
-    std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
-                    << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
-                    << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
-
-    std::cout << std::endl;
-
-    std::cout << std::endl << "**** Running simulation ****" << std::endl;
-    boost::posix_time::ptime m_FullStartTime = boost::posix_time::microsec_clock::local_time();
-    std::cout.flush();
-    boost::posix_time::ptime m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
-    mp_Engine->run();
-    boost::posix_time::ptime m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
-    std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
-    std::cout.flush();
-    m_SimBlob.getExecutionMessages().resetWarningFlag();
-    openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
-
-
-    if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
+    try
     {
-      std::cout << "* Saving simulation report... "; std::cout.flush();
-      mp_Engine->saveReports();
-      std::cout << "[Done]" << std::endl; std::cout.flush();
-      m_SimBlob.getExecutionMessages().resetWarningFlag();
+      std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
+                        << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
+                        << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
+
+      std::cout << std::endl;
+
+      std::cout << std::endl << "**** Running simulation ****" << std::endl;
+      boost::posix_time::ptime m_FullStartTime = boost::posix_time::microsec_clock::local_time();
+      std::cout.flush();
+      boost::posix_time::ptime m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
+      mp_Engine->run();
+      boost::posix_time::ptime m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
+      std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
+      std::cout.flush();
+      mp_SimBlob->getExecutionMessages().resetWarningFlag();
+      openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
+
+
+      if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
+      {
+        std::cout << "* Saving simulation report... "; std::cout.flush();
+        mp_Engine->saveReports();
+        std::cout << "[Done]" << std::endl; std::cout.flush();
+        mp_SimBlob->getExecutionMessages().resetWarningFlag();
+      }
+
+
+      boost::posix_time::ptime m_FullEndTime = boost::posix_time::microsec_clock::local_time();
+
+      if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
+
+      boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
+
+
+      std::cout << std::endl;
+
+      std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
+      std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
+      std::cout << std::endl;
     }
-
-
-    boost::posix_time::ptime m_FullEndTime = boost::posix_time::microsec_clock::local_time();
-
-    if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
-
-    boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
-
-
-    std::cout << std::endl;
-
-    std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
-    std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
-    std::cout << std::endl;
-
+    catch (openfluid::base::OFException& E)
+    {
+      std::cerr << E.what() << std::endl;
+    }
   }
 
   if(mp_Model)
   {
     delete mp_Model;
     mp_Model = 0;
+  }
+  if(mp_SimBlob)
+  {
+    delete mp_SimBlob;
+    mp_SimBlob = 0;
   }
 //  if(mp_Engine)
 //  {

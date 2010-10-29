@@ -497,8 +497,8 @@ bool ModelModule::checkModule(openfluid::machine::ModelInstance * ModelInstance)
   /* TODO: get WarningMsgs */
 
   std::cout << "* Initializing parameters... " << std::endl;
-  mp_StatusParamsValues->clearErrorValues();
 
+  mp_StatusParamsValues->clearErrorValues();
 
   bool IsOk = true;
 
@@ -525,6 +525,7 @@ bool ModelModule::checkModule(openfluid::machine::ModelInstance * ModelInstance)
   }
 
   Glib::ustring Status = IsOk ? "(OK)" : "(with errors)";
+
   std::cout << "...Parameters initialized " << Status << std::endl;
 
   return IsOk;

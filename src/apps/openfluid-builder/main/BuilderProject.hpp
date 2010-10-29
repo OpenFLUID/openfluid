@@ -64,8 +64,8 @@
 #include <openfluid/machine.hpp>
 
 #include "ModuleInterface.hpp"
-#include "DomainModule.hpp"
 #include "ModelModule.hpp"
+#include "DomainModule.hpp"
 #include "SimulationModule.hpp"
 #include "ResultsModule.hpp"
 
@@ -89,7 +89,7 @@ class BuilderProject
 
     openfluid::base::RuntimeEnvironment * mp_RunEnv;
 
-    openfluid::machine::SimulationBlob m_SimBlob;
+    openfluid::machine::SimulationBlob * mp_SimBlob;
 
 //    openfluid::base::ExecutionMessages * mp_ExecMsgs;
 
@@ -100,6 +100,10 @@ class BuilderProject
     openfluid::io::IOListener * mp_IOListener;
 
     openfluid::machine::ModelInstance * mp_Model;
+
+    openfluid::base::RunDescriptor m_RunDesc;
+
+    openfluid::base::OutputDescriptor m_OutputDesc;
 
 
     ModulesPtrByNameMap_t m_Modules;

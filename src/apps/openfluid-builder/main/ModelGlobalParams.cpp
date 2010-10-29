@@ -488,24 +488,24 @@ bool ModelGlobalParams::onEntryFocusOut(GdkEventFocus * /*Event*/, Gtk::Entry * 
 
 void ModelGlobalParams::tempCheckModel()
 {
-  std::cout << "-------- checking GlobalParamsTree : " << std::endl;
-
-  Gtk::TreeModel::Children Params = mp_TreeModelParams->children();
-
-  Gtk::TreeModel::Children::iterator It;
-
-  for(It=Params.begin() ; It!=Params.end() ; ++It)
-  {
-    Gtk::TreeRow RowParam = *It;
-
-    std::cout << "- " << RowParam[m_GlobalAvailColumns.m_Id] << " " << RowParam[m_GlobalAvailColumns.m_Unit];
-
-    std::cout << " isnotused :" << RowParam[m_GlobalAvailColumns.m_IsNotUsed];
-
-    std::vector<Gtk::Label *> Labels = RowParam[m_GlobalAvailColumns.m_Labels];
-
-    std::cout << " nb labels :" << Labels.size() << std::endl;
-  }
+//  std::cout << "-------- checking GlobalParamsTree : " << std::endl;
+//
+//  Gtk::TreeModel::Children Params = mp_TreeModelParams->children();
+//
+//  Gtk::TreeModel::Children::iterator It;
+//
+//  for(It=Params.begin() ; It!=Params.end() ; ++It)
+//  {
+//    Gtk::TreeRow RowParam = *It;
+//
+//    std::cout << "- " << RowParam[m_GlobalAvailColumns.m_Id] << " " << RowParam[m_GlobalAvailColumns.m_Unit];
+//
+//    std::cout << " isnotused :" << RowParam[m_GlobalAvailColumns.m_IsNotUsed];
+//
+//    std::vector<Gtk::Label *> Labels = RowParam[m_GlobalAvailColumns.m_Labels];
+//
+//    std::cout << " nb labels :" << Labels.size() << std::endl;
+//  }
 
 }
 

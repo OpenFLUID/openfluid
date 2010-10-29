@@ -76,21 +76,28 @@ class DomainModule : public ModuleInterface
 
     ~DomainModule();
 
+    openfluid::base::DomainDescriptor * getDomainDescriptorWOIData();
+
+    void setInputData(openfluid::core::CoreRepository & CoreRepos);
+
   private:
 
-    typedef std::map<Glib::ustring,Gtk::TreeModelColumn<std::string> * > InputDataMap_t;
+    typedef std::map<std::string,Gtk::TreeModelColumn<std::string> * > InputDataMap_t;
 
     class DomainColumns : public Gtk::TreeModel::ColumnRecord
     {
       public:
 
       DomainColumns()
-      { add(m_UnitClass); add(m_Id); add(m_PcsOrder); add(m_Unit); }
+      { add(m_UnitClass); add(m_Id); add(m_PcsOrder);
+        add(m_UnitsTos); add(m_UnitsParents); }
 
-      Gtk::TreeModelColumn<Glib::ustring> m_UnitClass;
+      Gtk::TreeModelColumn<std::string> m_UnitClass;
       Gtk::TreeModelColumn<int> m_Id;
       Gtk::TreeModelColumn<int> m_PcsOrder;
-      Gtk::TreeModelColumn<openfluid::core::Unit *> m_Unit;
+
+      Gtk::TreeModelColumn<std::list<openfluid::core::UnitClassID_t> > m_UnitsTos;
+      Gtk::TreeModelColumn<std::list<openfluid::core::UnitClassID_t> > m_UnitsParents;
 
       InputDataMap_t m_InputDataMap;
 
