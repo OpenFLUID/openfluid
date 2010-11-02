@@ -3,30 +3,37 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkViewport" id="ViewportModel">
+    <property name="width_request">400</property>
+    <property name="height_request">300</property>
     <property name="visible">True</property>
-    <property name="resize_mode">queue</property>
     <child>
       <object class="GtkVPaned" id="vpaned1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="position">500</property>
+        <property name="position_set">True</property>
         <child>
           <object class="GtkVPaned" id="vpaned3">
+            <property name="height_request">200</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="position">200</property>
+            <property name="position_set">True</property>
             <child>
               <object class="GtkFrame" id="frame1">
+                <property name="height_request">100</property>
                 <property name="visible">True</property>
                 <property name="border_width">5</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
+                <property name="shadow_type">etched-out</property>
                 <child>
                   <object class="GtkHPaned" id="hpaned2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="position">250</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow1">
-                        <property name="width_request">400</property>
-                        <property name="height_request">200</property>
+                        <property name="width_request">100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="hscrollbar_policy">automatic</property>
@@ -41,12 +48,12 @@
                       </object>
                       <packing>
                         <property name="resize">True</property>
-                        <property name="shrink">True</property>
+                        <property name="shrink">False</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkNotebook" id="NotebookAvailFct">
-                        <property name="width_request">400</property>
+                        <property name="width_request">100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="scrollable">True</property>
@@ -455,6 +462,7 @@
                                       <packing>
                                         <property name="top_attach">5</property>
                                         <property name="bottom_attach">6</property>
+                                        <property name="y_options"></property>
                                       </packing>
                                     </child>
                                     <child>
@@ -466,6 +474,7 @@
                                         <property name="right_attach">2</property>
                                         <property name="top_attach">5</property>
                                         <property name="bottom_attach">6</property>
+                                        <property name="y_options"></property>
                                       </packing>
                                     </child>
                                     <child>
@@ -678,7 +687,7 @@
                       </object>
                       <packing>
                         <property name="resize">True</property>
-                        <property name="shrink">True</property>
+                        <property name="shrink">False</property>
                       </packing>
                     </child>
                   </object>
@@ -694,15 +703,16 @@
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
             <child>
               <object class="GtkFrame" id="frame3">
+                <property name="height_request">100</property>
                 <property name="visible">True</property>
                 <property name="border_width">5</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
+                <property name="shadow_type">etched-out</property>
                 <child>
                   <object class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
@@ -713,7 +723,6 @@
                         <property name="tab_pos">bottom</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow2">
-                            <property name="height_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -815,23 +824,25 @@
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="resize">False</property>
-            <property name="shrink">True</property>
+            <property name="resize">True</property>
+            <property name="shrink">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkFrame" id="frame2">
+            <property name="height_request">150</property>
             <property name="visible">True</property>
             <property name="border_width">5</property>
             <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
+            <property name="shadow_type">etched-out</property>
             <child>
               <object class="GtkNotebook" id="NotebookParams">
+                <property name="height_request">100</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="scrollable">True</property>
@@ -839,6 +850,8 @@
                 <child>
                   <object class="GtkVBox" id="BoxGlobalParams">
                     <property name="visible">True</property>
+                    <property name="border_width">5</property>
+                    <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="label31">
                         <property name="visible">True</property>
@@ -875,13 +888,13 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="padding">5</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -895,20 +908,35 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkTable" id="TableGlobal">
+                      <object class="GtkScrolledWindow" id="scrolledwindow3">
                         <property name="visible">True</property>
-                        <property name="n_columns">4</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
+                          <object class="GtkViewport" id="viewport2">
+                            <property name="visible">True</property>
+                            <property name="resize_mode">queue</property>
+                            <property name="shadow_type">none</property>
+                            <child>
+                              <object class="GtkTable" id="TableGlobal">
+                                <property name="visible">True</property>
+                                <property name="n_columns">4</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
                         </child>
                       </object>
                       <packing>
@@ -939,7 +967,7 @@
           </object>
           <packing>
             <property name="resize">True</property>
-            <property name="shrink">True</property>
+            <property name="shrink">False</property>
           </packing>
         </child>
       </object>
@@ -958,8 +986,8 @@
             <child>
               <object class="GtkMenuItem" id="MenuItemCheckModel">
                 <property name="visible">True</property>
-                <property name="use_action_appearance">True</property>
                 <property name="related_action">ActionCheckModel</property>
+                <property name="use_action_appearance">True</property>
               </object>
             </child>
           </object>
@@ -975,8 +1003,8 @@
     <child>
       <object class="GtkToolButton" id="toolbutton1">
         <property name="visible">True</property>
-        <property name="use_action_appearance">True</property>
         <property name="related_action">ActionCheckModel</property>
+        <property name="use_action_appearance">True</property>
         <property name="use_underline">True</property>
       </object>
       <packing>

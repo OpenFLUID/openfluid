@@ -3,18 +3,20 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkViewport" id="ViewportDomain">
+    <property name="width_request">200</property>
+    <property name="height_request">200</property>
     <property name="visible">True</property>
-    <property name="resize_mode">queue</property>
     <child>
       <object class="GtkVPaned" id="vpaned1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <child>
           <object class="GtkFrame" id="frame2">
+            <property name="height_request">100</property>
             <property name="visible">True</property>
             <property name="border_width">5</property>
             <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
+            <property name="shadow_type">etched-out</property>
             <child>
               <object class="GtkVBox" id="VBoxInfos">
                 <property name="visible">True</property>
@@ -33,6 +35,8 @@
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -105,15 +109,16 @@
           </object>
           <packing>
             <property name="resize">True</property>
-            <property name="shrink">True</property>
+            <property name="shrink">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkFrame" id="frame1">
+            <property name="height_request">100</property>
             <property name="visible">True</property>
             <property name="border_width">5</property>
             <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
+            <property name="shadow_type">etched-out</property>
             <child>
               <object class="GtkAlignment" id="alignment1">
                 <property name="visible">True</property>
@@ -217,7 +222,7 @@
           </object>
           <packing>
             <property name="resize">True</property>
-            <property name="shrink">True</property>
+            <property name="shrink">False</property>
           </packing>
         </child>
       </object>

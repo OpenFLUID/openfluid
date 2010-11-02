@@ -354,9 +354,15 @@ void ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid
 {
   Glib::ustring Id = Row[m_Columns.m_Id];
 
+  Gtk::ScrolledWindow * Scrolled = Gtk::manage(new Gtk::ScrolledWindow());
+  Scrolled->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+
   Gtk::Table * TableParams = Gtk::manage(new Gtk::Table());
 
   TableParams->set_spacings(5);
+  TableParams->set_border_width(5);
+
+  Scrolled->add(*TableParams);
 
   std::vector<Gtk::Label *> GlobalParamsLabels;
 
@@ -409,7 +415,10 @@ void ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid
     TableParams->attach(*Unit,3,4,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
     TableParams->attach(*LabelGlobal,4,5,i*2,i*2+1,Gtk::FILL,Gtk::FILL);
 
+    // don't set show_all(true) because of Check widget
     TableParams->set_visible(true);
+
+    Scrolled->set_visible(true);
 
     GlobalParamsLabels.push_back(LabelGlobal);
   }
@@ -420,11 +429,13 @@ void ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid
   Gtk::Label * LabelTab = Gtk::manage(new Gtk::Label(Id));
   Gtk::Label * LabelMenu = Gtk::manage(new Gtk::Label(Id,Gtk::ALIGN_LEFT));
 
-  int Index = mp_NotebookParams->insert_page(*TableParams,*LabelTab,*LabelMenu,Position);
+//  int Index = mp_NotebookParams->insert_page(*TableParams,*LabelTab,*LabelMenu,Position);
+  int Index = mp_NotebookParams->insert_page(*Scrolled,*LabelTab,*LabelMenu,Position);
 
   mp_NotebookParams->set_current_page(Index);
 
-  Row[m_Columns.m_NotebookParamsPage] = TableParams;
+//  Row[m_Columns.m_NotebookParamsPage] = TableParams;
+  Row[m_Columns.m_NotebookParamsPage] = Scrolled;
   Row[m_Columns.m_GlobalParamsLabels] = GlobalParamsLabels;
 
 }

@@ -326,7 +326,6 @@ void ModelGlobalParams::createTableRowWidgets(Gtk::TreeRowReference RefParam)
   // Create widgets
   Gtk::Button * ButtonSuppr = Gtk::manage(new Gtk::Button());
 
-
   Gtk::Label * Label = Gtk::manage(new Gtk::Label(Row[m_GlobalAvailColumns.m_Id],Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
 
   Gtk::Entry * Entry = Gtk::manage(new Gtk::Entry());
