@@ -68,13 +68,31 @@
 
 class SimulationModule : public ModuleInterface
 {
-
   public:
 
-    SimulationModule();
+    SimulationModule(openfluid::base::RunDescriptor & RunDesc);
 
     ~SimulationModule();
 
+    openfluid::base::RunDescriptor & getRunDescriptor();
+
+
+  private:
+
+    openfluid::base::RunDescriptor & m_RunDesc;
+
+    Gtk::SpinButton * mp_SpinDeltat;
+    Gtk::Entry * mp_EntryBegin;
+    Gtk::Entry * mp_EntryEnd;
+    Gtk::SpinButton * mp_SpinBufferValues;
+    Gtk::SpinButton * mp_SpinBufferFiles;
+
+    void initRunPanel();
+
+    void onSpinDeltatValueChanged();
+    void onSpinBufferValuesValueChanged();
+    void onSpinBufferFilesValueChanged();
+    void onEntryPeriodChanged(Gtk::Entry * Entry);
 
 };
 

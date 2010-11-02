@@ -102,7 +102,7 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
   {
     m_RunDesc = openfluid::base::RunDescriptor(120,
         openfluid::core::DateTime(2000,01,01,00,00,00),
-        openfluid::core::DateTime(2000,01,01,06,00,00));
+        openfluid::core::DateTime(2000,01,01,07,00,00));
     m_RunDesc.setFilled(true);
 
     m_OutputDesc = openfluid::base::OutputDescriptor();
@@ -119,7 +119,7 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
 
   addModule(new ModelModule(*Model),"model");
   addModule(new DomainModule(SimBlob->getCoreRepository()),"domain");
-  addModule(new SimulationModule(),"simulation");
+  addModule(new SimulationModule(m_RunDesc),"simulation");
   addModule(new ResultsModule(),"results");
 
 }

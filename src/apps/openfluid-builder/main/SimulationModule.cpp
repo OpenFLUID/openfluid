@@ -64,12 +64,22 @@
 // =====================================================================
 // =====================================================================
 
-SimulationModule::SimulationModule()
-  : ModuleInterface("Simulation.glade", "ViewportSimulation", "", "", "")
+SimulationModule::SimulationModule(openfluid::base::RunDescriptor & RunDesc)
+  : ModuleInterface("Simulation.glade", "ViewportSimulation", "", "", ""),
+    m_RunDesc(RunDesc)
 {
   m_ModuleName = _("_Simulation");
   m_ModuleLongName = _("Simulation");
   mp_StockId = (Gtk::StockID *)&Gtk::Stock::PROPERTIES;
+
+  mp_Builder->get_widget("SpinDeltat",mp_SpinDeltat);
+  mp_Builder->get_widget("EntryBegin",mp_EntryBegin);
+  mp_Builder->get_widget("EntryEnd",mp_EntryEnd);
+  mp_Builder->get_widget("SpinBufferValues",mp_SpinBufferValues);
+  mp_Builder->get_widget("SpinBufferFiles",mp_SpinBufferFiles);
+
+  initRunPanel();
+
 }
 
 
@@ -81,3 +91,100 @@ SimulationModule::~SimulationModule()
 {
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationModule::initRunPanel()
+{
+  mp_SpinDeltat->set_value(m_RunDesc.getDeltaT());
+  mp_EntryBegin->set_text(m_RunDesc.getBeginDate().getAsISOString());
+  mp_EntryEnd->set_text(m_RunDesc.getEndDate().getAsISOString());
+  mp_SpinBufferValues->set_value(m_RunDesc.getValuesBufferSize());
+  mp_SpinBufferFiles->set_value(m_RunDesc.getFilesBufferSizeInKB());
+
+  mp_SpinDeltat->signal_value_changed().connect(
+      sigc::mem_fun(*this,&SimulationModule::onSpinDeltatValueChanged));
+
+  mp_EntryBegin->signal_changed().connect(sigc::bind<Gtk::Entry*>(
+      sigc::mem_fun(*this,&SimulationModule::onEntryPeriodChanged),
+      mp_EntryBegin));
+
+  mp_EntryEnd->signal_changed().connect(sigc::bind<Gtk::Entry*>(
+      sigc::mem_fun(*this,&SimulationModule::onEntryPeriodChanged),
+      mp_EntryEnd));
+
+  mp_SpinBufferValues->signal_value_changed().connect(
+      sigc::mem_fun(*this,&SimulationModule::onSpinBufferValuesValueChanged));
+
+  mp_SpinBufferFiles->signal_value_changed().connect(
+      sigc::mem_fun(*this,&SimulationModule::onSpinBufferFilesValueChanged));
+
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationModule::onSpinDeltatValueChanged()
+{
+  m_RunDesc.setDeltaT(mp_SpinDeltat->get_value());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationModule::onSpinBufferValuesValueChanged()
+{
+  m_RunDesc.setValuesBufferSize(mp_SpinBufferValues->get_value());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationModule::onSpinBufferFilesValueChanged()
+{
+  m_RunDesc.setFilesBufferSizeInKB(mp_SpinBufferFiles->get_value());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationModule::onEntryPeriodChanged(Gtk::Entry * Entry)
+{
+  openfluid::core::DateTime * DT = new openfluid::core::DateTime();
+
+  DT->setFromISOString(Entry->get_text());
+
+  if(openfluid::core::DateTime::isValidDateTime(DT->getYear(),DT->getMonth(),DT->getDay(),DT->getHour(),DT->getMinute(),DT->getSecond()))
+  {
+    if(Entry == mp_EntryBegin)
+      m_RunDesc.setBeginDate(*DT);
+    else if(Entry == mp_EntryEnd)
+      m_RunDesc.setEndDate(*DT);
+
+    Entry->modify_base(Gtk::STATE_NORMAL,Gdk::Color("white"));
+  }
+  else
+  {
+    Entry->modify_base(Gtk::STATE_NORMAL,Gdk::Color("red"));
+  }
+
+  delete DT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
