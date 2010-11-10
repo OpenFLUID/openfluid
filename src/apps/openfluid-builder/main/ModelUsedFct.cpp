@@ -337,12 +337,9 @@ void ModelUsedFct::removeSelectedUsedFunction()
 void ModelUsedFct::onTrashDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int /*x*/, int /*y*/,
     const Gtk::SelectionData& /*selection_data*/, guint /*info*/, guint time)
 {
-  std::cout << "onTrashDragDataReceived" << std::endl;
-
   removeSelectedUsedFunction();
 
   context->drag_finish(true,true,time);
-
 }
 
 
@@ -483,6 +480,26 @@ void ModelUsedFct::onCheckToggled(Glib::ustring ParamName, Gtk::Entry * Entry, G
   }
 
   tempCheckModel();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> ModelUsedFct::getUsedFctIDs()
+{
+  std::vector<std::string> FctIDs;
+
+  Gtk::TreeModel::Children Functions = mp_TreeModelUsedFct->children();
+  Gtk::TreeModel::Children::iterator it;
+
+  for(it=Functions.begin() ; it!=Functions.end() ; ++it)
+  {
+    FctIDs.push_back(it->get_value(m_Columns.m_Id));
+  }
+
+  return FctIDs;
 }
 
 

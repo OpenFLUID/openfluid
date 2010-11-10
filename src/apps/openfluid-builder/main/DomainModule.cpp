@@ -325,6 +325,38 @@ void DomainModule::initTreeViewInputData()
 // =====================================================================
 
 
+ItemsStrByClassMap_t DomainModule::getIDsByClassMap()
+{
+  ItemsStrByClassMap_t IDsByClassMap;
+
+  Gtk::TreeModel::Children UnitClasses = mp_MainTreeModel->children();
+  Gtk::TreeModel::Children::iterator ItUnitClasses;
+
+  for(ItUnitClasses=UnitClasses.begin() ; ItUnitClasses!=UnitClasses.end() ; ++ItUnitClasses)
+  {
+    std::vector<std::string> IDs;
+
+    Gtk::TreeModel::Children Units = ItUnitClasses->children();
+    Gtk::TreeModel::Children::iterator ItUnits;
+
+    for(ItUnits=Units.begin() ; ItUnits!=Units.end() ; ++ItUnits)
+    {
+      std::stringstream ss;
+      ss << ItUnits->get_value(m_DomainColumns.m_Id);
+      IDs.push_back(ss.str());
+    }
+
+    IDsByClassMap[ItUnitClasses->get_value(m_DomainColumns.m_UnitClass)] = IDs;
+  }
+
+  return IDsByClassMap;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::DomainDescriptor * DomainModule::getDomainDescriptorWOIData()
 {
   openfluid::base::DomainDescriptor * DomainDesc = new openfluid::base::DomainDescriptor();

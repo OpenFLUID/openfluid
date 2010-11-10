@@ -481,6 +481,39 @@ void ModelModule::setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, Mo
 // =====================================================================
 
 
+VarsByClassMap_t ModelModule::getVarsByClassMap()
+{
+  VarsByClassMap_t VarsByClassMap;
+
+  std::vector<std::string> Classes = mp_ModelUsedFct->getUsedFctIDs();
+
+  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+
+  for(unsigned int i=0 ; i<PlugContainers.size() ; i++)
+  {
+    if(std::find(Classes.begin(),Classes.end(),(std::string)PlugContainers[i]->Signature->ID) != Classes.end())
+    {
+      std::vector<openfluid::base::SignatureHandledDataItem> Vars = PlugContainers[i]->Signature->HandledData.ProducedVars;
+      std::vector<openfluid::base::SignatureHandledDataItem> UpVars = PlugContainers[i]->Signature->HandledData.UpdatedVars;
+
+      Vars.insert(Vars.end(),UpVars.begin(),UpVars.end());
+
+      for(unsigned int j=0 ; j<Vars.size() ; j++)
+      {
+        VarsByClassMap[Vars[j].UnitClass].push_back(Vars[j].DataName);
+      }
+    }
+
+  }
+
+  return VarsByClassMap;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::ModelDescriptor * ModelModule::getModelDescriptor()
 {
   return mp_ModelUsedFct->getModelDescriptor();

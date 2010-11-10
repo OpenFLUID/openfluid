@@ -78,6 +78,8 @@ class ModelUsedFct
 
     ~ModelUsedFct();
 
+    std::vector<std::string> getUsedFctIDs();
+
     openfluid::base::ModelDescriptor * getModelDescriptor();
 
     openfluid::machine::ArrayOfModelItemInstance m_AllFctContainers;

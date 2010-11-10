@@ -74,6 +74,9 @@
 // =====================================================================
 
 
+typedef std::map<std::string,std::vector<std::string> > VarsByClassMap_t;
+
+
 class ModelModule : public ModuleInterface
 {
   public:
@@ -81,6 +84,8 @@ class ModelModule : public ModuleInterface
     ModelModule(openfluid::machine::ModelInstance & Model);
 
     ~ModelModule();
+
+    VarsByClassMap_t getVarsByClassMap();
 
     openfluid::base::ModelDescriptor * getModelDescriptor();
 

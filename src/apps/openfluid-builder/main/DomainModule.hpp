@@ -68,6 +68,9 @@
 // =====================================================================
 
 
+typedef std::map<std::string,std::vector<std::string> > ItemsStrByClassMap_t;
+
+
 class DomainModule : public ModuleInterface
 {
   public:
@@ -75,6 +78,8 @@ class DomainModule : public ModuleInterface
     DomainModule(openfluid::core::CoreRepository & CoreRepos);
 
     ~DomainModule();
+
+    ItemsStrByClassMap_t getIDsByClassMap();
 
     openfluid::base::DomainDescriptor * getDomainDescriptorWOIData();
 

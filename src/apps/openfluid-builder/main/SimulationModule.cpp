@@ -64,7 +64,8 @@
 // =====================================================================
 // =====================================================================
 
-SimulationModule::SimulationModule(openfluid::base::RunDescriptor & RunDesc)
+SimulationModule::SimulationModule(openfluid::base::RunDescriptor & RunDesc, openfluid::base::OutputDescriptor & OutputDesc,
+    ItemsStrByClassMap_t UnitsMap, ItemsStrByClassMap_t VarsMap)
   : ModuleInterface("Simulation.glade", "ViewportSimulation", "", "", ""),
     m_RunDesc(RunDesc)
 {
@@ -77,6 +78,8 @@ SimulationModule::SimulationModule(openfluid::base::RunDescriptor & RunDesc)
   mp_Builder->get_widget("EntryEnd",mp_EntryEnd);
   mp_Builder->get_widget("SpinBufferValues",mp_SpinBufferValues);
   mp_Builder->get_widget("SpinBufferFiles",mp_SpinBufferFiles);
+
+  mp_SimulationOutput = new SimulationOutput(mp_Builder, OutputDesc, UnitsMap, VarsMap);
 
   initRunPanel();
 
@@ -95,6 +98,12 @@ SimulationModule::~SimulationModule()
 
 // =====================================================================
 // =====================================================================
+
+
+void SimulationModule::updateOutputDescriptor()
+{
+  mp_SimulationOutput->updateOutputDescriptor();
+}
 
 
 void SimulationModule::initRunPanel()

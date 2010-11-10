@@ -60,26 +60,34 @@
 #include <gtkmm.h>
 
 #include "ModuleInterface.hpp"
+#include "SimulationOutput.hpp"
 
 
 // =====================================================================
 // =====================================================================
+
+
+typedef std::map<std::string,std::vector<std::string> > ItemsStrByClassMap_t;
 
 
 class SimulationModule : public ModuleInterface
 {
   public:
 
-    SimulationModule(openfluid::base::RunDescriptor & RunDesc);
+    SimulationModule(openfluid::base::RunDescriptor & RunDesc, openfluid::base::OutputDescriptor & OutputDesc,
+        ItemsStrByClassMap_t UnitsMap, ItemsStrByClassMap_t VarsMap);
 
     ~SimulationModule();
 
-    openfluid::base::RunDescriptor & getRunDescriptor();
+
+    void updateOutputDescriptor();
 
 
   private:
 
     openfluid::base::RunDescriptor & m_RunDesc;
+
+    SimulationOutput * mp_SimulationOutput;
 
     Gtk::SpinButton * mp_SpinDeltat;
     Gtk::Entry * mp_EntryBegin;

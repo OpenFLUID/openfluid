@@ -130,6 +130,7 @@
                 <child>
                   <object class="GtkLabel" id="label8">
                     <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Size of the saved packets</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Files buffer</property>
                   </object>
@@ -162,6 +163,7 @@
                 <child>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Number of time steps kept in memory</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Values buffer</property>
                   </object>
@@ -278,7 +280,7 @@
             </child>
           </object>
           <packing>
-            <property name="resize">True</property>
+            <property name="resize">False</property>
             <property name="shrink">False</property>
           </packing>
         </child>
@@ -291,7 +293,18 @@
             <property name="label_xalign">0</property>
             <property name="shadow_type">etched-out</property>
             <child>
-              <placeholder/>
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <object class="GtkTreeView" id="TreeViewOutput">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                </child>
+              </object>
             </child>
             <child type="label">
               <object class="GtkLabel" id="label6">

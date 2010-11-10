@@ -117,9 +117,12 @@ BuilderProject::BuilderProject(Glib::ustring FolderIn)
     Model = new openfluid::machine::ModelInstance(*SimBlob,mp_Listener);
   }
 
-  addModule(new ModelModule(*Model),"model");
-  addModule(new DomainModule(SimBlob->getCoreRepository()),"domain");
-  addModule(new SimulationModule(m_RunDesc),"simulation");
+  DomainModule * DomainMod = new DomainModule(SimBlob->getCoreRepository());
+  ModelModule * ModeleMod = new ModelModule(*Model);
+
+  addModule(ModeleMod,"model");
+  addModule(DomainMod,"domain");
+  addModule(new SimulationModule(m_RunDesc,m_OutputDesc,DomainMod->getIDsByClassMap(),ModeleMod->getVarsByClassMap()),"simulation");
   addModule(new ResultsModule(),"results");
 
 }
@@ -233,10 +236,14 @@ bool BuilderProject::actionCheckProject()
 
   ModelModule * ModelMod = 0;
   DomainModule * DomainMod = 0;
+  SimulationModule * SimulMod = 0;
 
   try
   {
-    DomainMod = static_cast<DomainModule*>(getModule("domain"));
+    DomainMod = dynamic_cast<DomainModule*>(getModule("domain"));
+
+    SimulMod = dynamic_cast<SimulationModule*>(getModule("simulation"));
+    SimulMod->updateOutputDescriptor();
 
     std::cout << "* Building Blob before execution... " << std::endl;
     mp_SimBlob = new openfluid::machine::SimulationBlob();
@@ -311,7 +318,7 @@ bool BuilderProject::actionCheckProject()
     std::cout << "...Blob created" << std::endl;
 
 
-    ModelMod = static_cast<ModelModule*>(getModule("model"));
+    ModelMod = dynamic_cast<ModelModule*>(getModule("model"));
 
     std::cout << "* Building model before execution... " << std::endl;
     mp_Model = new openfluid::machine::ModelInstance(*mp_SimBlob,mp_Listener);
@@ -338,6 +345,30 @@ bool BuilderProject::actionCheckProject()
     std::cout << "* Creating Engine... " << std::endl;
     mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_Model, mp_Listener, mp_IOListener);
     std::cout << "...Engine created" << std::endl;
+
+    std::cout << "******** SIMUL ************" << std::endl;
+//    openfluid::base::OutputDescriptor OutputDesc = mp_SimBlob->getOutputDescriptor();
+
+    int FilesSize = m_OutputDesc.getFileSets().size();
+
+    for(int i=0 ; i<FilesSize ; i++)
+    {
+      openfluid::base::OutputFilesDescriptor & OutputFileDesc = m_OutputDesc.getFileSets()[i];
+
+      std::cout << OutputFileDesc.getColSeparator() << " - " << OutputFileDesc.getDateFormat() << " - " << OutputFileDesc.getCommentChar() << std::endl;
+
+      int SetSize = m_OutputDesc.getFileSets()[i].getSets().size();
+
+      for(int j=0 ; j<SetSize ; j++)
+      {
+//        openfluid::base::OutputSetDescriptor & OutputSetDesc = m_OutputDesc.getFileSets()[i].getSets()[j];
+        openfluid::base::OutputSetDescriptor & OutputSetDesc = OutputFileDesc.getSets()[j];
+
+        std::cout << "  "  << OutputSetDesc.getName() << " : " << OutputSetDesc.getUnitsClass() << " - " << OutputSetDesc.getUnitsIDs().size() << "IDs" << std::endl;
+      }
+    }
+    std::cout << "***************************" << std::endl;
+
   }
   catch(openfluid::base::OFException& E)
   {
