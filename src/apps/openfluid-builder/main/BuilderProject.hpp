@@ -68,6 +68,7 @@
 #include "DomainModule.hpp"
 #include "SimulationModule.hpp"
 #include "ResultsModule.hpp"
+#include "BuilderMachineListener.hpp"
 
 
 // =====================================================================

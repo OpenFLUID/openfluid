@@ -68,7 +68,7 @@
 BuilderProject::BuilderProject(Glib::ustring FolderIn)
 {
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-  mp_Listener = new openfluid::machine::MachineListener();
+  mp_Listener = new BuilderMachineListener();
   mp_IOListener = new openfluid::io::IOListener();
 
   openfluid::machine::ModelInstance * Model = 0;
@@ -430,45 +430,112 @@ void BuilderProject::actionRun()
 
     try
     {
-      std::cout << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
-                        << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
-                        << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
 
-      std::cout << std::endl;
+      Gtk::Dialog * Dialog = new Gtk::Dialog("Simulation Run", true, true);
 
-      std::cout << std::endl << "**** Running simulation ****" << std::endl;
+      Gtk::ScrolledWindow * Win = Gtk::manage(new Gtk::ScrolledWindow);
+
+      Gtk::TextView * TextView = Gtk::manage(new Gtk::TextView);
+
+      Glib::RefPtr<Gtk::TextBuffer> TextBuffer = TextView->get_buffer();
+
+      BuilderMachineListener * Listener = dynamic_cast<BuilderMachineListener*>(mp_Listener);
+
+
+      Listener->setTextView(TextView);
+
+      TextView->set_editable(false);
+      TextView->set_visible(true);
+      TextView->set_cursor_visible(false);
+
+      Pango::FontDescription Desc("Monospace");
+      TextView->modify_font(Desc);
+
+      Win->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+      Win->add(*TextView);
+
+      Dialog->set_default_size(600,400);
+      Dialog->get_vbox()->pack_start(*Win);
+      Dialog->add_button(Gtk::Stock::OK,Gtk::RESPONSE_OK);
+
+
+      Dialog->show_all();
+
+
+      std::ostringstream ss;
+
+      ss << "Simulation from " << mp_Engine->getSimulationInfo()->getStartTime().getAsISOString()
+         << " to " << mp_Engine->getSimulationInfo()->getEndTime().getAsISOString() << std::endl
+         << "         -> " <<  (mp_Engine->getSimulationInfo()->getStepsCount()) << " time steps of " << mp_Engine->getSimulationInfo()->getTimeStep() << " seconds" << std::endl;
+
+      ss << std::endl;
+
+      Listener->displayText(ss);
+      ss.str("");
+
+      ss << std::endl << "**** Running simulation ****" << std::endl;
       boost::posix_time::ptime m_FullStartTime = boost::posix_time::microsec_clock::local_time();
-      std::cout.flush();
+
+      Listener->displayText(ss);
+      ss.str("");
+
       boost::posix_time::ptime m_EffectiveStartTime = boost::posix_time::microsec_clock::local_time();
       mp_Engine->run();
       boost::posix_time::ptime m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
-      std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
-      std::cout.flush();
+
+      ss << "**** Simulation completed ****" << std::endl << std::endl;
+      ss << std::endl;
+
+      Listener->displayText(ss);
+      ss.str("");
+
       mp_SimBlob->getExecutionMessages().resetWarningFlag();
       openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
 
-
       if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
       {
-        std::cout << "* Saving simulation report... "; std::cout.flush();
+        ss << "* Saving simulation report... ";
         mp_Engine->saveReports();
-        std::cout << "[Done]" << std::endl; std::cout.flush();
+
+        Listener->displayText(ss);
+        ss.str("");
+
+        ss << "[Done]" << std::endl;
+
+        Listener->displayText(ss);
+        ss.str("");
+
         mp_SimBlob->getExecutionMessages().resetWarningFlag();
       }
 
 
       boost::posix_time::ptime m_FullEndTime = boost::posix_time::microsec_clock::local_time();
 
-      if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << std::endl;
+      if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
+        ss << std::endl;
+
+      Listener->displayText(ss);
+      ss.str("");
 
       boost::posix_time::time_duration FullSimDuration = m_FullEndTime - m_FullStartTime;
 
 
-      std::cout << std::endl;
+      ss << std::endl;
 
-      std::cout << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
-      std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
-      std::cout << std::endl;
+      ss << "Simulation run time: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getEffectiveSimulationDuration()) << std::endl;
+      ss << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
+      ss << std::endl;
+
+      Listener->displayText(ss);
+      ss.str("");
+
+
+      if(Dialog->run())
+      {
+        delete Dialog;
+
+        actionDefaultLayout(PostSimulation);
+      }
     }
     catch (openfluid::base::OFException& E)
     {
