@@ -75,6 +75,62 @@ class ResultsModule : public ModuleInterface
 
     ~ResultsModule();
 
+    void init(const openfluid::base::OutputDescriptor & OutDesc,
+               openfluid::core::CoreRepository * CoreRepos,
+               openfluid::base::SimulationInfo * SimInfo);
+
+
+  private:
+
+    typedef std::map<std::string,Gtk::TreeModelColumn<Glib::ustring> * > VarsMap_t;
+
+    Gtk::ComboBox * mp_ComboSetName;
+    Gtk::Entry * mp_EntryClass;
+    Gtk::ComboBox * mp_ComboIDs;
+    Gtk::TreeView * mp_TreeViewResults;
+
+    Glib::ustring m_TimeStepTitle;
+    Glib::ustring m_DateTimeTitle;
+
+    class ComboColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+      ComboColumns() { add(m_SetName); add(m_SetDesc); add(m_UnitID); }
+
+      Gtk::TreeModelColumn<Glib::ustring> m_SetName;
+      Gtk::TreeModelColumn<openfluid::base::OutputSetDescriptor> m_SetDesc;
+      Gtk::TreeModelColumn<openfluid::core::UnitID_t> m_UnitID;
+    };
+
+    ComboColumns m_ComboColumns;
+
+    class ResultsColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+      ResultsColumns() { add(m_TimeStep); add(m_DateTime);}
+
+      Gtk::TreeModelColumn<unsigned int> m_TimeStep;
+      Gtk::TreeModelColumn<std::string> m_DateTime;
+
+      VarsMap_t m_VarsMap;
+    };
+
+    ResultsColumns m_ResultsColumns;
+
+    Glib::RefPtr<Gtk::TreeStore> m_refUnitsModel;
+
+    openfluid::core::CoreRepository * mp_CoreRepos;
+
+    openfluid::base::SimulationInfo * mp_SimInfo;
+
+    Glib::RefPtr<Gtk::TreeStore> createComboByClassTreeModel(const openfluid::base::OutputDescriptor & OutDesc);
+
+    bool isUnitClassVisible(const Gtk::TreeModel::const_iterator & Iter);
+
+    void onSetNameChanged();
+
+    void onIDChanged();
+
 };
 
 #endif /* __RESULTSMODULE_HPP__ */

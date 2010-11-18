@@ -430,6 +430,7 @@ void BuilderProject::actionRun()
 
     try
     {
+      ResultsModule * ResultsMod = 0;
 
       Gtk::Dialog * Dialog = new Gtk::Dialog("Simulation Run", true, true);
 
@@ -529,12 +530,18 @@ void BuilderProject::actionRun()
       Listener->displayText(ss);
       ss.str("");
 
+      // after Run !
+      ResultsMod = dynamic_cast<ResultsModule*>(getModule("results"));
+      ResultsMod->init(m_OutputDesc,&(mp_SimBlob->getCoreRepository()),mp_Engine->getSimulationInfo());
+
 
       if(Dialog->run())
       {
         delete Dialog;
-
-        actionDefaultLayout(PostSimulation);
+        
+        Listener->unsetTextView();
+        
+//        actionDefaultLayout(PostSimulation);
       }
     }
     catch (openfluid::base::OFException& E)
@@ -543,16 +550,16 @@ void BuilderProject::actionRun()
     }
   }
 
-  if(mp_Model)
-  {
-    delete mp_Model;
-    mp_Model = 0;
-  }
-  if(mp_SimBlob)
-  {
-    delete mp_SimBlob;
-    mp_SimBlob = 0;
-  }
+//  if(mp_Model)
+//  {
+//    delete mp_Model;
+//    mp_Model = 0;
+//  }
+//  if(mp_SimBlob)
+//  {
+//    delete mp_SimBlob;
+//    mp_SimBlob = 0;
+//  }
 //  if(mp_Engine)
 //  {
 //    delete mp_Engine;

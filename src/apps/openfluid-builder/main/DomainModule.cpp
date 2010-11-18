@@ -242,7 +242,9 @@ Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel(openfluid::core::
 
 void DomainModule::initInputDataMap(openfluid::core::CoreRepository & CoreRepos)
 {
-  // 1. Get all InputDataNames
+  // (in two steps to avoid double of InputName)
+
+  // 1. Get all InputDataNames (once)
 
   openfluid::core::UnitsPtrList_t UnitsPtr = *CoreRepos.getUnitsGlobally();
   openfluid::core::UnitsPtrList_t::iterator ItUnitsPtr;

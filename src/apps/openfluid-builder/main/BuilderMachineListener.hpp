@@ -258,11 +258,17 @@ class BuilderMachineListener : public openfluid::machine::MachineListener
       m_refTextBuffer = TextView->get_buffer();
     };
 
+    void unsetTextView()
+    {
+      mp_TextView = 0;
+      m_refTextBuffer.reset();
+    };
+
     void displayText(std::ostringstream & ss_input)
     {
       ss.str(ss_input.str());
       display();
-    }
+    };
 
 
 };
