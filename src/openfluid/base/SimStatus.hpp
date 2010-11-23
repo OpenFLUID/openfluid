@@ -170,6 +170,13 @@ class DLLEXPORT SimulationStatus : public SimulationInfo
     inline openfluid::core::DateTime getCurrentTime() const { return m_CurrentTime; };
 
     /**
+      Returns the number of seconds since the simulation beginning
+
+      @return the number of seconds
+    */
+    inline unsigned int getSeconds() const { return (m_CurrentStep * m_TimeStep); };
+
+    /**
       Returns true if the current step is the first step of the simulation
     */
     inline bool isFirstStep() const { return m_IsFirstStep; };
