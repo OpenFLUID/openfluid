@@ -1,3 +1,12 @@
+1.6.1
+
+  * Fixed bug in spatial loops when units class does not exist
+  * Added getSeconds() method in SimulationStatus, giving the number 
+    of simulated seconds since the beginning of the simulation
+  * Updated documentation
+
+
+
 1.6.0
 
   * Refactored framework architecture
