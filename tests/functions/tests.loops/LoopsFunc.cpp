@@ -325,10 +325,12 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
   openfluid::core::Unit *TU = NULL;
   openfluid::core::Unit *OU = NULL;
   openfluid::core::Unit *ZU = NULL;
+  openfluid::core::Unit *FU = NULL;
   openfluid::core::Unit *ToUnit = NULL;
   openfluid::core::Unit *FromUnit = NULL;
   openfluid::core::UnitsPtrList_t *ToList = NULL;
   openfluid::core::UnitsPtrList_t *FromList = NULL;
+  openfluid::core::UnitsPtrList_t *FakeList = NULL;
   unsigned int CountInside;
   bool LoopIsOK;
 
@@ -337,6 +339,9 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
   DECLARE_UNITS_ORDERED_LOOP(2)
   DECLARE_UNITS_LIST_LOOP(1)
   DECLARE_GLOBAL_UNITS_ORDERED_LOOP(10)
+
+  DECLARE_UNITS_ORDERED_LOOP(99)
+  DECLARE_UNITS_LIST_LOOP(999)
 
 
   // ===== loop inside loop =====
@@ -472,6 +477,17 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
     }
     LastPcsOrd = ZU->getProcessOrder();
   END_LOOP
+
+
+  BEGIN_UNITS_ORDERED_LOOP(99,"FakeUnits",FU)
+    OPENFLUID_RaiseError("tests.loops","runStep()","error in ordered loop on fake units");
+  END_LOOP
+
+  BEGIN_UNITS_LIST_LOOP(999,FakeList,FU)
+    OPENFLUID_RaiseError("tests.loops","runStep()","error in list loop on fake units");
+  END_LOOP
+
+
 
   return true;
 }

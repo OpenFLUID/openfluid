@@ -185,12 +185,12 @@
   @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
 */
 #define BEGIN_UNITS_ORDERED_LOOP(loopid,unitclass,unit) \
-  if (!mp_CoreData->isUnitsClassExist(unitclass)) \
-    throw openfluid::base::OFException("OpenFLUID framework","BEGIN_UNITS_ORDERED_LOOP","Unit class " + std::string(unitclass) + " does not exists"); \
   _M_##loopid##_UList = mp_CoreData->getUnits(unitclass)->getList(); \
-  for (_M_##loopid##_ordit = _M_##loopid##_UList->begin();_M_##loopid##_ordit != _M_##loopid##_UList->end();++_M_##loopid##_ordit) \
-  { \
-    unit = &(*_M_##loopid##_ordit);
+  if (_M_##loopid##_UList != NULL) \
+    { \
+    for (_M_##loopid##_ordit = _M_##loopid##_UList->begin();_M_##loopid##_ordit != _M_##loopid##_UList->end();++_M_##loopid##_ordit) \
+    { \
+      unit = &(*_M_##loopid##_ordit);
 
 
 /**
@@ -199,10 +199,11 @@
   @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
 */
 #define BEGIN_GLOBAL_UNITS_ORDERED_LOOP(loopid,unit) \
-  _M_##loopid##_GUList = mp_CoreData->getUnitsGlobally(); \
-  for (_M_##loopid##_ordit = _M_##loopid##_GUList->begin();_M_##loopid##_ordit != _M_##loopid##_GUList->end();++_M_##loopid##_ordit) \
   { \
-    unit = (*_M_##loopid##_ordit);
+    _M_##loopid##_GUList = mp_CoreData->getUnitsGlobally(); \
+    for (_M_##loopid##_ordit = _M_##loopid##_GUList->begin();_M_##loopid##_ordit != _M_##loopid##_GUList->end();++_M_##loopid##_ordit) \
+    { \
+      unit = (*_M_##loopid##_ordit);
 
 
 /**
@@ -220,9 +221,11 @@
   @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
 */
 #define BEGIN_UNITS_LIST_LOOP(loopid,ulist,unit) \
-  for(_M_##loopid##_lstit=ulist->begin(); _M_##loopid##_lstit != ulist->end(); _M_##loopid##_lstit++) \
+  if ((ulist) != NULL) \
   { \
-    unit = *_M_##loopid##_lstit; \
+    for(_M_##loopid##_lstit=ulist->begin(); _M_##loopid##_lstit != ulist->end(); _M_##loopid##_lstit++) \
+    { \
+      unit = *_M_##loopid##_lstit; \
 
 
 /**
@@ -237,14 +240,17 @@
   @param[out] evobj the current processed event
 */
 #define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
-  for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
   { \
-    evobj = *_M_EvListiter;
+    for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
+    { \
+      evobj = *_M_EvListiter;
 
 /**
   Macro for the ending of a loop
 */
-#define END_LOOP }
+#define END_LOOP \
+    } \
+  }
 
 
 
