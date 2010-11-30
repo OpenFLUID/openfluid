@@ -69,7 +69,7 @@ ResultsModule::ResultsModule()
 {
   m_ModuleName = _("_Results");
   m_ModuleLongName = _("Results");
-  mp_StockId = (Gtk::StockID *)&Gtk::Stock::ABOUT;
+  mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "results-base.svg", "builder-results-base");
 
   m_TimeStepTitle = "Step";
   m_DateTimeTitle = "Date Time";
@@ -78,6 +78,11 @@ ResultsModule::ResultsModule()
   mp_Builder->get_widget("EntryResultsClassName",mp_EntryClass);
   mp_Builder->get_widget("ComboResultsIDs",mp_ComboIDs);
   mp_Builder->get_widget("TreeViewResults",mp_TreeViewResults);
+
+
+  Gdk::Color ColorBase("#78a91a");
+  getContainer()->modify_bg(Gtk::STATE_NORMAL,BuilderHelper::applyColorAlpha(ColorBase,0.01));
+
 
   // init Combos
   mp_ComboSetName->pack_start(m_ComboColumns.m_SetName);

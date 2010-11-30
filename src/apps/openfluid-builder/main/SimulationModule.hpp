@@ -80,9 +80,6 @@ class SimulationModule : public ModuleInterface
     ~SimulationModule();
 
 
-    void updateOutputDescriptor();
-
-
   private:
 
     openfluid::base::RunDescriptor & m_RunDesc;

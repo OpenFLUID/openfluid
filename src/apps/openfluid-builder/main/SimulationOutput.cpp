@@ -111,7 +111,7 @@ Glib::RefPtr<Gtk::TreeStore> SimulationOutput::createMainTreeModel()
 
     openfluid::base::OutputFilesDescriptor OutputFileDesc = m_OutputDesc.getFileSets()[i];
 
-    RowFile[m_OutputColumns.m_FileDesc] = OutputFileDesc;
+    RowFile[m_OutputColumns.m_FileDesc] = &(m_OutputDesc.getFileSets()[i]);
     RowFile[m_OutputColumns.m_IsAFile] = true;
     RowFile[m_OutputColumns.m_IsASet] = false;
 
@@ -139,7 +139,7 @@ Glib::RefPtr<Gtk::TreeStore> SimulationOutput::createMainTreeModel()
 
       openfluid::base::OutputSetDescriptor OutputSetDesc = OutputFileDesc.getSets()[j];
 
-      RowSet[m_OutputColumns.m_SetDesc] = OutputSetDesc;
+      RowSet[m_OutputColumns.m_SetDesc] = &(m_OutputDesc.getFileSets()[i].getSets()[j]);
 
       RowSet[m_OutputColumns.m_IsAFile] = false;
       RowSet[m_OutputColumns.m_IsASet] = true;
@@ -313,7 +313,7 @@ void SimulationOutput::initTreeView()
       sigc::mem_fun(*this,&SimulationOutput::onCommentCharEdited));
 
   // OutputSetDescriptor Name
-  Gtk::TreeView::Column * pColSetName = Gtk::manage(new Gtk::TreeView::Column("File Prefix") );
+  Gtk::TreeView::Column * pColSetName = Gtk::manage(new Gtk::TreeView::Column("Set Name") );
   Gtk::CellRendererText * pRendSetName = Gtk::manage(new Gtk::CellRendererText);
   pColSetName->pack_start(*pRendSetName);
   mp_TreeViewOutput->append_column(*pColSetName);
@@ -455,14 +455,13 @@ void SimulationOutput::onColSepEdited(const Glib::ustring PathString, const Glib
 
     Row[m_OutputColumns.m_ColSep] = NewText;
 
-    openfluid::base::OutputFilesDescriptor OutputDesc = Row[m_OutputColumns.m_FileDesc];
+    openfluid::base::OutputFilesDescriptor * OutputDesc = Row[m_OutputColumns.m_FileDesc];
 
     if(NewText == "[blank]")
-      OutputDesc.setColSeparator(" ");
+      OutputDesc->setColSeparator(" ");
     else
-      OutputDesc.setColSeparator(NewText);
+      OutputDesc->setColSeparator(NewText);
 
-    Row[m_OutputColumns.m_FileDesc] = OutputDesc;
   }
 }
 
@@ -483,11 +482,10 @@ void SimulationOutput::onDTFormatEdited(const Glib::ustring PathString, const Gl
 
     Row[m_OutputColumns.m_DtFormat] = NewText;
 
-    openfluid::base::OutputFilesDescriptor OutputDesc = Row[m_OutputColumns.m_FileDesc];
+    openfluid::base::OutputFilesDescriptor * OutputDesc = Row[m_OutputColumns.m_FileDesc];
 
-    OutputDesc.setDateFormat(NewText);
+    OutputDesc->setDateFormat(NewText);
 
-    Row[m_OutputColumns.m_FileDesc] = OutputDesc;
   }
 }
 
@@ -508,14 +506,13 @@ void SimulationOutput::onCommentCharEdited(const Glib::ustring PathString, const
 
     Row[m_OutputColumns.m_CommentChar] = NewText;
 
-    openfluid::base::OutputFilesDescriptor OutputDesc = Row[m_OutputColumns.m_FileDesc];
+    openfluid::base::OutputFilesDescriptor * OutputDesc = Row[m_OutputColumns.m_FileDesc];
 
     if(NewText == "[blank]")
-      OutputDesc.setCommentChar(" ");
+      OutputDesc->setCommentChar(" ");
     else
-      OutputDesc.setCommentChar(NewText);
+      OutputDesc->setCommentChar(NewText);
 
-    Row[m_OutputColumns.m_FileDesc] = OutputDesc;
   }
 }
 
@@ -536,11 +533,10 @@ void SimulationOutput::onSetNameEdited(const Glib::ustring PathString, const Gli
 
     Row[m_OutputColumns.m_SetName] = NewText;
 
-    openfluid::base::OutputSetDescriptor OutputDesc = Row[m_OutputColumns.m_SetDesc];
+    openfluid::base::OutputSetDescriptor * OutputDesc = Row[m_OutputColumns.m_SetDesc];
 
-    OutputDesc.setName(NewText);
+    OutputDesc->setName(NewText);
 
-    Row[m_OutputColumns.m_SetDesc] = OutputDesc;
   }
 }
 
@@ -561,11 +557,10 @@ void SimulationOutput::onUnitClassEdited(const Glib::ustring PathString, const G
 
     Row[m_OutputColumns.m_UnitClass] = NewText;
 
-    openfluid::base::OutputSetDescriptor OutputDesc = Row[m_OutputColumns.m_SetDesc];
+    openfluid::base::OutputSetDescriptor * OutputDesc = Row[m_OutputColumns.m_SetDesc];
 
-    OutputDesc.setUnitsClass(NewText);
+    OutputDesc->setUnitsClass(NewText);
 
-    Row[m_OutputColumns.m_SetDesc] = OutputDesc;
   }
 }
 
@@ -591,13 +586,13 @@ void SimulationOutput::onUnitIDsEditingStarted(Gtk::CellEditable * /*Editable*/,
     {
       Gtk::TreeRow Row = *Iter;
 
-      openfluid::base::OutputSetDescriptor OutputDesc = Row[m_OutputColumns.m_SetDesc];
+      openfluid::base::OutputSetDescriptor * OutputDesc = Row[m_OutputColumns.m_SetDesc];
 
       if(DialogRes.first)
       {
         Row[m_OutputColumns.m_UnitIDsList] = "*";
 
-        OutputDesc.setAllUnits(true);
+        OutputDesc->setAllUnits(true);
       }
       else
       {
@@ -605,21 +600,23 @@ void SimulationOutput::onUnitIDsEditingStarted(Gtk::CellEditable * /*Editable*/,
 
         Row[m_OutputColumns.m_UnitIDsList] = vectorToString(IDs);
 
-        OutputDesc.setAllUnits(false);
+        OutputDesc->setAllUnits(false);
 
         //TODO: Change this way of doing !
-        OutputDesc.getUnitsIDs().clear();
+
+        OutputDesc->getUnitsIDs().clear();
 
         for(unsigned int i=0 ; i<IDs.size() ; i++)
         {
           std::stringstream ss(IDs[i]);
           int ValInt;
           ss >> ValInt;
-          OutputDesc.getUnitsIDs().push_back(ValInt);
+
+          OutputDesc->getUnitsIDs().push_back(ValInt);
         }
+
       }
 
-      Row[m_OutputColumns.m_SetDesc] = OutputDesc;
     }
 
   }
@@ -648,14 +645,14 @@ void SimulationOutput::onVarsEditingStarted(Gtk::CellEditable * /*Editable*/, co
     {
       Gtk::TreeRow Row = *Iter;
 
-      openfluid::base::OutputSetDescriptor OutputDesc = Row[m_OutputColumns.m_SetDesc];
+      openfluid::base::OutputSetDescriptor * OutputDesc = Row[m_OutputColumns.m_SetDesc];
 
       if(DialogRes.first)
       {
         Row[m_OutputColumns.m_VarsList] = "*";
 
-        OutputDesc.setAllScalars(true);
-        OutputDesc.setAllVectors(true);
+        OutputDesc->setAllScalars(true);
+        OutputDesc->setAllVectors(true);
       }
       else
       {
@@ -663,22 +660,21 @@ void SimulationOutput::onVarsEditingStarted(Gtk::CellEditable * /*Editable*/, co
 
         Row[m_OutputColumns.m_VarsList] = vectorToString(Vars);
 
-        OutputDesc.setAllScalars(false);
-        OutputDesc.setAllVectors(false);
+        OutputDesc->setAllScalars(false);
+        OutputDesc->setAllVectors(false);
 
-        OutputDesc.getScalars().clear();
-        OutputDesc.getVectors().clear();
+        OutputDesc->getScalars().clear();
+        OutputDesc->getVectors().clear();
 
         for(unsigned int i=0 ; i<Vars.size() ; i++)
         {
           if(openfluid::tools::IsVectorNamedVariable(Vars[i]))
-            OutputDesc.getVectors().push_back(openfluid::tools::GetVectorNamedVariableName(Vars[i]));
+            OutputDesc->getVectors().push_back(openfluid::tools::GetVectorNamedVariableName(Vars[i]));
           else
-            OutputDesc.getScalars().push_back(Vars[i]);
+            OutputDesc->getScalars().push_back(Vars[i]);
         }
       }
 
-      Row[m_OutputColumns.m_SetDesc] = OutputDesc;
     }
 
   }
@@ -705,11 +701,10 @@ void SimulationOutput::onSetPrecisionEdited(const Glib::ustring PathString, cons
 
     Row[m_OutputColumns.m_Precision] = ValInt;
 
-    openfluid::base::OutputSetDescriptor OutputDesc = Row[m_OutputColumns.m_SetDesc];
+    openfluid::base::OutputSetDescriptor * OutputDesc = Row[m_OutputColumns.m_SetDesc];
 
-    OutputDesc.setPrecision(ValInt);
+    OutputDesc->setPrecision(ValInt);
 
-    Row[m_OutputColumns.m_SetDesc] = OutputDesc;
   }
 }
 
@@ -818,36 +813,3 @@ std::pair<bool,std::vector<std::string> > SimulationOutput::editListInDialogBox(
   return std::make_pair(AllItems,ItemsVectNew);
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationOutput::updateOutputDescriptor()
-{
-  std::vector<openfluid::base::OutputFilesDescriptor> FilesList;
-
-  Gtk::TreeModel::Children Files = mp_MainTreeModel->children();
-  Gtk::TreeModel::Children::iterator itFiles;
-
-  for(itFiles=Files.begin() ; itFiles!=Files.end() ; ++itFiles)
-  {
-    openfluid::base::OutputFilesDescriptor FileDesc = itFiles->get_value(m_OutputColumns.m_FileDesc);
-
-    std::vector<openfluid::base::OutputSetDescriptor> SetsList;
-
-    Gtk::TreeModel::Children Sets = itFiles->children();
-    Gtk::TreeModel::Children::iterator itSets;
-
-    for(itSets=Sets.begin() ; itSets!=Sets.end() ; ++itSets)
-    {
-      SetsList.push_back(itSets->get_value(m_OutputColumns.m_SetDesc));
-    }
-
-    FileDesc.getSets() = SetsList;
-
-    FilesList.push_back(FileDesc);
-  }
-
-  m_OutputDesc.getFileSets() = FilesList;
-}

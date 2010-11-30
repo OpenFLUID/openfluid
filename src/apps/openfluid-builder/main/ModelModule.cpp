@@ -72,6 +72,20 @@ ModelModule::ModelModule(openfluid::machine::ModelInstance & Model)
   m_ModuleLongName = _("Model");
   mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "model-base.svg", "builder-model-base");
 
+
+  Gdk::Color ColorBase = Gdk::Color("#ffdb9d");
+  Gdk::Color ColorLight = BuilderHelper::applyColorAlpha(ColorBase,0.01);
+  getContainer()->modify_bg(Gtk::STATE_NORMAL,BuilderHelper::applyColorAlpha(ColorBase,0.01));
+
+  Gtk::Frame * Frame;
+  mp_Builder->get_widget("frame1",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+  mp_Builder->get_widget("frame2",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+  mp_Builder->get_widget("frame3",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+
+
   createActions();
 
   openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();

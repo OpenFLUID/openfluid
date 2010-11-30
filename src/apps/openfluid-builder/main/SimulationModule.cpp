@@ -71,13 +71,25 @@ SimulationModule::SimulationModule(openfluid::base::RunDescriptor & RunDesc, ope
 {
   m_ModuleName = _("_Simulation");
   m_ModuleLongName = _("Simulation");
-  mp_StockId = (Gtk::StockID *)&Gtk::Stock::PROPERTIES;
+  mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "simulation-base.svg", "builder-simulation-base");
 
   mp_Builder->get_widget("SpinDeltat",mp_SpinDeltat);
   mp_Builder->get_widget("EntryBegin",mp_EntryBegin);
   mp_Builder->get_widget("EntryEnd",mp_EntryEnd);
   mp_Builder->get_widget("SpinBufferValues",mp_SpinBufferValues);
   mp_Builder->get_widget("SpinBufferFiles",mp_SpinBufferFiles);
+
+
+  Gdk::Color ColorBase("#bebebe");
+  Gdk::Color ColorLight = BuilderHelper::applyColorAlpha(ColorBase,0.01);
+  getContainer()->modify_bg(Gtk::STATE_NORMAL,BuilderHelper::applyColorAlpha(ColorBase,0.01));
+
+  Gtk::Frame * Frame;
+  mp_Builder->get_widget("frame1",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+  mp_Builder->get_widget("frame2",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+
 
   mp_SimulationOutput = new SimulationOutput(mp_Builder, OutputDesc, UnitsMap, VarsMap);
 
@@ -98,12 +110,6 @@ SimulationModule::~SimulationModule()
 
 // =====================================================================
 // =====================================================================
-
-
-void SimulationModule::updateOutputDescriptor()
-{
-  mp_SimulationOutput->updateOutputDescriptor();
-}
 
 
 void SimulationModule::initRunPanel()
@@ -132,7 +138,6 @@ void SimulationModule::initRunPanel()
       sigc::mem_fun(*this,&SimulationModule::onSpinBufferFilesValueChanged));
 
 }
-
 
 
 // =====================================================================

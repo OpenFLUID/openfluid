@@ -92,6 +92,10 @@ class DLLEXPORT Variables
 
     bool isAllVariablesCount(unsigned int Count) const;
 
+    //--- added Aline
+    void clear();
+    //---
+
 };
 
 
@@ -277,6 +281,14 @@ bool Variables<T>::isAllVariablesCount(unsigned int Count) const
   }
   return true;
 }
+
+//--- added Aline
+template <class T>
+void Variables<T>::clear()
+{
+    m_Data.clear();
+}
+//---
 
 
 } } // namespaces

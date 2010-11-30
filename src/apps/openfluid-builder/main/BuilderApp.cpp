@@ -287,6 +287,10 @@ void BuilderApp::createDockItemHome()
   // fill Dock with DockItem
   gdl_dock_add_item(GDL_DOCK(mp_MainDock), GDL_DOCK_ITEM(mp_DockItemHome), GDL_DOCK_TOP);
 
+  // customize Dock Grip
+  GtkWidget * GripHome = gdl_dock_item_get_grip(GDL_DOCK_ITEM(mp_DockItemHome));
+  gtk_widget_set_state(GripHome,GTK_STATE_ACTIVE);
+
 }
 
 // =====================================================================

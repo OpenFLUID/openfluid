@@ -88,37 +88,40 @@ class BuilderProject
 
   private:
 
-    openfluid::base::RuntimeEnvironment * mp_RunEnv;
-
     openfluid::machine::SimulationBlob * mp_SimBlob;
 
-//    openfluid::base::ExecutionMessages * mp_ExecMsgs;
-
-    openfluid::machine::Engine * mp_Engine;
-
-    openfluid::machine::MachineListener * mp_Listener;
+    BuilderMachineListener * mp_Listener;
 
     openfluid::io::IOListener * mp_IOListener;
 
     openfluid::machine::ModelInstance * mp_Model;
 
-    openfluid::base::RunDescriptor m_RunDesc;
-
-    openfluid::base::OutputDescriptor m_OutputDesc;
+    openfluid::machine::Engine * mp_Engine;
 
 
     ModulesPtrByNameMap_t m_Modules;
 
     DockItemsPtrByNameMap_t m_DockItems;
 
+    Gtk::Dialog * mp_DialogRun;
+
+    Gtk::TextView * mp_TextViewRun;
+
 
     LayoutType m_LayoutType;
-
 
 
     void addModule(ModuleInterface *, Glib::ustring ModuleName);
 
     ModuleInterface * getModule(Glib::ustring ModuleName);
+
+    void createDialogRun();
+
+    void onDialogRunClose(int ResponseId);
+
+    void tmpCheckDomain();
+    void tmpCheckModel();
+    void tmpCheckSimul();
 
 
   public:

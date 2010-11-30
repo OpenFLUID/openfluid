@@ -81,9 +81,6 @@ class DomainModule : public ModuleInterface
 
     ItemsStrByClassMap_t getIDsByClassMap();
 
-    openfluid::base::DomainDescriptor * getDomainDescriptorWOIData();
-
-    void setInputData(openfluid::core::CoreRepository & CoreRepos);
 
   private:
 
@@ -94,12 +91,15 @@ class DomainModule : public ModuleInterface
       public:
 
       DomainColumns()
-      { add(m_UnitClass); add(m_Id); add(m_PcsOrder);
+      { add(m_UnitClass); add(m_Id); add(m_PcsOrder); add(m_IsAClass); add(m_IsAnID);
         add(m_UnitsTos); add(m_UnitsParents); }
 
       Gtk::TreeModelColumn<std::string> m_UnitClass;
       Gtk::TreeModelColumn<int> m_Id;
       Gtk::TreeModelColumn<int> m_PcsOrder;
+
+      Gtk::TreeModelColumn<bool> m_IsAClass;
+      Gtk::TreeModelColumn<bool> m_IsAnID;
 
       Gtk::TreeModelColumn<std::list<openfluid::core::UnitClassID_t> > m_UnitsTos;
       Gtk::TreeModelColumn<std::list<openfluid::core::UnitClassID_t> > m_UnitsParents;
@@ -110,7 +110,7 @@ class DomainModule : public ModuleInterface
 
     DomainColumns m_DomainColumns;
 
-    openfluid::core::CoreRepository * mp_CoreData;
+    openfluid::core::CoreRepository & m_CoreRepos;
 
     Gtk::Box * mp_VBoxInfos;
     Gtk::TreeView * mp_TreeViewUnits;
@@ -120,15 +120,19 @@ class DomainModule : public ModuleInterface
 
     void createActions();
 
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::core::CoreRepository & CoreRepos);
+    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel();
 
-    void initInputDataMap(openfluid::core::CoreRepository & CoreRepos);
+    void initInputDataMap();
 
     void initTreeViewUnits();
 
     void initTreeViewInputData();
 
     void actionCheckDomain();
+
+    void onPcsOrderEdited(const Glib::ustring PathString, const Glib::ustring NewText);
+
+    void onDataEdited(const Glib::ustring PathString, const Glib::ustring NewText, std::string DataName);
 
 };
 

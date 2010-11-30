@@ -243,6 +243,10 @@ class DLLEXPORT Unit
 
     void streamContents(std::ostream& OStream);
 
+    //--- added Aline
+    void setProcessOrder(unsigned int PcsOrder) { m_PcsOrder = PcsOrder; };
+    //---
+
 };
 
 

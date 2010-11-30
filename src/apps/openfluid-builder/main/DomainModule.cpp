@@ -65,46 +65,37 @@
 // =====================================================================
 
 DomainModule::DomainModule(openfluid::core::CoreRepository & CoreRepos)
-  : ModuleInterface("Domain.glade", "ViewportDomain", "MenuDomain", "ToolBarDomain","")
+  : ModuleInterface("Domain.glade", "ViewportDomain", "MenuDomain", "ToolBarDomain",""),
+    m_CoreRepos(CoreRepos)
 {
   m_ModuleName = _("_Domain");
   m_ModuleLongName = _("Domain");
   mp_StockId = BuilderHelper::createIconStockId(BUILDER_RESOURCE_PATH, "domain-base.svg", "builder-domain-base");
 
-  mp_Builder->get_widget("VBoxInfos",mp_VBoxInfos);
   mp_Builder->get_widget("TreeViewUnits",mp_TreeViewUnits);
   mp_Builder->get_widget("TreeViewInputData",mp_TreeViewInputData);
 
+
+  Gdk::Color ColorBase("#9999cc");
+  Gdk::Color ColorLight = BuilderHelper::applyColorAlpha(ColorBase,0.01);
+  getContainer()->modify_bg(Gtk::STATE_NORMAL,BuilderHelper::applyColorAlpha(ColorBase,0.01));
+
+  Gtk::Frame * Frame;
+  mp_Builder->get_widget("frame1",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+  mp_Builder->get_widget("frame2",Frame);
+  Frame->modify_bg(Gtk::STATE_NORMAL,ColorLight);
+
+
   createActions();
 
-  mp_MainTreeModel = createMainTreeModel(CoreRepos);
+  mp_MainTreeModel = createMainTreeModel();
 
   mp_TreeViewUnits->set_model(mp_MainTreeModel);
   mp_TreeViewInputData->set_model(mp_MainTreeModel);
 
   initTreeViewUnits();
   initTreeViewInputData();
-
-
-
-//  Gtk::Label * Label = 0;
-//  mp_Builder->get_widget("label1",Label);
-//
-//  // List units
-//  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
-//
-//  unsigned int UnitsCount = 0;
-//  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
-//  {
-//    UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
-//  }
-//
-//  Label->set_text(Glib::ustring::compose("%1 units : ",UnitsCount));
-//
-//  for (UnitsIt = CoreRepos.getUnitsByClass()->begin(); UnitsIt != CoreRepos.getUnitsByClass()->end();++UnitsIt )
-//  {
-//    Label->set_text(Label->get_text() + "\n" + Glib::ustring::compose(" - %1, %2 units",UnitsIt->first,UnitsIt->second.getList()->size()));
-//  }
 
 }
 
@@ -115,7 +106,7 @@ DomainModule::DomainModule(openfluid::core::CoreRepository & CoreRepos)
 
 DomainModule::~DomainModule()
 {
-//  delete mp_CoreData;
+
 }
 
 
@@ -143,13 +134,13 @@ void DomainModule::createActions()
 // =====================================================================
 
 
-Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel(openfluid::core::CoreRepository & CoreRepos)
+Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel()
 {
-  initInputDataMap(CoreRepos);
+  initInputDataMap();
 
   Glib::RefPtr<Gtk::TreeStore> MainTreeModel = Gtk::TreeStore::create(m_DomainColumns);
 
-  openfluid::core::UnitsListByClassMap_t Units = *CoreRepos.getUnitsByClass();
+  openfluid::core::UnitsListByClassMap_t Units = *(m_CoreRepos.getUnitsByClass());
   openfluid::core::UnitsListByClassMap_t::iterator ItUnits;
 
   for(ItUnits=Units.begin() ; ItUnits!=Units.end() ; ++ItUnits)
@@ -158,7 +149,10 @@ Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel(openfluid::core::
 
     RowUnitClass[m_DomainColumns.m_UnitClass] = ItUnits->first;
 
-    openfluid::core::UnitsList_t * UnitsOfClass = CoreRepos.getUnits(ItUnits->first)->getList();
+    RowUnitClass[m_DomainColumns.m_IsAClass] = true;
+    RowUnitClass[m_DomainColumns.m_IsAnID] = false;
+
+    openfluid::core::UnitsList_t * UnitsOfClass = m_CoreRepos.getUnits(ItUnits->first)->getList();
     openfluid::core::UnitsList_t::iterator ItUnitsOfClass;
 
     for(ItUnitsOfClass=UnitsOfClass->begin() ; ItUnitsOfClass!=UnitsOfClass->end() ; ++ItUnitsOfClass)
@@ -168,7 +162,10 @@ Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel(openfluid::core::
       // Unit
       RowUnit[m_DomainColumns.m_Id] = ItUnitsOfClass->getID();
       RowUnit[m_DomainColumns.m_PcsOrder] = ItUnitsOfClass->getProcessOrder();
+      RowUnit[m_DomainColumns.m_UnitClass] = ItUnits->first;
 
+      RowUnit[m_DomainColumns.m_IsAClass] = false;
+      RowUnit[m_DomainColumns.m_IsAnID] = true;
 
       // Parents & Tos
       std::list<openfluid::core::UnitClassID_t> Parents;
@@ -240,13 +237,13 @@ Glib::RefPtr<Gtk::TreeStore> DomainModule::createMainTreeModel(openfluid::core::
 // =====================================================================
 
 
-void DomainModule::initInputDataMap(openfluid::core::CoreRepository & CoreRepos)
+void DomainModule::initInputDataMap()
 {
   // (in two steps to avoid double of InputName)
 
   // 1. Get all InputDataNames (once)
 
-  openfluid::core::UnitsPtrList_t UnitsPtr = *CoreRepos.getUnitsGlobally();
+  openfluid::core::UnitsPtrList_t UnitsPtr = *m_CoreRepos.getUnitsGlobally();
   openfluid::core::UnitsPtrList_t::iterator ItUnitsPtr;
 
   for(ItUnitsPtr=UnitsPtr.begin() ; ItUnitsPtr!=UnitsPtr.end() ; ++ItUnitsPtr)
@@ -285,12 +282,21 @@ void DomainModule::initTreeViewUnits()
   mp_TreeViewUnits->append_column("Unit class",m_DomainColumns.m_UnitClass);
   mp_TreeViewUnits->set_search_column(m_DomainColumns.m_UnitClass);
   mp_TreeViewUnits->get_column(0)->set_sort_column(m_DomainColumns.m_UnitClass);
+  mp_TreeViewUnits->get_column(0)->add_attribute(mp_TreeViewUnits->get_column_cell_renderer(0)->property_visible(),m_DomainColumns.m_IsAClass);
 
   mp_TreeViewUnits->append_column("Id",m_DomainColumns.m_Id);
   mp_TreeViewUnits->get_column(1)->set_sort_column(m_DomainColumns.m_Id);
+  mp_TreeViewUnits->get_column(1)->add_attribute(mp_TreeViewUnits->get_column_cell_renderer(1)->property_visible(),m_DomainColumns.m_IsAnID);
 
-  mp_TreeViewUnits->append_column_editable("Process order",m_DomainColumns.m_PcsOrder/*,"%i"*/);
+
+  mp_TreeViewUnits->append_column_editable("Process order",m_DomainColumns.m_PcsOrder);
   mp_TreeViewUnits->get_column(2)->set_sort_column(m_DomainColumns.m_PcsOrder);
+  mp_TreeViewUnits->get_column(2)->add_attribute(mp_TreeViewUnits->get_column_cell_renderer(2)->property_visible(),m_DomainColumns.m_IsAnID);
+
+  Gtk::CellRendererText * CellRend = (Gtk::CellRendererText *)mp_TreeViewUnits->get_column_cell_renderer(2);
+  mp_TreeViewUnits->get_column(2)->add_attribute(CellRend->property_editable(),m_DomainColumns.m_IsAnID);
+  CellRend->signal_edited().connect(
+      sigc::mem_fun(*this,&DomainModule::onPcsOrderEdited),false); // after=false for the value being updated before the view sort
 
   mp_TreeViewUnits->expand_all();
 }
@@ -306,9 +312,12 @@ void DomainModule::initTreeViewInputData()
   mp_TreeViewInputData->append_column("Unit class",m_DomainColumns.m_UnitClass);
   mp_TreeViewInputData->set_search_column(m_DomainColumns.m_UnitClass);
   mp_TreeViewInputData->get_column(0)->set_sort_column(m_DomainColumns.m_UnitClass);
+  mp_TreeViewInputData->get_column(0)->add_attribute(mp_TreeViewInputData->get_column_cell_renderer(0)->property_visible(),m_DomainColumns.m_IsAClass);
+
 
   mp_TreeViewInputData->append_column("Id",m_DomainColumns.m_Id);
   mp_TreeViewInputData->get_column(1)->set_sort_column(m_DomainColumns.m_Id);
+  mp_TreeViewInputData->get_column(1)->add_attribute(mp_TreeViewInputData->get_column_cell_renderer(1)->property_visible(),m_DomainColumns.m_IsAnID);
 
 
   InputDataMap_t::iterator ItDataMap;
@@ -317,6 +326,16 @@ void DomainModule::initTreeViewInputData()
   {
     int ColNb = mp_TreeViewInputData->append_column_editable(ItDataMap->first,*ItDataMap->second);
     mp_TreeViewInputData->get_column(ColNb-1)->set_sort_column(*ItDataMap->second);
+    mp_TreeViewInputData->get_column(ColNb-1)->add_attribute(mp_TreeViewInputData->get_column_cell_renderer(ColNb-1)->property_visible(),m_DomainColumns.m_IsAnID);
+
+
+    Gtk::CellRendererText * CellRend = (Gtk::CellRendererText *)mp_TreeViewInputData->get_column_cell_renderer(ColNb-1);
+    CellRend->signal_edited().connect(
+        sigc::bind<std::string>(
+            sigc::mem_fun(*this,&DomainModule::onDataEdited),
+            ItDataMap->first
+        ),false); // after=false for the value being updated before the view sort
+
   }
 
   mp_TreeViewInputData->expand_all();
@@ -352,154 +371,6 @@ ItemsStrByClassMap_t DomainModule::getIDsByClassMap()
   }
 
   return IDsByClassMap;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::DomainDescriptor * DomainModule::getDomainDescriptorWOIData()
-{
-  openfluid::base::DomainDescriptor * DomainDesc = new openfluid::base::DomainDescriptor();
-
-  std::list<openfluid::base::UnitDescriptor> DefDescriptor;
-
-  Gtk::TreeModel::Children UnitClasses = mp_MainTreeModel->children();
-  Gtk::TreeModel::Children::iterator ItUnitClasses;
-
-  for(ItUnitClasses=UnitClasses.begin() ; ItUnitClasses!=UnitClasses.end() ; ++ItUnitClasses)
-  {
-    openfluid::core::UnitClass_t UnitClass = (*ItUnitClasses)[m_DomainColumns.m_UnitClass];
-
-    Gtk::TreeModel::Children Units = ItUnitClasses->children();
-    Gtk::TreeModel::Children::iterator ItUnits;
-
-    for(ItUnits=Units.begin() ; ItUnits!=Units.end() ; ++ItUnits)
-    {
-      openfluid::base::UnitDescriptor UnitDesc;
-
-      UnitDesc.getUnitClass() = UnitClass;
-
-      UnitDesc.getUnitID() = (*ItUnits)[m_DomainColumns.m_Id];
-
-      UnitDesc.getProcessOrder() = (*ItUnits)[m_DomainColumns.m_PcsOrder];
-
-      UnitDesc.getUnitsParents() = (*ItUnits)[m_DomainColumns.m_UnitsParents];
-
-      UnitDesc.getUnitsTos() = (*ItUnits)[m_DomainColumns.m_UnitsTos];
-
-      DefDescriptor.push_back(UnitDesc);
-    }
-
-  }
-
-  DomainDesc->getUnits() = DefDescriptor;
-
-  return DomainDesc;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainModule::setInputData(openfluid::core::CoreRepository & CoreRepos)
-{
-  /* Temporary array of InputData
-   *     | IDataName1 | IDataName2
-   * id1 | IDataValue | IDataValue
-   * id2 | IDataValue | IDataValue
-   * id3 | ...
-   */
-  std::valarray<std::string> IDataArray;
-
-  int IDataNamesNb = m_DomainColumns.m_InputDataMap.size();
-  unsigned int IDataArrayJ = IDataNamesNb + 1;
-
-  Gtk::TreeModel::Children UnitClasses = mp_MainTreeModel->children();
-  Gtk::TreeModel::Children::iterator ItUnitClasses;
-
-  InputDataMap_t::iterator ItDataMap;
-
-  for(ItUnitClasses=UnitClasses.begin() ; ItUnitClasses!=UnitClasses.end() ; ++ItUnitClasses)
-  {
-    openfluid::core::UnitClass_t UnitClass = (*ItUnitClasses)[m_DomainColumns.m_UnitClass];
-
-    Gtk::TreeModel::Children Units = ItUnitClasses->children();
-    Gtk::TreeModel::Children::iterator ItUnits;
-
-    unsigned int IDataArrayI = Units.size() + 1;
-
-    IDataArray.resize(IDataArrayJ * IDataArrayI);
-
-    unsigned int i = 1;
-    unsigned j;
-
-    for(ItUnits=Units.begin() ; ItUnits!=Units.end() ; ++ItUnits)
-    {
-      // Add Input Data to temporary array
-      std::ostringstream oss;
-      oss << (*ItUnits)[m_DomainColumns.m_Id];
-      std::string IdStr = oss.str();
-
-      IDataArray[i*IDataArrayJ] = IdStr; // set Unit ID on first column
-
-      j = 1;
-      for(ItDataMap=m_DomainColumns.m_InputDataMap.begin() ; ItDataMap!=m_DomainColumns.m_InputDataMap.end() ; ++ItDataMap)
-      {
-        IDataArray[j] = ItDataMap->first; // set IData Name on first line
-
-        std::string Val = ItUnits->get_value(*ItDataMap->second);
-
-        IDataArray[(i*IDataArrayJ)+j] = Val;
-
-        j++;
-      }
-
-      i++;
-    }
-
-
-    // Check if there is Data for each Data Name
-
-    std::vector<std::string> IDataNamesToKeep;
-
-    for(j=1 ; j<IDataArrayJ ; j++)
-    {
-      // get Input Data by column (by DataName)
-      std::valarray<std::string> Col = IDataArray[std::slice(j+IDataArrayJ,IDataArrayI-1,IDataArrayJ)];
-
-      std::ostringstream oss;
-
-      for(i=0 ; i<Col.size() ; i++)
-      {
-        oss << Col[i];
-      }
-
-      if(!oss.str().empty()) // if there is at least one Data for this Data Name
-      {
-        IDataNamesToKeep.push_back(IDataArray[j]);
-      }
-    }
-
-
-    // Add used Input Data to the Unit
-
-    for(ItUnits=Units.begin() ; ItUnits!=Units.end() ; ++ItUnits)
-    {
-      openfluid::core::Unit * Unit = CoreRepos.getUnit(UnitClass,(*ItUnits)[m_DomainColumns.m_Id]);
-
-      for(i=0 ; i<IDataNamesToKeep.size() ; i++)
-      {
-        std::string DataName = IDataNamesToKeep[i];
-
-        Unit->getInputData()->setValue(DataName,ItUnits->get_value(*m_DomainColumns.m_InputDataMap[DataName]));
-      }
-    }
-
-  }
-
 }
 
 
@@ -545,4 +416,46 @@ void DomainModule::actionCheckDomain()
 
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainModule::onPcsOrderEdited(const Glib::ustring PathString, const Glib::ustring NewText)
+{
+  Gtk::TreePath Path(PathString);
+
+  Gtk::TreeModel::iterator Iter = mp_MainTreeModel->get_iter(Path);
+
+  if(Iter)
+  {
+    Gtk::TreeRow Row = *Iter;
+
+    std::istringstream ss(NewText);
+    unsigned int IntVal;
+    ss >> IntVal;
+
+    m_CoreRepos.getUnit(Row[m_DomainColumns.m_UnitClass],Row[m_DomainColumns.m_Id])->setProcessOrder(IntVal);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainModule::onDataEdited(const Glib::ustring PathString, const Glib::ustring NewText, std::string DataName)
+{
+  Gtk::TreePath Path(PathString);
+
+  Gtk::TreeModel::iterator Iter = mp_MainTreeModel->get_iter(Path);
+
+  if(Iter)
+  {
+    Gtk::TreeRow Row = *Iter;
+
+    m_CoreRepos.getUnit(Row[m_DomainColumns.m_UnitClass],Row[m_DomainColumns.m_Id])->getInputData()->replaceValue(DataName,NewText);
+  }
 }

@@ -82,3 +82,21 @@ Gtk::StockID * BuilderHelper::createIconStockId(Glib::ustring FilePath, Glib::us
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+Gdk::Color & BuilderHelper::applyColorAlpha(Gdk::Color & Color,double Alpha)
+{
+
+  if(Alpha > 0 && Alpha < 1)
+  {
+    int R = (1-Alpha)*65535 + Alpha*Color.get_red();
+    int G = (1-Alpha)*65535 + Alpha*Color.get_green();
+    int B = (1-Alpha)*65535 + Alpha*Color.get_blue();
+    Color.set_rgb(R,G,B);
+  }
+
+  return Color;
+}

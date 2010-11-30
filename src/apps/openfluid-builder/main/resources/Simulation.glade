@@ -4,7 +4,6 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkViewport" id="ViewportSimulation">
     <property name="visible">True</property>
-    <property name="border_width">5</property>
     <property name="resize_mode">queue</property>
     <child>
       <object class="GtkVPaned" id="vpaned1">
@@ -296,6 +295,7 @@
               <object class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">5</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <child>

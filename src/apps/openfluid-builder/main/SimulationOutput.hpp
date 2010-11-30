@@ -79,7 +79,6 @@ class SimulationOutput
 
     ~SimulationOutput();
 
-    void updateOutputDescriptor();
 
   private:
 
@@ -94,7 +93,7 @@ class SimulationOutput
         add(m_SetName); add(m_UnitClass); add(m_UnitIDsList); add(m_VarsList); add(m_Precision);
         add(m_ComboUnitClass); }
 
-      Gtk::TreeModelColumn<openfluid::base::OutputFilesDescriptor> m_FileDesc;
+      Gtk::TreeModelColumn<openfluid::base::OutputFilesDescriptor*> m_FileDesc;
       Gtk::TreeModelColumn<bool> m_IsAFile;
       Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
       Gtk::TreeModelColumn<std::string> m_ColSep;
@@ -104,7 +103,7 @@ class SimulationOutput
       Gtk::TreeModelColumn<Glib::RefPtr<Gtk::TreeModel> > m_ComboDTFormat;
       Gtk::TreeModelColumn<Glib::RefPtr<Gtk::TreeModel> > m_ComboCommentChar;
 
-      Gtk::TreeModelColumn<openfluid::base::OutputSetDescriptor> m_SetDesc;
+      Gtk::TreeModelColumn<openfluid::base::OutputSetDescriptor*> m_SetDesc;
       Gtk::TreeModelColumn<bool> m_IsASet;
       Gtk::TreeModelColumn<std::string> m_SetName;
       Gtk::TreeModelColumn<std::string> m_UnitClass;

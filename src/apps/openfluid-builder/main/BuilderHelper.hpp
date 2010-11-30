@@ -70,6 +70,8 @@ class BuilderHelper
 
     static Gtk::StockID * createIconStockId(Glib::ustring FilePath, Glib::ustring FileName, Glib::ustring StockIdString);
 
+    static Gdk::Color & applyColorAlpha(Gdk::Color & Color,double Alpha);
+
 };
 
 

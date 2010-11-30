@@ -82,6 +82,9 @@ class DLLEXPORT InputData
 
     std::vector<InputDataName_t> getInputDataNames() const;
 
+    //--- added Aline
+    void replaceValue(const InputDataName_t aName,const T aValue);
+    //---
 
 };
 
@@ -211,6 +214,14 @@ std::vector<InputDataName_t> InputData<T>::getInputDataNames() const
   return TheNames;
 
 }
+
+//--- added Aline
+template <class T>
+void InputData<T>::replaceValue(const InputDataName_t aName,const T aValue)
+{
+    m_Data[aName] = aValue;
+}
+//---
 
 } } // namespaces
 
