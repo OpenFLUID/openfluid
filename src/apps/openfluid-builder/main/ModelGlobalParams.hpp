@@ -130,6 +130,8 @@ class ModelGlobalParams
 
      bool onEntryFocusOut(GdkEventFocus * /*Event*/, Gtk::Entry * Entry, Gtk::TreeRowReference RefRow);
 
+     void onEntryActivate(Gtk::Entry * Entry, Gtk::TreeRowReference RefRow);
+
 };
 
 

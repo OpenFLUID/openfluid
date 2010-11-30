@@ -119,6 +119,8 @@ class ModelUsedFct
 
     bool onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
 
+    void onEntryActivate(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
+
     void onCheckToggled(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::CheckButton * Check, Gtk::TreeModel::Row Row);
 
     /* Temporary function, to be removed - Print to console used functions list information */

@@ -353,6 +353,10 @@ void ModelGlobalParams::createTableRowWidgets(Gtk::TreeRowReference RefParam)
       sigc::bind<Gtk::Entry *, Gtk::TreeRowReference>(
           sigc::mem_fun(*this,&ModelGlobalParams::onEntryFocusOut),
           Entry, RefParam));
+  Entry->signal_activate().connect(
+        sigc::bind<Gtk::Entry *, Gtk::TreeRowReference>(
+            sigc::mem_fun(*this,&ModelGlobalParams::onEntryActivate),
+            Entry, RefParam));
 
   ButtonSuppr->set_visible(true);
   Label->set_visible(true);
@@ -459,6 +463,18 @@ void ModelGlobalParams::onButtonSupprClicked(Gtk::TreeRowReference RowRef)
 
 bool ModelGlobalParams::onEntryFocusOut(GdkEventFocus * /*Event*/, Gtk::Entry * Entry, Gtk::TreeRowReference RefRow)
 {
+  onEntryActivate(Entry,RefRow);
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParams::onEntryActivate(Gtk::Entry * Entry, Gtk::TreeRowReference RefRow)
+{
   Gtk::TreeIter Iter = mp_TreeModelParams->get_iter(RefRow.get_path());
 
   Gtk::TreeRow Row = *Iter;
@@ -476,10 +492,7 @@ bool ModelGlobalParams::onEntryFocusOut(GdkEventFocus * /*Event*/, Gtk::Entry * 
   }
 
   tempCheckModel();
-
-  return true;
 }
-
 
 // =====================================================================
 // =====================================================================

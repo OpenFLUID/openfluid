@@ -391,6 +391,10 @@ void ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid
         sigc::bind<Glib::ustring,Gtk::Entry *,Gtk::TreeModel::Row>(
             sigc::mem_fun(*this,&ModelUsedFct::onEntryFocusOut),
             AvailParams[i].DataName,Entry,Row));
+    Entry->signal_activate().connect(
+        sigc::bind<Glib::ustring,Gtk::Entry *,Gtk::TreeModel::Row>(
+            sigc::mem_fun(*this,&ModelUsedFct::onEntryActivate),
+            AvailParams[i].DataName,Entry,Row));
 
     if(Row[m_Columns.m_Type] == ModelColumns::Generators)
       Check->set_visible(false);
@@ -444,6 +448,18 @@ void ModelUsedFct::createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid
 
 bool ModelUsedFct::onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row)
 {
+  onEntryActivate(ParamName,Entry,Row);
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelUsedFct::onEntryActivate(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row)
+{
   openfluid::core::FuncParamsMap_t UsedParams = Row[m_Columns.m_UsedParams];
 
   // if param doesn't exist we create it, otherwise we update it if necessary
@@ -456,7 +472,6 @@ bool ModelUsedFct::onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring Para
     tempCheckModel();
   }
 
-  return true;
 }
 
 
