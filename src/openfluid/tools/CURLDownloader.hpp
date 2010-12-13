@@ -45,22 +45,51 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file CURLDownloader.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __TOOLS_HPP___
-#define __TOOLS_HPP___
 
-#include <openfluid/tools/ColTextParser.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
-#include <openfluid/tools/DataSrcFile.hpp>
-#include <openfluid/tools/DistribInterp.hpp>
-#include <openfluid/tools/DTSerie.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#ifndef __CURLDOWNLOADER_HPP__
+#define __CURLDOWNLOADER_HPP__
 
-#endif /* __TOOLS_HPP___ */
+#include <string>
+
+#include <openfluid/dllexport.hpp>
+
+
+// =====================================================================
+// =====================================================================
+
+namespace openfluid { namespace tools {
+
+
+class DLLEXPORT CURLDownloader
+{
+  public:
+
+    enum ErrorCode { NO_ERROR, CURL_ERROR, UNKNOWN_ERROR };
+
+  private:
+    static int CURLWriterToBuffer(char *Data, size_t Size, size_t NMemb, std::string *BufferIn);
+
+    static int CURLWriterToFile(void *Ptr, size_t Size, size_t NMemb, FILE *FileStream);
+
+
+  public:
+
+    static ErrorCode downloadToFile(const std::string URL, const std::string FilePath);
+
+    static ErrorCode downloadToString(const std::string URL, std::string& Contents);
+
+};
+
+
+} } // namespaces
+
+
+#endif /* __CURLDOWNLOADER_HPP__ */
