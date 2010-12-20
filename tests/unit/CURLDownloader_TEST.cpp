@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string LoremIpsumDLoaded;
 
 
-  BOOST_REQUIRE_EQUAL(openfluid::tools::CURLDownloader::downloadToString("file:"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),LoremIpsumDLoaded),
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CURLDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),LoremIpsumDLoaded),
                       openfluid::tools::CURLDownloader::NO_ERROR);
 
   BOOST_REQUIRE_EQUAL(LoremIpsum,LoremIpsumDLoaded);
@@ -96,15 +96,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   boost::filesystem::remove(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt"));
   boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader"));
 
-  BOOST_REQUIRE_EQUAL(openfluid::tools::CURLDownloader::downloadToFile("file:"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CURLDownloader::downloadToFile("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),
                                             boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt").string()),
                       openfluid::tools::CURLDownloader::NO_ERROR);
 
 
   std::string LI1, LI2;
 
-  openfluid::tools::CURLDownloader::downloadToString("file:"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),LI1);
-  openfluid::tools::CURLDownloader::downloadToString("file:"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt").string(),LI2);
+  openfluid::tools::CURLDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),LI1);
+  openfluid::tools::CURLDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt").string(),LI2);
 
   BOOST_REQUIRE_EQUAL(LI1,LI2);
 
