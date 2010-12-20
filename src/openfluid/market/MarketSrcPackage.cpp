@@ -104,8 +104,6 @@ void MarketSrcPackage::process()
 
   boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT),
                                     boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error installing built package");
-
 }
 
 
