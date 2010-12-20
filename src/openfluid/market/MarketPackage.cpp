@@ -46,66 +46,93 @@
 */
 
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
+/**
+  \file MarketPackage.cpp
+  \brief Implements ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
+
+#include <openfluid/market/MarketPackage.hpp>
+
+namespace openfluid { namespace market {
 
 
-#include <string>
+std::string MarketPackage::m_TempBuildsDir = "";
+std::string MarketPackage::m_TempDownloadsDir = "";
+std::string MarketPackage::m_MarketBagDir = "";
 
-namespace openfluid { namespace config {
-
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
-
-// Relative openfluid directory
-const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
+std::string MarketPackage::m_CMakeCommand = "";
 
 
-// Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
+
+MarketPackage::MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
+              : m_ID(ID), m_PackageURL(PackageURL)
+{
+
+}
 
 
-// Install prefix
-const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
-
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
-const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
-
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
+// =====================================================================
+// =====================================================================
 
 
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
+void MarketPackage::initialize()
+{
+  std::string CMakeProgram = "";
 
-
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
-
-
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
-
-
-// Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
-const std::string FULL_VERSION = "@FULL_VERSION@";
-
-
-} } //namespaces
-
+#if defined __unix__ || defined __APPLE__
+  CMakeProgram = "cmake";
 #endif
+
+#if WIN32
+  CMakeProgram = "cmake.exe";
+#endif
+
+  if (CMakeProgram.empty())
+    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Unsupported system platform");
+
+
+  std::vector<std::string> CMakePaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(CMakeProgram);
+
+  if (!CMakePaths.empty())
+  {
+    m_CMakeCommand = boost::filesystem::path(CMakePaths[0]).string();
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Required CMake program not found");
+
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::setWorksDirs(std::string TempBuildsDir, std::string TempDownloadsDir, std::string MarketBagDir)
+{
+  m_TempBuildsDir = TempBuildsDir;
+  m_TempDownloadsDir = TempDownloadsDir;
+  m_MarketBagDir = MarketBagDir;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::download()
+{
+
+  m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_ID+".tar.gz").string();
+
+  openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest);
+}
+
+
+} } // namespaces
+
+
+
 

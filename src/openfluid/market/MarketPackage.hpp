@@ -45,67 +45,73 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+/**
+  \file MarketPackage.hpp
+  \brief Header of ...
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
-
-
-#include <string>
-
-namespace openfluid { namespace config {
-
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
-
-// Relative openfluid directory
-const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-// Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
+#ifndef __MARKETPACKAGE_HPP__
+#define __MARKETPACKAGE_HPP__
 
 
-// Install prefix
-const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
-
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
-const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
-
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
+#include <openfluid/dllexport.hpp>
+#include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/base.hpp>
 
 
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
+namespace openfluid { namespace market {
 
 
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
+class DLLEXPORT MarketPackage
+{
+  protected:
+
+    static std::string m_TempBuildsDir;
+
+    static std::string m_TempDownloadsDir;
+
+    static std::string m_MarketBagDir;
+
+    static std::string m_CMakeCommand;
 
 
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
+    openfluid::base::FuncID_t m_ID;
+
+    std::string m_PackageURL;
+
+    std::string m_PackageDest;
 
 
-// Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
-const std::string FULL_VERSION = "@FULL_VERSION@";
+
+  public:
+
+    MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
+
+    static void initialize();
+
+    static void setWorksDirs(std::string TempBuildsDir, std::string TempDownloadsDir, std::string MarketBagDir);
+
+    static std::string getMarketBagDir() { return m_MarketBagDir; };
+
+    static std::string getTempBuildsDir() { return m_TempBuildsDir; };
+
+    static std::string getTempDownloadsDir() { return m_TempDownloadsDir; };
 
 
-} } //namespaces
+    virtual void process() = 0;
 
-#endif
+    void download();
 
+
+};
+
+
+
+
+} } // namespaces
+
+
+#endif /* __MARKETPACKAGE_HPP__ */

@@ -6,5 +6,5 @@ includedir=${prefix}/include
 Name: openfluid
 Description: OpenFLUID framework
 Version: @FULL_VERSION@
-Libs: -L${libdir} -lopenfluid-base -lopenfluid-buddies -lopenfluid-core -lopenfluid-io -lopenfluid-machine -lopenfluid-tools
+Libs: -L${libdir} -lopenfluid-base -lopenfluid-buddies -lopenfluid-core -lopenfluid-io -lopenfluid-machine -lopenfluid-tools -lopenfluid-market
 Cflags: -I${includedir} -DOPENFLUID_VERSION=@FULL_VERSION@

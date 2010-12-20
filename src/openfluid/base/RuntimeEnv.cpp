@@ -81,11 +81,16 @@ RuntimeEnvironment::RuntimeEnvironment()
   std::string HomeDir = "";
   std::string UserID = "";
 
+  m_Version = openfluid::config::MAJOR_VERSION+"."+openfluid::config::MINOR_VERSION+"."+openfluid::config::PATCH_VERSION;
+  m_FullVersion = openfluid::config::FULL_VERSION;
+
+
   m_TempDir = "";
   m_HostName = "(unknown)";
   m_UserID = "(unknown)";
+  m_Arch = "unknown";
 
-  // default directories
+  // ====== Default directories ======
   // UNIX:
   //  Temp directory : using TMPDIR, TMP or TEMP env. var.
   //  User directory for Openfluid : using HOME env. var. + .openfluid suffix
@@ -136,7 +141,7 @@ RuntimeEnvironment::RuntimeEnvironment()
 
 
   HomeDir = boost::filesystem::path(HomeDir).string();
-  m_TempDir = boost::filesystem::path(m_TempDir).string();
+  m_TempDir = boost::filesystem::path(m_TempDir+"/openfluid").string();
 
 #if WIN32
   m_UserDataDir = boost::filesystem::path(HomeDir+"/"+openfluid::config::RELATIVEDIR).string();
@@ -148,7 +153,41 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_OUTDIR).string();
   m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_INDIR).string();
+  m_MarketBagDir = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::MARKETBAG_SUBDIR).string();
+  m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/" + m_FullVersion).string();
 
+
+  // ====== System architecture ======
+
+#if linux
+  #if __i386__
+    m_Arch = "linux-i386";
+  #endif
+  #ifdef __X86_64__
+    m_Arch = "linux-x86-64";
+  #endif
+#endif
+
+
+#if WIN32
+  m_Arch = "win32";
+#endif
+
+#if WIN64
+  m_Arch = "win64";
+#endif
+
+
+#if __APPLE__
+  #if __LP64__
+    m_Arch = "osx64";
+  #else
+    m_Arch = "osx32";
+  #endif
+#endif
+
+
+  // ====== Default values ======
 
   m_ClearOutputDir = false;
   m_WriteResults = true;
@@ -159,6 +198,9 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_IsUserValuesBufferSize = false;
 
   m_TimeStep = 0;
+
+
+  // ====== Function environnement ======
 
   mp_FuncEnv = new openfluid::base::EnvironmentProperties();
 
@@ -171,10 +213,11 @@ RuntimeEnvironment::RuntimeEnvironment()
   mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport);
 
 
-  // plugins search order:
+  // ====== Plugins search order ======
   //  1) command line paths,
   //  2) environment var OPENFLUID_FUNCS_PATH
   //  3) user directory,
+  //  4) market-bag directory
   //  4) install directory
 
   // env var
@@ -189,6 +232,9 @@ RuntimeEnvironment::RuntimeEnvironment()
   // user dir
   m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::PLUGINS_SUBDIR).string());
 
+  // market-bag dir (for current version)
+  m_PlugsDirs.push_back(m_MarketBagVersionDir);
+
 
   // install path
   std::string PluginsInstallPath = boost::filesystem::path(openfluid::config::INSTALL_PREFIX + "/" + openfluid::config::PLUGINS_STDDIR).string();
@@ -202,6 +248,8 @@ RuntimeEnvironment::RuntimeEnvironment()
   }
 
   m_PlugsDirs.push_back(PluginsInstallPath);
+
+
 
   // set ignition date time
   m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();

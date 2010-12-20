@@ -46,66 +46,44 @@
 */
 
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
+/**
+  \file MarketBinPackage.cpp
+  \brief Implements ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
+
+#include <openfluid/market/MarketBinPackage.hpp>
+
+#include <cstdlib>
+
+namespace openfluid { namespace market {
 
 
-#include <string>
+MarketBinPackage::MarketBinPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
+                : MarketPackage(ID,PackageURL)
+{
 
-namespace openfluid { namespace config {
-
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
-
-// Relative openfluid directory
-const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
+}
 
 
-// Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
+// =====================================================================
+// =====================================================================
 
 
-// Install prefix
-const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
+void MarketBinPackage::process()
+{
+  if (m_CMakeCommand.empty())
+    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
 
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
-const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
+  std::string ProcessCommand = m_CMakeCommand +" -E chdir " + m_MarketBagDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
 
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
+  if (std::system(ProcessCommand.c_str()) != 0)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
+}
 
 
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
+} } // namespaces
 
 
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
-
-
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
-
-
-// Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
-const std::string FULL_VERSION = "@FULL_VERSION@";
-
-
-} } //namespaces
-
-#endif
 

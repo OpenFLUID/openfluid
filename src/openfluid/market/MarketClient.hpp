@@ -45,67 +45,83 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+/**
+  @file
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
+  @author JC.Fabre <fabrejc@supagro.inra.fr>
+*/
 
+
+
+
+#ifndef __MARKETCLIENT_HPP__
+#define __MARKETCLIENT_HPP__
 
 #include <string>
+#include <list>
 
-namespace openfluid { namespace config {
+#include <openfluid/dllexport.hpp>
+#include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/market/MarketInfos.hpp>
+#include <openfluid/market/MarketSrcPackage.hpp>
+#include <openfluid/market/MarketBinPackage.hpp>
 
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
-
-// Relative openfluid directory
-const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
-
-
-// Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
+namespace openfluid { namespace market {
 
 
-// Install prefix
-const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
-
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
-const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
-
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
+// =====================================================================
+// =====================================================================
 
 
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
+typedef std::list<PackageInfo> PackagesInfosList_t;
 
 
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
+// =====================================================================
+// =====================================================================
 
 
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
+class DLLEXPORT MarketClient
+{
+  private:
+
+    static const std::string BUILDS_SUBDIR;
+
+    static const std::string DLOADS_SUBDIR;
+
+    static const std::string LOCK_FILE;
 
 
-// Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
-const std::string FULL_VERSION = "@FULL_VERSION@";
+    MarketInfo m_MarketInfo;
+
+    void initMarketBag();
+
+    void initMarketTemp();
+
+    void lockMarketTemp();
+
+    void unlockMarketTemp();
 
 
-} } //namespaces
+  public:
 
-#endif
+    MarketClient();
+
+    ~MarketClient();
+
+    openfluid::tools::CURLDownloader::ErrorCode connect(const std::string URL);
+
+    void disconnect();
+
+    void getMarketInfo(MarketInfo& Info);
+
+    void getPackagesInfos(PackagesInfosList_t& Infos);
+
+
+};
+
+
+} } // namespaces
+
+
+#endif /* __MARKETCLIENT_HPP__ */
 

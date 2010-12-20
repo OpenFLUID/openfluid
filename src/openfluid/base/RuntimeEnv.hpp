@@ -81,16 +81,22 @@ class DLLEXPORT RuntimeEnvironment
 
     static RuntimeEnvironment* mp_Singleton;
 
+    std::string m_Version;
+    std::string m_FullVersion;
+
     std::string m_OutputDir;
     std::string m_InputDir;
     std::string m_UserDataDir;
     std::string m_TempDir;
+    std::string m_MarketBagDir;
+    std::string m_MarketBagVersionDir;
 
     std::vector<std::string> m_PlugsDirs;
 
     std::string m_UserID;
-
     std::string m_HostName;
+    std::string m_Arch;
+
 
     bool m_ClearOutputDir;
 
@@ -135,6 +141,10 @@ class DLLEXPORT RuntimeEnvironment
     */
     ~RuntimeEnvironment();
 
+    std::string getVersion() const { return m_Version; };
+
+    std::string getFullVersion() const { return m_FullVersion; };
+
     void setInputDir(const std::string InputDir)
       { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
 
@@ -143,9 +153,13 @@ class DLLEXPORT RuntimeEnvironment
     void setOutputDir(const std::string OutputDir)
       { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
 
-    std::string getOutputDir() const { return m_OutputDir; };
+    inline std::string getOutputDir() const { return m_OutputDir; };
 
     void setDateTimeOutputDir();
+
+    inline std::string getMarketBagDir() const{ return m_MarketBagDir; };
+
+    inline std::string getMarketBagVersionDir() const{ return m_MarketBagVersionDir; };
 
     inline std::string getTempDir() const
       { return m_TempDir; mp_FuncEnv->setValue("dir.temp",m_OutputDir); };
@@ -201,6 +215,8 @@ class DLLEXPORT RuntimeEnvironment
     std::string getHostName() const {return m_HostName; };
 
     std::string getUserID() const {return m_UserID; };
+
+    std::string getArch() const {return m_Arch; };
 
     void setSimulationTimeInformation(openfluid::core::DateTime StartTime,
                                       openfluid::core::DateTime EndTime,

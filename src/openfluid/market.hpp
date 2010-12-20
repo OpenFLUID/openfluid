@@ -46,66 +46,21 @@
 */
 
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
+/**
+  @file
+
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#include <string>
+#ifndef __MARKET_HPP__
+#define __MARKET_HPP__
 
-namespace openfluid { namespace config {
+#include <openfluid/market/MarketBinPackage.hpp>
+#include <openfluid/market/MarketClient.hpp>
+#include <openfluid/market/MarketInfos.hpp>
+#include <openfluid/market/MarketListener.hpp>
+#include <openfluid/market/MarketPackage.hpp>
+#include <openfluid/market/MarketSrcPackage.hpp>
 
-// App Name
-const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
-
-// Relative openfluid directory
-const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
-
-
-// Default directories
-const std::string DEFAULT_INDIR = "@OPENFLUID_INPUTDIR@";
-const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
-
-
-// Install prefix
-const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
-
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
-const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
-
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
-const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
-
-
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
-
-
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
-
-
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
-
-
-// Version information
-const std::string MAJOR_VERSION = "@VERSION_MAJOR@";
-const std::string MINOR_VERSION = "@VERSION_MINOR@";
-const std::string PATCH_VERSION = "@VERSION_PATCH@";
-const std::string RELEASE_STATUS = "@VERSION_STATUS@";
-const std::string FULL_VERSION = "@FULL_VERSION@";
-
-
-} } //namespaces
-
-#endif
-
+#endif /* __MARKET_HPP__ */

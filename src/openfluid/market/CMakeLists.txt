@@ -1,0 +1,36 @@
+
+ADD_DEFINITIONS(${LibXML2_CFLAGS})
+
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
+LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+
+
+FILE(GLOB OPENFLUID_MARKET_CPP *.cpp)
+FILE(GLOB OPENFLUID_MARKET_HPP *.hpp)
+
+
+ADD_LIBRARY(openfluid-market SHARED ${OPENFLUID_MARKET_CPP} ${OPENFLUID_MARKET_HPP})
+
+SET_TARGET_PROPERTIES(openfluid-market PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
+                                        SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+                                        LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+
+TARGET_LINK_LIBRARIES(openfluid-market
+                      openfluid-base
+                      openfluid-tools
+                      ${LibXML2_LIBRARIES} 
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+
+
+
+INSTALL(TARGETS openfluid-market
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+   
+
+INSTALL(FILES ${OPENFLUID_MARKET_HPP} DESTINATION ${INCLUDE_INSTALL_PATH}/market)
+
+   
