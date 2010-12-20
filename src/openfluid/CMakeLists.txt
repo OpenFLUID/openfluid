@@ -8,9 +8,11 @@ ADD_SUBDIRECTORY(core)
 ADD_SUBDIRECTORY(machine)
 ADD_SUBDIRECTORY(io)
 ADD_SUBDIRECTORY(tools)
+ADD_SUBDIRECTORY(market)
 
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp dllexport.hpp  
+INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.hpp 
+              dllexport.hpp  
         DESTINATION ${INCLUDE_INSTALL_PATH})
        
 CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)
