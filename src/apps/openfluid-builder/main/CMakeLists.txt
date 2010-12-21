@@ -24,11 +24,11 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
                  ${GTKMM_LIBRARY_DIRS})
 
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} . model domain simulation results)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
-FILE(GLOB OPENFLUID_BUILDER_CPP *.cpp)
-FILE(GLOB OPENFLUID_BUILDER_HPP *.hpp)
+FILE(GLOB OPENFLUID_BUILDER_CPP *.cpp model/*.cpp domain/*.cpp simulation/*.cpp results/*.cpp)
+FILE(GLOB OPENFLUID_BUILDER_HPP *.hpp model/*.hpp domain/*.hpp simulation/*.hpp results/*.hpp)
 
 
 ADD_EXECUTABLE(openfluid-builder ${OPENFLUID_BUILDER_CPP} ${OPENFLUID_BUILDER_HPP})
