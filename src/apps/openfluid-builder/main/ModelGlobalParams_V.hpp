@@ -46,79 +46,84 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file ModelGlobalParams_V.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
+#ifndef __MODELGLOBALPARAMS_V_HPP__
+#define __MODELGLOBALPARAMS_V_HPP__
+
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include "ModelGlobalParam_V.hpp"
 
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
-
-#include "ModelStructure.hpp"
+class ModelGlobalParams;
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef std::map<std::string,std::vector<std::string> > VarsByClassMap_t;
-
-
-class ModelModule : public ModuleInterface
+class ModelGlobalParams_V
 {
-  public:
-
-    ModelModule(openfluid::machine::ModelInstance & Model);
-
-    ~ModelModule();
-
-    VarsByClassMap_t getVarsByClassMap();
-
-    openfluid::base::ModelDescriptor * getModelDescriptor();
-
-    //    void actionCheckModel();
-    bool checkModule(openfluid::machine::ModelInstance * ModelInstance);
-
-
   private:
 
-    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+    ModelGlobalParams * mp_Control;
 
-    ModelColumns m_Columns;
+    class GlobalAvailColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
 
-    ModelAvailFct * mp_ModelAvailFct;
+      GlobalAvailColumns()
+      { add(m_Id); add(m_Unit); add(m_ToBeListed);}
 
-    StatusItemInterface * mp_StatusParamsValues;
+      Gtk::TreeModelColumn<Glib::ustring> m_Id;
+      Gtk::TreeModelColumn<Glib::ustring> m_Unit;
+      Gtk::TreeModelColumn<bool> m_ToBeListed;
+    };
 
-    ModelStructure * mp_ModelStructure;
+    GlobalAvailColumns m_GlobalAvailColumns;
+
+    Glib::RefPtr<Gtk::ListStore> mp_TreeModel;
+
+    Glib::RefPtr<Gtk::TreeModelFilter> mp_TreeModelToBeListed;
+
+    Gtk::ComboBox * mp_Combo;
+
+    Gtk::Button * mp_ButtonAdd;
+
+    Gtk::Table * mp_Table;
+
+    void onButtonAddClicked();
+
+    void setComboSensitive(bool Sensitive);
+
+    Gtk::TreeModel::iterator getIteratorFromKey(Glib::ustring Key);
+
+    Glib::ustring getKeyFromIterator(Gtk::TreeModel::iterator Iter);
 
 
-    void createActions();
+  public:
 
-    openfluid::machine::ArrayOfModelItemInstance createGeneratorContainers();
+    ModelGlobalParams_V(ModelGlobalParams * Control, Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
-    openfluid::machine::ModelItemInstance * createGeneratorInstance(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    void addEntry(Glib::ustring Key, Glib::ustring DataUnit, bool ToBeListed);
 
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::machine::ArrayOfModelItemInstance PlugContainers, openfluid::machine::ArrayOfModelItemInstance GeneratorContainers);
+    void removeEntry(Glib::ustring Key);
 
-    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
+    void addWidgetRow(std::vector<Gtk::Widget *> WidgetVector);
 
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
+    void removeWidgetRow(std::vector<Gtk::Widget *> WidgetVector);
+
+    void setToBeListed(Glib::ustring Key, bool ToBeListed);
+
+    void updateCombo();
 
 };
 
-#endif /* __MODELMODULE_HPP__ */
+#endif /* __MODELGLOBALPARAMS_V_HPP__ */

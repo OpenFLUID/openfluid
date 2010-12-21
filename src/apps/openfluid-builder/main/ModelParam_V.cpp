@@ -47,7 +47,7 @@
 
 
 /**
-  \file ModelGlobalParams.cpp
+  \file ModelParam_V.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
@@ -58,19 +58,53 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
-
-#include "ModelStructure.hpp"
-#include "ModelGlobalParams.hpp"
+#include "ModelParam.hpp"
+#include "ModelParam_V.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
+ModelParam_V::ModelParam_V(ModelParam * Control)
+: mp_Control(Control)
 {
-  mp_View = new ModelGlobalParams_V(this, GladeBuilder);
+  mp_Check = Gtk::manage(new Gtk::CheckButton());
+
+  mp_Label = Gtk::manage(new Gtk::Label("",Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+
+  mp_Entry = Gtk::manage(new Gtk::Entry());
+
+  mp_Unit = Gtk::manage(new Gtk::Label("",Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+
+  mp_LabelGlobal = Gtk::manage(new Gtk::Label("",Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+
+
+  mp_Check->signal_toggled().connect(
+      sigc::mem_fun(*this,&ModelParam_V::onCheckToggled));
+
+  mp_Entry->signal_focus_out_event().connect(
+      sigc::mem_fun(*this,&ModelParam_V::onEntryFocusOut));
+  mp_Entry->signal_activate().connect(
+      sigc::mem_fun(*this,&ModelParam_V::onEntryActivate));
+
+
+  mp_Check->set_visible(true);
+
+  mp_Entry->set_visible(true);
+
+  mp_Label->set_visible(true);
+
+  mp_Unit->set_visible(true);
+
+  mp_LabelGlobal->set_visible(true);
+
+
+  m_WidgetRow.push_back(mp_Check);
+  m_WidgetRow.push_back(mp_Label);
+  m_WidgetRow.push_back(mp_Entry);
+  m_WidgetRow.push_back(mp_Unit);
+  m_WidgetRow.push_back(mp_LabelGlobal);
 }
 
 
@@ -78,12 +112,9 @@ ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 // =====================================================================
 
 
-ModelGlobalParams::~ModelGlobalParams()
+std::vector<Gtk::Widget *> ModelParam_V::asWidgetVector()
 {
-  delete mp_View;
-
-  BOOST_FOREACH(GlobalParamsMap_t::value_type i, m_GlobalParams)
-     delete i.second;
+  return m_WidgetRow;
 }
 
 
@@ -91,14 +122,9 @@ ModelGlobalParams::~ModelGlobalParams()
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+void ModelParam_V::setLabel(Glib::ustring Label)
 {
-  std::string Key = ParamDef.DataName;
-
-  if(m_GlobalParams.find(Key) == m_GlobalParams.end())
-    return createGlobalParam(ParamDef);
-
-    return m_GlobalParams.find(Key)->second;
+  mp_Label->set_text(Label);
 }
 
 
@@ -106,22 +132,9 @@ ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureH
 // =====================================================================
 
 
-void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
+void ModelParam_V::setUnit(Glib::ustring Unit)
 {
-  // update GlobalParam
-
-  ModelGlobalParam * GlobalParam = m_GlobalParams[Key];
-
-  GlobalParam->C_activated();
-
-
-  // update View
-
-  mp_View->setToBeListed(Key,false);
-
-  mp_View->addWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  mp_Unit->set_text(Unit);
 }
 
 
@@ -129,15 +142,9 @@ void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
 // =====================================================================
 
 
-void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
+void ModelParam_V::setLocalValue(std::string Value)
 {
-  // update View
-
-  mp_View->setToBeListed(GlobalParam->getKey(),true);
-
-  mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  mp_Entry->set_text(Value);
 }
 
 
@@ -145,24 +152,9 @@ void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+void ModelParam_V::setGlobalValue(std::string GlobalValue)
 {
-  ModelGlobalParam * GlobalParam = new ModelGlobalParam(this, ParamDef);
-
-  std::string Key = ParamDef.DataName;
-
-  // add to GlobalParams map
-  m_GlobalParams[Key] = GlobalParam;
-
-
-  // update View
-
-  mp_View->addEntry(Key, ParamDef.DataUnit, true);
-
-  mp_View->updateCombo();
-
-
-  return GlobalParam;
+  mp_LabelGlobal->set_text(GlobalValue);
 }
 
 
@@ -170,21 +162,53 @@ ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::Signatu
 // =====================================================================
 
 
-void ModelGlobalParams::deleteGlobalParam(ModelGlobalParam * GlobalParam)
+void ModelParam_V::setLocalValueUsed(bool Used)
 {
-  // update View
+  mp_Check->set_active(Used);
 
-  mp_View->removeEntry(GlobalParam->getKey());
+  mp_Entry->set_sensitive(Used);
 
-  mp_View->updateCombo();
-
-  if(GlobalParam->isActivated())
-    mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
+  mp_LabelGlobal->set_sensitive(!Used);
+}
 
 
-  // remove from GlobalParams map
+// =====================================================================
+// =====================================================================
 
-  m_GlobalParams.erase(GlobalParam->getKey());
 
-  delete GlobalParam;
+void ModelParam_V::setGlobalValueActivated(bool Activated)
+{
+  mp_LabelGlobal->set_visible(Activated);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelParam_V::onCheckToggled()
+{
+  mp_Control->V_localValueUsedChanged(mp_Check->get_active());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ModelParam_V::onEntryFocusOut(GdkEventFocus * /*Event*/)
+{
+  onEntryActivate();
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelParam_V::onEntryActivate()
+{
+  mp_Control->V_localValueChanged(mp_Entry->get_text());
 }

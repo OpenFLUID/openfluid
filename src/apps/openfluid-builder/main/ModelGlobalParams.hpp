@@ -56,81 +56,45 @@
 #ifndef __MODELGLOBALPARAMS_HPP__
 #define __MODELGLOBALPARAMS_HPP__
 
-#include <gtkmm.h>
+//#include <gtkmm.h>
+
+#include "ModelGlobalParams_V.hpp"
+#include "ModelGlobalParam.hpp"
+
+class ModelStructure;
 
 
 // =====================================================================
 // =====================================================================
+
+
+typedef std::map<openfluid::core::FuncParamKey_t,ModelGlobalParam *> GlobalParamsMap_t;
 
 
 class ModelGlobalParams
 {
+  private:
+
+    ModelGlobalParams_V * mp_View;
+
+    GlobalParamsMap_t m_GlobalParams;
+
+    ModelGlobalParam * createGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef);
+
+
   public:
 
     ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
     ~ModelGlobalParams();
 
-    void addParamRequest(Glib::ustring ParamId, Glib::ustring ParamUnit, Gtk::Label * GlobalLabel);
+    ModelGlobalParam * getGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef);
 
-    void removeParamRequest(std::vector<Gtk::Label *> GlobalParamsLabels);
+    void deleteGlobalParam(ModelGlobalParam * GlobalParam);
 
-    Glib::ustring getGlobalParamValue(Glib::ustring ParamId/*, Glib::ustring ParamUnit*/);
+    void V_globalParamActivated(Glib::ustring Key);
 
-    /* Temporary function, to be removed - Print to console used functions list information */
-    void tempCheckModel();
-
-  private:
-
-     class GlobalAvailColumns : public Gtk::TreeModel::ColumnRecord
-     {
-       public:
-
-       GlobalAvailColumns()
-       { add(m_Id); add(m_Unit); add(m_Labels); add(m_IsNotUsed); add(m_TableRowWidgets); add(m_Value); }
-
-       Gtk::TreeModelColumn<Glib::ustring> m_Id;
-       Gtk::TreeModelColumn<Glib::ustring> m_Unit;
-       Gtk::TreeModelColumn<std::vector<Gtk::Label *> > m_Labels;
-       Gtk::TreeModelColumn<bool> m_IsNotUsed; //and not the opposite, because of TreeModel::set_visible_column()
-       Gtk::TreeModelColumn<std::vector<Gtk::Widget *> > m_TableRowWidgets;
-       Gtk::TreeModelColumn<Glib::ustring> m_Value;
-     };
-
-     GlobalAvailColumns m_GlobalAvailColumns;
-
-     Gtk::ComboBox * mp_Combo;
-
-     Gtk::Table * mp_Table;
-
-     Glib::RefPtr<Gtk::TreeStore> mp_TreeModelParams;
-
-     Glib::RefPtr<Gtk::TreeModelFilter> mp_TreeModelFilterCombo;
-
-
-     Gtk::TreeIter getParamIter(Glib::ustring ParamId, Glib::ustring ParamUnit="");
-
-     void setGlobalParamUsed(Gtk::TreeRowReference RefRow);
-
-     void setGlobalParamUnused(Gtk::TreeRowReference RefRow);
-
-     void removeGlobalParams(std::vector<Gtk::TreeRowReference> ParamsToDel);
-
-     void createTableRowWidgets(Gtk::TreeRowReference RefParam);
-
-     void removeTableRowWidgets(Gtk::TreeModel::iterator & Iter);
-
-     void updateComboState();
-
-     void setGlobalLabelValue(Gtk::Label * GlobalLabel, Glib::ustring GlobalValue);
-
-     void onButtonAddClicked();
-
-     void onButtonSupprClicked(Gtk::TreeRowReference RowRef);
-
-     bool onEntryFocusOut(GdkEventFocus * /*Event*/, Gtk::Entry * Entry, Gtk::TreeRowReference RefRow);
-
-     void onEntryActivate(Gtk::Entry * Entry, Gtk::TreeRowReference RefRow);
+    void C_globalParamUnactivated(ModelGlobalParam * GlobalParam);
 
 };
 

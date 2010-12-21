@@ -46,79 +46,48 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file ModelStructure_VNotebook.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
+#ifndef __MODELSTRUCTURE_VNOTEBOOK_HPP__
+#define __MODELSTRUCTURE_VNOTEBOOK_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
-
-#include "ModelStructure.hpp"
+class ModelStructure;
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef std::map<std::string,std::vector<std::string> > VarsByClassMap_t;
-
-
-class ModelModule : public ModuleInterface
+class ModelStructure_VNotebook
 {
-  public:
-
-    ModelModule(openfluid::machine::ModelInstance & Model);
-
-    ~ModelModule();
-
-    VarsByClassMap_t getVarsByClassMap();
-
-    openfluid::base::ModelDescriptor * getModelDescriptor();
-
-    //    void actionCheckModel();
-    bool checkModule(openfluid::machine::ModelInstance * ModelInstance);
-
-
   private:
 
-    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+    ModelStructure * mp_Control;
 
-    ModelColumns m_Columns;
+    Gtk::Notebook * mp_Notebook;
 
-    ModelAvailFct * mp_ModelAvailFct;
+    unsigned int m_AdditionalPageNb;
 
-    StatusItemInterface * mp_StatusParamsValues;
-
-    ModelStructure * mp_ModelStructure;
+    int getAdaptedPagePosition(int Position);
 
 
-    void createActions();
+  public:
 
-    openfluid::machine::ArrayOfModelItemInstance createGeneratorContainers();
+    ModelStructure_VNotebook(ModelStructure * Control, Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
-    openfluid::machine::ModelItemInstance * createGeneratorInstance(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    void addPage(Glib::ustring LabelTxt, Gtk::Widget * InnerWidget, int Position);
 
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::machine::ArrayOfModelItemInstance PlugContainers, openfluid::machine::ArrayOfModelItemInstance GeneratorContainers);
+    void movePage(int PositionFrom, int PositionTo);
 
-    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
-
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
-
+    void removePage(int Position);
 };
 
-#endif /* __MODELMODULE_HPP__ */
+#endif /* __MODELSTRUCTURE_VNOTEBOOK_HPP__ */

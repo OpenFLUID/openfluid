@@ -46,79 +46,64 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file BuilderPluginManager.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
+#ifndef __BUILDERAVAILABLEFUNCTIONS_HPP__
+#define __BUILDERAVAILABLEFUNCTIONS_HPP__
 
-
-#include <gtkmm.h>
 
 #include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
-
-#include "ModelStructure.hpp"
 
 
-// =====================================================================
-// =====================================================================
-
-
-typedef std::map<std::string,std::vector<std::string> > VarsByClassMap_t;
-
-
-class ModelModule : public ModuleInterface
+class BuilderAvailableFunctions
 {
-  public:
-
-    ModelModule(openfluid::machine::ModelInstance & Model);
-
-    ~ModelModule();
-
-    VarsByClassMap_t getVarsByClassMap();
-
-    openfluid::base::ModelDescriptor * getModelDescriptor();
-
-    //    void actionCheckModel();
-    bool checkModule(openfluid::machine::ModelInstance * ModelInstance);
-
-
   private:
 
-    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+    static BuilderAvailableFunctions * mp_Singleton;
 
-    ModelColumns m_Columns;
+    openfluid::machine::ArrayOfModelItemInstance m_PluggableFunctions;
 
-    ModelAvailFct * mp_ModelAvailFct;
+    openfluid::machine::ArrayOfModelItemInstance m_Generators;
 
-    StatusItemInterface * mp_StatusParamsValues;
+    openfluid::machine::ArrayOfModelItemInstance m_AllAvailableFunctions;
 
-    ModelStructure * mp_ModelStructure;
+    BuilderAvailableFunctions();
 
+    openfluid::machine::ArrayOfModelItemInstance buildPluggableFunctionList();
 
-    void createActions();
+    openfluid::machine::ArrayOfModelItemInstance buildGeneratorList();
 
-    openfluid::machine::ArrayOfModelItemInstance createGeneratorContainers();
+    openfluid::machine::ModelItemInstance * buildGeneratorContainer(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
-    openfluid::machine::ModelItemInstance * createGeneratorInstance(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    openfluid::machine::ArrayOfModelItemInstance buildAllAvailableFunctionList();
 
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::machine::ArrayOfModelItemInstance PlugContainers, openfluid::machine::ArrayOfModelItemInstance GeneratorContainers);
+  public:
 
-    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
+    ~BuilderAvailableFunctions();
 
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
+    static BuilderAvailableFunctions * getInstance();
 
+    void update();
+
+    //TODO: set const all getters
+    openfluid::machine::ArrayOfModelItemInstance getPluggableFunctions()
+        { return m_PluggableFunctions; };
+
+    openfluid::machine::ArrayOfModelItemInstance getGenerators()
+        { return m_Generators; };
+
+    openfluid::machine::ArrayOfModelItemInstance getAllAvailableFunctions()
+        { return m_AllAvailableFunctions; };
+
+    openfluid::machine::ModelItemInstance * getPluggableFunction(openfluid::base::FuncID_t Id);
+
+//    openfluid::machine::ModelItemInstance * getGenerator(method);
 };
 
-#endif /* __MODELMODULE_HPP__ */
+
+#endif /* __BUILDERAVAILABLEFUNCTIONS_HPP__ */

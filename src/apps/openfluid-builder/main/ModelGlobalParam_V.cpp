@@ -47,7 +47,7 @@
 
 
 /**
-  \file ModelGlobalParams.cpp
+  \file ModelGlobalParam_V.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
@@ -58,19 +58,50 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
-
-#include "ModelStructure.hpp"
-#include "ModelGlobalParams.hpp"
+#include "ModelGlobalParam.hpp"
+#include "ModelGlobalParam_V.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
+ModelGlobalParam_V::ModelGlobalParam_V(ModelGlobalParam * Control)
+: mp_Control(Control)
 {
-  mp_View = new ModelGlobalParams_V(this, GladeBuilder);
+  mp_ButtonSuppr = Gtk::manage(new Gtk::Button());
+
+  mp_Label = new Gtk::Label("",Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER);
+
+  mp_Entry = Gtk::manage(new Gtk::Entry());
+
+  mp_Unit = Gtk::manage(new Gtk::Label("",Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+
+  mp_Image = Gtk::manage(new Gtk::Image(Gtk::Stock::DELETE, Gtk::ICON_SIZE_BUTTON));
+
+
+  mp_Image->show();
+  mp_ButtonSuppr->add(*mp_Image);
+
+
+  mp_ButtonSuppr->signal_clicked().connect(
+      sigc::mem_fun(*this,&ModelGlobalParam_V::onButtonSupprClicked));
+
+  mp_Entry->signal_focus_out_event().connect(
+      sigc::mem_fun(*this,&ModelGlobalParam_V::onEntryFocusOut));
+  mp_Entry->signal_activate().connect(
+      sigc::mem_fun(*this,&ModelGlobalParam_V::onEntryActivate));
+
+
+  mp_ButtonSuppr->set_visible(true);
+  mp_Label->set_visible(true);
+  mp_Entry->set_visible(true);
+  mp_Unit->set_visible(true);
+
+  m_WidgetRow.push_back(mp_ButtonSuppr);
+  m_WidgetRow.push_back(mp_Label);
+  m_WidgetRow.push_back(mp_Entry);
+  m_WidgetRow.push_back(mp_Unit);
 }
 
 
@@ -78,12 +109,9 @@ ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 // =====================================================================
 
 
-ModelGlobalParams::~ModelGlobalParams()
+std::vector<Gtk::Widget *> ModelGlobalParam_V::asWidgetVector()
 {
-  delete mp_View;
-
-  BOOST_FOREACH(GlobalParamsMap_t::value_type i, m_GlobalParams)
-     delete i.second;
+  return m_WidgetRow;
 }
 
 
@@ -91,14 +119,9 @@ ModelGlobalParams::~ModelGlobalParams()
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+void ModelGlobalParam_V::setLabel(Glib::ustring Label)
 {
-  std::string Key = ParamDef.DataName;
-
-  if(m_GlobalParams.find(Key) == m_GlobalParams.end())
-    return createGlobalParam(ParamDef);
-
-    return m_GlobalParams.find(Key)->second;
+  mp_Label->set_text(Label);
 }
 
 
@@ -106,22 +129,9 @@ ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureH
 // =====================================================================
 
 
-void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
+void ModelGlobalParam_V::setUnit(Glib::ustring Unit)
 {
-  // update GlobalParam
-
-  ModelGlobalParam * GlobalParam = m_GlobalParams[Key];
-
-  GlobalParam->C_activated();
-
-
-  // update View
-
-  mp_View->setToBeListed(Key,false);
-
-  mp_View->addWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  mp_Unit->set_text(Unit);
 }
 
 
@@ -129,15 +139,9 @@ void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
 // =====================================================================
 
 
-void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
+void ModelGlobalParam_V::setValue(Glib::ustring Value)
 {
-  // update View
-
-  mp_View->setToBeListed(GlobalParam->getKey(),true);
-
-  mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  mp_Entry->set_text(Value);
 }
 
 
@@ -145,24 +149,9 @@ void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+void ModelGlobalParam_V::onButtonSupprClicked()
 {
-  ModelGlobalParam * GlobalParam = new ModelGlobalParam(this, ParamDef);
-
-  std::string Key = ParamDef.DataName;
-
-  // add to GlobalParams map
-  m_GlobalParams[Key] = GlobalParam;
-
-
-  // update View
-
-  mp_View->addEntry(Key, ParamDef.DataUnit, true);
-
-  mp_View->updateCombo();
-
-
-  return GlobalParam;
+  mp_Control->V_unactivated();
 }
 
 
@@ -170,21 +159,19 @@ ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::Signatu
 // =====================================================================
 
 
-void ModelGlobalParams::deleteGlobalParam(ModelGlobalParam * GlobalParam)
+bool ModelGlobalParam_V::onEntryFocusOut(GdkEventFocus * /*Event*/)
 {
-  // update View
+  onEntryActivate();
 
-  mp_View->removeEntry(GlobalParam->getKey());
-
-  mp_View->updateCombo();
-
-  if(GlobalParam->isActivated())
-    mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
+  return true;
+}
 
 
-  // remove from GlobalParams map
+// =====================================================================
+// =====================================================================
 
-  m_GlobalParams.erase(GlobalParam->getKey());
 
-  delete GlobalParam;
+void ModelGlobalParam_V::onEntryActivate()
+{
+  mp_Control->V_globalValueChanged(mp_Entry->get_text());
 }

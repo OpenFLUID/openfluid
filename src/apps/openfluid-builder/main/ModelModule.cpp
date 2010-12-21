@@ -105,7 +105,7 @@ ModelModule::ModelModule(openfluid::machine::ModelInstance & Model)
   AllFctContainers.insert(AllFctContainers.end(),GeneratorContainers.begin(),GeneratorContainers.end());
 
   // create Used functions panel
-  mp_ModelUsedFct = new ModelUsedFct(mp_Builder,AllFctContainers,Model);
+  mp_ModelStructure = new ModelStructure(mp_Builder, Model);
 
   // create StatusBar
   mp_StatusBarWidget = new StatusInterface(_("Model Status"));
@@ -125,15 +125,9 @@ ModelModule::ModelModule(openfluid::machine::ModelInstance & Model)
 
 ModelModule::~ModelModule()
 {
-  /*TODO: delete custom objects */
-
   delete mp_ModelAvailFct;
-  delete mp_ModelUsedFct;
+  delete mp_ModelStructure;
   delete mp_StatusBarWidget;
-
-  mp_ModelAvailFct = 0;
-  mp_ModelUsedFct = 0;
-  mp_StatusBarWidget = 0;
 }
 
 
@@ -499,26 +493,26 @@ VarsByClassMap_t ModelModule::getVarsByClassMap()
 {
   VarsByClassMap_t VarsByClassMap;
 
-  std::vector<std::string> Classes = mp_ModelUsedFct->getUsedFctIDs();
-
-  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
-
-  for(unsigned int i=0 ; i<PlugContainers.size() ; i++)
-  {
-    if(std::find(Classes.begin(),Classes.end(),(std::string)PlugContainers[i]->Signature->ID) != Classes.end())
-    {
-      std::vector<openfluid::base::SignatureHandledDataItem> Vars = PlugContainers[i]->Signature->HandledData.ProducedVars;
-      std::vector<openfluid::base::SignatureHandledDataItem> UpVars = PlugContainers[i]->Signature->HandledData.UpdatedVars;
-
-      Vars.insert(Vars.end(),UpVars.begin(),UpVars.end());
-
-      for(unsigned int j=0 ; j<Vars.size() ; j++)
-      {
-        VarsByClassMap[Vars[j].UnitClass].push_back(Vars[j].DataName);
-      }
-    }
-
-  }
+//  std::vector<std::string> Classes = mp_ModelUsedFct->getUsedFctIDs();
+//
+//  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+//
+//  for(unsigned int i=0 ; i<PlugContainers.size() ; i++)
+//  {
+//    if(std::find(Classes.begin(),Classes.end(),(std::string)PlugContainers[i]->Signature->ID) != Classes.end())
+//    {
+//      std::vector<openfluid::base::SignatureHandledDataItem> Vars = PlugContainers[i]->Signature->HandledData.ProducedVars;
+//      std::vector<openfluid::base::SignatureHandledDataItem> UpVars = PlugContainers[i]->Signature->HandledData.UpdatedVars;
+//
+//      Vars.insert(Vars.end(),UpVars.begin(),UpVars.end());
+//
+//      for(unsigned int j=0 ; j<Vars.size() ; j++)
+//      {
+//        VarsByClassMap[Vars[j].UnitClass].push_back(Vars[j].DataName);
+//      }
+//    }
+//
+//  }
 
   return VarsByClassMap;
 }
@@ -530,7 +524,7 @@ VarsByClassMap_t ModelModule::getVarsByClassMap()
 
 openfluid::base::ModelDescriptor * ModelModule::getModelDescriptor()
 {
-  return mp_ModelUsedFct->getModelDescriptor();
+  return mp_ModelStructure->getModelDescriptor();
 }
 
 

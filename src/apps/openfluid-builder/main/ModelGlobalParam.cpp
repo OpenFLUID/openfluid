@@ -47,7 +47,7 @@
 
 
 /**
-  \file ModelGlobalParams.cpp
+  \file ModelGlobalParam.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
@@ -60,17 +60,22 @@
 
 #include <boost/foreach.hpp>
 
-#include "ModelStructure.hpp"
-#include "ModelGlobalParams.hpp"
+#include "ModelGlobalParam.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
+ModelGlobalParam::ModelGlobalParam(ModelGlobalParams * GlobalParams, openfluid::base::SignatureHandledDataItem Signature, Glib::ustring GlobalValue )
+: mp_GlobalParams(GlobalParams), m_Signature(Signature),
+  m_GlobalValue(GlobalValue), m_GlobalValueActivated(false)
 {
-  mp_View = new ModelGlobalParams_V(this, GladeBuilder);
+  mp_View = new ModelGlobalParam_V(this);
+
+  updateLinkedParams();
+
+  updateView();
 }
 
 
@@ -78,12 +83,9 @@ ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 // =====================================================================
 
 
-ModelGlobalParams::~ModelGlobalParams()
+ModelGlobalParam::~ModelGlobalParam()
 {
   delete mp_View;
-
-  BOOST_FOREACH(GlobalParamsMap_t::value_type i, m_GlobalParams)
-     delete i.second;
 }
 
 
@@ -91,14 +93,9 @@ ModelGlobalParams::~ModelGlobalParams()
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+Glib::ustring ModelGlobalParam::getValue()
 {
-  std::string Key = ParamDef.DataName;
-
-  if(m_GlobalParams.find(Key) == m_GlobalParams.end())
-    return createGlobalParam(ParamDef);
-
-    return m_GlobalParams.find(Key)->second;
+  return m_GlobalValue;
 }
 
 
@@ -106,22 +103,9 @@ ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureH
 // =====================================================================
 
 
-void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
+Glib::ustring ModelGlobalParam::getKey()
 {
-  // update GlobalParam
-
-  ModelGlobalParam * GlobalParam = m_GlobalParams[Key];
-
-  GlobalParam->C_activated();
-
-
-  // update View
-
-  mp_View->setToBeListed(Key,false);
-
-  mp_View->addWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  return m_Signature.DataName;
 }
 
 
@@ -129,15 +113,9 @@ void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
 // =====================================================================
 
 
-void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
+Glib::ustring ModelGlobalParam::getUnit()
 {
-  // update View
-
-  mp_View->setToBeListed(GlobalParam->getKey(),true);
-
-  mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  return m_Signature.DataUnit;
 }
 
 
@@ -145,24 +123,9 @@ void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+bool ModelGlobalParam::isActivated()
 {
-  ModelGlobalParam * GlobalParam = new ModelGlobalParam(this, ParamDef);
-
-  std::string Key = ParamDef.DataName;
-
-  // add to GlobalParams map
-  m_GlobalParams[Key] = GlobalParam;
-
-
-  // update View
-
-  mp_View->addEntry(Key, ParamDef.DataUnit, true);
-
-  mp_View->updateCombo();
-
-
-  return GlobalParam;
+  return m_GlobalValueActivated;
 }
 
 
@@ -170,21 +133,97 @@ ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::Signatu
 // =====================================================================
 
 
-void ModelGlobalParams::deleteGlobalParam(ModelGlobalParam * GlobalParam)
+std::vector<Gtk::Widget *> ModelGlobalParam::asWidgetVector()
 {
-  // update View
-
-  mp_View->removeEntry(GlobalParam->getKey());
-
-  mp_View->updateCombo();
-
-  if(GlobalParam->isActivated())
-    mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
+  return mp_View->asWidgetVector();
+}
 
 
-  // remove from GlobalParams map
+// =====================================================================
+// =====================================================================
 
-  m_GlobalParams.erase(GlobalParam->getKey());
 
-  delete GlobalParam;
+void ModelGlobalParam::linkParam(ModelParam * Param)
+{
+  m_ParamList.push_back(Param);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParam::unlinkParam(ModelParam * Param)
+{
+  m_ParamList.remove(Param);
+
+  if(m_ParamList.empty())
+    mp_GlobalParams->deleteGlobalParam(this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParam::C_activated()
+{
+  m_GlobalValueActivated = true;
+
+  updateLinkedParams();
+
+  updateView();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParam::V_unactivated()
+{
+
+  m_GlobalValueActivated = false;
+  m_GlobalValue = "";
+
+  mp_GlobalParams->C_globalParamUnactivated(this);
+
+  updateLinkedParams();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParam::V_globalValueChanged(std::string GlobalValue)
+{
+  m_GlobalValue = GlobalValue;
+
+  updateLinkedParams();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParam::updateLinkedParams()
+{
+  BOOST_FOREACH(ModelParam * i, m_ParamList)
+      i->update();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParam::updateView()
+{
+  mp_View->setLabel(getKey());
+
+  mp_View->setUnit(getUnit());
+
+  mp_View->setValue(m_GlobalValue);
 }

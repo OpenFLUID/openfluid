@@ -46,87 +46,42 @@
 */
 
 /**
- \file ModelUsedFct.hpp
+ \file ModelStructure_VTools.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELUSEDFCT_HPP__
-#define __MODELUSEDFCT_HPP__
+#ifndef __MODELSTRUCTURE_VTOOLS_HPP__
+#define __MODELSTRUCTURE_VTOOLS_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-
-#include "ModelColumns.hpp"
-#include "ModelGlobalParams.hpp"
+class ModelStructure;
 
 
 // =====================================================================
 // =====================================================================
 
 
-class ModelUsedFct
+class ModelStructure_VTools
 {
+  private:
+
+      ModelStructure * mp_Control;
+
+      Gtk::Image * mp_ImageTrash;
+
+      void onTrashDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int /*x*/, int /*y*/,
+          const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
+
   public:
 
-    ModelUsedFct(Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ArrayOfModelItemInstance AllFctContainers, openfluid::machine::ModelInstance & ModelInstance);
-
-    ~ModelUsedFct();
-
-    std::vector<std::string> getUsedFctIDs();
-
-    openfluid::base::ModelDescriptor * getModelDescriptor();
-
-    openfluid::machine::ArrayOfModelItemInstance m_AllFctContainers;
-
-    ModelColumns m_Columns;
-
-    Glib::RefPtr<Gtk::ListStore> mp_TreeModelUsedFct;
-
-    Gtk::TreeView * mp_TreeViewUsedFct;
-
-    Gtk::Image * mp_ImageModelUsedFctTrash;
-
-    Gtk::Notebook * mp_NotebookParams;
-
-    ModelGlobalParams * mp_ModelGlobalParams;
-
-    Glib::RefPtr<Gtk::ListStore> createTreeModelUsedFct(openfluid::machine::ModelInstance & ModelInstance);
-
-    void initTreeViewUsedFct(std::list<Gtk::TargetEntry> ListTargets);
-
-    void onSourceDragDataGet(const Glib::RefPtr< Gdk::DragContext >& /*context*/,
-        Gtk::SelectionData& selection_data, guint /*info*/, guint /*time*/);
-
-    void onDestDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-        const Gtk::SelectionData& selection_data, guint /*info*/, guint time);
-
-    void onTrashDragDataReceived(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-        const Gtk::SelectionData& /*selection_data*/, guint /*info*/, guint time);
-
-    void addAFunction(Glib::ustring Id, Gtk::TreeModel::Row & RowDest);
-
-    void moveAFunction(Gtk::TreeModel::iterator & IterSrc, Gtk::TreeModel::iterator & IterDest);
-
-    void removeSelectedUsedFunction();
-
-    void createParamTab(Gtk::TreeModel::Row Row, std::vector<openfluid::base::SignatureHandledDataItem> AvailParams, int Position);
-
-    bool onEntryFocusOut(GdkEventFocus * /*Event*/, Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
-
-    void onEntryActivate(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::TreeModel::Row Row);
-
-    void onCheckToggled(Glib::ustring ParamName, Gtk::Entry * Entry, Gtk::CheckButton * Check, Gtk::TreeModel::Row Row);
-
-    /* Temporary function, to be removed - Print to console used functions list information */
-    void tempCheckModel();
+      ModelStructure_VTools(ModelStructure * Control, Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
 };
 
 
-#endif /* __MODELUSEDFCT_HPP__ */
+#endif /* __MODELSTRUCTURE_VTOOLS_HPP__ */

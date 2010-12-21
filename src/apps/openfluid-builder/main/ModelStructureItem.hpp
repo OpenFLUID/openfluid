@@ -46,79 +46,77 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file ModelStructureItem.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
+#ifndef __MODELSTRUCTUREITEM_HPP__
+#define __MODELSTRUCTUREITEM_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
 #include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/machine.hpp>
 
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
+#include "ModelStructureItem_V.hpp"
+#include "ModelParam.hpp"
 
-#include "ModelStructure.hpp"
+class ModelStructure;
+class ModelGlobalParams;
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef std::map<std::string,std::vector<std::string> > VarsByClassMap_t;
+typedef std::map<openfluid::core::FuncParamKey_t,ModelParam *> ParamsMap_t;
 
 
-class ModelModule : public ModuleInterface
+// Adapter
+class ModelStructureItem
 {
-  public:
-
-    ModelModule(openfluid::machine::ModelInstance & Model);
-
-    ~ModelModule();
-
-    VarsByClassMap_t getVarsByClassMap();
-
-    openfluid::base::ModelDescriptor * getModelDescriptor();
-
-    //    void actionCheckModel();
-    bool checkModule(openfluid::machine::ModelInstance * ModelInstance);
-
-
   private:
 
-    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+    openfluid::base::ModelItemDescriptor * mp_ItemDescriptor;
 
-    ModelColumns m_Columns;
+    openfluid::base::FuncID_t m_Id;
 
-    ModelAvailFct * mp_ModelAvailFct;
+    ModelStructure * mp_Structure;
 
-    StatusItemInterface * mp_StatusParamsValues;
+    ModelStructureItem_V * mp_View;
 
-    ModelStructure * mp_ModelStructure;
+    ParamsMap_t m_ParamsMap;
+
+    ModelGlobalParams * mp_GlobalParams;
+
+    Glib::RefPtr<Gtk::Builder> mp_Builder;
 
 
-    void createActions();
+  public:
 
-    openfluid::machine::ArrayOfModelItemInstance createGeneratorContainers();
+    ModelStructureItem(ModelStructure * Structure, ModelGlobalParams * GlobalParams, Glib::RefPtr<Gtk::Builder> GladeBuilder, Glib::ustring Id, openfluid::base::ModelItemDescriptor::ModelItemType Type = openfluid::base::ModelItemDescriptor::PluggedFunction);
 
-    openfluid::machine::ModelItemInstance * createGeneratorInstance(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    ModelStructureItem(ModelStructure * Structure, ModelGlobalParams * GlobalParams, Glib::RefPtr<Gtk::Builder> GladeBuilder, openfluid::machine::ModelItemInstance & Instance);
 
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::machine::ArrayOfModelItemInstance PlugContainers, openfluid::machine::ArrayOfModelItemInstance GeneratorContainers);
+    ~ModelStructureItem();
 
-    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
+    void initParams(Glib::ustring FunctionId, openfluid::core::FuncParamsMap_t * ParamsValues=0);
 
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
+    openfluid::base::FuncID_t getId();
+
+    openfluid::core::FuncParamValue_t getParamValue(openfluid::core::FuncParamKey_t Key);
+
+    openfluid::base::ModelItemDescriptor * getItemDescriptor();
+
+    Gtk::Widget * asWidget();
+
+    void setParamValue(openfluid::core::FuncParamKey_t Key, openfluid::core::FuncParamValue_t Value);
 
 };
 
-#endif /* __MODELMODULE_HPP__ */
+
+#endif /* __MODELSTRUCTUREITEM_HPP__ */

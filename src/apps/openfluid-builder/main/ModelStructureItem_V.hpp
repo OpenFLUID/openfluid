@@ -46,79 +46,45 @@
 */
 
 /**
- \file ModelModule.hpp
+ \file ModelStructureItem_V.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
-#ifndef __MODELMODULE_HPP__
-#define __MODELMODULE_HPP__
+#ifndef __MODELSTRUCTUREITEM_V_HPP__
+#define __MODELSTRUCTUREITEM_V_HPP__
 
 
 #include <gtkmm.h>
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include "ModelParam_V.hpp"
 
-#include "ModuleInterface.hpp"
-#include "ModelAvailFct.hpp"
-#include "StatusInterface.hpp"
-#include "StatusItemInterface.hpp"
-
-#include "ModelStructure.hpp"
+class ModelStructureItem;
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef std::map<std::string,std::vector<std::string> > VarsByClassMap_t;
-
-
-class ModelModule : public ModuleInterface
+class ModelStructureItem_V : public Gtk::ScrolledWindow
 {
-  public:
-
-    ModelModule(openfluid::machine::ModelInstance & Model);
-
-    ~ModelModule();
-
-    VarsByClassMap_t getVarsByClassMap();
-
-    openfluid::base::ModelDescriptor * getModelDescriptor();
-
-    //    void actionCheckModel();
-    bool checkModule(openfluid::machine::ModelInstance * ModelInstance);
-
-
   private:
 
-    Glib::RefPtr<Gtk::TreeStore> mp_MainTreeModel;
+    ModelStructureItem * mp_Control;
 
-    ModelColumns m_Columns;
+    Gtk::Table * mp_Table;
 
-    ModelAvailFct * mp_ModelAvailFct;
-
-    StatusItemInterface * mp_StatusParamsValues;
-
-    ModelStructure * mp_ModelStructure;
+    int m_ParamNb;
 
 
-    void createActions();
+  public:
 
-    openfluid::machine::ArrayOfModelItemInstance createGeneratorContainers();
+    ModelStructureItem_V(ModelStructureItem * Control, Glib::RefPtr<Gtk::Builder> GladeBuilder);
 
-    openfluid::machine::ModelItemInstance * createGeneratorInstance(openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
-
-    Glib::RefPtr<Gtk::TreeStore> createMainTreeModel(openfluid::machine::ArrayOfModelItemInstance PlugContainers, openfluid::machine::ArrayOfModelItemInstance GeneratorContainers);
-
-    void createHandleDataTreeRows(Glib::RefPtr<Gtk::TreeStore> Model,Gtk::TreeModel::Row * PrevRow, Glib::ustring Title, ModelColumns::RowType Type, std::vector<openfluid::base::SignatureHandledDataItem> Vars, bool ShowTitle = true);
-
-    void setRowTitle(Gtk::TreeModel::Row * Row, Glib::ustring Title, ModelColumns::RowType Type, bool ShowTitle = true);
+    void addParamWidgetRow(std::vector<Gtk::Widget *>WidgetVector);
 
 };
 
-#endif /* __MODELMODULE_HPP__ */
+#endif /* __MODELSTRUCTUREITEM_V_HPP__ */

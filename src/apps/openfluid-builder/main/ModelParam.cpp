@@ -47,7 +47,7 @@
 
 
 /**
-  \file ModelGlobalParams.cpp
+  \file ModelParam.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
@@ -58,19 +58,23 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
-
-#include "ModelStructure.hpp"
-#include "ModelGlobalParams.hpp"
+#include "ModelGlobalParam.hpp"
+#include "ModelParam.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
+ModelParam::ModelParam(ModelStructureItem * StructureItem, openfluid::base::SignatureHandledDataItem Signature, ModelGlobalParam * GlobalParam, openfluid::core::FuncParamValue_t Value)
+: mp_StructureItem(StructureItem), m_Signature(Signature), mp_GlobalParam(GlobalParam),
+  m_LocalValue(Value), m_LocalValueUsed(true)
 {
-  mp_View = new ModelGlobalParams_V(this, GladeBuilder);
+  mp_View = new ModelParam_V(this);
+
+  mp_GlobalParam->linkParam(this);
+
+  update();
 }
 
 
@@ -78,12 +82,11 @@ ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 // =====================================================================
 
 
-ModelGlobalParams::~ModelGlobalParams()
+ModelParam::~ModelParam()
 {
   delete mp_View;
 
-  BOOST_FOREACH(GlobalParamsMap_t::value_type i, m_GlobalParams)
-     delete i.second;
+  mp_GlobalParam->unlinkParam(this);
 }
 
 
@@ -91,14 +94,9 @@ ModelGlobalParams::~ModelGlobalParams()
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+std::vector<Gtk::Widget *> ModelParam::asWidgetVector()
 {
-  std::string Key = ParamDef.DataName;
-
-  if(m_GlobalParams.find(Key) == m_GlobalParams.end())
-    return createGlobalParam(ParamDef);
-
-    return m_GlobalParams.find(Key)->second;
+  return mp_View->asWidgetVector();
 }
 
 
@@ -106,22 +104,11 @@ ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureH
 // =====================================================================
 
 
-void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
+void ModelParam::V_localValueChanged(Glib::ustring Value)
 {
-  // update GlobalParam
+  m_LocalValue = Value;
 
-  ModelGlobalParam * GlobalParam = m_GlobalParams[Key];
-
-  GlobalParam->C_activated();
-
-
-  // update View
-
-  mp_View->setToBeListed(Key,false);
-
-  mp_View->addWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  update();
 }
 
 
@@ -129,15 +116,11 @@ void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
 // =====================================================================
 
 
-void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
+void ModelParam::V_localValueUsedChanged(bool Used)
 {
-  // update View
+  m_LocalValueUsed = Used;
 
-  mp_View->setToBeListed(GlobalParam->getKey(),true);
-
-  mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  update();
 }
 
 
@@ -145,24 +128,11 @@ void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+void ModelParam::update()
 {
-  ModelGlobalParam * GlobalParam = new ModelGlobalParam(this, ParamDef);
+  mp_StructureItem->setParamValue(getKey(),getCurrentValue());
 
-  std::string Key = ParamDef.DataName;
-
-  // add to GlobalParams map
-  m_GlobalParams[Key] = GlobalParam;
-
-
-  // update View
-
-  mp_View->addEntry(Key, ParamDef.DataUnit, true);
-
-  mp_View->updateCombo();
-
-
-  return GlobalParam;
+  updatePresentation();
 }
 
 
@@ -170,21 +140,75 @@ ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::Signatu
 // =====================================================================
 
 
-void ModelGlobalParams::deleteGlobalParam(ModelGlobalParam * GlobalParam)
+Glib::ustring ModelParam::getKey()
 {
-  // update View
-
-  mp_View->removeEntry(GlobalParam->getKey());
-
-  mp_View->updateCombo();
-
-  if(GlobalParam->isActivated())
-    mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
+  return m_Signature.DataName;
+}
 
 
-  // remove from GlobalParams map
+// =====================================================================
+// =====================================================================
 
-  m_GlobalParams.erase(GlobalParam->getKey());
 
-  delete GlobalParam;
+Glib::ustring ModelParam::getUnit()
+{
+  return m_Signature.DataUnit;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring ModelParam::getGlobalValue()
+{
+  return mp_GlobalParam->getValue();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring ModelParam::getFormattedGlobalValue()
+{
+  return Glib::ustring::compose(_("(global : \"%1\")"),getGlobalValue());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring ModelParam::getCurrentValue()
+{
+  if(m_LocalValueUsed)
+    return m_LocalValue;
+
+  return getGlobalValue();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ModelParam::isGlobalValueActivated()
+{
+  return mp_GlobalParam->isActivated();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelParam::updatePresentation()
+{
+  mp_View->setLabel(getKey());
+  mp_View->setUnit(getUnit());
+  mp_View->setLocalValue(m_LocalValue);
+  mp_View->setGlobalValue(getFormattedGlobalValue());
+  mp_View->setLocalValueUsed(m_LocalValueUsed);
+  mp_View->setGlobalValueActivated(isGlobalValueActivated());
 }

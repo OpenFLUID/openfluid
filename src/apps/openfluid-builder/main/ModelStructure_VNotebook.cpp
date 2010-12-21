@@ -47,7 +47,7 @@
 
 
 /**
-  \file ModelGlobalParams.cpp
+  \file ModelStructure_VNotebook.cpp
   \brief Implements ...
 
   \author Aline LIBRES <libres@supagro.inra.fr>
@@ -58,19 +58,21 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
-
 #include "ModelStructure.hpp"
-#include "ModelGlobalParams.hpp"
+
+#include "ModelStructure_VNotebook.hpp"
 
 
 // =====================================================================
 // =====================================================================
 
 
-ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
+ModelStructure_VNotebook::ModelStructure_VNotebook(ModelStructure * Control, Glib::RefPtr<Gtk::Builder> GladeBuilder)
+:mp_Control(Control)
 {
-  mp_View = new ModelGlobalParams_V(this, GladeBuilder);
+  GladeBuilder->get_widget("NotebookParams",mp_Notebook);
+
+  m_AdditionalPageNb = mp_Notebook->get_n_pages();
 }
 
 
@@ -78,12 +80,12 @@ ModelGlobalParams::ModelGlobalParams(Glib::RefPtr<Gtk::Builder> GladeBuilder)
 // =====================================================================
 
 
-ModelGlobalParams::~ModelGlobalParams()
+int ModelStructure_VNotebook::getAdaptedPagePosition(int Position)
 {
-  delete mp_View;
+  if(Position > -1)
+    Position += m_AdditionalPageNb;
 
-  BOOST_FOREACH(GlobalParamsMap_t::value_type i, m_GlobalParams)
-     delete i.second;
+  return Position;
 }
 
 
@@ -91,14 +93,15 @@ ModelGlobalParams::~ModelGlobalParams()
 // =====================================================================
 
 
-ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
+void ModelStructure_VNotebook::addPage(Glib::ustring LabelTxt, Gtk::Widget * InnerWidget, int Position)
 {
-  std::string Key = ParamDef.DataName;
+  Gtk::Label * LabelTab = Gtk::manage(new Gtk::Label(LabelTxt));
+  Gtk::Label * LabelMenu = Gtk::manage(new Gtk::Label(LabelTxt,Gtk::ALIGN_LEFT));
 
-  if(m_GlobalParams.find(Key) == m_GlobalParams.end())
-    return createGlobalParam(ParamDef);
+  int Index = mp_Notebook->insert_page(*InnerWidget,*LabelTab,*LabelMenu,getAdaptedPagePosition(Position));
 
-    return m_GlobalParams.find(Key)->second;
+  mp_Notebook->set_current_page(Index);
+
 }
 
 
@@ -106,22 +109,13 @@ ModelGlobalParam * ModelGlobalParams::getGlobalParam(openfluid::base::SignatureH
 // =====================================================================
 
 
-void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
+void ModelStructure_VNotebook::movePage(int PositionFrom, int PositionTo)
 {
-  // update GlobalParam
+  Gtk::Widget * InnerWidget = mp_Notebook->get_nth_page(getAdaptedPagePosition(PositionFrom));
 
-  ModelGlobalParam * GlobalParam = m_GlobalParams[Key];
+  mp_Notebook->reorder_child(*InnerWidget,getAdaptedPagePosition(PositionTo));
 
-  GlobalParam->C_activated();
-
-
-  // update View
-
-  mp_View->setToBeListed(Key,false);
-
-  mp_View->addWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
+  mp_Notebook->set_current_page(mp_Notebook->page_num(*InnerWidget));
 }
 
 
@@ -129,62 +123,7 @@ void ModelGlobalParams::V_globalParamActivated(Glib::ustring Key)
 // =====================================================================
 
 
-void ModelGlobalParams::C_globalParamUnactivated(ModelGlobalParam * GlobalParam)
+void ModelStructure_VNotebook::removePage(int Position)
 {
-  // update View
-
-  mp_View->setToBeListed(GlobalParam->getKey(),true);
-
-  mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
-
-  mp_View->updateCombo();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ModelGlobalParam * ModelGlobalParams::createGlobalParam(openfluid::base::SignatureHandledDataItem ParamDef)
-{
-  ModelGlobalParam * GlobalParam = new ModelGlobalParam(this, ParamDef);
-
-  std::string Key = ParamDef.DataName;
-
-  // add to GlobalParams map
-  m_GlobalParams[Key] = GlobalParam;
-
-
-  // update View
-
-  mp_View->addEntry(Key, ParamDef.DataUnit, true);
-
-  mp_View->updateCombo();
-
-
-  return GlobalParam;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelGlobalParams::deleteGlobalParam(ModelGlobalParam * GlobalParam)
-{
-  // update View
-
-  mp_View->removeEntry(GlobalParam->getKey());
-
-  mp_View->updateCombo();
-
-  if(GlobalParam->isActivated())
-    mp_View->removeWidgetRow(GlobalParam->asWidgetVector());
-
-
-  // remove from GlobalParams map
-
-  m_GlobalParams.erase(GlobalParam->getKey());
-
-  delete GlobalParam;
+  mp_Notebook->remove_page(getAdaptedPagePosition(Position));
 }
