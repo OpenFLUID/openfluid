@@ -75,11 +75,23 @@ MarketSrcPackage::MarketSrcPackage(openfluid::base::FuncID_t ID, std::string Pac
 // =====================================================================
 
 
+void MarketSrcPackage::setAdditionalBuildConfigOptions(const std::string& Options)
+{
+  m_BuildConfigOptions = Options;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketSrcPackage::process()
 {
 
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","CMake command not defined");
+
+  if (!m_BuildConfigOptions.empty()) m_BuildConfigOptions = " " + m_BuildConfigOptions;
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
 
@@ -88,17 +100,20 @@ void MarketSrcPackage::process()
 
   std::string UntarCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
 
-  std::string BuildConfigCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " . ";
+  std::string BuildConfigCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " ." + m_BuildConfigOptions;
 
   std::string BuildCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " --build . --target "+m_ID;
 
 
+  // uncompressing package
   if (std::system(UntarCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
 
+  // configuring build
   if (std::system(BuildConfigCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error configuring package build using CMake");
 
+  // building
   if (std::system(BuildCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error building package using CMake");
 

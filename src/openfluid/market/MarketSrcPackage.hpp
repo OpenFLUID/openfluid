@@ -65,7 +65,13 @@ namespace openfluid { namespace market {
 
 class DLLEXPORT MarketSrcPackage : public MarketPackage
 {
+
+  private:
+    std::string m_BuildConfigOptions;
+
   public:
+
+    void setAdditionalBuildConfigOptions(const std::string& Options);
 
     MarketSrcPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
 
