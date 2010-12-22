@@ -54,6 +54,8 @@
 */
 
 #include <openfluid/market/MarketPackage.hpp>
+#include <openfluid/tools/CURLDownloader.hpp>
+
 
 namespace openfluid { namespace market {
 
@@ -64,12 +66,16 @@ std::string MarketPackage::m_MarketBagDir = "";
 
 std::string MarketPackage::m_CMakeCommand = "";
 
+bool MarketPackage::m_Initialized = false;
 
 
 MarketPackage::MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
               : m_ID(ID), m_PackageURL(PackageURL)
 {
+  m_PackageFilename = boost::filesystem::path(PackageURL).leaf();
+  m_Downloaded = false;
 
+  std::cout << m_PackageFilename << std::endl;
 }
 
 
@@ -102,7 +108,7 @@ void MarketPackage::initialize()
   else
     throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Required CMake program not found");
 
-
+  m_Initialized = true;
 }
 
 
@@ -125,9 +131,16 @@ void MarketPackage::setWorksDirs(std::string TempBuildsDir, std::string TempDown
 void MarketPackage::download()
 {
 
-  m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_ID+".tar.gz").string();
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","package "+m_PackageFilename+" not initialized");;
 
-  openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest);
+  m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
+
+  if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","error while downloading package "+m_PackageFilename);;
+
+  m_Downloaded = true;
+
 }
 
 

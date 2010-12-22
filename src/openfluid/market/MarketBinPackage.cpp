@@ -73,6 +73,11 @@ MarketBinPackage::MarketBinPackage(openfluid::base::FuncID_t ID, std::string Pac
 
 void MarketBinPackage::process()
 {
+
+  if (!m_Downloaded)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+
+
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
 

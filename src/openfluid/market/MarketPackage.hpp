@@ -58,7 +58,6 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/base.hpp>
 
 
@@ -77,13 +76,19 @@ class DLLEXPORT MarketPackage
 
     static std::string m_CMakeCommand;
 
+    static bool m_Initialized;
+
+
 
     openfluid::base::FuncID_t m_ID;
 
     std::string m_PackageURL;
 
+    std::string m_PackageFilename;
+
     std::string m_PackageDest;
 
+    bool m_Downloaded;
 
 
   public:

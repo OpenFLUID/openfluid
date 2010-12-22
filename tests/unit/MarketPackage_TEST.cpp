@@ -47,7 +47,7 @@
 
 
 /**
-  \file MarketClient_TEST.cpp
+  \file MarketPackage_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketBinPackage BPack("tests.market.bin.dummy","file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/market/packages/tests.market.bin.dummy.ofpk").string());
 
   BPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.bin.dummy.tar.gz")));
+  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.bin.dummy.ofpk")));
 
   BPack.process();
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market/tests.market.bin.dummy.pdf.txt")));
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
                                         "-Dopenfluid_VERSION="+CONFIGTESTS_FULL_VERSION);
 
   SPack.download();
-  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.src.use.tar.gz")));
+  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.src.use.ofpk")));
 
   SPack.process();
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/builds/tests.market.src.use/tests.market.src.use"+CONFIGTESTS_PLUGINS_EXT)));

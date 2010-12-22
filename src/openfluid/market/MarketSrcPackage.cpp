@@ -87,6 +87,9 @@ void MarketSrcPackage::setAdditionalBuildConfigOptions(const std::string& Option
 
 void MarketSrcPackage::process()
 {
+  if (!m_Downloaded)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+
 
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","CMake command not defined");
@@ -107,15 +110,15 @@ void MarketSrcPackage::process()
 
   // uncompressing package
   if (std::system(UntarCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error uncompressing package using CMake");
 
   // configuring build
   if (std::system(BuildConfigCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error configuring package build using CMake");
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error configuring package build using CMake");
 
   // building
   if (std::system(BuildCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error building package using CMake");
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error building package using CMake");
 
   boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT),
                                     boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
