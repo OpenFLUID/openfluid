@@ -74,8 +74,6 @@ MarketPackage::MarketPackage(openfluid::base::FuncID_t ID, std::string PackageUR
 {
   m_PackageFilename = boost::filesystem::path(PackageURL).leaf();
   m_Downloaded = false;
-
-  std::cout << m_PackageFilename << std::endl;
 }
 
 
