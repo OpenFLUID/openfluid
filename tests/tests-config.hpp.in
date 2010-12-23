@@ -61,6 +61,7 @@ const std::string CONFIGTESTS_DISTBIN_DIR = "@BIN_OUTPUT_PATH@";
 const std::string CONFIGTESTS_LIB_OUTPUT_PATH = "@LIB_OUTPUT_PATH@";
 const std::string CONFIGTESTS_INCLUDE_DIRS = "@CMAKE_SOURCE_DIR@/src";
 const std::string CONFIGTESTS_CMAKE_GENERATOR = "@CMAKE_GENERATOR@";
+const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" -Dopenfluid_FOUND=1 -Dopenfluid_LIBRARY_DIRS=\"@LIB_OUTPUT_PATH@\" -Dopenfluid_LIBRARIES=\"-L@LIB_OUTPUT_PATH@ -lopenfluid-base -lopenfluid-core -lopenfluid-tools\" -Dopenfluid_INCLUDE_DIRS=\"@CMAKE_SOURCE_DIR@/src\" -Dopenfluid_VERSION=@FULL_VERSION@";
 
 // Plugins extension
 const std::string CONFIGTESTS_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
