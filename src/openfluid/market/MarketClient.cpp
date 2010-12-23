@@ -196,9 +196,9 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 
   KFile.load_from_data(SiteData);
 
-  m_MarketInfo.Name = KFile.get_string("site","name");
-  m_MarketInfo.Description = KFile.get_string("site","description");
-  m_MarketInfo.Contact = KFile.get_string("site","contact");
+  m_MarketInfo.Name = KFile.get_string("openfluid-market-site","name");
+  m_MarketInfo.Description = KFile.get_string("openfluid-market-site","description");
+  m_MarketInfo.Contact = KFile.get_string("openfluid-market-site","contact");
 }
 
 
