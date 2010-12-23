@@ -68,6 +68,13 @@ class DLLEXPORT MarketPackage
 {
   protected:
 
+    static const std::string BUILDS_SUBDIR;
+
+    static const std::string DLOADS_SUBDIR;
+
+
+    static std::string m_TempDir;
+
     static std::string m_TempBuildsDir;
 
     static std::string m_TempDownloadsDir;
@@ -97,9 +104,11 @@ class DLLEXPORT MarketPackage
 
     static void initialize();
 
-    static void setWorksDirs(std::string TempBuildsDir, std::string TempDownloadsDir, std::string MarketBagDir);
+    static void setWorksDirs(std::string TempDir, std::string MarketBagDir);
 
     static std::string getMarketBagDir() { return m_MarketBagDir; };
+
+    static std::string getTempDir() { return m_TempDir; };
 
     static std::string getTempBuildsDir() { return m_TempBuildsDir; };
 

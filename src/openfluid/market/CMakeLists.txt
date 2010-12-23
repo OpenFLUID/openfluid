@@ -1,8 +1,12 @@
 
+
+PKG_CHECK_MODULES(GLIBMM REQUIRED glibmm-2.4)
+
+
 ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS})
+LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS})
 
 
 FILE(GLOB OPENFLUID_MARKET_CPP *.cpp)
@@ -20,7 +24,7 @@ SET_TARGET_PROPERTIES(openfluid-market PROPERTIES VERSION "${VERSION_MAJOR}.${VE
 TARGET_LINK_LIBRARIES(openfluid-market
                       openfluid-base
                       openfluid-tools
-                      ${LibXML2_LIBRARIES} 
+                      ${GLIBMM_LIBRARIES} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
 

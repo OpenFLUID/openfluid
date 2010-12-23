@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <market>
+    <site>
+      <name>OpenFLUID-Market for tests</name>
+      <description>
+        This is the OpenFLUID-Market for tests
+      </description>
+      <contact>John Doe (J.doe@anonymous.com)</contact>
+    </site>
+  </market>
+</openfluid>

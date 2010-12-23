@@ -57,6 +57,9 @@
 #define __MARKETINFOS_HPP__
 
 #include <openfluid/base.hpp>
+#include <map>
+#include <boost/scoped_ptr.hpp>
+
 
 namespace openfluid { namespace market {
 
@@ -68,18 +71,30 @@ class DLLEXPORT MarketInfo
 {
   public:
 
-    std::string URL;
-
     std::string Name;
 
     std::string Description;
 
+    std::string Contact;
+
     MarketInfo()
     {
-      URL.clear();
       Name.clear();
       Description.clear();
+      Contact.clear();
     }
+
+    ~MarketInfo() { }
+
+
+    void clear()
+    {
+      Name.clear();
+      Description.clear();
+      Contact.clear();
+    }
+
+
 };
 
 
@@ -91,23 +106,65 @@ class DLLEXPORT PackageInfo
 {
   public:
 
-    openfluid::base::FuncID_t FuncID;
+    std::string URL;
 
     std::string Name;
 
+    std::string Description;
+
     std::string Authors;
 
-    std::string Description;
+    std::string License;
 
     PackageInfo()
     {
-      FuncID.clear();
+      URL.clear();
       Name.clear();
       Authors.clear();
       Description.clear();
+      License.clear();
+    }
+
+    ~PackageInfo() {  }
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class DLLEXPORT MetaPackageInfo
+{
+  public:
+
+    enum SelectionType { NONE, BIN, SRC};
+
+    openfluid::base::FuncID_t ID;
+
+    std::map<SelectionType,PackageInfo> AvailablePackages;
+
+    SelectionType Selected;
+
+    MetaPackageInfo()
+    {
+      ID.clear();
+      Selected = NONE;
+      AvailablePackages.clear();
+    }
+
+    ~MetaPackageInfo()
+    {
     }
 
 };
+
+
+// =====================================================================
+// =====================================================================
+
+
+typedef std::map<openfluid::base::FuncID_t,MetaPackageInfo> MetaPackagesCatalog_t;
 
 
 } } // namespaces
