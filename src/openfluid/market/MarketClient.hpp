@@ -90,6 +90,8 @@ class DLLEXPORT MarketClient
 
     MarketLicensesTexts_t m_LicensesTexts;
 
+    bool m_IsConnected;
+
     void initMarketBag();
 
     void initMarketTemp();
