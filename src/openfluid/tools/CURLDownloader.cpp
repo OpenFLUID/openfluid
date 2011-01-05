@@ -133,6 +133,8 @@ CURLDownloader::ErrorCode CURLDownloader::downloadToFile(const std::string URL,
     curl_easy_setopt(Curl, CURLOPT_HEADER, 0);
     curl_easy_setopt(Curl, CURLOPT_WRITEFUNCTION, CURLDownloader::CURLWriterToFile);
     curl_easy_setopt(Curl, CURLOPT_WRITEDATA, FP);
+    curl_easy_setopt(Curl, CURLOPT_FAILONERROR, 1);
+
     Result = curl_easy_perform(Curl);
     curl_easy_cleanup(Curl);
     fclose(FP);
@@ -171,10 +173,9 @@ CURLDownloader::ErrorCode CURLDownloader::downloadToString(const std::string URL
     curl_easy_setopt(Curl, CURLOPT_HEADER, 0);
     curl_easy_setopt(Curl, CURLOPT_WRITEFUNCTION, CURLDownloader::CURLWriterToBuffer);
     curl_easy_setopt(Curl, CURLOPT_WRITEDATA, &Contents);
+    curl_easy_setopt(Curl, CURLOPT_FAILONERROR, 1);
 
     Result = curl_easy_perform(Curl);
-
-    // Always cleanup
     curl_easy_cleanup(Curl);
   }
 
