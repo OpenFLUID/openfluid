@@ -69,10 +69,11 @@ const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
 // Install prefix
 const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
 
+
 // Plugins dirs
 const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
 const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
-const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
+
 
 // Default files
 const std::string MODELFILE = "model.xml";
@@ -86,6 +87,12 @@ const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
 // Default file extensions
 const std::string OUTFILES_EXT = "out";
 const std::string TRACEFILES_EXT = "trace";
+
+// Market
+
+const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
+const std::string MARKETPLACE_SITEFILE = "@OPENFLUID_MARKETPLACE_SITEFILE@";
+const std::string MARKETPLACE_CATALOGFILE = "@OPENFLUID_MARKETPLACE_CATALOGFILE@";
 
 
 // func2doc default template file path

@@ -50,7 +50,7 @@
 #include <openfluid/market/MarketBinPackage.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
-
+#include <openfluid/config.hpp>
 
 #include <fstream>
 #include <deque>
@@ -197,9 +197,9 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 
   KFile.load_from_data(SiteData);
 
-  m_MarketInfo.Name = KFile.get_string("openfluid-market-site","name");
-  m_MarketInfo.Description = KFile.get_string("openfluid-market-site","description");
-  m_MarketInfo.Contact = KFile.get_string("openfluid-market-site","contact");
+  m_MarketInfo.Name = KFile.get_string("openfluid-marketplace","name");
+  m_MarketInfo.Description = KFile.get_string("openfluid-marketplace","description");
+  m_MarketInfo.Contact = KFile.get_string("openfluid-marketplace","contact");
 }
 
 
@@ -328,9 +328,9 @@ void MarketClient::connect(const std::string URL)
 
   MarketPackage::initialize();
 
-  std::string MarketFileURL = m_URL+"/Market";
-  std::string BinCatalogFileURL = m_URL + "/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/Catalog";
-  std::string SrcCatalogFileURL = m_URL + "/src/Catalog";
+  std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
+  std::string BinCatalogFileURL = m_URL + "/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+openfluid::config::MARKETPLACE_CATALOGFILE;
+  std::string SrcCatalogFileURL = m_URL + "/src/"+openfluid::config::MARKETPLACE_CATALOGFILE;
 
   if (!m_IsConnected && openfluid::tools::CURLDownloader::downloadToString(MarketFileURL, MarketData) == openfluid::tools::CURLDownloader::NO_ERROR)
   {
