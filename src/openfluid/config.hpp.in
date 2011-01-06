@@ -57,6 +57,11 @@ namespace openfluid { namespace config {
 // App Name
 const std::string APPNAME = "@OPENFLUID_MAIN_NAME@";
 
+
+// default config file
+const std::string DEFAULT_CONFIGFILE = "@OPENFLUID_DEFAULT_CONFIGFILE@";
+
+
 // Relative openfluid directory
 const std::string RELATIVEDIR = "@OPENFLUID_RELATIVEDIR@";
 
@@ -88,8 +93,8 @@ const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
 const std::string OUTFILES_EXT = "out";
 const std::string TRACEFILES_EXT = "trace";
 
-// Market
 
+// Market
 const std::string MARKETBAG_SUBDIR = "@OPENFLUID_MARKETBAGDIR@";
 const std::string MARKETPLACE_SITEFILE = "@OPENFLUID_MARKETPLACE_SITEFILE@";
 const std::string MARKETPLACE_CATALOGFILE = "@OPENFLUID_MARKETPLACE_CATALOGFILE@";

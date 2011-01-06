@@ -60,7 +60,6 @@
 #include <openfluid/tools.hpp>
 #include <openfluid/base/EnvProperties.hpp>
 
-
 #include <boost/filesystem/path.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -97,6 +96,7 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_HostName;
     std::string m_Arch;
 
+    std::string m_DefaultConfigFilePath;
 
     bool m_ClearOutputDir;
 
@@ -157,12 +157,18 @@ class DLLEXPORT RuntimeEnvironment
 
     void setDateTimeOutputDir();
 
-    inline std::string getMarketBagDir() const{ return m_MarketBagDir; };
+    inline std::string getMarketBagDir() const { return m_MarketBagDir; };
 
-    inline std::string getMarketBagVersionDir() const{ return m_MarketBagVersionDir; };
+    inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
+
+    inline std::string getDefaultConfigFile() const
+      { return m_DefaultConfigFilePath; };
+
+    std::string getConfigFilePath(std::string Filename) const
+      { return boost::filesystem::path(m_UserDataDir + "/" + Filename).string(); };
 
     inline std::string getTempDir() const
-      { return m_TempDir; mp_FuncEnv->setValue("dir.temp",m_OutputDir); };
+      { return m_TempDir; };
 
     std::string getInputFullPath(std::string Filename) const
       { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };

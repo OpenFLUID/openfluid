@@ -156,6 +156,7 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_MarketBagDir = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::MARKETBAG_SUBDIR).string();
   m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/" + m_FullVersion).string();
 
+  m_DefaultConfigFilePath = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_CONFIGFILE).string();
 
   // ====== System architecture ======
 
