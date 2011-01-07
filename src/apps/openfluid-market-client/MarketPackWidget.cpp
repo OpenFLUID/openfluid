@@ -43,105 +43,95 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
- */
+*/
+
 
 /**
-  \file MarketClientAssistant.hpp
-  \brief Header of ...
+  \file MarketPackWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
-
-
-#ifndef __MARKETCLIENTASSISTANT_HPP__
-#define __MARKETCLIENTASSISTANT_HPP__
-
-#include <gtkmm.h>
-#include <openfluid/market.hpp>
+*/
 
 #include "MarketPackWidget.hpp"
 
-class MarketClientAssistant : public Gtk::Assistant
+const static Gdk::Color GREEN("#97DE62");
+
+
+// =====================================================================
+// =====================================================================
+
+
+MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
+ : Gtk::Frame(),
+   m_IDLabel(ID),
+   m_FormatLabel("Package Format:"),
+   m_InstallToggle("Mark for\ninstallation")
 {
+  set_shadow_type(Gtk::SHADOW_NONE);
 
-  private:
+  m_IDLabel.set_markup("<b>"+ID+"</b>");
+  m_IDLabel.set_use_markup(true);
+  m_IDLabel.set_alignment(0,0);
 
-    // ===== Package selection =====//
-    Gtk::VBox m_SelectionPageBox;
-
-    Gtk::HBox m_URLBox;
-    Gtk::Label m_URLLabel;
-    Gtk::ComboBox m_URLCombo;
-    Glib::RefPtr<Gtk::ListStore> m_RefURLComboBoxModel;
-
-    class URLComboColumns : public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-
-        Gtk::TreeModelColumn<Glib::ustring> m_Name;
-        Gtk::TreeModelColumn<Glib::ustring> m_URL;
-
-        URLComboColumns() { add(m_Name); add(m_URL); }
-    };
-
-    URLComboColumns m_URLColumns;
+  set_border_width(5);
 
 
-    Gtk::VBox m_AvailPacksBox;
+  m_RefFormatComboBoxModel = Gtk::ListStore::create(m_FormatColumns);
+  m_FormatCombo.set_model(m_RefFormatComboBoxModel);
 
-    Gtk::ScrolledWindow m_AvailPacksSWindow;
+  m_FormatCombo.pack_start(m_FormatColumns.m_FormatName);
 
-    std::list<MarketPackWidget*> mp_AvailPacksWidgets;
+  Gtk::TreeModel::Row TmpFormatRow;
 
-    void onURLComboChanged();
+  if (IsSrc)
+  {
+    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
+    TmpFormatRow[m_FormatColumns.m_FormatName] = "source";
+    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::SRC;
+  }
 
-    // ===== Licenses =====//
-    Gtk::VBox m_LicensesPageBox;
+  if (IsBin)
+  {
+    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
+    TmpFormatRow[m_FormatColumns.m_FormatName] = "binary";
+    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::BIN;
+  }
 
-    Gtk::Label m_LicensesLabel;
+  m_FormatCombo.set_active(0);
 
-    Gtk::HBox m_LicensesReviewBox;
-    Gtk::TreeView m_LicensesTreeview;
-    Gtk::TextView m_LicensesTextview;
-    Gtk::ScrolledWindow m_LicensesSWindow;
+  m_FormatHBox.pack_start(m_FormatLabel,Gtk::PACK_SHRINK,6);
+  m_FormatHBox.pack_start(m_FormatCombo,Gtk::PACK_SHRINK);
 
-    Gtk::RadioButton m_LicensesAcceptRadio;
-    Gtk::RadioButton m_LicensesDoNotRadio;
+  m_DetailsVBox.pack_start(m_IDLabel,Gtk::PACK_SHRINK);
+  m_DetailsVBox.pack_start(m_FormatHBox,Gtk::PACK_SHRINK);
 
-    void onLicenseRadioClicked();
+  m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
+  m_MainHBox.pack_start(m_DetailsVBox,Gtk::PACK_EXPAND_WIDGET,12);
 
-    // ===== Download and install =====//
-    Gtk::VBox m_InstallPageBox;
+  m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
+      &MarketPackWidget::onInstallToggled));
 
-    Gtk::TextView m_InstallTextview;
-    Gtk::ScrolledWindow m_InstallSWindow;
-    Gtk::ProgressBar m_InstallProgressBar;
+  m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREEN);
+  // m_InstallToggle.modify_bg(Gtk::STATE_PRELIGHT, GREEN);
 
-
-    void setupSelectionPage();
-    void setupConfirmationPage();
-    void setupLicensesPage();
-    void setupDownloadPage();
-
-
-  // Signal handlers:
-    void onApply();
-    void onCancel();
-    void onClose();
-    void onPrepare(Gtk::Widget* widget);
-
-    void updateAvailPacksTreeview();
-
-    openfluid::market::MarketClient m_MarketClient;
+  add(m_MainHBox);
+}
 
 
-  public:
-    MarketClientAssistant();
+// =====================================================================
+// =====================================================================
 
-    virtual ~MarketClientAssistant();
+void MarketPackWidget::onInstallToggled()
+{
+  if (m_InstallToggle.get_active())
+  {
+    m_InstallToggle.set_label("Marked for\ninstallation");
+  }
+  else
+  {
+    m_InstallToggle.set_label("Mark for\ninstallation");
+  }
 
+}
 
-};
-
-
-#endif /* __MARKETCLIENTASSISTANT_HPP__ */

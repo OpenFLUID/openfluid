@@ -68,7 +68,7 @@ MarketClientAssistant::MarketClientAssistant()
 {
   set_title("OpenFLUID Market client");
   set_border_width(20);
-  set_default_size(700, 500);
+  set_default_size(800, 600);
   set_position(Gtk::WIN_POS_CENTER);
 
 
@@ -173,28 +173,12 @@ void MarketClientAssistant::setupSelectionPage()
   m_URLBox.pack_start(m_URLCombo,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_RefAvailPacksModel = Gtk::ListStore::create(m_AvailPacksColumns);
-  m_AvailPacksTreeview.set_model(m_RefAvailPacksModel);
-
-  m_AvailPacksTreeview.append_column_editable("",m_AvailPacksColumns.m_Selected);
-  m_AvailPacksTreeview.append_column("ID",m_AvailPacksColumns.m_ID);
-  m_AvailPacksTreeview.append_column("Format",m_AvailPacksColumns.m_Format);
-  m_AvailPacksTreeview.append_column("Name",m_AvailPacksColumns.m_Name);
-
-
-  m_AvailPacksLabel.set_text("Available packages:");
-  m_AvailPacksLabel.set_justify(Gtk::JUSTIFY_LEFT);
-  m_AvailPacksLabel.set_alignment(0, 0);
-
-
-  m_AvailPacksBox.pack_start(m_AvailPacksLabel,Gtk::PACK_SHRINK,0);
-  m_AvailPacksBox.pack_start(m_AvailPacksTreeview,Gtk::PACK_EXPAND_WIDGET);
+  m_AvailPacksSWindow.add(m_AvailPacksBox);
+  m_AvailPacksSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
-  m_SelectionPageBox.pack_start(m_AvailPacksBox,Gtk::PACK_EXPAND_WIDGET);
-
-
+  m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,12);
 
   m_URLCombo.signal_changed().connect(
     sigc::mem_fun(*this, &MarketClientAssistant::onURLComboChanged)
@@ -341,7 +325,6 @@ void MarketClientAssistant::onLicenseRadioClicked()
 
 void MarketClientAssistant::onURLComboChanged()
 {
-  std::cout << "onURLComboChanged() " << m_URLCombo.get_active() << std::endl;
   m_MarketClient.disconnect();
 
   if (m_URLCombo.get_active_row_number() == 0)
@@ -375,7 +358,20 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   openfluid::market::MetaPackagesCatalog_t Catalog;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
-  m_RefAvailPacksModel->clear();
+
+  std::list<MarketPackWidget*>::iterator APLiter;
+
+  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  {
+    MarketPackWidget* MPW;
+    MPW = *APLiter;
+    m_AvailPacksBox.remove(*MPW);
+    delete MPW;
+  }
+  mp_AvailPacksWidgets.clear();
+
+
+
   Catalog = m_MarketClient.getMetaPackagesCatalog();
 
   for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
@@ -383,15 +379,20 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
     std::map<openfluid::market::MetaPackageInfo::SelectionType,openfluid::market::PackageInfo>::const_iterator PIter;
 
+    bool TmpBin = false;
+    bool TmpSrc = false;
+
     for (PIter = CIter->second.AvailablePackages.begin();PIter!=CIter->second.AvailablePackages.end();++PIter)
     {
-      Gtk::TreeModel::Row TmpAvailPacksRow = *(m_RefAvailPacksModel->append());
-      TmpAvailPacksRow[m_AvailPacksColumns.m_Selected] = false;
-      TmpAvailPacksRow[m_AvailPacksColumns.m_ID] = CIter->first;
-      if (PIter->first == openfluid::market::MetaPackageInfo::BIN) TmpAvailPacksRow[m_AvailPacksColumns.m_Format] = "binary";
-      else TmpAvailPacksRow[m_AvailPacksColumns.m_Format] = "source";
-      TmpAvailPacksRow[m_AvailPacksColumns.m_Name] = PIter->second.Name;
+      if (PIter->first == openfluid::market::MetaPackageInfo::BIN) TmpBin = true;
+      else TmpSrc = true;
     }
+
+
+    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc));
+    m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,10);
+
+    m_AvailPacksBox.show_all_children();
   }
 }
 

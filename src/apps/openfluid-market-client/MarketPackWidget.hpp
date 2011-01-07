@@ -43,105 +43,62 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
- */
+*/
 
 /**
-  \file MarketClientAssistant.hpp
+  \file MarketPackWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#ifndef __MARKETCLIENTASSISTANT_HPP__
-#define __MARKETCLIENTASSISTANT_HPP__
-
 #include <gtkmm.h>
-#include <openfluid/market.hpp>
 
-#include "MarketPackWidget.hpp"
+#include <openfluid/market/MarketInfos.hpp>
 
-class MarketClientAssistant : public Gtk::Assistant
+
+#ifndef __MARKETPACKWIDGET_HPP__
+#define __MARKETPACKWIDGET_HPP__
+
+
+// =====================================================================
+// =====================================================================
+
+class MarketPackWidget : public Gtk::Frame
 {
-
   private:
 
-    // ===== Package selection =====//
-    Gtk::VBox m_SelectionPageBox;
+    Gtk::Label m_IDLabel;
+    Gtk::HBox m_FormatHBox;
+    Gtk::Label m_FormatLabel;
+    Gtk::ComboBox m_FormatCombo;
+    Gtk::VBox m_DetailsVBox;
+    Gtk::HBox m_MainHBox;
+    Gtk::ToggleButton m_InstallToggle;
 
-    Gtk::HBox m_URLBox;
-    Gtk::Label m_URLLabel;
-    Gtk::ComboBox m_URLCombo;
-    Glib::RefPtr<Gtk::ListStore> m_RefURLComboBoxModel;
+    Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
 
-    class URLComboColumns : public Gtk::TreeModel::ColumnRecord
+    class FormatComboColumns : public Gtk::TreeModel::ColumnRecord
     {
       public:
 
-        Gtk::TreeModelColumn<Glib::ustring> m_Name;
-        Gtk::TreeModelColumn<Glib::ustring> m_URL;
+        Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
+        Gtk::TreeModelColumn<openfluid::market::MetaPackageInfo::SelectionType> m_SelType;
 
-        URLComboColumns() { add(m_Name); add(m_URL); }
+        FormatComboColumns() { add(m_FormatName); add(m_SelType); }
     };
 
-    URLComboColumns m_URLColumns;
+    FormatComboColumns m_FormatColumns;
 
+    void onInstallToggled();
 
-    Gtk::VBox m_AvailPacksBox;
-
-    Gtk::ScrolledWindow m_AvailPacksSWindow;
-
-    std::list<MarketPackWidget*> mp_AvailPacksWidgets;
-
-    void onURLComboChanged();
-
-    // ===== Licenses =====//
-    Gtk::VBox m_LicensesPageBox;
-
-    Gtk::Label m_LicensesLabel;
-
-    Gtk::HBox m_LicensesReviewBox;
-    Gtk::TreeView m_LicensesTreeview;
-    Gtk::TextView m_LicensesTextview;
-    Gtk::ScrolledWindow m_LicensesSWindow;
-
-    Gtk::RadioButton m_LicensesAcceptRadio;
-    Gtk::RadioButton m_LicensesDoNotRadio;
-
-    void onLicenseRadioClicked();
-
-    // ===== Download and install =====//
-    Gtk::VBox m_InstallPageBox;
-
-    Gtk::TextView m_InstallTextview;
-    Gtk::ScrolledWindow m_InstallSWindow;
-    Gtk::ProgressBar m_InstallProgressBar;
-
-
-    void setupSelectionPage();
-    void setupConfirmationPage();
-    void setupLicensesPage();
-    void setupDownloadPage();
-
-
-  // Signal handlers:
-    void onApply();
-    void onCancel();
-    void onClose();
-    void onPrepare(Gtk::Widget* widget);
-
-    void updateAvailPacksTreeview();
-
-    openfluid::market::MarketClient m_MarketClient;
 
 
   public:
-    MarketClientAssistant();
+    MarketPackWidget(std::string ID, bool IsBin, bool IsSrc);
 
-    virtual ~MarketClientAssistant();
-
-
+    ~MarketPackWidget() { };
 };
 
 
-#endif /* __MARKETCLIENTASSISTANT_HPP__ */
+#endif /* __MARKETPACKWIDGET_HPP__ */
