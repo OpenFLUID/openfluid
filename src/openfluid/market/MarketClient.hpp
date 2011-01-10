@@ -131,6 +131,8 @@ class DLLEXPORT MarketClient
 
     void installSelection(const bool IgnoreMissing = true);
 
+    bool isConnected() const { return m_IsConnected; };
+
 };
 
 

@@ -74,6 +74,8 @@
 BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::market::MarketClient MC;
+
+  BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
 
 // =====================================================================
@@ -98,6 +100,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/market/repository").string());
 
+  BOOST_REQUIRE_EQUAL(MC.isConnected(),true);
 
   MC.getMarketInfo(MI);
   BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market for tests");
@@ -153,6 +156,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   MC.disconnect();
 
+  BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
 
 
