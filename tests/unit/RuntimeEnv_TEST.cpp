@@ -80,6 +80,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),false);
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID(),"");
 
+  std::cout << "Arch: " << openfluid::base::RuntimeEnvironment::getInstance()->getArch() << std::endl;
+
 }
 
 // =====================================================================

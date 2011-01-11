@@ -164,7 +164,7 @@ RuntimeEnvironment::RuntimeEnvironment()
   #if __i386__
     m_Arch = "linux-i386";
   #endif
-  #ifdef __X86_64__
+  #ifdef __x86_64__
     m_Arch = "linux-x86-64";
   #endif
 #endif
