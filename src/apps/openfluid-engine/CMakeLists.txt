@@ -33,8 +33,6 @@ TARGET_LINK_LIBRARIES(openfluid-engine
 INSTALL(TARGETS openfluid-engine
         RUNTIME DESTINATION ${BIN_INSTALL_PATH})
 
-#INSTALL(FILES "${CMAKE_SOURCE_DIR}/resources/func2doc/func2doc_tpl.tex" 
-#        DESTINATION ${SHARE_COMMON_INSTALL_PATH})
        
       
 
