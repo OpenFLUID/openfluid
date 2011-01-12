@@ -90,6 +90,8 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_MarketBagDir;
     std::string m_MarketBagVersionDir;
 
+    std::string m_InstallPrefix;
+
     std::vector<std::string> m_PlugsDirs;
 
     std::string m_UserID;
@@ -141,63 +143,199 @@ class DLLEXPORT RuntimeEnvironment
     */
     ~RuntimeEnvironment();
 
+
+    /**
+      Returns the version of OpenFLUID
+      @return the version as a std::string
+    */
     std::string getVersion() const { return m_Version; };
 
+    /**
+      Returns the full version of OpenFLUID, including status (alpha, beta, rc, ...)
+      @return the full version as a std::string
+    */
     std::string getFullVersion() const { return m_FullVersion; };
 
+    /**
+      Sets the input directory, overriding the default input dir
+      @param[in] InputDir The input directory
+    */
     void setInputDir(const std::string InputDir)
       { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
 
+    /**
+      Returns the input directory
+      @return the input directory
+    */
     inline std::string getInputDir() const { return m_InputDir; };
 
+    /**
+      Sets the output directory, overriding the default output dir
+      @param[in] OutputDir The output directory
+    */
     void setOutputDir(const std::string OutputDir)
       { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
 
+    /**
+      Returns the output directory
+      @return the output directory
+    */
     inline std::string getOutputDir() const { return m_OutputDir; };
 
+    /**
+      Sets the output directory as a directory located in the user data directory, with a name based on the current date-time
+    */
     void setDateTimeOutputDir();
 
+    /**
+      Returns the market bag directory (i.e. $HOME/.openfluid/market-bag)
+      @return the market bag directory
+    */
     inline std::string getMarketBagDir() const { return m_MarketBagDir; };
 
+    /**
+      Returns the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/1.6.2~alpha1)
+      @return the market bag directory for the current version
+    */
     inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
 
+    /**
+      Returns the default config file path (i.e. $HOME/.openfluid/openfluid.conf)
+      @return the default config file path
+    */
     inline std::string getDefaultConfigFile() const
       { return m_DefaultConfigFilePath; };
 
+    /**
+      Returns the path for a given config file (i.e. $HOME/.openfluid/Filename)
+      @param[in] Filename the given config file name
+      @return the path
+    */
     std::string getConfigFilePath(std::string Filename) const
       { return boost::filesystem::path(m_UserDataDir + "/" + Filename).string(); };
 
+    /**
+      Returns the path of the temporary directory
+      @return the path of the temporary directory
+    */
     inline std::string getTempDir() const
       { return m_TempDir; };
 
+    /**
+      Returns the path for a given input file (i.e. InputDir/Filename)
+      @param[in] Filename The given input file name
+      @return the path for a given input file
+    */
     std::string getInputFullPath(std::string Filename) const
       { return boost::filesystem::path(m_InputDir + "/" + Filename).string(); };
 
+    /**
+      Returns the path for a given output file (i.e. OutputDir/Filename)
+      @param[in] Filename The given output file name
+      @return the path for a given output file
+    */
     inline std::string getOutputFullPath(std::string Filename) const
       { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
+    /**
+      Returns the path for a given plugin file, taking into account the plugins path search order
+      @param[in] Filename The given plugin file name
+      @return the first path found for a given plugin file
+    */
     std::string getPluginFullPath(std::string Filename);
 
+    /**
+      Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
+      These paths are added at the top of the search paths list.
+      @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
+    */
     void addExtraPluginsPaths(std::string SemicolonSeparatedPaths);
 
+    /**
+      Returns the ordered list of paths used to search for plugins
+      @return the ordered list of paths
+    */
     inline std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
 
+    /**
+      Returns the install prefix path.
+      The install prefix is given at compile time, but can be overriden by the OPENFLUID_INSTALL_PREFIX environment variable (recommended on windows systems).
+      @return the install prefix path
+    */
+    inline std::string getInstallPrefix() const
+      { return m_InstallPrefix; };
+
+    /**
+      Returns the path for common resources, taking into account the install prefix path
+      @return the path for common resources
+    */
+    std::string getCommonResourcesDir() const;
+
+    /**
+      Returns the path for a given file, relative to the common resources path
+      @param[in] RelativeFilePath The given file
+      @return the path for a given file in the common resources
+    */
+    std::string getCommonResourceFilePath(std::string RelativeFilePath) const;
+
+    /**
+      Returns the path for resources of a given application, taking into account the install prefix path
+      @param[in] AppName The given application name
+      @return the path for resources of a given application
+    */
+    std::string getAppResourcesDir(std::string AppName) const;
+
+    /**
+      Returns the path for a given file, relative a given application resources path
+      @param[in] AppName The given application name
+      @param[in] RelativeFilePath The given file
+      @return the path for a given file in the given application resources
+    */
+    std::string getAppResourceFilePath(std::string AppName, std::string RelativeFilePath) const;
+
+    /**
+      Returns the extra properties list
+      @return the extra properties list
+    */
     inline openfluid::base::EnvironmentProperties& getExtraProperties()
       { return m_ExtraProperties; };
 
+    /**
+      Returns the clear output directory flag
+    */
     inline bool isClearOutputDir() const { return m_ClearOutputDir; };
 
+    /**
+      Sets the clear output directory flag
+      @param[in] ClearDir The value of the flag
+    */
     inline void setClearOutputDir(bool ClearDir)
       { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
+    /**
+      Returns the write results flag
+      @return the flag as a boolean
+    */
     inline bool isWriteResults() const
       { return m_WriteResults; };
 
+    /**
+      Sets the write results flag
+      @param[in] WriteIt The value of the flag
+    */
     void setWriteResults(bool WriteIt)
       { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
 
+    /**
+      Returns the write simulation report flag
+      @return the flag as a boolean
+    */
     inline bool isWriteSimReport() const { return m_WriteSimReport; };
 
+    /**
+      Sets the write simulation report flag
+      @param[in] WriteIt The value of the flag
+    */
     void setWriteSimReport(bool WriteIt)
       { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
 
@@ -218,10 +356,22 @@ class DLLEXPORT RuntimeEnvironment
     void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration)
       { m_EffectiveSimulationDuration = TimeDuration; };
 
+    /**
+      Returns the local host name (if could be determined)
+      @return the local host name
+    */
     std::string getHostName() const {return m_HostName; };
 
+    /**
+      Returns the local user ID (if could be determined)
+      @return the local user ID
+    */
     std::string getUserID() const {return m_UserID; };
 
+    /**
+      Returns the local system architecture (if could be determined)
+      @return the local architecture
+    */
     std::string getArch() const {return m_Arch; };
 
     void setSimulationTimeInformation(openfluid::core::DateTime StartTime,

@@ -100,8 +100,13 @@ const std::string MARKETPLACE_SITEFILE = "@OPENFLUID_MARKETPLACE_SITEFILE@";
 const std::string MARKETPLACE_CATALOGFILE = "@OPENFLUID_MARKETPLACE_CATALOGFILE@";
 
 
-// func2doc default template file path
-const std::string FUNC2DOC_TPLFILE_PATH = "@CMAKE_INSTALL_PREFIX@/@FUNC2DOC_TPL_INSTALL_PATH@";  
+// Shared ressources paths
+const std::string SHARE_INSTALL_PATH = "@SHARE_INSTALL_PATH@";
+const std::string SHARE_COMMON_INSTALL_PATH = "@SHARE_COMMON_INSTALL_PATH@";
+const std::string SHARE_APPS_INSTALL_PATH = "@SHARE_APPS_INSTALL_PATH@";
+
+
+// func2doc default template file path  
 const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
 
 

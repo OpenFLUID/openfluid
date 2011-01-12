@@ -64,6 +64,7 @@
 
 #include <openfluid/buddies/Func2DocBuddy.hpp>
 #include <openfluid/core.hpp>
+#include <openfluid/base.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/config.hpp>
 
@@ -766,7 +767,7 @@ bool Func2DocBuddy::run()
 {
 #if defined __unix__ || defined __APPLE__
 
-  setOptionIfNotSet("tplfile",openfluid::config::FUNC2DOC_TPLFILE_PATH + "/" + openfluid::config::FUNC2DOC_TPLFILE_NAME);
+  setOptionIfNotSet("tplfile", openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath(openfluid::config::FUNC2DOC_TPLFILE_NAME));
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");

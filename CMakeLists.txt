@@ -57,21 +57,23 @@ IF(Boost_FOUND AND LibXML2_FOUND)
                 "AUTHORS"
                 "README"   
                 "CHANGELOG"
-          DESTINATION ${DOC_INSTALL_PATH})
+          DESTINATION "${DOC_INSTALL_PATH}")
   
-  INSTALL(FILES "COPYING"
-                "AUTHORS"
-                "README"
-                "CHANGELOG"
-          DESTINATION ${DOC_INSTALL_PATH})
+            
+  INSTALL(DIRECTORY "share/openfluid/" 
+          DESTINATION "${SHARE_INSTALL_PATH}" PATTERN ".svn" EXCLUDE)
+            
 
 
+  MESSAGE(STATUS "****************************************")
   MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
   MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
   MESSAGE(STATUS "Compiler flags for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
   MESSAGE(STATUS "Compiler flags for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
+  MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
+  MESSAGE(STATUS "****************************************")
   MESSAGE(STATUS "Build openfluid-minimal application : yes")
 
   IF(BUILD_APP_ENGINE)
@@ -85,7 +87,8 @@ IF(Boost_FOUND AND LibXML2_FOUND)
   ELSE(BUILD_APP_BUILDER)
     MESSAGE(STATUS "Build openfluid-builder application : no")  
   ENDIF(BUILD_APP_BUILDER)
-
+  
+  MESSAGE(STATUS "****************************************")
   
   
 ENDIF(Boost_FOUND AND LibXML2_FOUND)

@@ -90,6 +90,19 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_UserID = "(unknown)";
   m_Arch = "unknown";
 
+
+  m_InstallPrefix = openfluid::config::INSTALL_PREFIX;
+
+  char *INSTALLEnvVar;
+  INSTALLEnvVar = std::getenv("OPENFLUID_INSTALL_PREFIX");
+
+  if (INSTALLEnvVar != NULL)
+  {
+    m_InstallPrefix = boost::filesystem::path(std::string(INSTALLEnvVar)).string();
+  }
+
+
+
   // ====== Default directories ======
   // UNIX:
   //  Temp directory : using TMPDIR, TMP or TEMP env. var.
@@ -219,7 +232,7 @@ RuntimeEnvironment::RuntimeEnvironment()
   //  2) environment var OPENFLUID_FUNCS_PATH
   //  3) user directory,
   //  4) market-bag directory
-  //  4) install directory
+  //  5) install directory
 
   // env var
   char *PATHEnvVar;
@@ -237,17 +250,8 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_PlugsDirs.push_back(m_MarketBagVersionDir);
 
 
-  // install path
-  std::string PluginsInstallPath = boost::filesystem::path(openfluid::config::INSTALL_PREFIX + "/" + openfluid::config::PLUGINS_STDDIR).string();
-  char *INSTALLEnvVar;
-
-  INSTALLEnvVar = std::getenv("OPENFLUID_INSTALL_PREFIX");
-
-  if (INSTALLEnvVar != NULL)
-  {
-    PluginsInstallPath = boost::filesystem::path(std::string(INSTALLEnvVar) + "/" + openfluid::config::PLUGINS_STDDIR).string();
-  }
-
+  // install directory
+  std::string PluginsInstallPath = boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::PLUGINS_STDDIR).string();
   m_PlugsDirs.push_back(PluginsInstallPath);
 
 
@@ -348,6 +352,44 @@ std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
   }
 
   return PlugFullPath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getCommonResourcesDir() const
+{
+  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::SHARE_COMMON_INSTALL_PATH).string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getCommonResourceFilePath(std::string RelativeFilePath) const
+{
+  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::SHARE_COMMON_INSTALL_PATH + "/" + RelativeFilePath).string();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getAppResourcesDir(std::string AppName) const
+{
+  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName).string();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName, std::string RelativeFilePath) const
+{
+  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName + "/" + RelativeFilePath).string();
 }
 
 
