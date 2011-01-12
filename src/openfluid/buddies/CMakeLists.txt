@@ -17,6 +17,7 @@ SET_TARGET_PROPERTIES(openfluid-buddies PROPERTIES VERSION "${VERSION_MAJOR}.${V
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
 TARGET_LINK_LIBRARIES(openfluid-buddies 
+                      openfluid-base
                       openfluid-tools
                       openfluid-core
                       ${LibXML2_LIBRARIES}                      
