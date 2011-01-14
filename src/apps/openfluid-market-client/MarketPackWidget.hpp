@@ -68,6 +68,8 @@ class MarketPackWidget : public Gtk::Frame
 {
   private:
 
+    std::string m_ID;
+
     Gtk::Label m_IDLabel;
     Gtk::HBox m_FormatHBox;
     Gtk::Label m_FormatLabel;
@@ -92,12 +94,21 @@ class MarketPackWidget : public Gtk::Frame
 
     void onInstallToggled();
 
+    // add signal
+    // http://library.gnome.org/devel/gtkmm-tutorial/unstable/chapter-custom-signals-example.html.en
 
 
   public:
     MarketPackWidget(std::string ID, bool IsBin, bool IsSrc);
 
     ~MarketPackWidget() { };
+
+    std::string getID() const { return m_ID; };
+
+    bool isInstall() const { return m_InstallToggle.get_active(); };
+
+    openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+
 };
 
 

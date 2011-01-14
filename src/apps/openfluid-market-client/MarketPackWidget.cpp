@@ -56,7 +56,7 @@
 #include "MarketPackWidget.hpp"
 
 const static Gdk::Color GREEN("#97DE62");
-
+const static Gdk::Color GREY("#777777");
 
 // =====================================================================
 // =====================================================================
@@ -64,18 +64,22 @@ const static Gdk::Color GREEN("#97DE62");
 
 MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
  : Gtk::Frame(),
-   m_IDLabel(ID),
-   m_FormatLabel("Package Format:"),
-   m_InstallToggle("Mark for\ninstallation")
+   m_ID(ID),
+   m_FormatLabel("Package Format:")
 {
-  set_shadow_type(Gtk::SHADOW_NONE);
+  //set_shadow_type(Gtk::SHADOW_NONE);
 
-  m_IDLabel.set_markup("<b>"+ID+"</b>");
+  Gtk::Image* TImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
+
+  m_InstallToggle.set_image(*TImage);
+
+  m_IDLabel.set_markup("<b>"+m_ID+"</b>");
   m_IDLabel.set_use_markup(true);
   m_IDLabel.set_alignment(0,0);
 
   set_border_width(5);
 
+  m_MainHBox.set_border_width(10);
 
   m_RefFormatComboBoxModel = Gtk::ListStore::create(m_FormatColumns);
   m_FormatCombo.set_model(m_RefFormatComboBoxModel);
@@ -113,7 +117,8 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
       &MarketPackWidget::onInstallToggled));
 
   m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREEN);
-  // m_InstallToggle.modify_bg(Gtk::STATE_PRELIGHT, GREEN);
+
+  modify_bg(Gtk::STATE_NORMAL,GREY);
 
   add(m_MainHBox);
 }
@@ -122,16 +127,37 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
 // =====================================================================
 // =====================================================================
 
+
 void MarketPackWidget::onInstallToggled()
 {
   if (m_InstallToggle.get_active())
   {
-    m_InstallToggle.set_label("Marked for\ninstallation");
+    modify_bg(Gtk::STATE_NORMAL ,GREEN);
   }
   else
   {
-    m_InstallToggle.set_label("Mark for\ninstallation");
+    modify_bg(Gtk::STATE_NORMAL ,GREY);
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::market::MetaPackageInfo::SelectionType MarketPackWidget::getPackageFormat() const
+{
+  Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
+  if (TmpIter)
+  {
+    Gtk::TreeModel::Row TmpRow = *TmpIter;
+    if (TmpRow)
+    {
+      return TmpRow[m_FormatColumns.m_SelType];
+    }
+  }
+
+  return openfluid::market::MetaPackageInfo::NONE;
 }
 
