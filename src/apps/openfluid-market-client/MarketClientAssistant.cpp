@@ -322,16 +322,11 @@ void MarketClientAssistant::onLicenseRadioClicked()
 // =====================================================================
 
 
-
 void MarketClientAssistant::onURLComboChanged()
 {
   m_MarketClient.disconnect();
 
-  if (m_URLCombo.get_active_row_number() == 0)
-  {
-    set_page_complete(m_SelectionPageBox,false);
-  }
-  else
+  if (m_URLCombo.get_active_row_number() > 0)
   {
     Gtk::TreeModel::iterator TmpIter = m_URLCombo.get_active();
     if (TmpIter)
@@ -341,11 +336,31 @@ void MarketClientAssistant::onURLComboChanged()
       {
         Glib::ustring TmpURL = TmpRow[m_URLColumns.m_URL];
         m_MarketClient.connect(TmpURL);
-        set_page_complete(m_SelectionPageBox,true);
       }
     }
   }
+  set_page_complete(m_SelectionPageBox,false);
   updateAvailPacksTreeview();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::onPackageInstallToggled()
+{
+  bool Selection = false;
+
+  std::list<MarketPackWidget*>::iterator APLiter;
+  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  {
+    MarketPackWidget* MPW;
+    MPW = *APLiter;
+    Selection = Selection || MPW->isInstall();
+  }
+
+  set_page_complete(m_SelectionPageBox,Selection);
 }
 
 
@@ -390,6 +405,10 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 
     mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc));
+    mp_AvailPacksWidgets.back()->signal_install_toggled().connect(
+        sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallToggled)
+    );
+
     m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,10);
 
     m_AvailPacksBox.show_all_children();

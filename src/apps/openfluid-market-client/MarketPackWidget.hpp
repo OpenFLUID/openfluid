@@ -66,6 +66,11 @@
 
 class MarketPackWidget : public Gtk::Frame
 {
+
+  public:
+    typedef sigc::signal<void> signal_install_toggled_t;
+
+
   private:
 
     std::string m_ID;
@@ -94,8 +99,9 @@ class MarketPackWidget : public Gtk::Frame
 
     void onInstallToggled();
 
-    // add signal
-    // http://library.gnome.org/devel/gtkmm-tutorial/unstable/chapter-custom-signals-example.html.en
+
+  protected:
+    signal_install_toggled_t m_signal_install_toggled;
 
 
   public:
@@ -108,6 +114,9 @@ class MarketPackWidget : public Gtk::Frame
     bool isInstall() const { return m_InstallToggle.get_active(); };
 
     openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+
+    signal_install_toggled_t signal_install_toggled();
+
 
 };
 

@@ -95,6 +95,8 @@ class MarketClientAssistant : public Gtk::Assistant
 
     void onURLComboChanged();
 
+    void onPackageInstallToggled();
+
     // ===== Licenses =====//
     Gtk::VBox m_LicensesPageBox;
 

@@ -67,7 +67,6 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
    m_ID(ID),
    m_FormatLabel("Package Format:")
 {
-  //set_shadow_type(Gtk::SHADOW_NONE);
 
   Gtk::Image* TImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
 
@@ -132,10 +131,12 @@ void MarketPackWidget::onInstallToggled()
 {
   if (m_InstallToggle.get_active())
   {
+    m_signal_install_toggled.emit();
     modify_bg(Gtk::STATE_NORMAL ,GREEN);
   }
   else
   {
+    m_signal_install_toggled.emit();
     modify_bg(Gtk::STATE_NORMAL ,GREY);
   }
 
@@ -161,3 +162,12 @@ openfluid::market::MetaPackageInfo::SelectionType MarketPackWidget::getPackageFo
   return openfluid::market::MetaPackageInfo::NONE;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+MarketPackWidget::signal_install_toggled_t MarketPackWidget::signal_install_toggled()
+{
+  return m_signal_install_toggled;
+}
