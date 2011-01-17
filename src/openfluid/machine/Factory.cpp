@@ -252,7 +252,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       MInstance.appendItem(IInstance);
     }
 
-      if ((*it)->isType(openfluid::base::ModelItemDescriptor::Generator))
+    if ((*it)->isType(openfluid::base::ModelItemDescriptor::Generator))
     {
         // instanciation of a data generator
       openfluid::base::GeneratorDescriptor* GenDesc = (openfluid::base::GeneratorDescriptor*)(*it);
@@ -263,16 +263,13 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::Generator;
 
-
       openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
-
-      Signature->ID = "(generator)";
-
 
       std::string VarName = GenDesc->getVariableName();
       if (GenDesc->isVectorVariable()) VarName = VarName + "[]";
 
-      Signature->ID = "(generator)"+VarName;
+      Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
+
       Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem(VarName,GenDesc->getUnitClass(),"",""));
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Fixed)
@@ -352,6 +349,25 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::base::DomainDescript
   fillRunEnvironmentFromDescriptor(RunDesc);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Factory::buildGeneratorID(const openfluid::core::VariableName_t& VarName,
+                                      bool IsVector,
+                                      const openfluid::core::UnitClass_t ClassName)
+{
+  std::string GenID("(generator)");
+
+  GenID += VarName;
+  if (IsVector) GenID += "[]";
+  GenID += "#";
+  GenID += ClassName;
+
+  return GenID;
+
+}
 
 } } //namespaces
 

@@ -88,6 +88,10 @@ class DLLEXPORT Factory
                                                    openfluid::base::OutputDescriptor& OutDesc,
                                                    SimulationBlob& SimBlob);
 
+    static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
+                                        bool IsVector,
+                                        const openfluid::core::UnitClass_t ClassName);
+
 };
 
 
