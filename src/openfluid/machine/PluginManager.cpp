@@ -170,13 +170,75 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
 }
 
 
+
 // =====================================================================
 // =====================================================================
 
 
-ArrayOfModelItemInstance PluginManager::getAvailableFunctions(const std::string Pattern)
+SignatureItemInstance* PluginManager::getSignatureFromPlugin(std::string PluginFilename)
 {
-  ArrayOfModelItemInstance PluginsContainers;
+  std::string PluginFile = openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
+  SignatureItemInstance* Plug = NULL;
+
+  DynamicLib *PlugLib = new DynamicLib(PluginFile);
+
+  // library loading
+  if (PluginFile.length()>0 && PlugLib->load())
+  {
+    Plug = new ModelItemInstance();
+    Plug->Filename = PluginFile;
+
+    if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
+    {
+      openfluid::base::GetSDKVersionProc SDKProc;
+
+      SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
+      Plug->SDKCompatible = (openfluid::config::FULL_VERSION == SDKProc());
+    }
+    else Plug->SDKCompatible = false;
+
+
+    if (Plug->SDKCompatible)
+    {
+
+      // checks if the handle proc exists
+      if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
+      {
+
+        // hooks the handle proc
+        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->getSymbol(PLUGSIGNATURE_PROC_NAME);
+
+
+        if (SignProc != NULL)
+        {
+          Plug->Signature = SignProc();
+
+          if (Plug->Signature == NULL)
+            throw openfluid::base::OFException("OpenFLUID framework","PluginManager::getSignatureFromPlugin","Signature from plugin file " + PluginFilename + " cannot be instanciated");
+
+        }
+        else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::getSignatureFromPlugin","Unable to find signature in plugin file " + PluginFilename);
+
+        // unloads the library
+        //PlugLib->unload();
+        //delete PlugLib;
+
+      }
+      else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::getSignatureFromPlugin","Format error in plugin file " + PluginFilename);
+    }
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::getSignatureFromPlugin","Unable to find plugin file " + PluginFilename);
+
+  return Plug;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+ArrayOfSignatureItemInstance PluginManager::getAvailableFunctions(const std::string Pattern)
+{
+  ArrayOfSignatureItemInstance PluginsContainers;
   std::vector<std::string> PluginsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
   std::vector<std::string> PluginFiles;
   std::vector<std::string> TmpFiles;
@@ -190,11 +252,11 @@ ArrayOfModelItemInstance PluginManager::getAvailableFunctions(const std::string 
   }
 
 
-  ModelItemInstance* CurrentPlug;
+  SignatureItemInstance* CurrentPlug;
 
   for (i=0;i<PluginFiles.size();i++)
   {
-    CurrentPlug = buildPluginContainer(PluginFiles[i]);
+    CurrentPlug = getSignatureFromPlugin(PluginFiles[i]);
 
     if (CurrentPlug != NULL && CurrentPlug->SDKCompatible)
     {

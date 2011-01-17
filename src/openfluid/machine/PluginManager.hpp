@@ -65,7 +65,7 @@
 namespace openfluid { namespace machine {
 
 
-typedef std::vector<ModelItemInstance*> ArrayOfModelItemInstance;
+typedef std::vector<SignatureItemInstance*> ArrayOfSignatureItemInstance;
 
 /**
   Management class for plugins
@@ -74,9 +74,11 @@ class DLLEXPORT PluginManager
 {
   private:
 
+    static PluginManager* mp_Singleton;
+
     ModelItemInstance* buildPluginContainer(std::string PluginFilename);
 
-    static PluginManager* mp_Singleton;
+    SignatureItemInstance* getSignatureFromPlugin(std::string PluginFilename);
 
     /**
       Constructor
@@ -96,7 +98,7 @@ class DLLEXPORT PluginManager
     /**
       Lists available simulation functions
     */
-    ArrayOfModelItemInstance getAvailableFunctions(const std::string Pattern = "");
+    ArrayOfSignatureItemInstance getAvailableFunctions(const std::string Pattern = "");
 
 
     /**

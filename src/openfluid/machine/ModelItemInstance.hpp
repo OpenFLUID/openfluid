@@ -65,25 +65,29 @@
 namespace openfluid { namespace machine {
 
 
-
-struct ModelItemInstance
+class SignatureItemInstance
 {
-  std::string Filename;
-  bool SDKCompatible;
-  openfluid::core::FuncParamsMap_t Params;
-  openfluid::base::FunctionSignature* Signature;
-  openfluid::base::PluggableFunction* Function;
-  openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
+  public:
+    std::string Filename;
+    bool SDKCompatible;
+    openfluid::base::FunctionSignature* Signature;
+    openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
 
-  ModelItemInstance()
-  {
-    Filename = "";
-    Signature = NULL;
-    Function = NULL;
-    SDKCompatible = false;
-    ItemType = openfluid::base::ModelItemDescriptor::NoModelItemType;
-  }
+    SignatureItemInstance();
+};
 
+
+// =====================================================================
+// =====================================================================
+
+
+class ModelItemInstance : public SignatureItemInstance
+{
+  public:
+    openfluid::core::FuncParamsMap_t Params;
+    openfluid::base::PluggableFunction* Function;
+
+    ModelItemInstance();
 };
 
 

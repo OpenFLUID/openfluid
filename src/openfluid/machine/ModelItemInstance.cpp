@@ -53,6 +53,31 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+
 #include <openfluid/machine/ModelItemInstance.hpp>
+
+namespace openfluid { namespace machine {
+
+
+SignatureItemInstance::SignatureItemInstance()
+{
+  Filename = "";
+  Signature = NULL;
+  SDKCompatible = false;
+  ItemType = openfluid::base::ModelItemDescriptor::NoModelItemType;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ModelItemInstance::ModelItemInstance()
+  : SignatureItemInstance()
+{
+  Function = NULL;
+}
+
+} } //namespaces
 
 
