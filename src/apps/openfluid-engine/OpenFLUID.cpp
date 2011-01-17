@@ -149,7 +149,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 void OpenFLUIDApp::printPluginsList()
 {
 
-  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+  openfluid::machine::ArrayOfSignatureItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
 
   std::cout << "Available simulation functions:" << std::endl;
 
@@ -303,7 +303,7 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 void OpenFLUIDApp::printPluginsReport(bool IsXMLFormat, const std::string Pattern)
 {
 
-  openfluid::machine::ArrayOfModelItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(Pattern);
+  openfluid::machine::ArrayOfSignatureItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(Pattern);
   std::string StatusStr;
 
 
