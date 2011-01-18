@@ -402,7 +402,6 @@ void MarketClientAssistant::onPackageInstallModified()
     else m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
   }
 
-  std::cout << "ici" << std::endl;
   set_page_complete(m_SelectionPageBox,Selection);
 }
 
