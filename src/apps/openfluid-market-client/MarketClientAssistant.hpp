@@ -95,7 +95,8 @@ class MarketClientAssistant : public Gtk::Assistant
 
     void onURLComboChanged();
 
-    void onPackageInstallToggled();
+    void onPackageInstallModified();
+
 
     // ===== Licenses =====//
     Gtk::VBox m_LicensesPageBox;
@@ -103,12 +104,35 @@ class MarketClientAssistant : public Gtk::Assistant
     Gtk::Label m_LicensesLabel;
 
     Gtk::HBox m_LicensesReviewBox;
-    Gtk::TreeView m_LicensesTreeview;
-    Gtk::TextView m_LicensesTextview;
+    Gtk::TreeView m_LicensesTreeView;
+
+    Glib::RefPtr<Gtk::ListStore> m_RefLicenseTreeViewModel;
+
+    class LicensesTreeViewColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+
+        Gtk::TreeModelColumn<Glib::ustring> m_ID;
+
+        LicensesTreeViewColumns() { add(m_ID); }
+    };
+
+    LicensesTreeViewColumns m_LicensesColumns;
+
+    Glib::RefPtr<Gtk::TreeSelection> m_RefLicensesTreeSelection;
+
+    Gtk::TextView m_LicensesTextView;
+
+    Glib::RefPtr<Gtk::TextBuffer> m_RefLicenseTextBuffer;
+
+
     Gtk::ScrolledWindow m_LicensesSWindow;
 
     Gtk::RadioButton m_LicensesAcceptRadio;
     Gtk::RadioButton m_LicensesDoNotRadio;
+
+
+    void onLicensesTreeviewChanged();
 
     void onLicenseRadioClicked();
 
@@ -130,9 +154,11 @@ class MarketClientAssistant : public Gtk::Assistant
     void onApply();
     void onCancel();
     void onClose();
-    void onPrepare(Gtk::Widget* widget);
+    void onPrepare(Gtk::Widget* Widget);
 
     void updateAvailPacksTreeview();
+
+    void initializeLicencesTreeView();
 
     openfluid::market::MarketClient m_MarketClient;
 

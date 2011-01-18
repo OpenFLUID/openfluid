@@ -112,12 +112,17 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
   m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
   m_MainHBox.pack_start(m_DetailsVBox,Gtk::PACK_EXPAND_WIDGET,12);
 
-  m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
-      &MarketPackWidget::onInstallToggled));
-
   m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREEN);
 
   modify_bg(Gtk::STATE_NORMAL,GREY);
+
+
+  m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
+        &MarketPackWidget::onInstallModified));
+
+  m_FormatCombo.signal_changed().connect(sigc::mem_fun(*this,
+        &MarketPackWidget::onInstallModified));
+
 
   add(m_MainHBox);
 }
@@ -127,16 +132,16 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
 // =====================================================================
 
 
-void MarketPackWidget::onInstallToggled()
+void MarketPackWidget::onInstallModified()
 {
   if (m_InstallToggle.get_active())
   {
-    m_signal_install_toggled.emit();
+    m_signal_install_modified.emit();
     modify_bg(Gtk::STATE_NORMAL ,GREEN);
   }
   else
   {
-    m_signal_install_toggled.emit();
+    m_signal_install_modified.emit();
     modify_bg(Gtk::STATE_NORMAL ,GREY);
   }
 
@@ -167,7 +172,7 @@ openfluid::market::MetaPackageInfo::SelectionType MarketPackWidget::getPackageFo
 // =====================================================================
 
 
-MarketPackWidget::signal_install_toggled_t MarketPackWidget::signal_install_toggled()
+MarketPackWidget::signal_install_modified_t MarketPackWidget::signal_install_modified()
 {
-  return m_signal_install_toggled;
+  return m_signal_install_modified;
 }

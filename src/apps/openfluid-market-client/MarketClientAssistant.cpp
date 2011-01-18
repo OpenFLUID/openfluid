@@ -203,11 +203,22 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesLabel.set_text("Licenses:");
   m_LicensesLabel.set_alignment(0,0);
 
-  m_LicensesSWindow.add(m_LicensesTextview);
+  m_RefLicenseTextBuffer = Gtk::TextBuffer::create();
+  m_RefLicenseTextBuffer->set_text("This is the text from TextBuffer #1.");
+
+  m_LicensesTextView.set_buffer(m_RefLicenseTextBuffer);
+
+  m_LicensesSWindow.add(m_LicensesTextView);
   m_LicensesSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
+  m_RefLicenseTreeViewModel = Gtk::ListStore::create(m_LicensesColumns);
+  m_LicensesTreeView.set_model(m_RefLicenseTreeViewModel);
+  m_LicensesTreeView.set_headers_visible(false);
+
+  m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
+
   m_LicensesReviewBox.set_spacing(12);
-  m_LicensesReviewBox.pack_start(m_LicensesTreeview,Gtk::PACK_EXPAND_WIDGET);
+  m_LicensesReviewBox.pack_start(m_LicensesTreeView,Gtk::PACK_SHRINK);
   m_LicensesReviewBox.pack_start(m_LicensesSWindow,Gtk::PACK_EXPAND_WIDGET);
 
 
@@ -222,6 +233,10 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesPageBox.pack_start(m_LicensesReviewBox,Gtk::PACK_EXPAND_WIDGET);
   m_LicensesPageBox.pack_start(m_LicensesAcceptRadio,Gtk::PACK_SHRINK);
   m_LicensesPageBox.pack_start(m_LicensesDoNotRadio,Gtk::PACK_SHRINK);
+
+  m_RefLicensesTreeSelection->signal_changed().connect(
+      sigc::mem_fun(*this,&MarketClientAssistant::onLicensesTreeviewChanged)
+  );
 
 
   m_LicensesAcceptRadio.signal_clicked().connect(
@@ -282,29 +297,48 @@ void MarketClientAssistant::onClose()
 // =====================================================================
 
 
-void MarketClientAssistant::onPrepare(Gtk::Widget* widget)
+void MarketClientAssistant::onPrepare(Gtk::Widget* /*Widget*/)
 {
-    set_title(Glib::ustring::compose("OpenFLUID Market client (Step %1 of %2)",
-      get_current_page() + 1, get_n_pages()));
-
-  std::cout << "onprepare on page " << get_page_title(*widget) << std::endl;
+  set_title(Glib::ustring::compose("OpenFLUID Market client (Step %1 of %2)",get_current_page() + 1, get_n_pages()));
 
 
   if (get_current_page() == 1)
   {
-/*    Gtk::MessageDialog dialog(*this, "This is an INFO MessageDialog");
-    dialog.set_secondary_text(
-            "And this is the secondary text that explains things.");
-
-    dialog.run();
-
-    set_current_page(0);
-    show();
-*/
+    initializeLicencesTreeView();
   }
 
-//  Gtk::MessageDialog dialog(*this, "OnPrepare()");
-//  dialog.run();
+
+  if (get_current_page() == 2)
+  {
+
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::onLicensesTreeviewChanged()
+{
+  Gtk::TreeModel::iterator Iter = m_RefLicensesTreeSelection->get_selected();
+
+  m_RefLicenseTextBuffer->set_text("");
+
+  if(Iter)
+  {
+    Gtk::TreeModel::Row Row = *Iter;
+    std::string PackageID = Row.get_value(m_LicensesColumns.m_ID);
+    openfluid::market::MetaPackagesCatalog_t Catalog = m_MarketClient.getMetaPackagesCatalog();
+    std::string LicenseID = Catalog[PackageID].AvailablePackages[Catalog[PackageID].Selected].License;
+
+    std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
+
+    if (LIter != m_MarketClient.getLicensesTexts().end())
+      m_RefLicenseTextBuffer->set_text(LIter->second);
+
+  }
 
 
 }
@@ -353,7 +387,7 @@ void MarketClientAssistant::onURLComboChanged()
 // =====================================================================
 
 
-void MarketClientAssistant::onPackageInstallToggled()
+void MarketClientAssistant::onPackageInstallModified()
 {
   bool Selection = false;
 
@@ -363,9 +397,12 @@ void MarketClientAssistant::onPackageInstallToggled()
     MarketPackWidget* MPW;
     MPW = *APLiter;
     Selection = Selection || MPW->isInstall();
-    m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
+    if (MPW->isInstall())
+      m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
+    else m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
   }
 
+  std::cout << "ici" << std::endl;
   set_page_complete(m_SelectionPageBox,Selection);
 }
 
@@ -411,13 +448,43 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 
     mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc));
-    mp_AvailPacksWidgets.back()->signal_install_toggled().connect(
-        sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallToggled)
+    mp_AvailPacksWidgets.back()->signal_install_modified().connect(
+        sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
     );
 
     m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,10);
 
     m_AvailPacksBox.show_all_children();
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::initializeLicencesTreeView()
+{
+  openfluid::market::MetaPackagesCatalog_t Catalog;
+  openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
+
+
+  m_LicensesTreeView.remove_all_columns();
+  m_RefLicenseTreeViewModel->clear();
+
+  Catalog = m_MarketClient.getMetaPackagesCatalog();
+
+  for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
+  {
+
+    if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+    {
+      Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append());
+      TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+    }
+  }
+
+  m_LicensesTreeView.append_column("", m_LicensesColumns.m_ID);
+
 }
 

@@ -68,7 +68,7 @@ class MarketPackWidget : public Gtk::Frame
 {
 
   public:
-    typedef sigc::signal<void> signal_install_toggled_t;
+    typedef sigc::signal<void> signal_install_modified_t;
 
 
   private:
@@ -97,11 +97,11 @@ class MarketPackWidget : public Gtk::Frame
 
     FormatComboColumns m_FormatColumns;
 
-    void onInstallToggled();
+    void onInstallModified();
 
 
   protected:
-    signal_install_toggled_t m_signal_install_toggled;
+    signal_install_modified_t m_signal_install_modified;
 
 
   public:
@@ -115,7 +115,7 @@ class MarketPackWidget : public Gtk::Frame
 
     openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
-    signal_install_toggled_t signal_install_toggled();
+    signal_install_modified_t signal_install_modified();
 
 
 };
