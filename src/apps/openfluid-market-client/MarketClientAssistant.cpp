@@ -58,8 +58,10 @@
 #include "MarketClientAssistant.hpp"
 
 #include <iostream>
+#include <boost/filesystem.hpp>
 
 #include <openfluid/base.hpp>
+
 
 MarketClientAssistant::MarketClientAssistant()
 : m_SelectionPageBox(false,0),
@@ -143,7 +145,10 @@ void MarketClientAssistant::setupSelectionPage()
 
   Glib::KeyFile MarketConf;
 
-  if (MarketConf.load_from_file(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile()))
+
+
+  if (boost::filesystem::exists(boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile())) &&
+      MarketConf.load_from_file(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile()))
   {
     if (MarketConf.has_group("openfluid.market.marketplaces"))
     {
