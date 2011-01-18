@@ -363,6 +363,7 @@ void MarketClientAssistant::onPackageInstallToggled()
     MarketPackWidget* MPW;
     MPW = *APLiter;
     Selection = Selection || MPW->isInstall();
+    m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
   }
 
   set_page_complete(m_SelectionPageBox,Selection);
