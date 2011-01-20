@@ -114,6 +114,7 @@ class DLLEXPORT MarketPackage
 
     static std::string getTempDownloadsDir() { return m_TempDownloadsDir; };
 
+    openfluid::base::FuncID_t getID() const { return m_ID; };
 
     virtual void process() = 0;
 

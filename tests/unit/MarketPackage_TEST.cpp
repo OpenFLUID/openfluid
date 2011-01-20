@@ -89,8 +89,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 
   openfluid::market::MarketSrcPackage SPack("dummy.id","file:://path/to/file");
+  BOOST_REQUIRE_EQUAL(SPack.getID(),"dummy.id");
 
   openfluid::market::MarketBinPackage BPack("dummy.id","file:://path/to/file");
+  BOOST_REQUIRE_EQUAL(BPack.getID(),"dummy.id");
 }
 
 // =====================================================================

@@ -98,6 +98,9 @@ void MarketSrcPackage::process()
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
 
+  if (boost::filesystem::is_directory(boost::filesystem::path(BuildDir)))
+    boost::filesystem::remove_all(boost::filesystem::path(BuildDir));
+
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
 
@@ -120,8 +123,11 @@ void MarketSrcPackage::process()
   if (std::system(BuildCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error building package using CMake");
 
+  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT)))
+    boost::filesystem::remove(boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+
   boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT),
-                                    boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+                               boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
 }
 
 

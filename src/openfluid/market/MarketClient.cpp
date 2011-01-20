@@ -159,8 +159,6 @@ void MarketClient::lockMarketTemp()
 {
   std::string LockFilename = MarketPackage::getTempDir()+"/"+LOCK_FILE;
 
-  // std::cout << boost::filesystem::path(LockFilename).string() << std::endl;
-
   if (boost::filesystem::exists(boost::filesystem::path(LockFilename)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketClient::lockMarketTemp()","Unable to lock market temp directory (already locked)");
 
@@ -449,47 +447,81 @@ MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::b
 // =====================================================================
 
 
-void MarketClient::installSelection(const bool /*IgnoreMissing = true*/)
+void MarketClient::preparePackagesInstallation()
 {
-
   MetaPackagesCatalog_t::iterator PCit;
-  std::vector<MarketPackage*> PacksToInstall;
-  std::vector<MarketPackage*>::iterator PIit;
 
+  // clearing list of packages to install
+  while (!m_PacksToInstall.empty())
+  {
+    delete m_PacksToInstall.front();
+    m_PacksToInstall.pop();
+  }
 
   // creating the list of packages to install
   for (PCit = m_MetaPackagesCatalog.begin(); PCit != m_MetaPackagesCatalog.end();++PCit)
   {
     if (PCit->second.Selected == MetaPackageInfo::BIN)
     {
-      // std::cout << "BIN to install : " << PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL << std::endl;
-      PacksToInstall.push_back(new MarketBinPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+      m_PacksToInstall.push(new MarketBinPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
     }
     if (PCit->second.Selected == MetaPackageInfo::SRC)
     {
-      // std::cout << "SRC to install : " << PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL << std::endl;
-      PacksToInstall.push_back(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+      m_PacksToInstall.push(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
     }
-  }
-
-
-  // download and install of packages
-  for (PIit = PacksToInstall.begin(); PIit != PacksToInstall.end();++PIit)
-  {
-    (*PIit)->download();
-  }
-
-
-  for (PIit = PacksToInstall.begin(); PIit != PacksToInstall.end();++PIit)
-  {
-    (*PIit)->process();
-  }
-
-  for (PIit = PacksToInstall.begin(); PIit != PacksToInstall.end();++PIit)
-  {
-    delete (*PIit);
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClient::installSelection(const bool /*IgnoreMissing = true*/)
+{
+
+  preparePackagesInstallation();
+
+
+  while (!m_PacksToInstall.empty())
+  {
+    MarketPackage* MP = m_PacksToInstall.front();
+    m_PacksToInstall.pop();
+
+    MP->download();
+    MP->process();
+
+    delete MP;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MarketClient::hasSelectedPackagesToInstall()
+{
+  return (!m_PacksToInstall.empty());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClient::installNextSelectedPackage()
+{
+  if (!m_PacksToInstall.empty())
+  {
+    MarketPackage* MP = m_PacksToInstall.front();
+    m_PacksToInstall.pop();
+
+    MP->download();
+    MP->process();
+
+    delete MP;
+  }
+}
 
 } } // namespaces

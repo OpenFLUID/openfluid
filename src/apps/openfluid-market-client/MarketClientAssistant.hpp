@@ -139,9 +139,13 @@ class MarketClientAssistant : public Gtk::Assistant
     // ===== Download and install =====//
     Gtk::VBox m_InstallPageBox;
 
-    Gtk::TextView m_InstallTextview;
+    Gtk::TextView m_InstallTextView;
+    Glib::RefPtr<Gtk::TextBuffer> m_RefInstallTextBuffer;
+
     Gtk::ScrolledWindow m_InstallSWindow;
     Gtk::ProgressBar m_InstallProgressBar;
+
+    void onInstallTimeoutOnce();
 
 
     void setupSelectionPage();
@@ -150,7 +154,6 @@ class MarketClientAssistant : public Gtk::Assistant
     void setupDownloadPage();
 
 
-  // Signal handlers:
     void onApply();
     void onCancel();
     void onClose();
@@ -162,6 +165,7 @@ class MarketClientAssistant : public Gtk::Assistant
 
     openfluid::market::MarketClient m_MarketClient;
 
+    int m_InstallationTimeout;
 
   public:
     MarketClientAssistant();

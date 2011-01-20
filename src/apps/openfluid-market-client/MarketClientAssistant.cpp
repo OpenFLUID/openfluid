@@ -68,6 +68,9 @@ MarketClientAssistant::MarketClientAssistant()
   m_LicensesPageBox(false,0),
   m_InstallPageBox(false,0)
 {
+
+  openfluid::market::MarketPackage::initialize();
+
   set_title("OpenFLUID Market client");
   set_border_width(20);
   set_default_size(800, 600);
@@ -204,8 +207,9 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesLabel.set_alignment(0,0);
 
   m_RefLicenseTextBuffer = Gtk::TextBuffer::create();
-  m_RefLicenseTextBuffer->set_text("This is the text from TextBuffer #1.");
+  m_RefLicenseTextBuffer->set_text("");
 
+  m_LicensesTextView.set_editable(false);
   m_LicensesTextView.set_buffer(m_RefLicenseTextBuffer);
 
   m_LicensesSWindow.add(m_LicensesTextView);
@@ -251,11 +255,20 @@ void MarketClientAssistant::setupLicensesPage()
 
 void MarketClientAssistant::setupDownloadPage()
 {
-  m_InstallSWindow.add(m_InstallTextview);
-  m_InstallSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_RefInstallTextBuffer = Gtk::TextBuffer::create();
+  m_RefInstallTextBuffer->set_text("");
+
+  m_InstallTextView.set_editable(false);
+  m_InstallTextView.set_buffer(m_RefInstallTextBuffer);
+  m_InstallTextView.set_wrap_mode(Gtk::WRAP_WORD);
+
+  m_InstallSWindow.add(m_InstallTextView);
+  m_InstallSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
+
+  m_InstallProgressBar.set_size_request(-1,30);
 
   m_InstallPageBox.set_border_width(12);
-  m_InstallPageBox.pack_start(m_InstallProgressBar,Gtk::PACK_SHRINK);
+  m_InstallPageBox.pack_start(m_InstallProgressBar,Gtk::PACK_SHRINK,12);
   m_InstallPageBox.pack_start(m_InstallSWindow,Gtk::PACK_EXPAND_WIDGET,12);
 
 }
@@ -302,17 +315,23 @@ void MarketClientAssistant::onPrepare(Gtk::Widget* /*Widget*/)
   set_title(Glib::ustring::compose("OpenFLUID Market client (Step %1 of %2)",get_current_page() + 1, get_n_pages()));
 
 
+
+  // page : Licenses
   if (get_current_page() == 1)
   {
     initializeLicencesTreeView();
   }
 
 
+  // page : Installation
   if (get_current_page() == 2)
   {
+    set_page_complete(m_InstallPageBox, false);
 
+
+    Glib::signal_timeout().connect_once(sigc::mem_fun(*this,
+      &MarketClientAssistant::onInstallTimeoutOnce), 250 );
   }
-
 }
 
 
@@ -410,6 +429,59 @@ void MarketClientAssistant::onPackageInstallModified()
 // =====================================================================
 
 
+void MarketClientAssistant::onInstallTimeoutOnce()
+{
+  set_page_complete(m_InstallPageBox, false);
+
+  m_MarketClient.preparePackagesInstallation();
+
+  unsigned int PackToInstallCount = m_MarketClient.getCountOfPackagesToInstall();
+  unsigned int InstalledCount = 0;
+
+  m_InstallProgressBar.set_fraction(0.0);
+
+  while( Gtk::Main::events_pending()) Gtk::Main::iteration();
+
+  while (m_MarketClient.hasSelectedPackagesToInstall())
+  {
+    m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"\n");
+    m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"Installing package "+m_MarketClient.getNextPackageToBeInstalled()->getID());
+    m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
+
+    while( Gtk::Main::events_pending()) Gtk::Main::iteration();
+    m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
+
+    try
+    {
+      m_MarketClient.installNextSelectedPackage();
+      m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"  [Done]\n\n");
+    }
+    catch (openfluid::base::OFException& E)
+    {
+      std::string ErrorMsg(E.what());
+      m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"  [Error]["+ErrorMsg+"]\n\n");
+    }
+    InstalledCount++;
+
+    m_InstallProgressBar.set_fraction(float(InstalledCount)/float(PackToInstallCount));
+    m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"********************************************************************************\n");
+    while( Gtk::Main::events_pending()) Gtk::Main::iteration();
+    m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
+
+  }
+
+  m_InstallProgressBar.set_fraction(1.0);
+  m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"\n\nInstallation completed.");
+  while( Gtk::Main::events_pending()) Gtk::Main::iteration();
+  m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
+
+  set_page_complete(m_InstallPageBox, true);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::updateAvailPacksTreeview()
 {
   openfluid::market::MetaPackagesCatalog_t Catalog;
@@ -484,6 +556,11 @@ void MarketClientAssistant::initializeLicencesTreeView()
   }
 
   m_LicensesTreeView.append_column("", m_LicensesColumns.m_ID);
+
+
+  // select first package
+  Gtk::TreeModel::Row TmpSelRow = m_RefLicenseTreeViewModel->children()[0];
+  m_RefLicensesTreeSelection->select(TmpSelRow);
 
 }
 

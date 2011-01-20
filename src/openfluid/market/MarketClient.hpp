@@ -58,6 +58,7 @@
 #define __MARKETCLIENT_HPP__
 
 #include <string>
+#include <queue>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
@@ -91,6 +92,8 @@ class DLLEXPORT MarketClient
     MarketLicensesTexts_t m_LicensesTexts;
 
     bool m_IsConnected;
+
+    std::queue<MarketPackage*> m_PacksToInstall;
 
     void initMarketBag();
 
@@ -130,6 +133,16 @@ class DLLEXPORT MarketClient
     MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::base::FuncID_t& ID) const;
 
     void installSelection(const bool IgnoreMissing = true);
+
+    void preparePackagesInstallation();
+
+    unsigned int getCountOfPackagesToInstall() const { return m_PacksToInstall.size(); };
+
+    const MarketPackage* getNextPackageToBeInstalled() const { return m_PacksToInstall.front(); };
+
+    bool hasSelectedPackagesToInstall();
+
+    void installNextSelectedPackage();
 
     bool isConnected() const { return m_IsConnected; };
 

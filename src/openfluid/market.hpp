@@ -59,7 +59,6 @@
 #include <openfluid/market/MarketBinPackage.hpp>
 #include <openfluid/market/MarketClient.hpp>
 #include <openfluid/market/MarketInfos.hpp>
-#include <openfluid/market/MarketListener.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 
