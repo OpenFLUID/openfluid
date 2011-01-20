@@ -422,6 +422,8 @@ void MarketClientAssistant::onPackageInstallModified()
   }
 
   set_page_complete(m_SelectionPageBox,Selection);
+  m_LicensesDoNotRadio.set_active(true);
+
 }
 
 
