@@ -83,6 +83,7 @@ RuntimeEnvironment::RuntimeEnvironment()
 
   m_Version = openfluid::config::MAJOR_VERSION+"."+openfluid::config::MINOR_VERSION+"."+openfluid::config::PATCH_VERSION;
   m_FullVersion = openfluid::config::FULL_VERSION;
+  m_MajorMinorVersion = openfluid::config::MAJOR_VERSION+"."+openfluid::config::MINOR_VERSION;
 
 
   m_TempDir = "";

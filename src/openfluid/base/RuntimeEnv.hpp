@@ -82,6 +82,7 @@ class DLLEXPORT RuntimeEnvironment
 
     std::string m_Version;
     std::string m_FullVersion;
+    std::string m_MajorMinorVersion;
 
     std::string m_OutputDir;
     std::string m_InputDir;
@@ -155,6 +156,14 @@ class DLLEXPORT RuntimeEnvironment
       @return the full version as a std::string
     */
     std::string getFullVersion() const { return m_FullVersion; };
+
+    /**
+      Returns the version of OpenFLUID, composed of major and minor numbers
+      @return the major.minor version as a std::string
+    */
+    std::string getMajorMinorVersion() const { return m_MajorMinorVersion; };
+
+
 
     /**
       Sets the input directory, overriding the default input dir
