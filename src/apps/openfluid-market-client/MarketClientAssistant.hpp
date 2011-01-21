@@ -134,7 +134,8 @@ class MarketClientAssistant : public Gtk::Assistant
     Glib::RefPtr<Gtk::TextBuffer> m_RefLicenseTextBuffer;
 
 
-    Gtk::ScrolledWindow m_LicensesSWindow;
+    Gtk::ScrolledWindow m_LicensesListSWindow;
+    Gtk::ScrolledWindow m_LicensesReviewSWindow;
 
     Gtk::RadioButton m_LicensesAcceptRadio;
     Gtk::RadioButton m_LicensesDoNotRadio;

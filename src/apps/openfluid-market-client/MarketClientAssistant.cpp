@@ -231,18 +231,22 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesTextView.set_editable(false);
   m_LicensesTextView.set_buffer(m_RefLicenseTextBuffer);
 
-  m_LicensesSWindow.add(m_LicensesTextView);
-  m_LicensesSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_LicensesReviewSWindow.add(m_LicensesTextView);
+  m_LicensesReviewSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
   m_RefLicenseTreeViewModel = Gtk::ListStore::create(m_LicensesColumns);
   m_LicensesTreeView.set_model(m_RefLicenseTreeViewModel);
   m_LicensesTreeView.set_headers_visible(false);
 
+  m_LicensesListSWindow.add(m_LicensesTreeView);
+  m_LicensesListSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
+
+
   m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
 
   m_LicensesReviewBox.set_spacing(12);
-  m_LicensesReviewBox.pack_start(m_LicensesTreeView,Gtk::PACK_SHRINK);
-  m_LicensesReviewBox.pack_start(m_LicensesSWindow,Gtk::PACK_EXPAND_WIDGET);
+  m_LicensesReviewBox.pack_start(m_LicensesListSWindow,Gtk::PACK_SHRINK);
+  m_LicensesReviewBox.pack_start(m_LicensesReviewSWindow,Gtk::PACK_EXPAND_WIDGET);
 
 
   m_LicensesAcceptRadio.set_label("Accept packages licenses");
@@ -282,7 +286,7 @@ void MarketClientAssistant::setupDownloadPage()
   m_InstallTextView.set_wrap_mode(Gtk::WRAP_WORD);
 
   m_InstallSWindow.add(m_InstallTextView);
-  m_InstallSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
+  m_InstallSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
   m_InstallProgressBar.set_size_request(-1,30);
 
