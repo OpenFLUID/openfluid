@@ -91,11 +91,19 @@ class MarketClientAssistant : public Gtk::Assistant
 
     Gtk::ScrolledWindow m_AvailPacksSWindow;
 
+    Gtk::HBox m_SelectionActionsBox;
+    Gtk::Button m_SelectAllButton;
+    Gtk::Button m_SelectNoneButton;
+
     std::list<MarketPackWidget*> mp_AvailPacksWidgets;
 
     void onURLComboChanged();
 
     void onPackageInstallModified();
+
+    void onSelectAllClicked();
+
+    void onSelectNoneClicked();
 
 
     // ===== Licenses =====//

@@ -184,14 +184,33 @@ void MarketClientAssistant::setupSelectionPage()
   m_AvailPacksSWindow.add(m_AvailPacksBox);
   m_AvailPacksSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
+
+  m_SelectAllButton.set_label("Select all");
+  m_SelectAllButton.set_sensitive(false);
+  m_SelectNoneButton.set_label("Select none");
+  m_SelectNoneButton.set_sensitive(false);
+
+  m_SelectionActionsBox.pack_start(m_SelectAllButton,Gtk::PACK_SHRINK,0);
+  m_SelectionActionsBox.pack_start(m_SelectNoneButton,Gtk::PACK_SHRINK,12);
+
+
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
-  m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,12);
+  m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,6);
+  m_SelectionPageBox.pack_start(m_SelectionActionsBox,Gtk::PACK_SHRINK);
+
 
   m_URLCombo.signal_changed().connect(
     sigc::mem_fun(*this, &MarketClientAssistant::onURLComboChanged)
   );
 
+  m_SelectAllButton.signal_clicked().connect(
+      sigc::mem_fun(*this, &MarketClientAssistant::onSelectAllClicked)
+    );
+
+  m_SelectNoneButton.signal_clicked().connect(
+      sigc::mem_fun(*this, &MarketClientAssistant::onSelectNoneClicked)
+    );
 
 }
 
@@ -394,10 +413,19 @@ void MarketClientAssistant::onURLComboChanged()
       {
         Glib::ustring TmpURL = TmpRow[m_URLColumns.m_URL];
         m_MarketClient.connect(TmpURL);
+        m_SelectAllButton.set_sensitive(!m_MarketClient.getMetaPackagesCatalog().empty());
+        m_SelectNoneButton.set_sensitive(!m_MarketClient.getMetaPackagesCatalog().empty());
       }
     }
   }
+  else
+  {
+    m_SelectAllButton.set_sensitive(false);
+    m_SelectNoneButton.set_sensitive(false);
+  }
+
   set_page_complete(m_SelectionPageBox,false);
+
   updateAvailPacksTreeview();
 }
 
@@ -431,6 +459,40 @@ void MarketClientAssistant::onPackageInstallModified()
 // =====================================================================
 
 
+void MarketClientAssistant::onSelectAllClicked()
+{
+  std::list<MarketPackWidget*>::iterator APLiter;
+
+  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  {
+    MarketPackWidget* MPW;
+    MPW = *APLiter;
+    MPW->setInstall(true);
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void MarketClientAssistant::onSelectNoneClicked()
+{
+  std::list<MarketPackWidget*>::iterator APLiter;
+
+  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  {
+    MarketPackWidget* MPW;
+    MPW = *APLiter;
+    MPW->setInstall(false);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::onInstallTimeoutOnce()
 {
   set_page_complete(m_InstallPageBox, false);
@@ -451,31 +513,33 @@ void MarketClientAssistant::onInstallTimeoutOnce()
     m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
 
     while( Gtk::Main::events_pending()) Gtk::Main::iteration();
-    m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
 
     try
     {
       m_MarketClient.installNextSelectedPackage();
       m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"  [Done]\n\n");
+
+      while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     }
     catch (openfluid::base::OFException& E)
     {
       std::string ErrorMsg(E.what());
       m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"  [Error]["+ErrorMsg+"]\n\n");
+
+      while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     }
     InstalledCount++;
 
     m_InstallProgressBar.set_fraction(float(InstalledCount)/float(PackToInstallCount));
     m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"********************************************************************************\n");
-    while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
-
+    while( Gtk::Main::events_pending()) Gtk::Main::iteration();
   }
 
   m_InstallProgressBar.set_fraction(1.0);
   m_RefInstallTextBuffer->insert(m_RefInstallTextBuffer->end(),"\n\nInstallation completed.");
-  while( Gtk::Main::events_pending()) Gtk::Main::iteration();
   m_InstallTextView.scroll_to_mark(m_RefInstallTextBuffer->get_insert(),0);
+  while( Gtk::Main::events_pending()) Gtk::Main::iteration();
 
   set_page_complete(m_InstallPageBox, true);
 }
@@ -565,4 +629,5 @@ void MarketClientAssistant::initializeLicencesTreeView()
   m_RefLicensesTreeSelection->select(TmpSelRow);
 
 }
+
 

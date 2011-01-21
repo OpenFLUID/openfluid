@@ -56,7 +56,7 @@
 #include "MarketPackWidget.hpp"
 
 const static Gdk::Color GREEN("#97DE62");
-const static Gdk::Color GREY("#777777");
+const static Gdk::Color GREY("#AAAAAA");
 
 // =====================================================================
 // =====================================================================
@@ -113,9 +113,11 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
   m_MainHBox.pack_start(m_DetailsVBox,Gtk::PACK_EXPAND_WIDGET,12);
 
   m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREEN);
+  m_InstallToggle.modify_bg(Gtk::STATE_NORMAL, GREY);
 
   modify_bg(Gtk::STATE_NORMAL,GREY);
 
+  set_shadow_type(Gtk::SHADOW_NONE);
 
   m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
         &MarketPackWidget::onInstallModified));

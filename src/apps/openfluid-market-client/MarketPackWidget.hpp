@@ -113,6 +113,8 @@ class MarketPackWidget : public Gtk::Frame
 
     bool isInstall() const { return m_InstallToggle.get_active(); };
 
+    void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
+
     openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
     signal_install_modified_t signal_install_modified();
