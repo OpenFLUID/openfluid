@@ -77,6 +77,11 @@ MarketClientAssistant::MarketClientAssistant()
   set_position(Gtk::WIN_POS_CENTER);
 
 
+  Glib::RefPtr<Gdk::Pixbuf> IconPixbuf = Gdk::Pixbuf::create_from_file(openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath("openfluid_icon.png"));
+
+  set_default_icon(IconPixbuf);
+
+
   setupSelectionPage();
   setupLicensesPage();
   setupDownloadPage();
