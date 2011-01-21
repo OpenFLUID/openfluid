@@ -261,7 +261,7 @@ void MarketClient::parseCatalogsData(const std::string& BinCatalogData, const st
       {
         splitPackageFilename(PackagesNames[i],TmpID,TmpVersion,TmpArch);
 
-        if (TmpVersion == openfluid::base::RuntimeEnvironment::getInstance()->getFullVersion())
+        if (TmpVersion == openfluid::base::RuntimeEnvironment::getInstance()->getMajorMinorVersion() || TmpVersion == openfluid::base::RuntimeEnvironment::getInstance()->getFullVersion())
         {
           m_MetaPackagesCatalog[TmpID].ID = TmpID;
           m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
