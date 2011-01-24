@@ -68,6 +68,7 @@ class DLLEXPORT MarketSrcPackage : public MarketPackage
 
   private:
     std::string m_BuildConfigOptions;
+    bool m_KeepSources;
 
   public:
 

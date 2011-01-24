@@ -88,14 +88,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketInfo MI;
 
   std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp").string();
-  std::string MarketBagDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market").string();;
+  std::string MarketBagBinDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-bin").string();;
+  std::string MarketBagSrcDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-src").string();;
 
   openfluid::market::MarketPackage::initialize();
 
-  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagDir);
+  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagBinDir,MarketBagSrcDir);
 
   boost::filesystem::remove_all(boost::filesystem::path(TmpDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcDir));
 
 
   MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/market/repository").string());

@@ -92,6 +92,37 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_Arch = "unknown";
 
 
+  // ====== System architecture ======
+
+#if linux
+  #if __i386__
+    m_Arch = "linux-i386";
+  #endif
+  #ifdef __x86_64__
+    m_Arch = "linux-x86-64";
+  #endif
+#endif
+
+
+#if WIN32
+  m_Arch = "win32";
+#endif
+
+#if WIN64
+  m_Arch = "win64";
+#endif
+
+
+#if __APPLE__
+  #if __LP64__
+    m_Arch = "osx64";
+  #else
+    m_Arch = "osx32";
+  #endif
+#endif
+
+
+
   m_InstallPrefix = openfluid::config::INSTALL_PREFIX;
 
   char *INSTALLEnvVar;
@@ -168,38 +199,11 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_OUTDIR).string();
   m_InputDir =  boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_INDIR).string();
   m_MarketBagDir = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::MARKETBAG_SUBDIR).string();
-  m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/" + m_FullVersion).string();
+  m_MarketBagBinVersionDir = boost::filesystem::path(m_MarketBagDir + "/" + m_Arch + "/" + m_FullVersion).string();
+  m_MarketBagSrcVersionDir = boost::filesystem::path(m_MarketBagDir + "/src/" + m_MajorMinorVersion).string();
 
   m_DefaultConfigFilePath = boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::DEFAULT_CONFIGFILE).string();
 
-  // ====== System architecture ======
-
-#if linux
-  #if __i386__
-    m_Arch = "linux-i386";
-  #endif
-  #ifdef __x86_64__
-    m_Arch = "linux-x86-64";
-  #endif
-#endif
-
-
-#if WIN32
-  m_Arch = "win32";
-#endif
-
-#if WIN64
-  m_Arch = "win64";
-#endif
-
-
-#if __APPLE__
-  #if __LP64__
-    m_Arch = "osx64";
-  #else
-    m_Arch = "osx32";
-  #endif
-#endif
 
 
   // ====== Default values ======
@@ -248,7 +252,7 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/" + openfluid::config::PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
-  m_PlugsDirs.push_back(m_MarketBagVersionDir);
+  m_PlugsDirs.push_back(m_MarketBagBinVersionDir);
 
 
   // install directory

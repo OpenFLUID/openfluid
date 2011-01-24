@@ -89,7 +89,8 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_UserDataDir;
     std::string m_TempDir;
     std::string m_MarketBagDir;
-    std::string m_MarketBagVersionDir;
+    std::string m_MarketBagBinVersionDir;
+    std::string m_MarketBagSrcVersionDir;
 
     std::string m_InstallPrefix;
 
@@ -203,10 +204,16 @@ class DLLEXPORT RuntimeEnvironment
     inline std::string getMarketBagDir() const { return m_MarketBagDir; };
 
     /**
-      Returns the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/1.6.2~alpha1)
+      Returns the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/linux-i386/1.6.2~alpha1)
       @return the market bag directory for the current version
     */
-    inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
+    inline std::string getMarketBagBinVersionDir() const { return m_MarketBagBinVersionDir; };
+
+    /**
+      Returns the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/src/1.6)
+      @return the market bag directory for the current version
+    */
+    inline std::string getMarketBagSrcVersionDir() const { return m_MarketBagSrcVersionDir; };
 
     /**
       Returns the default config file path (i.e. $HOME/.openfluid/openfluid.conf)

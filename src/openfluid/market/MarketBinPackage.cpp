@@ -81,7 +81,7 @@ void MarketBinPackage::process()
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
 
-  std::string ProcessCommand = m_CMakeCommand +" -E chdir " + m_MarketBagDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
+  std::string ProcessCommand = m_CMakeCommand +" -E chdir " + m_MarketBagBinDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
 
   if (std::system(ProcessCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");

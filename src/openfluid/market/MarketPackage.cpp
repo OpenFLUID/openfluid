@@ -65,7 +65,8 @@ const std::string MarketPackage::DLOADS_SUBDIR = "downloads";
 std::string MarketPackage::m_TempDir = "";
 std::string MarketPackage::m_TempBuildsDir = "";
 std::string MarketPackage::m_TempDownloadsDir = "";
-std::string MarketPackage::m_MarketBagDir = "";
+std::string MarketPackage::m_MarketBagBinDir = "";
+std::string MarketPackage::m_MarketBagSrcDir = "";
 
 std::string MarketPackage::m_CMakeCommand = "";
 
@@ -117,12 +118,13 @@ void MarketPackage::initialize()
 // =====================================================================
 
 
-void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagDir)
+void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir)
 {
   m_TempDir = TempDir;
   m_TempBuildsDir = TempDir+"/"+BUILDS_SUBDIR;
   m_TempDownloadsDir = TempDir+"/"+DLOADS_SUBDIR;
-  m_MarketBagDir = MarketBagDir;
+  m_MarketBagBinDir = MarketBagBinDir;
+  m_MarketBagSrcDir = MarketBagSrcDir;
 }
 
 

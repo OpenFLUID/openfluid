@@ -79,7 +79,9 @@ class DLLEXPORT MarketPackage
 
     static std::string m_TempDownloadsDir;
 
-    static std::string m_MarketBagDir;
+    static std::string m_MarketBagBinDir;
+
+    static std::string m_MarketBagSrcDir;
 
     static std::string m_CMakeCommand;
 
@@ -104,9 +106,11 @@ class DLLEXPORT MarketPackage
 
     static void initialize();
 
-    static void setWorksDirs(std::string TempDir, std::string MarketBagDir);
+    static void setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir);
 
-    static std::string getMarketBagDir() { return m_MarketBagDir; };
+    static std::string getMarketBagBinDir() { return m_MarketBagBinDir; };
+
+    static std::string getMarketBagSrcDir() { return m_MarketBagSrcDir; };
 
     static std::string getTempDir() { return m_TempDir; };
 

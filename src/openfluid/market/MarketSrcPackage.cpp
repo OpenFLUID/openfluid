@@ -65,7 +65,8 @@ namespace openfluid { namespace market {
 
 
 MarketSrcPackage::MarketSrcPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
-                : MarketPackage(ID,PackageURL)
+                : MarketPackage(ID,PackageURL),
+                  m_KeepSources(true)
 {
 
 }
@@ -97,6 +98,13 @@ void MarketSrcPackage::process()
   if (!m_BuildConfigOptions.empty()) m_BuildConfigOptions = " " + m_BuildConfigOptions;
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
+  std::string SrcInstallDir = m_MarketBagSrcDir + "/" + m_ID;
+
+  if (boost::filesystem::is_directory(boost::filesystem::path(SrcInstallDir)))
+    boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
+
+  if (!boost::filesystem::create_directories(boost::filesystem::path(SrcInstallDir)))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create source directory for "+m_ID+" package");
 
   if (boost::filesystem::is_directory(boost::filesystem::path(BuildDir)))
     boost::filesystem::remove_all(boost::filesystem::path(BuildDir));
@@ -104,9 +112,9 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
 
-  std::string UntarCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
+  std::string UntarCommand = m_CMakeCommand +" -E chdir " + SrcInstallDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
 
-  std::string BuildConfigCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " ." + m_BuildConfigOptions;
+  std::string BuildConfigCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " " + SrcInstallDir + m_BuildConfigOptions;
 
   std::string BuildCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " --build . --target "+m_ID;
 
@@ -123,11 +131,15 @@ void MarketSrcPackage::process()
   if (std::system(BuildCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error building package using CMake");
 
-  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT)))
-    boost::filesystem::remove(boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT)))
+    boost::filesystem::remove(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
 
   boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT),
-                               boost::filesystem::path(m_MarketBagDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+                               boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+
+  if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
+
+
 }
 
 

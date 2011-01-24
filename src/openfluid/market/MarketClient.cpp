@@ -76,7 +76,8 @@ MarketClient::MarketClient() :
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
   MarketPackage::setWorksDirs(boost::filesystem::path(m_TempDir).string(),
-                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagVersionDir());
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcVersionDir());
 
   m_URL.clear();
   m_MarketInfo.clear();
@@ -128,10 +129,16 @@ void MarketClient::splitPackageFilename(const std::string& Filename, std::string
 void MarketClient::initMarketBag()
 {
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagDir()));
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBinDir()));
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag directory");
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBinDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag binary directory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSrcDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSrcDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag source directory");
+
 }
 
 
