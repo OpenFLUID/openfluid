@@ -77,6 +77,8 @@ class DLLEXPORT ModelInstance
 
     openfluid::machine::SimulationBlob& m_SimulationBlob;
 
+    bool m_Initialized;
+
   public:
 
     ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
@@ -105,7 +107,7 @@ class DLLEXPORT ModelInstance
 
     const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
 
-    void initialize() const;
+    void initialize();
 
     bool call_initParams() const;
 

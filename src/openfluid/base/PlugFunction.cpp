@@ -55,6 +55,7 @@
 
 #include <openfluid/base/PlugFunction.hpp>
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/config.hpp>
 
 
 // =====================================================================
@@ -66,13 +67,10 @@ namespace openfluid { namespace base {
 
 
 PluggableFunction::PluggableFunction()
+  : mp_CoreData(NULL), mp_InternalCoreData(NULL), mp_ExecMsgs(NULL),
+    m_MaxThreads(openfluid::config::FUNCTIONS_MAXNUMTHREADS), m_Initialized(false)
 {
-  mp_CoreData = NULL;
-  mp_InternalCoreData = NULL;
 
-  mp_ExecMsgs = NULL;
-
-  m_Initialized = false;
 }
 
 
@@ -89,9 +87,22 @@ PluggableFunction::~PluggableFunction()
 // =====================================================================
 
 
-void PluggableFunction::initializeFunction()
+void PluggableFunction::initializeFunction(openfluid::core::CoreRepository* CoreData,
+    openfluid::base::ExecutionMessages* ExecMsgs,
+    openfluid::base::EnvironmentProperties* FuncEnv,
+    const unsigned int& MaxThreads,
+    const openfluid::base::FuncID_t& FuncID)
 {
   if (m_Initialized) return;
+
+
+  mp_CoreData = CoreData;
+  mp_ExecMsgs = ExecMsgs;
+  mp_FunctionEnv = FuncEnv;
+  m_FunctionID = FuncID;
+  m_MaxThreads = MaxThreads;
+
+  // initialize loggers
 
   std::string LogFile;
   std::string LogDir;
@@ -1262,6 +1273,7 @@ bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, std::string
   return mp_FunctionEnv->getValue(Key,Value);
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -1272,6 +1284,14 @@ bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads)
+{
+  if (MaxNumThreads > 0) m_MaxThreads = MaxNumThreads;
+};
 
 
 } } // namespace openfluid::base

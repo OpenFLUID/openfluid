@@ -131,7 +131,7 @@ namespace openfluid { namespace machine {
 
 ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
                              openfluid::machine::MachineListener* Listener)
-             : m_SimulationBlob(SimulationBlob)
+             : m_SimulationBlob(SimulationBlob), m_Initialized(false)
 {
   mp_Listener = Listener;
   if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
@@ -154,6 +154,9 @@ ModelInstance::~ModelInstance()
 
 void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 {
+  if (m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::appendItem()","Trying to append model item after model initialization");
+
   m_ModelItems.push_back(ItemInstance);
 }
 
@@ -164,6 +167,9 @@ void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 
 void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Position)
 {
+  if (m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Trying to insert model item after model initialization");
+
   if (Position < m_ModelItems.size())
   {
     std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
@@ -171,7 +177,7 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
     m_ModelItems.insert(it,ItemInstance);
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem","Bad index of item to insert");
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Bad index of item to insert");
 
 }
 
@@ -182,6 +188,9 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
 
 void ModelInstance::deleteItem(unsigned int Position)
 {
+  if (m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::deleteItem()","Trying to delete model item after model initialization");
+
   if (Position < m_ModelItems.size())
   {
     std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
@@ -189,7 +198,7 @@ void ModelInstance::deleteItem(unsigned int Position)
     m_ModelItems.erase(it);
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::deleteItem","Bad index of item to delete");
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::deleteItem()","Bad index of item to delete");
 }
 
 
@@ -199,6 +208,9 @@ void ModelInstance::deleteItem(unsigned int Position)
 
 void ModelInstance::clear()
 {
+  if (m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::clear()","Trying to clear model after model initialization");
+
   std::list<ModelItemInstance*>::iterator it;
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
@@ -216,16 +228,20 @@ void ModelInstance::clear()
 // =====================================================================
 
 
-void ModelInstance::initialize() const
+void ModelInstance::initialize()
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
 
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
-    (*FuncIter)->Function->initializeFunction();
+    (*FuncIter)->Function->initializeFunction(&(m_SimulationBlob.getCoreRepository()),&(m_SimulationBlob.getExecutionMessages()),
+        openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment(),
+        openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads(),
+        (*FuncIter)->Signature->ID);
     FuncIter++;
   }
+  m_Initialized = true;
 }
 
 
@@ -235,6 +251,10 @@ void ModelInstance::initialize() const
 
 bool ModelInstance::call_initParams() const
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initParams()","Model not initialized");
+
+
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
@@ -250,6 +270,10 @@ bool ModelInstance::call_initParams() const
 
 bool ModelInstance::call_prepareData() const
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_prepareData()","Model not initialized");
+
+
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
@@ -265,6 +289,10 @@ bool ModelInstance::call_prepareData() const
 
 bool ModelInstance::call_checkConsistency() const
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_checkConsistency()","Model not initialized");
+
+
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
@@ -280,6 +308,10 @@ bool ModelInstance::call_checkConsistency() const
 
 bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* SimInfo) const
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initializeRun()","Model not initialized");
+
+
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
@@ -295,6 +327,10 @@ bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* Si
 
 bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimStatus) const
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_runStep()","Model not initialized");
+
+
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
@@ -310,6 +346,10 @@ bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimSta
 
 bool ModelInstance::call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_finalizeRun()","Model not initialized");
+
+
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 

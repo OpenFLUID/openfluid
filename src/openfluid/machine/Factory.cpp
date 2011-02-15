@@ -226,8 +226,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 
 
 void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
-                                          SimulationBlob& SimBlob,
-                                          ModelInstance& MInstance)
+                                               ModelInstance& MInstance)
 {
 
   openfluid::base::ModelDescriptor::ModelDescription_t::const_iterator it;
@@ -246,9 +245,10 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
     {
       // instanciation of a pluggeg simulation function using the plugin manager
-      IInstance = PluginManager::getInstance()->getPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),&(SimBlob.getExecutionMessages()),&(SimBlob.getCoreRepository()));
+      IInstance = PluginManager::getInstance()->getPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
       MInstance.appendItem(IInstance);
     }
 
@@ -288,9 +288,6 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       if (GenInstance == NULL)
         throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
-      GenInstance->setDataRepository(&(SimBlob.getCoreRepository()));
-      GenInstance->setExecutionMessages(&(SimBlob.getExecutionMessages()));
-      GenInstance->setFunctionEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
       GenInstance->setDescriptor(*GenDesc);
       IInstance->Function = GenInstance;
       IInstance->Signature = Signature;

@@ -129,7 +129,6 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
   {
 
-
     return true;
   }
 
@@ -140,6 +139,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   bool prepareData()
   {
 
+    std::cout << std::endl << "Max threads: " << OPENFLUID_GetFunctionMaxThreads() << std::endl;
 
     return true;
   }

@@ -104,9 +104,7 @@ class DLLEXPORT PluginManager
     /**
       Returns function and function types
     */
-    ModelItemInstance* getPlugin(std::string PluginName,
-                               openfluid::base::ExecutionMessages* ExecMsgs,
-                               openfluid::core::CoreRepository* CoreData);
+    ModelItemInstance* getPlugin(std::string PluginName);
 
 
 };

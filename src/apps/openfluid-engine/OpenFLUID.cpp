@@ -519,7 +519,6 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building model... "; std::cout.flush();
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
-                                                                m_SimBlob,
                                                                 Model);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
@@ -624,6 +623,8 @@ void OpenFLUIDApp::runSimulation()
 void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 {
 
+  std::string DefaultMaxThreadsStr;
+  openfluid::tools::ConvertValue(openfluid::config::FUNCTIONS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
   boost::program_options::options_description OptionsDesc("openfluid-engine allowed options");
   OptionsDesc.add_options()
@@ -641,6 +642,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("functions-report,r","print a report of available functions, with details (do not run the simulation)")
       ("no-simreport,s","do not generate simulation report")
       ("show-paths","print the used paths (do not run the simulation)")
+      ("max-threads,t",boost::program_options::value< unsigned int >(),std::string("change maximum number of threads for threaded spatial loops (default is "+DefaultMaxThreadsStr+")").c_str())
       ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of functions matching the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
       ("version","get version (do not run the simulation)")
@@ -762,6 +764,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     m_RunType = InfoRequest;
     printPaths();
     return;
+  }
+
+  if (OptionsVars.count("max-threads"))
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->setFunctionsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
   }
 
   if (OptionsVars.count("clean-output-dir"))

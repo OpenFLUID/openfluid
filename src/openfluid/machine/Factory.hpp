@@ -78,8 +78,7 @@ class DLLEXPORT Factory
 
 
     static void buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
-                                            SimulationBlob& SimBlob,
-                                            ModelInstance& MInstance);
+                                                 ModelInstance& MInstance);
 
     static void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& RunDescr);
 

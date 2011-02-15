@@ -392,9 +392,9 @@ class DLLEXPORT RuntimeEnvironment
     */
     std::string getArch() const {return m_Arch; };
 
-    unsigned int getFunctionsFunctionsMaxNumThreads() const { return m_FunctionsMaxNumThreads; };
+    unsigned int getFunctionsMaxNumThreads() const { return m_FunctionsMaxNumThreads; };
 
-    void setFunctionsFunctionsMaxNumThreads(const unsigned int& MaxNumThreads)
+    void setFunctionsMaxNumThreads(const unsigned int& MaxNumThreads)
       { if (MaxNumThreads > 0) m_FunctionsMaxNumThreads = MaxNumThreads; };
 
 

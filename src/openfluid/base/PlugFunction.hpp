@@ -225,7 +225,7 @@
       openfluid::core::PcsOrd_t _M_##loopid##_pcsord = _M_##loopid##_ordit->getProcessOrder(); \
       while (_M_##loopid##_ordit != _M_##loopid##_UList->end()) \
       { \
-        Glib::ThreadPool _M_##loopid##_pool(4,true); \
+        Glib::ThreadPool _M_##loopid##_pool(OPENFLUID_GetFunctionMaxThreads(),true); \
         while (_M_##loopid##_ordit != _M_##loopid##_UList->end() && _M_##loopid##_ordit->getProcessOrder() == _M_##loopid##_pcsord) \
         { \
           openfluid::core::Unit* _M_##loopid##_unit = &(*_M_##loopid##_ordit); \
@@ -255,7 +255,7 @@
       openfluid::core::PcsOrd_t _M_##loopid##_pcsord = (*_M_##loopid##_ordit)->getProcessOrder(); \
       while (_M_##loopid##_ordit != _M_##loopid##_GUList->end()) \
       { \
-        Glib::ThreadPool _M_##loopid##_pool(4,true); \
+        Glib::ThreadPool _M_##loopid##_pool(OPENFLUID_GetFunctionMaxThreads(),true); \
         while (_M_##loopid##_ordit != _M_##loopid##_GUList->end() && (*_M_##loopid##_ordit)->getProcessOrder() == _M_##loopid##_pcsord) \
         { \
           openfluid::core::Unit* _M_##loopid##_unit = (*_M_##loopid##_ordit); \
@@ -369,6 +369,8 @@ class DLLEXPORT PluggableFunction
     */
     openfluid::base::FuncID_t m_FunctionID;
 
+    unsigned int m_MaxThreads;
+
     bool m_Initialized;
 
     static bool IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
@@ -377,7 +379,6 @@ class DLLEXPORT PluggableFunction
     static std::string generateDotEdge(std::string SrcClass, std::string SrcID,
                                        std::string DestClass, std::string DestID,
                                        std::string Options);
-
 
 
   protected:
@@ -989,6 +990,18 @@ class DLLEXPORT PluggableFunction
     */
     bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Value);
 
+    /**
+      Returns the maximum number of threads that can be concurrently run in threaded spatial loops
+      @return the number of threads
+    */
+    inline unsigned int OPENFLUID_GetFunctionMaxThreads() const { return m_MaxThreads; };
+
+    /**
+      Sets the maximum number of threads that can be concurrently run in threaded spatial loops
+      @param[in] MaxNumThreads the number of threads
+    */
+    void OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads);
+
 
     StdoutAndFileOutputStream OPENFLUID_Logger;
 
@@ -1004,15 +1017,14 @@ class DLLEXPORT PluggableFunction
     */
     virtual ~PluggableFunction();
 
-    void setDataRepository(openfluid::core::CoreRepository* CoreData) { mp_CoreData = CoreData; mp_InternalCoreData = CoreData;};
 
-    void setExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs) { mp_ExecMsgs = ExecMsgs; };
+    void initializeFunction(openfluid::core::CoreRepository* CoreData,
+                            openfluid::base::ExecutionMessages* ExecMsgs,
+                            openfluid::base::EnvironmentProperties* FuncEnv,
+                            const unsigned int& MaxThreads,
+                            const openfluid::base::FuncID_t& FuncID);
 
-    void setFunctionEnvironment(openfluid::base::EnvironmentProperties* FuncEnv) { mp_FunctionEnv = FuncEnv; };
 
-    void setFunctionID(const openfluid::base::FuncID_t& FuncID) { m_FunctionID = FuncID; };
-
-    void initializeFunction();
 
 
     /**

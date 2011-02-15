@@ -103,7 +103,6 @@ int main(int argc, char **argv)
                                                                     SBlob);
 
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
-                                                                  SBlob,
                                                                   Model);
 
 

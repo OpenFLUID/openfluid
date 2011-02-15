@@ -86,7 +86,7 @@ int main()
         Reader.getRunDescriptor(),
         Reader.getOutputDescriptor(),
         SBlob);
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(Reader.getModelDescriptor(),SBlob, MInstance);
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(Reader.getModelDescriptor(),MInstance);
 
     Writer.setDomainToWrite(SBlob.getCoreRepository());
     Writer.setModelToWrite(const_cast<openfluid::machine::ModelInstance&>(MInstance));

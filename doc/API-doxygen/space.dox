@@ -11,6 +11,10 @@ methods (see \ref funcparams_sec and \ref propini_sec).\n
 
 The spatial domain can be parsed using the macros intended for handling spatial entities.\n
 
+\n
+
+\subsection spaceparsingseq_ssec Sequential parsing
+
 To parse units of a specific class, you can use:
 <ul>
 <li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
@@ -18,7 +22,7 @@ To parse units of a specific class, you can use:
 </ul>
 
 
-To parse all units of the graph, you can use:
+To parse all units of the spatial domain, you can use:
 <ul>
 <li>#DECLARE_GLOBAL_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of the graph, 
 <li>#BEGIN_GLOBAL_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
@@ -63,6 +67,66 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
   
 }
 \endcode
+
+\n
+
+\subsection spaceparsingthreaded_ssec Concurrent parsing using multi-threading
+
+
+To parse units of a specific class, you can use:
+<ul>
+<li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
+<li>#APPLY_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the given class. Extra arguments can be passed (see example below)  
+</ul>
+
+
+To parse all units of the spatial domain, you can use:
+<ul>
+<li>#DECLARE_GLOBAL_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of the graph, 
+<li>#APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the graph. Extra arguments can be passed (see example below)
+</ul>
+\n
+\code
+void MyFunc::computeA(openfluid::core::Unit* aUnit)
+{
+ // compute something
+ // use/produce variables
+}
+
+
+void MyFunc::computeB(openfluid::core::Unit* U,
+                      const openfluid::base::SimulationStatus* SimStatus, 
+                      const double Coeff)
+{
+ // compute something else, with extra args
+ // use/produce variables
+}
+
+
+bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
+{
+
+  DECLARE_UNITS_ORDERED_LOOP(1);
+  DECLARE_UNITS_ORDERED_LOOP(7);
+  DECLARE_GLOBAL_UNITS_ORDERED_LOOP(10)
+
+  APPLY_UNITS_ORDERED_LOOP_THREADED(1,"SU",MyFunc::computeA);
+  APPLY_UNITS_ORDERED_LOOP_THREADED(7,"TU",MyFunc::computeB, SimStatus, 2.5);
+  
+  APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED(10,MyFunc::computeA);
+
+}
+\endcode
+
+
+Please note:
+<ul>
+<li>If a spatial loop is used inside other spatial loop, it is recommended to use multi-threading in only one loop.\n
+<li>In case of concurrent data access, it is strongly recommended to use mutex locks for thread safe data handling.
+<li>Concurrent parsing using multi-threading should improve computing performance, reducing simulations durations.
+But in case of very short computing durations, the cost of multi-threading management may nullify the speed improvements of concurrent computing. 
+
+</ul>
 
 \n
 

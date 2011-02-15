@@ -278,24 +278,12 @@ ArrayOfSignatureItemInstance PluginManager::getAvailableFunctions(const std::str
 // =====================================================================
 
 
-ModelItemInstance* PluginManager::getPlugin(std::string PluginName,
-                                          openfluid::base::ExecutionMessages* ExecMsgs,
-                                          openfluid::core::CoreRepository* CoreData)
+ModelItemInstance* PluginManager::getPlugin(std::string PluginName)
 {
 
   ModelItemInstance* Plug = buildPluginContainer(PluginName+openfluid::config::PLUGINS_EXT);
 
-
-
-  if (Plug != NULL && Plug->SDKCompatible)
-  {
-    Plug->Function->setDataRepository(CoreData);
-    Plug->Function->setExecutionMessages(ExecMsgs);
-    Plug->Function->setFunctionEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
-    Plug->Function->setFunctionID(Plug->Signature->ID);
-    return Plug;
-  }
-
+  if (Plug != NULL && Plug->SDKCompatible) return Plug;
 
   return NULL;
 }
