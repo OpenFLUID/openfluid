@@ -65,6 +65,7 @@
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
 #include <openfluid/base/IDataDescriptor.hpp>
+#include <openfluid/base/Init.hpp>
 #include <openfluid/base/Listener.hpp>
 #include <openfluid/base/Message.hpp>
 #include <openfluid/base/ModelDescriptor.hpp>

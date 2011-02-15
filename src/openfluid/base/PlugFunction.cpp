@@ -71,6 +71,8 @@ PluggableFunction::PluggableFunction()
   mp_InternalCoreData = NULL;
 
   mp_ExecMsgs = NULL;
+
+  m_Initialized = false;
 }
 
 
@@ -87,8 +89,9 @@ PluggableFunction::~PluggableFunction()
 // =====================================================================
 
 
-void PluggableFunction::initLogger()
+void PluggableFunction::initializeFunction()
 {
+  if (m_Initialized) return;
 
   std::string LogFile;
   std::string LogDir;

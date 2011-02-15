@@ -47,32 +47,38 @@
 
 
 /**
-  \file main.cpp
+  \file Init.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
+#include <openfluid/base/Init.hpp>
 
-// =====================================================================
-// =====================================================================
+#include <glibmm/thread.h>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 
-#include <gtkmm/main.h>
-#include "MarketClientAssistant.hpp"
 
-int main(int argc, char *argv[])
+namespace openfluid { namespace base {
+
+void Init()
 {
-  openfluid::base::Init();
 
-  Gtk::Main kit(argc, argv);
-  MarketClientAssistant Assistant;
+  if(!Glib::thread_supported()) Glib::thread_init();
 
-  Gtk::Main::run(Assistant);
 
-  return 0;
+  RuntimeEnvironment::getInstance();
 }
+
+
+} } // namespaces
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 

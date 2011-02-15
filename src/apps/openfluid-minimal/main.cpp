@@ -76,6 +76,8 @@ int main(int argc, char **argv)
       throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdir>");
 
 
+    openfluid::base::Init();
+
 
     openfluid::machine::Engine* Engine;
     openfluid::machine::SimulationBlob SBlob;

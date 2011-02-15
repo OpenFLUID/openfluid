@@ -45,34 +45,30 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file main.cpp
-  \brief Implements ...
+  \file Init.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
 
+#ifndef __INIT_HPP__
+#define __INIT_HPP__
+
+#include <openfluid/dllexport.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-#include <gtkmm/main.h>
-#include "MarketClientAssistant.hpp"
+namespace openfluid { namespace base {
 
-int main(int argc, char *argv[])
-{
-  openfluid::base::Init();
+void DLLEXPORT Init();
 
-  Gtk::Main kit(argc, argv);
-  MarketClientAssistant Assistant;
 
-  Gtk::Main::run(Assistant);
-
-  return 0;
-}
+} } // namespaces
 
 
 
+#endif /* __INIT_HPP__ */

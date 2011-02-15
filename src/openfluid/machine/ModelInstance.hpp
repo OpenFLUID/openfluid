@@ -105,7 +105,7 @@ class DLLEXPORT ModelInstance
 
     const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
 
-    void initLoggers() const;
+    void initialize() const;
 
     bool call_initParams() const;
 

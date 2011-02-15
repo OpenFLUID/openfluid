@@ -100,6 +100,8 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_HostName;
     std::string m_Arch;
 
+    unsigned int m_FunctionsMaxNumThreads;
+
     std::string m_DefaultConfigFilePath;
 
     bool m_ClearOutputDir;
@@ -389,6 +391,12 @@ class DLLEXPORT RuntimeEnvironment
       @return the local architecture
     */
     std::string getArch() const {return m_Arch; };
+
+    unsigned int getFunctionsFunctionsMaxNumThreads() const { return m_FunctionsMaxNumThreads; };
+
+    void setFunctionsFunctionsMaxNumThreads(const unsigned int& MaxNumThreads)
+      { if (MaxNumThreads > 0) m_FunctionsMaxNumThreads = MaxNumThreads; };
+
 
     void setSimulationTimeInformation(openfluid::core::DateTime StartTime,
                                       openfluid::core::DateTime EndTime,

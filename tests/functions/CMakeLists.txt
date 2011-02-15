@@ -61,6 +61,14 @@ ADD_TEST(functions-Loops "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-p${TEST_OUTPUT_PATH}")                              
 
 
+ADD_FUNCTION(tests.threadedloops tests.threadedloops ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-ThreadedLoops "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ThreadedLoops" 
+                        "-p${TEST_OUTPUT_PATH}")             
+TARGET_LINK_LIBRARIES(tests.threadedloops ${GLIBMM_LIBRARIES})
+
+
 
 ADD_FUNCTION(tests.messages tests.messages ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Messages "${BIN_OUTPUT_PATH}/openfluid-engine" 

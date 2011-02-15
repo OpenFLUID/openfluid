@@ -64,6 +64,8 @@ int main(int argc, char **argv)
 
   int ReturnValue = 0;
 
+  openfluid::base::Init();
+
   OpenFLUIDApp App;
 
   try

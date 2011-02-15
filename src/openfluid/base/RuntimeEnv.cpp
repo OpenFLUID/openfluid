@@ -91,6 +91,7 @@ RuntimeEnvironment::RuntimeEnvironment()
   m_UserID = "(unknown)";
   m_Arch = "unknown";
 
+  m_FunctionsMaxNumThreads = openfluid::config::FUNCTIONS_MAXNUMTHREADS;
 
   // ====== System architecture ======
 

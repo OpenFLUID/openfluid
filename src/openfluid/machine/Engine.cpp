@@ -97,7 +97,7 @@ Engine::Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
 
 
   prepareOutputDir();
-  m_ModelInstance.initLoggers();
+  m_ModelInstance.initialize();
 }
 
 // =====================================================================

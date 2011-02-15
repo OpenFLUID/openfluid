@@ -122,6 +122,9 @@ const std::string RELEASE_STATUS = "@VERSION_STATUS@";
 const std::string FULL_VERSION = "@FULL_VERSION@";
 
 
+// Functions threads
+const unsigned int FUNCTIONS_MAXNUMTHREADS = @OPENFLUID_FUNCSMAXNUMTHREADS@;
+
 } } //namespaces
 
 #endif

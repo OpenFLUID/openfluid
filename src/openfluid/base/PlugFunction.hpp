@@ -74,6 +74,8 @@
 #include <string>
 
 #include <boost/filesystem/path.hpp>
+#include <glibmm.h>
+
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
@@ -207,6 +209,68 @@
 
 
 /**
+  Macro for applying a threaded function to each units of a class, following their process order
+  @param[in] loopid ID of the loop, must match declaration
+  @param[in] unitclass name of the unit class
+  @param[in] functptr member function name
+  @param[in] ... extra parameters to pass to the member function
+*/
+#define APPLY_UNITS_ORDERED_LOOP_THREADED(loopid,unitclass,funcptr,...) \
+  _M_##loopid##_UList = mp_CoreData->getUnits(unitclass)->getList(); \
+  if (_M_##loopid##_UList != NULL) \
+  { \
+    _M_##loopid##_ordit = _M_##loopid##_UList->begin(); \
+    if (_M_##loopid##_ordit != _M_##loopid##_UList->end()) \
+    { \
+      openfluid::core::PcsOrd_t _M_##loopid##_pcsord = _M_##loopid##_ordit->getProcessOrder(); \
+      while (_M_##loopid##_ordit != _M_##loopid##_UList->end()) \
+      { \
+        Glib::ThreadPool _M_##loopid##_pool(4,true); \
+        while (_M_##loopid##_ordit != _M_##loopid##_UList->end() && _M_##loopid##_ordit->getProcessOrder() == _M_##loopid##_pcsord) \
+        { \
+          openfluid::core::Unit* _M_##loopid##_unit = &(*_M_##loopid##_ordit); \
+          _M_##loopid##_pool.push(sigc::bind(sigc::mem_fun(*this,&funcptr),_M_##loopid##_unit, ## __VA_ARGS__)); \
+          ++_M_##loopid##_ordit; \
+        } \
+        _M_##loopid##_pool.shutdown(); \
+        if (_M_##loopid##_ordit != _M_##loopid##_UList->end()) _M_##loopid##_pcsord = _M_##loopid##_ordit->getProcessOrder(); \
+      } \
+    } \
+  }
+
+
+/**
+  Macro for applying a threaded function to each units of the domain, following their process order
+  @param[in] loopid ID of the loop, must match declaration
+  @param[in] functptr member function name
+  @param[in] ... extra parameters to pass to the member function
+*/
+#define APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED(loopid,funcptr,...) \
+  _M_##loopid##_GUList = mp_CoreData->getUnitsGlobally(); \
+  if (_M_##loopid##_GUList != NULL) \
+  { \
+    _M_##loopid##_ordit = _M_##loopid##_GUList->begin(); \
+    if (_M_##loopid##_ordit != _M_##loopid##_GUList->end()) \
+    { \
+      openfluid::core::PcsOrd_t _M_##loopid##_pcsord = (*_M_##loopid##_ordit)->getProcessOrder(); \
+      while (_M_##loopid##_ordit != _M_##loopid##_GUList->end()) \
+      { \
+        Glib::ThreadPool _M_##loopid##_pool(4,true); \
+        while (_M_##loopid##_ordit != _M_##loopid##_GUList->end() && (*_M_##loopid##_ordit)->getProcessOrder() == _M_##loopid##_pcsord) \
+        { \
+          openfluid::core::Unit* _M_##loopid##_unit = (*_M_##loopid##_ordit); \
+          _M_##loopid##_pool.push(sigc::bind(sigc::mem_fun(*this,&funcptr),_M_##loopid##_unit, ## __VA_ARGS__)); \
+          ++_M_##loopid##_ordit; \
+        } \
+        _M_##loopid##_pool.shutdown(); \
+        if (_M_##loopid##_ordit != _M_##loopid##_GUList->end()) _M_##loopid##_pcsord = (*_M_##loopid##_ordit)->getProcessOrder(); \
+      } \
+    } \
+  }
+
+
+
+/**
   Macro for declaration of a loop processing a list of units
   @param[in] loopid ID of the loop
 */
@@ -305,6 +369,7 @@ class DLLEXPORT PluggableFunction
     */
     openfluid::base::FuncID_t m_FunctionID;
 
+    bool m_Initialized;
 
     static bool IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
                                   const openfluid::core::UnitID_t& ID);
@@ -947,7 +1012,7 @@ class DLLEXPORT PluggableFunction
 
     void setFunctionID(const openfluid::base::FuncID_t& FuncID) { m_FunctionID = FuncID; };
 
-    void initLogger();
+    void initializeFunction();
 
 
     /**

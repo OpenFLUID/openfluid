@@ -216,14 +216,14 @@ void ModelInstance::clear()
 // =====================================================================
 
 
-void ModelInstance::initLoggers() const
+void ModelInstance::initialize() const
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
 
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
-    (*FuncIter)->Function->initLogger();
+    (*FuncIter)->Function->initializeFunction();
     FuncIter++;
   }
 }
