@@ -97,7 +97,7 @@ END_SIGNATURE_HOOK
 class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 {
   private:
-    Glib::Mutex m_Mutex;
+    Glib::RecMutex m_Mutex;
 
     openfluid::core::PcsOrd_t m_LastOrd;
 
@@ -175,13 +175,9 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
   void processUnit(openfluid::core::Unit* aUnit)
   {
-    Glib::Mutex::Lock Lock(m_Mutex);
     if (m_LastOrd > aUnit->getProcessOrder())
       OPENFLUID_RaiseError("tests.threadedloops","processUnit()","wrong process order");
     m_LastOrd = aUnit->getProcessOrder();
-//    std::cout << aUnit->getClass() << aUnit->getID() << "(" << aUnit->getProcessOrder() << ") ";
-//    std::cout.flush();
-    m_Mutex.unlock();
 
     Glib::usleep(100);//*aUnit->getID());
   }
@@ -195,9 +191,9 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   {
     Glib::usleep(100*aUnit->getID());
 
-    Glib::Mutex::Lock Lock(m_Mutex);
+    Glib::RecMutex::Lock Lock(m_Mutex);
     OPENFLUID_AppendVariable(aUnit,"tests.data.threaded",double(aUnit->getID())+Value/1000.0);
-    m_Mutex.unlock();
+    Lock.release();
   }
 
 
@@ -261,7 +257,6 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
     Duration = EndTime - StartTime;
     std::cout << "TU Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
 
-    double(SimStatus->getCurrentStep());
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     BEGIN_UNITS_ORDERED_LOOP(1,"TU",TU)
@@ -354,160 +349,3 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
 DEFINE_FUNCTION_HOOK(ThreadedLoopsFunction)
 
-
-/*
-_M_20_GUList = mp_CoreData->getUnitsGlobally();
-if (_M_20_GUList != 0)
-{
-  _M_20_ordit = _M_20_GUList->begin();
-
-  if (_M_20_ordit != _M_20_GUList->end())
-  {
-    openfluid::core::PcsOrd_t CurrPcsOrd = (*_M_20_ordit)->getProcessOrder();
-
-    while (_M_20_ordit != _M_20_GUList->end())
-    {
-       Glib::ThreadPool TPool(4);
-//          std::cout << "in " << CurrPcsOrd << " " << (*_M_20_ordit)->getProcessOrder() << std::endl;
-
-       while (_M_20_ordit != _M_20_GUList->end() && (*_M_20_ordit)->getProcessOrder() == CurrPcsOrd)
-       {
-         openfluid::core::Unit* TmpTU = (*_M_20_ordit);
-//             std::cout << "ici" << std::endl;
-         TPool.push(sigc::bind(sigc::mem_fun(*this,&ThreadedLoopsFunction::processUnit),TmpTU));
-         ++_M_20_ordit;
-       }
-       //std::cout << "la " << CurrPcsOrd << " " << (*_M_20_ordit)->getProcessOrder() << std::endl;
-       TPool.shutdown();
-       if (_M_20_ordit != _M_20_GUList->end()) CurrPcsOrd = (*_M_20_ordit)->getProcessOrder();
-
-    }
-
-  }
-}
-*/
-
-/* _M_20_GUList = mp_CoreData->getUnitsGlobally();
-  if (_M_20_GUList != 0)
-  {
-    _M_20_ordit = _M_20_GUList->begin();
-    if (_M_20_ordit != _M_20_GUList->end())
-    {
-      openfluid::core::PcsOrd_t _M_20_pcsord = (*_M_20_ordit)->getProcessOrder();
-      while (_M_20_ordit != _M_20_GUList->end())
-      {
-        Glib::ThreadPool _M_20_pool(4);
-        while (_M_20_ordit != _M_20_GUList->end() && _M_20_ordit->getProcessOrder() == _M_20_pcsord)
-        {
-          openfluid::core::Unit* _M_20_unit = (*_M_20_ordit);
-          _M_20_pool.push(sigc::bind(sigc::mem_fun(*this,&ThreadedLoopsFunction::processUnit),_M_20_unit));
-          ++_M_20_ordit;
-        }
-        _M_20_pool.shutdown();
-        if (_M_20_ordit != _M_20_GUList->end()) _M_20_pcsord = _M_20_ordit->getProcessOrder();
-      }
-    }
-  }*/
-
-
-/*
-StartTime = boost::posix_time::microsec_clock::local_time();
-
-_M_2_UList = mp_CoreData->getUnits("TU")->getList();
-if (_M_2_UList != 0)
-{
-  _M_2_ordit = _M_2_UList->begin();
-
-  if (_M_2_ordit != _M_2_UList->end())
-  {
-    openfluid::core::PcsOrd_t CurrPcsOrd = _M_2_ordit->getProcessOrder();
-
-    while (_M_2_ordit != _M_2_UList->end())
-    {
-       Glib::ThreadPool TPool(4);
-       while (_M_2_ordit != _M_2_UList->end() && _M_2_ordit->getProcessOrder() == CurrPcsOrd)
-       {
-         openfluid::core::Unit* TmpTU = &(*_M_2_ordit);
-         TPool.push(sigc::bind<openfluid::core::Unit*>(sigc::mem_fun(*this,&ThreadedLoopsFunction::processUnit),TmpTU));
-         ++_M_2_ordit;
-         CurrPcsOrd = _M_2_ordit->getProcessOrder();
-       }
-       TPool.shutdown();
-    }
-
-  }
-}
-
-EndTime = boost::posix_time::microsec_clock::local_time();
-
-std::cout << std::endl;
-
-Duration = EndTime - StartTime;
-std::cout << "TU Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
-*/
-
-
-/*
-    StartTime = boost::posix_time::microsec_clock::local_time();
-    m_LastOrd = 0;
-
-    _M_30_GUList = mp_CoreData->getUnitsGlobally();
-    if (_M_30_GUList != 0)
-    {
-      _M_30_ordit = _M_30_GUList->begin();
-
-      if (_M_30_ordit != _M_30_GUList->end())
-      {
-        openfluid::core::PcsOrd_t CurrPcsOrd = (*_M_30_ordit)->getProcessOrder();
-
-        Glib::ThreadPool TPool(4);
-        while (_M_30_ordit != _M_30_GUList->end())
-        {
-          openfluid::core::Unit* TmpTU = (*_M_30_ordit);
-          if (TmpTU->getProcessOrder() != CurrPcsOrd)
-          {
-            while (TPool.unprocessed() !=0 || TPool.get_num_threads() !=0);
-
-            CurrPcsOrd = TmpTU->getProcessOrder();
-          }
-
-          TPool.push(sigc::bind(sigc::mem_fun(*this,&ThreadedLoopsFunction::processUnit),TmpTU));
-          ++_M_30_ordit;
-        }
-        TPool.shutdown();
-
-      }
-    }
-
-    EndTime = boost::posix_time::microsec_clock::local_time();
-
-    std::cout << std::endl;
-
-    Duration = EndTime - StartTime;
-    std::cout << "Full Threaded method 2: " << boost::posix_time::to_simple_string(Duration) << std::endl;
-    std::cout << std::endl;*/
-/*
-#define APPLY_UNITS_ORDERED_LOOP_THREADED_BIS(loopid,unitclass,funcptr,...) \
-  _M_##loopid##_UList = mp_CoreData->getUnits(unitclass)->getList(); \
-  if (_M_##loopid##_UList != NULL) \
-  { \
-    _M_##loopid##_ordit = _M_##loopid##_UList->begin(); \
-    if (_M_##loopid##_ordit != _M_##loopid##_UList->end()) \
-    { \
-        openfluid::core::PcsOrd_t _M_##loopid##_pcsord = _M_##loopid##_ordit->getProcessOrder(); \
-        Glib::ThreadPool _M_##loopid##_pool(4);\
-        while (_M_##loopid##_ordit != _M_##loopid##_UList->end()) \
-        { \
-          openfluid::core::Unit* _M_##loopid##_unit = &(*_M_##loopid##_ordit); \
-          if (_M_##loopid##_unit->getProcessOrder() != _M_##loopid##_pcsord) \
-          { \
-            while (_M_##loopid##_pool.unprocessed() !=0 || _M_##loopid##_pool.get_num_threads() !=0); \
-            _M_##loopid##_pcsord = _M_##loopid##_unit->getProcessOrder(); \
-          } \
-          _M_##loopid##_pool.push(sigc::bind(sigc::mem_fun(*this,&funcptr),(_M_##loopid##_unit), ## __VA_ARGS__)); \
-          ++_M_##loopid##_ordit; \
-        } \
-        _M_##loopid##_pool.shutdown(); \
-      } \
-  }
-*/
