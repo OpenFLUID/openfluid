@@ -62,7 +62,7 @@
 
 namespace openfluid { namespace market {
 
-class MarketBinPackage : public MarketPackage
+class DLLEXPORT MarketBinPackage : public MarketPackage
 {
   public:
 

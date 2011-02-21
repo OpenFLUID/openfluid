@@ -85,6 +85,16 @@ MarketPackage::MarketPackage(openfluid::base::FuncID_t ID, std::string PackageUR
 // =====================================================================
 
 
+MarketPackage::~MarketPackage()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketPackage::initialize()
 {
   std::string CMakeProgram = "";

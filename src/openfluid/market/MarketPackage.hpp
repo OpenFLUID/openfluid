@@ -104,6 +104,8 @@ class DLLEXPORT MarketPackage
 
     MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
 
+    virtual ~MarketPackage();
+
     static void initialize();
 
     static void setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir);

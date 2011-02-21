@@ -140,9 +140,9 @@ CURLDownloader::ErrorCode CURLDownloader::downloadToFile(const std::string URL,
     fclose(FP);
   }
 
-  if (Result == CURLE_OK) return NO_ERROR;
+  if (Result == CURLE_OK) return CURLDownloader::ErrorCode(NO_ERROR);
 
-  return CURL_ERROR;
+  return CURLDownloader::ErrorCode(CURL_ERROR);
 }
 
 
@@ -179,9 +179,10 @@ CURLDownloader::ErrorCode CURLDownloader::downloadToString(const std::string URL
     curl_easy_cleanup(Curl);
   }
 
-  if (Result == CURLE_OK) return NO_ERROR;
+  if (Result == CURLE_OK) return CURLDownloader::ErrorCode(NO_ERROR);
 
-  return CURL_ERROR;
+  return CURLDownloader::ErrorCode(CURL_ERROR);
+
 }
 
 // =====================================================================
