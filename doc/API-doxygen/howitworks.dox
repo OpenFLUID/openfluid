@@ -17,7 +17,7 @@ The OpenFLUID libraries features are gathered into the openfluid namespace, whic
 
 These libraries mainly rely on external libraries:
 <ul> 
-  <li>The boost libraries : http://wws.boost.org/   
+  <li>The boost libraries : http://www.boost.org/   
   <li>The libXML2 library for XML file handling : http://xmlsoft.org/
   <li>The C++ Standard Type Library (STL) for common data structures : http://www.sgi.com/tech/stl/ 
 </ul>

@@ -294,4 +294,14 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                   "${TEST_OUTPUT_PATH}"
                               )                              
   SET_TESTS_PROPERTIES(integration-MinimalFailsInput PROPERTIES WILL_FAIL TRUE)
+ 
+ 
+  ADD_TEST(integration-Debug "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                             "-f" "-p${TEST_OUTPUT_PATH}")
+  IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    SET_TESTS_PROPERTIES(integration-Debug PROPERTIES PASS_REGULAR_EXPRESSION "OpenFLUID debugging mode is enabled")
+  ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    SET_TESTS_PROPERTIES(integration-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "OpenFLUID debugging mode is enabled")
+  ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
+  
   

@@ -13,7 +13,7 @@ to build OpenFLUID software applications and to develop simulation functions.
 Along with the technical information, this API documentation contains specific parts about simulation function development: 
 <ul>
   <li> the \subpage howitworks part giving the general organization and features of the library     
-  <li> the \subpage emptyfunc part explaining how to create an empty simulation function
+  <li> the \subpage emptyfunc part explaining how to create and build a simulation function
   <li> the parts for integration of your own code and how to access to simulation data and information
   <ul>
   <li>\subpage signature
@@ -25,7 +25,8 @@ Along with the technical information, this API documentation contains specific p
   <li>\subpage warnerrorlog
   <li>\subpage runenv
   <li>\subpage fortran
-  <li>\subpage misc    
+  <li>\subpage debug
+  <li>\subpage misc 
   </ul> 
 </ul>   
 

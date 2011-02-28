@@ -27,6 +27,11 @@ BUILDNAME:STRING=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${BUILDNAME_COMP
 
 INCLUDE(CMake.in.sub)
 
+
+IF(NOT CMAKE_BUILD_TYPE) 
+  SET(CMAKE_BUILD_TYPE "Debug")
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
 FIND_PACKAGE(PkgConfig REQUIRED)
 FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system filesystem date_time program_options regex iostreams)
 PKG_CHECK_MODULES(LibXML2 REQUIRED libxml-2.0)
@@ -68,13 +73,14 @@ IF(Boost_FOUND AND LibXML2_FOUND)
             
 
 
+  STRING(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE_STR)
+
   MESSAGE(STATUS "****************************************")
   MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
   MESSAGE(STATUS "Build name: ${BUILDNAME}")
   MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
-  MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
-  MESSAGE(STATUS "Compiler flags for release build:  ${CMAKE_CXX_FLAGS_RELEASE}")
-  MESSAGE(STATUS "Compiler flags for debug build: ${CMAKE_CXX_FLAGS_DEBUG}")
+  MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")  
+  MESSAGE(STATUS "Compiler flags for build:  ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
   MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
   MESSAGE(STATUS "****************************************")
   MESSAGE(STATUS "Build openfluid-minimal application : yes")
@@ -90,6 +96,12 @@ IF(Boost_FOUND AND LibXML2_FOUND)
   ELSE(BUILD_APP_BUILDER)
     MESSAGE(STATUS "Build openfluid-builder application : no")  
   ENDIF(BUILD_APP_BUILDER)
+  
+  IF(BUILD_APP_MARKETCLIENT)
+    MESSAGE(STATUS "Build openfluid-market-client application : yes")  
+  ELSE(BUILD_APP_MARKETCLIENT)
+    MESSAGE(STATUS "Build openfluid--market-client application : no")  
+  ENDIF(BUILD_APP_MARKETCLIENT)  
   
   MESSAGE(STATUS "****************************************")
   

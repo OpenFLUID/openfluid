@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 ADD_DEFINITIONS(-DOPENFLUID_VERSION=${FULL_VERSION})
 
-INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src")
+INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
@@ -142,3 +142,17 @@ ADD_TEST(functions-Logger "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Logger"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Logger" 
                         "-p${TEST_OUTPUT_PATH}")                              
+
+ADD_FUNCTION(tests.debug tests.debug ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-Debug "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Debug"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Debug" 
+                        "-p${TEST_OUTPUT_PATH}")                              
+IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+  SET_TESTS_PROPERTIES(functions-Debug PROPERTIES PASS_REGULAR_EXPRESSION "TU#")  
+ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+  SET_TESTS_PROPERTIES(functions-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
+ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
+
+
+                         

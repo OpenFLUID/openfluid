@@ -55,16 +55,18 @@
 
 
 #include <openfluid/base/Init.hpp>
+#include <openfluid/debug.hpp>
 
 #include <glibmm/thread.h>
 #include <openfluid/base/RuntimeEnv.hpp>
-
 
 
 namespace openfluid { namespace base {
 
 void Init()
 {
+
+  OFDBG_BANNER;
 
   if(!Glib::thread_supported()) Glib::thread_init();
 
