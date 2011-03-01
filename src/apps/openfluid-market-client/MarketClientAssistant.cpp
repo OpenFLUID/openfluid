@@ -73,7 +73,7 @@ MarketClientAssistant::MarketClientAssistant()
 
   set_title("OpenFLUID Market client");
   set_border_width(20);
-  set_default_size(800, 600);
+  set_default_size(900, 700);
   set_position(Gtk::WIN_POS_CENTER);
 
 
@@ -562,16 +562,24 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   openfluid::market::MetaPackagesCatalog_t Catalog;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
+  std::vector<Gtk::Widget*> AvailPacksBoxChildren = m_AvailPacksBox.get_children();
+  std::vector<Gtk::Widget*>::iterator APBCiter;
+
+  // removing widgets from available packages display
+  for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
+    m_AvailPacksBox.remove(**APBCiter);
+
 
   std::list<MarketPackWidget*>::iterator APLiter;
 
+  // destroying widgets from available packages list
   for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
   {
     MarketPackWidget* MPW;
     MPW = *APLiter;
-    m_AvailPacksBox.remove(*MPW);
     delete MPW;
   }
+
   mp_AvailPacksWidgets.clear();
 
 
@@ -593,12 +601,17 @@ void MarketClientAssistant::updateAvailPacksTreeview()
     }
 
 
-    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc));
+    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc,
+                                                        "","",
+                                                        "","",
+                                                        ""));
     mp_AvailPacksWidgets.back()->signal_install_modified().connect(
         sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
     );
 
-    m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,10);
+    if (CIter != Catalog.begin()) m_AvailPacksBox.pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+    m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
+
 
     m_AvailPacksBox.show_all_children();
   }

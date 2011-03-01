@@ -64,7 +64,7 @@
 // =====================================================================
 // =====================================================================
 
-class MarketPackWidget : public Gtk::Frame
+class MarketPackWidget : public Gtk::EventBox
 {
 
   public:
@@ -99,13 +99,20 @@ class MarketPackWidget : public Gtk::Frame
 
     void onInstallModified();
 
+    bool onButtonRelease(GdkEventButton* Event);
+
+    std::string buildMarkupTooltip(std::string ID,std::string Description,
+                                   std::string Authors, std::string Version);
 
   protected:
     signal_install_modified_t m_signal_install_modified;
 
 
   public:
-    MarketPackWidget(std::string ID, bool IsBin, bool IsSrc);
+    MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
+                     std::string Name, std::string Description,
+                     std::string Authors, std::string Version,
+                     std::string License);
 
     ~MarketPackWidget() { };
 

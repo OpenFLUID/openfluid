@@ -56,14 +56,20 @@
 #include "MarketPackWidget.hpp"
 
 const static Gdk::Color GREEN("#97DE62");
+const static Gdk::Color LIGHTGREEN("#C7F1B3");
 const static Gdk::Color GREY("#AAAAAA");
+const static Gdk::Color LIGHTGREY("#CCCCCC");
+const static Gdk::Color WHITE("#FFFFFF");
 
 // =====================================================================
 // =====================================================================
 
 
-MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
- : Gtk::Frame(),
+MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
+    std::string Name, std::string Description,
+    std::string Authors, std::string Version,
+    std::string License)
+ : Gtk::EventBox(),
    m_ID(ID),
    m_FormatLabel("Package Format:")
 {
@@ -76,7 +82,7 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
   m_IDLabel.set_use_markup(true);
   m_IDLabel.set_alignment(0,0);
 
-  set_border_width(5);
+  set_border_width(0);
 
   m_MainHBox.set_border_width(10);
 
@@ -112,12 +118,14 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
   m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
   m_MainHBox.pack_start(m_DetailsVBox,Gtk::PACK_EXPAND_WIDGET,12);
 
-  m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREEN);
-  m_InstallToggle.modify_bg(Gtk::STATE_NORMAL, GREY);
+  m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREY);
+  m_InstallToggle.modify_bg(Gtk::STATE_NORMAL, LIGHTGREY);
 
-  modify_bg(Gtk::STATE_NORMAL,GREY);
 
-  set_shadow_type(Gtk::SHADOW_NONE);
+  modify_bg(Gtk::STATE_NORMAL,WHITE);
+
+  set_tooltip_markup(buildMarkupTooltip(ID,Description,Authors,Version));
+
 
   m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
         &MarketPackWidget::onInstallModified));
@@ -125,8 +133,22 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc)
   m_FormatCombo.signal_changed().connect(sigc::mem_fun(*this,
         &MarketPackWidget::onInstallModified));
 
+  signal_button_release_event().connect(sigc::mem_fun(*this,
+      &MarketPackWidget::onButtonRelease));
 
   add(m_MainHBox);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MarketPackWidget::onButtonRelease(GdkEventButton* Event)
+{
+  if (((GdkEventButton*)Event)->button == 1)
+  m_InstallToggle.set_active(!m_InstallToggle.get_active());
+  return true;
 }
 
 
@@ -139,12 +161,12 @@ void MarketPackWidget::onInstallModified()
   if (m_InstallToggle.get_active())
   {
     m_signal_install_modified.emit();
-    modify_bg(Gtk::STATE_NORMAL ,GREEN);
+    modify_bg(Gtk::STATE_NORMAL,LIGHTGREEN);
   }
   else
   {
     m_signal_install_modified.emit();
-    modify_bg(Gtk::STATE_NORMAL ,GREY);
+    modify_bg(Gtk::STATE_NORMAL ,WHITE);
   }
 
 }
@@ -167,6 +189,36 @@ openfluid::market::MetaPackageInfo::SelectionType MarketPackWidget::getPackageFo
   }
 
   return openfluid::market::MetaPackageInfo::NONE;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackWidget::buildMarkupTooltip(std::string ID,std::string Description,
+                                                 std::string Authors, std::string Version)
+{
+  std::string MarkupTooltip = "";
+
+  MarkupTooltip += "<b>" + ID + "</b>";
+
+  MarkupTooltip += "\n<u>Version:</u> ";
+  if (!Version.empty()) MarkupTooltip += Version;
+  else MarkupTooltip += "<i>unknown</i>";
+
+
+  MarkupTooltip += "\n<u>Author(s):</u> ";
+  if (!Authors.empty()) MarkupTooltip += Authors;
+  else MarkupTooltip += "<i>unknown</i>";
+
+
+  if (!Description.empty()) MarkupTooltip += "\n\n"+Description;
+
+
+
+  return MarkupTooltip;
+
 }
 
 
