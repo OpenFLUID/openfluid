@@ -105,12 +105,9 @@ class DLLEXPORT MarketClient
 
     void parseMarketSiteData(const std::string& SiteData);
 
-    void parseCatalogsData(const std::string& BinCatalogData, const std::string& SrcCatalogData);
+    void parseCatalogData(const std::string& CatalogData);
 
     void downloadAssociatedLicenses();
-
-    void static splitPackageFilename(const std::string& Filename, std::string& ID, std::string& Version, std::string& Arch);
-
 
   public:
 

@@ -58,6 +58,7 @@
 #include <boost/filesystem/convenience.hpp>
 #include <glibmm/keyfile.h>
 
+#include <openfluid/debug.hpp>
 
 namespace openfluid { namespace market {
 
@@ -91,34 +92,6 @@ MarketClient::MarketClient() :
 MarketClient::~MarketClient()
 {
   unlockMarketTemp();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MarketClient::splitPackageFilename(const std::string& Filename, std::string& ID, std::string& Version, std::string& Arch)
-{
-  std::string TmpStr = Filename;
-  std::vector< std::string > TmpTokens;
-
-  TmpStr.erase(TmpStr.size()-5,5);
-  openfluid::tools::TokenizeString(TmpStr,TmpTokens,"_");
-
-  unsigned int TmpTokensNbr = TmpTokens.size();
-
-  Arch = TmpTokens[TmpTokensNbr-1];
-  Version = TmpTokens[TmpTokensNbr-2];
-
-  ID.clear();
-
-  for (unsigned int i=0;i<TmpTokensNbr-2;i++)
-  {
-    ID = ID + TmpTokens[i];
-    if (i != TmpTokensNbr-3) ID = ID+"_";
-  }
-
 }
 
 
@@ -212,78 +185,78 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-void MarketClient::parseCatalogsData(const std::string& BinCatalogData, const std::string& SrcCatalogData)
+void MarketClient::parseCatalogData(const std::string& CatalogData)
 {
 
   std::string TmpVersion, TmpArch, TmpID;
-  std::vector<std::string> PackagesNames;
+  std::vector<std::string> PackagesIDs;
   Glib::KeyFile KFile;
 
   m_MetaPackagesCatalog.clear();
 
+  std::string BinaryArchKey= "arch." + openfluid::base::RuntimeEnvironment::getInstance()->getArch();
 
-  // bin packages
-  try
-  {
-    if (!BinCatalogData.empty() && KFile.load_from_data(BinCatalogData))
-    {
-      PackagesNames = KFile.get_groups();
-
-      for (unsigned int i=0; i< PackagesNames.size(); i++)
-      {
-        splitPackageFilename(PackagesNames[i],TmpID,TmpVersion,TmpArch);
-
-        if (TmpVersion == openfluid::base::RuntimeEnvironment::getInstance()->getFullVersion())
-        {
-          m_MetaPackagesCatalog[TmpID].ID = TmpID;
-
-          m_MetaPackagesCatalog[TmpID].ID = TmpID;
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
-
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+PackagesNames[i];
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].Name = KFile.get_string(PackagesNames[i],"name");
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].Description = KFile.get_string(PackagesNames[i],"description");
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].Authors = KFile.get_string(PackagesNames[i],"authors");
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(PackagesNames[i],"license");
-        }
-
-      }
-
-    }
-  }
-  catch (...) {};
-
-
-  // source packages
-
-  PackagesNames.clear();
 
   try
   {
-    if (!SrcCatalogData.empty() && KFile.load_from_data(SrcCatalogData))
+    if (!CatalogData.empty() && KFile.load_from_data(CatalogData))
     {
-      PackagesNames = KFile.get_groups();
+      PackagesIDs = KFile.get_groups();
 
-      for (unsigned int i=0; i< PackagesNames.size(); i++)
+
+      for (unsigned int i=0; i< PackagesIDs.size(); i++)
       {
-        splitPackageFilename(PackagesNames[i],TmpID,TmpVersion,TmpArch);
+         std::string TmpID = PackagesIDs[i];
 
-        if (TmpVersion == openfluid::base::RuntimeEnvironment::getInstance()->getMajorMinorVersion() || TmpVersion == openfluid::base::RuntimeEnvironment::getInstance()->getFullVersion())
-        {
-          m_MetaPackagesCatalog[TmpID].ID = TmpID;
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
 
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/src/"+PackagesNames[i];
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Name = KFile.get_string(PackagesNames[i],"name");
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Description = KFile.get_string(PackagesNames[i],"description");
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Authors = KFile.get_string(PackagesNames[i],"authors");
-          m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(PackagesNames[i],"license");
-        }
+         if (KFile.has_key(TmpID,BinaryArchKey+".file") || KFile.has_key(TmpID,"arch.src.file"))
+         {
+
+           m_MetaPackagesCatalog[TmpID].ID = TmpID;
+
+           // name
+           if (KFile.has_key(TmpID,"name"))
+             m_MetaPackagesCatalog[TmpID].Name = KFile.get_string(TmpID,"name");
+
+           // description
+           if (KFile.has_key(TmpID,"description"))
+             m_MetaPackagesCatalog[TmpID].Description = KFile.get_string(TmpID,"description");
+
+           // version
+           if (KFile.has_key(TmpID,"version"))
+             m_MetaPackagesCatalog[TmpID].Version = KFile.get_string(TmpID,"version");
+
+           // authors
+           if (KFile.has_key(TmpID,"authors"))
+             m_MetaPackagesCatalog[TmpID].Authors = KFile.get_string(TmpID,"authors");
+
+           // binary ?
+           if (KFile.has_key(TmpID,BinaryArchKey+".file"))
+           {
+             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
+             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
+
+             // license
+             if (KFile.has_key(TmpID,BinaryArchKey+".license"))
+              m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
+
+           }
+
+           // source ?
+           if (KFile.has_key(TmpID,"arch.src.file"))
+           {
+             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
+             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/src/"+KFile.get_string(TmpID,"arch.src.file");
+
+             // license
+             if (KFile.has_key(TmpID,"arch.src.license"))
+               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
+           }
+         }
       }
     }
   }
   catch (...) {};
-
 }
 
 
@@ -321,8 +294,7 @@ void MarketClient::downloadAssociatedLicenses()
 void MarketClient::connect(const std::string URL)
 {
   std::string MarketData;
-  std::string BinCatalogData;
-  std::string SrcCatalogData;
+  std::string CatalogData;
 
   m_URL = URL;
   m_MarketInfo.clear();
@@ -334,8 +306,8 @@ void MarketClient::connect(const std::string URL)
   MarketPackage::initialize();
 
   std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
-  std::string BinCatalogFileURL = m_URL + "/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+openfluid::config::MARKETPLACE_CATALOGFILE;
-  std::string SrcCatalogFileURL = m_URL + "/src/"+openfluid::config::MARKETPLACE_CATALOGFILE;
+  std::string CatalogFileURL = m_URL + "/"+openfluid::config::MARKETPLACE_CATALOGFILE+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
+
 
   if (!m_IsConnected && openfluid::tools::CURLDownloader::downloadToString(MarketFileURL, MarketData) == openfluid::tools::CURLDownloader::NO_ERROR)
   {
@@ -347,13 +319,10 @@ void MarketClient::connect(const std::string URL)
   if (m_IsConnected)
   {
 
-    if (openfluid::tools::CURLDownloader::downloadToString(BinCatalogFileURL, BinCatalogData)  != openfluid::tools::CURLDownloader::NO_ERROR)
-      BinCatalogData.clear();
+    if (openfluid::tools::CURLDownloader::downloadToString(CatalogFileURL, CatalogData)  != openfluid::tools::CURLDownloader::NO_ERROR)
+      CatalogData.clear();
 
-    if (openfluid::tools::CURLDownloader::downloadToString(SrcCatalogFileURL, SrcCatalogData)  != openfluid::tools::CURLDownloader::NO_ERROR)
-      SrcCatalogData.clear();
-
-    parseCatalogsData(BinCatalogData,SrcCatalogData);
+    parseCatalogData(CatalogData);
 
     downloadAssociatedLicenses();
   }

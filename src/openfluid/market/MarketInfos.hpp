@@ -108,20 +108,11 @@ class DLLEXPORT PackageInfo
 
     std::string URL;
 
-    std::string Name;
-
-    std::string Description;
-
-    std::string Authors;
-
     std::string License;
 
     PackageInfo()
     {
       URL.clear();
-      Name.clear();
-      Authors.clear();
-      Description.clear();
       License.clear();
     }
 
@@ -146,11 +137,24 @@ class DLLEXPORT MetaPackageInfo
 
     SelectionType Selected;
 
+    std::string Name;
+
+    std::string Description;
+
+    std::string Authors;
+
+    std::string Version;
+
+
     MetaPackageInfo()
     {
       ID.clear();
       Selected = NONE;
       AvailablePackages.clear();
+      Name.clear();
+      Authors.clear();
+      Description.clear();
+      Version.clear();
     }
 
     ~MetaPackageInfo()

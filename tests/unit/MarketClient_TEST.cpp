@@ -121,9 +121,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
     if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != PCit->second.AvailablePackages.end())
     {
       std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL << std::endl;
-      std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
+/*      std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
       std::cout << "BIN | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
-      std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;
+      std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;*/
       std::cout << "BIN | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
 
     }
@@ -131,9 +131,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
     if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != PCit->second.AvailablePackages.end())
     {
       std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL << std::endl;
-      std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
+/*      std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
       std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
-      std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;
+      std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;*/
       std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
 
     }

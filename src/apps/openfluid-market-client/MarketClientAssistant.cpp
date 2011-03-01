@@ -602,8 +602,8 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 
     mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc,
-                                                        "","",
-                                                        "","",
+                                                        CIter->second.Name,CIter->second.Description,
+                                                        CIter->second.Authors,CIter->second.Version,
                                                         ""));
     mp_AvailPacksWidgets.back()->signal_install_modified().connect(
         sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
