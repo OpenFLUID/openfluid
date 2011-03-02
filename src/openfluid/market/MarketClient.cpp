@@ -240,6 +240,11 @@ void MarketClient::parseCatalogData(const std::string& CatalogData)
              if (KFile.has_key(TmpID,BinaryArchKey+".license"))
               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
 
+             // dependencies
+             if (KFile.has_key(TmpID,BinaryArchKey+".depends"))
+              m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].Dependencies = KFile.get_string(TmpID,BinaryArchKey+".depends");
+
+
            }
 
            // source ?
@@ -251,6 +256,12 @@ void MarketClient::parseCatalogData(const std::string& CatalogData)
              // license
              if (KFile.has_key(TmpID,"arch.src.license"))
                m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
+
+             // dependencies
+             if (KFile.has_key(TmpID,"arch.src.depends"))
+               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Dependencies = KFile.get_string(TmpID,"arch.src.depends");
+
+
            }
          }
       }

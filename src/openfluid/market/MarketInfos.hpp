@@ -110,10 +110,13 @@ class DLLEXPORT PackageInfo
 
     std::string License;
 
+    std::string Dependencies;
+
     PackageInfo()
     {
       URL.clear();
       License.clear();
+      Dependencies.clear();
     }
 
     ~PackageInfo() {  }

@@ -73,15 +73,20 @@ class MarketPackWidget : public Gtk::EventBox
 
   private:
 
-    std::string m_ID;
+    const openfluid::market::MetaPackageInfo m_MetaPackInfo;
 
     Gtk::Label m_IDLabel;
     Gtk::HBox m_FormatHBox;
     Gtk::Label m_FormatLabel;
     Gtk::ComboBox m_FormatCombo;
-    Gtk::VBox m_DetailsVBox;
+    Gtk::VBox m_DetailsLeftVBox;
     Gtk::HBox m_MainHBox;
     Gtk::ToggleButton m_InstallToggle;
+
+    Gtk::VBox m_DetailsRightVBox;
+    Gtk::Label m_LicenseLabel;
+    Gtk::Label m_VersionLabel;
+
 
     Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
 
@@ -101,22 +106,21 @@ class MarketPackWidget : public Gtk::EventBox
 
     bool onButtonRelease(GdkEventButton* Event);
 
-    std::string buildMarkupTooltip(std::string ID,std::string Description,
-                                   std::string Authors, std::string Version);
+    void updateDisplayedInfos();
+
+    static std::string replaceByUnknownIfEmpty(const std::string& Str);
+
 
   protected:
     signal_install_modified_t m_signal_install_modified;
 
 
   public:
-    MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
-                     std::string Name, std::string Description,
-                     std::string Authors, std::string Version,
-                     std::string License);
+    MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     ~MarketPackWidget() { };
 
-    std::string getID() const { return m_ID; };
+    std::string getID() const { return m_MetaPackInfo.ID; };
 
     bool isInstall() const { return m_InstallToggle.get_active(); };
 

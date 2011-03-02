@@ -73,7 +73,7 @@ MarketClientAssistant::MarketClientAssistant()
 
   set_title("OpenFLUID Market client");
   set_border_width(20);
-  set_default_size(900, 700);
+  set_default_size(750, 700);
   set_position(Gtk::WIN_POS_CENTER);
 
 
@@ -453,9 +453,15 @@ void MarketClientAssistant::onPackageInstallModified()
     MarketPackWidget* MPW;
     MPW = *APLiter;
     Selection = Selection || MPW->isInstall();
+
     if (MPW->isInstall())
+    {
       m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
-    else m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
+    }
+    else
+    {
+      m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
+    }
   }
 
   set_page_complete(m_SelectionPageBox,Selection);
@@ -559,6 +565,10 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 
 void MarketClientAssistant::updateAvailPacksTreeview()
 {
+  // change mouse cursor to watch
+  get_window()->set_cursor(Gdk::Cursor(Gdk::WATCH));
+  while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
+
   openfluid::market::MetaPackagesCatalog_t Catalog;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
@@ -589,22 +599,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
   {
 
-    std::map<openfluid::market::MetaPackageInfo::SelectionType,openfluid::market::PackageInfo>::const_iterator PIter;
-
-    bool TmpBin = false;
-    bool TmpSrc = false;
-
-    for (PIter = CIter->second.AvailablePackages.begin();PIter!=CIter->second.AvailablePackages.end();++PIter)
-    {
-      if (PIter->first == openfluid::market::MetaPackageInfo::BIN) TmpBin = true;
-      else TmpSrc = true;
-    }
-
-
-    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->first,TmpBin,TmpSrc,
-                                                        CIter->second.Name,CIter->second.Description,
-                                                        CIter->second.Authors,CIter->second.Version,
-                                                        ""));
+    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->second));
     mp_AvailPacksWidgets.back()->signal_install_modified().connect(
         sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
     );
@@ -615,6 +610,10 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
     m_AvailPacksBox.show_all_children();
   }
+
+  // change mouse cursor to default
+  get_window()->set_cursor();
+  while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
 }
 
 

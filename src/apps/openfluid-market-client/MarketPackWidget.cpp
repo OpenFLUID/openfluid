@@ -55,8 +55,10 @@
 
 #include "MarketPackWidget.hpp"
 
+
 const static Gdk::Color GREEN("#97DE62");
 const static Gdk::Color LIGHTGREEN("#C7F1B3");
+const static Gdk::Color DARKGREY("#555555");
 const static Gdk::Color GREY("#AAAAAA");
 const static Gdk::Color LIGHTGREY("#CCCCCC");
 const static Gdk::Color WHITE("#FFFFFF");
@@ -65,12 +67,9 @@ const static Gdk::Color WHITE("#FFFFFF");
 // =====================================================================
 
 
-MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
-    std::string Name, std::string Description,
-    std::string Authors, std::string Version,
-    std::string License)
+MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo)
  : Gtk::EventBox(),
-   m_ID(ID),
+   m_MetaPackInfo(MetaPackInfo),
    m_FormatLabel("Package Format:")
 {
 
@@ -78,9 +77,18 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
 
   m_InstallToggle.set_image(*TImage);
 
-  m_IDLabel.set_markup("<b>"+m_ID+"</b>");
+  m_IDLabel.set_markup("<b>"+m_MetaPackInfo.ID+"</b>");
   m_IDLabel.set_use_markup(true);
   m_IDLabel.set_alignment(0,0);
+
+  m_VersionLabel.set_justify(Gtk::JUSTIFY_RIGHT);
+  m_VersionLabel.set_alignment(1.0,0);
+  m_VersionLabel.modify_fg(Gtk::STATE_NORMAL,DARKGREY);
+
+  m_LicenseLabel.set_justify(Gtk::JUSTIFY_RIGHT);
+  m_LicenseLabel.set_alignment(1.0,0);
+  m_LicenseLabel.modify_fg(Gtk::STATE_NORMAL,DARKGREY);
+
 
   set_border_width(0);
 
@@ -93,14 +101,14 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
 
   Gtk::TreeModel::Row TmpFormatRow;
 
-  if (IsSrc)
+  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != MetaPackInfo.AvailablePackages.end())
   {
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
     TmpFormatRow[m_FormatColumns.m_FormatName] = "source";
     TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::SRC;
   }
 
-  if (IsBin)
+  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
   {
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
     TmpFormatRow[m_FormatColumns.m_FormatName] = "binary";
@@ -112,11 +120,16 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
   m_FormatHBox.pack_start(m_FormatLabel,Gtk::PACK_SHRINK,6);
   m_FormatHBox.pack_start(m_FormatCombo,Gtk::PACK_SHRINK);
 
-  m_DetailsVBox.pack_start(m_IDLabel,Gtk::PACK_SHRINK);
-  m_DetailsVBox.pack_start(m_FormatHBox,Gtk::PACK_SHRINK);
+  m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET);
+  m_DetailsLeftVBox.pack_start(m_FormatHBox,Gtk::PACK_EXPAND_WIDGET);
+
+  m_DetailsRightVBox.pack_start(m_VersionLabel,Gtk::PACK_EXPAND_WIDGET);
+  m_DetailsRightVBox.pack_start(m_LicenseLabel,Gtk::PACK_EXPAND_WIDGET);
+
 
   m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
-  m_MainHBox.pack_start(m_DetailsVBox,Gtk::PACK_EXPAND_WIDGET,12);
+  m_MainHBox.pack_start(m_DetailsLeftVBox,Gtk::PACK_EXPAND_WIDGET,12);
+  m_MainHBox.pack_start(m_DetailsRightVBox,Gtk::PACK_EXPAND_WIDGET,12);
 
   m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREY);
   m_InstallToggle.modify_bg(Gtk::STATE_NORMAL, LIGHTGREY);
@@ -124,8 +137,10 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
 
   modify_bg(Gtk::STATE_NORMAL,WHITE);
 
-  set_tooltip_markup(buildMarkupTooltip(ID,Description,Authors,Version));
+  updateDisplayedInfos();
 
+
+  add(m_MainHBox);
 
   m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
         &MarketPackWidget::onInstallModified));
@@ -136,7 +151,7 @@ MarketPackWidget::MarketPackWidget(std::string ID, bool IsBin, bool IsSrc,
   signal_button_release_event().connect(sigc::mem_fun(*this,
       &MarketPackWidget::onButtonRelease));
 
-  add(m_MainHBox);
+
 }
 
 
@@ -168,7 +183,7 @@ void MarketPackWidget::onInstallModified()
     m_signal_install_modified.emit();
     modify_bg(Gtk::STATE_NORMAL ,WHITE);
   }
-
+  updateDisplayedInfos();
 }
 
 
@@ -196,29 +211,38 @@ openfluid::market::MetaPackageInfo::SelectionType MarketPackWidget::getPackageFo
 // =====================================================================
 
 
-std::string MarketPackWidget::buildMarkupTooltip(std::string ID,std::string Description,
-                                                 std::string Authors, std::string Version)
+void MarketPackWidget::updateDisplayedInfos()
 {
   std::string MarkupTooltip = "";
+  openfluid::market::MetaPackageInfo::SelectionType SelType;
 
-  MarkupTooltip += "<b>" + ID + "</b>";
-
-  MarkupTooltip += "\n<u>Version:</u> ";
-  if (!Version.empty()) MarkupTooltip += Version;
-  else MarkupTooltip += "<i>unknown</i>";
+  m_VersionLabel.set_markup("<u>Version:</u> "+ replaceByUnknownIfEmpty(m_MetaPackInfo.Version));
 
 
-  MarkupTooltip += "\n<u>Author(s):</u> ";
-  if (!Authors.empty()) MarkupTooltip += Authors;
-  else MarkupTooltip += "<i>unknown</i>";
+  MarkupTooltip += "<b>" + m_MetaPackInfo.ID + "</b>";
 
 
-  if (!Description.empty()) MarkupTooltip += "\n\n"+Description;
+  MarkupTooltip += "\n<u>Version:</u> " + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
+  MarkupTooltip += "\n<u>Author(s):</u> " + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
+
+  Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
+  if (TmpIter)
+  {
+    Gtk::TreeModel::Row TmpRow = *TmpIter;
+    if (TmpRow)
+    {
+      SelType = TmpRow[m_FormatColumns.m_SelType];
+      MarkupTooltip += "\n<u>License :</u> " + replaceByUnknownIfEmpty(m_MetaPackInfo.AvailablePackages.at(SelType).License);
+
+      m_LicenseLabel.set_markup("<u>License:</u> "+replaceByUnknownIfEmpty(m_MetaPackInfo.AvailablePackages.at(SelType).License));
+    }
+  }
 
 
+  if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
 
-  return MarkupTooltip;
 
+  set_tooltip_markup(MarkupTooltip);
 }
 
 
@@ -230,3 +254,15 @@ MarketPackWidget::signal_install_modified_t MarketPackWidget::signal_install_mod
 {
   return m_signal_install_modified;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackWidget::replaceByUnknownIfEmpty(const std::string& Str)
+{
+  if (Str.empty()) return "<i>unknown</i>";
+  return Str;
+}
+
