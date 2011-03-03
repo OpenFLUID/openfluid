@@ -88,9 +88,11 @@ void MarketSrcPackage::setAdditionalBuildConfigOptions(const std::string& Option
 
 void MarketSrcPackage::process()
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::download()","package "+m_PackageFilename+" not initialized");
+
   if (!m_Downloaded)
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
-
 
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","CMake command not defined");
@@ -118,6 +120,15 @@ void MarketSrcPackage::process()
 
   std::string BuildCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " --build . --target "+m_ID;
 
+  if (m_IsLogEnabled)
+  {
+    UntarCommand += " >> " + boost::filesystem::path(m_LogFile).string();
+    BuildConfigCommand += " >> " + boost::filesystem::path(m_LogFile).string();
+    BuildCommand += " >> " + boost::filesystem::path(m_LogFile).string();
+  }
+
+  AppendToLogFile("\nProcessing source package " + m_PackageFilename +"\n\n");
+
 
   // uncompressing package
   if (std::system(UntarCommand.c_str()) != 0)
@@ -139,6 +150,7 @@ void MarketSrcPackage::process()
 
   if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 
+  AppendToLogFile("\n########################\n");
 
 }
 

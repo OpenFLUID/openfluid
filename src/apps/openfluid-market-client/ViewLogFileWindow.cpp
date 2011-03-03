@@ -45,115 +45,73 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/**
-  @file
 
-  @author JC.Fabre <fabrejc@supagro.inra.fr>
+/**
+  \file ViewLog.cpp
+  \brief Implements ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-
-
-
-#ifndef __MARKETCLIENT_HPP__
-#define __MARKETCLIENT_HPP__
-
-#include <string>
-#include <queue>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
-#include <openfluid/market/MarketInfos.hpp>
-#include <openfluid/market/MarketSrcPackage.hpp>
-#include <openfluid/market/MarketBinPackage.hpp>
-
-namespace openfluid { namespace market {
-
-
-typedef std::map<std::string,std::string> MarketLicensesTexts_t;
+#include "ViewLogFileWindow.hpp"
+#include <fstream>
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT MarketClient
+ViewLogFileWindow::ViewLogFileWindow(const std::string& PathToLogFile)
 {
-  public:
+  set_default_size(500, 350);
+  set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 
-    static const std::string LOCK_FILE;
+  set_title("Install log");
 
-  private:
+  m_CloseButton.set_label("Close");
 
-    MarketInfo m_MarketInfo;
-    MetaPackagesCatalog_t m_MetaPackagesCatalog;
-    std::string m_TempDir;
+  m_RefLogTextBuffer = Gtk::TextBuffer::create();
+  m_RefLogTextBuffer->set_text("");
 
-    std::string m_URL;
+  m_LogTextView.set_editable(false);
+  m_LogTextView.set_buffer(m_RefLogTextBuffer);
+  m_LogTextView.set_wrap_mode(Gtk::WRAP_WORD);
 
-    MarketLicensesTexts_t m_LicensesTexts;
-
-    bool m_IsConnected;
-
-    bool m_IsLogEnabled;
-
-    std::list<MarketPackage*> m_PacksToInstall;
-
-    void initMarketBag();
-
-    void initMarketTemp();
-
-    void lockMarketTemp();
-
-    void unlockMarketTemp();
-
-    void parseMarketSiteData(const std::string& SiteData);
-
-    void parseCatalogData(const std::string& CatalogData);
-
-    void downloadAssociatedLicenses();
-
-  public:
-
-    MarketClient();
-
-    ~MarketClient();
-
-    void connect(const std::string URL);
-
-    void disconnect();
-
-    void getMarketInfo(MarketInfo& Info);
-
-    const MarketLicensesTexts_t& getLicensesTexts();
-
-    const MetaPackagesCatalog_t& getMetaPackagesCatalog();
-
-    bool setSelectionFlag(const openfluid::base::FuncID_t& ID, const MetaPackageInfo::SelectionType& Flag);
-
-    MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::base::FuncID_t& ID) const;
-
-    void installSelection(const bool IgnoreMissing = true);
-
-    void preparePackagesInstallation();
-
-    unsigned int getCountOfPackagesToInstall() const { return m_PacksToInstall.size(); };
-
-    const MarketPackage* getNextPackageToBeInstalled() const { return m_PacksToInstall.front(); };
-
-    bool hasSelectedPackagesToInstall();
-
-    void installNextSelectedPackage();
-
-    const std::list<MarketPackage*>& getSelectionToInstall() const { return m_PacksToInstall; };
-
-    bool isConnected() const { return m_IsConnected; };
-
-    void enableLog(bool Enabled) { m_IsLogEnabled = Enabled; };
-
-};
+  m_LogSWindow.add(m_LogTextView);
+  m_LogSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
 
-} } // namespaces
+  m_VBox.set_border_width(12);
+  m_VBox.pack_start(m_LogSWindow,Gtk::PACK_EXPAND_WIDGET,12);
+  m_VBox.pack_start(m_CloseButton,Gtk::PACK_SHRINK,12);
+
+  add(m_VBox);
+
+  m_CloseButton.signal_clicked().connect(
+      sigc::mem_fun(*this, &ViewLogFileWindow::onCloseClicked)
+    );
+
+  std::ifstream LogFile(PathToLogFile.c_str());
+  std::string Line, FullContent;
+
+  while(getline(LogFile,Line))
+  {
+    FullContent += Line + "\n";
+  }
+  LogFile.close();
+
+  m_RefLogTextBuffer->set_text(FullContent);
+
+  show_all_children();
+
+  set_modal(true);
+}
 
 
-#endif /* __MARKETCLIENT_HPP__ */
+// =====================================================================
+// =====================================================================
 
+
+void ViewLogFileWindow::onCloseClicked()
+{
+  hide();
+}

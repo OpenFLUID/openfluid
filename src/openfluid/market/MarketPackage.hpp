@@ -59,6 +59,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base.hpp>
+#include <openfluid/market/MarketInfos.hpp>
 
 
 namespace openfluid { namespace market {
@@ -72,6 +73,8 @@ class DLLEXPORT MarketPackage
 
     static const std::string DLOADS_SUBDIR;
 
+    static const std::string LOG_FILENAME;
+
 
     static std::string m_TempDir;
 
@@ -84,6 +87,10 @@ class DLLEXPORT MarketPackage
     static std::string m_MarketBagSrcDir;
 
     static std::string m_CMakeCommand;
+
+    static std::string m_LogFile;
+
+    static bool m_IsLogEnabled;
 
     static bool m_Initialized;
 
@@ -100,13 +107,16 @@ class DLLEXPORT MarketPackage
     bool m_Downloaded;
 
 
+    void AppendToLogFile(const std::string& Str);
+
+
   public:
 
     MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
 
     virtual ~MarketPackage();
 
-    static void initialize();
+    static void initialize(bool EnableLog);
 
     static void setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir);
 
@@ -120,7 +130,11 @@ class DLLEXPORT MarketPackage
 
     static std::string getTempDownloadsDir() { return m_TempDownloadsDir; };
 
+    static std::string getLogFile() { return m_LogFile; };
+
     openfluid::base::FuncID_t getID() const { return m_ID; };
+
+    virtual MetaPackageInfo::SelectionType getFormat() const = 0;
 
     virtual void process() = 0;
 

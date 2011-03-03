@@ -53,6 +53,10 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/convenience.hpp>
+
+
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 
@@ -61,12 +65,15 @@ namespace openfluid { namespace market {
 
 const std::string MarketPackage::BUILDS_SUBDIR = "builds";
 const std::string MarketPackage::DLOADS_SUBDIR = "downloads";
+const std::string MarketPackage::LOG_FILENAME = "packages_install.log";
 
 std::string MarketPackage::m_TempDir = "";
 std::string MarketPackage::m_TempBuildsDir = "";
 std::string MarketPackage::m_TempDownloadsDir = "";
 std::string MarketPackage::m_MarketBagBinDir = "";
 std::string MarketPackage::m_MarketBagSrcDir = "";
+std::string MarketPackage::m_LogFile = "";
+bool MarketPackage::m_IsLogEnabled = false;
 
 std::string MarketPackage::m_CMakeCommand = "";
 
@@ -95,7 +102,7 @@ MarketPackage::~MarketPackage()
 // =====================================================================
 
 
-void MarketPackage::initialize()
+void MarketPackage::initialize(bool EnableLog = false)
 {
   std::string CMakeProgram = "";
 
@@ -120,6 +127,15 @@ void MarketPackage::initialize()
   else
     throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Required CMake program not found");
 
+
+  m_IsLogEnabled = EnableLog;
+
+  if (m_IsLogEnabled)
+  {
+    boost::filesystem::remove(boost::filesystem::path(m_LogFile));
+    std::ofstream(boost::filesystem::path(m_LogFile).string().c_str()).close();
+  }
+
   m_Initialized = true;
 }
 
@@ -135,6 +151,26 @@ void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDi
   m_TempDownloadsDir = TempDir+"/"+DLOADS_SUBDIR;
   m_MarketBagBinDir = MarketBagBinDir;
   m_MarketBagSrcDir = MarketBagSrcDir;
+  m_LogFile = TempDir+"/"+LOG_FILENAME;
+
+  m_Initialized = false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::AppendToLogFile(const std::string& Str)
+{
+  if (m_IsLogEnabled)
+  {
+    std::ofstream LogFileStream;
+    LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
+    LogFileStream << Str;
+    LogFileStream.close();
+  }
+
 }
 
 
@@ -146,12 +182,19 @@ void MarketPackage::download()
 {
 
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","package "+m_PackageFilename+" not initialized");;
+    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","package "+m_PackageFilename+" not initialized");
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
+  AppendToLogFile("\nDownloading package " + m_PackageFilename + " ");
+
   if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","error while downloading package "+m_PackageFilename);;
+  {
+    AppendToLogFile("[Error]\n\n########################\n");
+    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","error while downloading package "+m_PackageFilename);
+  }
+
+  AppendToLogFile("[OK]\n\n########################\n");
 
   m_Downloaded = true;
 

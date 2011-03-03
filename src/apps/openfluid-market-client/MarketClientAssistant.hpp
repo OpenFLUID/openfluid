@@ -148,13 +148,33 @@ class MarketClientAssistant : public Gtk::Assistant
     // ===== Download and install =====//
     Gtk::VBox m_InstallPageBox;
 
-    Gtk::TextView m_InstallTextView;
-    Glib::RefPtr<Gtk::TextBuffer> m_RefInstallTextBuffer;
+    Gtk::TreeView m_InstallTreeView;
+    Glib::RefPtr<Gtk::TreeView> m_RefInstallTreeView;
+
+    Glib::RefPtr<Gtk::ListStore> m_RefInstallTreeViewModel;
+
+    class InstallTreeViewColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+
+        Gtk::TreeModelColumn<Glib::ustring> m_ID;
+        Gtk::TreeModelColumn<Glib::ustring> m_Format;
+        Gtk::TreeModelColumn<Glib::ustring> m_Status;
+
+        InstallTreeViewColumns() { add(m_ID); add(m_Format); add(m_Status);}
+    };
+
+    InstallTreeViewColumns m_InstallColumns;
+
 
     Gtk::ScrolledWindow m_InstallSWindow;
     Gtk::ProgressBar m_InstallProgressBar;
+    Gtk::Button m_ViewLogButton;
+    Gtk::Alignment m_LogButtonAlign;
 
     void onInstallTimeoutOnce();
+
+    void onViewLogClicked();
 
 
     void setupSelectionPage();
@@ -169,6 +189,8 @@ class MarketClientAssistant : public Gtk::Assistant
     void onPrepare(Gtk::Widget* Widget);
 
     void updateAvailPacksTreeview();
+
+    void updateInstallTreeview();
 
     void initializeLicencesTreeView();
 

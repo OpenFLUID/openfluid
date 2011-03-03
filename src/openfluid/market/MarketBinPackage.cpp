@@ -73,6 +73,9 @@ MarketBinPackage::MarketBinPackage(openfluid::base::FuncID_t ID, std::string Pac
 
 void MarketBinPackage::process()
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::download()","package "+m_PackageFilename+" not initialized");
+
 
   if (!m_Downloaded)
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
@@ -81,10 +84,20 @@ void MarketBinPackage::process()
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
 
+  AppendToLogFile("\nProcessing binary package " + m_PackageFilename +"\n\n");
+
   std::string ProcessCommand = m_CMakeCommand +" -E chdir " + m_MarketBagBinDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
+
+  if (m_IsLogEnabled)
+  {
+    ProcessCommand += " >> " + boost::filesystem::path(m_LogFile).string();
+  }
 
   if (std::system(ProcessCommand.c_str()) != 0)
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
+
+  AppendToLogFile("\n########################\n");
+
 }
 
 

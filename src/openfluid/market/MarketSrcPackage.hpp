@@ -77,6 +77,9 @@ class DLLEXPORT MarketSrcPackage : public MarketPackage
     MarketSrcPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
 
     void process();
+
+    MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::SRC; };
+
 };
 
 

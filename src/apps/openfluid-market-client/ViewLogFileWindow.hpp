@@ -46,114 +46,35 @@
 */
 
 /**
-  @file
+  \file ViewLog.hpp
+  \brief Header of ...
 
-  @author JC.Fabre <fabrejc@supagro.inra.fr>
-*/
-
-
-
-
-#ifndef __MARKETCLIENT_HPP__
-#define __MARKETCLIENT_HPP__
-
-#include <string>
-#include <queue>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
-#include <openfluid/market/MarketInfos.hpp>
-#include <openfluid/market/MarketSrcPackage.hpp>
-#include <openfluid/market/MarketBinPackage.hpp>
-
-namespace openfluid { namespace market {
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-typedef std::map<std::string,std::string> MarketLicensesTexts_t;
+#ifndef __VIEWLOGFILEWINDOW_HPP__
+#define __VIEWLOGFILEWINDOW_HPP__
+
+#include <gtkmm.h>
 
 // =====================================================================
 // =====================================================================
 
-
-class DLLEXPORT MarketClient
+class ViewLogFileWindow : public Gtk::Window
 {
-  public:
-
-    static const std::string LOCK_FILE;
-
   private:
+    Gtk::VBox m_VBox;
+    Gtk::TextView m_LogTextView;
+    Glib::RefPtr<Gtk::TextBuffer> m_RefLogTextBuffer;
+    Gtk::ScrolledWindow m_LogSWindow;
+    Gtk::Button m_CloseButton;
 
-    MarketInfo m_MarketInfo;
-    MetaPackagesCatalog_t m_MetaPackagesCatalog;
-    std::string m_TempDir;
-
-    std::string m_URL;
-
-    MarketLicensesTexts_t m_LicensesTexts;
-
-    bool m_IsConnected;
-
-    bool m_IsLogEnabled;
-
-    std::list<MarketPackage*> m_PacksToInstall;
-
-    void initMarketBag();
-
-    void initMarketTemp();
-
-    void lockMarketTemp();
-
-    void unlockMarketTemp();
-
-    void parseMarketSiteData(const std::string& SiteData);
-
-    void parseCatalogData(const std::string& CatalogData);
-
-    void downloadAssociatedLicenses();
+    void onCloseClicked();
 
   public:
-
-    MarketClient();
-
-    ~MarketClient();
-
-    void connect(const std::string URL);
-
-    void disconnect();
-
-    void getMarketInfo(MarketInfo& Info);
-
-    const MarketLicensesTexts_t& getLicensesTexts();
-
-    const MetaPackagesCatalog_t& getMetaPackagesCatalog();
-
-    bool setSelectionFlag(const openfluid::base::FuncID_t& ID, const MetaPackageInfo::SelectionType& Flag);
-
-    MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::base::FuncID_t& ID) const;
-
-    void installSelection(const bool IgnoreMissing = true);
-
-    void preparePackagesInstallation();
-
-    unsigned int getCountOfPackagesToInstall() const { return m_PacksToInstall.size(); };
-
-    const MarketPackage* getNextPackageToBeInstalled() const { return m_PacksToInstall.front(); };
-
-    bool hasSelectedPackagesToInstall();
-
-    void installNextSelectedPackage();
-
-    const std::list<MarketPackage*>& getSelectionToInstall() const { return m_PacksToInstall; };
-
-    bool isConnected() const { return m_IsConnected; };
-
-    void enableLog(bool Enabled) { m_IsLogEnabled = Enabled; };
-
+    ViewLogFileWindow(const std::string& PathToLogfile);
 };
 
 
-} } // namespaces
-
-
-#endif /* __MARKETCLIENT_HPP__ */
-
+#endif /* __VIEWLOGFILEWINDOW_HPP__ */

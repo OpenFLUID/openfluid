@@ -69,6 +69,9 @@ class DLLEXPORT MarketBinPackage : public MarketPackage
     MarketBinPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
 
     void process();
+
+    MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::BIN; };
+
 };
 
 

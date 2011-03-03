@@ -58,7 +58,6 @@
 #include <boost/filesystem/convenience.hpp>
 #include <glibmm/keyfile.h>
 
-#include <openfluid/debug.hpp>
 
 namespace openfluid { namespace market {
 
@@ -72,7 +71,7 @@ const std::string MarketClient::LOCK_FILE = ".lock";
 
 
 MarketClient::MarketClient() :
-    m_IsConnected(false)
+    m_IsConnected(false), m_IsLogEnabled(false)
 {
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
@@ -314,7 +313,7 @@ void MarketClient::connect(const std::string URL)
   initMarketBag();
   initMarketTemp();
 
-  MarketPackage::initialize();
+  MarketPackage::initialize(m_IsLogEnabled);
 
   std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
   std::string CatalogFileURL = m_URL + "/"+openfluid::config::MARKETPLACE_CATALOGFILE+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
@@ -442,7 +441,7 @@ void MarketClient::preparePackagesInstallation()
   while (!m_PacksToInstall.empty())
   {
     delete m_PacksToInstall.front();
-    m_PacksToInstall.pop();
+    m_PacksToInstall.pop_front();
   }
 
   // creating the list of packages to install
@@ -450,11 +449,11 @@ void MarketClient::preparePackagesInstallation()
   {
     if (PCit->second.Selected == MetaPackageInfo::BIN)
     {
-      m_PacksToInstall.push(new MarketBinPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+      m_PacksToInstall.push_back(new MarketBinPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
     }
     if (PCit->second.Selected == MetaPackageInfo::SRC)
     {
-      m_PacksToInstall.push(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+      m_PacksToInstall.push_back(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
     }
   }
 }
@@ -473,7 +472,7 @@ void MarketClient::installSelection(const bool /*IgnoreMissing = true*/)
   while (!m_PacksToInstall.empty())
   {
     MarketPackage* MP = m_PacksToInstall.front();
-    m_PacksToInstall.pop();
+    m_PacksToInstall.pop_front();
 
     MP->download();
     MP->process();
@@ -502,7 +501,7 @@ void MarketClient::installNextSelectedPackage()
   if (!m_PacksToInstall.empty())
   {
     MarketPackage* MP = m_PacksToInstall.front();
-    m_PacksToInstall.pop();
+    m_PacksToInstall.pop_front();
 
     MP->download();
     MP->process();
