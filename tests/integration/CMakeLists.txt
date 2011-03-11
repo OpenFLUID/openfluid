@@ -60,6 +60,8 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
   ADD_TEST(integration-FunctionsXMLReport "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "-x"
                               "-p${TEST_OUTPUT_PATH}")
+  SET_TESTS_PROPERTIES(integration-FunctionsXMLReport PROPERTIES WILL_FAIL TRUE)        
+                              
   
   ADD_TEST(integration-InputDoesNotExist "${BIN_OUTPUT_PATH}/openfluid-engine" "-i" "${CMAKE_BINARY_DIR}/path/does/not/exist")                           
   SET_TESTS_PROPERTIES(integration-InputDoesNotExist PROPERTIES WILL_FAIL TRUE)

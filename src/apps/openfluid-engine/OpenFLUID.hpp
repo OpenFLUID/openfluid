@@ -102,13 +102,13 @@ class OpenFLUIDApp
 
     void printPluginsList();
 
-    void printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix, bool IsXMLFormat);
+    void printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
 
-    void printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, std::string Suffix, bool IsXMLFormat);
+    void printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, std::string Suffix);
 
-    void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type, bool IsXMLFormat);
+    void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type);
 
-    void printPluginsReport(bool IsXMLFormat, const std::string Pattern);
+    void printPluginsReport(const std::string Pattern);
 
     /**
       Runs simulation
