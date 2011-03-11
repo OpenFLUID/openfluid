@@ -63,6 +63,7 @@ const static Gdk::Color GREY("#AAAAAA");
 const static Gdk::Color LIGHTGREY("#CCCCCC");
 const static Gdk::Color WHITE("#FFFFFF");
 
+
 // =====================================================================
 // =====================================================================
 
@@ -72,10 +73,10 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
    m_MetaPackInfo(MetaPackInfo),
    m_FormatLabel("Package Format:")
 {
+  m_EmptyCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
+  m_FullCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart_full.png"));
 
-  Gtk::Image* TImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
-
-  m_InstallToggle.set_image(*TImage);
+  m_InstallToggle.set_image(*m_EmptyCartImage);
 
   m_IDLabel.set_markup("<b>"+m_MetaPackInfo.ID+"</b>");
   m_IDLabel.set_use_markup(true);
@@ -159,6 +160,17 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
 // =====================================================================
 
 
+MarketPackWidget::~MarketPackWidget()
+{
+  delete m_EmptyCartImage;
+  delete m_FullCartImage;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool MarketPackWidget::onButtonRelease(GdkEventButton* Event)
 {
   if (((GdkEventButton*)Event)->button == 1)
@@ -177,11 +189,14 @@ void MarketPackWidget::onInstallModified()
   {
     m_signal_install_modified.emit();
     modify_bg(Gtk::STATE_NORMAL,LIGHTGREEN);
+    m_InstallToggle.set_image(*m_FullCartImage);
+
   }
   else
   {
     m_signal_install_modified.emit();
     modify_bg(Gtk::STATE_NORMAL ,WHITE);
+    m_InstallToggle.set_image(*m_EmptyCartImage);
   }
   updateDisplayedInfos();
 }

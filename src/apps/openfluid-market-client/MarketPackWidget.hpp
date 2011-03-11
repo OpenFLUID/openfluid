@@ -70,10 +70,12 @@ class MarketPackWidget : public Gtk::EventBox
   public:
     typedef sigc::signal<void> signal_install_modified_t;
 
-
   private:
 
     const openfluid::market::MetaPackageInfo m_MetaPackInfo;
+
+    Gtk::Image* m_EmptyCartImage;
+    Gtk::Image* m_FullCartImage;
 
     Gtk::Label m_IDLabel;
     Gtk::HBox m_FormatHBox;
@@ -118,7 +120,7 @@ class MarketPackWidget : public Gtk::EventBox
   public:
     MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
-    ~MarketPackWidget() { };
+    ~MarketPackWidget();
 
     std::string getID() const { return m_MetaPackInfo.ID; };
 
@@ -129,6 +131,7 @@ class MarketPackWidget : public Gtk::EventBox
     openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
     signal_install_modified_t signal_install_modified();
+
 
 
 };
