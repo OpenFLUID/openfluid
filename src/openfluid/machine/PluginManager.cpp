@@ -120,7 +120,7 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
       openfluid::base::GetSDKVersionProc SDKProc;
 
       SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
-      Plug->SDKCompatible = (openfluid::config::FULL_VERSION == SDKProc());
+      Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0);
     }
     else Plug->SDKCompatible = false;
 
@@ -163,12 +163,12 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
       }
       else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Format error in plugin file " + PluginFilename);
     }
+    else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Compatibility version mismatch for plugin file " + PluginFilename);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Unable to find plugin file " + PluginFilename);
 
   return Plug;
 }
-
 
 
 // =====================================================================
@@ -193,7 +193,7 @@ SignatureItemInstance* PluginManager::getSignatureFromPlugin(std::string PluginF
       openfluid::base::GetSDKVersionProc SDKProc;
 
       SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
-      Plug->SDKCompatible = (openfluid::config::FULL_VERSION == SDKProc());
+      Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0);
     }
     else Plug->SDKCompatible = false;
 
@@ -267,7 +267,6 @@ ArrayOfSignatureItemInstance PluginManager::getAvailableFunctions(const std::str
       }
       else PluginsContainers.push_back(CurrentPlug);
     }
-
   }
 
   return PluginsContainers;
