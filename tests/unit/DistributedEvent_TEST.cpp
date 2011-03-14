@@ -113,8 +113,7 @@ BOOST_AUTO_TEST_CASE(check_infosoperations)
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test1",&LongInfo),false);
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test2",&LongInfo),true);
   BOOST_REQUIRE_EQUAL(LongInfo,18);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test3",&LongInfo),true);
-  BOOST_REQUIRE_EQUAL(LongInfo,25);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test3",&LongInfo),false);
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test",&LongInfo),false);
 
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test1",&DoubleInfo),false);

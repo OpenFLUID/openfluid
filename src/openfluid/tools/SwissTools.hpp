@@ -76,7 +76,8 @@ template<typename T>
 inline bool ConvertString(const std::string& StrToConvert, T* Converted)
 {
   std::istringstream iss(StrToConvert);
-  return !(iss >> (*Converted)).fail();
+  char c;
+  return ((iss >> (*Converted)) && !iss.get(c));
 }
 
 // =====================================================================
@@ -208,6 +209,17 @@ openfluid::core::DateTime DLLEXPORT GenerateDateTimeFromStep(openfluid::core::Da
 void DLLEXPORT CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
 std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::string Filename);
+
+
+/**
+  Compare 2 OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
+  @param[in] VersionA the first version number
+  @param[in] VersionB the second version number
+  @param[in] Strict If true, the comparison include the status part of the version (it ignores it otherwise)
+  @return 1 if VersionA is greater than VersionB, -1 if VersionB is greater than VersionA, 0 if versions are equals, -2 if a version format is not well-formed
+*/
+int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
+
 
 
 } } //namespaces

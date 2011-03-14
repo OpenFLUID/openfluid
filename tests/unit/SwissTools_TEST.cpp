@@ -61,6 +61,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <openfluid/tools.hpp>
+#include <openfluid/debug.hpp>
 
 
 // =====================================================================
@@ -71,6 +72,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 {
   std::string Str;
   bool BoolValue;
+  unsigned int UIntValue;
   double DoubleValue;
   std::vector<std::string> StrArray;
 
@@ -84,6 +86,18 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   Str = "1";
   BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&BoolValue),true);
+
+  Str = "12a";
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&UIntValue),false);
+
+  Str = "1a2";
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&UIntValue),false);
+
+
+  Str = "a11";
+  BOOST_REQUIRE_EQUAL(openfluid::tools::ConvertString(Str,&UIntValue),false);
+
+
   BOOST_REQUIRE_EQUAL(1,true);
   BOOST_REQUIRE_EQUAL(0,false);
 
@@ -114,6 +128,25 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo*foo","foobarfo"),false);
   BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo?foo","foobarfoo"),false);
   BOOST_REQUIRE_EQUAL(openfluid::tools::WildcardMatching("foo???foo","foobarfoo"),true);
+
+
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1","1.6.1"),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1","1.6.1",false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~alpha8","1.6.1"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~alpha8","1.6.1~alpha1"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~alpha8","1.6.1~alpha1", false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~alpha8","1.6.1~rc1"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~alpha8","1.6.1~rc1",false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1~alpha8"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1~alpha8",false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.11","1.6.3"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.0.0","1.6.3"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.7.0","1.6.3"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.a.0","1.6.3"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1~RC1"),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1+18"),-2);
+
+
 
 }
 

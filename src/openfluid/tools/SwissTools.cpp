@@ -310,8 +310,10 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename)
 {
@@ -343,6 +345,76 @@ std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filen
 
   return FileLocations;
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict)
+{
+  std::string LowCaseA(VersionA), LowCaseB(VersionB);
+
+  boost::to_lower(LowCaseA);
+  boost::to_lower(LowCaseB);
+
+
+  if (LowCaseA == LowCaseB) return 0;
+
+
+  std::vector<std::string> SplittedA, SplittedB;
+
+  SplittedA = SplitString(LowCaseA,".~",false);
+
+  SplittedB = SplitString(LowCaseB,".~",false);
+
+  if ( !(SplittedA.size()==3 || SplittedA.size()==4) || !(SplittedB.size()==3 || SplittedB.size()==4))
+    return -2;
+
+
+  unsigned int MajorA, MinorA, PatchA, MajorB, MinorB, PatchB;
+  std::string StatusA(""), StatusB("");
+
+  if (SplittedA.size()==4) StatusA = SplittedA[3];
+  if (SplittedB.size()==4) StatusB = SplittedB[3];
+
+  if (ConvertString(SplittedA[0],&MajorA) && ConvertString(SplittedA[1],&MinorA) && ConvertString(SplittedA[2],&PatchA) &&
+      ConvertString(SplittedB[0],&MajorB) && ConvertString(SplittedB[1],&MinorB) && ConvertString(SplittedB[2],&PatchB))
+  {
+    if (MajorA > MajorB) return 1;
+    if (MajorA < MajorB) return -1;
+    if (MajorA == MajorB)
+    {
+      if (MinorA > MinorB) return 1;
+      if (MinorA < MinorB) return -1;
+      if (MinorA == MinorB)
+      {
+        if (PatchA > PatchB) return 1;
+        if (PatchA < PatchB) return -1;
+        if (PatchA == PatchB)
+        {
+          if (!Strict) return 0;
+          else
+          {
+
+            if (StatusA.empty() && StatusB.empty()) return 0;
+
+            if (StatusA == StatusB) return 0;
+
+            if (StatusA.empty() && !StatusB.empty()) return 1;
+            if (!StatusA.empty() && StatusB.empty()) return -1;
+
+
+            if (StatusA > StatusB) return 1;
+            if (StatusA < StatusB) return -1;
+          }
+        }
+      }
+    }
+  }
+
+  return -2;
 }
 
 
