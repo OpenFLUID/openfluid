@@ -3,108 +3,134 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Aline LIBRES <libres@supagro.inra.fr>, 2010.
 #
+#: model/ModelStructure_VList.cpp:80
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2010-08-27 18:35+0200\n"
+"POT-Creation-Date: 2011-02-02 16:34+0100\n"
 "PO-Revision-Date: 2010-07-23 16:04+0200\n"
 "Last-Translator: Aline LIBRES <libres@supagro.inra.fr>\n"
 "Language-Team: Spanish\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: BuilderApp.cpp:182
+#: domain/DomainModule.cpp:71
+msgid "_Domain"
+msgstr ""
+
+#: domain/DomainModule.cpp:72
+msgid "Domain"
+msgstr ""
+
+#: domain/DomainModule.cpp:121 domain/DomainModule.cpp:122
+msgid "Check Domain"
+msgstr ""
+
+#: BuilderAppWindow.hpp:84
+msgid "toto was here"
+msgstr ""
+
+#: simulation/SimulationModule.cpp:72
+msgid "_Simulation"
+msgstr ""
+
+#: simulation/SimulationModule.cpp:73
+msgid "Simulation"
+msgstr ""
+
+#: BuilderApp.cpp:185
 msgid "Empty"
 msgstr ""
 
-#: BuilderApp.cpp:183
+#: BuilderApp.cpp:186
 msgid "From..."
 msgstr ""
 
-#: BuilderApp.cpp:184
+#: BuilderApp.cpp:187
 msgid "_Open..."
 msgstr ""
 
-#: BuilderApp.cpp:186
+#: BuilderApp.cpp:189
 msgid "Save _As..."
 msgstr ""
 
-#: BuilderApp.cpp:187
+#: BuilderApp.cpp:190
 msgid "Project Properties..."
 msgstr ""
 
-#: BuilderApp.cpp:188
+#: BuilderApp.cpp:191
 msgid "OpenFLUID Builder Preferences..."
 msgstr ""
 
-#: BuilderApp.cpp:191
+#: BuilderApp.cpp:194
 msgid "Check Project"
 msgstr ""
 
-#: BuilderApp.cpp:192
+#: BuilderApp.cpp:195
 msgid "Run Simulation"
 msgstr ""
 
-#: BuilderApp.cpp:193
+#: BuilderApp.cpp:196
 msgid "Pre-simulation"
 msgstr ""
 
-#: BuilderApp.cpp:194
+#: BuilderApp.cpp:197
 msgid "Post-simulation"
 msgstr ""
 
-#: BuilderApp.cpp:195
+#: BuilderApp.cpp:198
 msgid "All tabbed"
 msgstr ""
 
-#: BuilderApp.cpp:196
+#: BuilderApp.cpp:199
 msgid "Layout Manager"
 msgstr ""
 
-#: BuilderApp.cpp:197
+#: BuilderApp.cpp:200
 msgid "Extensions"
 msgstr ""
 
-#: BuilderApp.cpp:198
+#: BuilderApp.cpp:201
 msgid "Documentation"
 msgstr ""
 
-#: BuilderApp.cpp:199
+#: BuilderApp.cpp:202
 msgid "Demo Project"
 msgstr ""
 
-#: BuilderApp.cpp:200
+#: BuilderApp.cpp:203
 msgid "_About OpenFLUID Builder"
 msgstr ""
 
-#: BuilderApp.cpp:202
+#: BuilderApp.cpp:205
 msgid "Create new empty project"
 msgstr ""
 
-#: BuilderApp.cpp:203
+#: BuilderApp.cpp:206
 msgid "Create new project from an existing one"
 msgstr ""
 
-#: BuilderApp.cpp:204 resources/MainWindow.glade:511
+#: BuilderApp.cpp:207
 msgid "Open an existing project"
 msgstr ""
 
-#: BuilderApp.cpp:205
+#: BuilderApp.cpp:208
 msgid "Save project"
 msgstr ""
 
-#: BuilderApp.cpp:206
+#: BuilderApp.cpp:209
 msgid "Check project"
 msgstr ""
 
-#: BuilderApp.cpp:207
+#: BuilderApp.cpp:210
 msgid "Run simulation"
 msgstr ""
 
-#: BuilderApp.cpp:208
+#: BuilderApp.cpp:211
 msgid "Open demo project"
 msgstr ""
 
@@ -112,180 +138,62 @@ msgstr ""
 msgid "%1Home"
 msgstr ""
 
-#: DomainModule.cpp:70 resources/Domain.glade:20
-msgid "_Domain"
+#: BuilderApp.cpp:523
+msgid "Select existing project folder"
 msgstr ""
 
-#: DomainModule.cpp:71
-msgid "Domain"
-msgstr ""
-
-#: DomainModule.cpp:96 DomainModule.cpp:97
-msgid "Check Domain"
-msgstr ""
-
-#: ModelModule.cpp:71 resources/Model.glade:389
-msgid "_Model"
-msgstr ""
-
-#: ModelModule.cpp:72
-msgid "Model"
-msgstr ""
-
-#: ModelModule.cpp:89 ModelModule.cpp:90
-msgid "Check Model"
-msgstr ""
-
-#: resources/Domain.glade:11
-msgid "I am the Domain Module"
-msgstr ""
-
-#: resources/Domain.glade:48
-msgid "Action Test"
-msgstr ""
-
-#: resources/MainWindow.glade:18
-msgid "_File"
-msgstr ""
-
-#: resources/MainWindow.glade:26
-msgid "_New"
-msgstr ""
-
-#: resources/MainWindow.glade:102
-msgid "_Edit"
-msgstr ""
-
-#: resources/MainWindow.glade:128
-msgid "_Project"
-msgstr ""
-
-#: resources/MainWindow.glade:166
-msgid "_View"
-msgstr ""
-
-#: resources/MainWindow.glade:174
-msgid "Default Layout"
-msgstr ""
-
-#: resources/MainWindow.glade:217
-msgid "_Help"
-msgstr ""
-
-#: resources/MainWindow.glade:527
-msgid "Choose the input directory"
-msgstr ""
-
-#: resources/MainWindow.glade:734
-msgid "Recent projects"
-msgstr ""
-
-#: resources/MainWindow.glade:752
-msgid "No recent project"
-msgstr ""
-
-#: resources/Model.glade:74
-msgid "Signature"
-msgstr ""
-
-#: resources/Model.glade:101
-msgid "Parameters"
-msgstr ""
-
-#: resources/Model.glade:129
-msgid "Variables"
-msgstr ""
-
-#: resources/Model.glade:157
-msgid "Events"
-msgstr ""
-
-#: resources/Model.glade:185
-msgid "Extra files"
-msgstr ""
-
-#: resources/Model.glade:208
-msgid "<b>Available functions</b>"
-msgstr ""
-
-#: resources/Model.glade:235
-msgid "tools"
-msgstr ""
-
-#: resources/Model.glade:266
-msgid "List"
-msgstr ""
-
-#: resources/Model.glade:283
-msgid "Graph"
-msgstr ""
-
-#: resources/Model.glade:305
-msgid "<b>Model structure</b>"
-msgstr ""
-
-#: resources/Model.glade:355
-msgid "Global parameters"
-msgstr ""
-
-#: resources/Model.glade:371
-msgid "<b>Model Parameters</b>"
-msgstr ""
-
-#: resources/Results.glade:16 ResultsModule.cpp:71
-msgid "Results"
-msgstr ""
-
-#: resources/Simulation.glade:47
-msgid "Data exchange time step"
-msgstr ""
-
-#: resources/Simulation.glade:76
-msgid "seconds"
-msgstr ""
-
-#: resources/Simulation.glade:124
-msgid "Simulation period"
-msgstr ""
-
-#: resources/Simulation.glade:146
-msgid "begin"
-msgstr ""
-
-#: resources/Simulation.glade:187
-msgid "end"
-msgstr ""
-
-#: resources/Simulation.glade:262
-msgid ""
-"Progressive output mode\n"
-"<i>(can be empty)</i>"
-msgstr ""
-
-#: resources/Simulation.glade:282
-msgid "Size (in number of time steps) of the saved packets"
-msgstr ""
-
-#: resources/Simulation.glade:308
-msgid "Number of time steps kept in memory"
-msgstr ""
-
-#: resources/Simulation.glade:338
-msgid "<b>Run Configuration</b>"
-msgstr ""
-
-#: resources/Simulation.glade:453
-msgid "<b>Output Configuration</b>"
-msgstr ""
-
-#: ResultsModule.cpp:70
+#: results/ResultsModule.cpp:70
 msgid "_Results"
 msgstr ""
 
-#: SimulationModule.cpp:70
-msgid "_Simulation"
+#: results/ResultsModule.cpp:71
+msgid "Results"
 msgstr ""
 
-#: SimulationModule.cpp:71
-msgid "Simulation"
+#: results/ResultsModule.cpp:346
+msgid "No value... Run the simulation before !"
+msgstr ""
+
+#: BuilderListToolBox.hpp:285
+msgid "Append a function to the Model"
+msgstr ""
+
+#: model/ModelModule.cpp:75
+msgid "_Model"
+msgstr ""
+
+#: model/ModelModule.cpp:76
+msgid "Model"
+msgstr ""
+
+#: model/ModelModule.cpp:125
+msgid "Model Status"
+msgstr ""
+
+#: model/ModelModule.cpp:127
+msgid "Params values"
+msgstr ""
+
+#: model/ModelModule.cpp:129
+msgid "Test"
+msgstr ""
+
+#: model/ModelAvailFctView.hpp:91
+msgid "Status"
+msgstr ""
+
+#: model/ModelStructureItem.cpp:89 model/ModelStructureItem.cpp:118
+msgid "(Generator)"
+msgstr ""
+
+#: model/ModelAvailFct.cpp:492
+msgid "<i>(None)</i>"
+msgstr ""
+
+#: model/ModelParam.cpp:175
+msgid "(global : \"%1\")"
+msgstr ""
+
+#: model/ModelStructure_VList.cpp:81
+msgid "Id"
 msgstr ""

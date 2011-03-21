@@ -1,7 +1,7 @@
 #! /bin/bash
 
 echo "update POTFILES.in..."
-ls *.hpp *.cpp resources/*.glade > po/POTFILES.in
+find . -name "*.?pp" -print > po/POTFILES.in
 
 echo "xgettext from POTFILES.in to openfluid-builder.pot..."
 xgettext --files-from po/POTFILES.in -o po/openfluid-builder.pot --keyword=_ --package-name="OpenFLUID Builder" --package-version="0.0.0" --copyright-holder="2007-2010 INRA-Montpellier SupAgro" --msgid-bugs-address="libres at supagro.inra.fr" --no-wrap
