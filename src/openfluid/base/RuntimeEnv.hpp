@@ -426,6 +426,11 @@ class DLLEXPORT RuntimeEnvironment
     inline unsigned int getFilesBufferSize() const
       { return m_FilesBufferSize; };
 
+    inline void unsetUserValuesBufferSize()
+    {
+      m_IsUserValuesBufferSize = false;
+    }
+
 };
 
 

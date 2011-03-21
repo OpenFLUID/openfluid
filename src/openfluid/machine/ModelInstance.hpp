@@ -121,6 +121,8 @@ class DLLEXPORT ModelInstance
 
     bool call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const;
 
+    void resetInitialized() { m_Initialized = false; }
+
 };
 
 

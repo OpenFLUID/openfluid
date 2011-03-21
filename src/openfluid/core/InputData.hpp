@@ -1,50 +1,49 @@
 /*
-  This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+ This file is part of OpenFLUID software
+ Copyright (c) 2007-2010 INRA-Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
-  OpenFLUID is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+ OpenFLUID is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-  OpenFLUID is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+ OpenFLUID is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
 
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+ In addition, as a special exception, INRA gives You the additional right
+ to dynamically link the code of OpenFLUID with code not covered
+ under the GNU General Public License ("Non-GPL Code") and to distribute
+ linked combinations including the two, subject to the limitations in this
+ paragraph. Non-GPL Code permitted under this exception must only link to
+ the code of OpenFLUID dynamically through the OpenFLUID libraries
+ interfaces, and only for building OpenFLUID plugins. The files of
+ Non-GPL Code may be link to the OpenFLUID libraries without causing the
+ resulting work to be covered by the GNU General Public License. You must
+ obey the GNU General Public License in all respects for all of the
+ OpenFLUID code and other code used in conjunction with OpenFLUID
+ except the Non-GPL Code covered by this exception. If you modify
+ this OpenFLUID, you may extend this exception to your version of the file,
+ but you are not obligated to do so. If you do not wish to provide this
+ exception without modification, you must delete this exception statement
+ from your version and license this OpenFLUID solely under the GPL without
+ exception.
 
 
  == Other Usage ==
 
-  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
-  license, and requires a written agreement between You and INRA.
-  Licensees for Other Usage of OpenFLUID may use this file in accordance
-  with the terms contained in the written agreement between You and INRA.
-*/
-
+ Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+ license, and requires a written agreement between You and INRA.
+ Licensees for Other Usage of OpenFLUID may use this file in accordance
+ with the terms contained in the written agreement between You and INRA.
+ */
 
 #ifndef __INPUTDATA_H__
 #define __INPUTDATA_H__
@@ -52,25 +51,24 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 
+namespace openfluid {
+namespace core {
 
-namespace openfluid { namespace core {
-
-
-template <class T>
+template<class T>
 class DLLEXPORT InputData
 {
-  private :
+  private:
 
-    typedef std::map<InputDataName_t,T> InputDataMap_t;
+    typedef std::map<InputDataName_t, T> InputDataMap_t;
     InputDataMap_t m_Data;
 
-  public :
+  public:
 
     InputData();
 
     ~InputData();
 
-    bool setValue(const InputDataName_t aName,const T aValue);
+    bool setValue(const InputDataName_t aName, const T aValue);
 
     bool getValue(const InputDataName_t aName, T *aValue);
 
@@ -82,43 +80,41 @@ class DLLEXPORT InputData
 
     std::vector<InputDataName_t> getInputDataNames() const;
 
-    //--- added Aline
-    void replaceValue(const InputDataName_t aName,const T aValue);
-    //---
+    void replaceValue(const InputDataName_t aName, const T aValue);
+
+    void removeData(const InputDataName_t aName);
 
 };
 
-
 // =====================================================================
 // =====================================================================
 
 
-template <class T>
+template<class T>
 InputData<T>::InputData()
 {
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-template <class T>
+template<class T>
 InputData<T>::~InputData()
 {
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
-template <class T>
-bool InputData<T>::setValue(const InputDataName_t aName,const T aValue)
+template<class T>
+bool InputData<T>::setValue(const InputDataName_t aName, const T aValue)
 {
 
-  if (isDataExist(aName)) return false;
+  if (isDataExist(aName))
+    return false;
   else
   {
     m_Data[aName] = aValue;
@@ -126,12 +122,11 @@ bool InputData<T>::setValue(const InputDataName_t aName,const T aValue)
   return true;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-template <class T>
+template<class T>
 bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
 {
   typename InputDataMap_t::iterator it = m_Data.find(aName);
@@ -140,15 +135,15 @@ bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
   {
     *aValue = it->second;
     return true;
-  }
-  else return false;
+  } else
+    return false;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-template <class T>
+template<class T>
 bool InputData<T>::getValueAsDouble(const InputDataName_t aName, double *aValue)
 {
   T TValue;
@@ -160,16 +155,15 @@ bool InputData<T>::getValueAsDouble(const InputDataName_t aName, double *aValue)
 
     std::istringstream iss(TValue);
     return !(iss >> (*aValue)).fail();
-  }
-  else return false;
+  } else
+    return false;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-template <class T>
+template<class T>
 bool InputData<T>::getValueAsLong(const InputDataName_t aName, long *aValue)
 {
   T TValue;
@@ -181,16 +175,15 @@ bool InputData<T>::getValueAsLong(const InputDataName_t aName, long *aValue)
 
     std::istringstream iss(TValue);
     return !(iss >> (*aValue)).fail();
-  }
-  else return false;
+  } else
+    return false;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-template <class T>
+template<class T>
 bool InputData<T>::isDataExist(const InputDataName_t aName) const
 {
   return m_Data.find(aName) != m_Data.end();
@@ -199,14 +192,14 @@ bool InputData<T>::isDataExist(const InputDataName_t aName) const
 // =====================================================================
 // =====================================================================
 
-template <class T>
+template<class T>
 std::vector<InputDataName_t> InputData<T>::getInputDataNames() const
 {
   std::vector<InputDataName_t> TheNames;
 
   typename InputDataMap_t::const_iterator it;
 
-  for (it = m_Data.begin() ; it != m_Data.end() ; ++it)
+  for (it = m_Data.begin(); it != m_Data.end(); ++it)
   {
     TheNames.push_back(it->first);
   }
@@ -215,16 +208,28 @@ std::vector<InputDataName_t> InputData<T>::getInputDataNames() const
 
 }
 
-//--- added Aline
-template <class T>
-void InputData<T>::replaceValue(const InputDataName_t aName,const T aValue)
+// =====================================================================
+// =====================================================================
+
+template<class T>
+void InputData<T>::replaceValue(const InputDataName_t aName, const T aValue)
 {
-    m_Data[aName] = aValue;
+  m_Data[aName] = aValue;
 }
-//---
 
-} } // namespaces
+// =====================================================================
+// =====================================================================
 
+template<class T>
+void InputData<T>::removeData(const InputDataName_t aName)
+{
+  typename InputDataMap_t::iterator it = m_Data.find(aName);
+  if (it != m_Data.end())
+    m_Data.erase(it);
+}
+
+}
+} // namespaces
 
 
 #endif /* __INPUTDATA_H__ */

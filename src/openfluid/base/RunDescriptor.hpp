@@ -121,6 +121,11 @@ class DLLEXPORT RunDescriptor
 
     inline void setFilled(const bool Filled) { m_Filled = Filled; };
 
+    inline void unsetUserValuesBufferSize()
+    {
+      m_IsUserValuesBufferSize = false;
+    }
+
 };
 
 } } // namespaces

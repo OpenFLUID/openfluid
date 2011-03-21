@@ -317,6 +317,10 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& R
   {
     openfluid::base::RuntimeEnvironment::getInstance()->setValuesBufferSize(RunDesc.getValuesBufferSize());
   }
+  else
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->unsetUserValuesBufferSize();
+  }
 
   openfluid::base::RuntimeEnvironment::getInstance()->setFilesBufferSize(RunDesc.getFilesBufferSizeInKB()*1024);
 
