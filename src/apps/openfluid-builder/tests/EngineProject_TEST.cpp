@@ -66,7 +66,7 @@
 #include "GeneratorSignature.hpp"
 #include "FunctionSignatureRegistry.hpp"
 #include "ModelItemInstanceFactory.hpp"
-#include "../../../tests/tests-config.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================

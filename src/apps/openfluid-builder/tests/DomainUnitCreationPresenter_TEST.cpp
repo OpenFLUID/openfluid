@@ -63,7 +63,7 @@
 #include "DomainUnitCreationModel.hpp"
 #include "DomainUnitCreationView.hpp"
 #include "EngineProjectFactory.hpp"
-#include "../../../tests/tests-config.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================

@@ -63,7 +63,7 @@
 #include "SimulRunModel.hpp"
 #include "SimulRunView.hpp"
 #include "EngineProjectFactory.hpp"
-#include "../../../tests/tests-config.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================

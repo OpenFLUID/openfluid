@@ -64,7 +64,7 @@
 #include "SimulOutFileDescView.hpp"
 #include "EngineProjectFactory.hpp"
 #include "SimulOutFilesModel.hpp"
-#include "../../../tests/tests-config.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================

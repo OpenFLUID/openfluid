@@ -58,7 +58,7 @@
 #include "EngineProjectFactory.hpp"
 #include "SimulOutFilesModel.hpp"
 #include "SimulOutSetsModel.hpp"
-#include "../../../tests/tests-config.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================

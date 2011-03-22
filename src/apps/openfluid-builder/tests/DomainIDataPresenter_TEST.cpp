@@ -63,7 +63,7 @@
 #include "DomainIDataModel.hpp"
 #include "DomainIDataView.hpp"
 #include "EngineProjectFactory.hpp"
-#include "../../../tests/tests-config.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================
