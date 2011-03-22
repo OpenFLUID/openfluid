@@ -76,13 +76,17 @@ struct init_Engine
     init_Engine()
     {
       BuilderTestHelper::getInstance()->initGtk();
+
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
     }
 };
 
 BOOST_FIXTURE_TEST_SUITE(EngineProjectTest, init_Engine)
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 {
@@ -94,8 +98,14 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
   delete EngProject;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(test_addItems_Empty)
 {
+
   EngineProject* EngProject = EngineProjectFactory::createEngineProject();
 
   FixedGeneratorSignature FixedGenSignature;
@@ -121,6 +131,11 @@ BOOST_AUTO_TEST_CASE(test_addItems_Empty)
   delete EngProject;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 // may be false negative if test datatsets change
 BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 {
@@ -133,6 +148,11 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 
   delete EngProject;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_addItems_FromFolder)
 {

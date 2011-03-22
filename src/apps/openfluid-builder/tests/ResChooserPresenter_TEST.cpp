@@ -73,6 +73,8 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+
       mp_Component = new ResChooserComponent();
       mp_Model = (ResChooserModelSub*) (mp_Component->getModel());
       mp_View = (ResChooserViewSub*) (mp_Component->getView());

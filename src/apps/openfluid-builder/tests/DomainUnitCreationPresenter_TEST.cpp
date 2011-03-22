@@ -80,6 +80,8 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+
       mp_Component = new DomainUnitCreationComponent();
       mp_Model = (DomainUnitCreationModelSub*) (mp_Component->getModel());
       mp_View = (DomainUnitCreationView*) (mp_Component->getView());

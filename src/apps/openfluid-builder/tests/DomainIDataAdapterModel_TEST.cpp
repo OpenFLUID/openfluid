@@ -75,6 +75,8 @@ struct init_Model
     {
       BuilderTestHelper::getInstance()->initGtk();
 
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+
       mp_AdapterModel = new DomainIDataAdapterModelSub();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR

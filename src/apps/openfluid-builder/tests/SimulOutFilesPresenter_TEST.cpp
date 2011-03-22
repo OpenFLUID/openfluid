@@ -83,6 +83,8 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+
       mp_Component = new SimulOutFilesComponent();
       mp_Model = (SimulOutFilesModelSub*) mp_Component->getModel();
       mp_View = (SimulOutFilesViewSub*) (mp_Component->getView());

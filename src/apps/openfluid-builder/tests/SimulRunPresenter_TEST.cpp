@@ -81,12 +81,16 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+
       mp_Component = new SimulRunComponent();
       mp_Model = (SimulRunModelSub*) mp_Component->getModel();
       mp_View = (SimulRunViewSub*) (mp_Component->getView());
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
+
+      openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/SimulRunPresenter_TEST.OUT");
       mp_EngProject = EngineProjectFactory::createEngineProject(Path);
 
       mp_Model->setEngineRequirements(mp_EngProject->getRunDescriptor());

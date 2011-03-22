@@ -1,4 +1,7 @@
 
+FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
+
+
 INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
                     ${GTKMM_INCLUDE_DIRS})
                     
@@ -6,10 +9,11 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
                  ${GTKMM_LIBRARY_DIRS})
 
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ../builder-main ../builder-main/common ../builder-main/model ../builder-main/domain ../builder-main/simulation ../builder-main/results)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
-INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}/src/tests")
+
+INCLUDE_DIRECTORIES( ../builder-main ../builder-main/common ../builder-main/model ../builder-main/domain ../builder-main/simulation ../builder-main/results "${PROJECT_BINARY_DIR}/src/tests")
 
 
 MACRO(ADD_BUILDER_UNITTEST TEST_NAME EXE_NAME)

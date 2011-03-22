@@ -74,6 +74,8 @@ struct init_Model
     {
       BuilderTestHelper::getInstance()->initGtk();
 
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+
       mp_Model = new DomainStructureModelSub();
     }
 
@@ -85,8 +87,10 @@ struct init_Model
 
 BOOST_FIXTURE_TEST_SUITE(DomainStructureModelTest, init_Model)
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
@@ -95,6 +99,11 @@ BOOST_AUTO_TEST_CASE(test_constructor)
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(),true);
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_setCoreReposEmpty)
 {
@@ -108,6 +117,11 @@ BOOST_AUTO_TEST_CASE(test_setCoreReposEmpty)
 
   delete EngProject;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_setCoreReposNonEmpty)
 {
@@ -128,6 +142,11 @@ BOOST_AUTO_TEST_CASE(test_setCoreReposNonEmpty)
   delete EngProject;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
@@ -147,6 +166,11 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
   delete EngProject;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
@@ -165,6 +189,11 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 
   delete EngProject;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_addUnit)
 {
@@ -186,6 +215,11 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
 
   delete EngProject;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_addUnits)
 {
@@ -223,6 +257,11 @@ BOOST_AUTO_TEST_CASE(test_addUnits)
   delete EngProject;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(test_deleteUnit)
 {
   EngineProject* EngProject = EngineProjectFactory::createEngineProject();
@@ -249,6 +288,11 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
 
   delete EngProject;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(test_deleteLastUnitOfClass)
 {
