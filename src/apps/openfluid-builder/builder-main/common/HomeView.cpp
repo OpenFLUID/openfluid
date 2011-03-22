@@ -60,6 +60,10 @@
 #include "BuilderAppActions.hpp"
 #include "BuilderGraphicsHelper.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::createHeadPanel()
 {
   mp_LogoImage = BuilderGraphicsHelper::createImageFromFileName(
@@ -78,6 +82,12 @@ void HomeViewImpl::createHeadPanel()
   mp_HeadPanel->pack_start(*mp_VersionLabel, Gtk::PACK_SHRINK, 10);
   mp_HeadPanel->pack_start(*mp_LinkLabel, Gtk::PACK_SHRINK, 10);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::createButtonPanel()
 {
   mp_NewButton = Gtk::manage(new BuilderHomeButton(
@@ -92,6 +102,11 @@ void HomeViewImpl::createButtonPanel()
       mp_Actions.getFileOpenAction()));
   mp_OpenButton->set_visible(true);
 
+  mp_MarketButton = Gtk::manage(new BuilderHomeButton(
+      mp_Actions.getAppMarketAction()));
+  mp_MarketButton->set_visible(true);
+
+
   Gtk::VButtonBox* ButtonBox = Gtk::manage(new Gtk::VButtonBox(
       Gtk::BUTTONBOX_START, 4));
   ButtonBox->set_visible(true);
@@ -99,10 +114,24 @@ void HomeViewImpl::createButtonPanel()
   ButtonBox->pack_start(*mp_NewFromButton, Gtk::PACK_SHRINK, 0);
   ButtonBox->pack_start(*mp_OpenButton, Gtk::PACK_SHRINK, 0);
 
+  Gtk::VButtonBox* ExtraButtonBox = Gtk::manage(new Gtk::VButtonBox(
+      Gtk::BUTTONBOX_START, 4));
+  ExtraButtonBox->set_visible(true);
+  ExtraButtonBox->pack_start(*mp_MarketButton, Gtk::PACK_SHRINK, 0);
+
   mp_ButtonPanel = Gtk::manage(new Gtk::VBox(false, 0));
   mp_ButtonPanel->set_visible(true);
   mp_ButtonPanel->pack_start(*ButtonBox, Gtk::PACK_SHRINK, 10);
+  mp_ButtonPanel->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+  mp_ButtonPanel->pack_start(*ExtraButtonBox, Gtk::PACK_SHRINK, 10);
+  mp_ButtonPanel->show_all_children(true);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::createRecentPanel()
 {
   mp_RecentTitleLabel = Gtk::manage(new Gtk::Label());
@@ -121,6 +150,12 @@ void HomeViewImpl::createRecentPanel()
   mp_RecentPanel->pack_start(*mp_RecentTitleLabel, Gtk::PACK_SHRINK, 0);
   mp_RecentPanel->pack_start(*mp_RecentLabel, Gtk::PACK_SHRINK, 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::createBottomPanel()
 {
   createButtonPanel();
@@ -135,6 +170,11 @@ void HomeViewImpl::createBottomPanel()
   mp_BottomPanel->pack_start(*VSep, Gtk::PACK_SHRINK, 0);
   mp_BottomPanel->pack_start(*mp_RecentPanel, Gtk::PACK_EXPAND_WIDGET, 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 HomeViewImpl::HomeViewImpl(BuilderAppActions& Actions) :
   mp_Actions(Actions)
@@ -152,23 +192,54 @@ HomeViewImpl::HomeViewImpl(BuilderAppActions& Actions) :
   mp_MainContainer->pack_start(*HSep, Gtk::PACK_SHRINK, 0);
   mp_MainContainer->pack_start(*mp_BottomPanel, Gtk::PACK_EXPAND_WIDGET, 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> HomeViewImpl::signal_NewProjectAsked()
 {
   return m_signal_NewProjectAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::setVersion(std::string VersionTxt)
 {
   mp_VersionLabel->set_text(VersionTxt);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::setWebSite(std::string WebSite)
 {
   mp_LinkLabel->set_markup("<a href=\"" + WebSite + "\">" + WebSite + "</a>");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeViewImpl::setRecentText(std::string RecentText)
 {
   mp_RecentLabel->set_text(RecentText);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* HomeViewImpl::asWidget()
 {
   return mp_MainContainer;
 }
+

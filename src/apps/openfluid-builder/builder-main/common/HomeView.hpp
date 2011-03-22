@@ -95,17 +95,31 @@ class HomeViewImpl: public HomeView
     BuilderHomeButton* mp_NewFromButton;
     BuilderHomeButton* mp_OpenButton;
 
+    BuilderHomeButton* mp_MarketButton;
+
     void createHeadPanel();
+
     void createButtonPanel();
+
     void createRecentPanel();
+
     void createBottomPanel();
+
+
   public:
+
     HomeViewImpl(BuilderAppActions& Actions);
+
     sigc::signal<void> signal_NewProjectAsked();
+
     void setVersion(std::string VersionTxt);
+
     void setWebSite(std::string WebSite);
+
     void setRecentText(std::string RecentText);
+
     Gtk::Widget* asWidget();
 };
+
 
 #endif /* __HOMEVIEW_HPP__ */

@@ -24,10 +24,25 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} . common model domain simulation results)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
+
+# for OpenFLUID market
+
+SET(OPENFLUID_BUILDER_MARKETCLIENT_RELDIR ../../openfluid-market-client)
+SET(OPENFLUID_BUILDER_MARKETCLIENT_HPP "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketClientAssistant.hpp"
+                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketPackWidget.hpp"
+                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/ViewLogFileWindow.hpp")
+
+SET(OPENFLUID_BUILDER_MARKETCLIENT_CPP "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketClientAssistant.cpp"
+                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketPackWidget.cpp"
+                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/ViewLogFileWindow.cpp")                                  
+
+INCLUDE_DIRECTORIES(../../openfluid-market-client)
+
 FILE(GLOB OPENFLUID_BUILDER_MAINLIB_CPP common/*.cpp model/*.cpp domain/*.cpp simulation/*.cpp results/*.cpp)
 FILE(GLOB OPENFLUID_BUILDER_MAINLIB_HPP common/*.hpp model/*.hpp domain/*.hpp simulation/*.hpp results/*.hpp)
 
-ADD_LIBRARY(openfluid-builder-main SHARED ${OPENFLUID_BUILDER_MAINLIB_CPP} ${OPENFLUID_BUILDER_MAINLIB_HPP})
+ADD_LIBRARY(openfluid-builder-main SHARED ${OPENFLUID_BUILDER_MAINLIB_CPP} ${OPENFLUID_BUILDER_MAINLIB_HPP}
+                                          ${OPENFLUID_BUILDER_MARKETCLIENT_CPP} ${OPENFLUID_BUILDER_MARKETCLIENT_HPP})
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
@@ -41,6 +56,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-machine
                       openfluid-io
                       openfluid-tools
+                      openfluid-market
                       openfluid-builder-ext
                       openfluid-builder-gdl)
 

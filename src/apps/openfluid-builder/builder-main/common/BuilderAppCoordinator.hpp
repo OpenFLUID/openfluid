@@ -65,26 +65,49 @@ class BuilderAppCoordinator
     BuilderAppState* mp_ProjectState;
 
     void unsetCurrentModule();
+
     void setCurrentModule(BuilderModule* Module);
+
     void whenNewProjectAsked();
+
     void whenOpenProjectAsked();
+
     void whenCloseProjectAsked();
+
     void whenQuitAsked();
+
     void whenCheckAsked();
+
     void whenRunAsked();
+
+    void whenMarketAsked();
+
+
   public:
+
     BuilderAppCoordinator(BuilderAppWindow& MainWindow,
         BuilderAppActions& Actions);
+
     void setState(BuilderAppState& State);
+
     BuilderAppState* getHomeState();
+
     BuilderAppState* getProjectState();
+
     void setHomeModule();
+
     void setProjectModule(std::string FolderIn = "");
+
     BuilderModule* getCurrentModule();
+
     void quitApp();
+
     bool showCloseProjectDialog();
+
     bool showQuitAppDialog();
+
     std::string showOpenProjectDialog();
+
 };
 
 #endif /* BUILDERAPPCOORDINATOR_HPP_ */

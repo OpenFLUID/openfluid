@@ -56,36 +56,94 @@
 
 #include "BuilderAppCoordinator.hpp"
 
+#include "BuilderAppDialogFactory.hpp"
+
+#include "MarketClientAssistant.hpp"
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppHomeState::BuilderAppHomeState(BuilderAppCoordinator& AppCoordinator) :
   m_App(AppCoordinator)
 {
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppHomeState::whenNewProjectAsked()
 {
   m_App.setProjectModule();
   m_App.setState(*m_App.getProjectState());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppHomeState::whenOpenProjectAsked()
 {
   m_App.setProjectModule(m_App.showOpenProjectDialog());
   m_App.setState(*m_App.getProjectState());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppHomeState::whenCloseProjectAsked()
 {
   //nothing to do, should not happen
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppHomeState::whenQuitAsked()
 {
   if (m_App.showQuitAppDialog())
     m_App.quitApp();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppHomeState::whenCheckAsked()
 {
   //nothing to do, should not happen
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppHomeState::whenRunAsked()
 {
   //nothing to do, should not happen
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenMarketAsked()
+{
+  MarketClientAssistant Assistant;
+  Assistant.set_modal(true);
+  Gtk::Main::run(Assistant);
+}
+
+

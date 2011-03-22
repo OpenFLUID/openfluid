@@ -63,14 +63,26 @@ class BuilderAppHomeState: public BuilderAppState
 {
   private:
     BuilderAppCoordinator& m_App;
+
+
   public:
+
     BuilderAppHomeState(BuilderAppCoordinator& AppCoordinator);
+
     void whenNewProjectAsked();
+
     void whenOpenProjectAsked();
+
     void whenCloseProjectAsked();
+
     void whenQuitAsked();
+
     void whenCheckAsked();
+
     void whenRunAsked();
+
+    void whenMarketAsked();
+
 };
 
 #endif /* __BUILDERAPPHOMESTATE_HPP__ */

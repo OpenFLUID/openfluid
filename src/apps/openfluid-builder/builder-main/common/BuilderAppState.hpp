@@ -58,12 +58,20 @@
 class BuilderAppState
 {
   public:
+
     virtual void whenNewProjectAsked() = 0;
+
     virtual void whenOpenProjectAsked() = 0;
+
     virtual void whenCloseProjectAsked() = 0;
+
     virtual void whenQuitAsked() = 0;
+
     virtual void whenCheckAsked() = 0;
+
     virtual void whenRunAsked() = 0;
+
+    virtual void whenMarketAsked() = 0;
 };
 
 #endif /* __BUILDERAPPSTATE_HPP__ */

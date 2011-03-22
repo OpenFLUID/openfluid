@@ -60,28 +60,49 @@
 class BuilderAppActions
 {
   private:
+
     Glib::RefPtr<Gtk::UIManager> mref_UIManager;
     Glib::RefPtr<Gtk::ActionGroup> mref_AppActionGroup;
     Glib::RefPtr<Gtk::ActionGroup> mref_ProjectActionGroup;
     Glib::ustring m_AppUiXml;
     Glib::ustring m_ProjectUiXml;
+
     void createAppUiXml();
+
     void createProjectUiXml();
+
     void createAppActionGroup();
+
     void createProjectActionGroup();
+
   public:
+
     BuilderAppActions();
+
     Gtk::Widget* getMenuBarWidget();
+
     Gtk::Widget* getToolBarWidget();
+
     Glib::RefPtr<Gtk::AccelGroup> getAccelGroup();
+
     void setProjectActionGroupSensitive(bool Sensitive);
+
     Glib::RefPtr<Gtk::Action> getFileNewAction();
+
     Glib::RefPtr<Gtk::Action> getFileNewFromAction();
+
     Glib::RefPtr<Gtk::Action> getFileOpenAction();
+
     Glib::RefPtr<Gtk::Action> getFileCloseAction();
+
     Glib::RefPtr<Gtk::Action> getFileQuitAction();
+
     Glib::RefPtr<Gtk::Action> getProjectCheckAction();
+
     Glib::RefPtr<Gtk::Action> getProjectRunAction();
+
+    Glib::RefPtr<Gtk::Action> getAppMarketAction();
+
 };
 
 #endif /* __BUILDERAPPACTIONS_HPP__ */

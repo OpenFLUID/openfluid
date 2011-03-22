@@ -59,6 +59,11 @@
 
 #include "BuilderGraphicsHelper.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppActions::createAppUiXml()
 {
   m_AppUiXml = "<ui>"
@@ -99,6 +104,11 @@ void BuilderAppActions::createAppUiXml()
     "  </toolbar>"
     "</ui>";
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppActions::createProjectUiXml()
 {
   m_ProjectUiXml = "<ui>"
@@ -128,6 +138,12 @@ void BuilderAppActions::createProjectUiXml()
     "  </toolbar>"
     "</ui>";
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppActions::createAppActionGroup()
 {
   mref_AppActionGroup = Gtk::ActionGroup::create();
@@ -161,7 +177,17 @@ void BuilderAppActions::createAppActionGroup()
   mref_AppActionGroup->add(Gtk::Action::create("HelpDemo", _("Demo")));
   mref_AppActionGroup->add(Gtk::Action::create("HelpDoc", _("Doc")));
   mref_AppActionGroup->add(Gtk::Action::create("HelpAbout", Gtk::Stock::ABOUT));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpMarket",
+      *BuilderGraphicsHelper::createBuilderIconStockId("openfluid_in_cart.png",
+          "openfluid_in_cart"), _("OpenFLUID Market..."),
+      _("Access to OpenFLUID Market")));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppActions::createProjectActionGroup()
 {
   mref_ProjectActionGroup = Gtk::ActionGroup::create();
@@ -184,6 +210,11 @@ void BuilderAppActions::createProjectActionGroup()
       Gtk::Stock::PROPERTIES));
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppActions::BuilderAppActions()
 {
   mref_UIManager = Gtk::UIManager::create();
@@ -202,48 +233,125 @@ BuilderAppActions::BuilderAppActions()
     std::cerr << "building menus failed: " << ex.what();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderAppActions::getMenuBarWidget()
 {
   return mref_UIManager->get_widget("/MenuBar");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderAppActions::getToolBarWidget()
 {
   return mref_UIManager->get_widget("/ToolBar");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::AccelGroup> BuilderAppActions::getAccelGroup()
 {
   return mref_UIManager->get_accel_group();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppActions::setProjectActionGroupSensitive(bool Sensitive)
 {
   mref_ProjectActionGroup->set_sensitive(Sensitive);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewAction()
 {
   return mref_AppActionGroup->get_action("FileNewEmpty");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewFromAction()
 {
   return mref_AppActionGroup->get_action("FileNewFrom");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileOpenAction()
 {
   return mref_AppActionGroup->get_action("FileOpen");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileCloseAction()
 {
   return mref_ProjectActionGroup->get_action("FileClose");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileQuitAction()
 {
   return mref_AppActionGroup->get_action("FileQuit");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getProjectCheckAction()
 {
   return mref_ProjectActionGroup->get_action("ProjectCheck");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getProjectRunAction()
 {
   return mref_ProjectActionGroup->get_action("ProjectRun");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppMarketAction()
+{
+  return mref_AppActionGroup->get_action("HelpMarket");
+}
+
 

@@ -61,11 +61,22 @@
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::unsetCurrentModule()
 {
   m_MainWindow.unsetCurrentModuleWidget();
   delete mp_CurrentModule;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::setCurrentModule(BuilderModule* Module)
 {
   unsetCurrentModule();
@@ -74,30 +85,81 @@ void BuilderAppCoordinator::setCurrentModule(BuilderModule* Module)
   m_MainWindow.setCurrentModuleWidget(
       *mp_CurrentModule->composeAndGetAsWidget());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenNewProjectAsked()
 {
   mp_CurrentState->whenNewProjectAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenOpenProjectAsked()
 {
   mp_CurrentState->whenOpenProjectAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenCloseProjectAsked()
 {
   mp_CurrentState->whenCloseProjectAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenQuitAsked()
 {
   mp_CurrentState->whenQuitAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenCheckAsked()
 {
   mp_CurrentState->whenCheckAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenRunAsked()
 {
   mp_CurrentState->whenRunAsked();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenMarketAsked()
+{
+  mp_CurrentState->whenMarketAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
     BuilderAppActions& Actions) :
@@ -122,12 +184,28 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getProjectRunAction()->signal_activate().connect(sigc::mem_fun(
       *this, &BuilderAppCoordinator::whenRunAsked));
 
+  m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
+        *this, &BuilderAppCoordinator::whenMarketAsked));
+
+
   setState(*mp_HomeState);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::setState(BuilderAppState& State)
 {
   mp_CurrentState = &State;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppState* BuilderAppCoordinator::getHomeState()
 {
   return mp_HomeState;
@@ -136,36 +214,80 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 {
   return mp_ProjectState;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::setHomeModule()
 {
   setCurrentModule(BuilderModuleFactory::createHomeModule(m_Actions));
   m_Actions.setProjectActionGroupSensitive(false);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::setProjectModule(std::string FolderIn)
 {
   setCurrentModule(new BuilderProjectModulePlainGtk(FolderIn));
   m_Actions.setProjectActionGroupSensitive(true);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderModule* BuilderAppCoordinator::getCurrentModule()
 {
   return mp_CurrentModule;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::quitApp()
 {
   unsetCurrentModule();
   m_MainWindow.hide();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool BuilderAppCoordinator::showCloseProjectDialog()
 {
   return BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to close this project ?"));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool BuilderAppCoordinator::showQuitAppDialog()
 {
   return BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to quit ?"));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string BuilderAppCoordinator::showOpenProjectDialog()
 {
   return BuilderAppDialogFactory::showOpenProjectDialog();
 }
+
+
