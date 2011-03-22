@@ -368,22 +368,22 @@ EngineProjectEmpty::EngineProjectEmpty()
   getRunDescriptor() = RunDesc;
 }
 
-
 EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
 {
-getRunEnv()->setInputDir(FolderIn);
-getRunEnv()->setOutputDir(Glib::ustring::compose("%1/OUT", FolderIn));
+  getRunEnv()->setInputDir(FolderIn);
+  //TODO: set OUT folder from Preferences
+//  getRunEnv()->setOutputDir(Glib::ustring::compose("%1/OUT", FolderIn));
 
-//      std::cout << "* Loading data... " << std::endl;
-openfluid::io::FluidXReader FXReader(mp_IOListener);
-FXReader.loadFromDirectory(FolderIn);
+  //      std::cout << "* Loading data... " << std::endl;
+  openfluid::io::FluidXReader FXReader(mp_IOListener);
+  FXReader.loadFromDirectory(FolderIn);
 
-//      std::cout << "* Building  Blob... " << std::endl;
-openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-    FXReader.getDomainDescriptor(), FXReader.getRunDescriptor(),
-    FXReader.getOutputDescriptor(), *mp_SimBlob);
+  //      std::cout << "* Building  Blob... " << std::endl;
+  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
+      FXReader.getDomainDescriptor(), FXReader.getRunDescriptor(),
+      FXReader.getOutputDescriptor(), *mp_SimBlob);
 
-//      std::cout << "* Building Model... " << std::endl;
-openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-    FXReader.getModelDescriptor(), *mp_ModelInstance);
+  //      std::cout << "* Building Model... " << std::endl;
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(
+      FXReader.getModelDescriptor(), *mp_ModelInstance);
 }
