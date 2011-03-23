@@ -58,6 +58,11 @@
 
 #include "BuilderListStore.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerAdapterModelImpl::createColumns(std::vector<std::string> VarNames)
 {
   delete mp_Columns;
@@ -70,14 +75,33 @@ void ResViewerAdapterModelImpl::createColumns(std::vector<std::string> VarNames)
     mp_Columns->addWithTitle(VarNames[i], *DataColumn);
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerAdapterModelImpl::setNoVarTitle()
 {
   m_Title = "no variables to display at this time";
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 ResViewerAdapterModelImpl::ResViewerAdapterModelImpl()
+: mp_Columns(NULL)
 {
   clear();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
     std::string> VarNames, openfluid::base::SimulationStatus* SimStatus,
     unsigned int Precision)
@@ -139,18 +163,42 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
   } while (SimStatus->switchToNextStep());
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 ResViewerColumns* ResViewerAdapterModelImpl::getColumns()
 {
   return mp_Columns;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> ResViewerAdapterModelImpl::getTreeModel()
 {
   return m_refListStore;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string ResViewerAdapterModelImpl::getTitle()
 {
   return m_Title;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerAdapterModelImpl::clear()
 {
   delete mp_Columns;
@@ -158,3 +206,4 @@ void ResViewerAdapterModelImpl::clear()
   m_refListStore = BuilderListStore::create(*mp_Columns);
   setNoVarTitle();
 }
+
