@@ -247,9 +247,10 @@ void MarketPackWidget::updateDisplayedInfos()
     if (TmpRow)
     {
       SelType = TmpRow[m_FormatColumns.m_SelType];
-      MarkupTooltip += "\n<u>License :</u> " + replaceByUnknownIfEmpty(m_MetaPackInfo.AvailablePackages.at(SelType).License);
+      std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
 
-      m_LicenseLabel.set_markup("<u>License:</u> "+replaceByUnknownIfEmpty(m_MetaPackInfo.AvailablePackages.at(SelType).License));
+      MarkupTooltip += "\n<u>License :</u> " + replaceByUnknownIfEmpty(LicenseStr);
+      m_LicenseLabel.set_markup("<u>License:</u> "+replaceByUnknownIfEmpty(LicenseStr));
     }
   }
 
