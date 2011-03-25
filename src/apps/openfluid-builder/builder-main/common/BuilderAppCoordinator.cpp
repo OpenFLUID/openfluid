@@ -131,16 +131,6 @@ void BuilderAppCoordinator::whenQuitAsked()
 // =====================================================================
 
 
-void BuilderAppCoordinator::whenCheckAsked()
-{
-  mp_CurrentState->whenCheckAsked();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void BuilderAppCoordinator::whenRunAsked()
 {
   mp_CurrentState->whenRunAsked();
@@ -179,9 +169,7 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getFileQuitAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenQuitAsked));
 
-  m_Actions.getProjectCheckAction()->signal_activate().connect(sigc::mem_fun(
-      *this, &BuilderAppCoordinator::whenCheckAsked));
-  m_Actions.getProjectRunAction()->signal_activate().connect(sigc::mem_fun(
+  m_Actions.getSimulationRunAction()->signal_activate().connect(sigc::mem_fun(
       *this, &BuilderAppCoordinator::whenRunAsked));
 
   m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
@@ -223,7 +211,7 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 void BuilderAppCoordinator::setHomeModule()
 {
   setCurrentModule(BuilderModuleFactory::createHomeModule(m_Actions));
-  m_Actions.setProjectActionGroupSensitive(false);
+  m_Actions.setProjectActionGroupVisible(false);
 }
 
 
@@ -234,7 +222,7 @@ void BuilderAppCoordinator::setHomeModule()
 void BuilderAppCoordinator::setProjectModule(std::string FolderIn)
 {
   setCurrentModule(new BuilderProjectModulePlainGtk(FolderIn));
-  m_Actions.setProjectActionGroupSensitive(true);
+  m_Actions.setProjectActionGroupVisible(true);
 }
 
 

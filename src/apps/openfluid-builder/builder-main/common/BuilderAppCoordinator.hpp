@@ -76,8 +76,6 @@ class BuilderAppCoordinator
 
     void whenQuitAsked();
 
-    void whenCheckAsked();
-
     void whenRunAsked();
 
     void whenMarketAsked();

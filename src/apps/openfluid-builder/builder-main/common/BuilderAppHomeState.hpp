@@ -77,8 +77,6 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenQuitAsked();
 
-    void whenCheckAsked();
-
     void whenRunAsked();
 
     void whenMarketAsked();

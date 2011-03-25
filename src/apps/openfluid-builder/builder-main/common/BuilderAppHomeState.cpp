@@ -119,16 +119,6 @@ void BuilderAppHomeState::whenQuitAsked()
 // =====================================================================
 
 
-void BuilderAppHomeState::whenCheckAsked()
-{
-  //nothing to do, should not happen
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void BuilderAppHomeState::whenRunAsked()
 {
   //nothing to do, should not happen

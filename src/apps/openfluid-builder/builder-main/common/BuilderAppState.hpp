@@ -67,8 +67,6 @@ class BuilderAppState
 
     virtual void whenQuitAsked() = 0;
 
-    virtual void whenCheckAsked() = 0;
-
     virtual void whenRunAsked() = 0;
 
     virtual void whenMarketAsked() = 0;

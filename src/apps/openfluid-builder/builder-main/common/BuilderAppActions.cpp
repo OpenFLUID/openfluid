@@ -69,38 +69,40 @@ void BuilderAppActions::createAppUiXml()
   m_AppUiXml = "<ui>"
     "  <menubar name='MenuBar'>"
     "    <menu action='FileMenu'>"
-    "      <menu action='FileNew'>"
-    "        <menuitem action='FileNewEmpty'/>"
-    "        <menuitem action='FileNewFrom'/>"
-    "      </menu>"
+    "      <menuitem action='FileNewEmpty'/>"
+    "      <menuitem action='FileNewFrom'/>"
     "      <menuitem action='FileOpen'/>"
     "      <separator/>"
-    "<placeholder name='ProjectFilePlaceholder' />"
+    "      <placeholder name='ProjectFilePlaceholder' />"
     "      <menuitem action='FileQuit'/>"
     "    </menu>"
     "    <menu action='EditMenu'>"
-    "      <menuitem action='EditPreferences'/>"
-    "      <menuitem action='EditExtensions'/>"
-    "    </menu>"
-    "<placeholder name='ProjectPlaceholder' />"
-    "<placeholder name='ModulesPlaceholder' />"
-    "    <menu action='ViewMenu'>"
-    "    </menu>"
-    "    <menu action='HelpMenu'>"
-    "      <menuitem action='HelpDemo'/>"
-    "      <menuitem action='HelpDoc'/>"
+    "      <menuitem action='EditCut'/>"
+    "      <menuitem action='EditCopy'/>"
+    "      <menuitem action='EditPaste'/>"
     "      <separator/>"
+    "      <menuitem action='EditPreferences'/>"
+    "    </menu>"
+    "    <placeholder name='ProjectDataPlaceholder' />"
+    "    <placeholder name='ProjectSimulationPlaceholder' />"
+    "    <placeholder name='ProjectExtensionsPlaceholder' />"
+    "    <menu action='HelpMenu'>"
     "      <menuitem action='HelpAbout'/>"
     "    </menu>"
     "  </menubar>"
+
+
     "  <toolbar  name='ToolBar'>"
     "    <toolitem action='FileNewEmpty'/>"
     "    <toolitem action='FileNewFrom'/>"
     "    <toolitem action='FileOpen'/>"
-    "    <toolitem action='FileSave'/>"
-    "      <separator/>"
-    "<placeholder name='ProjectPlaceholder' />"
-    "      <separator/>"
+    "    <placeholder name='ProjectFilePlaceholder' />"
+    "    <separator/>"
+    "    <toolitem action='EditCut'/>"
+    "    <toolitem action='EditCopy'/>"
+    "    <toolitem action='EditPaste'/>"
+    "    <placeholder name='SimulationPlaceholder' />"
+//    "      <separator/>"
     "  </toolbar>"
     "</ui>";
 }
@@ -114,27 +116,41 @@ void BuilderAppActions::createProjectUiXml()
   m_ProjectUiXml = "<ui>"
     "  <menubar name='MenuBar'>"
     "  <menu action='FileMenu'>"
-    "<placeholder name='ProjectFilePlaceholder'>"
+    "    <placeholder name='ProjectFilePlaceholder'>"
     "      <menuitem action='FileSave'/>"
     "      <menuitem action='FileSaveAs'/>"
     "      <separator/>"
     "      <menuitem action='FileClose'/>"
-    "</placeholder>"
-    "</menu>"
-    "<placeholder name='ProjectPlaceholder'>"
-    "    <menu action='ProjectMenu'>"
-    "      <menuitem action='ProjectCheck'/>"
-    "      <menuitem action='ProjectRun'/>"
-    "      <separator/>"
-    "      <menuitem action='ProjectProperties'/>"
+    "    </placeholder>"
+    "  </menu>"
+    "  <placeholder name='ProjectDataPlaceholder'>"
+    "    <menu action='DataMenu'>"
+    "      <menu action='DataDomainMenu'/>"
+    "      <menu action='DataInputdataMenu'/>"
+    "      <menu action='DataEventsMenu'/>"
+    "      <menu action='DataExtraMenu'/>"
     "    </menu>"
-    "</placeholder>"
+    "  </placeholder>"
+    "  <placeholder name='ProjectSimulationPlaceholder'>"
+    "    <menu action='SimulationMenu'>"
+    "      <menuitem action='SimulationConfig'/>"
+    "      <menuitem action='SimulationOutputs'/>"
+    "      <separator/>"
+    "      <menuitem action='SimulationRun'/>"
+    "    </menu>"
+    "  </placeholder>"
     "  </menubar>"
+
+
     "  <toolbar  name='ToolBar'>"
-    "<placeholder name='ProjectPlaceholder'>"
-    "    <toolitem action='ProjectCheck'/>"
-    "    <toolitem action='ProjectRun'/>"
-    "</placeholder>"
+    "  <placeholder name='ProjectFilePlaceholder'>"
+    "    <toolitem action='FileSave'/>"
+    "    <toolitem action='FileClose'/>"
+    "  </placeholder>"
+    "  <placeholder name='SimulationPlaceholder'>"
+    "    <separator/>"
+    "    <toolitem action='SimulationRun'/>"
+    "  </placeholder>"
     "  </toolbar>"
     "</ui>";
 }
@@ -148,29 +164,24 @@ void BuilderAppActions::createAppActionGroup()
 {
   mref_AppActionGroup = Gtk::ActionGroup::create();
 
-  //File|New sub-menu
+  //File menu
+  mref_AppActionGroup->add(Gtk::Action::create("FileMenu", _("Project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileNewEmpty", Gtk::Stock::NEW,
-      _("Empty"), _("Create new empty project")));
+      _("New"), _("Create new empty project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileNewFrom",
       *BuilderGraphicsHelper::createBuilderIconStockId("document-new-derived.png",
-          "builder-new-derived"), _("From..."),
+          "builder-new-derived"), _("New from..."),
       _("Create new project from an existing one")));
-  //File menu
-  mref_AppActionGroup->add(Gtk::Action::create("FileMenu", _("File")));
-  mref_AppActionGroup->add(Gtk::Action::create("FileNew", Gtk::Stock::NEW));
   mref_AppActionGroup->add(Gtk::Action::create("FileOpen", Gtk::Stock::OPEN,
       _("Open..."), _("Open an existing project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileQuit", Gtk::Stock::QUIT));
 
   //Edit menu
   mref_AppActionGroup->add(Gtk::Action::create("EditMenu", _("Edit")));
-  mref_AppActionGroup->add(Gtk::Action::create("EditPreferences",
-      Gtk::Stock::PREFERENCES));
-  mref_AppActionGroup->add(Gtk::Action::create("EditExtensions",
-      _("Extensions")));
-
-  //View menu
-  mref_AppActionGroup->add(Gtk::Action::create("ViewMenu", _("View")));
+  mref_AppActionGroup->add(Gtk::Action::create("EditCut", Gtk::Stock::CUT));
+  mref_AppActionGroup->add(Gtk::Action::create("EditCopy", Gtk::Stock::COPY));
+  mref_AppActionGroup->add(Gtk::Action::create("EditPaste", Gtk::Stock::PASTE));
+  mref_AppActionGroup->add(Gtk::Action::create("EditPreferences", Gtk::Stock::PREFERENCES));
 
   //Help menu
   mref_AppActionGroup->add(Gtk::Action::create("HelpMenu", Gtk::Stock::HELP));
@@ -200,14 +211,19 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(Gtk::Action::create("FileClose",
       Gtk::Stock::CLOSE));
 
-  //Project menu
-  mref_ProjectActionGroup->add(Gtk::Action::create("ProjectMenu", _("Project")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("ProjectCheck",
-      Gtk::Stock::OK, _("Check"), _("Check Project")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("ProjectRun",
-      Gtk::Stock::EXECUTE, _("Run"), _("Run Simulation")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("ProjectProperties",
-      Gtk::Stock::PROPERTIES));
+  //Data menu
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataMenu", _("Data")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataDomainMenu", _("Import spatial domain from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataInputdataMenu", _("Import inputdata from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataEventsMenu", _("Import events from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu", _("Import extra file from")));
+
+  //Simulation menu
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu", _("Simulation")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationConfig", _("Configuration")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationOutputs", _("Outputs")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun", Gtk::Stock::MEDIA_PLAY, _("Run...")));
+
 }
 
 
@@ -279,6 +295,16 @@ void BuilderAppActions::setProjectActionGroupSensitive(bool Sensitive)
 // =====================================================================
 
 
+void BuilderAppActions::setProjectActionGroupVisible(bool Visible)
+{
+  mref_ProjectActionGroup->set_visible(Visible);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewAction()
 {
   return mref_AppActionGroup->get_action("FileNewEmpty");
@@ -329,19 +355,9 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileQuitAction()
 // =====================================================================
 
 
-Glib::RefPtr<Gtk::Action> BuilderAppActions::getProjectCheckAction()
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getSimulationRunAction()
 {
-  return mref_ProjectActionGroup->get_action("ProjectCheck");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-Glib::RefPtr<Gtk::Action> BuilderAppActions::getProjectRunAction()
-{
-  return mref_ProjectActionGroup->get_action("ProjectRun");
+  return mref_ProjectActionGroup->get_action("SimulationRun");
 }
 
 

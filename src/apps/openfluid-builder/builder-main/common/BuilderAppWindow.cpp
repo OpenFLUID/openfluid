@@ -58,6 +58,11 @@
 
 #include "BuilderGraphicsHelper.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppWindow::BuilderAppWindow()
 {
   set_title("OpenFLUID Builder");
@@ -77,25 +82,60 @@ BuilderAppWindow::BuilderAppWindow()
 
   mp_CurrentModuleWidget = 0;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppWindow::setCurrentModuleWidget(Gtk::Widget& ModuleWidget)
 {
   mp_CurrentModuleWidget = &ModuleWidget;
   mp_ModuleContainer->pack_start(*mp_CurrentModuleWidget);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppWindow::unsetCurrentModuleWidget()
 {
   if (mp_CurrentModuleWidget)
     mp_ModuleContainer->remove(*mp_CurrentModuleWidget);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppWindow::setMenuBarWidget(Gtk::Widget& MenuBarWidget)
 {
   mp_MainContainer->pack_start(MenuBarWidget, Gtk::PACK_SHRINK, 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppWindow::setToolBarWidget(Gtk::Widget& ToolBarWidget)
 {
+  ((Gtk::Toolbar&)ToolBarWidget).set_icon_size(Gtk::IconSize(5));
+  ((Gtk::Toolbar&)ToolBarWidget).set_toolbar_style(Gtk::TOOLBAR_BOTH);
   mp_MainContainer->pack_start(ToolBarWidget, Gtk::PACK_SHRINK, 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+
 void BuilderAppWindow::addAccelGroup(Glib::RefPtr<Gtk::AccelGroup> AccelGroup)
 {
   add_accel_group(AccelGroup);
 }
+
+

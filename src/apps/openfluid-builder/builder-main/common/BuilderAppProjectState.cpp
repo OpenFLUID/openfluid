@@ -57,17 +57,34 @@
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderProjectModule.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppProjectState::BuilderAppProjectState(
     BuilderAppCoordinator& AppCoordinator) :
   m_App(AppCoordinator)
 {
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppProjectState::whenNewProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
     m_App.setProjectModule();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppProjectState::whenOpenProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
@@ -76,6 +93,12 @@ void BuilderAppProjectState::whenOpenProjectAsked()
     m_App.setState(*m_App.getProjectState());
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppProjectState::whenCloseProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
@@ -84,6 +107,12 @@ void BuilderAppProjectState::whenCloseProjectAsked()
     m_App.setState(*m_App.getHomeState());
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppProjectState::whenQuitAsked()
 {
   if (m_App.showCloseProjectDialog())
@@ -98,12 +127,14 @@ void BuilderAppProjectState::whenQuitAsked()
   }
 }
 
-void BuilderAppProjectState::whenCheckAsked()
-{
-  ((BuilderProjectModule*)m_App.getCurrentModule())->checkAsked();
-}
+
+// =====================================================================
+// =====================================================================
+
 
 void BuilderAppProjectState::whenRunAsked()
 {
   ((BuilderProjectModule*)m_App.getCurrentModule())->runAsked();
 }
+
+

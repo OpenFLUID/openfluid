@@ -87,6 +87,8 @@ class BuilderAppActions
 
     void setProjectActionGroupSensitive(bool Sensitive);
 
+    void setProjectActionGroupVisible(bool Visible);
+
     Glib::RefPtr<Gtk::Action> getFileNewAction();
 
     Glib::RefPtr<Gtk::Action> getFileNewFromAction();
@@ -97,9 +99,7 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getFileQuitAction();
 
-    Glib::RefPtr<Gtk::Action> getProjectCheckAction();
-
-    Glib::RefPtr<Gtk::Action> getProjectRunAction();
+    Glib::RefPtr<Gtk::Action> getSimulationRunAction();
 
     Glib::RefPtr<Gtk::Action> getAppMarketAction();
 
