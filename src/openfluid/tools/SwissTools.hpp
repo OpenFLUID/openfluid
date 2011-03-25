@@ -64,6 +64,11 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 
+
+#define STRINGIFY(x) XSTRINGIFY(x)
+#define XSTRINGIFY(x) #x
+
+
 namespace openfluid { namespace tools {
 
 /**

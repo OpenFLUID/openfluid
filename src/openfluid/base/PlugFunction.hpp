@@ -87,22 +87,6 @@
 
 
 
-// compilation directives for shared libs linkage
-#ifdef WIN32
-  #ifdef BUILDPLUGDLL
-    #define DLLIMPORT __declspec(dllexport)
-  #else
-    #define DLLIMPORT __declspec(dllimport)
-  #endif
-  #define CALL __stdcall
-#else
-  #define DLLIMPORT
-  #define CALL
-#endif
-
-
-#define STRINGIFY(x) XSTRINGIFY(x)
-#define XSTRINGIFY(x) #x
 
 // =====================================================================
 // =====================================================================
@@ -130,9 +114,9 @@
 #define DECLARE_PLUGIN_HOOKS \
   extern "C" \
   { \
-    DLLIMPORT std::string GetPlugSDKVersion(); \
-    DLLIMPORT openfluid::base::PluggableFunction* GetPlugFunction(); \
-    DLLIMPORT openfluid::base::FunctionSignature* GetPlugSignature(); \
+    DLLEXPORT std::string GetPlugSDKVersion(); \
+    DLLEXPORT openfluid::base::PluggableFunction* GetPlugFunction(); \
+    DLLEXPORT openfluid::base::FunctionSignature* GetPlugSignature(); \
   }
 
 
