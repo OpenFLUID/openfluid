@@ -212,6 +212,7 @@ void BuilderAppCoordinator::setHomeModule()
 {
   setCurrentModule(BuilderModuleFactory::createHomeModule(m_Actions));
   m_Actions.setProjectActionGroupVisible(false);
+  m_MainWindow.setToolBarVisible(false);
 }
 
 
@@ -221,8 +222,9 @@ void BuilderAppCoordinator::setHomeModule()
 
 void BuilderAppCoordinator::setProjectModule(std::string FolderIn)
 {
-  setCurrentModule(new BuilderProjectModulePlainGtk(FolderIn));
+	setCurrentModule(new BuilderProjectModulePlainGtk(FolderIn));
   m_Actions.setProjectActionGroupVisible(true);
+  m_MainWindow.setToolBarVisible(true);
 }
 
 

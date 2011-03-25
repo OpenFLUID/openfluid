@@ -81,6 +81,8 @@ BuilderAppWindow::BuilderAppWindow()
   add(*mp_MainContainer);
 
   mp_CurrentModuleWidget = 0;
+
+  mp_ToolBar = Gtk::manage(new Gtk::Toolbar());
 }
 
 
@@ -122,9 +124,21 @@ void BuilderAppWindow::setMenuBarWidget(Gtk::Widget& MenuBarWidget)
 
 void BuilderAppWindow::setToolBarWidget(Gtk::Widget& ToolBarWidget)
 {
-  ((Gtk::Toolbar&)ToolBarWidget).set_icon_size(Gtk::IconSize(5));
-  ((Gtk::Toolbar&)ToolBarWidget).set_toolbar_style(Gtk::TOOLBAR_BOTH);
-  mp_MainContainer->pack_start(ToolBarWidget, Gtk::PACK_SHRINK, 0);
+  mp_ToolBar = (Gtk::Toolbar*)&ToolBarWidget;
+  mp_ToolBar->set_icon_size(Gtk::IconSize(5));
+  mp_ToolBar->set_toolbar_style(Gtk::TOOLBAR_BOTH);
+  mp_ToolBar->set_visible(false);
+  mp_MainContainer->pack_start(*mp_ToolBar, Gtk::PACK_SHRINK, 0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppWindow::setToolBarVisible(bool Visible)
+{
+  mp_ToolBar->set_visible(Visible);
 }
 
 

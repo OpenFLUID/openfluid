@@ -63,12 +63,14 @@ class BuilderAppWindow: public Gtk::Window
     Gtk::Box* mp_MainContainer;
     Gtk::Box* mp_ModuleContainer;
     Gtk::Widget* mp_CurrentModuleWidget;
+    Gtk::Toolbar* mp_ToolBar;
   public:
     BuilderAppWindow();
     void setCurrentModuleWidget(Gtk::Widget& ModuleWidget);
     void unsetCurrentModuleWidget();
     void setMenuBarWidget(Gtk::Widget& MenuBarWidget);
     void setToolBarWidget(Gtk::Widget& ToolBarWidget);
+    void setToolBarVisible(bool Visible);
     void addAccelGroup(Glib::RefPtr<Gtk::AccelGroup> AccelGroup);
 };
 
