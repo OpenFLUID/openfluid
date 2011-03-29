@@ -46,6 +46,8 @@
 */
 
 
+#include <boost/foreach.hpp>
+
 #include <openfluid/core/CoreRepository.hpp>
 
 
@@ -350,6 +352,62 @@ void CoreRepository::streamContents(std::ostream& OStream)
 
   }
   OStream << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CoreRepository::clearAllVariables()
+{
+  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  {
+    CurrentUnit->getScalarVariables()->clear();
+    CurrentUnit->getVectorVariables()->clear();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CoreRepository::clearAllInputdata()
+{
+  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  {
+    CurrentUnit->getInputData()->clear();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CoreRepository::clearAllEvents()
+{
+  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  {
+    CurrentUnit->getEvents()->clear();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CoreRepository::clearAllData()
+{
+  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  {
+    CurrentUnit->getScalarVariables()->clear();
+    CurrentUnit->getVectorVariables()->clear();
+    CurrentUnit->getInputData()->clear();
+    CurrentUnit->getEvents()->clear();
+  }
 }
 
 

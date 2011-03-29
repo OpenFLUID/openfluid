@@ -84,6 +84,8 @@ class DLLEXPORT InputData
 
     void removeData(const InputDataName_t aName);
 
+    void clear();
+
 };
 
 // =====================================================================
@@ -228,8 +230,19 @@ void InputData<T>::removeData(const InputDataName_t aName)
     m_Data.erase(it);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+void InputData<T>::clear()
+{
+    m_Data.clear();
 }
-} // namespaces
+
+
+} } // namespaces
 
 
 #endif /* __INPUTDATA_H__ */

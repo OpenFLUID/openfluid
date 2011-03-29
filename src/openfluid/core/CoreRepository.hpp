@@ -103,6 +103,14 @@ class DLLEXPORT CoreRepository
 
     void streamContents(std::ostream& OStream);
 
+    void clearAllVariables();
+
+    void clearAllInputdata();
+
+    void clearAllEvents();
+
+    void clearAllData();
+
 };
 
 
