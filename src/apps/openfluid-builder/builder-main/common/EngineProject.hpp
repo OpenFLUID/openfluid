@@ -82,7 +82,6 @@ class EngineProject
 
     BuilderRunDialog* mp_RunDialog;
     EngineProject();
-    void clearVariables();
     boost::posix_time::ptime getNow();
     std::string generateSimulationIdStr();
     std::string generateDomainInformationStr();
@@ -108,15 +107,28 @@ class EngineProject
     void run();
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
 class EngineProjectEmpty: public EngineProject
 {
   public:
     EngineProjectEmpty();
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
 class EngineProjectFromFolder: public EngineProject
 {
   public:
     EngineProjectFromFolder(std::string FolderIn);
 };
+
+
 #endif /* __ENGINEPROJECT_HPP__ */
+

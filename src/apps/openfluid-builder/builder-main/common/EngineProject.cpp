@@ -63,6 +63,11 @@
 #include "BuilderAppDialogFactory.hpp"
 #include "BuilderRunDialog.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 EngineProject::EngineProject()
 {
   //      openfluid::base::Init();
@@ -82,22 +87,33 @@ EngineProject::EngineProject()
       mp_Listener, mp_IOListener);
   mp_ModelInstance->resetInitialized();
 }
-void EngineProject::clearVariables()
-{
-  BOOST_FOREACH(openfluid::core::Unit* Unit,*getCoreRepository().getUnitsGlobally())
-{  Unit->getScalarVariables()->clear();
-  Unit->getVectorVariables()->clear();
-}
-}
+
+
+// =====================================================================
+// =====================================================================
+
+
 boost::posix_time::ptime EngineProject::getNow()
 {
   return boost::posix_time::microsec_clock::local_time();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateSimulationIdStr()
 {
   return Glib::ustring::compose(_("\nSimulation ID: %1\n\n"),
       getRunEnv()->getSimulationID());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateDomainInformationStr()
 {
   Glib::ustring Str = "";
@@ -115,11 +131,23 @@ std::string EngineProject::generateDomainInformationStr()
   return Glib::ustring::compose(_("Spatial domain, %1 units :\n%2\n"),
       UnitsCount, Str);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateWarningsCountStr()
 {
   return Glib::ustring::compose(_("\n%1 warning(s)\n\n"),
       getExecutionMessages().getWarningsCount());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateSimulationInformationStr()
 {
   openfluid::base::SimulationInfo* SimInfo = mp_Engine->getSimulationInfo();
@@ -130,6 +158,13 @@ std::string EngineProject::generateSimulationInformationStr()
       SimInfo->getEndTime().getAsISOString(), SimInfo->getStepsCount(),
       SimInfo->getTimeStep());
 }
+
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateBuffersInformationStr()
 {
   Glib::ustring Str = "";
@@ -147,6 +182,12 @@ std::string EngineProject::generateBuffersInformationStr()
 
   return Str;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateRunTimeInformationStr()
 {
   boost::posix_time::time_duration FullSimDuration = m_FullEndTime
@@ -158,15 +199,32 @@ std::string EngineProject::generateRunTimeInformationStr()
           getRunEnv()->getEffectiveSimulationDuration()),
       boost::posix_time::to_simple_string(FullSimDuration));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateSavingReportStr()
 {
   return Glib::ustring::compose(_("%1Saving simulation report%2\n"), "* ",
       "... ");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string EngineProject::generateDoneStr()
 {
   return Glib::ustring::compose(_("%1Done%2\n"), "[", "]");
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 EngineProject::~EngineProject()
 {
@@ -181,42 +239,102 @@ EngineProject::~EngineProject()
   delete mp_Engine;
   delete mp_RunDialog;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::SimulationBlob* EngineProject::getSimBlob()
 {
   return mp_SimBlob;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::RuntimeEnvironment* EngineProject::getRunEnv()
 {
   return mp_RunEnv;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::io::IOListener* EngineProject::getIOListener()
 {
   return mp_IOListener;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::MachineListener* EngineProject::getMachineListener()
 {
   return mp_Listener;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::ModelInstance* EngineProject::getModelInstance()
 {
   return mp_ModelInstance;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::CoreRepository& EngineProject::getCoreRepository()
 {
   return mp_SimBlob->getCoreRepository();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::ExecutionMessages& EngineProject::getExecutionMessages()
 {
   return mp_SimBlob->getExecutionMessages();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::RunDescriptor& EngineProject::getRunDescriptor()
 {
   return mp_SimBlob->getRunDescriptor();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
 {
   return mp_SimBlob->getOutputDescriptor();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void EngineProject::stopEngine()
 {
   std::cout << generateWarningsCountStr() << std::endl;
@@ -237,6 +355,12 @@ void EngineProject::stopEngine()
     getExecutionMessages().resetWarningFlag();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool EngineProject::check()
 {
   bool IsOk = true;
@@ -292,7 +416,7 @@ bool EngineProject::check()
 
     mp_Engine->prepareData();
 
-    clearVariables();
+    getCoreRepository().clearAllVariables();
     mp_Engine->checkConsistency();
   } catch (openfluid::base::OFException& E)
   {
@@ -305,6 +429,12 @@ bool EngineProject::check()
   mp_ModelInstance->resetInitialized();
   return IsOk;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void EngineProject::run()
 {
   if (check())
@@ -359,6 +489,11 @@ void EngineProject::run()
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 EngineProjectEmpty::EngineProjectEmpty()
 {
   openfluid::base::RunDescriptor RunDesc(120, openfluid::core::DateTime(2000,
@@ -367,6 +502,11 @@ EngineProjectEmpty::EngineProjectEmpty()
 
   getRunDescriptor() = RunDesc;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
 {
@@ -387,3 +527,4 @@ EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(
       FXReader.getModelDescriptor(), *mp_ModelInstance);
 }
+
