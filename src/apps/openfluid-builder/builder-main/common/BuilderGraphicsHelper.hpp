@@ -71,12 +71,17 @@ class BuilderGraphicsHelper
     static Gdk::Color& applyColorAlpha(Gdk::Color& Color, double Alpha);
 
     static Glib::ustring getPathForFileName(Glib::ustring FileName);
+
     static Gtk::Image* createImageFromFileName(Glib::ustring FileName);
 
     static Gtk::StockID* createBuilderIconStockId(Glib::ustring IconFileName,
         Glib::ustring StockIdString);
+
     static Glib::RefPtr<Gdk::Pixbuf> createSmallPixbufFromFile(
         Glib::ustring FileName);
+
+    static Glib::RefPtr<Gdk::Pixbuf> createPixbufFromFile(Glib::ustring FileName);
+
 };
 
 #endif /* __BUILDERGRAPHICSHELPER_HPP__ */

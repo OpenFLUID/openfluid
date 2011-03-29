@@ -3,10 +3,6 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
-
-# ! let this before CONFIGURE_FILE(builderconfig.hpp.in)
-SET(BUILDER_NLS_PACKAGE openfluid-builder)
-SET(BUILDER_NLS_LOCALEDIR ${CMAKE_INSTALL_PREFIX}/share/locale)
     
 ADD_SUBDIRECTORY(po)
 
@@ -57,7 +53,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-io
                       openfluid-tools
                       openfluid-market
-                      openfluid-builder-ext
+#                      openfluid-builder-ext
                       openfluid-builder-gdl)
 
 
@@ -68,7 +64,11 @@ SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
 
-FILE(GLOB Builder_RESOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/[^.]*)
-INSTALL(FILES ${Builder_RESOURCE_FILES}
-        DESTINATION ${BUILDER_RESOURCE_PATH})
+#FILE(GLOB Builder_RESOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/[^.]*)
+#INSTALL(FILES ${Builder_RESOURCE_FILES}
+#        DESTINATION ${BUILDER_RESOURCE_PATH})
 
+INSTALL(TARGETS openfluid-builder-main
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})

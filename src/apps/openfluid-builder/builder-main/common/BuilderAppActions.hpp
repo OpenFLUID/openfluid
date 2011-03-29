@@ -103,6 +103,8 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getAppMarketAction();
 
+    Glib::RefPtr<Gtk::Action> getAppAboutAction();
+
 };
 
 #endif /* __BUILDERAPPACTIONS_HPP__ */

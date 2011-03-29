@@ -70,6 +70,9 @@ class BuilderAppState
     virtual void whenRunAsked() = 0;
 
     virtual void whenMarketAsked() = 0;
+
+    void whenAboutAsked();
+
 };
 
 #endif /* __BUILDERAPPSTATE_HPP__ */

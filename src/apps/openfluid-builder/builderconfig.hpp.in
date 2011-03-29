@@ -46,22 +46,26 @@
 */
 
 /**
- \file config.hpp
+ \file builderconfig.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 
+#include <string>
+
 #ifndef __BUILDERCONFIG_HPP__
 #define __BUILDERCONFIG_HPP__
 
 
-#define BUILDER_RESOURCE_PATH "@BUILDER_RESOURCE_PATH@"
-
 #define BUILDER_NLS_ENABLE @BUILDER_NLS_ENABLE@
 #define BUILDER_NLS_PACKAGE "@BUILDER_NLS_PACKAGE@"
 #define BUILDER_NLS_LOCALEDIR "@BUILDER_NLS_LOCALEDIR@"
+
+const std::string BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
+const std::string BUILDER_URL = "@BUILDER_URL_TEXT@";
+const std::string BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
 
 
 #endif /* __BUILDERCONFIG_HPP__ */

@@ -86,6 +86,7 @@ Gtk::StockID* BuilderGraphicsHelper::createIconStockId(Glib::ustring FilePath,
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -104,6 +105,11 @@ Gdk::Color& BuilderGraphicsHelper::applyColorAlpha(Gdk::Color& Color, double Alp
   return Color;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::ustring BuilderGraphicsHelper::getPathForFileName(Glib::ustring FileName)
 {
   std::string
@@ -119,10 +125,20 @@ Glib::ustring BuilderGraphicsHelper::getPathForFileName(Glib::ustring FileName)
   return Path;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Image* BuilderGraphicsHelper::createImageFromFileName(Glib::ustring FileName)
 {
   return new Gtk::Image(getPathForFileName(FileName));
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 Gtk::StockID* BuilderGraphicsHelper::createBuilderIconStockId(
     Glib::ustring IconFileName, Glib::ustring StockIdString)
@@ -145,9 +161,28 @@ Gtk::StockID* BuilderGraphicsHelper::createBuilderIconStockId(
 
   return StockId;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gdk::Pixbuf> BuilderGraphicsHelper::createSmallPixbufFromFile(
     Glib::ustring FileName)
 {
   return Gdk::Pixbuf::create_from_file(getPathForFileName(FileName), 8, -1,
       true);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gdk::Pixbuf> BuilderGraphicsHelper::createPixbufFromFile(
+    Glib::ustring FileName)
+{
+  return Gdk::Pixbuf::create_from_file(getPathForFileName(FileName));
+
+}
+

@@ -151,6 +151,15 @@ void BuilderAppCoordinator::whenMarketAsked()
 // =====================================================================
 
 
+void BuilderAppCoordinator::whenAboutAsked()
+{
+  mp_CurrentState->whenAboutAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
     BuilderAppActions& Actions) :
   m_MainWindow(MainWindow), m_Actions(Actions)
@@ -174,6 +183,10 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
         *this, &BuilderAppCoordinator::whenMarketAsked));
+
+  m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(
+        *this, &BuilderAppCoordinator::whenAboutAsked));
+
 
 
   setState(*mp_HomeState);
