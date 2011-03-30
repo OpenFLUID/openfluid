@@ -79,6 +79,25 @@ namespace openfluid { namespace machine {
 */
 class DLLEXPORT Engine
 {
+  public:
+
+    struct PretestInfos_t
+    {
+      bool Model;
+      std::string ModelMsg;
+
+      bool Inputdata;
+      std::string InputdataMsg;
+
+      bool ExtraFiles;
+      std::string ExtraFilesMsg;
+
+      PretestInfos_t() : Model(true), ModelMsg(""),
+          Inputdata(true), InputdataMsg(""),
+          ExtraFiles(true), ExtraFilesMsg("")
+        { };
+    };
+
   private:
 
      SimulationBlob& m_SimulationBlob;
@@ -146,6 +165,9 @@ class DLLEXPORT Engine
       Destructor
     */
     ~Engine();
+
+
+    void pretestConsistency(PretestInfos_t& PretestInfos);
 
 
     void initParams();

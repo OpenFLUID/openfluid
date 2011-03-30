@@ -471,6 +471,63 @@ void Engine::saveSimulationInfos()
 // =====================================================================
 
 
+void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
+{
+  if (PretestInfos.ExtraFiles)
+  {
+    PretestInfos.ExtraFilesMsg.clear();
+
+    try
+    {
+      checkExtraFilesConsistency();
+    }
+    catch (openfluid::base::OFException& E)
+    {
+      PretestInfos.ExtraFiles = false;
+      PretestInfos.ExtraFilesMsg.assign(E.what());
+    }
+  }
+
+
+  if (PretestInfos.Inputdata)
+  {
+    PretestInfos.InputdataMsg.clear();
+
+    try
+    {
+      checkInputDataConsistency();
+    }
+    catch (openfluid::base::OFException& E)
+    {
+      PretestInfos.Inputdata = false;
+      PretestInfos.InputdataMsg.assign(E.what());
+    }
+  }
+
+
+  if (PretestInfos.Model)
+  {
+    PretestInfos.ModelMsg.clear();
+
+    try
+    {
+      checkModelConsistency();
+    }
+    catch (openfluid::base::OFException& E)
+    {
+      PretestInfos.Model = false;
+      PretestInfos.ModelMsg.assign(E.what());
+    }
+    m_SimulationBlob.getCoreRepository().clearAllVariables();
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Engine::initParams()
 {
 
