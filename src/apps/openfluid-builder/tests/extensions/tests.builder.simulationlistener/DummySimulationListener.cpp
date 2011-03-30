@@ -47,27 +47,82 @@
 
 
 /**
-  \file Dummy.cpp
+  \file DummySimulationListener.cpp
   \brief Implements ...
 
-  \author Aline LIBRES <libres@supagro.inra.fr>
- */
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
 
+#include <openfluid/builderext/SimulationListener.hpp>
 
-#include "Dummy.hpp"
+DECLARE_EXTENSION_HOOKS;
 
-
-Dummy::Dummy()
-{
-
-}
+DEFINE_EXTENSION_INFOS("tests.builder.simulationlistener",
+                       "Dummy simulation listener",
+                       "Dummy simulation listener for tests",
+                       "This is a dummy simulation listener for tests",
+                       "JC.Fabre;A.Libres",
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
 
 
 // =====================================================================
 // =====================================================================
 
 
-Dummy::~Dummy()
+class DummySimulationListener : public openfluid::builderext::SimulationListener
 {
+  private:
 
-}
+
+  public:
+
+   DummySimulationListener()
+    {
+
+    };
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    ~DummySimulationListener()
+    {
+
+    };
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void onRefresh()
+    {
+
+    };
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    Gtk::Widget* getExtensionAsWidget()
+    {
+      return new Gtk::Frame();
+    }
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummySimulationListener);
+
+
+
+
+
+
+

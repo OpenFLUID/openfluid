@@ -33,26 +33,25 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/contrib)
 
 ADD_SUBDIRECTORY(contrib)
 
-ADD_SUBDIRECTORY(builder-ext)
+
+INCLUDE_DIRECTORIES(${GTKMM_INCLUDE_DIRS})
+LINK_DIRECTORIES(${GTKMM_LIBRARY_DIRS})
+
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+
+
 
 ADD_SUBDIRECTORY(builder-main)
-
-ADD_SUBDIRECTORY(extensions)
 
 ADD_SUBDIRECTORY(tests)
 
 
 
-INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
-                    ${GTKMM_INCLUDE_DIRS})
-                    
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
-                 ${GTKMM_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
+LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} builder-main builder-main/common)
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-
+INCLUDE_DIRECTORIES(builder-main builder-main/common)
 
 ADD_EXECUTABLE(openfluid-builder main.cpp)
 
@@ -70,10 +69,11 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-machine
                       openfluid-io
                       openfluid-tools
-#                      openfluid-builder-ext
                       openfluid-builder-gdl
                       openfluid-builder-main)
 
+
+ADD_SUBDIRECTORY(extensions)
 
 INSTALL(TARGETS openfluid-builder
         RUNTIME DESTINATION ${BIN_INSTALL_PATH})

@@ -45,19 +45,41 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file Dummy.cpp
-  \brief Implements ...
+  \file EventsImporter.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
+
+#ifndef __EVENTSIMPORTER_HPP__
+#define __EVENTSIMPORTER_HPP__
+
+
+#include <openfluid/builderext/DataImporter.hpp>
+
+
+namespace openfluid { namespace builderext {
 
 
 // =====================================================================
 // =====================================================================
 
 
+class DLLEXPORT EventsImporter : public DataImporter
+{
+  protected:
 
 
+  public:
+
+    ExtensionType getType() const { return PluggableBuilderExtension::EventsImporter; };
+
+};
+
+
+} } // namespaces
+
+
+#endif /* __EVENTSIMPORTER_HPP__ */
