@@ -233,6 +233,14 @@ class DLLEXPORT RuntimeEnvironment
       { return boost::filesystem::path(m_UserDataDir + "/" + Filename).string(); };
 
     /**
+      Returns the absolute path for a given relative path in the user OpenFLUID directory (i.e. $HOME/.openfluid/RelativePath)
+      @param[in] RelativePath the given relative path
+      @return the absolute path
+    */
+    std::string getUserDataPath(std::string RelativePath) const
+      { return boost::filesystem::path(m_UserDataDir + "/" + RelativePath).string(); };
+
+    /**
       Returns the path of the temporary directory
       @return the path of the temporary directory
     */
