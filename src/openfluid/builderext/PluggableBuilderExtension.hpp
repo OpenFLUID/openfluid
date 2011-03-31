@@ -62,6 +62,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
 
 
 
@@ -71,7 +72,7 @@
 /**
   Extension hook name
 */
-#define EXTENSIONPROC_NAME "GetExtension"
+#define EXTENSION_PROC_NAME "GetExtension"
 
 /**
   Infos hook name
@@ -83,6 +84,9 @@
 */
 #define EXTSDKVERSION_PROC_NAME "GetExtensionSDKVersion"
 
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -180,6 +184,9 @@ class DLLEXPORT PluggableBuilderExtension
 
     Gtk::Widget* m_PrefsPanelWidget;
 
+    openfluid::machine::SimulationBlob* mp_SimulationBlob;
+
+
   public:
 
     enum ExtensionType { WorkspaceTab, ModelessWindow, ModalWindow,
@@ -187,23 +194,79 @@ class DLLEXPORT PluggableBuilderExtension
                          SimulationListener, HomeLauncher };
 
 
-    PluggableBuilderExtension() : m_PrefsPanelWidget(NULL) { };
+    PluggableBuilderExtension() : m_PrefsPanelWidget(NULL), mp_SimulationBlob(NULL) { };
 
     virtual ~PluggableBuilderExtension() { };
 
+
+    void setSimulationBlob(openfluid::machine::SimulationBlob* Blob) { mp_SimulationBlob = Blob; };
+
+    /**
+      Returns the type of the extension. This must be overridden.
+      @returns the type of the extension
+    */
     virtual ExtensionType getType() const = 0;
 
+
+    /**
+      Returns true if the extension is configurable, false otherwise.
+      @returns true if the extension is configurable
+    */
     virtual bool isConfigurable() { return false; };
 
+
+    /**
+      Retrieves the configuration information from the extension.
+      @return the configuration information
+    */
     ExtensionConfig_t getConfiguration() const { return m_Config; };
 
+
+    /**
+      Gives the configuration information to the extension.
+      @param[in] Config the configuration information
+    */
     void setConfiguration(const ExtensionConfig_t& Config) { m_Config = Config; };
 
+
+    /**
+      Returns the main widget for the preferences panel of the extension.
+      Default is NULL, so no preference panel will be shown for this extension.
+      This should be overridden in derived extensions.
+      @returns a pointer to widget for the preferences panel
+    */
     Gtk::Widget* getPrefsPanelAsWidget() { return m_PrefsPanelWidget; };
 
+
+    /**
+      Returns the main widget of the extension. The kind of widget depends on the
+      extension type.
+      This must be overridden in derived extensions
+      @returns a pointer to the main widget
+    */
     virtual Gtk::Widget* getExtensionAsWidget() = 0;
 
+
+    /**
+      Returns true if the extension is currently ready to use (showtime!).
+      Default is false, but this should be overridden in derived extensions
+      @returns  a boolean giving the state of the extension
+    */
+    virtual bool isReadyForShowtime() const { return false; };
+
 };
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+typedef PluggableBuilderExtension* (*GetExtensionProc)();
+
+typedef BuilderExtensionInfos (*GetExtensionInfosProc)();
+
+typedef std::string (*GetExtensionSDKVersionProc)();
 
 
 } } // namespaces

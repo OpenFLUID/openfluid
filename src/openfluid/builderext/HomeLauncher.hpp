@@ -76,6 +76,8 @@ class DLLEXPORT HomeLauncher : public ModalWindow
 
     ExtensionType getType() const { return PluggableBuilderExtension::HomeLauncher; };
 
+    virtual bool isReadyForShowtime() const { return true; };
+
 };
 
 

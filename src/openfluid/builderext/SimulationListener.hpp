@@ -76,6 +76,8 @@ class DLLEXPORT SimulationListener : public ModelessWindow
 
     ExtensionType getType() const { return PluggableBuilderExtension::SimulationListener; };
 
+    virtual bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+
 };
 
 
