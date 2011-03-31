@@ -2,6 +2,9 @@
 FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
 
 
+ADD_DEFINITIONS(-DOPENFLUID_VERSION=${FULL_VERSION})
+
+
 INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
                     ${GTKMM_INCLUDE_DIRS})
                     
@@ -44,9 +47,14 @@ ENDMACRO(ADD_BUILDER_UNITTEST)
 
                       
 
+ADD_BUILDER_UNITTEST(builder-unittest-BuilderExtensionsManager
+                     builder_unittest_BuilderExtensionsManager_TEST
+                     BuilderExtensionsManager_TEST.cpp)
+
 ADD_BUILDER_UNITTEST(builder-unittest-GeneratorSignature
                      builder_unittest_GeneratorSignature_TEST
                      GeneratorSignature_TEST.cpp)
+
                      
 ADD_BUILDER_UNITTEST(builder-unittest-FunctionSignatureRegistry
                      builder_unittest_FunctionSignatureRegistry_TEST

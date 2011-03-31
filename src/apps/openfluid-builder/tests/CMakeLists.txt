@@ -1,4 +1,13 @@
 
+
+
+
+CONFIGURE_FILE(tests-builderconfig.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/tests-builderconfig.hpp)
+
+
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
 ADD_SUBDIRECTORY(unit)
 
 ADD_SUBDIRECTORY(extensions)
