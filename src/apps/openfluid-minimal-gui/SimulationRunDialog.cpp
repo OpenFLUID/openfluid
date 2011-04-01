@@ -124,8 +124,8 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBl
 
   Gtk::ButtonBox* ButtonBox = get_action_area();
 
-  m_ControlButton.set_label(_("Abort simulation"));
-//  m_ControlButton.set_image(*(Gtk::manage(new Gtk::Image(Gtk::Stock::MEDIA_STOP,Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)))));
+  m_ControlButton.set_label(_("Close"));
+  m_ControlButton.set_sensitive(false);
 
 
   ButtonBox->pack_start(m_ControlButton,Gtk::PACK_SHRINK,8);
@@ -169,11 +169,15 @@ void SimulationRunDialog::onIgnition()
 
   m_SimulationCompleted = false;
 
-  while(!m_SimulationCompleted || Gtk::Main::events_pending()) Gtk::Main::iteration();
+
+  while(!m_SimulationCompleted)
+  {
+    while(Gtk::Main::events_pending()) Gtk::Main::iteration();
+  }
 
   RunThread->join();
-  m_ControlButton.set_label(_("Close"));
 
+  m_ControlButton.set_sensitive(true);
 }
 
 

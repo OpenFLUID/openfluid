@@ -75,7 +75,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     unsigned int m_CurrentFunction;
 
     unsigned int m_TotalSteps;
-    std::string m_TotalStepsStr;
+    std::string m_LastStepNbrStr;
     unsigned int m_TotalFunctions;
 
     Gtk::ProgressBar* mp_PreSimProgressBar;
@@ -128,7 +128,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       m_CurrentStep = 0;
       m_TotalSteps = TotalSteps;
-      openfluid::tools::ConvertValue(m_TotalSteps,&m_TotalStepsStr);
+      openfluid::tools::ConvertValue((m_TotalSteps-1),&m_LastStepNbrStr);
     };
 
 
@@ -230,12 +230,13 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     void onBeforeRunSteps()
     {
       m_CurrentStep = 0;
-      mp_RunProgressBar->set_text("0/"+m_TotalStepsStr);
+      mp_RunProgressBar->set_text("0/"+m_LastStepNbrStr);
       while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     };
 
-    void onRunStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+    void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
+      m_CurrentStep = SimStatus->getCurrentStep();
       openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
     };
 
@@ -255,10 +256,8 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
 
     void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      m_CurrentStep++;
-
       mp_RunProgressBar->set_fraction(double(m_CurrentStep)/double(m_TotalSteps));
-      mp_RunProgressBar->set_text("Step "+m_CurrentStepStr+"/"+m_TotalStepsStr);
+      mp_RunProgressBar->set_text("Step "+m_CurrentStepStr+"/"+m_LastStepNbrStr);
     };
 
 
