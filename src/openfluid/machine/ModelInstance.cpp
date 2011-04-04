@@ -170,14 +170,20 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
   if (m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Trying to insert model item after model initialization");
 
-  if (Position < m_ModelItems.size())
-  {
-    std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
-    for (unsigned int i = 0; i< Position; i++) ++it;
-    m_ModelItems.insert(it,ItemInstance);
-  }
+
+  if (Position == 0)
+    m_ModelItems.insert(m_ModelItems.begin(),ItemInstance);
   else
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Bad index of item to insert");
+  {
+    if (Position < m_ModelItems.size())
+    {
+      std::list<ModelItemInstance*>::iterator it = m_ModelItems.begin();
+      for (unsigned int i = 0; i< Position; i++) ++it;
+      m_ModelItems.insert(it,ItemInstance);
+    }
+    else
+      throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Bad index of item to insert");
+  }
 
 }
 
