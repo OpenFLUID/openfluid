@@ -143,7 +143,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     };
 
     void onFunctionInitParamsDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                  const std::string& /*FunctionID*/)
     {
       m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) + "\n");
       mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
@@ -197,7 +197,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     };
 
 
-    void onInitializeRun(const std::string& /*FunctionID*/)
+    void onInitializeRun()
     {
       m_CurrentFunction = 0;
       mp_InitProgressBar->set_text("In progress");
@@ -222,8 +222,6 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       mp_InitProgressBar->set_fraction(1.0);
       mp_InitProgressBar->set_text("Completed");
-      while( Gtk::Main::events_pending()) Gtk::Main::iteration();
-
     };
 
 
@@ -231,7 +229,6 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       m_CurrentStep = 0;
       mp_RunProgressBar->set_text("0/"+m_LastStepNbrStr);
-      while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     };
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
@@ -266,7 +263,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
       mp_RunProgressBar->set_fraction(1.0);
     };
 
-    void onFinalizeRun(const std::string& /*FunctionID*/)
+    void onFinalizeRun()
     {
       m_CurrentFunction = 0;
       mp_FinalProgressBar->set_text("In progress");

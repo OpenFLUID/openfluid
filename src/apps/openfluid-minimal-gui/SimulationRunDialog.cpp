@@ -77,7 +77,7 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBl
 
   Gtk::VBox* MainBox = get_vbox();
 
-  m_TopLabel.set_text("Simulation from date to date\nTime step : delta second(s)");
+  m_TopLabel.set_text("");
   m_TopLabel.set_justify(Gtk::JUSTIFY_CENTER);
   m_TopLabel.set_size_request(580,-1);
   m_TopLabel.set_use_markup(true);
@@ -120,6 +120,7 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBl
   MainBox->pack_start(*(Gtk::manage(new Gtk::HSeparator())),Gtk::PACK_SHRINK,8);
   MainBox->pack_start(m_RunTable,Gtk::PACK_SHRINK,8);
   MainBox->pack_start(m_DetailsExpander,Gtk::PACK_SHRINK,8);
+  MainBox->pack_start(*(Gtk::manage(new Gtk::HSeparator())),Gtk::PACK_SHRINK,8);
 
 
   Gtk::ButtonBox* ButtonBox = get_action_area();
@@ -140,9 +141,6 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBl
     &SimulationRunDialog::onIgnition), 250);
 
   resetWidgets();
-
-  mp_MachineListen->setWidgets(&m_PreSimProgressBar,&m_InitProgressBar,&m_RunProgressBar,&m_FinalProgressBar,
-                               &m_DetailsTextView);
 
   show_all_children();
 }
@@ -166,6 +164,7 @@ void SimulationRunDialog::onIgnition()
 {
   Glib::Thread* RunThread = Glib::Thread::create(sigc::mem_fun(*this,
       &SimulationRunDialog::runSimulation),true);
+
 
   m_SimulationCompleted = false;
 
@@ -206,10 +205,10 @@ void SimulationRunDialog::resetWidgets()
 
   openfluid::tools::ConvertValue(mp_SBlob->getRunDescriptor().getDeltaT(),&TStepStr);
 
-  m_TopLabel.set_text(_("Simulation from ") + mp_SBlob->getRunDescriptor().getBeginDate().getAsISOString() +
+  m_TopLabel.set_markup(std::string("<b>")+_("Simulation from ") + mp_SBlob->getRunDescriptor().getBeginDate().getAsISOString() +
                                              _(" to ") +
                                              mp_SBlob->getRunDescriptor().getEndDate().getAsISOString() +
-                                             "\n" + _("Time step: ") + TStepStr + _(" second(s)"));
+                                             "\n" + _("Time step: ") + TStepStr + _(" second(s)") + std::string("</b>"));
 
   m_PreSimProgressBar.set_fraction(0.0);
   m_InitProgressBar.set_fraction(0.0);
@@ -228,6 +227,9 @@ void SimulationRunDialog::runSimulation()
 {
   try
   {
+    mp_MachineListen->setWidgets(&m_PreSimProgressBar,&m_InitProgressBar,&m_RunProgressBar,&m_FinalProgressBar,
+                                 &m_DetailsTextView);
+
     mp_MachineListen->setFunctionsCount(mp_Model->getItemsCount());
 
     mp_Engine = new openfluid::machine::Engine(*mp_SBlob, *mp_Model, mp_MachineListen, mp_IOListen);
