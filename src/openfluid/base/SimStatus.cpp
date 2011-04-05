@@ -56,7 +56,7 @@
 
 
 #include <openfluid/base/SimStatus.hpp>
-#include <iostream>
+
 
 namespace openfluid { namespace base {
 
@@ -68,25 +68,20 @@ SimulationInfo::SimulationInfo(openfluid::core::DateTime StartTime,
 {
 
 
-  openfluid::core::rawtime_t DeltaTime;
 
   m_StartTime = StartTime;
   m_EndTime = EndTime;
 
   m_TimeStep = TimeStep;
 
-  DeltaTime = EndTime.diffInSeconds(StartTime);
-  m_StepsCount = int(DeltaTime / TimeStep);
-  if ((DeltaTime % TimeStep) != 0) m_StepsCount++;
-
-
-
-
+  m_StepsCount = computeTimeStepsCount(StartTime,EndTime,TimeStep);
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 SimulationInfo::~SimulationInfo()
 {
@@ -94,10 +89,28 @@ SimulationInfo::~SimulationInfo()
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
+
+int SimulationInfo::computeTimeStepsCount(const openfluid::core::DateTime& StartTime,
+                                          const openfluid::core::DateTime& EndTime,
+                                          const int& TimeStep)
+{
+  int StepsCount;
+
+  openfluid::core::rawtime_t DeltaTime;
+
+  DeltaTime = EndTime.diffInSeconds(StartTime);
+  StepsCount = int(DeltaTime / TimeStep);
+  if ((DeltaTime % TimeStep) != 0) StepsCount++;
+
+  return StepsCount;
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 SimulationStatus::SimulationStatus(openfluid::core::DateTime StartTime,
@@ -118,17 +131,19 @@ SimulationStatus::SimulationStatus(openfluid::core::DateTime StartTime,
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 SimulationStatus::~SimulationStatus()
 {
 
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 bool SimulationStatus::switchToNextStep()

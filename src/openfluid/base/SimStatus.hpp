@@ -120,6 +120,10 @@ class DLLEXPORT SimulationInfo
     */
     inline openfluid::core::DateTime getEndTime() const { return m_EndTime; };
 
+    static int computeTimeStepsCount(const openfluid::core::DateTime& StartTime,
+                                     const openfluid::core::DateTime& EndTime,
+                                     const int& TimeStep);
+
 
 };
 
