@@ -62,6 +62,8 @@
 #include <gtkmm.h>
 #include <glibmm/i18n.h>
 
+#include "RunStatusWidget.hpp"
+
 
 // =====================================================================
 // =====================================================================
@@ -75,15 +77,17 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     unsigned int m_CurrentFunction;
 
     unsigned int m_TotalSteps;
-    std::string m_LastStepNbrStr;
     unsigned int m_TotalFunctions;
 
-    Gtk::ProgressBar* mp_PreSimProgressBar;
-    Gtk::ProgressBar* mp_InitProgressBar;
-    Gtk::ProgressBar* mp_RunProgressBar;
-    Gtk::ProgressBar* mp_FinalProgressBar;
+    RunStatusWidget* mp_RunStatusWidget;
+
     Gtk::TextView* mp_DetailsTextView;
     Glib::RefPtr<Gtk::TextBuffer> m_RefDetailsTextBuffer;
+
+    unsigned int m_CurrentPreSim;
+    unsigned int m_CurrentInit;
+    unsigned int m_CurrentFinal;
+    unsigned int m_TotalTotal;
 
     std::string getStatusStr(const openfluid::base::Listener::Status& Status)
     {
@@ -99,136 +103,145 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     }
 
 
+    void appendToTextBuffer(const std::string& Str)
+    {
+      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), Str);
+//      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(),0);
+    }
+
+
   public:
 
     RunDialogMachineListener() {};
 
     ~RunDialogMachineListener() {};
 
-    void setWidgets(Gtk::ProgressBar* PreSimProgressBar, Gtk::ProgressBar* InitProgressBar,
-                    Gtk::ProgressBar* RunProgressBar, Gtk::ProgressBar* FinalProgressBar,
+    void setWidgets(RunStatusWidget* RStatusWidget,
                     Gtk::TextView* DetailsTextView)
     {
-      mp_PreSimProgressBar = PreSimProgressBar;
-      mp_InitProgressBar = InitProgressBar;
-      mp_RunProgressBar = RunProgressBar;
-      mp_FinalProgressBar = FinalProgressBar;
+      mp_RunStatusWidget = RStatusWidget;
       mp_DetailsTextView = DetailsTextView;
       m_RefDetailsTextBuffer = mp_DetailsTextView->get_buffer();
     };
 
 
-    void setFunctionsCount(const unsigned int& TotalFunctions)
+    void setInfos(const unsigned int& TotalFunctions, const unsigned int& TotalSteps)
     {
-      m_TotalFunctions= TotalFunctions;
+      m_TotalFunctions = TotalFunctions;
+
+      m_TotalSteps = TotalSteps;
+
+      m_TotalTotal = 3 + m_TotalFunctions + m_TotalSteps + m_TotalFunctions;
+      m_CurrentPreSim = 0;
+      m_CurrentInit = 0;
+      m_CurrentStep = 0;
+      m_CurrentFinal = 0;
     }
 
-
-    void setTotalStepsCount(const unsigned int& TotalSteps)
+    double computeCurrentFraction()
     {
-      m_CurrentStep = 0;
-      m_TotalSteps = TotalSteps;
-      openfluid::tools::ConvertValue((m_TotalSteps-1),&m_LastStepNbrStr);
-    };
+      return (double(m_CurrentPreSim + m_CurrentInit + (m_CurrentStep+1) + m_CurrentFinal)/double(m_TotalTotal));
+    }
 
 
     void onInitParams()
     {
-      mp_PreSimProgressBar->set_text("In progress");
+      mp_RunStatusWidget->setPresimRunning();
     };
 
     virtual void onFunctionInitParams(const std::string& FunctionID)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "<initParams> " + FunctionID);
+      appendToTextBuffer("<initParams> " + FunctionID);
     };
 
     void onFunctionInitParamsDone(const openfluid::base::Listener::Status& Status,
                                   const std::string& /*FunctionID*/)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) + "\n");
-      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
+      appendToTextBuffer("  " + getStatusStr(Status) + "\n");
     };
 
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_PreSimProgressBar->set_fraction(0.33);
+      m_CurrentPreSim = 1;
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
     };
 
 
 
     void onFunctionPrepareData(const std::string& FunctionID)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "<prepareData> " + FunctionID);
+      appendToTextBuffer("<prepareData> " + FunctionID);
 
     };
 
     void onFunctionPrepareDataDone(const openfluid::base::Listener::Status& Status,
                                           const std::string& /*FunctionID*/)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) +"\n");
-      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
+      appendToTextBuffer("  " + getStatusStr(Status) +"\n");
     };
 
 
     virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_PreSimProgressBar->set_fraction(0.66);
+      m_CurrentPreSim = 2;
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+
     };
 
 
     virtual void onFunctionCheckConsistency(const std::string& FunctionID)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "<checkConsistency> " + FunctionID);
+      appendToTextBuffer("<checkConsistency> " + FunctionID);
     };
 
     void onFunctionCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
                                           const std::string& /*FunctionID*/)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) +"\n");
-      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
+      appendToTextBuffer("  " + getStatusStr(Status) +"\n");
     };
 
 
     void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_PreSimProgressBar->set_fraction(1.0);
-      mp_PreSimProgressBar->set_text("Completed");
+      m_CurrentPreSim = 3;
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      mp_RunStatusWidget->setPresimDone();
     };
 
 
     void onInitializeRun()
     {
-      m_CurrentFunction = 0;
-      mp_InitProgressBar->set_text("In progress");
+      m_CurrentInit = 0;
+      mp_RunStatusWidget->setInitRunning();
     };
 
     void onFunctionInitializeRun(const std::string& FunctionID)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "<initializeRun> " + FunctionID);
+      appendToTextBuffer("<initializeRun> " + FunctionID);
     }
 
     void onFunctionInitializeRunDone(const openfluid::base::Listener::Status& Status,
                                           const std::string& /*FunctionID*/)
     {
-      m_CurrentFunction++;
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) +"\n");
-      mp_InitProgressBar->set_fraction(m_CurrentFunction/m_TotalFunctions);
-      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
+      m_CurrentInit++;
+      appendToTextBuffer("  " + getStatusStr(Status) +"\n");
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
     };
 
 
     void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_InitProgressBar->set_fraction(1.0);
-      mp_InitProgressBar->set_text("Completed");
+      mp_RunStatusWidget->setInitDone();
     };
 
 
     void onBeforeRunSteps()
     {
       m_CurrentStep = 0;
-      mp_RunProgressBar->set_text("0/"+m_LastStepNbrStr);
+      openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      mp_RunStatusWidget->setRunstepRunning();
     };
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
@@ -239,55 +252,55 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
 
     void onFunctionRunStep(const std::string& FunctionID)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "<runStep("+m_CurrentStepStr+")> " + FunctionID);
+      appendToTextBuffer("<runStep("+m_CurrentStepStr+")> " + FunctionID);
     };
 
 
     void onFunctionRunStepDone(const openfluid::base::Listener::Status& Status,
                                const std::string& /*FunctionID*/)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) +"\n");
-      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
+      appendToTextBuffer("  " + getStatusStr(Status) +"\n");
     };
 
 
     void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_RunProgressBar->set_fraction(double(m_CurrentStep)/double(m_TotalSteps));
-      mp_RunProgressBar->set_text("Step "+m_CurrentStepStr+"/"+m_LastStepNbrStr);
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      mp_RunStatusWidget->updateCurrentStep(m_CurrentStepStr);
+      mp_RunStatusWidget->setRunstepRunning();
     };
 
 
     void onAfterRunSteps()
     {
-      mp_RunProgressBar->set_fraction(1.0);
+
     };
 
     void onFinalizeRun()
     {
-      m_CurrentFunction = 0;
-      mp_FinalProgressBar->set_text("In progress");
+      m_CurrentFinal = 0;
+      mp_RunStatusWidget->setRunstepDone();
+      mp_RunStatusWidget->setFinalRunning();
     };
 
     void onFunctionFinalizeRun(const std::string& FunctionID)
     {
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "<finalizeRun> " + FunctionID);
+      appendToTextBuffer("<finalizeRun> " + FunctionID);
     }
 
 
     virtual void onFunctionFinalizeRunDone(const openfluid::base::Listener::Status& Status,
                                           const std::string& /*FunctionID*/)
     {
-      m_CurrentFunction++;
-      m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), "  " + getStatusStr(Status) +"\n");
-      mp_FinalProgressBar->set_fraction(m_CurrentFunction/m_TotalFunctions);
-      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(), 0);
+      m_CurrentFinal++;
+      appendToTextBuffer("  " + getStatusStr(Status) +"\n");
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
     };
 
     virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_FinalProgressBar->set_fraction(1.0);
-      mp_FinalProgressBar->set_text("Completed");
+      mp_RunStatusWidget->setProgressFraction(1.0);
+      mp_RunStatusWidget->setFinalDone();
     };
 
 };

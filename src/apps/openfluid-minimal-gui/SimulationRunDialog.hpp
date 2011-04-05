@@ -63,6 +63,7 @@
 #include <openfluid/machine.hpp>
 
 #include "RunDialogMachineListener.hpp"
+#include "RunStatusWidget.hpp"
 
 
 class SimulationRunDialog : public Gtk::Dialog
@@ -71,15 +72,7 @@ class SimulationRunDialog : public Gtk::Dialog
 
     Gtk::Label m_TopLabel;
 
-    Gtk::Label m_PreSimLabel;
-    Gtk::ProgressBar m_PreSimProgressBar;
-    Gtk::Label m_InitLabel;
-    Gtk::ProgressBar m_InitProgressBar;
-    Gtk::Label m_RunLabel;
-    Gtk::ProgressBar m_RunProgressBar;
-    Gtk::Label m_FinalLabel;
-    Gtk::ProgressBar m_FinalProgressBar;
-    Gtk::Table m_RunTable;
+    RunStatusWidget m_RunStatusWidget;
 
     Gtk::Expander m_DetailsExpander;
 
@@ -92,12 +85,14 @@ class SimulationRunDialog : public Gtk::Dialog
 
     bool m_SimulationCompleted;
 
-    openfluid::machine::Engine* mp_Engine;
     openfluid::machine::SimulationBlob* mp_SBlob;
     openfluid::machine::ModelInstance* mp_Model;
     RunDialogMachineListener* mp_MachineListen;
     openfluid::io::IOListener* mp_IOListen;
+    openfluid::machine::Engine* mp_Engine;
 
+    std::string m_LastStepStr;
+    int m_StepsCount;
 
     void onIgnition();
 
@@ -108,12 +103,15 @@ class SimulationRunDialog : public Gtk::Dialog
     void runSimulation();
 
 
+
+
   public:
 
     SimulationRunDialog(openfluid::machine::SimulationBlob* SBlob,
                         openfluid::machine::ModelInstance* Model,
                         RunDialogMachineListener* MachineListen,
-                        openfluid::io::IOListener* IOListen);
+                        openfluid::io::IOListener* IOListen,
+                        openfluid::machine::Engine* Eng);
 
     ~SimulationRunDialog();
 };

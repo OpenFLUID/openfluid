@@ -20,6 +20,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 
 ADD_EXECUTABLE(openfluid-minimal-gui    
+               RunStatusWidget.cpp RunStatusWidget.hpp 
                SimulationRunDialog.cpp SimulationRunDialog.hpp
                main.cpp)
 

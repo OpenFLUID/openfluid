@@ -66,9 +66,19 @@
 SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBlob,
                                          openfluid::machine::ModelInstance* Model,
                                          RunDialogMachineListener* MachineListen,
-                                         openfluid::io::IOListener* IOListen)
-  : m_SimulationCompleted(false), mp_SBlob(SBlob), mp_Model(Model), mp_MachineListen(MachineListen), mp_IOListen(IOListen)
+                                         openfluid::io::IOListener* IOListen,
+                                         openfluid::machine::Engine* Eng)
+  : m_SimulationCompleted(false), mp_SBlob(SBlob), mp_Model(Model), mp_MachineListen(MachineListen), mp_IOListen(IOListen),
+    mp_Engine(Eng)
 {
+
+  m_StepsCount = openfluid::base::SimulationInfo::computeTimeStepsCount(mp_SBlob->getRunDescriptor().getBeginDate(),
+                                                                                        mp_SBlob->getRunDescriptor().getEndDate(),
+                                                                                        mp_SBlob->getRunDescriptor().getDeltaT());
+
+  openfluid::tools::ConvertValue((m_StepsCount-1),&m_LastStepStr);
+
+
   set_border_width(10);
   set_default_size(600, -1);
   set_position(Gtk::WIN_POS_CENTER);
@@ -82,30 +92,6 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBl
   m_TopLabel.set_size_request(580,-1);
   m_TopLabel.set_use_markup(true);
 
-  m_PreSimLabel.set_text(_("Pre-simulation"));
-  m_PreSimLabel.set_alignment(1,0.5);
-  m_PreSimProgressBar.set_size_request(-1,20);
-  m_InitLabel.set_text(_("Initialization"));
-  m_InitLabel.set_alignment(1,0.5);
-  m_InitProgressBar.set_size_request(-1,20);
-  m_RunLabel.set_text(_("Run"));
-  m_RunLabel.set_alignment(1,0.5);
-  m_RunProgressBar.set_size_request(-1,40);
-  m_FinalLabel.set_text(_("Finalization"));
-  m_FinalLabel.set_alignment(1,0.5);
-  m_FinalProgressBar.set_size_request(-1,20);
-
-
-  m_RunTable.attach(m_PreSimLabel,0,1,0,1,Gtk::FILL,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_PreSimProgressBar,1,2,0,1,Gtk::FILL|Gtk::EXPAND,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_InitLabel,0,1,1,2,Gtk::FILL,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_InitProgressBar,1,2,1,2,Gtk::FILL|Gtk::EXPAND,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_RunLabel,0,1,2,3,Gtk::FILL,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_RunProgressBar,1,2,2,3,Gtk::FILL|Gtk::EXPAND,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_FinalLabel,0,1,3,4,Gtk::FILL,Gtk::FILL|Gtk::EXPAND,4,4);
-  m_RunTable.attach(m_FinalProgressBar,1,2,3,4,Gtk::FILL|Gtk::EXPAND,Gtk::FILL|Gtk::EXPAND,4,4);
-
-
   m_DetailsExpander.set_label(_("Details"));
   m_DetailsSWindow.add(m_DetailsTextView);
   m_DetailsSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -118,10 +104,8 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBl
 
   MainBox->pack_start(m_TopLabel,Gtk::PACK_SHRINK,8);
   MainBox->pack_start(*(Gtk::manage(new Gtk::HSeparator())),Gtk::PACK_SHRINK,8);
-  MainBox->pack_start(m_RunTable,Gtk::PACK_SHRINK,8);
-  MainBox->pack_start(m_DetailsExpander,Gtk::PACK_SHRINK,8);
-  MainBox->pack_start(*(Gtk::manage(new Gtk::HSeparator())),Gtk::PACK_SHRINK,8);
-
+  MainBox->pack_start(m_RunStatusWidget,Gtk::PACK_SHRINK,16);
+  MainBox->pack_start(m_DetailsExpander,Gtk::PACK_SHRINK,16);
 
   Gtk::ButtonBox* ButtonBox = get_action_area();
 
@@ -210,10 +194,10 @@ void SimulationRunDialog::resetWidgets()
                                              mp_SBlob->getRunDescriptor().getEndDate().getAsISOString() +
                                              "\n" + _("Time step: ") + TStepStr + _(" second(s)") + std::string("</b>"));
 
-  m_PreSimProgressBar.set_fraction(0.0);
-  m_InitProgressBar.set_fraction(0.0);
-  m_RunProgressBar.set_fraction(0.0);
-  m_FinalProgressBar.set_fraction(0.0);
+
+  m_RunStatusWidget.setLastStepStr(m_LastStepStr);
+  m_RunStatusWidget.updateCurrentStep("0");
+  m_RunStatusWidget.setRunstepDefault();
 
   m_RefDetailsTextBuffer->set_text("");
 }
@@ -227,23 +211,20 @@ void SimulationRunDialog::runSimulation()
 {
   try
   {
-    mp_MachineListen->setWidgets(&m_PreSimProgressBar,&m_InitProgressBar,&m_RunProgressBar,&m_FinalProgressBar,
+    mp_MachineListen->setWidgets(&m_RunStatusWidget,
                                  &m_DetailsTextView);
 
-    mp_MachineListen->setFunctionsCount(mp_Model->getItemsCount());
-
-    mp_Engine = new openfluid::machine::Engine(*mp_SBlob, *mp_Model, mp_MachineListen, mp_IOListen);
+    mp_MachineListen->setInfos(mp_Model->getItemsCount(),
+                               m_StepsCount);
 
     mp_Engine->initParams();
     mp_Engine->prepareData();
     mp_Engine->checkConsistency();
 
-    mp_MachineListen->setTotalStepsCount(mp_Engine->getSimulationInfo()->getStepsCount());
     mp_Engine->run();
 
     mp_Engine->saveReports();
 
-    delete mp_Engine;
   }
   catch (openfluid::base::OFException& E)
   {

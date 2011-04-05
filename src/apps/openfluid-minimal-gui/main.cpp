@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
   openfluid::base::RuntimeEnvironment* RunEnv;
   RunDialogMachineListener* MachineListen = new RunDialogMachineListener();
   openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
+  openfluid::machine::Engine* SimEngine;
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
   openfluid::io::FluidXReader FXReader(IOListen);
 
@@ -103,6 +104,8 @@ int main(int argc, char *argv[])
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
         Model);
 
+    SimEngine = new openfluid::machine::Engine(SBlob, Model, MachineListen, IOListen);
+
   }
   catch (openfluid::base::OFException& E)
   {
@@ -123,10 +126,11 @@ int main(int argc, char *argv[])
 
 
   Gtk::Main kit(argc, argv);
-  SimulationRunDialog RunDialog(&SBlob, &Model, MachineListen, IOListen);
+  SimulationRunDialog RunDialog(&SBlob, &Model, MachineListen, IOListen, SimEngine);
 
   Gtk::Main::run(RunDialog);
 
+  delete SimEngine;
 
   return 0;
 }
