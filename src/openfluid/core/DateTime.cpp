@@ -102,7 +102,6 @@ DateTime::~DateTime()
 
 bool DateTime::set(int Year, int Month, int Day, int Hour, int Minute, int Second)
 {
-
   if (isValidDateTime(Year,Month,Day,Hour,Minute,Second))
   {
     m_TM.tm_year = Year-1900;
@@ -126,7 +125,7 @@ bool DateTime::set(int Year, int Month, int Day, int Hour, int Minute, int Secon
 // =====================================================================
 
 
-bool DateTime::setFromISOString(std::string DateTimeStr)
+bool DateTime::setFromISOString(const std::string& DateTimeStr)
 {
   int Year;
   int Month;
@@ -147,7 +146,7 @@ bool DateTime::setFromISOString(std::string DateTimeStr)
 // =====================================================================
 
 
-void DateTime::set(rawtime_t SecondsSince0000)
+void DateTime::set(const rawtime_t& SecondsSince0000)
 {
   m_RawTime = SecondsSince0000;
 
@@ -349,7 +348,7 @@ std::string DateTime::getTimeAsISOString() const
 // =====================================================================
 
 
-void DateTime::addSeconds(rawtime_t Seconds)
+void DateTime::addSeconds(const rawtime_t& Seconds)
 {
   m_RawTime = m_RawTime + Seconds;
   updateYMDHMSFromRawTime();
@@ -359,7 +358,7 @@ void DateTime::addSeconds(rawtime_t Seconds)
 // =====================================================================
 
 
-void DateTime::subtractSeconds(rawtime_t Seconds)
+void DateTime::subtractSeconds(const rawtime_t& Seconds)
 {
   m_RawTime = m_RawTime - Seconds;
   updateYMDHMSFromRawTime();
@@ -388,7 +387,7 @@ bool DateTime::isStrictlyBetween(const DateTime& FirstDT, const DateTime& Second
 // =====================================================================
 
 
-rawtime_t DateTime::diffInSeconds(DateTime DT)
+rawtime_t DateTime::diffInSeconds(const DateTime& DT) const
 {
   return (m_RawTime - DT.getRawTime());
 }
@@ -458,7 +457,7 @@ bool DateTime::operator <=(const DateTime &Right) const
 // =====================================================================
 
 
-DateTime DateTime::operator +(const rawtime_t Seconds) const
+DateTime DateTime::operator +(const rawtime_t& Seconds) const
 {
   DateTime DT(m_RawTime+Seconds);
 
@@ -469,7 +468,7 @@ DateTime DateTime::operator +(const rawtime_t Seconds) const
 // =====================================================================
 
 
-DateTime DateTime::operator -(const rawtime_t Seconds) const
+DateTime DateTime::operator -(const rawtime_t& Seconds) const
 {
   DateTime DT(m_RawTime-Seconds);
 
@@ -516,7 +515,7 @@ bool DateTime::isValidDateTime(int Year, int Month, int Day, int Hour, int Minut
 // =====================================================================
 // =====================================================================
 
-bool DateTime::isSameDate(DateTime DT) const
+bool DateTime::isSameDate(const DateTime& DT) const
 {
   return (((m_TM.tm_year+1900) ==  DT.getYear()) &&
           ((m_TM.tm_mon+1) == DT.getMonth()) &&
@@ -526,7 +525,7 @@ bool DateTime::isSameDate(DateTime DT) const
 // =====================================================================
 // =====================================================================
 
-bool DateTime::isSameTime(DateTime DT) const
+bool DateTime::isSameTime(const DateTime& DT) const
 {
   return (((m_TM.tm_hour) ==  DT.getHour()) &&
           ((m_TM.tm_min) == DT.getMinute()) &&

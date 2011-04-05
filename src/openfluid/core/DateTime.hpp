@@ -193,13 +193,13 @@ class DLLEXPORT DateTime
       Sets the date and time from the number of seconds since first day of 4713BC
     */
 
-    void set(rawtime_t SecondsSince0000);
+    void set(const rawtime_t& SecondsSince0000);
 
 
     /**
       Sets the date and time from an ISO formatted string (YYYY-MM-DD hh:mm:ss)
     */
-    bool setFromISOString(std::string DateTimeStr);
+    bool setFromISOString(const std::string& DateTimeStr);
 
 
     /**
@@ -275,17 +275,17 @@ class DLLEXPORT DateTime
     /**
       Adds the given seconds to the current date and time
     */
-    void addSeconds(rawtime_t Seconds);
+    void addSeconds(const rawtime_t& Seconds);
 
     /**
       Subtracts the given seconds from the current date and time
     */
-    void subtractSeconds(rawtime_t Seconds);
+    void subtractSeconds(const rawtime_t& Seconds);
 
     /**
       Returns the difference in seconds between the date-time and the given date-time (Self - Given)
     */
-    rawtime_t diffInSeconds(DateTime DT);
+    rawtime_t diffInSeconds(const DateTime& DT) const;
 
     /**
       Returns true if the date-time is between the two given date-time
@@ -336,12 +336,12 @@ class DLLEXPORT DateTime
     /**
       Add operator
     */
-    DateTime operator +(const rawtime_t Seconds) const;
+    DateTime operator +(const rawtime_t& Seconds) const;
 
     /**
       Subtract operator
     */
-    DateTime operator -(const rawtime_t Seconds) const;
+    DateTime operator -(const rawtime_t& Seconds) const;
 
     /**
       Returns the number of seconds for one minute
@@ -401,12 +401,12 @@ class DLLEXPORT DateTime
     /**
       Returns true if the given date is the same, without comparing time parts
     */
-    bool isSameDate(DateTime DT) const;
+    bool isSameDate(const DateTime& DT) const;
 
     /**
       Returns true if the given time is the same, without comparing dates
     */
-    bool isSameTime(DateTime DT) const;
+    bool isSameTime(const DateTime& DT) const;
 
 };
 
