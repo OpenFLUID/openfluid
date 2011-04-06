@@ -56,7 +56,7 @@
 
 #include <glibmm/i18n.h>
 
-#include "BuilderAppDialogFactory.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 
 // =====================================================================
@@ -140,7 +140,7 @@ Gtk::TreeIter SimulOutFilesViewImpl::getSelectedIter()
 
 void SimulOutFilesViewImpl::showDialogConfirmDeletion()
 {
-  if (BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("This will delete the sets associated to this format.\nDo you want to continue ?")))
     m_signal_DeletionConfirmed.emit();
 }

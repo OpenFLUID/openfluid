@@ -61,7 +61,7 @@
 #include "DomainUnitCreationModel.hpp"
 
 #include "BuilderListToolBox.hpp"
-#include "BuilderAppDialogFactory.hpp"
+
 
 // =====================================================================
 // =====================================================================
@@ -164,7 +164,7 @@ sigc::signal<void> DomainStructureCoordinator::signal_DomainChanged()
 
 
 void DomainStructureCoordinator::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
+    openfluid::machine::ModelInstance& /*ModelInstance*/,
     openfluid::machine::SimulationBlob& SimBlob)
 {
   m_StructureModel.setEngineRequirements(SimBlob.getCoreRepository());

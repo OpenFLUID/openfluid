@@ -6,12 +6,9 @@ INCLUDE_DIRECTORIES(${GTKMM_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKMM_LIBRARY_DIRS})
 
 
-FILE(GLOB OPENFLUID_MARKETCLIENT_CPP *.cpp)
-FILE(GLOB OPENFLUID_MARKETCLIENT_HPP *.hpp)
-
 
 ADD_EXECUTABLE(openfluid-market-client    
-               ${OPENFLUID_MARKETCLIENT_CPP} ${OPENFLUID_MARKETCLIENT_HPP})
+               main.cpp)
 
 SET_TARGET_PROPERTIES(openfluid-market-client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
@@ -23,7 +20,8 @@ TARGET_LINK_LIBRARIES(openfluid-market-client
                       openfluid-base
                       openfluid-core
                       openfluid-tools
-                      openfluid-market)
+                      openfluid-market
+                      openfluid-guicommon)
 
 
 

@@ -59,7 +59,7 @@
 
 #include "DomainIDataModel.hpp"
 #include "BuilderListToolBox.hpp"
-#include "BuilderAppDialogFactory.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 
 // =====================================================================
@@ -81,7 +81,7 @@ void DomainClassCoordinator::updateIDataListToolBox()
 
 void DomainClassCoordinator::whenAddIDataAsked()
 {
-  std::string DataName = BuilderAppDialogFactory::showTextEntryDialog(
+  std::string DataName = openfluid::guicommon::DialogBoxFactory::showTextEntryDialog(
       _("Adding data to the selected class"), _("Data Name : "));
   m_IDataModel.addData(DataName);
 }
@@ -96,7 +96,7 @@ void DomainClassCoordinator::whenRemoveIDataAsked()
 {
   std::string
       DataName =
-          BuilderAppDialogFactory::showTextEntryDialog(
+          openfluid::guicommon::DialogBoxFactory::showTextEntryDialog(
               _("Removing data from the selected class\nAll values of this data will be destroyed"),
               _("Data Name : "));
   m_IDataModel.removeData(DataName);

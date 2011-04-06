@@ -21,29 +21,6 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} . common model domain simulation resul
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 
-# for OpenFLUID market
-
-SET(OPENFLUID_BUILDER_MARKETCLIENT_RELDIR ../../openfluid-market-client)
-SET(OPENFLUID_BUILDER_MARKETCLIENT_HPP "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketClientAssistant.hpp"
-                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketPackWidget.hpp"
-                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/ViewLogFileWindow.hpp")
-
-SET(OPENFLUID_BUILDER_MARKETCLIENT_CPP "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketClientAssistant.cpp"
-                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/MarketPackWidget.cpp"
-                                  "${OPENFLUID_BUILDER_MARKETCLIENT_RELDIR}/ViewLogFileWindow.cpp")                                  
-
-INCLUDE_DIRECTORIES(../../openfluid-market-client)
-
-###
-# for OpenFLUID minimal-gui
-
-SET(OPENFLUID_BUILDER_MINIMALGUI_RELDIR ../../openfluid-minimal-gui)
-FILE(GLOB OPENFLUID_BUILDER_MINIMALGUI_HPP ${OPENFLUID_BUILDER_MINIMALGUI_RELDIR}/*.hpp)
-FILE(GLOB OPENFLUID_BUILDER_MINIMALGUI_CPP ${OPENFLUID_BUILDER_MINIMALGUI_RELDIR}/*.cpp)
-INCLUDE_DIRECTORIES(../../openfluid-minimal-gui)
-
-###
-
 FILE(GLOB OPENFLUID_BUILDER_MAINLIB_CPP common/*.cpp model/*.cpp domain/*.cpp simulation/*.cpp results/*.cpp)
 FILE(GLOB OPENFLUID_BUILDER_MAINLIB_HPP common/*.hpp model/*.hpp domain/*.hpp simulation/*.hpp results/*.hpp)
 
@@ -64,6 +41,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-io
                       openfluid-tools
                       openfluid-market
+                      openfluid-guicommon
 #                      openfluid-builder-ext
                       openfluid-builder-gdl)
 

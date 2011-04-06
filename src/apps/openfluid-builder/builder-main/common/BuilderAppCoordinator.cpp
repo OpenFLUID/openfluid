@@ -52,12 +52,13 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
 #include "BuilderAppCoordinator.hpp"
 
 #include "BuilderAppWindow.hpp"
 #include "BuilderModuleFactory.hpp"
 #include "BuilderProjectModule.hpp"
-#include "BuilderAppDialogFactory.hpp"
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
 #include "PreferencesModel.hpp"
@@ -285,7 +286,7 @@ void BuilderAppCoordinator::quitApp()
 
 bool BuilderAppCoordinator::showCloseProjectDialog()
 {
-  return BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
+  return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to close this project ?"));
 }
 
@@ -296,7 +297,7 @@ bool BuilderAppCoordinator::showCloseProjectDialog()
 
 bool BuilderAppCoordinator::showQuitAppDialog()
 {
-  return BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
+  return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to quit ?"));
 }
 
@@ -307,7 +308,7 @@ bool BuilderAppCoordinator::showQuitAppDialog()
 
 std::string BuilderAppCoordinator::showOpenProjectDialog()
 {
-  return BuilderAppDialogFactory::showOpenProjectDialog();
+  return openfluid::guicommon::DialogBoxFactory::showOpenProjectDialog();
 }
 
 

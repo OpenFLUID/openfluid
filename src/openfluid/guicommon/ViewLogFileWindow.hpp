@@ -45,73 +45,44 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file ViewLog.cpp
-  \brief Implements ...
+  \file ViewLog.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
-#include "ViewLogFileWindow.hpp"
-#include <fstream>
+
+#ifndef __VIEWLOGFILEWINDOW_HPP__
+#define __VIEWLOGFILEWINDOW_HPP__
+
+#include <gtkmm.h>
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace guicommon {
+
 
 // =====================================================================
 // =====================================================================
 
-
-ViewLogFileWindow::ViewLogFileWindow(const std::string& PathToLogFile)
+class DLLEXPORT ViewLogFileWindow : public Gtk::Window
 {
-  set_default_size(500, 350);
-  set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+  private:
+    Gtk::VBox m_VBox;
+    Gtk::TextView m_LogTextView;
+    Glib::RefPtr<Gtk::TextBuffer> m_RefLogTextBuffer;
+    Gtk::ScrolledWindow m_LogSWindow;
+    Gtk::Button m_CloseButton;
 
-  set_title("Install log");
+    void onCloseClicked();
 
-  m_CloseButton.set_label("Close");
+  public:
+    ViewLogFileWindow(const std::string& PathToLogfile);
+};
 
-  m_RefLogTextBuffer = Gtk::TextBuffer::create();
-  m_RefLogTextBuffer->set_text("");
-
-  m_LogTextView.set_editable(false);
-  m_LogTextView.set_buffer(m_RefLogTextBuffer);
-  m_LogTextView.set_wrap_mode(Gtk::WRAP_WORD);
-
-  m_LogSWindow.add(m_LogTextView);
-  m_LogSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+} } //namespaces
 
 
-  m_VBox.set_border_width(12);
-  m_VBox.pack_start(m_LogSWindow,Gtk::PACK_EXPAND_WIDGET,12);
-  m_VBox.pack_start(m_CloseButton,Gtk::PACK_SHRINK,12);
 
-  add(m_VBox);
-
-  m_CloseButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &ViewLogFileWindow::onCloseClicked)
-    );
-
-  std::ifstream LogFile(PathToLogFile.c_str());
-  std::string Line, FullContent;
-
-  while(getline(LogFile,Line))
-  {
-    FullContent += Line + "\n";
-  }
-  LogFile.close();
-
-  m_RefLogTextBuffer->set_text(FullContent);
-
-  show_all_children();
-
-  set_modal(true);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ViewLogFileWindow::onCloseClicked()
-{
-  hide();
-}
+#endif /* __VIEWLOGFILEWINDOW_HPP__ */

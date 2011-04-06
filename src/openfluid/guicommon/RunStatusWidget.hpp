@@ -58,13 +58,17 @@
 
 #include <gtkmm.h>
 
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace guicommon {
 
 
 // =====================================================================
 // =====================================================================
 
 
-class RunStatusWidget : public Gtk::EventBox
+class DLLEXPORT RunStatusWidget : public Gtk::EventBox
 {
   private:
     Gtk::VBox m_MainBox;
@@ -120,13 +124,10 @@ class RunStatusWidget : public Gtk::EventBox
 
     void setLastStepStr(std::string StepNbrStr) { m_LastStepNbrStr = StepNbrStr; };
 
-
-
-
-
-
-
-
 };
+
+
+} } //namespaces
+
 
 #endif /* __RUNSTATUSWIDGET_HPP__ */

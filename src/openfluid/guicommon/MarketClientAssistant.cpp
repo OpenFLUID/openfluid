@@ -55,13 +55,16 @@
 
 
 
-#include "MarketClientAssistant.hpp"
-#include "ViewLogFileWindow.hpp"
+#include <openfluid/guicommon/MarketClientAssistant.hpp>
+#include <openfluid/guicommon/ViewLogFileWindow.hpp>
 
 #include <iostream>
 #include <boost/filesystem.hpp>
 
 #include <openfluid/base.hpp>
+
+
+namespace openfluid { namespace guicommon {
 
 
 MarketClientAssistant::MarketClientAssistant()
@@ -704,3 +707,7 @@ void MarketClientAssistant::onViewLogClicked()
 
   Gtk::Main::run(LogWindow);
 }
+
+
+} } //namespaces
+

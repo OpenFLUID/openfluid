@@ -60,14 +60,14 @@
 
 
 #include <gtkmm/main.h>
-#include "MarketClientAssistant.hpp"
+#include <openfluid/guicommon/MarketClientAssistant.hpp>
 
 int main(int argc, char *argv[])
 {
   openfluid::base::Init();
 
   Gtk::Main kit(argc, argv);
-  MarketClientAssistant Assistant;
+  openfluid::guicommon::MarketClientAssistant Assistant;
 
   Gtk::Main::run(Assistant);
 

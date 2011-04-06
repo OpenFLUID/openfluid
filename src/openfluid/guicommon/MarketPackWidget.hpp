@@ -45,83 +45,103 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file RunStatusWidget.cpp
-  \brief Implements ...
+  \file MarketPackWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
 
-#include <glibmm/i18n.h>
+#ifndef __MARKETPACKWIDGET_HPP__
+#define __MARKETPACKWIDGET_HPP__
 
 
-#include "RunStatusWidget.hpp"
-#include <boost/format.hpp>
+#include <gtkmm.h>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/market/MarketInfos.hpp>
+
+
+namespace openfluid { namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
-
-RunStatusWidget::RunStatusWidget()
+class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 {
 
-  m_PresimText = _("Pre-simulation");
-  m_InitText = _("Initialization");
-  m_RunstepText = _("Run step");
-  m_FinalText = _("Finalization");
-  m_LastStepNbrStr = "0";
-  m_CurrentStepText = "0";
+  public:
+    typedef sigc::signal<void> signal_install_modified_t;
 
-  m_RunProgressBar.set_fraction(0.0);
-  m_RunProgressBar.set_size_request(-1,50);
+  private:
 
-  setPresimDefault();
-  m_PresimLabel.set_size_request(120,-1);
-  setInitDefault();
-  m_InitLabel.set_size_request(120,-1);
-  setRunstepDefault();
-  m_RunstepLabel.set_size_request(150,-1);
-  setFinalDefault();
-  m_FinalLabel.set_size_request(120,-1);
+    const openfluid::market::MetaPackageInfo m_MetaPackInfo;
 
+    Gtk::Image* m_EmptyCartImage;
+    Gtk::Image* m_FullCartImage;
 
+    Gtk::Label m_IDLabel;
+    Gtk::HBox m_FormatHBox;
+    Gtk::Label m_FormatLabel;
+    Gtk::ComboBox m_FormatCombo;
+    Gtk::VBox m_DetailsLeftVBox;
+    Gtk::HBox m_MainHBox;
+    Gtk::ToggleButton m_InstallToggle;
 
-  m_InfosBox.pack_start(m_PresimLabel,Gtk::PACK_EXPAND_WIDGET,8);
-  m_InfosBox.pack_start(m_InitLabel,Gtk::PACK_EXPAND_WIDGET,8);
-  m_InfosBox.pack_start(m_RunstepLabel,Gtk::PACK_EXPAND_WIDGET,8);
-  m_InfosBox.pack_start(m_FinalLabel,Gtk::PACK_EXPAND_WIDGET,8);
-
-  m_MainBox.pack_start(m_RunProgressBar,Gtk::PACK_EXPAND_WIDGET,8);
-  m_MainBox.pack_start(m_InfosBox,Gtk::PACK_EXPAND_WIDGET,8);
+    Gtk::VBox m_DetailsRightVBox;
+    Gtk::Label m_LicenseLabel;
+    Gtk::Label m_VersionLabel;
 
 
+    Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
 
-  add(m_MainBox);
+    class FormatComboColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
 
-  show_all_children(true);
-}
+        Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
+        Gtk::TreeModelColumn<openfluid::market::MetaPackageInfo::SelectionType> m_SelType;
 
-// =====================================================================
-// =====================================================================
+        FormatComboColumns() { add(m_FormatName); add(m_SelType); }
+    };
 
+    FormatComboColumns m_FormatColumns;
 
-RunStatusWidget::~RunStatusWidget()
-{
+    void onInstallModified();
 
-}
+    bool onButtonRelease(GdkEventButton* Event);
 
+    void updateDisplayedInfos();
 
-// =====================================================================
-// =====================================================================
-
-
-void RunStatusWidget::setProgressFraction(double Fraction)
-{
-  m_RunProgressBar.set_fraction(Fraction);
-  m_RunProgressBar.set_text((boost::format("%1$.1f %%") % (Fraction*100)).str());
-}
+    static std::string replaceByUnknownIfEmpty(const std::string& Str);
 
 
+  protected:
+    signal_install_modified_t m_signal_install_modified;
+
+
+  public:
+    MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo);
+
+    ~MarketPackWidget();
+
+    std::string getID() const { return m_MetaPackInfo.ID; };
+
+    bool isInstall() const { return m_InstallToggle.get_active(); };
+
+    void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
+
+    openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+
+    signal_install_modified_t signal_install_modified();
+
+
+
+};
+
+
+} } //namespaces
+
+
+#endif /* __MARKETPACKWIDGET_HPP__ */

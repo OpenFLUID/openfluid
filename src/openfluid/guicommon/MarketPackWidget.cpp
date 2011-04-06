@@ -53,8 +53,10 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include "MarketPackWidget.hpp"
+#include <openfluid/guicommon/MarketPackWidget.hpp>
 
+
+namespace openfluid { namespace guicommon {
 
 const static Gdk::Color GREEN("#97DE62");
 const static Gdk::Color LIGHTGREEN("#C7F1B3");
@@ -281,4 +283,7 @@ std::string MarketPackWidget::replaceByUnknownIfEmpty(const std::string& Str)
   if (Str.empty()) return "<i>unknown</i>";
   return Str;
 }
+
+
+} } //namespaces
 

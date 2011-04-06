@@ -10,8 +10,8 @@ LINK_DIRECTORIES(${GTKMM_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${GLIBMM_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS})
 
-INCLUDE_DIRECTORIES(${GTHREAD_INCLUDE_DIRS})
-LINK_DIRECTORIES(${GTHREAD_LIBRARY_DIRS})
+#INCLUDE_DIRECTORIES(${GTHREAD_INCLUDE_DIRS})
+#LINK_DIRECTORIES(${GTHREAD_LIBRARY_DIRS})
 
 ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
@@ -19,9 +19,7 @@ INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 
-ADD_EXECUTABLE(openfluid-minimal-gui    
-               RunStatusWidget.cpp RunStatusWidget.hpp 
-               SimulationRunDialog.cpp SimulationRunDialog.hpp
+ADD_EXECUTABLE(openfluid-minimal-gui                   
                main.cpp)
 
 SET_TARGET_PROPERTIES(openfluid-minimal-gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
@@ -33,7 +31,8 @@ TARGET_LINK_LIBRARIES(openfluid-minimal-gui
                       openfluid-core
                       openfluid-machine
                       openfluid-io
-                      openfluid-tools)
+                      openfluid-tools
+                      openfluid-guicommon)
 
 
 

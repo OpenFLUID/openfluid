@@ -57,19 +57,21 @@
 #define __RUNDIALOGMACHINELISTENER_HPP__
 
 
-
 #include <openfluid/machine/MachineListener.hpp>
 #include <gtkmm.h>
 #include <glibmm/i18n.h>
 
-#include "RunStatusWidget.hpp"
+#include <openfluid/dllexport.hpp>
+#include <openfluid/guicommon/RunStatusWidget.hpp>
 
+
+namespace openfluid { namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
 
-class RunDialogMachineListener : public openfluid::machine::MachineListener
+class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineListener
 {
   private:
     unsigned int m_CurrentStep;
@@ -328,6 +330,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
 
 };
 
+} } //namespaces
 
 
 

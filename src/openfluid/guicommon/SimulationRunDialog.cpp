@@ -57,7 +57,11 @@
 #include <glibmm.h>
 #include <glibmm/i18n.h>
 
-#include "SimulationRunDialog.hpp"
+#include <openfluid/guicommon/SimulationRunDialog.hpp>
+
+
+namespace openfluid { namespace guicommon {
+
 
 // =====================================================================
 // =====================================================================
@@ -259,3 +263,8 @@ void SimulationRunDialog::runSimulation()
   m_SimulationCompleted = true;
 
 }
+
+
+} } //namespaces
+
+

@@ -57,15 +57,8 @@
 #include <boost/foreach.hpp>
 #include <glibmm/i18n.h>
 
-//#include <openfluid/debug.hpp>
-
-//#include "BuilderMachineListener.hpp"
-#include "../../openfluid-minimal-gui/RunDialogMachineListener.hpp"
-#include "../../openfluid-minimal-gui/SimulationRunDialog.hpp"
-#include "BuilderAppDialogFactory.hpp"
-//#include "BuilderRunDialog.hpp"
-//#include "RunDialogMachineListener.hpp"
-//#include "SimulationRunDialog.hpp"
+#include <openfluid/guicommon/SimulationRunDialog.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -79,7 +72,7 @@ EngineProject::EngineProject()
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   mp_IOListener = new openfluid::io::IOListener();
   //  mp_Listener = new BuilderMachineListener();
-  mp_Listener = new RunDialogMachineListener();
+  mp_Listener = new openfluid::guicommon::RunDialogMachineListener();
 
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
       mp_Listener);
@@ -102,7 +95,7 @@ void EngineProject::run()
 
   mp_ModelInstance->initialize();
 
-  SimulationRunDialog RunDialog(mp_Engine);
+  openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
 
   Gtk::Main::run(RunDialog);
 

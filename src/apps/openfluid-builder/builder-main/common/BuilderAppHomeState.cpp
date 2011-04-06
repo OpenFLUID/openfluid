@@ -56,9 +56,8 @@
 
 #include "BuilderAppCoordinator.hpp"
 
-#include "BuilderAppDialogFactory.hpp"
-
-#include "MarketClientAssistant.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/guicommon/MarketClientAssistant.hpp>
 
 
 // =====================================================================
@@ -131,7 +130,7 @@ void BuilderAppHomeState::whenRunAsked()
 
 void BuilderAppHomeState::whenMarketAsked()
 {
-  MarketClientAssistant Assistant;
+  openfluid::guicommon::MarketClientAssistant Assistant;
   Assistant.set_modal(true);
   Gtk::Main::run(Assistant);
 }

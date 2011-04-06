@@ -59,9 +59,14 @@
 #include <gtkmm.h>
 #include <openfluid/market.hpp>
 
-#include "MarketPackWidget.hpp"
+#include <openfluid/dllexport.hpp>
+#include <openfluid/guicommon/MarketPackWidget.hpp>
 
-class MarketClientAssistant : public Gtk::Assistant
+
+namespace openfluid { namespace guicommon {
+
+
+class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 {
 
   private:
@@ -205,6 +210,8 @@ class MarketClientAssistant : public Gtk::Assistant
 
 
 };
+
+} } //namespaces
 
 
 #endif /* __MARKETCLIENTASSISTANT_HPP__ */

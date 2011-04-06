@@ -46,23 +46,32 @@
  */
 
 /**
- \file BuilderAppDialogFactory.hpp
+ \file DialogBoxFactory.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERAPPDIALOGFACTORY_HPP__
-#define __BUILDERAPPDIALOGFACTORY_HPP__
+#ifndef __DIALOGBOXFACTORY_HPP__
+#define __DIALOGBOXFACTORY_HPP__
+
 
 #include <gtkmm.h>
-
 #include <openfluid/base.hpp>
 
-class BuilderAppDialogFactory
+
+namespace openfluid { namespace guicommon {
+
+// =====================================================================
+// =====================================================================
+
+
+class DialogBoxFactory
 {
   public:
+
     static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+
     static Glib::ustring showOpenProjectDialog();
 
     static void showSimpleErrorMessage(Glib::ustring MessageText);
@@ -71,4 +80,8 @@ class BuilderAppDialogFactory
         Glib::ustring LabelText);
 };
 
-#endif /* __BUILDERAPPDIALOGFACTORY_HPP__ */
+
+} } //namespaces
+
+
+#endif /* __DIALOGBOXFACTORY_HPP__ */

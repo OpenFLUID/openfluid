@@ -55,7 +55,7 @@
 
 #include <gtkmm.h>
 
-#include "SimulationRunDialog.hpp"
+#include <openfluid/guicommon/SimulationRunDialog.hpp>
 
 
 int main(int argc, char *argv[])
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
   openfluid::machine::SimulationBlob SBlob;
   openfluid::base::RuntimeEnvironment* RunEnv;
-  RunDialogMachineListener* MachineListen = new RunDialogMachineListener();
+  openfluid::guicommon::RunDialogMachineListener* MachineListen = new openfluid::guicommon::RunDialogMachineListener();
   openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
   openfluid::machine::Engine* SimEngine;
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 
   Gtk::Main kit(argc, argv);
-  SimulationRunDialog RunDialog(SimEngine);
+  openfluid::guicommon::SimulationRunDialog RunDialog(SimEngine);
 
   Gtk::Main::run(RunDialog);
 

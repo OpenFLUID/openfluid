@@ -60,8 +60,11 @@
 //#include "SimulOutSetsModel.hpp"
 //#include "SimulOutSetDescModel.hpp"
 #include "BuilderListToolBox.hpp"
-#include "BuilderAppDialogFactory.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
+
+// =====================================================================
+// =====================================================================
 
 
 void SimulCoordinator::updateOutFilesListToolBox()
@@ -71,20 +74,44 @@ void SimulCoordinator::updateOutFilesListToolBox()
   m_OutFilesListToolBox.setEditCommandAvailable(
       m_OutFilesModel.getSelectedFileFormat());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::updateOutSetsListToolBox()
 {
   m_OutSetsListToolBox.setRemoveCommandAvailable(
       m_OutSetsModel.getSelectedSet());
   m_OutSetsListToolBox.setEditCommandAvailable(m_OutSetsModel.getSelectedSet());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenFromUserFileFormatSelectionChanged()
 {
   updateOutFilesListToolBox();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenFromUserSetSelectionChanged()
 {
   updateOutSetsListToolBox();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenAddFileFormatAsked()
 {
   m_OutFileDescModel.initialize(0, m_OutFilesModel.generateNextFormatName(),
@@ -94,6 +121,12 @@ void SimulCoordinator::whenAddFileFormatAsked()
       m_OutFileDescModel.getFormatName());
   updateOutFilesListToolBox();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenAddSetAsked()
 {
   m_OutSetDescModel.initialize(0, "",
@@ -108,9 +141,15 @@ void SimulCoordinator::whenAddSetAsked()
         m_OutSetDescModel.getFormatName(), m_OutSetDescModel.getFormatIndex());
     updateOutSetsListToolBox();
   } else
-    BuilderAppDialogFactory::showSimpleErrorMessage(
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
         "Impossible to create a Set :\nYou have to create at least a Unit Class and a Files Format before.");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenRemoveFileFormatAsked()
 {
   m_OutFilesModel.deleteSelectedFileFormat();
@@ -119,11 +158,23 @@ void SimulCoordinator::whenRemoveFileFormatAsked()
   updateOutSetsListToolBox();
   //if deletion, emit signal to update sets
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenRemoveSetAsked()
 {
   m_OutSetsModel.deleteSelectedSet();
   updateOutSetsListToolBox();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenEditFileFormatAsked()
 {
   m_OutFileDescModel.initialize(m_OutFilesModel.getSelectedFileFormat(),
@@ -132,6 +183,12 @@ void SimulCoordinator::whenEditFileFormatAsked()
   m_OutFileDescModel.showDialog();
   m_OutFilesModel.updateSelectedFileFormat(m_OutFileDescModel.getFormatName());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::whenEditSetAsked()
 {
   m_OutSetDescModel.initialize(m_OutSetsModel.getSelectedSet(),
@@ -142,6 +199,11 @@ void SimulCoordinator::whenEditSetAsked()
   m_OutSetsModel.updateSelectedSet(m_OutSetDescModel.getFormatName());
   updateOutSetsListToolBox();
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 SimulCoordinator::SimulCoordinator(SimulRunModel& RunModel,
     SimulOutFilesModel& OutFilesModel, SimulOutFileDescModel& FileDescModel,
@@ -170,6 +232,12 @@ SimulCoordinator::SimulCoordinator(SimulRunModel& RunModel,
   m_OutSetsListToolBox.signal_EditCommandAsked().connect(sigc::mem_fun(*this,
       &SimulCoordinator::whenEditSetAsked));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulCoordinator::setEngineRequirements(
     openfluid::base::RunDescriptor& RunDesc,
     openfluid::base::OutputDescriptor& OutDesc,

@@ -62,9 +62,9 @@
 #include <openfluid/core.hpp>
 #include <openfluid/io.hpp>
 
-//class BuilderMachineListener;
-class RunDialogMachineListener;
-//class BuilderRunDialog;
+
+#include <openfluid/guicommon/RunDialogMachineListener.hpp>
+
 
 class EngineProject
 {
@@ -77,7 +77,7 @@ class EngineProject
     openfluid::io::IOListener* mp_IOListener;
 
     //    BuilderMachineListener* mp_Listener;
-    RunDialogMachineListener* mp_Listener;
+    openfluid::guicommon::RunDialogMachineListener* mp_Listener;
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 

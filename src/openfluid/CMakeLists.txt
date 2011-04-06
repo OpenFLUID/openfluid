@@ -9,6 +9,8 @@ ADD_SUBDIRECTORY(machine)
 ADD_SUBDIRECTORY(io)
 ADD_SUBDIRECTORY(tools)
 ADD_SUBDIRECTORY(market)
+ADD_SUBDIRECTORY(builderext)
+ADD_SUBDIRECTORY(guicommon)
 
 
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.hpp 

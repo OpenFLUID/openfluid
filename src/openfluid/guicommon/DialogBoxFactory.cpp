@@ -46,17 +46,26 @@
  */
 
 /**
- \file BuilderAppDialogFactory.cpp
+ \file DialogBoxFactory.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "BuilderAppDialogFactory.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
+#include <glibmm.h>
 #include <glibmm/i18n.h>
 
-bool BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
+
+namespace openfluid { namespace guicommon {
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool DialogBoxFactory::showSimpleOkCancelQuestionDialog(
     Glib::ustring Message)
 {
   Gtk::MessageDialog Dialog(Message, false, Gtk::MESSAGE_QUESTION,
@@ -64,7 +73,13 @@ bool BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
 
   return (Dialog.run() == Gtk::RESPONSE_OK);
 }
-Glib::ustring BuilderAppDialogFactory::showOpenProjectDialog()
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring DialogBoxFactory::showOpenProjectDialog()
 {
   Gtk::FileChooserDialog Dialog(_("Select existing project folder"),
       Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
@@ -84,7 +99,12 @@ Glib::ustring BuilderAppDialogFactory::showOpenProjectDialog()
   return "";
 }
 
-void BuilderAppDialogFactory::showSimpleErrorMessage(Glib::ustring MessageText)
+
+// =====================================================================
+// =====================================================================
+
+
+void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,
       Gtk::BUTTONS_OK);
@@ -92,7 +112,12 @@ void BuilderAppDialogFactory::showSimpleErrorMessage(Glib::ustring MessageText)
     Dialog.hide();
 }
 
-std::string BuilderAppDialogFactory::showTextEntryDialog(
+
+// =====================================================================
+// =====================================================================
+
+
+std::string DialogBoxFactory::showTextEntryDialog(
     Glib::ustring MessageText, Glib::ustring LabelText)
 {
   Gtk::Dialog Dialog;
@@ -118,3 +143,8 @@ std::string BuilderAppDialogFactory::showTextEntryDialog(
 
   return "";
 }
+
+
+} } //namespaces
+
+

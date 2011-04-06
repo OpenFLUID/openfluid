@@ -56,7 +56,12 @@
 
 #include <glibmm/i18n.h>
 
-#include "BuilderAppDialogFactory.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
+
+// =====================================================================
+// =====================================================================
+
 
 void DomainUnitEditionModelImpl::initialize()
 {
@@ -74,6 +79,12 @@ void DomainUnitEditionModelImpl::initialize()
 
   m_SelectedRelation = std::make_pair("", std::make_pair("", 0));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::extractClassNames()
 {
   m_ClassNames.clear();
@@ -86,6 +97,12 @@ void DomainUnitEditionModelImpl::extractClassNames()
     m_ClassNames.push_back(it->first);
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::extractRelation(std::string RelationName,
     openfluid::core::UnitsPtrList_t* UnitsPtrList)
 {
@@ -94,6 +111,12 @@ void DomainUnitEditionModelImpl::extractRelation(std::string RelationName,
         m_RelationsByNameMap[RelationName].end(), UnitsPtrList->begin(),
         UnitsPtrList->end());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::extractUnitAttributes()
 {
   m_ProcessOrder = mp_Unit->getProcessOrder();
@@ -115,31 +138,73 @@ void DomainUnitEditionModelImpl::extractUnitAttributes()
     extractRelation("Children", Children);
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 DomainUnitEditionModelImpl::DomainUnitEditionModelImpl()
 {
   initialize();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionModelImpl::signal_InitAsked()
 {
   return m_signal_InitAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionModelImpl::signal_ShowDialogAsked()
 {
   return m_signal_ShowDialogAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionModelImpl::signal_SelectedRelationRemoved()
 {
   return m_signal_SelectedRelationRemoved;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionModelImpl::signal_RelationAdded()
 {
   return m_signal_RelationAdded;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::setEngineRequirements(
     openfluid::core::CoreRepository& CoreRepos)
 {
   mp_CoreRepos = &CoreRepos;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::initialize(openfluid::core::Unit& SelectedUnit)
 {
   initialize();
@@ -150,36 +215,84 @@ void DomainUnitEditionModelImpl::initialize(openfluid::core::Unit& SelectedUnit)
 
   m_signal_InitAsked.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::showDialog()
 {
   m_signal_ShowDialogAsked.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::setProcessOrder(int PcsOrder)
 {
   m_ProcessOrder = PcsOrder;
   mp_Unit->setProcessOrder(m_ProcessOrder);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainUnitEditionModelImpl::getClassName()
 {
   return mp_Unit->getClass();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainUnitEditionModelImpl::getId()
 {
   return mp_Unit->getID();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainUnitEditionModelImpl::getProcessOrder()
 {
   return m_ProcessOrder;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, openfluid::core::UnitsPtrList_t> DomainUnitEditionModelImpl::getRelationsByName()
 {
   return m_RelationsByNameMap;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::setSelectedRelation(std::pair<std::string,
     std::pair<std::string, int> > SelectedRelation)
 {
   m_SelectedRelation = SelectedRelation;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::removeSelectedRelation()
 {
   openfluid::core::Unit* SelectedUnit = mp_CoreRepos->getUnit(
@@ -213,6 +326,12 @@ void DomainUnitEditionModelImpl::removeSelectedRelation()
     }
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionModelImpl::addRelationAsked(std::string RelationName,
     std::string AddClassName, int AddId)
 {
@@ -251,10 +370,15 @@ void DomainUnitEditionModelImpl::addRelationAsked(std::string RelationName,
     }
   } else
   {
-    BuilderAppDialogFactory::showSimpleErrorMessage(_(
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_(
         "This Unit doesn't exist."));
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 std::pair<std::string, std::pair<std::string, int> > DomainUnitEditionModelSub::getSelectedRelation()
 {

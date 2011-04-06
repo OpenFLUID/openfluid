@@ -69,6 +69,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-machine
                       openfluid-io
                       openfluid-tools
+                      openfluid-guicommon
                       openfluid-builder-gdl
                       openfluid-builder-main)
 

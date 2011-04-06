@@ -61,12 +61,16 @@
 
 #include <openfluid/base.hpp>
 #include <openfluid/machine.hpp>
+#include <openfluid/dllexport.hpp>
 
-#include "RunDialogMachineListener.hpp"
-#include "RunStatusWidget.hpp"
+#include <openfluid/guicommon/RunDialogMachineListener.hpp>
+#include <openfluid/guicommon/RunStatusWidget.hpp>
 
 
-class SimulationRunDialog : public Gtk::Dialog
+namespace openfluid { namespace guicommon {
+
+
+class DLLEXPORT SimulationRunDialog : public Gtk::Dialog
 {
   private:
 
@@ -113,6 +117,9 @@ class SimulationRunDialog : public Gtk::Dialog
     bool isSimulationCompleted() { return m_SimulationCompleted; };
 
 };
+
+} } //namespaces
+
 
 
 #endif /* __SIMULATIONRUNDIALOG_HPP___ */

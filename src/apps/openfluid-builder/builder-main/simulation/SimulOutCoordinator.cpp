@@ -57,7 +57,7 @@
 #include "SimulOutFileDescModel.hpp"
 
 #include "BuilderListToolBox.hpp"
-#include "BuilderAppDialogFactory.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -135,7 +135,7 @@ void SimulOutCoordinator::whenAddSetAsked()
     updateOutSetsListToolBox();
     m_signal_SimulOutChanged.emit();
   } else
-    BuilderAppDialogFactory::showSimpleErrorMessage(
+  openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
         "Impossible to create a Set :\nYou have to create at least a Unit Class and a Files Format before.");
 }
 
