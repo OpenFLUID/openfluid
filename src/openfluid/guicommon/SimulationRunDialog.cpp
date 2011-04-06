@@ -58,7 +58,7 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
-
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 namespace openfluid { namespace guicommon {
 
@@ -241,23 +241,23 @@ void SimulationRunDialog::runSimulation()
   }
   catch (openfluid::base::OFException& E)
   {
-    std::cerr << "ERROR: " + std::string(E.what()) << std::endl;
-    delete mp_Engine;
+    DialogBoxFactory::showSimpleErrorMessage(_("OpenFLUID error: ") + std::string(E.what()));
+    hide();
   }
   catch (std::bad_alloc& E)
   {
-    std::cerr << "MEMORY ALLOCATION ERROR: " + std::string(E.what()) + ". Possibly not enough memory available" << std::endl;
-    delete mp_Engine;
+    DialogBoxFactory::showSimpleErrorMessage(_("Memory allocation error: ") + std::string(E.what()));
+    hide();
   }
   catch (std::exception& E)
   {
-    std::cerr << "SYSTEM ERROR: " + std::string(E.what()) << std::endl;
-    delete mp_Engine;
+    DialogBoxFactory::showSimpleErrorMessage(_("System error: ") + std::string(E.what()));
+    hide();
   }
   catch (...)
   {
-    std::cerr << "UNKNOWN ERROR" << std::endl;
-    delete mp_Engine;
+    DialogBoxFactory::showSimpleErrorMessage(_("Undetermined error."));
+    hide();
   }
 
   m_SimulationCompleted = true;
