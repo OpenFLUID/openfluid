@@ -63,18 +63,14 @@
 // =====================================================================
 
 
-SimulationRunDialog::SimulationRunDialog(openfluid::machine::SimulationBlob* SBlob,
-                                         openfluid::machine::ModelInstance* Model,
-                                         RunDialogMachineListener* MachineListen,
-                                         openfluid::io::IOListener* IOListen,
-                                         openfluid::machine::Engine* Eng)
-  : m_SimulationCompleted(false), mp_SBlob(SBlob), mp_Model(Model), mp_MachineListen(MachineListen), mp_IOListen(IOListen),
-    mp_Engine(Eng)
+SimulationRunDialog::SimulationRunDialog(openfluid::machine::Engine* Engine)
+  : m_SimulationCompleted(false), mp_Engine(Engine), mp_SBlob(Engine->getSimulationBlob()),
+    mp_Model(Engine->getModelInstance()), mp_MachineListen((RunDialogMachineListener*)(Engine->getMachineListener()))
 {
 
   m_StepsCount = openfluid::base::SimulationInfo::computeTimeStepsCount(mp_SBlob->getRunDescriptor().getBeginDate(),
-                                                                                        mp_SBlob->getRunDescriptor().getEndDate(),
-                                                                                        mp_SBlob->getRunDescriptor().getDeltaT());
+                                                                        mp_SBlob->getRunDescriptor().getEndDate(),
+                                                                        mp_SBlob->getRunDescriptor().getDeltaT());
 
   openfluid::tools::ConvertValue((m_StepsCount-1),&m_LastStepStr);
 
@@ -146,6 +142,7 @@ SimulationRunDialog::~SimulationRunDialog()
 
 void SimulationRunDialog::onIgnition()
 {
+
   m_SimulationCompleted = false;
 
   /*
@@ -161,10 +158,20 @@ void SimulationRunDialog::onIgnition()
 */
   runSimulation();
 
-
   m_ControlButton.set_sensitive(true);
+
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationRunDialog::on_delete_event(GdkEventAny*)
+{
+  onControlButtonClicked();
+  return true;
+}
 
 
 // =====================================================================

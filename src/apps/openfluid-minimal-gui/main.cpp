@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 
   Gtk::Main kit(argc, argv);
-  SimulationRunDialog RunDialog(&SBlob, &Model, MachineListen, IOListen, SimEngine);
+  SimulationRunDialog RunDialog(SimEngine);
 
   Gtk::Main::run(RunDialog);
 

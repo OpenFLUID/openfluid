@@ -85,11 +85,11 @@ class SimulationRunDialog : public Gtk::Dialog
 
     bool m_SimulationCompleted;
 
+    openfluid::machine::Engine* mp_Engine;
     openfluid::machine::SimulationBlob* mp_SBlob;
     openfluid::machine::ModelInstance* mp_Model;
     RunDialogMachineListener* mp_MachineListen;
-    openfluid::io::IOListener* mp_IOListen;
-    openfluid::machine::Engine* mp_Engine;
+
 
     std::string m_LastStepStr;
     int m_StepsCount;
@@ -102,16 +102,16 @@ class SimulationRunDialog : public Gtk::Dialog
 
     void runSimulation();
 
+    bool on_delete_event(GdkEventAny*);
 
   public:
 
-    SimulationRunDialog(openfluid::machine::SimulationBlob* SBlob,
-                        openfluid::machine::ModelInstance* Model,
-                        RunDialogMachineListener* MachineListen,
-                        openfluid::io::IOListener* IOListen,
-                        openfluid::machine::Engine* Eng);
+    SimulationRunDialog(openfluid::machine::Engine* Eng);
 
     ~SimulationRunDialog();
+
+    bool isSimulationCompleted() { return m_SimulationCompleted; };
+
 };
 
 
