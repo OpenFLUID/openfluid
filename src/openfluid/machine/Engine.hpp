@@ -182,7 +182,16 @@ class DLLEXPORT Engine
 
     void closeOutputs();
 
-    openfluid::base::SimulationInfo *getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };
+    openfluid::base::SimulationInfo* getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };
+
+    SimulationBlob*  getSimulationBlob() { return &m_SimulationBlob; };
+
+    MachineListener* getMachineListener() { return mp_MachineListener; };
+
+    openfluid::io::IOListener* getIOListener() { return mp_IOListener; };
+
+    ModelInstance* getModelInstance() { return &m_ModelInstance; };
+
 
 };
 
