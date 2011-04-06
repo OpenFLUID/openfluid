@@ -59,128 +59,240 @@
 class SimulOutSetDescView
 {
   public:
+
     virtual sigc::signal<void> signal_NameChanged() = 0;
+
     virtual sigc::signal<void> signal_ClassChanged() = 0;
+
     virtual sigc::signal<void> signal_IDsChanged() = 0;
+
     virtual sigc::signal<void> signal_VarsChanged() = 0;
+
     virtual sigc::signal<void> signal_FormatNameChanged() = 0;
+
     virtual sigc::signal<void> signal_PrecisionChanged() = 0;
+
     virtual sigc::signal<void> signal_SaveAsked() = 0;
+
     virtual sigc::signal<void> signal_CancelAsked() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
     virtual void setCreationMode() = 0;
+
     virtual void setEditionMode() = 0;
+
     virtual void showDialog() = 0;
+
     virtual void setFormatNames(std::vector<std::string> FormatNames) = 0;
+
     virtual void setClasses(std::vector<std::string> Classes) = 0;
+
     virtual void setByClassIDs(
         std::map<std::string, std::vector<unsigned int> > IDsByClass) = 0;
+
     virtual void
         setByClassVars(
             std::map<std::string, std::vector<std::string> > VarsByClass) = 0;
+
     virtual void setName(std::string Value) = 0;
+
     virtual void setClass(std::string Value) = 0;
+
     virtual void setFormatName(std::string Value) = 0;
+
     virtual void setPrecision(int Value) = 0;
+
     virtual void setIDs(std::vector<unsigned int> IDs) = 0;
+
     virtual void setVars(std::vector<std::string> Vars) = 0;
 
     virtual std::string getName() = 0;
+
     virtual std::string getClass() = 0;
+
     virtual std::string getFormatName() = 0;
+
     virtual int getPrecision() = 0;
+
     virtual std::vector<unsigned int> getIDs() = 0;
+
     virtual std::vector<std::string> getVars() = 0;
+
     virtual void closeDialog() = 0;
+
     virtual void showErrorMessageDialog(std::string MessageText) = 0;
+
 };
+
 
 class SimulOutSetDescViewImpl: public SimulOutSetDescView
 {
   private:
+
     sigc::signal<void> m_signal_NameChanged;
+
     sigc::signal<void> m_signal_ClassChanged;
+
     sigc::signal<void> m_signal_IDsChanged;
+
     sigc::signal<void> m_signal_VarsChanged;
+
     sigc::signal<void> m_signal_FormatNameChanged;
+
     sigc::signal<void> m_signal_PrecisionChanged;
+
     sigc::signal<void> m_signal_SaveAsked;
+
     sigc::signal<void> m_signal_CancelAsked;
+
     SimulOutSetDescColumns m_Columns;
+
     Gtk::Dialog* mp_Dialog;
+
     Gtk::Table* mp_Table;
+
     bool m_isInCreationMode;
+
     std::map<std::string, Glib::RefPtr<Gtk::ListStore> > m_ByClassIDsListStores;
+
     std::map<std::string, Glib::RefPtr<Gtk::ListStore> >
         m_ByClassVarsListStores;
+
     std::vector<unsigned int> m_IDs;
+
     std::vector<std::string> m_Vars;
+
     bool m_HaveIDsToBeStored;
+
     bool m_HaveVarsToBeStored;
+
     bool IDsListStoreExistsForCurrentClass();
+
     bool VarsListStoreExistsForCurrentClass();
+
     void selectIDs();
+
     void selectVars();
+
     void onNameChanged();
+
     void onClassChanged();
+
     void selectedIdCallback(const Gtk::TreeModel::iterator& Iter);
+
     void selectedVarCallback(const Gtk::TreeModel::iterator& Iter);
+
     void onIDsChanged();
+
     void onVarsChanged();
+
     void onFormatNameChanged();
+
     void onPrecisionChanged();
+
     void onOkButtonClicked();
+
     void closeDialog();
+
+
   protected:
+
     Gtk::Entry* mp_SetNameEntry;
+
     Gtk::Label* mp_SetNameLabel;
+
     Gtk::ComboBoxText* mp_ClassCombo;
+
     Gtk::ComboBoxText* mp_FormatNameCombo;
+
     Gtk::SpinButton* mp_PrecisionSpin;
+
     Gtk::TreeView* mp_IDsTreeView;
+
     Gtk::TreeView* mp_VarsTreeView;
+
     Gtk::Button* mp_OkCreateButton;
+
     Gtk::Button* mp_CancelCreateButton;
+
     Gtk::Button* mp_CloseEditButton;
+
+
   public:
+
     SimulOutSetDescViewImpl();
+
     sigc::signal<void> signal_NameChanged();
+
     sigc::signal<void> signal_ClassChanged();
+
     sigc::signal<void> signal_IDsChanged();
+
     sigc::signal<void> signal_VarsChanged();
+
     sigc::signal<void> signal_FormatNameChanged();
+
     sigc::signal<void> signal_PrecisionChanged();
+
     sigc::signal<void> signal_SaveAsked();
+
     sigc::signal<void> signal_CancelAsked();
+
     void setCreationMode();
+
     void setEditionMode();
+
     void setFormatNames(std::vector<std::string> FormatNames);
+
     void setClasses(std::vector<std::string> Classes);
+
     void setByClassIDs(
         std::map<std::string, std::vector<unsigned int> > IDsByClass);
+
     void setByClassVars(
         std::map<std::string, std::vector<std::string> > VarsByClass);
+
     void setName(std::string Value);
+
     void setClass(std::string Value);
+
     void setFormatName(std::string Value);
+
+
     void setPrecision(int Value);
+
     void setIDs(std::vector<unsigned int> IDs);
+
     void setVars(std::vector<std::string> Vars);
+
     std::string getName();
+
     std::string getClass();
+
     std::string getFormatName();
+
     int getPrecision();
+
     std::vector<unsigned int> getIDs();
+
     std::vector<std::string> getVars();
+
     void showDialog();
+
     Gtk::Widget* asWidget();
+
     void showErrorMessageDialog(std::string MessageText);
+
 };
+
 
 class SimulOutSetDescViewSub: public SimulOutSetDescViewImpl
 {
   public:
+
     Gtk::TreeView* getIDsTreeView();
+
     Gtk::TreeView* getVarsTreeView();
 };
 

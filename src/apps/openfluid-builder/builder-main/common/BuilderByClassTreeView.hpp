@@ -62,33 +62,59 @@
 class BuilderByClassTreeView
 {
   protected:
+
     sigc::signal<void> m_signal_ClassSelectionChanged;
+
     sigc::signal<void> m_signal_UnitSelectionChanged;
+
     BuilderClassListColumns m_ClassColumns;
+
     Gtk::TreeView* mp_ClassesView;
+
     Gtk::TreeView* mp_UnitsView;
+
     Gtk::Box* mp_MainBox;
+
     void onClassesViewSelectionChanged();
+
     void onUnitsViewSelectionChanged();
+
     void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel);
+
+
   public:
+
     BuilderByClassTreeView();
+
     sigc::signal<void> signal_ClassSelectionChanged();
+
     sigc::signal<void> signal_UnitSelectionChanged();
+
     void setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel);
+
     void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel);
+
     void requestClassSelection(Gtk::TreeIter Iter);
+
     void requestUnitSelection(Gtk::TreeIter Iter);
+
     Gtk::TreeIter getSelectedClassIter();
+
     Gtk::TreeIter getSelectedUnitIter();
+
     Gtk::Widget* asWidget();
+
 };
+
 
 class BuilderByClassTreeViewSub: public BuilderByClassTreeView
 {
   public:
+
     int getClassesViewRowCount();
+
     int getUnitsViewRowCount();
+
 };
 
 #endif /* __BUILDERBYCLASSTREEVIEW_HPP__ */

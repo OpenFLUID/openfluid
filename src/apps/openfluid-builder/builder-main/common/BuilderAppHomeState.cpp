@@ -137,3 +137,11 @@ void BuilderAppHomeState::whenMarketAsked()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenPreferencesAsked()
+{
+  m_App.showPreferencesDialog();
+}

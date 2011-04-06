@@ -63,29 +63,47 @@
 class BuilderProjectModule: public BuilderModule
 {
   private:
+
     EngineProject* mp_EngineProject;
+
   protected:
+
     BuilderModule* mp_ModelModule;
+
     BuilderModule* mp_DomainModule;
+
     BuilderModule* mp_SimulationModule;
+
     BuilderModule* mp_ResultsModule;
 
     BuilderProjectModule(std::string FolderIn);
+
     ~BuilderProjectModule();
+
     void initialize();
+
   public:
+
     void checkAsked();
+
     void runAsked();
+
 };
 
 class BuilderProjectModulePlainGtk: public BuilderProjectModule
 {
   private:
+
     Gtk::Notebook* mp_Notebook;
+
   public:
+
     BuilderProjectModulePlainGtk(std::string FolderIn);
+
     void compose();
+
     Gtk::Widget* asWidget();
+
 };
 
 //class BuilderProjectModuleGdl: public BuilderProjectModule

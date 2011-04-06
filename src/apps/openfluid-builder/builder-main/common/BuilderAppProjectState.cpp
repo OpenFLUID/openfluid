@@ -138,3 +138,11 @@ void BuilderAppProjectState::whenRunAsked()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenPreferencesAsked()
+{
+  m_App.showPreferencesDialog();
+}

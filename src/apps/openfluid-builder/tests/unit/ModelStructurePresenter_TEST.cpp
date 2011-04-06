@@ -56,6 +56,8 @@
 #include "ModelStructureModel.hpp"
 #include "ModelStructureView.hpp"
 #include "TestModelInstanceWrapper.hpp"
+#include "EngineProjectFactory.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -333,6 +335,30 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
   it++;
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
+}
+
+BOOST_AUTO_TEST_CASE(test_update)
+{
+//  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+//  + "/OPENFLUID.IN.Primitives";
+//  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+//
+//  mp_Model->setEngineRequirements(*EngProject->getModelInstance());
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getModelInstance()->getItemsCount(),2);
+//
+//  mp_Model->update();
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getModelInstance()->getItemsCount(),2);
+//
+//  EngProject->getModelInstance()->deleteItem(0);
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getModelInstance()->getItemsCount(),2);
+//
+//  mp_Model->update();
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getModelInstance()->getItemsCount(),1);
+
 }
 
 // =====================================================================

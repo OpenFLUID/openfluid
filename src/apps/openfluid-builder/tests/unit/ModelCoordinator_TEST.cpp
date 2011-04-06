@@ -124,11 +124,11 @@ BOOST_AUTO_TEST_CASE(test_initialStateWithEmptyModel)
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isDownCommandAvailable(),false);
 
   // init signatures
-  FunctionSignatureRegistryImpl Signatures;
-  mp_Coordinator->setSignatures(Signatures);
+  FunctionSignatureRegistry* Signatures = FunctionSignatureRegistry::getInstance();
+  mp_Coordinator->setSignatures(*Signatures);
 
   BOOST_CHECK_EQUAL(mp_AvailFctModel->isASignatureSelected(), true);
-  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures.getGeneratorSignatures()[0]);
+  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures->getGeneratorSignatures()[0]);
   BOOST_CHECK_EQUAL(mp_StructureModel->getFctCount(), 0);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isAddCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isRemoveCommandAvailable(),false);
@@ -140,38 +140,42 @@ BOOST_AUTO_TEST_CASE(test_initialStateWithEmptyModel)
   mp_Coordinator->setEngineRequirements(*EmptyModelInstanceWrapper.getModelInstance());
 
   BOOST_CHECK_EQUAL(mp_AvailFctModel->isASignatureSelected(), true);
-  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures.getGeneratorSignatures()[0]);
+  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures->getGeneratorSignatures()[0]);
   BOOST_CHECK_EQUAL(mp_StructureModel->getFctCount(), 0);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isAddCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isRemoveCommandAvailable(),false);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isUpCommandAvailable(),false);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isDownCommandAvailable(),false);
+
+  delete Signatures;
 }
 
 BOOST_AUTO_TEST_CASE(test_initialStateWithNotEmptyModel)
 {
   // init signatures
-  FunctionSignatureRegistrySub Signatures;
-  mp_Coordinator->setSignatures(Signatures);
+  FunctionSignatureRegistry* Signatures = FunctionSignatureRegistry::getInstance();
+  mp_Coordinator->setSignatures(*Signatures);
 
   // set Engine elements
   TestModelInstanceWrapper OneItemModelInstanceWrapper(1);
   mp_Coordinator->setEngineRequirements(*OneItemModelInstanceWrapper.getModelInstance());
 
   BOOST_CHECK_EQUAL(mp_AvailFctModel->isASignatureSelected(), true);
-  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures.getGeneratorSignatures()[0]);
+  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures->getGeneratorSignatures()[0]);
   BOOST_CHECK_EQUAL(mp_StructureModel->getFctCount(), 1);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isAddCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isRemoveCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isUpCommandAvailable(),false);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isDownCommandAvailable(),false);
+
+  delete Signatures;
 }
 
 BOOST_AUTO_TEST_CASE(test_addAFunction)
 {
   // init signatures
-  FunctionSignatureRegistrySub Signatures;
-  mp_Coordinator->setSignatures(Signatures);
+  FunctionSignatureRegistry* Signatures = FunctionSignatureRegistry::getInstance();
+  mp_Coordinator->setSignatures(*Signatures);
 
   // set Engine elements
   TestModelInstanceWrapper EmptyModelInstanceWrapper;
@@ -181,7 +185,7 @@ BOOST_AUTO_TEST_CASE(test_addAFunction)
   mp_StructureListToolBox->signal_AddCommandAsked().emit();
 
   BOOST_CHECK_EQUAL(mp_AvailFctModel->isASignatureSelected(), true);
-  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures.getGeneratorSignatures()[0]);
+  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures->getGeneratorSignatures()[0]);
   BOOST_CHECK_EQUAL(mp_StructureModel->getFctCount(), 1);
   BOOST_CHECK_EQUAL(mp_StructureModel->getCurrentSelection(), 0);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isAddCommandAvailable(),true);
@@ -193,20 +197,22 @@ BOOST_AUTO_TEST_CASE(test_addAFunction)
   mp_StructureListToolBox->signal_AddCommandAsked().emit();
 
   BOOST_CHECK_EQUAL(mp_AvailFctModel->isASignatureSelected(), true);
-  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures.getGeneratorSignatures()[0]);
+  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures->getGeneratorSignatures()[0]);
   BOOST_CHECK_EQUAL(mp_StructureModel->getFctCount(), 2);
   BOOST_CHECK_EQUAL(mp_StructureModel->getCurrentSelection(), 1);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isAddCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isRemoveCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isUpCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isDownCommandAvailable(),true);
+
+  delete Signatures;
 }
 
 BOOST_AUTO_TEST_CASE(test_removeAFunction)
 {
   // init signatures
-  FunctionSignatureRegistrySub Signatures;
-  mp_Coordinator->setSignatures(Signatures);
+  FunctionSignatureRegistry* Signatures = FunctionSignatureRegistry::getInstance();
+  mp_Coordinator->setSignatures(*Signatures);
 
   // set Engine elements
   TestModelInstanceWrapper OneItemModelInstanceWrapper(1);
@@ -216,13 +222,15 @@ BOOST_AUTO_TEST_CASE(test_removeAFunction)
   mp_StructureListToolBox->signal_RemoveCommandAsked().emit();
 
   BOOST_CHECK_EQUAL(mp_AvailFctModel->isASignatureSelected(), true);
-  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures.getGeneratorSignatures()[0]);
+  BOOST_CHECK(mp_FctDetailModel->getFctDisplayed() == Signatures->getGeneratorSignatures()[0]);
   BOOST_CHECK_EQUAL(mp_StructureModel->getFctCount(), 0);
   BOOST_CHECK_EQUAL(mp_StructureModel->getCurrentSelection(), -1);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isAddCommandAvailable(),true);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isRemoveCommandAvailable(),false);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isUpCommandAvailable(),false);
   BOOST_CHECK_EQUAL(mp_StructureListToolBox->isDownCommandAvailable(),false);
+
+  delete Signatures;
 }
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)

@@ -52,40 +52,62 @@
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
+#include "PreferencesComponent.hpp"
+
+
+// =====================================================================
+// =====================================================================
+
 
 class BuilderAppModule: BuilderModule
 {
   private:
+
     BuilderAppWindow& m_MainWindow;
+
     BuilderAppCoordinator* mp_Coordinator;
+
     BuilderAppActions& m_Actions;
+
+    PreferencesComponent* mp_PreferencesMVP;
+
   protected:
+
     void compose()
     {
       m_MainWindow.setMenuBarWidget(*m_Actions.getMenuBarWidget());
       m_MainWindow.setToolBarWidget(*m_Actions.getToolBarWidget());
       m_MainWindow.addAccelGroup(m_Actions.getAccelGroup());
     }
+
     Gtk::Widget* asWidget()
     {
-      Gtk::Widget* VoidPtr = 0;
-      return VoidPtr;
+      return (Gtk::Widget*) 0;
     }
+
   public:
-    BuilderAppModule():
-      m_MainWindow(*new BuilderAppWindow()), m_Actions(*new BuilderAppActions())
+
+    BuilderAppModule() :
+      m_MainWindow(*new BuilderAppWindow()),
+          m_Actions(*new BuilderAppActions())
     {
-      mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions);
+      mp_PreferencesMVP = new PreferencesComponent();
+
+      mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions,
+          *mp_PreferencesMVP->getModel());
     }
+
     void initialize()
     {
       mp_Coordinator->setHomeModule();
     }
+
     Gtk::Window& composeAndGetAsWindow()
     {
       compose();
       return m_MainWindow;
     }
+
 };
 
 #endif /* BUILDERAPPMODULE_HPP_ */

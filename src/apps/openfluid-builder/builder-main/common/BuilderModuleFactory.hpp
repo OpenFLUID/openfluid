@@ -70,30 +70,51 @@ class BuilderAppActions;
 //class BuilderSimulationModuleSub;
 //class BuilderResultsModuleSub;
 
+#include "EngineProject.hpp"
+
 class BuilderModuleFactory
 {
   private:
     // cf. Idiome de construction à la première utilisation : http://cpp.developpez.com/faq/cpp/?page=static
     static BuilderListToolBoxFactory& ListToolBoxFactory();
+    EngineProject& mp_EngineProject;
   public:
     static BuilderModule* createHomeModule(BuilderAppActions& Actions);
-    static BuilderModule* createModelModule(
-        openfluid::machine::ModelInstance& ModelInstance);
+
+    BuilderModuleFactory(EngineProject& EngProject);
+
+    BuilderModule* createModelModule();
+    BuilderModule* createDomainModule();
+    BuilderModule* createSimulationModule();
+    BuilderModule* createResultsModule();
+
+    BuilderModule* createModelStructureModule();
+    BuilderModule* createDomainStructureModule();
+    BuilderModule* createDomainClassModule();
+    BuilderModule* createSimulationRunModule();
+    BuilderModule* createSimulationOutModule();
+    BuilderModule* createResultsSetModule();
+
+
+//    BuilderModule* createModelFunctionModule(std::string FunctionName);
+
+//    static BuilderModule* createModelModule(
+//        openfluid::machine::ModelInstance& ModelInstance);
 //    static BuilderModelModuleSub* createModelModuleSub();
-    static BuilderModule* createDomainModule(
-        openfluid::core::CoreRepository& CoreRepos);
+//    static BuilderModule* createDomainModule(
+//        openfluid::core::CoreRepository& CoreRepos);
 //    static BuilderDomainModuleSub* createDomainModuleSub();
-    static BuilderModule* createSimulationModule(
-        openfluid::base::RunDescriptor& RunDesc,
-        openfluid::base::OutputDescriptor& OutDesc,
-        openfluid::core::CoreRepository& CoreRepos,
-        openfluid::machine::ModelInstance& ModelInstance);
+//    static BuilderModule* createSimulationModule(
+//        openfluid::base::RunDescriptor& RunDesc,
+//        openfluid::base::OutputDescriptor& OutDesc,
+//        openfluid::core::CoreRepository& CoreRepos,
+//        openfluid::machine::ModelInstance& ModelInstance);
 //    static BuilderSimulationModuleSub* createSimulationModuleSub();
-    static BuilderModule* createResultsModule(
-        openfluid::base::RunDescriptor& RunDesc,
-        openfluid::base::OutputDescriptor& OutDesc,
-        openfluid::core::CoreRepository& CoreRepos,
-        openfluid::machine::ModelInstance& ModelInstance);
+//    static BuilderModule* createResultsModule(
+//        openfluid::base::RunDescriptor& RunDesc,
+//        openfluid::base::OutputDescriptor& OutDesc,
+//        openfluid::core::CoreRepository& CoreRepos,
+//        openfluid::machine::ModelInstance& ModelInstance);
 //    static BuilderResultsModuleSub* createResultsModuleSub();
 };
 

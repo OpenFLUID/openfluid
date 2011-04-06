@@ -81,6 +81,8 @@ class BuilderAppProjectState: public BuilderAppState
     void whenRunAsked();
 
     void whenMarketAsked() {};
+
+    void whenPreferencesAsked();
 };
 
 #endif /* __BUILDERAPPPROJECTSTATE_HPP__ */

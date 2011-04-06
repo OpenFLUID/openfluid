@@ -56,8 +56,12 @@
 
 #include <glibmm/i18n.h>
 
-#include "BuilderListStore.hpp"
+#include <openfluid/tools.hpp>
+#include <openfluid/config.hpp>
 
+#include <boost/filesystem.hpp>
+
+#include "BuilderListStore.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -76,6 +80,57 @@ void ResViewerAdapterModelImpl::createColumns(std::vector<std::string> VarNames)
   }
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void ResViewerAdapterModelImpl::createFileBuffers(
+    std::vector<std::string> VarNames, openfluid::core::Unit* Unit,
+    std::string SetName)
+{
+  for (unsigned int i = 0; i < VarNames.size(); i++)
+  {
+    std::string DirPath =
+        openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir();
+
+    std::string FileName;
+    std::string AbsoluteFileName;
+    std::string FilePath;
+
+    if (openfluid::tools::IsVectorNamedVariable(VarNames[i]))
+    {
+      //erase "[]"
+      Glib::ustring VarName = VarNames[i].erase(VarNames[i].size() - 2, 2);
+      FileName = Glib::ustring::compose("%1%2_%3.vector.%4.%5",
+          Unit->getClass(), Unit->getID(), SetName, VarName,
+          openfluid::config::OUTFILES_EXT);
+    } else
+    {
+      FileName = Glib::ustring::compose("%1%2_%3.scalars.%4", Unit->getClass(),
+          Unit->getID(), SetName, openfluid::config::OUTFILES_EXT);
+    }
+
+    AbsoluteFileName = Glib::ustring::compose("%1/%2", DirPath, FileName);
+    FilePath = boost::filesystem::path(AbsoluteFileName).string();
+
+    if (m_FileContentsByName.find(FileName) == m_FileContentsByName.end())
+    {
+      std::ifstream File(FilePath.c_str());
+
+      if (File)
+      {
+        std::stringstream StringBuf;
+        StringBuf << File.rdbuf();
+        File.close();
+
+        Glib::RefPtr<Gtk::TextBuffer> TextBuf = Gtk::TextBuffer::create();
+        TextBuf->set_text(StringBuf.str());
+
+        m_FileContentsByName[FileName] = TextBuf;
+      }
+    }
+  }
+}
 
 // =====================================================================
 // =====================================================================
@@ -86,17 +141,15 @@ void ResViewerAdapterModelImpl::setNoVarTitle()
   m_Title = "no variables to display at this time";
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-ResViewerAdapterModelImpl::ResViewerAdapterModelImpl()
-: mp_Columns(NULL)
+ResViewerAdapterModelImpl::ResViewerAdapterModelImpl() :
+  mp_Columns(NULL)
 {
   clear();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -104,13 +157,16 @@ ResViewerAdapterModelImpl::ResViewerAdapterModelImpl()
 
 void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
     std::string> VarNames, openfluid::base::SimulationStatus* SimStatus,
-    unsigned int Precision)
+    unsigned int Precision, std::string SetName, bool ShowFiles)
 {
-
   m_Title = Glib::ustring::compose(_("Variables for Unit ID %1 Class %2"),
       Unit->getID(), Unit->getClass());
 
   createColumns(VarNames);
+
+  m_FileContentsByName.clear();
+  if (ShowFiles)
+    createFileBuffers(VarNames, Unit, SetName);
 
   m_refListStore = BuilderListStore::create(*mp_Columns);
 
@@ -164,7 +220,6 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -173,7 +228,6 @@ ResViewerColumns* ResViewerAdapterModelImpl::getColumns()
 {
   return mp_Columns;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -184,7 +238,6 @@ Glib::RefPtr<Gtk::TreeModel> ResViewerAdapterModelImpl::getTreeModel()
   return m_refListStore;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -194,6 +247,14 @@ std::string ResViewerAdapterModelImpl::getTitle()
   return m_Title;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> > ResViewerAdapterModelImpl::getFileContentsByName()
+{
+  return m_FileContentsByName;
+}
 
 // =====================================================================
 // =====================================================================
@@ -205,5 +266,6 @@ void ResViewerAdapterModelImpl::clear()
   mp_Columns = new ResViewerColumns();
   m_refListStore = BuilderListStore::create(*mp_Columns);
   setNoVarTitle();
+  m_FileContentsByName.clear();
 }
 

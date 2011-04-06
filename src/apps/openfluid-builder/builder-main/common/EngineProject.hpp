@@ -62,49 +62,85 @@
 #include <openfluid/core.hpp>
 #include <openfluid/io.hpp>
 
-class BuilderMachineListener;
-class BuilderRunDialog;
+//class BuilderMachineListener;
+class RunDialogMachineListener;
+//class BuilderRunDialog;
 
 class EngineProject
 {
   protected:
+
     openfluid::machine::SimulationBlob* mp_SimBlob;
+
     openfluid::base::RuntimeEnvironment* mp_RunEnv;
+
     openfluid::io::IOListener* mp_IOListener;
-    BuilderMachineListener* mp_Listener;
+
+    //    BuilderMachineListener* mp_Listener;
+    RunDialogMachineListener* mp_Listener;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
+
     openfluid::machine::Engine* mp_Engine;
 
-    boost::posix_time::ptime m_FullStartTime;
-    boost::posix_time::ptime m_FullEndTime;
-    boost::posix_time::ptime m_EffectiveStartTime;
-    boost::posix_time::ptime m_EffectiveEndTime;
+//    boost::posix_time::ptime m_FullStartTime;
+//
+//    boost::posix_time::ptime m_FullEndTime;
+//
+//    boost::posix_time::ptime m_EffectiveStartTime;
+//
+//    boost::posix_time::ptime m_EffectiveEndTime;
 
-    BuilderRunDialog* mp_RunDialog;
+//    BuilderRunDialog* mp_RunDialog;
+
     EngineProject();
-    boost::posix_time::ptime getNow();
-    std::string generateSimulationIdStr();
-    std::string generateDomainInformationStr();
-    std::string generateWarningsCountStr();
-    std::string generateSimulationInformationStr();
-    std::string generateBuffersInformationStr();
-    std::string generateRunTimeInformationStr();
-    std::string generateSavingReportStr();
-    std::string generateDoneStr();
+
+//    boost::posix_time::ptime getNow();
+//
+//    std::string generateSimulationIdStr();
+//
+//    std::string generateDomainInformationStr();
+//
+//    std::string generateWarningsCountStr();
+//
+//    std::string generateSimulationInformationStr();
+//
+//    std::string generateBuffersInformationStr();
+//
+//    std::string generateRunTimeInformationStr();
+//
+//    std::string generateSavingReportStr();
+//
+//    std::string generateDoneStr();
+
   public:
+
     ~EngineProject();
+
     openfluid::machine::SimulationBlob* getSimBlob();
+
     openfluid::base::RuntimeEnvironment* getRunEnv();
+
     openfluid::io::IOListener* getIOListener();
+
     openfluid::machine::MachineListener* getMachineListener();
+
     openfluid::machine::ModelInstance* getModelInstance();
+
     openfluid::core::CoreRepository& getCoreRepository();
+
     openfluid::base::ExecutionMessages& getExecutionMessages();
+
     openfluid::base::RunDescriptor& getRunDescriptor();
+
     openfluid::base::OutputDescriptor& getOutputDescriptor();
+
     void stopEngine();
+
     bool check();
+
     void run();
+
 };
 
 
@@ -115,6 +151,7 @@ class EngineProject
 class EngineProjectEmpty: public EngineProject
 {
   public:
+
     EngineProjectEmpty();
 };
 
@@ -126,6 +163,7 @@ class EngineProjectEmpty: public EngineProject
 class EngineProjectFromFolder: public EngineProject
 {
   public:
+
     EngineProjectFromFolder(std::string FolderIn);
 };
 

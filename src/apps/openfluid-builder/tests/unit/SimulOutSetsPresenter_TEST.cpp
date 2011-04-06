@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(test_extractVariablesString)
 
 BOOST_AUTO_TEST_CASE(test_SetOutDescriptor)
 {
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),2);
   BOOST_CHECK_EQUAL(TreeView->get_columns().size(),6);
@@ -198,13 +198,13 @@ BOOST_AUTO_TEST_CASE(test_deleteSet)
 
   mp_Model->deleteSelectedSet();
 
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 }
 
 BOOST_AUTO_TEST_CASE(test_addSet)
 {
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),2);
 

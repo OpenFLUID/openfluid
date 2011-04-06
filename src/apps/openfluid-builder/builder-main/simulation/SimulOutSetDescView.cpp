@@ -56,16 +56,30 @@
 
 #include <glibmm/i18n.h>
 
+// =====================================================================
+// =====================================================================
+
+
 bool SimulOutSetDescViewImpl::IDsListStoreExistsForCurrentClass()
 {
   return m_ByClassIDsListStores.find(getClass())
       != m_ByClassIDsListStores.end();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool SimulOutSetDescViewImpl::VarsListStoreExistsForCurrentClass()
 {
   return m_ByClassVarsListStores.find(getClass())
       != m_ByClassVarsListStores.end();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::selectIDs()
 {
   if (IDsListStoreExistsForCurrentClass())
@@ -86,6 +100,11 @@ void SimulOutSetDescViewImpl::selectIDs()
     m_HaveIDsToBeStored = true;
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::selectVars()
 {
   if (VarsListStoreExistsForCurrentClass())
@@ -106,10 +125,20 @@ void SimulOutSetDescViewImpl::selectVars()
     m_HaveVarsToBeStored = true;
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onNameChanged()
 {
   m_signal_NameChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onClassChanged()
 {
   std::string ClassName = getClass();
@@ -132,16 +161,31 @@ void SimulOutSetDescViewImpl::onClassChanged()
 
   m_signal_ClassChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::selectedIdCallback(
     const Gtk::TreeModel::iterator& Iter)
 {
   m_IDs.push_back(Iter->get_value(m_Columns.m_IntValue));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::selectedVarCallback(
     const Gtk::TreeModel::iterator& Iter)
 {
   m_Vars.push_back(Iter->get_value(m_Columns.m_StringValue));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onIDsChanged()
 {
   if (m_HaveIDsToBeStored)
@@ -152,6 +196,11 @@ void SimulOutSetDescViewImpl::onIDsChanged()
     m_signal_IDsChanged.emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onVarsChanged()
 {
   if (m_HaveVarsToBeStored)
@@ -162,22 +211,46 @@ void SimulOutSetDescViewImpl::onVarsChanged()
     m_signal_VarsChanged.emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onFormatNameChanged()
 {
   m_signal_FormatNameChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onPrecisionChanged()
 {
   m_signal_PrecisionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::onOkButtonClicked()
 {
   m_signal_SaveAsked.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::closeDialog()
 {
   mp_Dialog->hide();
 }
+
+// =====================================================================
+// =====================================================================
+
 
 SimulOutSetDescViewImpl::SimulOutSetDescViewImpl()
 {
@@ -211,30 +284,42 @@ SimulOutSetDescViewImpl::SimulOutSetDescViewImpl()
 
   mp_IDsTreeView = Gtk::manage(new Gtk::TreeView());
   mp_IDsTreeView->append_column("", m_Columns.m_IntValue);
+  mp_IDsTreeView->set_headers_visible(false);
   mp_IDsTreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
   mp_IDsTreeView->get_selection()->signal_changed().connect(sigc::mem_fun(
       *this, &SimulOutSetDescViewImpl::onIDsChanged));
 
+  Gtk::ScrolledWindow* WinIDs = Gtk::manage(new Gtk::ScrolledWindow());
+  WinIDs->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  WinIDs->set_visible(true);
+  WinIDs->add(*mp_IDsTreeView);
+
   mp_VarsTreeView = Gtk::manage(new Gtk::TreeView());
   mp_VarsTreeView->append_column("", m_Columns.m_StringValue);
+//  mp_VarsTreeView->set_headers_visible(false);
   mp_VarsTreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
   mp_VarsTreeView->get_selection()->signal_changed().connect(sigc::mem_fun(
       *this, &SimulOutSetDescViewImpl::onVarsChanged));
 
+  Gtk::ScrolledWindow* WinVars = Gtk::manage(new Gtk::ScrolledWindow());
+  WinVars->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  WinVars->set_visible(true);
+  WinVars->add(*mp_VarsTreeView);
+
   mp_Table = Gtk::manage(new Gtk::Table());
-  mp_Table->attach(*SetNameLabel, 0, 1, 0, 1);
-  mp_Table->attach(*ClassLabel, 0, 1, 1, 2);
-  mp_Table->attach(*IDsLabel, 0, 1, 2, 3);
-  mp_Table->attach(*VarsLabel, 0, 1, 3, 4);
-  mp_Table->attach(*FormatNameLabel, 0, 1, 4, 5);
-  mp_Table->attach(*PrecisionLabel, 0, 1, 5, 6);
-  mp_Table->attach(*mp_SetNameEntry, 1, 2, 0, 1);
-  mp_Table->attach(*mp_SetNameLabel, 1, 2, 0, 1);
-  mp_Table->attach(*mp_ClassCombo, 1, 2, 1, 2);
-  mp_Table->attach(*mp_IDsTreeView, 1, 2, 2, 3);
-  mp_Table->attach(*mp_VarsTreeView, 1, 2, 3, 4);
-  mp_Table->attach(*mp_FormatNameCombo, 1, 2, 4, 5);
-  mp_Table->attach(*mp_PrecisionSpin, 1, 2, 5, 6);
+  mp_Table->attach(*SetNameLabel, 0, 1, 0, 1,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*ClassLabel, 0, 1, 1, 2,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*IDsLabel, 0, 1, 2, 3,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*VarsLabel, 0, 1, 3, 4,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*FormatNameLabel, 0, 1, 4, 5,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*PrecisionLabel, 0, 1, 5, 6,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*mp_SetNameEntry, 1, 2, 0, 1,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*mp_SetNameLabel, 1, 2, 0, 1,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*mp_ClassCombo, 1, 2, 1, 2,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*WinIDs, 1, 2, 2, 3, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND|Gtk::FILL);
+  mp_Table->attach(*WinVars, 1, 2, 3, 4,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*mp_FormatNameCombo, 1, 2, 4, 5,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
+  mp_Table->attach(*mp_PrecisionSpin, 1, 2, 5, 6,Gtk::EXPAND|Gtk::FILL,Gtk::SHRINK);
 
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->get_vbox()->pack_start(*mp_Table);
@@ -252,38 +337,83 @@ SimulOutSetDescViewImpl::SimulOutSetDescViewImpl()
 
   mp_Dialog->show_all_children();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_NameChanged()
 {
   return m_signal_NameChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_ClassChanged()
 {
   return m_signal_ClassChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_IDsChanged()
 {
   return m_signal_IDsChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_VarsChanged()
 {
   return m_signal_VarsChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_FormatNameChanged()
 {
   return m_signal_FormatNameChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_PrecisionChanged()
 {
   return m_signal_PrecisionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_SaveAsked()
 {
   return m_signal_SaveAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescViewImpl::signal_CancelAsked()
 {
   return m_signal_CancelAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setCreationMode()
 {
   m_isInCreationMode = true;
@@ -298,6 +428,11 @@ void SimulOutSetDescViewImpl::setCreationMode()
   mp_SetNameEntry->set_visible(true);
   mp_SetNameLabel->set_visible(false);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setEditionMode()
 {
   m_isInCreationMode = false;
@@ -312,6 +447,11 @@ void SimulOutSetDescViewImpl::setEditionMode()
   mp_SetNameLabel->set_visible(true);
   mp_SetNameEntry->set_visible(false);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setFormatNames(
     std::vector<std::string> FormatNames)
 {
@@ -320,6 +460,11 @@ void SimulOutSetDescViewImpl::setFormatNames(
   for (unsigned int i = 0; i < FormatNames.size(); i++)
     mp_FormatNameCombo->append_text(FormatNames[i]);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setClasses(std::vector<std::string> Classes)
 {
   mp_ClassCombo->clear_items();
@@ -327,6 +472,11 @@ void SimulOutSetDescViewImpl::setClasses(std::vector<std::string> Classes)
   for (unsigned int i = 0; i < Classes.size(); i++)
     mp_ClassCombo->append_text(Classes[i]);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setByClassIDs(std::map<std::string, std::vector<
     unsigned int> > IDsByClass)
 {
@@ -344,6 +494,11 @@ void SimulOutSetDescViewImpl::setByClassIDs(std::map<std::string, std::vector<
     m_ByClassIDsListStores[it->first] = List;
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setByClassVars(std::map<std::string, std::vector<
     std::string> > VarsByClass)
 {
@@ -361,57 +516,122 @@ void SimulOutSetDescViewImpl::setByClassVars(std::map<std::string, std::vector<
     m_ByClassVarsListStores[it->first] = List;
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setName(std::string Value)
 {
   mp_SetNameEntry->set_text(Value);
   mp_SetNameLabel->set_text(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setClass(std::string Value)
 {
   mp_ClassCombo->set_active_text(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setFormatName(std::string Value)
 {
   mp_FormatNameCombo->set_active_text(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setPrecision(int Value)
 {
   mp_PrecisionSpin->set_value(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setIDs(std::vector<unsigned int> IDs)
 {
   m_IDs = IDs;
   selectIDs();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::setVars(std::vector<std::string> Vars)
 {
   m_Vars = Vars;
   selectVars();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetDescViewImpl::getName()
 {
   return mp_SetNameEntry->get_text();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetDescViewImpl::getClass()
 {
   return mp_ClassCombo->get_active_text();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetDescViewImpl::getFormatName()
 {
   return mp_FormatNameCombo->get_active_text();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulOutSetDescViewImpl::getPrecision()
 {
   return mp_PrecisionSpin->get_value_as_int();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<unsigned int> SimulOutSetDescViewImpl::getIDs()
 {
   return m_IDs;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> SimulOutSetDescViewImpl::getVars()
 {
   return m_Vars;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::showDialog()
 {
   int Res = mp_Dialog->run();
@@ -422,10 +642,20 @@ void SimulOutSetDescViewImpl::showDialog()
 
   closeDialog();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* SimulOutSetDescViewImpl::asWidget()
 {
   return mp_Table;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescViewImpl::showErrorMessageDialog(std::string MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,
@@ -434,10 +664,22 @@ void SimulOutSetDescViewImpl::showErrorMessageDialog(std::string MessageText)
     Dialog.hide();
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeView* SimulOutSetDescViewSub::getIDsTreeView()
 {
   return mp_IDsTreeView;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeView* SimulOutSetDescViewSub::getVarsTreeView()
 {
   return mp_VarsTreeView;

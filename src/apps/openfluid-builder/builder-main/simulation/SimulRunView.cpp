@@ -54,8 +54,9 @@
 
 #include "SimulRunView.hpp"
 
-
 #include <glibmm/i18n.h>
+
+#include "BuilderFrame.hpp"
 
 void SimulRunViewImpl::onDeltaChanged()
 {
@@ -119,14 +120,13 @@ SimulRunViewImpl::SimulRunViewImpl()
   mp_EndEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onEndChanged));
 
-  Gtk::Label* ValuesBuffCBLabel = Gtk::manage(new Gtk::Label(
-      _("Values Buffer is set")));
-  mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton());
+  //  Gtk::Label* ValuesBuffCBLabel = Gtk::manage(
+  //      new Gtk::Label(_("Values Buffer")));
+  mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton(_("Values Buffer")));
   mp_ValuesBuffCB->signal_clicked().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onValuesBuffToggle));
 
-  Gtk::Label* ValuesBuffValueLabel = Gtk::manage(new Gtk::Label(
-      _("Values Buffer steps")));
+  Gtk::Label* ValuesBuffValueLabel = Gtk::manage(new Gtk::Label(_("steps")));
   mp_ValuesBuffSpin = Gtk::manage(new Gtk::SpinButton());
   mp_ValuesBuffSpin->set_range(1.0, 999.0);
   mp_ValuesBuffSpin->set_increments(1, 10);
@@ -134,31 +134,196 @@ SimulRunViewImpl::SimulRunViewImpl()
   mp_ValuesBuffSpin->signal_value_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onValuesBuffChanged));
 
-  mp_Table = Gtk::manage(new Gtk::Table(2, 9, false));
-  mp_Table->set_col_spacings(10);
-  //Top Row
-  mp_Table->attach(*DeltaLabel, 0, 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*mp_DeltaSpin, 1, 2, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*DeltaUnit, 2, 3, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 0, 1);
-  mp_Table->attach(*BeginLabel, 4, 5, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*mp_BeginEntry, 5, 6, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 6, 7, 0, 1);
-  mp_Table->attach(*ValuesBuffCBLabel, 7, 8, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*mp_ValuesBuffCB, 8, 9, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //Bottom Row
-  mp_Table->attach(*FilesBuffLabel, 0, 1, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*mp_FilesBuffSpin, 1, 2, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*FilesBuffUnit, 2, 3, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 1, 2);
-  mp_Table->attach(*EndLabel, 4, 5, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*mp_EndEntry, 5, 6, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 6, 7, 1, 2);
-  mp_Table->attach(*ValuesBuffValueLabel, 7, 8, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_Table->attach(*mp_ValuesBuffSpin, 8, 9, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  ////////////////
+  // New layout //
+  ////////////////
 
-  mp_Table->set_visible(true);
-  mp_Table->show_all_children();
+  DeltaLabel->set_alignment(0,0.5);
+  BeginLabel->set_alignment(0,0.5);
+  EndLabel->set_alignment(0,0.5);
+  FilesBuffLabel->set_alignment(0,0.5);
+  mp_ValuesBuffCB->set_alignment(0,0.5);
+
+  Gtk::HBox* DeltaBox = Gtk::manage(new Gtk::HBox());
+  DeltaBox->pack_start(*mp_DeltaSpin, Gtk::PACK_SHRINK, 5);
+  DeltaBox->pack_start(*DeltaUnit, Gtk::PACK_SHRINK, 0);
+
+  Gtk::Button* DateBeginButton = Gtk::manage(new Gtk::Button("..."));
+  DateBeginButton->set_sensitive(false);
+
+  Gtk::Button* DateEndButton = Gtk::manage(new Gtk::Button("..."));
+  DateEndButton->set_sensitive(false);
+
+  Gtk::HBox* DateBeginBox = Gtk::manage(new Gtk::HBox());
+  DateBeginBox->pack_start(*mp_BeginEntry, Gtk::PACK_SHRINK, 5);
+  DateBeginBox->pack_start(*DateBeginButton, Gtk::PACK_SHRINK, 0);
+
+  Gtk::HBox* DateEndBox = Gtk::manage(new Gtk::HBox());
+  DateEndBox->pack_start(*mp_EndEntry, Gtk::PACK_SHRINK, 5);
+  DateEndBox->pack_start(*DateEndButton, Gtk::PACK_SHRINK, 0);
+
+  Gtk::SpinButton* BeginHSpin = Gtk::manage(new Gtk::SpinButton());
+  BeginHSpin->set_range(0.0, 24.0);
+  BeginHSpin->set_numeric(true);
+  //  BeginHSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  //        &SimulRunViewImpl::onBeginHValueChanged));
+
+  Gtk::SpinButton* BeginMSpin = Gtk::manage(new Gtk::SpinButton());
+  BeginMSpin->set_range(0.0, 60.0);
+  BeginMSpin->set_numeric(true);
+  //  BeginMSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  //        &SimulRunViewImpl::onBeginMValueChanged));
+
+  Gtk::SpinButton* BeginSSpin = Gtk::manage(new Gtk::SpinButton());
+  BeginSSpin->set_range(0.0, 60.0);
+  BeginSSpin->set_numeric(true);
+  //  BeginSSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  //        &SimulRunViewImpl::onBeginSValueChanged));
+
+  Gtk::SpinButton* EndHSpin = Gtk::manage(new Gtk::SpinButton());
+  EndHSpin->set_range(0.0, 24.0);
+  EndHSpin->set_numeric(true);
+  //  EndHSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  //        &SimulRunViewImpl::onEndHValueChanged));
+
+  Gtk::SpinButton* EndMSpin = Gtk::manage(new Gtk::SpinButton());
+  EndMSpin->set_range(0.0, 60.0);
+  EndMSpin->set_numeric(true);
+  //  EndMSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  //        &SimulRunViewImpl::onEndMValueChanged));
+
+  Gtk::SpinButton* EndSSpin = Gtk::manage(new Gtk::SpinButton());
+  EndSSpin->set_range(0.0, 60.0);
+  EndSSpin->set_numeric(true);
+  //  EndSSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  //        &SimulRunViewImpl::onEndSValueChanged));
+
+  Gtk::HBox* TimeBeginBox = Gtk::manage(new Gtk::HBox());
+  TimeBeginBox->pack_start(*BeginHSpin, Gtk::PACK_SHRINK, 5);
+  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("h"))),
+      Gtk::PACK_SHRINK, 0);
+  TimeBeginBox->pack_start(*BeginMSpin, Gtk::PACK_SHRINK, 5);
+  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("m"))),
+      Gtk::PACK_SHRINK, 0);
+  TimeBeginBox->pack_start(*BeginSSpin, Gtk::PACK_SHRINK, 5);
+  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))),
+      Gtk::PACK_SHRINK, 0);
+  TimeBeginBox->set_sensitive(false);
+
+  Gtk::HBox* TimeEndBox = Gtk::manage(new Gtk::HBox());
+  TimeEndBox->pack_start(*EndHSpin, Gtk::PACK_SHRINK, 5);
+  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("h"))),
+      Gtk::PACK_SHRINK, 0);
+  TimeEndBox->pack_start(*EndMSpin, Gtk::PACK_SHRINK, 5);
+  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("m"))),
+      Gtk::PACK_SHRINK, 0);
+  TimeEndBox->pack_start(*EndSSpin, Gtk::PACK_SHRINK, 5);
+  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))),
+      Gtk::PACK_SHRINK, 0);
+  TimeEndBox->set_sensitive(false);
+
+  Gtk::Table* TopTable = Gtk::manage(new Gtk::Table());
+  TopTable->set_border_width(15);
+  TopTable->set_spacings(15);
+  TopTable->attach(*DeltaLabel, 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*DeltaBox, 1, 2, 0, 1, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*BeginLabel, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"))), 0, 1, 3, 4, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*DateBeginBox, 1, 2, 3, 4, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"))), 0, 1, 4, 5, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*TimeBeginBox, 1, 2, 4, 5, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 5, 6, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*EndLabel, 0, 1, 6, 7, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"))), 0, 1, 7, 8, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*DateEndBox, 1, 2, 7, 8, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"))), 0, 1, 8, 9, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  TopTable->attach(*TimeEndBox, 1, 2, 8, 9, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+
+  Gtk::HBox* FilesBufferBox = Gtk::manage(new Gtk::HBox());
+  FilesBufferBox->pack_start(*mp_FilesBuffSpin, Gtk::PACK_SHRINK, 5);
+  FilesBufferBox->pack_start(*FilesBuffUnit, Gtk::PACK_SHRINK, 0);
+
+  Gtk::HBox* ValuesBufferBox = Gtk::manage(new Gtk::HBox());
+  ValuesBufferBox->pack_start(*mp_ValuesBuffSpin, Gtk::PACK_SHRINK, 5);
+  ValuesBufferBox->pack_start(*ValuesBuffValueLabel, Gtk::PACK_SHRINK, 0);
+
+  Gtk::Table* BottomTable = Gtk::manage(new Gtk::Table());
+  BottomTable->set_border_width(15);
+  BottomTable->set_spacings(15);
+  BottomTable->attach(*FilesBuffLabel, 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK, 0,
+      0);
+  BottomTable->attach(*FilesBufferBox, 1, 2, 0, 1, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  BottomTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
+      0);
+  BottomTable->attach(*mp_ValuesBuffCB, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK,
+      0, 0);
+  BottomTable->attach(*ValuesBufferBox, 1, 2, 2, 3, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK,
+      0, 0);
+
+  BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
+  TopFrame->setLabelText(_("Time Management"));
+  TopFrame->add(*TopTable);
+
+  BuilderFrame* BottomFrame = Gtk::manage(new BuilderFrame());
+  BottomFrame->setLabelText(_("Memory Management"));
+  BottomFrame->add(*BottomTable);
+
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*TopFrame,Gtk::PACK_SHRINK,15);
+  mp_MainBox->pack_start(*BottomFrame,Gtk::PACK_SHRINK);
+  mp_MainBox->set_visible(true);
+  mp_MainBox->show_all_children();
+//  mp_MainPaned = Gtk::manage(new Gtk::VPaned());
+//  mp_MainPaned->pack1(*TopFrame, false, false);
+//  mp_MainPaned->pack2(*BottomFrame, false, false);
+//  mp_MainPaned->set_visible(true);
+//  mp_MainPaned->show_all_children();
+
+  ////////////////
+  // Old layout //
+  ////////////////
+
+  //  mp_Table = Gtk::manage(new Gtk::Table(2, 9, false));
+  //  mp_Table->set_col_spacings(10);
+  //  //Top Row
+  //  mp_Table->attach(*DeltaLabel, 0, 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*mp_DeltaSpin, 1, 2, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*DeltaUnit, 2, 3, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 0, 1);
+  //  mp_Table->attach(*BeginLabel, 4, 5, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*mp_BeginEntry, 5, 6, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 6, 7, 0, 1);
+  //  mp_Table->attach(*ValuesBuffCBLabel, 7, 8, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*mp_ValuesBuffCB, 8, 9, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  //  //Bottom Row
+  //  mp_Table->attach(*FilesBuffLabel, 0, 1, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*mp_FilesBuffSpin, 1, 2, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*FilesBuffUnit, 2, 3, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 1, 2);
+  //  mp_Table->attach(*EndLabel, 4, 5, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*mp_EndEntry, 5, 6, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 6, 7, 1, 2);
+  //  mp_Table->attach(*ValuesBuffValueLabel, 7, 8, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //  mp_Table->attach(*mp_ValuesBuffSpin, 8, 9, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  //
+  //  mp_Table->set_visible(true);
+  //  mp_Table->show_all_children();
 }
 sigc::signal<void> SimulRunViewImpl::signal_DeltaChanged()
 {
@@ -245,7 +410,9 @@ int SimulRunViewImpl::getFilesBuff()
 }
 Gtk::Widget* SimulRunViewImpl::asWidget()
 {
-  return mp_Table;
+  //  return mp_Table;
+//  return mp_MainPaned;
+  return mp_MainBox;
 }
 
 bool SimulRunViewSub::isValuesBuffSpinSensitive()

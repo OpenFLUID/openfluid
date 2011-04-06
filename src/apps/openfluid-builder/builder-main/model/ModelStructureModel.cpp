@@ -54,8 +54,11 @@
 
 #include "ModelStructureModel.hpp"
 
-
 #include "ModelItemInstanceFactory.hpp"
+
+// =====================================================================
+// =====================================================================
+
 
 bool ModelStructureModelImpl::isModelInstance()
 {
@@ -66,12 +69,19 @@ bool ModelStructureModelImpl::isModelInstance()
         "no Model Instance. Operation is impossible.");
     return false;
   }
+
   return true;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool ModelStructureModelImpl::areMoveIndexesValid(unsigned int From,
     unsigned int To)
 {
   unsigned int ModelListSize = getFctCount();
+
   if (!(From < ModelListSize && To < ModelListSize))
   {
     throw openfluid::base::OFException("OpenFLUID Builder",
@@ -79,18 +89,34 @@ bool ModelStructureModelImpl::areMoveIndexesValid(unsigned int From,
         "Bad indexes of items to move");
     return false;
   }
+
   if (From == To)
     return false;
+
   return true;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool ModelStructureModelImpl::isModelEmpty()
 {
   return getFctCount() == 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelStructureModelImpl::getLastPosition()
 {
   return isModelEmpty() ? -1 : getFctCount() - 1;
 }
+
+// =====================================================================
+// =====================================================================
+
 
 ModelStructureModelImpl::ModelStructureModelImpl()
 {
@@ -98,31 +124,69 @@ ModelStructureModelImpl::ModelStructureModelImpl()
   m_CurrentSelection = -1;
   m_AppRequestedSelection = -1;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelStructureModelImpl::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelStructureModelImpl::signal_FromAppModelChanged()
 {
   return m_signal_FromAppModelChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelStructureModelImpl::signal_FromAppSelectionRequested()
 {
   return m_signal_FromAppSelectionRequested;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance)
 {
   mp_ModelInstance = &ModelInstance;
-  signal_FromAppModelChanged().emit();
-  requestSelectionByAppAt(getLastPosition());
+  update();
+//  signal_FromAppModelChanged().emit();
+//  requestSelectionByAppAt(getLastPosition());
 }
+
+void ModelStructureModelImpl::update()
+{
+  signal_FromAppModelChanged().emit();
+    requestSelectionByAppAt(getLastPosition());
+}
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::ModelInstance* ModelStructureModelImpl::getModelInstance()
 {
   if (isModelInstance())
     return mp_ModelInstance;
+
   return 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::appendFunction(
     openfluid::machine::SignatureItemInstance& Signature)
 {
@@ -136,6 +200,11 @@ void ModelStructureModelImpl::appendFunction(
     requestSelectionByAppAt(getLastPosition());
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::moveFunction(unsigned int From, unsigned int To)
 {
   if (isModelInstance() && areMoveIndexesValid(From, To))
@@ -156,6 +225,11 @@ void ModelStructureModelImpl::moveFunction(unsigned int From, unsigned int To)
     requestSelectionByAppAt(To);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::moveTowardTheBegin()
 {
   if (getCurrentSelection() > -1)
@@ -165,6 +239,11 @@ void ModelStructureModelImpl::moveTowardTheBegin()
     moveFunction(From, To);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::moveTowardTheEnd()
 {
   if (getCurrentSelection() > -1)
@@ -174,12 +253,18 @@ void ModelStructureModelImpl::moveTowardTheEnd()
     moveFunction(From, To);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::removeFunctionAt(int Position)
 {
   if (isModelInstance() && Position > -1)
   {
     mp_ModelInstance->deleteItem(Position);
     signal_FromAppModelChanged().emit();
+
     if (isModelEmpty())
       requestSelectionByAppAt(-1);
     else if (Position == (int) getFctCount())
@@ -188,29 +273,91 @@ void ModelStructureModelImpl::removeFunctionAt(int Position)
       requestSelectionByAppAt(Position);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::setCurrentSelectionByUserAt(int Position)
 {
   m_CurrentSelection = Position;
   m_signal_FromUserSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelStructureModelImpl::getCurrentSelection()
 {
   return m_CurrentSelection;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::machine::SignatureItemInstance* ModelStructureModelImpl::getCurrentSelectionSignature()
+{
+  if (m_CurrentSelection > -1)
+  {
+    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+        mp_ModelInstance->getItems().begin();
+
+    std::advance(it, m_CurrentSelection);
+
+    return *it;
+  }
+  return (openfluid::machine::SignatureItemInstance*) 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 unsigned int ModelStructureModelImpl::getFctCount()
 {
   if (mp_ModelInstance)
     return mp_ModelInstance->getItemsCount();
+
   return 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureModelImpl::requestSelectionByAppAt(int Position)
 {
+  m_AppRequestedSelection = Position;
+
   if (Position != m_CurrentSelection)
-  {
-    m_AppRequestedSelection = Position;
     m_signal_FromAppSelectionRequested.emit();
-  }
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureModelImpl::requestSelectionByApp(std::string FunctionName)
+{
+  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+      mp_ModelInstance->getItems().begin(); it
+      != mp_ModelInstance->getItems().end(); ++it)
+  {
+    if ((*it)->Signature->ID == FunctionName)
+    {
+      int Index = std::distance(mp_ModelInstance->getItems().begin(), it);
+      requestSelectionByAppAt(Index);
+      return;
+    }
+  }
+  requestSelectionByAppAt(-1);
+}
+// =====================================================================
+// =====================================================================
+
+
 int ModelStructureModelImpl::getAppRequestedSelection()
 {
   return m_AppRequestedSelection;

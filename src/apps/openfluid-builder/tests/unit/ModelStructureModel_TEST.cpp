@@ -54,6 +54,8 @@
 #include "BuilderTestHelper.hpp"
 #include "ModelStructureModel.hpp"
 #include "TestModelInstanceWrapper.hpp"
+#include "EngineProjectFactory.hpp"
+#include "tests-config.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -318,6 +320,43 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
 }
 
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
+{
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance());
+
+  mp_Model->setCurrentSelectionByUserAt(1);
+
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelectionSignature()->Signature->ID,"tests.primitives.use");
+}
+
+BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
+{
+  TestModelInstanceWrapper ThreeItemsModelInstanceWrapper(3);
+  mp_Model->setEngineRequirements(*ThreeItemsModelInstanceWrapper.getModelInstance());
+
+  std::string idA = ThreeItemsModelInstanceWrapper.getItemIdAt(0);
+  std::string idB = ThreeItemsModelInstanceWrapper.getItemIdAt(1);
+  std::string idC = ThreeItemsModelInstanceWrapper.getItemIdAt(2);
+
+  mp_Model->requestSelectionByApp(idB);
+  BOOST_CHECK_EQUAL(mp_Model->getAppRequestedSelection(),1);
+
+  mp_Model->requestSelectionByApp("idD");
+  BOOST_CHECK_EQUAL(mp_Model->getAppRequestedSelection(),-1);
+
+  mp_Model->requestSelectionByApp(idC);
+  BOOST_CHECK_EQUAL(mp_Model->getAppRequestedSelection(),2);
+
+  mp_Model->requestSelectionByApp(idA);
+  BOOST_CHECK_EQUAL(mp_Model->getAppRequestedSelection(),0);
+}
 // =====================================================================
 // =====================================================================
 

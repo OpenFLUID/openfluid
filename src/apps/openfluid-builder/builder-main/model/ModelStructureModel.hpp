@@ -55,59 +55,116 @@
 class ModelStructureModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromUserSelectionChanged() = 0;
+
     virtual sigc::signal<void> signal_FromAppModelChanged() = 0;
+
     virtual sigc::signal<void> signal_FromAppSelectionRequested() = 0;
+
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance) = 0;
+
     virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
+
     virtual void appendFunction(
         openfluid::machine::SignatureItemInstance& Signature) = 0;
+
     /* Move the element at From position before the action to be at To position after the action,
      * positions starting from 0. */
     virtual void moveFunction(unsigned int From, unsigned int To) = 0;
+
     virtual void moveTowardTheBegin() = 0;
+
     virtual void moveTowardTheEnd() = 0;
+
     /* Remove the element at Position, position starting from 0; */
     virtual void removeFunctionAt(int Position) = 0;
+
     virtual void setCurrentSelectionByUserAt(int Position) = 0;
+
     virtual int getCurrentSelection() = 0;
+
+    virtual openfluid::machine::SignatureItemInstance* getCurrentSelectionSignature() = 0;
+
     virtual unsigned int getFctCount() = 0;
+
     virtual void requestSelectionByAppAt(int Position) = 0;
+
+    virtual void requestSelectionByApp(std::string FunctionName) = 0;
+
     virtual int getAppRequestedSelection() = 0;
+
+    virtual void update() = 0;
+
 };
 
 class ModelStructureModelImpl: public ModelStructureModel
 {
   private:
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
+
     sigc::signal<void> m_signal_FromAppModelChanged;
+
     sigc::signal<void> m_signal_FromAppSelectionRequested;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
+
     int m_CurrentSelection;
+
     int m_AppRequestedSelection;
+
     bool isModelInstance();
+
     bool areMoveIndexesValid(unsigned int From, unsigned int To);
+
     bool isModelEmpty();
+
     int getLastPosition();
+
+
   public:
+
     ModelStructureModelImpl();
+
     sigc::signal<void> signal_FromUserSelectionChanged();
+
     sigc::signal<void> signal_FromAppModelChanged();
+
     sigc::signal<void> signal_FromAppSelectionRequested();
+
     void
         setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
+
     openfluid::machine::ModelInstance* getModelInstance();
+
     void appendFunction(openfluid::machine::SignatureItemInstance& Signature);
+
     void moveFunction(unsigned int From, unsigned int To);
+
     void moveTowardTheBegin();
+
     void moveTowardTheEnd();
+
     void removeFunctionAt(int Position);
+
     void setCurrentSelectionByUserAt(int Position);
+
     int getCurrentSelection();
+
+    openfluid::machine::SignatureItemInstance* getCurrentSelectionSignature();
+
     unsigned int getFctCount();
+
     void requestSelectionByAppAt(int Position);
+
+    void requestSelectionByApp(std::string FunctionName);
+
     int getAppRequestedSelection();
+
+    void update();
+
 };
 
 #endif /* MODELSTRUCTUREMODEL_HPP_ */

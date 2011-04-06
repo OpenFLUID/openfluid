@@ -170,6 +170,11 @@ std::string DomainIDataAdapterModelImpl::getClassNameFromIter(
 {
   return mref_ClassStore->getClassNameFromIter(Iter);
 }
+Gtk::TreeIter DomainIDataAdapterModelImpl::getIterFromClassName(
+    std::string ClassName)
+{
+  return mref_ClassStore->getIterFromClassName(ClassName);
+}
 int DomainIDataAdapterModelImpl::getUnitIdFromIter(Gtk::TreeIter Iter)
 {
   int Id = -1;

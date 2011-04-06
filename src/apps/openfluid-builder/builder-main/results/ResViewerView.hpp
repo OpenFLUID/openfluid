@@ -64,31 +64,61 @@
 class ResViewerView
 {
   public:
+
     virtual sigc::signal<void> signal_FileSelectionChanged() = 0;
+
     virtual void setColumns(ResViewerColumns* Columns) = 0;
+
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual void setTitle(std::string Text) = 0;
+
+    virtual void setFileContentsByName(std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> > FileContents) = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
 };
 
 class ResViewerViewImpl: public ResViewerView
 {
   private:
+
+    Gtk::Notebook* mp_Notebook;
+
     Gtk::Box* mp_MainBox;
+
     sigc::signal<void> m_signal_FileSelectionChanged;
+
     ResViewerColumns m_Columns;
+
     void onSelectionChanged();
+
+
   protected:
+
     Gtk::TreeView* mp_TreeView;
+
     Gtk::Label* mp_TitleLabel;
+
+
   public:
+
     ResViewerViewImpl();
+
     sigc::signal<void> signal_FileSelectionChanged();
+
     void setColumns(ResViewerColumns* Columns);
+
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     void setTitle(std::string Text);
+
+    void setFileContentsByName(std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> > FileContents);
+
     Gtk::Widget* asWidget();
+
 };
+
 
 class ResViewerViewSub: public ResViewerViewImpl
 {

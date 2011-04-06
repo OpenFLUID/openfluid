@@ -81,6 +81,8 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenMarketAsked();
 
+    void whenPreferencesAsked();
+
 };
 
 #endif /* __BUILDERAPPHOMESTATE_HPP__ */

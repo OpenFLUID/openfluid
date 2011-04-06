@@ -65,6 +65,8 @@ class DomainIDataModel
     virtual sigc::signal<void> signal_FromAppDataInit() = 0;
     virtual sigc::signal<void> signal_FromAppDataReplaced() = 0;
     virtual sigc::signal<void> signal_FromAppDataListChanged() = 0;
+    virtual
+    sigc::signal<void> signal_FromAppClassSelectionChanged() = 0;
     virtual void setEngineRequirements(
         openfluid::core::CoreRepository& CoreRepos) = 0;
     virtual const openfluid::core::CoreRepository* getCoreRepos() = 0;
@@ -74,8 +76,13 @@ class DomainIDataModel
     virtual void removeData(std::string DataName) = 0;
     virtual void addData(std::string DataName) = 0;
     virtual void setCurrentClassSelectionByUser(std::string ClassName) = 0;
+    virtual void setCurrentClassSelectionByApp(std::string ClassName) = 0;
     virtual std::string getSelectedClass() = 0;
+    virtual std::string getAppRequestedClass() = 0;
 };
+
+// =====================================================================
+// =====================================================================
 
 class DomainIDataModelImpl: public DomainIDataModel
 {
@@ -84,12 +91,15 @@ class DomainIDataModelImpl: public DomainIDataModel
     sigc::signal<void> m_signal_FromAppDataInit;
     sigc::signal<void> m_signal_FromAppDataReplaced;
     sigc::signal<void> m_signal_FromAppDataListChanged;
+    sigc::signal<void> m_signal_FromAppClassSelectionChanged;
     std::string m_SelectedClass;
+    std::string m_AppRequestedSelection;
   public:
     DomainIDataModelImpl();
     sigc::signal<void> signal_FromAppDataInit();
     sigc::signal<void> signal_FromAppDataReplaced();
     sigc::signal<void> signal_FromAppDataListChanged();
+    sigc::signal<void> signal_FromAppClassSelectionChanged();
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
     const openfluid::core::CoreRepository* getCoreRepos();
     void update();
@@ -98,8 +108,14 @@ class DomainIDataModelImpl: public DomainIDataModel
     void removeData(std::string DataName);
     void addData(std::string DataName);
     void setCurrentClassSelectionByUser(std::string ClassName);
+    void setCurrentClassSelectionByApp(std::string ClassName);
     std::string getSelectedClass();
+    std::string getAppRequestedClass();
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainIDataModelSub: public DomainIDataModelImpl
 {

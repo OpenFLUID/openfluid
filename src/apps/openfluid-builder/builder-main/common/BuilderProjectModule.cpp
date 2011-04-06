@@ -60,6 +60,10 @@
 #include "BuilderModuleFactory.hpp"
 
 
+// =====================================================================
+// =====================================================================
+
+
 BuilderProjectModule::BuilderProjectModule(std::string FolderIn) :
   mp_EngineProject(0), mp_ModelModule(0), mp_DomainModule(0),
       mp_SimulationModule(0), mp_ResultsModule(0)
@@ -68,25 +72,20 @@ BuilderProjectModule::BuilderProjectModule(std::string FolderIn) :
 
   if (mp_EngineProject)
   {
-    mp_ModelModule = BuilderModuleFactory::createModelModule(
-        *(mp_EngineProject->getModelInstance()));
+    BuilderModuleFactory ModuleFactory(*mp_EngineProject);
 
-    mp_DomainModule = BuilderModuleFactory::createDomainModule(
-        mp_EngineProject->getCoreRepository());
-
-    mp_SimulationModule = BuilderModuleFactory::createSimulationModule(
-        mp_EngineProject->getRunDescriptor(),
-        mp_EngineProject->getOutputDescriptor(),
-        mp_EngineProject->getCoreRepository(),
-        *mp_EngineProject->getModelInstance());
-
-    mp_ResultsModule = BuilderModuleFactory::createResultsModule(
-        mp_EngineProject->getRunDescriptor(),
-        mp_EngineProject->getOutputDescriptor(),
-        mp_EngineProject->getCoreRepository(),
-        *mp_EngineProject->getModelInstance());
+    mp_ModelModule = ModuleFactory.createModelModule();
+    mp_DomainModule = ModuleFactory.createDomainModule();
+    mp_SimulationModule = ModuleFactory.createSimulationModule();
+    mp_ResultsModule = ModuleFactory.createResultsModule();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderProjectModule::~BuilderProjectModule()
 {
   delete mp_ModelModule;
@@ -95,6 +94,12 @@ BuilderProjectModule::~BuilderProjectModule()
   delete mp_ResultsModule;
   delete mp_EngineProject;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderProjectModule::initialize()
 {
   if (mp_ModelModule)
@@ -107,20 +112,44 @@ void BuilderProjectModule::initialize()
     mp_ResultsModule->initialize();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderProjectModule::checkAsked()
 {
   mp_EngineProject->check();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderProjectModule::runAsked()
 {
   mp_EngineProject->run();
-  mp_ResultsModule->initialize();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 
 BuilderProjectModulePlainGtk::BuilderProjectModulePlainGtk(std::string FolderIn) :
   BuilderProjectModule(FolderIn)
 {
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderProjectModulePlainGtk::compose()
 {
   mp_Notebook = Gtk::manage(new Gtk::Notebook());
@@ -139,6 +168,12 @@ void BuilderProjectModulePlainGtk::compose()
     mp_Notebook->append_page(*mp_ResultsModule->composeAndGetAsWidget(),
         _("Results"));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderProjectModulePlainGtk::asWidget()
 {
   if (mp_Notebook)
@@ -146,4 +181,5 @@ Gtk::Widget* BuilderProjectModulePlainGtk::asWidget()
   throw std::logic_error(
       "BuilderProjectModule : you try to get a widget from a non yet composed module.");
 }
+
 

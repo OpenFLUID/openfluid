@@ -73,6 +73,7 @@ class DomainIDataAdapterModel
     virtual Glib::RefPtr<Gtk::TreeModel> getUnitsTreeModel() = 0;
     virtual Gtk::TreeIter getRequestedClassSelection() = 0;
     virtual std::string getClassNameFromIter(Gtk::TreeIter Iter) = 0;
+    virtual Gtk::TreeIter getIterFromClassName(std::string ClassName) = 0;
     virtual int getUnitIdFromIter(Gtk::TreeIter Iter) = 0;
     virtual void setSelectedClass(Gtk::TreeIter Iter) = 0;
     virtual void updateEditedData(
@@ -103,6 +104,7 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
     Glib::RefPtr<Gtk::TreeModel> getUnitsTreeModel();
     Gtk::TreeIter getRequestedClassSelection();
     std::string getClassNameFromIter(Gtk::TreeIter Iter);
+    Gtk::TreeIter getIterFromClassName(std::string ClassName);
     int getUnitIdFromIter(Gtk::TreeIter Iter);
     void updateEditedData(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters,
         std::pair<std::string, std::string> DataInfo);
@@ -119,7 +121,7 @@ class DomainIDataAdapterModelSub: public DomainIDataAdapterModelImpl
     void createDataColumnsAndStoreForClass(std::string ClassName);
     std::map<std::string, DomainIDataColumns*> getByClassColumns();
     std::map<std::string, Glib::RefPtr<BuilderListStore> >
-        getByClassUnitsStores();
+    getByClassUnitsStores();
     void populateStoreForClass(std::string ClassName);
     Glib::RefPtr<BuilderClassListStore> getClassStore();
 };

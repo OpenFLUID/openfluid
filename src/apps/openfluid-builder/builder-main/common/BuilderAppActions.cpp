@@ -371,6 +371,16 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppMarketAction()
 }
 
 
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getEditPreferencesAction()
+{
+  return mref_AppActionGroup->get_action("EditPreferences");
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -379,4 +389,5 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppAboutAction()
 {
   return mref_AppActionGroup->get_action("HelpAbout");
 }
+
 

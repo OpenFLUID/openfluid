@@ -57,6 +57,7 @@
 #include "ModelAvailFctModel.hpp"
 #include "ModelFctDetailModel.hpp"
 #include "ModelStructureModel.hpp"
+#include "ModelGlobalParamsModel.hpp"
 #include "BuilderListToolBox.hpp"
 
 void ModelCoordinator::updateStructureListToolBox()
@@ -101,10 +102,11 @@ void ModelCoordinator::whenMoveTowardTheEndAsked()
 
 ModelCoordinator::ModelCoordinator(ModelAvailFctModel& AvailFctModel,
     ModelFctDetailModel& FctDetailModel, ModelStructureModel& StructureModel,
+    ModelGlobalParamsModel& GlobalParamsModel,
     BuilderListToolBox& StructureListToolBox) :
   m_AvailFctModel(AvailFctModel), m_FctDetailModel(FctDetailModel),
-      m_StructureModel(StructureModel), m_StructureListToolBox(
-          StructureListToolBox)
+      m_StructureModel(StructureModel), m_GlobalParamsModel(GlobalParamsModel),
+      m_StructureListToolBox(StructureListToolBox)
 {
   m_AvailFctModel.signal_SelectedSignatureChanged().connect(sigc::mem_fun(
       *this, &ModelCoordinator::whenAvailFctSelectionChanged));
@@ -124,6 +126,7 @@ ModelCoordinator::ModelCoordinator(ModelAvailFctModel& AvailFctModel,
 void ModelCoordinator::setSignatures(FunctionSignatureRegistry& Signatures)
 {
   m_AvailFctModel.setSignatures(Signatures);
+  m_GlobalParamsModel.setSignatures(Signatures);
 }
 void ModelCoordinator::setFctToDisplay(
     openfluid::machine::SignatureItemInstance* Signature)
@@ -134,4 +137,5 @@ void ModelCoordinator::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance)
 {
   m_StructureModel.setEngineRequirements(ModelInstance);
+  m_GlobalParamsModel.setEngineRequirements(ModelInstance);
 }

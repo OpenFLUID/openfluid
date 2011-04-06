@@ -59,10 +59,13 @@
 
 //#include <openfluid/debug.hpp>
 
-#include "BuilderMachineListener.hpp"
+//#include "BuilderMachineListener.hpp"
+#include "../../openfluid-minimal-gui/RunDialogMachineListener.hpp"
+#include "../../openfluid-minimal-gui/SimulationRunDialog.hpp"
 #include "BuilderAppDialogFactory.hpp"
-#include "BuilderRunDialog.hpp"
-
+//#include "BuilderRunDialog.hpp"
+//#include "RunDialogMachineListener.hpp"
+//#include "SimulationRunDialog.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -75,12 +78,13 @@ EngineProject::EngineProject()
   mp_SimBlob = new openfluid::machine::SimulationBlob();
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   mp_IOListener = new openfluid::io::IOListener();
-  mp_Listener = new BuilderMachineListener();
+  //  mp_Listener = new BuilderMachineListener();
+  mp_Listener = new RunDialogMachineListener();
 
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
       mp_Listener);
 
-  mp_RunDialog = new BuilderRunDialog();
+//  mp_RunDialog = new BuilderRunDialog();
 
   ///// CREATE ENGINE
   mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance,
@@ -88,14 +92,72 @@ EngineProject::EngineProject()
   mp_ModelInstance->resetInitialized();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-boost::posix_time::ptime EngineProject::getNow()
+void EngineProject::run()
 {
-  return boost::posix_time::microsec_clock::local_time();
+  getCoreRepository().clearAllVariables();
+
+  mp_ModelInstance->initialize();
+
+  SimulationRunDialog RunDialog(mp_Engine);
+
+  Gtk::Main::run(RunDialog);
+
+  mp_ModelInstance->resetInitialized();
+
+  //  if (check())
+  //  {
+  //    mp_Listener->linkWithTextView(mp_RunDialog->getTextView());
+  //    mp_RunDialog->show();
+  //
+  //    try
+  //    {
+  //      mp_ModelInstance->initialize();
+  //      m_FullStartTime = getNow();
+  //
+  //      mp_Listener->displayText(generateSimulationIdStr());
+  //      mp_Listener->displayText(generateDomainInformationStr());
+  //      mp_Listener->displayText(generateSimulationInformationStr());
+  //      mp_Listener->displayText(generateBuffersInformationStr());
+  //
+  //      mp_Listener->displayText(Glib::ustring::compose(
+  //          _("%1Running simulation%2\n"), "**** ", " ****"));
+  //
+  //      m_EffectiveStartTime = getNow();
+  //      mp_Engine->run();
+  //      m_EffectiveEndTime = getNow();
+  //
+  //      mp_Listener->displayText(Glib::ustring::compose(
+  //          _("%1Simulation completed%2\n\n"), "**** ", " ****"));
+  //
+  //      getExecutionMessages().resetWarningFlag();
+  //      getRunEnv()->setEffectiveSimulationDuration(m_EffectiveEndTime
+  //          - m_EffectiveStartTime);
+  //
+  //      if (getRunEnv()->isWriteSimReport())
+  //      {
+  //        mp_Listener->displayText(generateSavingReportStr());
+  //        mp_Engine->saveReports();
+  //        mp_Listener->displayText(generateDoneStr());
+  //        getExecutionMessages().resetWarningFlag();
+  //      }
+  //
+  //      m_FullEndTime = getNow();
+  //
+  //      mp_Listener->displayText(generateWarningsCountStr());
+  //      mp_Listener->displayText(generateRunTimeInformationStr());
+  //    } catch (openfluid::base::OFException& E)
+  //    {
+  //      BuilderAppDialogFactory::showSimpleErrorMessage(E.what());
+  //      std::cerr << E.what() << std::endl;
+  //      stopEngine();
+  //    }
+  //
+  //    mp_ModelInstance->resetInitialized();
+  //  }
 }
 
 
@@ -103,10 +165,73 @@ boost::posix_time::ptime EngineProject::getNow()
 // =====================================================================
 
 
-std::string EngineProject::generateSimulationIdStr()
+bool EngineProject::check()
 {
-  return Glib::ustring::compose(_("\nSimulation ID: %1\n\n"),
-      getRunEnv()->getSimulationID());
+//  bool IsOk = true;
+//
+//  try
+//  {
+//    std::cout << "* Filling Run Environnement Descriptor..." << std::endl;
+//    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
+//        getRunDescriptor());
+//    std::cout << "...Run Environnement Descriptor filled" << std::endl;
+//
+//    getCoreRepository().sortUnitsByProcessOrder();
+//
+//    mp_ModelInstance->initialize();
+//
+//    ///// CHECK MODEL
+//    std::cout << "* Initializing parameters... " << std::endl;
+//    mp_Engine->initParams();
+//
+//    //            mp_StatusParamsValues->clearErrorValues();
+//    //
+//    //            bool IsOk = true;
+//    //
+//    //            const std::list<openfluid::machine::ModelItemInstance *> ItemInstances = ModelInstance->getItems();
+//    //
+//    //            std::list<openfluid::machine::ModelItemInstance *>::const_iterator it;
+//    //
+//    //            for(it=ItemInstances.begin() ; it!=ItemInstances.end() ; ++it)
+//    //            {
+//    //              openfluid::machine::ModelItemInstance * ItemInstance = *it;
+//    //
+//    //              try
+//    //              {
+//    //                ItemInstance->Function->initParams(ItemInstance->Params);
+//    //              }
+//    //              catch(openfluid::base::OFException& E)
+//    //              {
+//    //                std::cerr << E.what() << std::endl;
+//    //                mp_StatusParamsValues->appendErrorValue(E.what());
+//    //                IsOk = false;
+//    //                continue;
+//    //              }
+//    //
+//    //            }
+//    //
+//    //            Glib::ustring Status = IsOk ? "(OK)" : "(with errors)";
+//    //
+//    std::cout << "...Parameters initialized " << /*Status <<*/std::endl;
+//    //
+//    //            return IsOk;
+//
+//    ////
+//
+//    mp_Engine->prepareData();
+//
+//    getCoreRepository().clearAllVariables();
+//    mp_Engine->checkConsistency();
+//  } catch (openfluid::base::OFException& E)
+//  {
+//    BuilderAppDialogFactory::showSimpleErrorMessage(E.what());
+//    std::cerr << E.what() << std::endl;
+//    stopEngine();
+//    IsOk = false;
+//  }
+//
+//  mp_ModelInstance->resetInitialized();
+//  return IsOk;
 }
 
 
@@ -114,111 +239,231 @@ std::string EngineProject::generateSimulationIdStr()
 // =====================================================================
 
 
-std::string EngineProject::generateDomainInformationStr()
+void EngineProject::stopEngine()
 {
-  Glib::ustring Str = "";
-  unsigned int UnitsCount = 0;
-
-  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
-      getCoreRepository().getUnitsByClass()->begin(); it
-      != getCoreRepository().getUnitsByClass()->end(); ++it)
-  {
-    Str.append(Glib::ustring::compose("  - %1, %2 units\n", it->first,
-        it->second.getList()->size()));
-    UnitsCount++;
-  }
-
-  return Glib::ustring::compose(_("Spatial domain, %1 units :\n%2\n"),
-      UnitsCount, Str);
+//  std::cout << generateWarningsCountStr() << std::endl;
+//
+//  if (mp_Engine)
+//    mp_Engine->closeOutputs();
+//
+//  if (mp_Engine && getRunEnv()->isWriteSimReport())
+//  {
+//    std::cout << _("* Closing outputs... ") << std::endl;
+//    mp_Engine->closeOutputs();
+//    std::cout << generateDoneStr() << std::endl;
+//
+//    std::cout << generateSavingReportStr() << std::endl;
+//    mp_Engine->saveReports();
+//    std::cout << generateDoneStr() << std::endl;
+//
+//    getExecutionMessages().resetWarningFlag();
+//  }
 }
 
 
 // =====================================================================
 // =====================================================================
 
+//
+//boost::posix_time::ptime EngineProject::getNow()
+//{
+//  return boost::posix_time::microsec_clock::local_time();
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateSimulationIdStr()
+//{
+//  return Glib::ustring::compose(_("\nSimulation ID: %1\n\n"),
+//      getRunEnv()->getSimulationID());
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateDomainInformationStr()
+//{
+//  Glib::ustring Str = "";
+//  unsigned int UnitsCount = 0;
+//
+//  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
+//      getCoreRepository().getUnitsByClass()->begin(); it
+//      != getCoreRepository().getUnitsByClass()->end(); ++it)
+//  {
+//    Str.append(Glib::ustring::compose("  - %1, %2 units\n", it->first,
+//        it->second.getList()->size()));
+//    UnitsCount++;
+//  }
+//
+//  return Glib::ustring::compose(_("Spatial domain, %1 units :\n%2\n"),
+//      UnitsCount, Str);
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateWarningsCountStr()
+//{
+//  return Glib::ustring::compose(_("\n%1 warning(s)\n\n"),
+//      getExecutionMessages().getWarningsCount());
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateSimulationInformationStr()
+//{
+//  openfluid::base::SimulationInfo* SimInfo = mp_Engine->getSimulationInfo();
+//
+//  return Glib::ustring::compose(
+//      _("Simulation from %1 to %2\n         -> %3 time steps of %4 seconds\n\n"),
+//      SimInfo->getStartTime().getAsISOString(),
+//      SimInfo->getEndTime().getAsISOString(), SimInfo->getStepsCount(),
+//      SimInfo->getTimeStep());
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateBuffersInformationStr()
+//{
+//  Glib::ustring Str = "";
+//
+//  if (getRunEnv()->isUserValuesBufferSize())
+//    Str = Glib::ustring::compose(
+//        _("Buffers for variables set to %1 time steps\n"),
+//        getRunEnv()->getValuesBufferSize());
+//  else
+//    Str = _("Buffers for variables set to full simulation\n");
+//
+//  Str.append(Glib::ustring::compose(
+//      _("Buffers for output files set to %1 bytes\n\n"),
+//      getRunEnv()->getFilesBufferSize()));
+//
+//  return Str;
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateRunTimeInformationStr()
+//{
+//  boost::posix_time::time_duration FullSimDuration = m_FullEndTime
+//      - m_FullStartTime;
+//
+//  return Glib::ustring::compose(
+//      _("Simulation run time: %1\n     Total run time: %2\n\n"),
+//      boost::posix_time::to_simple_string(
+//          getRunEnv()->getEffectiveSimulationDuration()),
+//      boost::posix_time::to_simple_string(FullSimDuration));
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateSavingReportStr()
+//{
+//  return Glib::ustring::compose(_("%1Saving simulation report%2\n"), "* ",
+//      "... ");
+//}
+//
+//// =====================================================================
+//// =====================================================================
+//
+//
+//std::string EngineProject::generateDoneStr()
+//{
+//  return Glib::ustring::compose(_("%1Done%2\n"), "[", "]");
+//}
 
-std::string EngineProject::generateWarningsCountStr()
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::machine::SimulationBlob* EngineProject::getSimBlob()
 {
-  return Glib::ustring::compose(_("\n%1 warning(s)\n\n"),
-      getExecutionMessages().getWarningsCount());
+  return mp_SimBlob;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string EngineProject::generateSimulationInformationStr()
+openfluid::base::RuntimeEnvironment* EngineProject::getRunEnv()
 {
-  openfluid::base::SimulationInfo* SimInfo = mp_Engine->getSimulationInfo();
-
-  return Glib::ustring::compose(
-      _("Simulation from %1 to %2\n         -> %3 time steps of %4 seconds\n\n"),
-      SimInfo->getStartTime().getAsISOString(),
-      SimInfo->getEndTime().getAsISOString(), SimInfo->getStepsCount(),
-      SimInfo->getTimeStep());
+  return mp_RunEnv;
 }
 
-
-
 // =====================================================================
 // =====================================================================
 
 
-std::string EngineProject::generateBuffersInformationStr()
+openfluid::io::IOListener* EngineProject::getIOListener()
 {
-  Glib::ustring Str = "";
-
-  if (getRunEnv()->isUserValuesBufferSize())
-    Str = Glib::ustring::compose(
-        _("Buffers for variables set to %1 time steps\n"),
-        getRunEnv()->getValuesBufferSize());
-  else
-    Str = _("Buffers for variables set to full simulation\n");
-
-  Str.append(Glib::ustring::compose(
-      _("Buffers for output files set to %1 bytes\n\n"),
-      getRunEnv()->getFilesBufferSize()));
-
-  return Str;
+  return mp_IOListener;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string EngineProject::generateRunTimeInformationStr()
+openfluid::machine::MachineListener* EngineProject::getMachineListener()
 {
-  boost::posix_time::time_duration FullSimDuration = m_FullEndTime
-      - m_FullStartTime;
-
-  return Glib::ustring::compose(
-      _("Simulation run time: %1\n     Total run time: %2\n\n"),
-      boost::posix_time::to_simple_string(
-          getRunEnv()->getEffectiveSimulationDuration()),
-      boost::posix_time::to_simple_string(FullSimDuration));
+  return mp_Listener;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string EngineProject::generateSavingReportStr()
+openfluid::machine::ModelInstance* EngineProject::getModelInstance()
 {
-  return Glib::ustring::compose(_("%1Saving simulation report%2\n"), "* ",
-      "... ");
+  return mp_ModelInstance;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string EngineProject::generateDoneStr()
+openfluid::core::CoreRepository& EngineProject::getCoreRepository()
 {
-  return Glib::ustring::compose(_("%1Done%2\n"), "[", "]");
+  return mp_SimBlob->getCoreRepository();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::ExecutionMessages& EngineProject::getExecutionMessages()
+{
+  return mp_SimBlob->getExecutionMessages();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::RunDescriptor& EngineProject::getRunDescriptor()
+{
+  return mp_SimBlob->getRunDescriptor();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
+{
+  return mp_SimBlob->getOutputDescriptor();
 }
 
 
@@ -237,258 +482,12 @@ EngineProject::~EngineProject()
   delete mp_SimBlob;
   //do not delete mp_RunEnv, which is a singleton
   delete mp_Engine;
-  delete mp_RunDialog;
+//  delete mp_RunDialog;
 }
 
 
 // =====================================================================
 // =====================================================================
-
-
-openfluid::machine::SimulationBlob* EngineProject::getSimBlob()
-{
-  return mp_SimBlob;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::RuntimeEnvironment* EngineProject::getRunEnv()
-{
-  return mp_RunEnv;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::io::IOListener* EngineProject::getIOListener()
-{
-  return mp_IOListener;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::MachineListener* EngineProject::getMachineListener()
-{
-  return mp_Listener;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::ModelInstance* EngineProject::getModelInstance()
-{
-  return mp_ModelInstance;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::core::CoreRepository& EngineProject::getCoreRepository()
-{
-  return mp_SimBlob->getCoreRepository();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::ExecutionMessages& EngineProject::getExecutionMessages()
-{
-  return mp_SimBlob->getExecutionMessages();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::RunDescriptor& EngineProject::getRunDescriptor()
-{
-  return mp_SimBlob->getRunDescriptor();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
-{
-  return mp_SimBlob->getOutputDescriptor();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EngineProject::stopEngine()
-{
-  std::cout << generateWarningsCountStr() << std::endl;
-
-  if (mp_Engine)
-    mp_Engine->closeOutputs();
-
-  if (mp_Engine && getRunEnv()->isWriteSimReport())
-  {
-    std::cout << _("* Closing outputs... ") << std::endl;
-    mp_Engine->closeOutputs();
-    std::cout << generateDoneStr() << std::endl;
-
-    std::cout << generateSavingReportStr() << std::endl;
-    mp_Engine->saveReports();
-    std::cout << generateDoneStr() << std::endl;
-
-    getExecutionMessages().resetWarningFlag();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool EngineProject::check()
-{
-  bool IsOk = true;
-
-  try
-  {
-    std::cout << "* Filling Run Environnement Descriptor..." << std::endl;
-    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
-        getRunDescriptor());
-    std::cout << "...Run Environnement Descriptor filled" << std::endl;
-
-    getCoreRepository().sortUnitsByProcessOrder();
-
-    mp_ModelInstance->initialize();
-
-    ///// CHECK MODEL
-    std::cout << "* Initializing parameters... " << std::endl;
-    mp_Engine->initParams();
-
-    //            mp_StatusParamsValues->clearErrorValues();
-    //
-    //            bool IsOk = true;
-    //
-    //            const std::list<openfluid::machine::ModelItemInstance *> ItemInstances = ModelInstance->getItems();
-    //
-    //            std::list<openfluid::machine::ModelItemInstance *>::const_iterator it;
-    //
-    //            for(it=ItemInstances.begin() ; it!=ItemInstances.end() ; ++it)
-    //            {
-    //              openfluid::machine::ModelItemInstance * ItemInstance = *it;
-    //
-    //              try
-    //              {
-    //                ItemInstance->Function->initParams(ItemInstance->Params);
-    //              }
-    //              catch(openfluid::base::OFException& E)
-    //              {
-    //                std::cerr << E.what() << std::endl;
-    //                mp_StatusParamsValues->appendErrorValue(E.what());
-    //                IsOk = false;
-    //                continue;
-    //              }
-    //
-    //            }
-    //
-    //            Glib::ustring Status = IsOk ? "(OK)" : "(with errors)";
-    //
-    std::cout << "...Parameters initialized " << /*Status <<*/std::endl;
-    //
-    //            return IsOk;
-
-    ////
-
-    mp_Engine->prepareData();
-
-    getCoreRepository().clearAllVariables();
-    mp_Engine->checkConsistency();
-  } catch (openfluid::base::OFException& E)
-  {
-    BuilderAppDialogFactory::showSimpleErrorMessage(E.what());
-    std::cerr << E.what() << std::endl;
-    stopEngine();
-    IsOk = false;
-  }
-
-  mp_ModelInstance->resetInitialized();
-  return IsOk;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void EngineProject::run()
-{
-  if (check())
-  {
-    mp_Listener->linkWithTextView(mp_RunDialog->getTextView());
-    mp_RunDialog->show();
-
-    try
-    {
-      mp_ModelInstance->initialize();
-      m_FullStartTime = getNow();
-
-      mp_Listener->displayText(generateSimulationIdStr());
-      mp_Listener->displayText(generateDomainInformationStr());
-      mp_Listener->displayText(generateSimulationInformationStr());
-      mp_Listener->displayText(generateBuffersInformationStr());
-
-      mp_Listener->displayText(Glib::ustring::compose(
-          _("%1Running simulation%2\n"), "**** ", " ****"));
-
-      m_EffectiveStartTime = getNow();
-      mp_Engine->run();
-      m_EffectiveEndTime = getNow();
-
-      mp_Listener->displayText(Glib::ustring::compose(
-          _("%1Simulation completed%2\n\n"), "**** ", " ****"));
-
-      getExecutionMessages().resetWarningFlag();
-      getRunEnv()->setEffectiveSimulationDuration(m_EffectiveEndTime
-          - m_EffectiveStartTime);
-
-      if (getRunEnv()->isWriteSimReport())
-      {
-        mp_Listener->displayText(generateSavingReportStr());
-        mp_Engine->saveReports();
-        mp_Listener->displayText(generateDoneStr());
-        getExecutionMessages().resetWarningFlag();
-      }
-
-      m_FullEndTime = getNow();
-
-      mp_Listener->displayText(generateWarningsCountStr());
-      mp_Listener->displayText(generateRunTimeInformationStr());
-    } catch (openfluid::base::OFException& E)
-    {
-      BuilderAppDialogFactory::showSimpleErrorMessage(E.what());
-      std::cerr << E.what() << std::endl;
-      stopEngine();
-    }
-
-    mp_ModelInstance->resetInitialized();
-  }
-}
-
 
 // =====================================================================
 // =====================================================================
@@ -507,12 +506,15 @@ EngineProjectEmpty::EngineProjectEmpty()
 // =====================================================================
 // =====================================================================
 
+// =====================================================================
+// =====================================================================
+
 
 EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
 {
   getRunEnv()->setInputDir(FolderIn);
   //TODO: set OUT folder from Preferences
-//  getRunEnv()->setOutputDir(Glib::ustring::compose("%1/OUT", FolderIn));
+  //  getRunEnv()->setOutputDir(Glib::ustring::compose("%1/OUT", FolderIn));
 
   //      std::cout << "* Loading data... " << std::endl;
   openfluid::io::FluidXReader FXReader(mp_IOListener);

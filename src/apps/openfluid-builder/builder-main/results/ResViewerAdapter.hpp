@@ -73,7 +73,8 @@ class ResViewerAdapter: public sigc::trackable
     ResViewerAdapter(ResViewerAdapterModel& Model, ResViewerView& View);
     sigc::signal<void> signal_FromUserSelectionChanged();
     void init(openfluid::core::Unit* Unit, std::vector<std::string> VarNames,
-        openfluid::base::SimulationStatus* SimStatus, unsigned int Precision);
+        openfluid::base::SimulationStatus* SimStatus, unsigned int Precision,
+        std::string SetName, bool ShowFiles);
     void clear();
 };
 

@@ -71,6 +71,8 @@ class BuilderAppState
 
     virtual void whenMarketAsked() = 0;
 
+    virtual void whenPreferencesAsked() = 0;
+
     void whenAboutAsked();
 
 };

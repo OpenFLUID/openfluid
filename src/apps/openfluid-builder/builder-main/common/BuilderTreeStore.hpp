@@ -60,22 +60,37 @@
 class BuilderTreeStore: public Gtk::TreeStore
 {
   private:
+
     Gtk::TreeModelColumn<Glib::ustring> m_TitleColumn;
+
     bool m_TitleColumnDefined;
+
   protected:
+
     BuilderTreeStore(Gtk::TreeModelColumnRecord& Columns);
+
   public:
+
     static Glib::RefPtr<BuilderTreeStore> create(
         Gtk::TreeModelColumnRecord& Columns);
+
     void setTitleColumn(Gtk::TreeModelColumn<Glib::ustring> TitleColumn);
+
     Gtk::TreeRowReference* createRowRefFromPathString(std::string PathString);
+
     Gtk::TreeRowReference* createRowRefFromIter(Gtk::TreeIter Iter);
+
     Gtk::TreeRow getRowFromRowRef(Gtk::TreeRowReference& RowRef);
+
     Gtk::TreeRow appendToRowRef(Gtk::TreeRowReference& RowRef);
+
     Gtk::TreeRowReference* appendATitleRow(
         Gtk::TreeModelColumn<Glib::ustring> Column, std::string Value);
+
     // throw OFException
     Gtk::TreeRowReference* appendATitleRow(std::string Value);
+
+    void clearChildrenOfRowRef(Gtk::TreeRowReference& RowRef);
 };
 
 #endif /* __BUILDERTREESTORE_HPP__ */

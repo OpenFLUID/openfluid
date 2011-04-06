@@ -88,6 +88,7 @@ class DomainIDataAdapter: public sigc::trackable
     std::pair<std::string, std::string> getEditedDataInfo();
     void updateEditedData();
     void updateDataList();
+    void setSelectedClassName(std::string RequestedClass);
 };
 
 #endif /* __DOMAINIDATAADAPTER_HPP__ */

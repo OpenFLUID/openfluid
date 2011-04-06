@@ -128,3 +128,7 @@ void DomainIDataAdapter::updateDataList()
   m_View.setUnitsTreeColumns(m_Model.getUnitsTreeColumns());
   m_View.setUnitsTreeModel(m_Model.getUnitsTreeModel());
 }
+void DomainIDataAdapter::setSelectedClassName(std::string RequestedClass)
+{
+  m_View.requestClassSelection(m_Model.getIterFromClassName(RequestedClass));
+}

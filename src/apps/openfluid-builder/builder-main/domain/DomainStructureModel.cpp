@@ -54,6 +54,10 @@
 
 #include "DomainStructureModel.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 bool DomainStructureModelImpl::isCoreRepos()
 {
   if (!mp_CoreRepos)
@@ -65,48 +69,98 @@ bool DomainStructureModelImpl::isCoreRepos()
   }
   return true;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::CoreRepository* DomainStructureModelImpl::getCoreRepos()
 {
   if (isCoreRepos())
     return mp_CoreRepos;
   return 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::deleteUnit(openfluid::core::Unit* Unit)
 {
   mp_CoreRepos->deleteUnit(Unit);
   m_signal_FromAppUnitDeleted.emit();
 }
 
+// =====================================================================
+// =====================================================================
+
+
 DomainStructureModelImpl::DomainStructureModelImpl() :
   mp_CoreRepos(0), mp_SelectedUnit(0), m_SelectedClass("")
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainStructureModelImpl::signal_FromAppDomainChanged()
 {
   return m_signal_FromAppDomainChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainStructureModelImpl::signal_FromAppUnitDeleted()
 {
   return m_signal_FromAppUnitDeleted;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void, openfluid::core::Unit&> DomainStructureModelImpl::signal_FromAppUnitAdded()
 {
   return m_signal_FromAppUnitAdded;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void, int> DomainStructureModelImpl::signal_FromAppUnitAltered()
 {
   return m_signal_FromAppUnitAltered;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainStructureModelImpl::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::setEngineRequirements(
     openfluid::core::CoreRepository& CoreRepos)
 {
   mp_CoreRepos = &CoreRepos;
-  m_signal_FromAppDomainChanged.emit();
+  update();
+  //  m_signal_FromAppDomainChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByClass()
 {
   // warn : copies only base info of units, not relations
@@ -125,10 +179,20 @@ openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByCl
   }
   return UnitsMapWithNoEmpty;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool DomainStructureModelImpl::isEmpty()
 {
   return getUnitListByClass().empty();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::addUnit(openfluid::core::Unit* Unit)
 {
   if (Unit)
@@ -139,6 +203,11 @@ void DomainStructureModelImpl::addUnit(openfluid::core::Unit* Unit)
     m_signal_FromAppUnitAdded.emit(*createdUnit);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::deleteSelectedUnit()
 {
   if (mp_SelectedUnit)
@@ -146,10 +215,20 @@ void DomainStructureModelImpl::deleteSelectedUnit()
     deleteUnit(mp_SelectedUnit);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::alterSelectedUnit()
 {
   m_signal_FromAppUnitAltered.emit(mp_SelectedUnit->getProcessOrder());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::setCurrentSelectionByUser(std::pair<std::string,
     int> UnitInfos)
 {
@@ -164,19 +243,51 @@ void DomainStructureModelImpl::setCurrentSelectionByUser(std::pair<std::string,
 
   m_signal_FromUserSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::Unit* DomainStructureModelImpl::getSelectedUnit()
 {
   return mp_SelectedUnit;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainStructureModelImpl::getSelectedClass()
 {
   return m_SelectedClass;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructureModelImpl::update()
+{
+  m_signal_FromAppDomainChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::CoreRepository* DomainStructureModelSub::getCoreRepos()
 {
   return DomainStructureModelImpl::getCoreRepos();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelSub::deleteUnit(openfluid::core::Unit* Unit)
 {
   DomainStructureModelImpl::deleteUnit(Unit);

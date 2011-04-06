@@ -182,9 +182,8 @@ void SimulOutSetsModelImpl::updateFileFormats(
     openfluid::base::OutputFilesDescriptor Formats =
         FilesFormatsByNameVect[i].second;
 
-    std::cout << "i " << i << "foramtname : " << FormatName << std::endl;
     BOOST_FOREACH(openfluid::base::OutputSetDescriptor OutDesc,FilesFormatsByNameVect[i].second.getSets())
-{    std::cout << "--setname " << OutDesc.getName() << std::endl;
+{
     m_SetsByName [OutDesc.getName()] = std::make_pair(FormatName,
         OutDesc);
   }

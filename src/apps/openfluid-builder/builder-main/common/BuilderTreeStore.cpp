@@ -56,42 +56,81 @@
 
 #include <openfluid/base/OFException.hpp>
 
+// =====================================================================
+// =====================================================================
+
+
 BuilderTreeStore::BuilderTreeStore(Gtk::TreeModelColumnRecord& Columns)
 {
   m_TitleColumnDefined = false;
   set_column_types(Columns);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<BuilderTreeStore> BuilderTreeStore::create(
     Gtk::TreeModelColumnRecord& Columns)
 {
   return Glib::RefPtr<BuilderTreeStore>(new BuilderTreeStore(Columns));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderTreeStore::setTitleColumn(
     Gtk::TreeModelColumn<Glib::ustring> TitleColumn)
 {
   m_TitleColumn = TitleColumn;
   m_TitleColumnDefined = true;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRowReference* BuilderTreeStore::createRowRefFromPathString(
     std::string PathString)
 {
   return new Gtk::TreeRowReference((Glib::RefPtr<Gtk::TreeStore>) this,
       this->get_path(this->get_iter(PathString)));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRowReference* BuilderTreeStore::createRowRefFromIter(
     Gtk::TreeIter Iter)
 {
   return new Gtk::TreeRowReference((Glib::RefPtr<Gtk::TreeStore>) this,
       this->get_path(Iter));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRow BuilderTreeStore::getRowFromRowRef(Gtk::TreeRowReference& RowRef)
 {
   return *(this->get_iter(RowRef.get_path()));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRow BuilderTreeStore::appendToRowRef(Gtk::TreeRowReference& RowRef)
 {
   return *(this->append(getRowFromRowRef(RowRef)->children()));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRowReference* BuilderTreeStore::appendATitleRow(Gtk::TreeModelColumn<
     Glib::ustring> Column, std::string Value)
 {
@@ -99,6 +138,11 @@ Gtk::TreeRowReference* BuilderTreeStore::appendATitleRow(Gtk::TreeModelColumn<
   Row[Column] = Value;
   return createRowRefFromIter(*Row);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 // throw OFException
 Gtk::TreeRowReference* BuilderTreeStore::appendATitleRow(std::string Value)
 {
@@ -107,4 +151,18 @@ Gtk::TreeRowReference* BuilderTreeStore::appendATitleRow(std::string Value)
   else
     throw openfluid::base::OFException("OpenFLUID Builder",
         "BuilderTreeStore::appendATitleRow", "No title column defined.");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderTreeStore::clearChildrenOfRowRef(Gtk::TreeRowReference& RowRef)
+{
+  Gtk::TreeModel::Children ChildrenRows = getRowFromRowRef(RowRef).children();
+
+  while (!ChildrenRows.empty())
+  {
+    erase(ChildrenRows.begin());
+  }
 }

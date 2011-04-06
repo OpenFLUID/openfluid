@@ -59,15 +59,29 @@
 #include "ResViewerModel.hpp"
 #include "ResViewerAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerPresenter::whenAppInit()
 {
   m_Adapter.init(m_Model.getUnit(), m_Model.getVarNames(),
-      m_Model.getSimStatus(), m_Model.getPrecision());
+      m_Model.getSimStatus(), m_Model.getPrecision(), m_Model.getSetName(),
+      m_Model.getShowFiles());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerPresenter::whenAppClear()
 {
   m_Adapter.clear();
 }
+
+// =====================================================================
+// =====================================================================
+
 
 ResViewerPresenter::ResViewerPresenter(ResViewerModel& Model,
     ResViewerAdapter& Adapter) :

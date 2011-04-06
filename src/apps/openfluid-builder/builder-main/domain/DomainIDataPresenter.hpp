@@ -70,6 +70,7 @@ class DomainIDataPresenter: public sigc::trackable
     void whenDataEdited();
     void whenDataListChanged();
     void whenClassSelectionChanged();
+    void whenFromAppClassSelectionChanged();
   public:
     DomainIDataPresenter(DomainIDataModel& Model, DomainIDataAdapter& Adapter);
 };

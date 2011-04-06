@@ -103,6 +103,8 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getAppMarketAction();
 
+    Glib::RefPtr<Gtk::Action> getEditPreferencesAction();
+
     Glib::RefPtr<Gtk::Action> getAppAboutAction();
 
 };

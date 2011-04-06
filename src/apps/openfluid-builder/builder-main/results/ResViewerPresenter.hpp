@@ -60,15 +60,24 @@
 class ResViewerModel;
 class ResViewerAdapter;
 
+
 class ResViewerPresenter: public sigc::trackable
 {
   private:
+
     ResViewerModel& m_Model;
+
     ResViewerAdapter& m_Adapter;
+
     void whenAppInit();
+
     void whenAppClear();
+
+
   public:
+
     ResViewerPresenter(ResViewerModel& Model, ResViewerAdapter& Adapter);
+
 };
 
 #endif /* __RESVIEWERPRESENTER_HPP__ */

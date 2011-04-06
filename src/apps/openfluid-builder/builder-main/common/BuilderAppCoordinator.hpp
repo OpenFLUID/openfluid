@@ -53,6 +53,7 @@
 #include "BuilderAppState.hpp"
 
 class BuilderAppWindow;
+class PreferencesModel;
 
 class BuilderAppCoordinator
 {
@@ -63,6 +64,7 @@ class BuilderAppCoordinator
     BuilderAppState* mp_CurrentState;
     BuilderAppState* mp_HomeState;
     BuilderAppState* mp_ProjectState;
+    PreferencesModel& m_PreferencesModel;
 
     void unsetCurrentModule();
 
@@ -80,13 +82,15 @@ class BuilderAppCoordinator
 
     void whenMarketAsked();
 
+    void whenPreferencesAsked();
+
     void whenAboutAsked();
 
 
   public:
 
     BuilderAppCoordinator(BuilderAppWindow& MainWindow,
-        BuilderAppActions& Actions);
+        BuilderAppActions& Actions, PreferencesModel& PrefModel);
 
     void setState(BuilderAppState& State);
 
@@ -107,6 +111,8 @@ class BuilderAppCoordinator
     bool showQuitAppDialog();
 
     std::string showOpenProjectDialog();
+
+    void showPreferencesDialog();
 
 };
 

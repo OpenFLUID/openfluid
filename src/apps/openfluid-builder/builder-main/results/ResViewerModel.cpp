@@ -56,6 +56,9 @@
 
 #include <boost/foreach.hpp>
 
+// =====================================================================
+// =====================================================================
+
 
 void ResViewerModelImpl::extractVariablesNames()
 {
@@ -76,23 +79,48 @@ void ResViewerModelImpl::extractVariablesNames()
   m_VarNames.insert(m_VarNames.end(), VectorVars.begin(), VectorVars.end());
 }
 
+// =====================================================================
+// =====================================================================
+
+
 ResViewerModelImpl::ResViewerModelImpl() :
-  mp_RunDesc(0), mp_SetDesc(0), mp_Unit(0), mp_SimStatus(0), m_Precision(0)
+  mp_RunDesc(0), mp_SetDesc(0), mp_Unit(0), mp_SimStatus(0), m_Precision(0),
+      m_ShowFiles(true)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ResViewerModelImpl::signal_FromAppInit()
 {
   return m_signal_FromAppInit;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ResViewerModelImpl::signal_FromAppClear()
 {
   return m_signal_FromAppClear;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerModelImpl::setEngineRequirements(
     openfluid::base::RunDescriptor& RunDesc)
 {
   mp_RunDesc = &RunDesc;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerModelImpl::initialize(
     openfluid::base::OutputSetDescriptor* SetDesc, openfluid::core::Unit* Unit)
 {
@@ -112,6 +140,38 @@ void ResViewerModelImpl::initialize(
     m_signal_FromAppInit.emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void ResViewerModelImpl::initialize(
+    openfluid::base::OutputSetDescriptor* SetDesc, openfluid::core::Unit* Unit,
+    std::vector<std::string> Vars, bool ShowFiles)
+{
+  if (SetDesc && Unit)
+  {
+    mp_SetDesc = SetDesc;
+    mp_Unit = Unit;
+
+    mp_SimStatus = new openfluid::base::SimulationStatus(
+        mp_RunDesc->getBeginDate(), mp_RunDesc->getEndDate(),
+        mp_RunDesc->getDeltaT());
+
+    m_Precision = mp_SetDesc->getPrecision();
+
+    m_VarNames = Vars;
+
+    m_ShowFiles = ShowFiles;
+
+    m_signal_FromAppInit.emit();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerModelImpl::clear()
 {
   mp_SetDesc = 0;
@@ -121,32 +181,86 @@ void ResViewerModelImpl::clear()
   m_VarNames.clear();
   m_signal_FromAppClear.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::Unit* ResViewerModelImpl::getUnit()
 {
   return mp_Unit;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> ResViewerModelImpl::getVarNames()
 {
   return m_VarNames;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::SimulationStatus* ResViewerModelImpl::getSimStatus()
 {
   return mp_SimStatus;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 unsigned int ResViewerModelImpl::getPrecision()
 {
   return m_Precision;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ResViewerModelImpl::getSetName()
+{
+  return mp_SetDesc->getName();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ResViewerModelImpl::getShowFiles()
+{
+  return m_ShowFiles;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void ResViewerModelSub::setSetDescriptor(
     openfluid::base::OutputSetDescriptor* SetDesc)
 {
   mp_SetDesc = SetDesc;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerModelSub::setUnit(openfluid::core::Unit* Unit)
 {
   mp_Unit = Unit;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerModelSub::extractVariablesNames()
 {
   ResViewerModelImpl::extractVariablesNames();

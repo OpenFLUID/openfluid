@@ -60,6 +60,9 @@
 #include "BuilderAppDialogFactory.hpp"
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
+#include "PreferencesModel.hpp"
+
+#include "BuilderProjectWithExplorer.hpp"
 
 
 // =====================================================================
@@ -151,6 +154,16 @@ void BuilderAppCoordinator::whenMarketAsked()
 // =====================================================================
 
 
+void BuilderAppCoordinator::whenPreferencesAsked()
+{
+  mp_CurrentState->whenPreferencesAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderAppCoordinator::whenAboutAsked()
 {
   mp_CurrentState->whenAboutAsked();
@@ -161,8 +174,8 @@ void BuilderAppCoordinator::whenAboutAsked()
 
 
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
-    BuilderAppActions& Actions) :
-  m_MainWindow(MainWindow), m_Actions(Actions)
+    BuilderAppActions& Actions, PreferencesModel& PrefModel) :
+  m_MainWindow(MainWindow), m_Actions(Actions), m_PreferencesModel(PrefModel)
 {
   mp_CurrentModule = 0;
 
@@ -184,9 +197,11 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
         *this, &BuilderAppCoordinator::whenMarketAsked));
 
+  m_Actions.getEditPreferencesAction()->signal_activate().connect(sigc::mem_fun(
+        *this, &BuilderAppCoordinator::whenPreferencesAsked));
+
   m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(
         *this, &BuilderAppCoordinator::whenAboutAsked));
-
 
 
   setState(*mp_HomeState);
@@ -211,6 +226,7 @@ BuilderAppState* BuilderAppCoordinator::getHomeState()
 {
   return mp_HomeState;
 }
+
 BuilderAppState* BuilderAppCoordinator::getProjectState()
 {
   return mp_ProjectState;
@@ -235,7 +251,8 @@ void BuilderAppCoordinator::setHomeModule()
 
 void BuilderAppCoordinator::setProjectModule(std::string FolderIn)
 {
-	setCurrentModule(new BuilderProjectModulePlainGtk(FolderIn));
+//  setCurrentModule(new BuilderProjectModulePlainGtk(FolderIn));
+  setCurrentModule(new BuilderProjectWithExplorer(FolderIn));
   m_Actions.setProjectActionGroupVisible(true);
   m_MainWindow.setToolBarVisible(true);
 }
@@ -294,3 +311,11 @@ std::string BuilderAppCoordinator::showOpenProjectDialog()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::showPreferencesDialog()
+{
+  m_PreferencesModel.showAsked();
+}

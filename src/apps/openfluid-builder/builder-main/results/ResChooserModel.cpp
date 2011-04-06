@@ -56,8 +56,16 @@
 
 #include <boost/foreach.hpp>
 
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelImpl::extractSets()
 {
+  m_BySetNameClassName.clear();
+  m_BySetNameSetDesc.clear();
+  m_BySetNameIDs.clear();
+
   for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
   {
     for (unsigned int j = 0; j < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
@@ -85,23 +93,47 @@ IDs        .push_back(Unit.getID());
   }
 }
 
+// =====================================================================
+// =====================================================================
+
+
 ResChooserModelImpl::ResChooserModelImpl() :
   mp_OutDesc(0), mp_CoreRepos(0), mp_ModelInstance(0), m_SelectedSetName(""),
       m_SelectedUnitInfo(std::make_pair("", -1))
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ResChooserModelImpl::signal_FromAppInit()
 {
   return m_signal_FromAppInit;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ResChooserModelImpl::signal_ViewResultAsked()
 {
   return m_signal_ViewResultAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void, std::string> ResChooserModelImpl::signal_MessageAsked()
 {
   return m_signal_MessageAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelImpl::setEngineRequirements(
     openfluid::base::OutputDescriptor& OutDesc,
     openfluid::core::CoreRepository& CoreRepos,
@@ -111,55 +143,121 @@ void ResChooserModelImpl::setEngineRequirements(
   mp_CoreRepos = &CoreRepos;
   mp_ModelInstance = &ModelInstance;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelImpl::initialize()
 {
   extractSets();
 
   m_signal_FromAppInit.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::string> ResChooserModelImpl::getBySetNameClassName()
 {
   return m_BySetNameClassName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::vector<unsigned int> > ResChooserModelImpl::getBySetNameIDs()
 {
   return m_BySetNameIDs;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelImpl::setSelectedUnitInfo(
     std::pair<std::string, int> UnitInfo)
 {
   if (UnitInfo.first != "" && UnitInfo.second > -1)
     m_SelectedUnitInfo = UnitInfo;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelImpl::setSelectedSetName(std::string SetName)
 {
   m_SelectedSetName = SetName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::Unit* ResChooserModelImpl::getSelectedUnit()
 {
   if (openfluid::core::Unit* Unit = mp_CoreRepos->getUnit(m_SelectedUnitInfo.first,m_SelectedUnitInfo.second))
     return Unit;
   return (openfluid::core::Unit*) 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::OutputSetDescriptor* ResChooserModelImpl::getSelectedSetDescriptor()
 {
   if (m_BySetNameSetDesc.find(m_SelectedSetName) != m_BySetNameSetDesc.end())
     return m_BySetNameSetDesc[m_SelectedSetName];
   return (openfluid::base::OutputSetDescriptor*) 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelImpl::validate()
 {
   m_signal_ViewResultAsked.emit();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void ResChooserModelImpl::update()
+{
+  initialize();
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 void ResChooserModelSub::extractSets()
 {
   ResChooserModelImpl::extractSets();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string ResChooserModelSub::getSelectedSetName()
 {
   return m_SelectedSetName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::pair<std::string, unsigned int> ResChooserModelSub::getSelectedUnitInfo()
 {
   return m_SelectedUnitInfo;

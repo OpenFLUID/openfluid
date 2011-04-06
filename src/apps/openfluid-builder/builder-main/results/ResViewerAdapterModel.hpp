@@ -67,32 +67,63 @@ class BuilderListStore;
 class ResViewerAdapterModel
 {
   public:
+
     virtual void
-        init(openfluid::core::Unit* Unit, std::vector<std::string> VarNames,
-            openfluid::base::SimulationStatus* SimStatus,
-            unsigned int Precision) = 0;
+    init(openfluid::core::Unit* Unit, std::vector<std::string> VarNames,
+        openfluid::base::SimulationStatus* SimStatus, unsigned int Precision,
+        std::string SetName, bool ShowFiles) = 0;
+
     virtual ResViewerColumns* getColumns() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
+
+    virtual std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> >
+        getFileContentsByName() = 0;
+
     virtual std::string getTitle() = 0;
+
     virtual void clear() = 0;
+
 };
 
 class ResViewerAdapterModelImpl: public ResViewerAdapterModel
 {
   private:
+
     ResViewerColumns* mp_Columns;
+
     Glib::RefPtr<BuilderListStore> m_refListStore;
+
     std::string m_Title;
+
+    std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> > m_FileContentsByName;
+
     void createColumns(std::vector<std::string> VarNames);
+
+    void createFileBuffers(std::vector<std::string> VarNames,
+        openfluid::core::Unit* Unit, std::string SetName);
+
     void setNoVarTitle();
+
   public:
+
     ResViewerAdapterModelImpl();
+
     void init(openfluid::core::Unit* Unit, std::vector<std::string> VarNames,
-        openfluid::base::SimulationStatus* SimStatus, unsigned int Precision);
+        openfluid::base::SimulationStatus* SimStatus, unsigned int Precision,
+        std::string SetName, bool ShowFiles);
+
     ResViewerColumns* getColumns();
+
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
+
+    std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> >
+        getFileContentsByName();
+
     std::string getTitle();
+
     void clear();
+
 };
 
 class ResViewerAdapterModelSub: public ResViewerAdapterModelImpl

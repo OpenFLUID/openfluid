@@ -58,10 +58,20 @@
 
 #include "BuilderAppDialogFactory.hpp"
 
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesViewImpl::onSelectionChanged()
 {
   m_signal_FileSelectionChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 SimulOutFilesViewImpl::SimulOutFilesViewImpl()
 {
@@ -76,33 +86,82 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
       &SimulOutFilesViewImpl::onSelectionChanged));
 
   mp_TreeView->set_visible(true);
+
+  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->add(*mp_TreeView);
+  mp_MainWin->set_visible(true);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFilesViewImpl::signal_FileSelectionChanged()
 {
   return m_signal_FileSelectionChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFilesViewImpl::signal_DeletionConfirmed()
 {
   return m_signal_DeletionConfirmed;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_TreeView->set_model(Model);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter SimulOutFilesViewImpl::getSelectedIter()
 {
   return mp_TreeView->get_selection()->get_selected();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesViewImpl::showDialogConfirmDeletion()
 {
   if (BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
       _("This will delete the sets associated to this format.\nDo you want to continue ?")))
     m_signal_DeletionConfirmed.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* SimulOutFilesViewImpl::asWidget()
 {
-  return mp_TreeView;
+  return mp_MainWin;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 
 void SimulOutFilesViewSub::selectRowWithIndex(int Index)
 {
@@ -110,3 +169,12 @@ void SimulOutFilesViewSub::selectRowWithIndex(int Index)
       mp_TreeView->get_model()->children()[Index]);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeView* SimulOutFilesViewSub::getTreeView()
+{
+  return mp_TreeView;
+}

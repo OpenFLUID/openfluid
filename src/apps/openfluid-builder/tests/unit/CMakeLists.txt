@@ -67,11 +67,26 @@ ADD_BUILDER_UNITTEST(builder-unittest-EngineProject
 ADD_BUILDER_UNITTEST(builder-unittest-BuilderClassListStore
                      builder_unittest_BuilderClassListStore_TEST
                      BuilderClassListStore_TEST.cpp)
-                     
+
+ADD_BUILDER_UNITTEST(builder-unittest-BuilderTreeStore
+                     builder_unittest_BuilderTreeStore_TEST
+                     BuilderTreeStore_TEST.cpp) 
+                                          
 ADD_BUILDER_UNITTEST(builder-unittest-ModelItemInstanceFactory
                      builder_unittest_ModelItemInstanceFactory_TEST
                      ModelItemInstanceFactory_TEST.cpp)
+                     
+ADD_BUILDER_UNITTEST(builder-unittest-ProjectExplorerAdapterModel
+                     builder_unittest_ProjectExplorerAdapterModel_TEST
+                     ProjectExplorerAdapterModel_TEST.cpp)
 
+ADD_BUILDER_UNITTEST(builder-unittest-ProjectExplorerPresenter
+                     builder_unittest_ProjectExplorerPresenter_TEST
+                     ProjectExplorerPresenter_TEST.cpp)
+                     
+#ADD_BUILDER_UNITTEST(builder-unittest-ProjectCoordinator
+#                     builder_unittest_ProjectCoordinator_TEST
+#                     ProjectCoordinator_TEST.cpp)
 
 ### MODEL ###
 
@@ -97,9 +112,9 @@ ADD_BUILDER_UNITTEST(builder-unittest-ModelStructurePresenter
                      builder_unittest_ModelStructurePresenter_TEST
                      ModelStructurePresenter_TEST.cpp)
 
-ADD_BUILDER_UNITTEST(builder-unittest-ModelCoordinator
-                     builder_unittest_ModelCoordinator_TEST
-                     ModelCoordinator_TEST.cpp)
+#ADD_BUILDER_UNITTEST(builder-unittest-ModelCoordinator
+#                     builder_unittest_ModelCoordinator_TEST
+#                     ModelCoordinator_TEST.cpp)
 
 ### DOMAIN ###
                    
@@ -176,4 +191,7 @@ ADD_BUILDER_UNITTEST(builder-unittest-ResChooserPresenter
                      builder_unittest_ResChooserPresenter_TEST
                      ResChooserPresenter_TEST.cpp)
 
-                     
+ADD_BUILDER_UNITTEST(builder-unittest-ResUnitChooserModel
+                     builder_unittest_ResUnitChooserModel_TEST
+                     ResUnitChooserModel_TEST.cpp)
+                                          

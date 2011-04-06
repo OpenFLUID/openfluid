@@ -78,7 +78,10 @@ void DomainIDataPresenter::whenClassSelectionChanged()
 {
   m_Model.setCurrentClassSelectionByUser(m_Adapter.getSelectedClassName());
 }
-
+void DomainIDataPresenter::whenFromAppClassSelectionChanged()
+{
+  m_Adapter.setSelectedClassName(m_Model.getAppRequestedClass());
+}
 DomainIDataPresenter::DomainIDataPresenter(DomainIDataModel& Model,
     DomainIDataAdapter& Adapter) :
   m_Model(Model), m_Adapter(Adapter)
@@ -89,6 +92,9 @@ DomainIDataPresenter::DomainIDataPresenter(DomainIDataModel& Model,
       &DomainIDataPresenter::whenDataReplaced));
   m_Model.signal_FromAppDataListChanged().connect(sigc::mem_fun(*this,
       &DomainIDataPresenter::whenDataListChanged));
+
+  m_Model.signal_FromAppClassSelectionChanged().connect(sigc::mem_fun(*this,
+      &DomainIDataPresenter::whenFromAppClassSelectionChanged));
 
   m_Adapter.signal_FromUserClassSelectionChanged().connect(sigc::mem_fun(*this,
       &DomainIDataPresenter::whenClassSelectionChanged));

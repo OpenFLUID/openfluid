@@ -64,71 +64,112 @@
 class ResChooserModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppInit() = 0;
+
     virtual sigc::signal<void> signal_ViewResultAsked() = 0;
+
     virtual sigc::signal<void, std::string> signal_MessageAsked() = 0;
+
     virtual void setEngineRequirements(
         openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,
         openfluid::machine::ModelInstance& ModelInstance) = 0;
+
     virtual void initialize() = 0;
 
     virtual std::map<std::string, std::string> getBySetNameClassName() = 0;
+
     virtual std::map<std::string, std::vector<unsigned int> >
     getBySetNameIDs() = 0;
 
     virtual void setSelectedUnitInfo(std::pair<std::string, int> UnitInfo) = 0;
+
     virtual void setSelectedSetName(std::string SetName) = 0;
 
     virtual openfluid::core::Unit* getSelectedUnit() = 0;
+
     virtual openfluid::base::OutputSetDescriptor* getSelectedSetDescriptor() = 0;
 
     virtual void validate() = 0;
+
+    virtual void update() = 0;
 };
+
 
 class ResChooserModelImpl: public ResChooserModel
 {
   private:
+
     sigc::signal<void> m_signal_FromAppInit;
+
     sigc::signal<void> m_signal_ViewResultAsked;
+
     sigc::signal<void, std::string> m_signal_MessageAsked;
+
     openfluid::base::OutputDescriptor* mp_OutDesc;
+
     openfluid::core::CoreRepository* mp_CoreRepos;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
     std::map<std::string, std::string> m_BySetNameClassName;
+
     std::map<std::string, std::vector<unsigned int> > m_BySetNameIDs;
+
     std::map<std::string, openfluid::base::OutputSetDescriptor*>
         m_BySetNameSetDesc;
 
   protected:
+
     std::string m_SelectedSetName;
+
     std::pair<std::string, unsigned int> m_SelectedUnitInfo;
 
     void extractSets();
+
   public:
+
     ResChooserModelImpl();
+
     sigc::signal<void> signal_FromAppInit();
+
     sigc::signal<void> signal_ViewResultAsked();
+
     sigc::signal<void, std::string> signal_MessageAsked();
+
     void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,
         openfluid::machine::ModelInstance& ModelInstance);
+
     void initialize();
+
     std::map<std::string, std::string> getBySetNameClassName();
+
     std::map<std::string, std::vector<unsigned int> > getBySetNameIDs();
+
     void setSelectedUnitInfo(std::pair<std::string, int> UnitInfo);
+
     void setSelectedSetName(std::string SetName);
+
     openfluid::core::Unit* getSelectedUnit();
+
     openfluid::base::OutputSetDescriptor* getSelectedSetDescriptor();
+
     void validate();
+
+    void update();
 };
+
 
 class ResChooserModelSub: public ResChooserModelImpl
 {
   public:
+
     void extractSets();
+
     std::string getSelectedSetName();
+
     std::pair<std::string, unsigned int> getSelectedUnitInfo();
 };
 

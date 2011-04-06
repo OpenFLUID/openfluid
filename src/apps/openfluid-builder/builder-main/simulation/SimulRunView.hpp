@@ -102,6 +102,8 @@ class SimulRunViewImpl: public SimulRunView
     void onValuesBuffChanged();
     void onFilesBuffChanged();
   protected:
+//    Gtk::VPaned* mp_MainPaned;
+    Gtk::Box* mp_MainBox;
     Gtk::SpinButton* mp_DeltaSpin;
     Gtk::Entry* mp_BeginEntry;
     Gtk::Entry* mp_EndEntry;

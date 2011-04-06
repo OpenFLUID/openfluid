@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_SUITE(SimulOutFilesPresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_SetOutDescriptor)
 {
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(test_deleteFileFormat)
 
   mp_Model->deleteSelectedFileFormatConfirmed();
 
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),0);
 }
 
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(test_addFileFormatToEmptyFilesSet)
   mp_View->selectRowWithIndex(0);
   mp_Model->deleteSelectedFileFormatConfirmed();
 
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),0);
 
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(test_addFileFormatToEmptyFilesSet)
 
 BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
 {
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
 
   mp_Model->updateSelectedFileFormat("New Name");
 
-  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);

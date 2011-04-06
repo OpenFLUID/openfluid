@@ -56,19 +56,37 @@
 
 #include <glibmm/i18n.h>
 
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::onClassesViewSelectionChanged()
 {
   m_signal_ClassSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::onUnitsViewSelectionChanged()
 {
   m_signal_UnitSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::setTreeModel(
     Glib::RefPtr<Gtk::TreeModel> TreeModel)
 {
   mp_UnitsView->set_model(TreeModel);
 }
+
+// =====================================================================
+// =====================================================================
+
 
 BuilderByClassTreeView::BuilderByClassTreeView()
 {
@@ -83,29 +101,64 @@ BuilderByClassTreeView::BuilderByClassTreeView()
       &BuilderByClassTreeView::onUnitsViewSelectionChanged));
   mp_UnitsView->set_visible(true);
 
+//  Gtk::ScrolledWindow* WinClasses = Gtk::manage(new Gtk::ScrolledWindow());
+//  WinClasses->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+//  WinClasses->set_visible(true);
+//  WinClasses->add(*mp_ClassesView);
+
+  Gtk::ScrolledWindow* WinUnits = Gtk::manage(new Gtk::ScrolledWindow());
+  WinUnits->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  WinUnits->set_visible(true);
+  WinUnits->add(*mp_UnitsView);
+
   mp_MainBox = Gtk::manage(new Gtk::HBox());
   mp_MainBox->pack_start(*mp_ClassesView);
-  mp_MainBox->pack_start(*mp_UnitsView);
+  mp_MainBox->pack_start(*WinUnits);
   mp_MainBox->set_visible(true);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> BuilderByClassTreeView::signal_ClassSelectionChanged()
 {
   return m_signal_ClassSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> BuilderByClassTreeView::signal_UnitSelectionChanged()
 {
   return m_signal_UnitSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::setClassesTreeModel(
     Glib::RefPtr<Gtk::TreeModel> ClassesModel)
 {
   mp_ClassesView->set_model(ClassesModel);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::setUnitsTreeModel(
     Glib::RefPtr<Gtk::TreeModel> UnitsModel)
 {
   mp_UnitsView->set_model(UnitsModel);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::requestClassSelection(Gtk::TreeIter Iter)
 {
   if (Iter)
@@ -113,23 +166,50 @@ void BuilderByClassTreeView::requestClassSelection(Gtk::TreeIter Iter)
     mp_ClassesView->get_selection()->select(Iter);
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::requestUnitSelection(Gtk::TreeIter Iter)
 {
   if (Iter)
     mp_UnitsView->get_selection()->select(Iter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter BuilderByClassTreeView::getSelectedClassIter()
 {
   return mp_ClassesView->get_selection()->get_selected();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter BuilderByClassTreeView::getSelectedUnitIter()
 {
   return mp_UnitsView->get_selection()->get_selected();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderByClassTreeView::asWidget()
 {
   return mp_MainBox;
 }
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 
 int BuilderByClassTreeViewSub::getClassesViewRowCount()
 {
@@ -137,6 +217,11 @@ int BuilderByClassTreeViewSub::getClassesViewRowCount()
     return mp_ClassesView->get_model()->children().size();
   return 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int BuilderByClassTreeViewSub::getUnitsViewRowCount()
 {
   if (mp_UnitsView->get_model())

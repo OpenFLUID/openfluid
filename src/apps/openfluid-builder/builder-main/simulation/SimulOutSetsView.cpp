@@ -58,10 +58,19 @@
 
 #include "BuilderAppDialogFactory.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsViewImpl::onSelectionChanged()
 {
   m_signal_SetSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
@@ -77,36 +86,87 @@ SimulOutSetsViewImpl::SimulOutSetsViewImpl()
       &SimulOutSetsViewImpl::onSelectionChanged));
 
   mp_TreeView->set_visible(true);
+
+  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_visible(true);
+  mp_MainWin->add(*mp_TreeView);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetsViewImpl::signal_SetSelectionChanged()
 {
   return m_signal_SetSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetsViewImpl::signal_DeletionConfirmed()
 {
   return m_signal_DeletionConfirmed;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_TreeView->set_model(Model);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter SimulOutSetsViewImpl::getSelectedIter()
 {
   return mp_TreeView->get_selection()->get_selected();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsViewImpl::showDialogConfirmDeletion()
 {
   if (BuilderAppDialogFactory::showSimpleOkCancelQuestionDialog(
       _("This will delete the sets associated to this format.\nDo you want to continue ?")))
     m_signal_DeletionConfirmed.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* SimulOutSetsViewImpl::asWidget()
 {
-  return mp_TreeView;
+  return mp_MainWin;
 }
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 
 void SimulOutSetsViewSub::selectRowWithIndex(int Index)
 {
   mp_TreeView->get_selection()->select(
       mp_TreeView->get_model()->children()[Index]);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeView* SimulOutSetsViewSub::getTreeView()
+{
+  return mp_TreeView;
 }

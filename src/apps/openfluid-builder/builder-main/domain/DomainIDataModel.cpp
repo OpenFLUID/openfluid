@@ -56,9 +56,8 @@
 
 #include <boost/foreach.hpp>
 
-
 DomainIDataModelImpl::DomainIDataModelImpl() :
-  mp_CoreRepos(0), m_SelectedClass("")
+  mp_CoreRepos(0), m_SelectedClass(""), m_AppRequestedSelection("")
 {
 }
 sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataInit()
@@ -72,6 +71,10 @@ sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataReplaced()
 sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataListChanged()
 {
   return m_signal_FromAppDataListChanged;
+}
+sigc::signal<void> DomainIDataModelImpl::signal_FromAppClassSelectionChanged()
+{
+  return m_signal_FromAppClassSelectionChanged;
 }
 void DomainIDataModelImpl::setEngineRequirements(
     openfluid::core::CoreRepository& CoreRepos)
@@ -88,6 +91,9 @@ const openfluid::core::CoreRepository* DomainIDataModelImpl::getCoreRepos()
 void DomainIDataModelImpl::update()
 {
   m_signal_FromAppDataInit.emit();
+
+  if(m_AppRequestedSelection!="")
+    m_signal_FromAppClassSelectionChanged.emit();
 }
 void DomainIDataModelImpl::replaceDataValue(
     std::pair<std::string, int> UnitInfo,
@@ -111,29 +117,36 @@ void DomainIDataModelImpl::replaceDataValue(
 void DomainIDataModelImpl::removeData(std::string DataName)
 {
   BOOST_FOREACH(openfluid::core::Unit Unit,*mp_CoreRepos->getUnits(m_SelectedClass)->getList())
-        {
-          mp_CoreRepos->getUnit(m_SelectedClass, Unit.getID())->getInputData()->removeData(
-              DataName);
-        }
-  m_signal_FromAppDataListChanged.emit();
+{  mp_CoreRepos->getUnit(m_SelectedClass, Unit.getID())->getInputData()->removeData(
+      DataName);
+}
+m_signal_FromAppDataListChanged.emit();
 }
 void DomainIDataModelImpl::addData(std::string DataName)
 {
   if (mp_CoreRepos->isUnitsClassExist(m_SelectedClass) && DataName != "")
   {
     BOOST_FOREACH(openfluid::core::Unit Unit,*mp_CoreRepos->getUnits(m_SelectedClass)->getList())
-          {
-            mp_CoreRepos->getUnit(m_SelectedClass, Unit.getID())->getInputData()->setValue(
-                DataName, "");
-          }
-    m_signal_FromAppDataListChanged.emit();
+{    mp_CoreRepos->getUnit(m_SelectedClass, Unit.getID())->getInputData()->setValue(
+        DataName, "");
   }
+  m_signal_FromAppDataListChanged.emit();
+}
 }
 void DomainIDataModelImpl::setCurrentClassSelectionByUser(std::string ClassName)
 {
   m_SelectedClass = ClassName;
 }
+void DomainIDataModelImpl::setCurrentClassSelectionByApp(std::string ClassName)
+{
+  m_AppRequestedSelection = ClassName;
+  m_signal_FromAppClassSelectionChanged.emit();
+}
 std::string DomainIDataModelImpl::getSelectedClass()
 {
   return m_SelectedClass;
+}
+std::string DomainIDataModelImpl::getAppRequestedClass()
+{
+  return m_AppRequestedSelection;
 }

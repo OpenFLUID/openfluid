@@ -60,81 +60,60 @@
 class FunctionSignatureRegistry
 {
   public:
+
     typedef std::vector<openfluid::machine::SignatureItemInstance*>
         FctSignatures_t;
+
     typedef std::map<openfluid::base::ModelItemDescriptor::ModelItemType,
         FctSignatures_t> FctSignaturesByType_t;
-    virtual FctSignaturesByType_t getFctSignatures() = 0;
-    virtual FctSignatures_t getGeneratorSignatures() = 0;
-    virtual FctSignatures_t getPluggableSignatures() = 0;
-    virtual void updatePluggableSignatures() = 0;
-  protected:
-    virtual void addAPluggableSignature(
-        openfluid::machine::SignatureItemInstance* Signature) = 0;
-    virtual void addAGeneratorSignature(
-        openfluid::machine::SignatureItemInstance* Signature) = 0;
-};
 
-class FunctionSignatureRegistryImpl: public FunctionSignatureRegistry
-{
   private:
+
+    static FunctionSignatureRegistry* mp_Instance;
+
     FctSignaturesByType_t m_Signatures;
+
   protected:
+
+    FunctionSignatureRegistry();
+
     void addAPluggableSignature(
-        openfluid::machine::SignatureItemInstance* Signature)
-    {
-      m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].push_back(
-          Signature);
-    }
+        openfluid::machine::SignatureItemInstance* Signature);
+
     void addAGeneratorSignature(
-        openfluid::machine::SignatureItemInstance* Signature)
-    {
-      m_Signatures[openfluid::base::ModelItemDescriptor::Generator].push_back(
-          Signature);
-    }
+        openfluid::machine::SignatureItemInstance* Signature);
+
   public:
-    FunctionSignatureRegistryImpl()
-    {
-      addAGeneratorSignature(new FixedGeneratorSignature());
-      addAGeneratorSignature(new RandomGeneratorSignature());
-      addAGeneratorSignature(new InterpGeneratorSignature());
-    }
-    FctSignaturesByType_t getFctSignatures()
-    {
-      return m_Signatures;
-    }
-    void updatePluggableSignatures()
-    {
-      for (unsigned int i = 0; i
-          < openfluid::machine::PluginManager::getInstance()->getAvailableFunctions().size(); i++)
-      {
-        addAPluggableSignature(
-            openfluid::machine::PluginManager::getInstance()->getAvailableFunctions()[i]);
-      }
-    }
-    FctSignatures_t getGeneratorSignatures()
-    {
-      return m_Signatures[openfluid::base::ModelItemDescriptor::Generator];
-    }
-    FctSignatures_t getPluggableSignatures()
-    {
-      return m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction];
-    }
+
+    static FunctionSignatureRegistry* getInstance();
+
+    FctSignaturesByType_t getFctSignatures();
+
+    FctSignatures_t getGeneratorSignatures();
+
+    FctSignatures_t getPluggableSignatures();
+
+    void updatePluggableSignatures();
+
+    static openfluid::machine::SignatureItemInstance
+    * getEmptyPluggableSignature();
+
 };
 
-class FunctionSignatureRegistrySub: public FunctionSignatureRegistryImpl
+// =====================================================================
+// =====================================================================
+
+
+class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
 {
   public:
+
     void addAPluggableSignature(
-        openfluid::machine::SignatureItemInstance* Signature)
-    {
-      FunctionSignatureRegistryImpl::addAPluggableSignature(Signature);
-    }
+        openfluid::machine::SignatureItemInstance* Signature);
+
     void addAGeneratorSignature(
-        openfluid::machine::SignatureItemInstance* Signature)
-    {
-      FunctionSignatureRegistryImpl::addAGeneratorSignature(Signature);
-    }
+        openfluid::machine::SignatureItemInstance* Signature);
+
 };
 
 #endif /* __FUNCTIONSIGNATUREREGISTRY_HPP__ */

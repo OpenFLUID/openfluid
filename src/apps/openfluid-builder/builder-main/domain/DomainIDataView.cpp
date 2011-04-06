@@ -54,8 +54,11 @@
 
 #include "DomainIDataView.hpp"
 
-
 #include "DomainIDataColumns.hpp"
+
+// =====================================================================
+// =====================================================================
+
 
 void DomainIDataViewImpl::onDataEdited(const Glib::ustring /*PathString*/,
     const Glib::ustring NewText, std::string DataName)
@@ -64,27 +67,57 @@ void DomainIDataViewImpl::onDataEdited(const Glib::ustring /*PathString*/,
   m_signal_DataEdited.emit();
 }
 
+// =====================================================================
+// =====================================================================
+
+
 DomainIDataViewImpl::DomainIDataViewImpl() :
   m_EditedDataInfo(std::make_pair("", ""))
 {
+  mp_ClassesView->set_visible(false);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainIDataViewImpl::signal_ClassSelectionChanged()
 {
   return BuilderByClassTreeView::signal_ClassSelectionChanged();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainIDataViewImpl::signal_DataEdited()
 {
   return m_signal_DataEdited;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainIDataViewImpl::signal_UnitSelectionChanged()
 {
   return BuilderByClassTreeView::signal_UnitSelectionChanged();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewImpl::setClassesTreeModel(
     Glib::RefPtr<Gtk::TreeModel> ClassesModel)
 {
   BuilderByClassTreeView::setClassesTreeModel(ClassesModel);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewImpl::setUnitsTreeColumns(DomainIDataColumns* Columns)
 {
   mp_UnitsView->remove_all_columns();
@@ -111,35 +144,77 @@ void DomainIDataViewImpl::setUnitsTreeColumns(DomainIDataColumns* Columns)
     }
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewImpl::setUnitsTreeModel(
     Glib::RefPtr<Gtk::TreeModel> UnitsModel)
 {
   BuilderByClassTreeView::setUnitsTreeModel(UnitsModel);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewImpl::requestClassSelection(Gtk::TreeIter Iter)
 {
   BuilderByClassTreeView::requestClassSelection(Iter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewImpl::requestUnitSelection(Gtk::TreeIter Iter)
 {
   BuilderByClassTreeView::requestUnitSelection(Iter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter DomainIDataViewImpl::getSelectedClassIter()
 {
   return BuilderByClassTreeView::getSelectedClassIter();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter DomainIDataViewImpl::getSelectedUnitIter()
 {
   return BuilderByClassTreeView::getSelectedUnitIter();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::pair<std::string, std::string> DomainIDataViewImpl::getEditedDataInfo()
 {
   return m_EditedDataInfo;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* DomainIDataViewImpl::asWidget()
 {
   return BuilderByClassTreeView::asWidget();
 }
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 
 int DomainIDataViewSub::getClassesViewRowCount()
 {
@@ -147,18 +222,33 @@ int DomainIDataViewSub::getClassesViewRowCount()
     return mp_ClassesView->get_model()->children().size();
   return 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainIDataViewSub::getUnitsViewRowCount()
 {
   if (mp_UnitsView->get_model())
     return mp_UnitsView->get_model()->children().size();
   return 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainIDataViewSub::getSelectedClassName()
 {
   if (getSelectedClassIter())
     return getSelectedClassIter()->get_value(m_ClassColumns.m_Class);
   return "";
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainIDataViewSub::getSelectedUnitId()
 {
   int Id = -1;
@@ -166,19 +256,39 @@ int DomainIDataViewSub::getSelectedUnitId()
     getSelectedUnitIter()->get_value(0, Id);
   return Id;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewSub::selectClassWithIndex(int Index)
 {
   requestClassSelection(mp_ClassesView->get_model()->children()[Index]);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewSub::selectUnitWithIndex(int Index)
 {
   requestUnitSelection(mp_UnitsView->get_model()->children()[Index]);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataViewSub::setEditedDataInfo(std::string DataName,
     std::string NewValue)
 {
   m_EditedDataInfo = std::make_pair(DataName, NewValue);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainIDataViewSub::getUnitsColumnCount()
 {
   return mp_UnitsView->get_columns().size();

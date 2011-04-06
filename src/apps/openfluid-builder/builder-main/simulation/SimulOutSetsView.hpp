@@ -54,40 +54,72 @@
 
 #include "SimulOutSetsColumns.hpp"
 
+
 class SimulOutSetsView
 {
   public:
+
     virtual sigc::signal<void> signal_SetSelectionChanged() = 0;
+
     virtual sigc::signal<void> signal_DeletionConfirmed() = 0;
+
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual Gtk::TreeIter getSelectedIter() = 0;
+
     virtual void showDialogConfirmDeletion() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
 };
+
 
 class SimulOutSetsViewImpl: public SimulOutSetsView
 {
   private:
+
     sigc::signal<void> m_signal_SetSelectionChanged;
+
     sigc::signal<void> m_signal_DeletionConfirmed;
+
     SimulOutSetsColumns m_Columns;
+
     void onSelectionChanged();
+
+
   protected:
+
     Gtk::TreeView* mp_TreeView;
+
+    Gtk::ScrolledWindow* mp_MainWin;
+
+
   public:
+
     SimulOutSetsViewImpl();
+
     sigc::signal<void> signal_SetSelectionChanged();
+
     sigc::signal<void> signal_DeletionConfirmed();
+
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     Gtk::TreeIter getSelectedIter();
+
     void showDialogConfirmDeletion();
+
     Gtk::Widget* asWidget();
+
 };
+
 
 class SimulOutSetsViewSub: public SimulOutSetsViewImpl
 {
   public:
+
     void selectRowWithIndex(int Index);
+
+    Gtk::TreeView* getTreeView();
 };
 
 #endif /* SIMULOUTSETSVIEW_HPP_ */

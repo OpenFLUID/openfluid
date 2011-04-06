@@ -57,6 +57,7 @@
 #include "ModelAvailFctComponent.hpp"
 #include "ModelFctDetailComponent.hpp"
 #include "ModelStructureComponent.hpp"
+#include "ModelGlobalParamsComponent.hpp"
 #include "ModelCoordinator.hpp"
 #include "FunctionSignatureRegistry.hpp"
 #include "BuilderListToolBoxFactory.hpp"
@@ -73,11 +74,13 @@ BuilderModelModule::BuilderModelModule(
   mp_ModelFctDetailMVP = new ModelFctDetailComponent();
   mp_ModelStructureMVP = new ModelStructureComponent();
 
+  mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent();
+
   mp_StructureListToolBox = ListToolBoxFactory.createModelStructureToolBox();
 
   mp_Coordinator = new ModelCoordinator(*mp_ModelAvailFctMVP->getModel(),
       *mp_ModelFctDetailMVP->getModel(), *mp_ModelStructureMVP->getModel(),
-      *mp_StructureListToolBox);
+      *mp_ModelGlobalParamsMVP->getModel(), *mp_StructureListToolBox);
 
   Signatures = 0;
 }
@@ -87,13 +90,15 @@ BuilderModelModule::~BuilderModelModule()
   delete mp_ModelAvailFctMVP;
   delete mp_ModelFctDetailMVP;
   delete mp_ModelStructureMVP;
+  delete mp_ModelGlobalParamsMVP;
   delete mp_StructureListToolBox;
   delete Signatures;
 }
 void BuilderModelModule::initialize()
 {
-  Signatures = new FunctionSignatureRegistryImpl();
-  Signatures->updatePluggableSignatures();
+  Signatures = FunctionSignatureRegistry::getInstance();
+//  Signatures = new FunctionSignatureRegistryImpl();
+//  Signatures->updatePluggableSignatures();
   mp_Coordinator->setSignatures(*Signatures);
 }
 void BuilderModelModule::setEngineRequirements(
@@ -118,8 +123,15 @@ void BuilderModelModule::compose()
       Gtk::PACK_SHRINK, 0);
   MiddlePanel->set_visible(true);
 
+  Gtk::Notebook* ParamsNB = Gtk::manage(new Gtk::Notebook());
+  ParamsNB->append_page(*mp_ModelGlobalParamsMVP->asWidget(),
+      _("Global Parameters"));
+  ParamsNB->set_visible(true);
+
   Gtk::HBox* BottomPanel = Gtk::manage(new Gtk::HBox());
   BottomPanel->set_border_width(5);
+  BottomPanel->pack_start(*ParamsNB);
+  BottomPanel->set_visible(true);
 
   BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
   TopFrame->setLabelText(_("Available Functions"));

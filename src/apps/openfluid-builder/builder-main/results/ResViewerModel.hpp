@@ -63,52 +63,106 @@
 class ResViewerModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppInit() = 0;
+
     virtual sigc::signal<void> signal_FromAppClear() = 0;
+
     virtual void
     setEngineRequirements(openfluid::base::RunDescriptor& RunDesc) = 0;
+
     virtual void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
         openfluid::core::Unit* Unit) = 0;
+
+    virtual void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
+        openfluid::core::Unit* Unit, std::vector<std::string> Vars,
+        bool ShowFiles) = 0;
+
     virtual void clear() = 0;
+
     virtual openfluid::core::Unit* getUnit() = 0;
+
     virtual std::vector<std::string> getVarNames() = 0;
+
     virtual openfluid::base::SimulationStatus* getSimStatus() = 0;
+
     virtual unsigned int getPrecision() = 0;
+
+    virtual std::string getSetName() = 0;
+
+    virtual bool getShowFiles() = 0;
+
 };
 
 class ResViewerModelImpl: public ResViewerModel
 {
   private:
+
     sigc::signal<void> m_signal_FromAppInit;
+
     sigc::signal<void> m_signal_FromAppClear;
+
   protected:
+
     openfluid::base::RunDescriptor* mp_RunDesc;
+
     openfluid::base::OutputSetDescriptor* mp_SetDesc;
+
     openfluid::core::Unit* mp_Unit;
+
     std::vector<std::string> m_VarNames;
+
     openfluid::base::SimulationStatus* mp_SimStatus;
+
     unsigned int m_Precision;
+
+    bool m_ShowFiles;
+
     void extractVariablesNames();
+
   public:
+
     ResViewerModelImpl();
+
     sigc::signal<void> signal_FromAppInit();
+
     sigc::signal<void> signal_FromAppClear();
+
     void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc);
+
     void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
         openfluid::core::Unit* Unit);
+
+    void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
+        openfluid::core::Unit* Unit, std::vector<std::string> Vars,
+        bool ShowFiles);
+
     void clear();
+
     openfluid::core::Unit* getUnit();
+
     std::vector<std::string> getVarNames();
+
     openfluid::base::SimulationStatus* getSimStatus();
+
     unsigned int getPrecision();
+
+    std::string getSetName();
+
+    bool getShowFiles();
+
 };
 
 class ResViewerModelSub: public ResViewerModelImpl
 {
   public:
+
     void setSetDescriptor(openfluid::base::OutputSetDescriptor* SetDesc);
+
     void setUnit(openfluid::core::Unit* Unit);
+
     void extractVariablesNames();
+
 };
 
 #endif /* __RESVIEWERMODEL_HPP__ */

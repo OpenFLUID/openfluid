@@ -65,8 +65,15 @@ sigc::signal<void> ModelFctDetailModelImpl::signal_FctToDisplayChanged()
 void ModelFctDetailModelImpl::setFctToDisplay(
     openfluid::machine::SignatureItemInstance* Signature)
 {
-  mp_FctToDisplay = Signature;
-  signal_FctToDisplayChanged().emit();
+  if (!Signature)
+  {
+    throw std::logic_error(
+        "ModelFctDetailModelImpl::setFctToDisplay : nul Signature parameter");
+  } else
+  {
+    mp_FctToDisplay = Signature;
+    signal_FctToDisplayChanged().emit();
+  }
 }
 openfluid::machine::SignatureItemInstance* ModelFctDetailModelImpl::getFctDisplayed()
 {

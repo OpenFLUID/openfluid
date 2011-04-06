@@ -56,27 +56,55 @@
 
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerViewImpl::onSelectionChanged()
 {
   m_signal_FileSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
 
 ResViewerViewImpl::ResViewerViewImpl()
 {
   mp_MainBox = Gtk::manage(new Gtk::VBox());
 
   mp_TitleLabel = Gtk::manage(new Gtk::Label());
+
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
 
-  mp_MainBox->pack_start(*mp_TitleLabel, Gtk::PACK_SHRINK);
-  mp_MainBox->pack_start(*mp_TreeView);
+  Gtk::ScrolledWindow* Win = Gtk::manage(new Gtk::ScrolledWindow());
+  Win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  Win->add(*mp_TreeView);
+
+  //  mp_MainBox->pack_start(*mp_TitleLabel, Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*Win);
 
   mp_MainBox->show_all_children();
+
+  mp_Notebook = Gtk::manage(new Gtk::Notebook());
+  mp_Notebook->append_page(*mp_MainBox, _("tabular"));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ResViewerViewImpl::signal_FileSelectionChanged()
 {
   return m_signal_FileSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerViewImpl::setColumns(ResViewerColumns* Columns)
 {
   mp_TreeView->remove_all_columns();
@@ -100,15 +128,56 @@ void ResViewerViewImpl::setColumns(ResViewerColumns* Columns)
     }
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_TreeView->set_model(Model);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ResViewerViewImpl::setTitle(std::string Text)
 {
   mp_TitleLabel->set_text(Text);
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
+    Glib::RefPtr<Gtk::TextBuffer> > FileContents)
+{
+  while (mp_Notebook->get_n_pages() > 1)
+    mp_Notebook->remove_page(1);
+
+  for (std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> >::iterator it =
+      FileContents.begin(); it != FileContents.end(); ++it)
+  {
+    Gtk::TextView* TextView = Gtk::manage(new Gtk::TextView(it->second));
+    TextView->set_editable(false);
+    TextView->set_visible(true);
+
+    Gtk::ScrolledWindow* Win = Gtk::manage(new Gtk::ScrolledWindow());
+    Win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+    Win->set_visible(true);
+    Win->add(*TextView);
+
+    mp_Notebook->append_page(*Win, it->first);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ResViewerViewImpl::asWidget()
 {
-  return mp_MainBox;
+  return mp_Notebook;
 }

@@ -64,13 +64,13 @@
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
 class ModelStructureComponent;
+class ModelGlobalParamsComponent;
 class ModelAvailFctModel;
 class ModelFctDetailModel;
 class ModelStructureModel;
 class ModelCoordinator;
 class FunctionSignatureRegistry;
 class BuilderListToolBox;
-//class BuilderListToolBoxFactory;
 
 
 class BuilderModelModule: public BuilderModule
@@ -81,6 +81,7 @@ class BuilderModelModule: public BuilderModule
     ModelAvailFctComponent* mp_ModelAvailFctMVP;
     ModelFctDetailComponent* mp_ModelFctDetailMVP;
     ModelStructureComponent* mp_ModelStructureMVP;
+    ModelGlobalParamsComponent* mp_ModelGlobalParamsMVP;
     BuilderListToolBox* mp_StructureListToolBox;
     ModelCoordinator* mp_Coordinator;
     FunctionSignatureRegistry* Signatures;

@@ -62,6 +62,7 @@
 class ModelAvailFctModel;
 class ModelFctDetailModel;
 class ModelStructureModel;
+class ModelGlobalParamsModel;
 class BuilderListToolBox;
 class FunctionSignatureRegistry;
 
@@ -72,6 +73,7 @@ class ModelCoordinator: public sigc::trackable
     ModelAvailFctModel& m_AvailFctModel;
     ModelFctDetailModel& m_FctDetailModel;
     ModelStructureModel& m_StructureModel;
+    ModelGlobalParamsModel& m_GlobalParamsModel;
     BuilderListToolBox& m_StructureListToolBox;
     void updateStructureListToolBox();
     void whenAvailFctSelectionChanged();
@@ -84,6 +86,7 @@ class ModelCoordinator: public sigc::trackable
     ModelCoordinator(ModelAvailFctModel& AvailFctModel,
         ModelFctDetailModel& FctDetailModel,
         ModelStructureModel& StructureModel,
+        ModelGlobalParamsModel& GlobalParamsModel,
         BuilderListToolBox& StructureListToolBox);
     void setSignatures(FunctionSignatureRegistry& Signatures);
     void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
