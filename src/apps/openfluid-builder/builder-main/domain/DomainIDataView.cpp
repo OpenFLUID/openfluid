@@ -74,7 +74,7 @@ void DomainIDataViewImpl::onDataEdited(const Glib::ustring /*PathString*/,
 DomainIDataViewImpl::DomainIDataViewImpl() :
   m_EditedDataInfo(std::make_pair("", ""))
 {
-  mp_ClassesView->set_visible(false);
+  mp_ClassesWin->set_visible(false);
 }
 
 // =====================================================================

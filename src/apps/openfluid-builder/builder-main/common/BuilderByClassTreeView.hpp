@@ -73,6 +73,10 @@ class BuilderByClassTreeView
 
     Gtk::TreeView* mp_UnitsView;
 
+    Gtk::ScrolledWindow* mp_ClassesWin;
+
+    Gtk::ScrolledWindow* mp_UnitsWin;
+
     Gtk::Box* mp_MainBox;
 
     void onClassesViewSelectionChanged();

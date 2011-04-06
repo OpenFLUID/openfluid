@@ -101,19 +101,19 @@ BuilderByClassTreeView::BuilderByClassTreeView()
       &BuilderByClassTreeView::onUnitsViewSelectionChanged));
   mp_UnitsView->set_visible(true);
 
-//  Gtk::ScrolledWindow* WinClasses = Gtk::manage(new Gtk::ScrolledWindow());
-//  WinClasses->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-//  WinClasses->set_visible(true);
-//  WinClasses->add(*mp_ClassesView);
+  mp_ClassesWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ClassesWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ClassesWin->set_visible(true);
+  mp_ClassesWin->add(*mp_ClassesView);
 
-  Gtk::ScrolledWindow* WinUnits = Gtk::manage(new Gtk::ScrolledWindow());
-  WinUnits->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  WinUnits->set_visible(true);
-  WinUnits->add(*mp_UnitsView);
+  mp_UnitsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_UnitsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_UnitsWin->set_visible(true);
+  mp_UnitsWin->add(*mp_UnitsView);
 
   mp_MainBox = Gtk::manage(new Gtk::HBox());
-  mp_MainBox->pack_start(*mp_ClassesView);
-  mp_MainBox->pack_start(*WinUnits);
+  mp_MainBox->pack_start(*mp_ClassesWin);
+  mp_MainBox->pack_start(*mp_UnitsWin);
   mp_MainBox->set_visible(true);
 }
 
