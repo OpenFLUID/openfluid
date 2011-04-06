@@ -76,6 +76,8 @@ class DialogBoxFactory
 
     static void showSimpleErrorMessage(Glib::ustring MessageText);
 
+    static void showSimpleWarningMessage(Glib::ustring MessageText);
+
     static std::string showTextEntryDialog(Glib::ustring MessageText,
         Glib::ustring LabelText);
 };

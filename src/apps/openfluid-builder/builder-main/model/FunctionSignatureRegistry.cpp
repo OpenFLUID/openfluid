@@ -111,7 +111,8 @@ void FunctionSignatureRegistry::addAGeneratorSignature(
 
 void FunctionSignatureRegistry::updatePluggableSignatures()
 {
-  //TODO: clear pluggable signatures before
+  m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].clear();
+
   for (unsigned int i = 0; i
       < openfluid::machine::PluginManager::getInstance()->getAvailableFunctions().size(); i++)
   {

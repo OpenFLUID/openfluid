@@ -77,7 +77,7 @@ EngineProject::EngineProject()
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
       mp_Listener);
 
-//  mp_RunDialog = new BuilderRunDialog();
+  //  mp_RunDialog = new BuilderRunDialog();
 
   ///// CREATE ENGINE
   mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance,
@@ -153,80 +153,78 @@ void EngineProject::run()
   //  }
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 bool EngineProject::check()
 {
-//  bool IsOk = true;
-//
-//  try
-//  {
-//    std::cout << "* Filling Run Environnement Descriptor..." << std::endl;
-//    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
-//        getRunDescriptor());
-//    std::cout << "...Run Environnement Descriptor filled" << std::endl;
-//
-//    getCoreRepository().sortUnitsByProcessOrder();
-//
-//    mp_ModelInstance->initialize();
-//
-//    ///// CHECK MODEL
-//    std::cout << "* Initializing parameters... " << std::endl;
-//    mp_Engine->initParams();
-//
-//    //            mp_StatusParamsValues->clearErrorValues();
-//    //
-//    //            bool IsOk = true;
-//    //
-//    //            const std::list<openfluid::machine::ModelItemInstance *> ItemInstances = ModelInstance->getItems();
-//    //
-//    //            std::list<openfluid::machine::ModelItemInstance *>::const_iterator it;
-//    //
-//    //            for(it=ItemInstances.begin() ; it!=ItemInstances.end() ; ++it)
-//    //            {
-//    //              openfluid::machine::ModelItemInstance * ItemInstance = *it;
-//    //
-//    //              try
-//    //              {
-//    //                ItemInstance->Function->initParams(ItemInstance->Params);
-//    //              }
-//    //              catch(openfluid::base::OFException& E)
-//    //              {
-//    //                std::cerr << E.what() << std::endl;
-//    //                mp_StatusParamsValues->appendErrorValue(E.what());
-//    //                IsOk = false;
-//    //                continue;
-//    //              }
-//    //
-//    //            }
-//    //
-//    //            Glib::ustring Status = IsOk ? "(OK)" : "(with errors)";
-//    //
-//    std::cout << "...Parameters initialized " << /*Status <<*/std::endl;
-//    //
-//    //            return IsOk;
-//
-//    ////
-//
-//    mp_Engine->prepareData();
-//
-//    getCoreRepository().clearAllVariables();
-//    mp_Engine->checkConsistency();
-//  } catch (openfluid::base::OFException& E)
-//  {
-//    BuilderAppDialogFactory::showSimpleErrorMessage(E.what());
-//    std::cerr << E.what() << std::endl;
-//    stopEngine();
-//    IsOk = false;
-//  }
-//
-//  mp_ModelInstance->resetInitialized();
-//  return IsOk;
+  //  bool IsOk = true;
+  //
+  //  try
+  //  {
+  //    std::cout << "* Filling Run Environnement Descriptor..." << std::endl;
+  //    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
+  //        getRunDescriptor());
+  //    std::cout << "...Run Environnement Descriptor filled" << std::endl;
+  //
+  //    getCoreRepository().sortUnitsByProcessOrder();
+  //
+  //    mp_ModelInstance->initialize();
+  //
+  //    ///// CHECK MODEL
+  //    std::cout << "* Initializing parameters... " << std::endl;
+  //    mp_Engine->initParams();
+  //
+  //    //            mp_StatusParamsValues->clearErrorValues();
+  //    //
+  //    //            bool IsOk = true;
+  //    //
+  //    //            const std::list<openfluid::machine::ModelItemInstance *> ItemInstances = ModelInstance->getItems();
+  //    //
+  //    //            std::list<openfluid::machine::ModelItemInstance *>::const_iterator it;
+  //    //
+  //    //            for(it=ItemInstances.begin() ; it!=ItemInstances.end() ; ++it)
+  //    //            {
+  //    //              openfluid::machine::ModelItemInstance * ItemInstance = *it;
+  //    //
+  //    //              try
+  //    //              {
+  //    //                ItemInstance->Function->initParams(ItemInstance->Params);
+  //    //              }
+  //    //              catch(openfluid::base::OFException& E)
+  //    //              {
+  //    //                std::cerr << E.what() << std::endl;
+  //    //                mp_StatusParamsValues->appendErrorValue(E.what());
+  //    //                IsOk = false;
+  //    //                continue;
+  //    //              }
+  //    //
+  //    //            }
+  //    //
+  //    //            Glib::ustring Status = IsOk ? "(OK)" : "(with errors)";
+  //    //
+  //    std::cout << "...Parameters initialized " << /*Status <<*/std::endl;
+  //    //
+  //    //            return IsOk;
+  //
+  //    ////
+  //
+  //    mp_Engine->prepareData();
+  //
+  //    getCoreRepository().clearAllVariables();
+  //    mp_Engine->checkConsistency();
+  //  } catch (openfluid::base::OFException& E)
+  //  {
+  //    BuilderAppDialogFactory::showSimpleErrorMessage(E.what());
+  //    std::cerr << E.what() << std::endl;
+  //    stopEngine();
+  //    IsOk = false;
+  //  }
+  //
+  //  mp_ModelInstance->resetInitialized();
+  //  return IsOk;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -234,25 +232,24 @@ bool EngineProject::check()
 
 void EngineProject::stopEngine()
 {
-//  std::cout << generateWarningsCountStr() << std::endl;
-//
-//  if (mp_Engine)
-//    mp_Engine->closeOutputs();
-//
-//  if (mp_Engine && getRunEnv()->isWriteSimReport())
-//  {
-//    std::cout << _("* Closing outputs... ") << std::endl;
-//    mp_Engine->closeOutputs();
-//    std::cout << generateDoneStr() << std::endl;
-//
-//    std::cout << generateSavingReportStr() << std::endl;
-//    mp_Engine->saveReports();
-//    std::cout << generateDoneStr() << std::endl;
-//
-//    getExecutionMessages().resetWarningFlag();
-//  }
+  //  std::cout << generateWarningsCountStr() << std::endl;
+  //
+  //  if (mp_Engine)
+  //    mp_Engine->closeOutputs();
+  //
+  //  if (mp_Engine && getRunEnv()->isWriteSimReport())
+  //  {
+  //    std::cout << _("* Closing outputs... ") << std::endl;
+  //    mp_Engine->closeOutputs();
+  //    std::cout << generateDoneStr() << std::endl;
+  //
+  //    std::cout << generateSavingReportStr() << std::endl;
+  //    mp_Engine->saveReports();
+  //    std::cout << generateDoneStr() << std::endl;
+  //
+  //    getExecutionMessages().resetWarningFlag();
+  //  }
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -459,7 +456,6 @@ openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
   return mp_SimBlob->getOutputDescriptor();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -475,9 +471,8 @@ EngineProject::~EngineProject()
   delete mp_SimBlob;
   //do not delete mp_RunEnv, which is a singleton
   delete mp_Engine;
-//  delete mp_RunDialog;
+  //  delete mp_RunDialog;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -495,7 +490,6 @@ EngineProjectEmpty::EngineProjectEmpty()
   getRunDescriptor() = RunDesc;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -508,18 +502,24 @@ EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
   getRunEnv()->setInputDir(FolderIn);
   //TODO: set OUT folder from Preferences
   //  getRunEnv()->setOutputDir(Glib::ustring::compose("%1/OUT", FolderIn));
+  try
+  {
 
-  //      std::cout << "* Loading data... " << std::endl;
-  openfluid::io::FluidXReader FXReader(mp_IOListener);
-  FXReader.loadFromDirectory(FolderIn);
+    //      std::cout << "* Loading data... " << std::endl;
+    openfluid::io::FluidXReader FXReader(mp_IOListener);
+    FXReader.loadFromDirectory(FolderIn);
 
-  //      std::cout << "* Building  Blob... " << std::endl;
-  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-      FXReader.getDomainDescriptor(), FXReader.getRunDescriptor(),
-      FXReader.getOutputDescriptor(), *mp_SimBlob);
+    //      std::cout << "* Building  Blob... " << std::endl;
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
+        FXReader.getDomainDescriptor(), FXReader.getRunDescriptor(),
+        FXReader.getOutputDescriptor(), *mp_SimBlob);
 
-  //      std::cout << "* Building Model... " << std::endl;
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-      FXReader.getModelDescriptor(), *mp_ModelInstance);
+    //      std::cout << "* Building Model... " << std::endl;
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(
+        FXReader.getModelDescriptor(), *mp_ModelInstance);
+  } catch (openfluid::base::OFException e)
+  {
+    BuilderAppDialogFactory::showSimpleWarningMessage(e.what());
+  }
 }
 
