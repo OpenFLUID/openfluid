@@ -103,8 +103,6 @@ class SimulationRunDialog : public Gtk::Dialog
     void runSimulation();
 
 
-
-
   public:
 
     SimulationRunDialog(openfluid::machine::SimulationBlob* SBlob,

@@ -90,7 +90,7 @@ class RunStatusWidget : public Gtk::EventBox
 
     ~RunStatusWidget();
 
-    void setProgressFraction(double Fraction) { m_RunProgressBar.set_fraction(Fraction); };
+    void setProgressFraction(double Fraction);
 
     void setPresimDefault() { m_PresimLabel.set_markup("<span foreground='#777777'>"+m_PresimText+"</span>"); };
 

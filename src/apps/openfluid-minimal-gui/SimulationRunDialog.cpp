@@ -146,12 +146,11 @@ SimulationRunDialog::~SimulationRunDialog()
 
 void SimulationRunDialog::onIgnition()
 {
-  Glib::Thread* RunThread = Glib::Thread::create(sigc::mem_fun(*this,
-      &SimulationRunDialog::runSimulation),true);
-
-
   m_SimulationCompleted = false;
 
+  /*
+  Glib::Thread* RunThread = Glib::Thread::create(sigc::mem_fun(*this,
+      &SimulationRunDialog::runSimulation),true);
 
   while(!m_SimulationCompleted)
   {
@@ -159,6 +158,9 @@ void SimulationRunDialog::onIgnition()
   }
 
   RunThread->join();
+*/
+  runSimulation();
+
 
   m_ControlButton.set_sensitive(true);
 }
@@ -194,7 +196,7 @@ void SimulationRunDialog::resetWidgets()
                                              mp_SBlob->getRunDescriptor().getEndDate().getAsISOString() +
                                              "\n" + _("Time step: ") + TStepStr + _(" second(s)") + std::string("</b>"));
 
-
+  m_RunStatusWidget.setProgressFraction(0.0);
   m_RunStatusWidget.setLastStepStr(m_LastStepStr);
   m_RunStatusWidget.updateCurrentStep("0");
   m_RunStatusWidget.setRunstepDefault();

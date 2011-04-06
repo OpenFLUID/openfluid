@@ -89,6 +89,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     unsigned int m_CurrentFinal;
     unsigned int m_TotalTotal;
 
+
     std::string getStatusStr(const openfluid::base::Listener::Status& Status)
     {
       switch (Status)
@@ -103,11 +104,33 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     }
 
 
-    void appendToTextBuffer(const std::string& Str)
+    inline void refreshWidgets()
+    {
+      while(Gtk::Main::events_pending()) Gtk::Main::iteration();
+    }
+
+
+    inline void appendToTextBuffer(const std::string& Str)
     {
       m_RefDetailsTextBuffer->insert(m_RefDetailsTextBuffer->end(), Str);
-//      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(),0);
+      mp_DetailsTextView->scroll_to_mark(m_RefDetailsTextBuffer->get_insert(),0);
+      refreshWidgets();
     }
+
+
+    inline double computeCurrentFraction()
+    {
+      return (double(m_CurrentPreSim + m_CurrentInit + (m_CurrentStep+1) + m_CurrentFinal)/double(m_TotalTotal));
+    }
+
+
+    inline void updateProgressBar()
+    {
+      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      refreshWidgets();
+    }
+
+
 
 
   public:
@@ -138,11 +161,6 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
       m_CurrentFinal = 0;
     }
 
-    double computeCurrentFraction()
-    {
-      return (double(m_CurrentPreSim + m_CurrentInit + (m_CurrentStep+1) + m_CurrentFinal)/double(m_TotalTotal));
-    }
-
 
     void onInitParams()
     {
@@ -164,7 +182,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/)
     {
       m_CurrentPreSim = 1;
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      updateProgressBar();
     };
 
 
@@ -185,7 +203,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/)
     {
       m_CurrentPreSim = 2;
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      updateProgressBar();
 
     };
 
@@ -205,7 +223,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/)
     {
       m_CurrentPreSim = 3;
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      updateProgressBar();
       mp_RunStatusWidget->setPresimDone();
     };
 
@@ -214,6 +232,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       m_CurrentInit = 0;
       mp_RunStatusWidget->setInitRunning();
+      refreshWidgets();
     };
 
     void onFunctionInitializeRun(const std::string& FunctionID)
@@ -226,13 +245,14 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       m_CurrentInit++;
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      updateProgressBar();
     };
 
 
     void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/)
     {
       mp_RunStatusWidget->setInitDone();
+      refreshWidgets();
     };
 
 
@@ -240,14 +260,15 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       m_CurrentStep = 0;
       openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
       mp_RunStatusWidget->setRunstepRunning();
+      updateProgressBar();
     };
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
       m_CurrentStep = SimStatus->getCurrentStep();
       openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
+      updateProgressBar();
     };
 
     void onFunctionRunStep(const std::string& FunctionID)
@@ -265,15 +286,15 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
 
     void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
       mp_RunStatusWidget->updateCurrentStep(m_CurrentStepStr);
       mp_RunStatusWidget->setRunstepRunning();
+      updateProgressBar();
     };
 
 
     void onAfterRunSteps()
     {
-
+      refreshWidgets();
     };
 
     void onFinalizeRun()
@@ -281,6 +302,7 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
       m_CurrentFinal = 0;
       mp_RunStatusWidget->setRunstepDone();
       mp_RunStatusWidget->setFinalRunning();
+      updateProgressBar();
     };
 
     void onFunctionFinalizeRun(const std::string& FunctionID)
@@ -294,13 +316,14 @@ class RunDialogMachineListener : public openfluid::machine::MachineListener
     {
       m_CurrentFinal++;
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");
-      mp_RunStatusWidget->setProgressFraction(computeCurrentFraction());
+      updateProgressBar();
     };
 
     virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/)
     {
       mp_RunStatusWidget->setProgressFraction(1.0);
       mp_RunStatusWidget->setFinalDone();
+      updateProgressBar();
     };
 
 };

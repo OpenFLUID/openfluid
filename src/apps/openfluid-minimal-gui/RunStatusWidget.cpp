@@ -58,6 +58,7 @@
 
 
 #include "RunStatusWidget.hpp"
+#include <boost/format.hpp>
 
 
 // =====================================================================
@@ -78,13 +79,13 @@ RunStatusWidget::RunStatusWidget()
   m_RunProgressBar.set_size_request(-1,50);
 
   setPresimDefault();
-  m_PresimLabel.set_size_request(100,-1);
+  m_PresimLabel.set_size_request(120,-1);
   setInitDefault();
-  m_InitLabel.set_size_request(100,-1);
+  m_InitLabel.set_size_request(120,-1);
   setRunstepDefault();
-  m_RunstepLabel.set_size_request(100,-1);
+  m_RunstepLabel.set_size_request(150,-1);
   setFinalDefault();
-  m_FinalLabel.set_size_request(100,-1);
+  m_FinalLabel.set_size_request(120,-1);
 
 
 
@@ -113,10 +114,14 @@ RunStatusWidget::~RunStatusWidget()
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
 
+void RunStatusWidget::setProgressFraction(double Fraction)
+{
+  m_RunProgressBar.set_fraction(Fraction);
+  m_RunProgressBar.set_text((boost::format("%1$.1f %%") % (Fraction*100)).str());
+}
 
 
