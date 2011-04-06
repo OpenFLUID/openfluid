@@ -53,23 +53,42 @@
  */
 
 #include "ModelAvailFctAdapterModel.hpp"
-
 #include "BuilderGraphicsHelper.hpp"
+
+
 
 sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_SelectionChanged()
 {
   return m_signal_SelectionChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_FunctionsChanged()
 {
   return m_signal_FunctionsChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapterModelImpl::createTitleRows()
 {
   mp_PluggableTitleRowRef = mref_TreeModel->appendATitleRow(_(
       "Simulation Functions"));
   mp_GeneratorTitleRowRef = mref_TreeModel->appendATitleRow(_("Generators"));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::ustring ModelAvailFctAdapterModelImpl::replaceEmpty(
     Glib::ustring TextToCheck)
 {
@@ -77,34 +96,46 @@ Glib::ustring ModelAvailFctAdapterModelImpl::replaceEmpty(
     TextToCheck = _("(unknown)");
   return TextToCheck;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapterModelImpl::setAPluggableFunction(
     openfluid::machine::SignatureItemInstance* Function)
 {
   Gtk::TreeRow TitleRow = mref_TreeModel->appendToRowRef(
       *mp_PluggableTitleRowRef);
-  TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createSmallPixbufFromFile(
-      "green-bullet.png");
+  TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
+      "fct_status_stable.png");
   TitleRow[m_Columns.m_Id] = Function->Signature->ID;
   TitleRow[m_Columns.m_Domain] = replaceEmpty(Function->Signature->Domain);
 
   switch (Function->Signature->Status)
   {
     case openfluid::base::EXPERIMENTAL:
-      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createSmallPixbufFromFile(
-          "red-bullet.png");
+      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
+          "fct_status_experimental.png");
       break;
     case openfluid::base::BETA:
-      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createSmallPixbufFromFile(
-          "orange-bullet.png");
+      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
+          "fct_status_beta.png");
       break;
     case openfluid::base::STABLE:
-      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createSmallPixbufFromFile(
-          "green-bullet.png");
+      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
+          "fct_status_stable.png");
       break;
   }
 
   m_SignaturesById[Function->Signature->ID] = Function;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapterModelImpl::setAGeneratorFunction(
     openfluid::machine::SignatureItemInstance* Function)
 {
@@ -113,6 +144,12 @@ void ModelAvailFctAdapterModelImpl::setAGeneratorFunction(
   TitleRow[m_Columns.m_Id] = Function->Signature->ID;
   m_SignaturesById[Function->Signature->ID] = Function;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapterModelImpl::defineFirstAvailableRow()
 {
   if (!mref_TreeModel->children()[0]->children().empty())
@@ -123,6 +160,11 @@ void ModelAvailFctAdapterModelImpl::defineFirstAvailableRow()
     mp_FirstAvailableRowRef = new Gtk::TreeRowReference();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctAdapterModelImpl::ModelAvailFctAdapterModelImpl(
     ModelAvailFctColumns& Columns) :
   m_Columns(Columns)
@@ -132,12 +174,24 @@ ModelAvailFctAdapterModelImpl::ModelAvailFctAdapterModelImpl(
   createTitleRows();
   mp_SelectedSignature = 0;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctAdapterModelImpl::~ModelAvailFctAdapterModelImpl()
 {
   delete mp_GeneratorTitleRowRef;
   delete mp_PluggableTitleRowRef;
   delete mp_FirstAvailableRowRef;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapterModelImpl::setSignatures(
     FunctionSignatureRegistry::FctSignaturesByType_t Signatures)
 {
@@ -159,10 +213,22 @@ void ModelAvailFctAdapterModelImpl::setSignatures(
   defineFirstAvailableRow();
   m_signal_FunctionsChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> ModelAvailFctAdapterModelImpl::getTreeModel()
 {
   return mref_TreeModel;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapterModelImpl::setSelectedRow(Gtk::TreeRow Row)
 {
   if (Row)
@@ -174,10 +240,22 @@ void ModelAvailFctAdapterModelImpl::setSelectedRow(Gtk::TreeRow Row)
       mp_SelectedSignature = 0;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::SignatureItemInstance* ModelAvailFctAdapterModelImpl::getSelectedSignature()
 {
   return mp_SelectedSignature;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRow ModelAvailFctAdapterModelImpl::getFirstAvailableRow()
 {
   return mref_TreeModel->getRowFromRowRef(*mp_FirstAvailableRowRef);
