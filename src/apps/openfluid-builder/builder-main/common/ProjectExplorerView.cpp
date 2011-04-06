@@ -77,6 +77,10 @@ ProjectExplorerViewImpl::ProjectExplorerViewImpl() :
   mp_TreeView->signal_row_activated().connect(sigc::mem_fun(*this,
       &ProjectExplorerViewImpl::onRowActivated));
 
+  mp_MainWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWindow->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
+  mp_MainWindow->set_visible(true);
+  mp_MainWindow->add(*mp_TreeView);
 }
 
 // =====================================================================
@@ -129,7 +133,15 @@ Gtk::TreePath ProjectExplorerViewImpl::getActivatedPath()
 
 Gtk::Widget* ProjectExplorerViewImpl::asWidget()
 {
-  return mp_TreeView;
+  return mp_MainWindow;
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeView* ProjectExplorerViewSub::getTreeView()
+{
+  return mp_TreeView;
+}

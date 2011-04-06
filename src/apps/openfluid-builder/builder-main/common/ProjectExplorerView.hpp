@@ -79,7 +79,6 @@ class ProjectExplorerView
 
 };
 
-
 // =====================================================================
 // =====================================================================
 
@@ -90,13 +89,16 @@ class ProjectExplorerViewImpl: public ProjectExplorerView
 
     sigc::signal<void> m_signal_ActivationChanged;
 
-    void onRowActivated(const Gtk::TreeModel::Path& Path, Gtk::TreeViewColumn* /*Column*/);
+    void
+        onRowActivated(const Gtk::TreeModel::Path& Path, Gtk::TreeViewColumn* /*Column*/);
 
     Gtk::TreeModel::Path m_ActivatedPath;
 
   protected:
 
     Gtk::TreeView* mp_TreeView;
+
+    Gtk::ScrolledWindow* mp_MainWindow;
 
     ProjectExplorerColumns m_Columns;
 
@@ -114,5 +116,14 @@ class ProjectExplorerViewImpl: public ProjectExplorerView
 
 };
 
+// =====================================================================
+// =====================================================================
 
+class ProjectExplorerViewSub: public ProjectExplorerViewImpl
+{
+  public:
+
+    Gtk::TreeView* getTreeView();
+
+};
 #endif /* __PROJECTEXPLORERVIEW_HPP__ */

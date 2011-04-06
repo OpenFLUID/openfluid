@@ -73,7 +73,7 @@ struct init_Presenter
     ProjectExplorerComponent* mp_Component;
 
     ProjectExplorerModelImpl* mp_Model;
-    ProjectExplorerViewImpl* mp_View;
+    ProjectExplorerViewSub* mp_View;
 
     ProjectExplorerColumns m_Columns;
 
@@ -83,7 +83,7 @@ struct init_Presenter
 
       mp_Component = new ProjectExplorerComponent();
       mp_Model = (ProjectExplorerModelImpl*) (mp_Component->getModel());
-      mp_View = (ProjectExplorerViewImpl*) (mp_Component->getView());
+      mp_View = (ProjectExplorerViewSub*) (mp_Component->getView());
     }
 
     ~init_Presenter()
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
 
-  Gtk::TreeView* TreeView = (Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),4);
 
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
 
-  Gtk::TreeView* TreeView = (Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),4);
 
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
 
-  Gtk::TreeView* TreeView = (Gtk::TreeView*)mp_View->asWidget();
+  Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   // Model activated
   TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[0]),
