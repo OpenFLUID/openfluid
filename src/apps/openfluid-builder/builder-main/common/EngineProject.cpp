@@ -519,7 +519,7 @@ EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
         FXReader.getModelDescriptor(), *mp_ModelInstance);
   } catch (openfluid::base::OFException e)
   {
-    BuilderAppDialogFactory::showSimpleWarningMessage(e.what());
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
   }
 }
 

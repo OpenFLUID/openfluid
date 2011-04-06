@@ -117,7 +117,7 @@ void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
 // =====================================================================
 
 
-void BuilderAppDialogFactory::showSimpleWarningMessage(Glib::ustring MessageText)
+void DialogBoxFactory::showSimpleWarningMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_WARNING,
       Gtk::BUTTONS_OK);
