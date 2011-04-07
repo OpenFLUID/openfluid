@@ -66,6 +66,9 @@ class ModelGlobalParamsModel;
 class BuilderListToolBox;
 class FunctionSignatureRegistry;
 
+class ModelAddFunctionModule;
+
+
 class ModelStructureCoordinator: public sigc::trackable
 {
   private:
@@ -85,6 +88,8 @@ class ModelStructureCoordinator: public sigc::trackable
     ModelGlobalParamsModel& m_GlobalParamsModel;
 
     BuilderListToolBox& m_StructureListToolBox;
+
+    ModelAddFunctionModule* mp_AddFctModule;
 
     void updateStructureListToolBox();
 

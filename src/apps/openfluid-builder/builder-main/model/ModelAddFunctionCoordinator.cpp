@@ -91,16 +91,6 @@ void ModelAddFunctionCoordinator::setSignatures(
   m_AvailFctModel.setSignatures(Signatures);
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void ModelAddFunctionCoordinator::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance)
-{
-
-}
-
 
 // =====================================================================
 // =====================================================================

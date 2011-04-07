@@ -61,7 +61,6 @@
 #include "BuilderListToolBox.hpp"
 #include "ModelAddFunctionModule.hpp"
 
-//#include "GeneratorSignature.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -98,9 +97,7 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
 
 void ModelStructureCoordinator::whenAddFctAsked()
 {
-  ModelAddFunctionModule AddModule(*mp_ModelInstance, *mp_SimBlob);
-
-  openfluid::machine::SignatureItemInstance* Signature = AddModule.showDialog();
+  openfluid::machine::SignatureItemInstance* Signature = mp_AddFctModule->showDialog();
 
   if (Signature)
   {
@@ -166,6 +163,8 @@ ModelStructureCoordinator::ModelStructureCoordinator(
       &ModelStructureCoordinator::whenMoveTowardTheBeginAsked));
   m_StructureListToolBox.signal_DownCommandAsked().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenMoveTowardTheEndAsked));
+
+  mp_AddFctModule = new ModelAddFunctionModule();
 }
 
 // =====================================================================

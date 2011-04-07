@@ -54,6 +54,8 @@
 #include "BuilderAppActions.hpp"
 #include "PreferencesComponent.hpp"
 
+#include "FunctionSignatureRegistry.hpp"
+
 
 // =====================================================================
 // =====================================================================
@@ -100,6 +102,9 @@ class BuilderAppModule: BuilderModule
     void initialize()
     {
       mp_Coordinator->setHomeModule();
+
+      // to update pluggable signatures at app start
+      FunctionSignatureRegistry::getInstance();
     }
 
     Gtk::Window& composeAndGetAsWindow()

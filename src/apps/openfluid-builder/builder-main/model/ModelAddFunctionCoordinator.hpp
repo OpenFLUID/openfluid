@@ -87,9 +87,6 @@ class ModelAddFunctionCoordinator: public sigc::trackable
 
     void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
 
-    void
-        setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
-
     openfluid::machine::SignatureItemInstance* getSelectedSignature();
 
 };

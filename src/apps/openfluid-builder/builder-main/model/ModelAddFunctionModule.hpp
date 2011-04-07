@@ -64,9 +64,6 @@
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
 
-//class ModelAvailFctModel;
-//class ModelFctDetailModel;
-
 class ModelAddFunctionCoordinator;
 
 
@@ -97,12 +94,15 @@ class ModelAddFunctionModule
 
   public:
 
-    ModelAddFunctionModule(openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
+    ModelAddFunctionModule();
 
     ~ModelAddFunctionModule();
 
     sigc::signal<void> signal_ModelFunctionAdded();
+
+//    void setEngineRequirements(
+//        openfluid::machine::ModelInstance& ModelInstance,
+//        openfluid::machine::SimulationBlob& SimBlob);
 
     openfluid::machine::SignatureItemInstance* showDialog();
 };
