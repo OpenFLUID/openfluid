@@ -72,7 +72,7 @@ class ProjectWorkspace
 
     Gtk::Widget* createClosableTabLabel(std::string LabelText);
 
-    bool onTabCloseImageClicked(GdkEventButton* ClickedButton, std::string LabelText);
+    void onTabCloseButtonClicked(std::string LabelText);
 
   public:
 

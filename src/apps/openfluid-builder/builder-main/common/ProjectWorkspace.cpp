@@ -150,21 +150,19 @@ Gtk::Widget* ProjectWorkspace::createClosableTabLabel(std::string LabelText)
 {
   Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(LabelText));
 
-  Gtk::Image* TabImage = Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE,
-      Gtk::ICON_SIZE_BUTTON));
+  Gtk::Image* TabButtonImage;
+  TabButtonImage = Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE,Gtk::ICON_SIZE_BUTTON));
+  TabButtonImage->show();
 
-  Gtk::EventBox* EventBox = Gtk::manage(new Gtk::EventBox());
-  EventBox->set_events(Gdk::BUTTON_PRESS_MASK);
-  EventBox->signal_button_press_event().connect(sigc::bind<std::string>(
-      sigc::mem_fun(*this, &ProjectWorkspace::onTabCloseImageClicked),
-      LabelText));
-  EventBox->set_tooltip_text(_("Close this page"));
-  EventBox->add(*TabImage);
+  Gtk::Button* TabButton = Gtk::manage(new Gtk::Button());
+  TabButton->set_image(*TabButtonImage);
+  TabButton->set_relief(Gtk::RELIEF_NONE);
+  TabButton->signal_clicked().connect(sigc::bind<std::string>(
+      sigc::mem_fun(*this, &ProjectWorkspace::onTabCloseButtonClicked),LabelText));
 
   Gtk::HBox* TabLabelBox = Gtk::manage(new Gtk::HBox());
   TabLabelBox->pack_start(*TabLabel, Gtk::SHRINK, 0);
-  TabLabelBox->pack_end(*EventBox, Gtk::SHRINK, 0);
-
+  TabLabelBox->pack_end(*TabButton, Gtk::SHRINK, 0);
   TabLabelBox->show_all_children();
 
   return TabLabelBox;
@@ -173,9 +171,7 @@ Gtk::Widget* ProjectWorkspace::createClosableTabLabel(std::string LabelText)
 // =====================================================================
 // =====================================================================
 
-
-bool ProjectWorkspace::onTabCloseImageClicked(
-    GdkEventButton* /*ClickedButton*/, std::string LabelText)
+void ProjectWorkspace::onTabCloseButtonClicked(std::string LabelText)
 {
   if (existsPageName(LabelText))
   {
@@ -184,10 +180,7 @@ bool ProjectWorkspace::onTabCloseImageClicked(
     m_ByNamePagesMap.erase(LabelText);
 
     m_signal_PageRemoved.emit(LabelText);
-
-    return true;
   }
-  return false;
 }
 
 // =====================================================================
@@ -196,16 +189,5 @@ bool ProjectWorkspace::onTabCloseImageClicked(
 
 Gtk::Widget* ProjectWorkspace::asWidget()
 {
-  //  Gtk::Label* NewLabel = new Gtk::Label("ici nouveau");
-  //  NewLabel->set_visible(true);
-  //
-  //  Gtk::Label* OtherLabel = new Gtk::Label("ici other");
-  //  OtherLabel->set_visible(true);
-  //
-  //  appendPage("new tab", NewLabel);
-  //  appendPage("another tab", OtherLabel);
-  //
-  //  setCurrentPage("another tab");
-
   return mp_Notebook;
 }
