@@ -68,6 +68,7 @@ int main(int argc, char** argv)
   try
   {
     // Native Language Support setup
+
     if (BUILDER_NLS_ENABLE)
     {
       setlocale(LC_ALL, "");
@@ -83,17 +84,33 @@ int main(int argc, char** argv)
 
     GtkInitObjet.run(AppModule.composeAndGetAsWindow());
 
-  }/* catch (openfluid::base::OFException & E) // pass it in Project Coordinator
+  }
+  /* catch (openfluid::base::OFException & E) // pass it in Project Coordinator
   {
     std::cerr << "ERROR: " << E.what() << std::endl;
-  } */catch (std::bad_alloc & E)
+  } */
+  catch (std::bad_alloc & E)
   {
-    std::cerr << "ERROR: " << E.what()
+    std::cerr << "bad_alloc ERROR: " << E.what()
         << ". Possibly not enough memory available" << std::endl;
-  } catch (std::exception & E)
+  }
+  catch (std::bad_exception & E)
   {
-    std::cerr << "ERROR: " << E.what() << std::endl;
-  } catch (...)
+    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
+  }
+  catch (std::bad_cast & E)
+  {
+    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
+  }
+  catch (Glib::Error & E)
+  {
+    std::cerr << "Glib ERROR: " << E.what() << std::endl;
+  }
+  catch (std::exception & E)
+  {
+    std::cerr << "exception ERROR: " << E.what() << std::endl;
+  }
+  catch (...)
   {
     std::cerr << "ERROR: " << "Unknown Error" << std::endl;
   }

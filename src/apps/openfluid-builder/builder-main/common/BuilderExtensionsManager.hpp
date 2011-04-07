@@ -60,7 +60,6 @@
 #include <map>
 #include <list>
 
-#include <openfluid/dllexport.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
 
@@ -85,7 +84,7 @@ typedef std::map<openfluid::builderext::PluggableBuilderExtension::ExtensionType
 // =====================================================================
 
 
-class DLLEXPORT BuilderExtensionsManager
+class BuilderExtensionsManager
 {
   private:
 

@@ -60,12 +60,12 @@
 
 #include <openfluid/base.hpp>
 #include <openfluid/core.hpp>
-
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace machine {
 
 
-class SignatureItemInstance
+class DLLEXPORT SignatureItemInstance
 {
   public:
     std::string Filename;
@@ -81,7 +81,7 @@ class SignatureItemInstance
 // =====================================================================
 
 
-class ModelItemInstance : public SignatureItemInstance
+class DLLEXPORT ModelItemInstance : public SignatureItemInstance
 {
   public:
     openfluid::core::FuncParamsMap_t Params;

@@ -58,6 +58,7 @@
 
 #include <gtkmm.h>
 #include <openfluid/base.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace guicommon {
@@ -66,7 +67,7 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 
 
-class DialogBoxFactory
+class DLLEXPORT DialogBoxFactory
 {
   public:
 
