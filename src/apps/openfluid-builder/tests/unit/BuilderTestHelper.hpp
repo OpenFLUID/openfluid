@@ -57,21 +57,32 @@
 
 #include <gtkmm/main.h>
 
+#include <openfluid/base/RuntimeEnv.hpp>
+
+#include "tests-config.hpp"
+
 class BuilderTestHelper
 {
   private:
+
     static BuilderTestHelper* mp_Instance;
+
     Gtk::Main* Kit;
+
     BuilderTestHelper()
     {
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
     }
+
   public:
+
     static BuilderTestHelper* getInstance()
     {
       if (!mp_Instance)
         mp_Instance = new BuilderTestHelper();
       return mp_Instance;
     }
+
     /* Multiple AUTO_TEST_CASE allowed only if *new* Gtk::Main and no delete...? */
     void initGtk()
     {
@@ -82,6 +93,9 @@ class BuilderTestHelper
         Kit = new Gtk::Main(argc, argv);
       }
     }
+
 };
+
 BuilderTestHelper* BuilderTestHelper::mp_Instance = 0;
+
 #endif /* __BUILDERTESTHELPER_HPP__ */
