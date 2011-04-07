@@ -97,6 +97,8 @@ void EngineProject::run()
 
   openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
 
+  RunDialog.set_modal(true);
+  RunDialog.set_title(_("Simulation"));
   Gtk::Main::run(RunDialog);
 
   mp_ModelInstance->resetInitialized();
