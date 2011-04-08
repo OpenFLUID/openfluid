@@ -55,13 +55,10 @@
 #ifndef __ENGINEPROJECT_HPP__
 #define __ENGINEPROJECT_HPP__
 
-#include <iostream>
-
 #include <openfluid/base.hpp>
 #include <openfluid/machine.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/io.hpp>
-
 
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 
@@ -76,46 +73,17 @@ class EngineProject
 
     openfluid::io::IOListener* mp_IOListener;
 
-    //    BuilderMachineListener* mp_Listener;
     openfluid::guicommon::RunDialogMachineListener* mp_Listener;
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
     openfluid::machine::Engine* mp_Engine;
 
-//    boost::posix_time::ptime m_FullStartTime;
-//
-//    boost::posix_time::ptime m_FullEndTime;
-//
-//    boost::posix_time::ptime m_EffectiveStartTime;
-//
-//    boost::posix_time::ptime m_EffectiveEndTime;
-
-//    BuilderRunDialog* mp_RunDialog;
-
     EngineProject();
-
-//    boost::posix_time::ptime getNow();
-//
-//    std::string generateSimulationIdStr();
-//
-//    std::string generateDomainInformationStr();
-//
-//    std::string generateWarningsCountStr();
-//
-//    std::string generateSimulationInformationStr();
-//
-//    std::string generateBuffersInformationStr();
-//
-//    std::string generateRunTimeInformationStr();
-//
-//    std::string generateSavingReportStr();
-//
-//    std::string generateDoneStr();
 
   public:
 
-    ~EngineProject();
+    void run();
 
     openfluid::machine::SimulationBlob* getSimBlob();
 
@@ -135,14 +103,9 @@ class EngineProject
 
     openfluid::base::OutputDescriptor& getOutputDescriptor();
 
-    void stopEngine();
-
-    bool check();
-
-    void run();
+    ~EngineProject();
 
 };
-
 
 // =====================================================================
 // =====================================================================
@@ -155,7 +118,6 @@ class EngineProjectEmpty: public EngineProject
     EngineProjectEmpty();
 };
 
-
 // =====================================================================
 // =====================================================================
 
@@ -166,7 +128,6 @@ class EngineProjectFromFolder: public EngineProject
 
     EngineProjectFromFolder(std::string FolderIn);
 };
-
 
 #endif /* __ENGINEPROJECT_HPP__ */
 
