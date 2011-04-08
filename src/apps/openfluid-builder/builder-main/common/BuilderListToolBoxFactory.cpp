@@ -57,6 +57,10 @@
 #include <glibmm/i18n.h>
 
 
+// =====================================================================
+// =====================================================================
+
+
 BuilderListToolBox* BuilderListToolBoxFactory::createModelStructureToolBox()
 {
   BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
@@ -72,6 +76,12 @@ BuilderListToolBox* BuilderListToolBoxFactory::createModelStructureToolBox()
   ToolBox->setAllCommandAvailable(false);
   return ToolBox;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderListToolBox* BuilderListToolBoxFactory::createDomainStructureToolBox()
 {
   BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
@@ -83,6 +93,12 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainStructureToolBox()
   ToolBox->setEditCommandTooltipText(_("Edit the selected Unit"));
   return ToolBox;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderListToolBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
     std::string RelationName)
 {
@@ -97,6 +113,12 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
       "Remove the selected %1 Unit"), RelationName));
   return ToolBox;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderListToolBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
 {
   BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
@@ -110,6 +132,12 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
       "Remove an Input Data from the selected class"));
   return ToolBox;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutFilesToolBox()
 {
   BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
@@ -121,6 +149,12 @@ BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutFilesToolBox()
   ToolBox->setRemoveCommandTooltipText(_("Remove the selected File Format"));
   return ToolBox;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutSetsToolBox()
 {
   BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();

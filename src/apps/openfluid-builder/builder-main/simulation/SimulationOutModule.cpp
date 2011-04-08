@@ -67,20 +67,19 @@
 // =====================================================================
 
 
-SimulationOutModule::SimulationOutModule(
-    BuilderListToolBoxFactory& ListToolBoxFactory)
+SimulationOutModule::SimulationOutModule()
 {
   mp_MainPanel = 0;
 
   mp_SimulOutFilesMVP = new SimulOutFilesComponent();
   mp_SimulOutFileDescMVP = new SimulOutFileDescComponent();
 
-  mp_OutFilesListToolBox = ListToolBoxFactory.createSimulOutFilesToolBox();
+  mp_OutFilesListToolBox = BuilderListToolBoxFactory::createSimulOutFilesToolBox();
 
   mp_SimulOutSetsMVP = new SimulOutSetsComponent();
   mp_SimulOutSetDescMVP = new SimulOutSetDescComponent();
 
-  mp_OutSetsListToolBox = ListToolBoxFactory.createSimulOutSetsToolBox();
+  mp_OutSetsListToolBox = BuilderListToolBoxFactory::createSimulOutSetsToolBox();
 
   mp_Coordinator = new SimulOutCoordinator(*mp_SimulOutFilesMVP->getModel(),
       *mp_SimulOutFileDescMVP->getModel(), *mp_OutFilesListToolBox,

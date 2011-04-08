@@ -59,6 +59,7 @@
 #include "DomainUnitCreationComponent.hpp"
 
 #include "DomainStructureCoordinator.hpp"
+#include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
 
 #include "BuilderFrame.hpp"
@@ -67,8 +68,7 @@
 // =====================================================================
 
 
-DomainStructureModule::DomainStructureModule(
-    BuilderListToolBoxFactory& ListToolBoxFactory)
+DomainStructureModule::DomainStructureModule()
 {
   mp_MainPanel = 0;
 
@@ -76,7 +76,7 @@ DomainStructureModule::DomainStructureModule(
   mp_DomainUnitEditionMVP = new DomainUnitEditionComponent();
   mp_DomainUnitCreationMVP = new DomainUnitCreationComponent();
 
-  mp_StructureListToolBox = ListToolBoxFactory.createDomainStructureToolBox();
+  mp_StructureListToolBox = BuilderListToolBoxFactory::createDomainStructureToolBox();
 
   mp_Coordinator = new DomainStructureCoordinator(*mp_DomainStructureMVP->getModel(),
       *mp_DomainUnitEditionMVP->getModel(),

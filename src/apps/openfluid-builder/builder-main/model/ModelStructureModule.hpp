@@ -56,9 +56,6 @@
 #define __MODELSTRUCTUREMODULE_HPP__
 
 #include "ProjectWorkspaceModule.hpp"
-//#include "BuilderModule.hpp"
-
-#include "BuilderListToolBoxFactory.hpp"
 
 class ModelFctDetailComponent;
 class ModelStructureComponent;
@@ -70,7 +67,7 @@ class ModelStructureModel;
 class ModelStructureCoordinator;
 class BuilderListToolBox;
 
-class ModelStructureModule /*: public BuilderModule*/: public ProjectWorkspaceModule
+class ModelStructureModule : public ProjectWorkspaceModule
 {
   private:
     Gtk::Box* mp_MainPanel;
@@ -99,7 +96,7 @@ class ModelStructureModule /*: public BuilderModule*/: public ProjectWorkspaceMo
 
   public:
 
-    ModelStructureModule(BuilderListToolBoxFactory& ListToolBoxFactory);
+    ModelStructureModule();
 
     ~ModelStructureModule();
 

@@ -57,6 +57,7 @@
 #include "DomainIDataComponent.hpp"
 
 #include "DomainClassCoordinator.hpp"
+#include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
 
 #include "BuilderFrame.hpp"
@@ -65,13 +66,12 @@
 // =====================================================================
 
 
-DomainClassModule::DomainClassModule(
-    BuilderListToolBoxFactory& ListToolBoxFactory)
+DomainClassModule::DomainClassModule()
 {
   mp_MainPanel = 0;
 
   mp_DomainIDataMVP = new DomainIDataComponent();
-  mp_IDataListToolBox = ListToolBoxFactory.createDomainIDataToolBox();
+  mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
 
   mp_Coordinator = new DomainClassCoordinator(*mp_DomainIDataMVP->getModel(),
       *mp_IDataListToolBox);

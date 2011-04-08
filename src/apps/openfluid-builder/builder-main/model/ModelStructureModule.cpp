@@ -60,6 +60,7 @@
 
 #include "ModelStructureCoordinator.hpp"
 #include "FunctionSignatureRegistry.hpp"
+#include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
 
 #include "BuilderFrame.hpp"
@@ -68,8 +69,7 @@
 // =====================================================================
 
 
-ModelStructureModule::ModelStructureModule(
-    BuilderListToolBoxFactory& ListToolBoxFactory)
+ModelStructureModule::ModelStructureModule()
 {
   mp_MainPanel = 0;
 
@@ -78,7 +78,7 @@ ModelStructureModule::ModelStructureModule(
 
   mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent();
 
-  mp_StructureListToolBox = ListToolBoxFactory.createModelStructureToolBox();
+  mp_StructureListToolBox = BuilderListToolBoxFactory::createModelStructureToolBox();
 
   mp_Coordinator = new ModelStructureCoordinator(
       *mp_ModelFctDetailMVP->getModel(), *mp_ModelStructureMVP->getModel(),
@@ -98,6 +98,7 @@ ModelStructureModule::~ModelStructureModule()
   delete mp_ModelFctDetailMVP;
   delete mp_ModelStructureMVP;
   delete mp_ModelGlobalParamsMVP;
+  delete mp_StructureListToolBox;
 }
 
 // =====================================================================

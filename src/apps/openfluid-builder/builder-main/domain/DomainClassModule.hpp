@@ -55,8 +55,6 @@
 #ifndef __DOMAINCLASSMODULE_HPP__
 #define __DOMAINCLASSMODULE_HPP__
 
-#include "BuilderListToolBoxFactory.hpp"
-
 #include "ProjectWorkspaceModule.hpp"
 
 class DomainIDataComponent;
@@ -93,7 +91,7 @@ class DomainClassModule: public ProjectWorkspaceModule
 
   public:
 
-    DomainClassModule(BuilderListToolBoxFactory& ListToolBoxFactory);
+    DomainClassModule();
 
     ~DomainClassModule();
 

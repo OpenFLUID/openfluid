@@ -57,8 +57,6 @@
 
 #include "ProjectWorkspaceModule.hpp"
 
-#include "BuilderListToolBoxFactory.hpp"
-
 class DomainStructureComponent;
 
 class DomainUnitEditionComponent;
@@ -99,7 +97,7 @@ class DomainStructureModule: public ProjectWorkspaceModule
 
   public:
 
-    DomainStructureModule(BuilderListToolBoxFactory& ListToolBoxFactory);
+    DomainStructureModule();
 
     ~DomainStructureModule();
 

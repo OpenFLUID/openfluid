@@ -54,7 +54,6 @@
 
 #include "BuilderModuleFactory.hpp"
 
-#include "BuilderListToolBoxFactory.hpp"
 #include "BuilderHomeModule.hpp"
 #include "ModelStructureModule.hpp"
 #include "DomainStructureModule.hpp"
@@ -71,7 +70,6 @@
 BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
   mp_EngineProject(EngProject)
 {
-
 }
 
 
@@ -91,7 +89,7 @@ BuilderModule* BuilderModuleFactory::createHomeModule(
 
 BuilderModule* BuilderModuleFactory::createModelStructureModule()
 {
-  ModelStructureModule* Module = new ModelStructureModule(ListToolBoxFactory());
+  ModelStructureModule* Module = new ModelStructureModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
       *mp_EngineProject.getSimBlob());
   return Module;
@@ -102,20 +100,9 @@ BuilderModule* BuilderModuleFactory::createModelStructureModule()
 // =====================================================================
 
 
-BuilderListToolBoxFactory& BuilderModuleFactory::ListToolBoxFactory()
-{
-  BuilderListToolBoxFactory* Factory = new BuilderListToolBoxFactory();
-  return *Factory;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 {
-  DomainStructureModule* Module = new DomainStructureModule(
-      ListToolBoxFactory());
+  DomainStructureModule* Module = new DomainStructureModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
       *mp_EngineProject.getSimBlob());
   return Module;
@@ -128,7 +115,7 @@ BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 
 BuilderModule* BuilderModuleFactory::createDomainClassModule()
 {
-  DomainClassModule* Module = new DomainClassModule(ListToolBoxFactory());
+  DomainClassModule* Module = new DomainClassModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
       *mp_EngineProject.getSimBlob());
   return Module;
@@ -154,7 +141,7 @@ BuilderModule* BuilderModuleFactory::createSimulationRunModule()
 
 BuilderModule* BuilderModuleFactory::createSimulationOutModule()
 {
-  SimulationOutModule* Module = new SimulationOutModule(ListToolBoxFactory());
+  SimulationOutModule* Module = new SimulationOutModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
       *mp_EngineProject.getSimBlob());
   return Module;

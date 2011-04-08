@@ -60,13 +60,19 @@
 class BuilderListToolBoxFactory
 {
   public:
-    BuilderListToolBox* createModelStructureToolBox();
-    BuilderListToolBox* createDomainStructureToolBox();
-    BuilderListToolBox* createDomainUnitRelationToolBox(
+
+    static BuilderListToolBox* createModelStructureToolBox();
+
+    static BuilderListToolBox* createDomainStructureToolBox();
+
+    static BuilderListToolBox* createDomainUnitRelationToolBox(
         std::string RelationName);
-    BuilderListToolBox* createDomainIDataToolBox();
-    BuilderListToolBox* createSimulOutFilesToolBox();
-    BuilderListToolBox* createSimulOutSetsToolBox();
+
+    static BuilderListToolBox* createDomainIDataToolBox();
+
+    static BuilderListToolBox* createSimulOutFilesToolBox();
+
+    static BuilderListToolBox* createSimulOutSetsToolBox();
 };
 
 #endif /* __BUILDERLISTTOOLBOXFACTORY_HPP__ */

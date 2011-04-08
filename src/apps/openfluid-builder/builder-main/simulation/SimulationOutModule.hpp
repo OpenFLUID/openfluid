@@ -62,7 +62,6 @@ class SimulOutFileDescComponent;
 class SimulOutSetsComponent;
 class SimulOutSetDescComponent;
 class SimulOutCoordinator;
-class BuilderListToolBoxFactory;
 class BuilderListToolBox;
 
 class SimulationOutModule: public ProjectWorkspaceModule
@@ -99,7 +98,7 @@ class SimulationOutModule: public ProjectWorkspaceModule
 
   public:
 
-    SimulationOutModule(BuilderListToolBoxFactory& ListToolBoxFactory);
+    SimulationOutModule();
 
     ~SimulationOutModule();
 

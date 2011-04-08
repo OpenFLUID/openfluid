@@ -63,15 +63,11 @@
 #include "BuilderModule.hpp"
 #include "EngineProject.hpp"
 
-class BuilderListToolBoxFactory;
 class BuilderAppActions;
 
 class BuilderModuleFactory
 {
   private:
-
-    // cf. Idiome de construction à la première utilisation : http://cpp.developpez.com/faq/cpp/?page=static
-    static BuilderListToolBoxFactory& ListToolBoxFactory();
 
     EngineProject& mp_EngineProject;
 
