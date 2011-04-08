@@ -53,7 +53,6 @@
 
 #include "BuilderTestHelper.hpp"
 #include "ModelStructureModel.hpp"
-#include "TestModelInstanceWrapper.hpp"
 #include "EngineProjectFactory.hpp"
 #include "tests-config.hpp"
 
@@ -86,37 +85,45 @@ BOOST_AUTO_TEST_CASE(test_getModelInstance)
 {
   BOOST_CHECK_THROW(mp_Model->getModelInstance(),openfluid::base::OFException);
 
-  TestModelInstanceWrapper EmptyModelInstanceWrapper;
-  mp_Model->setEngineRequirements(*EmptyModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
-  BOOST_CHECK(mp_Model->getModelInstance() == EmptyModelInstanceWrapper.getModelInstance());
+  BOOST_CHECK_EQUAL(mp_Model->getModelInstance(),EngProject->getModelInstance());
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_setEmptyModelInstance)
 {
-  TestModelInstanceWrapper EmptyModelInstanceWrapper;
-  mp_Model->setEngineRequirements(*EmptyModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(),0);
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_setNonEmptyModelInstance)
 {
-  TestModelInstanceWrapper OneItemModelInstanceWrapper(1);
-  mp_Model->setEngineRequirements(*OneItemModelInstanceWrapper.getModelInstance());
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
-  BOOST_CHECK_EQUAL(mp_Model->getFctCount(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getFctCount(),2);
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_AppendAnUnavailableFunction)
 {
-  TestModelInstanceWrapper EmptyModelInstanceWrapper;
-  mp_Model->setEngineRequirements(*EmptyModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   // create an unavailable function
   openfluid::machine::SignatureItemInstance Plug;
   openfluid::base::FunctionSignature* PlugSignature = new openfluid::base::FunctionSignature();
-  PlugSignature->ID = "plug";
+  PlugSignature->ID = "inexistant function id";
   Plug.Signature = PlugSignature;
   Plug.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
 
@@ -124,45 +131,40 @@ BOOST_AUTO_TEST_CASE(test_AppendAnUnavailableFunction)
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),-1);
 
   delete PlugSignature;
+  delete EngProject;
 }
 
-//TODO: use test-designed simulation functions
-//!! May be false negative according available functions !!
-BOOST_AUTO_TEST_CASE(test_AppendARegularFunction_WARNING_MayBeFalseNegative)
+BOOST_AUTO_TEST_CASE(test_AppendARegularFunction)
 {
-  if(!openfluid::machine::PluginManager::getInstance()->getAvailableFunctions().empty())
-  {
-    TestModelInstanceWrapper EmptyModelInstanceWrapper;
-    mp_Model->setEngineRequirements(*EmptyModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
-    // get the first available function on disk
-    openfluid::machine::SignatureItemInstance FctSignature = *openfluid::machine::PluginManager::getInstance()->getAvailableFunctions()[0];
-    mp_Model->appendFunction(FctSignature);
+  openfluid::machine::SignatureItemInstance FctSignature =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(
+      "tests.primitives.use");
+  FctSignature.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
 
-    BOOST_CHECK_EQUAL(mp_Model->getFctCount(),1);
-  }
-}
-
-BOOST_AUTO_TEST_CASE(test_AppendAGenerator)
-{
-  TestModelInstanceWrapper EmptyModelInstanceWrapper;
-  mp_Model->setEngineRequirements(*EmptyModelInstanceWrapper.getModelInstance());
-
-  FixedGeneratorSignature Sign1;
-  mp_Model->appendFunction(Sign1);
+  mp_Model->appendFunction(FctSignature);
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(),1);
 
-  RandomGeneratorSignature Sign2;
-  mp_Model->appendFunction(Sign2);
-
-  BOOST_CHECK_EQUAL(mp_Model->getFctCount(),2);
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 {
-  TestModelInstanceWrapper ThreeItemsModelInstanceWrapper(3);
-  mp_Model->setEngineRequirements(*ThreeItemsModelInstanceWrapper.getModelInstance());
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
+
+  openfluid::machine::SignatureItemInstance FctSignature =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(
+      "tests.vector.prod");
+  FctSignature.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  mp_Model->appendFunction(FctSignature);
 
   //remove in the middle
   mp_Model->removeFunctionAt(1);
@@ -180,27 +182,58 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(),0);
 
   // add three new functions
-  FixedGeneratorSignature Sign11;
-  mp_Model->appendFunction(Sign11);
-  RandomGeneratorSignature Sign12;
-  mp_Model->appendFunction(Sign12);
-  InterpGeneratorSignature Sign13;
-  mp_Model->appendFunction(Sign13);
+  openfluid::machine::SignatureItemInstance FctSignature1 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(
+      "tests.vector.prod");
+  FctSignature1.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature2 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(
+      "tests.vector.use");
+  FctSignature2.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature3 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(
+      "tests.primitives.prod");
+  FctSignature3.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  mp_Model->appendFunction(FctSignature1);
+  mp_Model->appendFunction(FctSignature2);
+  mp_Model->appendFunction(FctSignature3);
 
   // remove last
   mp_Model->removeFunctionAt(2);
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(),2);
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 {
-  TestModelInstanceWrapper ThreeItemsModelInstanceWrapper(3);
-  mp_Model->setEngineRequirements(*ThreeItemsModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
 
-  std::string idA = ThreeItemsModelInstanceWrapper.getItemIdAt(0);
-  std::string idB = ThreeItemsModelInstanceWrapper.getItemIdAt(1);
-  std::string idC = ThreeItemsModelInstanceWrapper.getItemIdAt(2);
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
+
+  std::string idA = "tests.primitives.prod";
+  std::string idB = "tests.primitives.use";
+  std::string idC = "tests.vector.prod";
+
+  openfluid::machine::SignatureItemInstance FctSignature1 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idA);
+  FctSignature1.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature2 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idB);
+  FctSignature2.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature3 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idC);
+  FctSignature3.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  mp_Model->appendFunction(FctSignature1);
+  mp_Model->appendFunction(FctSignature2);
+  mp_Model->appendFunction(FctSignature3);
 
   std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
 
@@ -254,16 +287,35 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
   it++;
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 {
-  TestModelInstanceWrapper ThreeItemsModelInstanceWrapper(3);
-  mp_Model->setEngineRequirements(*ThreeItemsModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
 
-  std::string idA = ThreeItemsModelInstanceWrapper.getItemIdAt(0);
-  std::string idB = ThreeItemsModelInstanceWrapper.getItemIdAt(1);
-  std::string idC = ThreeItemsModelInstanceWrapper.getItemIdAt(2);
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
+
+  std::string idA = "tests.primitives.prod";
+  std::string idB = "tests.primitives.use";
+  std::string idC = "tests.vector.prod";
+
+  openfluid::machine::SignatureItemInstance FctSignature1 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idA);
+  FctSignature1.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature2 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idB);
+  FctSignature2.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature3 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idC);
+  FctSignature3.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  mp_Model->appendFunction(FctSignature1);
+  mp_Model->appendFunction(FctSignature2);
+  mp_Model->appendFunction(FctSignature3);
 
   std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
 
@@ -286,16 +338,35 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
   it++;
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 {
-  TestModelInstanceWrapper ThreeItemsModelInstanceWrapper(3);
-  mp_Model->setEngineRequirements(*ThreeItemsModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
 
-  std::string idA = ThreeItemsModelInstanceWrapper.getItemIdAt(0);
-  std::string idB = ThreeItemsModelInstanceWrapper.getItemIdAt(1);
-  std::string idC = ThreeItemsModelInstanceWrapper.getItemIdAt(2);
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
+
+  std::string idA = "tests.primitives.prod";
+  std::string idB = "tests.primitives.use";
+  std::string idC = "tests.vector.prod";
+
+  openfluid::machine::SignatureItemInstance FctSignature1 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idA);
+  FctSignature1.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature2 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idB);
+  FctSignature2.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature3 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idC);
+  FctSignature3.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  mp_Model->appendFunction(FctSignature1);
+  mp_Model->appendFunction(FctSignature2);
+  mp_Model->appendFunction(FctSignature3);
 
   std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
 
@@ -318,6 +389,8 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
   it++;
   BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
+
+  delete EngProject;
 }
 
 // =====================================================================
@@ -329,21 +402,40 @@ BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance());
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   mp_Model->setCurrentSelectionByUserAt(1);
 
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelectionSignature()->Signature->ID,"tests.primitives.use");
+
+  delete EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
 {
-  TestModelInstanceWrapper ThreeItemsModelInstanceWrapper(3);
-  mp_Model->setEngineRequirements(*ThreeItemsModelInstanceWrapper.getModelInstance());
+  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
 
-  std::string idA = ThreeItemsModelInstanceWrapper.getItemIdAt(0);
-  std::string idB = ThreeItemsModelInstanceWrapper.getItemIdAt(1);
-  std::string idC = ThreeItemsModelInstanceWrapper.getItemIdAt(2);
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
+
+  std::string idA = "tests.primitives.prod";
+  std::string idB = "tests.primitives.use";
+  std::string idC = "tests.vector.prod";
+
+  openfluid::machine::SignatureItemInstance FctSignature1 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idA);
+  FctSignature1.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature2 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idB);
+  FctSignature2.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  openfluid::machine::SignatureItemInstance FctSignature3 =
+  *openfluid::machine::PluginManager::getInstance()->getPlugin(idC);
+  FctSignature3.ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+  mp_Model->appendFunction(FctSignature1);
+  mp_Model->appendFunction(FctSignature2);
+  mp_Model->appendFunction(FctSignature3);
 
   mp_Model->requestSelectionByApp(idB);
   BOOST_CHECK_EQUAL(mp_Model->getAppRequestedSelection(),1);
@@ -356,7 +448,10 @@ BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
 
   mp_Model->requestSelectionByApp(idA);
   BOOST_CHECK_EQUAL(mp_Model->getAppRequestedSelection(),0);
+
+  delete EngProject;
 }
+
 // =====================================================================
 // =====================================================================
 

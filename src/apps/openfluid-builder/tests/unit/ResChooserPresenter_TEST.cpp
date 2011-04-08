@@ -73,8 +73,6 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-
       mp_Component = new ResChooserComponent();
       mp_Model = (ResChooserModelSub*) (mp_Component->getModel());
       mp_View = (ResChooserViewSub*) (mp_Component->getView());
@@ -184,12 +182,12 @@ BOOST_AUTO_TEST_CASE(changeIdValue)
   mp_View->selectId(1);
 
   BOOST_CHECK_EQUAL(mp_View->getSetName(),"full");
-//  BOOST_CHECK_EQUAL(mp_View->getID(),2);
+  //  BOOST_CHECK_EQUAL(mp_View->getID(),2);
   BOOST_CHECK_EQUAL(mp_View->getClassName(),"TestUnits");
 
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSetName(),"full");
   BOOST_CHECK_EQUAL(mp_Model->getSelectedUnitInfo().first,"TestUnits");
-//  BOOST_CHECK_EQUAL(mp_Model->getSelectedUnitInfo().second,2);
+  //  BOOST_CHECK_EQUAL(mp_Model->getSelectedUnitInfo().second,2);
 }
 
 // =====================================================================

@@ -63,7 +63,8 @@ class ModelStructureModel
     virtual sigc::signal<void> signal_FromAppSelectionRequested() = 0;
 
     virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance) = 0;
+        openfluid::machine::ModelInstance& ModelInstance,
+        openfluid::core::CoreRepository* CoreRepos = 0) = 0;
 
     virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
 
@@ -85,7 +86,8 @@ class ModelStructureModel
 
     virtual int getCurrentSelection() = 0;
 
-    virtual openfluid::machine::SignatureItemInstance* getCurrentSelectionSignature() = 0;
+    virtual openfluid::machine::SignatureItemInstance
+        * getCurrentSelectionSignature() = 0;
 
     virtual unsigned int getFctCount() = 0;
 
@@ -111,6 +113,8 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
     int m_CurrentSelection;
 
     int m_AppRequestedSelection;
@@ -123,7 +127,6 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int getLastPosition();
 
-
   public:
 
     ModelStructureModelImpl();
@@ -135,7 +138,8 @@ class ModelStructureModelImpl: public ModelStructureModel
     sigc::signal<void> signal_FromAppSelectionRequested();
 
     void
-        setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
+    setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance,
+        openfluid::core::CoreRepository* CoreRepos = 0);
 
     openfluid::machine::ModelInstance* getModelInstance();
 

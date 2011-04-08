@@ -57,23 +57,20 @@
 #include <glibmm.h>
 #include <glibmm/i18n.h>
 
-
-namespace openfluid { namespace guicommon {
-
+namespace openfluid {
+namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
 
-bool DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-    Glib::ustring Message)
+bool DialogBoxFactory::showSimpleOkCancelQuestionDialog(Glib::ustring Message)
 {
   Gtk::MessageDialog Dialog(Message, false, Gtk::MESSAGE_QUESTION,
       Gtk::BUTTONS_OK_CANCEL);
 
   return (Dialog.run() == Gtk::RESPONSE_OK);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -99,7 +96,6 @@ Glib::ustring DialogBoxFactory::showOpenProjectDialog()
   return "";
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -111,7 +107,6 @@ void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
   if (Dialog.run())
     Dialog.hide();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -125,13 +120,12 @@ void DialogBoxFactory::showSimpleWarningMessage(Glib::ustring MessageText)
     Dialog.hide();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string DialogBoxFactory::showTextEntryDialog(
-    Glib::ustring MessageText, Glib::ustring LabelText)
+std::string DialogBoxFactory::showTextEntryDialog(Glib::ustring MessageText,
+    Glib::ustring LabelText)
 {
   Gtk::Dialog Dialog;
 
@@ -157,7 +151,76 @@ std::string DialogBoxFactory::showTextEntryDialog(
   return "";
 }
 
+// =====================================================================
+// =====================================================================
 
-} } //namespaces
+
+std::map<std::string, std::string> DialogBoxFactory::showGeneratorCreationDialog(
+    std::vector<std::string> Classes)
+{
+  Gtk::Dialog Dialog(_("Generator creation"));
+
+  Gtk::Label VarNameLabel(_("Variable Name"));
+  Gtk::Label ClassLabel(_("Unit Class"));
+  Gtk::Label VarSizeLabel("Size");
+
+  Gtk::RadioButton::Group RadioGrp;
+  Gtk::RadioButton ScalarRadio(RadioGrp, "Scalar Value");
+  ScalarRadio.set_active(true);
+  Gtk::RadioButton VectorRadio(RadioGrp, "Vector Value : ");
+
+  Gtk::Entry VarNameEntry;
+
+  Gtk::ComboBoxText ClassCombo;
+  for (unsigned int i = 0; i < Classes.size(); i++)
+  {
+    ClassCombo.append_text(Classes[i]);
+  }
+  ClassCombo.set_active(0);
+
+  Gtk::SpinButton VarSizeSpin;
+  VarSizeSpin.set_numeric(true);
+  VarSizeSpin.set_increments(1,1);
+  VarSizeSpin.set_range(2.0, 9.0);
+
+  Gtk::Table Table;
+  Table.set_row_spacings(10);
+  Table.attach(VarNameLabel, 0, 1, 0, 1);
+  Table.attach(VarNameEntry, 1, 2, 0, 1);
+  Table.attach(ClassLabel, 0, 1, 1, 2);
+  Table.attach(ClassCombo, 1, 2, 1, 2);
+
+  Gtk::HBox VectorBox;
+  VectorBox.pack_start(VectorRadio, Gtk::PACK_SHRINK);
+  VectorBox.pack_start(VarSizeLabel, Gtk::PACK_SHRINK);
+  VectorBox.pack_start(VarSizeSpin, Gtk::PACK_SHRINK);
+
+  Dialog.get_vbox()->pack_start(Table, true, true, 10);
+  Dialog.get_vbox()->pack_start(ScalarRadio, true, true, 0);
+  Dialog.get_vbox()->pack_start(VectorBox, true, true, 10);
+
+  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  Dialog.show_all_children();
+
+  std::map<std::string, std::string> GenInfo;
+
+  if (Dialog.run() == Gtk::RESPONSE_OK)
+  {
+    GenInfo["varname"] = VarNameEntry.get_text();
+    GenInfo["classname"] = ClassCombo.get_active_text();
+    if (ScalarRadio.get_active())
+      GenInfo["varsize"] = Glib::ustring::compose("%1", 1);
+    else
+      GenInfo["varsize"] = Glib::ustring::compose("%1",
+          VarSizeSpin.get_value_as_int());
+  }
+
+  return GenInfo;
+}
+
+}
+} //namespaces
 
 

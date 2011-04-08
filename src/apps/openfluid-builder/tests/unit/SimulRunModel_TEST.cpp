@@ -74,8 +74,8 @@ struct init_Model
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-      openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/SimulRunModel_TEST.OUT");
+      openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(
+          CONFIGTESTS_OUTPUT_DATA_DIR + "/SimulRunModel_TEST.OUT");
 
       mp_Model = new SimulRunModelSub();
     }

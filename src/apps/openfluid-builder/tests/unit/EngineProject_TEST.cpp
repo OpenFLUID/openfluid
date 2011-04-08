@@ -76,13 +76,10 @@ struct init_Engine
     init_Engine()
     {
       BuilderTestHelper::getInstance()->initGtk();
-
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
     }
 };
 
 BOOST_FIXTURE_TEST_SUITE(EngineProjectTest, init_Engine)
-
 
 // =====================================================================
 // =====================================================================
@@ -98,49 +95,33 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
   delete EngProject;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 BOOST_AUTO_TEST_CASE(test_addItems_Empty)
 {
-
   EngineProject* EngProject = EngineProjectFactory::createEngineProject();
 
-  FixedGeneratorSignature FixedGenSignature;
-  openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createModelItemInstanceFromSignature(
-          FixedGenSignature);
-
-  if (Item)
-    EngProject->getModelInstance()->appendItem(Item);
+  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getPlugin("tests.primitives.prod"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),1);
 
-  RandomGeneratorSignature RandomGenSignature;
-  openfluid::machine::ModelItemInstance* Item2 =
-      ModelItemInstanceFactory::createModelItemInstanceFromSignature(
-          RandomGenSignature);
-
-  if (Item2)
-    EngProject->getModelInstance()->appendItem(Item2);
+  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getPlugin("tests.primitives.use"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
 
   delete EngProject;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-// may be false negative if test datatsets change
 BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+  + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
@@ -149,7 +130,6 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
   delete EngProject;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -157,26 +137,14 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 BOOST_AUTO_TEST_CASE(test_addItems_FromFolder)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+  + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
 
-  FixedGeneratorSignature FixedGenSignature;
-  openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createModelItemInstanceFromSignature(
-          FixedGenSignature);
-
-  if (Item)
-    EngProject->getModelInstance()->appendItem(Item);
+  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getPlugin("tests.vector.prod"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),3);
 
-  RandomGeneratorSignature RandomGenSignature;
-  openfluid::machine::ModelItemInstance* Item2 =
-      ModelItemInstanceFactory::createModelItemInstanceFromSignature(
-          RandomGenSignature);
-
-  if (Item2)
-    EngProject->getModelInstance()->appendItem(Item2);
+  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getPlugin("tests.vector.use"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),4);
 

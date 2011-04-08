@@ -73,8 +73,6 @@ struct init_Model
 
     init_Model()
     {
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-
       BuilderTestHelper::getInstance()->initGtk();
 
       mp_Model = new DomainUnitEditionModelSub();

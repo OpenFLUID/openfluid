@@ -76,8 +76,6 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-
       mp_Component = new SimulOutSetsComponent();
       mp_Model = (SimulOutSetsModelSub*) mp_Component->getModel();
       mp_View = (SimulOutSetsViewSub*) (mp_Component->getView());
@@ -224,7 +222,7 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),3);
 
   Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
-//  std::advance(it,2);
+  //  std::advance(it,2);
 
   std::string Value;
 

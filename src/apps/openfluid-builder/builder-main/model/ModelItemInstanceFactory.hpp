@@ -55,83 +55,22 @@
 class ModelItemInstanceFactory
 {
   protected:
-    static openfluid::machine::ModelItemInstance* createPluggableItemFromSignature(
-        openfluid::machine::SignatureItemInstance& Signature)
-    {
-      openfluid::machine::ModelItemInstance* Item =
-          openfluid::machine::PluginManager::getInstance()->getPlugin(
-              Signature.Signature->ID);
-      Item->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
-      return Item;
-    }
+
     static openfluid::machine::Generator* createGeneratorFunctionFromId(
-        Glib::ustring Id)
-    {
-      openfluid::machine::Generator* GeneratorFunction = 0;
-      if (Id.find("(generator) Fixed") != std::string::npos)
-        GeneratorFunction = new openfluid::machine::FixedGenerator();
-      else if (Id.find("(generator) Random") != std::string::npos)
-        GeneratorFunction = new openfluid::machine::RandomGenerator();
-      else if (Id.find("(generator) Interp") != std::string::npos)
-        GeneratorFunction = new openfluid::machine::InterpGenerator();
-      else
-        throw openfluid::base::OFException("OpenFLUID Builder",
-            "ModelItemInstanceFactory::createGeneratorFunction",
-            "unknown generator type");
-      return GeneratorFunction;
-    }
-    static openfluid::machine::ModelItemInstance* createGeneratorItemFromSignature(
-        openfluid::machine::SignatureItemInstance& Signature)
-    {
-      openfluid::machine::ModelItemInstance* Item =
-          new openfluid::machine::ModelItemInstance();
-      Item->SDKCompatible = true;
-      Item->ItemType = openfluid::base::ModelItemDescriptor::Generator;
-      Item->Signature = Signature.Signature;
-      openfluid::machine::Generator* GeneratorFunction = ModelItemInstanceFactory::
-          createGeneratorFunctionFromId(Signature.Signature->ID);
-      Item->Function = GeneratorFunction;
-      return Item;
-    }
+        Glib::ustring Id, std::string VarName, std::string ClassName,
+        unsigned int VarSize);
+
   public:
-    static openfluid::machine::ModelItemInstance* createModelItemInstanceFromSignature(
-        openfluid::machine::SignatureItemInstance& Signature)
-    {
-      openfluid::machine::ModelItemInstance* Item = 0;
-      if (!Signature.Signature)
-        throw openfluid::base::OFException("OpenFLUID Builder",
-            "ModelItemInstanceFactory::createModelItemInstance",
-            "Function Signature is not set. Creation is impossible.");
-      else
-      {
-        if (Signature.Signature->ID.find("(generator)") != std::string::npos)
-          Item = ModelItemInstanceFactory::createGeneratorItemFromSignature(Signature);
-        else
-          Item = ModelItemInstanceFactory::createPluggableItemFromSignature(Signature);
-      }
-      return Item;
-    }
+
+    static openfluid::machine::ModelItemInstance
+    * createPluggableItemFromSignature(
+        openfluid::machine::SignatureItemInstance& Signature);
+
+    static openfluid::machine::ModelItemInstance
+    * createGeneratorItemFromSignature(
+        openfluid::machine::SignatureItemInstance& Signature,
+        std::string VarName, std::string ClassName, std::string VarSize);
+
 };
 
-//class ModelItemInstanceFactorySub: ModelItemInstanceFactory
-//{
-//  public:
-//    ModelItemInstanceFactorySub(openfluid::base::ExecutionMessages& ExecMsgs,
-//        openfluid::core::CoreRepository& CoreRepos) :
-//      ModelItemInstanceFactory(ExecMsgs, CoreRepos)
-//    {
-//    }
-//    openfluid::machine::ModelItemInstance* createModelItemInstance(
-//        openfluid::machine::SignatureItemInstance& Signature)
-//    {
-//      return ModelItemInstanceFactory::createModelItemInstanceFromSignature(
-//          Signature);
-//    }
-//    openfluid::machine::ModelItemInstance* getResultOfcreateGenerator(
-//        openfluid::machine::SignatureItemInstance& Signature)
-//    {
-//      return ModelItemInstanceFactory::createGeneratorItemFromSignature(
-//          Signature);
-//    }
-//};
 #endif /* MODELITEMINSTANCEFACTORY_HPP_ */

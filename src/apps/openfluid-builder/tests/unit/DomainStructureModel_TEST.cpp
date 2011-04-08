@@ -74,8 +74,6 @@ struct init_Model
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-
       mp_Model = new DomainStructureModelSub();
     }
 
@@ -86,7 +84,6 @@ struct init_Model
 };
 
 BOOST_FIXTURE_TEST_SUITE(DomainStructureModelTest, init_Model)
-
 
 // =====================================================================
 // =====================================================================
@@ -99,7 +96,6 @@ BOOST_AUTO_TEST_CASE(test_constructor)
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(),true);
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -117,7 +113,6 @@ BOOST_AUTO_TEST_CASE(test_setCoreReposEmpty)
 
   delete EngProject;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -142,7 +137,6 @@ BOOST_AUTO_TEST_CASE(test_setCoreReposNonEmpty)
   delete EngProject;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -166,7 +160,6 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
   delete EngProject;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -189,7 +182,6 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 
   delete EngProject;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -215,7 +207,6 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
 
   delete EngProject;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -257,7 +248,6 @@ BOOST_AUTO_TEST_CASE(test_addUnits)
   delete EngProject;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -288,7 +278,6 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
 
   delete EngProject;
 }
-
 
 // =====================================================================
 // =====================================================================

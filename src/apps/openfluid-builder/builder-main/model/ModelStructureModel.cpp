@@ -56,6 +56,10 @@
 
 #include "ModelItemInstanceFactory.hpp"
 
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
+#include <glibmm/i18n.h>
+
 // =====================================================================
 // =====================================================================
 
@@ -118,11 +122,11 @@ int ModelStructureModelImpl::getLastPosition()
 // =====================================================================
 
 
-ModelStructureModelImpl::ModelStructureModelImpl()
+ModelStructureModelImpl::ModelStructureModelImpl() :
+  mp_ModelInstance(0), mp_CoreRepos(0), m_CurrentSelection(-1),
+      m_AppRequestedSelection(-1)
 {
-  mp_ModelInstance = 0;
-  m_CurrentSelection = -1;
-  m_AppRequestedSelection = -1;
+
 }
 
 // =====================================================================
@@ -157,18 +161,22 @@ sigc::signal<void> ModelStructureModelImpl::signal_FromAppSelectionRequested()
 
 
 void ModelStructureModelImpl::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance)
+    openfluid::machine::ModelInstance& ModelInstance,
+    openfluid::core::CoreRepository* CoreRepos)
 {
   mp_ModelInstance = &ModelInstance;
+  mp_CoreRepos = CoreRepos;
   update();
-//  signal_FromAppModelChanged().emit();
-//  requestSelectionByAppAt(getLastPosition());
 }
+
+// =====================================================================
+// =====================================================================
+
 
 void ModelStructureModelImpl::update()
 {
   signal_FromAppModelChanged().emit();
-    requestSelectionByAppAt(getLastPosition());
+  requestSelectionByAppAt(getLastPosition());
 }
 
 // =====================================================================
@@ -192,12 +200,66 @@ void ModelStructureModelImpl::appendFunction(
 {
   if (isModelInstance())
   {
-    mp_ModelInstance->appendItem(
-        ModelItemInstanceFactory::createModelItemInstanceFromSignature(
-            Signature));
+    openfluid::machine::ModelItemInstance* Item = 0;
 
-    signal_FromAppModelChanged().emit();
-    requestSelectionByAppAt(getLastPosition());
+    if (Signature.ItemType
+        == openfluid::base::ModelItemDescriptor::PluggedFunction)
+    {
+      Item = ModelItemInstanceFactory::createPluggableItemFromSignature(
+          Signature);
+    } else if (Signature.ItemType
+        == openfluid::base::ModelItemDescriptor::Generator)
+    {
+      if (!mp_CoreRepos)
+      {
+        throw openfluid::base::OFException("OpenFLUID Builder",
+            "ModelStructureModelImpl::appendFunction", "no Core Repository");
+        return;
+      }
+
+      if (mp_CoreRepos->getUnitsGlobally()->empty())
+      {
+        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+            "You can't create a generator now :\n Model is empty");
+        return;
+      } else
+      {
+        std::vector<std::string> Classes;
+        for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
+            mp_CoreRepos->getUnitsByClass()->begin(); it
+            != mp_CoreRepos->getUnitsByClass()->end(); ++it)
+        {
+          Classes.push_back(it->first);
+        }
+
+        std::map<std::string, std::string>
+            GenInfo =
+                openfluid::guicommon::DialogBoxFactory::showGeneratorCreationDialog(
+                    Classes);
+
+        if (GenInfo.size() != 3)
+          return;
+
+        Item = ModelItemInstanceFactory::createGeneratorItemFromSignature(
+            Signature, GenInfo["varname"], GenInfo["classname"],
+            GenInfo["varsize"]);
+      }
+    } else
+    {
+      throw openfluid::base::OFException("OpenFLUID Builder",
+          "ModelStructureModelImpl::appendFunction",
+          "bad ModelItemDescriptor type");
+      return;
+    }
+
+    if (Item)
+    {
+      mp_ModelInstance->appendItem(Item);
+
+      signal_FromAppModelChanged().emit();
+      requestSelectionByAppAt(getLastPosition());
+    }
+
   }
 }
 

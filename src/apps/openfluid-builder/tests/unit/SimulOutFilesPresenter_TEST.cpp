@@ -83,8 +83,6 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-
       mp_Component = new SimulOutFilesComponent();
       mp_Model = (SimulOutFilesModelSub*) mp_Component->getModel();
       mp_View = (SimulOutFilesViewSub*) (mp_Component->getView());
@@ -239,7 +237,6 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
   mp_Model->updateSelectedFileFormat("New Name");
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
-
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 

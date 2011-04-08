@@ -90,6 +90,8 @@ FunctionSignatureRegistry* FunctionSignatureRegistry::getInstance()
 void FunctionSignatureRegistry::addAPluggableSignature(
     openfluid::machine::SignatureItemInstance* Signature)
 {
+  Signature->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
   m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].push_back(
       Signature);
 }

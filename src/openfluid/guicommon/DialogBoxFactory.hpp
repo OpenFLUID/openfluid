@@ -55,13 +55,12 @@
 #ifndef __DIALOGBOXFACTORY_HPP__
 #define __DIALOGBOXFACTORY_HPP__
 
-
 #include <gtkmm.h>
 #include <openfluid/base.hpp>
 #include <openfluid/dllexport.hpp>
 
-
-namespace openfluid { namespace guicommon {
+namespace openfluid {
+namespace guicommon {
 
 // =====================================================================
 // =====================================================================
@@ -81,10 +80,13 @@ class DLLEXPORT DialogBoxFactory
 
     static std::string showTextEntryDialog(Glib::ustring MessageText,
         Glib::ustring LabelText);
+
+    static std::map<std::string, std::string>
+    showGeneratorCreationDialog(std::vector<std::string> Classes);
 };
 
-
-} } //namespaces
+}
+} //namespaces
 
 
 #endif /* __DIALOGBOXFACTORY_HPP__ */

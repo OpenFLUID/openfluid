@@ -67,8 +67,6 @@ struct init_Model
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-
       mp_Model = new SimulOutSetsModelSub();
     }
 
@@ -245,33 +243,33 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedSet)
 
 BOOST_AUTO_TEST_CASE(test_updateFileFormats)
 {
-//  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-//  + "/OPENFLUID.IN.Primitives";
-//  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
-//
-//  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-//  mp_Model->setSelectedSetName("partial");
-//
-//  SimulOutFilesModelImpl FilesModel;
-//  FilesModel.setEngineRequirements(p_EngProject->getOutputDescriptor());
-//  openfluid::base::OutputFilesDescriptor FileDesc;
-//  openfluid::base::OutputSetDescriptor SetDesc1;
-//  openfluid::base::OutputSetDescriptor SetDesc2;
-//  openfluid::base::OutputSetDescriptor SetDesc3;
-//  FileDesc.getSets().push_back(SetDesc1);
-//  FileDesc.getSets().push_back(SetDesc2);
-//  FileDesc.getSets().push_back(SetDesc3);
-//  FilesModel.addFileFormat(&FileDesc,"New Format");
-//
-//  mp_Model->addSet()
-//
-//  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),3);
-//
-//  mp_Model->updateFileFormats(FilesModel.getFilesFormatsByNameVect());
-//
-//  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),1);
-//
-//  delete p_EngProject;
+  //  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  //  + "/OPENFLUID.IN.Primitives";
+  //  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  //
+  //  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
+  //  mp_Model->setSelectedSetName("partial");
+  //
+  //  SimulOutFilesModelImpl FilesModel;
+  //  FilesModel.setEngineRequirements(p_EngProject->getOutputDescriptor());
+  //  openfluid::base::OutputFilesDescriptor FileDesc;
+  //  openfluid::base::OutputSetDescriptor SetDesc1;
+  //  openfluid::base::OutputSetDescriptor SetDesc2;
+  //  openfluid::base::OutputSetDescriptor SetDesc3;
+  //  FileDesc.getSets().push_back(SetDesc1);
+  //  FileDesc.getSets().push_back(SetDesc2);
+  //  FileDesc.getSets().push_back(SetDesc3);
+  //  FilesModel.addFileFormat(&FileDesc,"New Format");
+  //
+  //  mp_Model->addSet()
+  //
+  //  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),3);
+  //
+  //  mp_Model->updateFileFormats(FilesModel.getFilesFormatsByNameVect());
+  //
+  //  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),1);
+  //
+  //  delete p_EngProject;
 }
 
 // =====================================================================

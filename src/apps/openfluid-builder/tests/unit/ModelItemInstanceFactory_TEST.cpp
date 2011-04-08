@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
   openfluid::machine::SignatureItemInstance Plug;
 
   // throw "Function Signature is not set. Creation is impossible."
-  BOOST_CHECK_THROW(ModelItemInstanceFactory::createModelItemInstanceFromSignature(Plug),openfluid::base::OFException);
+  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
 
   // create an unavailable function
   openfluid::base::FunctionSignature* PlugSignature =
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
   Plug.Signature = PlugSignature;
 
   // throw OFException from openfluid::machine::PluginManager
-  BOOST_CHECK_THROW(ModelItemInstanceFactory::createModelItemInstanceFromSignature(Plug),openfluid::base::OFException);
+  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
 
   delete PlugSignature;
 }
@@ -79,33 +79,28 @@ BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
   FixedGeneratorSignature FixedGenSignature;
 
   openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createModelItemInstanceFromSignature(FixedGenSignature);
+      ModelItemInstanceFactory::createGeneratorItemFromSignature(
+          FixedGenSignature, "MyVar", "MyClass", "1");
 
   BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::Generator);
   BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
-  BOOST_CHECK_EQUAL(Item->Signature->ID,FixedGenSignature.Signature->ID);
+  BOOST_CHECK_EQUAL(Item->Signature->ID,openfluid::machine::Factory::buildGeneratorID("MyVar",false,"MyClass"));
 
   delete Item;
 }
 
-//TODO: use test-designed simulation functions
-//!! May be false negative according available functions !!
-BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation_WARNING_MayBeFalseNegative)
+BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
 {
-  if (!openfluid::machine::PluginManager::getInstance()->getAvailableFunctions().empty())
-  {
-    // get first available function on disk
-    openfluid::machine::SignatureItemInstance
-        FctSignature =
-            *openfluid::machine::PluginManager::getInstance()->getAvailableFunctions()[0];
+  openfluid::machine::SignatureItemInstance FctSignature =
+      *openfluid::machine::PluginManager::getInstance()->getPlugin(
+          "tests.primitives.use");
 
-    openfluid::machine::ModelItemInstance* Item =
-        ModelItemInstanceFactory::createModelItemInstanceFromSignature(FctSignature);
+  openfluid::machine::ModelItemInstance* Item =
+      ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
 
-    BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::PluggedFunction);
-    BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
-    BOOST_CHECK_EQUAL(Item->Signature->ID,FctSignature.Signature->ID);
+  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::PluggedFunction);
+  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
+  BOOST_CHECK_EQUAL(Item->Signature->ID,FctSignature.Signature->ID);
 
-    delete Item;
-  }
+  delete Item;
 }
