@@ -57,6 +57,7 @@
 #include <glibmm/i18n.h>
 
 #include "BuilderGraphicsHelper.hpp"
+#include <openfluid/debug.hpp>
 
 
 // =====================================================================
@@ -71,18 +72,44 @@ BuilderAppWindow::BuilderAppWindow()
   set_default_size(Gdk::Screen::get_default()->get_width() * 0.9,
       Gdk::Screen::get_default()->get_height() * 0.9);
 
+
   mp_ModuleContainer = Gtk::manage(new Gtk::HBox());
   mp_ModuleContainer->set_visible(true);
 
+
+  mp_StatusBarLabel = Gtk::manage(new Gtk::Label());
+  mp_StatusBarInfosBox = Gtk::manage(new Gtk::HBox());
+
+  mp_StatusBarLabel->set_alignment(0,0.5);
+  mp_StatusBarInfosBox->set_border_width(4);
+  mp_StatusBarInfosBox->pack_start(*mp_StatusBarLabel,Gtk::PACK_SHRINK,0);
+
+  mp_StatusBarSeparator = Gtk::manage(new Gtk::HSeparator());
+  mp_StatusBar = Gtk::manage(new Gtk::Statusbar());
+  mp_StatusBarSeparator->set_visible(false);
+  mp_StatusBar->set_visible(false);
+
+  // removing existing message field in status bar
+  mp_StatusBar->remove(*(*(mp_StatusBar->get_children().begin())));
+
+  mp_StatusBar->pack_start(*mp_StatusBarInfosBox,Gtk::PACK_EXPAND_WIDGET,0);
+  mp_StatusBar->show_all_children(true);
+
+
   mp_MainContainer = Gtk::manage(new Gtk::VBox());
   mp_MainContainer->set_visible(true);
+
+  mp_MainContainer->pack_end(*mp_StatusBar, Gtk::PACK_SHRINK, 0);
+  mp_MainContainer->pack_end(*mp_StatusBarSeparator, Gtk::PACK_SHRINK, 0);
   mp_MainContainer->pack_end(*mp_ModuleContainer, Gtk::PACK_EXPAND_WIDGET, 0);
+
 
   add(*mp_MainContainer);
 
   mp_CurrentModuleWidget = 0;
 
   mp_ToolBar = Gtk::manage(new Gtk::Toolbar());
+
 }
 
 
@@ -145,6 +172,25 @@ void BuilderAppWindow::setToolBarVisible(bool Visible)
 // =====================================================================
 // =====================================================================
 
+
+void BuilderAppWindow::setStatusBarVisible(bool Visible)
+{
+  mp_StatusBarSeparator->set_visible(Visible);
+  mp_StatusBar->set_visible(Visible);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppWindow::setStatusBarMessage(std::string Msg)
+{
+  mp_StatusBarLabel->set_markup(Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 void BuilderAppWindow::addAccelGroup(Glib::RefPtr<Gtk::AccelGroup> AccelGroup)

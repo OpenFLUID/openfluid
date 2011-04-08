@@ -64,6 +64,11 @@ class BuilderAppWindow: public Gtk::Window
     Gtk::Box* mp_ModuleContainer;
     Gtk::Widget* mp_CurrentModuleWidget;
     Gtk::Toolbar* mp_ToolBar;
+    Gtk::HSeparator* mp_StatusBarSeparator;
+    Gtk::Statusbar* mp_StatusBar;
+    Gtk::Label* mp_StatusBarLabel;
+    Gtk::HBox* mp_StatusBarInfosBox;
+
   public:
     BuilderAppWindow();
     void setCurrentModuleWidget(Gtk::Widget& ModuleWidget);
@@ -72,6 +77,8 @@ class BuilderAppWindow: public Gtk::Window
     void setToolBarWidget(Gtk::Widget& ToolBarWidget);
     void setToolBarVisible(bool Visible);
     void addAccelGroup(Glib::RefPtr<Gtk::AccelGroup> AccelGroup);
+    void setStatusBarVisible(bool Visible);
+    void setStatusBarMessage(std::string Msg);
 };
 
 #endif /* __BUILDERAPPWINDOW_HPP__ */

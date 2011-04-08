@@ -243,6 +243,7 @@ void BuilderAppCoordinator::setHomeModule()
   setCurrentModule(BuilderModuleFactory::createHomeModule(m_Actions));
   m_Actions.setProjectActionGroupVisible(false);
   m_MainWindow.setToolBarVisible(false);
+  m_MainWindow.setStatusBarVisible(false);
 }
 
 
@@ -256,6 +257,11 @@ void BuilderAppCoordinator::setProjectModule(std::string FolderIn)
   setCurrentModule(new BuilderProjectWithExplorer(FolderIn));
   m_Actions.setProjectActionGroupVisible(true);
   m_MainWindow.setToolBarVisible(true);
+  m_MainWindow.setStatusBarVisible(true);
+
+  std::string CurrentPrjStr = FolderIn;
+  if (CurrentPrjStr.empty()) CurrentPrjStr = std::string("<span color='red'>")+_("(unsaved!)")+std::string("</span>");
+  m_MainWindow.setStatusBarMessage("Current project: " + CurrentPrjStr);
 }
 
 
