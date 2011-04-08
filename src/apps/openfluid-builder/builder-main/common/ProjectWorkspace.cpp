@@ -53,6 +53,7 @@
  */
 
 #include "ProjectWorkspace.hpp"
+#include "BuilderGraphicsHelper.hpp"
 
 #include <iostream>
 
@@ -151,7 +152,8 @@ Gtk::Widget* ProjectWorkspace::createClosableTabLabel(std::string LabelText)
   Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(LabelText));
 
   Gtk::Image* TabButtonImage;
-  TabButtonImage = Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE,Gtk::ICON_SIZE_BUTTON));
+  TabButtonImage = Gtk::manage(new Gtk::Image(BuilderGraphicsHelper::createPixbufFromFile(
+            "tab_close.png")));
   TabButtonImage->show();
 
   Gtk::Button* TabButton = Gtk::manage(new Gtk::Button());
@@ -164,6 +166,7 @@ Gtk::Widget* ProjectWorkspace::createClosableTabLabel(std::string LabelText)
   TabLabelBox->pack_start(*TabLabel, Gtk::SHRINK, 0);
   TabLabelBox->pack_end(*TabButton, Gtk::SHRINK, 0);
   TabLabelBox->show_all_children();
+
 
   return TabLabelBox;
 }
