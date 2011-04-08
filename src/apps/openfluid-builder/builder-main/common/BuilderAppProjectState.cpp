@@ -55,7 +55,7 @@
 #include "BuilderAppProjectState.hpp"
 
 #include "BuilderAppCoordinator.hpp"
-#include "BuilderProjectModule.hpp"
+#include "BuilderProjectWithExplorer.hpp"
 
 
 // =====================================================================
@@ -134,7 +134,7 @@ void BuilderAppProjectState::whenQuitAsked()
 
 void BuilderAppProjectState::whenRunAsked()
 {
-  ((BuilderProjectModule*)m_App.getCurrentModule())->runAsked();
+  ((BuilderProjectWithExplorer*)m_App.getCurrentModule())->runAsked();
 }
 
 

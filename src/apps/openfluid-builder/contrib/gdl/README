@@ -1,9 +1,0 @@
-Gnome Docking library
-=====================
-
-Provides docking features for gtk+. Currently used by anjuta and lumiera.
-
-Discussion of GDL development takes place on the gnome-devtools@gnome.org or
-anjuta-devel@lists.sf.net mailing list and on #anjuta at irc.gnome.org.
-
-GDL is licensed under the terms of the LGPL.

@@ -27,12 +27,6 @@ CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.h
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/contrib)
-
-
-
-ADD_SUBDIRECTORY(contrib)
-
 
 INCLUDE_DIRECTORIES(${GTKMM_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKMM_LIBRARY_DIRS})
@@ -70,7 +64,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-io
                       openfluid-tools
                       openfluid-guicommon
-                      openfluid-builder-gdl
                       openfluid-builder-main)
 
 

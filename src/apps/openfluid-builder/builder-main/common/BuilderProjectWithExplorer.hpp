@@ -98,6 +98,8 @@ class BuilderProjectWithExplorer: public BuilderModule
 
     void initialize(){};
 
+    void runAsked();
+
 };
 
 #endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */

@@ -56,12 +56,6 @@
 
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderHomeModule.hpp"
-
-#include "BuilderModelModule.hpp"
-#include "BuilderDomainModule.hpp"
-#include "BuilderSimulationModule.hpp"
-#include "BuilderResultsModule.hpp"
-
 #include "ModelStructureModule.hpp"
 #include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
@@ -69,15 +63,17 @@
 #include "SimulationOutModule.hpp"
 #include "ResultsSetModule.hpp"
 
+
 // =====================================================================
 // =====================================================================
 
 
-BuilderListToolBoxFactory& BuilderModuleFactory::ListToolBoxFactory()
+BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
+  mp_EngineProject(EngProject)
 {
-  BuilderListToolBoxFactory* Factory = new BuilderListToolBoxFactory();
-  return *Factory;
+
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -93,71 +89,6 @@ BuilderModule* BuilderModuleFactory::createHomeModule(
 // =====================================================================
 
 
-BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
-  mp_EngineProject(EngProject)
-{
-
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BuilderModule* BuilderModuleFactory::createModelModule()
-{
-  BuilderModelModule* Module = new BuilderModelModule(ListToolBoxFactory());
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BuilderModule* BuilderModuleFactory::createDomainModule()
-{
-  BuilderDomainModule* Module = new BuilderDomainModule(ListToolBoxFactory());
-  Module->setEngineRequirements(mp_EngineProject.getCoreRepository());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BuilderModule* BuilderModuleFactory::createSimulationModule()
-{
-  BuilderSimulationModule* Module = new BuilderSimulationModule(
-      ListToolBoxFactory());
-  Module->setEngineRequirements(mp_EngineProject.getRunDescriptor(),
-      mp_EngineProject.getOutputDescriptor(),
-      mp_EngineProject.getCoreRepository(),
-      *mp_EngineProject.getModelInstance());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BuilderModule* BuilderModuleFactory::createResultsModule()
-{
-  BuilderResultsModule* Module = new BuilderResultsModule();
-  Module->setEngineRequirements(mp_EngineProject.getRunDescriptor(),
-      mp_EngineProject.getOutputDescriptor(),
-      mp_EngineProject.getCoreRepository(),
-      *mp_EngineProject.getModelInstance());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-////////////////////////////////
-// MODULES FOR WORKSPACE TABS //
-////////////////////////////////
-
-
 BuilderModule* BuilderModuleFactory::createModelStructureModule()
 {
   ModelStructureModule* Module = new ModelStructureModule(ListToolBoxFactory());
@@ -165,6 +96,21 @@ BuilderModule* BuilderModuleFactory::createModelStructureModule()
       *mp_EngineProject.getSimBlob());
   return Module;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BuilderListToolBoxFactory& BuilderModuleFactory::ListToolBoxFactory()
+{
+  BuilderListToolBoxFactory* Factory = new BuilderListToolBoxFactory();
+  return *Factory;
+}
+
+// =====================================================================
+// =====================================================================
+
 
 BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 {
@@ -175,6 +121,11 @@ BuilderModule* BuilderModuleFactory::createDomainStructureModule()
   return Module;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderModule* BuilderModuleFactory::createDomainClassModule()
 {
   DomainClassModule* Module = new DomainClassModule(ListToolBoxFactory());
@@ -182,6 +133,11 @@ BuilderModule* BuilderModuleFactory::createDomainClassModule()
       *mp_EngineProject.getSimBlob());
   return Module;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 BuilderModule* BuilderModuleFactory::createSimulationRunModule()
 {
@@ -191,6 +147,11 @@ BuilderModule* BuilderModuleFactory::createSimulationRunModule()
   return Module;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderModule* BuilderModuleFactory::createSimulationOutModule()
 {
   SimulationOutModule* Module = new SimulationOutModule(ListToolBoxFactory());
@@ -199,6 +160,11 @@ BuilderModule* BuilderModuleFactory::createSimulationOutModule()
   return Module;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderModule* BuilderModuleFactory::createResultsSetModule()
 {
   ResultsSetModule* Module = new ResultsSetModule();
@@ -206,69 +172,3 @@ BuilderModule* BuilderModuleFactory::createResultsSetModule()
       *mp_EngineProject.getSimBlob());
   return Module;
 }
-
-//BuilderModule* BuilderModuleFactory::createModelFunctionModule(std::string FunctionName)
-//{
-//  ModelStructureModule* Module = new ModelStructureModule(ListToolBoxFactory());
-//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-//      *mp_EngineProject.getSimBlob());
-//  Module->setCurrentFunction(FunctionName);
-//  return Module;
-//}
-
-
-// =====================================================================
-// =====================================================================
-
-
-//BuilderModule* BuilderModuleFactory::createModelModule(
-//    openfluid::machine::ModelInstance& ModelInstance)
-//{
-//  BuilderModelModule* Module = new BuilderModelModule(ListToolBoxFactory());
-//  Module->setEngineRequirements(ModelInstance);
-//  return Module;
-//}
-//BuilderModelModuleSub* BuilderModuleFactory::createModelModuleSub()
-//{
-//  return new BuilderModelModuleSub(ListToolBoxFactory());
-//}
-//BuilderModule* BuilderModuleFactory::createDomainModule(
-//    openfluid::core::CoreRepository& CoreRepos)
-//{
-//  BuilderDomainModule* Module = new BuilderDomainModule(ListToolBoxFactory());
-//  Module->setEngineRequirements(CoreRepos);
-//  return Module;
-//}
-//BuilderDomainModuleSub* BuilderModuleFactory::createDomainModuleSub()
-//{
-//  return new BuilderDomainModuleSub(ListToolBoxFactory());
-//}
-//BuilderModule* BuilderModuleFactory::createSimulationModule(
-//    openfluid::base::RunDescriptor& RunDesc,
-//    openfluid::base::OutputDescriptor& OutDesc,
-//    openfluid::core::CoreRepository& CoreRepos,
-//    openfluid::machine::ModelInstance& ModelInstance)
-//{
-//  BuilderSimulationModule* Module = new BuilderSimulationModule(
-//      ListToolBoxFactory());
-//  Module->setEngineRequirements(RunDesc, OutDesc, CoreRepos, ModelInstance);
-//  return Module;
-//}
-//BuilderSimulationModuleSub* BuilderModuleFactory::createSimulationModuleSub()
-//{
-//  return new BuilderSimulationModuleSub(ListToolBoxFactory());
-//}
-//BuilderModule* BuilderModuleFactory::createResultsModule(
-//    openfluid::base::RunDescriptor& RunDesc,
-//    openfluid::base::OutputDescriptor& OutDesc,
-//    openfluid::core::CoreRepository& CoreRepos,
-//    openfluid::machine::ModelInstance& ModelInstance)
-//{
-//  BuilderResultsModule* Module = new BuilderResultsModule();
-//  Module->setEngineRequirements(RunDesc, OutDesc, CoreRepos, ModelInstance);
-//  return Module;
-//}
-//BuilderResultsModuleSub* BuilderModuleFactory::createResultsModuleSub()
-//{
-//  return new BuilderResultsModuleSub();
-//}

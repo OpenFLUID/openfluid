@@ -37,8 +37,7 @@ MACRO(ADD_BUILDER_UNITTEST TEST_NAME EXE_NAME)
                        openfluid-base openfluid-buddies
                        openfluid-core openfluid-machine
                        openfluid-io openfluid-tools openfluid-market
-                       openfluid-builder-main
-                       openfluid-builder-gdl)
+                       openfluid-builder-main)
                        
   SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
   ADD_TEST(${TEST_NAME} "${TEST_OUTPUT_PATH}/${EXE_NAME}")
@@ -112,10 +111,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-ModelStructurePresenter
                      builder_unittest_ModelStructurePresenter_TEST
                      ModelStructurePresenter_TEST.cpp)
 
-#ADD_BUILDER_UNITTEST(builder-unittest-ModelCoordinator
-#                     builder_unittest_ModelCoordinator_TEST
-#                     ModelCoordinator_TEST.cpp)
-
 ### DOMAIN ###
                    
 ADD_BUILDER_UNITTEST(builder-unittest-DomainStructureModel
@@ -126,7 +121,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-DomainStructureAdapterModel
                      builder_unittest_DomainStructureAdapterModel_TEST
                      DomainStructureAdapterModel_TEST.cpp)
                      
-
 ADD_BUILDER_UNITTEST(builder-unittest-DomainStructurePresenter
                      builder_unittest_DomainStructurePresenter_TEST
                      DomainStructurePresenter_TEST.cpp)             
@@ -154,6 +148,8 @@ ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataAdapterModel
 ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataPresenter
                      builder_unittest_DomainIDataPresenter_TEST
                      DomainIDataPresenter_TEST.cpp)
+
+### SIMULATION ###
 
 ADD_BUILDER_UNITTEST(builder-unittest-SimulRunModel
                      builder_unittest_SimulRunModel_TEST
@@ -187,9 +183,7 @@ ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetDescPresenter
                      builder_unittest_SimulOutSetDescPresenter_TEST
                      SimulOutSetDescPresenter_TEST.cpp)
 
-ADD_BUILDER_UNITTEST(builder-unittest-ResChooserPresenter
-                     builder_unittest_ResChooserPresenter_TEST
-                     ResChooserPresenter_TEST.cpp)
+### RESULTS ###
 
 ADD_BUILDER_UNITTEST(builder-unittest-ResUnitChooserModel
                      builder_unittest_ResUnitChooserModel_TEST

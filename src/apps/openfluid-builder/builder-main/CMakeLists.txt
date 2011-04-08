@@ -41,9 +41,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-io
                       openfluid-tools
                       openfluid-market
-                      openfluid-guicommon
-#                      openfluid-builder-ext
-                      openfluid-builder-gdl)
+                      openfluid-guicommon)
+#                      openfluid-builder-ext)
 
 
 SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
