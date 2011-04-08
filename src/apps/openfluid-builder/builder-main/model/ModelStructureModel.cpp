@@ -176,7 +176,7 @@ void ModelStructureModelImpl::setEngineRequirements(
 void ModelStructureModelImpl::update()
 {
   signal_FromAppModelChanged().emit();
-  requestSelectionByAppAt(getLastPosition());
+  signal_FromAppSelectionRequested().emit();
 }
 
 // =====================================================================
