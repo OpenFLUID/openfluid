@@ -19,8 +19,12 @@ IF(BUILDER_NLS_ENABLE)
         ADD_CUSTOM_TARGET(i18n-${BUILDER_PO_INPUT_BASE} ALL 
                           COMMENT "Building i18n messages for ${BUILDER_PO_INPUT_BASE}"
                           DEPENDS ${BUILDER_MO_OUTPUT})
+
         
-        INSTALL(FILES ${BUILDER_MO_OUTPUT} DESTINATION "${CMAKE_INSTALL_PREFIX}/share/locale/${BUILDER_PO_INPUT_BASE}/LC_MESSAGES RENAME ${BUILDER_NLS_PACKAGE}.mo")
+        INSTALL(FILES "${BUILDER_MO_OUTPUT}" 
+                DESTINATION "share/locale/${BUILDER_PO_INPUT_BASE}/LC_MESSAGES" 
+                RENAME "${BUILDER_NLS_PACKAGE}.mo"
+                )
         
     ENDFOREACH(BUILDER_PO_INPUT ${BUILDER_PO_FILES})
 

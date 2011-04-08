@@ -1,5 +1,17 @@
 
 
+IF(BUILD_APP_BUILDER AND UNIX AND NOT APPLE)
+
+  CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/packaging/openfluid-builder.desktop.in" "${CMAKE_CURRENT_BINARY_DIR}/openfluid-builder.desktop" @ONLY)
+
+  INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/openfluid-builder.desktop" 
+          DESTINATION "${SHARE_DESKTOPENTRY_INSTALL_PATH}"
+          PERMISSIONS OWNER_READ OWNER_EXECUTE OWNER_WRITE
+                      GROUP_READ GROUP_EXECUTE
+                      WORLD_READ WORLD_EXECUTE
+          )
+
+ENDIF(BUILD_APP_BUILDER AND UNIX AND NOT APPLE)
 
   # examples installation
   INSTALL(DIRECTORY "examples/src" 

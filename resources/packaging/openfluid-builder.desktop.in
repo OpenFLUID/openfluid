@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=OpenFLUID-Builder
+Version=@FULL_VERSION@
+Comment=The OpenFLUID graphical user interface
+TryExec=@CMAKE_INSTALL_PREFIX@/@BIN_INSTALL_PATH@/openfluid-builder
+Exec=@CMAKE_INSTALL_PREFIX@/@BIN_INSTALL_PATH@/openfluid-builder
+Icon=@CMAKE_INSTALL_PREFIX@/@SHARE_INSTALL_PATH@/common/openfluid_icon.png
+Categories=Science;Education;Applications
