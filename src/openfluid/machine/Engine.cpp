@@ -504,8 +504,6 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
 
     try
     {
-      // checkModelConsistency();
-
       std::set<std::pair<openfluid::core::UnitClass_t,openfluid::core::VariableName_t> > VarsUnits;
       std::list<ModelItemInstance*>::const_iterator FuncIter;
       openfluid::base::SignatureHandledData HData;
@@ -590,9 +588,7 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
       PretestInfos.Model = false;
       PretestInfos.ModelMsg.assign(E.what());
     }
-    m_SimulationBlob.getCoreRepository().clearAllVariables();
   }
-
 }
 
 
