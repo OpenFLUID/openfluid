@@ -95,6 +95,7 @@ class DLLEXPORT SimulationBlob
 
     inline const openfluid::base::ExecutionMessages& getExecutionMessages() const {return  m_ExecMessages; };
 
+    void clearSimulationGarbage();
 
 
 };

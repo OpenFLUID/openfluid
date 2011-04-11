@@ -83,7 +83,7 @@ EngineProject::EngineProject()
 
 void EngineProject::run()
 {
-  getCoreRepository().clearAllVariables();
+  mp_SimBlob->clearSimulationGarbage();
 
   mp_ModelInstance->initialize();
 
