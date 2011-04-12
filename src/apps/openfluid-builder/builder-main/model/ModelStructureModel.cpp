@@ -195,12 +195,13 @@ openfluid::machine::ModelInstance* ModelStructureModelImpl::getModelInstance()
 // =====================================================================
 
 
-void ModelStructureModelImpl::appendFunction(
+openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
     openfluid::machine::SignatureItemInstance& Signature)
 {
+  openfluid::machine::ModelItemInstance* Item = 0;
+
   if (isModelInstance())
   {
-    openfluid::machine::ModelItemInstance* Item = 0;
 
     if (Signature.ItemType
         == openfluid::base::ModelItemDescriptor::PluggedFunction)
@@ -214,14 +215,14 @@ void ModelStructureModelImpl::appendFunction(
       {
         throw openfluid::base::OFException("OpenFLUID Builder",
             "ModelStructureModelImpl::appendFunction", "no Core Repository");
-        return;
+        return (openfluid::machine::ModelItemInstance*)0;
       }
 
       if (mp_CoreRepos->getUnitsGlobally()->empty())
       {
         openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
             "You can't create a generator now :\n Model is empty");
-        return;
+        return (openfluid::machine::ModelItemInstance*)0;
       } else
       {
         std::vector<std::string> Classes;
@@ -238,7 +239,7 @@ void ModelStructureModelImpl::appendFunction(
                     Classes);
 
         if (GenInfo.size() != 3)
-          return;
+          return (openfluid::machine::ModelItemInstance*)0;
 
         Item = ModelItemInstanceFactory::createGeneratorItemFromSignature(
             Signature, GenInfo["varname"], GenInfo["classname"],
@@ -249,7 +250,7 @@ void ModelStructureModelImpl::appendFunction(
       throw openfluid::base::OFException("OpenFLUID Builder",
           "ModelStructureModelImpl::appendFunction",
           "bad ModelItemDescriptor type");
-      return;
+      return (openfluid::machine::ModelItemInstance*)0;
     }
 
     if (Item)
@@ -261,6 +262,8 @@ void ModelStructureModelImpl::appendFunction(
     }
 
   }
+
+  return Item;
 }
 
 // =====================================================================

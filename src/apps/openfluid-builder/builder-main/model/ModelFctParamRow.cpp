@@ -46,22 +46,88 @@
  */
 
 /**
- \file BuilderTableRowWidget.cpp
+ \file ModelFctParamRow.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "BuilderTableRowWidget.hpp"
-
+#include "ModelFctParamRow.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
-std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgets()
+ModelFctParamRow::ModelFctParamRow(std::string ParamName, std::string ParamUnit)
 {
-  return m_RowWidgets;
+  m_ColumnCount = 5;
+
+  mp_GlobalCheck = Gtk::manage(new Gtk::CheckButton());
+  mp_GlobalCheck->set_visible(true);
+  mp_GlobalCheck->signal_activate().connect(sigc::mem_fun(*this,
+      &ModelFctParamRow::onGlobalCheckActivated));
+  m_RowWidgets.push_back(mp_GlobalCheck);
+
+  mp_ParamNameLabel = Gtk::manage(new Gtk::Label(ParamName, Gtk::ALIGN_LEFT,
+      Gtk::ALIGN_CENTER));
+  mp_ParamNameLabel->set_visible(true);
+  m_RowWidgets.push_back(mp_ParamNameLabel);
+
+  mp_ParamValueEntry = Gtk::manage(new Gtk::Entry());
+  mp_ParamValueEntry->set_visible(true);
+  mp_ParamValueEntry->signal_changed().connect(sigc::mem_fun(*this,
+      &ModelFctParamRow::onParamValueChanged));
+  m_RowWidgets.push_back(mp_ParamValueEntry);
+
+  mp_ParamUnitLabel = Gtk::manage(new Gtk::Label(ParamUnit, Gtk::ALIGN_LEFT,
+      Gtk::ALIGN_CENTER));
+  mp_ParamUnitLabel->set_visible(true);
+  m_RowWidgets.push_back(mp_ParamUnitLabel);
+
+  mp_GlobalValueLabel = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
+      Gtk::ALIGN_CENTER));
+  mp_GlobalValueLabel->set_visible(true);
+  m_RowWidgets.push_back(mp_GlobalValueLabel);
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamRow::signal_GobalDefinedAsked()
+{
+  return m_signal_GobalDefinedAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamRow::signal_ValueChanged()
+{
+  return m_signal_ValueChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamRow::onGlobalCheckActivated()
+{
+  if (mp_GlobalCheck->activate())
+    m_signal_GobalDefinedAsked.emit();
+  else
+    m_signal_ValueChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamRow::onParamValueChanged()
+{
+  m_signal_ValueChanged.emit();
 }
 
 
@@ -69,9 +135,9 @@ std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgets()
 // =====================================================================
 
 
-unsigned int BuilderTableRowWidget::getWidgetCount()
+void ModelFctParamRow::setValue(std::string Value)
 {
-  return getWidgets().size();
+  mp_ParamValueEntry->set_text(Value);
 }
 
 
@@ -79,9 +145,9 @@ unsigned int BuilderTableRowWidget::getWidgetCount()
 // =====================================================================
 
 
-unsigned int BuilderTableRowWidget::getColumnCount()
+std::string ModelFctParamRow::getValue()
 {
-  return m_ColumnCount;
+  return mp_ParamValueEntry->get_text();
 }
 
 
@@ -89,23 +155,8 @@ unsigned int BuilderTableRowWidget::getColumnCount()
 // =====================================================================
 
 
-unsigned int BuilderTableRowWidget::getRowCount()
+std::string ModelFctParamRow::getParamName()
 {
-  return getWidgetCount() / getColumnCount();
+  return mp_ParamNameLabel->get_text();
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgetsOfRow(
-    unsigned int RowIndex)
-{
-  std::vector<Gtk::Widget*> InnerRowWidgets;
-  for (unsigned int j = 0; j < getColumnCount(); j++)
-  {
-    InnerRowWidgets.push_back(getWidgets()[(RowIndex * getColumnCount()) + j]);
-  }
-  return InnerRowWidgets;
-}

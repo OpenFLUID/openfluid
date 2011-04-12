@@ -46,38 +46,60 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
- \brief Header of ...
+ \file ModelFctParamsComponent.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#include "ModelFctParamsComponent.hpp"
 
-#include <gtkmm.h>
+#include "ModelFctParamsModel.hpp"
+#include "ModelFctParamsView.hpp"
+#include "ModelFctParamsPresenter.hpp"
 
-class BuilderTableRowWidget
+
+// =====================================================================
+// =====================================================================
+
+
+ModelFctParamsComponent::ModelFctParamsComponent(openfluid::machine::ModelItemInstance* Item)
 {
-  protected:
+  mp_Model = new ModelFctParamsModelImpl();
+  mp_View = new ModelFctParamsViewImpl();
+  mp_Presenter = new ModelFctParamsPresenter(*mp_Model, *mp_View);
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+  mp_Model->setModelItemInstance(Item);
+}
 
-    unsigned int m_ColumnCount;
 
-  public:
+// =====================================================================
+// =====================================================================
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
 
-    unsigned int getWidgetCount();
+ModelFctParamsComponent::~ModelFctParamsComponent()
+{
+  delete mp_Presenter;
+  delete mp_Model;
+  delete mp_View;
+}
 
-    unsigned int getColumnCount();
 
-    unsigned int getRowCount();
+// =====================================================================
+// =====================================================================
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
 
-};
+Gtk::Widget* ModelFctParamsComponent::asWidget()
+{
+  return mp_View->asWidget();
+}
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+
+// =====================================================================
+// =====================================================================
+
+
+ModelFctParamsModel* ModelFctParamsComponent::getModel()
+{
+  return mp_Model;
+}

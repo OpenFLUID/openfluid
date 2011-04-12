@@ -46,38 +46,40 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelFctParamsPresenter.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELFCTPARAMSPRESENTER_HPP__
+#define __MODELFCTPARAMSPRESENTER_HPP__
 
-#include <gtkmm.h>
+#include <sigc++/sigc++.h>
 
-class BuilderTableRowWidget
+#include <iostream>
+
+
+class ModelFctParamsModel;
+class ModelFctParamsView;
+
+
+class ModelFctParamsPresenter: public sigc::trackable
 {
-  protected:
+  private:
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+    ModelFctParamsModel& m_Model;
 
-    unsigned int m_ColumnCount;
+    ModelFctParamsView& m_View;
+
+    void whenSignatureInit();
+
+    void whenParamValueChanged(std::string ParamName, std::string ParamValue);
 
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
-
-    unsigned int getWidgetCount();
-
-    unsigned int getColumnCount();
-
-    unsigned int getRowCount();
-
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    ModelFctParamsPresenter(ModelFctParamsModel& Model,
+        ModelFctParamsView& View);
 
 };
-
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+#endif /* __MODELFCTPARAMSPRESENTER_HPP__ */

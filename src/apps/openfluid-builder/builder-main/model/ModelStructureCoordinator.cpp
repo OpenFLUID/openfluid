@@ -58,9 +58,10 @@
 #include "ModelFctDetailModel.hpp"
 #include "ModelStructureModel.hpp"
 #include "ModelGlobalParamsModel.hpp"
+#include "ModelParamsPanel.hpp"
+#include "ModelFctParamsComponent.hpp"
 #include "BuilderListToolBox.hpp"
 #include "ModelAddFunctionModule.hpp"
-
 
 // =====================================================================
 // =====================================================================
@@ -97,12 +98,17 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
 
 void ModelStructureCoordinator::whenAddFctAsked()
 {
-  openfluid::machine::SignatureItemInstance* Signature = mp_AddFctModule->showDialog();
+  openfluid::machine::SignatureItemInstance* Signature =
+      mp_AddFctModule->showDialog();
 
   if (Signature)
   {
-    m_StructureModel.appendFunction(*Signature);
+    openfluid::machine::ModelItemInstance* Item = m_StructureModel.appendFunction(*Signature);
     updateStructureListToolBox();
+    //GlobalParams.addFct(Signature)
+    createModelFctParamsComponent(Item);
+    //FctParams.setGlobalValues(GlobalParams.getValues(Signature))
+
     m_signal_ModelChanged.emit();
   }
 }
@@ -113,8 +119,12 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
 void ModelStructureCoordinator::whenRemoveFctAsked()
 {
+  eraseModelFctParamsComponent(m_StructureModel.getCurrentSelectionSignature());
+  //GlobalParams.removeFct(m_StructureModel.getCurrentSelectionSignature())
+
   m_StructureModel.removeFunctionAt(m_StructureModel.getCurrentSelection());
   updateStructureListToolBox();
+
   m_signal_ModelChanged.emit();
 }
 
@@ -138,17 +148,27 @@ void ModelStructureCoordinator::whenMoveTowardTheEndAsked()
   m_signal_ModelChanged.emit();
 }
 
+//whenGloballyDefinedParamAsked(ModelFctParamsComponent,ParamName)
+//{
+//  ModelFctParamsComponent.setGlobalValue(GlobalParams.getValue(ParamName))
+//}
+
+//whenGlobalParamChanged(ParamName,ParamValue)
+//{
+//  ModelParamsPanel.setGlobalValue(ParamName,ParamValue)
+//}
+
 // =====================================================================
 // =====================================================================
 
 
 ModelStructureCoordinator::ModelStructureCoordinator(
     ModelFctDetailModel& FctDetailModel, ModelStructureModel& StructureModel,
-    ModelGlobalParamsModel& GlobalParamsModel,
+    ModelGlobalParamsModel& GlobalParamsModel, ModelParamsPanel& ParamsPanel,
     BuilderListToolBox& StructureListToolBox) :
   m_FctDetailModel(FctDetailModel), m_StructureModel(StructureModel),
-      m_GlobalParamsModel(GlobalParamsModel), m_StructureListToolBox(
-          StructureListToolBox)
+      m_GlobalParamsModel(GlobalParamsModel), m_ParamsPanel(ParamsPanel),
+      m_StructureListToolBox(StructureListToolBox)
 {
   m_StructureListToolBox.setAddCommandAvailable(true);
 
@@ -164,7 +184,14 @@ ModelStructureCoordinator::ModelStructureCoordinator(
   m_StructureListToolBox.signal_DownCommandAsked().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenMoveTowardTheEndAsked));
 
+  //ModelParamsPanel.signal_GloballyDefinedParamAsked(FctName,ParamName)
+  //. connect(whenGloballyDefinedParamAsked(FctName,ParamName))
+
+  //GlobalParams.signal_GlobalParamChanged(ParamName,ParamValue)
+  //.connect(whenGlobalParamChanged(ParamName,ParamValue))
+
   mp_AddFctModule = new ModelAddFunctionModule();
+
 }
 
 // =====================================================================
@@ -198,8 +225,12 @@ void ModelStructureCoordinator::setEngineRequirements(
   mp_ModelInstance = &ModelInstance;
   mp_SimBlob = &SimBlob;
 
-  m_StructureModel.setEngineRequirements(ModelInstance,&SimBlob.getCoreRepository());
-  m_GlobalParamsModel.setEngineRequirements(ModelInstance);
+  m_StructureModel.setEngineRequirements(ModelInstance,
+      &SimBlob.getCoreRepository());
+
+  initParams();
+
+//  m_GlobalParamsModel.setEngineRequirements(ModelInstance);
 }
 
 // =====================================================================
@@ -209,8 +240,8 @@ void ModelStructureCoordinator::setEngineRequirements(
 void ModelStructureCoordinator::setCurrentFunction(std::string FunctionName)
 {
   m_StructureModel.requestSelectionByApp(FunctionName);
+  m_ParamsPanel.setCurrentPage(FunctionName);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -219,4 +250,48 @@ void ModelStructureCoordinator::setCurrentFunction(std::string FunctionName)
 void ModelStructureCoordinator::update()
 {
   m_StructureModel.update();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::initParams()
+{
+  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+      mp_ModelInstance->getItems().begin(); it
+      != mp_ModelInstance->getItems().end(); ++it)
+  {
+    createModelFctParamsComponent(*it);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::createModelFctParamsComponent(
+    openfluid::machine::ModelItemInstance* Item)
+{
+  ModelFctParamsComponent* FctParams = new ModelFctParamsComponent(Item);
+
+  std::string FctName = Item->Signature->ID;
+
+  m_ParamsPanel.addAFctParamsPage(FctParams->asWidget(), FctName);
+  m_ByNameFctParamsComponents[FctName] = FctParams;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::eraseModelFctParamsComponent(openfluid::machine::SignatureItemInstance* Signature)
+{
+  std::string FctName = Signature->Signature->ID;
+
+  m_ParamsPanel.removeAPage(FctName);
+  m_ByNameFctParamsComponents.erase(FctName);
 }

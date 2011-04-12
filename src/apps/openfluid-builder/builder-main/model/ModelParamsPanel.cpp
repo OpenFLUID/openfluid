@@ -46,38 +46,87 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
- \brief Header of ...
+ \file ModelParamsPanel.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#include "ModelParamsPanel.hpp"
 
-#include <gtkmm.h>
+#include "ModelFctParamsComponent.hpp"
 
-class BuilderTableRowWidget
+// =====================================================================
+// =====================================================================
+
+
+ModelParamsPanel::ModelParamsPanel()
 {
-  protected:
+  mp_Notebook = Gtk::manage(new Gtk::Notebook());
+  mp_Notebook->set_visible(true);
+}
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+// =====================================================================
+// =====================================================================
 
-    unsigned int m_ColumnCount;
 
-  public:
+ModelParamsPanel::~ModelParamsPanel()
+{
+  // TODO Auto-generated destructor stub
+}
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+// =====================================================================
+// =====================================================================
 
-    unsigned int getWidgetCount();
 
-    unsigned int getColumnCount();
+void ModelParamsPanel::addAStaticPage(Gtk::Widget* Page, std::string Label,
+    int Position)
+{
+  mp_Notebook->insert_page(*Page, Label, Position);
+}
 
-    unsigned int getRowCount();
+// =====================================================================
+// =====================================================================
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
 
-};
+void ModelParamsPanel::addAFctParamsPage(Gtk::Widget* FctParamsPage,
+    std::string PageLabel)
+{
+  mp_Notebook->append_page(*FctParamsPage, PageLabel);
+  m_ByFctNamePages[PageLabel] = FctParamsPage;
+}
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+void ModelParamsPanel::removeAPage(std::string PageLabel)
+{
+  if (m_ByFctNamePages.find(PageLabel) != m_ByFctNamePages.end())
+  {
+    mp_Notebook->remove_page(*m_ByFctNamePages[PageLabel]);
+    m_ByFctNamePages.erase(PageLabel);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelParamsPanel::setCurrentPage(std::string PageLabel)
+{
+  if (m_ByFctNamePages.find(PageLabel) != m_ByFctNamePages.end())
+  {
+    mp_Notebook->set_current_page(mp_Notebook->page_num(
+        *m_ByFctNamePages[PageLabel]));
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Widget* ModelParamsPanel::asWidget()
+{
+  return mp_Notebook;
+}

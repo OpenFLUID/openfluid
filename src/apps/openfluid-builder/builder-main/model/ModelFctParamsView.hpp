@@ -46,38 +46,84 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelFctParamsView.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELFCTPARAMSVIEW_HPP__
+#define __MODELFCTPARAMSVIEW_HPP__
+
+#include <sigc++/sigc++.h>
 
 #include <gtkmm.h>
 
-class BuilderTableRowWidget
+class ModelFctParamRow;
+class ModelFctFileRow;
+class BuilderTableRowWidget;
+
+
+class ModelFctParamsView
 {
-  protected:
-
-    std::vector<Gtk::Widget*> m_RowWidgets;
-
-    unsigned int m_ColumnCount;
-
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+    virtual Gtk::Widget* asWidget() = 0;
 
-    unsigned int getWidgetCount();
+    virtual void setParams(std::map<std::string,std::string> ParamsMap) = 0;
 
-    unsigned int getColumnCount();
+    virtual void setParamValues(std::map<std::string,std::string> ParamValuesMap) = 0;
 
-    unsigned int getRowCount();
+    virtual sigc::signal<void,std::string,std::string> signal_ParamValueChanged() = 0;
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    virtual void setRequiredFiles(std::vector<std::string> Files) = 0;
+
+    virtual void setUsedFiles(std::vector<std::string> Files) = 0;
 
 };
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+
+class ModelFctParamsViewImpl: public ModelFctParamsView
+{
+  private:
+
+    Gtk::Box* mp_MainBox;
+
+    Gtk::Table* mp_ParamsTable;
+
+    Gtk::Table* mp_FilesTable;
+
+    unsigned int m_ParamsTableBottom;
+
+    unsigned int m_FilesTableBottom;
+
+    std::map<std::string,ModelFctParamRow*> m_ByParamNameParamRow;
+
+    std::map<std::string,ModelFctFileRow*> m_ByFileNameFileRow;
+
+    sigc::signal<void,std::string,std::string> m_signal_ParamValueChanged;
+
+    void attachTableRow(BuilderTableRowWidget& TableRow, Gtk::Table* Table,unsigned int& TableBottom);
+
+    void onParamValueChanged(ModelFctParamRow* FctParamRow);
+
+
+  public:
+
+    ModelFctParamsViewImpl();
+
+    sigc::signal<void,std::string,std::string> signal_ParamValueChanged();
+
+    void setParams(std::map<std::string,std::string> ParamsMap);
+
+    void setParamValues(std::map<std::string,std::string> ParamValuesMap);
+
+    void setRequiredFiles(std::vector<std::string> Files);
+
+    void setUsedFiles(std::vector<std::string> Files);
+
+    Gtk::Widget* asWidget();
+};
+
+
+#endif /* __MODELFCTPARAMSVIEW_HPP__ */

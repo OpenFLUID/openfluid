@@ -60,6 +60,7 @@
 class ModelFctDetailComponent;
 class ModelStructureComponent;
 class ModelGlobalParamsComponent;
+class ModelParamsPanel;
 
 class ModelFctDetailModel;
 class ModelStructureModel;
@@ -77,6 +78,7 @@ class ModelStructureModule : public ProjectWorkspaceModule
     ModelFctDetailComponent* mp_ModelFctDetailMVP;
     ModelStructureComponent* mp_ModelStructureMVP;
     ModelGlobalParamsComponent* mp_ModelGlobalParamsMVP;
+    ModelParamsPanel* mp_ModelParamsPanel;
     BuilderListToolBox* mp_StructureListToolBox;
     ModelStructureCoordinator* mp_Coordinator;
 

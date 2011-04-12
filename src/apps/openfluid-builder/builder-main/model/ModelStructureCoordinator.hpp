@@ -62,12 +62,13 @@
 class ModelFctDetailModel;
 class ModelStructureModel;
 class ModelGlobalParamsModel;
+class ModelFctParamsComponent;
+class ModelParamsPanel;
 
 class BuilderListToolBox;
 class FunctionSignatureRegistry;
 
 class ModelAddFunctionModule;
-
 
 class ModelStructureCoordinator: public sigc::trackable
 {
@@ -87,6 +88,10 @@ class ModelStructureCoordinator: public sigc::trackable
 
     ModelGlobalParamsModel& m_GlobalParamsModel;
 
+    ModelParamsPanel& m_ParamsPanel;
+
+    std::map<std::string, ModelFctParamsComponent*> m_ByNameFctParamsComponents;
+
     BuilderListToolBox& m_StructureListToolBox;
 
     ModelAddFunctionModule* mp_AddFctModule;
@@ -105,10 +110,11 @@ class ModelStructureCoordinator: public sigc::trackable
 
   public:
 
-    ModelStructureCoordinator(ModelFctDetailModel& FctDetailModel,
-        ModelStructureModel& StructureModel,
-        ModelGlobalParamsModel& GlobalParamsModel,
-        BuilderListToolBox& StructureListToolBox);
+        ModelStructureCoordinator(ModelFctDetailModel& FctDetailModel,
+            ModelStructureModel& StructureModel,
+            ModelGlobalParamsModel& GlobalParamsModel,
+            ModelParamsPanel& ParamsPanel,
+            BuilderListToolBox& StructureListToolBox);
 
     sigc::signal<void> signal_ModelChanged();
 
@@ -121,6 +127,13 @@ class ModelStructureCoordinator: public sigc::trackable
     void setCurrentFunction(std::string FunctionName);
 
     void update();
+
+    void initParams();
+
+    void createModelFctParamsComponent(
+        openfluid::machine::ModelItemInstance* Item);
+
+    void eraseModelFctParamsComponent(openfluid::machine::SignatureItemInstance* Signature);
 
 };
 

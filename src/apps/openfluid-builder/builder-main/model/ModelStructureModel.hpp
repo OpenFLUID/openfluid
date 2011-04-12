@@ -68,7 +68,7 @@ class ModelStructureModel
 
     virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
 
-    virtual void appendFunction(
+    virtual openfluid::machine::ModelItemInstance* appendFunction(
         openfluid::machine::SignatureItemInstance& Signature) = 0;
 
     /* Move the element at From position before the action to be at To position after the action,
@@ -143,7 +143,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     openfluid::machine::ModelInstance* getModelInstance();
 
-    void appendFunction(openfluid::machine::SignatureItemInstance& Signature);
+    openfluid::machine::ModelItemInstance* appendFunction(openfluid::machine::SignatureItemInstance& Signature);
 
     void moveFunction(unsigned int From, unsigned int To);
 

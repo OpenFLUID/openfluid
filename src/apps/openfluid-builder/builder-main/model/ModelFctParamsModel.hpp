@@ -46,38 +46,69 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelFctParamsModel.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELFCTPARAMSMODEL_HPP__
+#define __MODELFCTPARAMSMODEL_HPP__
 
-#include <gtkmm.h>
+#include <sigc++/sigc++.h>
 
-class BuilderTableRowWidget
+#include <openfluid/machine.hpp>
+
+
+class ModelFctParamsModel
 {
-  protected:
-
-    std::vector<Gtk::Widget*> m_RowWidgets;
-
-    unsigned int m_ColumnCount;
-
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+    virtual sigc::signal<void> signal_ItemInit() = 0;
 
-    unsigned int getWidgetCount();
+    virtual void setModelItemInstance(openfluid::machine::ModelItemInstance* Item) = 0;
 
-    unsigned int getColumnCount();
+    virtual std::map<std::string,std::string> getParams() = 0;
 
-    unsigned int getRowCount();
+    virtual std::vector<std::string> getRequiredFiles() = 0;
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    virtual std::vector<std::string> getUsedFiles() = 0;
+
+    virtual std::map<std::string,std::string> getParamValues() = 0;
+
+    virtual void setParamValue(std::string ParamName,std::string ParamValue) = 0;
 
 };
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+
+class ModelFctParamsModelImpl: public ModelFctParamsModel
+{
+  private:
+
+    sigc::signal<void> m_signal_ItemInit;
+
+    openfluid::machine::ModelItemInstance* mp_Item;
+
+    bool fileExists(std::string FileName);
+
+  public:
+
+    ModelFctParamsModelImpl();
+
+    void setModelItemInstance(openfluid::machine::ModelItemInstance* Item);
+
+    sigc::signal<void> signal_ItemInit();
+
+    std::map<std::string,std::string> getParams();
+
+    std::vector<std::string> getRequiredFiles();
+
+    std::vector<std::string> getUsedFiles();
+
+    std::map<std::string,std::string> getParamValues();
+
+    void setParamValue(std::string ParamName,std::string ParamValue);
+
+};
+
+#endif /* __MODELFCTPARAMSMODEL_HPP__ */

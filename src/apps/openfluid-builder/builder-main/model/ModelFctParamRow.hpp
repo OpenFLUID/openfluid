@@ -46,38 +46,55 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelFctParamRow.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELFCTPARAMROW_HPP__
+#define __MODELFCTPARAMROW_HPP__
 
-#include <gtkmm.h>
+#include "BuilderTableRowWidget.hpp"
 
-class BuilderTableRowWidget
+#include <sigc++/sigc++.h>
+
+class ModelFctParamRow: public BuilderTableRowWidget
 {
-  protected:
+  private:
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+    Gtk::CheckButton* mp_GlobalCheck;
 
-    unsigned int m_ColumnCount;
+    Gtk::Label* mp_ParamNameLabel;
+
+    Gtk::Entry* mp_ParamValueEntry;
+
+    Gtk::Label* mp_ParamUnitLabel;
+
+    Gtk::Label* mp_GlobalValueLabel;
+
+    sigc::signal<void> m_signal_GobalDefinedAsked;
+
+    sigc::signal<void> m_signal_ValueChanged;
+
+    void onGlobalCheckActivated();
+
+    void onParamValueChanged();
 
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+    ModelFctParamRow(std::string ParamName, std::string ParamUnit);
 
-    unsigned int getWidgetCount();
+    sigc::signal<void> signal_GobalDefinedAsked();
 
-    unsigned int getColumnCount();
+    sigc::signal<void> signal_ValueChanged();
 
-    unsigned int getRowCount();
+    void setValue(std::string Value);
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    std::string getValue();
+
+    std::string getParamName();
 
 };
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+#endif /* __MODELFCTPARAMROW_HPP__ */

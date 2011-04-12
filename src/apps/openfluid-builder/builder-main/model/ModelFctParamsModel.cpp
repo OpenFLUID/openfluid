@@ -46,66 +46,104 @@
  */
 
 /**
- \file BuilderTableRowWidget.cpp
+ \file ModelFctParamsModel.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "BuilderTableRowWidget.hpp"
+#include "ModelFctParamsModel.hpp"
 
+#include <boost/foreach.hpp>
+#include <boost/filesystem.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgets()
+ModelFctParamsModelImpl::ModelFctParamsModelImpl() :
+  mp_Item(0)
 {
-  return m_RowWidgets;
+
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-unsigned int BuilderTableRowWidget::getWidgetCount()
+void ModelFctParamsModelImpl::setModelItemInstance(
+    openfluid::machine::ModelItemInstance* Item)
 {
-  return getWidgets().size();
-}
+  mp_Item = Item;
 
-
-// =====================================================================
-// =====================================================================
-
-
-unsigned int BuilderTableRowWidget::getColumnCount()
-{
-  return m_ColumnCount;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-unsigned int BuilderTableRowWidget::getRowCount()
-{
-  return getWidgetCount() / getColumnCount();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgetsOfRow(
-    unsigned int RowIndex)
-{
-  std::vector<Gtk::Widget*> InnerRowWidgets;
-  for (unsigned int j = 0; j < getColumnCount(); j++)
+  if (mp_Item)
   {
-    InnerRowWidgets.push_back(getWidgets()[(RowIndex * getColumnCount()) + j]);
+    m_signal_ItemInit.emit();
   }
-  return InnerRowWidgets;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
+{
+  std::map<std::string, std::string> ParamsMap;
+
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, mp_Item->Signature->HandledData.FunctionParams)
+{  ParamsMap[Param.DataName] = Param.DataUnit;
+}
+
+return ParamsMap;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
+{
+  return mp_Item->Params;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> ModelFctParamsModelImpl::getRequiredFiles()
+{
+  return mp_Item->Signature->HandledData.RequiredExtraFiles;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> ModelFctParamsModelImpl::getUsedFiles()
+{
+  return mp_Item->Signature->HandledData.UsedExtraFiles;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
+    std::string ParamValue)
+{
+  mp_Item->Params[ParamName] = ParamValue;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsModelImpl::signal_ItemInit()
+{
+  return m_signal_ItemInit;
+}
+
+// =====================================================================
+// =====================================================================
+
+

@@ -46,38 +46,42 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelParamsPanel.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELPARAMSPANEL_HPP__
+#define __MODELPARAMSPANEL_HPP__
 
 #include <gtkmm.h>
 
-class BuilderTableRowWidget
+
+class ModelParamsPanel
 {
-  protected:
+  private:
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+    Gtk::Notebook* mp_Notebook;
 
-    unsigned int m_ColumnCount;
+    std::map<std::string,Gtk::Widget*> m_ByFctNamePages;
+
 
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+    ModelParamsPanel();
 
-    unsigned int getWidgetCount();
+    ~ModelParamsPanel();
 
-    unsigned int getColumnCount();
+    void addAStaticPage(Gtk::Widget* Page, std::string Label, int Position = -1);
 
-    unsigned int getRowCount();
+    void addAFctParamsPage(Gtk::Widget* FctParamsPage,std::string PageLabel);
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    void removeAPage(std::string PageLabel);
 
+    void setCurrentPage(std::string PageLabel);
+
+    Gtk::Widget* asWidget();
 };
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+#endif /* __MODELPARAMSPANEL_HPP__ */

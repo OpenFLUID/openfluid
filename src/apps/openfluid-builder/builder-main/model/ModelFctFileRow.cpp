@@ -46,66 +46,115 @@
  */
 
 /**
- \file BuilderTableRowWidget.cpp
+ \file ModelFctFileRow.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "BuilderTableRowWidget.hpp"
+#include "ModelFctFileRow.hpp"
 
+#include <glibmm/i18n.h>
+#include <boost/filesystem.hpp>
+
+#include <openfluid/base.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgets()
+ModelFctFileRow::ModelFctFileRow(std::string FileName) :
+  m_FileName(FileName), m_InputDir(
+      openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()),
+      m_FilePath(Glib::ustring::compose("%1/%2", m_InputDir, m_FileName))
 {
-  return m_RowWidgets;
+  m_ColumnCount = 2;
+
+  mp_FileButton = Gtk::manage(new Gtk::Button());
+  mp_FileButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::OPEN,
+      Gtk::ICON_SIZE_BUTTON)));
+  mp_FileButton->set_visible(true);
+  mp_FileButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &ModelFctFileRow::onFileButtonClicked));
+  m_RowWidgets.push_back(mp_FileButton);
+
+  mp_FileNameLabel = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
+      Gtk::ALIGN_CENTER));
+  mp_FileNameLabel->set_visible(true);
+  mp_FileNameLabel->set_padding(10, 0);
+  m_RowWidgets.push_back(mp_FileNameLabel);
+
+  setFileFound();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-unsigned int BuilderTableRowWidget::getWidgetCount()
+void ModelFctFileRow::onFileButtonClicked()
 {
-  return getWidgets().size();
-}
+  Gtk::FileChooserDialog Dialog(
+      _("Select a file to copy in the Project directory"));
 
+  Dialog.set_current_folder(m_InputDir);
+  Dialog.set_filename(m_FilePath);
+  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::COPY, Gtk::RESPONSE_OK);
 
-// =====================================================================
-// =====================================================================
+  std::string TargetFilePath = Glib::ustring::compose("%1/%2", m_InputDir,
+      m_FileName);
 
-
-unsigned int BuilderTableRowWidget::getColumnCount()
-{
-  return m_ColumnCount;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-unsigned int BuilderTableRowWidget::getRowCount()
-{
-  return getWidgetCount() / getColumnCount();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<Gtk::Widget*> BuilderTableRowWidget::getWidgetsOfRow(
-    unsigned int RowIndex)
-{
-  std::vector<Gtk::Widget*> InnerRowWidgets;
-  for (unsigned int j = 0; j < getColumnCount(); j++)
+  if (Dialog.run() == Gtk::RESPONSE_OK)
   {
-    InnerRowWidgets.push_back(getWidgets()[(RowIndex * getColumnCount()) + j]);
+    std::string ChoosedFile = Dialog.get_filename();
+
+    if (ChoosedFile != "")
+    {
+      if (boost::filesystem::exists(m_FilePath))
+      {
+        if (ChoosedFile != m_FilePath
+            && openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+                Glib::ustring::compose(
+                    _("File %1 still exists,\ndo you really want to overwrite it ?"),
+                    m_FileName)))
+        {
+          boost::filesystem::remove(m_FilePath);
+          boost::filesystem::copy_file(ChoosedFile, m_FilePath);
+        }
+      } else
+        boost::filesystem::copy_file(ChoosedFile, m_FilePath);
+    }
   }
-  return InnerRowWidgets;
+
+  setFileFound();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctFileRow::setFileFound()
+{
+  if (boost::filesystem::exists(m_FilePath))
+  {
+    mp_FileNameLabel->set_markup(Glib::ustring::compose("%1  <i>(%2)</i>",
+        m_FileName, _("found")));
+    mp_FileButton->set_tooltip_text(_("Change the file to use"));
+  } else
+  {
+    mp_FileNameLabel->set_markup(Glib::ustring::compose(
+        "<span color='red'>%1  <i>(%2)</i></span>", m_FileName, _("not found")));
+    mp_FileButton->set_tooltip_text(_("Choose the file to use"));
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ModelFctFileRow::getFileName()
+{
+  return mp_FileNameLabel->get_text();
+}
+

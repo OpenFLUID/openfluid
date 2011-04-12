@@ -46,38 +46,43 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelFctParamsComponent.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELFCTPARAMSCOMPONENT_HPP__
+#define __MODELFCTPARAMSCOMPONENT_HPP__
 
-#include <gtkmm.h>
+#include "BuilderMVPComponent.hpp"
 
-class BuilderTableRowWidget
+#include <openfluid/machine.hpp>
+
+class ModelFctParamsModel;
+class ModelFctParamsView;
+class ModelFctParamsPresenter;
+
+class ModelFctParamsComponent: public BuilderMVPComponent
 {
-  protected:
+  private:
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+    ModelFctParamsModel* mp_Model;
 
-    unsigned int m_ColumnCount;
+    ModelFctParamsView* mp_View;
+
+    ModelFctParamsPresenter* mp_Presenter;
 
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+    ModelFctParamsComponent(openfluid::machine::ModelItemInstance* Item);
 
-    unsigned int getWidgetCount();
+    ~ModelFctParamsComponent();
 
-    unsigned int getColumnCount();
+    Gtk::Widget* asWidget();
 
-    unsigned int getRowCount();
-
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    ModelFctParamsModel* getModel();
 
 };
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+#endif /* __MODELFCTPARAMSCOMPONENT_HPP__ */

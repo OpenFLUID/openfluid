@@ -46,38 +46,45 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
+ \file ModelFctFileRow.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#ifndef __MODELFCTFILEROW_HPP__
+#define __MODELFCTFILEROW_HPP__
 
-#include <gtkmm.h>
+#include "BuilderTableRowWidget.hpp"
 
-class BuilderTableRowWidget
+#include <sigc++/sigc++.h>
+
+class ModelFctFileRow: public BuilderTableRowWidget
 {
-  protected:
+  private:
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
+    std::string m_FileName;
 
-    unsigned int m_ColumnCount;
+    std::string m_InputDir;
+
+    std::string m_FilePath;
+
+    std::string m_Found;
+
+    Gtk::Label* mp_FileNameLabel;
+
+    Gtk::Button* mp_FileButton;
+
+    void onFileButtonClicked();
 
   public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+    ModelFctFileRow(std::string FileName);
 
-    unsigned int getWidgetCount();
+    void setFileFound();
 
-    unsigned int getColumnCount();
-
-    unsigned int getRowCount();
-
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+    std::string getFileName();
 
 };
 
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+#endif /* __MODELFCTFILEROW_HPP__ */

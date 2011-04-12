@@ -57,6 +57,7 @@
 #include "ModelFctDetailComponent.hpp"
 #include "ModelStructureComponent.hpp"
 #include "ModelGlobalParamsComponent.hpp"
+#include "ModelParamsPanel.hpp"
 
 #include "ModelStructureCoordinator.hpp"
 #include "FunctionSignatureRegistry.hpp"
@@ -77,12 +78,14 @@ ModelStructureModule::ModelStructureModule()
   mp_ModelStructureMVP = new ModelStructureComponent();
 
   mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent();
+  mp_ModelParamsPanel = new ModelParamsPanel();
+  mp_ModelParamsPanel->addAStaticPage(mp_ModelGlobalParamsMVP->asWidget(),_("Global Parameters"),0);
 
   mp_StructureListToolBox = BuilderListToolBoxFactory::createModelStructureToolBox();
 
   mp_Coordinator = new ModelStructureCoordinator(
       *mp_ModelFctDetailMVP->getModel(), *mp_ModelStructureMVP->getModel(),
-      *mp_ModelGlobalParamsMVP->getModel(), *mp_StructureListToolBox);
+      *mp_ModelGlobalParamsMVP->getModel(), *mp_ModelParamsPanel, *mp_StructureListToolBox);
 
   mp_Coordinator->signal_ModelChanged().connect(sigc::mem_fun(*this,
       &ModelStructureModule::whenModelChanged));
@@ -99,6 +102,7 @@ ModelStructureModule::~ModelStructureModule()
   delete mp_ModelStructureMVP;
   delete mp_ModelGlobalParamsMVP;
   delete mp_StructureListToolBox;
+  delete mp_ModelParamsPanel;
 }
 
 // =====================================================================
@@ -117,14 +121,9 @@ void ModelStructureModule::compose()
       0);
   TopPanel->set_visible(true);
 
-  Gtk::Notebook* ParamsNB = Gtk::manage(new Gtk::Notebook());
-  ParamsNB->append_page(*mp_ModelGlobalParamsMVP->asWidget(),
-      _("Global Parameters"));
-  ParamsNB->set_visible(true);
-
   Gtk::HBox* BottomPanel = Gtk::manage(new Gtk::HBox());
   BottomPanel->set_border_width(5);
-  BottomPanel->pack_start(*ParamsNB);
+  BottomPanel->pack_start(*mp_ModelParamsPanel->asWidget());
   BottomPanel->set_visible(true);
 
   BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());

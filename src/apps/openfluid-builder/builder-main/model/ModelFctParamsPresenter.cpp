@@ -46,38 +46,52 @@
  */
 
 /**
- \file BuilderTableRowWidget.hpp
- \brief Header of ...
+ \file ModelFctParamsPresenter.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERTABLEROWWIDGET_HPP__
-#define __BUILDERTABLEROWWIDGET_HPP__
+#include "ModelFctParamsPresenter.hpp"
 
-#include <gtkmm.h>
 
-class BuilderTableRowWidget
+#include "ModelFctParamsModel.hpp"
+#include "ModelFctParamsView.hpp"
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsPresenter::whenSignatureInit()
 {
-  protected:
+  m_View.setParams(m_Model.getParams());
+  m_View.setParamValues(m_Model.getParamValues());
+  m_View.setRequiredFiles(m_Model.getRequiredFiles());
+  m_View.setUsedFiles(m_Model.getUsedFiles());
+}
 
-    std::vector<Gtk::Widget*> m_RowWidgets;
 
-    unsigned int m_ColumnCount;
+// =====================================================================
+// =====================================================================
 
-  public:
 
-    /* get widgets by row then by column*/
-    std::vector<Gtk::Widget*> getWidgets();
+void ModelFctParamsPresenter::whenParamValueChanged(std::string ParamName, std::string ParamValue)
+{
+  m_Model.setParamValue(ParamName,ParamValue);
+}
 
-    unsigned int getWidgetCount();
 
-    unsigned int getColumnCount();
+// =====================================================================
+// =====================================================================
 
-    unsigned int getRowCount();
 
-    std::vector<Gtk::Widget*> getWidgetsOfRow(unsigned int RowIndex);
+ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model, ModelFctParamsView& View) :
+  m_Model(Model), m_View(View)
+{
+  m_Model.signal_ItemInit().connect(sigc::mem_fun(*this,
+            &ModelFctParamsPresenter::whenSignatureInit));
 
-};
-
-#endif /* __BUILDERTABLEROWWIDGET_HPP__ */
+  m_View.signal_ParamValueChanged().connect(sigc::mem_fun(*this,
+      &ModelFctParamsPresenter::whenParamValueChanged));
+}
