@@ -54,18 +54,69 @@
 
 #include "ModelGlobalParamsPresenter.hpp"
 
-
 #include "ModelGlobalParamsModel.hpp"
 #include "ModelGlobalParamsView.hpp"
 
-void ModelGlobalParamsPresenter::whenNewProjectAsked()
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsPresenter::whenFromAppModelChanged()
 {
-//  m_Model.newProjectAsked();
+  m_View.setComboParams(m_Model.getGloballyNotUsed());
+  m_View.removeGlobalParamsRows(m_Model.getGloballyNoMoreUsed());
 }
 
-ModelGlobalParamsPresenter::ModelGlobalParamsPresenter(ModelGlobalParamsModel& Model, ModelGlobalParamsView& View) :
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsPresenter::whenFromUserGloballySetAsked(
+    std::string ParamName)
+{
+  m_View.addGlobalParamsRow(ParamName, m_Model.fromUserGloballyUsedSet(
+      ParamName));
+  m_View.setComboParams(m_Model.getGloballyNotUsed());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsPresenter::whenFromUserGloballyUnsetAsked(
+    std::string ParamName)
+{
+  m_Model.fromUserGloballyUsedUnset(ParamName);
+  m_View.removeGlobalParamsRow(ParamName);
+  m_View.setComboParams(m_Model.getGloballyNotUsed());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsPresenter::whenGlobalValueChanged(std::string ParamName)
+{
+  m_Model.setGlobalValue(ParamName,m_View.getGlobalValue(ParamName));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ModelGlobalParamsPresenter::ModelGlobalParamsPresenter(
+    ModelGlobalParamsModel& Model, ModelGlobalParamsView& View) :
   m_Model(Model), m_View(View)
 {
-//  m_View.signal_NewProjectAsked().connect(sigc::mem_fun(*this,
-//      &ModelGlobalParamsPresenter::whenNewProjectAsked));
+  m_Model.signal_FromAppModelChanged().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsPresenter::whenFromAppModelChanged));
+
+  m_View.signal_GlobalParamSetAsked().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsPresenter::whenFromUserGloballySetAsked));
+  m_View.signal_GlobalParamUnsetAsked().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsPresenter::whenFromUserGloballyUnsetAsked));
+  m_View.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsPresenter::whenGlobalValueChanged));
 }

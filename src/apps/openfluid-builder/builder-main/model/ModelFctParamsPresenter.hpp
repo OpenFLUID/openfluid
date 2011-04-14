@@ -59,10 +59,8 @@
 
 #include <iostream>
 
-
 class ModelFctParamsModel;
 class ModelFctParamsView;
-
 
 class ModelFctParamsPresenter: public sigc::trackable
 {
@@ -75,6 +73,10 @@ class ModelFctParamsPresenter: public sigc::trackable
     void whenSignatureInit();
 
     void whenParamValueChanged(std::string ParamName, std::string ParamValue);
+
+    void whenGlobalValueChanged(std::string ParamName, std::string GlobalValue);
+
+    void whenGlobalValueUnset(std::string ParamName);
 
   public:
 

@@ -80,6 +80,10 @@ class ModelFctParamsView
 
     virtual void setUsedFiles(std::vector<std::string> Files) = 0;
 
+    virtual void setGlobalValue(std::string ParamName,std::string GlobalValue) = 0;
+
+    virtual void unsetGlobalValue(std::string ParamName) = 0;
+
 };
 
 
@@ -121,6 +125,10 @@ class ModelFctParamsViewImpl: public ModelFctParamsView
     void setRequiredFiles(std::vector<std::string> Files);
 
     void setUsedFiles(std::vector<std::string> Files);
+
+    void setGlobalValue(std::string ParamName,std::string GlobalValue);
+
+    void unsetGlobalValue(std::string ParamName);
 
     Gtk::Widget* asWidget();
 };

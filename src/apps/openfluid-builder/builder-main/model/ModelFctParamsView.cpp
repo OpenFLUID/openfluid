@@ -208,6 +208,29 @@ void ModelFctParamsViewImpl::setUsedFiles(std::vector<std::string> Files)
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsViewImpl::setGlobalValue(std::string ParamName,std::string GlobalValue)
+{
+  if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
+        m_ByParamNameParamRow[ParamName]->setGlobalValue(GlobalValue);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsViewImpl::unsetGlobalValue(std::string ParamName)
+{
+  if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
+          m_ByParamNameParamRow[ParamName]->unsetGlobalValue();
+}
+
+
 // =====================================================================
 // =====================================================================
 

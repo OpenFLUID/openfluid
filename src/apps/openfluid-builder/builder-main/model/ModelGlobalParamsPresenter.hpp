@@ -57,18 +57,31 @@
 
 #include <sigc++/sigc++.h>
 
+#include <iostream>
+
 class ModelGlobalParamsModel;
 class ModelGlobalParamsView;
 
 class ModelGlobalParamsPresenter: public sigc::trackable
 {
   private:
-    ModelGlobalParamsModel& m_Model;
-    ModelGlobalParamsView& m_View;
-    void whenNewProjectAsked();
-  public:
-    ModelGlobalParamsPresenter(ModelGlobalParamsModel& Model, ModelGlobalParamsView& View);
-};
 
+    ModelGlobalParamsModel& m_Model;
+
+    ModelGlobalParamsView& m_View;
+
+    void whenFromAppModelChanged();
+
+    void whenFromUserGloballySetAsked(std::string ParamName);
+
+    void whenFromUserGloballyUnsetAsked(std::string ParamName);
+
+    void whenGlobalValueChanged(std::string ParamName);
+
+  public:
+
+    ModelGlobalParamsPresenter(ModelGlobalParamsModel& Model,
+        ModelGlobalParamsView& View);
+};
 
 #endif /* __MODELGLOBALPARAMSPRESENTER_H__ */

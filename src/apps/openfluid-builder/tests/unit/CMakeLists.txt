@@ -53,7 +53,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-BuilderExtensionsManager
 ADD_BUILDER_UNITTEST(builder-unittest-GeneratorSignature
                      builder_unittest_GeneratorSignature_TEST
                      GeneratorSignature_TEST.cpp)
-
                      
 ADD_BUILDER_UNITTEST(builder-unittest-FunctionSignatureRegistry
                      builder_unittest_FunctionSignatureRegistry_TEST
@@ -110,6 +109,10 @@ ADD_BUILDER_UNITTEST(builder-unittest-ModelStructureModel
 ADD_BUILDER_UNITTEST(builder-unittest-ModelStructurePresenter
                      builder_unittest_ModelStructurePresenter_TEST
                      ModelStructurePresenter_TEST.cpp)
+
+ADD_BUILDER_UNITTEST(builder-unittest-ModelGlobalParamsModel
+                     builder_unittest_ModelGlobalParamsModel_TEST
+                     ModelGlobalParamsModel_TEST.cpp)
 
 ### DOMAIN ###
                    

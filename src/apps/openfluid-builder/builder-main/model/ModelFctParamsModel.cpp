@@ -114,7 +114,6 @@ std::vector<std::string> ModelFctParamsModelImpl::getRequiredFiles()
   return mp_Item->Signature->HandledData.RequiredExtraFiles;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -138,6 +137,25 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
 // =====================================================================
 
 
+void ModelFctParamsModelImpl::setGlobalValue(std::string ParamName,
+    std::string GlobalValue)
+{
+  m_signal_GlobalValueChanged.emit(ParamName, GlobalValue);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsModelImpl::unsetGlobalValue(std::string ParamName)
+{
+  m_signal_GlobalValueUnset.emit(ParamName);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelFctParamsModelImpl::signal_ItemInit()
 {
   return m_signal_ItemInit;
@@ -147,3 +165,16 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_ItemInit()
 // =====================================================================
 
 
+sigc::signal<void, std::string, std::string> ModelFctParamsModelImpl::signal_GlobalValueChanged()
+{
+  return m_signal_GlobalValueChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> ModelFctParamsModelImpl::signal_GlobalValueUnset()
+{
+  return m_signal_GlobalValueUnset;
+}

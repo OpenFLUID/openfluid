@@ -46,13 +46,13 @@
  */
 
 /**
- \file ModelFctParamRow.cpp
+ \file ModelGlobalParamRow.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "ModelFctParamRow.hpp"
+#include "ModelGlobalParamRow.hpp"
 
 #include <glibmm/i18n.h>
 
@@ -60,141 +60,78 @@
 // =====================================================================
 
 
-ModelFctParamRow::ModelFctParamRow(std::string ParamName, std::string ParamUnit) :
-  m_GlobalValue(""), m_isGloballySet(false)
+ModelGlobalParamRow::ModelGlobalParamRow(std::string ParamName,
+    std::string ParamUnit) :
+  m_ParamName(ParamName)
 {
-  m_ColumnCount = 5;
+  m_ColumnCount = 4;
 
-  mp_ParamNameLabel = Gtk::manage(new Gtk::Label(ParamName, Gtk::ALIGN_LEFT,
-      Gtk::ALIGN_CENTER));
-  mp_ParamNameLabel->set_visible(true);
-  m_RowWidgets.push_back(mp_ParamNameLabel);
+  Gtk::Label* ParamNameLabel = Gtk::manage(new Gtk::Label(ParamName,
+      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  ParamNameLabel->set_visible(true);
+  m_RowWidgets.push_back(ParamNameLabel);
 
   mp_ParamValueEntry = Gtk::manage(new Gtk::Entry());
-  mp_ParamValueEntry->set_visible(true);
   mp_ParamValueEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &ModelFctParamRow::onParamValueChanged));
+      &ModelGlobalParamRow::onEntryChanged));
+  mp_ParamValueEntry->set_visible(true);
   m_RowWidgets.push_back(mp_ParamValueEntry);
 
-  mp_ParamUnitLabel = Gtk::manage(new Gtk::Label(ParamUnit, Gtk::ALIGN_LEFT,
-      Gtk::ALIGN_CENTER));
-  mp_ParamUnitLabel->set_visible(true);
-  m_RowWidgets.push_back(mp_ParamUnitLabel);
+  Gtk::Label* ParamUnitLabel = Gtk::manage(new Gtk::Label(ParamUnit,
+      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  ParamUnitLabel->set_visible(true);
+  m_RowWidgets.push_back(ParamUnitLabel);
 
-  mp_GlobalCheck = Gtk::manage(new Gtk::CheckButton());
-  mp_GlobalCheck->set_visible(false);
-  mp_GlobalCheck->set_tooltip_text(_("Use the global value of this parameter"));
-  mp_GlobalCheck->signal_clicked().connect(sigc::mem_fun(*this,
-      &ModelFctParamRow::onGlobalCheckClicked));
-  m_RowWidgets.push_back(mp_GlobalCheck);
-
-  mp_GlobalValueLabel = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
-      Gtk::ALIGN_CENTER));
-  mp_GlobalValueLabel->set_visible(false);
-  mp_GlobalValueLabel->set_sensitive(false);
-  m_RowWidgets.push_back(mp_GlobalValueLabel);
-
+  mp_RemoveButton = Gtk::manage(new Gtk::Button());
+  mp_RemoveButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::DELETE,
+      Gtk::ICON_SIZE_BUTTON)));
+  mp_RemoveButton->set_tooltip_text(_("Unset this parameter as global"));
+  mp_RemoveButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamRow::onRemoveButtonClicked));
+  mp_RemoveButton->set_visible(true);
+  m_RowWidgets.push_back(mp_RemoveButton);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> ModelFctParamRow::signal_GobalDefinedAsked()
+std::string ModelGlobalParamRow::getValue()
 {
-  return m_signal_GobalDefinedAsked;
+  return mp_ParamValueEntry->get_text();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> ModelFctParamRow::signal_ValueChanged()
+sigc::signal<void, std::string> ModelGlobalParamRow::signal_valueChanged()
 {
-  return m_signal_ValueChanged;
+  return m_signal_valueChanged;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamRow::onGlobalCheckClicked()
+void ModelGlobalParamRow::onEntryChanged()
 {
-  m_isGloballySet = mp_GlobalCheck->get_active();
-
-  mp_GlobalValueLabel->set_sensitive(m_isGloballySet);
-  mp_ParamValueEntry->set_sensitive(!m_isGloballySet);
-
-  m_signal_ValueChanged.emit();
+  m_signal_valueChanged.emit(m_ParamName);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamRow::onParamValueChanged()
+void ModelGlobalParamRow::onRemoveButtonClicked()
 {
-  m_signal_ValueChanged.emit();
+  m_signal_removeAsked.emit(m_ParamName);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ModelFctParamRow::setValue(std::string Value)
+sigc::signal<void, std::string> ModelGlobalParamRow::signal_removeAsked()
 {
-  mp_ParamValueEntry->set_text(Value);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ModelFctParamRow::getValue()
-{
-  if (m_isGloballySet)
-    return m_GlobalValue;
-  else
-    return mp_ParamValueEntry->get_text();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ModelFctParamRow::getParamName()
-{
-  return mp_ParamNameLabel->get_text();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelFctParamRow::setGlobalValue(std::string Value)
-{
-  m_GlobalValue = Value;
-  mp_GlobalValueLabel->set_text(Glib::ustring::compose("%1: \"%2\"",
-      _("use global value"), Value));
-
-  mp_GlobalCheck->set_visible(true);
-  mp_GlobalValueLabel->set_visible(true);
-
-  m_signal_ValueChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelFctParamRow::unsetGlobalValue()
-{
-  m_GlobalValue = "";
-  mp_GlobalValueLabel->set_text("");
-  mp_GlobalCheck->set_active(false);
-
-  mp_GlobalCheck->set_visible(false);
-  mp_GlobalValueLabel->set_visible(false);
-
-  m_signal_ValueChanged.emit();
+  return m_signal_removeAsked;
 }

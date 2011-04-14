@@ -56,36 +56,134 @@
 #define __MODELGLOBALPARAMSMODEL_H__
 
 #include <sigc++/sigc++.h>
+#include <set>
 
 #include <openfluid/machine.hpp>
-
-#include "FunctionSignatureRegistry.hpp"
 
 class ModelGlobalParamsModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppModelChanged() = 0;
-    virtual void setSignatures(FunctionSignatureRegistry& Signatures) = 0;
+
+    virtual sigc::signal<void, std::string> signal_GlobalParamSet() = 0;
+
+    virtual sigc::signal<void, std::string> signal_GlobalParamUnset() = 0;
+
+    virtual sigc::signal<void, std::string> signal_GlobalValueChanged() = 0;
+
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance) = 0;
-    virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
+
+    virtual void update() = 0;
+
+    virtual std::map<std::string, std::string> getGloballyUsed() = 0;
+
+    virtual std::set<std::string> getGloballyNotUsed() = 0;
+
+    virtual std::vector<std::string> getGloballyNoMoreUsed() = 0;
+
+    virtual std::string fromUserGloballyUsedSet(std::string ParamName) = 0;
+
+    virtual void fromUserGloballyUsedUnset(std::string ParamName) = 0;
+
+    virtual void
+    setGlobalValue(std::string ParamName, std::string ParamValue) = 0;
+
+    virtual std::string getGlobalValue(std::string ParamName) = 0;
+
+    virtual bool isGloballyDefined(std::string ParamName) = 0;
+
+    virtual std::map<std::string,std::string> getGlobalValues(openfluid::machine::ModelItemInstance* Item) = 0;
+
 };
 
 class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 {
   private:
+
     sigc::signal<void> m_signal_FromAppModelChanged;
-    FunctionSignatureRegistry::FctSignaturesByType_t m_Signatures;
+
+    sigc::signal<void, std::string> m_signal_GlobalParamSet;
+
+    sigc::signal<void, std::string> m_signal_GlobalParamUnset;
+
+    sigc::signal<void, std::string> m_signal_GlobalValueChanged;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
-    bool isModelInstance();
+
+    std::map<std::string, std::string> m_ByParamNameParamUnit;
+
+  protected:
+
+    std::map<std::string, std::string> m_GloballyUsed;
+
+    std::set<std::string> m_GloballyNotUsed;
+
+    std::vector<std::string> m_GloballyNoMoreUsed;
+
+    std::map<std::string, std::string> m_TempNewGloballyUsed;
+
+    void dispatchParam(std::string ParamName);
+
+    void afterDispatch();
+
   public:
+
     ModelGlobalParamsModelImpl();
+
     sigc::signal<void> signal_FromAppModelChanged();
-    void setSignatures(FunctionSignatureRegistry& Signatures);
+
+    sigc::signal<void, std::string> signal_GlobalParamSet();
+
+    sigc::signal<void, std::string> signal_GlobalParamUnset();
+
+    sigc::signal<void, std::string> signal_GlobalValueChanged();
+
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
-    openfluid::machine::ModelInstance* getModelInstance();
+
+    void update();
+
+    std::map<std::string, std::string> getGloballyUsed();
+
+    std::set<std::string> getGloballyNotUsed();
+
+    std::vector<std::string> getGloballyNoMoreUsed();
+
+    std::string fromUserGloballyUsedSet(std::string ParamName);
+
+    void fromUserGloballyUsedUnset(std::string ParamName);
+
+    void setGlobalValue(std::string ParamName, std::string ParamValue);
+
+    std::string getGlobalValue(std::string ParamName);
+
+    bool isGloballyDefined(std::string ParamName);
+
+    std::map<std::string,std::string> getGlobalValues(openfluid::machine::ModelItemInstance* Item);
 
 };
 
+class ModelGlobalParamsModelSub: public ModelGlobalParamsModelImpl
+{
+  public:
+
+    void setGloballyUsed(std::map<std::string, std::string> Map);
+
+    void setGloballyNotUsed(std::set<std::string> Set);
+
+    void clearGloballyNotUsed();
+
+    void clearTempNewGloballyUsed();
+
+    void clearGloballyNoMoreUsed();
+
+    std::map<std::string, std::string> getTempNewGloballyUsed();
+
+    void dispatchParam(std::string ParamName);
+
+    void afterDispatch();
+
+};
 #endif /* __MODELGLOBALPARAMSMODEL_H__ */

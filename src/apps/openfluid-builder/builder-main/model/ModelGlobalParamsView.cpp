@@ -54,24 +54,195 @@
 
 #include "ModelGlobalParamsView.hpp"
 
-
 #include <glibmm/i18n.h>
 
+#include "ModelGlobalParamRow.hpp"
 
-ModelGlobalParamsViewImpl::ModelGlobalParamsViewImpl()
+// =====================================================================
+// =====================================================================
+
+
+ModelGlobalParamsViewImpl::ModelGlobalParamsViewImpl() :
+  m_CurrentTableBottom(0)
 {
   mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->set_border_width(5);
 
-  Gtk::Label* testLabel = Gtk::manage(new Gtk::Label("coming soon..."));
-  testLabel->set_visible(true);
+  Gtk::Label* ParamsLabel = Gtk::manage(new Gtk::Label(
+      _("Available parameters:")));
 
-  mp_MainBox->pack_start(*testLabel);
+  mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
+
+  mp_AddButton = Gtk::manage(new Gtk::Button(_("Set global")));
+  mp_AddButton->set_tooltip_text(_("Unset this parameter as global"));
+  mp_AddButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsViewImpl::onAddButtonClicked));
+
+  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
+  TopBox->pack_start(*ParamsLabel, Gtk::PACK_SHRINK, 0);
+  TopBox->pack_start(*mp_Combo, Gtk::PACK_SHRINK, 10);
+  TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK, 0);
+  TopBox->set_visible(true);
+  TopBox->show_all_children();
+
+  Gtk::HSeparator* HSep = Gtk::manage(new Gtk::HSeparator());
+  HSep->set_visible(true);
+
+  mp_Table = Gtk::manage(new Gtk::Table());
+  mp_Table->set_col_spacings(10);
+  mp_Table->set_visible(true);
+
+  mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*HSep, Gtk::PACK_SHRINK, 15);
+  mp_MainBox->pack_start(*mp_Table);
   mp_MainBox->set_visible(true);
 }
-sigc::signal<void> ModelGlobalParamsViewImpl::signal_StructureFctSelectionChanged()
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsViewImpl::setComboParams(std::set<std::string> Params)
 {
-  return m_signal_StuctureFctSelectionChanged;
+  mp_Combo->clear();
+
+  for (std::set<std::string>::iterator it = Params.begin(); it != Params.end(); ++it)
+    mp_Combo->append_text(*it);
+
+  mp_Combo->set_active(0);
+
+  mp_AddButton->set_sensitive(!Params.empty());
 }
+
+// =====================================================================
+// =====================================================================
+
+void ModelGlobalParamsViewImpl::removeGlobalParamsRow(std::string ParamName)
+{
+  if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
+  {
+    for (unsigned int j = 0; j
+        < m_ByParamNameParamRow[ParamName]->getWidgetCount(); j++)
+    {
+      mp_Table->remove(*m_ByParamNameParamRow[ParamName]->getWidgets()[j]);
+    }
+    /* no, apparently Gtk::Table doesn't update attachment indexes
+     when a widget is removed from container directly */
+    //    m_CurrentTableBottom--;
+
+    m_ByParamNameParamRow.erase(ParamName);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsViewImpl::removeGlobalParamsRows(
+    std::vector<std::string> ParamNames)
+{
+  for (unsigned int i = 0; i < ParamNames.size(); i++)
+  {
+    removeGlobalParamsRow(ParamNames[i]);
+  }
+}
+
+// =====================================================================
+// ==================================================================
+
+
+void ModelGlobalParamsViewImpl::addGlobalParamsRow(std::string ParamName,
+    std::string ParamUnit)
+{
+  if (ParamName == "")
+    return;
+
+  ModelGlobalParamRow* Row = new ModelGlobalParamRow(ParamName, ParamUnit);
+
+  for (unsigned int i = 0; i < Row->getColumnCount(); i++)
+  {
+    mp_Table->attach(*Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
+        m_CurrentTableBottom + 1, Gtk::FILL, Gtk::FILL, 0, 0);
+  }
+  m_CurrentTableBottom++;
+
+  Row->signal_removeAsked().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsViewImpl::onRowRemoveAsked));
+  Row->signal_valueChanged().connect(sigc::mem_fun(*this,
+      &ModelGlobalParamsViewImpl::onGlobalValueChanged));
+
+  m_ByParamNameParamRow[ParamName] = Row;
+}
+
+// =====================================================================
+// =====================================================================
+
+void ModelGlobalParamsViewImpl::onRowRemoveAsked(std::string ParamName)
+{
+  m_signal_GlobalParamUnsetAsked.emit(ParamName);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsViewImpl::onGlobalValueChanged(std::string ParamName)
+{
+  m_signal_GlobalValueChanged.emit(ParamName);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelGlobalParamsViewImpl::onAddButtonClicked()
+{
+  m_signal_GlobalParamSetAsked.emit(mp_Combo->get_active_text());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> ModelGlobalParamsViewImpl::signal_GlobalValueChanged()
+{
+  return m_signal_GlobalValueChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> ModelGlobalParamsViewImpl::signal_GlobalParamSetAsked()
+{
+  return m_signal_GlobalParamSetAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> ModelGlobalParamsViewImpl::signal_GlobalParamUnsetAsked()
+{
+  return m_signal_GlobalParamUnsetAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ModelGlobalParamsViewImpl::getGlobalValue(std::string ParamName)
+{
+  if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
+    return m_ByParamNameParamRow[ParamName]->getValue();
+
+  return "";
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelGlobalParamsViewImpl::asWidget()
 {
   return mp_MainBox;

@@ -73,11 +73,15 @@ class ModelFctParamRow: public BuilderTableRowWidget
 
     Gtk::Label* mp_GlobalValueLabel;
 
+    std::string m_GlobalValue;
+
+    bool m_isGloballySet;
+
     sigc::signal<void> m_signal_GobalDefinedAsked;
 
     sigc::signal<void> m_signal_ValueChanged;
 
-    void onGlobalCheckActivated();
+    void onGlobalCheckClicked();
 
     void onParamValueChanged();
 
@@ -94,6 +98,10 @@ class ModelFctParamRow: public BuilderTableRowWidget
     std::string getValue();
 
     std::string getParamName();
+
+    void setGlobalValue(std::string Value);
+
+    void unsetGlobalValue();
 
 };
 

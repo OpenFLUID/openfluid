@@ -60,6 +60,7 @@
 #include "ModelGlobalParamsModel.hpp"
 #include "ModelParamsPanel.hpp"
 #include "ModelFctParamsComponent.hpp"
+#include "ModelFctParamsModel.hpp"
 #include "BuilderListToolBox.hpp"
 #include "ModelAddFunctionModule.hpp"
 
@@ -103,11 +104,12 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
   if (Signature)
   {
-    openfluid::machine::ModelItemInstance* Item = m_StructureModel.appendFunction(*Signature);
+    openfluid::machine::ModelItemInstance* Item =
+        m_StructureModel.appendFunction(*Signature);
+
     updateStructureListToolBox();
-    //GlobalParams.addFct(Signature)
+
     createModelFctParamsComponent(Item);
-    //FctParams.setGlobalValues(GlobalParams.getValues(Signature))
 
     m_signal_ModelChanged.emit();
   }
@@ -120,7 +122,6 @@ void ModelStructureCoordinator::whenAddFctAsked()
 void ModelStructureCoordinator::whenRemoveFctAsked()
 {
   eraseModelFctParamsComponent(m_StructureModel.getCurrentSelectionSignature());
-  //GlobalParams.removeFct(m_StructureModel.getCurrentSelectionSignature())
 
   m_StructureModel.removeFunctionAt(m_StructureModel.getCurrentSelection());
   updateStructureListToolBox();
@@ -148,15 +149,35 @@ void ModelStructureCoordinator::whenMoveTowardTheEndAsked()
   m_signal_ModelChanged.emit();
 }
 
-//whenGloballyDefinedParamAsked(ModelFctParamsComponent,ParamName)
-//{
-//  ModelFctParamsComponent.setGlobalValue(GlobalParams.getValue(ParamName))
-//}
 
-//whenGlobalParamChanged(ParamName,ParamValue)
-//{
-//  ModelParamsPanel.setGlobalValue(ParamName,ParamValue)
-//}
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::whenGlobalValueChanged(std::string ParamName)
+{
+  std::string GlobalValue = m_GlobalParamsModel.getGlobalValue(ParamName);
+
+  for(std::map<std::string, ModelFctParamsComponent*>::iterator it = m_ByNameFctParamsComponents.begin() ;
+      it !=m_ByNameFctParamsComponents.end() ; ++it)
+  {
+    it->second->getModel()->setGlobalValue(ParamName, GlobalValue);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::whenGlobalParamUnset(std::string ParamName)
+{
+  for(std::map<std::string, ModelFctParamsComponent*>::iterator it = m_ByNameFctParamsComponents.begin() ;
+        it !=m_ByNameFctParamsComponents.end() ; ++it)
+    {
+      it->second->getModel()->unsetGlobalValue(ParamName);
+    }
+}
 
 // =====================================================================
 // =====================================================================
@@ -184,11 +205,12 @@ ModelStructureCoordinator::ModelStructureCoordinator(
   m_StructureListToolBox.signal_DownCommandAsked().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenMoveTowardTheEndAsked));
 
-  //ModelParamsPanel.signal_GloballyDefinedParamAsked(FctName,ParamName)
-  //. connect(whenGloballyDefinedParamAsked(FctName,ParamName))
-
-  //GlobalParams.signal_GlobalParamChanged(ParamName,ParamValue)
-  //.connect(whenGlobalParamChanged(ParamName,ParamValue))
+  m_GlobalParamsModel.signal_GlobalParamSet().connect(sigc::mem_fun(*this,
+      &ModelStructureCoordinator::whenGlobalValueChanged));
+  m_GlobalParamsModel.signal_GlobalParamUnset().connect(sigc::mem_fun(*this,
+      &ModelStructureCoordinator::whenGlobalParamUnset));
+  m_GlobalParamsModel.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
+      &ModelStructureCoordinator::whenGlobalValueChanged));
 
   mp_AddFctModule = new ModelAddFunctionModule();
 
@@ -200,18 +222,6 @@ ModelStructureCoordinator::ModelStructureCoordinator(
 sigc::signal<void> ModelStructureCoordinator::signal_ModelChanged()
 {
   return m_signal_ModelChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelStructureCoordinator::setSignatures(
-    FunctionSignatureRegistry& Signatures)
-{
-  mp_SignatureRegistry = &Signatures;
-
-  m_GlobalParamsModel.setSignatures(Signatures);
 }
 
 // =====================================================================
@@ -230,7 +240,7 @@ void ModelStructureCoordinator::setEngineRequirements(
 
   initParams();
 
-//  m_GlobalParamsModel.setEngineRequirements(ModelInstance);
+  m_GlobalParamsModel.setEngineRequirements(ModelInstance);
 }
 
 // =====================================================================
@@ -250,8 +260,8 @@ void ModelStructureCoordinator::setCurrentFunction(std::string FunctionName)
 void ModelStructureCoordinator::update()
 {
   m_StructureModel.update();
+  m_GlobalParamsModel.update();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -267,7 +277,6 @@ void ModelStructureCoordinator::initParams()
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -281,14 +290,22 @@ void ModelStructureCoordinator::createModelFctParamsComponent(
 
   m_ParamsPanel.addAFctParamsPage(FctParams->asWidget(), FctName);
   m_ByNameFctParamsComponents[FctName] = FctParams;
+
+
+  std::map<std::string, std::string> GlobalValues = m_GlobalParamsModel.getGlobalValues(Item);
+  for(std::map<std::string, std::string>::iterator it = GlobalValues.begin() ; it!=GlobalValues.end() ; ++it)
+  {
+    FctParams->getModel()->setGlobalValue(it->first, it->second);
+  }
+
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void ModelStructureCoordinator::eraseModelFctParamsComponent(openfluid::machine::SignatureItemInstance* Signature)
+void ModelStructureCoordinator::eraseModelFctParamsComponent(
+    openfluid::machine::SignatureItemInstance* Signature)
 {
   std::string FctName = Signature->Signature->ID;
 

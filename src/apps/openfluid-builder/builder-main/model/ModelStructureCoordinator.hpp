@@ -108,6 +108,10 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void whenMoveTowardTheEndAsked();
 
+    void whenGlobalValueChanged(std::string ParamName);
+
+    void whenGlobalParamUnset(std::string ParamName);
+
   public:
 
         ModelStructureCoordinator(ModelFctDetailModel& FctDetailModel,
@@ -117,8 +121,6 @@ class ModelStructureCoordinator: public sigc::trackable
             BuilderListToolBox& StructureListToolBox);
 
     sigc::signal<void> signal_ModelChanged();
-
-    void setSignatures(FunctionSignatureRegistry& Signatures);
 
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance,

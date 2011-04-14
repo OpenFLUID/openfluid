@@ -54,10 +54,8 @@
 
 #include "ModelFctParamsPresenter.hpp"
 
-
 #include "ModelFctParamsModel.hpp"
 #include "ModelFctParamsView.hpp"
-
 
 // =====================================================================
 // =====================================================================
@@ -71,26 +69,49 @@ void ModelFctParamsPresenter::whenSignatureInit()
   m_View.setUsedFiles(m_Model.getUsedFiles());
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamsPresenter::whenParamValueChanged(std::string ParamName, std::string ParamValue)
+void ModelFctParamsPresenter::whenParamValueChanged(std::string ParamName,
+    std::string ParamValue)
 {
-  m_Model.setParamValue(ParamName,ParamValue);
+  m_Model.setParamValue(ParamName, ParamValue);
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsPresenter::whenGlobalValueChanged(std::string ParamName,
+    std::string GlobalValue)
+{
+  m_View.setGlobalValue(ParamName, GlobalValue);
+}
 
 // =====================================================================
 // =====================================================================
 
 
-ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model, ModelFctParamsView& View) :
+void ModelFctParamsPresenter::whenGlobalValueUnset(std::string ParamName)
+{
+  m_View.unsetGlobalValue(ParamName);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
+    ModelFctParamsView& View) :
   m_Model(Model), m_View(View)
 {
   m_Model.signal_ItemInit().connect(sigc::mem_fun(*this,
-            &ModelFctParamsPresenter::whenSignatureInit));
+      &ModelFctParamsPresenter::whenSignatureInit));
+  m_Model.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
+      &ModelFctParamsPresenter::whenGlobalValueChanged));
+  m_Model.signal_GlobalValueUnset().connect(sigc::mem_fun(*this,
+        &ModelFctParamsPresenter::whenGlobalValueUnset));
 
   m_View.signal_ParamValueChanged().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenParamValueChanged));
