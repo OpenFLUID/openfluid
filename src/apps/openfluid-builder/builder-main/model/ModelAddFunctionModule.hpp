@@ -55,7 +55,6 @@
 #ifndef __MODELADDFUNCTIONMODULE_HPP__
 #define __MODELADDFUNCTIONMODULE_HPP__
 
-
 #include <gtkmm.h>
 #include <sigc++/sigc++.h>
 
@@ -66,12 +65,11 @@ class ModelFctDetailComponent;
 
 class ModelAddFunctionCoordinator;
 
-
 class ModelAddFunctionModule
 {
   private:
 
-    Gtk::Box* mp_MainPanel;
+    Gtk::HPaned* mp_MainPanel;
 
     Gtk::Dialog* mp_Dialog;
 
@@ -91,7 +89,6 @@ class ModelAddFunctionModule
 
     void compose();
 
-
   public:
 
     ModelAddFunctionModule();
@@ -100,9 +97,9 @@ class ModelAddFunctionModule
 
     sigc::signal<void> signal_ModelFunctionAdded();
 
-//    void setEngineRequirements(
-//        openfluid::machine::ModelInstance& ModelInstance,
-//        openfluid::machine::SimulationBlob& SimBlob);
+    //    void setEngineRequirements(
+    //        openfluid::machine::ModelInstance& ModelInstance,
+    //        openfluid::machine::SimulationBlob& SimBlob);
 
     openfluid::machine::SignatureItemInstance* showDialog();
 };

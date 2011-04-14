@@ -65,6 +65,8 @@ class ModelFctDetailInfoPage
   private:
     Gtk::Table* mp_InfoTable;
 
+    Gtk::ScrolledWindow* mp_MainWin;
+
     ModelFctDetailInfoTableRow* mp_IdRow;
     ModelFctDetailInfoTableRow* mp_NameRow;
     ModelFctDetailInfoTableRow* mp_PathRow;
@@ -82,132 +84,24 @@ class ModelFctDetailInfoPage
     std::vector<ModelFctDetailInfoTableRow*> m_RowsAboutPluggable;
     std::vector<Gtk::Separator*> m_SeparatorsAboutPluggable;
 
-    void attachTableRow(ModelFctDetailInfoTableRow& TableRow)
-    {
-      for (unsigned int i = 0; i < TableRow.getRowCount(); i++)
-      {
-        mp_InfoTable ->attach(*TableRow.getWidgetsOfRow(i)[0], 0, 1,
-            m_CurrentTableBottom + i, m_CurrentTableBottom + i + 1, Gtk::FILL,
-            Gtk::FILL, 0, 0);
-        mp_InfoTable ->attach(*TableRow.getWidgetsOfRow(i)[1], 1, 2,
-            m_CurrentTableBottom + i, m_CurrentTableBottom + i + 1, Gtk::FILL
-                | Gtk::EXPAND, Gtk::FILL, 5, 0);
-        m_CurrentTableBottom += 2;
-      }
-    }
-    Gtk::HSeparator* attachTableSeparator()
-    {
-      Gtk::HSeparator* p_Separator = Gtk::manage(new Gtk::HSeparator());
-      p_Separator->set_visible(true);
-      mp_InfoTable ->attach(*p_Separator, 0, 2, m_CurrentTableBottom,
-          m_CurrentTableBottom + 1, Gtk::FILL | Gtk::EXPAND, Gtk::FILL, 0, 0);
-      m_CurrentTableBottom++;
-      return p_Separator;
-    }
+    void attachTableRow(ModelFctDetailInfoTableRow& TableRow);
+
+    Gtk::HSeparator* attachTableSeparator();
+
   public:
-    ModelFctDetailInfoPage() :
-      m_CurrentTableBottom(0)
-    {
-      mp_InfoTable = Gtk::manage(new Gtk::Table());
-      mp_InfoTable->set_border_width(3);
 
-      mp_IdRow = new ModelFctDetailInfoTableRow(_("Id :"));
-      mp_IdRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_IdRow);
+    ModelFctDetailInfoPage();
 
-      mp_NameRow = new ModelFctDetailInfoTableRow(_("Name :"));
-      mp_NameRow->setVisible(true);
+    void setInfos(std::map<std::string, std::string> Infos);
 
-      mp_PathRow = new ModelFctDetailInfoTableRow(_("Path :"));
-      mp_PathRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_PathRow);
+    Gtk::Widget* asWidget();
 
-      mp_DescriptionRow = new ModelFctDetailInfoTableRow(_("Description :"));
-      mp_DescriptionRow->setVisible(true);
+    void setPluggableElementsVisible(bool Visible);
 
-      mp_VersionRow = new ModelFctDetailInfoTableRow(_("Version :"));
-      mp_VersionRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_VersionRow);
+    std::string getIdValue();
 
-      mp_StatusRow = new ModelFctDetailInfoTableRow(_("Status :"));
-      mp_StatusRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_StatusRow);
+    bool isIdVisible();
 
-      mp_DomainRow = new ModelFctDetailInfoTableRow(_("Domain :"));
-      mp_DomainRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_DomainRow);
-
-      mp_ProcessRow = new ModelFctDetailInfoTableRow(_("Process :"));
-      mp_ProcessRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_ProcessRow);
-
-      mp_MethodRow = new ModelFctDetailInfoTableRow(_("Method :"));
-      mp_MethodRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_MethodRow);
-
-      mp_AuthorRow = new ModelFctDetailInfoTableRow(_("Author(s) :"));
-      mp_AuthorRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_AuthorRow);
-
-      mp_AuthorMailRow = new ModelFctDetailInfoTableRow(
-          _("Author(s) email(s) :"));
-      mp_AuthorMailRow->setVisible(true);
-      m_RowsAboutPluggable.push_back(mp_AuthorMailRow);
-
-      attachTableRow(*mp_IdRow);
-      m_SeparatorsAboutPluggable.push_back(attachTableSeparator());
-      attachTableRow(*mp_NameRow);
-      attachTableSeparator();
-      attachTableRow(*mp_PathRow);
-      m_SeparatorsAboutPluggable.push_back(attachTableSeparator());
-      attachTableRow(*mp_DescriptionRow);
-      attachTableSeparator();
-      attachTableRow(*mp_VersionRow);
-      attachTableRow(*mp_StatusRow);
-      m_SeparatorsAboutPluggable.push_back(attachTableSeparator());
-      attachTableRow(*mp_DomainRow);
-      attachTableRow(*mp_ProcessRow);
-      attachTableRow(*mp_MethodRow);
-      m_SeparatorsAboutPluggable.push_back(attachTableSeparator());
-      attachTableRow(*mp_AuthorRow);
-      attachTableRow(*mp_AuthorMailRow);
-      m_SeparatorsAboutPluggable.push_back(attachTableSeparator());
-
-      mp_InfoTable->set_visible(true);
-    }
-    void setInfos(std::map<std::string, std::string> Infos)
-    {
-      mp_IdRow->setValueText(Infos["id"]);
-      mp_NameRow->setValueText(Infos["name"]);
-      mp_PathRow->setValueText(Infos["path"]);
-      mp_DescriptionRow->setValueText(Infos["description"]);
-      mp_VersionRow->setValueText(Infos["version"]);
-      mp_StatusRow->setValueText(Infos["status"]);
-      mp_DomainRow->setValueText(Infos["domain"]);
-      mp_ProcessRow->setValueText(Infos["process"]);
-      mp_MethodRow->setValueText(Infos["method"]);
-      mp_AuthorRow->setValueText(Infos["author"]);
-      mp_AuthorMailRow->setValueText(Infos["authormail"]);
-    }
-    Gtk::Widget* asWidget()
-    {
-      return mp_InfoTable;
-    }
-    void setPluggableElementsVisible(bool Visible)
-    {
-      for (unsigned int i = 0; i < m_RowsAboutPluggable.size(); i++)
-        m_RowsAboutPluggable[i]->setVisible(Visible);
-      for (unsigned int i = 0; i < m_SeparatorsAboutPluggable.size(); i++)
-        m_SeparatorsAboutPluggable[i]->set_visible(Visible);
-    }
-    std::string getIdValue()
-    {
-      return mp_IdRow->getValueText();
-    }
-    bool isIdVisible()
-    {
-      return mp_IdRow->isVisible();
-    }
 };
 
 #endif /* __MODELFCTDETAILINFOPAGE_HPP__ */

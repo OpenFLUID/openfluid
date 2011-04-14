@@ -58,6 +58,10 @@
 
 #include "ModelFctDetailInfoPage.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 ModelFctDetailViewImpl::ModelFctDetailViewImpl(ModelFctDetailColumns& Columns) :
   m_Columns(Columns)
 {
@@ -87,14 +91,44 @@ ModelFctDetailViewImpl::ModelFctDetailViewImpl(ModelFctDetailColumns& Columns) :
   mp_ExtraFilesTreeView = Gtk::manage(new Gtk::TreeView());
   mp_ExtraFilesTreeView->append_column(_("Name"), m_Columns.m_Name);
 
+  Gtk::ScrolledWindow* ParamsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ParamsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ParamsWin->set_visible(true);
+  ParamsWin->add(*mp_ParamsTreeView);
+
+  Gtk::ScrolledWindow* VarsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  VarsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  VarsWin->set_visible(true);
+  VarsWin->add(*mp_VarsTreeView);
+
+  Gtk::ScrolledWindow* IDataWin = Gtk::manage(new Gtk::ScrolledWindow());
+  IDataWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  IDataWin->set_visible(true);
+  IDataWin->add(*mp_IDataTreeView);
+
+  Gtk::ScrolledWindow* EventsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  EventsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  EventsWin->set_visible(true);
+  EventsWin->add(*mp_EventsTreeView);
+
+  Gtk::ScrolledWindow* ExtraFilesWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ExtraFilesWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ExtraFilesWin->set_visible(true);
+  ExtraFilesWin->add(*mp_ExtraFilesTreeView);
+
   mp_Notebook->append_page(*mp_InfoPage->asWidget(), _("Information"));
-  mp_Notebook->append_page(*mp_ParamsTreeView, _("Parameters"));
-  mp_Notebook->append_page(*mp_VarsTreeView, _("Variables"));
-  mp_Notebook->append_page(*mp_IDataTreeView, _("Input Data"));
-  mp_Notebook->append_page(*mp_EventsTreeView, _("Events"));
-  mp_Notebook->append_page(*mp_ExtraFilesTreeView, _("Extra Files"));
+  mp_Notebook->append_page(*ParamsWin, _("Parameters"));
+  mp_Notebook->append_page(*VarsWin, _("Variables"));
+  mp_Notebook->append_page(*IDataWin, _("Input Data"));
+  mp_Notebook->append_page(*EventsWin, _("Events"));
+  mp_Notebook->append_page(*ExtraFilesWin, _("Extra Files"));
   mp_Notebook->set_visible(true);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setPluggableElementsVisible(bool Visible)
 {
   mp_InfoPage->setPluggableElementsVisible(Visible);
@@ -103,32 +137,62 @@ void ModelFctDetailViewImpl::setPluggableElementsVisible(bool Visible)
   mp_EventsTreeView->set_visible(Visible);
   mp_ExtraFilesTreeView->set_visible(Visible);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setInfos(std::map<std::string, std::string> Infos)
 {
   mp_InfoPage->setInfos(Infos);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setParamsModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_ParamsTreeView->set_model(Model);
   mp_ParamsTreeView->get_column(0)->set_sort_column(m_Columns.m_Name);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setVarsModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_VarsTreeView->set_model(Model);
   mp_VarsTreeView->get_column(0)->set_sort_column(m_Columns.m_Name);
   mp_VarsTreeView->expand_all();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setIDataModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_IDataTreeView->set_model(Model);
   mp_IDataTreeView->get_column(0)->set_sort_column(m_Columns.m_Name);
   mp_IDataTreeView->expand_all();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setEventsModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_EventsTreeView->set_model(Model);
   mp_EventsTreeView->get_column(0)->set_sort_column(m_Columns.m_Class);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailViewImpl::setExtraFilesModel(
     Glib::RefPtr<Gtk::TreeModel> Model)
 {
@@ -136,15 +200,31 @@ void ModelFctDetailViewImpl::setExtraFilesModel(
   mp_ExtraFilesTreeView->get_column(0)->set_sort_column(m_Columns.m_Name);
   mp_ExtraFilesTreeView->expand_all();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelFctDetailViewImpl::asWidget()
 {
   return mp_Notebook;
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 ModelFctDetailViewSub::ModelFctDetailViewSub(ModelFctDetailColumns& Columns) :
   ModelFctDetailViewImpl(Columns)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
 int ModelFctDetailViewSub::getNotebookVisiblePageNb()
 {
   int NbVisibles = 0;
@@ -155,14 +235,29 @@ int ModelFctDetailViewSub::getNotebookVisiblePageNb()
   }
   return NbVisibles;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string ModelFctDetailViewSub::getIdValue()
 {
   return mp_InfoPage->getIdValue();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool ModelFctDetailViewSub::isIdVisible()
 {
   return mp_InfoPage->isIdVisible();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelFctDetailViewSub::getParamsRowNb()
 {
   return mp_ParamsTreeView->get_model()->children().size();

@@ -68,16 +68,27 @@ class ModelAvailFctAdapterModel;
 class ModelAvailFctComponent: public BuilderMVPComponent
 {
   private:
+
     ModelAvailFctModel* mp_Model;
+
     ModelAvailFctView* mp_View;
+
     ModelAvailFctPresenter* mp_Presenter;
+
     ModelAvailFctAdapter* mp_Adapter;
+
     ModelAvailFctAdapterModel* mp_AdapterModel;
+
   public:
+
     ModelAvailFctComponent();
+
     ~ModelAvailFctComponent();
+
     Gtk::Widget* asWidget();
+
     ModelAvailFctModel* getModel();
+
     ModelAvailFctView* getView();
 };
 

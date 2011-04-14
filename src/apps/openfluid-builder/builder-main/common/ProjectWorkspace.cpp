@@ -64,6 +64,8 @@
 ProjectWorkspace::ProjectWorkspace()
 {
   mp_Notebook = Gtk::manage(new Gtk::Notebook());
+  mp_Notebook->set_scrollable(true);
+  mp_Notebook->popup_enable();
   mp_Notebook->set_visible(true);
 }
 
@@ -104,8 +106,11 @@ void ProjectWorkspace::appendPage(std::string PageName,
     Gtk::Widget* PageContent)
 {
   Gtk::Widget* TabLabel = createClosableTabLabel(PageName);
+  Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(PageName,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
 
-  mp_Notebook->append_page(*PageContent, *TabLabel, *TabLabel);
+  mp_Notebook->append_page(*PageContent, *TabLabel, *MenuLabel);
+
+  mp_Notebook->set_tab_reorderable(*PageContent, true);
 
   m_ByNamePagesMap[PageName] = PageContent;
 }
@@ -152,21 +157,20 @@ Gtk::Widget* ProjectWorkspace::createClosableTabLabel(std::string LabelText)
   Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(LabelText));
 
   Gtk::Image* TabButtonImage;
-  TabButtonImage = Gtk::manage(new Gtk::Image(BuilderGraphicsHelper::createPixbufFromFile(
-            "tab_close.png")));
+  TabButtonImage = Gtk::manage(new Gtk::Image(
+      BuilderGraphicsHelper::createPixbufFromFile("tab_close.png")));
   TabButtonImage->show();
 
   Gtk::Button* TabButton = Gtk::manage(new Gtk::Button());
   TabButton->set_image(*TabButtonImage);
   TabButton->set_relief(Gtk::RELIEF_NONE);
-  TabButton->signal_clicked().connect(sigc::bind<std::string>(
-      sigc::mem_fun(*this, &ProjectWorkspace::onTabCloseButtonClicked),LabelText));
+  TabButton->signal_clicked().connect(sigc::bind<std::string>(sigc::mem_fun(
+      *this, &ProjectWorkspace::onTabCloseButtonClicked), LabelText));
 
   Gtk::HBox* TabLabelBox = Gtk::manage(new Gtk::HBox());
   TabLabelBox->pack_start(*TabLabel, Gtk::SHRINK, 0);
   TabLabelBox->pack_end(*TabButton, Gtk::SHRINK, 0);
   TabLabelBox->show_all_children();
-
 
   return TabLabelBox;
 }

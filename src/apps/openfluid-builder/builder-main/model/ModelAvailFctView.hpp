@@ -64,35 +64,59 @@
 class ModelAvailFctView
 {
   public:
+
     virtual sigc::signal<void> signal_AvailFctSelectionChanged() = 0;
+
     virtual void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel) = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
     virtual Gtk::TreeRow getSelectedRow() = 0;
+
     virtual void select(Gtk::TreeRow Row) = 0;
 };
+
 
 class ModelAvailFctViewImpl: public ModelAvailFctView
 {
   private:
+
     sigc::signal<void> m_signal_AvailFctSelectionChanged;
+
     ModelAvailFctColumns& m_Columns;
+
     void onTreeViewSelectionChanged();
+
   protected:
+
     Gtk::TreeView* mp_TreeView;
+
+    Gtk::ScrolledWindow* mp_MainWin;
+
   public:
+
     ModelAvailFctViewImpl(ModelAvailFctColumns& Columns);
+
     sigc::signal<void> signal_AvailFctSelectionChanged();
+
     void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel);
+
     Gtk::TreeRow getSelectedRow();
+
     Gtk::Widget* asWidget();
+
     void select(Gtk::TreeRow Row);
 };
+
 
 class ModelAvailFctViewSub: public ModelAvailFctViewImpl
 {
   public:
+
     ModelAvailFctViewSub(ModelAvailFctColumns& Columns);
+
     int getPluggableBranchRowsNumber();
+
     int getGeneratorBranchRowsNumber();
 };
 

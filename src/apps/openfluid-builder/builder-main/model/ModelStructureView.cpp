@@ -56,11 +56,18 @@
 
 #include <glibmm/i18n.h>
 
+// =====================================================================
+// =====================================================================
+
 
 void ModelStructureViewImpl::onTreeViewSelectionChanged()
 {
   m_signal_StuctureFctSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
 
 ModelStructureViewImpl::ModelStructureViewImpl(ModelStructureColumns& Columns) :
   m_Columns(Columns)
@@ -68,20 +75,36 @@ ModelStructureViewImpl::ModelStructureViewImpl(ModelStructureColumns& Columns) :
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
 
   mp_TreeView->append_column("", m_Columns.m_Id);
+  mp_TreeView->set_headers_visible(false);
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &ModelStructureViewImpl::onTreeViewSelectionChanged));
 
   mp_TreeView->set_visible(true);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelStructureViewImpl::signal_StructureFctSelectionChanged()
 {
   return m_signal_StuctureFctSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_TreeView->set_model(Model);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelStructureViewImpl::getSelectedRowPosition()
 {
   Gtk::TreeIter Iter = mp_TreeView->get_selection()->get_selected();
@@ -89,10 +112,20 @@ int ModelStructureViewImpl::getSelectedRowPosition()
     return *mp_TreeView->get_model()->get_path(Iter).begin();
   return -1;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelStructureViewImpl::asWidget()
 {
   return mp_TreeView;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureViewImpl::requestSelectionAt(int RowPosition)
 {
   if (RowPosition > -1 && RowPosition
@@ -105,14 +138,31 @@ void ModelStructureViewImpl::requestSelectionAt(int RowPosition)
   signal_StructureFctSelectionChanged().emit();
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 ModelStructureViewSub::ModelStructureViewSub(ModelStructureColumns& Columns) :
   ModelStructureViewImpl(Columns)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelStructureViewSub::getRowNb()
 {
   return mp_TreeView->get_model()->children().size();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string ModelStructureViewSub::getRowId(int RowNumber)
 {
   Glib::ustring Id =

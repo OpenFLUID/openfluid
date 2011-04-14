@@ -64,47 +64,79 @@ class ModelFctDetailInfoPage;
 class ModelFctDetailView
 {
   public:
+
     virtual void setPluggableElementsVisible(bool Visible) = 0;
+
     virtual void setInfos(std::map<std::string, std::string> Infos) = 0;
+
     virtual void setParamsModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual void setVarsModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual void setIDataModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual void setEventsModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual void setExtraFilesModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
 };
 
 class ModelFctDetailViewImpl: public ModelFctDetailView
 {
   private:
+
     ModelFctDetailColumns& m_Columns;
+
   protected:
+
     Gtk::Notebook* mp_Notebook;
+
     ModelFctDetailInfoPage* mp_InfoPage;
+
     Gtk::TreeView* mp_ParamsTreeView;
+
     Gtk::TreeView* mp_VarsTreeView;
+
     Gtk::TreeView* mp_IDataTreeView;
+
     Gtk::TreeView* mp_EventsTreeView;
+
     Gtk::TreeView* mp_ExtraFilesTreeView;
+
   public:
+
     ModelFctDetailViewImpl(ModelFctDetailColumns& Columns);
+
     void setPluggableElementsVisible(bool Visible);
+
     void setInfos(std::map<std::string, std::string> Infos);
+
     void setParamsModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     void setVarsModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     void setIDataModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     void setEventsModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     void setExtraFilesModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     Gtk::Widget* asWidget();
 };
 
 class ModelFctDetailViewSub: public ModelFctDetailViewImpl
 {
   public:
+
     ModelFctDetailViewSub(ModelFctDetailColumns& Columns);
+
     int getNotebookVisiblePageNb();
+
     std::string getIdValue();
+
     bool isIdVisible();
+
     int getParamsRowNb();
 };
 

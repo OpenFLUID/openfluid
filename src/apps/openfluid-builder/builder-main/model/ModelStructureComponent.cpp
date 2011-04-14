@@ -54,12 +54,15 @@
 
 #include "ModelStructureComponent.hpp"
 
-
 #include "ModelStructureModel.hpp"
 #include "ModelStructureView.hpp"
 #include "ModelStructurePresenter.hpp"
 #include "ModelStructureAdapter.hpp"
 #include "ModelStructureAdapterModel.hpp"
+
+// =====================================================================
+// =====================================================================
+
 
 ModelStructureComponent::ModelStructureComponent()
 {
@@ -70,6 +73,11 @@ ModelStructureComponent::ModelStructureComponent()
   mp_Adapter = new ModelStructureAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new ModelStructurePresenter(*mp_Model, *mp_Adapter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelStructureComponent::~ModelStructureComponent()
 {
   delete mp_Presenter;
@@ -78,14 +86,29 @@ ModelStructureComponent::~ModelStructureComponent()
   delete mp_Model;
   delete mp_View;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelStructureComponent::asWidget()
 {
   return mp_View->asWidget();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelStructureModel* ModelStructureComponent::getModel()
 {
   return mp_Model;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelStructureView* ModelStructureComponent::getView()
 {
   return mp_View;

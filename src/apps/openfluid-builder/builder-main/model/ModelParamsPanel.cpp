@@ -63,6 +63,8 @@
 ModelParamsPanel::ModelParamsPanel()
 {
   mp_Notebook = Gtk::manage(new Gtk::Notebook());
+  mp_Notebook->set_scrollable(true);
+  mp_Notebook->popup_enable();
   mp_Notebook->set_visible(true);
 }
 
@@ -82,7 +84,12 @@ ModelParamsPanel::~ModelParamsPanel()
 void ModelParamsPanel::addAStaticPage(Gtk::Widget* Page, std::string Label,
     int Position)
 {
-  mp_Notebook->insert_page(*Page, Label, Position);
+  Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(Label));
+  Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(Label, Gtk::ALIGN_LEFT,
+      Gtk::ALIGN_CENTER));
+
+  mp_Notebook->insert_page(*Page, *TabLabel, *MenuLabel, Position);
+  mp_Notebook->set_tab_reorderable(*Page, true);
 }
 
 // =====================================================================
@@ -92,7 +99,13 @@ void ModelParamsPanel::addAStaticPage(Gtk::Widget* Page, std::string Label,
 void ModelParamsPanel::addAFctParamsPage(Gtk::Widget* FctParamsPage,
     std::string PageLabel)
 {
-  mp_Notebook->append_page(*FctParamsPage, PageLabel);
+  Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(PageLabel));
+  Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(PageLabel,
+      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+
+  mp_Notebook->append_page(*FctParamsPage, *TabLabel, *MenuLabel);
+  mp_Notebook->set_tab_reorderable(*FctParamsPage, true);
+
   m_ByFctNamePages[PageLabel] = FctParamsPage;
 }
 

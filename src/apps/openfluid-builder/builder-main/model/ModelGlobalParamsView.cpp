@@ -90,11 +90,17 @@ ModelGlobalParamsViewImpl::ModelGlobalParamsViewImpl() :
 
   mp_Table = Gtk::manage(new Gtk::Table());
   mp_Table->set_col_spacings(10);
+  mp_Table->set_border_width(5);
   mp_Table->set_visible(true);
 
+  Gtk::ScrolledWindow* BottomWin = Gtk::manage(new Gtk::ScrolledWindow());
+  BottomWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  BottomWin->set_visible(true);
+  BottomWin->add(*mp_Table);
+
   mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK);
-  mp_MainBox->pack_start(*HSep, Gtk::PACK_SHRINK, 15);
-  mp_MainBox->pack_start(*mp_Table);
+  mp_MainBox->pack_start(*HSep, Gtk::PACK_SHRINK, 5);
+  mp_MainBox->pack_start(*BottomWin);
   mp_MainBox->set_visible(true);
 }
 
@@ -126,7 +132,7 @@ void ModelGlobalParamsViewImpl::removeGlobalParamsRow(std::string ParamName)
     {
       mp_Table->remove(*m_ByParamNameParamRow[ParamName]->getWidgets()[j]);
     }
-    /* no, apparently Gtk::Table doesn't update attachment indexes
+    /* it seems that Gtk::Table doesn't update attachment indexes
      when a widget is removed from container directly */
     //    m_CurrentTableBottom--;
 

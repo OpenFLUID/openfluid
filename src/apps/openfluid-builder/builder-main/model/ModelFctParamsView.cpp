@@ -84,6 +84,12 @@ ModelFctParamsViewImpl::ModelFctParamsViewImpl() :
   mp_MainBox->pack_start(*HSep, Gtk::PACK_SHRINK, 15);
   mp_MainBox->pack_start(*mp_FilesTable, Gtk::PACK_SHRINK);
   mp_MainBox->set_visible(true);
+
+  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_visible(true);
+  mp_MainWin->add(*mp_MainBox);
+
 }
 
 // =====================================================================
@@ -237,5 +243,5 @@ void ModelFctParamsViewImpl::unsetGlobalValue(std::string ParamName)
 
 Gtk::Widget* ModelFctParamsViewImpl::asWidget()
 {
-  return mp_MainBox;
+  return mp_MainWin;
 }

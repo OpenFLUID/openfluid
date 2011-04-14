@@ -89,7 +89,7 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl():
 
   mp_IdCombo = Gtk::manage(new Gtk::ComboBoxText());
 
-  mp_OkButton = Gtk::manage(new Gtk::Button(Gtk::Stock::OK));
+  mp_OkButton = Gtk::manage(new Gtk::Button(_("Update")));
   mp_OkButton->signal_clicked().connect(sigc::mem_fun(*this,
       &ResUnitChooserViewImpl::onOkButtonClicked));
 

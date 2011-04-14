@@ -57,35 +57,55 @@
 class ModelStructureView
 {
   public:
+
     virtual sigc::signal<void> signal_StructureFctSelectionChanged() = 0;
+
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
+
     virtual int getSelectedRowPosition() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
     virtual void requestSelectionAt(int RowPosition) = 0;
 };
 
 class ModelStructureViewImpl: public ModelStructureView
 {
   private:
+
     sigc::signal<void> m_signal_StuctureFctSelectionChanged;
+
     void onTreeViewSelectionChanged();
+
   protected:
+
     ModelStructureColumns& m_Columns;
+
     Gtk::TreeView* mp_TreeView;
+
   public:
+
     ModelStructureViewImpl(ModelStructureColumns& Columns);
+
     sigc::signal<void> signal_StructureFctSelectionChanged();
+
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
     int getSelectedRowPosition();
+
     Gtk::Widget* asWidget();
+
     void requestSelectionAt(int RowPosition);
 };
 
 class ModelStructureViewSub: public ModelStructureViewImpl
 {
   public:
+
     ModelStructureViewSub(ModelStructureColumns& Columns);
+
     int getRowNb();
+
     std::string getRowId(int RowNumber);
 };
 

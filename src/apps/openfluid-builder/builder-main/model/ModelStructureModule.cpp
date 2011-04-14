@@ -79,13 +79,16 @@ ModelStructureModule::ModelStructureModule()
 
   mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent();
   mp_ModelParamsPanel = new ModelParamsPanel();
-  mp_ModelParamsPanel->addAStaticPage(mp_ModelGlobalParamsMVP->asWidget(),_("Global Parameters"),0);
+  mp_ModelParamsPanel->addAStaticPage(mp_ModelGlobalParamsMVP->asWidget(),
+      _("Global Parameters"), 0);
 
-  mp_StructureListToolBox = BuilderListToolBoxFactory::createModelStructureToolBox();
+  mp_StructureListToolBox
+      = BuilderListToolBoxFactory::createModelStructureToolBox();
 
   mp_Coordinator = new ModelStructureCoordinator(
       *mp_ModelFctDetailMVP->getModel(), *mp_ModelStructureMVP->getModel(),
-      *mp_ModelGlobalParamsMVP->getModel(), *mp_ModelParamsPanel, *mp_StructureListToolBox);
+      *mp_ModelGlobalParamsMVP->getModel(), *mp_ModelParamsPanel,
+      *mp_StructureListToolBox);
 
   mp_Coordinator->signal_ModelChanged().connect(sigc::mem_fun(*this,
       &ModelStructureModule::whenModelChanged));
@@ -111,7 +114,7 @@ ModelStructureModule::~ModelStructureModule()
 
 void ModelStructureModule::compose()
 {
-  mp_MainPanel = Gtk::manage(new Gtk::VBox());
+  mp_MainPanel = Gtk::manage(new Gtk::VPaned());
 
   Gtk::HBox* TopPanel = Gtk::manage(new Gtk::HBox());
   TopPanel->set_border_width(5);
@@ -136,8 +139,8 @@ void ModelStructureModule::compose()
   BottomFrame->set_visible(true);
   BottomFrame->add(*BottomPanel);
 
-  mp_MainPanel->pack_start(*TopFrame);
-  mp_MainPanel->pack_start(*BottomFrame);
+  mp_MainPanel->pack1(*TopFrame, true,false);
+  mp_MainPanel->pack2(*BottomFrame, true,false);
   mp_MainPanel->set_visible(true);
 }
 

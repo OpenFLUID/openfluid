@@ -66,16 +66,27 @@ class ModelStructureAdapterModel;
 class ModelStructureComponent: public BuilderMVPComponent
 {
   private:
+
     ModelStructureModel* mp_Model;
+
     ModelStructureView* mp_View;
+
     ModelStructurePresenter* mp_Presenter;
+
     ModelStructureAdapter* mp_Adapter;
+
     ModelStructureAdapterModel* mp_AdapterModel;
+
   public:
+
     ModelStructureComponent();
+
     ~ModelStructureComponent();
+
     Gtk::Widget* asWidget();
+
     ModelStructureModel* getModel();
+
     ModelStructureView* getView();
 };
 

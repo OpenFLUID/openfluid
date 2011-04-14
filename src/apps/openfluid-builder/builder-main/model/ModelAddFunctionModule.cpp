@@ -59,7 +59,6 @@
 
 #include "ModelAddFunctionCoordinator.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -72,7 +71,7 @@ ModelAddFunctionModule::ModelAddFunctionModule()
   mp_Coordinator = new ModelAddFunctionCoordinator(
       *mp_ModelAvailFctMVP->getModel(), *mp_ModelFctDetailMVP->getModel());
 
-//  mp_Coordinator->setEngineRequirements(ModelInstance);
+  //  mp_Coordinator->setEngineRequirements(ModelInstance);
 
   compose();
 
@@ -95,22 +94,22 @@ ModelAddFunctionModule::~ModelAddFunctionModule()
 
 void ModelAddFunctionModule::compose()
 {
-  mp_MainPanel = Gtk::manage(new Gtk::HBox());
+  mp_MainPanel = Gtk::manage(new Gtk::HPaned());
 
   mp_MainPanel->set_border_width(5);
-  mp_MainPanel->pack_start(*mp_ModelAvailFctMVP->asWidget());
-  mp_MainPanel->pack_start(*mp_ModelFctDetailMVP->asWidget());
+  mp_MainPanel->pack1(*mp_ModelAvailFctMVP->asWidget(), Gtk::EXPAND);
+  mp_MainPanel->pack2(*mp_ModelFctDetailMVP->asWidget(), false, false);
   mp_MainPanel->set_visible(true);
 
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->set_modal(true);
+  mp_Dialog->set_size_request(800, 500);
   mp_Dialog->get_vbox()->add(*mp_MainPanel);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -120,7 +119,6 @@ sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
 {
   return m_signal_ModelFunctionAdded;
 }
-
 
 // =====================================================================
 // =====================================================================

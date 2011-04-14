@@ -60,6 +60,10 @@
 #include "ModelAvailFctAdapter.hpp"
 #include "ModelAvailFctAdapterModel.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctComponent::ModelAvailFctComponent()
 {
   ModelAvailFctColumns* TreeColumns = new ModelAvailFctColumns();
@@ -69,6 +73,11 @@ ModelAvailFctComponent::ModelAvailFctComponent()
   mp_Adapter = new ModelAvailFctAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new ModelAvailFctPresenter(*mp_Model, *mp_Adapter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctComponent::~ModelAvailFctComponent()
 {
   delete mp_Presenter;
@@ -77,14 +86,29 @@ ModelAvailFctComponent::~ModelAvailFctComponent()
   delete mp_Model;
   delete mp_View;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelAvailFctComponent::asWidget()
 {
   return mp_View->asWidget();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctModel* ModelAvailFctComponent::getModel()
 {
   return mp_Model;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctView* ModelAvailFctComponent::getView()
 {
   return mp_View;

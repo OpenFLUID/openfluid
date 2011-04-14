@@ -71,7 +71,8 @@ class BuilderListToolBox;
 class ModelStructureModule : public ProjectWorkspaceModule
 {
   private:
-    Gtk::Box* mp_MainPanel;
+
+    Gtk::VPaned* mp_MainPanel;
 
   protected:
 

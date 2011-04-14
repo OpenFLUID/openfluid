@@ -93,6 +93,8 @@ class ModelFctParamsViewImpl: public ModelFctParamsView
 
     Gtk::Box* mp_MainBox;
 
+    Gtk::ScrolledWindow* mp_MainWin;
+
     Gtk::Table* mp_ParamsTable;
 
     Gtk::Table* mp_FilesTable;

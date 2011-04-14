@@ -56,11 +56,18 @@
 
 #include <glibmm/i18n.h>
 
+// =====================================================================
+// =====================================================================
+
 
 void ModelAvailFctViewImpl::onTreeViewSelectionChanged()
 {
   signal_AvailFctSelectionChanged().emit();
 }
+
+// =====================================================================
+// =====================================================================
+
 
 ModelAvailFctViewImpl::ModelAvailFctViewImpl(ModelAvailFctColumns& Columns) :
   m_Columns(Columns)
@@ -81,11 +88,26 @@ ModelAvailFctViewImpl::ModelAvailFctViewImpl(ModelAvailFctColumns& Columns) :
       &ModelAvailFctViewImpl::onTreeViewSelectionChanged));
 
   mp_TreeView->set_visible(true);
+
+  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_visible(true);
+  mp_MainWin->add(*mp_TreeView);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelAvailFctViewImpl::signal_AvailFctSelectionChanged()
 {
   return m_signal_AvailFctSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel)
 {
   mp_TreeView->set_model(TreeModel);
@@ -100,14 +122,29 @@ void ModelAvailFctViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel)
     mp_TreeView->get_column(i)->set_reorderable();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeRow ModelAvailFctViewImpl::getSelectedRow()
 {
   return *(mp_TreeView->get_selection()->get_selected());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelAvailFctViewImpl::asWidget()
 {
-  return mp_TreeView;
+  return mp_MainWin;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctViewImpl::select(Gtk::TreeRow Row)
 {
   if (Row)
@@ -117,14 +154,31 @@ void ModelAvailFctViewImpl::select(Gtk::TreeRow Row)
   }
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAvailFctViewSub::ModelAvailFctViewSub(ModelAvailFctColumns& Columns) :
   ModelAvailFctViewImpl(Columns)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelAvailFctViewSub::getPluggableBranchRowsNumber()
 {
   return mp_TreeView->get_model()->children()[0]->children().size();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int ModelAvailFctViewSub::getGeneratorBranchRowsNumber()
 {
   return mp_TreeView->get_model()->children()[1]->children().size();

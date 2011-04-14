@@ -83,12 +83,13 @@ ResViewerViewImpl::ResViewerViewImpl()
   Win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   Win->add(*mp_TreeView);
 
-  //  mp_MainBox->pack_start(*mp_TitleLabel, Gtk::PACK_SHRINK);
   mp_MainBox->pack_start(*Win);
 
   mp_MainBox->show_all_children();
 
   mp_Notebook = Gtk::manage(new Gtk::Notebook());
+  mp_Notebook->set_scrollable(true);
+  mp_Notebook->popup_enable();
   mp_Notebook->append_page(*mp_MainBox, _("tabular"));
 }
 
@@ -169,7 +170,12 @@ void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
     Win->set_visible(true);
     Win->add(*TextView);
 
-    mp_Notebook->append_page(*Win, it->first);
+    Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(it->first));
+    Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(it->first,
+        Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+
+    mp_Notebook->append_page(*Win, *TabLabel, *MenuLabel);
+    mp_Notebook->set_tab_reorderable(*Win, true);
   }
 }
 
