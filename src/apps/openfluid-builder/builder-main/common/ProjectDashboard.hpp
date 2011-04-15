@@ -46,90 +46,59 @@
  */
 
 /**
- \file EngineProject.hpp
+ \file ProjectDashboard.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __ENGINEPROJECT_HPP__
-#define __ENGINEPROJECT_HPP__
+#ifndef __PROJECTDASHBOARD_HPP__
+#define __PROJECTDASHBOARD_HPP__
 
-#include <openfluid/base.hpp>
+#include <gtkmm.h>
+#include <glibmm/i18n.h>
+
 #include <openfluid/machine.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/io.hpp>
 
-#include <openfluid/guicommon/RunDialogMachineListener.hpp>
-
-
-class EngineProject
+class ProjectDashboard
 {
-  protected:
+  private:
 
-    openfluid::machine::SimulationBlob* mp_SimBlob;
+    class ProjectDashboardColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        ProjectDashboardColumns()
+        {
+          add(m_Title);
+          add(m_StateIcon);
+          add(m_StateInfo);
+        }
 
-    openfluid::base::RuntimeEnvironment* mp_RunEnv;
+        Gtk::TreeModelColumn<std::string> m_Title;
+        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_StateIcon;
+        Gtk::TreeModelColumn<std::string> m_StateInfo;
+    };
+    ProjectDashboardColumns m_Columns;
 
-    openfluid::io::IOListener* mp_IOListener;
+    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
 
-    openfluid::guicommon::RunDialogMachineListener* mp_Listener;
+    Gtk::TreeView* mp_TreeView;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
+    Glib::RefPtr<Gdk::Pixbuf> m_RedIcon;
+    Glib::RefPtr<Gdk::Pixbuf> m_OrangeIcon;
+    Glib::RefPtr<Gdk::Pixbuf> m_GreenIcon;
 
-    openfluid::machine::Engine* mp_Engine;
+    Gtk::ScrolledWindow* mp_MainWin;
 
-    EngineProject();
+    std::string minimiseInfoString(std::string InfoString);
 
   public:
 
-    void run();
+    ProjectDashboard();
 
-    void check(openfluid::machine::Engine::PretestInfos_t& PretestInfos);
+    void setCheckInfo(openfluid::machine::Engine::PretestInfos_t CheckInfo);
 
-    openfluid::machine::SimulationBlob* getSimBlob();
-
-    openfluid::base::RuntimeEnvironment* getRunEnv();
-
-    openfluid::io::IOListener* getIOListener();
-
-    openfluid::machine::MachineListener* getMachineListener();
-
-    openfluid::machine::ModelInstance* getModelInstance();
-
-    openfluid::core::CoreRepository& getCoreRepository();
-
-    openfluid::base::ExecutionMessages& getExecutionMessages();
-
-    openfluid::base::RunDescriptor& getRunDescriptor();
-
-    openfluid::base::OutputDescriptor& getOutputDescriptor();
-
-    ~EngineProject();
-
+    Gtk::Widget* asWidget();
 };
 
-// =====================================================================
-// =====================================================================
-
-
-class EngineProjectEmpty: public EngineProject
-{
-  public:
-
-    EngineProjectEmpty();
-};
-
-// =====================================================================
-// =====================================================================
-
-
-class EngineProjectFromFolder: public EngineProject
-{
-  public:
-
-    EngineProjectFromFolder(std::string FolderIn);
-};
-
-#endif /* __ENGINEPROJECT_HPP__ */
-
+#endif /* __PROJECTDASHBOARD_HPP__ */

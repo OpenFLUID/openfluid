@@ -57,11 +57,11 @@
 #include "ProjectExplorerComponent.hpp"
 #include "ProjectWorkspace.hpp"
 #include "ProjectCoordinator.hpp"
+#include "ProjectDashboard.hpp"
 
 #include "FunctionSignatureRegistry.hpp"
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderFrame.hpp"
-
 
 // =====================================================================
 // =====================================================================
@@ -75,8 +75,10 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(std::string FolderIn)
 
   mp_Workspace = new ProjectWorkspace();
 
+  mp_ProjectDashboard = new ProjectDashboard();
+
   mp_Coordinator = new ProjectCoordinator(*mp_ProjectExplorerMVP->getModel(),
-      *mp_Workspace, *mp_EngineProject);
+      *mp_Workspace, *mp_EngineProject, *mp_ProjectDashboard);
 
   mp_ToolBoxFactory = new BuilderListToolBoxFactory();
 
@@ -93,8 +95,8 @@ BuilderProjectWithExplorer::~BuilderProjectWithExplorer()
   delete mp_Workspace;
   delete mp_ProjectExplorerMVP;
   delete mp_EngineProject;
+  delete mp_ProjectDashboard;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -105,15 +107,19 @@ void BuilderProjectWithExplorer::compose()
   mp_MainPaned = Gtk::manage(new Gtk::HPaned());
   mp_MainPaned->set_visible(true);
 
-  Gtk::Label* NothingLabel = Gtk::manage(new Gtk::Label(
-      _("Nothing to display at this time")));
-  NothingLabel->set_visible(true);
+//  Gtk::Label* NothingLabel = Gtk::manage(new Gtk::Label(
+//      _("Nothing to display at this time")));
+//  NothingLabel->set_visible(true);
 
-  mp_MainPaned->add1(*mp_ProjectExplorerMVP->asWidget());
+  Gtk::VPaned* LeftBox = Gtk::manage(new Gtk::VPaned());
+  LeftBox->pack1(*mp_ProjectExplorerMVP->asWidget());
+  LeftBox->pack2(*mp_ProjectDashboard->asWidget(),true, true);
+  LeftBox->set_visible(true);
+
+  mp_MainPaned->add1(*LeftBox);
   mp_MainPaned->add2(*mp_Workspace->asWidget());
   //  mp_MainPaned->add2(*NothingLabel);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -123,7 +129,6 @@ void BuilderProjectWithExplorer::runAsked()
 {
   mp_EngineProject->run();
 }
-
 
 // =====================================================================
 // =====================================================================

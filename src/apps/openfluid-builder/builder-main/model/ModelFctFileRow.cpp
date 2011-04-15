@@ -128,6 +128,8 @@ void ModelFctFileRow::onFileButtonClicked()
   }
 
   setFileFound();
+
+  m_signal_FileChanged.emit();
 }
 
 // =====================================================================
@@ -158,3 +160,11 @@ std::string ModelFctFileRow::getFileName()
   return mp_FileNameLabel->get_text();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctFileRow::signal_FileChanged()
+{
+  return m_signal_FileChanged;
+}

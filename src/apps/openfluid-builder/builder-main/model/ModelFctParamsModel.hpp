@@ -70,6 +70,8 @@ class ModelFctParamsModel
 
     virtual sigc::signal<void, std::string> signal_GlobalValueUnset() = 0;
 
+    virtual sigc::signal<void> signal_RequiredFileChanged() = 0;
+
     virtual void setModelItemInstance(openfluid::machine::ModelItemInstance* Item) = 0;
 
     virtual std::map<std::string,std::string> getParams() = 0;
@@ -86,6 +88,8 @@ class ModelFctParamsModel
 
     virtual void unsetGlobalValue(std::string ParamName) = 0;
 
+    virtual void whenRequiredFileChanged() = 0;
+
 };
 
 
@@ -98,6 +102,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
     sigc::signal<void, std::string, std::string> m_signal_GlobalValueChanged;
 
     sigc::signal<void, std::string> m_signal_GlobalValueUnset;
+
+    sigc::signal<void> m_signal_RequiredFileChanged;
 
     openfluid::machine::ModelItemInstance* mp_Item;
 
@@ -115,6 +121,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void, std::string> signal_GlobalValueUnset();
 
+    sigc::signal<void> signal_RequiredFileChanged();
+
     std::map<std::string,std::string> getParams();
 
     std::vector<std::string> getRequiredFiles();
@@ -128,6 +136,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
     void setGlobalValue(std::string ParamName,std::string GlobalValue);
 
     void unsetGlobalValue(std::string ParamName);
+
+    void whenRequiredFileChanged();
 
 };
 

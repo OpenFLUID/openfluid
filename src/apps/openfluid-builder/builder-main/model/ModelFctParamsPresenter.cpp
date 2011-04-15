@@ -102,6 +102,15 @@ void ModelFctParamsPresenter::whenGlobalValueUnset(std::string ParamName)
 // =====================================================================
 
 
+void ModelFctParamsPresenter::whenRequiredFileChanged()
+{
+  m_Model.whenRequiredFileChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
     ModelFctParamsView& View) :
   m_Model(Model), m_View(View)
@@ -111,8 +120,10 @@ ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
   m_Model.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenGlobalValueChanged));
   m_Model.signal_GlobalValueUnset().connect(sigc::mem_fun(*this,
-        &ModelFctParamsPresenter::whenGlobalValueUnset));
+      &ModelFctParamsPresenter::whenGlobalValueUnset));
 
   m_View.signal_ParamValueChanged().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenParamValueChanged));
+  m_View.signal_RequiredFileChanged().connect(sigc::mem_fun(*this,
+      &ModelFctParamsPresenter::whenRequiredFileChanged));
 }

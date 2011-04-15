@@ -75,6 +75,8 @@ class ModelFctFileRow: public BuilderTableRowWidget
 
     Gtk::Button* mp_FileButton;
 
+    sigc::signal<void> m_signal_FileChanged;
+
     void onFileButtonClicked();
 
   public:
@@ -84,6 +86,8 @@ class ModelFctFileRow: public BuilderTableRowWidget
     void setFileFound();
 
     std::string getFileName();
+
+    sigc::signal<void> signal_FileChanged();
 
 };
 

@@ -149,7 +149,6 @@ void ModelStructureCoordinator::whenMoveTowardTheEndAsked()
   m_signal_ModelChanged.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -158,13 +157,13 @@ void ModelStructureCoordinator::whenGlobalValueChanged(std::string ParamName)
 {
   std::string GlobalValue = m_GlobalParamsModel.getGlobalValue(ParamName);
 
-  for(std::map<std::string, ModelFctParamsComponent*>::iterator it = m_ByNameFctParamsComponents.begin() ;
-      it !=m_ByNameFctParamsComponents.end() ; ++it)
+  for (std::map<std::string, ModelFctParamsComponent*>::iterator it =
+      m_ByNameFctParamsComponents.begin(); it
+      != m_ByNameFctParamsComponents.end(); ++it)
   {
     it->second->getModel()->setGlobalValue(ParamName, GlobalValue);
   }
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -172,11 +171,12 @@ void ModelStructureCoordinator::whenGlobalValueChanged(std::string ParamName)
 
 void ModelStructureCoordinator::whenGlobalParamUnset(std::string ParamName)
 {
-  for(std::map<std::string, ModelFctParamsComponent*>::iterator it = m_ByNameFctParamsComponents.begin() ;
-        it !=m_ByNameFctParamsComponents.end() ; ++it)
-    {
-      it->second->getModel()->unsetGlobalValue(ParamName);
-    }
+  for (std::map<std::string, ModelFctParamsComponent*>::iterator it =
+      m_ByNameFctParamsComponents.begin(); it
+      != m_ByNameFctParamsComponents.end(); ++it)
+  {
+    it->second->getModel()->unsetGlobalValue(ParamName);
+  }
 }
 
 // =====================================================================
@@ -291,12 +291,16 @@ void ModelStructureCoordinator::createModelFctParamsComponent(
   m_ParamsPanel.addAFctParamsPage(FctParams->asWidget(), FctName);
   m_ByNameFctParamsComponents[FctName] = FctParams;
 
-
-  std::map<std::string, std::string> GlobalValues = m_GlobalParamsModel.getGlobalValues(Item);
-  for(std::map<std::string, std::string>::iterator it = GlobalValues.begin() ; it!=GlobalValues.end() ; ++it)
+  std::map<std::string, std::string> GlobalValues =
+      m_GlobalParamsModel.getGlobalValues(Item);
+  for (std::map<std::string, std::string>::iterator it = GlobalValues.begin(); it
+      != GlobalValues.end(); ++it)
   {
     FctParams->getModel()->setGlobalValue(it->first, it->second);
   }
+
+  FctParams->getModel()->signal_RequiredFileChanged().connect(sigc::mem_fun(
+      *this, &ModelStructureCoordinator::whenRequiredFileChanged));
 
 }
 
@@ -311,4 +315,13 @@ void ModelStructureCoordinator::eraseModelFctParamsComponent(
 
   m_ParamsPanel.removeAPage(FctName);
   m_ByNameFctParamsComponents.erase(FctName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void ModelStructureCoordinator::whenRequiredFileChanged()
+{
+   m_signal_ModelChanged.emit();
 }

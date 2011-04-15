@@ -152,6 +152,17 @@ void ModelFctParamsModelImpl::unsetGlobalValue(std::string ParamName)
   m_signal_GlobalValueUnset.emit(ParamName);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsModelImpl::whenRequiredFileChanged()
+{
+  m_signal_RequiredFileChanged.emit();
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -177,4 +188,15 @@ sigc::signal<void, std::string, std::string> ModelFctParamsModelImpl::signal_Glo
 sigc::signal<void, std::string> ModelFctParamsModelImpl::signal_GlobalValueUnset()
 {
   return m_signal_GlobalValueUnset;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFileChanged()
+{
+  return m_signal_RequiredFileChanged;
 }

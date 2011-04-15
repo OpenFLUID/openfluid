@@ -90,6 +90,13 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","input data for tests","")
   DECLARE_REQUIRED_INPUTDATA("indataB","TestUnits","input data for tests","")
 
+  DECLARE_FUNCTION_PARAM ("strparam","=strvalue","-");
+  DECLARE_FUNCTION_PARAM ("doubleparam","=1.1","-");
+  DECLARE_FUNCTION_PARAM ("longparam","=11","-");
+  DECLARE_FUNCTION_PARAM ("strarrayparam","=strvalue1;strvalue2;strvalue3","-");
+  DECLARE_FUNCTION_PARAM ("doublearrayparam","=1.1;1.3;1.3;1.4","-");
+  DECLARE_FUNCTION_PARAM ("longarrayparam","=11;12;13;14;15","-");
+
 END_SIGNATURE_HOOK
 
 
@@ -101,7 +108,7 @@ PrimitivesUseFunction::PrimitivesUseFunction()
                 : PluggableFunction()
 {
 
-
+//std::cout << "PrimitiveUseFunc constructor" << std::endl;
 }
 
 
@@ -261,6 +268,7 @@ bool PrimitivesUseFunction::initializeRun(const openfluid::base::SimulationInfo*
 
 bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
+//  std::cout << "PrimitiveUseFunc runStep begin" << std::endl;
   openfluid::core::Unit* TU;
   unsigned long VectorSize = 40;
   unsigned long NewVectorSize = 5;
@@ -276,7 +284,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   unsigned int UnitsCount;
 
 
-
+//  std::cout << "PrimitiveUseFunc runStep Units..." << std::endl;
   // ===== Units =====
 
   if (!OPENFLUID_IsUnitClassExist("TestUnits"))
@@ -297,7 +305,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   if (OPENFLUID_GetUnitsCount("unknown",UnitsCount))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_getUnitsCount (unknown)");
 
-
+//  std::cout << "PrimitiveUseFunc runStep Environt..." << std::endl;
   // ===== Run environment =====
 
   if (!OPENFLUID_GetRunEnvironment("dir.input",&RunEnvStr))
@@ -316,10 +324,12 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.bool)");
 
 
-
+//  std::cout << "*** PrimitiveUseFunc runStep Start Loop" << std::endl;
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
 
-
+//  std::cout << "PrimitiveUseFunc runStep child/parents..." << std::endl;
+//  std::cout << "TU->getID() : " << TU->getID() << std::endl;
+//  std::cout << "TU->getParentUnits(\"ParentTestUnits\")->size() : " << TU->getParentUnits("ParentTestUnits")->size() << std::endl;
     // ====== Units child/Parents ======
     if (TU->getID() < 10)
     {
@@ -339,7 +349,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     }
 
 
-
+//    std::cout << "PrimitiveUseFunc runStep scalar..." << std::endl;
     // ====== Scalar ======
 
     OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
@@ -417,7 +427,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVectorVariableExist (tests.scalar)");
 
 
-
+//    std::cout << "PrimitiveUseFunc runStep Vector..." << std::endl;
     // ====== Vector ======
 
     OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
@@ -501,7 +511,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     if (OPENFLUID_IsScalarVariableExist(TU,"tests.vector",SimStatus->getCurrentStep()))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsScalarVariableExist (tests.vector, timestep)");
 
-
+//    std::cout << "PrimitiveUseFunc runStep InputData..." << std::endl;
     // ====== Input data ======
 
     if (!OPENFLUID_IsInputDataExist(TU,"indataA"))
@@ -532,7 +542,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetInputData (indataB wrongvalue)");
 
 
-
+//    std::cout << "PrimitiveUseFunc runStep Events..." << std::endl;
     // ====== Events ======
 
     TheEvents.clear();
@@ -548,7 +558,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
 
   END_LOOP
-
+//  std::cout << "*** PrimitiveUseFunc runStep End Loop" << std::endl;
 
 
   return true;

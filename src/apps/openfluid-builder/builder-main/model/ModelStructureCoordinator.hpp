@@ -137,6 +137,8 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void eraseModelFctParamsComponent(openfluid::machine::SignatureItemInstance* Signature);
 
+    void whenRequiredFileChanged();
+
 };
 
 #endif /* __MODELSTRUCTURECOORDINATOR_HPP__ */

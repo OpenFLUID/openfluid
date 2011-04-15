@@ -58,21 +58,24 @@
 #include "ProjectWorkspace.hpp"
 #include "EngineProject.hpp"
 #include "BuilderModuleFactory.hpp"
+#include "ProjectDashboard.hpp"
 
 #include "ModelStructureModule.hpp"
 #include "DomainClassModule.hpp"
 #include "ResultsSetModule.hpp"
 
 #include <boost/foreach.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
 ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
-    ProjectWorkspace& Workspace, EngineProject& TheEngineProject) :
+    ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
+    ProjectDashboard& TheProjectDashboard) :
   m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
-      TheEngineProject)
+      TheEngineProject), m_ProjectDashboard(TheProjectDashboard)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
@@ -84,6 +87,7 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
   m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenPageRemoved));
 
+  checkProject();
 }
 
 // =====================================================================
@@ -240,12 +244,33 @@ void ProjectCoordinator::whenModelChanged()
 {
   m_ExplorerModel.updateModelAsked();
 
+  updateWorkspaceModules();
+
+  checkProject();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::updateWorkspaceModules()
+{
   for (std::map<std::string, ProjectWorkspaceModule*>::iterator it =
       m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
   {
     it->second->update();
   }
+}
 
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::checkProject()
+{
+  openfluid::machine::Engine::PretestInfos_t CheckInfo;
+  m_EngineProject.check(CheckInfo);
+  m_ProjectDashboard.setCheckInfo(CheckInfo);
 }
 
 // =====================================================================
@@ -257,16 +282,14 @@ void ProjectCoordinator::whenDomainChanged()
   m_ExplorerModel.updateDomainAsked();
 
   std::vector<std::string> PagesToDelete = getClassPagesToDelete();
-
   BOOST_FOREACH(std::string PageToDelete,PagesToDelete)
 {  m_Workspace.removePage(PageToDelete);
 }
 
-for (std::map<std::string, ProjectWorkspaceModule*>::iterator it =
-    m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
-{
-  it->second->update();
-}
+updateWorkspaceModules();
+
+checkProject();
+
 }
 
 // =====================================================================
@@ -301,7 +324,7 @@ std::vector<std::string> ProjectCoordinator::getClassPagesToDelete()
 
 void ProjectCoordinator::whenClassChanged()
 {
-
+  checkProject();
 }
 
 // =====================================================================
@@ -312,11 +335,7 @@ void ProjectCoordinator::whenRunChanged()
 {
   m_ExplorerModel.updateSimulationAsked();
 
-  for (std::map<std::string, ProjectWorkspaceModule*>::iterator it =
-      m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
-  {
-    it->second->update();
-  }
+  updateWorkspaceModules();
 }
 
 // =====================================================================
@@ -328,16 +347,11 @@ void ProjectCoordinator::whenOutChanged()
   m_ExplorerModel.updateResultsAsked();
 
   std::vector<std::string> PagesToDelete = getSetPagesToDelete();
-
   BOOST_FOREACH(std::string PageToDelete,PagesToDelete)
 {  m_Workspace.removePage(PageToDelete);
 }
 
-for (std::map<std::string, ProjectWorkspaceModule*>::iterator it =
-    m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
-{
-  it->second->update();
-}
+updateWorkspaceModules();
 }
 
 // =====================================================================
@@ -415,8 +429,9 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 
 ProjectCoordinatorSub::ProjectCoordinatorSub(
     ProjectExplorerModel& ExplorerModel, ProjectWorkspace& Workspace,
-    EngineProject& TheEngineProject) :
-  ProjectCoordinator(ExplorerModel, Workspace, TheEngineProject)
+    EngineProject& TheEngineProject, ProjectDashboard& TheProjectDashboard) :
+  ProjectCoordinator(ExplorerModel, Workspace, TheEngineProject,
+      TheProjectDashboard)
 {
 }
 

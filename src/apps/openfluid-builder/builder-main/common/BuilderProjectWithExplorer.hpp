@@ -64,6 +64,7 @@
 class ProjectExplorerComponent;
 class ProjectWorkspace;
 class ProjectCoordinator;
+class ProjectDashboard;
 
 class BuilderListToolBoxFactory;
 
@@ -79,6 +80,8 @@ class BuilderProjectWithExplorer: public BuilderModule
     ProjectExplorerComponent* mp_ProjectExplorerMVP;
 
     ProjectWorkspace* mp_Workspace;
+
+    ProjectDashboard* mp_ProjectDashboard;
 
     ProjectCoordinator* mp_Coordinator;
 

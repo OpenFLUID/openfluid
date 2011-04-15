@@ -62,6 +62,7 @@ class ProjectWorkspace;
 class ProjectWorkspaceModule;
 class EngineProject;
 class BuilderModuleFactory;
+class ProjectDashboard;
 
 class ProjectCoordinator
 {
@@ -72,6 +73,8 @@ class ProjectCoordinator
     ProjectWorkspace& m_Workspace;
 
     EngineProject& m_EngineProject;
+
+    ProjectDashboard& m_ProjectDashboard;
 
     BuilderModuleFactory* mp_ModuleFactory;
 
@@ -95,6 +98,10 @@ class ProjectCoordinator
 
     void whenPageRemoved(std::string RemovedPageName);
 
+    void updateWorkspaceModules();
+
+    void checkProject();
+
   protected:
 
     void whenModelChanged();
@@ -106,7 +113,8 @@ class ProjectCoordinator
   public:
 
     ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
-        ProjectWorkspace& Workspace, EngineProject& TheEngineProject);
+        ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
+        ProjectDashboard& TheProjectDashboard);
 
     ~ProjectCoordinator();
 
@@ -117,7 +125,8 @@ class ProjectCoordinatorSub: public ProjectCoordinator
   public:
 
     ProjectCoordinatorSub(ProjectExplorerModel& ExplorerModel,
-        ProjectWorkspace& Workspace, EngineProject& TheEngineProject);
+        ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
+        ProjectDashboard& TheProjectDashboard);
 
     void whenModelChanged();
 

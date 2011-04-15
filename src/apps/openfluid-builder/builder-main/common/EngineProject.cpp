@@ -96,6 +96,16 @@ void EngineProject::run()
   mp_ModelInstance->resetInitialized();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::check(openfluid::machine::Engine::PretestInfos_t& PretestInfos)
+{
+  mp_Engine->pretestConsistency(PretestInfos);
+}
+
 // =====================================================================
 // =====================================================================
 

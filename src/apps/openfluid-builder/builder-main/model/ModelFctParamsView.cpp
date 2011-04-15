@@ -153,6 +153,17 @@ sigc::signal<void, std::string, std::string> ModelFctParamsViewImpl::signal_Para
   return m_signal_ParamValueChanged;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsViewImpl::signal_RequiredFileChanged()
+{
+  return m_signal_RequiredFileChanged;
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -182,11 +193,14 @@ void ModelFctParamsViewImpl::setRequiredFiles(std::vector<std::string> Files)
       Gtk::EXPAND, 0, 0);
   m_FilesTableBottom++;
 
-  for (unsigned int i=0 ; i< Files.size() ; i++)
+  for (unsigned int i = 0; i < Files.size(); i++)
   {
     ModelFctFileRow* FileRow = new ModelFctFileRow(Files[i]);
     attachTableRow(*FileRow, mp_FilesTable, m_FilesTableBottom);
     m_ByFileNameFileRow[Files[i]] = FileRow;
+
+    FileRow->signal_FileChanged().connect(sigc::mem_fun(*this,
+        &ModelFctParamsViewImpl::whenRequiredFileChanged));
   }
 
 }
@@ -205,7 +219,7 @@ void ModelFctParamsViewImpl::setUsedFiles(std::vector<std::string> Files)
       m_FilesTableBottom + 1, Gtk::FILL, Gtk::EXPAND, 0, 0);
   m_FilesTableBottom++;
 
-  for (unsigned int i=0 ; i< Files.size() ; i++)
+  for (unsigned int i = 0; i < Files.size(); i++)
   {
     ModelFctFileRow* FileRow = new ModelFctFileRow(Files[i]);
     attachTableRow(*FileRow, mp_FilesTable, m_FilesTableBottom);
@@ -214,17 +228,16 @@ void ModelFctParamsViewImpl::setUsedFiles(std::vector<std::string> Files)
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamsViewImpl::setGlobalValue(std::string ParamName,std::string GlobalValue)
+void ModelFctParamsViewImpl::setGlobalValue(std::string ParamName,
+    std::string GlobalValue)
 {
   if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
-        m_ByParamNameParamRow[ParamName]->setGlobalValue(GlobalValue);
+    m_ByParamNameParamRow[ParamName]->setGlobalValue(GlobalValue);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -233,7 +246,15 @@ void ModelFctParamsViewImpl::setGlobalValue(std::string ParamName,std::string Gl
 void ModelFctParamsViewImpl::unsetGlobalValue(std::string ParamName)
 {
   if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
-          m_ByParamNameParamRow[ParamName]->unsetGlobalValue();
+    m_ByParamNameParamRow[ParamName]->unsetGlobalValue();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ModelFctParamsViewImpl::whenRequiredFileChanged()
+{
+  m_signal_RequiredFileChanged.emit();
 }
 
 

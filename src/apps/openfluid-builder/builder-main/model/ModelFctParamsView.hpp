@@ -76,6 +76,8 @@ class ModelFctParamsView
 
     virtual sigc::signal<void,std::string,std::string> signal_ParamValueChanged() = 0;
 
+    virtual sigc::signal<void> signal_RequiredFileChanged() = 0;
+
     virtual void setRequiredFiles(std::vector<std::string> Files) = 0;
 
     virtual void setUsedFiles(std::vector<std::string> Files) = 0;
@@ -83,6 +85,8 @@ class ModelFctParamsView
     virtual void setGlobalValue(std::string ParamName,std::string GlobalValue) = 0;
 
     virtual void unsetGlobalValue(std::string ParamName) = 0;
+
+    virtual void whenRequiredFileChanged() = 0;
 
 };
 
@@ -109,16 +113,19 @@ class ModelFctParamsViewImpl: public ModelFctParamsView
 
     sigc::signal<void,std::string,std::string> m_signal_ParamValueChanged;
 
+    sigc::signal<void> m_signal_RequiredFileChanged;
+
     void attachTableRow(BuilderTableRowWidget& TableRow, Gtk::Table* Table,unsigned int& TableBottom);
 
     void onParamValueChanged(ModelFctParamRow* FctParamRow);
-
 
   public:
 
     ModelFctParamsViewImpl();
 
     sigc::signal<void,std::string,std::string> signal_ParamValueChanged();
+
+    sigc::signal<void> signal_RequiredFileChanged();
 
     void setParams(std::map<std::string,std::string> ParamsMap);
 
@@ -131,6 +138,8 @@ class ModelFctParamsViewImpl: public ModelFctParamsView
     void setGlobalValue(std::string ParamName,std::string GlobalValue);
 
     void unsetGlobalValue(std::string ParamName);
+
+    void whenRequiredFileChanged();
 
     Gtk::Widget* asWidget();
 };
