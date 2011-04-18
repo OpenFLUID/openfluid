@@ -12,7 +12,7 @@ CONFIGURE_FILE(tests-config.hpp.in ${PROJECT_BINARY_DIR}/src/tests/tests-config.
 FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS} 
-                    "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src/tests")
+                    "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src" "${PROJECT_BINARY_DIR}/src/tests")
                     
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS} ${LibXML2_LIBRARY_DIRS})
 
