@@ -57,14 +57,21 @@
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
+#include <openfluid/base/ProjectManager.hpp>
+
+#include <boost/filesystem.hpp>
+
 // =====================================================================
 // =====================================================================
 
 
-EngineProject::EngineProject()
+EngineProject::EngineProject(bool WithProjectManager) :
+  m_WithProjectManager(WithProjectManager)
 {
   mp_SimBlob = new openfluid::machine::SimulationBlob();
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+  if (m_WithProjectManager)
+    mp_RunEnv->linkToProject();
   mp_IOListener = new openfluid::io::IOListener();
   mp_Listener = new openfluid::guicommon::RunDialogMachineListener();
 
@@ -75,6 +82,7 @@ EngineProject::EngineProject()
       mp_Listener, mp_IOListener);
 
   mp_ModelInstance->resetInitialized();
+
 }
 
 // =====================================================================
@@ -83,6 +91,8 @@ EngineProject::EngineProject()
 
 void EngineProject::run()
 {
+  openfluid::base::ProjectManager::getInstance()->updateOutputDir();
+
   mp_SimBlob->clearSimulationGarbage();
 
   mp_ModelInstance->initialize();
@@ -96,12 +106,30 @@ void EngineProject::run()
   mp_ModelInstance->resetInitialized();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::save()
+{
+  openfluid::base::ProjectManager::getInstance()->save();
+
+  openfluid::io::FluidXWriter Writer(getIOListener());
+
+  Writer.setDomainToWrite(getCoreRepository());
+  Writer.setModelToWrite(*getModelInstance());
+  Writer.setRunConfigurationToWrite(getRunDescriptor());
+  Writer.setOutputConfigurationToWrite(getOutputDescriptor());
+
+  Writer.WriteToManyFiles(getRunEnv()->getInputDir());
+}
 
 // =====================================================================
 // =====================================================================
 
 
-void EngineProject::check(openfluid::machine::Engine::PretestInfos_t& PretestInfos)
+void EngineProject::check(
+    openfluid::machine::Engine::PretestInfos_t& PretestInfos)
 {
   mp_Engine->pretestConsistency(PretestInfos);
 }
@@ -200,7 +228,9 @@ EngineProject::~EngineProject()
   delete mp_Listener;
   delete mp_IOListener;
   delete mp_SimBlob;
-  //do not delete mp_RunEnv, which is a singleton
+  //don't delete mp_RunEnv, which is a singleton
+  if(m_WithProjectManager)
+    getRunEnv()->detachFromProject();
   delete mp_Engine;
 }
 
@@ -211,7 +241,8 @@ EngineProject::~EngineProject()
 // =====================================================================
 
 
-EngineProjectEmpty::EngineProjectEmpty()
+EngineProjectEmpty::EngineProjectEmpty(bool WithProjectManager) :
+  EngineProject(WithProjectManager)
 {
   openfluid::base::RunDescriptor RunDesc(120, openfluid::core::DateTime(2000,
       01, 01, 00, 00, 00), openfluid::core::DateTime(2000, 01, 01, 07, 00, 00));
@@ -227,24 +258,22 @@ EngineProjectEmpty::EngineProjectEmpty()
 // =====================================================================
 
 
-EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn)
+EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn,
+    bool WithProjectManager) :
+  EngineProject(WithProjectManager)
 {
-  getRunEnv()->setInputDir(FolderIn);
-  //TODO: set OUT folder from Preferences
-  //  getRunEnv()->setOutputDir(Glib::ustring::compose("%1/OUT", FolderIn));
   try
   {
-
-    //      std::cout << "* Loading data... " << std::endl;
     openfluid::io::FluidXReader FXReader(mp_IOListener);
-    FXReader.loadFromDirectory(FolderIn);
 
-    //      std::cout << "* Building  Blob... " << std::endl;
+    FXReader.loadFromDirectory(
+        WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
+            : FolderIn);
+
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
         FXReader.getDomainDescriptor(), FXReader.getRunDescriptor(),
         FXReader.getOutputDescriptor(), *mp_SimBlob);
 
-    //      std::cout << "* Building Model... " << std::endl;
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(
         FXReader.getModelDescriptor(), *mp_ModelInstance);
   } catch (openfluid::base::OFException e)

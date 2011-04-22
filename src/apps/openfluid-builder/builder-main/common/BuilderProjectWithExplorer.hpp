@@ -68,7 +68,6 @@ class ProjectDashboard;
 
 class BuilderListToolBoxFactory;
 
-
 class BuilderProjectWithExplorer: public BuilderModule
 {
   private:
@@ -95,13 +94,15 @@ class BuilderProjectWithExplorer: public BuilderModule
 
   public:
 
-    BuilderProjectWithExplorer(std::string FolderIn);
+    BuilderProjectWithExplorer(std::string ProjectFolder);
 
     ~BuilderProjectWithExplorer();
 
-    void initialize(){};
+    void initialize() {};
 
     void runAsked();
+
+    void saveAsked();
 
 };
 

@@ -59,7 +59,6 @@
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 
-
 // =====================================================================
 // =====================================================================
 
@@ -67,9 +66,7 @@
 BuilderAppHomeState::BuilderAppHomeState(BuilderAppCoordinator& AppCoordinator) :
   m_App(AppCoordinator)
 {
-
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -77,10 +74,8 @@ BuilderAppHomeState::BuilderAppHomeState(BuilderAppCoordinator& AppCoordinator) 
 
 void BuilderAppHomeState::whenNewProjectAsked()
 {
-  m_App.setProjectModule();
-  m_App.setState(*m_App.getProjectState());
+  m_App.createProject();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -88,10 +83,8 @@ void BuilderAppHomeState::whenNewProjectAsked()
 
 void BuilderAppHomeState::whenOpenProjectAsked()
 {
-  m_App.setProjectModule(m_App.showOpenProjectDialog());
-  m_App.setState(*m_App.getProjectState());
+  m_App.openProject();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -101,7 +94,6 @@ void BuilderAppHomeState::whenCloseProjectAsked()
 {
   //nothing to do, should not happen
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -113,7 +105,6 @@ void BuilderAppHomeState::whenQuitAsked()
     m_App.quitApp();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -122,7 +113,6 @@ void BuilderAppHomeState::whenRunAsked()
 {
   //nothing to do, should not happen
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -135,7 +125,6 @@ void BuilderAppHomeState::whenMarketAsked()
   Gtk::Main::run(Assistant);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -143,4 +132,22 @@ void BuilderAppHomeState::whenMarketAsked()
 void BuilderAppHomeState::whenPreferencesAsked()
 {
   m_App.showPreferencesDialog();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenSaveAsked()
+{
+  //nothing to do, should not happen
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenSaveAsAsked()
+{
+  //nothing to do, should not happen
 }

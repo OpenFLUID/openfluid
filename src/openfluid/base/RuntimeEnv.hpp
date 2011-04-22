@@ -133,6 +133,8 @@ class DLLEXPORT RuntimeEnvironment
     // TODO set correct type for time step
     int m_TimeStep;
 
+    bool m_IsLinkedToProject;
+
     /**
       Default constructor
     */
@@ -421,7 +423,7 @@ class DLLEXPORT RuntimeEnvironment
       { return m_TimeStep; };
 
     void setValuesBufferSize(const unsigned int StepsNbr)
-      {m_ValuesBufferSize = StepsNbr; m_IsUserValuesBufferSize = true;};
+      { m_ValuesBufferSize = StepsNbr; m_IsUserValuesBufferSize = true; };
 
     inline unsigned int getValuesBufferSize() const
       { return m_ValuesBufferSize; };
@@ -429,15 +431,20 @@ class DLLEXPORT RuntimeEnvironment
     bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
 
     void setFilesBufferSize(const unsigned int Bytes)
-      {m_FilesBufferSize = Bytes; };
+      { m_FilesBufferSize = Bytes; };
 
     inline unsigned int getFilesBufferSize() const
       { return m_FilesBufferSize; };
 
     inline void unsetUserValuesBufferSize()
-    {
-      m_IsUserValuesBufferSize = false;
-    }
+      { m_IsUserValuesBufferSize = false; }
+
+    void linkToProject();
+
+    void detachFromProject();
+
+    bool isLinkedToProject()
+      { return m_IsLinkedToProject; };
 
 };
 

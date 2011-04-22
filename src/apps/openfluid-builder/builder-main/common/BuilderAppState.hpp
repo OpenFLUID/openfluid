@@ -75,6 +75,10 @@ class BuilderAppState
 
     void whenAboutAsked();
 
+    virtual void whenSaveAsked() = 0;
+
+    virtual void whenSaveAsAsked() = 0;
+
 };
 
 #endif /* __BUILDERAPPSTATE_HPP__ */

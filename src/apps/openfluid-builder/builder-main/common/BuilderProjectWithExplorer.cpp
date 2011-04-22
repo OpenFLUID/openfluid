@@ -67,9 +67,11 @@
 // =====================================================================
 
 
-BuilderProjectWithExplorer::BuilderProjectWithExplorer(std::string FolderIn)
+BuilderProjectWithExplorer::BuilderProjectWithExplorer(
+    std::string ProjectFolder)
 {
-  mp_EngineProject = EngineProjectFactory::createEngineProject(FolderIn);
+  mp_EngineProject = EngineProjectFactory::createEngineProject(ProjectFolder,
+      true);
 
   mp_ProjectExplorerMVP = new ProjectExplorerComponent();
 
@@ -107,13 +109,13 @@ void BuilderProjectWithExplorer::compose()
   mp_MainPaned = Gtk::manage(new Gtk::HPaned());
   mp_MainPaned->set_visible(true);
 
-//  Gtk::Label* NothingLabel = Gtk::manage(new Gtk::Label(
-//      _("Nothing to display at this time")));
-//  NothingLabel->set_visible(true);
+  //  Gtk::Label* NothingLabel = Gtk::manage(new Gtk::Label(
+  //      _("Nothing to display at this time")));
+  //  NothingLabel->set_visible(true);
 
   Gtk::VPaned* LeftBox = Gtk::manage(new Gtk::VPaned());
   LeftBox->pack1(*mp_ProjectExplorerMVP->asWidget());
-  LeftBox->pack2(*mp_ProjectDashboard->asWidget(),true, true);
+  LeftBox->pack2(*mp_ProjectDashboard->asWidget(), true, true);
   LeftBox->set_visible(true);
 
   mp_MainPaned->add1(*LeftBox);
@@ -128,6 +130,15 @@ void BuilderProjectWithExplorer::compose()
 void BuilderProjectWithExplorer::runAsked()
 {
   mp_EngineProject->run();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProjectWithExplorer::saveAsked()
+{
+  mp_EngineProject->save();
 }
 
 // =====================================================================

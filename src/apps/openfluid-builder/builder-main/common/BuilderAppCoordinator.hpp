@@ -55,6 +55,9 @@
 class BuilderAppWindow;
 class PreferencesModel;
 
+class EngineProjectNewDialog;
+class EngineProjectOpenDialog;
+
 class BuilderAppCoordinator
 {
   private:
@@ -65,6 +68,9 @@ class BuilderAppCoordinator
     BuilderAppState* mp_HomeState;
     BuilderAppState* mp_ProjectState;
     PreferencesModel& m_PreferencesModel;
+
+    EngineProjectNewDialog* mp_NewProjectDialog;
+    EngineProjectOpenDialog* mp_OpenProjectDialog;
 
     void unsetCurrentModule();
 
@@ -86,11 +92,17 @@ class BuilderAppCoordinator
 
     void whenAboutAsked();
 
+    void whenSaveAsked();
+
+    void whenSaveAsAsked();
+
 
   public:
 
     BuilderAppCoordinator(BuilderAppWindow& MainWindow,
         BuilderAppActions& Actions, PreferencesModel& PrefModel);
+
+    ~BuilderAppCoordinator();
 
     void setState(BuilderAppState& State);
 
@@ -100,7 +112,7 @@ class BuilderAppCoordinator
 
     void setHomeModule();
 
-    void setProjectModule(std::string FolderIn = "");
+    void setProjectModule(std::string ProjectFolder);
 
     BuilderModule* getCurrentModule();
 
@@ -110,9 +122,13 @@ class BuilderAppCoordinator
 
     bool showQuitAppDialog();
 
-    std::string showOpenProjectDialog();
-
     void showPreferencesDialog();
+
+    void openProject();
+
+    void createProject();
+
+    void closeProject();
 
 };
 

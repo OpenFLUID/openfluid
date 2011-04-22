@@ -94,9 +94,9 @@ void HomeViewImpl::createButtonPanel()
       mp_Actions.getFileNewAction()));
   mp_NewButton->set_visible(true);
 
-  mp_NewFromButton = Gtk::manage(new BuilderHomeButton(
-      mp_Actions.getFileNewFromAction()));
-  mp_NewFromButton->set_visible(true);
+//  mp_NewFromButton = Gtk::manage(new BuilderHomeButton(
+//      mp_Actions.getFileNewFromAction()));
+//  mp_NewFromButton->set_visible(true);
 
   mp_OpenButton = Gtk::manage(new BuilderHomeButton(
       mp_Actions.getFileOpenAction()));
@@ -111,7 +111,7 @@ void HomeViewImpl::createButtonPanel()
       Gtk::BUTTONBOX_START, 4));
   ButtonBox->set_visible(true);
   ButtonBox->pack_start(*mp_NewButton, Gtk::PACK_SHRINK, 0);
-  ButtonBox->pack_start(*mp_NewFromButton, Gtk::PACK_SHRINK, 0);
+//  ButtonBox->pack_start(*mp_NewFromButton, Gtk::PACK_SHRINK, 0);
   ButtonBox->pack_start(*mp_OpenButton, Gtk::PACK_SHRINK, 0);
 
   Gtk::VButtonBox* ExtraButtonBox = Gtk::manage(new Gtk::VButtonBox(

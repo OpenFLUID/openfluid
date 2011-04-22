@@ -70,7 +70,7 @@ void BuilderAppActions::createAppUiXml()
     "  <menubar name='MenuBar'>"
     "    <menu action='FileMenu'>"
     "      <menuitem action='FileNewEmpty'/>"
-    "      <menuitem action='FileNewFrom'/>"
+//    "      <menuitem action='FileNewFrom'/>"
     "      <menuitem action='FileOpen'/>"
     "      <separator/>"
     "      <placeholder name='ProjectFilePlaceholder' />"
@@ -94,7 +94,7 @@ void BuilderAppActions::createAppUiXml()
 
     "  <toolbar  name='ToolBar'>"
     "    <toolitem action='FileNewEmpty'/>"
-    "    <toolitem action='FileNewFrom'/>"
+//    "    <toolitem action='FileNewFrom'/>"
     "    <toolitem action='FileOpen'/>"
     "    <placeholder name='ProjectFilePlaceholder' />"
     "    <separator/>"
@@ -167,13 +167,13 @@ void BuilderAppActions::createAppActionGroup()
   //File menu
   mref_AppActionGroup->add(Gtk::Action::create("FileMenu", _("Project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileNewEmpty", Gtk::Stock::NEW,
-      _("New"), _("Create new empty project")));
-  mref_AppActionGroup->add(Gtk::Action::create("FileNewFrom",
-      *BuilderGraphicsHelper::createBuilderIconStockId("document-new-derived.png",
-          "builder-new-derived"), _("New from..."),
-      _("Create new project from an existing one")));
+      _("New"), _("Create a project")));
+//  mref_AppActionGroup->add(Gtk::Action::create("FileNewFrom",
+//      *BuilderGraphicsHelper::createBuilderIconStockId("document-new-derived.png",
+//          "builder-new-derived"), _("New from..."),
+//      _("Create new project from an existing one")));
   mref_AppActionGroup->add(Gtk::Action::create("FileOpen", Gtk::Stock::OPEN,
-      _("Open..."), _("Open an existing project")));
+      _("Open..."), _("Open a project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileQuit", Gtk::Stock::QUIT));
 
   //Edit menu
@@ -314,11 +314,11 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewAction()
 // =====================================================================
 // =====================================================================
 
-
-Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewFromAction()
-{
-  return mref_AppActionGroup->get_action("FileNewFrom");
-}
+//
+//Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewFromAction()
+//{
+//  return mref_AppActionGroup->get_action("FileNewFrom");
+//}
 
 
 // =====================================================================
@@ -388,6 +388,26 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getEditPreferencesAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppAboutAction()
 {
   return mref_AppActionGroup->get_action("HelpAbout");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAction()
+{
+  return mref_ProjectActionGroup->get_action("FileSave");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
+{
+  return mref_ProjectActionGroup->get_action("FileSaveAs");
 }
 
 

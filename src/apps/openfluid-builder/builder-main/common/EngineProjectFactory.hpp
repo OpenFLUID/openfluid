@@ -60,12 +60,13 @@
 class EngineProjectFactory
 {
   public:
-    static EngineProject* createEngineProject(std::string FolderIn = "")
+    static EngineProject* createEngineProject(std::string FolderIn = "",
+        bool WithProjectManager = false)
     {
       if (FolderIn == "")
-        return new EngineProjectEmpty();
+        return new EngineProjectEmpty(WithProjectManager);
       else
-        return new EngineProjectFromFolder(FolderIn);
+        return new EngineProjectFromFolder(FolderIn, WithProjectManager);
     }
 };
 

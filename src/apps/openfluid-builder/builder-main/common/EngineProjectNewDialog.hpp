@@ -46,49 +46,104 @@
  */
 
 /**
- \file BuilderAppProjectState.hpp
+ \file EngineProjectNewDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERAPPPROJECTSTATE_HPP__
-#define __BUILDERAPPPROJECTSTATE_HPP__
+#ifndef __ENGINEPROJECTNEWDIALOG_HPP__
+#define __ENGINEPROJECTNEWDIALOG_HPP__
 
-#include "BuilderAppState.hpp"
+#include <gtkmm.h>
+#include <boost/filesystem.hpp>
 
-class BuilderAppCoordinator;
-
-class BuilderAppProjectState: public BuilderAppState
+class EngineProjectNewDialog
 {
   private:
 
-    BuilderAppCoordinator& m_App;
+    Gtk::Dialog* mp_Dialog;
 
+    Gtk::FileChooserButton* mp_ProjectFileChooserButton;
+
+    Gtk::Entry* mp_NameEntry;
+
+    Gtk::TextView* mp_DescriptionTextView;
+
+    Gtk::Entry* mp_AuthorsEntry;
+
+    Gtk::Label* mp_MsgLabel;
+
+    Gtk::CheckButton* mp_ImportCheck;
+
+    Gtk::FileChooserButton* mp_ImportFileChooserButton;
+
+    std::string m_ProjectFolder;
+
+    std::string m_ImportFolder;
+
+    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+
+    Gtk::TreeView* mp_TreeView;
+
+    class ImportColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        ImportColumns()
+        {
+          add(m_IsSelected);
+          add(m_FileName);
+          add(m_FilePath);
+          add(m_AlreadyFilled);
+          add(m_Inconsistent);
+        }
+        Gtk::TreeModelColumn<bool> m_IsSelected;
+        Gtk::TreeModelColumn<std::string> m_FileName;
+        Gtk::TreeModelColumn<std::string> m_FilePath;
+        Gtk::TreeModelColumn<bool> m_AlreadyFilled;
+        Gtk::TreeModelColumn<bool> m_Inconsistent;
+    };
+
+    ImportColumns m_Columns;
+
+    std::string m_ProjectInputDir;
+
+    void onProjectFolderSelectionChanged();
+
+    void onImportFolderSelectionChanged();
+
+    void onImportCheckClicked();
+
+    void appendDirectoryContent(boost::filesystem::path DirectoryPath,
+        Gtk::TreeIter DirectoryIter);
+
+    bool onTestExpandRow(const Gtk::TreeModel::iterator& Iter,
+        const Gtk::TreeModel::Path& Path);
+
+    void onCheckToggled(const Glib::ustring TreePath);
+
+    void checkRowSiblings(Gtk::TreeRow Row, bool Checked);
+
+    void setChildrenChecked(Gtk::TreeRow Row, bool Checked = true);
+
+    void setParentsUnconsistent(Gtk::TreeRow Row);
+
+    void copyFilePathAndChildren(Gtk::TreeRow Row);
+
+    void copyOnDisk(std::string FromPath);
+
+    bool isHidden(std::string FileName);
 
   public:
 
-    BuilderAppProjectState(BuilderAppCoordinator& AppCoordinator);
+    EngineProjectNewDialog();
 
-    void whenNewProjectAsked();
+    ~EngineProjectNewDialog();
 
-    void whenOpenProjectAsked();
+    std::string show();
 
-    void whenCloseProjectAsked();
-
-    void whenQuitAsked();
-
-    void whenRunAsked();
-
-    void whenMarketAsked() {};
-
-    void whenPreferencesAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
+    std::string getImportDir();
 
 };
 
-#endif /* __BUILDERAPPPROJECTSTATE_HPP__ */
+#endif /* __ENGINEPROJECTNEWDIALOG_HPP__ */

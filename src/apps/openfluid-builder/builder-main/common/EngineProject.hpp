@@ -62,7 +62,6 @@
 
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 
-
 class EngineProject
 {
   protected:
@@ -79,11 +78,15 @@ class EngineProject
 
     openfluid::machine::Engine* mp_Engine;
 
-    EngineProject();
+    bool m_WithProjectManager;
+
+    EngineProject(bool WithProjectManager);
 
   public:
 
     void run();
+
+    void save();
 
     void check(openfluid::machine::Engine::PretestInfos_t& PretestInfos);
 
@@ -117,7 +120,7 @@ class EngineProjectEmpty: public EngineProject
 {
   public:
 
-    EngineProjectEmpty();
+    EngineProjectEmpty(bool WithProjectManager);
 };
 
 // =====================================================================
@@ -128,7 +131,7 @@ class EngineProjectFromFolder: public EngineProject
 {
   public:
 
-    EngineProjectFromFolder(std::string FolderIn);
+    EngineProjectFromFolder(std::string FolderIn, bool WithProjectManager);
 };
 
 #endif /* __ENGINEPROJECT_HPP__ */

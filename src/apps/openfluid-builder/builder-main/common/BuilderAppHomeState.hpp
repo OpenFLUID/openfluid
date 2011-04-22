@@ -83,6 +83,10 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenPreferencesAsked();
 
+    void whenSaveAsked();
+
+    void whenSaveAsAsked();
+
 };
 
 #endif /* __BUILDERAPPHOMESTATE_HPP__ */

@@ -46,49 +46,48 @@
  */
 
 /**
- \file BuilderAppProjectState.hpp
+ \file EngineProjectOpenDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERAPPPROJECTSTATE_HPP__
-#define __BUILDERAPPPROJECTSTATE_HPP__
+#ifndef __ENGINEPROJECTOPENDIALOG_HPP__
+#define __ENGINEPROJECTOPENDIALOG_HPP__
 
-#include "BuilderAppState.hpp"
+#include <gtkmm.h>
 
-class BuilderAppCoordinator;
-
-class BuilderAppProjectState: public BuilderAppState
+class EngineProjectOpenDialog
 {
   private:
 
-    BuilderAppCoordinator& m_App;
+    Gtk::FileChooserDialog* mp_Dialog;
 
+    std::string m_ProjectFolder;
+
+    Gtk::Label* mp_ProjectName;
+
+    Gtk::Label* mp_ProjectDesc;
+
+    Gtk::Label* mp_ProjectAuthors;
+
+    Gtk::Label* mp_ProjectCreationDate;
+
+    Gtk::Label* mp_ProjectLastModDate;
+
+    Gtk::VBox* mp_PreviewInfoBox;
+
+    void onProjectFolderSelectionChanged();
+
+    std::string replaceEmpty(std::string StringToCheck);
+
+    std::string insertMarkup(std::string String);
 
   public:
 
-    BuilderAppProjectState(BuilderAppCoordinator& AppCoordinator);
+    EngineProjectOpenDialog();
 
-    void whenNewProjectAsked();
-
-    void whenOpenProjectAsked();
-
-    void whenCloseProjectAsked();
-
-    void whenQuitAsked();
-
-    void whenRunAsked();
-
-    void whenMarketAsked() {};
-
-    void whenPreferencesAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-
+    std::string show();
 };
 
-#endif /* __BUILDERAPPPROJECTSTATE_HPP__ */
+#endif /* __ENGINEPROJECTOPENDIALOG_HPP__ */

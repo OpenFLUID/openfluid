@@ -72,8 +72,6 @@ class DLLEXPORT DialogBoxFactory
 
     static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
 
-    static Glib::ustring showOpenProjectDialog();
-
     static void showSimpleErrorMessage(Glib::ustring MessageText);
 
     static void showSimpleWarningMessage(Glib::ustring MessageText);

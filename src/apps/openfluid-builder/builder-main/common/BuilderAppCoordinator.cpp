@@ -64,6 +64,9 @@
 
 #include "BuilderProjectWithExplorer.hpp"
 
+#include "openfluid/base/ProjectManager.hpp"
+#include "EngineProjectNewDialog.hpp"
+#include "EngineProjectOpenDialog.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -74,7 +77,6 @@ void BuilderAppCoordinator::unsetCurrentModule()
   m_MainWindow.unsetCurrentModuleWidget();
   delete mp_CurrentModule;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -89,7 +91,6 @@ void BuilderAppCoordinator::setCurrentModule(BuilderModule* Module)
       *mp_CurrentModule->composeAndGetAsWidget());
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -98,7 +99,6 @@ void BuilderAppCoordinator::whenNewProjectAsked()
 {
   mp_CurrentState->whenNewProjectAsked();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -109,7 +109,6 @@ void BuilderAppCoordinator::whenOpenProjectAsked()
   mp_CurrentState->whenOpenProjectAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -118,7 +117,6 @@ void BuilderAppCoordinator::whenCloseProjectAsked()
 {
   mp_CurrentState->whenCloseProjectAsked();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -129,7 +127,6 @@ void BuilderAppCoordinator::whenQuitAsked()
   mp_CurrentState->whenQuitAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -138,7 +135,6 @@ void BuilderAppCoordinator::whenRunAsked()
 {
   mp_CurrentState->whenRunAsked();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -149,7 +145,6 @@ void BuilderAppCoordinator::whenMarketAsked()
   mp_CurrentState->whenMarketAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -159,7 +154,6 @@ void BuilderAppCoordinator::whenPreferencesAsked()
   mp_CurrentState->whenPreferencesAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -167,6 +161,24 @@ void BuilderAppCoordinator::whenPreferencesAsked()
 void BuilderAppCoordinator::whenAboutAsked()
 {
   mp_CurrentState->whenAboutAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenSaveAsked()
+{
+  mp_CurrentState->whenSaveAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenSaveAsAsked()
+{
+  mp_CurrentState->whenSaveAsAsked();
 }
 
 // =====================================================================
@@ -182,6 +194,9 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   mp_HomeState = new BuilderAppHomeState(*this);
   mp_ProjectState = new BuilderAppProjectState(*this);
 
+  mp_NewProjectDialog = new EngineProjectNewDialog();
+  mp_OpenProjectDialog = new EngineProjectOpenDialog();
+
   m_Actions.getFileNewAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenNewProjectAsked));
   m_Actions.getFileOpenAction()->signal_activate().connect(sigc::mem_fun(*this,
@@ -195,18 +210,22 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
       *this, &BuilderAppCoordinator::whenRunAsked));
 
   m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
-        *this, &BuilderAppCoordinator::whenMarketAsked));
+      *this, &BuilderAppCoordinator::whenMarketAsked));
 
-  m_Actions.getEditPreferencesAction()->signal_activate().connect(sigc::mem_fun(
-        *this, &BuilderAppCoordinator::whenPreferencesAsked));
+  m_Actions.getEditPreferencesAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenPreferencesAsked));
 
-  m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(
-        *this, &BuilderAppCoordinator::whenAboutAsked));
+  m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(*this,
+      &BuilderAppCoordinator::whenAboutAsked));
 
+  m_Actions.getSaveAction()->signal_activate().connect(sigc::mem_fun(*this,
+      &BuilderAppCoordinator::whenSaveAsked));
+
+  m_Actions.getSaveAsAction()->signal_activate().connect(sigc::mem_fun(*this,
+      &BuilderAppCoordinator::whenSaveAsAsked));
 
   setState(*mp_HomeState);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -216,7 +235,6 @@ void BuilderAppCoordinator::setState(BuilderAppState& State)
 {
   mp_CurrentState = &State;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -232,7 +250,6 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
   return mp_ProjectState;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -245,21 +262,33 @@ void BuilderAppCoordinator::setHomeModule()
   m_MainWindow.setStatusBarVisible(false);
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void BuilderAppCoordinator::setProjectModule(std::string FolderIn)
+void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 {
-  setCurrentModule(new BuilderProjectWithExplorer(FolderIn));
-  m_Actions.setProjectActionGroupVisible(true);
-  m_MainWindow.setToolBarVisible(true);
-  m_MainWindow.setStatusBarVisible(true);
+  if (openfluid::base::ProjectManager::isProject(ProjectFolder)
+      && openfluid::base::ProjectManager::getInstance()->isOpened())
+  {
+    setCurrentModule(new BuilderProjectWithExplorer(ProjectFolder));
+    m_Actions.setProjectActionGroupVisible(true);
+    m_MainWindow.setToolBarVisible(true);
+    m_MainWindow.setStatusBarVisible(true);
 
-  std::string CurrentPrjStr = FolderIn;
-  if (CurrentPrjStr.empty()) CurrentPrjStr = std::string("<span color='red'>")+_("(unsaved!)")+std::string("</span>");
-  m_MainWindow.setStatusBarMessage("Current project: " + CurrentPrjStr);
+    std::string CurrentPrjStr = ProjectFolder;
+
+    if (CurrentPrjStr.empty())
+      CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
+          + std::string("</span>");
+    m_MainWindow.setStatusBarMessage("Current project: " + CurrentPrjStr);
+  } else
+  {
+    throw openfluid::base::OFException("OpenFLUID Builder",
+        "BuilderAppCoordinator::setProjectModule",
+        "ProjectModule needs an opened Project Manager");
+  }
+
 }
 
 
@@ -272,7 +301,6 @@ BuilderModule* BuilderAppCoordinator::getCurrentModule()
   return mp_CurrentModule;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -283,7 +311,6 @@ void BuilderAppCoordinator::quitApp()
   m_MainWindow.hide();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -293,7 +320,6 @@ bool BuilderAppCoordinator::showCloseProjectDialog()
   return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to close this project ?"));
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -310,17 +336,64 @@ bool BuilderAppCoordinator::showQuitAppDialog()
 // =====================================================================
 
 
-std::string BuilderAppCoordinator::showOpenProjectDialog()
-{
-  return openfluid::guicommon::DialogBoxFactory::showOpenProjectDialog();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void BuilderAppCoordinator::showPreferencesDialog()
 {
   m_PreferencesModel.showAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::openProject()
+{
+  std::string ProjectFolder = mp_OpenProjectDialog->show();
+
+  if (ProjectFolder.empty())
+    return;
+
+  openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
+
+  setProjectModule(ProjectFolder);
+
+  setState(*getProjectState());
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::createProject()
+{
+  std::string ProjectFolder = mp_NewProjectDialog->show();
+
+  if (ProjectFolder.empty())
+    return;
+
+  openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
+
+  if(mp_NewProjectDialog->getImportDir().empty())
+    setProjectModule("");
+  else
+    setProjectModule(ProjectFolder);
+
+  setState(*getProjectState());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::closeProject()
+{
+  openfluid::base::ProjectManager::getInstance()->close();
+  setHomeModule();
+  setState(*getHomeState());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+BuilderAppCoordinator::~BuilderAppCoordinator()
+{
+  delete mp_NewProjectDialog;
 }

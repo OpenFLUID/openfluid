@@ -92,7 +92,7 @@ class HomeViewImpl: public HomeView
     Gtk::Label* mp_RecentLabel;
 
     BuilderHomeButton* mp_NewButton;
-    BuilderHomeButton* mp_NewFromButton;
+//    BuilderHomeButton* mp_NewFromButton;
     BuilderHomeButton* mp_OpenButton;
 
     BuilderHomeButton* mp_MarketButton;

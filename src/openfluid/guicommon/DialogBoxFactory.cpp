@@ -76,30 +76,6 @@ bool DialogBoxFactory::showSimpleOkCancelQuestionDialog(Glib::ustring Message)
 // =====================================================================
 
 
-Glib::ustring DialogBoxFactory::showOpenProjectDialog()
-{
-  Gtk::FileChooserDialog Dialog(_("Select existing project folder"),
-      Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
-
-  /* TODO: set default folder from Preferences */
-  Dialog.set_current_folder(
-      openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() + "/..");
-
-  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  Dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-
-  if (Dialog.run() == Gtk::RESPONSE_OK)
-  {
-    return Dialog.get_filename();
-  }
-
-  return "";
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,

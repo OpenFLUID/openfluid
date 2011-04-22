@@ -57,7 +57,6 @@
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderProjectWithExplorer.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -66,9 +65,7 @@ BuilderAppProjectState::BuilderAppProjectState(
     BuilderAppCoordinator& AppCoordinator) :
   m_App(AppCoordinator)
 {
-
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -77,9 +74,11 @@ BuilderAppProjectState::BuilderAppProjectState(
 void BuilderAppProjectState::whenNewProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
-    m_App.setProjectModule();
+  {
+    m_App.setHomeModule();
+    m_App.createProject();
+  }
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -89,11 +88,10 @@ void BuilderAppProjectState::whenOpenProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
   {
-    m_App.setProjectModule(m_App.showOpenProjectDialog());
-    m_App.setState(*m_App.getProjectState());
+    m_App.setHomeModule();
+    m_App.openProject();
   }
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -103,11 +101,9 @@ void BuilderAppProjectState::whenCloseProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
   {
-    m_App.setHomeModule();
-    m_App.setState(*m_App.getHomeState());
+    m_App.closeProject();
   }
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -127,16 +123,14 @@ void BuilderAppProjectState::whenQuitAsked()
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 void BuilderAppProjectState::whenRunAsked()
 {
-  ((BuilderProjectWithExplorer*)m_App.getCurrentModule())->runAsked();
+  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->runAsked();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -146,3 +140,23 @@ void BuilderAppProjectState::whenPreferencesAsked()
 {
   m_App.showPreferencesDialog();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenSaveAsked()
+{
+  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->saveAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenSaveAsAsked()
+{
+  std::cout << "save as asked " << std::endl;
+
+}
+
