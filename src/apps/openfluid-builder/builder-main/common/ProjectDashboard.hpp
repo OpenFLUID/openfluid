@@ -58,7 +58,7 @@
 #include <gtkmm.h>
 #include <glibmm/i18n.h>
 
-#include <openfluid/machine.hpp>
+#include "BuilderPretestInfo.hpp"
 
 class ProjectDashboard
 {
@@ -96,7 +96,7 @@ class ProjectDashboard
 
     ProjectDashboard();
 
-    void setCheckInfo(openfluid::machine::Engine::PretestInfos_t CheckInfo);
+    void setCheckInfo(BuilderPretestInfo CheckInfo);
 
     Gtk::Widget* asWidget();
 };

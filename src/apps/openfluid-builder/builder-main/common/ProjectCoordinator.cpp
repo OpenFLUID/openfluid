@@ -66,6 +66,7 @@
 
 #include <boost/foreach.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include "BuilderPretestInfo.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -86,8 +87,6 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
       &ProjectCoordinator::whenActivationChanged));
   m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenPageRemoved));
-
-  checkProject();
 }
 
 // =====================================================================
@@ -277,15 +276,16 @@ void ProjectCoordinator::updateWorkspaceModules()
 
 void ProjectCoordinator::checkProject()
 {
-  openfluid::machine::Engine::PretestInfos_t CheckInfo;
+  BuilderPretestInfo CheckInfo;
+
   m_EngineProject.check(CheckInfo);
+
+  CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
+      m_EngineProject.getCoreRepository());
+
   m_ProjectDashboard.setCheckInfo(CheckInfo);
 
-  bool IsCheckOk = false;
-  if (CheckInfo.ExtraFiles && CheckInfo.Inputdata && CheckInfo.Model)
-    IsCheckOk = true;
-
-  m_signal_CheckHappened.emit(IsCheckOk);
+  m_signal_CheckHappened.emit(CheckInfo.getGlobalCheckState());
 }
 
 // =====================================================================

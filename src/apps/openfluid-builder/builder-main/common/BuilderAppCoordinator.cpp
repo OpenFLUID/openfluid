@@ -278,6 +278,8 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     ProjectModule->signal_CheckHappened().connect(sigc::mem_fun(*this,
         &BuilderAppCoordinator::onCheckHappened));
 
+    ProjectModule->checkAsked();
+
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
     m_MainWindow.setStatusBarVisible(true);

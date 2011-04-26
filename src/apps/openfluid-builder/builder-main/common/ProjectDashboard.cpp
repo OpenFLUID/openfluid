@@ -91,8 +91,7 @@ ProjectDashboard::ProjectDashboard()
 // =====================================================================
 
 
-void ProjectDashboard::setCheckInfo(
-    openfluid::machine::Engine::PretestInfos_t CheckInfo)
+void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
 {
   mref_TreeModel->clear();
 
@@ -117,8 +116,8 @@ void ProjectDashboard::setCheckInfo(
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Domain structure");
-  Row[m_Columns.m_StateIcon] = m_OrangeIcon;
-  Row[m_Columns.m_StateInfo] = "not yet functionnal";
+  Row[m_Columns.m_StateIcon] = CheckInfo.Domain ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] = CheckInfo.Domain ? "ok" : CheckInfo.DomainMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Input data");
@@ -135,8 +134,13 @@ void ProjectDashboard::setCheckInfo(
 std::string ProjectDashboard::minimiseInfoString(std::string InfoString)
 {
   int i = InfoString.find("(sent by");
-  Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
-  return MinimizedStr;
+  if (i != std::string::npos)
+  {
+    Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
+    return MinimizedStr;
+  }
+
+  return InfoString;
 }
 
 // =====================================================================

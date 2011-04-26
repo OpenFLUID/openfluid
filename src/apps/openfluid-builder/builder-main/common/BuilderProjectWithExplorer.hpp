@@ -112,6 +112,8 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     void saveAsked();
 
+    void checkAsked();
+
 };
 
 #endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */

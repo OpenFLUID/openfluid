@@ -165,6 +165,15 @@ void BuilderProjectWithExplorer::saveAsked()
 // =====================================================================
 
 
+void BuilderProjectWithExplorer::checkAsked()
+{
+  mp_Coordinator->checkProject();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderProjectWithExplorer::asWidget()
 {
   return mp_MainPaned;

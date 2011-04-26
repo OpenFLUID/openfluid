@@ -46,96 +46,31 @@
  */
 
 /**
- \file ProjectCoordinator.hpp
+ \file BuilderPrestestInfo.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __PROJECTCOORDINATOR_HPP__
-#define __PROJECTCOORDINATOR_HPP__
+#ifndef __BUILDERPRESTESTINFO_HPP__
+#define __BUILDERPRESTESTINFO_HPP__
 
-#include <openfluid/machine.hpp>
+#include <openfluid/machine/Engine.hpp>
 
-class ProjectExplorerModel;
-class ProjectWorkspace;
-class ProjectWorkspaceModule;
-class EngineProject;
-class BuilderModuleFactory;
-class ProjectDashboard;
-
-class ProjectCoordinator
-{
-  private:
-
-    sigc::signal<void, bool> m_signal_CheckHappened;
-
-    ProjectExplorerModel& m_ExplorerModel;
-
-    ProjectWorkspace& m_Workspace;
-
-    EngineProject& m_EngineProject;
-
-    ProjectDashboard& m_ProjectDashboard;
-
-    BuilderModuleFactory* mp_ModuleFactory;
-
-    std::map<std::string, ProjectWorkspaceModule*> m_ModulesByPageNameMap;
-
-    std::vector<std::string> m_ClassPageNames;
-
-    std::vector<std::string> m_SetPageNames;
-
-    void whenActivationChanged();
-
-    void whenDomainChanged();
-
-    void whenClassChanged();
-
-    void whenRunChanged();
-
-    void whenOutChanged();
-
-    void whenResultsChanged();
-
-    void whenPageRemoved(std::string RemovedPageName);
-
-    void updateWorkspaceModules();
-
-  protected:
-
-    void whenModelChanged();
-
-    std::vector<std::string> getClassPagesToDelete();
-
-    std::vector<std::string> getSetPagesToDelete();
-
-  public:
-
-    sigc::signal<void, bool> signal_CheckHappened();
-
-    ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
-        ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
-        ProjectDashboard& TheProjectDashboard);
-
-    ~ProjectCoordinator();
-
-    void checkProject();
-
-};
-
-class ProjectCoordinatorSub: public ProjectCoordinator
+class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 {
   public:
 
-    ProjectCoordinatorSub(ProjectExplorerModel& ExplorerModel,
-        ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
-        ProjectDashboard& TheProjectDashboard);
+    bool Domain;
 
-    void whenModelChanged();
+    std::string DomainMsg;
 
-    std::vector<std::string> getWorkspacePagesToDelete();
+    BuilderPretestInfo();
 
+    void addBuilderInfo(openfluid::machine::ModelInstance* ModelInstance,
+        openfluid::core::CoreRepository& CoreRepos);
+
+    bool getGlobalCheckState();
 };
 
-#endif /* __PROJECTCOORDINATOR_HPP__ */
+#endif /* __BUILDERPRESTESTINFO_HPP__ */
