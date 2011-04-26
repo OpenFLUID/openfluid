@@ -95,8 +95,8 @@ SimulRunViewImpl::SimulRunViewImpl()
   Gtk::Label* DeltaLabel = Gtk::manage(new Gtk::Label(_("Delta T")));
   Gtk::Label* DeltaUnit = Gtk::manage(new Gtk::Label(_("seconds")));
   mp_DeltaSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_DeltaSpin->set_range(0.0, 86400.0); //->24h
-  mp_DeltaSpin->set_increments(60, 3600);
+  mp_DeltaSpin->set_range(1.0, 86400.0); //->24h
+  mp_DeltaSpin->set_increments(1, 3600);
   mp_DeltaSpin->set_numeric(true);
   mp_DeltaSpin->signal_value_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onDeltaChanged));

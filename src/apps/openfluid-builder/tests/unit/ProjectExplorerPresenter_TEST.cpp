@@ -62,7 +62,7 @@
 #include "ProjectExplorerComponent.hpp"
 #include "ProjectExplorerModel.hpp"
 #include "ProjectExplorerView.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -100,7 +100,7 @@ BOOST_FIXTURE_TEST_SUITE(ProjectExplorerPresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
 
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
 
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
 

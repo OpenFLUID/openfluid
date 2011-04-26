@@ -58,6 +58,7 @@
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 #include <boost/filesystem.hpp>
 
@@ -65,8 +66,11 @@
 // =====================================================================
 
 
-EngineProject::EngineProject(bool WithProjectManager) :
-  m_WithProjectManager(WithProjectManager)
+EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
+  m_WithProjectManager(WithProjectManager), m_DefaultBeginDT(
+      openfluid::core::DateTime(2000, 01, 01, 00, 00, 00)), m_DefaultEndDT(
+      openfluid::core::DateTime(2000, 01, 01, 07, 00, 00)),
+      m_DefaultDeltaT(120)
 {
   mp_SimBlob = new openfluid::machine::SimulationBlob();
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
@@ -83,6 +87,90 @@ EngineProject::EngineProject(bool WithProjectManager) :
 
   mp_ModelInstance->resetInitialized();
 
+  if (FolderIn == "")
+  {
+    openfluid::base::RunDescriptor RunDesc(m_DefaultDeltaT, m_DefaultBeginDT,
+        m_DefaultEndDT);
+    RunDesc.setFilled(true);
+
+    getRunDescriptor() = RunDesc;
+  } else
+  {
+    openfluid::io::FluidXReader FXReader(mp_IOListener);
+
+    try
+    {
+      FXReader.loadFromDirectory(
+          WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
+              : FolderIn);
+    } catch (openfluid::base::OFException e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
+    }
+
+    openfluid::base::RunDescriptor RunDesc = FXReader.getRunDescriptor();
+
+    checkAndSetDefaultRunValues(RunDesc);
+
+    try
+    {
+      openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
+          FXReader.getDomainDescriptor(), RunDesc,
+          FXReader.getOutputDescriptor(), *mp_SimBlob);
+
+      openfluid::machine::Factory::buildModelInstanceFromDescriptor(
+          FXReader.getModelDescriptor(), *mp_ModelInstance);
+    } catch (openfluid::base::OFException e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
+    }
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::checkAndSetDefaultRunValues(
+    openfluid::base::RunDescriptor& RunDesc)
+{
+  openfluid::core::DateTime DT;
+
+  std::string Msg = "";
+
+  if (!DT.setFromISOString(RunDesc.getBeginDate().getAsISOString()))
+  {
+    Msg.append(
+        Glib::ustring::compose(
+            _("Wrong or undefined simulation begin date, it has been replaced by the default one:\n%1\n\n"),
+            m_DefaultBeginDT.getAsISOString()));
+
+    RunDesc.setBeginDate(m_DefaultBeginDT);
+  }
+  if (!DT.setFromISOString(RunDesc.getEndDate().getAsISOString()))
+  {
+    Msg.append(
+        Glib::ustring::compose(
+            _("Wrong or undefined simulation end date, it has been replaced by the default one:\n%1\n\n"),
+            m_DefaultEndDT.getAsISOString()));
+
+    RunDesc.setEndDate(m_DefaultEndDT);
+  }
+  if (RunDesc.getDeltaT() < 1)
+  {
+    Msg.append(
+        Glib::ustring::compose(
+            _("Wrong or undefined simulation deltat T, it has been replaced by the default one:\n%1\n"),
+            m_DefaultDeltaT));
+
+    RunDesc.setDeltaT(m_DefaultDeltaT);
+  }
+
+  if (Msg != "")
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(Msg);
+    RunDesc.setFilled(true);
+  }
 }
 
 // =====================================================================
@@ -97,7 +185,8 @@ void EngineProject::run()
 
   mp_ModelInstance->initialize();
 
-  openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(getRunDescriptor());
+  openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
+      getRunDescriptor());
 
   openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
 
@@ -231,56 +320,8 @@ EngineProject::~EngineProject()
   delete mp_IOListener;
   delete mp_SimBlob;
   //don't delete mp_RunEnv, which is a singleton
-  if(m_WithProjectManager)
+  if (m_WithProjectManager)
     getRunEnv()->detachFromProject();
   delete mp_Engine;
-}
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
-EngineProjectEmpty::EngineProjectEmpty(bool WithProjectManager) :
-  EngineProject(WithProjectManager)
-{
-  openfluid::base::RunDescriptor RunDesc(120, openfluid::core::DateTime(2000,
-      01, 01, 00, 00, 00), openfluid::core::DateTime(2000, 01, 01, 07, 00, 00));
-  RunDesc.setFilled(true);
-
-  getRunDescriptor() = RunDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
-EngineProjectFromFolder::EngineProjectFromFolder(std::string FolderIn,
-    bool WithProjectManager) :
-  EngineProject(WithProjectManager)
-{
-  try
-  {
-    openfluid::io::FluidXReader FXReader(mp_IOListener);
-
-    FXReader.loadFromDirectory(
-        WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
-            : FolderIn);
-
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-        FXReader.getDomainDescriptor(), FXReader.getRunDescriptor(),
-        FXReader.getOutputDescriptor(), *mp_SimBlob);
-
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-        FXReader.getModelDescriptor(), *mp_ModelInstance);
-  } catch (openfluid::base::OFException e)
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
-  }
 }
 

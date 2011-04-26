@@ -58,7 +58,7 @@
 #define BOOST_TEST_MODULE builder_unittest_ProjectCoordinator
 #include <boost/test/unit_test.hpp>
 
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "ProjectExplorerComponent.hpp"
 #include "ProjectWorkspace.hpp"
 #include "ProjectCoordinator.hpp"
@@ -78,7 +78,7 @@ struct init_Coordinator
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
-      mp_EngProject = EngineProjectFactory::createEngineProject(Path);
+      mp_EngProject = new EngineProject(Path);
 
       mp_ProjectExplorerMVP = new ProjectExplorerComponent();
 

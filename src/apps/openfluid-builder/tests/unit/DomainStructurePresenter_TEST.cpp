@@ -62,7 +62,7 @@
 #include "DomainStructureComponent.hpp"
 #include "DomainStructureModel.hpp"
 #include "DomainStructureView.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_constructors)
 
 BOOST_AUTO_TEST_CASE(test_SetEmptyCoreRepos)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(test_SetCoreRepos)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(test_SetCoreRepos)
 
 BOOST_AUTO_TEST_CASE(test_addUnit)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
 
 BOOST_AUTO_TEST_CASE(test_selectClass)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
@@ -207,7 +207,7 @@ BOOST_AUTO_TEST_CASE(test_selectClass)
 
 BOOST_AUTO_TEST_CASE(test_selectUnit)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(test_selectUnit)
 
 BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
 
 BOOST_AUTO_TEST_CASE(test_alterUnit)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 

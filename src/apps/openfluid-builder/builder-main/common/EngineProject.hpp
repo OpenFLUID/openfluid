@@ -64,7 +64,15 @@
 
 class EngineProject
 {
-  protected:
+  private:
+
+    bool m_WithProjectManager;
+
+    openfluid::core::DateTime m_DefaultBeginDT;
+
+    openfluid::core::DateTime m_DefaultEndDT;
+
+    int m_DefaultDeltaT;
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
@@ -78,11 +86,11 @@ class EngineProject
 
     openfluid::machine::Engine* mp_Engine;
 
-    bool m_WithProjectManager;
-
-    EngineProject(bool WithProjectManager);
+    void checkAndSetDefaultRunValues(openfluid::base::RunDescriptor& RunDesc);
 
   public:
+
+    EngineProject(std::string FolderIn = "", bool WithProjectManager = false);
 
     void run();
 
@@ -110,28 +118,6 @@ class EngineProject
 
     ~EngineProject();
 
-};
-
-// =====================================================================
-// =====================================================================
-
-
-class EngineProjectEmpty: public EngineProject
-{
-  public:
-
-    EngineProjectEmpty(bool WithProjectManager);
-};
-
-// =====================================================================
-// =====================================================================
-
-
-class EngineProjectFromFolder: public EngineProject
-{
-  public:
-
-    EngineProjectFromFolder(std::string FolderIn, bool WithProjectManager);
 };
 
 #endif /* __ENGINEPROJECT_HPP__ */

@@ -70,7 +70,7 @@
 BuilderProjectWithExplorer::BuilderProjectWithExplorer(
     std::string ProjectFolder)
 {
-  mp_EngineProject = EngineProjectFactory::createEngineProject(ProjectFolder,
+  mp_EngineProject = new EngineProject(ProjectFolder,
       true);
 
   mp_ProjectExplorerMVP = new ProjectExplorerComponent();

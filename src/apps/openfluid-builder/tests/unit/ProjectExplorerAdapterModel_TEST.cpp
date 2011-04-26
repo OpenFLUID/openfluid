@@ -61,7 +61,7 @@
 #include "BuilderTestHelper.hpp"
 #include "ProjectExplorerAdapterModel.hpp"
 #include "ProjectExplorerColumns.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(test_updateModel)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setModelInstance(EngProject->getModelInstance());
 
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(test_updateDomain)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(test_updateRunInfo)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
 
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(test_updateResults)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
 

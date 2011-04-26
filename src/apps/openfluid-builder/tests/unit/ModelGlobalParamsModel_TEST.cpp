@@ -60,7 +60,7 @@
 
 #include "BuilderTestHelper.hpp"
 #include "ModelGlobalParamsModel.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 #include <openfluid/machine.hpp>
 
@@ -79,7 +79,7 @@ struct init_Model
       mp_Model = new ModelGlobalParamsModelSub();
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
-      mp_EngProject = EngineProjectFactory::createEngineProject(Path);
+      mp_EngProject = new EngineProject(Path);
     }
 
     ~init_Model()

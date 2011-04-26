@@ -53,7 +53,7 @@
 
 #include "BuilderTestHelper.hpp"
 #include "SimulOutSetsModel.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(test_setEngineRequirements)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_getSelectedFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedSet)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(test_addSet)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedSet)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(test_updateFileFormats)
 {
   //  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   //  + "/OPENFLUID.IN.Primitives";
-  //  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  //  EngineProject* p_EngProject = new EngineProject(Path);
   //
   //  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
   //  mp_Model->setSelectedSetName("partial");

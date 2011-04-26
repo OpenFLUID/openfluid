@@ -60,7 +60,7 @@
 
 #include "BuilderTestHelper.hpp"
 #include "SimulOutFilesModel.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(test_setEngineRequirements)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(test_getSelectedFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedFileFormat2Formats)
 {
 //  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
 //  + "/OPENFLUID.IN.Primitives";
-//  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+//  EngineProject* p_EngProject = new EngineProject(Path);
 //
 //  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 //
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(test_updateFileFormats)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(test_updateFileFormats)
 
 BOOST_AUTO_TEST_CASE(test_addFileFormatToEmptyFilesSet)
 {
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* p_EngProject = new EngineProject();
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),0);
@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 

@@ -62,7 +62,7 @@
 #include "SimulRunComponent.hpp"
 #include "SimulRunModel.hpp"
 #include "SimulRunView.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -90,7 +90,7 @@ struct init_Presenter
 
       openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(
           CONFIGTESTS_OUTPUT_DATA_DIR + "/SimulRunPresenter_TEST.OUT");
-      mp_EngProject = EngineProjectFactory::createEngineProject(Path);
+      mp_EngProject = new EngineProject(Path);
 
       mp_Model->setEngineRequirements(mp_EngProject->getRunDescriptor());
     }

@@ -62,7 +62,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "BuilderTestHelper.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "GeneratorSignature.hpp"
 #include "FunctionSignatureRegistry.hpp"
 #include "ModelItemInstanceFactory.hpp"
@@ -87,7 +87,7 @@ BOOST_FIXTURE_TEST_SUITE(EngineProjectTest, init_Engine)
 
 BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),0);
   BOOST_CHECK_EQUAL(EngProject->getCoreRepository().getUnitsGlobally()->size(),0);
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 
 BOOST_AUTO_TEST_CASE(test_addItems_Empty)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getPlugin("tests.primitives.prod"));
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
   BOOST_CHECK_EQUAL(EngProject->getCoreRepository().getUnitsGlobally()->size(),14);
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(test_addItems_FromFolder)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getPlugin("tests.vector.prod"));
 

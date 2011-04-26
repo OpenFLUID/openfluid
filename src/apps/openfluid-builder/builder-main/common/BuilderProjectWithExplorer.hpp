@@ -59,7 +59,7 @@
 #include <glibmm/i18n.h>
 
 #include "BuilderModule.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 
 class ProjectExplorerComponent;
 class ProjectWorkspace;

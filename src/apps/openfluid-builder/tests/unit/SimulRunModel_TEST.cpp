@@ -60,7 +60,7 @@
 
 #include "BuilderTestHelper.hpp"
 #include "SimulRunModel.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(test_setRunDescriptor)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
 
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(test_setInvalidDateTime)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
 
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(test_setValidDateTime)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
 
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(test_setValuesBuff)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
 
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(test_setOtherValues)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* p_EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
 

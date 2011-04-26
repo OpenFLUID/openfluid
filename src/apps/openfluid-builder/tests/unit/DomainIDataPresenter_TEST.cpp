@@ -62,7 +62,7 @@
 #include "DomainIDataComponent.hpp"
 #include "DomainIDataModel.hpp"
 #include "DomainIDataView.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -87,7 +87,7 @@ struct init_Presenter
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
-      mp_EngProject = EngineProjectFactory::createEngineProject(Path);
+      mp_EngProject = new EngineProject(Path);
 
       mp_Model->setEngineRequirements(mp_EngProject->getCoreRepository());
     }

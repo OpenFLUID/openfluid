@@ -53,7 +53,7 @@
 
 #include "BuilderTestHelper.hpp"
 #include "ModelStructureModel.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(test_getModelInstance)
 {
   BOOST_CHECK_THROW(mp_Model->getModelInstance(),openfluid::base::OFException);
 
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   BOOST_CHECK_EQUAL(mp_Model->getModelInstance(),EngProject->getModelInstance());
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(test_getModelInstance)
 
 BOOST_AUTO_TEST_CASE(test_setEmptyModelInstance)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(),0);
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_setNonEmptyModelInstance)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(),2);
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(test_setNonEmptyModelInstance)
 
 BOOST_AUTO_TEST_CASE(test_AppendAnUnavailableFunction)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   // create an unavailable function
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(test_AppendAnUnavailableFunction)
 
 BOOST_AUTO_TEST_CASE(test_AppendARegularFunction)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   openfluid::machine::SignatureItemInstance FctSignature =
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 
 BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -344,7 +344,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -400,7 +400,7 @@ BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject(Path);
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -413,7 +413,7 @@ BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
 
 BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 

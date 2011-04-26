@@ -55,7 +55,7 @@
 #include "ModelStructureComponent.hpp"
 #include "ModelStructureModel.hpp"
 #include "ModelStructureView.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "tests-config.hpp"
 
 // =====================================================================
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(test_SetModelInstance)
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),-1);
   BOOST_CHECK_EQUAL(mp_View->getRowNb(),0);
 
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(test_SetModelInstance)
 
 BOOST_AUTO_TEST_CASE(test_SelectAFunctionByApp)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(test_SelectAFunctionByApp)
 
 BOOST_AUTO_TEST_CASE(test_AppendAFunction)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(test_AppendAFunction)
 
 BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
 
 BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -294,7 +294,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 
 BOOST_AUTO_TEST_CASE(test_MoveFunction)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(test_MoveFunction)
 
 BOOST_AUTO_TEST_CASE(test_SelectAFunction)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -401,7 +401,7 @@ BOOST_AUTO_TEST_CASE(test_SelectAFunction)
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
@@ -454,7 +454,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 

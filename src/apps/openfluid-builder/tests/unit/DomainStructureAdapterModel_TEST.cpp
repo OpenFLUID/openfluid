@@ -61,7 +61,7 @@
 #include "BuilderTestHelper.hpp"
 #include "DomainStructureAdapterModel.hpp"
 #include "DomainStructureColumns.hpp"
-#include "EngineProjectFactory.hpp"
+#include "EngineProject.hpp"
 #include "BuilderClassListColumns.hpp"
 
 // =====================================================================
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
 BOOST_AUTO_TEST_CASE(test_setEmptyDomainStructure)
 {
-  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+  EngineProject* EngProject = new EngineProject();
 
   openfluid::core::UnitsListByClassMap_t UnitListByClass = *(EngProject->getCoreRepository().getUnitsByClass());
 
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyDomainStructure)
 
 //BOOST_AUTO_TEST_CASE(test_setRequestedClassSelectionOnNotEmptyDomain)
 //{
-//  EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+//  EngineProject* EngProject = new EngineProject();
 //
 //  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
 //  EngProject->getCoreRepository().addUnit(U);
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyDomainStructure)
 
 BOOST_AUTO_TEST_CASE(test_setDomainStructure)
 {
-    EngineProject* EngProject = EngineProjectFactory::createEngineProject();
+    EngineProject* EngProject = new EngineProject();
 
     openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
     EngProject->getCoreRepository().addUnit(U);
