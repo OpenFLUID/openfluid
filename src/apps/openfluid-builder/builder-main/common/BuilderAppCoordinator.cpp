@@ -268,15 +268,14 @@ void BuilderAppCoordinator::setHomeModule()
 
 void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 {
-  if (openfluid::base::ProjectManager::isProject(ProjectFolder)
-      && openfluid::base::ProjectManager::getInstance()->isOpened())
+  if (openfluid::base::ProjectManager::getInstance()->isOpened())
   {
     setCurrentModule(new BuilderProjectWithExplorer(ProjectFolder));
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
     m_MainWindow.setStatusBarVisible(true);
 
-    std::string CurrentPrjStr = ProjectFolder;
+    std::string CurrentPrjStr = openfluid::base::ProjectManager::getInstance()->getPath();
 
     if (CurrentPrjStr.empty())
       CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
