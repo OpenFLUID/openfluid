@@ -52,9 +52,9 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
-
 #include "BuilderAppCoordinator.hpp"
+
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 #include "BuilderAppWindow.hpp"
 #include "BuilderModuleFactory.hpp"
@@ -270,12 +270,20 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 {
   if (openfluid::base::ProjectManager::getInstance()->isOpened())
   {
-    setCurrentModule(new BuilderProjectWithExplorer(ProjectFolder));
+    BuilderProjectWithExplorer* ProjectModule = new BuilderProjectWithExplorer(
+        ProjectFolder);
+
+    setCurrentModule(ProjectModule);
+
+    ProjectModule->signal_CheckHappened().connect(sigc::mem_fun(*this,
+        &BuilderAppCoordinator::onCheckHappened));
+
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
     m_MainWindow.setStatusBarVisible(true);
 
-    std::string CurrentPrjStr = openfluid::base::ProjectManager::getInstance()->getPath();
+    std::string CurrentPrjStr =
+        openfluid::base::ProjectManager::getInstance()->getPath();
 
     if (CurrentPrjStr.empty())
       CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
@@ -290,6 +298,14 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::onCheckHappened(bool IsCheckOk)
+{
+  m_Actions.getSimulationRunAction()->set_sensitive(IsCheckOk);
+}
 
 // =====================================================================
 // =====================================================================
@@ -330,7 +346,6 @@ bool BuilderAppCoordinator::showQuitAppDialog()
       _("Are you sure you want to quit ?"));
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -369,7 +384,7 @@ void BuilderAppCoordinator::createProject()
 
   openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
 
-  if(mp_NewProjectDialog->getImportDir().empty())
+  if (mp_NewProjectDialog->getImportDir().empty())
     setProjectModule("");
   else
     setProjectModule(ProjectFolder);

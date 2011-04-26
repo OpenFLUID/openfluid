@@ -128,12 +128,17 @@ void ProjectDashboard::setCheckInfo(
 
 }
 
+// =====================================================================
+// =====================================================================
+
+
 std::string ProjectDashboard::minimiseInfoString(std::string InfoString)
 {
   int i = InfoString.find("(sent by");
   Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
   return MinimizedStr;
 }
+
 // =====================================================================
 // =====================================================================
 

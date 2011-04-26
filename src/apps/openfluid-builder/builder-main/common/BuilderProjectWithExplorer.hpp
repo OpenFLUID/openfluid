@@ -58,6 +58,8 @@
 #include <gtkmm.h>
 #include <glibmm/i18n.h>
 
+#include <sigc++/sigc++.h>
+
 #include "BuilderModule.hpp"
 #include "EngineProject.hpp"
 
@@ -68,9 +70,11 @@ class ProjectDashboard;
 
 class BuilderListToolBoxFactory;
 
-class BuilderProjectWithExplorer: public BuilderModule
+class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 {
   private:
+
+    sigc::signal<void, bool> m_signal_CheckHappened;
 
     EngineProject* mp_EngineProject;
 
@@ -86,6 +90,8 @@ class BuilderProjectWithExplorer: public BuilderModule
 
     Gtk::Paned* mp_MainPaned;
 
+    void whenCheckHappened(bool IsCheckOk);
+
   protected:
 
     void compose();
@@ -95,6 +101,8 @@ class BuilderProjectWithExplorer: public BuilderModule
   public:
 
     BuilderProjectWithExplorer(std::string ProjectFolder);
+
+    sigc::signal<void, bool> signal_CheckHappened();
 
     ~BuilderProjectWithExplorer();
 

@@ -68,6 +68,8 @@ class ProjectCoordinator
 {
   private:
 
+    sigc::signal<void, bool> m_signal_CheckHappened;
+
     ProjectExplorerModel& m_ExplorerModel;
 
     ProjectWorkspace& m_Workspace;
@@ -111,6 +113,8 @@ class ProjectCoordinator
     std::vector<std::string> getSetPagesToDelete();
 
   public:
+
+    sigc::signal<void, bool> signal_CheckHappened();
 
     ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
         ProjectWorkspace& Workspace, EngineProject& TheEngineProject,

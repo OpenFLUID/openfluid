@@ -94,6 +94,15 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
 // =====================================================================
 
 
+sigc::signal<void, bool> ProjectCoordinator::signal_CheckHappened()
+{
+  return m_signal_CheckHappened;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 ProjectCoordinator::~ProjectCoordinator()
 {
   // TODO Auto-generated destructor stub
@@ -271,6 +280,12 @@ void ProjectCoordinator::checkProject()
   openfluid::machine::Engine::PretestInfos_t CheckInfo;
   m_EngineProject.check(CheckInfo);
   m_ProjectDashboard.setCheckInfo(CheckInfo);
+
+  bool IsCheckOk = false;
+  if (CheckInfo.ExtraFiles && CheckInfo.Inputdata && CheckInfo.Model)
+    IsCheckOk = true;
+
+  m_signal_CheckHappened.emit(IsCheckOk);
 }
 
 // =====================================================================

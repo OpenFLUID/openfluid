@@ -70,8 +70,7 @@
 BuilderProjectWithExplorer::BuilderProjectWithExplorer(
     std::string ProjectFolder)
 {
-  mp_EngineProject = new EngineProject(ProjectFolder,
-      true);
+  mp_EngineProject = new EngineProject(ProjectFolder, true);
 
   mp_ProjectExplorerMVP = new ProjectExplorerComponent();
 
@@ -82,8 +81,29 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
   mp_Coordinator = new ProjectCoordinator(*mp_ProjectExplorerMVP->getModel(),
       *mp_Workspace, *mp_EngineProject, *mp_ProjectDashboard);
 
+  mp_Coordinator->signal_CheckHappened().connect(sigc::mem_fun(*this,
+      &BuilderProjectWithExplorer::whenCheckHappened));
+
   mp_ToolBoxFactory = new BuilderListToolBoxFactory();
 
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProjectWithExplorer::whenCheckHappened(bool IsCheckOk)
+{
+  m_signal_CheckHappened.emit(IsCheckOk);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, bool> BuilderProjectWithExplorer::signal_CheckHappened()
+{
+  return m_signal_CheckHappened;
 }
 
 // =====================================================================

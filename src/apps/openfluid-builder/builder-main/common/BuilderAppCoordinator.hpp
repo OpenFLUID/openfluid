@@ -48,6 +48,8 @@
 #ifndef BUILDERAPPCOORDINATOR_HPP_
 #define BUILDERAPPCOORDINATOR_HPP_
 
+#include <sigc++/sigc++.h>
+
 #include "BuilderAppActions.hpp"
 #include "BuilderModule.hpp"
 #include "BuilderAppState.hpp"
@@ -58,7 +60,7 @@ class PreferencesModel;
 class EngineProjectNewDialog;
 class EngineProjectOpenDialog;
 
-class BuilderAppCoordinator
+class BuilderAppCoordinator: public sigc::trackable
 {
   private:
     BuilderAppWindow& m_MainWindow;
@@ -95,6 +97,8 @@ class BuilderAppCoordinator
     void whenSaveAsked();
 
     void whenSaveAsAsked();
+
+    void onCheckHappened(bool IsCheckOk);
 
 
   public:
