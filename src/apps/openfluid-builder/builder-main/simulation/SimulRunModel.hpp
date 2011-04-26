@@ -63,58 +63,111 @@
 class SimulRunModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppDescriptorChanged() = 0;
+
     virtual sigc::signal<void> signal_FromAppBeginValidityChanged() = 0;
+
     virtual sigc::signal<void> signal_FromAppEndValidityChanged() = 0;
+
+    virtual sigc::signal<void> signal_SimulRunChanged() = 0;
+
     virtual void
     setEngineRequirements(openfluid::base::RunDescriptor& RunDesc) = 0;
+
     virtual int getDelta() = 0;
+
     virtual bool isBeginValid() = 0;
+
     virtual bool isEndValid() = 0;
+
     virtual std::string getBegin() = 0;
+
     virtual std::string getEnd() = 0;
+
     virtual bool isValuesBuffSet() = 0;
+
     virtual int getValuesBuff() = 0;
+
     virtual int getFilesBuff() = 0;
+
     virtual void setDelta(int Value) = 0;
+
     virtual void setBegin(std::string Begin) = 0;
+
     virtual void setEnd(std::string End) = 0;
+
     virtual void setValuesBuffIsSet(bool IsSet) = 0;
+
     virtual void setValuesBuff(int Value) = 0;
+
     virtual void setFilesBuff(int Value) = 0;
 };
 
 class SimulRunModelImpl: public SimulRunModel
 {
   private:
+
     sigc::signal<void> m_signal_FromAppDescriptorChanged;
+
     sigc::signal<void> m_signal_FromAppBeginValidityChanged;
+
     sigc::signal<void> m_signal_FromAppEndValidityChanged;
+
+    sigc::signal<void> m_signal_SimulRunChanged;
+
     openfluid::base::RunDescriptor* mp_RunDesc;
+
     bool m_isCurrentBeginValid;
+
     bool m_isCurrentEndValid;
+
     openfluid::core::DateTime m_EndTmp;
+
     void setBegin(openfluid::core::DateTime DateTime);
+
     void setEnd(openfluid::core::DateTime DateTime);
+
   public:
+
     SimulRunModelImpl();
+
     sigc::signal<void> signal_FromAppDescriptorChanged();
+
     sigc::signal<void> signal_FromAppBeginValidityChanged();
+
     sigc::signal<void> signal_FromAppEndValidityChanged();
+
+    sigc::signal<void> signal_SimulRunChanged();
+
     void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc);
+
     int getDelta();
+
     bool isBeginValid();
+
     bool isEndValid();
+
     std::string getBegin();
+
     std::string getEnd();
+
     int getValuesBuff();
+
     bool isValuesBuffSet();
+
     int getFilesBuff();
+
     void setDelta(int Value);
+
     void setBegin(std::string Begin);
+
     void setEnd(std::string End);
+
     void setValuesBuffIsSet(bool IsSet);
+
     void setValuesBuff(int Value);
+
     void setFilesBuff(int Value);
 };
 

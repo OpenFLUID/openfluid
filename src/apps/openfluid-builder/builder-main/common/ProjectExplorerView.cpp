@@ -99,11 +99,16 @@ sigc::signal<void> ProjectExplorerViewImpl::signal_ActivationChanged()
 void ProjectExplorerViewImpl::setTreeModel(
     Glib::RefPtr<Gtk::TreeModel> TreeModel)
 {
+  Gtk::TreePath RunRowPath = TreeModel->get_path(TreeModel->get_iter("2:0"));
+
+  bool RunRowIsExpanded = mp_TreeView->row_expanded(RunRowPath);
+
   mp_TreeView->set_model(TreeModel);
   mp_TreeView->expand_all();
-  mp_TreeView->collapse_row(TreeModel->get_path(TreeModel->get_iter("2:0")));
-}
 
+  if (!RunRowIsExpanded)
+    mp_TreeView->collapse_row(RunRowPath);
+}
 
 // =====================================================================
 // =====================================================================
@@ -116,7 +121,6 @@ void ProjectExplorerViewImpl::onRowActivated(const Gtk::TreeModel::Path& Path,
   m_signal_ActivationChanged.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -126,7 +130,6 @@ Gtk::TreePath ProjectExplorerViewImpl::getActivatedPath()
   return m_ActivatedPath;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -135,7 +138,6 @@ Gtk::Widget* ProjectExplorerViewImpl::asWidget()
 {
   return mp_MainWindow;
 }
-
 
 // =====================================================================
 // =====================================================================

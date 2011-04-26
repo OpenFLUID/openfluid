@@ -264,9 +264,9 @@ void ProjectExplorerAdapterModelImpl::updateResults()
       int UnitsCount = 0;
 
       if(SetDesc.isAllUnits())
-      UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
+        UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
       else
-      UnitsCount = SetDesc.getUnitsIDs().size();
+        UnitsCount = SetDesc.getUnitsIDs().size();
 
       Row[m_Columns.m_Id] = SetName;
       Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);

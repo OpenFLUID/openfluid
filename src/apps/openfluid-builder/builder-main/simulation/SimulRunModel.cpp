@@ -56,73 +56,167 @@
 
 #include <glibmm/i18n.h>
 
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setBegin(openfluid::core::DateTime DateTime)
 {
   mp_RunDesc->setBeginDate(DateTime);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setEnd(openfluid::core::DateTime DateTime)
 {
   mp_RunDesc->setEndDate(DateTime);
 }
 
+// =====================================================================
+// =====================================================================
+
+
 SimulRunModelImpl::SimulRunModelImpl() :
   m_isCurrentBeginValid(true), m_isCurrentEndValid(true)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunModelImpl::signal_FromAppDescriptorChanged()
 {
   return m_signal_FromAppDescriptorChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunModelImpl::signal_FromAppBeginValidityChanged()
 {
   return m_signal_FromAppBeginValidityChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunModelImpl::signal_FromAppEndValidityChanged()
 {
   return m_signal_FromAppEndValidityChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulRunModelImpl::signal_SimulRunChanged()
+{
+  return m_signal_SimulRunChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setEngineRequirements(
     openfluid::base::RunDescriptor& RunDesc)
 {
   mp_RunDesc = &RunDesc;
   m_signal_FromAppDescriptorChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulRunModelImpl::getDelta()
 {
   return mp_RunDesc->getDeltaT();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool SimulRunModelImpl::isBeginValid()
 {
   return m_isCurrentBeginValid;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool SimulRunModelImpl::isEndValid()
 {
   return m_isCurrentEndValid;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulRunModelImpl::getBegin()
 {
   return mp_RunDesc->getBeginDate().getAsISOString();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulRunModelImpl::getEnd()
 {
   return mp_RunDesc->getEndDate().getAsISOString();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulRunModelImpl::getValuesBuff()
 {
   return mp_RunDesc->getValuesBufferSize();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool SimulRunModelImpl::isValuesBuffSet()
 {
   return mp_RunDesc->isUserValuesBufferSize();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulRunModelImpl::getFilesBuff()
 {
   return mp_RunDesc->getFilesBufferSizeInKB();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setDelta(int Value)
 {
   mp_RunDesc->setDeltaT(Value);
+
+  m_signal_SimulRunChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setBegin(std::string Begin)
 {
   bool CurrentValidity = m_isCurrentBeginValid;
@@ -139,8 +233,15 @@ void SimulRunModelImpl::setBegin(std::string Begin)
 
     if (CurrentValidity != m_isCurrentBeginValid)
       m_signal_FromAppBeginValidityChanged.emit();
+
+    m_signal_SimulRunChanged.emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setEnd(std::string End)
 {
   bool CurrentValidity = m_isCurrentEndValid;
@@ -157,21 +258,44 @@ void SimulRunModelImpl::setEnd(std::string End)
 
     if (CurrentValidity != m_isCurrentEndValid)
       m_signal_FromAppEndValidityChanged.emit();
+
+    m_signal_SimulRunChanged.emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setValuesBuffIsSet(bool IsSet)
 {
   if (!IsSet)
     mp_RunDesc->unsetUserValuesBufferSize();
   else
     setValuesBuff(getValuesBuff());
+
+  m_signal_SimulRunChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setValuesBuff(int Value)
 {
   mp_RunDesc->setValuesBufferSize(Value);
+
+  m_signal_SimulRunChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunModelImpl::setFilesBuff(int Value)
 {
   mp_RunDesc->setFilesBufferSizeInKB(Value);
+
+  m_signal_SimulRunChanged.emit();
 }
 

@@ -69,8 +69,8 @@ SimulationRunModule::SimulationRunModule()
 
   mp_SimulRunMVP = new SimulRunComponent();
 
-//  mp_SimulRunMVP->getModel()->signal_SimulationRunChanged().connect(sigc::mem_fun(*this,
-//      &SimulationRunModule::whenRunChanged));
+  mp_SimulRunMVP->getModel()->signal_SimulRunChanged().connect(sigc::mem_fun(
+      *this, &SimulationRunModule::whenRunChanged));
 }
 
 // =====================================================================
@@ -140,12 +140,11 @@ void SimulationRunModule::whenRunChanged()
   m_signal_SimulationRunChanged.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 void SimulationRunModule::update()
 {
-//  mp_SimulRunMVP->getModel()->update();
+  //  mp_SimulRunMVP->getModel()->update();
 }

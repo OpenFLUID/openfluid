@@ -97,6 +97,8 @@ void EngineProject::run()
 
   mp_ModelInstance->initialize();
 
+  openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(getRunDescriptor());
+
   openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
 
   RunDialog.set_modal(true);
