@@ -888,9 +888,9 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
     throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","directory " + DirPath + " does not exist");
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"fluidx",true);
-  std::vector<std::string> XMLFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"xml",true);
-
-  FluidXFilesToLoad.insert(FluidXFilesToLoad.end(),XMLFilesToLoad.begin(),XMLFilesToLoad.end());
+//  std::vector<std::string> XMLFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"xml",true);
+//
+//  FluidXFilesToLoad.insert(FluidXFilesToLoad.end(),XMLFilesToLoad.begin(),XMLFilesToLoad.end());
 
   if (FluidXFilesToLoad.size() == 0)
     throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::loadFromDirectory","no fluidx file found in directory " + DirPath);

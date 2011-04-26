@@ -217,50 +217,66 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddyhelp" "convert"
                               )
 
-  ADD_TEST(integration-BuddyConvert1314 "${BIN_OUTPUT_PATH}/openfluid-engine"
+  IF(${FULL_VERSION} VERSION_GREATER "1.3") 
+    ADD_TEST(integration-BuddyConvert1314 "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=13_14,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V13,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
                               )
+  ENDIF(${FULL_VERSION} VERSION_GREATER "1.3") 
 
-  ADD_TEST(integration-BuddyConvert1314Check "${BIN_OUTPUT_PATH}/openfluid-engine"
+  IF(${FULL_VERSION} EQUAL "1.4")  
+    ADD_TEST(integration-BuddyConvert1314Check "${BIN_OUTPUT_PATH}/openfluid-engine"
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted13to14"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+  ENDIF(${FULL_VERSION} EQUAL "1.4")  
 
-
-  ADD_TEST(integration-BuddyConvert1415 "${BIN_OUTPUT_PATH}/openfluid-engine"
+  IF(${FULL_VERSION} VERSION_GREATER "1.4") 
+    ADD_TEST(integration-BuddyConvert1415 "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=14_15,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
                               )
+  ENDIF(${FULL_VERSION} VERSION_GREATER "1.4") 
 
-  ADD_TEST(integration-BuddyConvert1415Check "${BIN_OUTPUT_PATH}/openfluid-engine"
+  IF(${FULL_VERSION} EQUAL "1.5")  
+    ADD_TEST(integration-BuddyConvert1415Check "${BIN_OUTPUT_PATH}/openfluid-engine"
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted14to15"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+  ENDIF(${FULL_VERSION} EQUAL "1.5")  
 
-  ADD_TEST(integration-BuddyConvert1516 "${BIN_OUTPUT_PATH}/openfluid-engine"
+  IF(${FULL_VERSION} VERSION_GREATER "1.5") 
+    ADD_TEST(integration-BuddyConvert1516 "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=15_16,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
                               )
-
-  ADD_TEST(integration-BuddyConvert1516Check "${BIN_OUTPUT_PATH}/openfluid-engine"
+  ENDIF(${FULL_VERSION} VERSION_GREATER "1.5")
+ 
+  IF(${FULL_VERSION} EQUAL "1.6")  
+    ADD_TEST(integration-BuddyConvert1516Check "${BIN_OUTPUT_PATH}/openfluid-engine"
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+  ENDIF(${FULL_VERSION} EQUAL "1.6")  
 
-  ADD_TEST(integration-BuddyConvert1516wBuff "${BIN_OUTPUT_PATH}/openfluid-engine"
+  IF(${FULL_VERSION} VERSION_GREATER "1.5")
+    ADD_TEST(integration-BuddyConvert1516wBuff "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=15_16,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
                               )
-
-  ADD_TEST(integration-BuddyConvert1516wBuffCheck "${BIN_OUTPUT_PATH}/openfluid-engine"
+  ENDIF(${FULL_VERSION} VERSION_GREATER "1.5")
+  
+  IF(${FULL_VERSION} EQUAL "1.6")  
+    ADD_TEST(integration-BuddyConvert1516wBuffCheck "${BIN_OUTPUT_PATH}/openfluid-engine"
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16wBuff"
                                        "-p" "${TEST_OUTPUT_PATH}"
+  
                               )
+  ENDIF(${FULL_VERSION} EQUAL "1.6")
 
 
   ADD_TEST(integration-BuddyNewDataHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
