@@ -70,8 +70,6 @@ class EngineProject
 
     openfluid::core::DateTime m_DefaultBeginDT;
 
-    openfluid::core::DateTime m_DefaultEndDT;
-
     int m_DefaultDeltaT;
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
