@@ -112,6 +112,8 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void whenGlobalParamUnset(std::string ParamName);
 
+    void whenParamsChanged();
+
   public:
 
         ModelStructureCoordinator(ModelFctDetailModel& FctDetailModel,

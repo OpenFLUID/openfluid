@@ -58,20 +58,22 @@
 #include "ModelFctParamsView.hpp"
 #include "ModelFctParamsPresenter.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
 
-ModelFctParamsComponent::ModelFctParamsComponent(openfluid::machine::ModelItemInstance* Item)
+ModelFctParamsComponent::ModelFctParamsComponent(
+    openfluid::machine::ModelItemInstance* Item)
 {
   mp_Model = new ModelFctParamsModelImpl();
   mp_View = new ModelFctParamsViewImpl();
   mp_Presenter = new ModelFctParamsPresenter(*mp_Model, *mp_View);
 
+  mp_Model->signal_ParamsChanged().connect(sigc::mem_fun(*this,
+      &ModelFctParamsComponent::whenParamsChanged));
+
   mp_Model->setModelItemInstance(Item);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -84,7 +86,6 @@ ModelFctParamsComponent::~ModelFctParamsComponent()
   delete mp_View;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -94,7 +95,6 @@ Gtk::Widget* ModelFctParamsComponent::asWidget()
   return mp_View->asWidget();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -103,3 +103,22 @@ ModelFctParamsModel* ModelFctParamsComponent::getModel()
 {
   return mp_Model;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsComponent::whenParamsChanged()
+{
+  m_signal_ParamsChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsComponent::signal_ParamsChanged()
+{
+  return m_signal_ParamsChanged;
+}
+

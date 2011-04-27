@@ -55,13 +55,15 @@
 #include "BuilderPretestInfo.hpp"
 
 #include <glibmm/i18n.h>
-
+#include <boost/foreach.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-BuilderPretestInfo::BuilderPretestInfo():Domain(true),DomainMsg("")
+BuilderPretestInfo::BuilderPretestInfo() :
+  Domain(true), DomainMsg(""), Params(true), ParamsMsg(""), Project(true),
+      ProjectMsg(""), Outputs(true), OutputsMsg("")
 {
 }
 
@@ -71,7 +73,7 @@ BuilderPretestInfo::BuilderPretestInfo():Domain(true),DomainMsg("")
 
 void BuilderPretestInfo::addBuilderInfo(
     openfluid::machine::ModelInstance* ModelInstance,
-    openfluid::core::CoreRepository& CoreRepos)
+    openfluid::machine::SimulationBlob* SimBlob)
 {
   if (ModelInstance->getItemsCount() == 0)
   {
@@ -79,11 +81,103 @@ void BuilderPretestInfo::addBuilderInfo(
     ModelMsg = _("Model is empty");
   }
 
-  if(CoreRepos.getUnitsGlobally()->empty())
+  if (SimBlob->getCoreRepository().getUnitsGlobally()->empty())
   {
     Domain = false;
     DomainMsg = _("Domain is empty");
   }
+
+  Outputs = true;
+
+  if (SimBlob->getOutputDescriptor().getFileSets().empty())
+  {
+    Outputs = false;
+    OutputsMsg = _("No file format defined");
+  } else
+  {
+    bool SetsEmpty = true;
+    unsigned int i = 0;
+    while (i < SimBlob->getOutputDescriptor().getFileSets().size() && SetsEmpty)
+    {
+      SetsEmpty
+          = SimBlob->getOutputDescriptor().getFileSets()[i].getSets().empty();
+      i++;
+    }
+    if (SetsEmpty)
+    {
+      Outputs = false;
+      OutputsMsg = _("No set defined");
+    }
+  }
+
+  Params = Project = true;
+  ParamsMsg = ProjectMsg = "";
+
+  bool CheckVar;
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
+  {
+    CheckVar = true;
+
+    CheckVar = (Item->Params.find(Param.DataName) != Item->Params.end()
+        && Item->Params[Param.DataName] != "");
+
+    if(!CheckVar)
+    {
+      Params = false;
+      ParamsMsg.append(Glib::ustring::compose(_("%1 is missing\n"),Param.DataName));
+    }
+  }
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {
+    CheckVar = true;
+
+    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
+
+    if(!CheckVar)
+    {
+      Project = false;
+      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable produced by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
+    }
+  }
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredVars)
+  {
+    CheckVar = true;
+
+    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
+
+    if(!CheckVar)
+    {
+      Project = false;
+      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable required by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
+    }
+  }
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredPrevVars)
+  {
+    CheckVar = true;
+
+    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
+
+    if(!CheckVar)
+    {
+      Project = false;
+      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable previously required by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
+    }
+  }
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
+  {
+    CheckVar = true;
+
+    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
+
+    if(!CheckVar)
+    {
+      Project = false;
+      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable updated by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
+    }
+  }
+}
 
 }
 
@@ -92,5 +186,5 @@ void BuilderPretestInfo::addBuilderInfo(
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {
-  return (ExtraFiles && Inputdata && Model && Domain);
+  return (ExtraFiles && Inputdata && Model && Domain && Project);
 }

@@ -67,11 +67,15 @@ class ModelFctParamsComponent: public BuilderMVPComponent
 {
   private:
 
+    sigc::signal<void> m_signal_ParamsChanged;
+
     ModelFctParamsModel* mp_Model;
 
     ModelFctParamsView* mp_View;
 
     ModelFctParamsPresenter* mp_Presenter;
+
+    void whenParamsChanged();
 
   public:
 
@@ -82,6 +86,8 @@ class ModelFctParamsComponent: public BuilderMVPComponent
     Gtk::Widget* asWidget();
 
     ModelFctParamsModel* getModel();
+
+    sigc::signal<void> signal_ParamsChanged();
 
 };
 

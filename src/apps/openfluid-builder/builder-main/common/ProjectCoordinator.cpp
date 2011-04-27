@@ -281,7 +281,7 @@ void ProjectCoordinator::checkProject()
   m_EngineProject.check(CheckInfo);
 
   CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
-      m_EngineProject.getCoreRepository());
+      m_EngineProject.getSimBlob());
 
   m_ProjectDashboard.setCheckInfo(CheckInfo);
 
@@ -367,6 +367,8 @@ void ProjectCoordinator::whenOutChanged()
 }
 
 updateWorkspaceModules();
+
+checkProject();
 }
 
 // =====================================================================

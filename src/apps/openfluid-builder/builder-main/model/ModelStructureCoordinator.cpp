@@ -302,6 +302,9 @@ void ModelStructureCoordinator::createModelFctParamsComponent(
   FctParams->getModel()->signal_RequiredFileChanged().connect(sigc::mem_fun(
       *this, &ModelStructureCoordinator::whenRequiredFileChanged));
 
+  FctParams->signal_ParamsChanged().connect(sigc::mem_fun(*this,
+      &ModelStructureCoordinator::whenParamsChanged));
+
 }
 
 // =====================================================================
@@ -317,11 +320,19 @@ void ModelStructureCoordinator::eraseModelFctParamsComponent(
   m_ByNameFctParamsComponents.erase(FctName);
 }
 
-
 // =====================================================================
 // =====================================================================
 
 void ModelStructureCoordinator::whenRequiredFileChanged()
 {
-   m_signal_ModelChanged.emit();
+  m_signal_ModelChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::whenParamsChanged()
+{
+  m_signal_ModelChanged.emit();
 }

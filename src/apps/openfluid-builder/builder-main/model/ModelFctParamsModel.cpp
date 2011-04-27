@@ -131,6 +131,7 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
     std::string ParamValue)
 {
   mp_Item->Params[ParamName] = ParamValue;
+  m_signal_ParamsChanged.emit();
 }
 
 // =====================================================================
@@ -152,7 +153,6 @@ void ModelFctParamsModelImpl::unsetGlobalValue(std::string ParamName)
   m_signal_GlobalValueUnset.emit(ParamName);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -161,7 +161,6 @@ void ModelFctParamsModelImpl::whenRequiredFileChanged()
 {
   m_signal_RequiredFileChanged.emit();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -190,8 +189,6 @@ sigc::signal<void, std::string> ModelFctParamsModelImpl::signal_GlobalValueUnset
   return m_signal_GlobalValueUnset;
 }
 
-
-
 // =====================================================================
 // =====================================================================
 
@@ -199,4 +196,13 @@ sigc::signal<void, std::string> ModelFctParamsModelImpl::signal_GlobalValueUnset
 sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFileChanged()
 {
   return m_signal_RequiredFileChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChanged()
+{
+  return m_signal_ParamsChanged;
 }

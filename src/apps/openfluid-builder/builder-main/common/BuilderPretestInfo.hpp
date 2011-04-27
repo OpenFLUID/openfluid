@@ -55,7 +55,7 @@
 #ifndef __BUILDERPRESTESTINFO_HPP__
 #define __BUILDERPRESTESTINFO_HPP__
 
-#include <openfluid/machine/Engine.hpp>
+#include <openfluid/machine.hpp>
 
 class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 {
@@ -65,10 +65,22 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     std::string DomainMsg;
 
+    bool Params;
+
+    std::string ParamsMsg;
+
+    bool Project;
+
+    std::string ProjectMsg;
+
+    bool Outputs;
+
+    std::string OutputsMsg;
+
     BuilderPretestInfo();
 
     void addBuilderInfo(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::core::CoreRepository& CoreRepos);
+        openfluid::machine::SimulationBlob* SimBlob);
 
     bool getGlobalCheckState();
 };

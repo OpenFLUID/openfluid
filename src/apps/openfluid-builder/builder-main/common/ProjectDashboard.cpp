@@ -105,8 +105,8 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model parameters");
-  Row[m_Columns.m_StateIcon] = m_OrangeIcon;
-  Row[m_Columns.m_StateInfo] = "not yet functionnal";
+  Row[m_Columns.m_StateIcon] = CheckInfo.Params ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] = CheckInfo.Params ? "ok" : CheckInfo.ParamsMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Required files");
@@ -125,6 +125,16 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row[m_Columns.m_StateInfo] = CheckInfo.Inputdata ? "ok" : minimiseInfoString(
       CheckInfo.InputdataMsg);
 
+  Row = *mref_TreeModel->append();
+  Row[m_Columns.m_Title] = _("Project consistency");
+  Row[m_Columns.m_StateIcon] = CheckInfo.Project ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] = CheckInfo.Project ? "ok" : CheckInfo.ProjectMsg;
+
+  Row = *mref_TreeModel->append();
+  Row[m_Columns.m_Title] = _("Outputs");
+  Row[m_Columns.m_StateIcon] = CheckInfo.Outputs ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] = CheckInfo.Outputs ? "ok" : CheckInfo.OutputsMsg;
+
 }
 
 // =====================================================================
@@ -133,7 +143,7 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
 
 std::string ProjectDashboard::minimiseInfoString(std::string InfoString)
 {
-  int i = InfoString.find("(sent by");
+  std::size_t i = InfoString.find("(sent by");
   if (i != std::string::npos)
   {
     Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
