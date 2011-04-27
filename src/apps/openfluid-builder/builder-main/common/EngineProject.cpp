@@ -92,13 +92,24 @@ EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
 
   if (FolderIn == "")
   {
+    //set default Run values
     openfluid::core::DateTime DefaultEndDT = m_DefaultBeginDT
         + openfluid::core::DateTime::Day();
+
     openfluid::base::RunDescriptor RunDesc(m_DefaultDeltaT, m_DefaultBeginDT,
         DefaultEndDT);
+
     RunDesc.setFilled(true);
 
     getRunDescriptor() = RunDesc;
+
+    // set default Output values
+    openfluid::base::OutputDescriptor OutDesc;
+    openfluid::base::OutputFilesDescriptor FileDesc;
+
+    OutDesc.getFileSets().push_back(FileDesc);
+
+    getOutputDescriptor() = OutDesc;
   } else
   {
     openfluid::io::FluidXReader FXReader(mp_IOListener);
@@ -114,14 +125,15 @@ EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
     }
 
     openfluid::base::RunDescriptor RunDesc = FXReader.getRunDescriptor();
-
     checkAndSetDefaultRunValues(RunDesc);
+
+    openfluid::base::OutputDescriptor OutDesc = FXReader.getOutputDescriptor();
+    checkAndSetDefaultOutputValues(OutDesc);
 
     try
     {
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-          FXReader.getDomainDescriptor(), RunDesc,
-          FXReader.getOutputDescriptor(), *mp_SimBlob);
+          FXReader.getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(
           FXReader.getModelDescriptor(), *mp_ModelInstance);
@@ -140,15 +152,10 @@ void EngineProject::checkAndSetDefaultRunValues(
     openfluid::base::RunDescriptor& RunDesc)
 {
   openfluid::core::DateTime DT;
-
-  std::string Msg = "";
-
   openfluid::core::DateTime BeginDT;
 
   if (!DT.setFromISOString(RunDesc.getBeginDate().getAsISOString()))
   {
-    Msg.append(_("Wrong simulation begin date, set to now\n"));
-
     RunDesc.setBeginDate(m_DefaultBeginDT);
 
     BeginDT = m_DefaultBeginDT;
@@ -159,23 +166,27 @@ void EngineProject::checkAndSetDefaultRunValues(
   {
     openfluid::core::DateTime EndDT = BeginDT
         + openfluid::core::DateTime::Day();
-    Msg.append(_("Wrong simulation end date, set to begin date + 24h\n"));
 
     RunDesc.setEndDate(EndDT);
   }
+
   if (RunDesc.getDeltaT() < 1)
-  {
-    Msg.append(Glib::ustring::compose(
-        _("Wrong or undefined simulation deltat T, set to %1 seconds"),
-        m_DefaultDeltaT));
-
     RunDesc.setDeltaT(m_DefaultDeltaT);
-  }
 
-  if (Msg != "")
+  RunDesc.setFilled(true);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::checkAndSetDefaultOutputValues(
+    openfluid::base::OutputDescriptor& OutDesc)
+{
+  if (OutDesc.getFileSets().empty())
   {
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(Msg);
-    RunDesc.setFilled(true);
+    openfluid::base::OutputFilesDescriptor FileDesc;
+    OutDesc.getFileSets().push_back(FileDesc);
   }
 }
 

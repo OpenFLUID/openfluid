@@ -86,6 +86,8 @@ class EngineProject
 
     void checkAndSetDefaultRunValues(openfluid::base::RunDescriptor& RunDesc);
 
+    void checkAndSetDefaultOutputValues(openfluid::base::OutputDescriptor& OutDesc);
+
   public:
 
     EngineProject(std::string FolderIn = "", bool WithProjectManager = false);
