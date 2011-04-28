@@ -65,6 +65,11 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <tests-config.hpp>
 #include <unistd.h>
+
+#ifdef __WIN32__
+#include <windows.h>
+#endif
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 // =====================================================================
@@ -89,6 +94,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   if (boost::filesystem::is_directory(boost::filesystem::path(Prj1Dir)))
     boost::filesystem::remove_all(boost::filesystem::path(Prj1Dir));
 
+
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::isProject(Prj1Dir),false);
 
   openfluid::base::ProjectManager::getInstance()->create(Prj1Dir,"Test project","This is a test project","John Doe", false);
@@ -104,12 +110,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::base::ProjectManager::getInstance()->getAuthors(),"John Doe");
   BOOST_CHECK_EQUAL(openfluid::base::ProjectManager::getInstance()->getCreationDate(),openfluid::base::ProjectManager::getInstance()->getLastModDate());
 
-
   openfluid::base::ProjectManager::getInstance()->setIncrementalOutputDir(true);
   openfluid::base::ProjectManager::getInstance()->setName("Modified Test project");
   openfluid::base::ProjectManager::getInstance()->setDescription("This is a modified test project");
   openfluid::base::ProjectManager::getInstance()->setAuthors("John Doe, Tom Morello");
+
+#ifdef __WIN32__
+  Sleep(1000);
+#else
   sleep(1);
+#endif
   openfluid::base::ProjectManager::getInstance()->save();
   openfluid::base::ProjectManager::getInstance()->close();
 

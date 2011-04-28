@@ -65,11 +65,11 @@
 Gtk::StockID* BuilderGraphicsHelper::createIconStockId(Glib::ustring FilePath,
     Glib::ustring FileName, Glib::ustring StockIdString)
 {
-  Gtk::IconSource::IconSource IconSource;
+  Gtk::IconSource IconSource;
 
   IconSource.set_filename(FilePath + "/" + FileName);
 
-  Gtk::IconSet::IconSet IconSet;
+  Gtk::IconSet IconSet;
 
   IconSet.add_source(IconSource);
 
@@ -143,12 +143,12 @@ Gtk::Image* BuilderGraphicsHelper::createImageFromFileName(Glib::ustring FileNam
 Gtk::StockID* BuilderGraphicsHelper::createBuilderIconStockId(
     Glib::ustring IconFileName, Glib::ustring StockIdString)
 {
-  Gtk::IconSource::IconSource IconSource;
+  Gtk::IconSource IconSource;
   IconSource.set_filename(
       openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath(
           "openfluid-builder", IconFileName));
 
-  Gtk::IconSet::IconSet IconSet;
+  Gtk::IconSet IconSet;
   IconSet.add_source(IconSource);
 
   Glib::RefPtr<Gtk::IconFactory> BuilderIconFactory =

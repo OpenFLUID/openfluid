@@ -285,20 +285,24 @@ void ProjectManager::updateOutputDir()
 
 bool ProjectManager::isProject(const std::string& Path)
 {
-  try
+  if (boost::filesystem::exists(getFilePathFromProjectPath(Path)))
   {
-    Glib::KeyFile KFile;
-    KFile.load_from_file(getFilePathFromProjectPath(Path));
-
-    return boost::filesystem::exists(getInputDirFromProjectPath(Path));
-
-  } catch (Glib::FileError e)
-  {
-    return false;
-  } catch (Glib::KeyFileError e)
-  {
-    return false;
+    try
+    {
+      Glib::KeyFile KFile;
+      KFile.load_from_file(getFilePathFromProjectPath(Path));
+      return boost::filesystem::exists(getInputDirFromProjectPath(Path));
+    }
+    catch (Glib::FileError e)
+    {
+      return false;
+    }
+    catch (Glib::KeyFileError e)
+    {
+      return false;
+    }
   }
+  return false;
 }
 
 // =====================================================================
