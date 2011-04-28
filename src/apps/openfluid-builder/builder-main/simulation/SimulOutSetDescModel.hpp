@@ -57,121 +57,214 @@
 class SimulOutSetDescModel
 {
   public:
+
     virtual sigc::signal<void> signal_InitForCreationAsked() = 0;
+
     virtual sigc::signal<void> signal_InitForEditionAsked() = 0;
+
     virtual sigc::signal<void> signal_ShowDialogAsked() = 0;
+
     virtual sigc::signal<void> signal_CloseDialogAsked() = 0;
+
     virtual sigc::signal<void, std::string> signal_ErrorDialogAsked() = 0;
+
     virtual void setEngineRequirements(
         openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,
         openfluid::machine::ModelInstance& ModelInstance) = 0;
+
     virtual void
     initialize(openfluid::base::OutputSetDescriptor* SetDesc,
         std::string FileFormatName, std::vector<std::pair<std::string,
             openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect,
         std::map<std::string, std::pair<std::string,
             openfluid::base::OutputSetDescriptor> > SetsByName) = 0;
+
     virtual void showDialog() = 0;
+
     virtual openfluid::base::OutputSetDescriptor* getSetDesc() = 0;
+
     virtual std::vector<std::string> getClasses() = 0;
+
     virtual std::map<std::string, std::vector<unsigned int> >
     getByClassIDs() = 0;
+
     virtual std::map<std::string, std::vector<std::string> >
     getByClassVars() = 0;
+
     virtual std::vector<std::string> getFormatNames() = 0;
+
     virtual void setName(std::string SetName) = 0;
+
     virtual void setClass(std::string Class) = 0;
+
     virtual void setFormatName(std::string FormatName) = 0;
+
     virtual void setPrecision(int Precision) = 0;
+
     virtual void setIDs(std::vector<unsigned int> IDs) = 0;
+
     virtual void setVars(std::vector<std::string> Vars) = 0;
+
     virtual std::string getName() = 0;
+
     virtual std::string getClass() = 0;
+
     virtual std::string getFormatName() = 0;
+
     virtual int getFormatIndex() = 0;
+
     virtual int getPrecision() = 0;
+
     virtual std::vector<unsigned int> getIDs() = 0;
+
     virtual std::vector<std::string> getVars() = 0;
+
     virtual void save() = 0;
+
     virtual void cancel() = 0;
 };
+
 
 class SimulOutSetDescModelImpl: public SimulOutSetDescModel
 {
   private:
+
     sigc::signal<void> m_signal_InitForCreationAsked;
+
     sigc::signal<void> m_signal_InitForEditionAsked;
+
     sigc::signal<void> m_signal_ShowDialogAsked;
+
     sigc::signal<void> m_signal_CloseDialogAsked;
+
     sigc::signal<void, std::string> m_signal_ErrorDialogAsked;
+
     openfluid::base::OutputDescriptor* mp_OutDesc;
+
     openfluid::core::CoreRepository* mp_CoreRepos;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
+
     std::string m_FormatName;
+
     std::vector<std::string> m_Classes;
+
     std::map<std::string, std::vector<unsigned int> > m_ByClassIDs;
+
     std::map<std::string, std::vector<std::string> > m_ByClassVars;
+
     std::vector<std::string> m_FormatNames;
+
     std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> > m_SetsByName;
+
+    openfluid::base::OutputSetDescriptor> > m_SetsByName;
+
     bool checkSetNameFormat();
+
+    bool checkIdAtLeastOne();
+
+    bool checkVarAtLeastOne();
+
   protected:
+
     openfluid::base::OutputSetDescriptor* mp_SetDesc;
+
     std::map<std::string, std::vector<std::string> > m_ByClassScalarVars;
+
     std::map<std::string, std::vector<std::string> > m_ByClassVectorVars;
+
     std::vector<std::pair<std::string, openfluid::base::OutputFilesDescriptor> >
-        m_FilesFormatsByNameVect;
+    m_FilesFormatsByNameVect;
+
     void extractClassesAndIDs();
+
     void extractVars();
+
     void extractFormatNames();
+
   public:
+
     SimulOutSetDescModelImpl();
+
     sigc::signal<void> signal_InitForCreationAsked();
+
     sigc::signal<void> signal_InitForEditionAsked();
+
     sigc::signal<void> signal_ShowDialogAsked();
+
     sigc::signal<void> signal_CloseDialogAsked();
+
     sigc::signal<void, std::string> signal_ErrorDialogAsked();
+
     void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,
         openfluid::machine::ModelInstance& ModelInstance);
+
     void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
         std::string FileFormatName, std::vector<std::pair<std::string,
             openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect,
         std::map<std::string, std::pair<std::string,
             openfluid::base::OutputSetDescriptor> > SetsByName);
+
     void showDialog();
+
     openfluid::base::OutputSetDescriptor* getSetDesc();
+
     std::vector<std::string> getClasses();
+
     std::map<std::string, std::vector<unsigned int> > getByClassIDs();
+
     std::map<std::string, std::vector<std::string> > getByClassVars();
+
     std::vector<std::string> getFormatNames();
+
     void setName(std::string SetName);
+
     void setClass(std::string Class);
+
     void setFormatName(std::string FormatName);
+
     void setPrecision(int Precision);
+
     void setIDs(std::vector<unsigned int> IDs);
+
     void setVars(std::vector<std::string> Vars);
+
     std::string getName();
+
     std::string getClass();
+
     std::string getFormatName();
+
     int getFormatIndex();
+
     int getPrecision();
+
     std::vector<unsigned int> getIDs();
+
     std::vector<std::string> getVars();
+
     void save();
+
     void cancel();
 };
 
 class SimulOutSetDescModelSub: public SimulOutSetDescModelImpl
 {
   public:
+
     void extractClassesAndIDs();
+
     void extractVars();
+
     void extractFormatNames();
+
     void setFilesFormatsByNameVect(std::vector<std::pair<std::string,
         openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect);
+
     std::map<std::string, std::vector<std::string> > getByClassScalarVars();
+
     std::map<std::string, std::vector<std::string> > getByClassVectorVars();
 };
 

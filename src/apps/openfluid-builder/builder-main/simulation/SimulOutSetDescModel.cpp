@@ -58,6 +58,10 @@
 
 #include <boost/foreach.hpp>
 
+// =====================================================================
+// =====================================================================
+
+
 bool SimulOutSetDescModelImpl::checkSetNameFormat()
 {
   if (getName() == "")
@@ -71,6 +75,39 @@ bool SimulOutSetDescModelImpl::checkSetNameFormat()
   }
   return true;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulOutSetDescModelImpl::checkIdAtLeastOne()
+{
+  if (getIDs().empty())
+  {
+    m_signal_ErrorDialogAsked.emit(_("IDs can't be empty"));
+    return false;
+  }
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool SimulOutSetDescModelImpl::checkVarAtLeastOne()
+{
+  if (getVars().empty())
+  {
+    m_signal_ErrorDialogAsked.emit(_("Variables can't be empty"));
+    return false;
+  }
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
 
 void SimulOutSetDescModelImpl::extractClassesAndIDs()
 {
@@ -89,6 +126,11 @@ void SimulOutSetDescModelImpl::extractClassesAndIDs()
   }
 }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::extractVars()
 {
   m_ByClassVars.clear();
@@ -118,6 +160,11 @@ void SimulOutSetDescModelImpl::extractVars()
   }
 }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::extractFormatNames()
 {
   m_FormatNames.clear();
@@ -126,31 +173,65 @@ void SimulOutSetDescModelImpl::extractFormatNames()
     m_FormatNames.push_back(m_FilesFormatsByNameVect[i].first);
 }
 
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetDescModelImpl::SimulOutSetDescModelImpl() :
   mp_OutDesc(0), mp_CoreRepos(0), mp_ModelInstance(0), m_FormatName(""),
       mp_SetDesc(0)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescModelImpl::signal_InitForCreationAsked()
 {
   return m_signal_InitForCreationAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescModelImpl::signal_InitForEditionAsked()
 {
   return m_signal_InitForEditionAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescModelImpl::signal_ShowDialogAsked()
 {
   return m_signal_ShowDialogAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetDescModelImpl::signal_CloseDialogAsked()
 {
   return m_signal_CloseDialogAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void, std::string> SimulOutSetDescModelImpl::signal_ErrorDialogAsked()
 {
   return m_signal_ErrorDialogAsked;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setEngineRequirements(
     openfluid::base::OutputDescriptor& OutDesc,
     openfluid::core::CoreRepository& CoreRepos,
@@ -160,6 +241,11 @@ void SimulOutSetDescModelImpl::setEngineRequirements(
   mp_CoreRepos = &CoreRepos;
   mp_ModelInstance = &ModelInstance;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::initialize(
     openfluid::base::OutputSetDescriptor* SetDesc,
     std::string FileFormatName,
@@ -190,46 +276,101 @@ void SimulOutSetDescModelImpl::initialize(
     }
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::showDialog()
 {
   m_signal_ShowDialogAsked.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::OutputSetDescriptor* SimulOutSetDescModelImpl::getSetDesc()
 {
   return mp_SetDesc;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> SimulOutSetDescModelImpl::getClasses()
 {
   return m_Classes;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::vector<unsigned int> > SimulOutSetDescModelImpl::getByClassIDs()
 {
   return m_ByClassIDs;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::vector<std::string> > SimulOutSetDescModelImpl::getByClassVars()
 {
   return m_ByClassVars;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> SimulOutSetDescModelImpl::getFormatNames()
 {
   return m_FormatNames;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setName(std::string SetName)
 {
   mp_SetDesc->setName(SetName);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setClass(std::string Class)
 {
   mp_SetDesc->setUnitsClass(Class);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setFormatName(std::string FormatName)
 {
   m_FormatName = FormatName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setPrecision(int Precision)
 {
   mp_SetDesc->setPrecision(Precision);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setIDs(std::vector<unsigned int> IDs)
 {
   if (IDs.size() == m_ByClassIDs[mp_SetDesc->getUnitsClass()].size())
@@ -240,6 +381,11 @@ void SimulOutSetDescModelImpl::setIDs(std::vector<unsigned int> IDs)
     mp_SetDesc->getUnitsIDs() = IDs;
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::setVars(std::vector<std::string> Vars)
 {
   if (Vars.size() == m_ByClassVars[mp_SetDesc->getUnitsClass()].size())
@@ -264,18 +410,38 @@ void SimulOutSetDescModelImpl::setVars(std::vector<std::string> Vars)
     }
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetDescModelImpl::getName()
 {
   return mp_SetDesc->getName();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetDescModelImpl::getClass()
 {
   return mp_SetDesc->getUnitsClass();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetDescModelImpl::getFormatName()
 {
   return m_FormatName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulOutSetDescModelImpl::getFormatIndex()
 {
   for (unsigned int i = 0; i < m_FilesFormatsByNameVect.size(); i++)
@@ -285,10 +451,20 @@ int SimulOutSetDescModelImpl::getFormatIndex()
   }
   return -1;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulOutSetDescModelImpl::getPrecision()
 {
   return mp_SetDesc->getPrecision();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<unsigned int> SimulOutSetDescModelImpl::getIDs()
 {
   if (mp_SetDesc->isAllUnits())
@@ -296,6 +472,11 @@ std::vector<unsigned int> SimulOutSetDescModelImpl::getIDs()
 
   return mp_SetDesc->getUnitsIDs();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> SimulOutSetDescModelImpl::getVars()
 {
   std::vector<std::string> VectorVars;
@@ -316,38 +497,80 @@ std::vector<std::string> SimulOutSetDescModelImpl::getVars()
   Vars.insert(Vars.begin(), ScalarVars.begin(), ScalarVars.end());
   return Vars;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::save()
 {
-  if (checkSetNameFormat())
+  if (checkSetNameFormat() && checkIdAtLeastOne() && checkVarAtLeastOne())
     m_signal_CloseDialogAsked.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelImpl::cancel()
 {
   mp_SetDesc = 0;
   m_FormatName = "";
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelSub::extractClassesAndIDs()
 {
   SimulOutSetDescModelImpl::extractClassesAndIDs();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelSub::extractVars()
 {
   SimulOutSetDescModelImpl::extractVars();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelSub::extractFormatNames()
 {
   SimulOutSetDescModelImpl::extractFormatNames();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetDescModelSub::setFilesFormatsByNameVect(
     std::vector<std::pair<std::string, openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect)
 {
   m_FilesFormatsByNameVect = FilesFormatsByNameVect;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::vector<std::string> > SimulOutSetDescModelSub::getByClassScalarVars()
 {
   return m_ByClassScalarVars;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::vector<std::string> > SimulOutSetDescModelSub::getByClassVectorVars()
 {
   return m_ByClassVectorVars;
