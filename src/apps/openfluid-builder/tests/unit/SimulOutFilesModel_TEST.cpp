@@ -214,40 +214,32 @@ BOOST_AUTO_TEST_CASE(test_updateFileFormats)
   delete p_EngProject;
 }
 
-BOOST_AUTO_TEST_CASE(test_addFileFormatToEmptyFilesSet)
+BOOST_AUTO_TEST_CASE(test_defaultFileFormat)
 {
   EngineProject* p_EngProject = new EngineProject();
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),0);
-
-  openfluid::base::OutputFilesDescriptor FileDesc;
-  FileDesc.setColSeparator("---");
-  FileDesc.setDateFormat("abcd");
-  FileDesc.setCommentChar("***");
-
-  mp_Model->addFileFormat(&FileDesc,"A Name");
+  openfluid::base::OutputFilesDescriptor DefaultFileDesc;
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
   BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
 
   openfluid::base::OutputFilesDescriptor EngineFileDesc = *p_EngProject->getOutputDescriptor().getFileSets().begin();
 
-  BOOST_CHECK_EQUAL(EngineFileDesc.getColSeparator(),"---");
-  BOOST_CHECK_EQUAL(EngineFileDesc.getDateFormat(),"abcd");
-  BOOST_CHECK_EQUAL(EngineFileDesc.getCommentChar(),"***");
+  BOOST_CHECK_EQUAL(EngineFileDesc.getColSeparator(),DefaultFileDesc.getColSeparator());
+  BOOST_CHECK_EQUAL(EngineFileDesc.getDateFormat(),DefaultFileDesc.getDateFormat());
+  BOOST_CHECK_EQUAL(EngineFileDesc.getCommentChar(),DefaultFileDesc.getCommentChar());
   BOOST_CHECK_EQUAL(EngineFileDesc.getSets().size(),0);
 
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getColSeparator(),"---");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getDateFormat(),"abcd");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getCommentChar(),"***");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"A Name");
+  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getColSeparator(),DefaultFileDesc.getColSeparator());
+  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getDateFormat(),DefaultFileDesc.getDateFormat());
+  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getCommentChar(),DefaultFileDesc.getCommentChar());
+  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"Format #1");
 
   delete p_EngProject;
 }
 
-BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
+BOOST_AUTO_TEST_CASE(test_addFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
