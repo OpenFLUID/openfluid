@@ -122,6 +122,8 @@ class ProjectCoordinator
 
     void checkProject();
 
+    void updateResults();
+
 };
 
 class ProjectCoordinatorSub: public ProjectCoordinator

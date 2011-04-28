@@ -87,10 +87,21 @@ BOOST_FIXTURE_TEST_SUITE(EngineProjectTest, init_Engine)
 
 BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 {
-  EngineProject* EngProject = new EngineProject();
+  EngineProjectSub* EngProject = new EngineProjectSub();
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),0);
   BOOST_CHECK_EQUAL(EngProject->getCoreRepository().getUnitsGlobally()->size(),0);
+
+  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getBeginDate().getAsISOString(), EngProject->getDefaultBeginDT().getAsISOString());
+  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getEndDate().getAsISOString(), (EngProject->getDefaultBeginDT() + openfluid::core::DateTime::Day()).getAsISOString());
+  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getDeltaT(), EngProject->getDefaultDeltaT());
+
+  openfluid::base::OutputFilesDescriptor DefaultFileDesc;
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator(),DefaultFileDesc.getColSeparator());
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),DefaultFileDesc.getCommentChar());
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),DefaultFileDesc.getDateFormat());
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),0);
 
   delete EngProject;
 }
@@ -127,8 +138,20 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
   BOOST_CHECK_EQUAL(EngProject->getCoreRepository().getUnitsGlobally()->size(),14);
 
+  openfluid::core::DateTime DT;
+  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getBeginDate().getAsISOString(),"2000-01-01 00:00:00");
+  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getEndDate().getAsISOString(),"2000-01-01 06:00:00");
+  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getDeltaT(), 3600);
+
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator()," ");
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),"%");
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),"%Y %m %d %H %M %S");
+  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),2);
+
   delete EngProject;
 }
+
 
 // =====================================================================
 // =====================================================================

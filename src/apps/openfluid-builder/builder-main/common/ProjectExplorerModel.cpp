@@ -85,7 +85,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_Initialized()
   return m_signal_Initialized;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -94,7 +93,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_ActivationChanged()
 {
   return m_signal_ActivationChanged;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -105,7 +103,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateModelAsked()
   return m_signal_UpdateModelAsked;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -114,7 +111,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateDomainAsked()
 {
   return m_signal_UpdateDomainAsked;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -125,7 +121,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
   return m_signal_UpdateSimulationAsked;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -134,7 +129,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateResultsAsked()
 {
   return m_signal_UpdateResultsAsked;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -159,7 +153,6 @@ void ProjectExplorerModelImpl::updateModelAsked()
   m_signal_UpdateModelAsked.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -168,7 +161,6 @@ void ProjectExplorerModelImpl::updateDomainAsked()
 {
   m_signal_UpdateDomainAsked.emit();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -179,7 +171,6 @@ void ProjectExplorerModelImpl::updateSimulationAsked()
   m_signal_UpdateSimulationAsked.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -188,7 +179,6 @@ void ProjectExplorerModelImpl::updateResultsAsked()
 {
   m_signal_UpdateResultsAsked.emit();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -215,8 +205,8 @@ openfluid::machine::SimulationBlob* ProjectExplorerModelImpl::getSimulationBlob(
 void ProjectExplorerModelImpl::setActivatedElements(
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> ElementsPair)
 {
-    m_ActivatedElementsPair = ElementsPair;
-    m_signal_ActivationChanged.emit();
+  m_ActivatedElementsPair = ElementsPair;
+  m_signal_ActivationChanged.emit();
 }
 
 // =====================================================================

@@ -81,10 +81,13 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
   mp_Coordinator = new ProjectCoordinator(*mp_ProjectExplorerMVP->getModel(),
       *mp_Workspace, *mp_EngineProject, *mp_ProjectDashboard);
 
+  mp_ToolBoxFactory = new BuilderListToolBoxFactory();
+
   mp_Coordinator->signal_CheckHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenCheckHappened));
 
-  mp_ToolBoxFactory = new BuilderListToolBoxFactory();
+  mp_EngineProject->signal_RunHappened().connect(sigc::mem_fun(*this,
+      &BuilderProjectWithExplorer::whenRunHappened));
 
 }
 
@@ -95,6 +98,15 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
 void BuilderProjectWithExplorer::whenCheckHappened(bool IsCheckOk)
 {
   m_signal_CheckHappened.emit(IsCheckOk);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProjectWithExplorer::whenRunHappened()
+{
+  mp_Coordinator->updateResults();
 }
 
 // =====================================================================

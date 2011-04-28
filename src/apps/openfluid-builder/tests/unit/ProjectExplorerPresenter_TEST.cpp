@@ -111,6 +111,9 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),4);
 
+  // Result sets are not displayed
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children()[3]->children().size(),0);
+
   delete EngProject;
 }
 
@@ -128,6 +131,9 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),4);
+
+  // Result sets are not displayed
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children()[3]->children().size(),0);
 
   delete EngProject;
 }
@@ -183,13 +189,6 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_CLASS);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"ParentTestUnits");
-
-  // First Set activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[3]->children()[0]),
-      *TreeView->get_column(0));
-
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_SET);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"full");
 
   // Run activated
   TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[2]->children()[0]),

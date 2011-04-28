@@ -292,8 +292,18 @@ void ProjectCoordinator::checkProject()
 // =====================================================================
 
 
+void ProjectCoordinator::updateResults()
+{
+  m_ExplorerModel.updateResultsAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ProjectCoordinator::whenDomainChanged()
 {
+  m_ExplorerModel.updateResultsAsked();
   m_ExplorerModel.updateDomainAsked();
 
   std::vector<std::string> PagesToDelete = getClassPagesToDelete();

@@ -68,10 +68,6 @@ class EngineProject
 
     bool m_WithProjectManager;
 
-    openfluid::core::DateTime m_DefaultBeginDT;
-
-    int m_DefaultDeltaT;
-
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
     openfluid::base::RuntimeEnvironment* mp_RunEnv;
@@ -84,13 +80,30 @@ class EngineProject
 
     openfluid::machine::Engine* mp_Engine;
 
+    sigc::signal<void> m_signal_RunHappened;
+
+    void setDefaultRunDesc();
+
+    void setDefaultOutDesc();
+
     void checkAndSetDefaultRunValues(openfluid::base::RunDescriptor& RunDesc);
 
-    void checkAndSetDefaultOutputValues(openfluid::base::OutputDescriptor& OutDesc);
+    void checkAndSetDefaultOutputValues(
+        openfluid::base::OutputDescriptor& OutDesc);
+
+    std::string checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
+
+  protected:
+
+    openfluid::core::DateTime m_DefaultBeginDT;
+
+    int m_DefaultDeltaT;
 
   public:
 
     EngineProject(std::string FolderIn = "", bool WithProjectManager = false);
+
+    sigc::signal<void> signal_RunHappened();
 
     void run();
 
@@ -118,6 +131,25 @@ class EngineProject
 
     ~EngineProject();
 
+};
+
+class EngineProjectSub: public EngineProject
+{
+  public:
+    EngineProjectSub(std::string FolderIn = "", bool WithProjectManager = false) :
+      EngineProject(FolderIn, WithProjectManager)
+    {
+    }
+
+    openfluid::core::DateTime getDefaultBeginDT()
+    {
+      return m_DefaultBeginDT;
+    }
+
+    int getDefaultDeltaT()
+    {
+      return m_DefaultDeltaT;
+    }
 };
 
 #endif /* __ENGINEPROJECT_HPP__ */

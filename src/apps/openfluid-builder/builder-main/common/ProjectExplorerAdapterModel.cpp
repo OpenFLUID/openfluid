@@ -166,8 +166,6 @@ void ProjectExplorerAdapterModelImpl::updateAll()
   updateDomain();
 
   updateRunInfo();
-
-  updateResults();
 }
 
 // =====================================================================
@@ -257,20 +255,23 @@ void ProjectExplorerAdapterModelImpl::updateResults()
     BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
 {    BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
     {
-      Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
-
       std::string SetName = SetDesc.getName();
       std::string ClassName = SetDesc.getUnitsClass();
       int UnitsCount = 0;
 
-      if(SetDesc.isAllUnits())
-        UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
-      else
-        UnitsCount = SetDesc.getUnitsIDs().size();
+      if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
+      {
+        Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
 
-      Row[m_Columns.m_Id] = SetName;
-      Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
-      Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
+        if(SetDesc.isAllUnits())
+          UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
+        else
+          UnitsCount = SetDesc.getUnitsIDs().size();
+
+        Row[m_Columns.m_Id] = SetName;
+        Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
+        Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
+      }
     }
   }
 }

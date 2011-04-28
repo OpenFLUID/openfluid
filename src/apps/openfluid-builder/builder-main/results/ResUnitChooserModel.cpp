@@ -267,11 +267,6 @@ void ResUnitChooserModelImpl::setSelectedSetFromApp(std::string SetName)
 {
   m_SetName = SetName;
   update();
-  //  extractSet();
-  //  m_ClassName = mp_SetDesc->getUnitsClass();
-  //  extractIdsInfo();
-  //  extractVarsInfo();
-  //  m_signal_FromAppInit.emit();
 }
 
 // =====================================================================
@@ -283,6 +278,8 @@ void ResUnitChooserModelImpl::update()
   if (m_SetName != "")
   {
     extractSet();
+    if(!mp_SetDesc)
+      return;
     m_ClassName = mp_SetDesc->getUnitsClass();
     extractIdsInfo();
     extractVarsInfo();

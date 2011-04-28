@@ -92,6 +92,8 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     void whenCheckHappened(bool IsCheckOk);
 
+    void whenRunHappened();
+
   protected:
 
     void compose();

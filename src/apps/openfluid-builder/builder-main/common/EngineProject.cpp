@@ -92,56 +92,85 @@ EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
 
   if (FolderIn == "")
   {
-    //set default Run values
-    openfluid::core::DateTime DefaultEndDT = m_DefaultBeginDT
-        + openfluid::core::DateTime::Day();
-
-    openfluid::base::RunDescriptor RunDesc(m_DefaultDeltaT, m_DefaultBeginDT,
-        DefaultEndDT);
-
-    RunDesc.setFilled(true);
-
-    getRunDescriptor() = RunDesc;
-
-    // set default Output values
-    openfluid::base::OutputDescriptor OutDesc;
-    openfluid::base::OutputFilesDescriptor FileDesc;
-
-    OutDesc.getFileSets().push_back(FileDesc);
-
-    getOutputDescriptor() = OutDesc;
+    setDefaultRunDesc();
+    setDefaultOutDesc();
   } else
   {
-    openfluid::io::FluidXReader FXReader(mp_IOListener);
-
     try
     {
+      openfluid::io::FluidXReader FXReader(mp_IOListener);
+
       FXReader.loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
               : FolderIn);
-    } catch (openfluid::base::OFException e)
-    {
-      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
-    }
 
-    openfluid::base::RunDescriptor RunDesc = FXReader.getRunDescriptor();
-    checkAndSetDefaultRunValues(RunDesc);
+      openfluid::base::RunDescriptor RunDesc = FXReader.getRunDescriptor();
+      checkAndSetDefaultRunValues(RunDesc);
 
-    openfluid::base::OutputDescriptor OutDesc = FXReader.getOutputDescriptor();
-    checkAndSetDefaultOutputValues(OutDesc);
+      openfluid::base::OutputDescriptor OutDesc =
+          FXReader.getOutputDescriptor();
+      checkAndSetDefaultOutputValues(OutDesc);
 
-    try
-    {
+      openfluid::base::ModelDescriptor ModelDesc =
+          FXReader.getModelDescriptor();
+      std::string MissingFunctions = checkModelDesc(ModelDesc);
+      if (MissingFunctions != "")
+        openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+            "Unable to find plugin file(s):\n\n" + MissingFunctions);
+
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
           FXReader.getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
 
-      openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-          FXReader.getModelDescriptor(), *mp_ModelInstance);
+      openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
+          *mp_ModelInstance);
+
     } catch (openfluid::base::OFException e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> EngineProject::signal_RunHappened()
+{
+  return m_signal_RunHappened;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::setDefaultRunDesc()
+{
+  openfluid::core::DateTime DefaultEndDT = m_DefaultBeginDT
+      + openfluid::core::DateTime::Day();
+
+  openfluid::base::RunDescriptor RunDesc(m_DefaultDeltaT, m_DefaultBeginDT,
+      DefaultEndDT);
+
+  RunDesc.setFilled(true);
+
+  getRunDescriptor() = RunDesc;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::setDefaultOutDesc()
+{
+  openfluid::base::OutputDescriptor OutDesc;
+  openfluid::base::OutputFilesDescriptor FileDesc;
+
+  OutDesc.getFileSets().push_back(FileDesc);
+
+  getOutputDescriptor() = OutDesc;
 }
 
 // =====================================================================
@@ -194,6 +223,35 @@ void EngineProject::checkAndSetDefaultOutputValues(
 // =====================================================================
 
 
+std::string EngineProject::checkModelDesc(
+    openfluid::base::ModelDescriptor& ModelDesc)
+{
+  std::string MissingFunctions = "";
+
+  openfluid::base::ModelDescriptor::ModelDescription_t::iterator it =
+      ModelDesc.getItems().begin();
+
+  while (it != ModelDesc.getItems().end())
+  {
+    if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction)
+        && openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(
+            ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()).empty())
+    {
+      MissingFunctions.append(
+          ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
+
+      it = ModelDesc.getItems().erase(it);
+    } else
+      ++it;
+  }
+
+  return MissingFunctions;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void EngineProject::run()
 {
   openfluid::base::ProjectManager::getInstance()->updateOutputDir();
@@ -212,6 +270,8 @@ void EngineProject::run()
   Gtk::Main::run(RunDialog);
 
   mp_ModelInstance->resetInitialized();
+
+  m_signal_RunHappened.emit();
 }
 
 // =====================================================================

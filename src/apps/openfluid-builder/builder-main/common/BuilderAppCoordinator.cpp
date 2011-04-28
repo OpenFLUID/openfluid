@@ -291,6 +291,7 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
       CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
           + std::string("</span>");
     m_MainWindow.setStatusBarMessage("Current project: " + CurrentPrjStr);
+
   } else
   {
     throw openfluid::base::OFException("OpenFLUID Builder",
