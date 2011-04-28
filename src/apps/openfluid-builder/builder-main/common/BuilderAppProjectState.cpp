@@ -75,7 +75,7 @@ void BuilderAppProjectState::whenNewProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
   {
-    m_App.setHomeModule();
+    m_App.closeProject();
     m_App.createProject();
   }
 }
@@ -88,7 +88,7 @@ void BuilderAppProjectState::whenOpenProjectAsked()
 {
   if (m_App.showCloseProjectDialog())
   {
-    m_App.setHomeModule();
+    m_App.closeProject();
     m_App.openProject();
   }
 }
