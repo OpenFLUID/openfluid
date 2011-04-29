@@ -77,10 +77,10 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
 
-  mp_TreeView->append_column(_("Format Name"), m_Columns.m_Name);
-  mp_TreeView->append_column(_("Column Separator"), m_Columns.m_ColSeparator);
-  mp_TreeView->append_column(_("Date Format"), m_Columns.m_DateFormat);
-  mp_TreeView->append_column(_("Comment Character"), m_Columns.m_CommentChar);
+  mp_TreeView->append_column(_("Format name"), m_Columns.m_Name);
+  mp_TreeView->append_column(_("Column separator"), m_Columns.m_ColSeparator);
+  mp_TreeView->append_column(_("Date format"), m_Columns.m_DateFormat);
+  mp_TreeView->append_column(_("Comment character"), m_Columns.m_CommentChar);
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesViewImpl::onSelectionChanged));
@@ -90,6 +90,7 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
   mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
   mp_MainWin->add(*mp_TreeView);
+  mp_MainWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   mp_MainWin->set_visible(true);
 }
 

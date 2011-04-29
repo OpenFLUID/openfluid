@@ -69,6 +69,12 @@ class ModelStructureView
     virtual void requestSelectionAt(int RowPosition) = 0;
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
+
 class ModelStructureViewImpl: public ModelStructureView
 {
   private:
@@ -82,6 +88,8 @@ class ModelStructureViewImpl: public ModelStructureView
     ModelStructureColumns& m_Columns;
 
     Gtk::TreeView* mp_TreeView;
+
+    Gtk::ScrolledWindow* mp_ModelWin;
 
   public:
 

@@ -54,30 +54,62 @@
 
 #include "HomeModel.hpp"
 
+#include <glibmm/i18n.h>
 #include <openfluid/config.hpp>
+
 
 HomeModelImpl::HomeModelImpl()
 {
   m_OFVersionTxt = "OpenFLUID v" + openfluid::config::FULL_VERSION
-      + "\n\nLISAH, Montpellier, France";
+      + std::string("\n\n<span color='#FBAF40' font-style='italic'>") + _("This is a preview software release.\nYou may encounter unexpected crashes!") + std::string("</span>");
   m_OFWebSite = "http://www.umr-lisah.fr/openfluid/";
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> HomeModelImpl::signal_NewProjectAsked()
 {
   return m_signal_NewProjectAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string HomeModelImpl::getOFVersionTxt()
 {
   return m_OFVersionTxt;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string HomeModelImpl::getOFWebSite()
 {
   return m_OFWebSite;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string HomeModelImpl::getRecentText()
 {
-  return "No recent project";
+  return "(Not implemented)";
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeModelImpl::newProjectAsked()
 {
   m_signal_NewProjectAsked.emit();

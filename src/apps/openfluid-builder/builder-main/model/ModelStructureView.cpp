@@ -81,6 +81,14 @@ ModelStructureViewImpl::ModelStructureViewImpl(ModelStructureColumns& Columns) :
       &ModelStructureViewImpl::onTreeViewSelectionChanged));
 
   mp_TreeView->set_visible(true);
+
+  mp_ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ModelWin->set_visible(true);
+  mp_ModelWin->add(*mp_TreeView);
+  mp_ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+
 }
 
 // =====================================================================
@@ -119,7 +127,7 @@ int ModelStructureViewImpl::getSelectedRowPosition()
 
 Gtk::Widget* ModelStructureViewImpl::asWidget()
 {
-  return mp_TreeView;
+  return mp_ModelWin;
 }
 
 // =====================================================================

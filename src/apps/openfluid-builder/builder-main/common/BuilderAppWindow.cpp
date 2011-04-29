@@ -66,7 +66,7 @@
 
 BuilderAppWindow::BuilderAppWindow()
 {
-  set_title("OpenFLUID Builder");
+  set_title("OpenFLUID-Builder");
   set_position(Gtk::WIN_POS_CENTER);
   set_icon_from_file(BuilderGraphicsHelper::getPathForFileName("openfluid_icon.png"));
   set_default_size(Gdk::Screen::get_default()->get_width() * 0.9,

@@ -69,7 +69,7 @@ class DomainUnitRelationTreeView: public Gtk::TreeView
       m_RelationName(RelationName)
     {
       append_column("Class", m_Columns.m_Class);
-      append_column("Id", m_Columns.m_Id);
+      append_column("ID", m_Columns.m_Id);
       get_column(0)->set_sort_column(m_Columns.m_Class);
       get_column(1)->set_sort_column(m_Columns.m_Id);
     }

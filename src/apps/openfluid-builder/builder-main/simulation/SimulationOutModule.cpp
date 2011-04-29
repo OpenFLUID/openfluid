@@ -113,27 +113,37 @@ void SimulationOutModule::compose()
 {
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
+  Gtk::VBox* FilesButtonsPanel = Gtk::manage(new Gtk::VBox());
+  FilesButtonsPanel->pack_start(*mp_OutFilesListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  FilesButtonsPanel->set_visible(true);
+
+
   Gtk::HBox* MiddlePanel = Gtk::manage(new Gtk::HBox());
   MiddlePanel->set_border_width(5);
   MiddlePanel->pack_start(*mp_SimulOutFilesMVP->asWidget());
-  MiddlePanel->pack_start(*mp_OutFilesListToolBox->asWidget(),
-      Gtk::PACK_SHRINK, 5);
+  MiddlePanel->pack_start(*FilesButtonsPanel, Gtk::PACK_SHRINK,5);
   MiddlePanel->set_visible(true);
+
+
+
+  Gtk::VBox* SetsButtonsPanel = Gtk::manage(new Gtk::VBox());
+  SetsButtonsPanel->pack_start(*mp_OutSetsListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  SetsButtonsPanel->set_visible(true);
+
 
   Gtk::HBox* BottomPanel = Gtk::manage(new Gtk::HBox());
   BottomPanel->set_border_width(5);
   BottomPanel->pack_start(*mp_SimulOutSetsMVP->asWidget());
-  BottomPanel->pack_start(*mp_OutSetsListToolBox->asWidget(), Gtk::PACK_SHRINK,
-      5);
+  BottomPanel->pack_start(*SetsButtonsPanel, Gtk::PACK_SHRINK,5);
   BottomPanel->set_visible(true);
 
   BuilderFrame* MiddleFrame = Gtk::manage(new BuilderFrame());
-  MiddleFrame->setLabelText(_("Files Formats"));
+  MiddleFrame->setLabelText(_("Files formats"));
   MiddleFrame->set_visible(true);
   MiddleFrame->add(*MiddlePanel);
 
   BuilderFrame* BottomFrame = Gtk::manage(new BuilderFrame());
-  BottomFrame->setLabelText(_("Sets Definition"));
+  BottomFrame->setLabelText(_("Sets definition"));
   BottomFrame->set_visible(true);
   BottomFrame->add(*BottomPanel);
 

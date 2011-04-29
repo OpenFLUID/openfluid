@@ -109,18 +109,16 @@ void DomainStructureModule::compose()
 
   Gtk::HBox* TopPanel = Gtk::manage(new Gtk::HBox());
   TopPanel->set_border_width(5);
-  TopPanel->pack_start(*mp_DomainStructureMVP->asWidget());
-  TopPanel->pack_start(*mp_StructureListToolBox->asWidget(), Gtk::PACK_SHRINK,
-      5);
+  TopPanel->pack_start(*mp_DomainStructureMVP->asWidget(),Gtk::PACK_EXPAND_WIDGET,5);
+
+  Gtk::VBox* ButtonsPanel = Gtk::manage(new Gtk::VBox());
+  ButtonsPanel->pack_start(*mp_StructureListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  ButtonsPanel->set_visible(true);
+
+  TopPanel->pack_start(*ButtonsPanel, Gtk::PACK_SHRINK,5);
   TopPanel->set_visible(true);
 
-
-  BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
-  TopFrame->setLabelText(_("Domain Structure"));
-  TopFrame->set_visible(true);
-  TopFrame->add(*TopPanel);
-
-  mp_MainPanel->pack_start(*TopFrame);
+  mp_MainPanel->pack_start(*TopPanel,Gtk::PACK_EXPAND_WIDGET,12);
 
   mp_MainPanel->set_visible(true);
 }

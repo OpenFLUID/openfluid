@@ -140,7 +140,7 @@ void ProjectCoordinator::whenActivationChanged()
             m_ExplorerModel.getActivatedElement().second);
       break;
     case ProjectExplorerCategories::EXPLORER_DOMAIN:
-      PageName = _("Domain");
+      PageName = _("Spatial representation");
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -158,7 +158,7 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_CLASS:
-      PageName = m_ExplorerModel.getActivatedElement().second;
+      PageName = _("Spatial data")+ std::string(" [")+m_ExplorerModel.getActivatedElement().second+"]";
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -180,7 +180,7 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_RUN:
-      PageName = _("Run");
+      PageName = _("Run configuration");
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -198,7 +198,7 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_OUTPUTS:
-      PageName = _("Outputs");
+      PageName = _("Outputs configuration");
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -216,7 +216,7 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_SET:
-      PageName = m_ExplorerModel.getActivatedElement().second;
+      PageName = _("Results")+ std::string(" [")+m_ExplorerModel.getActivatedElement().second+"]";
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];

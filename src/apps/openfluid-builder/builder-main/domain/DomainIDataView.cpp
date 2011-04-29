@@ -124,7 +124,7 @@ void DomainIDataViewImpl::setUnitsTreeColumns(DomainIDataColumns* Columns)
 
   if (Columns)
   {
-    mp_UnitsView->append_column("Id", *Columns->getIdColumn());
+    mp_UnitsView->append_column("Unit ID", *Columns->getIdColumn());
     mp_UnitsView->get_column(0)->set_sort_column(*Columns->getIdColumn());
 
     std::map<std::string, Gtk::TreeModelColumn<std::string>*> ColumnsByTitle =

@@ -60,24 +60,41 @@ void DomainUnitCreationViewImpl::onClassChanged()
 {
   m_signal_ClassChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::onIdChanged()
 {
   m_signal_IdChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::onOkButtonClicked()
 {
   m_signal_SaveAsked.emit();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 DomainUnitCreationViewImpl::DomainUnitCreationViewImpl()
 {
-  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Class Unit")));
+  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Unit class")));
 
   mp_ClassComboEntry = Gtk::manage(new Gtk::ComboBoxEntryText());
   mp_ClassComboEntry->get_entry()->signal_changed().connect(sigc::mem_fun(
       *this, &DomainUnitCreationViewImpl::onClassChanged));
 
-  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("Id")));
+  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("ID")));
 
   mp_IdSpin = Gtk::manage(new Gtk::SpinButton());
   mp_IdSpin->set_range(1.0, 9999.0);
@@ -107,18 +124,42 @@ DomainUnitCreationViewImpl::DomainUnitCreationViewImpl()
 
   mp_Dialog->show_all_children();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitCreationViewImpl::signal_ClassChanged()
 {
   return m_signal_ClassChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitCreationViewImpl::signal_IdChanged()
 {
   return m_signal_IdChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitCreationViewImpl::signal_SaveAsked()
 {
   return m_signal_SaveAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::setClassNames(
     std::vector<std::string> ClassNames)
 {
@@ -126,35 +167,83 @@ void DomainUnitCreationViewImpl::setClassNames(
   for (unsigned int i = 0; i < ClassNames.size(); i++)
     mp_ClassComboEntry->append_text(ClassNames[i]);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::setClass(std::string ClassName)
 {
   mp_ClassComboEntry->get_entry()->set_text(ClassName);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::setId(int Id)
 {
   mp_IdSpin->set_value(Id);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainUnitCreationViewImpl::getClassName()
 {
   return mp_ClassComboEntry->get_entry()->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainUnitCreationViewImpl::getId()
 {
   return mp_IdSpin->get_value_as_int();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::closeDialog()
 {
   mp_Dialog->hide();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::showDialog()
 {
   if (mp_Dialog->run() == Gtk::RESPONSE_CANCEL)
     closeDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* DomainUnitCreationViewImpl::asWidget()
 {
   return mp_InfoTable;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitCreationViewImpl::showErrorMessageDialog(std::string MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,
@@ -162,3 +251,4 @@ void DomainUnitCreationViewImpl::showErrorMessageDialog(std::string MessageText)
   if (Dialog.run())
     Dialog.hide();
 }
+

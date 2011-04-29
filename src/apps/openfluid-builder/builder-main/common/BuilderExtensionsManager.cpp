@@ -58,6 +58,7 @@
 
 #include <openfluid/debug.hpp>
 #include <openfluid/machine.hpp>
+#include <openfluid/config.hpp>
 
 
 BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;

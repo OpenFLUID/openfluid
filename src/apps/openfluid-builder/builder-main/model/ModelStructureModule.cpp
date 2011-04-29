@@ -116,26 +116,31 @@ void ModelStructureModule::compose()
 {
   mp_MainPanel = Gtk::manage(new Gtk::VPaned());
 
+  Gtk::VBox* ButtonsPanel = Gtk::manage(new Gtk::VBox());
+  ButtonsPanel->pack_start(*mp_StructureListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  ButtonsPanel->set_visible(true);
+
   Gtk::HBox* TopPanel = Gtk::manage(new Gtk::HBox());
   TopPanel->set_border_width(5);
-  TopPanel->pack_start(*mp_ModelStructureMVP->asWidget());
-  TopPanel->pack_start(*mp_ModelFctDetailMVP->asWidget());
-  TopPanel->pack_start(*mp_StructureListToolBox->asWidget(), Gtk::PACK_SHRINK,
-      0);
+  TopPanel->pack_start(*mp_ModelStructureMVP->asWidget(),Gtk::PACK_EXPAND_WIDGET,5);
+  TopPanel->pack_start(*ButtonsPanel, Gtk::PACK_SHRINK,5);
+  TopPanel->pack_start(*mp_ModelFctDetailMVP->asWidget(),Gtk::PACK_EXPAND_WIDGET,5);
   TopPanel->set_visible(true);
+  TopPanel->set_border_width(6);
 
   Gtk::HBox* BottomPanel = Gtk::manage(new Gtk::HBox());
   BottomPanel->set_border_width(5);
   BottomPanel->pack_start(*mp_ModelParamsPanel->asWidget());
   BottomPanel->set_visible(true);
+  BottomPanel->set_border_width(6);
 
   BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
-  TopFrame->setLabelText(_("Model Structure"));
+  TopFrame->setLabelText(_("Model definition"));
   TopFrame->set_visible(true);
   TopFrame->add(*TopPanel);
 
   BuilderFrame* BottomFrame = Gtk::manage(new BuilderFrame());
-  BottomFrame->setLabelText(_("Model Parameters"));
+  BottomFrame->setLabelText(_("Model parameters"));
   BottomFrame->set_visible(true);
   BottomFrame->add(*BottomPanel);
 

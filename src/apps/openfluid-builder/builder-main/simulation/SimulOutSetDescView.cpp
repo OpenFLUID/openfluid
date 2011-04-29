@@ -254,11 +254,11 @@ void SimulOutSetDescViewImpl::closeDialog()
 
 SimulOutSetDescViewImpl::SimulOutSetDescViewImpl()
 {
-  Gtk::Label* SetNameLabel = Gtk::manage(new Gtk::Label(_("Set Name")));
-  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Unit Class")));
+  Gtk::Label* SetNameLabel = Gtk::manage(new Gtk::Label(_("Set name")));
+  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Unit class")));
   Gtk::Label* IDsLabel = Gtk::manage(new Gtk::Label(_("IDs")));
   Gtk::Label* VarsLabel = Gtk::manage(new Gtk::Label(_("Variables")));
-  Gtk::Label* FormatNameLabel = Gtk::manage(new Gtk::Label(_("Format Name")));
+  Gtk::Label* FormatNameLabel = Gtk::manage(new Gtk::Label(_("Format name")));
   Gtk::Label* PrecisionLabel = Gtk::manage(new Gtk::Label(_("Precision")));
 
   mp_SetNameEntry = Gtk::manage(new Gtk::Entry());

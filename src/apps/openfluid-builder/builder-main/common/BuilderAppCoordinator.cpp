@@ -260,6 +260,7 @@ void BuilderAppCoordinator::setHomeModule()
   m_Actions.setProjectActionGroupVisible(false);
   m_MainWindow.setToolBarVisible(false);
   m_MainWindow.setStatusBarVisible(false);
+  m_MainWindow.set_title("OpenFLUID-Builder");
 }
 
 // =====================================================================
@@ -283,6 +284,7 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
     m_MainWindow.setStatusBarVisible(true);
+    m_MainWindow.set_title("OpenFLUID-Builder  ["+ openfluid::base::ProjectManager::getInstance()->getName() +"]");
 
     std::string CurrentPrjStr =
         openfluid::base::ProjectManager::getInstance()->getPath();
@@ -290,7 +292,7 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     if (CurrentPrjStr.empty())
       CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
           + std::string("</span>");
-    m_MainWindow.setStatusBarMessage("Current project: " + CurrentPrjStr);
+    m_MainWindow.setStatusBarMessage("Current project path: " + CurrentPrjStr);
 
   } else
   {
@@ -373,6 +375,7 @@ void BuilderAppCoordinator::openProject()
   setProjectModule(ProjectFolder);
 
   setState(*getProjectState());
+
 }
 
 // =====================================================================
@@ -393,6 +396,9 @@ void BuilderAppCoordinator::createProject()
     setProjectModule(ProjectFolder);
 
   setState(*getProjectState());
+
+
+
 }
 
 // =====================================================================

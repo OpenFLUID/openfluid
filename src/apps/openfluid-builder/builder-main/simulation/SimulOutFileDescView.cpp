@@ -56,38 +56,79 @@
 
 #include <glibmm/i18n.h>
 
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::onNameChanged()
 {
   m_signal_NameChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::onColSepChanged()
 {
   m_signal_ColSepChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::onDateFormatChanged()
 {
   m_signal_DateFormatChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::onCommentCharChanged()
 {
   m_signal_CommentCharChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::onOkButtonClicked()
 {
   m_signal_SaveAsked.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::closeDialog()
 {
   mp_Dialog->hide();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutFileDescViewImpl::SimulOutFileDescViewImpl()
 {
-  Gtk::Label* FormatNameLabel = Gtk::manage(new Gtk::Label(_("Format Name")));
-  Gtk::Label* ColSepLabel = Gtk::manage(new Gtk::Label(_("Column Separator")));
-  Gtk::Label* DateFormatLabel = Gtk::manage(new Gtk::Label(_("Date Format")));
+  Gtk::Label* FormatNameLabel = Gtk::manage(new Gtk::Label(_("Format name")));
+  Gtk::Label* ColSepLabel = Gtk::manage(new Gtk::Label(_("Column separator")));
+  Gtk::Label* DateFormatLabel = Gtk::manage(new Gtk::Label(_("Date format")));
   Gtk::Label* CommentCharLabel = Gtk::manage(new Gtk::Label(
-      _("Comment Character")));
+      _("Comment character")));
 
   mp_FormatNameEntry = Gtk::manage(new Gtk::Entry());
   mp_FormatNameEntry->signal_changed().connect(sigc::mem_fun(*this,
@@ -134,30 +175,72 @@ SimulOutFileDescViewImpl::SimulOutFileDescViewImpl()
 
   mp_Dialog->show_all_children();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFileDescViewImpl::signal_NameChanged()
 {
   return m_signal_NameChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFileDescViewImpl::signal_ColSepChanged()
 {
   return m_signal_ColSepChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFileDescViewImpl::signal_DateFormatChanged()
 {
   return m_signal_DateFormatChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFileDescViewImpl::signal_CommentCharChanged()
 {
   return m_signal_CommentCharChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFileDescViewImpl::signal_SaveAsked()
 {
   return m_signal_SaveAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFileDescViewImpl::signal_CancelAsked()
 {
   return m_signal_CancelAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setCreationMode()
 {
   m_isInCreationMode = true;
@@ -172,6 +255,12 @@ void SimulOutFileDescViewImpl::setCreationMode()
   mp_FormatNameEntry->set_visible(true);
   mp_FormatNameLabel->set_visible(false);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setEditionMode()
 {
   m_isInCreationMode = false;
@@ -186,6 +275,12 @@ void SimulOutFileDescViewImpl::setEditionMode()
   mp_FormatNameLabel->set_visible(true);
   mp_FormatNameEntry->set_visible(false);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setChars(std::vector<std::string> Chars)
 {
   mp_ColSepComboEntry->clear_items();
@@ -197,6 +292,12 @@ void SimulOutFileDescViewImpl::setChars(std::vector<std::string> Chars)
     mp_CommentCharComboEntry->append_text(Chars[i]);
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setDateFormats(
     std::vector<std::string> DateFormats)
 {
@@ -204,39 +305,93 @@ void SimulOutFileDescViewImpl::setDateFormats(
   for (unsigned int i = 0; i < DateFormats.size(); i++)
     mp_DateFormatComboEntry->append_text(DateFormats[i]);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setFormatName(std::string Value)
 {
   mp_FormatNameEntry->set_text(Value);
   mp_FormatNameLabel->set_text(Value);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setColSep(std::string Value)
 {
   mp_ColSepComboEntry->get_entry()->set_text(Value);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setDateFormat(std::string Value)
 {
   mp_DateFormatComboEntry->get_entry()->set_text(Value);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::setCommentChar(std::string Value)
 {
   mp_CommentCharComboEntry->get_entry()->set_text(Value);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutFileDescViewImpl::getFormatName()
 {
   return mp_FormatNameEntry->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutFileDescViewImpl::getColSep()
 {
   return mp_ColSepComboEntry->get_entry()->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutFileDescViewImpl::getDateFormat()
 {
   return mp_DateFormatComboEntry->get_entry()->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutFileDescViewImpl::getCommentChar()
 {
   return mp_CommentCharComboEntry->get_entry()->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::showDialog()
 {
   int Res = mp_Dialog->run();
@@ -247,10 +402,22 @@ void SimulOutFileDescViewImpl::showDialog()
 
   closeDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* SimulOutFileDescViewImpl::asWidget()
 {
   return mp_Table;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFileDescViewImpl::showErrorMessageDialog(std::string MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,

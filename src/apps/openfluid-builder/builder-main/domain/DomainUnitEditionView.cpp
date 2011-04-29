@@ -60,6 +60,11 @@
 #include "BuilderListToolBox.hpp"
 #include "DomainUnitRelationTreeView.hpp"
 
+
+
+// =====================================================================
+// =====================================================================
+
 void DomainUnitEditionViewImpl::initGlobalVisibility()
 {
   mp_Dialog->show_all_children();
@@ -80,11 +85,17 @@ void DomainUnitEditionViewImpl::initGlobalVisibility()
   mp_ChildrenToolBox->setUpCommandVisible(false);
   mp_ChildrenToolBox->setEditCommandVisible(false);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::createAddDialog()
 {
-  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Class Unit")));
+  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Unit class")));
   mp_ClassAddEntry = Gtk::manage(new Gtk::Entry());
-  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("Id")));
+  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("ID")));
   mp_IdAddEntry = Gtk::manage(new Gtk::Entry());
   Gtk::Table* AddTable = Gtk::manage(new Gtk::Table());
 
@@ -106,73 +117,150 @@ void DomainUnitEditionViewImpl::createAddDialog()
 
   mp_AddDialog->show_all_children();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onProcessOrderChanged()
 {
   m_signal_ProcessOrderChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onFromSelectionChanged()
 {
   mp_SelectedView = mp_FromsView;
   m_signal_RelationSelectionChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onToSelectionChanged()
 {
   mp_SelectedView = mp_TosView;
   m_signal_RelationSelectionChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onParentSelectionChanged()
 {
   mp_SelectedView = mp_ParentsView;
   m_signal_RelationSelectionChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onChildSelectionChanged()
 {
   mp_SelectedView = mp_ChildrenView;
   m_signal_RelationSelectionChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onRelationRemoveAsked()
 {
   m_signal_RelationRemoveAsked .emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::showAddDialog()
 {
   if (mp_AddDialog->run() == Gtk::RESPONSE_CANCEL)
     closeAddDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onFromRelationAddButtonClicked()
 {
   mp_SelectedView = mp_FromsView;
   showAddDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onToRelationAddButtonClicked()
 {
   mp_SelectedView = mp_TosView;
   showAddDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onParentRelationAddButtonClicked()
 {
   mp_SelectedView = mp_ParentsView;
   showAddDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onChildRelationAddButtonClicked()
 {
   mp_SelectedView = mp_ChildrenView;
   showAddDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::onRelationAddAsked()
 {
   m_signal_RelationAddAsked.emit();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 DomainUnitEditionViewImpl::DomainUnitEditionViewImpl()
 {
-  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Class Unit")));
+  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Unit class")));
   mp_ClassValueLabel = Gtk::manage(new Gtk::Label());
 
-  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("Id")));
+  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("ID")));
   mp_IdValueLabel = Gtk::manage(new Gtk::Label());
 
-  Gtk::Label* PcsOrderLabel = Gtk::manage(new Gtk::Label(_("Process Order")));
+  Gtk::Label* PcsOrderLabel = Gtk::manage(new Gtk::Label(_("Process order")));
   mp_PcsOrderSpin = Gtk::manage(new Gtk::SpinButton());
   mp_PcsOrderSpin->set_range(1.0, 9999.0);
   mp_PcsOrderSpin->set_increments(1, 10);
@@ -268,73 +356,169 @@ DomainUnitEditionViewImpl::DomainUnitEditionViewImpl()
 
   createAddDialog();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 DomainUnitEditionViewImpl::~DomainUnitEditionViewImpl()
 {
   delete mp_Dialog;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionViewImpl::signal_ProcessOrderChanged()
 {
   return m_signal_ProcessOrderChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionViewImpl::signal_RelationSelectionChanged()
 {
   return m_signal_RelationSelectionChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionViewImpl::signal_RelationRemoveAsked()
 {
   return m_signal_RelationRemoveAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainUnitEditionViewImpl::signal_RelationAddAsked()
 {
   return m_signal_RelationAddAsked;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setClass(std::string ClassName)
 {
   mp_ClassValueLabel->set_text(ClassName);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setId(int Id)
 {
   std::ostringstream ss;
   ss << Id;
   mp_IdValueLabel->set_text(ss.str());
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setProcessOrder(int PcsOrder)
 {
   mp_PcsOrderSpin->set_value(PcsOrder);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setFromsModel(
     Glib::RefPtr<Gtk::TreeModel> FromsModel)
 {
   mp_FromsView-> set_model(FromsModel);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setTosModel(
     Glib::RefPtr<Gtk::TreeModel> TosModel)
 {
   mp_TosView->set_model(TosModel);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setParentsModel(
     Glib::RefPtr<Gtk::TreeModel> ParentsModel)
 {
   mp_ParentsView->set_model(ParentsModel);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::setChildrenModel(
     Glib::RefPtr<Gtk::TreeModel> ChildrenModel)
 {
   mp_ChildrenView->set_model(ChildrenModel);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::showDialog()
 {
   if (mp_Dialog->run() == Gtk::RESPONSE_CLOSE)
     mp_Dialog->hide();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* DomainUnitEditionViewImpl::asWidget()
 {
   return mp_MainBox;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainUnitEditionViewImpl::getClassName()
 {
   return mp_ClassValueLabel->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainUnitEditionViewImpl::getId()
 {
   std::istringstream ss(mp_IdValueLabel->get_text());
@@ -342,10 +526,22 @@ int DomainUnitEditionViewImpl::getId()
   ss >> val;
   return val;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainUnitEditionViewImpl::getProcessOrder()
 {
   return mp_PcsOrderSpin->get_value_as_int();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::pair<std::string, std::pair<std::string, int> > DomainUnitEditionViewImpl::getSelectedRelation()
 {
   if (mp_SelectedView)
@@ -353,6 +549,12 @@ std::pair<std::string, std::pair<std::string, int> > DomainUnitEditionViewImpl::
   else
     return std::make_pair("", std::make_pair("", 0));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::pair<std::string, Gtk::TreeIter> DomainUnitEditionViewImpl::getSelectedRelationIter()
 {
   if (mp_SelectedView)
@@ -360,14 +562,32 @@ std::pair<std::string, Gtk::TreeIter> DomainUnitEditionViewImpl::getSelectedRela
   else
     return std::make_pair("", (Gtk::TreeIter) 0);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewImpl::closeAddDialog()
 {
   mp_AddDialog->hide();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainUnitEditionViewImpl::getAddClassName()
 {
   return mp_ClassAddEntry->get_text();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainUnitEditionViewImpl::getAddId()
 {
   std::istringstream ss(mp_IdAddEntry->get_text());
@@ -376,17 +596,35 @@ int DomainUnitEditionViewImpl::getAddId()
   return val;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeView* DomainUnitEditionViewSub::getParentsView()
 {
   return mp_ParentsView;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewSub::selectParentsView()
 {
   mp_SelectedView = mp_ParentsView;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitEditionViewSub::setAddInfo(std::string AddClassName,
     std::string AddId)
 {
   mp_ClassAddEntry->set_text(AddClassName);
   mp_IdAddEntry->set_text(AddId);
 }
+

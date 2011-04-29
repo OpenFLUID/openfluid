@@ -71,16 +71,23 @@ void HomeViewImpl::createHeadPanel()
   mp_LogoImage->set_visible(true);
 
   mp_VersionLabel = Gtk::manage(new Gtk::Label());
+  mp_VersionLabel->set_justify(Gtk::JUSTIFY_CENTER);
   mp_VersionLabel->set_visible(true);
 
   mp_LinkLabel = Gtk::manage(new Gtk::Label());
   mp_LinkLabel->set_visible(true);
 
-  mp_HeadPanel = Gtk::manage(new Gtk::VBox(false, 10));
+  mp_HeadPanelBox = Gtk::manage(new Gtk::VBox(false, 10));
+  mp_HeadPanelBox->set_visible(true);
+  mp_HeadPanelBox->set_border_width(10);
+  mp_HeadPanelBox->pack_start(*mp_LogoImage, Gtk::PACK_SHRINK, 10);
+  mp_HeadPanelBox->pack_start(*mp_VersionLabel, Gtk::PACK_SHRINK, 10);
+  mp_HeadPanelBox->pack_start(*mp_LinkLabel, Gtk::PACK_SHRINK, 10);
+
+  mp_HeadPanel = Gtk::manage(new Gtk::EventBox());
+  mp_HeadPanel->add(*mp_HeadPanelBox);
   mp_HeadPanel->set_visible(true);
-  mp_HeadPanel->pack_start(*mp_LogoImage, Gtk::PACK_SHRINK, 10);
-  mp_HeadPanel->pack_start(*mp_VersionLabel, Gtk::PACK_SHRINK, 10);
-  mp_HeadPanel->pack_start(*mp_LinkLabel, Gtk::PACK_SHRINK, 10);
+  mp_HeadPanel->modify_bg(Gtk::STATE_NORMAL,Gdk::Color("#FFFFFF"));
 }
 
 
@@ -186,9 +193,9 @@ HomeViewImpl::HomeViewImpl(BuilderAppActions& Actions) :
   HSep->set_visible(true);
 
   mp_MainContainer = Gtk::manage(new Gtk::VBox(false, 0));
-  mp_MainContainer->set_border_width(5);
+  mp_MainContainer->set_border_width(0);
   mp_MainContainer->set_visible(true);
-  mp_MainContainer->pack_start(*mp_HeadPanel, Gtk::PACK_SHRINK, 20);
+  mp_MainContainer->pack_start(*mp_HeadPanel, Gtk::PACK_SHRINK);
   mp_MainContainer->pack_start(*HSep, Gtk::PACK_SHRINK, 0);
   mp_MainContainer->pack_start(*mp_BottomPanel, Gtk::PACK_EXPAND_WIDGET, 0);
 }
@@ -210,7 +217,7 @@ sigc::signal<void> HomeViewImpl::signal_NewProjectAsked()
 
 void HomeViewImpl::setVersion(std::string VersionTxt)
 {
-  mp_VersionLabel->set_text(VersionTxt);
+  mp_VersionLabel->set_markup(VersionTxt);
 }
 
 

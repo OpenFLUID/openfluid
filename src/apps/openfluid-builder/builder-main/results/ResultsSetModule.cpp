@@ -105,7 +105,7 @@ void ResultsSetModule::compose()
   MiddlePanel->set_visible(true);
 
   BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
-  TopFrame->setLabelText(_("Unit Choice"));
+  TopFrame->setLabelText(_("Unit selection"));
   TopFrame->set_visible(true);
   TopFrame->add(*TopPanel);
 

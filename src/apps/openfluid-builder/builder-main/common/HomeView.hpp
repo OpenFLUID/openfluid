@@ -62,6 +62,7 @@
 class BuilderHomeButton;
 class BuilderAppActions;
 
+
 class HomeView
 {
   public:
@@ -72,6 +73,13 @@ class HomeView
     virtual void setRecentText(std::string RecentText) = 0;
 };
 
+
+
+// =====================================================================
+// =====================================================================
+
+
+
 class HomeViewImpl: public HomeView
 {
   private:
@@ -79,7 +87,8 @@ class HomeViewImpl: public HomeView
     BuilderAppActions& mp_Actions;
     Gtk::Box* mp_MainContainer;
 
-    Gtk::Box* mp_HeadPanel;
+    Gtk::Box* mp_HeadPanelBox;
+    Gtk::EventBox* mp_HeadPanel;
     Gtk::Box* mp_BottomPanel;
 
     Gtk::Box* mp_ButtonPanel;

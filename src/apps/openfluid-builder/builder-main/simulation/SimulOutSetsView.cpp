@@ -75,11 +75,11 @@ SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
 
-  mp_TreeView->append_column(_("Set Name"), m_Columns.m_Name);
-  mp_TreeView->append_column(_("Unit Class"), m_Columns.m_UnitsClass);
+  mp_TreeView->append_column(_("Set name"), m_Columns.m_Name);
+  mp_TreeView->append_column(_("Unit class"), m_Columns.m_UnitsClass);
   mp_TreeView->append_column(_("Unit IDs"), m_Columns.m_UnitsIDs);
   mp_TreeView->append_column(_("Variables"), m_Columns.m_Vars);
-  mp_TreeView->append_column(_("Format Name"), m_Columns.m_FormatName);
+  mp_TreeView->append_column(_("Format name"), m_Columns.m_FormatName);
   mp_TreeView->append_column(_("Precision"), m_Columns.m_Precision);
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
@@ -89,6 +89,7 @@ SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 
   mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   mp_MainWin->set_visible(true);
   mp_MainWin->add(*mp_TreeView);
 }

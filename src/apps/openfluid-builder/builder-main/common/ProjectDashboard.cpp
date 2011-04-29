@@ -98,7 +98,7 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Gtk::TreeRow Row;
 
   Row = *mref_TreeModel->append();
-  Row[m_Columns.m_Title] = _("Model structure");
+  Row[m_Columns.m_Title] = _("Model definition");
   Row[m_Columns.m_StateIcon] = CheckInfo.Model ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.Model ? "ok" : minimiseInfoString(
       CheckInfo.ModelMsg);
@@ -115,7 +115,7 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
       : minimiseInfoString(CheckInfo.ExtraFilesMsg);
 
   Row = *mref_TreeModel->append();
-  Row[m_Columns.m_Title] = _("Domain structure");
+  Row[m_Columns.m_Title] = _("Spatial representation");
   Row[m_Columns.m_StateIcon] = CheckInfo.Domain ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.Domain ? "ok" : CheckInfo.DomainMsg;
 

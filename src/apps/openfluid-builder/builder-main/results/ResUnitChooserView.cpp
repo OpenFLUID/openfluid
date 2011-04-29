@@ -74,10 +74,10 @@ void ResUnitChooserViewImpl::onOkButtonClicked()
 ResUnitChooserViewImpl::ResUnitChooserViewImpl():
     mp_MessageLabel(0)
 {
-  Gtk::Label* ClassNameLabel = Gtk::manage(new Gtk::Label(_("Unit Class : ")));
-  Gtk::Label* IDsLabel = Gtk::manage(new Gtk::Label(_("Unit ID")));
+  Gtk::Label* ClassNameLabel = Gtk::manage(new Gtk::Label(_("Class : ")));
+  Gtk::Label* IDsLabel = Gtk::manage(new Gtk::Label(_("ID : ")));
 
-  mp_ShowFilesCB = Gtk::manage(new Gtk::CheckButton(_("show Output files")));
+  mp_ShowFilesCB = Gtk::manage(new Gtk::CheckButton(_("Show file(s)")));
   mp_ShowFilesCB->set_active(true);
 
   //  mp_MessageLabel = Gtk::manage(new Gtk::Label(""));

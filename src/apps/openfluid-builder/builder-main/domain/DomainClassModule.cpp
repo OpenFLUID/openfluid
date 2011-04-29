@@ -99,10 +99,15 @@ void DomainClassModule::compose()
 {
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
+  Gtk::VBox* ButtonsPanel = Gtk::manage(new Gtk::VBox());
+  ButtonsPanel->pack_start(*mp_IDataListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  ButtonsPanel->set_visible(true);
+
+
   Gtk::HBox* FirstPanel = Gtk::manage(new Gtk::HBox());
   FirstPanel->set_border_width(5);
   FirstPanel->pack_start(*mp_DomainIDataMVP->asWidget());
-  FirstPanel->pack_start(*mp_IDataListToolBox->asWidget(), Gtk::PACK_SHRINK, 5);
+  FirstPanel->pack_start(*ButtonsPanel, Gtk::PACK_SHRINK, 5);
   FirstPanel->set_visible(true);
 
   Gtk::HBox* SecondPanel = Gtk::manage(new Gtk::HBox());
@@ -115,14 +120,10 @@ void DomainClassModule::compose()
   Gtk::Notebook* Notebook = Gtk::manage(new Gtk::Notebook());
   Notebook->append_page(*FirstPanel,_("Input Data"));
   Notebook->append_page(*SecondPanel,_("Events"));
+  Notebook->set_border_width(6);
   Notebook->set_visible(true);
 
-  BuilderFrame* MainFrame = Gtk::manage(new BuilderFrame());
-  MainFrame->setLabelText(_("Class Parameters"));
-  MainFrame->set_visible(true);
-  MainFrame->add(*Notebook);
-
-  mp_MainPanel->pack_start(*MainFrame);
+  mp_MainPanel->pack_start(*Notebook);
 
   mp_MainPanel->set_visible(true);
 }

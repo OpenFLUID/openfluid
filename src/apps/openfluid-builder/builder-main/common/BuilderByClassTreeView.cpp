@@ -105,15 +105,17 @@ BuilderByClassTreeView::BuilderByClassTreeView()
   mp_ClassesWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_ClassesWin->set_visible(true);
   mp_ClassesWin->add(*mp_ClassesView);
+  mp_ClassesWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
   mp_UnitsWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_UnitsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_UnitsWin->set_visible(true);
   mp_UnitsWin->add(*mp_UnitsView);
+  mp_UnitsWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
   mp_MainBox = Gtk::manage(new Gtk::HBox());
-  mp_MainBox->pack_start(*mp_ClassesWin);
-  mp_MainBox->pack_start(*mp_UnitsWin);
+  mp_MainBox->pack_start(*mp_ClassesWin, Gtk::PACK_EXPAND_WIDGET, 5);
+  mp_MainBox->pack_start(*mp_UnitsWin, Gtk::PACK_EXPAND_WIDGET, 5);
   mp_MainBox->set_visible(true);
 }
 

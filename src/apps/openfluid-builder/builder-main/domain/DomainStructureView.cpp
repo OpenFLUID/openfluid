@@ -64,84 +64,180 @@ DomainStructureViewImpl::DomainStructureViewImpl(
     DomainStructureColumns& Columns) :
   m_Columns(Columns)
 {
-  mp_UnitsView->append_column("Id", m_Columns.m_Id);
+  mp_UnitsView->append_column("ID", m_Columns.m_Id);
   mp_UnitsView->append_column(_("Process Order"), m_Columns.m_PcsOrder);
 
   mp_UnitsView->get_column(0)->set_sort_column(m_Columns.m_Id);
   mp_UnitsView->get_column(1)->set_sort_column(m_Columns.m_PcsOrder);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainStructureViewImpl::signal_ClassSelectionChanged()
 {
   return BuilderByClassTreeView::signal_ClassSelectionChanged();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainStructureViewImpl::signal_UnitSelectionChanged()
 {
   return BuilderByClassTreeView::signal_UnitSelectionChanged();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureViewImpl::setClassesTreeModel(
     Glib::RefPtr<Gtk::TreeModel> ClassesModel)
 {
   BuilderByClassTreeView::setClassesTreeModel(ClassesModel);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureViewImpl::setUnitsTreeModel(
     Glib::RefPtr<Gtk::TreeModel> UnitsModel)
 {
   BuilderByClassTreeView::setUnitsTreeModel(UnitsModel);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureViewImpl::requestClassSelection(Gtk::TreeIter Iter)
 {
   BuilderByClassTreeView::requestClassSelection(Iter);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureViewImpl::requestUnitSelection(Gtk::TreeIter Iter)
 {
   BuilderByClassTreeView::requestUnitSelection(Iter);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter DomainStructureViewImpl::getSelectedClassIter()
 {
   return BuilderByClassTreeView::getSelectedClassIter();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter DomainStructureViewImpl::getSelectedUnitIter()
 {
   return BuilderByClassTreeView::getSelectedUnitIter();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* DomainStructureViewImpl::asWidget()
 {
   return BuilderByClassTreeView::asWidget();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
 DomainStructureViewSub::DomainStructureViewSub(DomainStructureColumns& Columns) :
   DomainStructureViewImpl(Columns)
 {
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainStructureViewSub::getClassesViewRowCount()
 {
   if (mp_ClassesView->get_model())
     return mp_ClassesView->get_model()->children().size();
   return 0;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainStructureViewSub::getUnitsViewRowCount()
 {
   if (mp_UnitsView->get_model())
     return mp_UnitsView->get_model()->children().size();
   return 0;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainStructureViewSub::getSelectedClassName()
 {
   if (getSelectedClassIter())
     return getSelectedClassIter()->get_value(m_ClassColumns.m_Class);
   return "";
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainStructureViewSub::getSelectedUnitId()
 {
   if (getSelectedUnitIter())
     return getSelectedUnitIter()->get_value(m_Columns.m_Id);
   return -1;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureViewSub::selectClassWithIndex(int Index)
 {
   requestClassSelection(mp_ClassesView->get_model()->children()[Index]);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureViewSub::selectUnitWithIndex(int Index)
 {
   requestUnitSelection(mp_UnitsView->get_model()->children()[Index]);
 }
+
