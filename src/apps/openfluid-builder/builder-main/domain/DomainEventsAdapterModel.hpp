@@ -46,47 +46,46 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsAdapterModel.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINEVENTSADAPTERMODEL_HPP__
+#define __DOMAINEVENTSADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <gtkmm/treestore.h>
 
-namespace openfluid {
-namespace guicommon {
+#include <openfluid/core/CoreRepository.hpp>
 
-// =====================================================================
-// =====================================================================
+#include "DomainEventsColumns.hpp"
 
-
-class DLLEXPORT DialogBoxFactory
+class DomainEventsAdapterModel
 {
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+    virtual void setUnitsColl(openfluid::core::UnitsCollection* UnitsColl) = 0;
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
+    virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 };
 
-}
-} //namespaces
 
+class DomainEventsAdapterModelImpl: public DomainEventsAdapterModel
+{
+  private:
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+
+    DomainEventsColumns m_Columns;
+
+  public:
+
+    DomainEventsAdapterModelImpl();
+
+    void setUnitsColl(openfluid::core::UnitsCollection* UnitsColl);
+
+    Glib::RefPtr<Gtk::TreeModel> getTreeModel();
+};
+
+#endif /* __DOMAINEVENTSADAPTERMODEL_HPP__ */

@@ -46,47 +46,60 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsModel.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINEVENTSMODEL_HPP__
+#define __DOMAINEVENTSMODEL_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <openfluid/core.hpp>
+#include <string.h>
+#include <sigc++/sigc++.h>
 
-namespace openfluid {
-namespace guicommon {
-
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT DialogBoxFactory
+class DomainEventsModel
 {
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+    virtual sigc::signal<void> signal_FromAppEventsInit() = 0;
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
+    virtual void setEngineRequirements(
+        openfluid::core::CoreRepository& CoreRepos) = 0;
 
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
+    virtual void setCurrentClassSelectionByApp(std::string ClassName) = 0;
 
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
+    virtual openfluid::core::UnitsCollection* getUnitsColl() = 0;
 
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
 };
 
-}
-} //namespaces
+class DomainEventsModelImpl: public DomainEventsModel
+{
+  private:
+
+    sigc::signal<void> m_signal_FromAppEventsInit;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    openfluid::core::UnitsCollection* mp_UnitsColl;
 
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+  public:
+
+    DomainEventsModelImpl();
+
+    ~DomainEventsModelImpl();
+
+    sigc::signal<void> signal_FromAppEventsInit();
+
+    void setEngineRequirements(
+            openfluid::core::CoreRepository& CoreRepos);
+
+    void setCurrentClassSelectionByApp(std::string ClassName);
+
+    openfluid::core::UnitsCollection* getUnitsColl();
+
+};
+
+#endif /* __DOMAINEVENTSMODEL_HPP__ */

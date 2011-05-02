@@ -58,6 +58,7 @@
 #include "ProjectWorkspaceModule.hpp"
 
 class DomainIDataComponent;
+class DomainEventsComponent;
 class BuilderListToolBox;
 class DomainClassCoordinator;
 
@@ -70,6 +71,9 @@ class DomainClassModule: public ProjectWorkspaceModule
 
     DomainIDataComponent* mp_DomainIDataMVP;
     BuilderListToolBox* mp_IDataListToolBox;
+
+    DomainEventsComponent* mp_DomainEventsMVP;
+
     DomainClassCoordinator* mp_Coordinator;
 
     sigc::signal<void> m_signal_DomainClassChanged;

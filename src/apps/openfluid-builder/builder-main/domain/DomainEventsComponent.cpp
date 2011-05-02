@@ -46,47 +46,69 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
- \brief Header of ...
+ \file DomainEventsComponent.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#include "DomainEventsComponent.hpp"
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-namespace guicommon {
+#include "DomainEventsModel.hpp"
+#include "DomainEventsView.hpp"
+#include "DomainEventsPresenter.hpp"
+#include "DomainEventsAdapterModel.hpp"
+#include "DomainEventsAdapter.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT DialogBoxFactory
+DomainEventsComponent::DomainEventsComponent()
 {
-  public:
-
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
-};
-
+  mp_Model = new DomainEventsModelImpl();
+  mp_AdapterModel = new DomainEventsAdapterModelImpl();
+  mp_View = new DomainEventsViewImpl();
+  mp_Adapter = new DomainEventsAdapter(*mp_AdapterModel,*mp_View);
+  mp_Presenter = new DomainEventsPresenter(*mp_Model, *mp_Adapter);
 }
-} //namespaces
+
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+DomainEventsComponent::~DomainEventsComponent()
+{
+  delete mp_Presenter;
+  delete mp_Adapter;
+  delete mp_AdapterModel;
+  delete mp_Model;
+  delete mp_View;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Widget* DomainEventsComponent::asWidget()
+{
+  return mp_View->asWidget();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+DomainEventsModel* DomainEventsComponent::getModel()
+{
+  return mp_Model;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+DomainEventsView* DomainEventsComponent::getView()
+{
+  return mp_View;
+}

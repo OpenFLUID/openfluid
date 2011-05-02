@@ -74,6 +74,8 @@ class BuilderAppCoordinator: public sigc::trackable
     EngineProjectNewDialog* mp_NewProjectDialog;
     EngineProjectOpenDialog* mp_OpenProjectDialog;
 
+    bool m_HasToBeSaved;
+
     void unsetCurrentModule();
 
     void setCurrentModule(BuilderModule* Module);
@@ -102,6 +104,9 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void onCheckHappened(bool IsCheckOk);
 
+    void onChangeHappened();
+
+    void onSaveHappened();
 
   public:
 

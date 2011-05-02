@@ -46,47 +46,34 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsAdapter.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINEVENTSADAPTER_HPP__
+#define __DOMAINEVENTSADAPTER_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <openfluid/core/UnitsColl.hpp>
 
-namespace openfluid {
-namespace guicommon {
-
-// =====================================================================
-// =====================================================================
+class DomainEventsAdapterModel;
+class DomainEventsView;
 
 
-class DLLEXPORT DialogBoxFactory
+class DomainEventsAdapter
 {
+  private:
+
+    DomainEventsAdapterModel& m_AdapterModel;
+
+    DomainEventsView& m_View;
+
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+    DomainEventsAdapter(DomainEventsAdapterModel& AdapterModel, DomainEventsView& View);
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
+    void setUnitsColl(openfluid::core::UnitsCollection* UnitsColl);
 };
 
-}
-} //namespaces
-
-
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+#endif /* __DOMAINEVENTSADAPTER_HPP__ */

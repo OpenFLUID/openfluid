@@ -68,6 +68,8 @@ class EngineProject
 
     bool m_WithProjectManager;
 
+    openfluid::io::FluidXReader* FXReader;
+
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
     openfluid::base::RuntimeEnvironment* mp_RunEnv;
@@ -81,6 +83,8 @@ class EngineProject
     openfluid::machine::Engine* mp_Engine;
 
     sigc::signal<void> m_signal_RunHappened;
+
+    sigc::signal<void> m_signal_SaveHappened;
 
     void setDefaultRunDesc();
 
@@ -104,6 +108,8 @@ class EngineProject
     EngineProject(std::string FolderIn = "", bool WithProjectManager = false);
 
     sigc::signal<void> signal_RunHappened();
+
+    sigc::signal<void> signal_SaveHappened();
 
     void run();
 

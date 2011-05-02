@@ -46,47 +46,33 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsPresenter.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINEVENTSPRESENTER_HPP__
+#define __DOMAINEVENTSPRESENTER_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <sigc++/sigc++.h>
 
-namespace openfluid {
-namespace guicommon {
+class DomainEventsModel;
+class DomainEventsAdapter;
 
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT DialogBoxFactory
+class DomainEventsPresenter: public sigc::trackable
 {
+  private:
+
+    DomainEventsModel& m_Model;
+
+    DomainEventsAdapter& m_Adapter;
+
+    void whenEventsInit();
+
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
+    DomainEventsPresenter(DomainEventsModel& Model, DomainEventsAdapter& Adapter);
 };
 
-}
-} //namespaces
-
-
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+#endif /* __DOMAINEVENTSPRESENTER_HPP__ */

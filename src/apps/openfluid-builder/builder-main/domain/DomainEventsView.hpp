@@ -46,47 +46,49 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsView.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINEVENTSVIEW_HPP__
+#define __DOMAINEVENTSVIEW_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <gtkmm/treemodel.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
 
-namespace openfluid {
-namespace guicommon {
+#include "DomainEventsColumns.hpp"
 
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT DialogBoxFactory
+class DomainEventsView
 {
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+    virtual void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel) = 0;
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
+    virtual Gtk::Widget* asWidget() = 0;
 };
 
-}
-} //namespaces
+class DomainEventsViewImpl: public DomainEventsView
+{
 
+  private:
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+    Gtk::TreeView* mp_TreeView;
+
+    DomainEventsColumns m_Columns;
+
+    Gtk::ScrolledWindow* mp_MainWin;
+
+  public:
+
+    DomainEventsViewImpl();
+
+    void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel);
+
+    Gtk::Widget* asWidget();
+
+};
+
+#endif /* __DOMAINEVENTSVIEW_HPP__ */

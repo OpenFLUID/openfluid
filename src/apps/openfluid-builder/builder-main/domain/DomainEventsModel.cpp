@@ -46,47 +46,69 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
- \brief Header of ...
+ \file DomainEventsModel.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
-
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-namespace guicommon {
+#include "DomainEventsModel.hpp"
+#include <glibmm/ustring.h>
+#include <openfluid/core/DateTime.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT DialogBoxFactory
+DomainEventsModelImpl::DomainEventsModelImpl() :
+  mp_CoreRepos(0), mp_UnitsColl(0)
 {
-  public:
-
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
-};
 
 }
-} //namespaces
+
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+DomainEventsModelImpl::~DomainEventsModelImpl()
+{
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> DomainEventsModelImpl::signal_FromAppEventsInit()
+{
+  return m_signal_FromAppEventsInit;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainEventsModelImpl::setEngineRequirements(
+    openfluid::core::CoreRepository& CoreRepos)
+{
+  mp_CoreRepos = &CoreRepos;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainEventsModelImpl::setCurrentClassSelectionByApp(std::string ClassName)
+{
+  mp_UnitsColl = mp_CoreRepos->getUnits(ClassName);
+
+  if (mp_UnitsColl)
+    m_signal_FromAppEventsInit.emit();
+
+}
+
+// =====================================================================
+// =====================================================================
+
+openfluid::core::UnitsCollection* DomainEventsModelImpl::getUnitsColl()
+{
+  return mp_UnitsColl;
+}

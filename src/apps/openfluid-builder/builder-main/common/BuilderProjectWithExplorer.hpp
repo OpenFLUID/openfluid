@@ -76,6 +76,10 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     sigc::signal<void, bool> m_signal_CheckHappened;
 
+    sigc::signal<void> m_signal_ChangeHappened;
+
+    sigc::signal<void> m_signal_SaveHappened;
+
     EngineProject* mp_EngineProject;
 
     BuilderListToolBoxFactory* mp_ToolBoxFactory;
@@ -92,6 +96,10 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     void whenCheckHappened(bool IsCheckOk);
 
+    void whenChangeHappened();
+
+    void whenSaveHappened();
+
     void whenRunHappened();
 
   protected:
@@ -105,6 +113,10 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
     BuilderProjectWithExplorer(std::string ProjectFolder);
 
     sigc::signal<void, bool> signal_CheckHappened();
+
+    sigc::signal<void> signal_ChangeHappened();
+
+    sigc::signal<void> signal_SaveHappened();
 
     ~BuilderProjectWithExplorer();
 

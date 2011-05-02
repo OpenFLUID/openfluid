@@ -102,6 +102,15 @@ sigc::signal<void, bool> ProjectCoordinator::signal_CheckHappened()
 // =====================================================================
 
 
+sigc::signal<void> ProjectCoordinator::signal_ChangeHappened()
+{
+  return m_signal_ChangeHappened;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 ProjectCoordinator::~ProjectCoordinator()
 {
   // TODO Auto-generated destructor stub
@@ -158,7 +167,8 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_CLASS:
-      PageName = _("Spatial data")+ std::string(" [")+m_ExplorerModel.getActivatedElement().second+"]";
+      PageName = _("Spatial data") + std::string(" [")
+          + m_ExplorerModel.getActivatedElement().second + "]";
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -216,7 +226,8 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_SET:
-      PageName = _("Results")+ std::string(" [")+m_ExplorerModel.getActivatedElement().second+"]";
+      PageName = _("Results") + std::string(" [")
+          + m_ExplorerModel.getActivatedElement().second + "]";
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -255,6 +266,8 @@ void ProjectCoordinator::whenModelChanged()
   updateWorkspaceModules();
 
   checkProject();
+
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================
@@ -315,6 +328,7 @@ updateWorkspaceModules();
 
 checkProject();
 
+m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================
@@ -350,6 +364,8 @@ std::vector<std::string> ProjectCoordinator::getClassPagesToDelete()
 void ProjectCoordinator::whenClassChanged()
 {
   checkProject();
+
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================
@@ -361,6 +377,8 @@ void ProjectCoordinator::whenRunChanged()
   m_ExplorerModel.updateSimulationAsked();
 
   updateWorkspaceModules();
+
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================
@@ -379,6 +397,8 @@ void ProjectCoordinator::whenOutChanged()
 updateWorkspaceModules();
 
 checkProject();
+
+m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================

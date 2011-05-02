@@ -67,7 +67,7 @@
 
 
 EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
-  m_WithProjectManager(WithProjectManager)
+  m_WithProjectManager(WithProjectManager), FXReader(0)
 {
   std::string Now = boost::posix_time::to_iso_extended_string(
       boost::posix_time::microsec_clock::local_time());
@@ -98,39 +98,38 @@ EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
   {
     try
     {
-      openfluid::io::FluidXReader FXReader(mp_IOListener);
+      FXReader = new openfluid::io::FluidXReader(mp_IOListener);
 
-      FXReader.loadFromDirectory(
+      FXReader->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
               : FolderIn);
 
-      openfluid::base::RunDescriptor RunDesc = FXReader.getRunDescriptor();
+      openfluid::base::RunDescriptor RunDesc = FXReader->getRunDescriptor();
       checkAndSetDefaultRunValues(RunDesc);
 
       openfluid::base::OutputDescriptor OutDesc =
-          FXReader.getOutputDescriptor();
+          FXReader->getOutputDescriptor();
       checkAndSetDefaultOutputValues(OutDesc);
 
       openfluid::base::ModelDescriptor ModelDesc =
-          FXReader.getModelDescriptor();
+          FXReader->getModelDescriptor();
       std::string MissingFunctions = checkModelDesc(ModelDesc);
       if (MissingFunctions != "")
         openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
             "Unable to find plugin file(s):\n\n" + MissingFunctions);
 
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-          FXReader.getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
+          FXReader->getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
-
     } catch (openfluid::base::OFException e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
     }
   }
-}
 
+}
 
 // =====================================================================
 // =====================================================================
@@ -139,6 +138,17 @@ EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
 sigc::signal<void> EngineProject::signal_RunHappened()
 {
   return m_signal_RunHappened;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> EngineProject::signal_SaveHappened()
+{
+  return m_signal_SaveHappened;
 }
 
 
@@ -280,6 +290,8 @@ void EngineProject::run()
 
 void EngineProject::save()
 {
+  std::string InputDir = getRunEnv()->getInputDir();
+
   openfluid::base::ProjectManager::getInstance()->save();
 
   openfluid::io::FluidXWriter Writer(getIOListener());
@@ -289,7 +301,18 @@ void EngineProject::save()
   Writer.setRunConfigurationToWrite(getRunDescriptor());
   Writer.setOutputConfigurationToWrite(getOutputDescriptor());
 
-  Writer.WriteToManyFiles(getRunEnv()->getInputDir());
+  boost::filesystem::path InputPath(InputDir);
+
+  boost::filesystem::directory_iterator end_it;
+  for (boost::filesystem::directory_iterator it(InputPath); it != end_it; ++it)
+  {
+    if ((boost::filesystem::extension(it->path()) == ".fluidx"))
+      boost::filesystem::remove(it->path());
+  }
+
+  Writer.WriteToManyFiles(InputDir);
+
+  m_signal_SaveHappened.emit();
 }
 
 // =====================================================================
@@ -400,5 +423,7 @@ EngineProject::~EngineProject()
   if (m_WithProjectManager)
     getRunEnv()->detachFromProject();
   delete mp_Engine;
+  if(FXReader)
+    delete FXReader;
 }
 

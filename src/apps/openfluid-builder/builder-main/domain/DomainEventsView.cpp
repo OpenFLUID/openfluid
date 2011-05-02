@@ -46,47 +46,49 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
- \brief Header of ...
+ \file DomainEventsView.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#include "DomainEventsView.hpp"
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-namespace guicommon {
+#include <glibmm/i18n.h>
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT DialogBoxFactory
+DomainEventsViewImpl::DomainEventsViewImpl()
 {
-  public:
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+  mp_TreeView->append_column(_("Id - Date - Info"),m_Columns.m_Id_Date_Info);
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+  mp_TreeView->set_visible(true);
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
-};
-
+  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->add(*mp_TreeView);
+  mp_MainWin->set_visible(TRUE);
 }
-} //namespaces
+
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+void DomainEventsViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel)
+{
+  mp_TreeView->set_model(TreeModel);
+  for(unsigned int i=0 ; i<TreeModel->children().size() ; i++)
+    mp_TreeView->expand_row(Gtk::TreePath(Glib::ustring::compose("%1",i)),false);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Widget* DomainEventsViewImpl::asWidget()
+{
+  return mp_MainWin;
+}

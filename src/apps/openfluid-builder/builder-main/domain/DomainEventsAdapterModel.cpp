@@ -46,47 +46,75 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
- \brief Header of ...
+ \file DomainEventsAdapterModel.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
-
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-namespace guicommon {
+#include "DomainEventsAdapterModel.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT DialogBoxFactory
+DomainEventsAdapterModelImpl::DomainEventsAdapterModelImpl()
 {
-  public:
-
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
-};
+  mref_TreeModel = Gtk::TreeStore::create(m_Columns);
 
 }
-} //namespaces
+
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+void DomainEventsAdapterModelImpl::setUnitsColl(
+    openfluid::core::UnitsCollection* UnitsColl)
+{
+  mref_TreeModel->clear();
+
+  if (!UnitsColl)
+    return;
+
+  openfluid::core::UnitsList_t::iterator it;
+  for (it = UnitsColl->getList()->begin(); it != UnitsColl->getList()->end(); ++it)
+  {
+    openfluid::core::Unit* TheUnit =
+        const_cast<openfluid::core::Unit*> (&(*it));
+
+    if (TheUnit->getEvents()->getCount())
+    {
+      Gtk::TreeRow UnitRow = *mref_TreeModel->append();
+      UnitRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1", TheUnit->getID());
+
+      std::list<openfluid::core::Event*>* Events =
+          TheUnit->getEvents()->getEventsList();
+
+      std::list<openfluid::core::Event*>::iterator itEvents;
+      for (itEvents = Events->begin(); itEvents != Events->end(); ++itEvents)
+      {
+        Gtk::TreeRow EventRow = *mref_TreeModel->append(UnitRow->children());
+        EventRow[m_Columns.m_Id_Date_Info] = (*itEvents)->getDateTime().getAsISOString();
+
+        openfluid::core::Event::EventInfosMap_t Infos = (*itEvents)->getInfos();
+        openfluid::core::Event::EventInfosMap_t::iterator itInfos;
+
+        for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
+        {
+          Gtk::TreeRow InfoRow = *mref_TreeModel->append(EventRow->children());
+          InfoRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1 : %2",
+              itInfos->first, itInfos->second);
+        }
+      }
+    }
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::TreeModel> DomainEventsAdapterModelImpl::getTreeModel()
+{
+  return mref_TreeModel;
+}

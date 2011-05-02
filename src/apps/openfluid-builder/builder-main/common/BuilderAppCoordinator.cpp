@@ -172,7 +172,6 @@ void BuilderAppCoordinator::whenSaveAsked()
   mp_CurrentState->whenSaveAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -181,7 +180,6 @@ void BuilderAppCoordinator::whenMapViewAsked()
 {
   mp_CurrentState->whenMapViewAsked();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -198,7 +196,8 @@ void BuilderAppCoordinator::whenSaveAsAsked()
 
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
     BuilderAppActions& Actions, PreferencesModel& PrefModel) :
-  m_MainWindow(MainWindow), m_Actions(Actions), m_PreferencesModel(PrefModel)
+  m_MainWindow(MainWindow), m_Actions(Actions), m_PreferencesModel(PrefModel),
+      m_HasToBeSaved(true)
 {
   mp_CurrentModule = 0;
 
@@ -237,7 +236,6 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   m_Actions.getMapViewAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenMapViewAsked));
-
 
   setState(*mp_HomeState);
 }
@@ -294,12 +292,21 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     ProjectModule->signal_CheckHappened().connect(sigc::mem_fun(*this,
         &BuilderAppCoordinator::onCheckHappened));
 
+    ProjectModule->signal_ChangeHappened().connect(sigc::mem_fun(*this,
+        &BuilderAppCoordinator::onChangeHappened));
+
+    ProjectModule->signal_SaveHappened().connect(sigc::mem_fun(*this,
+        &BuilderAppCoordinator::onSaveHappened));
+
     ProjectModule->checkAsked();
+
+    ProjectModule->saveAsked();
 
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
     m_MainWindow.setStatusBarVisible(true);
-    m_MainWindow.set_title("OpenFLUID-Builder  ["+ openfluid::base::ProjectManager::getInstance()->getName() +"]");
+    m_MainWindow.set_title("OpenFLUID-Builder  ["
+        + openfluid::base::ProjectManager::getInstance()->getName() + "]");
 
     std::string CurrentPrjStr =
         openfluid::base::ProjectManager::getInstance()->getPath();
@@ -331,6 +338,26 @@ void BuilderAppCoordinator::onCheckHappened(bool IsCheckOk)
 // =====================================================================
 
 
+void BuilderAppCoordinator::onChangeHappened()
+{
+  m_Actions.getSaveAction()->set_sensitive(true);
+  m_HasToBeSaved = true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::onSaveHappened()
+{
+  m_Actions.getSaveAction()->set_sensitive(false);
+  m_HasToBeSaved = false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderModule* BuilderAppCoordinator::getCurrentModule()
 {
   return mp_CurrentModule;
@@ -352,8 +379,16 @@ void BuilderAppCoordinator::quitApp()
 
 bool BuilderAppCoordinator::showCloseProjectDialog()
 {
-  return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      _("Are you sure you want to close this project ?"));
+  int Res = openfluid::guicommon::DialogBoxFactory::showCloseProjectDialog(m_HasToBeSaved);
+
+  if(Res == 0)
+    return false;
+
+  if(Res == 1)
+    return true;
+
+  whenSaveAsked();
+  return true;
 }
 
 // =====================================================================
@@ -411,8 +446,6 @@ void BuilderAppCoordinator::createProject()
     setProjectModule(ProjectFolder);
 
   setState(*getProjectState());
-
-
 
 }
 

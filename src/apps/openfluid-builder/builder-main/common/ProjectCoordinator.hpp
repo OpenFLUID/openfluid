@@ -70,6 +70,8 @@ class ProjectCoordinator
 
     sigc::signal<void, bool> m_signal_CheckHappened;
 
+    sigc::signal<void> m_signal_ChangeHappened;
+
     ProjectExplorerModel& m_ExplorerModel;
 
     ProjectWorkspace& m_Workspace;
@@ -113,6 +115,8 @@ class ProjectCoordinator
   public:
 
     sigc::signal<void, bool> signal_CheckHappened();
+
+    sigc::signal<void> signal_ChangeHappened();
 
     ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
         ProjectWorkspace& Workspace, EngineProject& TheEngineProject,

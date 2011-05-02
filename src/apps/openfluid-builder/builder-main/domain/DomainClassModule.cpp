@@ -55,6 +55,7 @@
 #include "DomainClassModule.hpp"
 
 #include "DomainIDataComponent.hpp"
+#include "DomainEventsComponent.hpp"
 
 #include "DomainClassCoordinator.hpp"
 #include "BuilderListToolBoxFactory.hpp"
@@ -73,8 +74,10 @@ DomainClassModule::DomainClassModule()
   mp_DomainIDataMVP = new DomainIDataComponent();
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
 
+  mp_DomainEventsMVP = new DomainEventsComponent();
+
   mp_Coordinator = new DomainClassCoordinator(*mp_DomainIDataMVP->getModel(),
-      *mp_IDataListToolBox);
+      *mp_IDataListToolBox, *mp_DomainEventsMVP->getModel());
 
   mp_Coordinator->signal_DomainClassChanged().connect(sigc::mem_fun(*this,
       &DomainClassModule::whenClassChanged));
@@ -112,8 +115,8 @@ void DomainClassModule::compose()
 
   Gtk::HBox* SecondPanel = Gtk::manage(new Gtk::HBox());
   SecondPanel->set_border_width(5);
-  Gtk::Label* EventsLabel = Gtk::manage(new Gtk::Label("Events"));
-  SecondPanel->pack_start(*EventsLabel);
+//  Gtk::Label* EventsLabel = Gtk::manage(new Gtk::Label("Events"));
+  SecondPanel->pack_start(*mp_DomainEventsMVP->asWidget());
   SecondPanel->set_visible(true);
 
 

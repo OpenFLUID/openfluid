@@ -156,7 +156,7 @@ std::map<std::string, std::string> DialogBoxFactory::showGeneratorCreationDialog
 
   Gtk::SpinButton VarSizeSpin;
   VarSizeSpin.set_numeric(true);
-  VarSizeSpin.set_increments(1,1);
+  VarSizeSpin.set_increments(1, 1);
   VarSizeSpin.set_range(2.0, 9.0);
 
   Gtk::Table Table;
@@ -195,6 +195,51 @@ std::map<std::string, std::string> DialogBoxFactory::showGeneratorCreationDialog
 
   return GenInfo;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
+{
+  Gtk::Dialog Dialog(_("Close project ?"));
+
+  Gtk::Label Label;
+
+  Gtk::HBox MainBox;
+  Gtk::Image Image(Gtk::Stock::DIALOG_QUESTION,Gtk::ICON_SIZE_DIALOG);
+  MainBox.pack_start(Image, Gtk::PACK_SHRINK, 10);
+  MainBox.pack_start(Label, Gtk::PACK_SHRINK, 10);
+
+  Dialog.get_vbox()->pack_start(MainBox, false, false, 10);
+
+  Dialog.add_button(Gtk::Stock::CANCEL, 0);
+
+  if (HasToBeSaved)
+  {
+    Label.set_text(_("Do you want to save this project before closing ?"));
+    Dialog.add_button(_("Close project without saving"), 1);
+    Dialog.add_button(_("Save and close project"), 2);
+  }
+  else
+  {
+    Label.set_text(_("Are you sure you want to close this project ?"));
+    Dialog.add_button(Gtk::Stock::OK , 1);
+  }
+
+  Dialog.show_all_children();
+
+  int Res = Dialog.run();
+
+  if(Res == Gtk::RESPONSE_DELETE_EVENT)
+    Res = 0;
+
+  return Res;
+}
+
+// =====================================================================
+// =====================================================================
+
 
 }
 } //namespaces

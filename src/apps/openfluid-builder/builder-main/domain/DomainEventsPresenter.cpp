@@ -46,47 +46,34 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
- \brief Header of ...
+ \file DomainEventsPresenter.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#include "DomainEventsPresenter.hpp"
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-namespace guicommon {
+#include "DomainEventsModel.hpp"
+#include "DomainEventsAdapter.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-class DLLEXPORT DialogBoxFactory
+DomainEventsPresenter::DomainEventsPresenter(DomainEventsModel& Model,
+    DomainEventsAdapter& Adapter) :
+  m_Model(Model), m_Adapter(Adapter)
 {
-  public:
-
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
-};
+  m_Model.signal_FromAppEventsInit().connect(sigc::mem_fun(*this,
+      &DomainEventsPresenter::whenEventsInit));
 
 }
-} //namespaces
 
+// =====================================================================
+// =====================================================================
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+void DomainEventsPresenter::whenEventsInit()
+{
+  m_Adapter.setUnitsColl(m_Model.getUnitsColl());
+}
+

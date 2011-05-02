@@ -46,47 +46,38 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsComponent.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
-
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-namespace guicommon {
-
-// =====================================================================
-// =====================================================================
+#ifndef __DOMAINEVENTSCOMPONENT_HPP__
+#define __DOMAINEVENTSCOMPONENT_HPP__
 
 
-class DLLEXPORT DialogBoxFactory
+#include "BuilderMVPComponent.hpp"
+
+class DomainEventsModel;
+class DomainEventsView;
+class DomainEventsPresenter;
+class DomainEventsAdapterModel;
+class DomainEventsAdapter;
+
+class DomainEventsComponent : public BuilderMVPComponent
 {
+  private:
+    DomainEventsModel* mp_Model;
+    DomainEventsView* mp_View;
+    DomainEventsPresenter* mp_Presenter;
+    DomainEventsAdapterModel* mp_AdapterModel;
+    DomainEventsAdapter* mp_Adapter;
+
   public:
-
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
+    DomainEventsComponent();
+    ~DomainEventsComponent();
+    Gtk::Widget* asWidget();
+    DomainEventsModel* getModel();
+    DomainEventsView* getView();
 };
-
-}
-} //namespaces
-
-
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+#endif /* __DOMAINEVENTSCOMPONENT_HPP__ */

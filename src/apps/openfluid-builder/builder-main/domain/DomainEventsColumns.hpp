@@ -43,50 +43,30 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- */
+*/
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainEventsColumns.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#ifndef __DOMAINEVENTSCOLUMNS_HPP__
+#define __DOMAINEVENTSCOLUMNS_HPP__
 
-namespace openfluid {
-namespace guicommon {
+#include <gtkmm/treemodel.h>
 
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT DialogBoxFactory
+class DomainEventsColumns: public Gtk::TreeModel::ColumnRecord
 {
   public:
+  DomainEventsColumns()
+    {
+      add(m_Id_Date_Info);
+    }
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
-
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
-
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
-
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
-
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
-    static int showCloseProjectDialog(bool HasToBeSaved);
+    Gtk::TreeModelColumn<std::string> m_Id_Date_Info;
 };
 
-}
-} //namespaces
-
-
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+#endif /* __DOMAINEVENTSCOLUMNS_HPP__ */

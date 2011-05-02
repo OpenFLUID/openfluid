@@ -52,15 +52,14 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-
 #include "DomainClassCoordinator.hpp"
 
 #include <glibmm/i18n.h>
 
 #include "DomainIDataModel.hpp"
+#include "DomainEventsModel.hpp"
 #include "BuilderListToolBox.hpp"
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
-
 
 // =====================================================================
 // =====================================================================
@@ -74,24 +73,23 @@ void DomainClassCoordinator::updateIDataListToolBox()
       != "");
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 void DomainClassCoordinator::whenAddIDataAsked()
 {
-  std::string DataName = openfluid::guicommon::DialogBoxFactory::showTextEntryDialog(
-      _("Adding data to the selected class"), _("Data Name : "));
+  std::string DataName =
+      openfluid::guicommon::DialogBoxFactory::showTextEntryDialog(
+          _("Adding data to the selected class"), _("Data Name : "));
   m_IDataModel.addData(DataName);
 
-  m_signal_DomainClassChanged.emit();
+  if (DataName != "")
+    m_signal_DomainClassChanged.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 
 void DomainClassCoordinator::whenRemoveIDataAsked()
@@ -103,25 +101,24 @@ void DomainClassCoordinator::whenRemoveIDataAsked()
               _("Data Name : "));
   m_IDataModel.removeData(DataName);
 
-  m_signal_DomainClassChanged.emit();
+  if (DataName != "")
+    m_signal_DomainClassChanged.emit();
 }
-
 
 // =====================================================================
 // =====================================================================
 
 
 DomainClassCoordinator::DomainClassCoordinator(DomainIDataModel& IDataModel,
-    BuilderListToolBox& IDataListToolBox) :
-  m_IDataModel(IDataModel), m_IDataListToolBox(
-          IDataListToolBox)
+    BuilderListToolBox& IDataListToolBox, DomainEventsModel& EventsModel) :
+  m_IDataModel(IDataModel), m_IDataListToolBox(IDataListToolBox),
+      m_EventsModel(EventsModel)
 {
   m_IDataListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenAddIDataAsked));
   m_IDataListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenRemoveIDataAsked));
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -131,7 +128,6 @@ sigc::signal<void> DomainClassCoordinator::signal_DomainClassChanged()
 {
   return m_signal_DomainClassChanged;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -143,8 +139,9 @@ void DomainClassCoordinator::setEngineRequirements(
 {
   m_IDataModel.setEngineRequirements(SimBlob.getCoreRepository());
   updateIDataListToolBox();
-}
 
+  m_EventsModel.setEngineRequirements(SimBlob.getCoreRepository());
+}
 
 // =====================================================================
 // =====================================================================
@@ -153,8 +150,8 @@ void DomainClassCoordinator::setEngineRequirements(
 void DomainClassCoordinator::setSelectedClassFromApp(std::string ClassName)
 {
   m_IDataModel.setCurrentClassSelectionByApp(ClassName);
+  m_EventsModel.setCurrentClassSelectionByApp(ClassName);
 }
-
 
 // =====================================================================
 // =====================================================================

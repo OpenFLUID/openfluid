@@ -86,8 +86,14 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
   mp_Coordinator->signal_CheckHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenCheckHappened));
 
+  mp_Coordinator->signal_ChangeHappened().connect(sigc::mem_fun(*this,
+      &BuilderProjectWithExplorer::whenChangeHappened));
+
   mp_EngineProject->signal_RunHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenRunHappened));
+
+  mp_EngineProject->signal_SaveHappened().connect(sigc::mem_fun(*this,
+      &BuilderProjectWithExplorer::whenSaveHappened));
 
 }
 
@@ -98,6 +104,24 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
 void BuilderProjectWithExplorer::whenCheckHappened(bool IsCheckOk)
 {
   m_signal_CheckHappened.emit(IsCheckOk);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProjectWithExplorer::whenChangeHappened()
+{
+  m_signal_ChangeHappened.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProjectWithExplorer::whenSaveHappened()
+{
+  m_signal_SaveHappened.emit();
 }
 
 // =====================================================================
@@ -116,6 +140,24 @@ void BuilderProjectWithExplorer::whenRunHappened()
 sigc::signal<void, bool> BuilderProjectWithExplorer::signal_CheckHappened()
 {
   return m_signal_CheckHappened;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> BuilderProjectWithExplorer::signal_ChangeHappened()
+{
+  return m_signal_ChangeHappened;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> BuilderProjectWithExplorer::signal_SaveHappened()
+{
+  return m_signal_SaveHappened;
 }
 
 // =====================================================================

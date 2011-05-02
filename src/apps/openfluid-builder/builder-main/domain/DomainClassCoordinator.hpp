@@ -60,6 +60,7 @@
 #include <openfluid/machine.hpp>
 
 class DomainIDataModel;
+class DomainEventsModel;
 class BuilderListToolBox;
 
 class DomainClassCoordinator: public sigc::trackable
@@ -69,8 +70,9 @@ class DomainClassCoordinator: public sigc::trackable
     sigc::signal<void> m_signal_DomainClassChanged;
 
     DomainIDataModel& m_IDataModel;
-
     BuilderListToolBox& m_IDataListToolBox;
+
+    DomainEventsModel& m_EventsModel;
 
     void updateIDataListToolBox();
 
@@ -81,7 +83,7 @@ class DomainClassCoordinator: public sigc::trackable
   public:
 
     DomainClassCoordinator(DomainIDataModel& IDataModel,
-        BuilderListToolBox& IDataListToolBox);
+        BuilderListToolBox& IDataListToolBox, DomainEventsModel& EventsModel);
 
     sigc::signal<void> signal_DomainClassChanged();
 
