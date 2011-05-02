@@ -64,6 +64,7 @@ namespace openfluid { namespace base {
 
 
 EventDescriptor::EventDescriptor()
+: m_Event(openfluid::core::InstantiationInfo::DESCRIPTOR)
 {
 
 }

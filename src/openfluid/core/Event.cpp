@@ -61,6 +61,7 @@
 namespace openfluid { namespace core {
 
 Event::Event()
+: InstantiationInfo(openfluid::core::InstantiationInfo::UNKNOWN)
 {
   m_Infos.clear();
   m_Date = DateTime();
@@ -71,6 +72,7 @@ Event::Event()
 
 
 Event::Event(DateTime Date)
+: InstantiationInfo(openfluid::core::InstantiationInfo::UNKNOWN)
 {
   m_Infos.clear();
   m_Date = Date;

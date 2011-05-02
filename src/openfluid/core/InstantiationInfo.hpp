@@ -45,77 +45,45 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file FluidXWriter.hpp
+  \file instantiationInfo.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
 
-#ifndef __FLUIDXWRITER_HPP__
-#define __FLUIDXWRITER_HPP__
+#ifndef __INSTANTIATIONINFO_HPP___
+#define __INSTANTIATIONINFO_HPP___
 
 
-#include <list>
-#include <string>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/io/IOListener.hpp>
+
+namespace openfluid { namespace core {
 
 
-namespace openfluid { namespace io {
-
-
-class DLLEXPORT FluidXWriter
+class DLLEXPORT InstantiationInfo
 {
+  public:
+    enum Type { DESCRIPTOR, SIMULATION, UNKNOWN };
+
   private:
 
-    std::string m_ModelStr;
-    std::string m_RunStr;
-    std::string m_DomainStr;
-    std::string m_OutputStr;
-
-    std::string m_IndentStr;
-
-    openfluid::io::IOListener* mp_Listener;
-
-    void prepareOutputDir(std::string DirPath);
-
-    std::string getGeneratorMethodAsStr(openfluid::base::GeneratorDescriptor::GeneratorMethod Method) const;
-
-    std::string getParamsAsStr(const openfluid::core::FuncParamsMap_t& Params) const;
-
-    openfluid::core::InstantiationInfo::Type m_InstType;
+    Type m_InstType;
 
   public:
 
+    InstantiationInfo(const Type& InstType) : m_InstType(InstType) { };
 
-    FluidXWriter(openfluid::io::IOListener* Listener);
+    inline void setInstantiationType(const Type& InstType) { m_InstType = InstType; };
 
-    ~FluidXWriter();
-
-    void setModelToWrite(openfluid::machine::ModelInstance& MInstance);
-
-    void setRunConfigurationToWrite(openfluid::base::RunDescriptor& RDescriptor);
-
-    void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
-
-    void setOutputConfigurationToWrite(openfluid::base::OutputDescriptor& ODescriptor);
-
-    void setInstantiationType(const openfluid::core::InstantiationInfo::Type& InstType)
-    { m_InstType = InstType; };
-
-    void WriteToManyFiles(std::string DirPath);
-
-    void WriteToSingleFile(std::string FilePath);
+    inline Type getInstantiationType() const { return m_InstType; };
 
 };
+
 
 } } // namespaces
 
 
-#endif /* __FLUIDXWRITER_HPP__ */
-
+#endif /* __INSTANTIATIONINFO_HPP___ */

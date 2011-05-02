@@ -90,7 +90,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
     CoreRepos.addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),
                                                (*itUnits).getUnitID(),
                                                (*itUnits).getProcessOrder(),
-                                               openfluid::core::Unit::DESCRIPTOR));
+                                               openfluid::core::InstantiationInfo::DESCRIPTOR));
   }
 
   // linking to units
@@ -213,6 +213,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 
     if (EventUnit != NULL)
     {
+      ((*itEvent).getEvent()).setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
       EventUnit->getEvents()->addEvent(&((*itEvent).getEvent()));
     }
 

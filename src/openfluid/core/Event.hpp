@@ -58,6 +58,7 @@
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/InstantiationInfo.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -72,7 +73,7 @@ namespace openfluid { namespace core {
   @li Key is the name given to the information
   @li Value is the value of the information and can be numeric or text information
 */
-class DLLEXPORT Event
+class DLLEXPORT Event : public InstantiationInfo
 {
   public:
     typedef std::map<std::string, std::string> EventInfosMap_t;

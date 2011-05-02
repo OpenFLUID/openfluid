@@ -65,7 +65,10 @@
 #include <openfluid/core/InputData.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/EventsColl.hpp>
+#include <openfluid/core/InstantiationInfo.hpp>
 #include <openfluid/dllexport.hpp>
+
+#include <boost/noncopyable.hpp>
 
 
 namespace openfluid { namespace core {
@@ -119,11 +122,8 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   aUnitListPtr = aUnit.getFromUnits("bar");
   @endcode
 */
-class DLLEXPORT Unit
+class DLLEXPORT Unit : public InstantiationInfo
 {
-  public:
-    enum  InstanciationType { DESCRIPTOR, SIMULATION, UNKNOWN };
-
   private:
     UnitID_t m_ID;
     UnitClass_t m_Class;
@@ -141,8 +141,6 @@ class DLLEXPORT Unit
 
     EventsCollection m_Events;
 
-    InstanciationType m_InstType;
-
   public:
 
     /*
@@ -152,7 +150,7 @@ class DLLEXPORT Unit
       @param[in] aPcsOrder the process order of the unit
         */
     Unit(const UnitClass_t aClass, const UnitID_t anID,
-         const PcsOrd_t aPcsOrder, const InstanciationType InstType);
+         const PcsOrd_t aPcsOrder, const InstantiationInfo::Type InstType);
 
     /*
           Destructor
@@ -174,9 +172,6 @@ class DLLEXPORT Unit
       Returns the class of the unit
     */
     inline UnitClass_t getClass() const { return m_Class; };
-
-    inline InstanciationType getIntanceType() const { return m_InstType; };
-
 
     bool addToUnit(Unit* aUnit);
 
@@ -243,14 +238,12 @@ class DLLEXPORT Unit
 
     void streamContents(std::ostream& OStream);
 
-    //--- added Aline
     void setProcessOrder(unsigned int PcsOrder) { m_PcsOrder = PcsOrder; };
-    //---
 
 };
 
 
-} } // namespaces
+} } // namespace openfluid::core
 
 
 #endif /* __UNIT_H__ */

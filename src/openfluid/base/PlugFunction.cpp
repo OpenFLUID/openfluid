@@ -621,6 +621,7 @@ void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, open
 
 void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,openfluid::core::Event& Ev)
 {
+  Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
   UnitPtr->getEvents()->addEvent(&Ev);
 }
 
@@ -709,7 +710,7 @@ void PluggableFunction::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName
                                           openfluid::core::UnitID_t ID,
                                           openfluid::core::PcsOrd_t PcsOrder)
 {
-  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::Unit::SIMULATION)))
+  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::InstantiationInfo::SIMULATION)))
    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddUnit","Error adding unit");
 
   mp_CoreData->sortUnitsByProcessOrder();
