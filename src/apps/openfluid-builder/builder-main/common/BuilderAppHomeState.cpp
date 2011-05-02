@@ -151,3 +151,13 @@ void BuilderAppHomeState::whenSaveAsAsked()
 {
   //nothing to do, should not happen
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenMapViewAsked()
+{
+  //nothing to do, should not happen
+}

@@ -172,6 +172,17 @@ void BuilderAppCoordinator::whenSaveAsked()
   mp_CurrentState->whenSaveAsked();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenMapViewAsked()
+{
+  mp_CurrentState->whenMapViewAsked();
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -223,6 +234,10 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   m_Actions.getSaveAsAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenSaveAsAsked));
+
+  m_Actions.getMapViewAction()->signal_activate().connect(sigc::mem_fun(*this,
+      &BuilderAppCoordinator::whenMapViewAsked));
+
 
   setState(*mp_HomeState);
 }

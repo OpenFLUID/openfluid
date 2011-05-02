@@ -111,6 +111,8 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getSaveAsAction();
 
+    Glib::RefPtr<Gtk::Action> getMapViewAction();
+
 };
 
 #endif /* __BUILDERAPPACTIONS_HPP__ */

@@ -94,13 +94,8 @@ void BuilderAppActions::createAppUiXml()
 
     "  <toolbar  name='ToolBar'>"
     "    <toolitem action='FileNewEmpty'/>"
-//    "    <toolitem action='FileNewFrom'/>"
     "    <toolitem action='FileOpen'/>"
     "    <placeholder name='ProjectFilePlaceholder' />"
-    "    <separator/>"
-    "    <toolitem action='EditCut'/>"
-    "    <toolitem action='EditCopy'/>"
-    "    <toolitem action='EditPaste'/>"
     "    <placeholder name='SimulationPlaceholder' />"
 //    "      <separator/>"
     "  </toolbar>"
@@ -149,6 +144,8 @@ void BuilderAppActions::createProjectUiXml()
     "  </placeholder>"
     "  <placeholder name='SimulationPlaceholder'>"
     "    <separator/>"
+    "    <toolitem action='MapView'/>"
+    "    <separator/>"
     "    <toolitem action='SimulationRun'/>"
     "  </placeholder>"
     "  </toolbar>"
@@ -168,10 +165,6 @@ void BuilderAppActions::createAppActionGroup()
   mref_AppActionGroup->add(Gtk::Action::create("FileMenu", _("Project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileNewEmpty", Gtk::Stock::NEW,
       _("New"), _("Create a project")));
-//  mref_AppActionGroup->add(Gtk::Action::create("FileNewFrom",
-//      *BuilderGraphicsHelper::createBuilderIconStockId("document-new-derived.png",
-//          "builder-new-derived"), _("New from..."),
-//      _("Create new project from an existing one")));
   mref_AppActionGroup->add(Gtk::Action::create("FileOpen", Gtk::Stock::OPEN,
       _("Open..."), _("Open a project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileQuit", Gtk::Stock::QUIT));
@@ -223,6 +216,13 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationConfig", _("Configuration")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationOutputs", _("Outputs")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun", Gtk::Stock::MEDIA_PLAY, _("Run...")));
+
+  mref_ProjectActionGroup->add(Gtk::Action::create("MapView",
+      *BuilderGraphicsHelper::createBuilderIconStockId("mapview.png",
+          "mapview"), _("Map View"),
+      _("Map view")));
+
+
 
 }
 
@@ -314,16 +314,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewAction()
 // =====================================================================
 // =====================================================================
 
-//
-//Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewFromAction()
-//{
-//  return mref_AppActionGroup->get_action("FileNewFrom");
-//}
-
-
-// =====================================================================
-// =====================================================================
-
 
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileOpenAction()
 {
@@ -410,4 +400,13 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
   return mref_ProjectActionGroup->get_action("FileSaveAs");
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
+{
+  return mref_ProjectActionGroup->get_action("MapView");
+}
 

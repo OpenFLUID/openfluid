@@ -88,6 +88,8 @@ class BuilderAppProjectState: public BuilderAppState
 
     void whenSaveAsAsked();
 
+    void whenMapViewAsked();
+
 
 };
 

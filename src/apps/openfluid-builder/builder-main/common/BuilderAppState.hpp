@@ -79,6 +79,8 @@ class BuilderAppState
 
     virtual void whenSaveAsAsked() = 0;
 
+    virtual void whenMapViewAsked() = 0;
+
 };
 
 #endif /* __BUILDERAPPSTATE_HPP__ */

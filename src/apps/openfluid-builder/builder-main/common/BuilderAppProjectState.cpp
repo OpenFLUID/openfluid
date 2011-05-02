@@ -57,6 +57,8 @@
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderProjectWithExplorer.hpp"
 
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -150,6 +152,7 @@ void BuilderAppProjectState::whenSaveAsked()
   ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->saveAsked();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -160,3 +163,13 @@ void BuilderAppProjectState::whenSaveAsAsked()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenMapViewAsked()
+{
+
+  openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(_("This feature is currently unavailable"));
+}
