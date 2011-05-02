@@ -98,35 +98,40 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   mp_AuthorsEntry = Gtk::manage(new Gtk::Entry());
 
   Gtk::Label* ProjectFolderLabel = Gtk::manage(new Gtk::Label(
-      _("Project Folder"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+      _("Project Folder")+std::string(":"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  ProjectFolderLabel->set_alignment(1.0,0.5);
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Project Name"),
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Project Name")+std::string(":"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  NameLabel->set_alignment(1.0,0.5);
 
   Gtk::Label* DescriptionLabel = Gtk::manage(new Gtk::Label(
-      _("Project Description"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
+      _("Project Description")+std::string(":"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
+  DescriptionLabel->set_alignment(1.0,0.0);
 
-  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Project Authors"),
+  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Project Authors")+std::string(":"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  AuthorsLabel->set_alignment(1.0,0.5);
 
   Gtk::Table* MainTable = Gtk::manage(new Gtk::Table());
   MainTable->set_spacings(5);
   MainTable->set_border_width(5);
   MainTable->attach(*mp_MsgLabel, 0, 2, 0, 1);
-  MainTable->attach(*ProjectFolderLabel, 0, 1, 1, 2, Gtk::FILL, Gtk::SHRINK);
+  MainTable->attach(*ProjectFolderLabel, 0, 1, 1, 2, Gtk::FILL, Gtk::FILL);
   MainTable->attach(*mp_ProjectFileChooserButton, 1, 2, 1, 2);
-  MainTable->attach(*NameLabel, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  MainTable->attach(*NameLabel, 0, 1, 2, 3, Gtk::FILL, Gtk::FILL);
   MainTable->attach(*mp_NameEntry, 1, 2, 2, 3);
-  MainTable->attach(*DescriptionLabel, 0, 1, 3, 4, Gtk::FILL, Gtk::SHRINK);
+  MainTable->attach(*DescriptionLabel, 0, 1, 3, 4, Gtk::FILL, Gtk::FILL);
   MainTable->attach(*DescriptionWin, 1, 2, 3, 4);
   MainTable->attach(*AuthorsLabel, 0, 1, 4, 5, Gtk::FILL, Gtk::SHRINK);
   MainTable->attach(*mp_AuthorsEntry, 1, 2, 4, 5);
+  MainTable->set_border_width(8);
   MainTable->set_visible(true);
   MainTable->show_all_children();
 
   mp_MsgLabel->set_visible(false);
 
-  mp_ImportCheck = Gtk::manage(new Gtk::CheckButton(_("Import dataset from ")));
+  mp_ImportCheck = Gtk::manage(new Gtk::CheckButton(_("Import dataset from ")+std::string(":")));
   mp_ImportCheck->signal_clicked().connect(sigc::mem_fun(*this,
       &EngineProjectNewDialog::onImportCheckClicked));
 
@@ -148,7 +153,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
       &EngineProjectNewDialog::onCheckToggled));
 
   Gtk::TreeView::Column* MyColumn = Gtk::manage(new Gtk::TreeView::Column(
-      "Files"));
+      "Files to import"));
   MyColumn->pack_start(*MyCellRend, false);
   MyColumn->pack_start(m_Columns.m_FileName);
   MyColumn->add_attribute(*MyCellRend, "active", m_Columns.m_IsSelected);
@@ -163,22 +168,25 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   Gtk::ScrolledWindow* ImportWin = Gtk::manage(new Gtk::ScrolledWindow());
   ImportWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   ImportWin->add(*mp_TreeView);
+  ImportWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
   Gtk::HBox* ImportTopBox = Gtk::manage(new Gtk::HBox());
   ImportTopBox->pack_start(*mp_ImportCheck, Gtk::PACK_SHRINK);
   ImportTopBox->pack_start(*mp_ImportFileChooserButton, Gtk::PACK_SHRINK);
 
   Gtk::VBox* ImportBox = Gtk::manage(new Gtk::VBox());
-  ImportBox->pack_start(*ImportTopBox, Gtk::PACK_SHRINK);
-  ImportBox->pack_start(*ImportWin, Gtk::PACK_EXPAND_WIDGET);
+  ImportBox->pack_start(*ImportTopBox, Gtk::PACK_SHRINK,6);
+  ImportBox->pack_start(*ImportWin, Gtk::PACK_EXPAND_WIDGET,6);
+  ImportBox->set_border_width(8);
 
   BuilderFrame* ImportFrame = new BuilderFrame();
   ImportFrame->setLabelText(_("Data import"));
   ImportFrame->set_visible(true);
   ImportFrame->add(*ImportBox);
+  ImportFrame->set_border_width(8);
   ImportFrame->show_all_children();
 
-  mp_Dialog = new Gtk::Dialog(_("Create a new Project"));
+  mp_Dialog = new Gtk::Dialog(_("Create a new project"));
   mp_Dialog->set_has_separator(true);
   mp_Dialog->get_vbox()->pack_start(*MainTable, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*ImportFrame);
