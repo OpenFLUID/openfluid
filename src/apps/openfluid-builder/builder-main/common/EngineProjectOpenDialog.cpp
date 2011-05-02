@@ -68,22 +68,42 @@
 EngineProjectOpenDialog::EngineProjectOpenDialog() :
   m_ProjectFolder("")
 {
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Name")/*,
-      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER*/));
-  Gtk::Label* DescLabel = Gtk::manage(new Gtk::Label(_("Description")/*,
-      Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP*/));
-  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Authors")/*,
-      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER*/));
-  Gtk::Label* CreationDateLabel = Gtk::manage(new Gtk::Label(
-      _("Creation Date")/*, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER*/));
-  Gtk::Label* LastModDateLabel = Gtk::manage(new Gtk::Label(
-      _("Last modification Date")/*, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER*/));
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label());
+  NameLabel->set_markup(std::string("<i>")+_("Name")+std::string(":</i>"));
+  NameLabel->set_alignment(0.0,0.5);
+
+  Gtk::Label* DescLabel = Gtk::manage(new Gtk::Label());
+  DescLabel->set_markup(std::string("<i>")+_("Description")+std::string(":</i>"));
+  DescLabel->set_alignment(0.0,0.5);
+
+  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label());
+  AuthorsLabel->set_markup(std::string("<i>")+_("Authors")+std::string(":</i>"));
+  AuthorsLabel->set_alignment(0.0,0.5);
+
+  Gtk::Label* CreationDateLabel = Gtk::manage(new Gtk::Label());
+  CreationDateLabel->set_markup(std::string("<i>")+_("Creation date")+std::string(":</i>"));
+  CreationDateLabel->set_alignment(0.0,0.5);
+
+  Gtk::Label* LastModDateLabel = Gtk::manage(new Gtk::Label());
+  LastModDateLabel->set_markup(std::string("<i>")+_("Modification date")+std::string(":</i>"));
+  LastModDateLabel->set_alignment(0.0,0.5);
+
   mp_ProjectName = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
       Gtk::ALIGN_CENTER, 5));
+  mp_ProjectName->set_line_wrap(true);
+  mp_ProjectName->set_line_wrap_mode(Pango::WRAP_WORD);
+
   mp_ProjectDesc = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
       Gtk::ALIGN_CENTER, 5));
+  mp_ProjectDesc->set_line_wrap(true);
+  mp_ProjectDesc->set_line_wrap_mode(Pango::WRAP_WORD);
+  mp_ProjectDesc->set_size_request(220,-1);
+
   mp_ProjectAuthors = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
       Gtk::ALIGN_CENTER, 5));
+  mp_ProjectAuthors->set_line_wrap(true);
+  mp_ProjectAuthors->set_line_wrap_mode(Pango::WRAP_WORD);
+
   mp_ProjectCreationDate = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
       Gtk::ALIGN_CENTER, 5));
   mp_ProjectLastModDate = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
@@ -92,29 +112,52 @@ EngineProjectOpenDialog::EngineProjectOpenDialog() :
   mp_PreviewInfoBox = Gtk::manage(new Gtk::VBox());
   mp_PreviewInfoBox->pack_start(*NameLabel, Gtk::PACK_SHRINK);
   mp_PreviewInfoBox->pack_start(*mp_ProjectName, Gtk::PACK_SHRINK);
-  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,8);
   mp_PreviewInfoBox->pack_start(*DescLabel, Gtk::PACK_SHRINK);
   mp_PreviewInfoBox->pack_start(*mp_ProjectDesc, Gtk::PACK_SHRINK);
-  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,8);
   mp_PreviewInfoBox->pack_start(*AuthorsLabel, Gtk::PACK_SHRINK);
   mp_PreviewInfoBox->pack_start(*mp_ProjectAuthors, Gtk::PACK_SHRINK);
-  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,8);
   mp_PreviewInfoBox->pack_start(*CreationDateLabel, Gtk::PACK_SHRINK);
   mp_PreviewInfoBox->pack_start(*mp_ProjectCreationDate, Gtk::PACK_SHRINK);
-  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_PreviewInfoBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,8);
   mp_PreviewInfoBox->pack_start(*LastModDateLabel, Gtk::PACK_SHRINK);
   mp_PreviewInfoBox->pack_start(*mp_ProjectLastModDate, Gtk::PACK_SHRINK);
+  mp_PreviewInfoBox->set_border_width(5);
   mp_PreviewInfoBox->set_visible(true);
   mp_PreviewInfoBox->show_all_children();
 
-  Gtk::VBox* PreviewBox = Gtk::manage(new Gtk::VBox());
+  Gtk::ScrolledWindow* DetailsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  DetailsWin->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
+  DetailsWin->set_shadow_type(Gtk::SHADOW_NONE);
+  DetailsWin->add(*mp_PreviewInfoBox);
+  DetailsWin->set_visible(true);
+  DetailsWin->show_all_children(true);
+
+
+  Gtk::HBox* TitleBox = Gtk::manage(new Gtk::HBox());
+
+  Gtk::Label* TitleLabel = Gtk::manage(new Gtk::Label());
+  TitleLabel->set_markup(_("<b>Project details</b>"));
+  TitleLabel->set_use_markup(true);
+  TitleLabel->set_visible(true);
+
   Gtk::Image* OFImage = BuilderGraphicsHelper::createImageFromFileName(
       "openfluid_icon.png");
   OFImage->set_visible(true);
-  PreviewBox->pack_start(*OFImage);
-  PreviewBox->pack_start(*mp_PreviewInfoBox, Gtk::PACK_SHRINK, 5);
 
-  mp_Dialog = new Gtk::FileChooserDialog(_("Select existing project folder"),
+  TitleBox->pack_start(*OFImage, Gtk::PACK_SHRINK, 6);
+  TitleBox->pack_start(*TitleLabel, Gtk::PACK_SHRINK, 6);
+  TitleBox->show_all_children(true);
+  TitleBox->set_visible(true);
+
+  Gtk::VBox* PreviewBox = Gtk::manage(new Gtk::VBox());
+
+  PreviewBox->pack_start(*TitleBox, Gtk::PACK_SHRINK, 12);
+  PreviewBox->pack_start(*DetailsWin, Gtk::PACK_EXPAND_WIDGET, 6);
+
+  mp_Dialog = new Gtk::FileChooserDialog(_("Select project folder"),
       Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
   mp_Dialog->set_create_folders(false);
 
@@ -130,6 +173,7 @@ EngineProjectOpenDialog::EngineProjectOpenDialog() :
 
   mp_Dialog->set_preview_widget(*PreviewBox);
   mp_Dialog->set_preview_widget_active(true);
+  mp_Dialog->set_use_preview_label(false);
 }
 
 // =====================================================================
@@ -157,12 +201,17 @@ void EngineProjectOpenDialog::onProjectFolderSelectionChanged()
 
     Manager->close();
 
-    mp_PreviewInfoBox->set_visible(true);
     mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, true);
     mp_Dialog->get_preview_widget()->set_sensitive(true);
-  } else
+  }
+  else
   {
-    mp_PreviewInfoBox->set_visible(false);
+    mp_ProjectName->set_text(replaceEmpty(""));
+    mp_ProjectDesc->set_text(replaceEmpty(""));
+    mp_ProjectAuthors->set_text(replaceEmpty(""));
+    mp_ProjectCreationDate->set_text(replaceEmpty(""));
+    mp_ProjectLastModDate->set_text(replaceEmpty(""));
+
     mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
     mp_Dialog->get_preview_widget()->set_sensitive(false);
   }
@@ -175,10 +224,14 @@ void EngineProjectOpenDialog::onProjectFolderSelectionChanged()
 std::string EngineProjectOpenDialog::replaceEmpty(std::string StringToCheck)
 {
   if(StringToCheck.empty())
-    return _("<none>");
+    return _("(none)");
 
   return StringToCheck;
 }
+
+
+// =====================================================================
+// =====================================================================
 
 
 std::string EngineProjectOpenDialog::show()
