@@ -159,23 +159,34 @@ void MarketClientAssistant::setupSelectionPage()
 
 
 
-  if (boost::filesystem::exists(boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile())) &&
-      MarketConf.load_from_file(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile()))
+  if (boost::filesystem::exists(boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile())))
   {
-    if (MarketConf.has_group("openfluid.market.marketplaces"))
+    try
     {
-      std::vector<std::string> PlacesKeys = MarketConf.get_keys("openfluid.market.marketplaces");
 
-      for (unsigned int i=0; i< PlacesKeys.size();i++)
+      MarketConf.load_from_file(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+
+      if (MarketConf.has_group("openfluid.market.marketplaces"))
       {
-        std::vector<std::string> PlaceInfo = MarketConf.get_string_list("openfluid.market.marketplaces",PlacesKeys[i]);
-        if (PlaceInfo.size() == 2 )
+        std::vector<std::string> PlacesKeys = MarketConf.get_keys("openfluid.market.marketplaces");
+
+        for (unsigned int i=0; i< PlacesKeys.size();i++)
         {
-          TmpURLRow = *(m_RefURLComboBoxModel->append());
-          TmpURLRow[m_URLColumns.m_Name] = PlaceInfo[0];
-          TmpURLRow[m_URLColumns.m_URL] = PlaceInfo[1];
+          std::vector<std::string> PlaceInfo = MarketConf.get_string_list("openfluid.market.marketplaces",PlacesKeys[i]);
+          if (PlaceInfo.size() == 2 )
+          {
+            TmpURLRow = *(m_RefURLComboBoxModel->append());
+            TmpURLRow[m_URLColumns.m_Name] = PlaceInfo[0];
+            TmpURLRow[m_URLColumns.m_URL] = PlaceInfo[1];
+          }
         }
       }
+    }
+    catch (Glib::FileError& E)
+    {
+    }
+    catch (Glib::KeyFileError& E)
+    {
     }
   }
 
