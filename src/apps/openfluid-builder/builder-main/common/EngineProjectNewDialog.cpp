@@ -172,7 +172,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
 
   Gtk::HBox* ImportTopBox = Gtk::manage(new Gtk::HBox());
   ImportTopBox->pack_start(*mp_ImportCheck, Gtk::PACK_SHRINK);
-  ImportTopBox->pack_start(*mp_ImportFileChooserButton, Gtk::PACK_SHRINK);
+  ImportTopBox->pack_start(*mp_ImportFileChooserButton, Gtk::PACK_EXPAND_WIDGET);
 
   Gtk::VBox* ImportBox = Gtk::manage(new Gtk::VBox());
   ImportBox->pack_start(*ImportTopBox, Gtk::PACK_SHRINK,6);

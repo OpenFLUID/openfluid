@@ -127,9 +127,28 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
   ToolBox->setDownCommandVisible(false);
   ToolBox->setEditCommandVisible(false);
   ToolBox->setAddCommandTooltipText(_(
-      "Add an Input Data for the selected class"));
+      "Add an inputdata for the current unit class"));
   ToolBox->setRemoveCommandTooltipText(_(
-      "Remove an Input Data from the selected class"));
+      "Remove an inputdata from the current unit class"));
+  return ToolBox;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BuilderListToolBox* BuilderListToolBoxFactory::createDomainEventsToolBox()
+{
+  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  ToolBox->setAllCommandVisible();
+  ToolBox->setUpCommandVisible(false);
+  ToolBox->setDownCommandVisible(false);
+  ToolBox->setEditCommandVisible(false);
+  ToolBox->setAddCommandTooltipText(_(
+      "Add an event for the current unit class"));
+  ToolBox->setRemoveCommandTooltipText(_(
+      "Remove an event from current unit class"));
   return ToolBox;
 }
 

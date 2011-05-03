@@ -84,6 +84,7 @@ void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
     Dialog.hide();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -94,6 +95,16 @@ void DialogBoxFactory::showSimpleWarningMessage(Glib::ustring MessageText)
       Gtk::BUTTONS_OK);
   if (Dialog.run())
     Dialog.hide();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DialogBoxFactory::showDisabledFeatureMessage()
+{
+  showSimpleWarningMessage(_("This feature is currently disabled"));
 }
 
 // =====================================================================

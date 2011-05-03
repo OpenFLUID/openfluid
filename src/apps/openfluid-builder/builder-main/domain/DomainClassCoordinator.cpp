@@ -105,19 +105,46 @@ void DomainClassCoordinator::whenRemoveIDataAsked()
     m_signal_DomainClassChanged.emit();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainClassCoordinator::whenAddEventAsked()
+{
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainClassCoordinator::whenRemoveEventAsked()
+{
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+}
+
+
 // =====================================================================
 // =====================================================================
 
 
 DomainClassCoordinator::DomainClassCoordinator(DomainIDataModel& IDataModel,
-    BuilderListToolBox& IDataListToolBox, DomainEventsModel& EventsModel) :
+    BuilderListToolBox& IDataListToolBox,
+    DomainEventsModel& EventsModel,
+    BuilderListToolBox& EventsListToolBox) :
   m_IDataModel(IDataModel), m_IDataListToolBox(IDataListToolBox),
-      m_EventsModel(EventsModel)
+      m_EventsModel(EventsModel), m_EventsListToolBox(EventsListToolBox)
 {
   m_IDataListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenAddIDataAsked));
   m_IDataListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenRemoveIDataAsked));
+
+  m_EventsListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
+      &DomainClassCoordinator::whenAddEventAsked));
+  m_EventsListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
+      &DomainClassCoordinator::whenRemoveEventAsked));
 }
 
 // =====================================================================

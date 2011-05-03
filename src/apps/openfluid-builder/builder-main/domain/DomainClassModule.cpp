@@ -75,9 +75,10 @@ DomainClassModule::DomainClassModule()
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
 
   mp_DomainEventsMVP = new DomainEventsComponent();
+  mp_EventsListToolBox = BuilderListToolBoxFactory::createDomainEventsToolBox();
 
   mp_Coordinator = new DomainClassCoordinator(*mp_DomainIDataMVP->getModel(),
-      *mp_IDataListToolBox, *mp_DomainEventsMVP->getModel());
+      *mp_IDataListToolBox, *mp_DomainEventsMVP->getModel(), *mp_EventsListToolBox);
 
   mp_Coordinator->signal_DomainClassChanged().connect(sigc::mem_fun(*this,
       &DomainClassModule::whenClassChanged));
@@ -102,21 +103,31 @@ void DomainClassModule::compose()
 {
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
-  Gtk::VBox* ButtonsPanel = Gtk::manage(new Gtk::VBox());
-  ButtonsPanel->pack_start(*mp_IDataListToolBox->asWidget(),Gtk::PACK_SHRINK);
-  ButtonsPanel->set_visible(true);
+  // input data
+
+  Gtk::VBox* IDataButtonsPanel = Gtk::manage(new Gtk::VBox());
+  IDataButtonsPanel->pack_start(*mp_IDataListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  IDataButtonsPanel->set_visible(true);
 
 
   Gtk::HBox* FirstPanel = Gtk::manage(new Gtk::HBox());
   FirstPanel->set_border_width(5);
   FirstPanel->pack_start(*mp_DomainIDataMVP->asWidget());
-  FirstPanel->pack_start(*ButtonsPanel, Gtk::PACK_SHRINK, 5);
+  FirstPanel->pack_start(*IDataButtonsPanel, Gtk::PACK_SHRINK, 5);
   FirstPanel->set_visible(true);
+
+
+  // events
+
+  Gtk::VBox* EventsButtonsPanel = Gtk::manage(new Gtk::VBox());
+  EventsButtonsPanel->pack_start(*mp_EventsListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  EventsButtonsPanel->set_visible(true);
+
 
   Gtk::HBox* SecondPanel = Gtk::manage(new Gtk::HBox());
   SecondPanel->set_border_width(5);
-//  Gtk::Label* EventsLabel = Gtk::manage(new Gtk::Label("Events"));
   SecondPanel->pack_start(*mp_DomainEventsMVP->asWidget());
+  SecondPanel->pack_start(*EventsButtonsPanel, Gtk::PACK_SHRINK, 5);
   SecondPanel->set_visible(true);
 
 

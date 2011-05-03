@@ -76,6 +76,8 @@ class DLLEXPORT DialogBoxFactory
 
     static void showSimpleWarningMessage(Glib::ustring MessageText);
 
+    static void showDisabledFeatureMessage();
+
     static std::string showTextEntryDialog(Glib::ustring MessageText,
         Glib::ustring LabelText);
 

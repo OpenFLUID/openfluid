@@ -64,12 +64,11 @@
 
 PreferencesModelImpl::PreferencesModelImpl()
 {
+
+  /*
   std::string
       FileName =
           openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile();
-
-
-  std::cout << "FileName : " << FileName << std::endl;
 
   if(!boost::filesystem::exists(FileName))
   {
@@ -87,6 +86,7 @@ PreferencesModelImpl::PreferencesModelImpl()
   {
     std::cout << "KeyFileError" << std::endl;
   }
+  */
 }
 
 // =====================================================================

@@ -171,5 +171,5 @@ void BuilderAppProjectState::whenSaveAsAsked()
 void BuilderAppProjectState::whenMapViewAsked()
 {
 
-  openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(_("This feature is currently unavailable"));
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }

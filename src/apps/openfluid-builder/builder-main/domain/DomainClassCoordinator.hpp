@@ -73,6 +73,7 @@ class DomainClassCoordinator: public sigc::trackable
     BuilderListToolBox& m_IDataListToolBox;
 
     DomainEventsModel& m_EventsModel;
+    BuilderListToolBox& m_EventsListToolBox;
 
     void updateIDataListToolBox();
 
@@ -80,10 +81,15 @@ class DomainClassCoordinator: public sigc::trackable
 
     void whenRemoveIDataAsked();
 
+    void whenAddEventAsked();
+
+    void whenRemoveEventAsked();
+
+
   public:
 
-    DomainClassCoordinator(DomainIDataModel& IDataModel,
-        BuilderListToolBox& IDataListToolBox, DomainEventsModel& EventsModel);
+    DomainClassCoordinator(DomainIDataModel& IDataModel, BuilderListToolBox& IDataListToolBox,
+                          DomainEventsModel& EventsModel, BuilderListToolBox& EventsListToolBox);
 
     sigc::signal<void> signal_DomainClassChanged();
 

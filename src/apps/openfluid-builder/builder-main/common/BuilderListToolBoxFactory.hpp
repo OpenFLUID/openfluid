@@ -70,6 +70,8 @@ class BuilderListToolBoxFactory
 
     static BuilderListToolBox* createDomainIDataToolBox();
 
+    static BuilderListToolBox* createDomainEventsToolBox();
+
     static BuilderListToolBox* createSimulOutFilesToolBox();
 
     static BuilderListToolBox* createSimulOutSetsToolBox();

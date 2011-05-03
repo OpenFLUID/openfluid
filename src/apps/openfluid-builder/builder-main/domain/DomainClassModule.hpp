@@ -73,6 +73,7 @@ class DomainClassModule: public ProjectWorkspaceModule
     BuilderListToolBox* mp_IDataListToolBox;
 
     DomainEventsComponent* mp_DomainEventsMVP;
+    BuilderListToolBox* mp_EventsListToolBox;
 
     DomainClassCoordinator* mp_Coordinator;
 
