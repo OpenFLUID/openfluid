@@ -76,7 +76,7 @@ MarketSrcPackage::MarketSrcPackage(openfluid::base::FuncID_t ID, std::string Pac
 // =====================================================================
 
 
-void MarketSrcPackage::setAdditionalBuildConfigOptions(const std::string& Options)
+void MarketSrcPackage::addBuildConfigOptions(const std::string& Options)
 {
   m_BuildConfigOptions = Options;
 }

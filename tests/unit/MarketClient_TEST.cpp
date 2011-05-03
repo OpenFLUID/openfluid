@@ -137,7 +137,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
       std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
       std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;*/
       std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
-
     }
 
     BOOST_REQUIRE_EQUAL(PCit->second.Selected,openfluid::market::MetaPackageInfo::NONE);
@@ -155,6 +154,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::NONE));
   BOOST_REQUIRE(MC.setSelectionFlag("tests.market.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
   BOOST_REQUIRE(MC.setSelectionFlag("tests.market.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
+
+
+  MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   MC.installSelection();
 

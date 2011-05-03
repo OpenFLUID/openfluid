@@ -71,7 +71,7 @@ const std::string MarketClient::LOCK_FILE = ".lock";
 
 
 MarketClient::MarketClient() :
-    m_IsConnected(false), m_IsLogEnabled(false)
+    m_IsConnected(false), m_IsLogEnabled(false), m_BuildConfigOptions("")
 {
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
@@ -454,6 +454,8 @@ void MarketClient::preparePackagesInstallation()
     if (PCit->second.Selected == MetaPackageInfo::SRC)
     {
       m_PacksToInstall.push_back(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+      if (!m_BuildConfigOptions.empty())
+        ((MarketSrcPackage*)m_PacksToInstall.back())->addBuildConfigOptions(m_BuildConfigOptions);
     }
   }
 }

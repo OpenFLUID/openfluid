@@ -97,6 +97,8 @@ class DLLEXPORT MarketClient
 
     std::list<MarketPackage*> m_PacksToInstall;
 
+    std::string m_BuildConfigOptions;
+
     void initMarketBag();
 
     void initMarketTemp();
@@ -128,6 +130,8 @@ class DLLEXPORT MarketClient
     const MetaPackagesCatalog_t& getMetaPackagesCatalog();
 
     bool setSelectionFlag(const openfluid::base::FuncID_t& ID, const MetaPackageInfo::SelectionType& Flag);
+
+    void addBuildConfigOptions(const std::string& Options) { m_BuildConfigOptions = Options; };
 
     MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::base::FuncID_t& ID) const;
 
