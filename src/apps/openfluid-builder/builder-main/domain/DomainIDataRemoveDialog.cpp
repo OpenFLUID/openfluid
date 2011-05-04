@@ -67,12 +67,12 @@
 DomainIDataRemoveDialog::DomainIDataRemoveDialog() :
   mp_CoreRepos(0), m_ClassName("")
 {
-  mp_Dialog = new Gtk::Dialog("Removing data from the selected class");
+  mp_Dialog = new Gtk::Dialog("Removing Inputdata field");
 
   Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
       _("All values of this data will be destroyed")));
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Data Name"),
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());

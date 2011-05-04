@@ -139,7 +139,7 @@ void DomainClassModule::compose()
 
 
   Gtk::Notebook* Notebook = Gtk::manage(new Gtk::Notebook());
-  Notebook->append_page(*FirstPanel, _("Input Data"));
+  Notebook->append_page(*FirstPanel, _("Inputdata"));
   Notebook->append_page(*SecondPanel, _("Events"));
   Notebook->set_border_width(6);
   Notebook->set_visible(true);

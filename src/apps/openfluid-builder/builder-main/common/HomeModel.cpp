@@ -102,7 +102,7 @@ std::string HomeModelImpl::getOFWebSite()
 
 std::string HomeModelImpl::getRecentText()
 {
-  return "(Not implemented)";
+  return "(Feature is disabled)";
 }
 
 

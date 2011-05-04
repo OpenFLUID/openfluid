@@ -68,15 +68,15 @@
 DomainIDataAddDialog::DomainIDataAddDialog() :
   mp_CoreRepos(0), m_ClassName(""), m_NameValid(false), m_ValueValid(false)
 {
-  mp_Dialog = new Gtk::Dialog("Adding data to the selected class");
+  mp_Dialog = new Gtk::Dialog("Adding Inputdata field");
 
   mp_NameMsgLabel = Gtk::manage(new Gtk::Label());
   mp_ValueMsgLabel = Gtk::manage(new Gtk::Label());
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Data Name :"),
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inpudata name :"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   Gtk::Label* DefaultValueLabel = Gtk::manage(new Gtk::Label(
-      _("Data default value :"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+      _("Default value :"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_NameEntry = Gtk::manage(new Gtk::Entry());
   mp_NameEntry->signal_changed().connect(sigc::mem_fun(*this,
@@ -123,7 +123,7 @@ void DomainIDataAddDialog::onNameChanged()
       != m_IDataNames.end())
   {
     mp_NameMsgLabel->set_markup(
-        _("<span color='red'>This Data Name already exists</span>"));
+        _("<span color='red'>This Inputdata already exists</span>"));
     m_NameValid = false;
   } else
   {
@@ -197,6 +197,7 @@ void DomainIDataAddDialog::update()
   }
 }
 }
+
 
 // =====================================================================
 // =====================================================================
