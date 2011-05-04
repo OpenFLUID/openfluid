@@ -140,7 +140,8 @@ void BuilderAppProjectState::whenRunAsked()
 
 void BuilderAppProjectState::whenPreferencesAsked()
 {
-  m_App.showPreferencesDialog();
+  // m_App.showPreferencesDialog();
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
 
 // =====================================================================
@@ -159,8 +160,7 @@ void BuilderAppProjectState::whenSaveAsked()
 
 void BuilderAppProjectState::whenSaveAsAsked()
 {
-  std::cout << "save as asked " << std::endl;
-
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
 
 

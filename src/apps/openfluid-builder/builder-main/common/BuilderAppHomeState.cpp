@@ -131,7 +131,8 @@ void BuilderAppHomeState::whenMarketAsked()
 
 void BuilderAppHomeState::whenPreferencesAsked()
 {
-  m_App.showPreferencesDialog();
+  //m_App.showPreferencesDialog();
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
 
 // =====================================================================
