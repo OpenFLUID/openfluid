@@ -64,8 +64,8 @@ Example of an empty function (.cpp file and makefile)
 .cpp file
 \code
 
-#include "openfluid-base.h"
-#include "openfluid-core.h"
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
 // =====================================================================

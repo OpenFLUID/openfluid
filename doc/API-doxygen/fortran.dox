@@ -6,8 +6,8 @@
 
 \section fortran_sec Calling Fortran source code
 
-The C++ - Fortran interface is defined in the FortranCPP.h file, located in the tool part of the SDK.
-In order to execute Fortran code from a simulation function, this Fortran source code have to be wrapped into a subroutine that will be called from the C++ code of the simulation function. To help programmers to achieve this wrapping operation, the FortranCPP.h file defines macros. These macros allows calls of Fortran77 and Fortran90 source code. Youa re invited to browse the FortranCPP.h file to get more information about these macros.\n
+The C++ - Fortran interface is defined in the <openfluid/tools/FortranCPP.hpp> file.
+In order to execute Fortran code from a simulation function, this Fortran source code have to be wrapped into a subroutine that will be called from the C++ code of the simulation function. To help programmers to achieve this wrapping operation, the FortranCPP.h file defines macros. These macros allows calls of Fortran77 and Fortran90 source code. You are invited to browse the FortranCPP.h file to get more information about these macros.\n
 
 
 \n
@@ -36,6 +36,9 @@ END_EXTERN_FORTRAN
 \n
 <I>Call of the fortran subroutine from the initializeRun method (MyFunc.cpp):</I>
 \code
+
+#include <openfluid/tools/FortranCPP.hpp>
+
 bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 {
   openfluid::core::VectorValue* MyVect;

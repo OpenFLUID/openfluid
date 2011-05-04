@@ -7,7 +7,7 @@
 \section tools_sec Available tools
 
 The tools have been developped to help function developpers in the set up of data processing or numerical computation. They are available in the namespace openfluid::tools.
-To get more information on theses tools and how to you use it, your are invited to browse the header files (.h) provided with the SDK.    
+To get more information on theses tools and how to you use it, your are invited to browse the provides header files (.hpp), located in the openfluid/tools include directory.    
 
 This involves the following classes and functions (non-exhaustive list): 
 <ul>
@@ -18,5 +18,7 @@ This involves the following classes and functions (non-exhaustive list):
   <li>openfluid::tools::IsVeryClose    
 </ul>
 
+
+In order to use these tools, the header file <openfluid/tools.hpp> must be included in your source code.
 
 */

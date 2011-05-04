@@ -1,3 +1,17 @@
+1.6.2
+
+  * Released OpenFLUID-Builder application (GUI), as a preview release
+  * Released OpenFLUID::guicommon API, as a preview release
+  * Added OpenFLUID Market system
+  * Added automatic parallelization capabilities based on spatial independancy 
+    (using multi-threading) 
+  * Updated .fluidX files I/O
+  * Removed .xml file extensions as standard file extension for input dataset
+  * Updated OpenFLUID API
+  * Fixed various bugs
+
+
+
 1.6.1
 
   * Fixed bug in spatial loops when units class does not exist
