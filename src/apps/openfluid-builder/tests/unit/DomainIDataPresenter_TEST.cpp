@@ -72,7 +72,7 @@ struct init_Presenter
 {
     DomainIDataComponent* mp_Component;
 
-    DomainIDataModelSub* mp_Model;
+    DomainIDataModelImpl* mp_Model;
     DomainIDataViewSub* mp_View;
 
     EngineProject* mp_EngProject;
@@ -82,7 +82,7 @@ struct init_Presenter
       BuilderTestHelper::getInstance()->initGtk();
 
       mp_Component = new DomainIDataComponent();
-      mp_Model = (DomainIDataModelSub*) (mp_Component->getModel());
+      mp_Model = (DomainIDataModelImpl*) (mp_Component->getModel());
       mp_View = (DomainIDataViewSub*) (mp_Component->getView());
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
@@ -106,63 +106,101 @@ BOOST_FIXTURE_TEST_SUITE(DomainIDataPresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_constructors)
 {
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"ParentTestUnits");
-  BOOST_CHECK_EQUAL(mp_View->getEditedDataInfo().first,"");
-  BOOST_CHECK_EQUAL(mp_View->getEditedDataInfo().second,"");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),-1);
-  BOOST_CHECK_EQUAL(mp_View->getUnitsColumnCount(),1);
+  mp_Model->setClass("TestUnits");
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(),mp_EngProject->getCoreRepository().getUnits("TestUnits")->getList()->size());
+
+  int Id;
+  std::string DataValFromView;
+  std::string DataValFromCoreRepos;
+
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",&DataValFromCoreRepos);
+
+  BOOST_CHECK_EQUAL(DataValFromView,DataValFromCoreRepos);
+
+  mp_View->getTreeView()->get_model()->children()[5]->get_value(0,Id);
+  mp_View->getTreeView()->get_model()->children()[5]->get_value(3,DataValFromView);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataC",&DataValFromCoreRepos);
+
+  BOOST_CHECK_EQUAL(DataValFromView,DataValFromCoreRepos);
+
+  mp_Model->setClass("ParentTestUnits");
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),0);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(),2);
 }
 
-BOOST_AUTO_TEST_CASE(test_replaceDataValue)
+BOOST_AUTO_TEST_CASE(test_updateData)
 {
-  mp_View->selectClassWithIndex(1);
-  mp_View->selectUnitWithIndex(10);
+  mp_Model->setClass("TestUnits");
 
-  std::string ClassName = mp_View->getSelectedClassName();
-  int Id = mp_View->getSelectedUnitId();
+  mp_View->signal_DataEdited().emit("0", "NewVal", "indataA", 1);
 
-  mp_View->setEditedDataInfo("indataB","CODE00");
-  mp_View->signal_DataEdited().emit();
+  int Id;
+  std::string DataValFromView;
+  std::string DataValFromCoreRepos;
 
-  std::string Value = "";
-  mp_EngProject->getCoreRepository().getUnit(ClassName,Id)->getInputData()->getValue("indataB",&Value);
-  BOOST_CHECK_EQUAL(Value,"CODE00");
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",&DataValFromCoreRepos);
+
+  BOOST_CHECK_EQUAL(DataValFromView,"NewVal");
+  BOOST_CHECK_EQUAL(DataValFromCoreRepos,"NewVal");
+
+  mp_View->signal_DataEdited().emit("0", "NewValAgain", "indataA", 1);
+
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",&DataValFromCoreRepos);
+
+  BOOST_CHECK_EQUAL(DataValFromView,"NewValAgain");
+  BOOST_CHECK_EQUAL(DataValFromCoreRepos,"NewValAgain");
+
+  mp_View->signal_DataEdited().emit("5", "NewVal", "indataC", 3);
+
+  mp_View->getTreeView()->get_model()->children()[5]->get_value(0,Id);
+  mp_View->getTreeView()->get_model()->children()[5]->get_value(3,DataValFromView);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataC",&DataValFromCoreRepos);
+
+  BOOST_CHECK_EQUAL(DataValFromView,"NewVal");
+  BOOST_CHECK_EQUAL(DataValFromCoreRepos,"NewVal");
 }
 
 BOOST_AUTO_TEST_CASE(test_removeData)
 {
-  mp_View->selectClassWithIndex(1);
+  mp_Model->setClass("TestUnits");
 
-  int ColCount = mp_View->getUnitsColumnCount();
-  std::string ClassName = mp_View->getSelectedClassName();
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
 
   mp_Model->removeData("indataB");
 
-  mp_View->selectUnitWithIndex(10);
-  std::string Value = "empty value";
-  mp_View->getSelectedUnitIter()->get_value(ColCount,Value);
-  BOOST_CHECK_EQUAL(Value,"");
-  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit(ClassName,1)->getInputData()->isDataExist("indataB"),false);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),3);
+
+  mp_Model->removeData("indataA");
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),2);
+
+  mp_Model->removeData("wrongIndata");
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),2);
+
+  mp_Model->removeData("indataC");
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),0);
 }
 
 BOOST_AUTO_TEST_CASE(test_addData)
 {
-  mp_View->selectClassWithIndex(1);
+  mp_Model->setClass("TestUnits");
 
-  int ColCount = mp_View->getUnitsColumnCount();
-  std::string ClassName = mp_View->getSelectedClassName();
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
 
-  mp_Model->addData("indataTEST");
+  mp_Model->addData(std::make_pair("NewIndata","DefaultVal"));
 
-  BOOST_CHECK_EQUAL(mp_View->getUnitsColumnCount(),ColCount+1);
-
-  mp_View->selectUnitWithIndex(10);
-  std::string Value = "empty value";
-  mp_View->getSelectedUnitIter()->get_value(ColCount,Value);
-  BOOST_CHECK_EQUAL(Value,"");
-  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit(ClassName,1)->getInputData()->isDataExist("indataTEST"),true);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),5);
 }
 
 // =====================================================================

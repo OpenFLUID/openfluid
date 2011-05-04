@@ -61,7 +61,8 @@
 
 
 DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl() :
-  mp_UnitsColl(0), mp_Columns(new DomainIDataColumns())
+  mp_UnitsColl(0), mp_Columns(new DomainIDataColumns()), mref_ListStore(
+      BuilderListStore::create(*mp_Columns))
 {
 }
 
@@ -79,33 +80,32 @@ void DomainIDataAdapterModelImpl::dataInit(
 
   // create columns and then liststore with those columns
   BOOST_FOREACH(std::string DataName, mp_UnitsColl->getList()->begin()->getInputData()->getInputDataNames())
-  {
-    Gtk::TreeModelColumn<std::string> * DataColumn =
-    new Gtk::TreeModelColumn<std::string>();
+{  Gtk::TreeModelColumn<std::string> * DataColumn =
+  new Gtk::TreeModelColumn<std::string>();
 
-    mp_Columns->addWithTitle(DataName, *DataColumn);
-  }
+  mp_Columns->addWithTitle(DataName, *DataColumn);
+}
 
 mref_ListStore = BuilderListStore::create(*mp_Columns);
 
-  // populate liststore
-  BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
+// populate liststore
+BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
+{
+  Gtk::TreeRow Row = *(mref_ListStore->append());
+
+  // Id column
+  Row.set_value(*mp_Columns->getIdColumn(),
+      (int) Unit.getID());
+
+  // Data columns
+  BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
   {
-    Gtk::TreeRow Row = *(mref_ListStore->append());
+    std::string Val;
+    Unit.getInputData()->getValue(DataName, &Val);
 
-    // Id column
-    Row.set_value(*mp_Columns->getIdColumn(),
-        (int) Unit.getID());
-
-    // Data columns
-    BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
-    {
-      std::string Val;
-      Unit.getInputData()->getValue(DataName, &Val);
-
-      Row.set_value( *mp_Columns->getColumnWithTitle(DataName), Val);
-    }
+    Row.set_value( *mp_Columns->getColumnWithTitle(DataName), Val);
   }
+}
 
 }
 

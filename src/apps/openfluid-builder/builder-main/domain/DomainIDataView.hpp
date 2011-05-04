@@ -85,10 +85,12 @@ class DomainIDataViewImpl: public DomainIDataView
     sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
         m_signal_DataEdited;
 
-    Gtk::TreeView* mp_TreeView;
-
     void onDataEditingStarted(Gtk::CellEditable* CellEditable,
         const Glib::ustring& /* Path */, std::string DataName, int ColIndex);
+
+  protected:
+
+    Gtk::TreeView* mp_TreeView;
 
   public:
 
@@ -110,6 +112,11 @@ class DomainIDataViewImpl: public DomainIDataView
 class DomainIDataViewSub: public DomainIDataViewImpl
 {
   public:
+
+    Gtk::TreeView* getTreeView()
+    {
+      return mp_TreeView;
+    }
 
 };
 

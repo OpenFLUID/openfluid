@@ -68,14 +68,14 @@
 
 struct init_Model
 {
-    DomainIDataModelSub* mp_Model;
+    DomainIDataModelImpl* mp_Model;
     EngineProject* mp_EngProject;
 
     init_Model()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Model = new DomainIDataModelSub();
+      mp_Model = new DomainIDataModelImpl();
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
@@ -95,39 +95,72 @@ BOOST_FIXTURE_TEST_SUITE(DomainIDataModelTest, init_Model)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_replaceDataValue)
+BOOST_AUTO_TEST_CASE(test_getUnitsColl)
 {
-  std::pair<std::string,int> UnitInfo = std::make_pair("TestUnits",10);
-  std::pair<std::string,std::string> DataInfo = std::make_pair("indataB","CODE00");
+  BOOST_CHECK(mp_Model->getUnitsCollection() == 0);
 
-  mp_Model->replaceDataValue(UnitInfo, DataInfo);
+  mp_Model->setClass("TestUnits");
 
-  std::string Value = "";
-  mp_EngProject->getCoreRepository().getUnit(UnitInfo.first,UnitInfo.second)->getInputData()->getValue(DataInfo.first,&Value);
-  BOOST_CHECK_EQUAL(Value,"CODE00");
+  BOOST_CHECK_EQUAL(mp_Model->getUnitsCollection()->getList()->size(),mp_EngProject->getCoreRepository().getUnits("TestUnits")->getList()->size());
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), false);
+
+  mp_Model->setClass("ParentTestUnits");
+
+  BOOST_CHECK_EQUAL(mp_Model->getUnitsCollection()->getList()->size(),mp_EngProject->getCoreRepository().getUnits("ParentTestUnits")->getList()->size());
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), true);
 }
 
 BOOST_AUTO_TEST_CASE(test_removeData)
 {
-  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataB"),true);
+  mp_Model->setClass("TestUnits");
 
-  mp_Model->setCurrentClassSelectionByUser("TestUnits");
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataA"),true);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataB"),true);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataC"),true);
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), false);
+
   mp_Model->removeData("indataB");
 
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataA"),true);
   BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataB"),false);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataC"),true);
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), false);
+
+  mp_Model->removeData("wrongIndata");
+
+  //does nothing
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataA"),true);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataB"),false);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataC"),true);
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), false);
+
+  mp_Model->removeData("indataC");
+
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataA"),true);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataB"),false);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataC"),false);
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), false);
+
+  mp_Model->removeData("indataA");
+
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataA"),false);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataB"),false);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataC"),false);
+  BOOST_CHECK_EQUAL(mp_Model->isEmptyDataList(), true);
 }
 
 BOOST_AUTO_TEST_CASE(test_addData)
 {
-  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataTEST"),false);
+  mp_Model->setClass("TestUnits");
 
-  mp_Model->setCurrentClassSelectionByUser("TestUnits");
-  mp_Model->addData(/*"TestUnits",*/"indataTEST");
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("NewIndata"),false);
 
-  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("indataTEST"),true);
-  std::string Value = "non empty";
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->getValue("indataTEST",&Value);
-  BOOST_CHECK_EQUAL(Value,"");
+  mp_Model->addData(std::make_pair("NewIndata","DefaultVal"));
+
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("NewIndata"),true);
+  std::string Val;
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->getValue("NewIndata",&Val);
+  BOOST_CHECK_EQUAL(Val,"DefaultVal");
 }
 
 // =====================================================================

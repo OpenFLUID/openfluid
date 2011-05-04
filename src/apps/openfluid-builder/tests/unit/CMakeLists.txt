@@ -140,17 +140,17 @@ ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitCreationPresenter
                      builder_unittest_DomainUnitCreationPresenter_TEST
                      DomainUnitCreationPresenter_TEST.cpp)
 
-#ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataModel
-#                     builder_unittest_DomainIDataModel_TEST
-#                     DomainIDataModel_TEST.cpp)
+ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataModel
+                     builder_unittest_DomainIDataModel_TEST
+                     DomainIDataModel_TEST.cpp)
                      
-#ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataAdapterModel
-#                     builder_unittest_DomainIDataAdapterModel_TEST
-#                     DomainIDataAdapterModel_TEST.cpp)
+ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataAdapterModel
+                     builder_unittest_DomainIDataAdapterModel_TEST
+                     DomainIDataAdapterModel_TEST.cpp)
                      
-#ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataPresenter
-#                     builder_unittest_DomainIDataPresenter_TEST
-#                     DomainIDataPresenter_TEST.cpp)
+ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataPresenter
+                     builder_unittest_DomainIDataPresenter_TEST
+                     DomainIDataPresenter_TEST.cpp)
 
 ### SIMULATION ###
 

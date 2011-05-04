@@ -68,20 +68,18 @@
 
 struct init_Model
 {
-    DomainIDataAdapterModelSub* mp_AdapterModel;
+    DomainIDataAdapterModelImpl* mp_AdapterModel;
     EngineProject* mp_EngProject;
 
     init_Model()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_AdapterModel = new DomainIDataAdapterModelSub();
+      mp_AdapterModel = new DomainIDataAdapterModelImpl();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
-
-      mp_AdapterModel->setCoreRepository(&mp_EngProject->getCoreRepository());
     }
 
     ~init_Model()
@@ -96,63 +94,44 @@ BOOST_FIXTURE_TEST_SUITE(DomainIDataAdapterModelTest, init_Model)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_extractClassNames)
+BOOST_AUTO_TEST_CASE(test_dataInit)
 {
-  mp_AdapterModel->extractClassNames();
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),0);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),0);
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getClassNames().size(),2);
-  BOOST_CHECK(std::find(mp_AdapterModel->getClassNames().begin(),mp_AdapterModel->getClassNames().end(),"ParentTestUnits") != mp_AdapterModel->getClassNames().end());
-  BOOST_CHECK(std::find(mp_AdapterModel->getClassNames().begin(),mp_AdapterModel->getClassNames().end(),"TestUnits") != mp_AdapterModel->getClassNames().end());
+  mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("TestUnits"));
+
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),3);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),mp_EngProject->getCoreRepository().getUnits("TestUnits")->getList()->size());
+
+  mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("ParentTestUnits"));
+
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),0);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),mp_EngProject->getCoreRepository().getUnits("ParentTestUnits")->getList()->size());
 }
 
-BOOST_AUTO_TEST_CASE(test_createDataColumns)
+BOOST_AUTO_TEST_CASE(test_updateData)
 {
-  mp_AdapterModel->extractClassNames();
+  mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("TestUnits"));
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassColumns().size(),0);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().size(),0);
+  mp_AdapterModel->updateData("0","NewData","indataA",1);
 
-  mp_AdapterModel->createDataColumnsAndStoreForClass("ParentTestUnits");
+  std::string IndataVal;
+  mp_AdapterModel->getTreeModel()->children()[0]->get_value(1,IndataVal);
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassColumns().size(),1);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().size(),1);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassColumns()["ParentTestUnits"]->getByTitleColumns().size(),0);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["ParentTestUnits"]->get_n_columns(),1);
+  BOOST_CHECK_EQUAL(IndataVal,"NewData");
 
-  mp_AdapterModel->createDataColumnsAndStoreForClass("TestUnits");
+  mp_AdapterModel->updateData("0","NewDataAgain","indataA",1);
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassColumns().size(),2);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassColumns()["ParentTestUnits"]->getByTitleColumns().size(),0);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["ParentTestUnits"]->get_n_columns(),1);
-  std::map<std::string, Gtk::TreeModelColumn<std::string>* > IDataMap = mp_AdapterModel->getByClassColumns()["TestUnits"]->getByTitleColumns();
-  BOOST_CHECK_EQUAL(IDataMap.size(),3);
-  BOOST_CHECK(IDataMap.find("indataA") != IDataMap.end());
-  BOOST_CHECK(IDataMap.find("indataB") != IDataMap.end());
-  BOOST_CHECK(IDataMap.find("indataC") != IDataMap.end());
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().size(),2);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["TestUnits"]->get_n_columns(),4);
-}
+  mp_AdapterModel->getTreeModel()->children()[0]->get_value(1,IndataVal);
 
-BOOST_AUTO_TEST_CASE(test_populateStore)
-{
-  mp_AdapterModel->extractClassNames();
-  mp_AdapterModel->createDataColumnsAndStoreForClass("ParentTestUnits");
-  mp_AdapterModel->populateStoreForClass("ParentTestUnits");
-  mp_AdapterModel->createDataColumnsAndStoreForClass("TestUnits");
-  mp_AdapterModel->populateStoreForClass("TestUnits");
+  BOOST_CHECK_EQUAL(IndataVal,"NewDataAgain");
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["ParentTestUnits"]->children().size(),2);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["TestUnits"]->children().size(),12);
-  std::map<std::string,Gtk::TreeModelColumn<std::string>* > TestUnitsColumns = mp_AdapterModel->getByClassColumns()["TestUnits"]->getByTitleColumns();
-  int FirstUnitId = mp_AdapterModel->getByClassUnitsStores()["TestUnits"]->children()[0].get_value(*mp_AdapterModel->getByClassColumns()["TestUnits"]->getIdColumn());
-  openfluid::core::Unit* FirstUnit = mp_EngProject->getCoreRepository().getUnit("TestUnits",FirstUnitId);
-  std::string DataVal = "";
-  FirstUnit->getInputData()->getValue("indataA",&DataVal);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["TestUnits"]->children()[0].get_value(*TestUnitsColumns["indataA"]),DataVal);
-  FirstUnit->getInputData()->getValue("indataB",&DataVal);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["TestUnits"]->children()[0].get_value(*TestUnitsColumns["indataB"]),DataVal);
-  FirstUnit->getInputData()->getValue("indataC",&DataVal);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores()["TestUnits"]->children()[0].get_value(*TestUnitsColumns["indataC"]),DataVal);
+  mp_AdapterModel->updateData("5","NewData","indataC",3);
+
+  mp_AdapterModel->getTreeModel()->children()[5]->get_value(3,IndataVal);
+
+  BOOST_CHECK_EQUAL(IndataVal,"NewData");
 }
 
 // =====================================================================
