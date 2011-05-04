@@ -55,6 +55,8 @@
 #include "DomainClassModule.hpp"
 
 #include "DomainIDataComponent.hpp"
+#include "DomainIDataAddDialog.hpp"
+#include "DomainIDataRemoveDialog.hpp"
 #include "DomainEventsComponent.hpp"
 
 #include "DomainClassCoordinator.hpp"
@@ -73,12 +75,15 @@ DomainClassModule::DomainClassModule()
 
   mp_DomainIDataMVP = new DomainIDataComponent();
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
+  mp_IDataAddDialog = new DomainIDataAddDialog();
+  mp_IDataRemoveDialog = new DomainIDataRemoveDialog();
 
   mp_DomainEventsMVP = new DomainEventsComponent();
   mp_EventsListToolBox = BuilderListToolBoxFactory::createDomainEventsToolBox();
 
   mp_Coordinator = new DomainClassCoordinator(*mp_DomainIDataMVP->getModel(),
-      *mp_IDataListToolBox, *mp_DomainEventsMVP->getModel(), *mp_EventsListToolBox);
+      *mp_IDataListToolBox, *mp_IDataAddDialog, *mp_IDataRemoveDialog,
+      *mp_DomainEventsMVP->getModel(), *mp_EventsListToolBox);
 
   mp_Coordinator->signal_DomainClassChanged().connect(sigc::mem_fun(*this,
       &DomainClassModule::whenClassChanged));
@@ -92,6 +97,8 @@ DomainClassModule::~DomainClassModule()
 {
   delete mp_Coordinator;
   delete mp_DomainIDataMVP;
+  delete mp_IDataAddDialog;
+  delete mp_IDataRemoveDialog;
   delete mp_IDataListToolBox;
 }
 
@@ -132,8 +139,8 @@ void DomainClassModule::compose()
 
 
   Gtk::Notebook* Notebook = Gtk::manage(new Gtk::Notebook());
-  Notebook->append_page(*FirstPanel,_("Input Data"));
-  Notebook->append_page(*SecondPanel,_("Events"));
+  Notebook->append_page(*FirstPanel, _("Input Data"));
+  Notebook->append_page(*SecondPanel, _("Events"));
   Notebook->set_border_width(6);
   Notebook->set_visible(true);
 

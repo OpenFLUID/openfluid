@@ -46,52 +46,104 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
- \brief Header of ...
+ \file DomainIDataRemoveDialog.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#include "DomainIDataRemoveDialog.hpp"
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <gtkmm/stock.h>
 
-namespace openfluid {
-namespace guicommon {
+#include <glibmm/i18n.h>
+
+#include <boost/foreach.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT DialogBoxFactory
+DomainIDataRemoveDialog::DomainIDataRemoveDialog() :
+  mp_CoreRepos(0), m_ClassName("")
 {
-  public:
+  mp_Dialog = new Gtk::Dialog("Removing data from the selected class");
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+  Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
+      _("All values of this data will be destroyed")));
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Data Name"),
+      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
+  mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
-    static void showDisabledFeatureMessage();
+  Gtk::HBox* HBox = Gtk::manage(new Gtk::HBox());
+  HBox->pack_start(*NameLabel);
+  HBox->pack_start(*mp_Combo);
 
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
+  mp_Dialog->get_vbox()->pack_start(*HBox, true, true, 10);
 
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
+  mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
-    static int showCloseProjectDialog(bool HasToBeSaved);
+  mp_Dialog->show_all_children();
+}
 
-    static std::string showDomainIDataEditDialog(int Id, std::string DataName,
-        std::string Val);
-};
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataRemoveDialog::setEngineRequirements(
+    openfluid::core::CoreRepository& CoreRepos)
+{
+  mp_CoreRepos = &CoreRepos;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataRemoveDialog::setClass(
+    std::string ClassName)
+{
+  m_ClassName = ClassName;
+
+  update();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataRemoveDialog::update()
+{
+  mp_Combo->clear_items();
+
+  if (mp_CoreRepos->getUnits(m_ClassName))
+  {
+    // get the first IData only, supposed to be the same on all the class
+    BOOST_FOREACH(std::string DataName,mp_CoreRepos->getUnits(m_ClassName)->getList()->begin()->getInputData()->getInputDataNames())
+{    mp_Combo->append_text(DataName);
+  }
+    mp_Combo->set_active(0);
+}
 
 }
-} //namespaces
+
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+std::string DomainIDataRemoveDialog::show()
+{
+  std::string IDataName = "";
+
+  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  {
+    IDataName = mp_Combo->get_active_text();
+  }
+
+  mp_Dialog->hide();
+
+  return IDataName;
+}

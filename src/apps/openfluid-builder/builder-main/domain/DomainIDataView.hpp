@@ -60,66 +60,57 @@
 #include <gtkmm.h>
 #include <glibmm/i18n.h>
 
-#include "BuilderByClassTreeView.hpp"
-
 class DomainIDataColumns;
 
 class DomainIDataView
 {
   public:
-    virtual sigc::signal<void> signal_ClassSelectionChanged() = 0;
-    virtual sigc::signal<void> signal_DataEdited() = 0;
-    virtual sigc::signal<void> signal_UnitSelectionChanged() = 0;
-    virtual void
-    setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel) = 0;
-    virtual void setUnitsTreeColumns(DomainIDataColumns* Columns) = 0;
-    virtual void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel) = 0;
-    virtual void requestClassSelection(Gtk::TreeIter Iter) = 0;
-    virtual void requestUnitSelection(Gtk::TreeIter Iter) = 0;
-    virtual Gtk::TreeIter getSelectedClassIter() = 0;
-    virtual Gtk::TreeIter getSelectedUnitIter() = 0;
-    virtual std::pair<std::string, std::string> getEditedDataInfo() = 0;
+
+    virtual sigc::signal<void, const Glib::ustring, const std::string,
+        std::string, int> signal_DataEdited() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
+    virtual void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel,
+        DomainIDataColumns* Columns) = 0;
 };
 
-class DomainIDataViewImpl: public BuilderByClassTreeView,
-    public DomainIDataView
+// =====================================================================
+// =====================================================================
+
+
+class DomainIDataViewImpl: public DomainIDataView
 {
   private:
-    sigc::signal<void> m_signal_DataEdited;
+    sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
+        m_signal_DataEdited;
 
-    void onDataEdited(const Glib::ustring /*PathString*/,
-        const Glib::ustring NewText, std::string DataName);
-  protected:
-    std::pair<std::string, std::string> m_EditedDataInfo;
+    Gtk::TreeView* mp_TreeView;
+
+    void onDataEditingStarted(Gtk::CellEditable* CellEditable,
+        const Glib::ustring& /* Path */, std::string DataName, int ColIndex);
+
   public:
+
     DomainIDataViewImpl();
-    sigc::signal<void> signal_ClassSelectionChanged();
-    sigc::signal<void> signal_DataEdited();
-    sigc::signal<void> signal_UnitSelectionChanged();
-    void setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel);
-    void setUnitsTreeColumns(DomainIDataColumns* Columns);
-    void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel);
-    void requestClassSelection(Gtk::TreeIter Iter);
-    void requestUnitSelection(Gtk::TreeIter Iter);
-    Gtk::TreeIter getSelectedClassIter();
-    Gtk::TreeIter getSelectedUnitIter();
-    std::pair<std::string, std::string> getEditedDataInfo();
+
+    sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
+    signal_DataEdited();
+
     Gtk::Widget* asWidget();
+
+    void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel,
+        DomainIDataColumns* Columns);
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainIDataViewSub: public DomainIDataViewImpl
 {
   public:
 
-    int getClassesViewRowCount();
-    int getUnitsViewRowCount();
-    std::string getSelectedClassName();
-    int getSelectedUnitId();
-    void selectClassWithIndex(int Index);
-    void selectUnitWithIndex(int Index);
-    void setEditedDataInfo(std::string DataName, std::string NewValue);
-    int getUnitsColumnCount();
 };
 
 #endif /* __DOMAINIDATAVIEW_HPP__ */

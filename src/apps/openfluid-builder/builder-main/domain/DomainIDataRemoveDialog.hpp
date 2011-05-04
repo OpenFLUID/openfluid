@@ -46,52 +46,49 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainIDataRemoveDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINIDATAREMOVEDIALOG_HPP__
+#define __DOMAINIDATAREMOVEDIALOG_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <gtkmm/dialog.h>
+#include <gtkmm/comboboxtext.h>
 
-namespace openfluid {
-namespace guicommon {
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/core/CoreRepository.hpp>
 
 
-class DLLEXPORT DialogBoxFactory
+class DomainIDataRemoveDialog
 {
+  private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Label* mp_NameLabel;
+
+    Gtk::ComboBoxText* mp_Combo;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    std::string m_ClassName;
+
+
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+    DomainIDataRemoveDialog();
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
+    void setClass(std::string ClassName);
 
-    static void showDisabledFeatureMessage();
+    void update();
 
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
+    std::string show();
 
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
 
-    static int showCloseProjectDialog(bool HasToBeSaved);
-
-    static std::string showDomainIDataEditDialog(int Id, std::string DataName,
-        std::string Val);
 };
 
-}
-} //namespaces
-
-
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+#endif /* __DOMAINIDATAREMOVEDIALOG_HPP__ */

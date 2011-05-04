@@ -58,6 +58,8 @@
 #include "ProjectWorkspaceModule.hpp"
 
 class DomainIDataComponent;
+class DomainIDataAddDialog;
+class DomainIDataRemoveDialog;
 class DomainEventsComponent;
 class BuilderListToolBox;
 class DomainClassCoordinator;
@@ -71,6 +73,8 @@ class DomainClassModule: public ProjectWorkspaceModule
 
     DomainIDataComponent* mp_DomainIDataMVP;
     BuilderListToolBox* mp_IDataListToolBox;
+    DomainIDataAddDialog* mp_IDataAddDialog;
+    DomainIDataRemoveDialog* mp_IDataRemoveDialog;
 
     DomainEventsComponent* mp_DomainEventsMVP;
     BuilderListToolBox* mp_EventsListToolBox;

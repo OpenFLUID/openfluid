@@ -96,7 +96,7 @@ void DomainEventsModelImpl::setEngineRequirements(
 // =====================================================================
 // =====================================================================
 
-void DomainEventsModelImpl::setCurrentClassSelectionByApp(std::string ClassName)
+void DomainEventsModelImpl::setClass(std::string ClassName)
 {
   mp_UnitsColl = mp_CoreRepos->getUnits(ClassName);
 

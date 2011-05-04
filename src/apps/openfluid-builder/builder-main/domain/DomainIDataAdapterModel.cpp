@@ -56,191 +56,106 @@
 
 #include <boost/foreach.hpp>
 
+// =====================================================================
+// =====================================================================
 
-void DomainIDataAdapterModelImpl::extractClassNames()
-{
-  m_ClassNames.clear();
-
-  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
-      mp_CoreRepos->getUnitsByClass()->begin(); it
-      != mp_CoreRepos->getUnitsByClass()->end(); ++it)
-  {
-    if (!it->second.getList()->empty())
-      m_ClassNames.push_back(it->first);
-  }
-}
-void DomainIDataAdapterModelImpl::createDataColumnsAndStoreForClass(
-    std::string ClassName)
-{
-  DomainIDataColumns* ThisClassColumnDesc = new DomainIDataColumns();
-
-  /* Extract first Unit data names of this class to get data names of this class
-   * (supposed to be the same for all the class)
-   */
-  openfluid::core::Unit FirstUnit =
-      *(mp_CoreRepos->getUnits(ClassName)->getList()->begin());
-
-  BOOST_FOREACH(std::string DataName, FirstUnit.getInputData()->getInputDataNames())
-        {
-          Gtk::TreeModelColumn<std::string> * DataColumn =
-              new Gtk::TreeModelColumn<std::string>();
-          ThisClassColumnDesc->addWithTitle(DataName, *DataColumn);
-        }
-  m_ByClassColumns[ClassName] = ThisClassColumnDesc;
-  m_ByClassUnitsStores[ClassName] = BuilderListStore::create(
-      *ThisClassColumnDesc);
-}
-void DomainIDataAdapterModelImpl::populateStoreForClass(std::string ClassName)
-{
-  BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_CoreRepos->getUnits(ClassName)->getList()))
-        {
-          Gtk::TreeRow Row = *(m_ByClassUnitsStores[ClassName]->append());
-
-          // Id column
-          Row.set_value(*m_ByClassColumns[ClassName]->getIdColumn(),
-              (int) Unit.getID());
-
-          // Data columns
-          BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
-                {
-                  std::string Val;
-                  Unit.getInputData()->getValue(DataName, &Val);
-                  Row.set_value(
-                      *m_ByClassColumns[ClassName]->getColumnWithTitle(DataName),
-                      Val);
-                }
-        }
-}
-bool DomainIDataAdapterModelImpl::isClassNameValid(std::string ClassName)
-{
-  return m_ByClassUnitsStores.find(ClassName) != m_ByClassUnitsStores.end();
-}
-void DomainIDataAdapterModelImpl::setFirstClassSelected()
-{
-  if (!m_ByClassUnitsStores.empty())
-    m_RequestedSelectedClass = m_ByClassUnitsStores.begin()->first;
-}
 
 DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl() :
-  mp_CoreRepos(0), mref_ClassStore(BuilderClassListStore::create()),
-      m_RequestedSelectedClass("")
+  mp_UnitsColl(0), mp_Columns(new DomainIDataColumns())
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataAdapterModelImpl::dataInit(
-    const openfluid::core::CoreRepository& CoreRepos)
+    openfluid::core::UnitsCollection* UnitsColl)
 {
-  mp_CoreRepos = &CoreRepos;
+  mp_UnitsColl = UnitsColl;
 
-  extractClassNames();
-  mref_ClassStore->setClasses(m_ClassNames);
+  delete mp_Columns;
+  mp_Columns = new DomainIDataColumns();
 
-  m_ByClassColumns.clear();
-  m_ByClassUnitsStores.clear();
-
-  BOOST_FOREACH(std::string ClassName, m_ClassNames)
-        {
-          createDataColumnsAndStoreForClass(ClassName);
-          populateStoreForClass(ClassName);
-        }
-
-  setFirstClassSelected();
-}
-Glib::RefPtr<Gtk::TreeModel> DomainIDataAdapterModelImpl::getClassesTreeModel()
-{
-  return mref_ClassStore;
-}
-DomainIDataColumns* DomainIDataAdapterModelImpl::getUnitsTreeColumns()
-{
-  if (isClassNameValid(m_RequestedSelectedClass))
-    return m_ByClassColumns[m_RequestedSelectedClass];
-  return (DomainIDataColumns*) 0;
-}
-Glib::RefPtr<Gtk::TreeModel> DomainIDataAdapterModelImpl::getUnitsTreeModel()
-{
-  if (isClassNameValid(m_RequestedSelectedClass))
-    return m_ByClassUnitsStores[m_RequestedSelectedClass];
-  return Gtk::ListStore::create(*new DomainIDataColumns());
-}
-Gtk::TreeIter DomainIDataAdapterModelImpl::getRequestedClassSelection()
-{
-  return mref_ClassStore->getIterFromClassName(m_RequestedSelectedClass);
-}
-std::string DomainIDataAdapterModelImpl::getClassNameFromIter(
-    Gtk::TreeIter Iter)
-{
-  return mref_ClassStore->getClassNameFromIter(Iter);
-}
-Gtk::TreeIter DomainIDataAdapterModelImpl::getIterFromClassName(
-    std::string ClassName)
-{
-  return mref_ClassStore->getIterFromClassName(ClassName);
-}
-int DomainIDataAdapterModelImpl::getUnitIdFromIter(Gtk::TreeIter Iter)
-{
-  int Id = -1;
-  if (Iter)
-    Iter->get_value(0, Id);
-  return Id;
-}
-void DomainIDataAdapterModelImpl::updateEditedData(std::pair<Gtk::TreeIter,
-    Gtk::TreeIter> UnitIters, std::pair<std::string, std::string> DataInfo)
-{
-  std::string ClassName = getClassNameFromIter(UnitIters.first);
-  std::string DataName = DataInfo.first;
-  Gtk::TreeModelColumn<std::string>* DataColumn =
-      m_ByClassColumns[ClassName]->getColumnWithTitle(DataName);
-  if (UnitIters.second)
+  // create columns and then liststore with those columns
+  BOOST_FOREACH(std::string DataName, mp_UnitsColl->getList()->begin()->getInputData()->getInputDataNames())
   {
-    UnitIters.second->set_value(*DataColumn, DataInfo.second);
+    Gtk::TreeModelColumn<std::string> * DataColumn =
+    new Gtk::TreeModelColumn<std::string>();
+
+    mp_Columns->addWithTitle(DataName, *DataColumn);
+  }
+
+mref_ListStore = BuilderListStore::create(*mp_Columns);
+
+  // populate liststore
+  BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
+  {
+    Gtk::TreeRow Row = *(mref_ListStore->append());
+
+    // Id column
+    Row.set_value(*mp_Columns->getIdColumn(),
+        (int) Unit.getID());
+
+    // Data columns
+    BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
+    {
+      std::string Val;
+      Unit.getInputData()->getValue(DataName, &Val);
+
+      Row.set_value( *mp_Columns->getColumnWithTitle(DataName), Val);
+    }
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::TreeModel> DomainIDataAdapterModelImpl::getTreeModel()
+{
+  return mref_ListStore;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+DomainIDataColumns* DomainIDataAdapterModelImpl::getColumns()
+{
+  return mp_Columns;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataAdapterModelImpl::updateData(const Glib::ustring PathString,
+    const std::string NewText, std::string DataName, int ColIndex)
+{
+  Gtk::TreeIter Iter = mref_ListStore->get_iter(PathString);
+
+  Gtk::TreeModelColumn<int>* ColId = mp_Columns->getIdColumn();
+
+  if (Iter && ColId && mp_UnitsColl)
+  {
+
+    Iter->set_value(ColIndex, NewText);
+
+    int Id = Iter->get_value(*ColId);
+    mp_UnitsColl->getUnit(Id)->getInputData()->replaceValue(DataName, NewText);
+
+    m_signal_DataChanged.emit();
   }
 }
-void DomainIDataAdapterModelImpl::updateDataForClass(Gtk::TreeIter ClassIter)
-{
-  std::string ClassName = getClassNameFromIter(ClassIter);
 
-  m_ByClassColumns.erase(ClassName);
-  m_ByClassUnitsStores.erase(ClassName);
+// =====================================================================
+// =====================================================================
 
-  createDataColumnsAndStoreForClass(ClassName);
-  populateStoreForClass(ClassName);
-}
-void DomainIDataAdapterModelImpl::setSelectedClass(Gtk::TreeIter Iter)
-{
-  m_RequestedSelectedClass = getClassNameFromIter(Iter);
-}
 
-void DomainIDataAdapterModelSub::setCoreRepository(
-    const openfluid::core::CoreRepository* CoreRepos)
+sigc::signal<void> DomainIDataAdapterModelImpl::signal_DataChanged()
 {
-  mp_CoreRepos = CoreRepos;
-}
-void DomainIDataAdapterModelSub::extractClassNames()
-{
-  DomainIDataAdapterModelImpl::extractClassNames();
-}
-std::vector<std::string> DomainIDataAdapterModelSub::getClassNames()
-{
-  return m_ClassNames;
-}
-void DomainIDataAdapterModelSub::createDataColumnsAndStoreForClass(
-    std::string ClassName)
-{
-  DomainIDataAdapterModelImpl::createDataColumnsAndStoreForClass(ClassName);
-}
-std::map<std::string, DomainIDataColumns*> DomainIDataAdapterModelSub::getByClassColumns()
-{
-  return m_ByClassColumns;
-}
-std::map<std::string, Glib::RefPtr<BuilderListStore> > DomainIDataAdapterModelSub::getByClassUnitsStores()
-{
-  return m_ByClassUnitsStores;
-}
-void DomainIDataAdapterModelSub::populateStoreForClass(std::string ClassName)
-{
-  DomainIDataAdapterModelImpl::populateStoreForClass(ClassName);
-}
-Glib::RefPtr<BuilderClassListStore> DomainIDataAdapterModelSub::getClassStore()
-{
-  return mref_ClassStore;
+  return m_signal_DataChanged;
 }
 

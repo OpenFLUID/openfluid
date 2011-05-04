@@ -57,47 +57,35 @@
 #include "DomainIDataModel.hpp"
 #include "DomainIDataAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataPresenter::whenDataInit()
 {
-  m_Adapter.dataInit(*m_Model.getCoreRepos());
+  m_Adapter.dataInit(m_Model.getUnitsCollection());
 }
-void DomainIDataPresenter::whenDataReplaced()
-{
-  m_Adapter.updateEditedData();
-}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataPresenter::whenDataEdited()
 {
-  m_Model.replaceDataValue(m_Adapter.getSelectedUnitInfos(),
-      m_Adapter.getEditedDataInfo());
+  m_Model.signal_IDataChanged().emit();
 }
-void DomainIDataPresenter::whenDataListChanged()
-{
-  m_Adapter.updateDataList();
-}
-void DomainIDataPresenter::whenClassSelectionChanged()
-{
-  m_Model.setCurrentClassSelectionByUser(m_Adapter.getSelectedClassName());
-}
-void DomainIDataPresenter::whenFromAppClassSelectionChanged()
-{
-  m_Adapter.setSelectedClassName(m_Model.getAppRequestedClass());
-}
+
+// =====================================================================
+// =====================================================================
+
+
 DomainIDataPresenter::DomainIDataPresenter(DomainIDataModel& Model,
     DomainIDataAdapter& Adapter) :
   m_Model(Model), m_Adapter(Adapter)
 {
   m_Model.signal_FromAppDataInit().connect(sigc::mem_fun(*this,
       &DomainIDataPresenter::whenDataInit));
-  m_Model.signal_FromAppDataReplaced().connect(sigc::mem_fun(*this,
-      &DomainIDataPresenter::whenDataReplaced));
-  m_Model.signal_FromAppDataListChanged().connect(sigc::mem_fun(*this,
-      &DomainIDataPresenter::whenDataListChanged));
 
-  m_Model.signal_FromAppClassSelectionChanged().connect(sigc::mem_fun(*this,
-      &DomainIDataPresenter::whenFromAppClassSelectionChanged));
-
-  m_Adapter.signal_FromUserClassSelectionChanged().connect(sigc::mem_fun(*this,
-      &DomainIDataPresenter::whenClassSelectionChanged));
   m_Adapter.signal_FromUserDataEdited().connect(sigc::mem_fun(*this,
       &DomainIDataPresenter::whenDataEdited));
 }

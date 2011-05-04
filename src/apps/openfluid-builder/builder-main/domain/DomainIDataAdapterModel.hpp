@@ -58,72 +58,68 @@
 #include <gtkmm.h>
 
 #include <openfluid/core.hpp>
+#include <sigc++/sigc++.h>
 
 #include "DomainIDataColumns.hpp"
-
-#include "BuilderClassListStore.hpp"
+#include "BuilderListStore.hpp"
 
 class DomainIDataAdapterModel
 {
   public:
+
     virtual void
-    dataInit(const openfluid::core::CoreRepository& CoreRepos) = 0;
-    virtual Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel() = 0;
-    virtual DomainIDataColumns* getUnitsTreeColumns() = 0;
-    virtual Glib::RefPtr<Gtk::TreeModel> getUnitsTreeModel() = 0;
-    virtual Gtk::TreeIter getRequestedClassSelection() = 0;
-    virtual std::string getClassNameFromIter(Gtk::TreeIter Iter) = 0;
-    virtual Gtk::TreeIter getIterFromClassName(std::string ClassName) = 0;
-    virtual int getUnitIdFromIter(Gtk::TreeIter Iter) = 0;
-    virtual void setSelectedClass(Gtk::TreeIter Iter) = 0;
-    virtual void updateEditedData(
-        std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters, std::pair<
-            std::string, std::string> DataInfo) = 0;
-    virtual void updateDataForClass(Gtk::TreeIter ClassIter) = 0;
+    dataInit(openfluid::core::UnitsCollection* UnitsColl) = 0;
+
+    virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
+
+    virtual DomainIDataColumns* getColumns() = 0;
+
+    virtual void updateData(const Glib::ustring PathString,
+        const std::string NewText, std::string DataName, int ColIndex) = 0;
+
+    virtual sigc::signal<void> signal_DataChanged() = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 {
   protected:
-    const openfluid::core::CoreRepository* mp_CoreRepos;
-    std::vector<std::string> m_ClassNames;
-    std::map<std::string, DomainIDataColumns*> m_ByClassColumns;
-    std::map<std::string, Glib::RefPtr<BuilderListStore> > m_ByClassUnitsStores;
-    Glib::RefPtr<BuilderClassListStore> mref_ClassStore;
-    std::string m_RequestedSelectedClass;
-    void extractClassNames();
-    void createDataColumnsAndStoreForClass(std::string ClassName);
-    void populateStoreForClass(std::string ClassName);
-    bool isClassNameValid(std::string ClassName);
-    void setFirstClassSelected();
+
+    openfluid::core::UnitsCollection* mp_UnitsColl;
+
+    DomainIDataColumns* mp_Columns;
+
+    Glib::RefPtr<BuilderListStore> mref_ListStore;
+
+    sigc::signal<void> m_signal_DataChanged;
+
   public:
+
     DomainIDataAdapterModelImpl();
-    void dataInit(const openfluid::core::CoreRepository& CoreRepos);
-    Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel();
-    DomainIDataColumns* getUnitsTreeColumns();
-    Glib::RefPtr<Gtk::TreeModel> getUnitsTreeModel();
-    Gtk::TreeIter getRequestedClassSelection();
-    std::string getClassNameFromIter(Gtk::TreeIter Iter);
-    Gtk::TreeIter getIterFromClassName(std::string ClassName);
-    int getUnitIdFromIter(Gtk::TreeIter Iter);
-    void updateEditedData(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters,
-        std::pair<std::string, std::string> DataInfo);
-    void updateDataForClass(Gtk::TreeIter ClassIter);
-    void setSelectedClass(Gtk::TreeIter Iter);
+
+    void dataInit(openfluid::core::UnitsCollection* UnitsColl);
+
+    sigc::signal<void> signal_DataChanged();
+
+    Glib::RefPtr<Gtk::TreeModel> getTreeModel();
+
+    DomainIDataColumns* getColumns();
+
+    void updateData(const Glib::ustring PathString, const std::string NewText,
+        std::string DataName, int ColIndex);
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainIDataAdapterModelSub: public DomainIDataAdapterModelImpl
 {
   public:
-    void setCoreRepository(const openfluid::core::CoreRepository* CoreRepos);
-    void extractClassNames();
-    std::vector<std::string> getClassNames();
-    void createDataColumnsAndStoreForClass(std::string ClassName);
-    std::map<std::string, DomainIDataColumns*> getByClassColumns();
-    std::map<std::string, Glib::RefPtr<BuilderListStore> >
-    getByClassUnitsStores();
-    void populateStoreForClass(std::string ClassName);
-    Glib::RefPtr<BuilderClassListStore> getClassStore();
+
 };
 
 #endif /* __DOMAINIDATAADAPTERMODEL_HPP__ */

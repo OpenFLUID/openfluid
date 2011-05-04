@@ -54,99 +54,137 @@
 
 #include "DomainIDataModel.hpp"
 
-#include <boost/foreach.hpp>
+
+// =====================================================================
+// =====================================================================
+
 
 DomainIDataModelImpl::DomainIDataModelImpl() :
-  mp_CoreRepos(0), m_SelectedClass(""), m_AppRequestedSelection("")
+  mp_CoreRepos(0), m_ClassName(""), m_UnitsColl(0)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataInit()
 {
   return m_signal_FromAppDataInit;
 }
-sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataReplaced()
+
+// =====================================================================
+// =====================================================================
+
+
+bool DomainIDataModelImpl::isEmptyDataList()
 {
-  return m_signal_FromAppDataReplaced;
+  return (m_UnitsColl
+      && m_UnitsColl->getList()->begin()->getInputData()->getInputDataNames().empty());
 }
-sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataListChanged()
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> DomainIDataModelImpl::signal_IDataChanged()
 {
-  return m_signal_FromAppDataListChanged;
+  return m_signal_IDataChanged;
 }
-sigc::signal<void> DomainIDataModelImpl::signal_FromAppClassSelectionChanged()
-{
-  return m_signal_FromAppClassSelectionChanged;
-}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataModelImpl::setEngineRequirements(
     openfluid::core::CoreRepository& CoreRepos)
 {
   mp_CoreRepos = &CoreRepos;
-  m_signal_FromAppDataInit.emit();
 }
-const openfluid::core::CoreRepository* DomainIDataModelImpl::getCoreRepos()
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::UnitsCollection* DomainIDataModelImpl::getUnitsCollection()
 {
-  if (mp_CoreRepos)
-    return mp_CoreRepos;
-  return 0;
+  return m_UnitsColl;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataModelImpl::update()
 {
-  m_signal_FromAppDataInit.emit();
-
-  if(m_AppRequestedSelection!="")
-    m_signal_FromAppClassSelectionChanged.emit();
-}
-void DomainIDataModelImpl::replaceDataValue(
-    std::pair<std::string, int> UnitInfo,
-    std::pair<std::string, std::string> DataInfo)
-{
-  openfluid::core::Unit* Unit = mp_CoreRepos->getUnit(UnitInfo.first,
-      UnitInfo.second);
-  if (Unit)
+  if (mp_CoreRepos && mp_CoreRepos->getUnits(m_ClassName))
   {
-    std::string DataName = DataInfo.first;
-    std::string NewValue = DataInfo.second;
-    std::string Value;
-    Unit->getInputData()->getValue(DataName, &Value);
-    if (Value != NewValue)
-    {
-      Unit->getInputData()->replaceValue(DataName, NewValue);
-      m_signal_FromAppDataReplaced.emit();
-    }
+    m_UnitsColl = mp_CoreRepos->getUnits(m_ClassName);
+    m_signal_FromAppDataInit.emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainIDataModelImpl::removeData(std::string DataName)
 {
-  BOOST_FOREACH(openfluid::core::Unit Unit,*mp_CoreRepos->getUnits(m_SelectedClass)->getList())
-{  mp_CoreRepos->getUnit(m_SelectedClass, Unit.getID())->getInputData()->removeData(
-      DataName);
-}
-m_signal_FromAppDataListChanged.emit();
-}
-void DomainIDataModelImpl::addData(std::string DataName)
-{
-  if (mp_CoreRepos->isUnitsClassExist(m_SelectedClass) && DataName != "")
+  if (DataName == "")
+    return;
+
+  openfluid::core::UnitsList_t::iterator it;
+  for (it = m_UnitsColl->getList()->begin(); it
+      != m_UnitsColl->getList()->end(); ++it)
   {
-    BOOST_FOREACH(openfluid::core::Unit Unit,*mp_CoreRepos->getUnits(m_SelectedClass)->getList())
-{    mp_CoreRepos->getUnit(m_SelectedClass, Unit.getID())->getInputData()->setValue(
-        DataName, "");
+    openfluid::core::Unit* TheUnit =
+        const_cast<openfluid::core::Unit*> (&(*it));
+
+    TheUnit->getInputData()->removeData(DataName);
   }
-  m_signal_FromAppDataListChanged.emit();
+
+  m_signal_FromAppDataInit.emit();
+
+  m_signal_IDataChanged.emit();
 }
-}
-void DomainIDataModelImpl::setCurrentClassSelectionByUser(std::string ClassName)
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataModelImpl::addData(std::pair<std::string, std::string> DataInfo)
 {
-  m_SelectedClass = ClassName;
+
+  if (DataInfo.first == "" || DataInfo.second == "")
+    return;
+
+  openfluid::core::UnitsList_t::iterator it;
+  for (it = m_UnitsColl->getList()->begin(); it
+      != m_UnitsColl->getList()->end(); ++it)
+  {
+    openfluid::core::Unit* TheUnit =
+        const_cast<openfluid::core::Unit*> (&(*it));
+
+    TheUnit->getInputData()->setValue(DataInfo.first, DataInfo.second);
+  }
+
+  m_signal_FromAppDataInit.emit();
+
+  m_signal_IDataChanged.emit();
+
 }
-void DomainIDataModelImpl::setCurrentClassSelectionByApp(std::string ClassName)
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataModelImpl::setClass(std::string ClassName)
 {
-  m_AppRequestedSelection = ClassName;
-  m_signal_FromAppClassSelectionChanged.emit();
+  m_ClassName = ClassName;
+
+  update();
 }
-std::string DomainIDataModelImpl::getSelectedClass()
-{
-  return m_SelectedClass;
-}
-std::string DomainIDataModelImpl::getAppRequestedClass()
-{
-  return m_AppRequestedSelection;
-}
+
+// =====================================================================
+// =====================================================================
+

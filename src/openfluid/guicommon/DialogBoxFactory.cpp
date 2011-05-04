@@ -84,7 +84,6 @@ void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
     Dialog.hide();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -96,7 +95,6 @@ void DialogBoxFactory::showSimpleWarningMessage(Glib::ustring MessageText)
   if (Dialog.run())
     Dialog.hide();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -218,7 +216,7 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
   Gtk::Label Label;
 
   Gtk::HBox MainBox;
-  Gtk::Image Image(Gtk::Stock::DIALOG_QUESTION,Gtk::ICON_SIZE_DIALOG);
+  Gtk::Image Image(Gtk::Stock::DIALOG_QUESTION, Gtk::ICON_SIZE_DIALOG);
   MainBox.pack_start(Image, Gtk::PACK_SHRINK, 10);
   MainBox.pack_start(Label, Gtk::PACK_SHRINK, 10);
 
@@ -231,18 +229,17 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
     Label.set_text(_("Do you want to save this project before closing ?"));
     Dialog.add_button(_("Close project without saving"), 1);
     Dialog.add_button(_("Save and close project"), 2);
-  }
-  else
+  } else
   {
     Label.set_text(_("Are you sure you want to close this project ?"));
-    Dialog.add_button(Gtk::Stock::OK , 1);
+    Dialog.add_button(Gtk::Stock::OK, 1);
   }
 
   Dialog.show_all_children();
 
   int Res = Dialog.run();
 
-  if(Res == Gtk::RESPONSE_DELETE_EVENT)
+  if (Res == Gtk::RESPONSE_DELETE_EVENT)
     Res = 0;
 
   return Res;
@@ -251,6 +248,40 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
 // =====================================================================
 // =====================================================================
 
+std::string DialogBoxFactory::showDomainIDataEditDialog(int Id,
+    std::string DataName, std::string Val)
+{
+  Gtk::Dialog Dialog("Edit Input Data", true, false);
+
+  Gtk::Entry Entry;
+  Entry.set_text(Val);
+
+  Gtk::Label Label(Glib::ustring::compose(_("%1 for Id %2"), DataName,Id));
+
+  Dialog.get_vbox()->pack_start(Label);
+  Dialog.get_vbox()->pack_start(Entry);
+
+  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  Dialog.set_default_response(Gtk::RESPONSE_OK);
+
+  Dialog.show_all_children();
+
+  int Res = Dialog.run();
+
+  if (Res == Gtk::RESPONSE_CANCEL || Res == Gtk::RESPONSE_DELETE_EVENT)
+    return Val;
+
+  std::string NewVal = Entry.get_text();
+  if (NewVal == "" || NewVal == " ")
+    NewVal = "0";
+
+  return NewVal;
+}
+
+// =====================================================================
+// =====================================================================
 
 }
 } //namespaces

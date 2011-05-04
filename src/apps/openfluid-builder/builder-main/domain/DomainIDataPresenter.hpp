@@ -63,15 +63,17 @@ class DomainIDataAdapter;
 class DomainIDataPresenter: public sigc::trackable
 {
   private:
+
     DomainIDataModel& m_Model;
+
     DomainIDataAdapter& m_Adapter;
+
     void whenDataInit();
-    void whenDataReplaced();
+
     void whenDataEdited();
-    void whenDataListChanged();
-    void whenClassSelectionChanged();
-    void whenFromAppClassSelectionChanged();
+
   public:
+
     DomainIDataPresenter(DomainIDataModel& Model, DomainIDataAdapter& Adapter);
 };
 

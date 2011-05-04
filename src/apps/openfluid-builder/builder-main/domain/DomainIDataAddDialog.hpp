@@ -46,52 +46,62 @@
  */
 
 /**
- \file DialogBoxFactory.hpp
+ \file DomainIDataAddDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DIALOGBOXFACTORY_HPP__
-#define __DIALOGBOXFACTORY_HPP__
+#ifndef __DOMAINIDATAADDDIALOG_HPP__
+#define __DOMAINIDATAADDDIALOG_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/base.hpp>
-#include <openfluid/dllexport.hpp>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
 
-namespace openfluid {
-namespace guicommon {
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/core/CoreRepository.hpp>
 
 
-class DLLEXPORT DialogBoxFactory
+class DomainIDataAddDialog
 {
+  private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Entry* mp_NameEntry;
+
+    Gtk::Entry* mp_DefaultValueEntry;
+
+    Gtk::Label* mp_NameMsgLabel;
+
+    Gtk::Label* mp_ValueMsgLabel;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    std::string m_ClassName;
+
+    std::vector<std::string> m_IDataNames;
+
+    bool m_NameValid;
+
+    bool m_ValueValid;
+
+    void onNameChanged();
+
+    void onValueChanged();
+
   public:
 
-    static bool showSimpleOkCancelQuestionDialog(Glib::ustring Message);
+    DomainIDataAddDialog();
 
-    static void showSimpleErrorMessage(Glib::ustring MessageText);
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 
-    static void showSimpleWarningMessage(Glib::ustring MessageText);
+    void setClass(std::string ClassName);
 
-    static void showDisabledFeatureMessage();
+    void update();
 
-    static std::string showTextEntryDialog(Glib::ustring MessageText,
-        Glib::ustring LabelText);
+    std::pair<std::string,std::string> show();
 
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
 
-    static int showCloseProjectDialog(bool HasToBeSaved);
-
-    static std::string showDomainIDataEditDialog(int Id, std::string DataName,
-        std::string Val);
 };
 
-}
-} //namespaces
-
-
-#endif /* __DIALOGBOXFACTORY_HPP__ */
+#endif /* __DOMAINIDATAADDDIALOG_HPP__ */

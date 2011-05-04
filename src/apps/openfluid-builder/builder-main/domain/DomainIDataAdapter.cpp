@@ -57,78 +57,57 @@
 #include "DomainIDataAdapterModel.hpp"
 #include "DomainIDataView.hpp"
 
-void DomainIDataAdapter::whenClassSelectionChanged()
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataAdapter::whenDataEdited(const Glib::ustring PathString,
+    const std::string NewText, std::string DataName, int ColIndex)
 {
-  if (m_hasClassSelectionToBeStored)
-  {
-    m_Model.setSelectedClass(m_View.getSelectedClassIter());
-    m_signal_FromUserClassSelectionChanged.emit();
-  }
-  m_View.setUnitsTreeColumns(m_Model.getUnitsTreeColumns());
-  m_View.setUnitsTreeModel(m_Model.getUnitsTreeModel());
+  m_Model.updateData(PathString, NewText, DataName, ColIndex);
 }
-void DomainIDataAdapter::whenDataEdited()
-{
-  m_signal_FromUserDataEdited.emit();
-}
+
+// =====================================================================
+// =====================================================================
+
+
 DomainIDataAdapter::DomainIDataAdapter(DomainIDataAdapterModel& Model,
     DomainIDataView& View) :
-  m_Model(Model), m_View(View), m_hasClassSelectionToBeStored(false)
+  m_Model(Model), m_View(View)
 {
-  m_View.signal_ClassSelectionChanged().connect(sigc::mem_fun(*this,
-      &DomainIDataAdapter::whenClassSelectionChanged));
   m_View.signal_DataEdited().connect(sigc::mem_fun(*this,
       &DomainIDataAdapter::whenDataEdited));
+
+  m_Model.signal_DataChanged().connect(sigc::mem_fun(*this,
+      &DomainIDataAdapter::whenDataChanged));
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataAdapter::whenDataChanged()
+{
+  m_signal_FromUserDataChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainIDataAdapter::signal_FromUserDataEdited()
 {
-  return m_signal_FromUserDataEdited;
+  return m_signal_FromUserDataChanged;
 }
-sigc::signal<void> DomainIDataAdapter::signal_FromUserClassSelectionChanged()
-{
-  return m_signal_FromUserClassSelectionChanged;
-}
-void DomainIDataAdapter::dataInit(
-    const openfluid::core::CoreRepository& CoreRepos)
-{
-  m_Model.dataInit(CoreRepos);
 
-  m_hasClassSelectionToBeStored = false;
-  m_View.setClassesTreeModel(m_Model.getClassesTreeModel());
-  m_hasClassSelectionToBeStored = true;
+// =====================================================================
+// =====================================================================
 
-  m_View.requestClassSelection(m_Model.getRequestedClassSelection());
-}
-std::pair<Gtk::TreeIter, Gtk::TreeIter> DomainIDataAdapter::getSelectedUnitIters()
+
+void DomainIDataAdapter::dataInit(openfluid::core::UnitsCollection* UnitsColl)
 {
-  return std::make_pair(m_View.getSelectedClassIter(),
-      m_View.getSelectedUnitIter());
+  m_Model.dataInit(UnitsColl);
+
+  m_View.setTreeModel(m_Model.getTreeModel(), m_Model.getColumns());
 }
-std::pair<std::string, int> DomainIDataAdapter::getSelectedUnitInfos()
-{
-  return std::make_pair(m_Model.getClassNameFromIter(
-      m_View.getSelectedClassIter()), m_Model.getUnitIdFromIter(
-      m_View.getSelectedUnitIter()));
-}
-std::string DomainIDataAdapter::getSelectedClassName()
-{
-  return m_Model.getClassNameFromIter(m_View.getSelectedClassIter());
-}
-std::pair<std::string, std::string> DomainIDataAdapter::getEditedDataInfo()
-{
-  return m_View.getEditedDataInfo();
-}
-void DomainIDataAdapter::updateEditedData()
-{
-  m_Model.updateEditedData(getSelectedUnitIters(), m_View.getEditedDataInfo());
-}
-void DomainIDataAdapter::updateDataList()
-{
-  m_Model.updateDataForClass(m_View.getSelectedClassIter());
-  m_View.setUnitsTreeColumns(m_Model.getUnitsTreeColumns());
-  m_View.setUnitsTreeModel(m_Model.getUnitsTreeModel());
-}
-void DomainIDataAdapter::setSelectedClassName(std::string RequestedClass)
-{
-  m_View.requestClassSelection(m_Model.getIterFromClassName(RequestedClass));
-}
+

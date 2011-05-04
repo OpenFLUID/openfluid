@@ -68,7 +68,7 @@ class DomainEventsModel
     virtual void setEngineRequirements(
         openfluid::core::CoreRepository& CoreRepos) = 0;
 
-    virtual void setCurrentClassSelectionByApp(std::string ClassName) = 0;
+    virtual void setClass(std::string ClassName) = 0;
 
     virtual openfluid::core::UnitsCollection* getUnitsColl() = 0;
 
@@ -96,7 +96,7 @@ class DomainEventsModelImpl: public DomainEventsModel
     void setEngineRequirements(
             openfluid::core::CoreRepository& CoreRepos);
 
-    void setCurrentClassSelectionByApp(std::string ClassName);
+    void setClass(std::string ClassName);
 
     openfluid::core::UnitsCollection* getUnitsColl();
 

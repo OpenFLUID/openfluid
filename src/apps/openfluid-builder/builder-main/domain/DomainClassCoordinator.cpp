@@ -57,6 +57,8 @@
 #include <glibmm/i18n.h>
 
 #include "DomainIDataModel.hpp"
+#include "DomainIDataAddDialog.hpp"
+#include "DomainIDataRemoveDialog.hpp"
 #include "DomainEventsModel.hpp"
 #include "BuilderListToolBox.hpp"
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
@@ -67,10 +69,7 @@
 
 void DomainClassCoordinator::updateIDataListToolBox()
 {
-  m_IDataListToolBox.setAddCommandAvailable(m_IDataModel.getSelectedClass()
-      != "");
-  m_IDataListToolBox.setRemoveCommandAvailable(m_IDataModel.getSelectedClass()
-      != "");
+  m_IDataListToolBox.setRemoveCommandAvailable(!m_IDataModel.isEmptyDataList());
 }
 
 // =====================================================================
@@ -79,13 +78,10 @@ void DomainClassCoordinator::updateIDataListToolBox()
 
 void DomainClassCoordinator::whenAddIDataAsked()
 {
-  std::string DataName =
-      openfluid::guicommon::DialogBoxFactory::showTextEntryDialog(
-          _("Adding data to the selected class"), _("Data Name : "));
-  m_IDataModel.addData(DataName);
+  std::pair<std::string, std::string> Data = m_IDataAddDialog.show();
+  m_IDataModel.addData(Data);
 
-  if (DataName != "")
-    m_signal_DomainClassChanged.emit();
+  updateIDataListToolBox();
 }
 
 // =====================================================================
@@ -94,17 +90,23 @@ void DomainClassCoordinator::whenAddIDataAsked()
 
 void DomainClassCoordinator::whenRemoveIDataAsked()
 {
-  std::string
-      DataName =
-          openfluid::guicommon::DialogBoxFactory::showTextEntryDialog(
-              _("Removing data from the selected class\nAll values of this data will be destroyed"),
-              _("Data Name : "));
+  std::string DataName = m_IDataRemoveDialog.show();
   m_IDataModel.removeData(DataName);
 
-  if (DataName != "")
-    m_signal_DomainClassChanged.emit();
+  updateIDataListToolBox();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void DomainClassCoordinator::whenIDataChanged()
+{
+  m_IDataAddDialog.update();
+  m_IDataRemoveDialog.update();
+
+  m_signal_DomainClassChanged.emit();
+}
 
 // =====================================================================
 // =====================================================================
@@ -124,22 +126,25 @@ void DomainClassCoordinator::whenRemoveEventAsked()
   openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 DomainClassCoordinator::DomainClassCoordinator(DomainIDataModel& IDataModel,
-    BuilderListToolBox& IDataListToolBox,
-    DomainEventsModel& EventsModel,
+    BuilderListToolBox& IDataListToolBox, DomainIDataAddDialog& IDataAddDialog,
+    DomainIDataRemoveDialog& IDataRemoveDialog, DomainEventsModel& EventsModel,
     BuilderListToolBox& EventsListToolBox) :
   m_IDataModel(IDataModel), m_IDataListToolBox(IDataListToolBox),
+      m_IDataAddDialog(IDataAddDialog), m_IDataRemoveDialog(IDataRemoveDialog),
       m_EventsModel(EventsModel), m_EventsListToolBox(EventsListToolBox)
 {
   m_IDataListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenAddIDataAsked));
   m_IDataListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenRemoveIDataAsked));
+
+  m_IDataModel.signal_IDataChanged().connect(sigc::mem_fun(*this,
+      &DomainClassCoordinator::whenIDataChanged));
 
   m_EventsListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenAddEventAsked));
@@ -165,7 +170,9 @@ void DomainClassCoordinator::setEngineRequirements(
     openfluid::machine::SimulationBlob& SimBlob)
 {
   m_IDataModel.setEngineRequirements(SimBlob.getCoreRepository());
-  updateIDataListToolBox();
+
+  m_IDataAddDialog.setEngineRequirements(SimBlob.getCoreRepository());
+  m_IDataRemoveDialog.setEngineRequirements(SimBlob.getCoreRepository());
 
   m_EventsModel.setEngineRequirements(SimBlob.getCoreRepository());
 }
@@ -176,8 +183,12 @@ void DomainClassCoordinator::setEngineRequirements(
 
 void DomainClassCoordinator::setSelectedClassFromApp(std::string ClassName)
 {
-  m_IDataModel.setCurrentClassSelectionByApp(ClassName);
-  m_EventsModel.setCurrentClassSelectionByApp(ClassName);
+  m_IDataModel.setClass(ClassName);
+  m_IDataAddDialog.setClass(ClassName);
+  m_IDataRemoveDialog.setClass(ClassName);
+  m_EventsModel.setClass(ClassName);
+
+  updateIDataListToolBox();
 }
 
 // =====================================================================
@@ -187,4 +198,8 @@ void DomainClassCoordinator::setSelectedClassFromApp(std::string ClassName)
 void DomainClassCoordinator::update()
 {
   m_IDataModel.update();
+  m_IDataAddDialog.update();
+  m_IDataRemoveDialog.update();
+
+  updateIDataListToolBox();
 }

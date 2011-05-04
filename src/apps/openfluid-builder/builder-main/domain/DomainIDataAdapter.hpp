@@ -66,29 +66,26 @@ class DomainIDataView;
 class DomainIDataAdapter: public sigc::trackable
 {
   private:
-    sigc::signal<void> m_signal_FromUserClassSelectionChanged;
-    sigc::signal<void> m_signal_FromUserDataEdited;
+
+    sigc::signal<void> m_signal_FromUserDataChanged;
+
     DomainIDataAdapterModel& m_Model;
+
     DomainIDataView& m_View;
-    /*
-     * to avoid empty class selection effect when ClassesTreeModel is set,
-     * (sigc::connection::block()/unblock() doesn't get expected result)
-     */
-    bool m_hasClassSelectionToBeStored;
-    void whenClassSelectionChanged();
-    void whenDataEdited();
+
+    void whenDataEdited(const Glib::ustring PathString,
+        const std::string NewText, std::string DataName, int ColIndex);
+
+    void whenDataChanged();
+
   public:
+
     DomainIDataAdapter(DomainIDataAdapterModel& Model, DomainIDataView& View);
+
     sigc::signal<void> signal_FromUserDataEdited();
-    sigc::signal<void> signal_FromUserClassSelectionChanged();
-    void dataInit(const openfluid::core::CoreRepository& CoreRepos);
-    std::pair<Gtk::TreeIter, Gtk::TreeIter> getSelectedUnitIters();
-    std::pair<std::string, int> getSelectedUnitInfos();
-    std::string getSelectedClassName();
-    std::pair<std::string, std::string> getEditedDataInfo();
-    void updateEditedData();
-    void updateDataList();
-    void setSelectedClassName(std::string RequestedClass);
+
+    void dataInit(openfluid::core::UnitsCollection* UnitsColl);
+
 };
 
 #endif /* __DOMAINIDATAADAPTER_HPP__ */

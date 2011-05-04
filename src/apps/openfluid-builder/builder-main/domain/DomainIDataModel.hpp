@@ -62,23 +62,26 @@
 class DomainIDataModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppDataInit() = 0;
-    virtual sigc::signal<void> signal_FromAppDataReplaced() = 0;
-    virtual sigc::signal<void> signal_FromAppDataListChanged() = 0;
-    virtual
-    sigc::signal<void> signal_FromAppClassSelectionChanged() = 0;
+
+    virtual sigc::signal<void> signal_IDataChanged() = 0;
+
+    virtual bool isEmptyDataList() = 0;
+
     virtual void setEngineRequirements(
         openfluid::core::CoreRepository& CoreRepos) = 0;
-    virtual const openfluid::core::CoreRepository* getCoreRepos() = 0;
+
     virtual void update() = 0;
-    virtual void replaceDataValue(std::pair<std::string, int> UnitInfo,
-        std::pair<std::string, std::string> DataInfo) = 0;
+
+    virtual openfluid::core::UnitsCollection* getUnitsCollection() = 0;
+
     virtual void removeData(std::string DataName) = 0;
-    virtual void addData(std::string DataName) = 0;
-    virtual void setCurrentClassSelectionByUser(std::string ClassName) = 0;
-    virtual void setCurrentClassSelectionByApp(std::string ClassName) = 0;
-    virtual std::string getSelectedClass() = 0;
-    virtual std::string getAppRequestedClass() = 0;
+
+    virtual void addData(std::pair<std::string, std::string> DataInfo) = 0;
+
+    virtual void setClass(std::string ClassName) = 0;
+
 };
 
 // =====================================================================
@@ -87,30 +90,39 @@ class DomainIDataModel
 class DomainIDataModelImpl: public DomainIDataModel
 {
   private:
+
     openfluid::core::CoreRepository* mp_CoreRepos;
+
     sigc::signal<void> m_signal_FromAppDataInit;
-    sigc::signal<void> m_signal_FromAppDataReplaced;
-    sigc::signal<void> m_signal_FromAppDataListChanged;
-    sigc::signal<void> m_signal_FromAppClassSelectionChanged;
-    std::string m_SelectedClass;
-    std::string m_AppRequestedSelection;
+
+    sigc::signal<void> m_signal_IDataChanged;
+
+    std::string m_ClassName;
+
+    openfluid::core::UnitsCollection* m_UnitsColl;
+
   public:
+
     DomainIDataModelImpl();
+
     sigc::signal<void> signal_FromAppDataInit();
-    sigc::signal<void> signal_FromAppDataReplaced();
-    sigc::signal<void> signal_FromAppDataListChanged();
-    sigc::signal<void> signal_FromAppClassSelectionChanged();
+
+    sigc::signal<void> signal_IDataChanged();
+
+    bool isEmptyDataList();
+
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
-    const openfluid::core::CoreRepository* getCoreRepos();
+
     void update();
-    void replaceDataValue(std::pair<std::string, int> UnitInfo, std::pair<
-        std::string, std::string> DataInfo);
+
+    openfluid::core::UnitsCollection* getUnitsCollection();
+
     void removeData(std::string DataName);
-    void addData(std::string DataName);
-    void setCurrentClassSelectionByUser(std::string ClassName);
-    void setCurrentClassSelectionByApp(std::string ClassName);
-    std::string getSelectedClass();
-    std::string getAppRequestedClass();
+
+    void addData(std::pair<std::string, std::string> DataInfo);
+
+    void setClass(std::string ClassName);
+
 };
 
 // =====================================================================

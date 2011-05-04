@@ -55,42 +55,85 @@
 #include "DomainIDataView.hpp"
 
 #include "DomainIDataColumns.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainIDataViewImpl::onDataEdited(const Glib::ustring /*PathString*/,
-    const Glib::ustring NewText, std::string DataName)
+void DomainIDataViewImpl::onDataEditingStarted(Gtk::CellEditable* /*CellEditable*/,
+    const Glib::ustring& Path, std::string DataName, int ColIndex)
 {
-  m_EditedDataInfo = std::make_pair(DataName, NewText);
-  m_signal_DataEdited.emit();
+
+  Gtk::TreePath path(Path);
+
+  int Id;
+  mp_TreeView->get_model()->get_iter(path)->get_value(0, Id);
+
+  std::string Val;
+  mp_TreeView->get_model()->get_iter(path)->get_value(ColIndex, Val);
+
+  std::string NewVal =
+      openfluid::guicommon::DialogBoxFactory::showDomainIDataEditDialog(Id,
+          DataName, Val);
+
+  m_signal_DataEdited.emit(Path, NewVal, DataName, ColIndex);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-DomainIDataViewImpl::DomainIDataViewImpl() :
-  m_EditedDataInfo(std::make_pair("", ""))
+DomainIDataViewImpl::DomainIDataViewImpl()
 {
-  mp_ClassesWin->set_visible(false);
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+
+  mp_TreeView->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> DomainIDataViewImpl::signal_ClassSelectionChanged()
+void DomainIDataViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel,
+    DomainIDataColumns* Columns)
 {
-  return BuilderByClassTreeView::signal_ClassSelectionChanged();
+  mp_TreeView->remove_all_columns();
+  mp_TreeView->set_model(TreeModel);
+
+  if (TreeModel->get_n_columns() < 2)
+    return;
+
+  mp_TreeView->append_column("Unit ID", *Columns->getIdColumn());
+  mp_TreeView->get_column(0)->set_sort_column(*Columns->getIdColumn());
+
+  std::map<std::string, Gtk::TreeModelColumn<std::string>*> ColumnsByTitle =
+      Columns->getByTitleColumns();
+
+  for (std::map<std::string, Gtk::TreeModelColumn<std::string>*>::iterator it =
+      ColumnsByTitle.begin(); it != ColumnsByTitle.end(); ++it)
+  {
+    int ColIndex = mp_TreeView->append_column_editable(it->first, *it->second)
+        - 1;
+
+    mp_TreeView->get_column(ColIndex)->set_sort_column(*it->second);
+
+    Gtk::CellRendererText* CellRend =
+        (Gtk::CellRendererText *) mp_TreeView->get_column_cell_renderer(
+            ColIndex);
+
+    CellRend->signal_editing_started().connect(sigc::bind<std::string, int>(
+        sigc::mem_fun(*this, &DomainIDataViewImpl::onDataEditingStarted),
+        it->first, ColIndex));
+  }
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> DomainIDataViewImpl::signal_DataEdited()
+sigc::signal<void, const Glib::ustring, const std::string, std::string, int> DomainIDataViewImpl::signal_DataEdited()
 {
   return m_signal_DataEdited;
 }
@@ -99,197 +142,8 @@ sigc::signal<void> DomainIDataViewImpl::signal_DataEdited()
 // =====================================================================
 
 
-sigc::signal<void> DomainIDataViewImpl::signal_UnitSelectionChanged()
-{
-  return BuilderByClassTreeView::signal_UnitSelectionChanged();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewImpl::setClassesTreeModel(
-    Glib::RefPtr<Gtk::TreeModel> ClassesModel)
-{
-  BuilderByClassTreeView::setClassesTreeModel(ClassesModel);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewImpl::setUnitsTreeColumns(DomainIDataColumns* Columns)
-{
-  mp_UnitsView->remove_all_columns();
-
-  if (Columns)
-  {
-    mp_UnitsView->append_column("Unit ID", *Columns->getIdColumn());
-    mp_UnitsView->get_column(0)->set_sort_column(*Columns->getIdColumn());
-
-    std::map<std::string, Gtk::TreeModelColumn<std::string>*> ColumnsByTitle =
-        Columns->getByTitleColumns();
-
-    for (std::map<std::string, Gtk::TreeModelColumn<std::string>*>::iterator
-        it = ColumnsByTitle.begin(); it != ColumnsByTitle.end(); ++it)
-    {
-      int ColNb = mp_UnitsView->append_column_editable(it->first, *it->second);
-      mp_UnitsView->get_column(ColNb - 1)->set_sort_column(*it->second);
-
-      Gtk::CellRendererText * CellRend =
-          (Gtk::CellRendererText *) mp_UnitsView->get_column_cell_renderer(
-              ColNb - 1);
-      CellRend->signal_edited().connect(sigc::bind<std::string>(sigc::mem_fun(
-          *this, &DomainIDataViewImpl::onDataEdited), it->first), false); // after=false for the value being updated before the view sort
-    }
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewImpl::setUnitsTreeModel(
-    Glib::RefPtr<Gtk::TreeModel> UnitsModel)
-{
-  BuilderByClassTreeView::setUnitsTreeModel(UnitsModel);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewImpl::requestClassSelection(Gtk::TreeIter Iter)
-{
-  BuilderByClassTreeView::requestClassSelection(Iter);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewImpl::requestUnitSelection(Gtk::TreeIter Iter)
-{
-  BuilderByClassTreeView::requestUnitSelection(Iter);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::TreeIter DomainIDataViewImpl::getSelectedClassIter()
-{
-  return BuilderByClassTreeView::getSelectedClassIter();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::TreeIter DomainIDataViewImpl::getSelectedUnitIter()
-{
-  return BuilderByClassTreeView::getSelectedUnitIter();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::pair<std::string, std::string> DomainIDataViewImpl::getEditedDataInfo()
-{
-  return m_EditedDataInfo;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 Gtk::Widget* DomainIDataViewImpl::asWidget()
 {
-  return BuilderByClassTreeView::asWidget();
+  return mp_TreeView;
 }
 
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
-int DomainIDataViewSub::getClassesViewRowCount()
-{
-  if (mp_ClassesView->get_model())
-    return mp_ClassesView->get_model()->children().size();
-  return 0;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-int DomainIDataViewSub::getUnitsViewRowCount()
-{
-  if (mp_UnitsView->get_model())
-    return mp_UnitsView->get_model()->children().size();
-  return 0;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string DomainIDataViewSub::getSelectedClassName()
-{
-  if (getSelectedClassIter())
-    return getSelectedClassIter()->get_value(m_ClassColumns.m_Class);
-  return "";
-}
-
-// =====================================================================
-// =====================================================================
-
-
-int DomainIDataViewSub::getSelectedUnitId()
-{
-  int Id = -1;
-  if (getSelectedUnitIter())
-    getSelectedUnitIter()->get_value(0, Id);
-  return Id;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewSub::selectClassWithIndex(int Index)
-{
-  requestClassSelection(mp_ClassesView->get_model()->children()[Index]);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewSub::selectUnitWithIndex(int Index)
-{
-  requestUnitSelection(mp_UnitsView->get_model()->children()[Index]);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataViewSub::setEditedDataInfo(std::string DataName,
-    std::string NewValue)
-{
-  m_EditedDataInfo = std::make_pair(DataName, NewValue);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-int DomainIDataViewSub::getUnitsColumnCount()
-{
-  return mp_UnitsView->get_columns().size();
-}
