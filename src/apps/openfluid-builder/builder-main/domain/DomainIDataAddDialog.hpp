@@ -57,9 +57,9 @@
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/infobar.h>
 
 #include <openfluid/core/CoreRepository.hpp>
-
 
 class DomainIDataAddDialog
 {
@@ -71,9 +71,9 @@ class DomainIDataAddDialog
 
     Gtk::Entry* mp_DefaultValueEntry;
 
-    Gtk::Label* mp_NameMsgLabel;
+    Gtk::InfoBar* mp_InfoBar;
 
-    Gtk::Label* mp_ValueMsgLabel;
+    Gtk::Label* mp_InfoBarLabel;
 
     openfluid::core::CoreRepository* mp_CoreRepos;
 
@@ -81,13 +81,11 @@ class DomainIDataAddDialog
 
     std::vector<std::string> m_IDataNames;
 
-    bool m_NameValid;
+    bool m_IsValid;
 
-    bool m_ValueValid;
+    void onChanged();
 
-    void onNameChanged();
-
-    void onValueChanged();
+    bool isEmptyString(std::string Str);
 
   public:
 
@@ -99,9 +97,7 @@ class DomainIDataAddDialog
 
     void update();
 
-    std::pair<std::string,std::string> show();
-
-
+    std::pair<std::string, std::string> show();
 };
 
 #endif /* __DOMAINIDATAADDDIALOG_HPP__ */
