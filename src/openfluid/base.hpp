@@ -75,6 +75,7 @@
 #include <openfluid/base/OutputFilesDescriptor.hpp>
 #include <openfluid/base/OutputSetDescriptor.hpp>
 #include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/SIFactors.hpp>
