@@ -49,6 +49,10 @@ ENDMACRO(ADD_BUILDER_UNITTEST)
 ADD_BUILDER_UNITTEST(builder-unittest-BuilderExtensionsManager
                      builder_unittest_BuilderExtensionsManager_TEST
                      BuilderExtensionsManager_TEST.cpp)
+                     
+ADD_BUILDER_UNITTEST(builder-unittest-PreferencesManager
+                     builder_unittest_PreferencesManager_TEST
+                     PreferencesManager_TEST.cpp)
 
 ADD_BUILDER_UNITTEST(builder-unittest-GeneratorSignature
                      builder_unittest_GeneratorSignature_TEST

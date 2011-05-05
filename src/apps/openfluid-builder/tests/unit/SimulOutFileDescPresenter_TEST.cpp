@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(test_initializeForCreation)
   mp_Model->initialize(0,"A Name",OutFilesModel.getFilesFormatsByNameVect());
 
   BOOST_CHECK_EQUAL(mp_Model->getChars().size(),7);
-  BOOST_CHECK_EQUAL(mp_Model->getDateFormats().size(),3);
+  BOOST_CHECK_EQUAL(mp_Model->getDateFormats().size(),6);
 
   openfluid::base::OutputFilesDescriptor FileDesc;
   BOOST_CHECK_EQUAL(mp_Model->getColSeparator(),FileDesc.getColSeparator());

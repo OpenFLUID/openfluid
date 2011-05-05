@@ -45,77 +45,87 @@
  with the terms contained in the written agreement between You and INRA.
  */
 
-#ifndef BUILDERAPPMODULE_HPP_
-#define BUILDERAPPMODULE_HPP_
+/**
+ \file PreferencesManager.hpp
+ \brief Header of ...
 
-#include "BuilderModule.hpp"
-#include "BuilderAppCoordinator.hpp"
-#include "BuilderAppWindow.hpp"
-#include "BuilderAppActions.hpp"
-#include "PreferencesComponent.hpp"
+ \author Aline LIBRES <libres@supagro.inra.fr>
+ */
 
-#include "FunctionSignatureRegistry.hpp"
-#include "PreferencesManager.hpp"
+#ifndef __PREFERENCESMANAGER_HPP__
+#define __PREFERENCESMANAGER_HPP__
 
-// =====================================================================
-// =====================================================================
+#include <glibmm/keyfile.h>
+#include <map>
+#include <iostream>
 
-
-class BuilderAppModule: BuilderModule
+class PreferencesManager
 {
   private:
 
-    BuilderAppWindow& m_MainWindow;
+    static PreferencesManager* mp_Instance;
 
-    BuilderAppCoordinator* mp_Coordinator;
+    std::string m_FileName;
 
-    BuilderAppActions& m_Actions;
+    Glib::KeyFile* mp_KFile;
 
-    PreferencesComponent* mp_PreferencesMVP;
+    PreferencesManager();
 
-  protected:
+    void setDefaultValues();
 
-    void compose()
-    {
-      m_MainWindow.setMenuBarWidget(*m_Actions.getMenuBarWidget());
-      m_MainWindow.setToolBarWidget(*m_Actions.getToolBarWidget());
-      m_MainWindow.addAccelGroup(m_Actions.getAccelGroup());
-    }
-
-    Gtk::Widget* asWidget()
-    {
-      return (Gtk::Widget*) 0;
-    }
+    void loadKeyFile();
 
   public:
 
-    BuilderAppModule() :
-      m_MainWindow(*new BuilderAppWindow()),
-          m_Actions(*new BuilderAppActions())
-    {
-      mp_PreferencesMVP = new PreferencesComponent();
+    static PreferencesManager* getInstance();
 
-      mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions,
-          *mp_PreferencesMVP->getModel());
-    }
+    ~PreferencesManager();
 
-    void initialize()
-    {
-      mp_Coordinator->setHomeModule();
+    bool save();
 
-      // to update pluggable signatures at app start
-      FunctionSignatureRegistry::getInstance();
+    std::string getFileName();
 
-      // to set default values at app start
-      PreferencesManager::getInstance();
-    }
+    bool isValidKey(std::string Group, std::string Key);
 
-    Gtk::Window& composeAndGetAsWindow()
-    {
-      compose();
-      return m_MainWindow;
-    }
+    void setLang(std::string RecentMax);
+    std::string getLang();
+
+    void setRecentMax(unsigned int Val);
+    int getRecentMax();
+
+    bool
+    addRecentProject(std::string ProjectPath, std::string ProjectName = "");
+    void clearRecentProjects();
+    std::vector<std::pair<std::string, std::string> > getRecentProjects();
+
+    void setWorkdir(std::string Workdir);
+    std::string getWorkdir();
+
+    void addExtraPlugPath(std::string Path);
+    void removeExtraPlugPath(std::string Path);
+    std::vector<std::string> getExtraPlugPaths();
+
+    void setDeltaT(unsigned int DeltaT);
+    int getDeltaT();
+
+    void setBegin(std::string Begin);
+    std::string getBegin();
+
+    void setEnd(std::string End);
+    std::string getEnd();
+
+    void setOutFilesBuffer(unsigned int Buffer);
+    int getOutFilesBuffer();
+
+    bool
+    addMarketplace(std::string PlaceName, std::string PlaceUrl);
+    void removeMarketplace(std::string PlaceName);
+    std::map<std::string, std::string> getMarketplaces();
+
+    std::string getPluginValue(std::string PluginName, std::string Key);
+    void setPluginValue(std::string PluginName, std::string Key,
+        std::string Value);
 
 };
 
-#endif /* BUILDERAPPMODULE_HPP_ */
+#endif /* __PREFERENCESMANAGER_HPP__ */
