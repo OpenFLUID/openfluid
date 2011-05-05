@@ -73,11 +73,20 @@ class ResViewerView
 
     virtual void setTitle(std::string Text) = 0;
 
-    virtual void setFileContentsByName(std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> > FileContents) = 0;
+    virtual void setFileContentsByName(std::map<std::string, Glib::RefPtr<
+        Gtk::TextBuffer> > FileContents) = 0;
+
+    virtual void setFileFormatInfo(std::string ColSep, std::string CommentChar,
+        std::string DateFormat) = 0;
 
     virtual Gtk::Widget* asWidget() = 0;
 
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 class ResViewerViewImpl: public ResViewerView
 {
@@ -92,6 +101,14 @@ class ResViewerViewImpl: public ResViewerView
     ResViewerColumns m_Columns;
 
     void onSelectionChanged();
+
+    void onGNUplotClicked(Glib::RefPtr<Gtk::TextBuffer> Text, const std::string& DateFormat ,const std::string& ColSeparator,const std::string& CommentChar, bool SingleWindow);
+
+    std::string m_ColSep;
+
+    std::string m_CommentChar;
+
+    std::string m_DateFormat;
 
 
   protected:
@@ -115,9 +132,15 @@ class ResViewerViewImpl: public ResViewerView
 
     void setFileContentsByName(std::map<std::string, Glib::RefPtr<Gtk::TextBuffer> > FileContents);
 
+    void setFileFormatInfo(std::string, std::string, std::string);
+
     Gtk::Widget* asWidget();
 
 };
+
+
+// =====================================================================
+// =====================================================================
 
 
 class ResViewerViewSub: public ResViewerViewImpl

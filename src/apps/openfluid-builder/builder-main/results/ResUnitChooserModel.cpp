@@ -278,7 +278,7 @@ void ResUnitChooserModelImpl::update()
   if (m_SetName != "")
   {
     extractSet();
-    if(!mp_SetDesc)
+    if (!mp_SetDesc)
       return;
     m_ClassName = mp_SetDesc->getUnitsClass();
     extractIdsInfo();
@@ -306,6 +306,7 @@ openfluid::base::OutputSetDescriptor* ResUnitChooserModelImpl::getSelectedSetDes
 {
   return mp_SetDesc;
 }
+
 
 // =====================================================================
 // =====================================================================

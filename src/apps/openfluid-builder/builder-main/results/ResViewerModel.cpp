@@ -84,8 +84,9 @@ void ResViewerModelImpl::extractVariablesNames()
 
 
 ResViewerModelImpl::ResViewerModelImpl() :
-  mp_RunDesc(0), mp_SetDesc(0), mp_Unit(0), mp_SimStatus(0), m_Precision(0),
-      m_ShowFiles(true)
+  mp_RunDesc(0), mp_SetDesc(0), mp_OutDesc(0), mp_Unit(0), mp_SimStatus(0),
+      m_Precision(0), m_ShowFiles(true), m_ColSep(""), m_CommentChar(""),
+      m_DateFormat("")
 {
 }
 
@@ -112,9 +113,11 @@ sigc::signal<void> ResViewerModelImpl::signal_FromAppClear()
 
 
 void ResViewerModelImpl::setEngineRequirements(
-    openfluid::base::RunDescriptor& RunDesc)
+    openfluid::base::RunDescriptor& RunDesc,
+    openfluid::base::OutputDescriptor& OutDesc)
 {
   mp_RunDesc = &RunDesc;
+  mp_OutDesc = &OutDesc;
 }
 
 // =====================================================================
@@ -164,6 +167,25 @@ void ResViewerModelImpl::initialize(
 
     m_ShowFiles = ShowFiles;
 
+    if (mp_SetDesc && mp_OutDesc)
+    {
+      for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+      {
+        for (unsigned int j = 0; j
+            < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
+        {
+          if (mp_OutDesc->getFileSets()[i].getSets()[j].getName()
+              == mp_SetDesc->getName())
+          {
+            m_ColSep = mp_OutDesc->getFileSets()[i].getColSeparator();
+            m_CommentChar = mp_OutDesc->getFileSets()[i].getCommentChar();
+            m_DateFormat = mp_OutDesc->getFileSets()[i].getDateFormat();
+            break;
+          }
+        }
+      }
+    }
+
     m_signal_FromAppInit.emit();
   }
 }
@@ -175,9 +197,13 @@ void ResViewerModelImpl::initialize(
 void ResViewerModelImpl::clear()
 {
   mp_SetDesc = 0;
+  mp_OutDesc = 0;
   mp_Unit = 0;
   mp_SimStatus = 0;
   m_Precision = 0;
+  m_ColSep = "";
+  m_CommentChar = "";
+  m_DateFormat = "";
   m_VarNames.clear();
   m_signal_FromAppClear.emit();
 }
@@ -227,6 +253,31 @@ std::string ResViewerModelImpl::getSetName()
   return mp_SetDesc->getName();
 }
 
+// =====================================================================
+// =====================================================================
+
+std::string ResViewerModelImpl::getColSep()
+{
+  return m_ColSep;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ResViewerModelImpl::getCommentChar()
+{
+  return m_CommentChar;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ResViewerModelImpl::getDateFormat()
+{
+  return m_DateFormat;
+}
 
 // =====================================================================
 // =====================================================================
@@ -236,7 +287,6 @@ bool ResViewerModelImpl::getShowFiles()
 {
   return m_ShowFiles;
 }
-
 
 // =====================================================================
 // =====================================================================

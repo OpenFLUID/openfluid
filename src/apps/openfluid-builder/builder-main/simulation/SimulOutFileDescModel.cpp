@@ -87,6 +87,9 @@ SimulOutFileDescModelImpl::SimulOutFileDescModelImpl() :
   //      m_Chars.push_back("[blank]");
   m_Chars.push_back(" ");
 
+  m_DateFormats.push_back("%Y%m%dT%H%M%S");
+  m_DateFormats.push_back("%Y-%m-%dT%H:%M:%S");
+  m_DateFormats.push_back("%Y-%m-%d %H:%M:%S");
   m_DateFormats.push_back("%Y %m %d %H %M %S");
   m_DateFormats.push_back("%d/%m/%Y %H:%M:%S");
   m_DateFormats.push_back("%Y-%m-%d %H.%M");

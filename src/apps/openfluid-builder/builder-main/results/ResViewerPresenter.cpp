@@ -67,7 +67,8 @@ void ResViewerPresenter::whenAppInit()
 {
   m_Adapter.init(m_Model.getUnit(), m_Model.getVarNames(),
       m_Model.getSimStatus(), m_Model.getPrecision(), m_Model.getSetName(),
-      m_Model.getShowFiles());
+      m_Model.getShowFiles(), m_Model.getColSep(), m_Model.getCommentChar(),
+      m_Model.getDateFormat());
 }
 
 // =====================================================================

@@ -69,12 +69,14 @@ sigc::signal<void> ResViewerAdapter::signal_FromUserSelectionChanged()
 }
 void ResViewerAdapter::init(openfluid::core::Unit* Unit, std::vector<
     std::string> VarNames, openfluid::base::SimulationStatus* SimStatus,
-    unsigned int Precision, std::string SetName, bool ShowFiles)
+    unsigned int Precision, std::string SetName, bool ShowFiles,
+    std::string ColSep, std::string CommentChar, std::string DateFormat)
 {
   m_Model.init(Unit, VarNames, SimStatus, Precision, SetName, ShowFiles);
   m_View.setColumns(m_Model.getColumns());
   m_View.setModel(m_Model.getTreeModel());
   m_View.setTitle(m_Model.getTitle());
+  m_View.setFileFormatInfo(ColSep, CommentChar, DateFormat);
   m_View.setFileContentsByName(m_Model.getFileContentsByName());
 }
 void ResViewerAdapter::clear()

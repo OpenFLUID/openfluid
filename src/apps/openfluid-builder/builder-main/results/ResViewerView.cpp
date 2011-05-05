@@ -53,6 +53,9 @@
  */
 
 #include "ResViewerView.hpp"
+#include "ViewWithGNUplot.hpp"
+
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 #include <glibmm/i18n.h>
 
@@ -73,6 +76,8 @@ void ResViewerViewImpl::onSelectionChanged()
 
 ResViewerViewImpl::ResViewerViewImpl()
 {
+  ViewWithGNUplot::FindGNUplot();
+
   mp_MainBox = Gtk::manage(new Gtk::VBox());
 
   mp_TitleLabel = Gtk::manage(new Gtk::Label());
@@ -81,6 +86,7 @@ ResViewerViewImpl::ResViewerViewImpl()
 
   Gtk::ScrolledWindow* Win = Gtk::manage(new Gtk::ScrolledWindow());
   Win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  Win->set_border_width(5);
   Win->add(*mp_TreeView);
 
   mp_MainBox->pack_start(*Win);
@@ -90,7 +96,7 @@ ResViewerViewImpl::ResViewerViewImpl()
   mp_Notebook = Gtk::manage(new Gtk::Notebook());
   mp_Notebook->set_scrollable(true);
   mp_Notebook->popup_enable();
-  mp_Notebook->append_page(*mp_MainBox, _("tabular"));
+  mp_Notebook->append_page(*mp_MainBox, _("Tabular view"));
 }
 
 // =====================================================================
@@ -112,10 +118,10 @@ void ResViewerViewImpl::setColumns(ResViewerColumns* Columns)
 
   if (Columns)
   {
-    mp_TreeView->append_column(_("Time Step"), *Columns->getStepColumn());
+    mp_TreeView->append_column(_("Time step"), *Columns->getStepColumn());
     mp_TreeView->get_column(0)->set_sort_column(*Columns->getStepColumn());
 
-    mp_TreeView->append_column(_("Date Time"), *Columns->getDateColumn());
+    mp_TreeView->append_column(_("Date-Time"), *Columns->getDateColumn());
     mp_TreeView->get_column(1)->set_sort_column(*Columns->getDateColumn());
 
     std::map<std::string, Gtk::TreeModelColumn<std::string>*> ColumnsByTitle =
@@ -168,15 +174,73 @@ void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
     Gtk::ScrolledWindow* Win = Gtk::manage(new Gtk::ScrolledWindow());
     Win->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
     Win->set_visible(true);
+    Win->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
     Win->add(*TextView);
 
     Gtk::Label* TabLabel = Gtk::manage(new Gtk::Label(it->first));
     Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(it->first,
         Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
-    mp_Notebook->append_page(*Win, *TabLabel, *MenuLabel);
+
+    Gtk::Button* SingleGNUplotButton = Gtk::manage(new Gtk::Button(_("Plot file with GNUplot\n(All-in-one window)")));
+    Gtk::Button* MultiGNUplotButton = Gtk::manage(new Gtk::Button(_("Plot file with GNUplot\n(Multiple windows)")));
+
+    Gtk::VBox* RightButtonsBox = Gtk::manage(new Gtk::VBox());
+    RightButtonsBox->pack_start(*SingleGNUplotButton,Gtk::PACK_SHRINK);
+    RightButtonsBox->pack_start(*MultiGNUplotButton,Gtk::PACK_SHRINK,5);
+    RightButtonsBox->show_all_children(true);
+    RightButtonsBox->set_visible(true);
+
+    if (ViewWithGNUplot::IsGNUplotAvailable())
+    {
+      SingleGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<Gtk::TextBuffer>,std::string,std::string,std::string,bool>(sigc::mem_fun(*this,
+                  &ResViewerViewImpl::onGNUplotClicked),(Glib::RefPtr<Gtk::TextBuffer>)(it->second),m_DateFormat,m_ColSep,m_CommentChar,true));
+      SingleGNUplotButton->set_sensitive(true);
+
+      MultiGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<Gtk::TextBuffer>,std::string,std::string,std::string,bool>(sigc::mem_fun(*this,
+                  &ResViewerViewImpl::onGNUplotClicked),(Glib::RefPtr<Gtk::TextBuffer>)(it->second),m_DateFormat,m_ColSep,m_CommentChar,false));
+      MultiGNUplotButton->set_sensitive(true);
+    }
+    else
+    {
+      SingleGNUplotButton->set_sensitive(false);
+      MultiGNUplotButton->set_sensitive(false);
+    }
+
+
+    Gtk::HBox* MainHBox = Gtk::manage(new Gtk::HBox());
+    MainHBox->pack_start(*Win,Gtk::PACK_EXPAND_WIDGET,5);
+    MainHBox->pack_start(*RightButtonsBox,Gtk::PACK_SHRINK,5);
+    MainHBox->set_border_width(8);
+    MainHBox->set_visible(true);
+
+    mp_Notebook->append_page(*MainHBox, *TabLabel, *MenuLabel);
     mp_Notebook->set_tab_reorderable(*Win, true);
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ResViewerViewImpl::onGNUplotClicked(Glib::RefPtr<Gtk::TextBuffer> Text, const std::string& DateFormat ,const std::string& ColSeparator,const std::string& CommentChar, bool SingleWindow)
+{
+  ViewWithGNUplot GNUplotView;
+
+  GNUplotView.run(Text->get_text(), DateFormat, ColSeparator, CommentChar,SingleWindow);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ResViewerViewImpl::setFileFormatInfo(std::string ColSep,
+    std::string CommentChar, std::string DateFormat)
+{
+  m_ColSep = ColSep;
+  m_CommentChar = CommentChar;
+  m_DateFormat = DateFormat;
 }
 
 // =====================================================================

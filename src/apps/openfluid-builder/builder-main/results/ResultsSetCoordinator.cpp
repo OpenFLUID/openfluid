@@ -91,7 +91,7 @@ void ResultsSetCoordinator::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance)
 {
   m_ChooserModel.setEngineRequirements(OutDesc, CoreRepos, ModelInstance);
-  m_ViewerModel.setEngineRequirements(RunDesc);
+  m_ViewerModel.setEngineRequirements(RunDesc, OutDesc);
 }
 
 // =====================================================================

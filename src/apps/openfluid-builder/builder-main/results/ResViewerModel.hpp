@@ -69,7 +69,8 @@ class ResViewerModel
     virtual sigc::signal<void> signal_FromAppClear() = 0;
 
     virtual void
-    setEngineRequirements(openfluid::base::RunDescriptor& RunDesc) = 0;
+    setEngineRequirements(openfluid::base::RunDescriptor& RunDesc,
+        openfluid::base::OutputDescriptor& OutDesc) = 0;
 
     virtual void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
         openfluid::core::Unit* Unit) = 0;
@@ -90,6 +91,12 @@ class ResViewerModel
 
     virtual std::string getSetName() = 0;
 
+    virtual std::string getColSep() = 0;
+
+    virtual std::string getCommentChar() = 0;
+
+    virtual std::string getDateFormat() = 0;
+
     virtual bool getShowFiles() = 0;
 
 };
@@ -108,6 +115,8 @@ class ResViewerModelImpl: public ResViewerModel
 
     openfluid::base::OutputSetDescriptor* mp_SetDesc;
 
+    openfluid::base::OutputDescriptor* mp_OutDesc;
+
     openfluid::core::Unit* mp_Unit;
 
     std::vector<std::string> m_VarNames;
@@ -117,6 +126,12 @@ class ResViewerModelImpl: public ResViewerModel
     unsigned int m_Precision;
 
     bool m_ShowFiles;
+
+    std::string m_ColSep;
+
+    std::string m_CommentChar;
+
+    std::string m_DateFormat;
 
     void extractVariablesNames();
 
@@ -128,7 +143,8 @@ class ResViewerModelImpl: public ResViewerModel
 
     sigc::signal<void> signal_FromAppClear();
 
-    void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc);
+    void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc,
+        openfluid::base::OutputDescriptor& OutDesc);
 
     void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
         openfluid::core::Unit* Unit);
@@ -148,6 +164,12 @@ class ResViewerModelImpl: public ResViewerModel
     unsigned int getPrecision();
 
     std::string getSetName();
+
+    std::string getColSep();
+
+    std::string getCommentChar();
+
+    std::string getDateFormat();
 
     bool getShowFiles();
 
