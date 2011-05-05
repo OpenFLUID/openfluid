@@ -284,6 +284,8 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   unsigned int UnitsCount;
 
 
+  std::cout << std::endl;
+
 //  std::cout << "PrimitiveUseFunc runStep Units..." << std::endl;
   // ===== Units =====
 
@@ -308,8 +310,17 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 //  std::cout << "PrimitiveUseFunc runStep Environt..." << std::endl;
   // ===== Run environment =====
 
+  RunEnvStr.clear();
+
   if (!OPENFLUID_GetRunEnvironment("dir.input",&RunEnvStr))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (dir.input)");
+
+  std::cout << "dir.input = " << RunEnvStr << std::endl;
+
+  if (!OPENFLUID_GetRunEnvironment("dir.output",&RunEnvStr))
+    OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (dir.output)");
+
+  std::cout << "dir.output = " << RunEnvStr << std::endl;
 
   if (OPENFLUID_GetRunEnvironment("wrong.str",&RunEnvStr))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetRunEnvironment (wrong.str)");

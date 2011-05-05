@@ -566,6 +566,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("max-threads,t",boost::program_options::value< unsigned int >(),std::string("change maximum number of threads for threaded spatial loops (default is "+DefaultMaxThreadsStr+")").c_str())
       ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of functions matching the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
+      ("project,w",boost::program_options::value< std::string >(),"set project")
       ("version","get version (do not run the simulation)")
       ("no-result,z","do not write results files")
   ;
@@ -656,6 +657,18 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     printPluginsReport(OptionsVars["matching-functions-report"].as<std::string>());
     return;
   }
+
+  if (OptionsVars.count("project"))
+  {
+    if (openfluid::base::ProjectManager::getInstance()->open(OptionsVars["project"].as<std::string>()))
+    {
+      openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
+      openfluid::base::ProjectManager::getInstance()->updateOutputDir();
+    }
+    else
+      openfluid::base::OFException("openfluid-engine",OptionsVars["project"].as<std::string>() + " is not a correct project path");
+  }
+
 
   if (OptionsVars.count("input-dir"))
   {
