@@ -68,6 +68,9 @@
 #include "EngineProjectNewDialog.hpp"
 #include "EngineProjectOpenDialog.hpp"
 
+#include <openfluid/guicommon/PreferencesManager.hpp>
+#include "BuilderHomeModule.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -269,7 +272,10 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 
 void BuilderAppCoordinator::setHomeModule()
 {
-  setCurrentModule(BuilderModuleFactory::createHomeModule(m_Actions));
+  BuilderModule* HomeModule = BuilderModuleFactory::createHomeModule(m_Actions);
+  setCurrentModule(HomeModule);
+  ((BuilderHomeModule*) HomeModule)->signal_OpenProjectAsked().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::openProject));
   m_Actions.setProjectActionGroupVisible(false);
   m_MainWindow.setToolBarVisible(false);
   m_MainWindow.setStatusBarVisible(false);
@@ -315,6 +321,11 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
       CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
           + std::string("</span>");
     m_MainWindow.setStatusBarMessage("Current project path: " + CurrentPrjStr);
+
+    openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+        openfluid::base::ProjectManager::getInstance()->getPath(),
+        openfluid::base::ProjectManager::getInstance()->getName());
+    openfluid::guicommon::PreferencesManager::getInstance()->save();
 
   } else
   {
@@ -379,12 +390,13 @@ void BuilderAppCoordinator::quitApp()
 
 bool BuilderAppCoordinator::showCloseProjectDialog()
 {
-  int Res = openfluid::guicommon::DialogBoxFactory::showCloseProjectDialog(m_HasToBeSaved);
+  int Res = openfluid::guicommon::DialogBoxFactory::showCloseProjectDialog(
+      m_HasToBeSaved);
 
-  if(Res == 0)
+  if (Res == 0)
     return false;
 
-  if(Res == 1)
+  if (Res == 1)
     return true;
 
   whenSaveAsked();
@@ -413,12 +425,23 @@ void BuilderAppCoordinator::showPreferencesDialog()
 // =====================================================================
 // =====================================================================
 
-void BuilderAppCoordinator::openProject()
+void BuilderAppCoordinator::openProject(std::string ProjectPath)
 {
-  std::string ProjectFolder = mp_OpenProjectDialog->show();
+  std::string ProjectFolder;
+
+  if (ProjectPath == "")
+    ProjectFolder = mp_OpenProjectDialog->show();
+  else
+    ProjectFolder = ProjectPath;
 
   if (ProjectFolder.empty())
     return;
+
+  if (!openfluid::base::ProjectManager::getInstance()->isProject(ProjectFolder))
+  {
+    std::cerr << ProjectPath << " is not an OpenFLUID project" << std::endl;
+    return;
+  }
 
   openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
 

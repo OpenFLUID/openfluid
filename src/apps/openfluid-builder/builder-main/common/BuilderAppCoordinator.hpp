@@ -135,7 +135,7 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void showPreferencesDialog();
 
-    void openProject();
+    void openProject(std::string ProjectPath = "");
 
     void createProject();
 

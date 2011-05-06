@@ -57,18 +57,27 @@
 #include "HomeModel.hpp"
 #include "HomeView.hpp"
 
-void HomePresenter::whenNewProjectAsked()
+
+// =====================================================================
+// =====================================================================
+
+
+void HomePresenter::whenOpenProjectAsked(std::string ProjectPath)
 {
-  m_Model.newProjectAsked();
+  m_Model.openProjectAsked(ProjectPath);
 }
+
+// =====================================================================
+// =====================================================================
+
 
 HomePresenter::HomePresenter(HomeModel& Model, HomeView& View) :
   m_Model(Model), m_View(View)
 {
   m_View.setVersion(m_Model.getOFVersionTxt());
   m_View.setWebSite(m_Model.getOFWebSite());
-  m_View.setRecentText(m_Model.getRecentText());
+  m_View.setRecentProjects(m_Model.getRecentProjects());
 
-  m_View.signal_NewProjectAsked().connect(sigc::mem_fun(*this,
-      &HomePresenter::whenNewProjectAsked));
+  m_View.signal_OpenProjectAsked().connect(sigc::mem_fun(*this,
+      &HomePresenter::whenOpenProjectAsked));
 }

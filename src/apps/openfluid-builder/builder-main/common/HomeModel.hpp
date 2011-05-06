@@ -58,30 +58,47 @@
 #include <sigc++/sigc++.h>
 
 #include <iostream>
+#include <vector>
 
 class HomeModel
 {
   public:
-    virtual sigc::signal<void> signal_NewProjectAsked() = 0;
+
+    virtual sigc::signal<void, std::string> signal_OpenProjectAsked() = 0;
+
     virtual std::string getOFVersionTxt() = 0;
+
     virtual std::string getOFWebSite() = 0;
-    virtual std::string getRecentText() = 0;
-    virtual void newProjectAsked() = 0;
+
+    virtual std::vector<std::pair<std::string, std::string> >
+    getRecentProjects() = 0;
+
+    virtual void openProjectAsked(std::string ProjectPath) = 0;
 };
 
 class HomeModelImpl: public HomeModel
 {
   private:
-    sigc::signal<void> m_signal_NewProjectAsked;
+
+    sigc::signal<void, std::string> m_signal_OpenProjectAsked;
+
     std::string m_OFVersionTxt;
+
     std::string m_OFWebSite;
+
   public:
+
     HomeModelImpl();
-    sigc::signal<void> signal_NewProjectAsked();
+
+    sigc::signal<void, std::string> signal_OpenProjectAsked();
+
     std::string getOFVersionTxt();
+
     std::string getOFWebSite();
-    std::string getRecentText();
-    void newProjectAsked();
+
+    std::vector<std::pair<std::string, std::string> > getRecentProjects();
+
+    void openProjectAsked(std::string ProjectPath);
 };
 
 #endif /* __HOMEMODEL_HPP__ */

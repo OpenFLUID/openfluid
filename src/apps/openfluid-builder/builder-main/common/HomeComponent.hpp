@@ -65,13 +65,27 @@ class HomePresenter;
 class HomeComponent: public BuilderMVPComponent
 {
   private:
+
     HomeModel* mp_Model;
+
     HomeView* mp_View;
+
     HomePresenter* mp_Presenter;
+
+    sigc::signal<void, std::string> m_signal_OpenProjectAsked;
+
   public:
+
     HomeComponent(BuilderAppActions& Actions);
+
     ~HomeComponent();
+
+    sigc::signal<void, std::string> signal_OpenProjectAsked();
+
+    void whenOpenProjectAsked(std::string ProjectPath);
+
     Gtk::Widget* asWidget();
+
     HomeModel* getModel();
 };
 

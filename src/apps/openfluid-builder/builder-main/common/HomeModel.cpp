@@ -56,25 +56,30 @@
 
 #include <glibmm/i18n.h>
 #include <openfluid/config.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
+
+// =====================================================================
+// =====================================================================
 
 
 HomeModelImpl::HomeModelImpl()
 {
-  m_OFVersionTxt = "OpenFLUID v" + openfluid::config::FULL_VERSION
-      + std::string("\n\n<span color='#FBAF40' font-style='italic'>") + _("This is a preview release of OpenFLUID-builder software.\nSome features have been temporarily disabled.\nUnexpected crashes may happen.") + std::string("</span>");
+  m_OFVersionTxt
+      = "OpenFLUID v" + openfluid::config::FULL_VERSION + std::string(
+          "\n\n<span color='#FBAF40' font-style='italic'>")
+          + _("This is a preview release of OpenFLUID-builder software.\nSome features have been temporarily disabled.\nUnexpected crashes may happen.")
+          + std::string("</span>");
   m_OFWebSite = "http://www.umr-lisah.fr/openfluid/";
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> HomeModelImpl::signal_NewProjectAsked()
+sigc::signal<void, std::string> HomeModelImpl::signal_OpenProjectAsked()
 {
-  return m_signal_NewProjectAsked;
+  return m_signal_OpenProjectAsked;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -85,7 +90,6 @@ std::string HomeModelImpl::getOFVersionTxt()
   return m_OFVersionTxt;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -95,22 +99,20 @@ std::string HomeModelImpl::getOFWebSite()
   return m_OFWebSite;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string HomeModelImpl::getRecentText()
+std::vector<std::pair<std::string, std::string> > HomeModelImpl::getRecentProjects()
 {
-  return "(Feature is disabled)";
+  return openfluid::guicommon::PreferencesManager::getInstance()->getRecentProjects();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void HomeModelImpl::newProjectAsked()
+void HomeModelImpl::openProjectAsked(std::string ProjectPath)
 {
-  m_signal_NewProjectAsked.emit();
+  m_signal_OpenProjectAsked.emit(ProjectPath);
 }

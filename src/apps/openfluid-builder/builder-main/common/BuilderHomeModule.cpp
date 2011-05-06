@@ -58,26 +58,76 @@
 #include "HomeModel.hpp"
 #include "BuilderAppActions.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 BuilderHomeModule::BuilderHomeModule(BuilderAppActions& Actions)
 {
   mp_HomeMVP = new HomeComponent(Actions);
+
+  mp_HomeMVP->signal_OpenProjectAsked().connect(sigc::mem_fun(*this,
+      &BuilderHomeModule::whenOpenProjectAsked));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderHomeModule::~BuilderHomeModule()
 {
   delete mp_HomeMVP;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderHomeModule::initialize()
 {
 
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderHomeModule::compose()
 {
 
 }
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> BuilderHomeModule::signal_OpenProjectAsked()
+{
+  return m_signal_OpenProjectAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderHomeModule::whenOpenProjectAsked(std::string ProjectPath)
+{
+  m_signal_OpenProjectAsked.emit(ProjectPath);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderHomeModule::asWidget()
 {
   return mp_HomeMVP->asWidget();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 HomeModel* BuilderHomeModule::getModel()
 {
   return mp_HomeMVP->getModel();

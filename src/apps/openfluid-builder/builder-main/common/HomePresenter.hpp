@@ -56,6 +56,7 @@
 #define __HOMEPRESENTER_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
 
 class HomeModel;
 class HomeView;
@@ -63,10 +64,15 @@ class HomeView;
 class HomePresenter: public sigc::trackable
 {
   private:
+
     HomeModel& m_Model;
+
     HomeView& m_View;
-    void whenNewProjectAsked();
+
+    void whenOpenProjectAsked(std::string ProjectPath);
+
   public:
+
     HomePresenter(HomeModel& Model, HomeView& View);
 };
 

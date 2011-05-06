@@ -64,13 +64,27 @@ class BuilderAppActions;
 class BuilderHomeModule: public BuilderModule
 {
   private:
+
     HomeComponent* mp_HomeMVP;
+
+    sigc::signal<void, std::string> m_signal_OpenProjectAsked;
+
   public:
+
     BuilderHomeModule(BuilderAppActions& Actions);
+
     ~BuilderHomeModule();
+
     void initialize();
+
     void compose();
+
+    sigc::signal<void, std::string> signal_OpenProjectAsked();
+
+    void whenOpenProjectAsked(std::string ProjectPath);
+
     Gtk::Widget* asWidget();
+
     HomeModel* getModel();
 };
 

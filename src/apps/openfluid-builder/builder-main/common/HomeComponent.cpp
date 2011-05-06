@@ -58,22 +58,61 @@
 #include "HomeView.hpp"
 #include "HomePresenter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 HomeComponent::HomeComponent(BuilderAppActions& Actions)
 {
   mp_Model = new HomeModelImpl();
   mp_View = new HomeViewImpl(Actions);
   mp_Presenter = new HomePresenter(*mp_Model, *mp_View);
+
+  mp_Model->signal_OpenProjectAsked().connect(sigc::mem_fun(*this,
+      &HomeComponent::whenOpenProjectAsked));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 HomeComponent::~HomeComponent()
 {
   delete mp_Presenter;
   delete mp_Model;
   delete mp_View;
 }
+
+// =====================================================================
+// =====================================================================
+
+void HomeComponent::whenOpenProjectAsked(std::string ProjectPath)
+{
+  m_signal_OpenProjectAsked.emit(ProjectPath);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> HomeComponent::signal_OpenProjectAsked()
+{
+  return m_signal_OpenProjectAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* HomeComponent::asWidget()
 {
   return mp_View->asWidget();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 HomeModel* HomeComponent::getModel()
 {
   return mp_Model;

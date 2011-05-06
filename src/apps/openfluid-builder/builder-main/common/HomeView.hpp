@@ -62,28 +62,30 @@
 class BuilderHomeButton;
 class BuilderAppActions;
 
-
 class HomeView
 {
   public:
-    virtual sigc::signal<void> signal_NewProjectAsked() = 0;
+
+    virtual sigc::signal<void, std::string> signal_OpenProjectAsked() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
     virtual void setVersion(std::string VersionTxt) = 0;
+
     virtual void setWebSite(std::string WebSite) = 0;
-    virtual void setRecentText(std::string RecentText) = 0;
+
+    virtual void setRecentProjects(std::vector<std::pair<std::string,
+        std::string> > RecentProjects) = 0;
 };
 
-
-
 // =====================================================================
 // =====================================================================
-
 
 
 class HomeViewImpl: public HomeView
 {
   private:
-    sigc::signal<void> m_signal_NewProjectAsked;
+    sigc::signal<void, std::string> m_signal_OpenProjectAsked;
     BuilderAppActions& mp_Actions;
     Gtk::Box* mp_MainContainer;
 
@@ -101,9 +103,7 @@ class HomeViewImpl: public HomeView
     Gtk::Label* mp_RecentLabel;
 
     BuilderHomeButton* mp_NewButton;
-//    BuilderHomeButton* mp_NewFromButton;
     BuilderHomeButton* mp_OpenButton;
-
     BuilderHomeButton* mp_MarketButton;
 
     void createHeadPanel();
@@ -114,21 +114,28 @@ class HomeViewImpl: public HomeView
 
     void createBottomPanel();
 
+    void addARecentProject(std::string ProjectName, std::string ProjectPath);
+
+    bool onRecentClicked(GdkEventButton* Event, std::string RecentPath);
+
+    bool onRecentEnter(GdkEventCrossing* Event, Gtk::Label* HoveredLabel);
+
+    bool onRecentLeave(GdkEventCrossing* Event, Gtk::Label* HoveredLabel);
 
   public:
 
     HomeViewImpl(BuilderAppActions& Actions);
 
-    sigc::signal<void> signal_NewProjectAsked();
+    sigc::signal<void, std::string> signal_OpenProjectAsked();
 
     void setVersion(std::string VersionTxt);
 
     void setWebSite(std::string WebSite);
 
-    void setRecentText(std::string RecentText);
+    void setRecentProjects(
+        std::vector<std::pair<std::string, std::string> > RecentProjects);
 
     Gtk::Widget* asWidget();
 };
-
 
 #endif /* __HOMEVIEW_HPP__ */

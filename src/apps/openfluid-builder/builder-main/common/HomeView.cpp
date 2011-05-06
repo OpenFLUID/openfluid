@@ -60,6 +60,8 @@
 #include "BuilderAppActions.hpp"
 #include "BuilderGraphicsHelper.hpp"
 
+#include <iostream>
+
 // =====================================================================
 // =====================================================================
 
@@ -87,9 +89,8 @@ void HomeViewImpl::createHeadPanel()
   mp_HeadPanel = Gtk::manage(new Gtk::EventBox());
   mp_HeadPanel->add(*mp_HeadPanelBox);
   mp_HeadPanel->set_visible(true);
-  mp_HeadPanel->modify_bg(Gtk::STATE_NORMAL,Gdk::Color("#FFFFFF"));
+  mp_HeadPanel->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#FFFFFF"));
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -101,10 +102,6 @@ void HomeViewImpl::createButtonPanel()
       mp_Actions.getFileNewAction()));
   mp_NewButton->set_visible(true);
 
-//  mp_NewFromButton = Gtk::manage(new BuilderHomeButton(
-//      mp_Actions.getFileNewFromAction()));
-//  mp_NewFromButton->set_visible(true);
-
   mp_OpenButton = Gtk::manage(new BuilderHomeButton(
       mp_Actions.getFileOpenAction()));
   mp_OpenButton->set_visible(true);
@@ -113,12 +110,10 @@ void HomeViewImpl::createButtonPanel()
       mp_Actions.getAppMarketAction()));
   mp_MarketButton->set_visible(true);
 
-
   Gtk::VButtonBox* ButtonBox = Gtk::manage(new Gtk::VButtonBox(
       Gtk::BUTTONBOX_START, 4));
   ButtonBox->set_visible(true);
   ButtonBox->pack_start(*mp_NewButton, Gtk::PACK_SHRINK, 0);
-//  ButtonBox->pack_start(*mp_NewFromButton, Gtk::PACK_SHRINK, 0);
   ButtonBox->pack_start(*mp_OpenButton, Gtk::PACK_SHRINK, 0);
 
   Gtk::VButtonBox* ExtraButtonBox = Gtk::manage(new Gtk::VButtonBox(
@@ -129,11 +124,10 @@ void HomeViewImpl::createButtonPanel()
   mp_ButtonPanel = Gtk::manage(new Gtk::VBox(false, 0));
   mp_ButtonPanel->set_visible(true);
   mp_ButtonPanel->pack_start(*ButtonBox, Gtk::PACK_SHRINK, 10);
-  mp_ButtonPanel->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+  mp_ButtonPanel->pack_start(*(new Gtk::HSeparator()), Gtk::PACK_SHRINK, 0);
   mp_ButtonPanel->pack_start(*ExtraButtonBox, Gtk::PACK_SHRINK, 10);
   mp_ButtonPanel->show_all_children(true);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -147,17 +141,10 @@ void HomeViewImpl::createRecentPanel()
   mp_RecentTitleLabel->set_markup(_("<b>Recent projects</b>"));
   mp_RecentTitleLabel->set_visible(true);
 
-  mp_RecentLabel = Gtk::manage(new Gtk::Label());
-  mp_RecentLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP);
-  mp_RecentLabel->set_padding(30, 10);
-  mp_RecentLabel->set_visible(true);
-
   mp_RecentPanel = Gtk::manage(new Gtk::VBox(false, 0));
   mp_RecentPanel->set_visible(true);
   mp_RecentPanel->pack_start(*mp_RecentTitleLabel, Gtk::PACK_SHRINK, 0);
-  mp_RecentPanel->pack_start(*mp_RecentLabel, Gtk::PACK_SHRINK, 0);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -177,7 +164,6 @@ void HomeViewImpl::createBottomPanel()
   mp_BottomPanel->pack_start(*VSep, Gtk::PACK_SHRINK, 0);
   mp_BottomPanel->pack_start(*mp_RecentPanel, Gtk::PACK_EXPAND_WIDGET, 0);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -200,16 +186,14 @@ HomeViewImpl::HomeViewImpl(BuilderAppActions& Actions) :
   mp_MainContainer->pack_start(*mp_BottomPanel, Gtk::PACK_EXPAND_WIDGET, 0);
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> HomeViewImpl::signal_NewProjectAsked()
+sigc::signal<void, std::string> HomeViewImpl::signal_OpenProjectAsked()
 {
-  return m_signal_NewProjectAsked;
+  return m_signal_OpenProjectAsked;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -220,7 +204,6 @@ void HomeViewImpl::setVersion(std::string VersionTxt)
   mp_VersionLabel->set_markup(VersionTxt);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -230,16 +213,91 @@ void HomeViewImpl::setWebSite(std::string WebSite)
   mp_LinkLabel->set_markup("<a href=\"" + WebSite + "\">" + WebSite + "</a>");
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void HomeViewImpl::setRecentText(std::string RecentText)
+void HomeViewImpl::setRecentProjects(std::vector<std::pair<std::string,
+    std::string> > RecentProjects)
 {
-  mp_RecentLabel->set_text(RecentText);
+  if (RecentProjects.empty())
+  {
+    mp_RecentLabel = Gtk::manage(new Gtk::Label());
+    mp_RecentLabel->set_markup(Glib::ustring::compose("<i>%1</i>",
+        _("no recent project")));
+    mp_RecentLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP);
+    mp_RecentLabel->set_padding(30, 10);
+    mp_RecentLabel->set_visible(true);
+    mp_RecentPanel->pack_start(*mp_RecentLabel, Gtk::PACK_SHRINK, 0);
+  } else
+  {
+    for (int i = RecentProjects.size() - 1; i > -1; i--)
+    {
+      addARecentProject(RecentProjects[i].second, RecentProjects[i].first);
+    }
+  }
+
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void HomeViewImpl::addARecentProject(std::string ProjectName,
+    std::string ProjectPath)
+{
+  Gtk::Label* RecentLabel = Gtk::manage(new Gtk::Label());
+  RecentLabel->set_markup(Glib::ustring::compose("%1   <i>( %2 )</i>",
+      ProjectName == "" ? _("unnamed") : ProjectName, ProjectPath));
+  RecentLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP);
+  RecentLabel->set_padding(30, 5);
+  RecentLabel->set_line_wrap(true);
+  RecentLabel->set_visible(true);
+
+  Gtk::EventBox* RecentBox = Gtk::manage(new Gtk::EventBox());
+  RecentBox->signal_button_press_event().connect(sigc::bind<std::string>(
+      sigc::mem_fun(*this, &HomeViewImpl::onRecentClicked), ProjectPath));
+  RecentBox->signal_enter_notify_event().connect(sigc::bind<Gtk::Label*>(
+      sigc::mem_fun(*this, &HomeViewImpl::onRecentEnter), RecentLabel));
+  RecentBox->signal_leave_notify_event().connect(sigc::bind<Gtk::Label*>(
+      sigc::mem_fun(*this, &HomeViewImpl::onRecentLeave), RecentLabel));
+  RecentBox->add(*RecentLabel);
+  RecentBox->set_visible(true);
+
+  mp_RecentPanel->pack_start(*RecentBox, Gtk::PACK_SHRINK, 0);
+}
+
+// =====================================================================
+// =====================================================================
+
+bool HomeViewImpl::onRecentClicked(GdkEventButton* /*Event*/,
+    std::string RecentPath)
+{
+  m_signal_OpenProjectAsked.emit(RecentPath);
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeViewImpl::onRecentEnter(GdkEventCrossing* /*Event*/,
+    Gtk::Label* HoveredLabel)
+{
+  HoveredLabel->set_markup("<u>" + HoveredLabel->get_text() + "</u>");
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool HomeViewImpl::onRecentLeave(GdkEventCrossing* /*Event*/,
+    Gtk::Label* HoveredLabel)
+{
+  HoveredLabel->set_text(HoveredLabel->get_text());
+  return false;
+}
 
 // =====================================================================
 // =====================================================================
