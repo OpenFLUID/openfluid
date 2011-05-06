@@ -118,7 +118,7 @@ bool ViewWithGNUplot::IsGNUplotAvailable()
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> ViewWithGNUplot::getOrderedVariablesNames(const std::string& Data)
+std::vector<std::string> ViewWithGNUplot::getOrderedScalarVariablesNames(const std::string& Data)
 {
   std::string BeginStr("scalar variables order (after date and time columns): ");
 
@@ -140,8 +140,36 @@ std::vector<std::string> ViewWithGNUplot::getOrderedVariablesNames(const std::st
   return std::vector<std::string>();
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+std::string ViewWithGNUplot::getVectorVariableName(const std::string& Data)
+{
+  std::string BeginStr("vector variable: ");
+
+  std::size_t FoundBegin = Data.find(BeginStr);
+
+  if (FoundBegin != std::string::npos)
+  {
+    std::size_t FoundEnd = Data.find("\n",FoundBegin+1);
+    if (FoundEnd != std::string::npos)
+    {
+      FoundBegin = FoundBegin +BeginStr.size();
+      std::string VarStr = Data.substr(FoundBegin,FoundEnd-FoundBegin);
+
+      return VarStr;
+    }
+  }
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void ViewWithGNUplot::run(const std::string& Data,
                           const std::string& DateFormat,
@@ -150,9 +178,15 @@ void ViewWithGNUplot::run(const std::string& Data,
                           bool SingleWindow)
 {
 
+  if (!getVectorVariableName(Data).empty())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(_("Unable to plot file with GNUplot:\nVector variables are not currently supported."));
+    return;
+  }
+
   if (DateFormat.find(ColSeparator) != std::string::npos)
   {
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(_("Unable to plot file with GNUplot:\nColumn seprator is present in date format."));
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(_("Unable to plot file with GNUplot:\nColumn separator is present in date format."));
     return;
   }
 
@@ -165,7 +199,7 @@ void ViewWithGNUplot::run(const std::string& Data,
   DataFile << Data;
   DataFile.close();
 
-  std::vector<std::string> VarNames = getOrderedVariablesNames(Data);
+  std::vector<std::string> VarNames = getOrderedScalarVariablesNames(Data);
 
 
   if (VarNames.size() <1 )

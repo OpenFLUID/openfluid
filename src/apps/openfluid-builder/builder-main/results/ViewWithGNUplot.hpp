@@ -69,7 +69,9 @@ class ViewWithGNUplot
 
     static std::string m_GNUplotProgram;
 
-    static std::vector<std::string> getOrderedVariablesNames(const std::string& Data);
+    static std::vector<std::string> getOrderedScalarVariablesNames(const std::string& Data);
+
+    static std::string getVectorVariableName(const std::string& Data);
 
 
   public:
