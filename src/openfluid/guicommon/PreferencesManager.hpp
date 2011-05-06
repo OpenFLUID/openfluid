@@ -85,6 +85,8 @@ class DLLEXPORT PreferencesManager
 
   public:
 
+    typedef std::map<std::string, std::string> MarketPlaces_t;
+
     static PreferencesManager* getInstance();
 
     ~PreferencesManager();
@@ -128,7 +130,7 @@ class DLLEXPORT PreferencesManager
     bool
     addMarketplace(std::string PlaceName, std::string PlaceUrl);
     void removeMarketplace(std::string PlaceName);
-    std::map<std::string, std::string> getMarketplaces();
+    MarketPlaces_t getMarketplaces();
 
     std::string getPluginValue(std::string PluginName, std::string Key);
     void setPluginValue(std::string PluginName, std::string Key,

@@ -468,9 +468,9 @@ void PreferencesManager::removeMarketplace(std::string PlaceName)
 // =====================================================================
 
 
-std::map<std::string, std::string> PreferencesManager::getMarketplaces()
+PreferencesManager::MarketPlaces_t PreferencesManager::getMarketplaces()
 {
-  std::map<std::string, std::string> Places;
+  MarketPlaces_t Places;
 
   if (mp_KFile->has_group("openfluid.market.marketplaces"))
   {
