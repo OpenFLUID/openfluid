@@ -59,6 +59,10 @@
 #include <glibmm/fileutils.h>
 #include <fstream>
 
+
+namespace openfluid { namespace guicommon {
+
+
 PreferencesManager* PreferencesManager::mp_Instance = 0;
 
 // =====================================================================
@@ -512,3 +516,5 @@ void PreferencesManager::setPluginValue(std::string PluginName,
   mp_KFile->set_string(GroupName, Key, Value);
 }
 
+
+} } //namespaces

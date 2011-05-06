@@ -55,7 +55,7 @@
 #include "PreferencesComponent.hpp"
 
 #include "FunctionSignatureRegistry.hpp"
-#include "PreferencesManager.hpp"
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -107,7 +107,7 @@ class BuilderAppModule: BuilderModule
       FunctionSignatureRegistry::getInstance();
 
       // to set default values at app start
-      PreferencesManager::getInstance();
+      openfluid::guicommon::PreferencesManager::getInstance();
     }
 
     Gtk::Window& composeAndGetAsWindow()

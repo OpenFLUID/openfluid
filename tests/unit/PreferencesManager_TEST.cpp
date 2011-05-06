@@ -55,10 +55,10 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_GeneratorSignature
+#define BOOST_TEST_MODULE builder_unittest_PreferencesManager
 #include <boost/test/unit_test.hpp>
 
-#include "PreferencesManager.hpp"
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <boost/filesystem.hpp>
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  PreferencesManager* PrefMgr = PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   PrefMgr->setLang("oc");
   PrefMgr->setRecentMax(10);
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  PreferencesManager* PrefMgr = PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),5);
   BOOST_CHECK_EQUAL(PrefMgr->getRecentProjects().size(),0);
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  PreferencesManager* PrefMgr = PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   std::vector<std::string> ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
 
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  PreferencesManager* PrefMgr = PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   std::map<std::string, std::string> Places = PrefMgr->getMarketplaces();
 
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(test_Save)
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  PreferencesManager* PrefMgr = PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(boost::filesystem::exists(ConfigPath),true);
 
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE(test_Save)
 
   delete PrefMgr;
 
-  PrefMgr = PreferencesManager::getInstance();
+  PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT()==1111,false);
 
@@ -300,7 +300,7 @@ BOOST_AUTO_TEST_CASE(test_Save)
 
   delete PrefMgr;
 
-  PrefMgr = PreferencesManager::getInstance();
+  PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),1111);
 

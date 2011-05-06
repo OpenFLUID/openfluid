@@ -9,7 +9,7 @@ MACRO(ADD_UNITTEST TEST_NAME EXE_NAME)
                        ${Boost_REGEX_LIBRARY}                      
                        openfluid-base openfluid-buddies
                        openfluid-core openfluid-machine
-                       openfluid-io openfluid-market openfluid-tools)
+                       openfluid-io openfluid-market openfluid-tools openfluid-guicommon)
   SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
   ADD_TEST(${TEST_NAME} "${TEST_OUTPUT_PATH}/${EXE_NAME}")
 ENDMACRO(ADD_UNITTEST)

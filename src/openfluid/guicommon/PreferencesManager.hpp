@@ -55,11 +55,19 @@
 #ifndef __PREFERENCESMANAGER_HPP__
 #define __PREFERENCESMANAGER_HPP__
 
+#include <openfluid/dllexport.hpp>
+
 #include <glibmm/keyfile.h>
 #include <map>
 #include <iostream>
 
-class PreferencesManager
+namespace openfluid { namespace guicommon {
+
+// =====================================================================
+// =====================================================================
+
+
+class DLLEXPORT PreferencesManager
 {
   private:
 
@@ -127,5 +135,7 @@ class PreferencesManager
         std::string Value);
 
 };
+
+} } //namespaces
 
 #endif /* __PREFERENCESMANAGER_HPP__ */
