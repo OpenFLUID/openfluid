@@ -57,9 +57,11 @@
 
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
 
 #include <openfluid/base.hpp>
 
@@ -155,39 +157,13 @@ void MarketClientAssistant::setupSelectionPage()
   TmpURLRow[m_URLColumns.m_URL] = "";
 
 
-  Glib::KeyFile MarketConf;
+  openfluid::guicommon::PreferencesManager::MarketPlaces_t MarketPlaces = openfluid::guicommon::PreferencesManager::getInstance()->getMarketplaces();
 
-
-
-  if (boost::filesystem::exists(boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile())))
+  BOOST_FOREACH(openfluid::guicommon::PreferencesManager::MarketPlaces_t::value_type &PlaceIt, MarketPlaces)
   {
-    try
-    {
-
-      MarketConf.load_from_file(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
-
-      if (MarketConf.has_group("openfluid.market.marketplaces"))
-      {
-        std::vector<std::string> PlacesKeys = MarketConf.get_keys("openfluid.market.marketplaces");
-
-        for (unsigned int i=0; i< PlacesKeys.size();i++)
-        {
-          std::vector<std::string> PlaceInfo = MarketConf.get_string_list("openfluid.market.marketplaces",PlacesKeys[i]);
-          if (PlaceInfo.size() == 2 )
-          {
-            TmpURLRow = *(m_RefURLComboBoxModel->append());
-            TmpURLRow[m_URLColumns.m_Name] = PlaceInfo[0];
-            TmpURLRow[m_URLColumns.m_URL] = PlaceInfo[1];
-          }
-        }
-      }
-    }
-    catch (Glib::FileError& E)
-    {
-    }
-    catch (Glib::KeyFileError& E)
-    {
-    }
+    TmpURLRow = *(m_RefURLComboBoxModel->append());
+    TmpURLRow[m_URLColumns.m_Name] = PlaceIt.first;
+    TmpURLRow[m_URLColumns.m_URL] = PlaceIt.second;
   }
 
 

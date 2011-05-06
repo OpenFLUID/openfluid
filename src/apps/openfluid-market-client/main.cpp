@@ -61,10 +61,13 @@
 
 #include <gtkmm/main.h>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 int main(int argc, char *argv[])
 {
   openfluid::base::Init();
+
+  openfluid::guicommon::PreferencesManager::getInstance();
 
   Gtk::Main kit(argc, argv);
   openfluid::guicommon::MarketClientAssistant Assistant;
