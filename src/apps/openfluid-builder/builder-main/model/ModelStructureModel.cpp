@@ -167,6 +167,7 @@ void ModelStructureModelImpl::setEngineRequirements(
   mp_ModelInstance = &ModelInstance;
   mp_CoreRepos = CoreRepos;
   update();
+  requestSelectionByAppAt(0);
 }
 
 // =====================================================================

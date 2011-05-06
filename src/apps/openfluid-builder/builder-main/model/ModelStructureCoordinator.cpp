@@ -121,7 +121,12 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
 void ModelStructureCoordinator::whenRemoveFctAsked()
 {
-  eraseModelFctParamsComponent(m_StructureModel.getCurrentSelectionSignature());
+  openfluid::machine::SignatureItemInstance* CurrentSelectionSignature = m_StructureModel.getCurrentSelectionSignature();
+
+  if(!CurrentSelectionSignature)
+    return;
+
+  eraseModelFctParamsComponent(CurrentSelectionSignature);
 
   m_StructureModel.removeFunctionAt(m_StructureModel.getCurrentSelection());
   updateStructureListToolBox();
