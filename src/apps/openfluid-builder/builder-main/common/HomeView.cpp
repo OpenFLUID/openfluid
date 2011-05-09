@@ -247,24 +247,33 @@ void HomeViewImpl::addARecentProject(std::string ProjectName,
     std::string ProjectPath)
 {
   Gtk::Label* RecentLabel = Gtk::manage(new Gtk::Label());
-  RecentLabel->set_markup(Glib::ustring::compose("%1   <i>( %2 )</i>",
-      ProjectName == "" ? _("unnamed") : ProjectName, ProjectPath));
-  RecentLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP);
-  RecentLabel->set_padding(30, 5);
-  RecentLabel->set_line_wrap(true);
+  RecentLabel->set_markup(ProjectName == "" ? _("unnamed") : ProjectName);
+  RecentLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+  RecentLabel->set_padding(5, 0);
   RecentLabel->set_visible(true);
 
+  Gtk::Arrow* Arrow = Gtk::manage(new Gtk::Arrow(Gtk::ARROW_RIGHT,
+      Gtk::SHADOW_NONE));
+  Arrow->set_padding(20,0);
+  Arrow->set_visible(true);
+
+  Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
+  Box->pack_start(*Arrow, Gtk::PACK_SHRINK);
+  Box->pack_start(*RecentLabel);
+  Box->set_visible(true);
+
   Gtk::EventBox* RecentBox = Gtk::manage(new Gtk::EventBox());
+  RecentBox->set_tooltip_text(ProjectPath);
   RecentBox->signal_button_press_event().connect(sigc::bind<std::string>(
       sigc::mem_fun(*this, &HomeViewImpl::onRecentClicked), ProjectPath));
   RecentBox->signal_enter_notify_event().connect(sigc::bind<Gtk::Label*>(
       sigc::mem_fun(*this, &HomeViewImpl::onRecentEnter), RecentLabel));
   RecentBox->signal_leave_notify_event().connect(sigc::bind<Gtk::Label*>(
       sigc::mem_fun(*this, &HomeViewImpl::onRecentLeave), RecentLabel));
-  RecentBox->add(*RecentLabel);
+  RecentBox->add(*Box);
   RecentBox->set_visible(true);
 
-  mp_RecentPanel->pack_start(*RecentBox, Gtk::PACK_SHRINK, 0);
+  mp_RecentPanel->pack_start(*RecentBox, Gtk::PACK_SHRINK, 5);
 }
 
 // =====================================================================
