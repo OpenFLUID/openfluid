@@ -65,17 +65,33 @@ class ModelAvailFctView;
 class ModelAvailFctAdapter: public sigc::trackable
 {
   private:
+
     ModelAvailFctAdapterModel& m_Model;
+
     ModelAvailFctView& m_View;
+
     sigc::signal<void> m_signal_FctSelectionChanged;
+
+    sigc::signal<void> m_signal_ReloadFctListAsked;
+
     void whenModelFunctionsChanged();
+
     void whenFctSelectionChanged();
+
+    void whenReloadFctListAsked();
+
   public:
+
     ModelAvailFctAdapter(ModelAvailFctAdapterModel& Model,
         ModelAvailFctView& View);
+
     sigc::signal<void> signal_FctSelectionChanged();
+
+    sigc::signal<void> signal_ReloadFctListAsked();
+
     void setSignatures(
         FunctionSignatureRegistry::FctSignaturesByType_t Signatures);
+
     openfluid::machine::SignatureItemInstance* getSelectedSignature();
 };
 

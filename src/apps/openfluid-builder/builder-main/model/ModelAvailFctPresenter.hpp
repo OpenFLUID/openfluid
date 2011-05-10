@@ -63,11 +63,19 @@ class ModelAvailFctAdapter;
 class ModelAvailFctPresenter: public sigc::trackable
 {
   private:
+
     ModelAvailFctModel& m_Model;
+
     ModelAvailFctAdapter& m_Adapter;
+
     void whenModelFctListChanged();
+
     void whenAdapterSelectionChanged();
+
+    void whenReloadFctListAsked();
+
   public:
+
     ModelAvailFctPresenter(ModelAvailFctModel& Model,
         ModelAvailFctAdapter& Adapter);
 };

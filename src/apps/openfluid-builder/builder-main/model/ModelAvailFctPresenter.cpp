@@ -57,15 +57,38 @@
 #include "ModelAvailFctModel.hpp"
 #include "ModelAvailFctAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
 
 void ModelAvailFctPresenter::whenModelFctListChanged()
 {
   m_Adapter.setSignatures(m_Model.getSignatures());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctPresenter::whenAdapterSelectionChanged()
 {
   m_Model.setSelectedSignatureByUser(m_Adapter.getSelectedSignature());
 }
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelAvailFctPresenter::whenReloadFctListAsked()
+{
+  m_Model.reloadSignatures();
+}
+
+// =====================================================================
+// =====================================================================
+
 
 ModelAvailFctPresenter::ModelAvailFctPresenter(ModelAvailFctModel& Model,
     ModelAvailFctAdapter& Adapter) :
@@ -75,4 +98,6 @@ ModelAvailFctPresenter::ModelAvailFctPresenter(ModelAvailFctModel& Model,
       &ModelAvailFctPresenter::whenModelFctListChanged));
   m_Adapter.signal_FctSelectionChanged().connect(sigc::mem_fun(*this,
       &ModelAvailFctPresenter::whenAdapterSelectionChanged));
+  m_Adapter.signal_ReloadFctListAsked().connect(sigc::mem_fun(*this,
+      &ModelAvailFctPresenter::whenReloadFctListAsked));
 }

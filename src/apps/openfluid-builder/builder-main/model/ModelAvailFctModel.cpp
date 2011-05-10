@@ -54,40 +54,88 @@
 
 #include "ModelAvailFctModel.hpp"
 
+// =====================================================================
+// =====================================================================
+
 
 ModelAvailFctModelImpl::ModelAvailFctModelImpl()
 {
   m_ASignatureIsSelected = false;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelAvailFctModelImpl::signal_SignaturesChanged()
 {
   return m_signal_SignaturesChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelAvailFctModelImpl::signal_SelectedSignatureChanged()
 {
   return m_signal_SelectedSignatureChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctModelImpl::setSignatures(
     FunctionSignatureRegistry& Signatures)
 {
   m_Signatures = Signatures.getFctSignatures();
   signal_SignaturesChanged().emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 FunctionSignatureRegistry::FctSignaturesByType_t ModelAvailFctModelImpl::getSignatures()
 {
   return m_Signatures;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctModelImpl::setSelectedSignatureByUser(
     openfluid::machine::SignatureItemInstance* Signature)
 {
   mp_SelectedSignature = Signature;
   signal_SelectedSignatureChanged().emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::SignatureItemInstance* ModelAvailFctModelImpl::getSelectedSignature()
 {
   return mp_SelectedSignature;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool ModelAvailFctModelImpl::isASignatureSelected()
 {
   return mp_SelectedSignature != 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelAvailFctModelImpl::reloadSignatures()
+{
+  FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  setSignatures(*FunctionSignatureRegistry::getInstance());
 }

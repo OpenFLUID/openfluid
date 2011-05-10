@@ -71,8 +71,6 @@ ModelAddFunctionModule::ModelAddFunctionModule()
   mp_Coordinator = new ModelAddFunctionCoordinator(
       *mp_ModelAvailFctMVP->getModel(), *mp_ModelFctDetailMVP->getModel());
 
-  //  mp_Coordinator->setEngineRequirements(ModelInstance);
-
   compose();
 
 }
@@ -119,17 +117,6 @@ sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
 {
   return m_signal_ModelFunctionAdded;
 }
-
-// =====================================================================
-// =====================================================================
-
-
-//void ModelAddFunctionModule::setEngineRequirements(
-//    openfluid::machine::ModelInstance& ModelInstance,
-//    openfluid::machine::SimulationBlob& SimBlob)
-//{
-//  mp_Coordinator->setEngineRequirements(ModelInstance);
-//}
 
 
 // =====================================================================

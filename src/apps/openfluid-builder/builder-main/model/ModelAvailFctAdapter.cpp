@@ -57,15 +57,37 @@
 #include "ModelAvailFctAdapterModel.hpp"
 #include "ModelAvailFctView.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapter::whenModelFunctionsChanged()
 {
   m_View.setTreeModel(m_Model.getTreeModel());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapter::whenFctSelectionChanged()
 {
   m_Model.setSelectedRow(m_View.getSelectedRow());
   m_signal_FctSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelAvailFctAdapter::whenReloadFctListAsked()
+{
+  m_signal_ReloadFctListAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
 
 ModelAvailFctAdapter::ModelAvailFctAdapter(ModelAvailFctAdapterModel& Model,
     ModelAvailFctView& View) :
@@ -77,17 +99,43 @@ ModelAvailFctAdapter::ModelAvailFctAdapter(ModelAvailFctAdapterModel& Model,
       &ModelAvailFctAdapter::whenModelFunctionsChanged));
   m_View.signal_AvailFctSelectionChanged().connect(sigc::mem_fun(*this,
       &ModelAvailFctAdapter::whenFctSelectionChanged));
+  m_View.signal_ReloadFctListAsked().connect(sigc::mem_fun(*this,
+      &ModelAvailFctAdapter::whenReloadFctListAsked));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelAvailFctAdapter::signal_FctSelectionChanged()
 {
   return m_signal_FctSelectionChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelAvailFctAdapter::signal_ReloadFctListAsked()
+{
+  return m_signal_ReloadFctListAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctAdapter::setSignatures(
     FunctionSignatureRegistry::FctSignaturesByType_t Signatures)
 {
   m_Model.setSignatures(Signatures);
   m_View.select(m_Model.getFirstAvailableRow());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::SignatureItemInstance* ModelAvailFctAdapter::getSelectedSignature()
 {
   return m_Model.getSelectedSignature();

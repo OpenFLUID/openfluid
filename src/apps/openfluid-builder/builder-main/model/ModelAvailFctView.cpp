@@ -74,14 +74,13 @@ ModelAvailFctViewImpl::ModelAvailFctViewImpl(ModelAvailFctColumns& Columns) :
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
 
-  Gtk::TreeView::Column * idColumn = Gtk::manage(
-      new Gtk::TreeView::Column("Id"));
+  Gtk::TreeView::Column * idColumn = Gtk::manage(new Gtk::TreeView::Column(
+      _("Available functions")));
 
   idColumn->pack_start(m_Columns.m_Status, false);
   idColumn->pack_start(m_Columns.m_Id);
 
   mp_TreeView->append_column(*idColumn);
-
   mp_TreeView->append_column(_("Domain"), m_Columns.m_Domain);
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
@@ -93,6 +92,39 @@ ModelAvailFctViewImpl::ModelAvailFctViewImpl(ModelAvailFctColumns& Columns) :
   mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_MainWin->set_visible(true);
   mp_MainWin->add(*mp_TreeView);
+
+  Gtk::Button* ReloadButton = Gtk::manage(new Gtk::Button());
+  ReloadButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &ModelAvailFctViewImpl::onReloadButtonClicked));
+  ReloadButton->set_tooltip_text(_("Refresh available functions list"));
+  ReloadButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH,
+      Gtk::ICON_SIZE_BUTTON)));
+  ReloadButton->set_visible(true);
+
+  Gtk::HBox* HeaderBox = Gtk::manage(new Gtk::HBox());
+  HeaderBox->pack_start(*ReloadButton, Gtk::PACK_SHRINK);
+  HeaderBox->set_visible(true);
+
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*HeaderBox, Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*mp_MainWin);
+  mp_MainBox->set_visible(true);
+}
+
+// =====================================================================
+// =====================================================================
+
+void ModelAvailFctViewImpl::onReloadButtonClicked()
+{
+  m_signal_ReloadFctListAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void> ModelAvailFctViewImpl::signal_ReloadFctListAsked()
+{
+  return m_signal_ReloadFctListAsked;
 }
 
 // =====================================================================
@@ -138,7 +170,7 @@ Gtk::TreeRow ModelAvailFctViewImpl::getSelectedRow()
 
 Gtk::Widget* ModelAvailFctViewImpl::asWidget()
 {
-  return mp_MainWin;
+  return mp_MainBox;
 }
 
 // =====================================================================

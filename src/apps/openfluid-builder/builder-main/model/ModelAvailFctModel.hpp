@@ -62,35 +62,60 @@
 class ModelAvailFctModel
 {
   public:
+
     virtual sigc::signal<void> signal_SignaturesChanged() = 0;
+
     virtual sigc::signal<void> signal_SelectedSignatureChanged() = 0;
+
     virtual void setSignatures(FunctionSignatureRegistry& Signatures) = 0;
+
     virtual FunctionSignatureRegistry::FctSignaturesByType_t getSignatures() = 0;
+
     virtual void setSelectedSignatureByUser(
         openfluid::machine::SignatureItemInstance* Signature) = 0;
+
     virtual openfluid::machine::SignatureItemInstance
     * getSelectedSignature() = 0;
+
     virtual bool isASignatureSelected() = 0;
+
+    virtual void reloadSignatures() = 0;
 };
 
 class ModelAvailFctModelImpl: public ModelAvailFctModel
 {
   private:
+
     sigc::signal<void> m_signal_SignaturesChanged;
+
     sigc::signal<void> m_signal_SelectedSignatureChanged;
+
     FunctionSignatureRegistry::FctSignaturesByType_t m_Signatures;
+
     openfluid::machine::SignatureItemInstance* mp_SelectedSignature;
+
     bool m_ASignatureIsSelected;
+
   public:
+
     ModelAvailFctModelImpl();
+
     sigc::signal<void> signal_SignaturesChanged();
+
     sigc::signal<void> signal_SelectedSignatureChanged();
+
     void setSignatures(FunctionSignatureRegistry& Signatures);
+
     FunctionSignatureRegistry::FctSignaturesByType_t getSignatures();
+
     void setSelectedSignatureByUser(
         openfluid::machine::SignatureItemInstance* Signature);
+
     openfluid::machine::SignatureItemInstance* getSelectedSignature();
+
     bool isASignatureSelected();
+
+    void reloadSignatures();
 };
 
 #endif /* __MODELAVAILFCTMODEL_HPP__ */
