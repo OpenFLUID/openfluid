@@ -92,6 +92,8 @@ class DomainIDataViewImpl: public DomainIDataView
 
     Gtk::TreeView* mp_TreeView;
 
+    Gtk::ScrolledWindow* mp_MainWin;
+
   public:
 
     DomainIDataViewImpl();

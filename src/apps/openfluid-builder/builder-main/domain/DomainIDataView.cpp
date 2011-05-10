@@ -87,8 +87,12 @@ void DomainIDataViewImpl::onDataEditingStarted(Gtk::CellEditable* /*CellEditable
 DomainIDataViewImpl::DomainIDataViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
-
   mp_TreeView->set_visible(true);
+
+  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_visible(true);
+  mp_MainWin->add(*mp_TreeView);
 }
 
 // =====================================================================
@@ -144,6 +148,6 @@ sigc::signal<void, const Glib::ustring, const std::string, std::string, int> Dom
 
 Gtk::Widget* DomainIDataViewImpl::asWidget()
 {
-  return mp_TreeView;
+  return mp_MainWin;
 }
 
