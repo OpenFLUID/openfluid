@@ -113,7 +113,7 @@ PreferencesManager::~PreferencesManager()
 
 void PreferencesManager::setDefaultValues()
 {
-  setLang("en");
+  setLang("en_US.UTF-8");
   setRecentMax(5);
 }
 

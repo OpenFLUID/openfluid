@@ -105,9 +105,6 @@ class BuilderAppModule: BuilderModule
 
       // to update pluggable signatures at app start
       FunctionSignatureRegistry::getInstance();
-
-      // to set default values at app start
-      openfluid::guicommon::PreferencesManager::getInstance();
     }
 
     Gtk::Window& composeAndGetAsWindow()
