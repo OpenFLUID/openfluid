@@ -43,7 +43,7 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-*/
+ */
 
 /**
  \file ModelFctDetailVarsTreeStore.hpp
@@ -52,11 +52,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-
 #ifndef __MODELFCTDETAILVARSTREESTORE_HPP__
 #define __MODELFCTDETAILVARSTREESTORE_HPP__
-
-
 
 #include "ModelFctDetailTreeStore.hpp"
 
@@ -67,8 +64,8 @@ class ModelFctDetailVarsTreeStore: public ModelFctDetailTreeStore
     Gtk::TreeRowReference* m_UpdatedTitleRow;
     Gtk::TreeRowReference* m_ProducedTitleRow;
     Gtk::TreeRowReference* m_UsedTitleRow;
-    Gtk::TreeRowReference* m_RequiredMinusTitleRow;
-    Gtk::TreeRowReference* m_UsedMinusTitleRow;
+    Gtk::TreeRowReference* m_RequiredPrevTitleRow;
+    Gtk::TreeRowReference* m_UsedPrevTitleRow;
     ModelFctDetailVarsTreeStore(ModelFctDetailColumns& Columns) :
       ModelFctDetailTreeStore(Columns)
     {
@@ -86,8 +83,8 @@ class ModelFctDetailVarsTreeStore: public ModelFctDetailTreeStore
       delete m_UpdatedTitleRow;
       delete m_ProducedTitleRow;
       delete m_UsedTitleRow;
-      delete m_RequiredMinusTitleRow;
-      delete m_UsedMinusTitleRow;
+      delete m_RequiredPrevTitleRow;
+      delete m_UsedPrevTitleRow;
     }
     void createTitleRows()
     {
@@ -95,15 +92,18 @@ class ModelFctDetailVarsTreeStore: public ModelFctDetailTreeStore
       m_UpdatedTitleRow = appendATitleRow(_("Updated"));
       m_RequiredTitleRow = appendATitleRow(_("Required"));
       m_UsedTitleRow = appendATitleRow(_("Used"));
-      m_RequiredMinusTitleRow = appendATitleRow(_("Required t-1"));
-      m_UsedMinusTitleRow = appendATitleRow(_("Used t-1"));
+      m_RequiredPrevTitleRow = appendATitleRow(_("Required t-1"));
+      m_UsedPrevTitleRow = appendATitleRow(_("Used t-1"));
     }
     void extractItems(openfluid::base::FunctionSignature* Signature)
     {
-      extractInnerItems(Signature->HandledData.ProducedVars,
-          m_ProducedTitleRow);
-      extractInnerItems(Signature->HandledData.UpdatedVars,
-          m_UpdatedTitleRow);
+      extractInnerItems(Signature->HandledData.ProducedVars, m_ProducedTitleRow);
+      extractInnerItems(Signature->HandledData.UpdatedVars, m_UpdatedTitleRow);
+      extractInnerItems(Signature->HandledData.RequiredVars, m_RequiredTitleRow);
+      extractInnerItems(Signature->HandledData.UsedVars, m_UsedTitleRow);
+      extractInnerItems(Signature->HandledData.RequiredPrevVars,
+          m_RequiredPrevTitleRow);
+      extractInnerItems(Signature->HandledData.UsedPrevVars, m_UsedPrevTitleRow);
     }
 };
 
