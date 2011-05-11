@@ -151,6 +151,7 @@ class DLLEXPORT Engine
 
      void saveSimulationInfos();
 
+     void saveSimulationProfile();
 
 
   public:

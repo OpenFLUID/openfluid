@@ -47,42 +47,69 @@
 
 
 /**
-  @file
+  \file SimulationProfiler.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
-
-
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Init.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/SimulationProfiler.hpp>
-#include <openfluid/base/SIFactors.hpp>
-#include <openfluid/base/SimStatus.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
 
 
-#endif /* __BASE_HPP___ */
+namespace openfluid { namespace base {
+
+
+SimulationProfiler* SimulationProfiler::mp_Singleton = NULL;
+
+
+// =====================================================================
+// =====================================================================
+
+
+SimulationProfiler::SimulationProfiler()
+: m_IsProfilingEnabled(false)
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+SimulationProfiler* SimulationProfiler::getInstance()
+{
+  if (mp_Singleton == NULL)
+    mp_Singleton = new SimulationProfiler();
+  return mp_Singleton;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationProfiler::addDuration(const openfluid::base::FuncID_t& FuncID,
+                                     TimeProfilePart ProfilePart,
+                                     const boost::posix_time::time_duration& Duration)
+{
+  if (!m_IsProfilingEnabled) return;
+
+  if (m_ModelTimeProfile.find(FuncID) == m_ModelTimeProfile.end())
+  {
+    m_ModelTimeProfile[FuncID][INITPARAMS] = boost::posix_time::time_duration(0,0,0,0);
+    m_ModelTimeProfile[FuncID][PREPAREDATA] = boost::posix_time::time_duration(0,0,0,0);
+    m_ModelTimeProfile[FuncID][CHECKCONSISTENCY] = boost::posix_time::time_duration(0,0,0,0);
+    m_ModelTimeProfile[FuncID][INITIALIZERUN] = boost::posix_time::time_duration(0,0,0,0);
+    m_ModelTimeProfile[FuncID][RUNSTEP] = boost::posix_time::time_duration(0,0,0,0);
+    m_ModelTimeProfile[FuncID][FINALIZERUN] = boost::posix_time::time_duration(0,0,0,0);
+  }
+
+  m_ModelTimeProfile[FuncID][ProfilePart] = m_ModelTimeProfile[FuncID][ProfilePart] + Duration;
+
+  if (ProfilePart == RUNSTEP) m_RunStepTimeProfile[FuncID].push_back(Duration);
+
+}
+
+
+} } //namespaces

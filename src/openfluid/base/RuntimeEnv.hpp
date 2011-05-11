@@ -55,10 +55,10 @@
 #ifndef __RUNTIMEENV_HPP__
 #define __RUNTIMEENV_HPP__
 
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/base/EnvProperties.hpp>
+#include <openfluid/base/SimulationProfiler.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -134,6 +134,7 @@ class DLLEXPORT RuntimeEnvironment
     int m_TimeStep;
 
     bool m_IsLinkedToProject;
+
 
     /**
       Default constructor
@@ -445,6 +446,10 @@ class DLLEXPORT RuntimeEnvironment
 
     bool isLinkedToProject()
       { return m_IsLinkedToProject; };
+
+    bool isSimulationProfilingEnabled() const { return SimulationProfiler::getInstance()->isEnabled(); };
+
+    void setSimulationProfilingEnabled(bool Profiling) { SimulationProfiler::getInstance()->setEnabled(Profiling); };
 
 };
 

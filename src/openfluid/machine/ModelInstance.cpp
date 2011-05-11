@@ -67,7 +67,7 @@ namespace openfluid { namespace machine {
   @param[in] calledmethod the method to call on each function
   @param[out] statevar the globalized return of the method calls
  */
-#define PARSE_FUNCTION_LIST(calledmethod,listenermethod,statevar) \
+#define PARSE_FUNCTION_LIST(calledmethod,listenermethod,timeprofilepart,statevar) \
     _M_FuncIter = m_ModelItems.begin(); \
     while (_M_FuncIter != m_ModelItems.end() && statevar) \
     { \
@@ -75,7 +75,9 @@ namespace openfluid { namespace machine {
       if (_M_CurrentFunction != NULL) \
       { \
         mp_Listener->onFunction##listenermethod(_M_CurrentFunction->Signature->ID); \
+        boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
         statevar = (statevar && _M_CurrentFunction->Function->calledmethod); \
+        openfluid::base::SimulationProfiler::getInstance()->addDuration(_M_CurrentFunction->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
         if (!statevar) \
         { \
           mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::ERROR,_M_CurrentFunction->Signature->ID); \
@@ -86,38 +88,6 @@ namespace openfluid { namespace machine {
           if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
           else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
           m_SimulationBlob.getExecutionMessages().resetWarningFlag(); \
-        } \
-      } \
-      _M_FuncIter++; \
-    } \
-
-
-/**
-  Macro for parsing the functions list and calling the given two methods of each function of the list
-  @param[in] calledmethod1 the first method to call on each function
-  @param[in] calledmethod2 the first method to call on each function
-  @param[out] statevar the globalized return of the method calls
- */
-
-#define PARSE_FUNCTION_LIST_TWO(calledmethod1,calledmethod2,listenermethod,statevar) \
-    _M_FuncIter = m_ModelItems.begin(); \
-    while (_M_FuncIter != m_ModelItems.end() && statevar) \
-    { \
-      ModelItemInstance* _M_CurrentFunction = *_M_FuncIter; \
-      if (_M_CurrentFunction != NULL) \
-      { \
-        mp_Listener->onFunction##listenermethod(_M_CurrentFunction->Signature->ID); \
-        statevar = (statevar && (_M_CurrentFunction->Function->calledmethod1 && _M_CurrentFunction->Function->calledmethod2)); \
-        if (!statevar) \
-        { \
-          mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::ERROR,_M_CurrentFunction->Signature->ID); \
-          throw openfluid::base::OFException("OpenFLUID framework","Bad return value while calling function method"); \
-        }  \
-        else \
-        { \
-          if (openfluid::base::ExecutionMessages::getInstance()->isWarningFlag()) mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
-          else mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
-          openfluid::base::ExecutionMessages::getInstance()->resetWarningFlag(); \
         } \
       } \
       _M_FuncIter++; \
@@ -264,7 +234,7 @@ bool ModelInstance::call_initParams() const
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(initParams(_M_CurrentFunction->Params),InitParams, IsOK);
+  PARSE_FUNCTION_LIST(initParams(_M_CurrentFunction->Params),InitParams,openfluid::base::SimulationProfiler::INITPARAMS,IsOK);
 
   return IsOK;
 }
@@ -283,7 +253,7 @@ bool ModelInstance::call_prepareData() const
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(prepareData(),PrepareData,IsOK);
+  PARSE_FUNCTION_LIST(prepareData(),PrepareData,openfluid::base::SimulationProfiler::PREPAREDATA,IsOK);
 
   return IsOK;
 }
@@ -302,7 +272,7 @@ bool ModelInstance::call_checkConsistency() const
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(checkConsistency(),CheckConsistency,IsOK);
+  PARSE_FUNCTION_LIST(checkConsistency(),CheckConsistency,openfluid::base::SimulationProfiler::CHECKCONSISTENCY,IsOK);
 
   return IsOK;
 }
@@ -321,7 +291,7 @@ bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* Si
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(initializeRun(SimInfo),InitializeRun, IsOK);
+  PARSE_FUNCTION_LIST(initializeRun(SimInfo),InitializeRun,openfluid::base::SimulationProfiler::INITIALIZERUN,IsOK);
 
   return IsOK;
 }
@@ -340,7 +310,7 @@ bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimSta
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(runStep(SimStatus),RunStep,  IsOK);
+  PARSE_FUNCTION_LIST(runStep(SimStatus),RunStep,openfluid::base::SimulationProfiler::RUNSTEP,IsOK);
 
   return IsOK;
 }
@@ -359,7 +329,7 @@ bool ModelInstance::call_finalizeRun(const openfluid::base::SimulationInfo* SimI
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(finalizeRun(SimInfo),FinalizeRun,IsOK);
+  PARSE_FUNCTION_LIST(finalizeRun(SimInfo),FinalizeRun,openfluid::base::SimulationProfiler::FINALIZERUN,IsOK);
 
   return IsOK;
 }

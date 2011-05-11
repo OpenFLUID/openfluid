@@ -137,6 +137,13 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-c")
 
+  ADD_TEST(integration-Profiling "${BIN_OUTPUT_PATH}/openfluid-engine"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.Primitives"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Profiling"
+                               "-p" "${TEST_OUTPUT_PATH}"
+                               "-k")
+
+
   ADD_FUNCTION(tests.outputs tests.outputs ${TEST_OUTPUT_PATH})
   ADD_INTEGRATIONTEST(integration-Outputs integrationtest_outputs Outputs_TEST.cpp)
 

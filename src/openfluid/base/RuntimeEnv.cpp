@@ -428,8 +428,10 @@ void RuntimeEnvironment::linkToProject()
   setOutputDir(ProjectManager::getInstance()->getOutputDir());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void RuntimeEnvironment::detachFromProject()
 {
@@ -438,6 +440,6 @@ void RuntimeEnvironment::detachFromProject()
   setOutputDir("");
 }
 
-}
-} //namespaces
+
+} } //namespaces
 

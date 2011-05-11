@@ -88,6 +88,9 @@ const std::string SIMINFOFILE = "siminfo.out";
 const std::string OUTMSGSFILE = "messages.out";
 const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
 
+const std::string PROFILEFILE = "profile.dat";
+const std::string PROFILESTEPSFILE = "profile_steps.dat";
+
 
 // Default file extensions
 const std::string OUTFILES_EXT = "out";

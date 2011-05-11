@@ -266,6 +266,8 @@ void EngineProject::run()
 {
   openfluid::base::ProjectManager::getInstance()->updateOutputDir();
 
+  openfluid::base::SimulationProfiler::getInstance()->reset();
+
   mp_SimBlob->clearSimulationGarbage();
 
   mp_ModelInstance->initialize();

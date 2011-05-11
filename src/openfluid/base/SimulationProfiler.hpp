@@ -47,42 +47,80 @@
 
 
 /**
-  @file
+  \file SimulationProfiler.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
+#ifndef __SIMULATIONPROFILER_HPP___
+#define __SIMULATIONPROFILER_HPP___
 
-
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Init.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
 #include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
-#include <openfluid/base/SIFactors.hpp>
-#include <openfluid/base/SimStatus.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <map>
+#include <list>
 
 
-#endif /* __BASE_HPP___ */
+namespace openfluid { namespace base {
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+class DLLEXPORT SimulationProfiler
+{
+  public:
+
+    enum TimeProfilePart { INITPARAMS, PREPAREDATA, CHECKCONSISTENCY, INITIALIZERUN, RUNSTEP, FINALIZERUN };
+
+    typedef std::map<TimeProfilePart,boost::posix_time::time_duration> FunctionTimeProfile_t;
+
+    typedef std::map<openfluid::base::FuncID_t,FunctionTimeProfile_t> ModelTimeProfile_t;
+
+    typedef std::map<openfluid::base::FuncID_t,std::list<boost::posix_time::time_duration> > RunStepTimeProfile_t;
+
+  private:
+
+    bool m_IsProfilingEnabled;
+
+    ModelTimeProfile_t m_ModelTimeProfile;
+
+    RunStepTimeProfile_t m_RunStepTimeProfile;
+
+    static SimulationProfiler* mp_Singleton;
+
+    SimulationProfiler();
+
+  public:
+
+    static SimulationProfiler* getInstance();
+
+
+    inline bool isEnabled() const { return m_IsProfilingEnabled; };
+
+    inline void setEnabled(bool Enabled) { m_IsProfilingEnabled = Enabled; };
+
+    void reset() { m_ModelTimeProfile.clear(); m_RunStepTimeProfile.clear(); };
+
+    void addDuration(const openfluid::base::FuncID_t& FuncID, TimeProfilePart ProfilePart,
+                     const boost::posix_time::time_duration& Duration);
+
+    const ModelTimeProfile_t& getModelTimeProfile() const { return m_ModelTimeProfile; };
+
+    const RunStepTimeProfile_t& getRunStepTimeProfile() const { return m_RunStepTimeProfile; };
+
+};
+
+
+
+} } //namespaces
+
+
+#endif /* __SIMULATIONPROFILER_HPP___ */

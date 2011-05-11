@@ -510,7 +510,7 @@ void OpenFLUIDApp::runSimulation()
 
   if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
   {
-    std::cout << "* Saving simulation report... "; std::cout.flush();
+    std::cout << "* Saving simulation reports... "; std::cout.flush();
     mp_Engine->saveReports();
     std::cout << "[Done]" << std::endl; std::cout.flush();
     m_SimBlob.getExecutionMessages().resetWarningFlag();
@@ -557,6 +557,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("functions-list,f","list available functions (do not run the simulation)")
       ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
+      ("enable-simulation-profiling,k","enable time profiling for functions")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
       ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions research paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
@@ -723,6 +724,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   {
     openfluid::base::RuntimeEnvironment::getInstance()->setWriteResults(false);
   }
+
+  if (OptionsVars.count("enable-simulation-profiling"))
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->setSimulationProfilingEnabled(true);
+  }
+
 
 }
 

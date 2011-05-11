@@ -464,6 +464,16 @@ void Engine::saveSimulationInfos()
 // =====================================================================
 
 
+void Engine::saveSimulationProfile()
+{
+  openfluid::io::SimulationProfileWriter::saveToFiles(mp_RunEnv->getOutputDir());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
 {
   if (PretestInfos.ExtraFiles)
@@ -814,6 +824,7 @@ void Engine::saveReports()
 {
   m_SimulationBlob.getExecutionMessages().resetWarningFlag();
   saveSimulationInfos();
+  saveSimulationProfile();
 }
 
 

@@ -47,42 +47,42 @@
 
 
 /**
-  @file
+  \file SimProfileWriter.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
+#ifndef __SIMPROFILEWRITER_HPP___
+#define __SIMPROFILEWRITER_HPP___
+
+#include <string>
+#include <openfluid/dllexport.hpp>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+namespace openfluid { namespace io {
 
 
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Init.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
-#include <openfluid/base/SIFactors.hpp>
-#include <openfluid/base/SimStatus.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
+class DLLEXPORT SimulationProfileWriter
+{
+  private:
+
+    static double getDurationInDecimalSeconds(const boost::posix_time::time_duration& Duration);
+
+  public:
+    SimulationProfileWriter();
+
+    ~SimulationProfileWriter();
+
+    static void saveToFiles(std::string Path);
+};
+
+} } //namespaces
 
 
-#endif /* __BASE_HPP___ */
+
+
+
+#endif /* __SIMPROFILEWRITER_HPP___ */
