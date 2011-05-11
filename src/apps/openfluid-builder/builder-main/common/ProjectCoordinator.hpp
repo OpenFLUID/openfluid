@@ -104,6 +104,10 @@ class ProjectCoordinator
 
     void updateWorkspaceModules();
 
+    std::string constructClassPageName(std::string ClassName);
+
+    std::string constructSetPageName(std::string SetName);
+
   protected:
 
     void whenModelChanged();

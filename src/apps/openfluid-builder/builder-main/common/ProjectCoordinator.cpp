@@ -173,8 +173,8 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_CLASS:
-      PageName = _("Spatial data") + std::string(" [")
-          + m_ExplorerModel.getActivatedElement().second + "]";
+      PageName = constructClassPageName(
+          m_ExplorerModel.getActivatedElement().second);
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -232,8 +232,8 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
     case ProjectExplorerCategories::EXPLORER_SET:
-      PageName = _("Results") + std::string(" [")
-          + m_ExplorerModel.getActivatedElement().second + "]";
+      PageName = constructSetPageName(
+          m_ExplorerModel.getActivatedElement().second);
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -259,6 +259,22 @@ void ProjectCoordinator::whenActivationChanged()
 
   m_Workspace.setCurrentPage(PageName);
 
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string ProjectCoordinator::constructClassPageName(std::string ClassName)
+{
+  return Glib::ustring::compose(_("%1 [%2]"), _("Spatial data"), ClassName);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string ProjectCoordinator::constructSetPageName(std::string SetName)
+{
+  return Glib::ustring::compose(_("%1 [%2]"), _("Results"), SetName);
 }
 
 // =====================================================================
@@ -350,7 +366,7 @@ std::vector<std::string> ProjectCoordinator::getClassPagesToDelete()
       != m_EngineProject.getCoreRepository().getUnitsByClass()->end(); ++it)
   {
     if (!it->second.getList()->empty())
-      ClassNames.push_back(it->first);
+      ClassNames.push_back(constructClassPageName(it->first));
   }
 
   std::sort(ClassNames.begin(), ClassNames.end());
@@ -422,7 +438,8 @@ std::vector<std::string> ProjectCoordinator::getSetPagesToDelete()
         < m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
     {
       SetNames.push_back(
-          m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets()[j].getName());
+          constructSetPageName(
+              m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets()[j].getName()));
     }
   }
 
