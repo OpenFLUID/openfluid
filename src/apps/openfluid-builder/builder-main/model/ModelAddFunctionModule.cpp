@@ -71,6 +71,9 @@ ModelAddFunctionModule::ModelAddFunctionModule()
   mp_Coordinator = new ModelAddFunctionCoordinator(
       *mp_ModelAvailFctMVP->getModel(), *mp_ModelFctDetailMVP->getModel());
 
+  mp_Coordinator->signal_AvailFctSelectionChanged().connect(sigc::mem_fun(
+      *this, &ModelAddFunctionModule::whenAvailFctSelectionChanged));
+
   compose();
 
 }
@@ -84,6 +87,15 @@ ModelAddFunctionModule::~ModelAddFunctionModule()
   delete mp_Coordinator;
   delete mp_ModelAvailFctMVP;
   delete mp_ModelFctDetailMVP;
+}
+
+// =====================================================================
+// =====================================================================
+
+void ModelAddFunctionModule::setEngineRequirements(
+    openfluid::machine::ModelInstance& ModelInstance)
+{
+  mp_ModelInstance = &ModelInstance;
 }
 
 // =====================================================================
@@ -118,7 +130,6 @@ sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
   return m_signal_ModelFunctionAdded;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -127,10 +138,34 @@ openfluid::machine::SignatureItemInstance* ModelAddFunctionModule::showDialog()
 {
   openfluid::machine::SignatureItemInstance* SelectedSignature = 0;
 
+  whenAvailFctSelectionChanged();
+
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
     SelectedSignature = mp_Coordinator->getSelectedSignature();
 
   mp_Dialog->hide();
 
   return SelectedSignature;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelAddFunctionModule::whenAvailFctSelectionChanged()
+{
+  std::string SelectedFctId = mp_Coordinator->getSelectedSignature()->Signature->ID;
+  bool SelectedFctAlreadyInModel = false;
+
+  std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
+  for(it = mp_ModelInstance->getItems().begin();it !=mp_ModelInstance->getItems().end();++it)
+  {
+    if ((*it)->Signature->ID == SelectedFctId)
+    {
+      SelectedFctAlreadyInModel = true;
+      break;
+    }
+  }
+
+  mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK,!SelectedFctAlreadyInModel);
 }

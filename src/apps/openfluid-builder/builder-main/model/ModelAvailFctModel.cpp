@@ -89,7 +89,7 @@ void ModelAvailFctModelImpl::setSignatures(
     FunctionSignatureRegistry& Signatures)
 {
   m_Signatures = Signatures.getFctSignatures();
-  signal_SignaturesChanged().emit();
+  m_signal_SignaturesChanged.emit();
 }
 
 // =====================================================================
@@ -109,7 +109,7 @@ void ModelAvailFctModelImpl::setSelectedSignatureByUser(
     openfluid::machine::SignatureItemInstance* Signature)
 {
   mp_SelectedSignature = Signature;
-  signal_SelectedSignatureChanged().emit();
+  m_signal_SelectedSignatureChanged.emit();
 }
 
 // =====================================================================

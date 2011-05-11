@@ -64,7 +64,10 @@
 void ModelAddFunctionCoordinator::whenAvailFctSelectionChanged()
 {
   if (m_AvailFctModel.isASignatureSelected())
+  {
     m_FctDetailModel.setFctToDisplay(m_AvailFctModel.getSelectedSignature());
+    m_signal_AvailFctSelectionChanged.emit();
+  }
 }
 
 // =====================================================================
@@ -91,7 +94,6 @@ void ModelAddFunctionCoordinator::setSignatures(
   m_AvailFctModel.setSignatures(Signatures);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -99,4 +101,13 @@ void ModelAddFunctionCoordinator::setSignatures(
 openfluid::machine::SignatureItemInstance* ModelAddFunctionCoordinator::getSelectedSignature()
 {
   return m_AvailFctModel.getSelectedSignature();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelAddFunctionCoordinator::signal_AvailFctSelectionChanged()
+{
+  return m_signal_AvailFctSelectionChanged;
 }

@@ -75,6 +75,8 @@ class ModelAddFunctionCoordinator: public sigc::trackable
 
     ModelFctDetailModel& m_FctDetailModel;
 
+    sigc::signal<void> m_signal_AvailFctSelectionChanged;
+
     void whenAvailFctSelectionChanged();
 
 
@@ -88,6 +90,8 @@ class ModelAddFunctionCoordinator: public sigc::trackable
     void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
 
     openfluid::machine::SignatureItemInstance* getSelectedSignature();
+
+    sigc::signal<void> signal_AvailFctSelectionChanged();
 
 };
 

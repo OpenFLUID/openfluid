@@ -243,6 +243,8 @@ void ModelStructureCoordinator::setEngineRequirements(
   m_StructureModel.setEngineRequirements(ModelInstance,
       &SimBlob.getCoreRepository());
 
+  mp_AddFctModule->setEngineRequirements(ModelInstance);
+
   initParams();
 
   m_GlobalParamsModel.setEngineRequirements(ModelInstance);

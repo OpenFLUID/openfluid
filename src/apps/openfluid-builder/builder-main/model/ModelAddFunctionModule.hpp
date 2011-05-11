@@ -89,6 +89,8 @@ class ModelAddFunctionModule
 
     void compose();
 
+    void whenAvailFctSelectionChanged();
+
   public:
 
     ModelAddFunctionModule();
@@ -97,11 +99,11 @@ class ModelAddFunctionModule
 
     sigc::signal<void> signal_ModelFunctionAdded();
 
-    //    void setEngineRequirements(
-    //        openfluid::machine::ModelInstance& ModelInstance,
-    //        openfluid::machine::SimulationBlob& SimBlob);
+    void
+    setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
 
     openfluid::machine::SignatureItemInstance* showDialog();
+
 };
 
 #endif /* __MODELADDFUNCTIONMODULE_HPP__ */
