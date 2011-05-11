@@ -71,8 +71,6 @@ class ModelParamsPanel
 
     ModelParamsPanel();
 
-    ~ModelParamsPanel();
-
     void addAStaticPage(Gtk::Widget* Page, std::string Label, int Position = -1);
 
     void addAFctParamsPage(Gtk::Widget* FctParamsPage,std::string PageLabel);

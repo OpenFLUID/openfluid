@@ -70,6 +70,7 @@ class BuilderModule
       compose();
       return asWidget();
     }
+    virtual ~BuilderModule(){};
 };
 
 #endif /* __BUILDERMODULE_HPP__ */

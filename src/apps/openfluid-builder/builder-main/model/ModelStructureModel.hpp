@@ -50,6 +50,9 @@
 
 #include <sigc++/sigc++.h>
 
+//#include <giomm/file.h>
+//#include <giomm/filemonitor.h>
+
 #include <openfluid/machine.hpp>
 
 class ModelStructureModel
@@ -87,7 +90,7 @@ class ModelStructureModel
     virtual int getCurrentSelection() = 0;
 
     virtual openfluid::machine::SignatureItemInstance
-        * getCurrentSelectionSignature() = 0;
+    * getCurrentSelectionSignature() = 0;
 
     virtual unsigned int getFctCount() = 0;
 
@@ -98,6 +101,8 @@ class ModelStructureModel
     virtual int getAppRequestedSelection() = 0;
 
     virtual void update() = 0;
+
+    virtual ~ModelStructureModel(){};
 
 };
 
@@ -119,6 +124,8 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int m_AppRequestedSelection;
 
+//    std::map<std::string, Glib::RefPtr<Gio::FileMonitor> > m_ItemMonitors;
+
     bool isModelInstance();
 
     bool areMoveIndexesValid(unsigned int From, unsigned int To);
@@ -127,9 +134,15 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int getLastPosition();
 
+//    void onItemMonitorChanged(const Glib::RefPtr<Gio::File>& File,
+//        const Glib::RefPtr<Gio::File>& OtherFile,
+//        Gio::FileMonitorEvent EventType, std::string FunctionId);
+
   public:
 
     ModelStructureModelImpl();
+
+    ~ModelStructureModelImpl();
 
     sigc::signal<void> signal_FromUserSelectionChanged();
 
@@ -143,7 +156,8 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     openfluid::machine::ModelInstance* getModelInstance();
 
-    openfluid::machine::ModelItemInstance* appendFunction(openfluid::machine::SignatureItemInstance& Signature);
+    openfluid::machine::ModelItemInstance* appendFunction(
+        openfluid::machine::SignatureItemInstance& Signature);
 
     void moveFunction(unsigned int From, unsigned int To);
 

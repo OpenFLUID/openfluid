@@ -113,7 +113,13 @@ sigc::signal<void> ProjectCoordinator::signal_ChangeHappened()
 
 ProjectCoordinator::~ProjectCoordinator()
 {
-  // TODO Auto-generated destructor stub
+  std::map<std::string, ProjectWorkspaceModule*>::iterator it;
+  for (it = m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
+  {
+    delete it->second;
+    it->second = 0;
+  }
+  m_ModulesByPageNameMap.clear();
 }
 
 // =====================================================================
@@ -446,24 +452,23 @@ void ProjectCoordinator::whenResultsChanged()
 
 void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 {
-  // update Class Pages
-  std::vector<std::string>::iterator it = std::find(m_ClassPageNames.begin(),
-      m_ClassPageNames.end(), RemovedPageName);
+  ProjectWorkspaceModule* ModuleToDelete =
+      m_ModulesByPageNameMap[RemovedPageName];
+  m_ModulesByPageNameMap.erase(RemovedPageName);
+  delete ModuleToDelete;
 
+  std::vector<std::string>::iterator it;
+
+  // update Class Pages
+  it = std::find(m_ClassPageNames.begin(), m_ClassPageNames.end(),
+      RemovedPageName);
   if (it != m_ClassPageNames.end())
-  {
     m_ClassPageNames.erase(it);
-    m_ModulesByPageNameMap.erase(RemovedPageName);
-  }
 
   // update Set Pages
   it = std::find(m_SetPageNames.begin(), m_SetPageNames.end(), RemovedPageName);
-
   if (it != m_SetPageNames.end())
-  {
     m_SetPageNames.erase(it);
-    m_ModulesByPageNameMap.erase(RemovedPageName);
-  }
 
 }
 

@@ -137,8 +137,6 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     ProjectExplorerModelImpl();
 
-    ~ ProjectExplorerModelImpl();
-
     sigc::signal<void> signal_Initialized();
 
     sigc::signal<void> signal_ActivationChanged();

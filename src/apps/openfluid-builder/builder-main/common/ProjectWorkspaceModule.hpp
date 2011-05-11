@@ -71,6 +71,8 @@ class ProjectWorkspaceModule: public BuilderModule
         openfluid::machine::SimulationBlob& SimBlob) = 0;
 
     virtual void update() = 0;
+
+    virtual ~ProjectWorkspaceModule(){};
 };
 
 #endif /* __PROJECTWORKSPACEMODULE_HPP__ */

@@ -129,6 +129,17 @@ ModelStructureModelImpl::ModelStructureModelImpl() :
 
 }
 
+
+
+// =====================================================================
+// =====================================================================
+
+
+ModelStructureModelImpl::~ModelStructureModelImpl()
+{
+
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -166,6 +177,11 @@ void ModelStructureModelImpl::setEngineRequirements(
 {
   mp_ModelInstance = &ModelInstance;
   mp_CoreRepos = CoreRepos;
+
+  //
+  // set monitors for existing items
+  //
+
   update();
   requestSelectionByAppAt(0);
 }
@@ -209,6 +225,19 @@ openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
     {
       Item = ModelItemInstanceFactory::createPluggableItemFromSignature(
           Signature);
+
+//      if (Item)
+//      {
+//        Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
+//            Signature.Filename);
+//        Glib::RefPtr<Gio::FileMonitor> ItemMonitor = ItemFile->monitor_file();
+//        ItemMonitor->signal_changed().connect(
+//            sigc::bind<std::string>(sigc::mem_fun(*this,
+//                &ModelStructureModelImpl::onItemMonitorChanged),
+//                Signature.Signature->ID));
+//        m_ItemMonitors[Signature.Signature->ID] = ItemMonitor;
+//      }
+
     } else if (Signature.ItemType
         == openfluid::base::ModelItemDescriptor::Generator)
     {
@@ -216,14 +245,14 @@ openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
       {
         throw openfluid::base::OFException("OpenFLUID Builder",
             "ModelStructureModelImpl::appendFunction", "no Core Repository");
-        return (openfluid::machine::ModelItemInstance*)0;
+        return (openfluid::machine::ModelItemInstance*) 0;
       }
 
       if (mp_CoreRepos->getUnitsGlobally()->empty())
       {
         openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
             "You can't create a generator now :\n Model is empty");
-        return (openfluid::machine::ModelItemInstance*)0;
+        return (openfluid::machine::ModelItemInstance*) 0;
       } else
       {
         std::vector<std::string> Classes;
@@ -240,7 +269,7 @@ openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
                     Classes);
 
         if (GenInfo.size() != 3)
-          return (openfluid::machine::ModelItemInstance*)0;
+          return (openfluid::machine::ModelItemInstance*) 0;
 
         Item = ModelItemInstanceFactory::createGeneratorItemFromSignature(
             Signature, GenInfo["varname"], GenInfo["classname"],
@@ -251,7 +280,7 @@ openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
       throw openfluid::base::OFException("OpenFLUID Builder",
           "ModelStructureModelImpl::appendFunction",
           "bad ModelItemDescriptor type");
-      return (openfluid::machine::ModelItemInstance*)0;
+      return (openfluid::machine::ModelItemInstance*) 0;
     }
 
     if (Item)
@@ -328,7 +357,13 @@ void ModelStructureModelImpl::removeFunctionAt(int Position)
 {
   if (isModelInstance() && Position > -1)
   {
+//    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+//        mp_ModelInstance->getItems().begin();
+//    std::advance(it, Position);
+//    m_ItemMonitors.erase((*it)->Signature->ID);
+
     mp_ModelInstance->deleteItem(Position);
+
     signal_FromAppModelChanged().emit();
 
     if (isModelEmpty())
@@ -420,6 +455,7 @@ void ModelStructureModelImpl::requestSelectionByApp(std::string FunctionName)
   }
   requestSelectionByAppAt(-1);
 }
+
 // =====================================================================
 // =====================================================================
 
@@ -428,3 +464,39 @@ int ModelStructureModelImpl::getAppRequestedSelection()
 {
   return m_AppRequestedSelection;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+//void ModelStructureModelImpl::onItemMonitorChanged(
+//    const Glib::RefPtr<Gio::File>& File,
+//    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
+//    Gio::FileMonitorEvent EventType, std::string FunctionId)
+//{
+//  if (EventType == Gio::FILE_MONITOR_EVENT_DELETED)
+//  {
+//    std::cout << "Warning : File of function " << FunctionId << "("
+//        << File->get_path() << ") has been deleted" << std::endl;
+//
+//  } else if (EventType == Gio::FILE_MONITOR_EVENT_CREATED)
+//  {
+//    std::cout << "Warning : File of function " << FunctionId << "("
+//        << File->get_path() << ") has been created" << std::endl;
+//
+//  } else if (EventType == Gio::FILE_MONITOR_EVENT_CHANGED)
+//  {
+//    std::cout << "File of function " << FunctionId << "(" << File->get_path()
+//        << ") has changed" << std::endl;
+//
+////    for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+////          mp_ModelInstance->getItems().begin(); it
+////          != mp_ModelInstance->getItems().end(); ++it)
+////      {
+////        if ((*it)->Signature->ID == FunctionName)
+////        {
+////
+////        }
+////      }
+//  }
+//}
