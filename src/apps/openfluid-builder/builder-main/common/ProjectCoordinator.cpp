@@ -155,7 +155,7 @@ void ProjectCoordinator::whenActivationChanged()
             m_ExplorerModel.getActivatedElement().second);
       break;
     case ProjectExplorerCategories::EXPLORER_DOMAIN:
-      PageName = _("Spatial representation");
+      PageName = _("Spatial domain");
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
