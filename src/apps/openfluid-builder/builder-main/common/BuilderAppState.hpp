@@ -55,6 +55,8 @@
 #ifndef __BUILDERAPPSTATE_HPP__
 #define __BUILDERAPPSTATE_HPP__
 
+#include <string>
+
 class BuilderAppState
 {
   public:
@@ -74,6 +76,8 @@ class BuilderAppState
     virtual void whenPreferencesAsked() = 0;
 
     void whenAboutAsked();
+
+    void whenOnlineAsked(const std::string& URL);
 
     virtual void whenSaveAsked() = 0;
 

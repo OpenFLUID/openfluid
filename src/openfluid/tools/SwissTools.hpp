@@ -226,6 +226,8 @@ std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::st
 int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
 
 
+bool DLLEXPORT OpenURLInBrowser(const std::string& URL);
+
 
 } } //namespaces
 

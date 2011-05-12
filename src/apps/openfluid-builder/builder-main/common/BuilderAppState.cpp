@@ -55,15 +55,18 @@
 
 
 #include <gtkmm.h>
+#include <glibmm/i18n.h>
 
 #include "BuilderAppState.hpp"
 #include "BuilderGraphicsHelper.hpp"
 
+#include <openfluid/tools.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/config.hpp>
 #include "builderconfig.hpp"
 
 
-#include <openfluid/tools.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -84,10 +87,22 @@ void BuilderAppState::whenAboutAsked()
   About.set_license(BUILDER_LICENSE_TEXT);
   About.set_authors(openfluid::tools::SplitString(BUILDER_AUTHORS_TEXT,"\n",true));
 
-  About.set_title("About OpenFLUID...");
+  About.set_title(_("About OpenFLUID..."));
 
   About.run();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppState::whenOnlineAsked(const std::string& URL)
+{
+  if (!openfluid::tools::OpenURLInBrowser(URL))
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Unable to open URL :")+std::string("\n")+URL);
+}
+
 
 
 

@@ -96,6 +96,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenAboutAsked();
 
+    void whenOnlineAsked(const std::string& URL);
+
     void whenSaveAsked();
 
     void whenSaveAsAsked();

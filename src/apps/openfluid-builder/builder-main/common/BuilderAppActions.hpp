@@ -107,6 +107,14 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getAppAboutAction();
 
+    Glib::RefPtr<Gtk::Action> getAppOnlineWebsiteAction();
+
+    Glib::RefPtr<Gtk::Action> getAppOnlineCommunityAction();
+
+    Glib::RefPtr<Gtk::Action> getAppOnlineDevAction();
+
+    Glib::RefPtr<Gtk::Action> getAppOnlineBugAction();
+
     Glib::RefPtr<Gtk::Action> getSaveAction();
 
     Glib::RefPtr<Gtk::Action> getSaveAsAction();
@@ -116,3 +124,4 @@ class BuilderAppActions
 };
 
 #endif /* __BUILDERAPPACTIONS_HPP__ */
+

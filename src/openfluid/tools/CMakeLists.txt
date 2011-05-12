@@ -22,7 +22,8 @@ TARGET_LINK_LIBRARIES(openfluid-tools
                       openfluid-core
                       ${LibXML2_LIBRARIES} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
-                      ${CURL_LIBRARY})
+                      ${CURL_LIBRARY}
+                      ${GLIBMM_LIBRARIES})
 
 
 

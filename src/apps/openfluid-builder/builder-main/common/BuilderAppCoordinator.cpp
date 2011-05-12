@@ -71,6 +71,8 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include "BuilderHomeModule.hpp"
 
+#include "builderconfig.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -166,6 +168,17 @@ void BuilderAppCoordinator::whenAboutAsked()
   mp_CurrentState->whenAboutAsked();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenOnlineAsked(const std::string& URL)
+{
+  mp_CurrentState->whenOnlineAsked(URL);
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -230,6 +243,18 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenAboutAsked));
+
+  m_Actions.getAppOnlineWebsiteAction()->signal_activate().connect(
+      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_WEBSITE));
+
+  m_Actions.getAppOnlineCommunityAction()->signal_activate().connect(
+      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_COMMUNITY));
+
+  m_Actions.getAppOnlineDevAction()->signal_activate().connect(
+      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_DEV));
+
+  m_Actions.getAppOnlineBugAction()->signal_activate().connect(
+      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_BUG));
 
   m_Actions.getSaveAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenSaveAsked));

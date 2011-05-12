@@ -70,7 +70,6 @@ void BuilderAppActions::createAppUiXml()
     "  <menubar name='MenuBar'>"
     "    <menu action='FileMenu'>"
     "      <menuitem action='FileNewEmpty'/>"
-//    "      <menuitem action='FileNewFrom'/>"
     "      <menuitem action='FileOpen'/>"
     "      <separator/>"
     "      <placeholder name='ProjectFilePlaceholder' />"
@@ -87,6 +86,13 @@ void BuilderAppActions::createAppUiXml()
     "    <placeholder name='ProjectSimulationPlaceholder' />"
     "    <placeholder name='ProjectExtensionsPlaceholder' />"
     "    <menu action='HelpMenu'>"
+    "      <menu action='HelpOnlineMenu'>"
+    "        <menuitem action='HelpOnlineWebsite'/>"
+    "        <menuitem action='HelpOnlineCommunity'/>"
+    "        <menuitem action='HelpOnlineDev'/>"
+    "        <menuitem action='HelpOnlineBug'/>"
+    "      </menu>"
+    "      <separator/>"
     "      <menuitem action='HelpAbout'/>"
     "    </menu>"
     "  </menubar>"
@@ -178,8 +184,12 @@ void BuilderAppActions::createAppActionGroup()
 
   //Help menu
   mref_AppActionGroup->add(Gtk::Action::create("HelpMenu", Gtk::Stock::HELP));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpDemo", _("Demo")));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpDoc", _("Doc")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineMenu", _("OpenFLUID online")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineWebsite", _("Official website")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineCommunity", _("Community website")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineDev", _("Development website")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineBug", _("Bug tracking")));
+
   mref_AppActionGroup->add(Gtk::Action::create("HelpAbout", Gtk::Stock::ABOUT));
   mref_AppActionGroup->add(Gtk::Action::create("HelpMarket",
       *BuilderGraphicsHelper::createBuilderIconStockId("openfluid_in_cart.png",
@@ -378,6 +388,46 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getEditPreferencesAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppAboutAction()
 {
   return mref_AppActionGroup->get_action("HelpAbout");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineWebsiteAction()
+{
+  return mref_AppActionGroup->get_action("HelpOnlineWebsite");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineCommunityAction()
+{
+  return mref_AppActionGroup->get_action("HelpOnlineCommunity");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineDevAction()
+{
+  return mref_AppActionGroup->get_action("HelpOnlineDev");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineBugAction()
+{
+  return mref_AppActionGroup->get_action("HelpOnlineBug");
 }
 
 

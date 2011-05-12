@@ -49,6 +49,7 @@
 #include <openfluid/tools/SwissTools.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
+#include <glibmm.h>
 
 
 namespace openfluid { namespace tools {
@@ -415,6 +416,70 @@ int CompareVersions(const std::string& VersionA, const std::string& VersionB, bo
   }
 
   return -2;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool OpenURLInBrowser(const std::string& URL)
+{
+  if (URL.empty()) return false;
+
+#ifdef G_OS_WIN32
+
+  if (URL.find("file://") == 0)
+  {
+    URL = URL.substr(7);
+  }
+  return (ShellExecute(NULL, "open", URL.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32);
+
+  #endif
+
+#ifdef G_OS_UNIX
+
+  std::vector<std::string> Args(2,"");
+
+  Args[0] = "xdg-open";
+  Args[1] = URL;
+
+  try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
+  catch (Glib::SpawnError& E)
+  {
+    Args[0] = "firefox";
+    try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
+    catch (Glib::SpawnError& E)
+    {
+      Args[0] = "chrome";
+      try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
+      catch (Glib::SpawnError& E)
+      {
+        Args[0] = "opera";
+        try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
+        catch (Glib::SpawnError& E)
+        {
+          Args[0] = "mozilla";
+          try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
+          catch (Glib::SpawnError& E)
+          {
+            Args[0] = "netscape";
+            try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
+            catch (Glib::SpawnError& E)
+            {
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return true;
+#endif
+
+
+  return false;
 }
 
 
