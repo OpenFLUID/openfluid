@@ -51,6 +51,10 @@
 #include <boost/algorithm/string.hpp>
 #include <glibmm.h>
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
 
 namespace openfluid { namespace tools {
 
@@ -429,11 +433,12 @@ bool OpenURLInBrowser(const std::string& URL)
 
 #ifdef G_OS_WIN32
 
-  if (URL.find("file://") == 0)
+  std::string URLTmp = URL;
+  if (URLTmp.find("file://") == 0)
   {
-    URL = URL.substr(7);
+    URLTmp = URLTmp.substr(7);
   }
-  return (ShellExecute(NULL, "open", URL.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32);
+  return ((int)(ShellExecute(NULL, "open", LPCSTR(URLTmp.c_str()), NULL, NULL, SW_SHOWNORMAL)) > 32);
 
   #endif
 
