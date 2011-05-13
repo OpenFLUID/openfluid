@@ -54,7 +54,6 @@
 
 #include "FunctionSignatureRegistry.hpp"
 
-
 FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 
 // =====================================================================
@@ -74,7 +73,7 @@ FunctionSignatureRegistry::FunctionSignatureRegistry()
 
 FunctionSignatureRegistry* FunctionSignatureRegistry::getInstance()
 {
-  if(!mp_Instance)
+  if (!mp_Instance)
   {
     mp_Instance = new FunctionSignatureRegistry();
     mp_Instance->updatePluggableSignatures();
@@ -115,11 +114,14 @@ void FunctionSignatureRegistry::updatePluggableSignatures()
 {
   m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].clear();
 
-  for (unsigned int i = 0; i
-      < openfluid::machine::PluginManager::getInstance()->getAvailableFunctions().size(); i++)
+  openfluid::machine::PluginManager::getInstance()->unloadAllPlugins();
+
+  openfluid::machine::ArrayOfSignatureItemInstance Signatures =
+      openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+
+  for (unsigned int i = 0; i < Signatures.size(); i++)
   {
-    addAPluggableSignature(
-        openfluid::machine::PluginManager::getInstance()->getAvailableFunctions()[i]);
+    addAPluggableSignature( Signatures[i]);
   }
 }
 

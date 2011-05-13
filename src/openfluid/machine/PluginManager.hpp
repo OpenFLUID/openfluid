@@ -62,6 +62,8 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
+#include <openfluid/machine/DynamicLib.hpp>
+
 namespace openfluid { namespace machine {
 
 
@@ -76,9 +78,10 @@ class DLLEXPORT PluginManager
 
     static PluginManager* mp_Singleton;
 
+    std::map<std::string,DynamicLib*> m_LoadedPlugins;
+
     ModelItemInstance* buildPluginContainer(std::string PluginFilename);
 
-    SignatureItemInstance* getSignatureFromPlugin(std::string PluginFilename);
 
     /**
       Constructor
@@ -106,6 +109,9 @@ class DLLEXPORT PluginManager
     */
     ModelItemInstance* getPlugin(std::string PluginName);
 
+    SignatureItemInstance* getSignatureFromPlugin(std::string PluginFilename);
+
+    void unloadAllPlugins();
 
 };
 

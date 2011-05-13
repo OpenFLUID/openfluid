@@ -77,7 +77,11 @@ class ModelAddFunctionCoordinator: public sigc::trackable
 
     sigc::signal<void> m_signal_AvailFctSelectionChanged;
 
+    sigc::signal<void> m_signal_ReloadPluginsAsked;
+
     void whenAvailFctSelectionChanged();
+
+    void whenReloadPluginsAsked();
 
 
   public:
@@ -92,6 +96,8 @@ class ModelAddFunctionCoordinator: public sigc::trackable
     openfluid::machine::SignatureItemInstance* getSelectedSignature();
 
     sigc::signal<void> signal_AvailFctSelectionChanged();
+
+    sigc::signal<void> signal_ReloadPluginsAsked();
 
 };
 

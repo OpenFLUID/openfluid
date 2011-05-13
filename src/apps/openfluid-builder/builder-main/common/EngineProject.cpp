@@ -113,6 +113,7 @@ EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
 
       openfluid::base::ModelDescriptor ModelDesc =
           FXReader->getModelDescriptor();
+
       std::string MissingFunctions = checkModelDesc(ModelDesc);
       if (MissingFunctions != "")
         openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
@@ -140,8 +141,6 @@ sigc::signal<void> EngineProject::signal_RunHappened()
   return m_signal_RunHappened;
 }
 
-
-
 // =====================================================================
 // =====================================================================
 
@@ -150,7 +149,6 @@ sigc::signal<void> EngineProject::signal_SaveHappened()
 {
   return m_signal_SaveHappened;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -240,6 +238,9 @@ std::string EngineProject::checkModelDesc(
 
   openfluid::base::ModelDescriptor::ModelDescription_t::iterator it =
       ModelDesc.getItems().begin();
+
+  openfluid::machine::ArrayOfSignatureItemInstance Signatures =
+      openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
 
   while (it != ModelDesc.getItems().end())
   {
@@ -425,7 +426,7 @@ EngineProject::~EngineProject()
   if (m_WithProjectManager)
     getRunEnv()->detachFromProject();
   delete mp_Engine;
-  if(FXReader)
+  if (FXReader)
     delete FXReader;
 }
 

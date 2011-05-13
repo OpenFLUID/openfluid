@@ -94,7 +94,6 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
 
   mp_EngineProject->signal_SaveHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenSaveHappened));
-
 }
 
 // =====================================================================

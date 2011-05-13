@@ -61,7 +61,7 @@
 openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggableItemFromSignature(
     openfluid::machine::SignatureItemInstance& Signature)
 {
-  openfluid::machine::ModelItemInstance* Item;
+  openfluid::machine::ModelItemInstance* Item = 0;
 
   if (!Signature.Signature)
     throw openfluid::base::OFException("OpenFLUID Builder",
@@ -71,7 +71,8 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggable
   {
     Item = openfluid::machine::PluginManager::getInstance()->getPlugin(
         Signature.Signature->ID);
-    Item->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+    if (Item)
+      Item->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
   }
   return Item;
 }

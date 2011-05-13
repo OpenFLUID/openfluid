@@ -129,8 +129,6 @@ ModelStructureModelImpl::ModelStructureModelImpl() :
 
 }
 
-
-
 // =====================================================================
 // =====================================================================
 
@@ -165,6 +163,15 @@ sigc::signal<void> ModelStructureModelImpl::signal_FromAppModelChanged()
 sigc::signal<void> ModelStructureModelImpl::signal_FromAppSelectionRequested()
 {
   return m_signal_FromAppSelectionRequested;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void, std::string> ModelStructureModelImpl::signal_FileMonitorEventChanged()
+{
+  return m_signal_FileMonitorEventChanged;
 }
 
 // =====================================================================
@@ -219,7 +226,6 @@ openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
 
   if (isModelInstance())
   {
-
     if (Signature.ItemType
         == openfluid::base::ModelItemDescriptor::PluggedFunction)
     {
@@ -353,14 +359,19 @@ void ModelStructureModelImpl::moveTowardTheEnd()
 // =====================================================================
 
 
-void ModelStructureModelImpl::removeFunctionAt(int Position)
+std::string ModelStructureModelImpl::removeFunctionAt(int Position)
 {
+  std::string FunctionId = "";
+
   if (isModelInstance() && Position > -1)
   {
-//    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-//        mp_ModelInstance->getItems().begin();
-//    std::advance(it, Position);
-//    m_ItemMonitors.erase((*it)->Signature->ID);
+    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+        mp_ModelInstance->getItems().begin();
+    std::advance(it, Position);
+
+    FunctionId = (*it)->Signature->ID;
+
+//    m_ItemMonitors.erase(FunctionId);
 
     mp_ModelInstance->deleteItem(Position);
 
@@ -373,6 +384,8 @@ void ModelStructureModelImpl::removeFunctionAt(int Position)
     else
       requestSelectionByAppAt(Position);
   }
+
+  return FunctionId;
 }
 
 // =====================================================================
@@ -469,11 +482,11 @@ int ModelStructureModelImpl::getAppRequestedSelection()
 // =====================================================================
 
 
-//void ModelStructureModelImpl::onItemMonitorChanged(
-//    const Glib::RefPtr<Gio::File>& File,
-//    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
-//    Gio::FileMonitorEvent EventType, std::string FunctionId)
-//{
+void ModelStructureModelImpl::onItemMonitorChanged(
+    const Glib::RefPtr<Gio::File>& File,
+    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
+    Gio::FileMonitorEvent EventType, std::string FunctionId)
+{
 //  if (EventType == Gio::FILE_MONITOR_EVENT_DELETED)
 //  {
 //    std::cout << "Warning : File of function " << FunctionId << "("
@@ -489,14 +502,29 @@ int ModelStructureModelImpl::getAppRequestedSelection()
 //    std::cout << "File of function " << FunctionId << "(" << File->get_path()
 //        << ") has changed" << std::endl;
 //
-////    for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-////          mp_ModelInstance->getItems().begin(); it
-////          != mp_ModelInstance->getItems().end(); ++it)
-////      {
-////        if ((*it)->Signature->ID == FunctionName)
-////        {
-////
-////        }
-////      }
+//    m_signal_FileMonitorEventChanged.emit(FunctionId);
 //  }
-//}
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int ModelStructureModelImpl::getPositionOfFunction(std::string FunctionId)
+{
+  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+      mp_ModelInstance->getItems().begin(); it
+      != mp_ModelInstance->getItems().end(); ++it)
+  {
+    if ((*it)->Signature->ID == FunctionId)
+    {
+      unsigned int pos = (unsigned int) std::distance(
+          mp_ModelInstance->getItems().begin(), it);
+
+      return pos;
+    }
+  }
+
+  return -1;
+}

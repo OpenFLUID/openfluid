@@ -67,6 +67,8 @@ class ModelAvailFctModel
 
     virtual sigc::signal<void> signal_SelectedSignatureChanged() = 0;
 
+    virtual sigc::signal<void> signal_ReloadPluginsAsked() = 0;
+
     virtual void setSignatures(FunctionSignatureRegistry& Signatures) = 0;
 
     virtual FunctionSignatureRegistry::FctSignaturesByType_t getSignatures() = 0;
@@ -90,6 +92,8 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
 
     sigc::signal<void> m_signal_SelectedSignatureChanged;
 
+    sigc::signal<void> m_signal_ReloadPluginsAsked;
+
     FunctionSignatureRegistry::FctSignaturesByType_t m_Signatures;
 
     openfluid::machine::SignatureItemInstance* mp_SelectedSignature;
@@ -103,6 +107,8 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
     sigc::signal<void> signal_SignaturesChanged();
 
     sigc::signal<void> signal_SelectedSignatureChanged();
+
+    sigc::signal<void> signal_ReloadPluginsAsked();
 
     void setSignatures(FunctionSignatureRegistry& Signatures);
 

@@ -103,8 +103,7 @@ class BuilderAppModule: BuilderModule
     {
       mp_Coordinator->setHomeModule();
 
-      // to update pluggable signatures at app start
-      FunctionSignatureRegistry::getInstance();
+      FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }
 
     Gtk::Window& composeAndGetAsWindow()

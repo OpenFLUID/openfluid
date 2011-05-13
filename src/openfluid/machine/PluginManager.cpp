@@ -56,7 +56,6 @@
 
 #include <openfluid/config.hpp>
 
-#include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/base/OFException.hpp>
@@ -107,7 +106,13 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
   std::string PluginFile = openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
   ModelItemInstance* Plug = NULL;
 
-  DynamicLib *PlugLib = new DynamicLib(PluginFile);
+  if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
+  {
+    m_LoadedPlugins[PluginFilename] = new DynamicLib(PluginFile);
+  }
+
+  DynamicLib* PlugLib = m_LoadedPlugins[PluginFilename];
+
 
   // library loading
   if (PluginFile.length()>0 && PlugLib->load())
@@ -180,7 +185,13 @@ SignatureItemInstance* PluginManager::getSignatureFromPlugin(std::string PluginF
   std::string PluginFile = openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
   SignatureItemInstance* Plug = NULL;
 
-  DynamicLib *PlugLib = new DynamicLib(PluginFile);
+  if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
+  {
+    m_LoadedPlugins[PluginFilename] = new DynamicLib(PluginFile);
+  }
+
+
+  DynamicLib* PlugLib = m_LoadedPlugins[PluginFilename];
 
   // library loading
   if (PluginFile.length()>0 && PlugLib->load())
@@ -286,6 +297,26 @@ ModelItemInstance* PluginManager::getPlugin(std::string PluginName)
 
   return NULL;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluginManager::unloadAllPlugins()
+{
+  std::map<std::string,DynamicLib*>::iterator it;
+
+  for (it=m_LoadedPlugins.begin();it != m_LoadedPlugins.end(); ++it)
+  {
+    delete (it->second);
+  }
+
+  m_LoadedPlugins.clear();
+}
+
+// =====================================================================
+// =====================================================================
 
 
 } } //namespaces

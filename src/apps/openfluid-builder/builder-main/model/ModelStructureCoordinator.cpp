@@ -63,6 +63,10 @@
 #include "ModelFctParamsModel.hpp"
 #include "BuilderListToolBox.hpp"
 #include "ModelAddFunctionModule.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/config.hpp>
+
+#include <glibmm/i18n.h>
 
 // =====================================================================
 // =====================================================================
@@ -104,14 +108,23 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
   if (Signature)
   {
-    openfluid::machine::ModelItemInstance* Item =
-        m_StructureModel.appendFunction(*Signature);
+    openfluid::machine::ModelItemInstance* Item = 0;
+    try
+    {
+      Item = m_StructureModel.appendFunction(*Signature);
+    } catch (openfluid::base::OFException e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
+    }
 
-    updateStructureListToolBox();
+    if (Item)
+    {
+      updateStructureListToolBox();
 
-    createModelFctParamsComponent(Item);
+      createModelFctParamsComponent(Item);
 
-    m_signal_ModelChanged.emit();
+      m_signal_ModelChanged.emit();
+    }
   }
 }
 
@@ -121,12 +134,14 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
 void ModelStructureCoordinator::whenRemoveFctAsked()
 {
-  openfluid::machine::SignatureItemInstance* CurrentSelectionSignature = m_StructureModel.getCurrentSelectionSignature();
+  openfluid::machine::SignatureItemInstance* CurrentSelectionSignature =
+      m_StructureModel.getCurrentSelectionSignature();
 
-  if(!CurrentSelectionSignature)
+  if (!CurrentSelectionSignature)
     return;
 
-  eraseModelFctParamsComponent(CurrentSelectionSignature);
+  //  eraseModelFctParamsComponent(CurrentSelectionSignature);
+  eraseModelFctParamsComponent(CurrentSelectionSignature->Signature->ID);
 
   m_StructureModel.removeFunctionAt(m_StructureModel.getCurrentSelection());
   updateStructureListToolBox();
@@ -187,6 +202,87 @@ void ModelStructureCoordinator::whenGlobalParamUnset(std::string ParamName)
 // =====================================================================
 // =====================================================================
 
+void ModelStructureCoordinator::whenFileMonitorEventChanged(std::string /*FunctionId*/)
+{
+  //  whenReloadPluginsAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::whenReloadPluginsAsked()
+{
+  try
+  {
+    FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+    mp_AddFctModule->setSignatures(*FunctionSignatureRegistry::getInstance());
+
+    typedef std::vector<
+        std::pair<std::string, openfluid::core::FuncParamsMap_t> > TempItems_t;
+    TempItems_t TempItems;
+
+    std::list<openfluid::machine::ModelItemInstance*> ModelItems =
+        mp_ModelInstance->getItems();
+    std::list<openfluid::machine::ModelItemInstance*>::iterator it;
+    for (it = ModelItems.begin(); it != ModelItems.end(); ++it)
+    {
+      TempItems.push_back(std::make_pair((*it)->Signature->ID, (*it)->Params));
+    }
+
+    int n = TempItems.size();
+    for (int i = 0; i < n; i++)
+    {
+      eraseModelFctParamsComponent(TempItems[i].first);
+
+      m_StructureModel.removeFunctionAt(0);
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+      openfluid::machine::SignatureItemInstance
+          * Signature =
+              openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
+                  TempItems[i].first + openfluid::config::PLUGINS_EXT);
+
+      if (Signature)
+      {
+        Signature->ItemType
+            = openfluid::base::ModelItemDescriptor::PluggedFunction;
+        openfluid::machine::ModelItemInstance* Item =
+            m_StructureModel.appendFunction(*Signature);
+        if (Item)
+        {
+          Item->Params = TempItems[i].second;
+          createModelFctParamsComponent(Item);
+        } else
+        {
+          openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+              Glib::ustring::compose(
+                  "Unable to create function %1,\nit will be ignored.",
+                  TempItems[i].first));
+        }
+      } else
+        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+            Glib::ustring::compose(
+                "Unable to load plugin %1,\nit will be ignored.",
+                TempItems[i].first));
+    }
+
+    m_signal_ModelChanged.emit();
+
+  } catch (openfluid::base::OFException e)
+  {
+    std::cerr << "ModelStructureCoordinator::whenReloadPluginsAsked : "
+        << e.what() << std::endl;
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 ModelStructureCoordinator::ModelStructureCoordinator(
     ModelFctDetailModel& FctDetailModel, ModelStructureModel& StructureModel,
@@ -200,6 +296,9 @@ ModelStructureCoordinator::ModelStructureCoordinator(
 
   m_StructureModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(
       *this, &ModelStructureCoordinator::whenStructureFctSelectionChanged));
+
+  m_StructureModel.signal_FileMonitorEventChanged().connect(sigc::mem_fun(
+      *this, &ModelStructureCoordinator::whenFileMonitorEventChanged));
 
   m_StructureListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenAddFctAsked));
@@ -219,6 +318,23 @@ ModelStructureCoordinator::ModelStructureCoordinator(
 
   mp_AddFctModule = new ModelAddFunctionModule();
 
+  mp_AddFctModule->signal_ReloadPluginsAsked().connect(sigc::mem_fun(*this,
+      &ModelStructureCoordinator::whenReloadPluginsAsked));
+
+  std::vector<std::string> PluginPaths =
+      openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+
+  //TODO think of get changes of pluginpaths from preferences
+  for (unsigned int i = 0; i < PluginPaths.size(); i++)
+  {
+    Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
+        PluginPaths[i]);
+    Glib::RefPtr<Gio::FileMonitor> DirMonitor = ItemFile->monitor_directory();
+    DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
+        &ModelStructureCoordinator::onDirMonitorChanged));
+
+    m_DirMonitors.push_back(DirMonitor);
+  }
 }
 
 // =====================================================================
@@ -318,13 +434,13 @@ void ModelStructureCoordinator::createModelFctParamsComponent(
 // =====================================================================
 
 
+//void ModelStructureCoordinator::eraseModelFctParamsComponent(
+//    openfluid::machine::SignatureItemInstance* Signature)
 void ModelStructureCoordinator::eraseModelFctParamsComponent(
-    openfluid::machine::SignatureItemInstance* Signature)
+    std::string FunctionId)
 {
-  std::string FctName = Signature->Signature->ID;
-
-  m_ParamsPanel.removeAPage(FctName);
-  m_ByNameFctParamsComponents.erase(FctName);
+  m_ParamsPanel.removeAPage(FunctionId);
+  m_ByNameFctParamsComponents.erase(FunctionId);
 }
 
 // =====================================================================
@@ -342,4 +458,25 @@ void ModelStructureCoordinator::whenRequiredFileChanged()
 void ModelStructureCoordinator::whenParamsChanged()
 {
   m_signal_ModelChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureCoordinator::onDirMonitorChanged(const Glib::RefPtr<
+    Gio::File>& File, const Glib::RefPtr<Gio::File>& /*OtherFile*/,
+    Gio::FileMonitorEvent EventType)
+{
+  if (EventType == Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+    return;
+
+  std::string Msg = Glib::ustring::compose(_(
+      "Changes occur in %1.\nDo you want to reload the plugin list ?\n"
+      "(if not, it's at your own risks, think of reload manually)"),
+      File->get_path());
+
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+      Msg))
+    whenReloadPluginsAsked();
 }

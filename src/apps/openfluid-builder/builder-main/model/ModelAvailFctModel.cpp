@@ -85,6 +85,15 @@ sigc::signal<void> ModelAvailFctModelImpl::signal_SelectedSignatureChanged()
 // =====================================================================
 
 
+sigc::signal<void> ModelAvailFctModelImpl::signal_ReloadPluginsAsked()
+{
+  return m_signal_ReloadPluginsAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelAvailFctModelImpl::setSignatures(
     FunctionSignatureRegistry& Signatures)
 {
@@ -136,6 +145,5 @@ bool ModelAvailFctModelImpl::isASignatureSelected()
 
 void ModelAvailFctModelImpl::reloadSignatures()
 {
-  FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
-  setSignatures(*FunctionSignatureRegistry::getInstance());
+  m_signal_ReloadPluginsAsked.emit();
 }

@@ -74,12 +74,24 @@ void ModelAddFunctionCoordinator::whenAvailFctSelectionChanged()
 // =====================================================================
 
 
+void ModelAddFunctionCoordinator::whenReloadPluginsAsked()
+{
+  m_signal_ReloadPluginsAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 ModelAddFunctionCoordinator::ModelAddFunctionCoordinator(
     ModelAvailFctModel& AvailFctModel, ModelFctDetailModel& FctDetailModel) :
   m_AvailFctModel(AvailFctModel), m_FctDetailModel(FctDetailModel)
 {
   m_AvailFctModel.signal_SelectedSignatureChanged().connect(sigc::mem_fun(
       *this, &ModelAddFunctionCoordinator::whenAvailFctSelectionChanged));
+
+  m_AvailFctModel.signal_ReloadPluginsAsked().connect(sigc::mem_fun(*this,
+      &ModelAddFunctionCoordinator::whenReloadPluginsAsked));
 
   setSignatures(*FunctionSignatureRegistry::getInstance());
 }
@@ -110,4 +122,13 @@ openfluid::machine::SignatureItemInstance* ModelAddFunctionCoordinator::getSelec
 sigc::signal<void> ModelAddFunctionCoordinator::signal_AvailFctSelectionChanged()
 {
   return m_signal_AvailFctSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelAddFunctionCoordinator::signal_ReloadPluginsAsked()
+{
+  return m_signal_ReloadPluginsAsked;
 }

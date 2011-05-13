@@ -50,8 +50,8 @@
 
 #include <sigc++/sigc++.h>
 
-//#include <giomm/file.h>
-//#include <giomm/filemonitor.h>
+#include <giomm/file.h>
+#include <giomm/filemonitor.h>
 
 #include <openfluid/machine.hpp>
 
@@ -64,6 +64,8 @@ class ModelStructureModel
     virtual sigc::signal<void> signal_FromAppModelChanged() = 0;
 
     virtual sigc::signal<void> signal_FromAppSelectionRequested() = 0;
+
+    virtual sigc::signal<void, std::string> signal_FileMonitorEventChanged() = 0;
 
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
@@ -82,8 +84,9 @@ class ModelStructureModel
 
     virtual void moveTowardTheEnd() = 0;
 
-    /* Remove the element at Position, position starting from 0; */
-    virtual void removeFunctionAt(int Position) = 0;
+    /* Remove the element at Position, position starting from 0;
+     * Returns the Id of the removed function*/
+    virtual std::string removeFunctionAt(int Position) = 0;
 
     virtual void setCurrentSelectionByUserAt(int Position) = 0;
 
@@ -102,7 +105,12 @@ class ModelStructureModel
 
     virtual void update() = 0;
 
-    virtual ~ModelStructureModel(){};
+    virtual ~ModelStructureModel()
+    {
+    }
+    ;
+
+    virtual int getPositionOfFunction(std::string FunctionId) = 0;
 
 };
 
@@ -116,6 +124,8 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     sigc::signal<void> m_signal_FromAppSelectionRequested;
 
+    sigc::signal<void, std::string> m_signal_FileMonitorEventChanged;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
     openfluid::core::CoreRepository* mp_CoreRepos;
@@ -124,7 +134,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int m_AppRequestedSelection;
 
-//    std::map<std::string, Glib::RefPtr<Gio::FileMonitor> > m_ItemMonitors;
+    std::map<std::string, Glib::RefPtr<Gio::FileMonitor> > m_ItemMonitors;
 
     bool isModelInstance();
 
@@ -134,9 +144,9 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int getLastPosition();
 
-//    void onItemMonitorChanged(const Glib::RefPtr<Gio::File>& File,
-//        const Glib::RefPtr<Gio::File>& OtherFile,
-//        Gio::FileMonitorEvent EventType, std::string FunctionId);
+    void onItemMonitorChanged(const Glib::RefPtr<Gio::File>& File,
+        const Glib::RefPtr<Gio::File>& OtherFile,
+        Gio::FileMonitorEvent EventType, std::string FunctionId);
 
   public:
 
@@ -149,6 +159,8 @@ class ModelStructureModelImpl: public ModelStructureModel
     sigc::signal<void> signal_FromAppModelChanged();
 
     sigc::signal<void> signal_FromAppSelectionRequested();
+
+    sigc::signal<void, std::string> signal_FileMonitorEventChanged();
 
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance,
@@ -165,7 +177,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     void moveTowardTheEnd();
 
-    void removeFunctionAt(int Position);
+    std::string removeFunctionAt(int Position);
 
     void setCurrentSelectionByUserAt(int Position);
 
@@ -182,6 +194,8 @@ class ModelStructureModelImpl: public ModelStructureModel
     int getAppRequestedSelection();
 
     void update();
+
+    int getPositionOfFunction(std::string FunctionId);
 
 };
 

@@ -60,6 +60,8 @@
 
 #include <openfluid/machine.hpp>
 
+#include "FunctionSignatureRegistry.hpp"
+
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
 
@@ -83,6 +85,8 @@ class ModelAddFunctionModule
 
     sigc::signal<void> m_signal_ModelFunctionAdded;
 
+    sigc::signal<void> m_signal_ReloadPluginsAsked;
+
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
@@ -99,10 +103,16 @@ class ModelAddFunctionModule
 
     sigc::signal<void> signal_ModelFunctionAdded();
 
+    sigc::signal<void> signal_ReloadPluginsAsked();
+
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
 
     openfluid::machine::SignatureItemInstance* showDialog();
+
+    void setSignatures(FunctionSignatureRegistry& Signatures);
+
+    void whenReloadPluginsAsked();
 
 };
 
