@@ -113,7 +113,7 @@ bool DomainUnitCreationModelImpl::checkUnitInfo()
 void DomainUnitCreationModelImpl::createUnit()
 {
   mp_Unit = new openfluid::core::Unit(m_ClassName, m_Id, 1,
-      openfluid::core::Unit::SIMULATION);
+      openfluid::core::Unit::DESCRIPTOR);
 }
 
 DomainUnitCreationModelImpl::DomainUnitCreationModelImpl()
