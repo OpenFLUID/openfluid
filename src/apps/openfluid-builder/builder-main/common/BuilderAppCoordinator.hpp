@@ -88,6 +88,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenQuitAsked();
 
+    bool whenMainWindowCloseAsked(GdkEventAny* Event);
+
     void whenRunAsked();
 
     void whenMarketAsked();

@@ -132,6 +132,17 @@ void BuilderAppCoordinator::whenQuitAsked()
   mp_CurrentState->whenQuitAsked();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool BuilderAppCoordinator::whenMainWindowCloseAsked(GdkEventAny* /*Event*/)
+{
+  whenQuitAsked();
+  return true;
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -265,12 +276,14 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getMapViewAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenMapViewAsked));
 
+  m_MainWindow.signal_delete_event().connect(sigc::mem_fun(*this,
+      &BuilderAppCoordinator::whenMainWindowCloseAsked));
+
   setState(*mp_HomeState);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::setState(BuilderAppState& State)
 {
