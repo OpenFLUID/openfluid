@@ -342,23 +342,26 @@ void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository& CoreD
 
         for (itEvents = Events->begin();itEvents != Events->end();++itEvents)
         {
-          openfluid::core::Event::EventInfosMap_t Infos = (*itEvents)->getInfos();
-          openfluid::core::Event::EventInfosMap_t::iterator itInfos;
-
-
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<event unitclass=\"" << (*itAllUnits)->getClass() << "\" " <<
-              "unitID=\"" << (*itAllUnits)->getID() << "\" " <<
-              "date=\"" << (*itEvents)->getDateTime().getAsISOString() << "\">\n";
-
-          for (itInfos = Infos.begin();itInfos != Infos.end();++itInfos)
+          if((*itEvents)->getInstantiationType() == m_InstType)
           {
-            Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr;
-            Contents << "<info key=\"" << itInfos->first << "\" value=\"" << itInfos->second << "\" />\n";
+            openfluid::core::Event::EventInfosMap_t Infos = (*itEvents)->getInfos();
+            openfluid::core::Event::EventInfosMap_t::iterator itInfos;
+
+
+            Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<event unitclass=\"" << (*itAllUnits)->getClass() << "\" " <<
+                "unitID=\"" << (*itAllUnits)->getID() << "\" " <<
+                "date=\"" << (*itEvents)->getDateTime().getAsISOString() << "\">\n";
+
+            for (itInfos = Infos.begin();itInfos != Infos.end();++itInfos)
+            {
+              Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr;
+              Contents << "<info key=\"" << itInfos->first << "\" value=\"" << itInfos->second << "\" />\n";
+            }
+
+            Contents << m_IndentStr << m_IndentStr << m_IndentStr <<"</event>\n";
           }
 
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr <<"</event>\n";
         }
-
 
       }
     }
