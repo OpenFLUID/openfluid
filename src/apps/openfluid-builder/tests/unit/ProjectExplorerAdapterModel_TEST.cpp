@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(test_updateResults)
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),0);
 
-  mp_AdapterModel->updateResults();
+  mp_AdapterModel->updateResults(false);
 
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),2);
