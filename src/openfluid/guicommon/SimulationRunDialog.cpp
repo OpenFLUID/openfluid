@@ -238,29 +238,35 @@ void SimulationRunDialog::runSimulation()
 
     mp_Engine->saveReports();
 
+    m_SimulationCompleted = true;
+
   }
   catch (openfluid::base::OFException& E)
   {
     DialogBoxFactory::showSimpleErrorMessage(_("OpenFLUID error: ") + std::string(E.what()));
+    m_SimulationCompleted = false;
     hide();
   }
   catch (std::bad_alloc& E)
   {
     DialogBoxFactory::showSimpleErrorMessage(_("Memory allocation error: ") + std::string(E.what()));
+    m_SimulationCompleted = false;
     hide();
   }
   catch (std::exception& E)
   {
     DialogBoxFactory::showSimpleErrorMessage(_("System error: ") + std::string(E.what()));
+    m_SimulationCompleted = false;
     hide();
   }
   catch (...)
   {
     DialogBoxFactory::showSimpleErrorMessage(_("Undetermined error."));
+    m_SimulationCompleted = false;
     hide();
   }
 
-  m_SimulationCompleted = true;
+//  m_SimulationCompleted = true;
 
 }
 

@@ -70,6 +70,7 @@ class ProjectExplorerColumns: public Gtk::TreeModel::ColumnRecord
       add(m_Display);
       add(m_Category);
       add(m_Weight);
+      add(m_Color);
     }
 
     Gtk::TreeModelColumn<std::string> m_Id;
@@ -79,6 +80,8 @@ class ProjectExplorerColumns: public Gtk::TreeModel::ColumnRecord
     Gtk::TreeModelColumn<ProjectExplorerCategories::ProjectExplorerCategory> m_Category;
 
     Gtk::TreeModelColumn<int> m_Weight;
+
+    Gtk::TreeModelColumn<std::string> m_Color;
 
 };
 

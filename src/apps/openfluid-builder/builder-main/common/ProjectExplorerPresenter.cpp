@@ -120,9 +120,9 @@ void ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked()
 // =====================================================================
 
 
-void ProjectExplorerPresenter::whenFromAppUpdateResultsAsked()
+void ProjectExplorerPresenter::whenFromAppUpdateResultsAsked(bool WithWarningState)
 {
-  m_Adapter.updateResults();
+  m_Adapter.updateResults(WithWarningState);
 }
 
 // =====================================================================

@@ -76,7 +76,7 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
     ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
     ProjectDashboard& TheProjectDashboard) :
   m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
-      TheEngineProject), m_ProjectDashboard(TheProjectDashboard)
+      TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(false)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
@@ -283,6 +283,8 @@ std::string ProjectCoordinator::constructSetPageName(std::string SetName)
 
 void ProjectCoordinator::whenModelChanged()
 {
+  updateResults();
+
   m_ExplorerModel.updateModelAsked();
 
   updateWorkspaceModules();
@@ -329,8 +331,21 @@ void ProjectCoordinator::checkProject()
 
 void ProjectCoordinator::updateResults()
 {
-  m_ExplorerModel.updateResultsAsked();
+  if(m_HasRun)
+    m_ExplorerModel.updateResultsAsked(true);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenRunHappened()
+{
+  m_HasRun = true;
+  m_ExplorerModel.updateResultsAsked(false);
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -338,7 +353,7 @@ void ProjectCoordinator::updateResults()
 
 void ProjectCoordinator::whenDomainChanged()
 {
-  m_ExplorerModel.updateResultsAsked();
+  updateResults();
   m_ExplorerModel.updateDomainAsked();
 
   std::vector<std::string> PagesToDelete = getClassPagesToDelete();
@@ -396,6 +411,8 @@ void ProjectCoordinator::whenClassChanged()
 
 void ProjectCoordinator::whenRunChanged()
 {
+  updateResults();
+
   m_ExplorerModel.updateSimulationAsked();
 
   updateWorkspaceModules();
@@ -409,7 +426,7 @@ void ProjectCoordinator::whenRunChanged()
 
 void ProjectCoordinator::whenOutChanged()
 {
-  m_ExplorerModel.updateResultsAsked();
+  updateResults();
 
   std::vector<std::string> PagesToDelete = getSetPagesToDelete();
   BOOST_FOREACH(std::string PageToDelete,PagesToDelete)

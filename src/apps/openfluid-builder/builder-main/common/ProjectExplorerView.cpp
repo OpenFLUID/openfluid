@@ -72,6 +72,10 @@ ProjectExplorerViewImpl::ProjectExplorerViewImpl() :
       ((Gtk::CellRendererText*) mp_TreeView->get_column_cell_renderer(0))->property_weight(),
       m_Columns.m_Weight);
 
+  mp_TreeView->get_column(0)->add_attribute(
+        ((Gtk::CellRendererText*) mp_TreeView->get_column_cell_renderer(0))->property_foreground(),
+        m_Columns.m_Color);
+
   mp_TreeView->set_visible(true);
 
   mp_TreeView->signal_row_activated().connect(sigc::mem_fun(*this,

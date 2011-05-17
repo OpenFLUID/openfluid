@@ -129,7 +129,7 @@ void BuilderProjectWithExplorer::whenSaveHappened()
 
 void BuilderProjectWithExplorer::whenRunHappened()
 {
-  mp_Coordinator->updateResults();
+  mp_Coordinator->whenRunHappened();
 }
 
 // =====================================================================

@@ -79,7 +79,7 @@ class ProjectExplorerModel
 
     virtual sigc::signal<void> signal_UpdateSimulationAsked() = 0;
 
-    virtual sigc::signal<void> signal_UpdateResultsAsked() = 0;
+    virtual sigc::signal<void,bool> signal_UpdateResultsAsked() = 0;
 
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
@@ -91,7 +91,7 @@ class ProjectExplorerModel
 
     virtual void updateSimulationAsked() = 0;
 
-    virtual void updateResultsAsked() = 0;
+    virtual void updateResultsAsked(bool WithWarningState) = 0;
 
     virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
 
@@ -124,7 +124,7 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     sigc::signal<void> m_signal_UpdateSimulationAsked;
 
-    sigc::signal<void> m_signal_UpdateResultsAsked;
+    sigc::signal<void,bool> m_signal_UpdateResultsAsked;
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
@@ -147,7 +147,7 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     sigc::signal<void> signal_UpdateSimulationAsked();
 
-    sigc::signal<void> signal_UpdateResultsAsked();
+    sigc::signal<void,bool> signal_UpdateResultsAsked();
 
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
@@ -159,7 +159,7 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     void updateSimulationAsked();
 
-    void updateResultsAsked();
+    void updateResultsAsked(bool WithWarningState);
 
     openfluid::machine::ModelInstance* getModelInstance();
 

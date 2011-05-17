@@ -95,7 +95,7 @@ class ProjectExplorerAdapter: public sigc::trackable
 
     void updateSimulation();
 
-    void updateResults();
+    void updateResults(bool WithWarningState);
 
 };
 

@@ -246,31 +246,43 @@ void ProjectExplorerAdapterModelImpl::updateRunInfo()
 // =====================================================================
 
 
-void ProjectExplorerAdapterModelImpl::updateResults()
+void ProjectExplorerAdapterModelImpl::updateResults(bool WithWarningState)
 {
-  if (mp_SimBlob)
+  if (WithWarningState)
   {
-    mref_TreeModel->clearChildrenOfRowRef(*mp_ResultsRowRef);
+    Gtk::TreeModel::Children ChildrenRows = mref_TreeModel->getRowFromRowRef(
+        *mp_ResultsRowRef).children();
 
-    BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
-{    BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
+    for (unsigned int i = 0; i < ChildrenRows.size(); i++)
     {
-      std::string SetName = SetDesc.getName();
-      std::string ClassName = SetDesc.getUnitsClass();
-      int UnitsCount = 0;
+      ChildrenRows[i][m_Columns.m_Color] = "red";
+    }
+  } else
+  {
+    if (mp_SimBlob)
+    {
+      mref_TreeModel->clearChildrenOfRowRef(*mp_ResultsRowRef);
 
-      if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
+      BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
+{      BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
       {
-        Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
+        std::string SetName = SetDesc.getName();
+        std::string ClassName = SetDesc.getUnitsClass();
+        int UnitsCount = 0;
 
-        if(SetDesc.isAllUnits())
+        if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
+        {
+          Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
+
+          if(SetDesc.isAllUnits())
           UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
-        else
+          else
           UnitsCount = SetDesc.getUnitsIDs().size();
 
-        Row[m_Columns.m_Id] = SetName;
-        Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
-        Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
+          Row[m_Columns.m_Id] = SetName;
+          Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
+          Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
+        }
       }
     }
   }

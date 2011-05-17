@@ -284,7 +284,9 @@ void EngineProject::run()
 
   mp_ModelInstance->resetInitialized();
 
-  m_signal_RunHappened.emit();
+  if(RunDialog.isSimulationCompleted())
+    m_signal_RunHappened.emit();
+
 }
 
 // =====================================================================

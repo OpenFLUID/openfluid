@@ -134,9 +134,9 @@ void ProjectExplorerAdapter::updateSimulation()
 // =====================================================================
 
 
-void ProjectExplorerAdapter::updateResults()
+void ProjectExplorerAdapter::updateResults(bool WithWarningState)
 {
-  m_Model.updateResults();
+  m_Model.updateResults(WithWarningState);
   m_View.setTreeModel(m_Model.getTreeModel());
 }
 

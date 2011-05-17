@@ -88,6 +88,8 @@ class ProjectCoordinator
 
     std::vector<std::string> m_SetPageNames;
 
+    bool m_HasRun;
+
     void whenActivationChanged();
 
     void whenDomainChanged();
@@ -101,6 +103,8 @@ class ProjectCoordinator
     void whenResultsChanged();
 
     void whenPageRemoved(std::string RemovedPageName);
+
+    void updateResults();
 
     void updateWorkspaceModules();
 
@@ -130,7 +134,7 @@ class ProjectCoordinator
 
     void checkProject();
 
-    void updateResults();
+    void whenRunHappened();
 
 };
 
