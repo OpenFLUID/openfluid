@@ -196,23 +196,27 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
             Precision), ScalarValue);
 
         Row[*mp_Columns->getColumnWithTitle(VarName)] = ValueStr;
-      } else if (Unit->getVectorVariables()->getValue(VarName, Step,
-          &VectorValue))
+      } else
       {
-        if (VectorValue.getSize() != 0)
-          ValueStr = Glib::ustring::format(std::fixed, std::setprecision(
-              Precision), VectorValue[0]);
+        std::string VectVarName = openfluid::tools::GetVectorNamedVariableName(VarName);
 
-        for (unsigned int i = 1; i < VectorValue.getSize(); i++)
+        if (Unit->getVectorVariables()->getValue(VectVarName, Step, &VectorValue))
         {
-          Glib::ustring ValueStrNew = Glib::ustring::format(std::fixed,
-              std::setprecision(Precision), VectorValue[i]);
+          if (VectorValue.getSize() != 0)
+            ValueStr = Glib::ustring::format(std::fixed, std::setprecision(
+                Precision), VectorValue[0]);
 
-          ValueStr = Glib::ustring::compose("%1%2%3", ValueStr, "\t ",
-              ValueStrNew);
+          for (unsigned int i = 1; i < VectorValue.getSize(); i++)
+          {
+            Glib::ustring ValueStrNew = Glib::ustring::format(std::fixed,
+                std::setprecision(Precision), VectorValue[i]);
+
+            ValueStr = Glib::ustring::compose("%1%2%3", ValueStr, " ; ",
+                ValueStrNew);
+          }
+
+          Row[*mp_Columns->getColumnWithTitle(VarName)] = ValueStr;
         }
-
-        Row[*mp_Columns->getColumnWithTitle(VarName)] = ValueStr;
       }
     }
 
