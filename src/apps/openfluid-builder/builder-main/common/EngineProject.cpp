@@ -66,7 +66,7 @@
 // =====================================================================
 
 
-EngineProject::EngineProject(std::string FolderIn, bool WithProjectManager) :
+EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   m_WithProjectManager(WithProjectManager), FXReader(0)
 {
   std::string Now = boost::posix_time::to_iso_extended_string(

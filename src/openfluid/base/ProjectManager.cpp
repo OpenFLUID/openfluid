@@ -102,7 +102,7 @@ ProjectManager* ProjectManager::getInstance()
 // =====================================================================
 
 
-bool ProjectManager::open(const std::string& Path)
+bool ProjectManager::open(const Glib::ustring& Path)
 {
   try
   {
@@ -140,43 +140,46 @@ bool ProjectManager::open(const std::string& Path)
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::string ProjectManager::getFilePathFromProjectPath(std::string ProjectPath)
+std::string ProjectManager::getFilePathFromProjectPath(
+    Glib::ustring ProjectPath)
 {
-  return boost::filesystem::path(ProjectPath + "/"
-      + openfluid::config::PROJECT_FILE).string();
+  return Glib::ustring::compose("%1/%2", ProjectPath,
+      openfluid::config::PROJECT_FILE);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-std::string ProjectManager::getInputDirFromProjectPath(std::string ProjectPath)
+std::string ProjectManager::getInputDirFromProjectPath(
+    Glib::ustring ProjectPath)
 {
-  return boost::filesystem::path(ProjectPath + "/"
-      + openfluid::config::PROJECT_INPUTDIR).string();
+  return Glib::ustring::compose("%1/%2", ProjectPath,
+      openfluid::config::PROJECT_INPUTDIR);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-std::string ProjectManager::getOuputDirFromProjectPath(std::string ProjectPath)
+std::string ProjectManager::getOuputDirFromProjectPath(
+    Glib::ustring ProjectPath)
 {
-  return boost::filesystem::path(ProjectPath + "/"
-      + openfluid::config::PROJECT_OUTPUTDIRPREFIX).string();
+  return Glib::ustring::compose("%1/%2", ProjectPath,
+      openfluid::config::PROJECT_OUTPUTDIRPREFIX);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-bool ProjectManager::create(const std::string& Path, const std::string& Name,
-    const std::string& Description, const std::string& Authors, const bool Inc)
+/* throws boost::filesystem::basic_filesystem_error<boost::filesystem::path> */
+bool ProjectManager::create(const Glib::ustring& Path,
+    const Glib::ustring& Name, const Glib::ustring& Description,
+    const Glib::ustring& Authors, const bool Inc)
 {
   if (boost::filesystem::create_directories(getInputDirFromProjectPath(Path)))
   {
@@ -202,7 +205,7 @@ bool ProjectManager::create(const std::string& Path, const std::string& Name,
 // =====================================================================
 
 
-std::string ProjectManager::getNow()
+Glib::ustring ProjectManager::getNow()
 {
   return boost::posix_time::to_iso_string(
       boost::posix_time::second_clock::local_time());
@@ -271,8 +274,9 @@ void ProjectManager::updateOutputDir()
 {
   if (m_IsOpened && m_IsIncOutputDir)
   {
-    std::string Now = getNow();
-    Now[8] = '-';
+    Glib::ustring Now = getNow();
+    Now.replace(8,1,"-");
+
     m_OutputDir = Glib::ustring::compose("%1_%2", getOuputDirFromProjectPath(
         m_Path), Now);
   } else
@@ -283,7 +287,7 @@ void ProjectManager::updateOutputDir()
 // =====================================================================
 
 
-bool ProjectManager::isProject(const std::string& Path)
+bool ProjectManager::isProject(const Glib::ustring& Path)
 {
   if (boost::filesystem::exists(getFilePathFromProjectPath(Path)))
   {
@@ -292,12 +296,10 @@ bool ProjectManager::isProject(const std::string& Path)
       Glib::KeyFile KFile;
       KFile.load_from_file(getFilePathFromProjectPath(Path));
       return boost::filesystem::exists(getInputDirFromProjectPath(Path));
-    }
-    catch (Glib::FileError e)
+    } catch (Glib::FileError e)
     {
       return false;
-    }
-    catch (Glib::KeyFileError e)
+    } catch (Glib::KeyFileError e)
     {
       return false;
     }

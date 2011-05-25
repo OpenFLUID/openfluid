@@ -75,8 +75,6 @@ class BuilderHomeModule: public BuilderModule
 
     ~BuilderHomeModule();
 
-    void initialize();
-
     void compose();
 
     sigc::signal<void, std::string> signal_OpenProjectAsked();

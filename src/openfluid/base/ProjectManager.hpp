@@ -59,7 +59,7 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <string>
+#include <glibmm/ustring.h>
 
 namespace openfluid { namespace base {
 
@@ -73,32 +73,32 @@ class DLLEXPORT ProjectManager
 
     static ProjectManager* mp_Singleton;
 
-    std::string m_Path;
+    Glib::ustring m_Path;
 
-    std::string m_Name;
-    std::string m_Description;
-    std::string m_Authors;
-    std::string m_CreationDate;
-    std::string m_LastModDate;
+    Glib::ustring m_Name;
+    Glib::ustring m_Description;
+    Glib::ustring m_Authors;
+    Glib::ustring m_CreationDate;
+    Glib::ustring m_LastModDate;
     bool m_IsIncOutputDir;
 
-    std::string m_OutputDir;
-    std::string m_InputDir;
+    Glib::ustring m_OutputDir;
+    Glib::ustring m_InputDir;
 
     bool m_IsOpened;
 
-    std::string m_KeyFileGroupName;
+    Glib::ustring m_KeyFileGroupName;
 
 
     ProjectManager();
 
-    std::string getNow();
+    Glib::ustring getNow();
 
-    static std::string getFilePathFromProjectPath(std::string ProjectPath);
+    static std::string getFilePathFromProjectPath(Glib::ustring ProjectPath);
 
-    static std::string getInputDirFromProjectPath(std::string ProjectPath);
+    static std::string getInputDirFromProjectPath(Glib::ustring ProjectPath);
 
-    static std::string getOuputDirFromProjectPath(std::string ProjectPath);
+    static std::string getOuputDirFromProjectPath(Glib::ustring ProjectPath);
 
   public:
 
@@ -106,40 +106,40 @@ class DLLEXPORT ProjectManager
 
     ~ProjectManager();
 
-    std::string getPath() const { return m_Path; };
+    Glib::ustring getPath() const { return m_Path; };
 
-    std::string getName() const { return m_Name; };
+    Glib::ustring getName() const { return m_Name; };
 
-    void setName(const std::string& Name) { m_Name = Name; };
+    void setName(const Glib::ustring& Name) { m_Name = Name; };
 
-    std::string getDescription() const { return m_Description; };
+    Glib::ustring getDescription() const { return m_Description; };
 
-    void setDescription(const std::string& Description) { m_Description = Description; };
+    void setDescription(const Glib::ustring& Description) { m_Description = Description; };
 
-    std::string getAuthors() const { return m_Authors; };
+    Glib::ustring getAuthors() const { return m_Authors; };
 
-    void setAuthors(const std::string& Authors) { m_Authors = Authors; };
+    void setAuthors(const Glib::ustring& Authors) { m_Authors = Authors; };
 
-    std::string getCreationDate() const { return m_CreationDate; };
+    Glib::ustring getCreationDate() const { return m_CreationDate; };
 
-    void setCreationDate(const std::string& CreationDate) { m_CreationDate = CreationDate; };
+    void setCreationDate(const Glib::ustring& CreationDate) { m_CreationDate = CreationDate; };
 
-    std::string getLastModDate() const { return m_LastModDate; };
+    Glib::ustring getLastModDate() const { return m_LastModDate; };
 
-    void setLastModDate(const std::string& LastModDate) { m_LastModDate = LastModDate; };
+    void setLastModDate(const Glib::ustring& LastModDate) { m_LastModDate = LastModDate; };
 
-    std::string getOutputDir() { return m_OutputDir; };
+    Glib::ustring getOutputDir() { return m_OutputDir; };
 
-    std::string getInputDir() const { return m_InputDir; };
+    Glib::ustring getInputDir() const { return m_InputDir; };
 
     bool isIncrementalOutputDir() const { return m_IsIncOutputDir; };
 
     void setIncrementalOutputDir(const bool Inc) { m_IsIncOutputDir = Inc; };
 
-    bool open(const std::string& Path);
+    bool open(const Glib::ustring& Path);
 
-    bool create(const std::string& Path, const std::string& Name,
-                const std::string& Description, const std::string& Authors,
+    bool create(const Glib::ustring& Path, const Glib::ustring& Name,
+                const Glib::ustring& Description, const Glib::ustring& Authors,
                 const bool Inc);
 
     bool isOpened() const { return m_IsOpened; };
@@ -148,7 +148,7 @@ class DLLEXPORT ProjectManager
 
     void close();
 
-    static bool isProject(const std::string& Path);
+    static bool isProject(const Glib::ustring& Path);
 
     void updateOutputDir();
 

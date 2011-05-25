@@ -61,15 +61,20 @@
 class BuilderModule
 {
   protected:
+
     virtual void compose() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
+
+
   public:
-    virtual void initialize() = 0;
+
     Gtk::Widget* composeAndGetAsWidget()
     {
       compose();
       return asWidget();
     }
+
     virtual ~BuilderModule(){};
 };
 

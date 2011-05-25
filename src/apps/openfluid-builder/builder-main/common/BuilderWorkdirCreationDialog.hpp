@@ -46,58 +46,45 @@
  */
 
 /**
- \file ResultsSetModule.hpp
+ \file BuilderWorkdirCreationDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __RESULTSSETMODULE_HPP__
-#define __RESULTSSETMODULE_HPP__
+#ifndef __BUILDERWORKDIRCREATIONDIALOG_HPP__
+#define __BUILDERWORKDIRCREATIONDIALOG_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/box.h>
+#include <gtkmm/filechooserbutton.h>
 
-class ResUnitChooserComponent;
-class ResViewerComponent;
-class ResultsSetCoordinator;
+#include <glibmm/ustring.h>
 
-class ResultsSetModule: public ProjectWorkspaceModule
+class BuilderWorkdirCreationDialog
 {
   private:
-    Gtk::Box* mp_MainPanel;
 
-  protected:
+    Gtk::Dialog* mp_Dialog;
 
-    ResUnitChooserComponent* mp_ResUnitChooserMVP;
-    ResViewerComponent* mp_ResViewerMVP;
-    ResultsSetCoordinator* mp_Coordinator;
+    Gtk::Label* mp_Label;
 
-    sigc::signal<void> m_signal_ResultsSetChanged;
+    Gtk::Entry* mp_Entry;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
+    Gtk::HBox* mp_FileBox;
 
-    openfluid::machine::SimulationBlob* mp_SimBlob;
+    Gtk::Button* mp_FileButton;
 
-    void compose();
-
-    Gtk::Widget* asWidget();
 
   public:
 
-    ResultsSetModule();
+    BuilderWorkdirCreationDialog();
 
-    ~ResultsSetModule();
+    bool show();
 
-    sigc::signal<void> signal_ModuleChanged();
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void setSelectedSetFromApp(std::string SetName);
-
-    void update();
-
+    void onFileButtonClicked();
 };
 
-#endif /* __RESULTSSETMODULE_HPP__ */
+#endif /* __BUILDERWORKDIRCREATIONDIALOG_HPP__ */

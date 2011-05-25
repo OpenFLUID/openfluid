@@ -93,8 +93,6 @@ class ModelStructureModule : public ProjectWorkspaceModule
 
     Gtk::Widget* asWidget();
 
-    void initialize(){};
-
     void whenModelChanged();
 
   public:

@@ -46,80 +46,111 @@
  */
 
 /**
- \file BuilderHomeModule.cpp
+ \file BuilderWorkdirCreationDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "BuilderHomeModule.hpp"
+#include "BuilderWorkdirCreationDialog.hpp"
 
-#include "HomeComponent.hpp"
-#include "HomeModel.hpp"
-#include "BuilderAppActions.hpp"
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+
+#include <glibmm/i18n.h>
+
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-BuilderHomeModule::BuilderHomeModule(BuilderAppActions& Actions)
+BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
 {
-  mp_HomeMVP = new HomeComponent(Actions);
+  mp_Dialog = new Gtk::Dialog(_("OpenFLUID working directory"), true, false);
 
-  mp_HomeMVP->signal_OpenProjectAsked().connect(sigc::mem_fun(*this,
-      &BuilderHomeModule::whenOpenProjectAsked));
+  mp_Label = Gtk::manage(new Gtk::Label(_(
+      "Choose the working directory to use for OpenFLUID Projects :")));
+
+  mp_Entry = Gtk::manage(new Gtk::Entry());
+  mp_Entry->set_activates_default(true);
+
+  mp_FileButton = Gtk::manage(new Gtk::Button(_("Change")));
+  mp_FileButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &BuilderWorkdirCreationDialog::onFileButtonClicked));
+
+  mp_FileBox = Gtk::manage(new Gtk::HBox());
+  mp_FileBox->pack_start(*mp_Entry, Gtk::PACK_EXPAND_WIDGET,5);
+  mp_FileBox->pack_start(*mp_FileButton, Gtk::PACK_SHRINK,5);
+
+  mp_Dialog->get_vbox()->pack_start(*mp_Label,Gtk::PACK_SHRINK,10);
+  mp_Dialog->get_vbox()->pack_start(*mp_FileBox,Gtk::PACK_SHRINK,10);
+
+  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+  mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+
+  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
+
+  mp_Dialog->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-BuilderHomeModule::~BuilderHomeModule()
+bool BuilderWorkdirCreationDialog::show()
 {
-  delete mp_HomeMVP;
+  mp_Entry->set_text(Glib::ustring::compose("%1/OpenFLUID-Projects",
+      Glib::get_home_dir()));
+
+  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  {
+    std::string Workdir = mp_Entry->get_text();
+
+    if (!boost::filesystem::exists(Workdir))
+    {
+      try
+      {
+        boost::filesystem::create_directory(Workdir);
+
+      } catch (boost::filesystem::basic_filesystem_error<
+          boost::filesystem::path> e)
+      {
+        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
+
+        mp_Dialog->hide();
+        return false;
+      }
+    }
+
+    openfluid::guicommon::PreferencesManager::getInstance()->setWorkdir(Workdir);
+    openfluid::guicommon::PreferencesManager::getInstance()->save();
+
+    mp_Dialog->hide();
+    return true;
+
+  }
+
+  mp_Dialog->hide();
+  return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void BuilderHomeModule::compose()
+void BuilderWorkdirCreationDialog::onFileButtonClicked()
 {
+  Gtk::FileChooserDialog Dialog(_("Choose OpenFLUID working directory"),Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
-}
+  Dialog.add_button(Gtk::Stock::OK,Gtk::RESPONSE_OK);
+  Dialog.add_button(Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL);
 
-// =====================================================================
-// =====================================================================
+  Dialog.set_current_folder(Glib::get_home_dir());
 
+  if(Dialog.run() == Gtk::RESPONSE_OK)
+    mp_Entry->set_text(Dialog.get_filename());
 
-sigc::signal<void, std::string> BuilderHomeModule::signal_OpenProjectAsked()
-{
-  return m_signal_OpenProjectAsked;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderHomeModule::whenOpenProjectAsked(std::string ProjectPath)
-{
-  m_signal_OpenProjectAsked.emit(ProjectPath);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* BuilderHomeModule::asWidget()
-{
-  return mp_HomeMVP->asWidget();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-HomeModel* BuilderHomeModule::getModel()
-{
-  return mp_HomeMVP->getModel();
 }

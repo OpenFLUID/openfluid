@@ -91,11 +91,6 @@ class DomainClassModule: public ProjectWorkspaceModule
 
     Gtk::Widget* asWidget();
 
-    void initialize()
-    {
-    }
-    ;
-
     void whenClassChanged();
 
   public:

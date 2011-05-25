@@ -120,8 +120,6 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     ~BuilderProjectWithExplorer();
 
-    void initialize() {};
-
     void runAsked();
 
     void saveAsked();

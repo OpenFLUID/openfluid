@@ -105,7 +105,7 @@ class EngineProject
 
   public:
 
-    EngineProject(std::string FolderIn = "", bool WithProjectManager = false);
+    EngineProject(Glib::ustring FolderIn = "", bool WithProjectManager = false);
 
     sigc::signal<void> signal_RunHappened();
 

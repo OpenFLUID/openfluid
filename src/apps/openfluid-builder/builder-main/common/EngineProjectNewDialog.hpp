@@ -64,7 +64,7 @@ class EngineProjectNewDialog
 
     Gtk::Dialog* mp_Dialog;
 
-    Gtk::FileChooserButton* mp_ProjectFileChooserButton;
+    Gtk::FileChooserButton* mp_WorkdirFileChooserButton;
 
     Gtk::Entry* mp_NameEntry;
 
@@ -72,15 +72,19 @@ class EngineProjectNewDialog
 
     Gtk::Entry* mp_AuthorsEntry;
 
-    Gtk::Label* mp_MsgLabel;
+    Gtk::Label* mp_InfoBarLabel;
+
+    Gtk::InfoBar* mp_InfoBar;
 
     Gtk::CheckButton* mp_ImportCheck;
 
     Gtk::FileChooserButton* mp_ImportFileChooserButton;
 
-    std::string m_ProjectFolder;
+    Glib::ustring m_Workdir;
 
-    std::string m_ImportFolder;
+    Glib::ustring m_ProjectName;
+
+    Glib::ustring m_ImportFolder;
 
     Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
 
@@ -108,6 +112,8 @@ class EngineProjectNewDialog
 
     std::string m_ProjectInputDir;
 
+    bool m_IsValid;
+
     void onProjectFolderSelectionChanged();
 
     void onImportFolderSelectionChanged();
@@ -133,6 +139,12 @@ class EngineProjectNewDialog
     void copyOnDisk(std::string FromPath);
 
     bool isHidden(std::string FileName);
+
+    void checkProject();
+
+    Glib::ustring replaceInvalidChars(Glib::ustring Str);
+
+    void reset();
 
   public:
 

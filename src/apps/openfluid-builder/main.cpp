@@ -76,18 +76,26 @@ int main(int argc, char** argv)
 
       if (PrefLang != "")
       {
-        Glib::ustring Language =
-            Glib::ustring::compose("LANGUAGE=%1", PrefLang);
-        Glib::ustring Lang = Glib::ustring::compose("LANG=%1", PrefLang);
+        try
+        {
+          std::locale::global(std::locale(PrefLang.c_str()));
 
-        char* LanguageC = const_cast<char*> (Language.c_str());
-        char* LangC = const_cast<char*> (Lang.c_str());
+          Glib::ustring Language = Glib::ustring::compose("LANGUAGE=%1",
+              PrefLang);
+          Glib::ustring Lang = Glib::ustring::compose("LANG=%1", PrefLang);
 
-        putenv(LanguageC);
-        putenv(LangC);
+          char* LanguageC = const_cast<char*> (Language.c_str());
+          char* LangC = const_cast<char*> (Lang.c_str());
+
+          putenv(LanguageC);
+          putenv(LangC);
+
+        } catch (std::runtime_error const& e)
+        {
+          std::locale::global(std::locale::classic());
+        }
       }
 
-      setlocale(LC_ALL, "");
       bindtextdomain(BUILDER_NLS_PACKAGE, BUILDER_NLS_LOCALEDIR);
       bind_textdomain_codeset(BUILDER_NLS_PACKAGE, "UTF-8");
       textdomain(BUILDER_NLS_PACKAGE);
@@ -96,12 +104,13 @@ int main(int argc, char** argv)
     BuilderGtkInit GtkInitObjet(argc, argv);
 
     BuilderAppModule AppModule;
-    AppModule.initialize();
-
-    GtkInitObjet.run(AppModule.composeAndGetAsWindow());
+    if (AppModule.initialize())
+      GtkInitObjet.run(AppModule.composeAndGetAsWindow());
+    else
+      return -1;
 
   }
-  /* catch (openfluid::base::OFException & E) // pass it in Project Coordinator
+  /* catch (openfluid::base::OFException & E) // TODO pass it in Project Coordinator
    {
    std::cerr << "ERROR: " << E.what() << std::endl;
    } */

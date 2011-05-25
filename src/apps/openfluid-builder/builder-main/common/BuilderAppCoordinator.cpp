@@ -91,7 +91,6 @@ void BuilderAppCoordinator::setCurrentModule(BuilderModule* Module)
 {
   unsetCurrentModule();
   mp_CurrentModule = Module;
-  mp_CurrentModule->initialize();
   m_MainWindow.setCurrentModuleWidget(
       *mp_CurrentModule->composeAndGetAsWidget());
 }

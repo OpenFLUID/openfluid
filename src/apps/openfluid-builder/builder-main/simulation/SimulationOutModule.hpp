@@ -89,11 +89,6 @@ class SimulationOutModule: public ProjectWorkspaceModule
 
     Gtk::Widget* asWidget();
 
-    void initialize()
-    {
-    }
-    ;
-
     void whenOutChanged();
 
   public:

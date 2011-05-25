@@ -80,11 +80,6 @@ class SimulationRunModule: public ProjectWorkspaceModule
 
     Gtk::Widget* asWidget();
 
-    void initialize()
-    {
-    }
-    ;
-
     void whenRunChanged();
 
   public:

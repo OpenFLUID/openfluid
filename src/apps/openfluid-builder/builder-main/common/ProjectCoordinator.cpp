@@ -145,7 +145,6 @@ void ProjectCoordinator::whenActivationChanged()
 
         Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
             &ProjectCoordinator::whenModelChanged));
-        Module->initialize();
 
         m_ModulesByPageNameMap[PageName] = Module;
         m_Workspace.appendPage(PageName, Module->composeAndGetAsWidget());
@@ -166,7 +165,6 @@ void ProjectCoordinator::whenActivationChanged()
 
         Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
             &ProjectCoordinator::whenDomainChanged));
-        Module->initialize();
 
         m_ModulesByPageNameMap[PageName] = Module;
         m_Workspace.appendPage(PageName, Module->composeAndGetAsWidget());
@@ -185,7 +183,6 @@ void ProjectCoordinator::whenActivationChanged()
 
         Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
             &ProjectCoordinator::whenClassChanged));
-        Module->initialize();
 
         ((DomainClassModule*) Module)->setSelectedClassFromApp(
             m_ExplorerModel.getActivatedElement().second);
@@ -207,7 +204,6 @@ void ProjectCoordinator::whenActivationChanged()
 
         Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
             &ProjectCoordinator::whenRunChanged));
-        Module->initialize();
 
         m_ModulesByPageNameMap[PageName] = Module;
         m_Workspace.appendPage(PageName, Module->composeAndGetAsWidget());
@@ -225,7 +221,6 @@ void ProjectCoordinator::whenActivationChanged()
 
         Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
             &ProjectCoordinator::whenOutChanged));
-        Module->initialize();
 
         m_ModulesByPageNameMap[PageName] = Module;
         m_Workspace.appendPage(PageName, Module->composeAndGetAsWidget());
@@ -241,8 +236,6 @@ void ProjectCoordinator::whenActivationChanged()
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createResultsSetModule();
-
-        Module->initialize();
 
         ((ResultsSetModule*) Module)->setSelectedSetFromApp(
             m_ExplorerModel.getActivatedElement().second);

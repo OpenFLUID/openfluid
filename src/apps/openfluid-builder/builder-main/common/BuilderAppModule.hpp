@@ -56,6 +56,9 @@
 
 #include "FunctionSignatureRegistry.hpp"
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include "BuilderWorkdirCreationDialog.hpp"
+
+#include <boost/filesystem/operations.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -99,11 +102,23 @@ class BuilderAppModule: BuilderModule
           *mp_PreferencesMVP->getModel());
     }
 
-    void initialize()
+    bool initialize()
     {
+      std::string WorkDirFromPref =
+          openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+      if (!boost::filesystem::exists(WorkDirFromPref))
+      {
+        BuilderWorkdirCreationDialog Dialog;
+        if (!Dialog.show())
+          return false;
+      }
+
       mp_Coordinator->setHomeModule();
 
       FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+      return true;
+
     }
 
     Gtk::Window& composeAndGetAsWindow()

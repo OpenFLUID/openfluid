@@ -88,11 +88,6 @@ class DomainStructureModule: public ProjectWorkspaceModule
 
     Gtk::Widget* asWidget();
 
-    void initialize()
-    {
-    }
-    ;
-
     void whenDomainChanged();
 
   public:
