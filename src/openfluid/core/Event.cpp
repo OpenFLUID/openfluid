@@ -215,13 +215,13 @@ bool Event::addInfo(std::string Key, std::string Info)
 
 void Event::println()
 {
-  std::cerr << "Date : " << m_Date.getAsISOString() << std::endl;
-  std::cerr << "Infos : " <<std::endl;
+  std::cout << "Date : " << m_Date.getAsISOString() << std::endl;
+  std::cout << "Infos : " << std::endl;
 
   EventInfosMap_t::iterator it;
   for (it = m_Infos.begin();it != m_Infos.end();++it)
   {
-    std::cerr << " - " << it->first << " = " << it->second << std::endl;
+    std::cout << " - " << it->first << " = " << it->second << std::endl;
   }
 }
 

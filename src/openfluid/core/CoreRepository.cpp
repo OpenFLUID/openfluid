@@ -411,5 +411,40 @@ void CoreRepository::clearAllData()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void CoreRepository::clearEvents(const InstantiationInfo::Type& InstType)
+{
+  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  {
+    CurrentUnit->getEvents()->clear(InstType);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CoreRepository::clearUnits(const InstantiationInfo::Type& InstType)
+{
+  UnitsPtrList_t::iterator UnitPtrIt = m_PcsOrderedUnitsGlobal.begin();
+
+  while (UnitPtrIt != m_PcsOrderedUnitsGlobal.end())
+  {
+    if ((*UnitPtrIt)->isInstantiationType(InstType))
+    {
+      deleteUnit(*(UnitPtrIt++));
+    }
+    else
+    {
+      ++UnitPtrIt;
+    }
+  }
+}
+
+
 } } // namespaces
 

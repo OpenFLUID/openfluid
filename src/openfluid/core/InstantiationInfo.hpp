@@ -80,6 +80,8 @@ class DLLEXPORT InstantiationInfo
 
     inline Type getInstantiationType() const { return m_InstType; };
 
+    inline bool isInstantiationType(const Type& InstType) { return (m_InstType == InstType); };
+
 };
 
 

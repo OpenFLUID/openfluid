@@ -151,6 +151,24 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(U->getID(),1333);
 
   BOOST_REQUIRE(Repos->getUnit("WrongClass",1) == NULL);
+
+
+  Repos->clearUnits(openfluid::core::InstantiationInfo::SIMULATION);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),250);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),7325);
+
+  Repos->clearUnits(openfluid::core::InstantiationInfo::DESCRIPTOR);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),250);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),7325);
+
+  Repos->clearUnits(openfluid::core::InstantiationInfo::UNKNOWN);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),0);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),0);
+
+  Repos->clearUnits(openfluid::core::InstantiationInfo::UNKNOWN);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),0);
+  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),0);
+
 }
 
 // =====================================================================

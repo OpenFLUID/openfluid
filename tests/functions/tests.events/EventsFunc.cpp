@@ -212,6 +212,25 @@ bool EventsFunction::initializeRun(const openfluid::base::SimulationInfo* SimInf
     }
   END_LOOP
 
+
+  BeginDate = SimInfo->getStartTime();
+
+  EndDate = SimInfo->getEndTime();
+
+//  std::cout << BeginDate.getAsISOString() << " -->" << EndDate.getAsISOString() << std::endl;
+
+  BEGIN_UNITS_ORDERED_LOOP(5,"TestUnits",aUnit)
+
+    EvColl.clear();
+    OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,&EvColl);
+
+    BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
+      if (Event->isInfoExist("addingstep")) OPENFLUID_RaiseError("tests.events","initializeRun()","unexpected event found");
+    END_LOOP
+
+  END_LOOP;
+
+
   return true;
 }
 
@@ -235,7 +254,6 @@ bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
   EndDate = SimStatus->getCurrentTime() + SimStatus->getTimeStep() -1;
 
-//  std::cout << BeginDate.getAsISOString() << " -->" << EndDate.getAsISOString() << std::endl;
 
   BEGIN_UNITS_ORDERED_LOOP(5,"TestUnits",aUnit)
 
@@ -243,11 +261,13 @@ bool EventsFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
     OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,&EvColl);
 
     BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
-      if (!(Event->isInfoEqual("when","during") &&
+//      std::cout << std::endl << "========== Unit " << aUnit->getID() << " ==========" << std::endl;
+      //Event->println();
+      if (!((Event->isInfoEqual("when","during") &&
             Event->isInfoEqual("where",double(aUnit->getID())) &&
             Event->isInfoEqual("numeric",1.15) &&
             Event->getInfoAsString("string",&Info) &&
-            Info.substr(0,4) == "EADG"))
+            Info.substr(0,4) == "EADG") || (Event->isInfoExist("addingstep"))))
         OPENFLUID_RaiseError("tests.events","runStep()","wrong event info on some TestUnit");
     END_LOOP
 

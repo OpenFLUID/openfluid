@@ -73,7 +73,7 @@ class DLLEXPORT Event;
 class DLLEXPORT EventsCollection
 {
   private:
-    std::list<Event*> m_Events;
+    std::list<Event> m_Events;
 
   public:
     EventsCollection();
@@ -96,7 +96,7 @@ class DLLEXPORT EventsCollection
     /**
       Returns the event collection as a list
     */
-    inline std::list<Event*>* getEventsList() { return &m_Events; };
+    inline std::list<Event>* getEventsList() { return &m_Events; };
 
     /**
       Returns number of events in the event collection
@@ -107,6 +107,12 @@ class DLLEXPORT EventsCollection
       Clears the event collection
     */
     void clear() { m_Events.clear(); };
+
+    /**
+      Clears the events corresponding to the given instantiation type.
+    */
+    void clear(const InstantiationInfo::Type& InstType);
+
 
     void println();
 

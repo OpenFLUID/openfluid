@@ -560,7 +560,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
     OPENFLUID_GetEvents(TU,SimStatus->getCurrentTime(),SimStatus->getCurrentTime() + SimStatus->getTimeStep(),&TheEvents);
 
-    if (TheEvents.getCount() > 0)
+    if (TheEvents.getCount() > 2)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetEvents");
 
 

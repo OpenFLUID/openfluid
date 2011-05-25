@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
 
-  openfluid::core::EventsCollection EvColl, EvColl2;
+  openfluid::core::EventsCollection EvColl, EvColl2, EvColl3;
   openfluid::core::Event* Ev;
 
   Ev = new openfluid::core::Event(openfluid::core::DateTime(1999,1,1,6,0,0));
@@ -117,11 +117,47 @@ BOOST_AUTO_TEST_CASE(check_operations)
   EvColl.getEventsBetween(openfluid::core::DateTime(2010,1,1,0,0,0),openfluid::core::DateTime(2010,12,31,23,59,59),&EvColl2);
   BOOST_REQUIRE_EQUAL(EvColl2.getCount(),1);
 
-  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front()->isInfoEqual("specialthing","wedding"),true);
-  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front()->isInfoExist("test333"),false);
+  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front().isInfoEqual("specialthing","wedding"),true);
+  BOOST_REQUIRE_EQUAL(EvColl2.getEventsList()->front().isInfoExist("test333"),false);
 
 
 
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(1999,1,1,6,0,0));
+  Ev->addInfo("test1","1");
+  Ev->addInfo("test2","2");
+  EvColl3.addEvent(Ev);
+
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(2003,2,5,6,0,0));
+  Ev->addInfo("test11","11");
+  Ev->addInfo("test22","22");
+  Ev->setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
+  EvColl3.addEvent(Ev);
+
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(2023,2,5,6,0,0));
+  Ev->addInfo("test111","111");
+  Ev->addInfo("test222","222");
+  Ev->addInfo("test333","333");
+  Ev->setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
+  EvColl3.addEvent(Ev);
+
+  Ev = new openfluid::core::Event(openfluid::core::DateTime(2010,7,31,16,30,0));
+  Ev->addInfo("specialthing","wedding");
+  Ev->setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
+  EvColl3.addEvent(Ev);
+
+  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),4);
+
+  EvColl3.clear(openfluid::core::InstantiationInfo::DESCRIPTOR);
+  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),2);
+
+  EvColl3.clear(openfluid::core::InstantiationInfo::SIMULATION);
+  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),1);
+
+  EvColl3.clear(openfluid::core::InstantiationInfo::UNKNOWN);
+  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),0);
+
+  EvColl3.clear(openfluid::core::InstantiationInfo::UNKNOWN);
+  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),0);
 }
 
 // =====================================================================

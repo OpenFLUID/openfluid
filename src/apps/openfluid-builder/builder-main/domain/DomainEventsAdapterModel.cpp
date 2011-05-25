@@ -87,16 +87,16 @@ void DomainEventsAdapterModelImpl::setUnitsColl(
       Gtk::TreeRow UnitRow = *mref_TreeModel->append();
       UnitRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1", TheUnit->getID());
 
-      std::list<openfluid::core::Event*>* Events =
+      std::list<openfluid::core::Event>* Events =
           TheUnit->getEvents()->getEventsList();
 
-      std::list<openfluid::core::Event*>::iterator itEvents;
+      std::list<openfluid::core::Event>::iterator itEvents;
       for (itEvents = Events->begin(); itEvents != Events->end(); ++itEvents)
       {
         Gtk::TreeRow EventRow = *mref_TreeModel->append(UnitRow->children());
-        EventRow[m_Columns.m_Id_Date_Info] = (*itEvents)->getDateTime().getAsISOString();
+        EventRow[m_Columns.m_Id_Date_Info] = (*itEvents).getDateTime().getAsISOString();
 
-        openfluid::core::Event::EventInfosMap_t Infos = (*itEvents)->getInfos();
+        openfluid::core::Event::EventInfosMap_t Infos = (*itEvents).getInfos();
         openfluid::core::Event::EventInfosMap_t::iterator itInfos;
 
         for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)

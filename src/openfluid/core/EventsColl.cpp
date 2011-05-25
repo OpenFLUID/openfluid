@@ -86,32 +86,32 @@ bool EventsCollection::addEvent(Event* Ev)
   // empty list
   if (m_Events.size() == 0)
   {
-    m_Events.push_back(Ev);
+    m_Events.push_back(*Ev);
   }
   else
   {
     // event date is before first collection item
-    if (m_Events.front()->getDateTime() >= Ev->getDateTime())
+    if (m_Events.front().getDateTime() >= Ev->getDateTime())
     {
-      m_Events.push_front(Ev);
+      m_Events.push_front(*Ev);
     }
     else
     {
       // event date is after last collection item
-      if (m_Events.back()->getDateTime() <= Ev->getDateTime())
+      if (m_Events.back().getDateTime() <= Ev->getDateTime())
       {
-        m_Events.push_back(Ev);
+        m_Events.push_back(*Ev);
       }
       else
       {
         // event has to be inserted somewhere in the collection
-        std::list<Event*>::iterator DEiter;
+        std::list<Event>::iterator DEiter;
 
         for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
         {
-          if ((*DEiter)->getDateTime() >= Ev->getDateTime())
+          if ((*DEiter).getDateTime() >= Ev->getDateTime())
           {
-            m_Events.insert(--DEiter,Ev);
+            m_Events.insert(--DEiter,*Ev);
             return true;
           }
         }
@@ -132,13 +132,13 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
     EventsCollection *Events)
 {
 
-  std::list<Event*>::iterator DEiter;
+  std::list<Event>::iterator DEiter;
 
   for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
   {
-    if ((*DEiter)->getDateTime().isBetween(BeginDate,EndDate))
+    if ((*DEiter).getDateTime().isBetween(BeginDate,EndDate))
     {
-      Events->addEvent(*DEiter);
+      Events->addEvent(&(*DEiter));
     }
   }
 
@@ -152,13 +152,36 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
 
 void EventsCollection::println()
 {
-  std::list<Event*>::iterator DEiter;
+  std::list<Event>::iterator DEiter;
 
     for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
     {
-      (*DEiter)->println();
+      (*DEiter).println();
     }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void EventsCollection::clear(const InstantiationInfo::Type& InstType)
+{
+  std::list<Event>::iterator EventIt = m_Events.begin();
+
+  while (EventIt != m_Events.end())
+  {
+    if ((*EventIt).isInstantiationType(InstType))
+    {
+      m_Events.erase(EventIt++);
+    }
+    else
+    {
+      ++EventIt;
+    }
+  }
+}
+
 
 
 } }  // namespaces
