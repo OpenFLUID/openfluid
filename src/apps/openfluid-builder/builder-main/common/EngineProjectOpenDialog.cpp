@@ -60,6 +60,7 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "BuilderGraphicsHelper.hpp"
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -164,9 +165,7 @@ EngineProjectOpenDialog::EngineProjectOpenDialog() :
   mp_Dialog->signal_selection_changed().connect(sigc::mem_fun(*this,
       &EngineProjectOpenDialog::onProjectFolderSelectionChanged));
 
-  //TODO set work directory from preferences
-  mp_Dialog->set_current_folder(
-      openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() + "/..");
+  mp_Dialog->set_current_folder(openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);

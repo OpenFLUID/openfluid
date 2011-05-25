@@ -76,7 +76,7 @@ BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
   mp_Entry = Gtk::manage(new Gtk::Entry());
   mp_Entry->set_activates_default(true);
 
-  mp_FileButton = Gtk::manage(new Gtk::Button(_("Change")));
+  mp_FileButton = Gtk::manage(new Gtk::Button(_("Browse...")));
   mp_FileButton->signal_clicked().connect(sigc::mem_fun(*this,
       &BuilderWorkdirCreationDialog::onFileButtonClicked));
 
@@ -91,6 +91,9 @@ BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 
   mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
+
+  mp_Dialog->set_border_width(8);
+  mp_Dialog->set_size_request(500,-1);
 
   mp_Dialog->show_all_children();
 }
