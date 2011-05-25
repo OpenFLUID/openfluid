@@ -88,6 +88,7 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_InputDir;
     std::string m_UserDataDir;
     std::string m_TempDir;
+    std::string m_HomeDir;
     std::string m_MarketBagDir;
     std::string m_MarketBagBinVersionDir;
     std::string m_MarketBagSrcVersionDir;

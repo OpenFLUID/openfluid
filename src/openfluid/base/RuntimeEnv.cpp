@@ -72,11 +72,6 @@ RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
 RuntimeEnvironment::RuntimeEnvironment() :
   m_IsLinkedToProject(false)
 {
-  char* ChTempDir = NULL;
-  char* ChHomeDir = NULL;
-  char* ChUser = NULL;
-
-  std::string HomeDir = "";
   std::string UserID = "";
 
   m_Version = openfluid::config::MAJOR_VERSION + "."
@@ -133,35 +128,12 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // ====== Default directories ======
   // UNIX:
-  //  Temp directory : using TMPDIR, TMP or TEMP env. var.
-  //  User directory for Openfluid : using HOME env. var. + .openfluid suffix
+  //  User directory for Openfluid : home dir + .openfluid subdir
   // WIN32:
-  //  Temp directory : using TEMP env. var.
-  //  User directory for Openfluid : using APPDATA env. var. + openfluid suffix
+  //  User directory for Openfluid : home dir + openfluid subdir
 
 #if defined __unix__ || defined __APPLE__
-
   char ChHostName[512];
-
-  ChTempDir = std::getenv("TMPDIR");
-  if (ChTempDir == NULL)
-    ChTempDir = std::getenv("TMP");
-  if (ChTempDir == NULL)
-    ChTempDir = std::getenv("TEMP");
-  if (ChTempDir == NULL)
-    m_TempDir = "/tmp";
-  else
-    m_TempDir = ChTempDir;
-
-  ChHomeDir = std::getenv("HOME");
-  if (ChHomeDir == NULL)
-    HomeDir = m_TempDir;
-  else
-    HomeDir = ChHomeDir;
-
-  ChUser = std::getenv("USER");
-  if (ChUser != NULL)
-    m_UserID = ChUser;
 
   if (gethostname(ChHostName, 512) == 0)
   {
@@ -170,32 +142,20 @@ RuntimeEnvironment::RuntimeEnvironment() :
 #endif
 
 #if WIN32
-
-  char* ChHostName = NULL;
-
-  ChTempDir = std::getenv("TEMP");
-  if (ChTempDir != NULL ) m_TempDir = ChTempDir;
-
-  ChHomeDir = std::getenv("APPDATA");
-  if (ChHomeDir == NULL) HomeDir = m_TempDir;
-  else HomeDir = ChHomeDir;
-
-  ChUser = std::getenv("USERNAME");
-  if (ChUser != NULL) m_UserID = ChUser;
-
   ChHostName= std::getenv("COMPUTERNAME");
   if (ChHostName != NULL) m_HostName = ChHostName;
 #endif
 
-  HomeDir = boost::filesystem::path(HomeDir).string();
-  m_TempDir = boost::filesystem::path(m_TempDir + "/openfluid").string();
+  m_HomeDir = boost::filesystem::path(Glib::get_home_dir()).string();
+  m_TempDir = boost::filesystem::path(Glib::get_tmp_dir() + "/openfluid-tmp").string();
+  m_UserID = Glib::get_user_name();
 
 #if WIN32
-  m_UserDataDir = boost::filesystem::path(HomeDir+"/"+openfluid::config::RELATIVEDIR).string();
+  m_UserDataDir = boost::filesystem::path(m_HomeDir+"/"+openfluid::config::RELATIVEDIR).string();
 #endif
 
 #if defined __unix__ || defined __APPLE__
-  m_UserDataDir = boost::filesystem::path(HomeDir + "/."
+  m_UserDataDir = boost::filesystem::path(m_HomeDir + "/."
       + openfluid::config::RELATIVEDIR).string();
 #endif
 
