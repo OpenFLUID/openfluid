@@ -205,10 +205,10 @@
 #define OFDBG_EVENTCOLLECTION(eventcoll) \
   { \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Event collection size : " << eventcoll.getEventsList()->size() << std::endl; \
-    std::list<openfluid::core::Event*>::iterator _M_DBG_EvListiter; \
+    std::list<openfluid::core::Event>::iterator _M_DBG_EvListiter; \
     for (_M_DBG_EvListiter=(EvColl.getEventsList())->begin(); _M_DBG_EvListiter != (EvColl.getEventsList())->end(); _M_DBG_EvListiter++) \
     { \
-      OFDBG_EVENT(*_M_DBG_EvListiter); \
+      OFDBG_EVENT(&(*_M_DBG_EvListiter)); \
     } \
   }
 
