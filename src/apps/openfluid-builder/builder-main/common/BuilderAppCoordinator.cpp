@@ -500,6 +500,9 @@ void BuilderAppCoordinator::createProject()
 
   openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
 
+  /* to create ("") or open (ProjectFolder) a Project,
+   * because ProjectFolder.empty() means Cancel on NewProjectDialog
+   */
   if (mp_NewProjectDialog->getImportDir().empty())
     setProjectModule("");
   else

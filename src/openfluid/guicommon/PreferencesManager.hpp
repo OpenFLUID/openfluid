@@ -108,8 +108,8 @@ class DLLEXPORT PreferencesManager
     void clearRecentProjects();
     std::vector<std::pair<std::string, std::string> > getRecentProjects();
 
-    void setWorkdir(std::string Workdir);
-    std::string getWorkdir();
+    void setWorkdir(Glib::ustring Workdir);
+    Glib::ustring getWorkdir();
 
     void addExtraPlugPath(std::string Path);
     void removeExtraPlugPath(std::string Path);

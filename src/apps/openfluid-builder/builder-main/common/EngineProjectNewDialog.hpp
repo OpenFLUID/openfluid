@@ -58,6 +58,9 @@
 #include <gtkmm.h>
 #include <boost/filesystem.hpp>
 
+class EngineProjectOpenDialog;
+
+
 class EngineProjectNewDialog
 {
   private:
@@ -78,12 +81,27 @@ class EngineProjectNewDialog
 
     Gtk::CheckButton* mp_ImportCheck;
 
-    Gtk::FileChooserButton* mp_ImportFileChooserButton;
+    Gtk::RadioButton* mp_ImportProjectFilesButton;
+
+    Gtk::Label* mp_ImportProjectNameLabel;
+
+    Gtk::RadioButton* mp_ImportSystemFilesButton;
+
+    Gtk::FileChooserButton* mp_ImportSystemFileChooserButton;
+
+    Gtk::Button* mp_ImportProjectFileChooserButton;
+
+    Gtk::VBox* mp_ImportBox;
 
     Glib::ustring m_Workdir;
 
     Glib::ustring m_ProjectName;
 
+    Glib::ustring m_ImportSystemFolder;
+
+    Glib::ustring m_ImportProjectFolder;
+
+    // is m_ImportSystemFolder or m_ImportProjectFolder
     Glib::ustring m_ImportFolder;
 
     Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
@@ -102,23 +120,29 @@ class EngineProjectNewDialog
           add(m_Inconsistent);
         }
         Gtk::TreeModelColumn<bool> m_IsSelected;
-        Gtk::TreeModelColumn<std::string> m_FileName;
-        Gtk::TreeModelColumn<std::string> m_FilePath;
+        Gtk::TreeModelColumn<Glib::ustring> m_FileName;
+        Gtk::TreeModelColumn<Glib::ustring> m_FilePath;
         Gtk::TreeModelColumn<bool> m_AlreadyFilled;
         Gtk::TreeModelColumn<bool> m_Inconsistent;
     };
 
     ImportColumns m_Columns;
 
-    std::string m_ProjectInputDir;
+    Glib::ustring m_ProjectInputDir;
 
     bool m_IsValid;
 
+    EngineProjectOpenDialog* mp_ProjectDialog;
+
     void onProjectFolderSelectionChanged();
 
-    void onImportFolderSelectionChanged();
+    void onImportSystemFolderSelectionChanged();
 
     void onImportCheckClicked();
+
+    void onImportTypeChanged();
+
+    void onImportProjectButtonClicked();
 
     void appendDirectoryContent(boost::filesystem::path DirectoryPath,
         Gtk::TreeIter DirectoryIter);
@@ -152,9 +176,9 @@ class EngineProjectNewDialog
 
     ~EngineProjectNewDialog();
 
-    std::string show();
+    Glib::ustring show();
 
-    std::string getImportDir();
+    Glib::ustring getImportDir();
 
 };
 

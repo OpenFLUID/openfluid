@@ -290,7 +290,7 @@ std::vector<std::pair<std::string, std::string> > PreferencesManager::getRecentP
 // =====================================================================
 
 
-void PreferencesManager::setWorkdir(std::string Workdir)
+void PreferencesManager::setWorkdir(Glib::ustring Workdir)
 {
   mp_KFile->set_string("openfluid.builder.paths", "workdir", Workdir);
 }
@@ -299,7 +299,7 @@ void PreferencesManager::setWorkdir(std::string Workdir)
 // =====================================================================
 
 
-std::string PreferencesManager::getWorkdir()
+Glib::ustring PreferencesManager::getWorkdir()
 {
   return isValidKey("openfluid.builder.paths", "workdir") ? mp_KFile->get_string(
       "openfluid.builder.paths", "workdir")

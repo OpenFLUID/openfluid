@@ -59,25 +59,30 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
-#include "BuilderFrame.hpp"
-
 #include <iostream>
 #include <boost/system/error_code.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include "EngineProjectOpenDialog.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
 EngineProjectNewDialog::EngineProjectNewDialog() :
-  m_Workdir(""), m_ImportFolder(""), m_ProjectInputDir("")
+  m_Workdir(""), m_ImportSystemFolder(""), m_ImportProjectFolder(""),
+      m_ImportFolder(""), m_ProjectInputDir("")
 {
+  // InfoBar
+
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label(""));
   mp_InfoBarLabel->set_visible(true);
 
   mp_InfoBar = Gtk::manage(new Gtk::InfoBar());
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
+
+
+  // Project Properties
 
   mp_WorkdirFileChooserButton = Gtk::manage(new Gtk::FileChooserButton(
       _("Choose the Working Directory to use"),
@@ -106,8 +111,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   mp_AuthorsEntry->set_activates_default(true);
 
   Gtk::Label* ProjectFolderLabel = Gtk::manage(new Gtk::Label(
-      _("Working Directory") + std::string(":"), Gtk::ALIGN_LEFT,
-      Gtk::ALIGN_CENTER));
+      _("Working Directory:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   ProjectFolderLabel->set_alignment(1.0, 0.5);
 
   Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Project Name")
@@ -115,12 +119,11 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   NameLabel->set_alignment(1.0, 0.5);
 
   Gtk::Label* DescriptionLabel = Gtk::manage(new Gtk::Label(
-      _("Project Description") + std::string(":"), Gtk::ALIGN_LEFT,
-      Gtk::ALIGN_TOP));
+      _("Project Description:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
   DescriptionLabel->set_alignment(1.0, 0.0);
 
-  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Project Authors")
-      + std::string(":"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Project Authors:"),
+      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   AuthorsLabel->set_alignment(1.0, 0.5);
 
   Gtk::Table* MainTable = Gtk::manage(new Gtk::Table());
@@ -138,19 +141,47 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   MainTable->set_visible(true);
   MainTable->show_all_children();
 
-  mp_ImportCheck = Gtk::manage(new Gtk::CheckButton(_("Import dataset from ")
-      + std::string(":")));
-  mp_ImportCheck->signal_clicked().connect(sigc::mem_fun(*this,
-      &EngineProjectNewDialog::onImportCheckClicked));
 
-  mp_ImportFileChooserButton = Gtk::manage(new Gtk::FileChooserButton(
-      _("Choose the folder which contains data to import"),
+  // Imports
+
+  Gtk::RadioButtonGroup Group;
+
+  //// Import from project
+
+  mp_ImportProjectFilesButton = Gtk::manage(new Gtk::RadioButton(Group,
+      _("Import dataset of an existing project:")));
+  mp_ImportProjectFilesButton->signal_toggled().connect(sigc::mem_fun(*this,
+      &EngineProjectNewDialog::onImportTypeChanged));
+
+  mp_ProjectDialog = new EngineProjectOpenDialog();
+
+  mp_ImportProjectNameLabel = Gtk::manage(new Gtk::Label(_("(none)")));
+  mp_ImportProjectNameLabel->set_alignment(0.2, 1);
+
+  mp_ImportProjectFileChooserButton = Gtk::manage(new Gtk::Button(
+      _("Browse...")));
+  mp_ImportProjectFileChooserButton->signal_clicked().connect(sigc::mem_fun(
+      *this, &EngineProjectNewDialog::onImportProjectButtonClicked));
+
+  Gtk::HBox* ImportProjectBox = Gtk::manage(new Gtk::HBox());
+  ImportProjectBox->pack_start(*mp_ImportProjectFilesButton);
+  ImportProjectBox->pack_start(*mp_ImportProjectFileChooserButton,
+      Gtk::PACK_SHRINK);
+
+  //// Import from file system
+
+  mp_ImportSystemFilesButton = Gtk::manage(new Gtk::RadioButton(Group,
+      _("Import data files from file system:")));
+  mp_ImportSystemFilesButton->signal_toggled().connect(sigc::mem_fun(*this,
+      &EngineProjectNewDialog::onImportTypeChanged));
+
+  mp_ImportSystemFileChooserButton = Gtk::manage(new Gtk::FileChooserButton(
+      _("Choose the folder which contains files to import"),
       Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER));
-  mp_ImportFileChooserButton->set_show_hidden(false);
-  mp_ImportFileChooserButton->set_create_folders(false);
-  mp_ImportFileChooserButton->signal_selection_changed().connect(sigc::mem_fun(
-      *this, &EngineProjectNewDialog::onImportFolderSelectionChanged));
-  mp_ImportFileChooserButton->set_sensitive(false);
+  mp_ImportSystemFileChooserButton->set_create_folders(false);
+  mp_ImportSystemFileChooserButton->signal_selection_changed().connect(
+      sigc::mem_fun(*this,
+          &EngineProjectNewDialog::onImportSystemFolderSelectionChanged));
 
   mref_TreeModel = Gtk::TreeStore::create(m_Columns);
 
@@ -169,30 +200,53 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
 
   mp_TreeView = Gtk::manage(new Gtk::TreeView(mref_TreeModel));
   mp_TreeView->append_column(*MyColumn);
-  mp_TreeView->set_sensitive(false);
   mp_TreeView->signal_test_expand_row().connect(sigc::mem_fun(*this,
       &EngineProjectNewDialog::onTestExpandRow));
 
-  Gtk::ScrolledWindow* ImportWin = Gtk::manage(new Gtk::ScrolledWindow());
-  ImportWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  ImportWin->add(*mp_TreeView);
-  ImportWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+  Gtk::ScrolledWindow* ImportSystemBottomWin = Gtk::manage(
+      new Gtk::ScrolledWindow());
+  ImportSystemBottomWin->set_policy(Gtk::POLICY_AUTOMATIC,
+      Gtk::POLICY_AUTOMATIC);
+  ImportSystemBottomWin->add(*mp_TreeView);
+  ImportSystemBottomWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
-  Gtk::HBox* ImportTopBox = Gtk::manage(new Gtk::HBox());
-  ImportTopBox->pack_start(*mp_ImportCheck, Gtk::PACK_SHRINK);
-  ImportTopBox->pack_start(*mp_ImportFileChooserButton, Gtk::PACK_EXPAND_WIDGET);
+  Gtk::HBox* ImportSystemTopBox = Gtk::manage(new Gtk::HBox());
+  ImportSystemTopBox->pack_start(*mp_ImportSystemFilesButton, Gtk::PACK_SHRINK);
+  ImportSystemTopBox->pack_start(*mp_ImportSystemFileChooserButton,
+      Gtk::PACK_EXPAND_WIDGET);
 
-  Gtk::VBox* ImportBox = Gtk::manage(new Gtk::VBox());
-  ImportBox->pack_start(*ImportTopBox, Gtk::PACK_SHRINK, 6);
-  ImportBox->pack_start(*ImportWin, Gtk::PACK_EXPAND_WIDGET, 6);
-  ImportBox->set_border_width(8);
+  //// Import frame
 
-  BuilderFrame* ImportFrame = new BuilderFrame();
-  ImportFrame->setLabelText(_("Data import"));
+  mp_ImportBox = Gtk::manage(new Gtk::VBox());
+  mp_ImportBox->pack_start(*ImportProjectBox, Gtk::PACK_SHRINK, 3);
+  mp_ImportBox->pack_start(*mp_ImportProjectNameLabel, Gtk::PACK_SHRINK, 3);
+  mp_ImportBox->pack_start(*Gtk::manage(new Gtk::HSeparator()),
+      Gtk::PACK_SHRINK, 6);
+  mp_ImportBox->pack_start(*ImportSystemTopBox, Gtk::PACK_SHRINK, 3);
+  mp_ImportBox->pack_start(*ImportSystemBottomWin, Gtk::PACK_EXPAND_WIDGET, 3);
+  mp_ImportBox->set_border_width(8);
+
+  mp_ImportCheck = Gtk::manage(new Gtk::CheckButton(_("Data import")));
+  Gtk::Label* CBLabel = static_cast<Gtk::Label*> (mp_ImportCheck->get_child());
+  if (CBLabel != 0)
+    CBLabel->set_markup(Glib::ustring::compose("<b>%1</b>", _("Data import")));
+  mp_ImportCheck->signal_clicked().connect(sigc::mem_fun(*this,
+      &EngineProjectNewDialog::onImportCheckClicked));
+
+  Gtk::HBox* FrameLabelBox = Gtk::manage(new Gtk::HBox());
+  FrameLabelBox->pack_start(*mp_ImportCheck);
+  FrameLabelBox->set_border_width(3);
+
+  Gtk::Frame* ImportFrame = Gtk::manage(new Gtk::Frame());
+  ImportFrame->set_label_widget(*FrameLabelBox);
+  ImportFrame->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   ImportFrame->set_visible(true);
-  ImportFrame->add(*ImportBox);
+  ImportFrame->add(*mp_ImportBox);
   ImportFrame->set_border_width(8);
   ImportFrame->show_all_children();
+
+
+  // Main dialog
 
   mp_Dialog = new Gtk::Dialog(_("Create a new project"));
   mp_Dialog->set_has_separator(true);
@@ -226,7 +280,8 @@ EngineProjectNewDialog::~EngineProjectNewDialog()
 bool EngineProjectNewDialog::onTestExpandRow(
     const Gtk::TreeModel::iterator& Iter, const Gtk::TreeModel::Path& /*Path*/)
 {
-  appendDirectoryContent(Iter->get_value(m_Columns.m_FilePath), Iter);
+  appendDirectoryContent(Glib::filename_from_utf8(Iter->get_value(
+      m_Columns.m_FilePath)), Iter);
   return false;
 }
 
@@ -245,7 +300,8 @@ void EngineProjectNewDialog::onCheckToggled(const Glib::ustring TreePath)
 
   checkRowSiblings(Row, Checked);
 
-  if (boost::filesystem::is_directory(Row.get_value(m_Columns.m_FilePath)))
+  if (boost::filesystem::is_directory(Glib::filename_from_utf8(Row.get_value(
+      m_Columns.m_FilePath))))
   {
     setChildrenChecked(Row, Checked);
   }
@@ -382,12 +438,12 @@ Glib::ustring EngineProjectNewDialog::replaceInvalidChars(Glib::ustring Str)
 // =====================================================================
 
 
-void EngineProjectNewDialog::onImportFolderSelectionChanged()
+void EngineProjectNewDialog::onImportSystemFolderSelectionChanged()
 {
-  std::string ImportFolder = Glib::filename_to_utf8(
-      mp_ImportFileChooserButton->get_filename());
+  m_ImportSystemFolder = Glib::filename_to_utf8(
+      mp_ImportSystemFileChooserButton->get_filename());
 
-  boost::filesystem::path ImportPath(ImportFolder);
+  boost::filesystem::path ImportPath(m_ImportSystemFolder);
 
   mref_TreeModel->clear();
 
@@ -452,7 +508,7 @@ void EngineProjectNewDialog::appendDirectoryContent(
         }
       }
     }
-  } catch (std::exception e)
+  } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path> e)
   {
     std::cerr << "EngineProjectNewDialog::appendDirectoryContent " << e.what()
         << std::endl;
@@ -473,27 +529,79 @@ bool EngineProjectNewDialog::isHidden(std::string FileName)
 
 void EngineProjectNewDialog::onImportCheckClicked()
 {
-  mp_ImportFileChooserButton->set_sensitive(mp_ImportCheck->get_active());
-  mp_TreeView->set_sensitive(mp_ImportCheck->get_active());
+  bool IsCheckActive = mp_ImportCheck->get_active();
+
+  mp_ImportBox->set_sensitive(IsCheckActive);
+
+  if (IsCheckActive)
+    onImportTypeChanged();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-std::string EngineProjectNewDialog::show()
+void EngineProjectNewDialog::onImportTypeChanged()
+{
+  bool FromProject = mp_ImportProjectFilesButton->get_active();
+
+  mp_ImportProjectFileChooserButton->set_sensitive(FromProject);
+  mp_ImportProjectNameLabel->set_sensitive(FromProject);
+
+  mp_ImportSystemFileChooserButton->set_sensitive(!FromProject);
+  mp_TreeView->set_sensitive(!FromProject);
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProjectNewDialog::onImportProjectButtonClicked()
+{
+  Glib::ustring ChoosenProjectFolder = mp_ProjectDialog->show();
+
+  if (!ChoosenProjectFolder.empty())
+  {
+    if (!openfluid::base::ProjectManager::isProject(ChoosenProjectFolder))
+    {
+      mp_InfoBarLabel->set_text(Glib::ustring::compose(
+          _("Error :\n%1\nis not an OpenFLUID Project directory"),
+          ChoosenProjectFolder));
+      return;
+    }
+
+    openfluid::base::ProjectManager* Manager =
+        openfluid::base::ProjectManager::getInstance();
+
+    Manager->open(ChoosenProjectFolder);
+
+    m_ImportProjectFolder = Manager->getInputDir();
+
+    mp_ImportProjectNameLabel->set_text(
+        Manager->getName().empty() ? _("(unnamed)") : Manager->getName());
+    mp_ImportProjectNameLabel->set_tooltip_text(ChoosenProjectFolder);
+
+    Manager->close();
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring EngineProjectNewDialog::show()
 {
   reset();
 
-  m_Workdir = "";
   Glib::ustring ProjectFolder = "";
-  m_ImportFolder = "";
-  m_ProjectInputDir = "";
-
-  onImportFolderSelectionChanged();
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
+
+    // Project properties
+
     m_Workdir = Glib::filename_to_utf8(
         mp_WorkdirFileChooserButton->get_filename());
 
@@ -501,7 +609,8 @@ std::string EngineProjectNewDialog::show()
 
     try
     {
-      boost::filesystem::create_directory(ProjectFolder.c_str());
+      boost::filesystem::create_directory(Glib::filename_from_utf8(
+          ProjectFolder));
     } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path>
         e)
     {
@@ -534,13 +643,30 @@ std::string EngineProjectNewDialog::show()
 
       m_ProjectInputDir = Manager->getInputDir();
 
+
+      // Import
+
       if (mp_ImportCheck->get_active())
       {
-        m_ImportFolder = Glib::filename_to_utf8(
-            mp_ImportFileChooserButton->get_filename());
+        if (mp_ImportProjectFilesButton->get_active() && !m_ImportProjectFolder.empty())
+        {
+          m_ImportFolder = m_ImportProjectFolder;
 
-        for (unsigned int i = 0; i < mref_TreeModel->children().size(); i++)
-          copyFilePathAndChildren(*mref_TreeModel->children()[i]);
+          boost::filesystem::recursive_directory_iterator end_it;
+          for (boost::filesystem::recursive_directory_iterator it(
+              Glib::filename_from_utf8(m_ImportFolder)); it != end_it; ++it)
+          {
+            if (!isHidden(it->path().filename()))
+              copyOnDisk(it->path().string());
+          }
+
+        } else if (mp_ImportSystemFilesButton->get_active() && !m_ImportSystemFolder.empty())
+        {
+          m_ImportFolder = m_ImportSystemFolder;
+
+          for (unsigned int i = 0; i < mref_TreeModel->children().size(); i++)
+            copyFilePathAndChildren(*mref_TreeModel->children()[i]);
+        }
       }
     } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path>
         e)
@@ -567,7 +693,7 @@ void EngineProjectNewDialog::copyFilePathAndChildren(Gtk::TreeRow Row)
 {
   if (Row[m_Columns.m_IsSelected])
   {
-    std::string SrcPath = Row[m_Columns.m_FilePath];
+    std::string SrcPath = Glib::filename_from_utf8(Row[m_Columns.m_FilePath]);
 
     copyOnDisk(SrcPath);
 
@@ -597,7 +723,8 @@ void EngineProjectNewDialog::copyOnDisk(std::string SrcPath)
 {
   std::string DestPath = SrcPath;
 
-  DestPath.replace(0, m_ImportFolder.size(), m_ProjectInputDir);
+  DestPath.replace(0, Glib::filename_from_utf8(m_ImportFolder).size(),
+      Glib::filename_from_utf8(m_ProjectInputDir));
 
   try
   {
@@ -630,9 +757,12 @@ void EngineProjectNewDialog::copyOnDisk(std::string SrcPath)
 // =====================================================================
 
 
-std::string EngineProjectNewDialog::getImportDir()
+Glib::ustring EngineProjectNewDialog::getImportDir()
 {
-  return m_ImportFolder;
+  if (mp_ImportCheck->get_active())
+    return m_ImportFolder;
+
+  return "";
 }
 
 // =====================================================================
@@ -641,18 +771,42 @@ std::string EngineProjectNewDialog::getImportDir()
 
 void EngineProjectNewDialog::reset()
 {
-  std::string WorkDir =
-      openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+  // Project properties
 
-  if (boost::filesystem::exists(WorkDir))
-    mp_WorkdirFileChooserButton->set_current_folder(WorkDir);
-  else
-    mp_WorkdirFileChooserButton->set_current_folder(Glib::get_home_dir());
+  m_Workdir = "";
+  m_ProjectInputDir = "";
 
   mp_NameEntry->set_text("");
   mp_DescriptionTextView->get_buffer()->set_text("");
   mp_AuthorsEntry->set_text("");
+
+
+  // Imports
+
+  m_ImportSystemFolder = "";
+  m_ImportProjectFolder = "";
+  m_ImportFolder = "";
+
   mp_ImportCheck->set_active(false);
+  mp_ImportBox->set_sensitive(false);
+  mp_ImportProjectFilesButton->set_active(true);
+
+  mp_ImportProjectNameLabel->set_text("");
+  mp_ImportProjectNameLabel->set_tooltip_text("");
+
+
+  std::string CurrentFolder;
+
+  Glib::ustring WorkDir =
+      openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+
+  if (boost::filesystem::exists(Glib::filename_from_utf8(WorkDir)))
+    CurrentFolder = Glib::filename_from_utf8(WorkDir);
+  else
+    CurrentFolder = Glib::filename_from_utf8(Glib::get_home_dir());
+
+  mp_WorkdirFileChooserButton->set_current_folder(CurrentFolder);
+  mp_ImportSystemFileChooserButton->set_current_folder(CurrentFolder);
 
   mp_Dialog->set_focus(*mp_NameEntry);
 }
