@@ -72,8 +72,6 @@ class ModelAvailFctPresenter: public sigc::trackable
 
     void whenAdapterSelectionChanged();
 
-    void whenReloadFctListAsked();
-
   public:
 
     ModelAvailFctPresenter(ModelAvailFctModel& Model,

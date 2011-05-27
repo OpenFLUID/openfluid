@@ -131,6 +131,7 @@ void BuilderAppProjectState::whenQuitAsked()
 
 void BuilderAppProjectState::whenRunAsked()
 {
+  //TODO test cast before
   ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->runAsked();
 }
 
@@ -170,6 +171,15 @@ void BuilderAppProjectState::whenSaveAsAsked()
 
 void BuilderAppProjectState::whenMapViewAsked()
 {
-
   openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenRefreshAsked()
+{
+  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->refreshAsked();
 }

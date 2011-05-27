@@ -93,38 +93,9 @@ ModelAvailFctViewImpl::ModelAvailFctViewImpl(ModelAvailFctColumns& Columns) :
   mp_MainWin->set_visible(true);
   mp_MainWin->add(*mp_TreeView);
 
-  Gtk::Button* ReloadButton = Gtk::manage(new Gtk::Button());
-  ReloadButton->signal_clicked().connect(sigc::mem_fun(*this,
-      &ModelAvailFctViewImpl::onReloadButtonClicked));
-  ReloadButton->set_tooltip_text(_("Refresh available functions list"));
-  ReloadButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH,
-      Gtk::ICON_SIZE_BUTTON)));
-  ReloadButton->set_visible(true);
-
-  Gtk::HBox* HeaderBox = Gtk::manage(new Gtk::HBox());
-  HeaderBox->pack_start(*ReloadButton, Gtk::PACK_SHRINK);
-  HeaderBox->set_visible(true);
-
   mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*HeaderBox, Gtk::PACK_SHRINK);
   mp_MainBox->pack_start(*mp_MainWin);
   mp_MainBox->set_visible(true);
-}
-
-// =====================================================================
-// =====================================================================
-
-void ModelAvailFctViewImpl::onReloadButtonClicked()
-{
-  m_signal_ReloadFctListAsked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-sigc::signal<void> ModelAvailFctViewImpl::signal_ReloadFctListAsked()
-{
-  return m_signal_ReloadFctListAsked;
 }
 
 // =====================================================================

@@ -150,6 +150,8 @@ void BuilderAppActions::createProjectUiXml()
     "  </placeholder>"
     "  <placeholder name='SimulationPlaceholder'>"
     "    <separator/>"
+    "    <toolitem action='Refresh'/>"
+    "    <separator/>"
     "    <toolitem action='MapView'/>"
     "    <separator/>"
     "    <toolitem action='SimulationRun'/>"
@@ -232,7 +234,8 @@ void BuilderAppActions::createProjectActionGroup()
           "mapview"), _("Map View"),
       _("Map view")));
 
-
+  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",Gtk::Stock::REFRESH, _("Refresh"),
+        _("Refresh simulation functions")));
 
 }
 
@@ -458,5 +461,15 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
 {
   return mref_ProjectActionGroup->get_action("MapView");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getRefreshAction()
+{
+  return mref_ProjectActionGroup->get_action("Refresh");
 }
 

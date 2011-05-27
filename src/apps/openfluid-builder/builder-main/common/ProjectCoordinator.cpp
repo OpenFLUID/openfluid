@@ -68,6 +68,8 @@
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "BuilderPretestInfo.hpp"
 
+#include "FunctionSignatureRegistry.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -76,7 +78,8 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
     ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
     ProjectDashboard& TheProjectDashboard) :
   m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
-      TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(false)
+      TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
+      false), m_ModelPageName(_("Model"))
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
@@ -87,6 +90,21 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
       &ProjectCoordinator::whenActivationChanged));
   m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenPageRemoved));
+
+  std::vector<std::string> PluginPaths =
+      openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+
+  //TODO think of get changes of pluginpaths from preferences
+  for (unsigned int i = 0; i < PluginPaths.size(); i++)
+  {
+    Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
+        PluginPaths[i]);
+    Glib::RefPtr<Gio::FileMonitor> DirMonitor = ItemFile->monitor_directory();
+    DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
+        &ProjectCoordinator::onDirMonitorChanged));
+
+    m_DirMonitors.push_back(DirMonitor);
+  }
 }
 
 // =====================================================================
@@ -134,7 +152,7 @@ void ProjectCoordinator::whenActivationChanged()
   switch (m_ExplorerModel.getActivatedElement().first)
   {
     case ProjectExplorerCategories::EXPLORER_MODEL:
-      PageName = _("Model");
+      PageName = m_ModelPageName;//_("Model");
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
@@ -324,10 +342,9 @@ void ProjectCoordinator::checkProject()
 
 void ProjectCoordinator::updateResults()
 {
-  if(m_HasRun)
+  if (m_HasRun)
     m_ExplorerModel.updateResultsAsked(true);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -341,7 +358,6 @@ void ProjectCoordinator::whenRunHappened()
 
   m_ExplorerModel.updateResultsAsked(false);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -500,6 +516,53 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
   if (it != m_SetPageNames.end())
     m_SetPageNames.erase(it);
 
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::onDirMonitorChanged(
+    const Glib::RefPtr<Gio::File>& File,
+    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
+    Gio::FileMonitorEvent EventType)
+{
+  if (EventType == Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+    return;
+
+  std::string Msg = Glib::ustring::compose(_(
+      "Changes occur in %1.\nDo you want to reload the plugin list ?\n"
+      "(if not, it's at your own risks, think of reload manually)"),
+      File->get_path());
+
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+      Msg))
+  {
+    whenUpdatePluginsAsked();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenUpdatePluginsAsked()
+{
+  FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+  // remove all functions and add those which are available
+  if (m_Workspace.existsPageName(m_ModelPageName))
+  {
+    (static_cast<ModelStructureModule*> (m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
+  }
+
+  m_ExplorerModel.updateModelAsked();
+
+  updateWorkspaceModules();
+
+  checkProject();
+
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================

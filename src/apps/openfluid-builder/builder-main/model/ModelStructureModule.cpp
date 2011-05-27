@@ -210,3 +210,13 @@ void ModelStructureModule::update()
 {
   mp_Coordinator->update();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelStructureModule::updateWithFctParamsComponents()
+{
+  mp_Coordinator->updateWithFctParamsComponents();
+}

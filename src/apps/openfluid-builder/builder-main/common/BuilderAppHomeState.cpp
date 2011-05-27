@@ -162,3 +162,14 @@ void BuilderAppHomeState::whenMapViewAsked()
 {
   //nothing to do, should not happen
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenRefreshAsked()
+{
+  //nothing to do, should not happen
+}
+

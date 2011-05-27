@@ -169,25 +169,12 @@ sigc::signal<void> ModelStructureModelImpl::signal_FromAppSelectionRequested()
 // =====================================================================
 
 
-sigc::signal<void, std::string> ModelStructureModelImpl::signal_FileMonitorEventChanged()
-{
-  return m_signal_FileMonitorEventChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelStructureModelImpl::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
     openfluid::core::CoreRepository* CoreRepos)
 {
   mp_ModelInstance = &ModelInstance;
   mp_CoreRepos = CoreRepos;
-
-  //
-  // set monitors for existing items
-  //
 
   update();
   requestSelectionByAppAt(0);
@@ -231,18 +218,6 @@ openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
     {
       Item = ModelItemInstanceFactory::createPluggableItemFromSignature(
           Signature);
-
-//      if (Item)
-//      {
-//        Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
-//            Signature.Filename);
-//        Glib::RefPtr<Gio::FileMonitor> ItemMonitor = ItemFile->monitor_file();
-//        ItemMonitor->signal_changed().connect(
-//            sigc::bind<std::string>(sigc::mem_fun(*this,
-//                &ModelStructureModelImpl::onItemMonitorChanged),
-//                Signature.Signature->ID));
-//        m_ItemMonitors[Signature.Signature->ID] = ItemMonitor;
-//      }
 
     } else if (Signature.ItemType
         == openfluid::base::ModelItemDescriptor::Generator)
@@ -371,8 +346,6 @@ std::string ModelStructureModelImpl::removeFunctionAt(int Position)
 
     FunctionId = (*it)->Signature->ID;
 
-//    m_ItemMonitors.erase(FunctionId);
-
     mp_ModelInstance->deleteItem(Position);
 
     signal_FromAppModelChanged().emit();
@@ -477,35 +450,6 @@ int ModelStructureModelImpl::getAppRequestedSelection()
 {
   return m_AppRequestedSelection;
 }
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelStructureModelImpl::onItemMonitorChanged(
-    const Glib::RefPtr<Gio::File>& File,
-    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
-    Gio::FileMonitorEvent EventType, std::string FunctionId)
-{
-//  if (EventType == Gio::FILE_MONITOR_EVENT_DELETED)
-//  {
-//    std::cout << "Warning : File of function " << FunctionId << "("
-//        << File->get_path() << ") has been deleted" << std::endl;
-//
-//  } else if (EventType == Gio::FILE_MONITOR_EVENT_CREATED)
-//  {
-//    std::cout << "Warning : File of function " << FunctionId << "("
-//        << File->get_path() << ") has been created" << std::endl;
-//
-//  } else if (EventType == Gio::FILE_MONITOR_EVENT_CHANGED)
-//  {
-//    std::cout << "File of function " << FunctionId << "(" << File->get_path()
-//        << ") has changed" << std::endl;
-//
-//    m_signal_FileMonitorEventChanged.emit(FunctionId);
-//  }
-}
-
 
 // =====================================================================
 // =====================================================================

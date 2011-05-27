@@ -75,17 +75,6 @@ void ModelAvailFctPresenter::whenAdapterSelectionChanged()
   m_Model.setSelectedSignatureByUser(m_Adapter.getSelectedSignature());
 }
 
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelAvailFctPresenter::whenReloadFctListAsked()
-{
-  m_Model.reloadSignatures();
-}
-
 // =====================================================================
 // =====================================================================
 
@@ -98,6 +87,4 @@ ModelAvailFctPresenter::ModelAvailFctPresenter(ModelAvailFctModel& Model,
       &ModelAvailFctPresenter::whenModelFctListChanged));
   m_Adapter.signal_FctSelectionChanged().connect(sigc::mem_fun(*this,
       &ModelAvailFctPresenter::whenAdapterSelectionChanged));
-  m_Adapter.signal_ReloadFctListAsked().connect(sigc::mem_fun(*this,
-      &ModelAvailFctPresenter::whenReloadFctListAsked));
 }

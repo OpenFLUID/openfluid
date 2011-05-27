@@ -74,9 +74,6 @@ ModelAddFunctionModule::ModelAddFunctionModule()
   mp_Coordinator->signal_AvailFctSelectionChanged().connect(sigc::mem_fun(
       *this, &ModelAddFunctionModule::whenAvailFctSelectionChanged));
 
-  mp_Coordinator->signal_ReloadPluginsAsked().connect(sigc::mem_fun(*this,
-      &ModelAddFunctionModule::whenReloadPluginsAsked));
-
   compose();
 
 }
@@ -137,15 +134,6 @@ sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
 // =====================================================================
 
 
-sigc::signal<void> ModelAddFunctionModule::signal_ReloadPluginsAsked()
-{
-  return m_signal_ReloadPluginsAsked;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 openfluid::machine::SignatureItemInstance* ModelAddFunctionModule::showDialog()
 {
   openfluid::machine::SignatureItemInstance* SelectedSignature = 0;
@@ -197,9 +185,3 @@ void ModelAddFunctionModule::setSignatures(
 
 // =====================================================================
 // =====================================================================
-
-
-void ModelAddFunctionModule::whenReloadPluginsAsked()
-{
-  m_signal_ReloadPluginsAsked.emit();
-}

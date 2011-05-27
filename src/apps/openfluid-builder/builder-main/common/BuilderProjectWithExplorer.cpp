@@ -227,6 +227,15 @@ void BuilderProjectWithExplorer::checkAsked()
 // =====================================================================
 
 
+void BuilderProjectWithExplorer::refreshAsked()
+{
+  mp_Coordinator->whenUpdatePluginsAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderProjectWithExplorer::asWidget()
 {
   return mp_MainPaned;

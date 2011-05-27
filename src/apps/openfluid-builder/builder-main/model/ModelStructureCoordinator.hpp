@@ -58,10 +58,8 @@
 #include <sigc++/sigc++.h>
 
 #include <giomm/file.h>
-#include <giomm/filemonitor.h>
 
 #include <openfluid/machine.hpp>
-
 
 class ModelFctDetailModel;
 class ModelStructureModel;
@@ -100,8 +98,6 @@ class ModelStructureCoordinator: public sigc::trackable
 
     ModelAddFunctionModule* mp_AddFctModule;
 
-    std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
-
     void updateStructureListToolBox();
 
     void whenStructureFctSelectionChanged();
@@ -119,14 +115,6 @@ class ModelStructureCoordinator: public sigc::trackable
     void whenGlobalParamUnset(std::string ParamName);
 
     void whenParamsChanged();
-
-    void whenFileMonitorEventChanged(std::string FunctionId);
-
-    void whenReloadPluginsAsked();
-
-    void onDirMonitorChanged(const Glib::RefPtr<Gio::File>& File,
-        const Glib::RefPtr<Gio::File>& /*OtherFile*/,
-        Gio::FileMonitorEvent EventType);
 
   public:
 
@@ -148,10 +136,11 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void initParams();
 
+    void updateWithFctParamsComponents();
+
     void createModelFctParamsComponent(
         openfluid::machine::ModelItemInstance* Item);
 
-    //    void eraseModelFctParamsComponent(openfluid::machine::SignatureItemInstance* Signature);
     void eraseModelFctParamsComponent(std::string FunctionId);
 
     void whenRequiredFileChanged();

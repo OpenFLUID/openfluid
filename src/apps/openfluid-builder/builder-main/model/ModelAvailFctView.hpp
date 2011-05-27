@@ -65,8 +65,6 @@ class ModelAvailFctView
 {
   public:
 
-    virtual sigc::signal<void> signal_ReloadFctListAsked() = 0;
-
     virtual sigc::signal<void> signal_AvailFctSelectionChanged() = 0;
 
     virtual void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel) = 0;
@@ -78,18 +76,13 @@ class ModelAvailFctView
     virtual void select(Gtk::TreeRow Row) = 0;
 };
 
-
 class ModelAvailFctViewImpl: public ModelAvailFctView
 {
   private:
 
-    sigc::signal<void> m_signal_ReloadFctListAsked;
-
     sigc::signal<void> m_signal_AvailFctSelectionChanged;
 
     ModelAvailFctColumns& m_Columns;
-
-    void onReloadButtonClicked();
 
     void onTreeViewSelectionChanged();
 
@@ -105,8 +98,6 @@ class ModelAvailFctViewImpl: public ModelAvailFctView
 
     ModelAvailFctViewImpl(ModelAvailFctColumns& Columns);
 
-    sigc::signal<void> signal_ReloadFctListAsked();
-
     sigc::signal<void> signal_AvailFctSelectionChanged();
 
     void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel);
@@ -117,7 +108,6 @@ class ModelAvailFctViewImpl: public ModelAvailFctView
 
     void select(Gtk::TreeRow Row);
 };
-
 
 class ModelAvailFctViewSub: public ModelAvailFctViewImpl
 {

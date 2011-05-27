@@ -91,8 +91,6 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getFileNewAction();
 
-//    Glib::RefPtr<Gtk::Action> getFileNewFromAction();
-
     Glib::RefPtr<Gtk::Action> getFileOpenAction();
 
     Glib::RefPtr<Gtk::Action> getFileCloseAction();
@@ -120,6 +118,8 @@ class BuilderAppActions
     Glib::RefPtr<Gtk::Action> getSaveAsAction();
 
     Glib::RefPtr<Gtk::Action> getMapViewAction();
+
+    Glib::RefPtr<Gtk::Action> getRefreshAction();
 
 };
 

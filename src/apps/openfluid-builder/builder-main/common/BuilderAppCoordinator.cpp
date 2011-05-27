@@ -207,6 +207,17 @@ void BuilderAppCoordinator::whenMapViewAsked()
   mp_CurrentState->whenMapViewAsked();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenRefreshAsked()
+{
+  mp_CurrentState->whenRefreshAsked();
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -274,6 +285,9 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   m_Actions.getMapViewAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenMapViewAsked));
+
+  m_Actions.getRefreshAction()->signal_activate().connect(sigc::mem_fun(*this,
+        &BuilderAppCoordinator::whenRefreshAsked));
 
   m_MainWindow.signal_delete_event().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenMainWindowCloseAsked));

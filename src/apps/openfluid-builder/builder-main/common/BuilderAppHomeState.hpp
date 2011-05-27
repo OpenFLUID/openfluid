@@ -89,6 +89,8 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenMapViewAsked();
 
+    void whenRefreshAsked();
+
 };
 
 #endif /* __BUILDERAPPHOMESTATE_HPP__ */

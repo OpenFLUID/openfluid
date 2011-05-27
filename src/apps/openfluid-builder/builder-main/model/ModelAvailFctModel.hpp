@@ -67,8 +67,6 @@ class ModelAvailFctModel
 
     virtual sigc::signal<void> signal_SelectedSignatureChanged() = 0;
 
-    virtual sigc::signal<void> signal_ReloadPluginsAsked() = 0;
-
     virtual void setSignatures(FunctionSignatureRegistry& Signatures) = 0;
 
     virtual FunctionSignatureRegistry::FctSignaturesByType_t getSignatures() = 0;
@@ -81,7 +79,6 @@ class ModelAvailFctModel
 
     virtual bool isASignatureSelected() = 0;
 
-    virtual void reloadSignatures() = 0;
 };
 
 class ModelAvailFctModelImpl: public ModelAvailFctModel
@@ -91,8 +88,6 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
     sigc::signal<void> m_signal_SignaturesChanged;
 
     sigc::signal<void> m_signal_SelectedSignatureChanged;
-
-    sigc::signal<void> m_signal_ReloadPluginsAsked;
 
     FunctionSignatureRegistry::FctSignaturesByType_t m_Signatures;
 
@@ -108,8 +103,6 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
 
     sigc::signal<void> signal_SelectedSignatureChanged();
 
-    sigc::signal<void> signal_ReloadPluginsAsked();
-
     void setSignatures(FunctionSignatureRegistry& Signatures);
 
     FunctionSignatureRegistry::FctSignaturesByType_t getSignatures();
@@ -121,7 +114,6 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
 
     bool isASignatureSelected();
 
-    void reloadSignatures();
 };
 
 #endif /* __MODELAVAILFCTMODEL_HPP__ */

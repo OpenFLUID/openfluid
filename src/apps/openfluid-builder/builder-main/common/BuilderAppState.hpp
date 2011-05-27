@@ -85,6 +85,8 @@ class BuilderAppState
 
     virtual void whenMapViewAsked() = 0;
 
+    virtual void whenRefreshAsked() = 0;
+
 };
 
 #endif /* __BUILDERAPPSTATE_HPP__ */

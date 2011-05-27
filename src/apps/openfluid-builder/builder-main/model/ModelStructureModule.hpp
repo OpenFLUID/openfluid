@@ -111,6 +111,8 @@ class ModelStructureModule : public ProjectWorkspaceModule
 
     void update();
 
+    void updateWithFctParamsComponents();
+
 };
 
 #endif /* __MODELSTRUCTUREMODULE_HPP__ */

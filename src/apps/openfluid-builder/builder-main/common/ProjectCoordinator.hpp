@@ -57,6 +57,8 @@
 
 #include <openfluid/machine.hpp>
 
+#include <giomm/filemonitor.h>
+
 class ProjectExplorerModel;
 class ProjectWorkspace;
 class ProjectWorkspaceModule;
@@ -90,6 +92,11 @@ class ProjectCoordinator
 
     bool m_HasRun;
 
+    // only to keep ref to FileMonitors (otherwise they're lost)
+    std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
+
+    std::string m_ModelPageName;
+
     void whenActivationChanged();
 
     void whenDomainChanged();
@@ -111,6 +118,10 @@ class ProjectCoordinator
     std::string constructClassPageName(std::string ClassName);
 
     std::string constructSetPageName(std::string SetName);
+
+    void onDirMonitorChanged(const Glib::RefPtr<
+        Gio::File>& File, const Glib::RefPtr<Gio::File>& OtherFile,
+        Gio::FileMonitorEvent EventType);
 
   protected:
 
@@ -135,6 +146,8 @@ class ProjectCoordinator
     void checkProject();
 
     void whenRunHappened();
+
+    void whenUpdatePluginsAsked();
 
 };
 

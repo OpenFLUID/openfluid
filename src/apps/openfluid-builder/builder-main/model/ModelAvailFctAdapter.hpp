@@ -72,8 +72,6 @@ class ModelAvailFctAdapter: public sigc::trackable
 
     sigc::signal<void> m_signal_FctSelectionChanged;
 
-    sigc::signal<void> m_signal_ReloadFctListAsked;
-
     void whenModelFunctionsChanged();
 
     void whenFctSelectionChanged();
@@ -86,8 +84,6 @@ class ModelAvailFctAdapter: public sigc::trackable
         ModelAvailFctView& View);
 
     sigc::signal<void> signal_FctSelectionChanged();
-
-    sigc::signal<void> signal_ReloadFctListAsked();
 
     void setSignatures(
         FunctionSignatureRegistry::FctSignaturesByType_t Signatures);

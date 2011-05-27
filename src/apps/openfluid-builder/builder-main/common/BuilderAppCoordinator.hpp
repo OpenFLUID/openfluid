@@ -106,6 +106,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenMapViewAsked();
 
+    void whenRefreshAsked();
+
     void onCheckHappened(bool IsCheckOk);
 
     void onChangeHappened();

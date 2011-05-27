@@ -65,8 +65,6 @@ class ModelStructureModel
 
     virtual sigc::signal<void> signal_FromAppSelectionRequested() = 0;
 
-    virtual sigc::signal<void, std::string> signal_FileMonitorEventChanged() = 0;
-
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::core::CoreRepository* CoreRepos = 0) = 0;
@@ -124,8 +122,6 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     sigc::signal<void> m_signal_FromAppSelectionRequested;
 
-    sigc::signal<void, std::string> m_signal_FileMonitorEventChanged;
-
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
     openfluid::core::CoreRepository* mp_CoreRepos;
@@ -134,8 +130,6 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int m_AppRequestedSelection;
 
-    std::map<std::string, Glib::RefPtr<Gio::FileMonitor> > m_ItemMonitors;
-
     bool isModelInstance();
 
     bool areMoveIndexesValid(unsigned int From, unsigned int To);
@@ -143,10 +137,6 @@ class ModelStructureModelImpl: public ModelStructureModel
     bool isModelEmpty();
 
     int getLastPosition();
-
-    void onItemMonitorChanged(const Glib::RefPtr<Gio::File>& File,
-        const Glib::RefPtr<Gio::File>& OtherFile,
-        Gio::FileMonitorEvent EventType, std::string FunctionId);
 
   public:
 
@@ -159,8 +149,6 @@ class ModelStructureModelImpl: public ModelStructureModel
     sigc::signal<void> signal_FromAppModelChanged();
 
     sigc::signal<void> signal_FromAppSelectionRequested();
-
-    sigc::signal<void, std::string> signal_FileMonitorEventChanged();
 
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance,

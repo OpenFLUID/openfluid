@@ -80,15 +80,6 @@ void ModelAvailFctAdapter::whenFctSelectionChanged()
 // =====================================================================
 
 
-void ModelAvailFctAdapter::whenReloadFctListAsked()
-{
-  m_signal_ReloadFctListAsked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 ModelAvailFctAdapter::ModelAvailFctAdapter(ModelAvailFctAdapterModel& Model,
     ModelAvailFctView& View) :
   m_Model(Model), m_View(View)
@@ -99,8 +90,6 @@ ModelAvailFctAdapter::ModelAvailFctAdapter(ModelAvailFctAdapterModel& Model,
       &ModelAvailFctAdapter::whenModelFunctionsChanged));
   m_View.signal_AvailFctSelectionChanged().connect(sigc::mem_fun(*this,
       &ModelAvailFctAdapter::whenFctSelectionChanged));
-  m_View.signal_ReloadFctListAsked().connect(sigc::mem_fun(*this,
-      &ModelAvailFctAdapter::whenReloadFctListAsked));
 }
 
 // =====================================================================
@@ -110,15 +99,6 @@ ModelAvailFctAdapter::ModelAvailFctAdapter(ModelAvailFctAdapterModel& Model,
 sigc::signal<void> ModelAvailFctAdapter::signal_FctSelectionChanged()
 {
   return m_signal_FctSelectionChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> ModelAvailFctAdapter::signal_ReloadFctListAsked()
-{
-  return m_signal_ReloadFctListAsked;
 }
 
 // =====================================================================

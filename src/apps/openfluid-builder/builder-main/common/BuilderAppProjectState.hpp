@@ -90,6 +90,7 @@ class BuilderAppProjectState: public BuilderAppState
 
     void whenMapViewAsked();
 
+    void whenRefreshAsked();
 
 };
 
