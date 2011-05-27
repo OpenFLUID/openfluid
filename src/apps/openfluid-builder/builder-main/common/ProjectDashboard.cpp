@@ -116,7 +116,7 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Spatial representation");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Domain ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateIcon] = CheckInfo.Domain ? m_GreenIcon : m_OrangeIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.Domain ? "ok" : CheckInfo.DomainMsg;
 
   Row = *mref_TreeModel->append();

@@ -336,6 +336,9 @@ void ProjectCoordinator::updateResults()
 void ProjectCoordinator::whenRunHappened()
 {
   m_HasRun = true;
+
+  whenDomainChanged(); // for functions which create units
+
   m_ExplorerModel.updateResultsAsked(false);
 }
 

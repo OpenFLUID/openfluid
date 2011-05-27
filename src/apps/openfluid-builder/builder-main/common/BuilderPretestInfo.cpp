@@ -186,5 +186,5 @@ void BuilderPretestInfo::addBuilderInfo(
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {
-  return (ExtraFiles && Inputdata && Model && Domain && Project);
+  return (ExtraFiles && Inputdata && Model && Project);
 }
