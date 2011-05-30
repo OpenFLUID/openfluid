@@ -202,7 +202,11 @@ void BuilderProjectWithExplorer::compose()
 
 void BuilderProjectWithExplorer::runAsked()
 {
+  mp_Coordinator->setFileMonitorDisplayState(false);
+
   mp_EngineProject->run();
+
+  mp_Coordinator->setFileMonitorDisplayState(true);
 }
 
 // =====================================================================

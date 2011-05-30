@@ -101,6 +101,10 @@ class ProjectCoordinator
 
     Gtk::MessageDialog* mp_FileMonitorDialog;
 
+    bool m_FileMonitorHasChanged;
+
+    bool m_FileMonitorHasToDisplay;
+
     void whenActivationChanged();
 
     void whenDomainChanged();
@@ -123,8 +127,8 @@ class ProjectCoordinator
 
     std::string constructSetPageName(std::string SetName);
 
-    void onDirMonitorChanged(const Glib::RefPtr<
-        Gio::File>& File, const Glib::RefPtr<Gio::File>& OtherFile,
+    void onDirMonitorChanged(const Glib::RefPtr<Gio::File>& File,
+        const Glib::RefPtr<Gio::File>& OtherFile,
         Gio::FileMonitorEvent EventType);
 
   protected:
@@ -152,6 +156,8 @@ class ProjectCoordinator
     void whenRunHappened();
 
     void whenUpdatePluginsAsked(int ResponseId = Gtk::RESPONSE_OK);
+
+    void setFileMonitorDisplayState(bool HasToDisplay);
 
 };
 

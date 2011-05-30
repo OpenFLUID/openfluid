@@ -131,8 +131,7 @@ void BuilderAppProjectState::whenQuitAsked()
 
 void BuilderAppProjectState::whenRunAsked()
 {
-  //TODO test cast before
-  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->runAsked();
+  static_cast<BuilderProjectWithExplorer*>(m_App.getCurrentModule())->runAsked();
 }
 
 // =====================================================================

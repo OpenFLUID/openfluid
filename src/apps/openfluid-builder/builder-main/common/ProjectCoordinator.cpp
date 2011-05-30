@@ -78,7 +78,8 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
     ProjectDashboard& TheProjectDashboard) :
   m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
       TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
-      false), m_ModelPageName(_("Model"))
+      false), m_ModelPageName(_("Model")), m_FileMonitorHasChanged(false),
+      m_FileMonitorHasToDisplay(true)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
@@ -90,10 +91,7 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
   m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenPageRemoved));
 
-  std::string Msg =
-      _( "Changes occur in your plugin list.\nDo you want to reload it ?\n"
-          "(if not, it's at your own risks, think of reload manually)");
-  mp_FileMonitorDialog = new Gtk::MessageDialog(Msg, false,
+  mp_FileMonitorDialog = new Gtk::MessageDialog("", false,
       Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL, false);
   mp_FileMonitorDialog->signal_response().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenUpdatePluginsAsked));
@@ -106,12 +104,15 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
   {
     Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
         PluginPaths[i]);
+
     Glib::RefPtr<Gio::FileMonitor> DirMonitor = ItemFile->monitor_directory();
+
     DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
         &ProjectCoordinator::onDirMonitorChanged));
 
     m_DirMonitors.push_back(DirMonitor);
   }
+
 }
 
 // =====================================================================
@@ -533,11 +534,16 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 
 void ProjectCoordinator::onDirMonitorChanged(
     const Glib::RefPtr<Gio::File>& /*File*/,
-    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
-    Gio::FileMonitorEvent EventType)
+    const Glib::RefPtr<Gio::File>& /*OtherFile*/, Gio::FileMonitorEvent /*EventType*/)
 {
-  if (!mp_FileMonitorDialog->is_popup())
+  if (!m_FileMonitorHasToDisplay)
+    m_FileMonitorHasChanged = true;
+  else if (!mp_FileMonitorDialog->is_popup())
   {
+    std::string Msg =
+        _( "Changes occur in your plugin list.\nDo you want to reload it ?\n"
+            "(if not, it's at your own risks, think of reload manually)");
+    mp_FileMonitorDialog->set_message(Msg);
     mp_FileMonitorDialog->show_all();
   }
 }
@@ -575,6 +581,30 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   checkProject();
 
   m_signal_ChangeHappened.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
+{
+  m_FileMonitorHasToDisplay = HasToDisplay;
+
+  if (m_FileMonitorHasToDisplay)
+  {
+    if (m_FileMonitorHasChanged && !mp_FileMonitorDialog->is_popup())
+    {
+      std::string
+          Msg =
+              _( "Changes occur in your plugin list while simulation ran.\nDo you want to reload it ?\n"
+                  "(if not, it's at your own risks, think of reload manually)");
+      mp_FileMonitorDialog->set_message(Msg);
+      mp_FileMonitorDialog->show_all();
+    }
+
+    m_FileMonitorHasChanged = false;
+  }
 }
 
 // =====================================================================
