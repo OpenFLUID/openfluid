@@ -104,8 +104,8 @@ BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
 
 bool BuilderWorkdirCreationDialog::show()
 {
-  mp_Entry->set_text(Glib::ustring::compose("%1/OpenFLUID-Projects",
-      Glib::get_home_dir()));
+  mp_Entry->set_text(boost::filesystem::path(Glib::ustring::compose("%1/OpenFLUID-Projects",
+      Glib::get_home_dir())).file_string());
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {

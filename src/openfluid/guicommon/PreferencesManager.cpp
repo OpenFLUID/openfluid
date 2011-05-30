@@ -247,7 +247,7 @@ bool PreferencesManager::addRecentProject(std::string ProjectPath,
   if (!ProjectPaths.empty() && ProjectPaths.size() > (RecentMax - 1))
     mp_KFile->remove_key("openfluid.builder.recentprojects", ProjectPaths[0]);
 
-  mp_KFile->set_string("openfluid.builder.recentprojects", ProjectPath,
+  mp_KFile->set_string("openfluid.builder.recentprojects", boost::filesystem::path(ProjectPath).string(),
       ProjectName);
 
   return true;
@@ -292,7 +292,7 @@ std::vector<std::pair<std::string, std::string> > PreferencesManager::getRecentP
 
 void PreferencesManager::setWorkdir(Glib::ustring Workdir)
 {
-  mp_KFile->set_string("openfluid.builder.paths", "workdir", Workdir);
+  mp_KFile->set_string("openfluid.builder.paths", "workdir", boost::filesystem::path(Workdir).string());
 }
 
 // =====================================================================

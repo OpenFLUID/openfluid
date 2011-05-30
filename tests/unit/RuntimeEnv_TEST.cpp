@@ -80,6 +80,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),false);
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID(),"");
 
+  std::cout << "InputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
+  std::cout << "OutputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+  std::cout << "TempDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
+  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size();i++) std::cout << "Plugins search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().at(i) << std::endl;
   std::cout << "Arch: " << openfluid::base::RuntimeEnvironment::getInstance()->getArch() << std::endl;
 
 }
