@@ -68,8 +68,8 @@ IF(Boost_FOUND AND LibXML2_FOUND)
           DESTINATION "${DOC_INSTALL_PATH}")
   
             
-  INSTALL(DIRECTORY "share/openfluid/" 
-          DESTINATION "${SHARE_INSTALL_PATH}" PATTERN ".svn" EXCLUDE)
+  INSTALL(DIRECTORY "share" 
+          DESTINATION "." PATTERN ".svn" EXCLUDE)
             
 
 
