@@ -331,39 +331,49 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
 
     for (int i = 0; i < n; i++)
     {
-      openfluid::machine::SignatureItemInstance
-          * Signature =
-              openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
-                  TempItems[i].first + openfluid::config::PLUGINS_EXT);
-
-      if (Signature)
+      try
       {
-        Signature->ItemType
-            = openfluid::base::ModelItemDescriptor::PluggedFunction;
-        openfluid::machine::ModelItemInstance* Item =
-            m_StructureModel.appendFunction(*Signature);
-        if (Item)
+
+        openfluid::machine::SignatureItemInstance
+            * Signature =
+                openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
+                    TempItems[i].first + openfluid::config::PLUGINS_EXT);
+
+        if (Signature)
         {
-          Item->Params = TempItems[i].second;
-          createModelFctParamsComponent(Item);
+          Signature->ItemType
+              = openfluid::base::ModelItemDescriptor::PluggedFunction;
+          openfluid::machine::ModelItemInstance* Item =
+              m_StructureModel.appendFunction(*Signature);
+          if (Item)
+          {
+            Item->Params = TempItems[i].second;
+            createModelFctParamsComponent(Item);
+          } else
+          {
+            openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+                Glib::ustring::compose(
+                    "Unable to create function %1,\nit will be ignored.",
+                    TempItems[i].first));
+          }
         } else
-        {
           openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
               Glib::ustring::compose(
-                  "Unable to create function %1,\nit will be ignored.",
+                  "Unable to load plugin %1,\nit will be ignored.",
                   TempItems[i].first));
-        }
-      } else
+      } catch (openfluid::base::OFException e)
+      {
         openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
             Glib::ustring::compose(
                 "Unable to load plugin %1,\nit will be ignored.",
                 TempItems[i].first));
+      }
     }
 
   } catch (openfluid::base::OFException e)
   {
-    //    std::cerr << "ModelStructureCoordinator::updateFctParamsComponents : "
-    //        << e.what() << std::endl;
+        std::cerr << "ModelStructureCoordinator::updateFctParamsComponents : "
+            << e.what() << std::endl;
   }
 }
 
