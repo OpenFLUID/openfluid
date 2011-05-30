@@ -142,6 +142,8 @@ RuntimeEnvironment::RuntimeEnvironment() :
 #endif
 
 #if WIN32
+  char* ChHostName = NULL;
+
   ChHostName= std::getenv("COMPUTERNAME");
   if (ChHostName != NULL) m_HostName = ChHostName;
 #endif
