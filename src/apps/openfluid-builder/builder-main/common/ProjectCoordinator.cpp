@@ -65,7 +65,6 @@
 #include "ResultsSetModule.hpp"
 
 #include <boost/foreach.hpp>
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "BuilderPretestInfo.hpp"
 
 #include "FunctionSignatureRegistry.hpp"
@@ -90,6 +89,14 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
       &ProjectCoordinator::whenActivationChanged));
   m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenPageRemoved));
+
+  std::string Msg =
+      _( "Changes occur in your plugin list.\nDo you want to reload it ?\n"
+          "(if not, it's at your own risks, think of reload manually)");
+  mp_FileMonitorDialog = new Gtk::MessageDialog(Msg, false,
+      Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL, false);
+  mp_FileMonitorDialog->signal_response().connect(sigc::mem_fun(*this,
+      &ProjectCoordinator::whenUpdatePluginsAsked));
 
   std::vector<std::string> PluginPaths =
       openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
@@ -138,6 +145,8 @@ ProjectCoordinator::~ProjectCoordinator()
     it->second = 0;
   }
   m_ModulesByPageNameMap.clear();
+
+  delete mp_FileMonitorDialog;
 }
 
 // =====================================================================
@@ -523,22 +532,13 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 
 
 void ProjectCoordinator::onDirMonitorChanged(
-    const Glib::RefPtr<Gio::File>& File,
+    const Glib::RefPtr<Gio::File>& /*File*/,
     const Glib::RefPtr<Gio::File>& /*OtherFile*/,
     Gio::FileMonitorEvent EventType)
 {
-  if (EventType == Gio::FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
-    return;
-
-  std::string Msg = Glib::ustring::compose(_(
-      "Changes occur in %1.\nDo you want to reload the plugin list ?\n"
-      "(if not, it's at your own risks, think of reload manually)"),
-      File->get_path());
-
-  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      Msg))
+  if (!mp_FileMonitorDialog->is_popup())
   {
-    whenUpdatePluginsAsked();
+    mp_FileMonitorDialog->show_all();
   }
 }
 
@@ -546,14 +546,26 @@ void ProjectCoordinator::onDirMonitorChanged(
 // =====================================================================
 
 
-void ProjectCoordinator::whenUpdatePluginsAsked()
+void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
 {
+  mp_FileMonitorDialog->hide();
+
+  if (ResponseId != Gtk::RESPONSE_OK)
+    return;
+
   FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
-  // remove all functions and add those which are available
+  // remove (delete) all functions and add (using function constructor) those which are available
   if (m_Workspace.existsPageName(m_ModelPageName))
   {
     (static_cast<ModelStructureModule*> (m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
+  } else
+  {
+    ModelStructureModule
+        * TempModelModule =
+            static_cast<ModelStructureModule*> (mp_ModuleFactory->createModelStructureModule());
+    TempModelModule->updateWithFctParamsComponents();
+    delete TempModelModule;
   }
 
   m_ExplorerModel.updateModelAsked();

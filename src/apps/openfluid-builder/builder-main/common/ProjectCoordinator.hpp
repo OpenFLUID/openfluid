@@ -59,6 +59,8 @@
 
 #include <giomm/filemonitor.h>
 
+#include <gtkmm/messagedialog.h>
+
 class ProjectExplorerModel;
 class ProjectWorkspace;
 class ProjectWorkspaceModule;
@@ -96,6 +98,8 @@ class ProjectCoordinator
     std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
 
     std::string m_ModelPageName;
+
+    Gtk::MessageDialog* mp_FileMonitorDialog;
 
     void whenActivationChanged();
 
@@ -147,7 +151,7 @@ class ProjectCoordinator
 
     void whenRunHappened();
 
-    void whenUpdatePluginsAsked();
+    void whenUpdatePluginsAsked(int ResponseId = Gtk::RESPONSE_OK);
 
 };
 
