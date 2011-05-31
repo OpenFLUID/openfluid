@@ -58,12 +58,13 @@
 #include <boost/filesystem.hpp>
 #include <glibmm/fileutils.h>
 #include <fstream>
+#include <openfluid/base/OFException.hpp>
 
-
-namespace openfluid { namespace guicommon {
-
+namespace openfluid {
+namespace guicommon {
 
 PreferencesManager* PreferencesManager::mp_Instance = 0;
+std::string PreferencesManager::m_FileName = "";
 
 // =====================================================================
 // =====================================================================
@@ -83,8 +84,9 @@ PreferencesManager* PreferencesManager::getInstance()
 
 PreferencesManager::PreferencesManager()
 {
-  m_FileName
-      = openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile();
+  if (m_FileName == "")
+    m_FileName
+        = openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile();
 
   mp_KFile = new Glib::KeyFile();
 
@@ -172,6 +174,20 @@ std::string PreferencesManager::getFileName()
 // =====================================================================
 // =====================================================================
 
+
+void PreferencesManager::setFileName(Glib::ustring AbsoluteFileName)
+{
+  if (!mp_Instance)
+    m_FileName = AbsoluteFileName;
+  else
+    throw openfluid::base::OFException("OpenFLUID Builder",
+        "PreferencesManager::setFileName",
+        "FileName can not be changed after PreferencesManager instanciation");
+}
+
+// =====================================================================
+// =====================================================================
+
 bool PreferencesManager::isValidKey(std::string Group, std::string Key)
 {
   return (mp_KFile->has_group(Group) && mp_KFile->has_key(Group, Key));
@@ -202,7 +218,6 @@ std::string PreferencesManager::getLang()
 
 void PreferencesManager::setRecentMax(unsigned int RecentMax)
 {
-  // imposer une limite ?
   mp_KFile->set_integer("openfluid.builder.interface", "recentmax", RecentMax);
 
   if (mp_KFile->has_group("openfluid.builder.recentprojects"))
@@ -247,8 +262,8 @@ bool PreferencesManager::addRecentProject(std::string ProjectPath,
   if (!ProjectPaths.empty() && ProjectPaths.size() > (RecentMax - 1))
     mp_KFile->remove_key("openfluid.builder.recentprojects", ProjectPaths[0]);
 
-  mp_KFile->set_string("openfluid.builder.recentprojects", boost::filesystem::path(ProjectPath).string(),
-      ProjectName);
+  mp_KFile->set_string("openfluid.builder.recentprojects",
+      boost::filesystem::path(ProjectPath).string(), ProjectName);
 
   return true;
 }
@@ -292,7 +307,8 @@ std::vector<std::pair<std::string, std::string> > PreferencesManager::getRecentP
 
 void PreferencesManager::setWorkdir(Glib::ustring Workdir)
 {
-  mp_KFile->set_string("openfluid.builder.paths", "workdir", boost::filesystem::path(Workdir).string());
+  mp_KFile->set_string("openfluid.builder.paths", "workdir",
+      boost::filesystem::path(Workdir).string());
 }
 
 // =====================================================================
@@ -515,5 +531,5 @@ void PreferencesManager::setPluginValue(std::string PluginName,
   mp_KFile->set_string(GroupName, Key, Value);
 }
 
-
-} } //namespaces
+}
+} //namespaces

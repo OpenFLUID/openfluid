@@ -60,23 +60,48 @@
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/config.hpp>
 #include <boost/filesystem.hpp>
+#include "tests-config.hpp"
+#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_SetFileName)
+{
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
+
+  BOOST_CHECK_THROW(openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string()),openfluid::base::OFException);
+
+  BOOST_CHECK_EQUAL(PrefMgr->getFileName(),openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+
+  delete PrefMgr;
+
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+
+  BOOST_CHECK_EQUAL(PrefMgr->getFileName(),ConfigPath.string());
+
+  delete PrefMgr;
+}
 
 BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 {
-  boost::filesystem::path
-      ConfigPath =
-          boost::filesystem::path(
-              openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
 
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
 
   PrefMgr->setLang("oc");
   PrefMgr->setRecentMax(10);
@@ -99,15 +124,15 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 
 BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 {
-  boost::filesystem::path
-      ConfigPath =
-          boost::filesystem::path(
-              openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
 
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),5);
   BOOST_CHECK_EQUAL(PrefMgr->getRecentProjects().size(),0);
@@ -158,15 +183,15 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 
 BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
 {
-  boost::filesystem::path
-      ConfigPath =
-          boost::filesystem::path(
-              openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
 
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
 
   std::vector<std::string> ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
 
@@ -217,15 +242,15 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
 
 BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 {
-  boost::filesystem::path
-      ConfigPath =
-          boost::filesystem::path(
-              openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
 
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
 
   std::map<std::string, std::string> Places = PrefMgr->getMarketplaces();
 
@@ -275,15 +300,15 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 
 BOOST_AUTO_TEST_CASE(test_Save)
 {
-  boost::filesystem::path
-      ConfigPath =
-          boost::filesystem::path(
-              openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
 
   if (boost::filesystem::exists(ConfigPath))
     boost::filesystem::remove(ConfigPath);
 
-  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(boost::filesystem::exists(ConfigPath),true);
 
@@ -291,6 +316,7 @@ BOOST_AUTO_TEST_CASE(test_Save)
 
   delete PrefMgr;
 
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
   PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT()==1111,false);
@@ -300,6 +326,7 @@ BOOST_AUTO_TEST_CASE(test_Save)
 
   delete PrefMgr;
 
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
   PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),1111);

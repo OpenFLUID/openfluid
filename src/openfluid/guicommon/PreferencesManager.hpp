@@ -73,7 +73,7 @@ class DLLEXPORT PreferencesManager
 
     static PreferencesManager* mp_Instance;
 
-    std::string m_FileName;
+    static std::string m_FileName;
 
     Glib::KeyFile* mp_KFile;
 
@@ -93,6 +93,11 @@ class DLLEXPORT PreferencesManager
 
     bool save();
 
+    /* Used only if we want to set another file name for the conf file
+     * instead of the default one (for tests eg.)
+     * To be set before the first call of getInstance().
+     */
+    static void setFileName(Glib::ustring AbsoluteFileName);
     std::string getFileName();
 
     bool isValidKey(std::string Group, std::string Key);
