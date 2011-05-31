@@ -136,6 +136,14 @@ void FluidXWriter::setModelToWrite(openfluid::machine::ModelInstance& MInstance)
 
     Contents << m_IndentStr << "<model>\n";
 
+    if (MInstance.getGlobalParameters().size() > 0)
+    {
+      Contents << m_IndentStr << m_IndentStr << "<gparams>\n";
+      Contents << getParamsAsStr(MInstance.getGlobalParameters());
+      Contents << m_IndentStr << m_IndentStr << "</gparams>\n";
+    }
+
+
     const std::list<openfluid::machine::ModelItemInstance*> Items = MInstance.getItems();
     std::list<openfluid::machine::ModelItemInstance*>::const_iterator itFuncs;
 

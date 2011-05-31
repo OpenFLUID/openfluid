@@ -280,7 +280,7 @@ openfluid::core::FuncParamsMap_t FluidXReader::mergeParams(const openfluid::core
 // =====================================================================
 // =====================================================================
 
-
+/*
 void FluidXReader::propagateGlobalParamsInModel()
 {
   openfluid::base::ModelDescriptor::ModelDescription_t::iterator itM;
@@ -297,7 +297,7 @@ void FluidXReader::propagateGlobalParamsInModel()
   }
 }
 
-
+*/
 // =====================================================================
 // =====================================================================
 
@@ -319,7 +319,7 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
 
     if (xmlStrcmp(CurrNode->name,(const xmlChar*)"gparams") == 0)
     {
-      m_ModelGlobalParams = mergeParams(m_ModelGlobalParams,extractParamsFromNode(CurrNode));
+      GParams = mergeParams(GParams,extractParamsFromNode(CurrNode));
     }
 
     if (xmlStrcmp(CurrNode->name,(const xmlChar*)"function") == 0)
@@ -376,6 +376,7 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
     CurrNode = CurrNode->next;
   }
 
+  m_ModelDescriptor.setGlobalParameters(GParams);
   m_ModelDefined = true;
 
 }
@@ -930,7 +931,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
     }
   }
 
-  propagateGlobalParamsInModel();
+  //propagateGlobalParamsInModel();
 
 }
 

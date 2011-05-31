@@ -88,8 +88,6 @@ class DLLEXPORT FluidXReader
 
     openfluid::base::DomainDescriptor m_DomainDescriptor;
 
-    openfluid::core::FuncParamsMap_t m_ModelGlobalParams;
-
 
     openfluid::base::OutputFilesDescriptor extractFilesDecriptorFromNode(xmlNodePtr NodePtr);
 

@@ -98,6 +98,12 @@ void TestDataset(std::string DatasetPath)
   // Model
   // ====================================================================
 
+  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters().size(),2);
+  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters()["gparam1"],"100");
+  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters()["gparam2"],"0.1");
+
+
+
   openfluid::base::ModelDescriptor::ModelDescription_t ModelItems;
 
   ModelItems = FXR.getModelDescriptor().getItems();
@@ -112,18 +118,14 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Interp);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),4);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),2);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["sources"],"sources.xml");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["distribution"],"distri.dat");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction),true);
   BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),"tests.functionA");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),2);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),0);
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);
@@ -131,10 +133,8 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableSize(),11);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Fixed);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),3);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),1);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"],"20");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);
@@ -142,19 +142,16 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Random);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),4);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),2);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["min"],"20.53");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["max"],"50");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
 
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction),true);
   BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),"tests.functionB");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),5);
+  BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),4);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"50");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam2"],"0.1");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["strparam"],"strvalue");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");

@@ -77,7 +77,12 @@ class DLLEXPORT ModelInstance
 
     openfluid::machine::SimulationBlob& m_SimulationBlob;
 
+    openfluid::core::FuncParamsMap_t m_GlobalParams;
+
     bool m_Initialized;
+
+    openfluid::core::FuncParamsMap_t mergeParamsWithGlobalParams(const openfluid::core::FuncParamsMap_t& Params) const;
+
 
   public:
 
@@ -104,6 +109,12 @@ class DLLEXPORT ModelInstance
     void clear();
 
     unsigned int getItemsCount() const { return m_ModelItems.size(); };
+
+    openfluid::core::FuncParamsMap_t& getGlobalParameters() { return m_GlobalParams; };
+
+    void setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value);
+
+    void setGlobalParameters(const openfluid::core::FuncParamsMap_t& Params) { m_GlobalParams = Params; };
 
     const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
 

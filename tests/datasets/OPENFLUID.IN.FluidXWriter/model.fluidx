@@ -3,6 +3,12 @@
 
     <model>
 
+     <gparams>
+        <param name="strparam" value="dummystrvalue" />
+        <param name="doubleparam" value="0.0" />
+        <param name="longparam" value="11" />     
+     </gparams>
+   
    
       <function fileID="tests.primitives.prod" />       
       

@@ -98,7 +98,6 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-
 ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
                              openfluid::machine::MachineListener* Listener)
              : m_SimulationBlob(SimulationBlob), m_Initialized(false)
@@ -115,6 +114,32 @@ ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
 ModelInstance::~ModelInstance()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::FuncParamsMap_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::core::FuncParamsMap_t& Params) const
+{
+  openfluid::core::FuncParamsMap_t MergedParams = m_GlobalParams;
+  openfluid::core::FuncParamsMap_t::const_iterator itParams;
+
+  for(itParams = Params.begin();itParams != Params.end();++itParams)
+    MergedParams[(*itParams).first] = (*itParams).second;
+
+  return MergedParams;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelInstance::setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value)
+{
+  m_GlobalParams[Key] = Value;
 }
 
 
@@ -234,7 +259,7 @@ bool ModelInstance::call_initParams() const
   DECLARE_FUNCTION_PARSER;
   bool IsOK = true;
 
-  PARSE_FUNCTION_LIST(initParams(_M_CurrentFunction->Params),InitParams,openfluid::base::SimulationProfiler::INITPARAMS,IsOK);
+  PARSE_FUNCTION_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentFunction->Params)),InitParams,openfluid::base::SimulationProfiler::INITPARAMS,IsOK);
 
   return IsOK;
 }

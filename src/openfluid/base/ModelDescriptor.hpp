@@ -71,12 +71,21 @@ class DLLEXPORT ModelDescriptor
   private:
     ModelDescription_t m_ModelDescription;
 
+    openfluid::core::FuncParamsMap_t m_Params;
+
+
   public:
     ModelDescriptor();
 
     inline ModelDescription_t& getItems() { return (m_ModelDescription); };
 
     inline const ModelDescription_t& getItems() const { return (m_ModelDescription); };
+
+    void setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value);
+
+    void setGlobalParameters(const openfluid::core::FuncParamsMap_t& Params);
+
+    openfluid::core::FuncParamsMap_t getGlobalParameters();
 
     void appendItem(ModelItemDescriptor *Item);
 

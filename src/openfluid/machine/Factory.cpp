@@ -298,6 +298,8 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
 
   }
 
+  MInstance.setGlobalParameters(ModelDesc.getGlobalParameters());
+
 }
 
 
