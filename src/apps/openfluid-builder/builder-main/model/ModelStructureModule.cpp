@@ -80,7 +80,7 @@ ModelStructureModule::ModelStructureModule()
   mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent();
   mp_ModelParamsPanel = new ModelParamsPanel();
   mp_ModelParamsPanel->addAStaticPage(mp_ModelGlobalParamsMVP->asWidget(),
-      _("Global Parameters"), 0);
+      _("Global parameters"), 0);
 
   mp_StructureListToolBox
       = BuilderListToolBoxFactory::createModelStructureToolBox();

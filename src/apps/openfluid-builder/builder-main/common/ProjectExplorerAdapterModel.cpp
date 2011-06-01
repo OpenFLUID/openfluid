@@ -128,7 +128,7 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl()
 std::string ProjectExplorerAdapterModelImpl::generateRunInfoStr(
     std::string Begin, std::string End, unsigned int DeltaT)
 {
-  return Glib::ustring::compose(_("From : %1\nTo : %2\nDelta T : %3 s"), Begin,
+  return Glib::ustring::compose(_("From: %1\nTo: %2\nDelta T: %3 s"), Begin,
       End, DeltaT);
 }
 

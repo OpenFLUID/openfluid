@@ -95,7 +95,7 @@ ModelFctFileRow::ModelFctFileRow(std::string FileName) :
 void ModelFctFileRow::onFileButtonClicked()
 {
   Gtk::FileChooserDialog Dialog(
-      _("Select a file to copy in the Project directory"));
+      _("Select a file to copy in the project directory"));
 
   Dialog.set_current_folder(m_InputDir);
   Dialog.set_filename(m_FilePath);
@@ -116,7 +116,7 @@ void ModelFctFileRow::onFileButtonClicked()
         if (ChoosedFile != m_FilePath
             && openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
                 Glib::ustring::compose(
-                    _("File %1 still exists,\ndo you really want to overwrite it ?"),
+                    _("File %1 already exists,\ndo you really want to overwrite it ?"),
                     m_FileName)))
         {
           boost::filesystem::remove(m_FilePath);

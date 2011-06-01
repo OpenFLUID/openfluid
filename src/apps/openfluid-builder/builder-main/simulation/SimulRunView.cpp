@@ -101,7 +101,7 @@ SimulRunViewImpl::SimulRunViewImpl()
   mp_DeltaSpin->signal_value_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onDeltaChanged));
 
-  Gtk::Label* FilesBuffLabel = Gtk::manage(new Gtk::Label(_("Files Buffer")));
+  Gtk::Label* FilesBuffLabel = Gtk::manage(new Gtk::Label(_("Output files buffer")));
   Gtk::Label* FilesBuffUnit = Gtk::manage(new Gtk::Label(_("KB")));
   mp_FilesBuffSpin = Gtk::manage(new Gtk::SpinButton());
   mp_FilesBuffSpin->set_range(1.0, 999.0);
@@ -110,19 +110,19 @@ SimulRunViewImpl::SimulRunViewImpl()
   mp_FilesBuffSpin->signal_value_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onFilesBuffChanged));
 
-  Gtk::Label* BeginLabel = Gtk::manage(new Gtk::Label(_("Period Begin")));
+  Gtk::Label* BeginLabel = Gtk::manage(new Gtk::Label(_("Period begin")));
   mp_BeginEntry = Gtk::manage(new Gtk::Entry());
   mp_BeginEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onBeginChanged));
 
-  Gtk::Label* EndLabel = Gtk::manage(new Gtk::Label(_("Period End")));
+  Gtk::Label* EndLabel = Gtk::manage(new Gtk::Label(_("Period end")));
   mp_EndEntry = Gtk::manage(new Gtk::Entry());
   mp_EndEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onEndChanged));
 
   //  Gtk::Label* ValuesBuffCBLabel = Gtk::manage(
   //      new Gtk::Label(_("Values Buffer")));
-  mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton(_("Values Buffer")));
+  mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton(_("Values buffer")));
   mp_ValuesBuffCB->signal_clicked().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onValuesBuffToggle));
 
@@ -277,11 +277,11 @@ SimulRunViewImpl::SimulRunViewImpl()
       0, 0);
 
   BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
-  TopFrame->setLabelText(_("Time Management"));
+  TopFrame->setLabelText(_("Time"));
   TopFrame->add(*TopTable);
 
   BuilderFrame* BottomFrame = Gtk::manage(new BuilderFrame());
-  BottomFrame->setLabelText(_("Memory Management"));
+  BottomFrame->setLabelText(_("Memory management"));
   BottomFrame->add(*BottomTable);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());

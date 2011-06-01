@@ -54,7 +54,7 @@
 */
 
 #include <openfluid/guicommon/MarketPackWidget.hpp>
-
+#include <glibmm/i18n.h>
 
 namespace openfluid { namespace guicommon {
 
@@ -73,7 +73,7 @@ const static Gdk::Color WHITE("#FFFFFF");
 MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo)
  : Gtk::EventBox(),
    m_MetaPackInfo(MetaPackInfo),
-   m_FormatLabel("Package Format:")
+   m_FormatLabel(_("Package Format:"))
 {
   m_EmptyCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
   m_FullCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart_full.png"));
@@ -107,14 +107,14 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != MetaPackInfo.AvailablePackages.end())
   {
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = "source";
+    TmpFormatRow[m_FormatColumns.m_FormatName] = _("source");
     TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::SRC;
   }
 
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
   {
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = "binary";
+    TmpFormatRow[m_FormatColumns.m_FormatName] = _("binary");
     TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::BIN;
   }
 
@@ -233,14 +233,14 @@ void MarketPackWidget::updateDisplayedInfos()
   std::string MarkupTooltip = "";
   openfluid::market::MetaPackageInfo::SelectionType SelType;
 
-  m_VersionLabel.set_markup("<u>Version:</u> "+ replaceByUnknownIfEmpty(m_MetaPackInfo.Version));
+  m_VersionLabel.set_markup(std::string("<u>")+_("Version:")+std::string("</u> ")+ replaceByUnknownIfEmpty(m_MetaPackInfo.Version));
 
 
   MarkupTooltip += "<b>" + m_MetaPackInfo.ID + "</b>";
 
 
-  MarkupTooltip += "\n<u>Version:</u> " + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
-  MarkupTooltip += "\n<u>Author(s):</u> " + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
+  MarkupTooltip += std::string("\n<u>")+_("Version:")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
+  MarkupTooltip += std::string("\n<u>")+_("Author(s):")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
 
   Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
   if (TmpIter)
@@ -251,8 +251,8 @@ void MarketPackWidget::updateDisplayedInfos()
       SelType = TmpRow[m_FormatColumns.m_SelType];
       std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
 
-      MarkupTooltip += "\n<u>License :</u> " + replaceByUnknownIfEmpty(LicenseStr);
-      m_LicenseLabel.set_markup("<u>License:</u> "+replaceByUnknownIfEmpty(LicenseStr));
+      MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
+      m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
     }
   }
 
@@ -280,7 +280,7 @@ MarketPackWidget::signal_install_modified_t MarketPackWidget::signal_install_mod
 
 std::string MarketPackWidget::replaceByUnknownIfEmpty(const std::string& Str)
 {
-  if (Str.empty()) return "<i>unknown</i>";
+  if (Str.empty()) return _("<i>unknown</i>");
   return Str;
 }
 

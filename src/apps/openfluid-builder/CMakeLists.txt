@@ -18,11 +18,6 @@ STRING(REGEX REPLACE "\"" "''" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
 SET(BUILDER_URL_TEXT  "http://www.umr-lisah.fr/openfluid/")
 
 
-# ! let this before CONFIGURE_FILE(builderconfig.hpp.in)
-SET(BUILDER_NLS_PACKAGE openfluid-builder)
-SET(BUILDER_NLS_LOCALEDIR ${CMAKE_INSTALL_PREFIX}/share/locale)
-
-
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
@@ -68,6 +63,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder
 
 
 ADD_SUBDIRECTORY(extensions)
+
+ADD_DEPENDENCIES(openfluid-builder i18n)
 
 INSTALL(TARGETS openfluid-builder
         RUNTIME DESTINATION ${BIN_INSTALL_PATH})

@@ -120,7 +120,7 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row[m_Columns.m_StateInfo] = CheckInfo.Domain ? "ok" : CheckInfo.DomainMsg;
 
   Row = *mref_TreeModel->append();
-  Row[m_Columns.m_Title] = _("Input data");
+  Row[m_Columns.m_Title] = _("Inputdata");
   Row[m_Columns.m_StateIcon] = CheckInfo.Inputdata ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.Inputdata ? "ok" : minimiseInfoString(
       CheckInfo.InputdataMsg);

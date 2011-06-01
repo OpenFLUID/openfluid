@@ -250,7 +250,7 @@ void SimulOutFileDescViewImpl::setCreationMode()
 
   mp_CloseEditButton->set_visible(false);
 
-  mp_Dialog->set_title(_("Files Format Creation"));
+  mp_Dialog->set_title(_("Files format creation"));
 
   mp_FormatNameEntry->set_visible(true);
   mp_FormatNameLabel->set_visible(false);
@@ -270,7 +270,7 @@ void SimulOutFileDescViewImpl::setEditionMode()
   mp_OkCreateButton->set_visible(false);
   mp_CancelCreateButton->set_visible(false);
 
-  mp_Dialog->set_title(_("Files Format Edition"));
+  mp_Dialog->set_title(_("Files format edition"));
 
   mp_FormatNameLabel->set_visible(true);
   mp_FormatNameEntry->set_visible(false);

@@ -145,14 +145,14 @@ std::map<std::string, std::string> DialogBoxFactory::showGeneratorCreationDialog
 {
   Gtk::Dialog Dialog(_("Generator creation"));
 
-  Gtk::Label VarNameLabel(_("Variable Name"));
-  Gtk::Label ClassLabel(_("Unit Class"));
+  Gtk::Label VarNameLabel(_("Variable name"));
+  Gtk::Label ClassLabel(_("Unit class"));
   Gtk::Label VarSizeLabel("Size");
 
   Gtk::RadioButton::Group RadioGrp;
-  Gtk::RadioButton ScalarRadio(RadioGrp, "Scalar Value");
+  Gtk::RadioButton ScalarRadio(RadioGrp, _("Scalar Value"));
   ScalarRadio.set_active(true);
-  Gtk::RadioButton VectorRadio(RadioGrp, "Vector Value : ");
+  Gtk::RadioButton VectorRadio(RadioGrp, _("Vector Value :")+std::string(" "));
 
   Gtk::Entry VarNameEntry;
 
@@ -211,7 +211,7 @@ std::map<std::string, std::string> DialogBoxFactory::showGeneratorCreationDialog
 
 int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
 {
-  Gtk::Dialog Dialog(_("Close project ?"));
+  Gtk::Dialog Dialog(_("Close project?"));
 
   Gtk::Label Label;
 
@@ -226,12 +226,12 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
 
   if (HasToBeSaved)
   {
-    Label.set_text(_("Do you want to save this project before closing ?"));
+    Label.set_text(_("Do you want to save this project before closing?"));
     Dialog.add_button(_("Close project without saving"), 1);
     Dialog.add_button(_("Save and close project"), 2);
   } else
   {
-    Label.set_text(_("Are you sure you want to close this project ?"));
+    Label.set_text(_("Are you sure you want to close this project?"));
     Dialog.add_button(Gtk::Stock::OK, 1);
   }
 
@@ -251,12 +251,12 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
 std::string DialogBoxFactory::showDomainIDataEditDialog(int Id,
     std::string DataName, std::string Val)
 {
-  Gtk::Dialog Dialog("Edit Input Data", true, false);
+  Gtk::Dialog Dialog(_("Edit Inputdata"), true, false);
 
   Gtk::Entry Entry;
   Entry.set_text(Val);
 
-  Gtk::Label Label(Glib::ustring::compose(_("%1 for Id %2"), DataName,Id));
+  Gtk::Label Label(Glib::ustring::compose(_("%1 for ID %2"), DataName,Id));
 
   Dialog.get_vbox()->pack_start(Label);
   Dialog.get_vbox()->pack_start(Entry);

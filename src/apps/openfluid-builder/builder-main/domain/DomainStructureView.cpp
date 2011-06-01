@@ -65,7 +65,7 @@ DomainStructureViewImpl::DomainStructureViewImpl(
   m_Columns(Columns)
 {
   mp_UnitsView->append_column("ID", m_Columns.m_Id);
-  mp_UnitsView->append_column(_("Process Order"), m_Columns.m_PcsOrder);
+  mp_UnitsView->append_column(_("Process order"), m_Columns.m_PcsOrder);
 
   mp_UnitsView->get_column(0)->set_sort_column(m_Columns.m_Id);
   mp_UnitsView->get_column(1)->set_sort_column(m_Columns.m_PcsOrder);

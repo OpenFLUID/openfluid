@@ -91,7 +91,7 @@ void BuilderByClassTreeView::setTreeModel(
 BuilderByClassTreeView::BuilderByClassTreeView()
 {
   mp_ClassesView = Gtk::manage(new Gtk::TreeView());
-  mp_ClassesView->append_column(_("Unit Classes"), m_ClassColumns.m_Class);
+  mp_ClassesView->append_column(_("Unit classes"), m_ClassColumns.m_Class);
   mp_ClassesView->set_visible(true);
   mp_ClassesView->get_selection()->signal_changed().connect(sigc::mem_fun(
       *this, &BuilderByClassTreeView::onClassesViewSelectionChanged));

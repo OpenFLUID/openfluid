@@ -61,14 +61,14 @@ bool SimulOutFileDescModelImpl::checkFileFormatName()
 {
   if (m_FormatName == "")
   {
-    m_signal_ErrorDialogAsked.emit(_("File Format Name can't be empty"));
+    m_signal_ErrorDialogAsked.emit(_("File format name cannot be empty"));
     return false;
   } else
   {
     for (unsigned int i = 0; i < m_FilesFormatsByNameVect.size(); i++)
       if (m_FilesFormatsByNameVect[i].first == m_FormatName)
       {
-        m_signal_ErrorDialogAsked.emit(_("This File Format Name still exists"));
+        m_signal_ErrorDialogAsked.emit(_("This file format name already exists"));
         return false;
       }
   }

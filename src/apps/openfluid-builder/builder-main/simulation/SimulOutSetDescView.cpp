@@ -423,7 +423,7 @@ void SimulOutSetDescViewImpl::setCreationMode()
 
   mp_CloseEditButton->set_visible(false);
 
-  mp_Dialog->set_title(_("Set Creation"));
+  mp_Dialog->set_title(_("Set creation"));
 
   mp_SetNameEntry->set_visible(true);
   mp_SetNameLabel->set_visible(false);
@@ -442,7 +442,7 @@ void SimulOutSetDescViewImpl::setEditionMode()
   mp_OkCreateButton->set_visible(false);
   mp_CancelCreateButton->set_visible(false);
 
-  mp_Dialog->set_title(_("Set Edition"));
+  mp_Dialog->set_title(_("Set edition"));
 
   mp_SetNameLabel->set_visible(true);
   mp_SetNameEntry->set_visible(false);

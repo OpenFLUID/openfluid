@@ -54,6 +54,7 @@
  */
 
 
+#include <glibmm/i18n.h>
 
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
@@ -98,9 +99,9 @@ MarketClientAssistant::MarketClientAssistant()
   append_page(m_InstallPageBox);
 
 
-  set_page_title(*get_nth_page(0), "Packages selection");
-  set_page_title(*get_nth_page(1), "Licenses");
-  set_page_title(*get_nth_page(2), "Download and install");
+  set_page_title(*get_nth_page(0), _("Packages selection"));
+  set_page_title(*get_nth_page(1), _("Licenses"));
+  set_page_title(*get_nth_page(2), _("Download and install"));
 
 
   set_page_complete(m_SelectionPageBox, false);
@@ -146,14 +147,14 @@ MarketClientAssistant::~MarketClientAssistant()
 void MarketClientAssistant::setupSelectionPage()
 {
 
-  m_URLLabel.set_text("Marketplace: ");
+  m_URLLabel.set_text(_("Marketplace:")+std::string(" "));
 
   m_RefURLComboBoxModel = Gtk::ListStore::create(m_URLColumns);
   m_URLCombo.set_model(m_RefURLComboBoxModel);
 
 
   Gtk::TreeModel::Row TmpURLRow = *(m_RefURLComboBoxModel->append());
-  TmpURLRow[m_URLColumns.m_Name] = "--- No marketplace selected ---";
+  TmpURLRow[m_URLColumns.m_Name] = _("--- No marketplace selected ---");
   TmpURLRow[m_URLColumns.m_URL] = "";
 
 
@@ -181,9 +182,9 @@ void MarketClientAssistant::setupSelectionPage()
   m_AvailPacksSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
 
-  m_SelectAllButton.set_label("Select all");
+  m_SelectAllButton.set_label(_("Select all"));
   m_SelectAllButton.set_sensitive(false);
-  m_SelectNoneButton.set_label("Select none");
+  m_SelectNoneButton.set_label(_("Select none"));
   m_SelectNoneButton.set_sensitive(false);
 
   m_SelectionActionsBox.pack_start(m_SelectAllButton,Gtk::PACK_SHRINK,0);
@@ -218,7 +219,7 @@ void MarketClientAssistant::setupSelectionPage()
 void MarketClientAssistant::setupLicensesPage()
 {
 
-  m_LicensesLabel.set_text("Licenses:");
+  m_LicensesLabel.set_text(_("Licenses:"));
   m_LicensesLabel.set_alignment(0,0);
 
   m_RefLicenseTextBuffer = Gtk::TextBuffer::create();
@@ -245,8 +246,8 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesReviewBox.pack_start(m_LicensesReviewSWindow,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_LicensesAcceptRadio.set_label("Accept all packages licenses");
-  m_LicensesDoNotRadio.set_label("Do not accept packages licenses");
+  m_LicensesAcceptRadio.set_label(_("Accept all packages licenses"));
+  m_LicensesDoNotRadio.set_label(_("Do not accept packages licenses"));
   Gtk::RadioButton::Group Group = m_LicensesAcceptRadio.get_group();
   m_LicensesDoNotRadio.set_group(Group);
   m_LicensesDoNotRadio.set_active(true);
@@ -279,9 +280,9 @@ void MarketClientAssistant::setupDownloadPage()
   m_InstallTreeView.set_model(m_RefInstallTreeViewModel);
 
 
-  m_InstallTreeView.append_column("Package ID",m_InstallColumns.m_ID);
-  m_InstallTreeView.append_column("Format",m_InstallColumns.m_Format);
-  m_InstallTreeView.append_column("Status",m_InstallColumns.m_Status);
+  m_InstallTreeView.append_column(_("Package ID"),m_InstallColumns.m_ID);
+  m_InstallTreeView.append_column(_("Format"),m_InstallColumns.m_Format);
+  m_InstallTreeView.append_column(_("Status"),m_InstallColumns.m_Status);
   m_InstallSWindow.add(m_InstallTreeView);
   m_InstallSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
@@ -289,7 +290,7 @@ void MarketClientAssistant::setupDownloadPage()
 
   m_LogButtonAlign.add(m_ViewLogButton);
 
-  m_ViewLogButton.set_label("View installation log");
+  m_ViewLogButton.set_label(_("View installation log"));
 
   m_InstallProgressBar.set_size_request(-1,30);
 
@@ -343,7 +344,7 @@ void MarketClientAssistant::onClose()
 
 void MarketClientAssistant::onPrepare(Gtk::Widget* /*Widget*/)
 {
-  set_title(Glib::ustring::compose("OpenFLUID Market client (Step %1 of %2)",get_current_page() + 1, get_n_pages()));
+  set_title(Glib::ustring::compose(_("OpenFLUID Market client (Step %1 of %2)"),get_current_page() + 1, get_n_pages()));
 
 
 
@@ -388,7 +389,7 @@ void MarketClientAssistant::onLicensesTreeviewChanged()
     if (LIter != m_MarketClient.getLicensesTexts().end())
       m_RefLicenseTextBuffer->set_text(LIter->second);
     else
-      m_RefLicenseTextBuffer->set_text("(License content not available)");
+      m_RefLicenseTextBuffer->set_text(_("(License content not available)"));
   }
 
 
@@ -526,7 +527,7 @@ void MarketClientAssistant::onInstallTimeoutOnce()
   unsigned int InstalledCount = 0;
 
   m_InstallProgressBar.set_fraction(0.0);
-  m_InstallProgressBar.set_text("0% complete");
+  m_InstallProgressBar.set_text(_("0% complete"));
 
   while( Gtk::Main::events_pending()) Gtk::Main::iteration();
 
@@ -537,32 +538,32 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 
     m_InstallTreeView.scroll_to_row(Gtk::TreePath(*TmpRow),0.7);
 
-    TmpRow[m_InstallColumns.m_Status] = "Installation in progress...";
+    TmpRow[m_InstallColumns.m_Status] = _("Installation in progress...");
     while( Gtk::Main::events_pending()) Gtk::Main::iteration();
 
     try
     {
       m_MarketClient.installNextSelectedPackage();
-      TmpRow[m_InstallColumns.m_Status] = "Success";
+      TmpRow[m_InstallColumns.m_Status] = _("Success");
       while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     }
     catch (openfluid::base::OFException& E)
     {
       std::string ErrorMsg(E.what());
-      TmpRow[m_InstallColumns.m_Status] = "Failed";
+      TmpRow[m_InstallColumns.m_Status] = _("Failed");
       while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     }
     InstalledCount++;
 
     m_InstallProgressBar.set_fraction(float(InstalledCount)/float(PackToInstallCount));
     openfluid::tools::ConvertValue(int(m_InstallProgressBar.get_fraction()*100),&StrPercent);
-    m_InstallProgressBar.set_text(StrPercent+"% complete");
+    m_InstallProgressBar.set_text(StrPercent+_("% complete"));
 
     while( Gtk::Main::events_pending()) Gtk::Main::iteration();
   }
 
   m_InstallProgressBar.set_fraction(1.0);
-  m_InstallProgressBar.set_text("100% complete");
+  m_InstallProgressBar.set_text(_("100% complete"));
   while( Gtk::Main::events_pending()) Gtk::Main::iteration();
 
   m_ViewLogButton.set_sensitive(true);
@@ -676,9 +677,9 @@ void MarketClientAssistant::updateInstallTreeview()
   {
     Gtk::TreeModel::Row TmpRow = *(m_RefInstallTreeViewModel->append());
     TmpRow[m_InstallColumns.m_ID] = (*PLiter)->getID();
-    if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = "binary";
-    else TmpRow[m_InstallColumns.m_Format] = "source";
-    TmpRow[m_InstallColumns.m_Status] = "Pending";
+    if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = _("binary");
+    else TmpRow[m_InstallColumns.m_Format] = _("source");
+    TmpRow[m_InstallColumns.m_Status] = _("Pending");
   }
 }
 

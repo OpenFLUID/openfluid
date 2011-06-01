@@ -96,45 +96,45 @@ ModelFctDetailInfoPage::ModelFctDetailInfoPage() :
   mp_InfoTable = Gtk::manage(new Gtk::Table());
   mp_InfoTable->set_border_width(3);
 
-  mp_IdRow = new ModelFctDetailInfoTableRow(_("Id :"));
+  mp_IdRow = new ModelFctDetailInfoTableRow(_("ID:"));
   mp_IdRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_IdRow);
 
-  mp_NameRow = new ModelFctDetailInfoTableRow(_("Name :"));
+  mp_NameRow = new ModelFctDetailInfoTableRow(_("Name:"));
   mp_NameRow->setVisible(true);
 
-  mp_PathRow = new ModelFctDetailInfoTableRow(_("Path :"));
+  mp_PathRow = new ModelFctDetailInfoTableRow(_("Path:"));
   mp_PathRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_PathRow);
 
-  mp_DescriptionRow = new ModelFctDetailInfoTableRow(_("Description :"));
+  mp_DescriptionRow = new ModelFctDetailInfoTableRow(_("Description:"));
   mp_DescriptionRow->setVisible(true);
 
-  mp_VersionRow = new ModelFctDetailInfoTableRow(_("Version :"));
+  mp_VersionRow = new ModelFctDetailInfoTableRow(_("Version:"));
   mp_VersionRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_VersionRow);
 
-  mp_StatusRow = new ModelFctDetailInfoTableRow(_("Status :"));
+  mp_StatusRow = new ModelFctDetailInfoTableRow(_("Status:"));
   mp_StatusRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_StatusRow);
 
-  mp_DomainRow = new ModelFctDetailInfoTableRow(_("Domain :"));
+  mp_DomainRow = new ModelFctDetailInfoTableRow(_("Domain:"));
   mp_DomainRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_DomainRow);
 
-  mp_ProcessRow = new ModelFctDetailInfoTableRow(_("Process :"));
+  mp_ProcessRow = new ModelFctDetailInfoTableRow(_("Process:"));
   mp_ProcessRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_ProcessRow);
 
-  mp_MethodRow = new ModelFctDetailInfoTableRow(_("Method :"));
+  mp_MethodRow = new ModelFctDetailInfoTableRow(_("Method:"));
   mp_MethodRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_MethodRow);
 
-  mp_AuthorRow = new ModelFctDetailInfoTableRow(_("Author(s) :"));
+  mp_AuthorRow = new ModelFctDetailInfoTableRow(_("Author(s):"));
   mp_AuthorRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_AuthorRow);
 
-  mp_AuthorMailRow = new ModelFctDetailInfoTableRow(_("Author(s) email(s) :"));
+  mp_AuthorMailRow = new ModelFctDetailInfoTableRow(_("Email(s):"));
   mp_AuthorMailRow->setVisible(true);
   m_RowsAboutPluggable.push_back(mp_AuthorMailRow);
 

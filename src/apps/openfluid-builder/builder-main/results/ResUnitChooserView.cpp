@@ -75,7 +75,7 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl():
     mp_MessageLabel(0)
 {
   Gtk::Label* ClassNameLabel = Gtk::manage(new Gtk::Label(_("Class : ")));
-  Gtk::Label* IDsLabel = Gtk::manage(new Gtk::Label(_("ID : ")));
+  Gtk::Label* IDsLabel = Gtk::manage(new Gtk::Label(_("ID:") + std::string("")));
 
   mp_ShowFilesCB = Gtk::manage(new Gtk::CheckButton(_("Show file(s)")));
   mp_ShowFilesCB->set_active(true);

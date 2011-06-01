@@ -99,7 +99,7 @@ ModelFctParamsViewImpl::ModelFctParamsViewImpl() :
 void ModelFctParamsViewImpl::setParams(
     std::map<std::string, std::string> ParamsMap)
 {
-  Gtk::Label* ParamsLabel = Gtk::manage(new Gtk::Label(_("Parameters :"),
+  Gtk::Label* ParamsLabel = Gtk::manage(new Gtk::Label(_("Parameters:"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
   ParamsLabel->set_visible(true);
 
@@ -186,7 +186,7 @@ void ModelFctParamsViewImpl::setParamValues(
 void ModelFctParamsViewImpl::setRequiredFiles(std::vector<std::string> Files)
 {
   Gtk::Label* RequiredFilesLabel = Gtk::manage(new Gtk::Label(
-      _("Required files :"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
+      _("Required files:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
   RequiredFilesLabel->set_visible(true);
 
   mp_FilesTable->attach(*RequiredFilesLabel, 0, 3, 0, 1, Gtk::FILL,

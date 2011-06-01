@@ -85,7 +85,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   // Project Properties
 
   mp_WorkdirFileChooserButton = Gtk::manage(new Gtk::FileChooserButton(
-      _("Choose the Working Directory to use"),
+      _("Choose the working directory to use"),
       Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER));
   mp_WorkdirFileChooserButton->set_show_hidden(false);
 
@@ -111,10 +111,10 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   mp_AuthorsEntry->set_activates_default(true);
 
   Gtk::Label* ProjectFolderLabel = Gtk::manage(new Gtk::Label(
-      _("Working Directory:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+      _("Working directory:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   ProjectFolderLabel->set_alignment(1.0, 0.5);
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Project Name")
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Project name")
       + std::string(":"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   NameLabel->set_alignment(1.0, 0.5);
 
@@ -499,7 +499,7 @@ void EngineProjectNewDialog::appendDirectoryContent(
         {
           if (boost::filesystem::is_empty(it->path()))
           {
-            Row[m_Columns.m_FileName] = it->path().filename() + _(" (Vide)");
+            Row[m_Columns.m_FileName] = it->path().filename() + std::string(" ") + _("(Empty)");
           } else
           {
             // add a dummy row to display expander

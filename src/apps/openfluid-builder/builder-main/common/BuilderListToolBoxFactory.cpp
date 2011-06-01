@@ -88,9 +88,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainStructureToolBox()
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
-  ToolBox->setAddCommandTooltipText(_("Add a Unit to the Domain"));
-  ToolBox->setRemoveCommandTooltipText(_("Delete the selected Unit"));
-  ToolBox->setEditCommandTooltipText(_("Edit the selected Unit"));
+  ToolBox->setAddCommandTooltipText(_("Add a unit to the spatial domain"));
+  ToolBox->setRemoveCommandTooltipText(_("Delete the selected unit"));
+  ToolBox->setEditCommandTooltipText(_("Edit the selected unit"));
   return ToolBox;
 }
 
@@ -108,9 +108,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
   ToolBox->setDownCommandVisible(false);
   ToolBox->setEditCommandVisible(false);
   ToolBox->setAddCommandTooltipText(Glib::ustring::compose(_(
-      "Add a %1 Unit to the Unit"), RelationName));
+      "Add a %1 unit to the unit"), RelationName));
   ToolBox->setRemoveCommandTooltipText(Glib::ustring::compose(_(
-      "Remove the selected %1 Unit"), RelationName));
+      "Remove the selected %1 unit"), RelationName));
   return ToolBox;
 }
 
@@ -163,9 +163,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutFilesToolBox()
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
-  ToolBox->setEditCommandTooltipText(_("Edit the selected File Format"));
-  ToolBox->setAddCommandTooltipText(_("Add a File Format"));
-  ToolBox->setRemoveCommandTooltipText(_("Remove the selected File Format"));
+  ToolBox->setEditCommandTooltipText(_("Edit the selected file format"));
+  ToolBox->setAddCommandTooltipText(_("Add a file format"));
+  ToolBox->setRemoveCommandTooltipText(_("Remove the selected file format"));
   return ToolBox;
 }
 
@@ -180,8 +180,8 @@ BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutSetsToolBox()
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
-  ToolBox->setEditCommandTooltipText(_("Edit the selected Set"));
-  ToolBox->setAddCommandTooltipText(_("Add a Set"));
-  ToolBox->setRemoveCommandTooltipText(_("Remove the selected Set"));
+  ToolBox->setEditCommandTooltipText(_("Edit the selected set"));
+  ToolBox->setAddCommandTooltipText(_("Add a set"));
+  ToolBox->setRemoveCommandTooltipText(_("Remove the selected set"));
   return ToolBox;
 }

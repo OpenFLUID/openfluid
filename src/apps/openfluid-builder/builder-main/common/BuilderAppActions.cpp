@@ -170,15 +170,15 @@ void BuilderAppActions::createAppActionGroup()
   mref_AppActionGroup = Gtk::ActionGroup::create();
 
   //File menu
-  mref_AppActionGroup->add(Gtk::Action::create("FileMenu", _("Project")));
+  mref_AppActionGroup->add(Gtk::Action::create("FileMenu", _("_Project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileNewEmpty", Gtk::Stock::NEW,
-      _("New"), _("Create a project")));
+      _("_New"), _("Create a project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileOpen", Gtk::Stock::OPEN,
-      _("Open..."), _("Open a project")));
+      _("_Open..."), _("Open a project")));
   mref_AppActionGroup->add(Gtk::Action::create("FileQuit", Gtk::Stock::QUIT));
 
   //Edit menu
-  mref_AppActionGroup->add(Gtk::Action::create("EditMenu", _("Edit")));
+  mref_AppActionGroup->add(Gtk::Action::create("EditMenu", _("E_dit")));
   mref_AppActionGroup->add(Gtk::Action::create("EditCut", Gtk::Stock::CUT));
   mref_AppActionGroup->add(Gtk::Action::create("EditCopy", Gtk::Stock::COPY));
   mref_AppActionGroup->add(Gtk::Action::create("EditPaste", Gtk::Stock::PASTE));
@@ -210,9 +210,9 @@ void BuilderAppActions::createProjectActionGroup()
 
   //File menu
   mref_ProjectActionGroup->add(Gtk::Action::create("FileSave",
-      Gtk::Stock::SAVE, _("Save"), _("Save project")));
+      Gtk::Stock::SAVE, _("_Save"), _("Save")));
   mref_ProjectActionGroup->add(Gtk::Action::create("FileSaveAs",
-      Gtk::Stock::SAVE_AS, _("Save As..."), _("Save project as...")));
+      Gtk::Stock::SAVE_AS, _("Save _as..."), _("Save as...")));
   mref_ProjectActionGroup->add(Gtk::Action::create("FileClose",
       Gtk::Stock::CLOSE));
 
@@ -224,7 +224,7 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu", _("Import extra file from")));
 
   //Simulation menu
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu", _("Simulation")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu", _("_Simulation")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationConfig", _("Configuration")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationOutputs", _("Outputs")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun", Gtk::Stock::MEDIA_PLAY, _("Run...")));
@@ -232,7 +232,7 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(Gtk::Action::create("MapView",
       *BuilderGraphicsHelper::createBuilderIconStockId("mapview.png",
           "mapview"), _("Map View"),
-      _("Map view")));
+      _("Map View")));
 
   mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",Gtk::Stock::REFRESH, _("Refresh"),
         _("Refresh simulation functions")));

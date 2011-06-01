@@ -66,11 +66,11 @@ bool SimulOutSetDescModelImpl::checkSetNameFormat()
 {
   if (getName() == "")
   {
-    m_signal_ErrorDialogAsked.emit(_("Set Name can't be empty"));
+    m_signal_ErrorDialogAsked.emit(_("Set name cannot be empty"));
     return false;
   } else if (m_SetsByName.find(getName()) != m_SetsByName.end())
   {
-    m_signal_ErrorDialogAsked.emit(_("This Set Name still exists"));
+    m_signal_ErrorDialogAsked.emit(_("This set name already exists"));
     return false;
   }
   return true;
@@ -84,7 +84,7 @@ bool SimulOutSetDescModelImpl::checkIdAtLeastOne()
 {
   if (getIDs().empty())
   {
-    m_signal_ErrorDialogAsked.emit(_("IDs can't be empty"));
+    m_signal_ErrorDialogAsked.emit(_("IDs cannot be empty"));
     return false;
   }
 
@@ -98,7 +98,7 @@ bool SimulOutSetDescModelImpl::checkVarAtLeastOne()
 {
   if (getVars().empty())
   {
-    m_signal_ErrorDialogAsked.emit(_("Variables can't be empty"));
+    m_signal_ErrorDialogAsked.emit(_("Variables cannot be empty"));
     return false;
   }
 

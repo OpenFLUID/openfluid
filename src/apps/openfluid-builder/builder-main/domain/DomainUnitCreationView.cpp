@@ -120,7 +120,7 @@ DomainUnitCreationViewImpl::DomainUnitCreationViewImpl()
       &DomainUnitCreationViewImpl::onOkButtonClicked));
   mp_Dialog->get_action_area()->pack_start(*mp_OkCreateButton);
 
-  mp_Dialog->set_title(_("Unit Creation"));
+  mp_Dialog->set_title(_("Unit creation"));
 
   mp_Dialog->show_all_children();
 }

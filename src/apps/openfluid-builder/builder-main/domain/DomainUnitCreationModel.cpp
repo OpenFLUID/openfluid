@@ -100,12 +100,12 @@ bool DomainUnitCreationModelImpl::checkUnitInfo()
 {
   if (m_ClassName == "")
   {
-    m_signal_ErrorDialogAsked.emit(_("Class Unit can't be empty"));
+    m_signal_ErrorDialogAsked.emit(_("Unit class cannot be empty"));
     return false;
   }
   if (mp_CoreRepos->getUnit(m_ClassName, m_Id))
   {
-    m_signal_ErrorDialogAsked.emit(_("This Id stil exists in this Class"));
+    m_signal_ErrorDialogAsked.emit(_("This ID already exists for this unit class"));
     return false;
   }
   return true;

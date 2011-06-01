@@ -55,6 +55,7 @@
 #include <iostream>
 
 #include "builderconfig.hpp"
+#include <openfluid/config.hpp>
 
 #include "BuilderGtkInit.hpp"
 #include "BuilderAppModule.hpp"
@@ -69,7 +70,7 @@ int main(int argc, char** argv)
   try
   {
     // Native Language Support setup
-    if (BUILDER_NLS_ENABLE)
+    if (OPENFLUID_NLS_ENABLE)
     {
       std::string PrefLang =
           openfluid::guicommon::PreferencesManager::getInstance()->getLang();
@@ -96,9 +97,9 @@ int main(int argc, char** argv)
         }
       }
 
-      bindtextdomain(BUILDER_NLS_PACKAGE, BUILDER_NLS_LOCALEDIR);
-      bind_textdomain_codeset(BUILDER_NLS_PACKAGE, "UTF-8");
-      textdomain(BUILDER_NLS_PACKAGE);
+      bindtextdomain(OPENFLUID_NLS_PACKAGE, OPENFLUID_NLS_LOCALEDIR);
+      bind_textdomain_codeset(OPENFLUID_NLS_PACKAGE, "UTF-8");
+      textdomain(OPENFLUID_NLS_PACKAGE);
     }
 
     BuilderGtkInit GtkInitObjet(argc, argv);

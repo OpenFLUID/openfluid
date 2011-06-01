@@ -119,7 +119,7 @@ ModelFctDetailViewImpl::ModelFctDetailViewImpl(ModelFctDetailColumns& Columns) :
   mp_Notebook->append_page(*mp_InfoPage->asWidget(), _("Information"));
   mp_Notebook->append_page(*ParamsWin, _("Parameters"));
   mp_Notebook->append_page(*VarsWin, _("Variables"));
-  mp_Notebook->append_page(*IDataWin, _("Input Data"));
+  mp_Notebook->append_page(*IDataWin, _("Inputdata"));
   mp_Notebook->append_page(*EventsWin, _("Events"));
   mp_Notebook->append_page(*ExtraFilesWin, _("Extra Files"));
   mp_Notebook->set_visible(true);

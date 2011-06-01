@@ -100,7 +100,7 @@ void BuilderAppState::whenAboutAsked()
 void BuilderAppState::whenOnlineAsked(const std::string& URL)
 {
   if (!openfluid::tools::OpenURLInBrowser(URL))
-    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Unable to open URL :")+std::string("\n")+URL);
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Unable to open URL:")+std::string("\n")+URL);
 }
 
 

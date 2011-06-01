@@ -319,7 +319,7 @@ DomainUnitEditionViewImpl::DomainUnitEditionViewImpl()
   ParentsBox->pack_start(*mp_ParentsView);
   ParentsBox->pack_start(*mp_ParentsToolBox->asWidget());
   Gtk::Expander* ParentsExpander = Gtk::manage(new Gtk::Expander(_(
-      "Parents Units")));
+      "Parents units")));
   ParentsExpander->add(*ParentsBox);
 
   mp_ChildrenView = new DomainUnitRelationTreeView("Children");
@@ -334,7 +334,7 @@ DomainUnitEditionViewImpl::DomainUnitEditionViewImpl()
   ChildrenBox->pack_start(*mp_ChildrenView);
   ChildrenBox->pack_start(*mp_ChildrenToolBox->asWidget());
   Gtk::Expander* ChildrenExpander = Gtk::manage(new Gtk::Expander(_(
-      "Children Units")));
+      "Children units")));
   ChildrenExpander->add(*ChildrenBox);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
@@ -350,7 +350,7 @@ DomainUnitEditionViewImpl::DomainUnitEditionViewImpl()
   mp_CloseEditButton = mp_Dialog->add_button(Gtk::Stock::CLOSE,
       Gtk::RESPONSE_CLOSE);
 
-  mp_Dialog->set_title(_("Unit Edition"));
+  mp_Dialog->set_title(_("Unit edition"));
 
   initGlobalVisibility();
 

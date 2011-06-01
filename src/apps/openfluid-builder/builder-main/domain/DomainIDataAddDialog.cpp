@@ -77,10 +77,10 @@ DomainIDataAddDialog::DomainIDataAddDialog() :
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name :"),
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name:"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   Gtk::Label* DefaultValueLabel = Gtk::manage(new Gtk::Label(
-      _("Default value :"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+      _("Default value:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_NameEntry = Gtk::manage(new Gtk::Entry());
   mp_NameEntry->signal_changed().connect(sigc::mem_fun(*this,
@@ -128,7 +128,7 @@ void DomainIDataAddDialog::onChanged()
   } else if (std::find(m_IDataNames.begin(), m_IDataNames.end(), Name)
       != m_IDataNames.end())
   {
-    mp_InfoBarLabel->set_text(_("Input data name already exists"));
+    mp_InfoBarLabel->set_text(_("Inputdata name already exists"));
   } else if (Val == "" || isEmptyString(Val))
   {
     mp_InfoBarLabel->set_text(_("Default value can not be empty"));
