@@ -46,56 +46,50 @@
  */
 
 /**
- \file BuilderGtkInit.hpp
+ \file i18nManager.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERGTKINIT_HPP__
-#define __BUILDERGTKINIT_HPP__
+#ifndef __I18NMANAGER_HPP__
+#define __I18NMANAGER_HPP__
 
-#include <gtkmm/main.h>
-#include <openfluid/config.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include "i18nManager.hpp"
+#include <glibmm/ustring.h>
+#include <map>
 
-class BuilderGtkInit
+class i18nManager
 {
   private:
 
-    Gtk::Main m_Kit;
+    static i18nManager* mp_Instance;
+
+    i18nManager();
+
+    std::map<Glib::ustring,Glib::ustring> m_AvailableLanguages;
+
+    Glib::ustring m_CurrentLanguage;
+
+    Glib::ustring m_DefaultLanguage;
+
+    bool m_isNLSEnable;
+
+    Glib::ustring setToDefaultLanguage();
 
   public:
 
-    BuilderGtkInit(int argc, char** argv) :
-      m_Kit(argc, argv)
-    {
-      // Native Language Support setup
-      if (OPENFLUID_NLS_ENABLE)
-      {
-        i18nManager::getInstance()->setNLSEnable(true);
+    static i18nManager* getInstance();
 
-        std::string PrefLang =
-            openfluid::guicommon::PreferencesManager::getInstance()->getLang();
+    std::map<Glib::ustring,Glib::ustring> getAvailableLanguages();
 
-        if (!PrefLang.empty())
-          i18nManager::getInstance()->tryToSetCurrentLanguage(PrefLang);
-      } else
-        i18nManager::getInstance()->setNLSEnable(false);
+    Glib::ustring getCurrentLanguage();
 
-    }
+    void tryToSetCurrentLanguage(Glib::ustring Language);
 
-    void run(Gtk::Window& Window)
-    {
-      /* Tells Gtk to use Text (always) AND Image on Buttons created with a stock icon only
-       Avoid to make those changes in Gtk config files */
-      //      Glib::RefPtr<Gtk::Settings> Settings = Gtk::Settings::get_default();
-      //      Settings->property_gtk_button_images() = true;
+    void setNLSEnable(bool Enable);
 
-      m_Kit.run(Window);
-    }
+    bool isNLSenable();
 
 };
 
-#endif /* __BUILDERGTKINIT_HPP__ */
+#endif /* __I18NMANAGER_HPP__ */

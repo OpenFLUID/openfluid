@@ -102,10 +102,10 @@ class DLLEXPORT PreferencesManager
 
     bool isValidKey(std::string Group, std::string Key);
 
-    void setLang(std::string RecentMax);
-    std::string getLang();
+    void setLang(Glib::ustring Lang);
+    Glib::ustring getLang();
 
-    void setRecentMax(unsigned int Val);
+    void setRecentMax(unsigned int RecentMax);
     int getRecentMax();
 
     bool

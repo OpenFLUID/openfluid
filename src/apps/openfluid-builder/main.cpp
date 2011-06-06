@@ -54,12 +54,9 @@
 
 #include <iostream>
 
-#include "builderconfig.hpp"
-#include <openfluid/config.hpp>
-
 #include "BuilderGtkInit.hpp"
 #include "BuilderAppModule.hpp"
-#include <openfluid/guicommon/PreferencesManager.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -69,42 +66,10 @@ int main(int argc, char** argv)
 {
   try
   {
-    // Native Language Support setup
-    if (OPENFLUID_NLS_ENABLE)
-    {
-      std::string PrefLang =
-          openfluid::guicommon::PreferencesManager::getInstance()->getLang();
-
-      if (PrefLang != "")
-      {
-        try
-        {
-          std::locale::global(std::locale(PrefLang.c_str()));
-
-          Glib::ustring Language = Glib::ustring::compose("LANGUAGE=%1",
-              PrefLang);
-          Glib::ustring Lang = Glib::ustring::compose("LANG=%1", PrefLang);
-
-          char* LanguageC = const_cast<char*> (Language.c_str());
-          char* LangC = const_cast<char*> (Lang.c_str());
-
-          putenv(LanguageC);
-          putenv(LangC);
-
-        } catch (std::runtime_error const& e)
-        {
-          std::locale::global(std::locale::classic());
-        }
-      }
-
-      bindtextdomain(OPENFLUID_NLS_PACKAGE, OPENFLUID_NLS_LOCALEDIR);
-      bind_textdomain_codeset(OPENFLUID_NLS_PACKAGE, "UTF-8");
-      textdomain(OPENFLUID_NLS_PACKAGE);
-    }
-
     BuilderGtkInit GtkInitObjet(argc, argv);
 
     BuilderAppModule AppModule;
+
     if (AppModule.initialize())
       GtkInitObjet.run(AppModule.composeAndGetAsWindow());
     else

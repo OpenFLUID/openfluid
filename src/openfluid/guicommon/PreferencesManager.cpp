@@ -196,7 +196,7 @@ bool PreferencesManager::isValidKey(std::string Group, std::string Key)
 // =====================================================================
 
 
-void PreferencesManager::setLang(std::string Lang)
+void PreferencesManager::setLang(Glib::ustring Lang)
 {
   mp_KFile->set_string("openfluid.builder.interface", "lang", Lang);
 }
@@ -205,7 +205,7 @@ void PreferencesManager::setLang(std::string Lang)
 // =====================================================================
 
 
-std::string PreferencesManager::getLang()
+Glib::ustring PreferencesManager::getLang()
 {
   return isValidKey("openfluid.builder.interface", "lang") ? mp_KFile->get_string(
       "openfluid.builder.interface", "lang")
