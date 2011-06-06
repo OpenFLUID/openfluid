@@ -84,7 +84,7 @@ void BuilderPretestInfo::addBuilderInfo(
   if (SimBlob->getCoreRepository().getUnitsGlobally()->empty())
   {
     Domain = false;
-    DomainMsg = _("Domain is empty");
+    DomainMsg = _("Spatial domain is empty");
   }
 
   Outputs = true;

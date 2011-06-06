@@ -406,7 +406,7 @@ void EngineProjectNewDialog::checkProject()
 
   if (m_ProjectName.empty())
   {
-    mp_InfoBarLabel->set_text(_("Project name can not be empty"));
+    mp_InfoBarLabel->set_text(_("Project name cannot be empty"));
   } else if (boost::filesystem::exists(boost::filesystem::path(ProjectFolder)))
   {
     mp_InfoBarLabel->set_text(_("This project folder already exists"));

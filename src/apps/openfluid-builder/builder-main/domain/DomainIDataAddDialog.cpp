@@ -131,7 +131,7 @@ void DomainIDataAddDialog::onChanged()
     mp_InfoBarLabel->set_text(_("Inputdata name already exists"));
   } else if (Val == "" || isEmptyString(Val))
   {
-    mp_InfoBarLabel->set_text(_("Default value can not be empty"));
+    mp_InfoBarLabel->set_text(_("Default value cannot be empty"));
   } else
   {
     m_IsValid = true;

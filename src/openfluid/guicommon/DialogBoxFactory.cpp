@@ -152,7 +152,7 @@ std::map<std::string, std::string> DialogBoxFactory::showGeneratorCreationDialog
   Gtk::RadioButton::Group RadioGrp;
   Gtk::RadioButton ScalarRadio(RadioGrp, _("Scalar Value"));
   ScalarRadio.set_active(true);
-  Gtk::RadioButton VectorRadio(RadioGrp, _("Vector Value :")+std::string(" "));
+  Gtk::RadioButton VectorRadio(RadioGrp, _("Vector Value:")+std::string(" "));
 
   Gtk::Entry VarNameEntry;
 

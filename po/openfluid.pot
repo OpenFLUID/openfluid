@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openfluid 1.6.2\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2011-06-01 16:21+0200\n"
+"POT-Creation-Date: 2011-06-06 11:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,6 +157,9 @@ msgstr ""
 #: src/apps/openfluid-builder/builder-main/domain/DomainUnitEditionView.cpp:96
 #: src/apps/openfluid-builder/builder-main/domain/DomainUnitEditionView.cpp:257
 #: src/apps/openfluid-builder/builder-main/domain/DomainUnitCreationView.cpp:91
+#: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:81
+#: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:86
+#: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:89
 #: src/openfluid/guicommon/DialogBoxFactory.cpp:149
 msgid "Unit class"
 msgstr ""
@@ -260,7 +263,7 @@ msgid "Inputdata name already exists"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/domain/DomainIDataAddDialog.cpp:134
-msgid "Default value can not be empty"
+msgid "Default value cannot be empty"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/domain/DomainUnitEditionModel.cpp:374
@@ -493,11 +496,11 @@ msgid "Map View"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:237
-msgid "Refresh"
+msgid "Reload sim. funcs."
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:238
-msgid "Refresh simulation functions"
+msgid "Reload simulation functions"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:73
@@ -544,7 +547,7 @@ msgid "(unsaved!)"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppCoordinator.cpp:464
-msgid "Are you sure you want to quit ?"
+msgid "Are you sure you want to quit?"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderListToolBoxFactory.cpp:69
@@ -666,7 +669,7 @@ msgid "Model is empty"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderPretestInfo.cpp:87
-msgid "Domain is empty"
+msgid "Spatial domain is empty"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderPretestInfo.cpp:95
@@ -739,7 +742,7 @@ msgid "Create a new project"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:409
-msgid "Project name can not be empty"
+msgid "Project name cannot be empty"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:412
@@ -815,7 +818,7 @@ msgid ""
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:77
-msgid "Class : "
+msgid "Class: "
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:78
@@ -1024,12 +1027,6 @@ msgstr ""
 msgid "Unit"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:81
-#: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:86
-#: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:89
-msgid "Unit Class"
-msgstr ""
-
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:119
 msgid "Information"
 msgstr ""
@@ -1063,7 +1060,7 @@ msgid "Scalar Value"
 msgstr ""
 
 #: src/openfluid/guicommon/DialogBoxFactory.cpp:155
-msgid "Vector Value :"
+msgid "Vector Value:"
 msgstr ""
 
 #: src/openfluid/guicommon/DialogBoxFactory.cpp:214

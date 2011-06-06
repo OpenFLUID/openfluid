@@ -234,8 +234,8 @@ void BuilderAppActions::createProjectActionGroup()
           "mapview"), _("Map View"),
       _("Map View")));
 
-  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",Gtk::Stock::REFRESH, _("Refresh"),
-        _("Refresh simulation functions")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",Gtk::Stock::REFRESH, _("Reload sim. funcs."),
+        _("Reload simulation functions")));
 
 }
 

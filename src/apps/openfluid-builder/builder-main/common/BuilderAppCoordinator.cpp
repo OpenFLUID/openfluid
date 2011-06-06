@@ -461,7 +461,7 @@ bool BuilderAppCoordinator::showCloseProjectDialog()
 bool BuilderAppCoordinator::showQuitAppDialog()
 {
   return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      _("Are you sure you want to quit ?"));
+      _("Are you sure you want to quit?"));
 }
 
 // =====================================================================

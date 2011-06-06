@@ -62,7 +62,8 @@ FOREACH(LINGUA ${PO_LINGUAS_STR})
                     "${PO_PACKAGENAME}"
                     "-D" "${PO_DIR}"
                     "-o" "${PO_DIR}/${LINGUA}.po"
-                    "--no-wrap")                    
+                    "--no-wrap"
+                    "--no-fuzzy-matching")                    
                     
   
   ELSE(EXISTS "${PO_DIR}/${LINGUA}.po")
