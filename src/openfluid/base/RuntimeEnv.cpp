@@ -216,16 +216,16 @@ RuntimeEnvironment::RuntimeEnvironment() :
   }
 
   // user dir
-  m_PlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
+  m_DefaultPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
-  m_PlugsDirs.push_back(m_MarketBagBinVersionDir);
+  m_DefaultPlugsDirs.push_back(m_MarketBagBinVersionDir);
 
   // install directory
   std::string PluginsInstallPath = boost::filesystem::path(m_InstallPrefix
       + "/" + openfluid::config::PLUGINS_STDDIR).string();
-  m_PlugsDirs.push_back(PluginsInstallPath);
+  m_DefaultPlugsDirs.push_back(PluginsInstallPath);
 
   // set ignition date time
   m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
@@ -294,7 +294,7 @@ void RuntimeEnvironment::addExtraPluginsPaths(
 #endif
 
   for (int i = ExtraPaths.size() - 1; i >= 0; i--)
-    m_PlugsDirs.insert(m_PlugsDirs.begin(), 1,
+    m_ExtraPlugsDirs.insert(m_ExtraPlugsDirs.begin(), 1,
         openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
 }
 
@@ -304,15 +304,17 @@ void RuntimeEnvironment::addExtraPluginsPaths(
 
 std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
 {
+
+  std::vector<std::string> PluginsPaths = getPluginsPaths();
   std::string PlugFullPath = "";
   boost::filesystem::path TmpPath;
 
   unsigned int i = 0;
 
-  while ((PlugFullPath.length() == 0) && (i < m_PlugsDirs.size()))
+  while ((PlugFullPath.length() == 0) && (i < PluginsPaths.size()))
   {
 
-    TmpPath = boost::filesystem::path(m_PlugsDirs[i] + "/" + Filename);
+    TmpPath = boost::filesystem::path(PluginsPaths[i] + "/" + Filename);
 
     if (boost::filesystem::exists(TmpPath))
       PlugFullPath = TmpPath.string();

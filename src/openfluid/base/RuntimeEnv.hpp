@@ -95,7 +95,8 @@ class DLLEXPORT RuntimeEnvironment
 
     std::string m_InstallPrefix;
 
-    std::vector<std::string> m_PlugsDirs;
+    std::vector<std::string> m_DefaultPlugsDirs;
+    std::vector<std::string> m_ExtraPlugsDirs;
 
     std::string m_UserID;
     std::string m_HostName;
@@ -281,11 +282,22 @@ class DLLEXPORT RuntimeEnvironment
     */
     void addExtraPluginsPaths(std::string SemicolonSeparatedPaths);
 
+    inline void resetExtraPluginsPaths() { m_ExtraPlugsDirs.clear(); };
+
+    inline std::vector<std::string> getDefaultPluginsPaths() const  { return m_DefaultPlugsDirs;  };
+
+    inline std::vector<std::string> getExtraPluginsPaths() const  { return m_ExtraPlugsDirs;  };
+
     /**
       Returns the ordered list of paths used to search for plugins
       @return the ordered list of paths
     */
-    inline std::vector<std::string> getPluginsPaths() const { return m_PlugsDirs; };
+    inline std::vector<std::string> getPluginsPaths() const
+    {
+      std::vector<std::string> ComposedPaths(m_ExtraPlugsDirs);
+      ComposedPaths.insert(ComposedPaths.end(), m_DefaultPlugsDirs.begin(), m_DefaultPlugsDirs.end());
+      return ComposedPaths;
+    };
 
     /**
       Returns the install prefix path.
