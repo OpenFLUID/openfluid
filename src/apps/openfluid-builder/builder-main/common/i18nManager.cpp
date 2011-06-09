@@ -58,8 +58,7 @@
 #include <openfluid/config.hpp>
 #include <glibmm/i18n.h>
 #include <glibmm/miscutils.h>
-
-#include <iostream>
+#include <langinfo.h>
 
 // =====================================================================
 // =====================================================================
@@ -81,7 +80,12 @@ i18nManager::i18nManager() :
   m_AvailableLanguages["es_ES.UTF-8"] = _("Spanish (Spain)");
   m_AvailableLanguages["it_IT.UTF-8"] = _("Italian (Italy)");
 
-  tryToSetCurrentLanguage(Glib::getenv("LANG"));
+  Glib::ustring EnvLang = Glib::getenv("LANG");
+
+  Glib::ustring Codeset = nl_langinfo(CODESET);
+  EnvLang.replace(6, Codeset.size(), Codeset);
+
+  tryToSetCurrentLanguage(EnvLang);
 }
 
 // =====================================================================
@@ -124,39 +128,32 @@ void i18nManager::tryToSetCurrentLanguage(Glib::ustring Language)
   {
     try
     {
-      /* throws runtime_error if locale is not available on the system
-       * else call also setlocale(LC_ALL,)
+      /*
+       * Throws runtime_error if locale is not available on the system
        */
-      std::locale::global(std::locale(Language.c_str()));
+      std::locale(Language.c_str());
+
+      setlocale(LC_MESSAGES, Language.c_str());
 
       m_CurrentLanguage = Language;
 
       Glib::setenv("LANGUAGE", m_CurrentLanguage);
       Glib::setenv("LANG", m_CurrentLanguage);
-
-      std::cout << "Language set to " << m_CurrentLanguage << std::endl;
-
     } catch (std::runtime_error const& e)
     {
-      std::cout << Language << " is not available on your system. ";
-
+      /*
+       * Keep unchanged if language already set, otherwise set to default one
+       */
       if (m_CurrentLanguage.empty())
-        std::cout << setToDefaultLanguage();
-      else
-        std::cout << "Language not changed.";
-
-      std::cout << std::endl;
+        setToDefaultLanguage();
     }
   } else
   {
-    std::cout << Language << " is not (yet) available for OpenFLUID Builder. ";
-
+    /*
+     * Keep unchanged if language already set, otherwise set to default one
+     */
     if (m_CurrentLanguage.empty())
-      std::cout << setToDefaultLanguage();
-    else
-      std::cout << "Language not changed.";
-
-    std::cout << std::endl;
+      setToDefaultLanguage();
   }
 
   bindtextdomain(OPENFLUID_NLS_PACKAGE, OPENFLUID_NLS_LOCALEDIR);
@@ -169,7 +166,7 @@ void i18nManager::tryToSetCurrentLanguage(Glib::ustring Language)
 // =====================================================================
 
 
-Glib::ustring i18nManager::setToDefaultLanguage()
+void i18nManager::setToDefaultLanguage()
 {
   std::locale::global(std::locale::classic());
 
@@ -178,8 +175,6 @@ Glib::ustring i18nManager::setToDefaultLanguage()
   Glib::setenv("LANGUAGE", m_CurrentLanguage);
   Glib::setenv("LANG", m_CurrentLanguage);
 
-  return Glib::ustring::compose("Set to 'C' locale and default language: %1",
-      m_DefaultLanguage);
 }
 
 // =====================================================================

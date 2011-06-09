@@ -66,7 +66,7 @@ class i18nManager
 
     i18nManager();
 
-    std::map<Glib::ustring,Glib::ustring> m_AvailableLanguages;
+    std::map<Glib::ustring, Glib::ustring> m_AvailableLanguages;
 
     Glib::ustring m_CurrentLanguage;
 
@@ -74,13 +74,13 @@ class i18nManager
 
     bool m_isNLSEnable;
 
-    Glib::ustring setToDefaultLanguage();
+    void setToDefaultLanguage();
 
   public:
 
     static i18nManager* getInstance();
 
-    std::map<Glib::ustring,Glib::ustring> getAvailableLanguages();
+    std::map<Glib::ustring, Glib::ustring> getAvailableLanguages();
 
     Glib::ustring getCurrentLanguage();
 
