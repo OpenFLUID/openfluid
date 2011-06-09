@@ -45,139 +45,82 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file MarketInfos.hpp
-  \brief Header of ...
+  \file MarketBuildOptionsDialog.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
+
+#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
+#include <openfluid/market/MarketPackage.hpp>
+
+#include <glibmm/i18n.h>
+
+#include <gtkmm/stock.h>
+#include <gtkmm/box.h>
+#include <gtkmm/button.h>
+#include <gtkmm/label.h>
 
 
-#ifndef __MARKETINFOS_HPP__
-#define __MARKETINFOS_HPP__
-
-#include <openfluid/base.hpp>
-#include <map>
-#include <boost/scoped_ptr.hpp>
-
-
-namespace openfluid { namespace market {
-
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT MarketInfo
+MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions, const std::string FuncID)
+: Gtk::Dialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_FuncID(FuncID)
 {
-  public:
 
-    std::string Name;
+  set_size_request(450,-1);
+  set_border_width(6);
 
-    std::string Description;
+  Gtk::Label* InfoLabel = Gtk::manage(new Gtk::Label());
+  InfoLabel->set_markup(std::string("<i>")+_("These options control the builds of source packages\nChanging this is at your own risk.")+std::string("</i>"));
+  InfoLabel->set_justify(Gtk::JUSTIFY_CENTER);
 
-    std::string Contact;
+  get_vbox()->pack_start(*InfoLabel);
 
-    MarketInfo()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
+  Gtk::Label* CommonOptsLabel = Gtk::manage(new Gtk::Label());
 
-    ~MarketInfo() { }
+  if (!FuncID.empty())
+    CommonOptsLabel->set_markup(_("<u>Common source build options:</u>\n")
+                                +openfluid::tools::ReplaceEmptyString(CommonBuildOptions,_("<i>none</i>")));
+  else
+    CommonOptsLabel->set_label("");
 
-
-    void clear()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
+  CommonOptsLabel->set_alignment(0,0.5);
+  get_vbox()->pack_start(*CommonOptsLabel,Gtk::PACK_SHRINK,12);
 
 
-};
+  Gtk::Label* EditLabel = Gtk::manage(new Gtk::Label());
+  if (!FuncID.empty())
+  {
+    EditLabel->set_label(_("Specific build options for ")+FuncID+_(":"));
+  }
+  else
+  {
+    EditLabel->set_label(_("Common source build options:"));
+  }
+  EditLabel->set_alignment(0,0.5);
+  get_vbox()->pack_start(*EditLabel);
+
+  if (FuncID.empty()) m_OptionsEntry.set_text(CommonBuildOptions);
+  else m_OptionsEntry.set_text(BuildOptions);
+  get_vbox()->pack_start(m_OptionsEntry);
+
+  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  if(m_FuncID.empty())
+    set_title(_("Common build options for all source packages"));
+  else
+    set_title(_("Build options for ") + m_FuncID);
 
 
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT PackageInfo
-{
-  public:
-
-    std::string URL;
-
-    std::string License;
-
-    std::string Dependencies;
-
-    std::string BuildOptions;
-
-    PackageInfo()
-    {
-      URL.clear();
-      License.clear();
-      Dependencies.clear();
-      BuildOptions.clear();
-    }
-
-    ~PackageInfo() {  }
-
-};
+  show_all_children();
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT MetaPackageInfo
-{
-  public:
-
-    enum SelectionType { NONE, BIN, SRC};
-
-    openfluid::base::FuncID_t ID;
-
-    std::map<SelectionType,PackageInfo> AvailablePackages;
-
-    SelectionType Selected;
-
-    std::string Name;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string Version;
 
 
-    MetaPackageInfo()
-    {
-      ID.clear();
-      Selected = NONE;
-      AvailablePackages.clear();
-      Name.clear();
-      Authors.clear();
-      Description.clear();
-      Version.clear();
-    }
-
-    ~MetaPackageInfo()
-    {
-    }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef std::map<openfluid::base::FuncID_t,MetaPackageInfo> MetaPackagesCatalog_t;
-
-
-} } // namespaces
-
-
-#endif /* __MARKETINFOS_HPP__ */

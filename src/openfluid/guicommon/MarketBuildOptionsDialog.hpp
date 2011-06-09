@@ -45,30 +45,44 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+/**
+  \file MarketBuildOptionsDialog.hpp
+  \brief Header of ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#ifndef __TESTSCONFIG_IN_H__
-#define __TESTSCONFIG_IN_H__
+#ifndef __MARKETBUILDOPTIONSDIALOG_HPP__
+#define __MARKETBUILDOPTIONSDIALOG_HPP__
 
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
 #include <string>
 
-// Directories
-const std::string CONFIGTESTS_OUTPUT_BINARY_DIR = "@TEST_OUTPUT_PATH@";
-const std::string CONFIGTESTS_OUTPUT_DATA_DIR = "@TESTS_OUTPUTDATA_PATH@";
-const std::string CONFIGTESTS_INPUT_DATASETS_DIR = "@TESTS_DATASETS_PATH@";
-const std::string CONFIGTESTS_SRC_DIR = "@CMAKE_SOURCE_DIR@";
-const std::string CONFIGTESTS_DISTBIN_DIR = "@BIN_OUTPUT_PATH@";
-const std::string CONFIGTESTS_LIB_OUTPUT_PATH = "@LIB_OUTPUT_PATH@";
-const std::string CONFIGTESTS_INCLUDE_DIRS = "@CMAKE_SOURCE_DIR@/src";
-const std::string CONFIGTESTS_CMAKE_GENERATOR = "@CMAKE_GENERATOR@";
-const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" -Dopenfluid_FOUND=1 -Dopenfluid_LIBRARY_DIRS=\"@LIB_OUTPUT_PATH@\" -Dopenfluid_LIBRARIES=\"-L@LIB_OUTPUT_PATH@ -lopenfluid-base -lopenfluid-core -lopenfluid-tools -pthread -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lgthread-2.0 -lrt -lglib-2.0\" -Dopenfluid_INCLUDE_DIRS=\"@CMAKE_SOURCE_DIR@/src;${GLIBMM_INCLUDE_DIRS}\" -Dopenfluid_VERSION=@FULL_VERSION@ -DNOFUNC2DOC=1";
-
-// Plugins extension
-const std::string CONFIGTESTS_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
-
-// Version
-const std::string CONFIGTESTS_FULL_VERSION = "@FULL_VERSION@";
+// =====================================================================
+// =====================================================================
 
 
-#endif
+class MarketBuildOptionsDialog : public Gtk::Dialog
+{
+  private:
 
+    std::string m_CommonBuildOptions;
+    std::string m_BuildOptions;
+
+    std::string m_FuncID;
+    Gtk::Entry m_OptionsEntry;
+
+  public:
+
+    MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions,
+                             const std::string FuncID = "");
+
+    ~MarketBuildOptionsDialog() {};
+
+    std::string getEditedOptions() const { return m_OptionsEntry.get_text(); };
+};
+
+
+#endif /* __MARKETBUILDOPTIONSDIALOG_HPP__ */

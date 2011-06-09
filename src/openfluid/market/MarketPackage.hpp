@@ -88,6 +88,8 @@ class DLLEXPORT MarketPackage
 
     static std::string m_CMakeCommand;
 
+    static std::string m_CommonBuildConfigOptions;
+
     static std::string m_LogFile;
 
     static bool m_IsLogEnabled;
@@ -131,6 +133,12 @@ class DLLEXPORT MarketPackage
     static std::string getTempDownloadsDir() { return m_TempDownloadsDir; };
 
     static std::string getLogFile() { return m_LogFile; };
+
+    static std::string getCommonBuildOptions() { return m_CommonBuildConfigOptions; };
+
+    static void setCommonBuildOptions(std::string BuildOptions) { m_CommonBuildConfigOptions = BuildOptions; };
+
+    static std::string composeFullBuildOptions(std::string BuildOptions);
 
     openfluid::base::FuncID_t getID() const { return m_ID; };
 

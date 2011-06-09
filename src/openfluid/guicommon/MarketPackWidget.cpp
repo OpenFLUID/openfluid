@@ -54,6 +54,9 @@
 */
 
 #include <openfluid/guicommon/MarketPackWidget.hpp>
+#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
+#include <openfluid/market/MarketPackage.hpp>
+
 #include <glibmm/i18n.h>
 
 namespace openfluid { namespace guicommon {
@@ -73,6 +76,7 @@ const static Gdk::Color WHITE("#FFFFFF");
 MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo)
  : Gtk::EventBox(),
    m_MetaPackInfo(MetaPackInfo),
+   m_EditedBuildOptions(""),
    m_FormatLabel(_("Package Format:"))
 {
   m_EmptyCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
@@ -109,6 +113,7 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
     TmpFormatRow[m_FormatColumns.m_FormatName] = _("source");
     TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::SRC;
+    m_EditedBuildOptions = m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions;
   }
 
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
@@ -120,8 +125,15 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
 
   m_FormatCombo.set_active(0);
 
+  Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
+  m_ConfigButton.add(*Img);
+  m_ConfigButton.set_image_position(Gtk::POS_LEFT);
+  m_ConfigButton.set_tooltip_text(_("Edit build options for ") + MetaPackInfo.ID);
+  m_ConfigButton.show_all_children(true);
+
   m_FormatHBox.pack_start(m_FormatLabel,Gtk::PACK_SHRINK,6);
   m_FormatHBox.pack_start(m_FormatCombo,Gtk::PACK_SHRINK);
+  m_FormatHBox.pack_start(m_ConfigButton,Gtk::PACK_SHRINK,6);
 
   m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET);
   m_DetailsLeftVBox.pack_start(m_FormatHBox,Gtk::PACK_EXPAND_WIDGET);
@@ -151,9 +163,11 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
   m_FormatCombo.signal_changed().connect(sigc::mem_fun(*this,
         &MarketPackWidget::onInstallModified));
 
+  m_ConfigButton.signal_clicked().connect(sigc::mem_fun(*this,
+      &MarketPackWidget::onConfigClicked));
+
   signal_button_release_event().connect(sigc::mem_fun(*this,
       &MarketPackWidget::onButtonRelease));
-
 
 }
 
@@ -192,7 +206,6 @@ void MarketPackWidget::onInstallModified()
     m_signal_install_modified.emit();
     modify_bg(Gtk::STATE_NORMAL,LIGHTGREEN);
     m_InstallToggle.set_image(*m_FullCartImage);
-
   }
   else
   {
@@ -200,6 +213,24 @@ void MarketPackWidget::onInstallModified()
     modify_bg(Gtk::STATE_NORMAL ,WHITE);
     m_InstallToggle.set_image(*m_EmptyCartImage);
   }
+  updateDisplayedInfos();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+void MarketPackWidget::onConfigClicked()
+{
+  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(),
+                                     m_EditedBuildOptions,m_MetaPackInfo.ID);
+
+
+  if (OptDialog.run() == Gtk::RESPONSE_OK)
+    m_EditedBuildOptions = OptDialog.getEditedOptions();
+
   updateDisplayedInfos();
 }
 
@@ -235,9 +266,7 @@ void MarketPackWidget::updateDisplayedInfos()
 
   m_VersionLabel.set_markup(std::string("<u>")+_("Version:")+std::string("</u> ")+ replaceByUnknownIfEmpty(m_MetaPackInfo.Version));
 
-
   MarkupTooltip += "<b>" + m_MetaPackInfo.ID + "</b>";
-
 
   MarkupTooltip += std::string("\n<u>")+_("Version:")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
   MarkupTooltip += std::string("\n<u>")+_("Author(s):")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
@@ -253,12 +282,17 @@ void MarketPackWidget::updateDisplayedInfos()
 
       MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
       m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
+
+      if (SelType == openfluid::market::MetaPackageInfo::SRC)
+      {
+        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_EditedBuildOptions));
+      }
     }
   }
 
-
   if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
 
+  m_ConfigButton.set_sensitive(getPackageFormat() == openfluid::market::MetaPackageInfo::SRC);
 
   set_tooltip_markup(MarkupTooltip);
 }
@@ -281,6 +315,18 @@ MarketPackWidget::signal_install_modified_t MarketPackWidget::signal_install_mod
 std::string MarketPackWidget::replaceByUnknownIfEmpty(const std::string& Str)
 {
   if (Str.empty()) return _("<i>unknown</i>");
+  return Str;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackWidget::replaceByNoneIfEmpty(const std::string& Str)
+{
+  if (Str.empty()) return _("<i>none</i>");
   return Str;
 }
 

@@ -56,7 +56,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-
+#include <openfluid/config.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 
@@ -76,6 +76,7 @@ std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
 std::string MarketPackage::m_CMakeCommand = "";
+std::string MarketPackage::m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 
 bool MarketPackage::m_Initialized = false;
 
@@ -127,6 +128,8 @@ void MarketPackage::initialize(bool EnableLog = false)
   else
     throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Required CMake program not found");
 
+  // TODO
+  //m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 
   m_IsLogEnabled = EnableLog;
 
@@ -154,6 +157,22 @@ void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDi
   m_LogFile = TempDir+"/"+LOG_FILENAME;
 
   m_Initialized = false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
+{
+  std::string FullOptions = "";
+
+  if (!BuildOptions.empty()) FullOptions = " " + BuildOptions;
+
+  if (!m_CommonBuildConfigOptions.empty()) FullOptions = " " + m_CommonBuildConfigOptions + FullOptions;
+
+  return FullOptions;
 }
 
 

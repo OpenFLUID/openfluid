@@ -76,7 +76,9 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
   private:
 
-    const openfluid::market::MetaPackageInfo m_MetaPackInfo;
+    openfluid::market::MetaPackageInfo m_MetaPackInfo;
+
+    std::string m_EditedBuildOptions;
 
     Gtk::Image* m_EmptyCartImage;
     Gtk::Image* m_FullCartImage;
@@ -85,6 +87,7 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
     Gtk::HBox m_FormatHBox;
     Gtk::Label m_FormatLabel;
     Gtk::ComboBox m_FormatCombo;
+    Gtk::Button m_ConfigButton;
     Gtk::VBox m_DetailsLeftVBox;
     Gtk::HBox m_MainHBox;
     Gtk::ToggleButton m_InstallToggle;
@@ -110,11 +113,13 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
     void onInstallModified();
 
+    void onConfigClicked();
+
     bool onButtonRelease(GdkEventButton* Event);
 
-    void updateDisplayedInfos();
-
     static std::string replaceByUnknownIfEmpty(const std::string& Str);
+
+    static std::string replaceByNoneIfEmpty(const std::string& Str);
 
 
   protected:
@@ -136,6 +141,9 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
     signal_install_modified_t signal_install_modified();
 
+    std::string getEditedBuildOptions() const { return m_EditedBuildOptions; };
+
+    void updateDisplayedInfos();
 
 
 };

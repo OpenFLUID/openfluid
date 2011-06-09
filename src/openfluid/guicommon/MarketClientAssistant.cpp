@@ -57,6 +57,7 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
+#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
@@ -187,14 +188,25 @@ void MarketClientAssistant::setupSelectionPage()
   m_SelectNoneButton.set_label(_("Select none"));
   m_SelectNoneButton.set_sensitive(false);
 
-  m_SelectionActionsBox.pack_start(m_SelectAllButton,Gtk::PACK_SHRINK,0);
-  m_SelectionActionsBox.pack_start(m_SelectNoneButton,Gtk::PACK_SHRINK,12);
+  //m_CommonBuildConfigButton.set_label(_("Configure source builds"));
+  Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
+  Gtk::Label* Lbl = Gtk::manage(new Gtk::Label(_("Edit build options")));
+  Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
+  Box->pack_start(*Img,Gtk::PACK_SHRINK,3);
+  Box->pack_end(*Lbl,Gtk::PACK_SHRINK,3);
+  m_CommonBuildConfigButton.add(*Box);
+  m_CommonBuildConfigButton.show_all_children(true);
 
+
+  m_ActionButtonsBox.pack_start(m_SelectAllButton,Gtk::PACK_SHRINK,0);
+  m_ActionButtonsBox.pack_start(m_SelectNoneButton,Gtk::PACK_SHRINK,12);
+  m_ActionButtonsBox.pack_start(*Gtk::manage(new Gtk::EventBox()),Gtk::PACK_EXPAND_WIDGET,0);
+  m_ActionButtonsBox.pack_start(m_CommonBuildConfigButton,Gtk::PACK_SHRINK,0);
 
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
   m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,6);
-  m_SelectionPageBox.pack_start(m_SelectionActionsBox,Gtk::PACK_SHRINK);
+  m_SelectionPageBox.pack_start(m_ActionButtonsBox,Gtk::PACK_SHRINK);
 
 
   m_URLCombo.signal_changed().connect(
@@ -207,6 +219,10 @@ void MarketClientAssistant::setupSelectionPage()
 
   m_SelectNoneButton.signal_clicked().connect(
       sigc::mem_fun(*this, &MarketClientAssistant::onSelectNoneClicked)
+    );
+
+  m_CommonBuildConfigButton.signal_clicked().connect(
+      sigc::mem_fun(*this, &MarketClientAssistant::onCommonBuildConfigClicked)
     );
 
 }
@@ -467,6 +483,7 @@ void MarketClientAssistant::onPackageInstallModified()
     {
       m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
     }
+    m_MarketClient.setSRCBuildOptions(MPW->getID(),MPW->getEditedBuildOptions());
   }
 
   set_page_complete(m_SelectionPageBox,Selection);
@@ -508,6 +525,25 @@ void MarketClientAssistant::onSelectNoneClicked()
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::onCommonBuildConfigClicked()
+{
+  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(),"");
+
+  if (OptDialog.run() == Gtk::RESPONSE_OK)
+  {
+    openfluid::market::MarketPackage::setCommonBuildOptions(OptDialog.getEditedOptions());
+
+    std::list<MarketPackWidget*>::iterator APLiter;
+
+    for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+      ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
+  }
+}
 
 // =====================================================================
 // =====================================================================

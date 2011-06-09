@@ -115,6 +115,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
 
+
   for (PCit = PC.begin(); PCit!=PC.end(); ++PCit)
   {
     std::cout << "############ " << PCit->first << " ############" << std::endl;
@@ -156,7 +157,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(MC.setSelectionFlag("tests.market.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
 
 
-  MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
+
+  openfluid::market::MarketPackage::setCommonBuildOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   MC.installSelection();
 

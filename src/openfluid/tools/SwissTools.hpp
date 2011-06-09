@@ -199,7 +199,7 @@ std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit,
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
-std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr);
+std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr);
 
 bool DLLEXPORT IsVectorNamedVariable(std::string Name);
 

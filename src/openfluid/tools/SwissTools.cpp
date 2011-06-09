@@ -214,9 +214,9 @@ bool EmptyDirectoryRecursively(const std::string DirPath)
 // =====================================================================
 // =====================================================================
 
-std::string ReplaceEmptyString(std::string SourceStr, std::string ReplaceStr)
+std::string ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr)
 {
-  if (SourceStr.length() == 0) SourceStr = ReplaceStr;
+  if (SourceStr.empty()) SourceStr = ReplaceStr;
   return SourceStr;
 }
 

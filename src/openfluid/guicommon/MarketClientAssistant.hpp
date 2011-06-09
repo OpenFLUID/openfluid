@@ -61,7 +61,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/guicommon/MarketPackWidget.hpp>
-
+#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 
 namespace openfluid { namespace guicommon {
 
@@ -96,9 +96,10 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     Gtk::ScrolledWindow m_AvailPacksSWindow;
 
-    Gtk::HBox m_SelectionActionsBox;
+    Gtk::HBox m_ActionButtonsBox;
     Gtk::Button m_SelectAllButton;
     Gtk::Button m_SelectNoneButton;
+    Gtk::Button m_CommonBuildConfigButton;
 
     std::list<MarketPackWidget*> mp_AvailPacksWidgets;
 
@@ -109,6 +110,8 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     void onSelectAllClicked();
 
     void onSelectNoneClicked();
+
+    void onCommonBuildConfigClicked();
 
 
     // ===== Licenses =====//

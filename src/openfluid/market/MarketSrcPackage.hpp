@@ -72,7 +72,9 @@ class DLLEXPORT MarketSrcPackage : public MarketPackage
 
   public:
 
-    void addBuildConfigOptions(const std::string& Options);
+    void setBuildConfigOptions(const std::string& Options) { m_BuildConfigOptions = Options; };
+
+    std::string getBuildConfigOptions() const { return m_BuildConfigOptions; };
 
     MarketSrcPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
 

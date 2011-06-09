@@ -51,6 +51,7 @@
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/debug.hpp>
 
 #include <fstream>
 #include <deque>
@@ -71,7 +72,7 @@ const std::string MarketClient::LOCK_FILE = ".lock";
 
 
 MarketClient::MarketClient() :
-    m_IsConnected(false), m_IsLogEnabled(false), m_BuildConfigOptions("")
+    m_IsConnected(false), m_IsLogEnabled(false)
 {
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
@@ -260,6 +261,10 @@ void MarketClient::parseCatalogData(const std::string& CatalogData)
              if (KFile.has_key(TmpID,"arch.src.depends"))
                m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Dependencies = KFile.get_string(TmpID,"arch.src.depends");
 
+             // build options
+             if (KFile.has_key(TmpID,"arch.src.buildoptions"))
+               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].BuildOptions = KFile.get_string(TmpID,"arch.src.buildoptions");
+
 
            }
          }
@@ -416,6 +421,21 @@ bool MarketClient::setSelectionFlag(const openfluid::base::FuncID_t& ID, const M
 // =====================================================================
 
 
+void MarketClient::setSRCBuildOptions(const openfluid::base::FuncID_t& ID, const std::string& BuildOpts)
+{
+  MetaPackagesCatalog_t::iterator PCit = m_MetaPackagesCatalog.find(ID);
+
+  if (PCit != m_MetaPackagesCatalog.end())
+  {
+    if (PCit->second.AvailablePackages.find(MetaPackageInfo::SRC) !=  PCit->second.AvailablePackages.end())
+      PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions = BuildOpts;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
 MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::base::FuncID_t& ID) const
 {
   MetaPackagesCatalog_t::const_iterator PCit = m_MetaPackagesCatalog.find(ID);
@@ -454,8 +474,13 @@ void MarketClient::preparePackagesInstallation()
     if (PCit->second.Selected == MetaPackageInfo::SRC)
     {
       m_PacksToInstall.push_back(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
-      if (!m_BuildConfigOptions.empty())
-        ((MarketSrcPackage*)m_PacksToInstall.back())->addBuildConfigOptions(m_BuildConfigOptions);
+
+      std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
+
+      OFDBG_MESSAGE(BuildOptsStr);
+
+      if (!BuildOptsStr.empty())
+        ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
     }
   }
 }
