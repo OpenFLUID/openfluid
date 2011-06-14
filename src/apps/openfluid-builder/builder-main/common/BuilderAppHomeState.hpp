@@ -91,6 +91,8 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenPreferencesAsked();
 
+    void whenPropertiesAsked();
+
 };
 
 #endif /* __BUILDERAPPHOMESTATE_HPP__ */

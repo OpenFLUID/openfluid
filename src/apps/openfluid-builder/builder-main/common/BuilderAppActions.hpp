@@ -93,6 +93,8 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getFileOpenAction();
 
+    Glib::RefPtr<Gtk::Action> getFilePropertiesAction();
+
     Glib::RefPtr<Gtk::Action> getFileCloseAction();
 
     Glib::RefPtr<Gtk::Action> getFileQuitAction();

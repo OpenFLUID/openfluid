@@ -222,6 +222,16 @@ void BuilderAppCoordinator::whenSaveAsAsked()
   mp_CurrentState->whenSaveAsAsked();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::whenPropertiesAsked()
+{
+  mp_CurrentState->whenPropertiesAsked();
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -248,6 +258,9 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
       *this, &BuilderAppCoordinator::whenCloseProjectAsked));
   m_Actions.getFileQuitAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenQuitAsked));
+
+  m_Actions.getFilePropertiesAction()->signal_activate().connect(sigc::mem_fun(
+      *this, &BuilderAppCoordinator::whenPropertiesAsked));
 
   m_Actions.getSimulationRunAction()->signal_activate().connect(sigc::mem_fun(
       *this, &BuilderAppCoordinator::whenRunAsked));

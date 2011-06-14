@@ -182,7 +182,7 @@ void EngineProject::setDefaultRunDesc()
   openfluid::base::RunDescriptor RunDesc(DefaultDeltaT, DefaultBeginDT,
       DefaultEndDT);
 
-  if(PrefMgr->getOutFilesBufferInKB() != -1)
+  if (PrefMgr->getOutFilesBufferInKB() != -1)
     RunDesc.setFilesBufferSizeInKB(PrefMgr->getOutFilesBufferInKB());
 
   RunDesc.setFilled(true);
@@ -290,11 +290,16 @@ void EngineProject::run()
 {
   openfluid::base::ProjectManager::getInstance()->updateOutputDir();
 
+  if (m_WithProjectManager)
+    mp_RunEnv->linkToProject();
+
+  delete mp_Engine;
+  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance,
+      mp_Listener, mp_IOListener);
+
   openfluid::base::SimulationProfiler::getInstance()->reset();
 
   mp_SimBlob->clearSimulationGarbage();
-
-  mp_ModelInstance->initialize();
 
   openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
       getRunDescriptor());

@@ -59,7 +59,6 @@
 
 #include "BuilderGraphicsHelper.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -97,15 +96,14 @@ void BuilderAppActions::createAppUiXml()
     "    </menu>"
     "  </menubar>"
 
-
     "  <toolbar  name='ToolBar'>"
     "    <toolitem action='FileNewEmpty'/>"
     "    <toolitem action='FileOpen'/>"
     "    <placeholder name='ProjectFilePlaceholder' />"
     "    <placeholder name='SimulationPlaceholder' />"
-//    "      <separator/>"
-    "  </toolbar>"
-    "</ui>";
+    //    "      <separator/>"
+      "  </toolbar>"
+      "</ui>";
 }
 
 // =====================================================================
@@ -120,6 +118,8 @@ void BuilderAppActions::createProjectUiXml()
     "    <placeholder name='ProjectFilePlaceholder'>"
     "      <menuitem action='FileSave'/>"
     "      <menuitem action='FileSaveAs'/>"
+    "      <separator/>"
+    "      <menuitem action='FileProperties'/>"
     "      <separator/>"
     "      <menuitem action='FileClose'/>"
     "    </placeholder>"
@@ -142,7 +142,6 @@ void BuilderAppActions::createProjectUiXml()
     "  </placeholder>"
     "  </menubar>"
 
-
     "  <toolbar  name='ToolBar'>"
     "  <placeholder name='ProjectFilePlaceholder'>"
     "    <toolitem action='FileSave'/>"
@@ -159,7 +158,6 @@ void BuilderAppActions::createProjectUiXml()
     "  </toolbar>"
     "</ui>";
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -182,15 +180,21 @@ void BuilderAppActions::createAppActionGroup()
   mref_AppActionGroup->add(Gtk::Action::create("EditCut", Gtk::Stock::CUT));
   mref_AppActionGroup->add(Gtk::Action::create("EditCopy", Gtk::Stock::COPY));
   mref_AppActionGroup->add(Gtk::Action::create("EditPaste", Gtk::Stock::PASTE));
-  mref_AppActionGroup->add(Gtk::Action::create("EditPreferences", Gtk::Stock::PREFERENCES));
+  mref_AppActionGroup->add(Gtk::Action::create("EditPreferences",
+      Gtk::Stock::PREFERENCES));
 
   //Help menu
   mref_AppActionGroup->add(Gtk::Action::create("HelpMenu", Gtk::Stock::HELP));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineMenu", _("OpenFLUID online")));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineWebsite", _("Official website")));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineCommunity", _("Community website")));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineDev", _("Development website")));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineBug", _("Bug tracking")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineMenu",
+      _("OpenFLUID online")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineWebsite",
+      _("Official website")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineCommunity",
+      _("Community website")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineDev",
+      _("Development website")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineBug",
+      _("Bug tracking")));
 
   mref_AppActionGroup->add(Gtk::Action::create("HelpAbout", Gtk::Stock::ABOUT));
   mref_AppActionGroup->add(Gtk::Action::create("HelpMarket",
@@ -198,7 +202,6 @@ void BuilderAppActions::createAppActionGroup()
           "openfluid_in_cart"), _("OpenFLUID Market..."),
       _("Access to OpenFLUID Market")));
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -213,32 +216,42 @@ void BuilderAppActions::createProjectActionGroup()
       Gtk::Stock::SAVE, _("_Save"), _("Save")));
   mref_ProjectActionGroup->add(Gtk::Action::create("FileSaveAs",
       Gtk::Stock::SAVE_AS, _("Save _as..."), _("Save as...")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("FileProperties",
+      Gtk::Stock::PROPERTIES, _("Properties"), _("Project properties")));
   mref_ProjectActionGroup->add(Gtk::Action::create("FileClose",
       Gtk::Stock::CLOSE));
 
   //Data menu
   mref_ProjectActionGroup->add(Gtk::Action::create("DataMenu", _("Data")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("DataDomainMenu", _("Import spatial domain from")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("DataInputdataMenu", _("Import inputdata from")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("DataEventsMenu", _("Import events from")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu", _("Import extra file from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataDomainMenu",
+      _("Import spatial domain from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataInputdataMenu",
+      _("Import inputdata from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataEventsMenu",
+      _("Import events from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu",
+      _("Import extra file from")));
 
   //Simulation menu
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu", _("_Simulation")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationConfig", _("Configuration")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationOutputs", _("Outputs")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun", Gtk::Stock::MEDIA_PLAY, _("Run...")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu",
+      _("_Simulation")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationConfig",
+      _("Configuration")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationOutputs",
+      _("Outputs")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun",
+      Gtk::Stock::MEDIA_PLAY, _("Run...")));
 
-  mref_ProjectActionGroup->add(Gtk::Action::create("MapView",
-      *BuilderGraphicsHelper::createBuilderIconStockId("mapview.png",
-          "mapview"), _("Map View"),
-      _("Map View")));
+  mref_ProjectActionGroup->add(
+      Gtk::Action::create("MapView",
+          *BuilderGraphicsHelper::createBuilderIconStockId("mapview.png",
+              "mapview"), _("Map View"), _("Map View")));
 
-  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",Gtk::Stock::REFRESH, _("Reload sim. funcs."),
-        _("Reload simulation functions")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",
+      Gtk::Stock::REFRESH, _("Reload sim. funcs."),
+      _("Reload simulation functions")));
 
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -263,7 +276,6 @@ BuilderAppActions::BuilderAppActions()
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -272,7 +284,6 @@ Gtk::Widget* BuilderAppActions::getMenuBarWidget()
 {
   return mref_UIManager->get_widget("/MenuBar");
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -283,7 +294,6 @@ Gtk::Widget* BuilderAppActions::getToolBarWidget()
   return mref_UIManager->get_widget("/ToolBar");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -292,7 +302,6 @@ Glib::RefPtr<Gtk::AccelGroup> BuilderAppActions::getAccelGroup()
 {
   return mref_UIManager->get_accel_group();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -303,7 +312,6 @@ void BuilderAppActions::setProjectActionGroupSensitive(bool Sensitive)
   mref_ProjectActionGroup->set_sensitive(Sensitive);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -312,7 +320,6 @@ void BuilderAppActions::setProjectActionGroupVisible(bool Visible)
 {
   mref_ProjectActionGroup->set_visible(Visible);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -323,7 +330,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileNewAction()
   return mref_AppActionGroup->get_action("FileNewEmpty");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -333,6 +339,14 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileOpenAction()
   return mref_AppActionGroup->get_action("FileOpen");
 }
 
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getFilePropertiesAction()
+{
+  return mref_ProjectActionGroup->get_action("FileProperties");
+}
 
 // =====================================================================
 // =====================================================================
@@ -343,7 +357,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileCloseAction()
   return mref_ProjectActionGroup->get_action("FileClose");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -352,7 +365,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileQuitAction()
 {
   return mref_AppActionGroup->get_action("FileQuit");
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -363,7 +375,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSimulationRunAction()
   return mref_ProjectActionGroup->get_action("SimulationRun");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -372,8 +383,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppMarketAction()
 {
   return mref_AppActionGroup->get_action("HelpMarket");
 }
-
-
 
 // =====================================================================
 // =====================================================================
@@ -393,7 +402,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppAboutAction()
   return mref_AppActionGroup->get_action("HelpAbout");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -402,7 +410,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineWebsiteAction()
 {
   return mref_AppActionGroup->get_action("HelpOnlineWebsite");
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -413,7 +420,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineCommunityAction()
   return mref_AppActionGroup->get_action("HelpOnlineCommunity");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -422,7 +428,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineDevAction()
 {
   return mref_AppActionGroup->get_action("HelpOnlineDev");
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -433,7 +438,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineBugAction()
   return mref_AppActionGroup->get_action("HelpOnlineBug");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -442,7 +446,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAction()
 {
   return mref_ProjectActionGroup->get_action("FileSave");
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -453,7 +456,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
   return mref_ProjectActionGroup->get_action("FileSaveAs");
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -462,7 +464,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
 {
   return mref_ProjectActionGroup->get_action("MapView");
 }
-
 
 // =====================================================================
 // =====================================================================

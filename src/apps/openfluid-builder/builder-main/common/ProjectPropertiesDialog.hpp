@@ -46,49 +46,52 @@
  */
 
 /**
- \file BuilderAppState.hpp
+ \file ProjectPropertiesDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERAPPSTATE_HPP__
-#define __BUILDERAPPSTATE_HPP__
+#ifndef __PROJECTPROPERTIESDIALOG_HPP__
+#define __PROJECTPROPERTIESDIALOG_HPP__
 
-#include <string>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/checkbutton.h>
 
-class BuilderAppState
+class ProjectPropertiesDialog
 {
+    private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Label* mp_NameValueLabel;
+    Gtk::Label* mp_PathValueLabel;
+    Gtk::TextView* mp_DescriptionTextView;
+    Gtk::Entry* mp_AuthorsEntry;
+    Gtk::Label* mp_CreationDateValueLabel;
+    Gtk::Label* mp_ModificationDateValueLabel;
+    Gtk::CheckButton* mp_IncrementalOutputCheckButton;
+
+    Glib::ustring m_Description;
+    Glib::ustring m_Authors;
+    bool m_IsIncrementalOutput;
+
+    void onDescriptionChanged();
+
+    void onAuthorsChanged();
+
+    void onIncrementalOutputChanged();
+
   public:
 
-    virtual void whenNewProjectAsked() = 0;
+    ProjectPropertiesDialog();
 
-    virtual void whenOpenProjectAsked() = 0;
+    ~ProjectPropertiesDialog();
 
-    virtual void whenCloseProjectAsked() = 0;
-
-    virtual void whenQuitAsked() = 0;
-
-    virtual void whenRunAsked() = 0;
-
-    virtual void whenMarketAsked() = 0;
-
-    void whenAboutAsked();
-
-    void whenOnlineAsked(const std::string& URL);
-
-    virtual void whenSaveAsked() = 0;
-
-    virtual void whenSaveAsAsked() = 0;
-
-    virtual void whenMapViewAsked() = 0;
-
-    virtual void whenRefreshAsked() = 0;
-
-    virtual void whenPreferencesAsked() = 0;
-
-    virtual void whenPropertiesAsked() = 0;
-
+    void show();
 };
 
-#endif /* __BUILDERAPPSTATE_HPP__ */
+#endif /* __PROJECTPROPERTIESDIALOG_HPP__ */

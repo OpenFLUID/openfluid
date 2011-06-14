@@ -58,12 +58,15 @@
 #include "BuilderAppState.hpp"
 
 class BuilderAppCoordinator;
+class ProjectPropertiesDialog;
 
 class BuilderAppProjectState: public BuilderAppState
 {
   private:
 
     BuilderAppCoordinator& m_App;
+
+    ProjectPropertiesDialog* mp_ProjectPropertiesDialog;
 
 
   public:
@@ -91,6 +94,8 @@ class BuilderAppProjectState: public BuilderAppState
     void whenRefreshAsked();
 
     void whenPreferencesAsked();
+
+    void whenPropertiesAsked();
 
 };
 

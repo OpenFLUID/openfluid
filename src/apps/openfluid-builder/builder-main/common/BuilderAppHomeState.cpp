@@ -197,3 +197,14 @@ void BuilderAppHomeState::whenPreferencesAsked()
   m_App.setHomeModule();
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenPropertiesAsked()
+{
+  //nothing to do, should not happen
+}
+

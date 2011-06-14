@@ -56,6 +56,7 @@
 
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderProjectWithExplorer.hpp"
+#include "ProjectPropertiesDialog.hpp"
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -68,6 +69,7 @@ BuilderAppProjectState::BuilderAppProjectState(
     BuilderAppCoordinator& AppCoordinator) :
   m_App(AppCoordinator)
 {
+  mp_ProjectPropertiesDialog = new ProjectPropertiesDialog();
 }
 
 // =====================================================================
@@ -204,3 +206,11 @@ void BuilderAppProjectState::whenPreferencesAsked()
 
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenPropertiesAsked()
+{
+  mp_ProjectPropertiesDialog->show();
+}

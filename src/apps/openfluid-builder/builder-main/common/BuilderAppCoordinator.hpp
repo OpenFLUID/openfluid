@@ -106,6 +106,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenSaveAsAsked();
 
+    void whenPropertiesAsked();
+
     void whenMapViewAsked();
 
     void whenRefreshAsked();
