@@ -81,19 +81,19 @@ BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
       &BuilderWorkdirCreationDialog::onFileButtonClicked));
 
   mp_FileBox = Gtk::manage(new Gtk::HBox());
-  mp_FileBox->pack_start(*mp_Entry, Gtk::PACK_EXPAND_WIDGET,5);
-  mp_FileBox->pack_start(*mp_FileButton, Gtk::PACK_SHRINK,5);
+  mp_FileBox->pack_start(*mp_Entry, Gtk::PACK_EXPAND_WIDGET, 5);
+  mp_FileBox->pack_start(*mp_FileButton, Gtk::PACK_SHRINK, 5);
 
-  mp_Dialog->get_vbox()->pack_start(*mp_Label,Gtk::PACK_SHRINK,10);
-  mp_Dialog->get_vbox()->pack_start(*mp_FileBox,Gtk::PACK_SHRINK,10);
+  mp_Dialog->get_vbox()->pack_start(*mp_Label, Gtk::PACK_SHRINK, 10);
+  mp_Dialog->get_vbox()->pack_start(*mp_FileBox, Gtk::PACK_SHRINK, 10);
 
-  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
   mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
   mp_Dialog->set_border_width(8);
-  mp_Dialog->set_size_request(500,-1);
+  mp_Dialog->set_size_request(500, -1);
 
   mp_Dialog->show_all_children();
 }
@@ -104,8 +104,13 @@ BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
 
 bool BuilderWorkdirCreationDialog::show()
 {
-  mp_Entry->set_text(boost::filesystem::path(Glib::ustring::compose("%1/OpenFLUID-Projects",
-      Glib::get_home_dir())).file_string());
+  Glib::ustring PrefWorkdir =
+      openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+  if (PrefWorkdir.empty())
+    mp_Entry->set_text(boost::filesystem::path(boost::filesystem::path(
+        Glib::get_home_dir()) /= ("OpenFLUID-Projects")).file_string());
+  else
+    mp_Entry->set_text(PrefWorkdir);
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
@@ -139,21 +144,21 @@ bool BuilderWorkdirCreationDialog::show()
   return false;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 void BuilderWorkdirCreationDialog::onFileButtonClicked()
 {
-  Gtk::FileChooserDialog Dialog(_("Choose OpenFLUID working directory"),Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+  Gtk::FileChooserDialog Dialog(_("Choose OpenFLUID working directory"),
+      Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
-  Dialog.add_button(Gtk::Stock::OK,Gtk::RESPONSE_OK);
-  Dialog.add_button(Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
   Dialog.set_current_folder(Glib::get_home_dir());
 
-  if(Dialog.run() == Gtk::RESPONSE_OK)
-    mp_Entry->set_text(Dialog.get_filename());
+  if (Dialog.run() == Gtk::RESPONSE_OK)
+    mp_Entry->set_text(Glib::filename_to_utf8(Dialog.get_filename()));
 
 }

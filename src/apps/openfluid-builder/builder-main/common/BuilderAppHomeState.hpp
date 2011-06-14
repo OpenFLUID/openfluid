@@ -81,8 +81,6 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenMarketAsked();
 
-    void whenPreferencesAsked();
-
     void whenSaveAsked();
 
     void whenSaveAsAsked();
@@ -90,6 +88,8 @@ class BuilderAppHomeState: public BuilderAppState
     void whenMapViewAsked();
 
     void whenRefreshAsked();
+
+    void whenPreferencesAsked();
 
 };
 

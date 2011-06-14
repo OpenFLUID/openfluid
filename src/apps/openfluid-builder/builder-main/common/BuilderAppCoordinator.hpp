@@ -55,10 +55,11 @@
 #include "BuilderAppState.hpp"
 
 class BuilderAppWindow;
-class PreferencesModel;
 
 class EngineProjectNewDialog;
 class EngineProjectOpenDialog;
+
+class PreferencesDialog;
 
 class BuilderAppCoordinator: public sigc::trackable
 {
@@ -69,10 +70,11 @@ class BuilderAppCoordinator: public sigc::trackable
     BuilderAppState* mp_CurrentState;
     BuilderAppState* mp_HomeState;
     BuilderAppState* mp_ProjectState;
-    PreferencesModel& m_PreferencesModel;
 
     EngineProjectNewDialog* mp_NewProjectDialog;
     EngineProjectOpenDialog* mp_OpenProjectDialog;
+
+    PreferencesDialog* mp_PreferencesDialog;
 
     bool m_HasToBeSaved;
 
@@ -117,7 +119,7 @@ class BuilderAppCoordinator: public sigc::trackable
   public:
 
     BuilderAppCoordinator(BuilderAppWindow& MainWindow,
-        BuilderAppActions& Actions, PreferencesModel& PrefModel);
+        BuilderAppActions& Actions);
 
     ~BuilderAppCoordinator();
 
@@ -139,13 +141,13 @@ class BuilderAppCoordinator: public sigc::trackable
 
     bool showQuitAppDialog();
 
-    void showPreferencesDialog();
-
     void openProject(std::string ProjectPath = "");
 
     void createProject();
 
     void closeProject();
+
+    void showPreferencesDialog();
 
 };
 

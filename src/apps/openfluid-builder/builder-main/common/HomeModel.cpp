@@ -105,7 +105,21 @@ std::string HomeModelImpl::getOFWebSite()
 
 std::vector<std::pair<std::string, std::string> > HomeModelImpl::getRecentProjects()
 {
-  return openfluid::guicommon::PreferencesManager::getInstance()->getRecentProjects();
+  std::vector<std::pair<std::string, std::string> > Recents;
+
+  int RecentsMax =
+      openfluid::guicommon::PreferencesManager::getInstance()->getRecentMax();
+
+  if (RecentsMax < 1)
+    return Recents;
+
+  Recents
+      = openfluid::guicommon::PreferencesManager::getInstance()->getRecentProjects();
+
+  if ((int)Recents.size() > RecentsMax)
+    Recents.resize(RecentsMax);
+
+  return Recents;
 }
 
 // =====================================================================

@@ -56,6 +56,7 @@
 
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -156,11 +157,33 @@ sigc::signal<void> EngineProject::signal_SaveHappened()
 
 void EngineProject::setDefaultRunDesc()
 {
-  openfluid::core::DateTime DefaultEndDT = m_DefaultBeginDT
-      + openfluid::core::DateTime::Day();
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
 
-  openfluid::base::RunDescriptor RunDesc(m_DefaultDeltaT, m_DefaultBeginDT,
+  openfluid::core::DateTime DefaultBeginDT;
+  openfluid::core::DateTime DefaultEndDT;
+  int DefaultDeltaT;
+
+  if (PrefMgr->getBegin() != "")
+    DefaultBeginDT.setFromISOString(PrefMgr->getBegin());
+  else
+    DefaultBeginDT = m_DefaultBeginDT;
+
+  if (PrefMgr->getEnd() != "")
+    DefaultEndDT.setFromISOString(PrefMgr->getEnd());
+  else
+    DefaultEndDT = DefaultBeginDT + openfluid::core::DateTime::Day();
+
+  if (PrefMgr->getDeltaT() != -1)
+    DefaultDeltaT = PrefMgr->getDeltaT();
+  else
+    DefaultDeltaT = m_DefaultDeltaT;
+
+  openfluid::base::RunDescriptor RunDesc(DefaultDeltaT, DefaultBeginDT,
       DefaultEndDT);
+
+  if(PrefMgr->getOutFilesBufferInKB() != -1)
+    RunDesc.setFilesBufferSizeInKB(PrefMgr->getOutFilesBufferInKB());
 
   RunDesc.setFilled(true);
 
@@ -284,7 +307,7 @@ void EngineProject::run()
 
   mp_ModelInstance->resetInitialized();
 
-  if(RunDialog.isSimulationCompleted())
+  if (RunDialog.isSimulationCompleted())
     m_signal_RunHappened.emit();
 
 }

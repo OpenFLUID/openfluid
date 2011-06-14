@@ -159,6 +159,8 @@ class ProjectCoordinator
 
     void setFileMonitorDisplayState(bool HasToDisplay);
 
+    void updatePluginPathsMonitors();
+
 };
 
 class ProjectCoordinatorSub: public ProjectCoordinator

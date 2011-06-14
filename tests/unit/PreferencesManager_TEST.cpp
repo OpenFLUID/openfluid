@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   PrefMgr->setDeltaT(777);
   PrefMgr->setBegin("2222-11-11T00:11:22");
   PrefMgr->setEnd("2221-12-12=11;22;33");
-  PrefMgr->setOutFilesBuffer(4);
+  PrefMgr->setOutFilesBufferInKB(4);
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),10);
   BOOST_CHECK_EQUAL(PrefMgr->getLang(),"oc");
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),777);
   BOOST_CHECK_EQUAL(PrefMgr->getBegin(),"2222-11-11T00:11:22");
   BOOST_CHECK_EQUAL(PrefMgr->getEnd(),"2221-12-12=11;22;33");
-  BOOST_CHECK_EQUAL(PrefMgr->getOutFilesBuffer(),4);
+  BOOST_CHECK_EQUAL(PrefMgr->getOutFilesBufferInKB(),4);
 
   delete PrefMgr;
 }
@@ -145,32 +145,12 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
       PrefMgr->getRecentProjects();
 
   BOOST_CHECK_EQUAL(Recents.size(),3);
-  BOOST_CHECK_EQUAL(Recents[0].first,"aa/bb/file1.txt");
-  BOOST_CHECK_EQUAL(Recents[0].second,"pj1");
-  BOOST_CHECK_EQUAL(Recents[1].first,"aa/bb/file2.txt");
-  BOOST_CHECK_EQUAL(Recents[1].second,"");
-  BOOST_CHECK_EQUAL(Recents[2].first,"aa/bb/file3.txt");
-  BOOST_CHECK_EQUAL(Recents[2].second,"pj3");
-
-  PrefMgr->setRecentMax(2);
-
-  Recents = PrefMgr->getRecentProjects();
-
-  BOOST_CHECK_EQUAL(Recents.size(),2);
-  BOOST_CHECK_EQUAL(Recents[0].first,"aa/bb/file2.txt");
-  BOOST_CHECK_EQUAL(Recents[0].second,"");
-  BOOST_CHECK_EQUAL(Recents[1].first,"aa/bb/file3.txt");
-  BOOST_CHECK_EQUAL(Recents[1].second,"pj3");
-
-  PrefMgr->addRecentProject("aa/bb/file4.txt", "pj4");
-
-  Recents = PrefMgr->getRecentProjects();
-
-  BOOST_CHECK_EQUAL(Recents.size(),2);
   BOOST_CHECK_EQUAL(Recents[0].first,"aa/bb/file3.txt");
   BOOST_CHECK_EQUAL(Recents[0].second,"pj3");
-  BOOST_CHECK_EQUAL(Recents[1].first,"aa/bb/file4.txt");
-  BOOST_CHECK_EQUAL(Recents[1].second,"pj4");
+  BOOST_CHECK_EQUAL(Recents[1].first,"aa/bb/file2.txt");
+  BOOST_CHECK_EQUAL(Recents[1].second,"");
+  BOOST_CHECK_EQUAL(Recents[2].first,"aa/bb/file1.txt");
+  BOOST_CHECK_EQUAL(Recents[2].second,"pj1");
 
   PrefMgr->clearRecentProjects();
 
@@ -193,7 +173,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
-  std::vector<std::string> ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
+  std::vector<Glib::ustring> ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
 
   BOOST_CHECK_EQUAL(ExtraPlugPaths.size(),0);
 
@@ -236,6 +216,32 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
   ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
 
   BOOST_CHECK_EQUAL(ExtraPlugPaths.size(),0);
+
+  std::vector<Glib::ustring> Paths;
+  Paths.push_back("aa/bb/dir1");
+  Paths.push_back("aa/bb/dir2");
+  Paths.push_back("aa/bb/dir3");
+
+  PrefMgr->setExtraPlugPaths(Paths);
+
+  ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
+
+  BOOST_CHECK_EQUAL(ExtraPlugPaths.size(),3);
+  BOOST_CHECK_EQUAL(ExtraPlugPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraPlugPaths[1],"aa/bb/dir2");
+  BOOST_CHECK_EQUAL(ExtraPlugPaths[2],"aa/bb/dir3");
+
+  Paths.clear();
+  Paths.push_back("cc/dd/dir1");
+  Paths.push_back("cc/dd/dir2");
+
+  PrefMgr->setExtraPlugPaths(Paths);
+
+  ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
+
+  BOOST_CHECK_EQUAL(ExtraPlugPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraPlugPaths[0],"cc/dd/dir1");
+  BOOST_CHECK_EQUAL(ExtraPlugPaths[1],"cc/dd/dir2");
 
   delete PrefMgr;
 }
@@ -314,14 +320,21 @@ BOOST_AUTO_TEST_CASE(test_Save)
 
   PrefMgr->setDeltaT(1111);
 
+  std::vector<Glib::ustring> Paths;
+  Paths.push_back("aa/bb/dir1");
+  Paths.push_back("aa/bb/dir2");
+  PrefMgr->setExtraPlugPaths(Paths);
+
   delete PrefMgr;
 
   openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
   PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT()==1111,false);
+  BOOST_CHECK_EQUAL(PrefMgr->getExtraPlugPaths().size(),0);
 
   PrefMgr->setDeltaT(1111);
+  PrefMgr->setExtraPlugPaths(Paths);
   PrefMgr->save();
 
   delete PrefMgr;
@@ -330,6 +343,7 @@ BOOST_AUTO_TEST_CASE(test_Save)
   PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),1111);
+  BOOST_CHECK_EQUAL(PrefMgr->getExtraPlugPaths().size(),2);
 
   delete PrefMgr;
 }

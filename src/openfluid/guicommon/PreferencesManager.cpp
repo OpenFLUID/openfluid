@@ -59,6 +59,7 @@
 #include <glibmm/fileutils.h>
 #include <fstream>
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/config.hpp>
 
 namespace openfluid {
 namespace guicommon {
@@ -116,6 +117,8 @@ PreferencesManager::~PreferencesManager()
 void PreferencesManager::setDefaultValues()
 {
   setRecentMax(5);
+  setDeltaT(300);
+  setOutFilesBufferInKB(openfluid::config::DEFAULT_OUTFILES_BUFFER_KB);
 }
 
 // =====================================================================
@@ -219,15 +222,6 @@ Glib::ustring PreferencesManager::getLang()
 void PreferencesManager::setRecentMax(unsigned int RecentMax)
 {
   mp_KFile->set_integer("openfluid.builder.interface", "recentmax", RecentMax);
-
-  if (mp_KFile->has_group("openfluid.builder.recentprojects"))
-  {
-    while (mp_KFile->get_keys("openfluid.builder.recentprojects").size()
-        > RecentMax)
-      mp_KFile->remove_key("openfluid.builder.recentprojects",
-          ((std::vector<std::string>) mp_KFile->get_keys(
-              "openfluid.builder.recentprojects"))[0]);
-  }
 }
 
 // =====================================================================
@@ -250,16 +244,12 @@ bool PreferencesManager::addRecentProject(std::string ProjectPath,
   if (ProjectPath.find('=') != std::string::npos)
     return false;
 
-  unsigned int RecentMax = isValidKey("openfluid.builder.interface",
-      "recentmax") ? mp_KFile->get_integer("openfluid.builder.interface",
-      "recentmax") : 5;
-
   std::vector<std::string> ProjectPaths;
 
   if (mp_KFile->has_group("openfluid.builder.recentprojects"))
     ProjectPaths = mp_KFile->get_keys("openfluid.builder.recentprojects");
 
-  if (!ProjectPaths.empty() && ProjectPaths.size() > (RecentMax - 1))
+  if (!ProjectPaths.empty() && ProjectPaths.size() > 11)
     mp_KFile->remove_key("openfluid.builder.recentprojects", ProjectPaths[0]);
 
   mp_KFile->set_string("openfluid.builder.recentprojects",
@@ -280,7 +270,7 @@ void PreferencesManager::clearRecentProjects()
 // =====================================================================
 // =====================================================================
 
-/* get pairs of <ProjectPath,ProjectName>, from older to newer */
+/* get pairs of <ProjectPath,ProjectName>, from newer to  older */
 std::vector<std::pair<std::string, std::string> > PreferencesManager::getRecentProjects()
 {
   std::vector<std::pair<std::string, std::string> > RecentProjects;
@@ -290,7 +280,7 @@ std::vector<std::pair<std::string, std::string> > PreferencesManager::getRecentP
     std::vector<std::string> ProjectPaths = mp_KFile->get_keys(
         "openfluid.builder.recentprojects");
 
-    for (unsigned int i = 0; i < ProjectPaths.size(); i++)
+    for (int i = ProjectPaths.size() - 1; i > -1; i--)
     {
       RecentProjects.push_back(std::make_pair(ProjectPaths[i],
           mp_KFile->get_string("openfluid.builder.recentprojects",
@@ -325,10 +315,20 @@ Glib::ustring PreferencesManager::getWorkdir()
 // =====================================================================
 // =====================================================================
 
-
-void PreferencesManager::addExtraPlugPath(std::string Path)
+void PreferencesManager::setExtraPlugPaths(
+    std::vector<Glib::ustring> ExtraPlugPaths)
 {
-  std::vector<std::string> ExtraPlugPaths;
+  mp_KFile->set_string_list("openfluid.builder.paths", "extraplugpaths",
+      ExtraPlugPaths);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::addExtraPlugPath(Glib::ustring Path)
+{
+  std::vector<Glib::ustring> ExtraPlugPaths;
 
   if (isValidKey("openfluid.builder.paths", "extraplugpaths"))
     ExtraPlugPaths = mp_KFile->get_string_list("openfluid.builder.paths",
@@ -344,14 +344,14 @@ void PreferencesManager::addExtraPlugPath(std::string Path)
 // =====================================================================
 
 
-void PreferencesManager::removeExtraPlugPath(std::string Path)
+void PreferencesManager::removeExtraPlugPath(Glib::ustring Path)
 {
   if (isValidKey("openfluid.builder.paths", "extraplugpaths"))
   {
-    std::vector<std::string> ExtraPlugPaths = mp_KFile->get_string_list(
+    std::vector<Glib::ustring> ExtraPlugPaths = mp_KFile->get_string_list(
         "openfluid.builder.paths", "extraplugpaths");
 
-    std::vector<std::string>::iterator it = std::find(ExtraPlugPaths.begin(),
+    std::vector<Glib::ustring>::iterator it = std::find(ExtraPlugPaths.begin(),
         ExtraPlugPaths.end(), Path);
 
     if (it != ExtraPlugPaths.end())
@@ -366,9 +366,9 @@ void PreferencesManager::removeExtraPlugPath(std::string Path)
 // =====================================================================
 
 
-std::vector<std::string> PreferencesManager::getExtraPlugPaths()
+std::vector<Glib::ustring> PreferencesManager::getExtraPlugPaths()
 {
-  std::vector<std::string> ExtraPlugPaths;
+  std::vector<Glib::ustring> ExtraPlugPaths;
 
   if (isValidKey("openfluid.builder.paths", "extraplugpaths"))
     ExtraPlugPaths = mp_KFile->get_string_list("openfluid.builder.paths",
@@ -440,7 +440,7 @@ std::string PreferencesManager::getEnd()
 // =====================================================================
 
 
-void PreferencesManager::setOutFilesBuffer(unsigned int Buffer)
+void PreferencesManager::setOutFilesBufferInKB(unsigned int Buffer)
 {
   mp_KFile->set_integer("openfluid.builder.runconfig", "outfilesbuffer", Buffer);
 }
@@ -449,7 +449,7 @@ void PreferencesManager::setOutFilesBuffer(unsigned int Buffer)
 // =====================================================================
 
 
-int PreferencesManager::getOutFilesBuffer()
+int PreferencesManager::getOutFilesBufferInKB()
 {
   return isValidKey("openfluid.builder.runconfig", "outfilesbuffer") ? mp_KFile->get_integer(
       "openfluid.builder.runconfig", "outfilesbuffer")
@@ -459,8 +459,8 @@ int PreferencesManager::getOutFilesBuffer()
 // =====================================================================
 // =====================================================================
 
-bool PreferencesManager::addMarketplace(std::string PlaceName,
-    std::string PlaceUrl)
+bool PreferencesManager::addMarketplace(Glib::ustring PlaceName,
+    Glib::ustring PlaceUrl)
 {
   if (PlaceName.find('=') != std::string::npos)
     return false;
@@ -469,11 +469,12 @@ bool PreferencesManager::addMarketplace(std::string PlaceName,
   return true;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesManager::removeMarketplace(std::string PlaceName)
+void PreferencesManager::removeMarketplace(Glib::ustring PlaceName)
 {
   if (isValidKey("openfluid.market.marketplaces", PlaceName))
     mp_KFile->remove_key("openfluid.market.marketplaces", PlaceName);

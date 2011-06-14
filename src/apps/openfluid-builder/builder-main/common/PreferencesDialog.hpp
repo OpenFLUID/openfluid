@@ -46,36 +46,78 @@
  */
 
 /**
- \file PreferencesPresenter.cpp
- \brief Implements ...
+ \file PreferencesDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "PreferencesPresenter.hpp"
+#ifndef __PREFERENCESDIALOG_HPP__
+#define __PREFERENCESDIALOG_HPP__
 
-#include "PreferencesModel.hpp"
-#include "PreferencesView.hpp"
 
+#include <gtkmm/treeview.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/box.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/liststore.h>
+
+#include <glibmm/i18n.h>
+#include <sigc++/sigc++.h>
+
+
+class PreferencesPanel;
 
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesPresenter::whenShowAsked()
+class PreferencesDialog
 {
-  m_View.show();
-}
+  private:
+
+    enum PrefGroup
+    {
+      Interface, Paths, Simulation, Market, Plugins
+    };
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Box* mp_MainBox;
+
+    Glib::RefPtr<Gtk::TreeStore> mref_GroupsTreeModel;
+
+    Gtk::TreeView* mp_GroupsTreeView;
+
+    class PrefGroupsColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        PrefGroupsColumns()
+        {
+          add(m_Id);
+          add(m_Name);
+        }
+        Gtk::TreeModelColumn<PrefGroup> m_Id;
+        Gtk::TreeModelColumn<Glib::ustring> m_Name;
+    };
+
+    PrefGroupsColumns m_GroupsColumns;
+
+    std::map<PrefGroup, PreferencesPanel*> m_GroupPanels;
+
+    Gtk::Widget* mp_CurrentPanel;
+
+    void onGroupSelectionChanged();
 
 
-// =====================================================================
-// =====================================================================
+  public:
 
+    PreferencesDialog();
 
-PreferencesPresenter::PreferencesPresenter(PreferencesModel& Model, PreferencesView& View) :
-  m_Model(Model), m_View(View)
-{
-  m_Model.signal_showAsked().connect(sigc::mem_fun(*this,
-      &PreferencesPresenter::whenShowAsked));
-}
+    void show();
 
+};
+
+#endif /* __PREFERENCESDIALOG_HPP__ */

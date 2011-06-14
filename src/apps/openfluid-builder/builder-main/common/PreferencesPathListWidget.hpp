@@ -46,62 +46,78 @@
  */
 
 /**
- \file PreferencesView.hpp
+ \file PreferencesPathListWidget.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __PREFERENCESVIEW_HPP__
-#define __PREFERENCESVIEW_HPP__
+#ifndef __PREFERENCESPATHLISTWIDGET_HPP__
+#define __PREFERENCESPATHLISTWIDGET_HPP__
 
-#include <gtkmm.h>
-#include <glibmm/i18n.h>
-#include <sigc++/sigc++.h>
+#include <gtkmm/box.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
 
+class BuilderListToolBox;
 
-// =====================================================================
-// =====================================================================
-
-
-class PreferencesView
-{
-  public:
-
-//    virtual sigc::signal<void> signal_NewProjectAsked() = 0;
-
-    virtual void show() = 0;
-
-    virtual Gtk::Widget* asWidget() = 0;
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-class PreferencesViewImpl: public PreferencesView
+class PreferencesPathListWidget
 {
   private:
 
-//    sigc::signal<void> m_signal_NewProjectAsked;
+    Gtk::Frame* mp_MainFrame;
 
-    Gtk::Dialog* mp_Dialog;
+    Gtk::VBox* mp_MainBox;
 
-    Gtk::Paned* mp_MainPaned;
+    class PathsColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        PathsColumns()
+        {
+          add(m_Path);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Path;
+    };
 
+    PathsColumns m_PathsColumns;
+
+    Glib::RefPtr<Gtk::ListStore> mref_UserDefinedModel;
+
+    Glib::RefPtr<Gtk::ListStore> mref_PreDefinedModel;
+
+    Gtk::TreeView* mp_UserDefinedTreeView;
+
+    Gtk::TreeView* mp_PreDefinedTreeView;
+
+    BuilderListToolBox* mp_ToolBox;
+
+    sigc::signal<void> m_signal_PathListChanged;
+
+    void whenAddPathAsked();
+
+    void whenRemovePathAsked();
+
+    void whenUpPathAsked();
+
+    void whenDownPathAsked();
+
+    void updateToolBox();
 
   public:
 
-    PreferencesViewImpl();
-
-//    sigc::signal<void> signal_NewProjectAsked();
-
-    void show();
+    PreferencesPathListWidget();
 
     Gtk::Widget* asWidget();
 
+    void setPreDefinedPaths(std::vector<std::string> Paths);
+
+    void setUserDefinedPaths(std::vector<Glib::ustring> Paths);
+
+    std::vector<Glib::ustring> getUserDefinedPaths();
+
+    sigc::signal<void> signal_PathListChanged();
+
 };
 
-#endif /* __PREFERENCESVIEW_HPP__ */
+#endif /* __PREFERENCESPATHLISTWIDGET_HPP__ */

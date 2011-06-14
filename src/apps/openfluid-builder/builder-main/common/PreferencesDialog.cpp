@@ -46,81 +46,118 @@
  */
 
 /**
- \file PreferencesModel.cpp
+ \file PreferencesDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "PreferencesModel.hpp"
+#include "PreferencesDialog.hpp"
 
-#include <boost/filesystem.hpp>
+#include <glibmm/i18n.h>
+#include <gtkmm/treeselection.h>
 
-#include <openfluid/base.hpp>
+#include "PreferencesPanel.hpp"
+#include <openfluid/guicommon/PreferencesManager.hpp>
+
 
 // =====================================================================
 // =====================================================================
 
 
-PreferencesModelImpl::PreferencesModelImpl()
+PreferencesDialog::PreferencesDialog() :
+  mp_CurrentPanel(0)
 {
+  mref_GroupsTreeModel = Gtk::TreeStore::create(m_GroupsColumns);
+  Gtk::TreeRow Row;
 
-  /*
-  std::string
-      FileName =
-          openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile();
+  Row = *mref_GroupsTreeModel->append();
+  Row[m_GroupsColumns.m_Id] = Interface;
+  Row[m_GroupsColumns.m_Name] = _("Interface");
 
-  if(!boost::filesystem::exists(FileName))
+  Row = *mref_GroupsTreeModel->append();
+  Row[m_GroupsColumns.m_Id] = Paths;
+  Row[m_GroupsColumns.m_Name] = _("Paths");
+
+  Row = *mref_GroupsTreeModel->append();
+  Row[m_GroupsColumns.m_Id] = Simulation;
+  Row[m_GroupsColumns.m_Name] = _("Simulation configuration");
+
+  Row = *mref_GroupsTreeModel->append();
+  Row[m_GroupsColumns.m_Id] = Market;
+  Row[m_GroupsColumns.m_Name] = _("Market");
+
+  mp_GroupsTreeView = Gtk::manage(new Gtk::TreeView(mref_GroupsTreeModel));
+  mp_GroupsTreeView->append_column("", m_GroupsColumns.m_Name);
+  mp_GroupsTreeView->set_headers_visible(false);
+  mp_GroupsTreeView->set_border_width(5);
+  mp_GroupsTreeView->get_selection()->signal_changed().connect(sigc::mem_fun(
+      *this, &PreferencesDialog::onGroupSelectionChanged));
+
+  m_GroupPanels[Interface] = new PreferencesInterfacePanel();
+  m_GroupPanels[Paths] = new PreferencesPathsPanel();
+  m_GroupPanels[Simulation] = new PreferencesSimPanel();
+  m_GroupPanels[Market] = new PreferencesMarketPanel();
+
+  mp_MainBox = Gtk::manage(new Gtk::HBox());
+  mp_MainBox->pack_start(*mp_GroupsTreeView, Gtk::PACK_SHRINK, 5);
+
+  mp_Dialog = new Gtk::Dialog();
+  mp_Dialog->get_vbox()->pack_start(*mp_MainBox);
+  mp_Dialog->set_default_size(800, 450);
+  mp_Dialog->show_all_children();
+
+  //select first group
+  mp_GroupsTreeView->get_selection()->select(
+      mref_GroupsTreeModel->children().begin());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::show()
+{
+  for(std::map<PrefGroup, PreferencesPanel*>::iterator it = m_GroupPanels.begin() ; it != m_GroupPanels.end() ; ++it)
+    it->second->init();
+
+  //select first group
+  mp_GroupsTreeView->get_selection()->select(
+      mref_GroupsTreeModel->children().begin());
+
+  if (mp_Dialog->run())
   {
-    std::ofstream File;
-    File.open(FileName.c_str());
-    File.close();
+    openfluid::guicommon::PreferencesManager::getInstance()->save();
+    mp_Dialog->hide();
   }
-  try
-  {
-    m_KeyFile.load_from_file(FileName);
-  } catch (Glib::FileError e)
-  {
-    std::cout << "FileError" << std::endl;
-  } catch (Glib::KeyFileError e)
-  {
-    std::cout << "KeyFileError" << std::endl;
-  }
-  */
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesModelImpl::createEmptyFile()
+void PreferencesDialog::onGroupSelectionChanged()
 {
+  Gtk::TreeIter SelectedIter =
+      mp_GroupsTreeView->get_selection()->get_selected();
+
+  if (!SelectedIter)
+    return;
+
+  PrefGroup SelectedGroup = SelectedIter->get_value(m_GroupsColumns.m_Id);
+
+  if (m_GroupPanels.find(SelectedGroup) == m_GroupPanels.end())
+    return;
+
+  if (mp_CurrentPanel)
+    mp_MainBox->remove(*mp_CurrentPanel);
+
+  mp_CurrentPanel = m_GroupPanels[SelectedGroup]->asWidget();
+
+  mp_MainBox->pack_start(*mp_CurrentPanel, Gtk::PACK_EXPAND_WIDGET, 5);
 
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void PreferencesModelImpl::showAsked()
-{
-  m_signal_showAsked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> PreferencesModelImpl::signal_showAsked()
-{
-  return m_signal_showAsked;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string PreferencesModelImpl::getOFVersionTxt()
-{
-  return "";
-}

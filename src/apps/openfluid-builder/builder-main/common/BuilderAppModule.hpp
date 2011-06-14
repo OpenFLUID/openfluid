@@ -52,7 +52,6 @@
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
-#include "PreferencesComponent.hpp"
 
 #include "FunctionSignatureRegistry.hpp"
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -74,8 +73,6 @@ class BuilderAppModule: BuilderModule
 
     BuilderAppActions& m_Actions;
 
-    PreferencesComponent* mp_PreferencesMVP;
-
   protected:
 
     void compose()
@@ -96,10 +93,7 @@ class BuilderAppModule: BuilderModule
       m_MainWindow(*new BuilderAppWindow()),
           m_Actions(*new BuilderAppActions())
     {
-      mp_PreferencesMVP = new PreferencesComponent();
-
-      mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions,
-          *mp_PreferencesMVP->getModel());
+      mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions);
     }
 
     bool initialize()
@@ -114,6 +108,13 @@ class BuilderAppModule: BuilderModule
       }
 
       mp_Coordinator->setHomeModule();
+
+      std::vector<Glib::ustring>
+          PrefXPaths =
+              openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
+      for (int i = PrefXPaths.size() - 1; i > -1; i--)
+        openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
+            PrefXPaths[i]);
 
       FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 

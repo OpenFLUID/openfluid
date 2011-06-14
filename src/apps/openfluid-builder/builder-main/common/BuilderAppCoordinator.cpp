@@ -60,7 +60,7 @@
 #include "BuilderModuleFactory.hpp"
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
-#include "PreferencesModel.hpp"
+#include "PreferencesDialog.hpp"
 
 #include "BuilderProjectWithExplorer.hpp"
 
@@ -131,7 +131,6 @@ void BuilderAppCoordinator::whenQuitAsked()
   mp_CurrentState->whenQuitAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -178,7 +177,6 @@ void BuilderAppCoordinator::whenAboutAsked()
   mp_CurrentState->whenAboutAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -187,7 +185,6 @@ void BuilderAppCoordinator::whenOnlineAsked(const std::string& URL)
 {
   mp_CurrentState->whenOnlineAsked(URL);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -207,7 +204,6 @@ void BuilderAppCoordinator::whenMapViewAsked()
   mp_CurrentState->whenMapViewAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -216,7 +212,6 @@ void BuilderAppCoordinator::whenRefreshAsked()
 {
   mp_CurrentState->whenRefreshAsked();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -232,9 +227,8 @@ void BuilderAppCoordinator::whenSaveAsAsked()
 
 
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
-    BuilderAppActions& Actions, PreferencesModel& PrefModel) :
-  m_MainWindow(MainWindow), m_Actions(Actions), m_PreferencesModel(PrefModel),
-      m_HasToBeSaved(true)
+    BuilderAppActions& Actions) :
+  m_MainWindow(MainWindow), m_Actions(Actions), m_HasToBeSaved(true)
 {
   mp_CurrentModule = 0;
 
@@ -243,6 +237,8 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   mp_NewProjectDialog = new EngineProjectNewDialog();
   mp_OpenProjectDialog = new EngineProjectOpenDialog();
+
+  mp_PreferencesDialog = new PreferencesDialog();
 
   m_Actions.getFileNewAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenNewProjectAsked));
@@ -265,17 +261,24 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenAboutAsked));
 
-  m_Actions.getAppOnlineWebsiteAction()->signal_activate().connect(
-      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_WEBSITE));
+  m_Actions.getAppOnlineWebsiteAction()->signal_activate().connect(sigc::bind<
+      std::string>(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+      BUILDER_URL_WEBSITE));
 
   m_Actions.getAppOnlineCommunityAction()->signal_activate().connect(
-      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_COMMUNITY));
+      sigc::bind<std::string>(sigc::mem_fun(*this,
+          &BuilderAppCoordinator::whenOnlineAsked), BUILDER_URL_COMMUNITY));
 
-  m_Actions.getAppOnlineDevAction()->signal_activate().connect(
-      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_DEV));
+  m_Actions.getAppOnlineDevAction()->signal_activate().connect(sigc::bind<
+      std::string>(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+      BUILDER_URL_DEV));
 
-  m_Actions.getAppOnlineBugAction()->signal_activate().connect(
-      sigc::bind<std::string>(sigc::mem_fun(*this,&BuilderAppCoordinator::whenOnlineAsked),BUILDER_URL_BUG));
+  m_Actions.getAppOnlineBugAction()->signal_activate().connect(sigc::bind<
+      std::string>(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+      BUILDER_URL_BUG));
 
   m_Actions.getSaveAction()->signal_activate().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenSaveAsked));
@@ -287,7 +290,7 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
       &BuilderAppCoordinator::whenMapViewAsked));
 
   m_Actions.getRefreshAction()->signal_activate().connect(sigc::mem_fun(*this,
-        &BuilderAppCoordinator::whenRefreshAsked));
+      &BuilderAppCoordinator::whenRefreshAsked));
 
   m_MainWindow.signal_delete_event().connect(sigc::mem_fun(*this,
       &BuilderAppCoordinator::whenMainWindowCloseAsked));
@@ -467,15 +470,6 @@ bool BuilderAppCoordinator::showQuitAppDialog()
 // =====================================================================
 // =====================================================================
 
-
-void BuilderAppCoordinator::showPreferencesDialog()
-{
-  m_PreferencesModel.showAsked();
-}
-
-// =====================================================================
-// =====================================================================
-
 void BuilderAppCoordinator::openProject(std::string ProjectPath)
 {
   std::string ProjectFolder;
@@ -541,7 +535,17 @@ void BuilderAppCoordinator::closeProject()
 // =====================================================================
 
 
+void BuilderAppCoordinator::showPreferencesDialog()
+{
+  mp_PreferencesDialog->show();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppCoordinator::~BuilderAppCoordinator()
 {
   delete mp_NewProjectDialog;
+  delete mp_OpenProjectDialog;
 }

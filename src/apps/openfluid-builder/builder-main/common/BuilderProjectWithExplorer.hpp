@@ -128,6 +128,8 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     void refreshAsked();
 
+    void updatePluginPathsMonitors();
+
 };
 
 #endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */

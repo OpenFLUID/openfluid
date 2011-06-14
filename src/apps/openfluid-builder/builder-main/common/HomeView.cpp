@@ -231,7 +231,7 @@ void HomeViewImpl::setRecentProjects(std::vector<std::pair<std::string,
     mp_RecentPanel->pack_start(*mp_RecentLabel, Gtk::PACK_SHRINK, 0);
   } else
   {
-    for (int i = RecentProjects.size() - 1; i > -1; i--)
+    for (unsigned int i = 0; i < RecentProjects.size(); i++)
     {
       addARecentProject(RecentProjects[i].second, RecentProjects[i].first);
     }
@@ -254,7 +254,7 @@ void HomeViewImpl::addARecentProject(std::string ProjectName,
 
   Gtk::Arrow* Arrow = Gtk::manage(new Gtk::Arrow(Gtk::ARROW_RIGHT,
       Gtk::SHADOW_NONE));
-  Arrow->set_padding(20,0);
+  Arrow->set_padding(20, 0);
   Arrow->set_visible(true);
 
   Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());

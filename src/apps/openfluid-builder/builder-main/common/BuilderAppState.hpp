@@ -73,8 +73,6 @@ class BuilderAppState
 
     virtual void whenMarketAsked() = 0;
 
-    virtual void whenPreferencesAsked() = 0;
-
     void whenAboutAsked();
 
     void whenOnlineAsked(const std::string& URL);
@@ -86,6 +84,8 @@ class BuilderAppState
     virtual void whenMapViewAsked() = 0;
 
     virtual void whenRefreshAsked() = 0;
+
+    virtual void whenPreferencesAsked() = 0;
 
 };
 

@@ -96,22 +96,7 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
   mp_FileMonitorDialog->signal_response().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenUpdatePluginsAsked));
 
-  std::vector<std::string> PluginPaths =
-      openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
-
-  //TODO think of get changes of pluginpaths from preferences
-  for (unsigned int i = 0; i < PluginPaths.size(); i++)
-  {
-    Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
-        PluginPaths[i]);
-
-    Glib::RefPtr<Gio::FileMonitor> DirMonitor = ItemFile->monitor_directory();
-
-    DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
-        &ProjectCoordinator::onDirMonitorChanged));
-
-    m_DirMonitors.push_back(DirMonitor);
-  }
+  updatePluginPathsMonitors();
 
 }
 
@@ -604,6 +589,31 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
     }
 
     m_FileMonitorHasChanged = false;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::updatePluginPathsMonitors()
+{
+  m_DirMonitors.clear();
+
+  std::vector<std::string> PluginPaths =
+      openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+
+  for (unsigned int i = 0; i < PluginPaths.size(); i++)
+  {
+    Glib::RefPtr<Gio::File> ItemFile = Gio::File::create_for_path(
+        PluginPaths[i]);
+
+    Glib::RefPtr<Gio::FileMonitor> DirMonitor = ItemFile->monitor_directory();
+
+    DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
+        &ProjectCoordinator::onDirMonitorChanged));
+
+    m_DirMonitors.push_back(DirMonitor);
   }
 }
 

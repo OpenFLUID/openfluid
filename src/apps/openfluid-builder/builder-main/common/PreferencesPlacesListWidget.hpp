@@ -46,35 +46,77 @@
  */
 
 /**
- \file PreferencesComponent.cpp
- \brief Implements ...
+ \file PreferencesUrlListWidget.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "PreferencesComponent.hpp"
+#ifndef __PREFERENCESURLLISTWIDGET_HPP__
+#define __PREFERENCESURLLISTWIDGET_HPP__
 
-#include "PreferencesModel.hpp"
-#include "PreferencesView.hpp"
-#include "PreferencesPresenter.hpp"
+#include <gtkmm/box.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/table.h>
 
-PreferencesComponent::PreferencesComponent()
+class BuilderListToolBox;
+
+class PreferencesPlacesListWidget
 {
-  mp_Model = new PreferencesModelImpl();
-  mp_View = new PreferencesViewImpl();
-  mp_Presenter = new PreferencesPresenter(*mp_Model, *mp_View);
-}
-PreferencesComponent::~PreferencesComponent()
-{
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* PreferencesComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-PreferencesModel* PreferencesComponent::getModel()
-{
-  return mp_Model;
-}
+  private:
+
+    Gtk::Frame* mp_MainFrame;
+
+    Gtk::VBox* mp_MainBox;
+
+    class PlacesColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        PlacesColumns()
+        {
+          add(m_Name);
+          add(m_Path);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Name;
+        Gtk::TreeModelColumn<Glib::ustring> m_Path;
+    };
+
+    PlacesColumns m_PlacesColumns;
+
+    Glib::RefPtr<Gtk::ListStore> mref_PlacesModel;
+
+    Gtk::TreeView* mp_PlacesTreeView;
+
+    BuilderListToolBox* mp_ToolBox;
+
+    Gtk::Dialog* mp_AddPlaceDialog;
+    Gtk::Label* mp_InfoBarLabel;
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_NameLabel;
+    Gtk::Entry* mp_NameEntry;
+    Gtk::Label* mp_UrlLabel;
+    Gtk::Entry* mp_UrlEntry;
+    Gtk::Table* mp_AddTable;
+
+    void whenAddPlaceAsked();
+
+    void whenEntryChanged();
+
+    void whenRemovePlaceAsked();
+
+  public:
+
+    PreferencesPlacesListWidget();
+
+    Gtk::Widget* asWidget();
+
+    void setPlaces(std::map<std::string,std::string> Places);
+
+};
+
+
+#endif /* __PREFERENCESURLLISTWIDGET_HPP__ */

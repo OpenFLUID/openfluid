@@ -236,6 +236,17 @@ void BuilderProjectWithExplorer::refreshAsked()
   mp_Coordinator->whenUpdatePluginsAsked();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderProjectWithExplorer::updatePluginPathsMonitors()
+{
+  mp_Coordinator->updatePluginPathsMonitors();
+}
+
+
 // =====================================================================
 // =====================================================================
 

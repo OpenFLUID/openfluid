@@ -55,9 +55,13 @@
 #include "BuilderAppHomeState.hpp"
 
 #include "BuilderAppCoordinator.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
+
+#include <algorithm>
 
 // =====================================================================
 // =====================================================================
@@ -129,16 +133,6 @@ void BuilderAppHomeState::whenMarketAsked()
 // =====================================================================
 
 
-void BuilderAppHomeState::whenPreferencesAsked()
-{
-  //m_App.showPreferencesDialog();
-  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void BuilderAppHomeState::whenSaveAsked()
 {
   //nothing to do, should not happen
@@ -153,7 +147,6 @@ void BuilderAppHomeState::whenSaveAsAsked()
   //nothing to do, should not happen
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -162,7 +155,6 @@ void BuilderAppHomeState::whenMapViewAsked()
 {
   //nothing to do, should not happen
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -173,3 +165,35 @@ void BuilderAppHomeState::whenRefreshAsked()
   //nothing to do, should not happen
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppHomeState::whenPreferencesAsked()
+{
+  m_App.showPreferencesDialog();
+
+  std::vector<std::string>
+      RunEnvXPaths =
+          openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths();
+
+  std::vector<Glib::ustring>
+      PrefXPaths =
+          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
+
+  if (!(RunEnvXPaths.size() == PrefXPaths.size() && std::equal(
+      RunEnvXPaths.begin(), RunEnvXPaths.end(), PrefXPaths.begin())))
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraPluginsPaths();
+
+    for (int i = PrefXPaths.size() - 1; i > -1; i--)
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
+          PrefXPaths[i]);
+
+    FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  }
+
+  // to refresh Recents
+  m_App.setHomeModule();
+
+}

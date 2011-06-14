@@ -116,9 +116,10 @@ class DLLEXPORT PreferencesManager
     void setWorkdir(Glib::ustring Workdir);
     Glib::ustring getWorkdir();
 
-    void addExtraPlugPath(std::string Path);
-    void removeExtraPlugPath(std::string Path);
-    std::vector<std::string> getExtraPlugPaths();
+    void setExtraPlugPaths(std::vector<Glib::ustring> ExtraPlugPaths);
+    void addExtraPlugPath(Glib::ustring Path);
+    void removeExtraPlugPath(Glib::ustring Path);
+    std::vector<Glib::ustring> getExtraPlugPaths();
 
     void setDeltaT(unsigned int DeltaT);
     int getDeltaT();
@@ -129,12 +130,12 @@ class DLLEXPORT PreferencesManager
     void setEnd(std::string End);
     std::string getEnd();
 
-    void setOutFilesBuffer(unsigned int Buffer);
-    int getOutFilesBuffer();
+    void setOutFilesBufferInKB(unsigned int Buffer);
+    int getOutFilesBufferInKB();
 
     bool
-    addMarketplace(std::string PlaceName, std::string PlaceUrl);
-    void removeMarketplace(std::string PlaceName);
+    addMarketplace(Glib::ustring PlaceName, Glib::ustring PlaceUrl);
+    void removeMarketplace(Glib::ustring PlaceName);
     MarketPlaces_t getMarketplaces();
 
     std::string getPluginValue(std::string PluginName, std::string Key);

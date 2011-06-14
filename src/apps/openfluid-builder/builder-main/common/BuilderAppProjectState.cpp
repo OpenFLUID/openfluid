@@ -58,6 +58,7 @@
 #include "BuilderProjectWithExplorer.hpp"
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -131,17 +132,7 @@ void BuilderAppProjectState::whenQuitAsked()
 
 void BuilderAppProjectState::whenRunAsked()
 {
-  static_cast<BuilderProjectWithExplorer*>(m_App.getCurrentModule())->runAsked();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderAppProjectState::whenPreferencesAsked()
-{
-  // m_App.showPreferencesDialog();
-  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+  static_cast<BuilderProjectWithExplorer*> (m_App.getCurrentModule())->runAsked();
 }
 
 // =====================================================================
@@ -153,7 +144,6 @@ void BuilderAppProjectState::whenSaveAsked()
   ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->saveAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -162,7 +152,6 @@ void BuilderAppProjectState::whenSaveAsAsked()
 {
   openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -173,7 +162,6 @@ void BuilderAppProjectState::whenMapViewAsked()
   openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -182,3 +170,37 @@ void BuilderAppProjectState::whenRefreshAsked()
 {
   ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->refreshAsked();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenPreferencesAsked()
+{
+  m_App.showPreferencesDialog();
+
+  std::vector<std::string>
+      RunEnvXPaths =
+          openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths();
+
+  std::vector<Glib::ustring>
+      PrefXPaths =
+          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
+
+  std::reverse(PrefXPaths.begin(), PrefXPaths.end());
+
+  if (!(RunEnvXPaths.size() == PrefXPaths.size() && std::equal(
+      RunEnvXPaths.begin(), RunEnvXPaths.end(), PrefXPaths.begin())))
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraPluginsPaths();
+
+    for (int i = PrefXPaths.size() - 1; i > -1; i--)
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
+          PrefXPaths[i]);
+
+    ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->updatePluginPathsMonitors();
+    ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->refreshAsked();
+  }
+
+}
+
