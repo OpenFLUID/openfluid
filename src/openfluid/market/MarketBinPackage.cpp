@@ -84,19 +84,36 @@ void MarketBinPackage::process()
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
 
-  AppendToLogFile("\nProcessing binary package " + m_PackageFilename +"\n\n");
+
+  std::string StrOut;
+  std::string StrErr;
+  int RetValue;
 
   std::string ProcessCommand = m_CMakeCommand +" -E chdir " + m_MarketBagBinDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
 
-  if (m_IsLogEnabled)
+  try
   {
-    ProcessCommand += " >> " + boost::filesystem::path(m_LogFile).string();
+    appendToLogFile(m_PackageFilename,"processing binaries",ProcessCommand);
+
+    StrOut.clear();
+    StrErr.clear();
+    RetValue = 0;
+    Glib::spawn_command_line_sync(ProcessCommand,&StrOut,&StrErr,&RetValue);
+
+    appendToLogFile(StrOut);
+
+    if (RetValue != 0)
+    {
+      appendToLogFile(StrErr);
+      throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
+
+    }
+
   }
-
-  if (std::system(ProcessCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
-
-  AppendToLogFile("\n########################\n");
+  catch (Glib::Error& E)
+  {
+    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Glib error uncompressing package using CMake");
+  }
 
 }
 

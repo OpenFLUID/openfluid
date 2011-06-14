@@ -108,8 +108,13 @@ class DLLEXPORT MarketPackage
 
     bool m_Downloaded;
 
+    static void resetLogFile();
 
-    void AppendToLogFile(const std::string& Str);
+    static void appendToLogFile(const std::string& PackageName,
+        const std::string& Action,
+        const std::string& Str);
+
+    static void appendToLogFile(const std::string& Str);
 
 
   public:

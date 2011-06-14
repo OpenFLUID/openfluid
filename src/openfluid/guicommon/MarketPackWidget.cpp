@@ -231,7 +231,7 @@ void MarketPackWidget::onConfigClicked()
   if (OptDialog.run() == Gtk::RESPONSE_OK)
     m_EditedBuildOptions = OptDialog.getEditedOptions();
 
-  updateDisplayedInfos();
+  onInstallModified();
 }
 
 

@@ -87,6 +87,10 @@ void MarketSrcPackage::process()
   if (m_CMakeCommand.empty())
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","CMake command not defined");
 
+  std::string StrOut;
+  std::string StrErr;
+  int RetValue;
+
   std::string BuildConfigOptions = composeFullBuildOptions(m_BuildConfigOptions);
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
@@ -104,33 +108,87 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
 
-  std::string UntarCommand = m_CMakeCommand +" -E chdir " + SrcInstallDir+ " " + m_CMakeCommand + " -E tar xfz " + m_PackageDest;
+  std::string UntarCommand = m_CMakeCommand +" -E chdir " + SrcInstallDir+ " " + m_CMakeCommand + " -E tar xfvz " + m_PackageDest;
 
   std::string BuildConfigCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " " + SrcInstallDir + BuildConfigOptions;
 
   std::string BuildCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " --build .";
 
-  if (m_IsLogEnabled)
-  {
-    UntarCommand += " >> " + boost::filesystem::path(m_LogFile).string();
-    BuildConfigCommand += " >> " + boost::filesystem::path(m_LogFile).string();
-    BuildCommand += " >> " + boost::filesystem::path(m_LogFile).string();
-  }
-
-  AppendToLogFile("\nProcessing source package " + m_PackageFilename +"\n\n");
-
 
   // uncompressing package
-  if (std::system(UntarCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error uncompressing package using CMake");
+  try
+  {
+    appendToLogFile(m_PackageFilename,"uncompressing sources",UntarCommand);
+
+
+    StrOut.clear();
+    StrErr.clear();
+    RetValue = 0;
+    Glib::spawn_command_line_sync(UntarCommand,&StrOut,&StrErr,&RetValue);
+
+    appendToLogFile(StrOut);
+
+    if (RetValue != 0)
+    {
+      appendToLogFile(StrErr);
+      throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error uncompressing package using CMake");
+    }
+  }
+  catch (Glib::Error& E)
+  {
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Glib error uncompressing package using CMake");
+  }
+
 
   // configuring build
-  if (std::system(BuildConfigCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error configuring package build using CMake");
+  try
+  {
+    appendToLogFile(m_PackageFilename,"configuring sources build",BuildConfigCommand);
+
+    StrOut.clear();
+    StrErr.clear();
+    RetValue = 0;
+    Glib::spawn_command_line_sync(BuildConfigCommand,&StrOut,&StrErr,&RetValue);
+
+    appendToLogFile(StrOut);
+
+    if (RetValue != 0)
+    {
+      appendToLogFile(StrErr);
+      throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error configuring package build using CMake");
+    }
+
+  }
+  catch (Glib::Error& E)
+  {
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Glib error configuring package build using CMake");
+  }
+
 
   // building
-  if (std::system(BuildCommand.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error building package using CMake");
+  try
+  {
+    appendToLogFile(m_PackageFilename,"building sources",BuildCommand);
+
+    StrOut.clear();
+    StrErr.clear();
+    RetValue = 0;
+    Glib::spawn_command_line_sync(BuildCommand,&StrOut,&StrErr,&RetValue);
+
+    appendToLogFile(StrOut);
+
+    if (RetValue != 0)
+    {
+      appendToLogFile(StrErr);
+      throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error building package using CMake");
+
+    }
+
+  }
+  catch (Glib::Error& E)
+  {
+    throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Glib error building package using CMake");
+  }
 
   if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error finding built package");
@@ -142,8 +200,6 @@ void MarketSrcPackage::process()
                                boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
 
   if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
-
-  AppendToLogFile("\n########################\n");
 
 }
 

@@ -133,11 +133,7 @@ void MarketPackage::initialize(bool EnableLog = false)
 
   m_IsLogEnabled = EnableLog;
 
-  if (m_IsLogEnabled)
-  {
-    boost::filesystem::remove(boost::filesystem::path(m_LogFile));
-    std::ofstream(boost::filesystem::path(m_LogFile).string().c_str()).close();
-  }
+  resetLogFile();
 
   m_Initialized = true;
 }
@@ -180,16 +176,52 @@ std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
 // =====================================================================
 
 
-void MarketPackage::AppendToLogFile(const std::string& Str)
+void MarketPackage::appendToLogFile(const std::string& PackageName,
+                                    const std::string& Action,
+                                    const std::string& Str)
 {
   if (m_IsLogEnabled)
   {
     std::ofstream LogFileStream;
     LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
-    LogFileStream << Str;
+    LogFileStream << "\n================================================================================\n";
+    LogFileStream << "  " << PackageName << " : " << Action << "\n";
+    LogFileStream << "================================================================================\n";
+    LogFileStream << Str << "\n";
     LogFileStream.close();
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::appendToLogFile(const std::string& Str)
+{
+  if (m_IsLogEnabled)
+  {
+    std::ofstream LogFileStream;
+    LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
+    LogFileStream << Str << "\n";
+    LogFileStream.close();
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::resetLogFile()
+{
+  if (m_IsLogEnabled)
+  {
+    boost::filesystem::remove(boost::filesystem::path(m_LogFile));
+    std::ofstream(boost::filesystem::path(m_LogFile).string().c_str()).close();
+  }
 }
 
 
@@ -205,15 +237,15 @@ void MarketPackage::download()
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
-  AppendToLogFile("\nDownloading package " + m_PackageFilename + " ");
+  appendToLogFile(m_PackageFilename,"downloading","");
 
   if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
   {
-    AppendToLogFile("[Error]\n\n########################\n");
+    appendToLogFile("Error");
     throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","error while downloading package "+m_PackageFilename);
   }
 
-  AppendToLogFile("[OK]\n\n########################\n");
+  appendToLogFile("OK");
 
   m_Downloaded = true;
 

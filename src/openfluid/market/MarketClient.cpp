@@ -51,7 +51,6 @@
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/config.hpp>
-#include <openfluid/debug.hpp>
 
 #include <fstream>
 #include <deque>
@@ -428,7 +427,9 @@ void MarketClient::setSRCBuildOptions(const openfluid::base::FuncID_t& ID, const
   if (PCit != m_MetaPackagesCatalog.end())
   {
     if (PCit->second.AvailablePackages.find(MetaPackageInfo::SRC) !=  PCit->second.AvailablePackages.end())
+    {
       PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions = BuildOpts;
+    }
   }
 }
 
@@ -477,7 +478,6 @@ void MarketClient::preparePackagesInstallation()
 
       std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
 
-      OFDBG_MESSAGE(BuildOptsStr);
 
       if (!BuildOptsStr.empty())
         ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
