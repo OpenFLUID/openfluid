@@ -81,7 +81,7 @@ PreferencesDialog::PreferencesDialog() :
 
   Row = *mref_GroupsTreeModel->append();
   Row[m_GroupsColumns.m_Id] = Simulation;
-  Row[m_GroupsColumns.m_Name] = _("Simulation configuration");
+  Row[m_GroupsColumns.m_Name] = _("Simulations");
 
   Row = *mref_GroupsTreeModel->append();
   Row[m_GroupsColumns.m_Id] = Market;
@@ -94,18 +94,29 @@ PreferencesDialog::PreferencesDialog() :
   mp_GroupsTreeView->get_selection()->signal_changed().connect(sigc::mem_fun(
       *this, &PreferencesDialog::onGroupSelectionChanged));
 
+  mp_GroupsSWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_GroupsSWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_GroupsSWindow->set_visible(true);
+  mp_GroupsSWindow->set_size_request(170,-1);
+  mp_GroupsSWindow->add(*mp_GroupsTreeView);
+  mp_GroupsSWindow->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
   m_GroupPanels[Interface] = new PreferencesInterfacePanel();
   m_GroupPanels[Paths] = new PreferencesPathsPanel();
   m_GroupPanels[Simulation] = new PreferencesSimPanel();
   m_GroupPanels[Market] = new PreferencesMarketPanel();
 
   mp_MainBox = Gtk::manage(new Gtk::HBox());
-  mp_MainBox->pack_start(*mp_GroupsTreeView, Gtk::PACK_SHRINK, 5);
+  mp_MainBox->pack_start(*mp_GroupsSWindow, Gtk::PACK_SHRINK, 6);
 
   mp_Dialog = new Gtk::Dialog();
-  mp_Dialog->get_vbox()->pack_start(*mp_MainBox);
-  mp_Dialog->set_default_size(800, 450);
+  mp_Dialog->get_vbox()->pack_start(*mp_MainBox,Gtk::PACK_EXPAND_WIDGET, 6);
+  mp_Dialog->set_default_size(850, 500);
+  mp_Dialog->set_border_width(6);
+  mp_Dialog->set_title(_("Preferences"));
   mp_Dialog->show_all_children();
+
+  mp_Dialog->add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE);
 
   //select first group
   mp_GroupsTreeView->get_selection()->select(
@@ -154,7 +165,7 @@ void PreferencesDialog::onGroupSelectionChanged()
 
   mp_CurrentPanel = m_GroupPanels[SelectedGroup]->asWidget();
 
-  mp_MainBox->pack_start(*mp_CurrentPanel, Gtk::PACK_EXPAND_WIDGET, 5);
+  mp_MainBox->pack_start(*mp_CurrentPanel, Gtk::PACK_EXPAND_WIDGET, 6);
 
 }
 

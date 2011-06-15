@@ -85,9 +85,9 @@ PreferencesPanel::PreferencesPanel(Glib::ustring PanelTitle)
   mp_ContentWindow->set_shadow_type(Gtk::SHADOW_NONE);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*TitleLabel, Gtk::PACK_SHRINK);
-  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
-  mp_MainBox->pack_start(*mp_ContentWindow);
+  mp_MainBox->pack_start(*TitleLabel, Gtk::PACK_SHRINK,3);
+//  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*mp_ContentWindow, Gtk::PACK_EXPAND_WIDGET);
 
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
@@ -358,7 +358,7 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   PanelBox->pack_start(*createSubTitle(_("Working directory")),
       Gtk::PACK_SHRINK);
   PanelBox->pack_start(*createSubBoxAlignement(WorkdirBox), Gtk::PACK_SHRINK);
-  PanelBox->pack_start(*createSubTitle(_("Simulation functions directories")),
+  PanelBox->pack_start(*createSubTitle(_("Search paths for simulation functions")),
       Gtk::PACK_SHRINK);
   PanelBox->pack_start(*createSubBoxAlignement(FunctionPaths), Gtk::PACK_SHRINK);
 
@@ -430,7 +430,7 @@ void PreferencesPathsPanel::onFunctionsPathListChanged()
 
 
 PreferencesSimPanel::PreferencesSimPanel() :
-  PreferencesPanel(_("Simulation configuration")), m_IsMonthChanged(false)
+  PreferencesPanel(_("Simulations")), m_IsMonthChanged(false)
 {
   /*
    * Time
@@ -589,9 +589,9 @@ PreferencesSimPanel::PreferencesSimPanel() :
    */
 
   Gtk::Box* PanelBox = createPanelBox();
-  PanelBox->pack_start(*createSubTitle(_("Time")), Gtk::PACK_SHRINK);
+  PanelBox->pack_start(*createSubTitle(_("Default Time settings")), Gtk::PACK_SHRINK);
   PanelBox->pack_start(*createSubBoxAlignement(TimeTable), Gtk::PACK_SHRINK);
-  PanelBox->pack_start(*createSubTitle(_("Outputs")), Gtk::PACK_SHRINK);
+  PanelBox->pack_start(*createSubTitle(_("Default Outputs settings")), Gtk::PACK_SHRINK);
   PanelBox->pack_start(*createSubBoxAlignement(OutputsBox), Gtk::PACK_SHRINK);
 
   mp_ContentWindow->add(*PanelBox);

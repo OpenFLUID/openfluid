@@ -63,6 +63,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/scrolledwindow.h>
 
 #include <glibmm/i18n.h>
 #include <sigc++/sigc++.h>
@@ -90,6 +91,8 @@ class PreferencesDialog
     Glib::RefPtr<Gtk::TreeStore> mref_GroupsTreeModel;
 
     Gtk::TreeView* mp_GroupsTreeView;
+
+    Gtk::ScrolledWindow* mp_GroupsSWindow;
 
     class PrefGroupsColumns: public Gtk::TreeModel::ColumnRecord
     {
