@@ -63,7 +63,8 @@
 
 BuilderPretestInfo::BuilderPretestInfo() :
   Domain(true), DomainMsg(""), Params(true), ParamsMsg(""), Project(true),
-      ProjectMsg(""), Outputs(true), OutputsMsg("")
+      ProjectMsg(""), Outputs(true), OutputsMsg(""), RunConfig(true),
+      RunConfigMsg("")
 {
 }
 
@@ -73,7 +74,8 @@ BuilderPretestInfo::BuilderPretestInfo() :
 
 void BuilderPretestInfo::addBuilderInfo(
     openfluid::machine::ModelInstance* ModelInstance,
-    openfluid::machine::SimulationBlob* SimBlob)
+    openfluid::machine::SimulationBlob* SimBlob,
+    openfluid::base::RunDescriptor& RunDesc)
 {
   if (ModelInstance->getItemsCount() == 0)
   {
@@ -108,6 +110,12 @@ void BuilderPretestInfo::addBuilderInfo(
       Outputs = false;
       OutputsMsg = _("No set defined");
     }
+  }
+
+  if (RunDesc.getBeginDate() >= RunDesc.getEndDate())
+  {
+    RunConfig = false;
+    RunConfigMsg = _("Run end date is not later than run begin date");
   }
 
   Params = Project = true;
@@ -186,5 +194,5 @@ void BuilderPretestInfo::addBuilderInfo(
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {
-  return (ExtraFiles && Inputdata && Model && Project);
+  return (ExtraFiles && Inputdata && Model && Project && RunConfig);
 }

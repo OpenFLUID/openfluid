@@ -60,26 +60,10 @@
 // =====================================================================
 
 
-void SimulRunModelImpl::setBegin(openfluid::core::DateTime DateTime)
-{
-  mp_RunDesc->setBeginDate(DateTime);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunModelImpl::setEnd(openfluid::core::DateTime DateTime)
-{
-  mp_RunDesc->setEndDate(DateTime);
-}
-
-// =====================================================================
-// =====================================================================
-
-
 SimulRunModelImpl::SimulRunModelImpl() :
-  m_isCurrentBeginValid(true), m_isCurrentEndValid(true)
+  m_isCurrentBeginValid(true), m_isCurrentEndValid(true), m_isDateTimeCoherent(
+      true), m_isDateTimeValid(true), m_BeginColorString("white"),
+      m_EndColorString("white")
 {
 }
 
@@ -96,19 +80,11 @@ sigc::signal<void> SimulRunModelImpl::signal_FromAppDescriptorChanged()
 // =====================================================================
 
 
-sigc::signal<void> SimulRunModelImpl::signal_FromAppBeginValidityChanged()
+sigc::signal<void> SimulRunModelImpl::signal_FromAppValidityChanged()
 {
-  return m_signal_FromAppBeginValidityChanged;
+  return m_signal_FromAppValidityChanged;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> SimulRunModelImpl::signal_FromAppEndValidityChanged()
-{
-  return m_signal_FromAppEndValidityChanged;
-}
 
 // =====================================================================
 // =====================================================================
@@ -128,6 +104,7 @@ void SimulRunModelImpl::setEngineRequirements(
 {
   mp_RunDesc = &RunDesc;
   m_signal_FromAppDescriptorChanged.emit();
+  checkDateTimeCoherence();
 }
 
 // =====================================================================
@@ -143,18 +120,36 @@ int SimulRunModelImpl::getDelta()
 // =====================================================================
 
 
-bool SimulRunModelImpl::isBeginValid()
+std::string SimulRunModelImpl::getBeginColor()
 {
-  return m_isCurrentBeginValid;
+  return m_BeginColorString;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool SimulRunModelImpl::isEndValid()
+std::string SimulRunModelImpl::getEndColor()
 {
-  return m_isCurrentEndValid;
+  return m_EndColorString;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulRunModelImpl::isDateTimeCoherent()
+{
+  return m_isDateTimeCoherent;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulRunModelImpl::isDateTimeValid()
+{
+  return m_isDateTimeValid;
 }
 
 // =====================================================================
@@ -219,8 +214,6 @@ void SimulRunModelImpl::setDelta(int Value)
 
 void SimulRunModelImpl::setBegin(std::string Begin)
 {
-  bool CurrentValidity = m_isCurrentBeginValid;
-
   if (Begin != getBegin())
   {
     openfluid::core::DateTime DT;
@@ -231,10 +224,7 @@ void SimulRunModelImpl::setBegin(std::string Begin)
     } else
       m_isCurrentBeginValid = false;
 
-    if (CurrentValidity != m_isCurrentBeginValid)
-      m_signal_FromAppBeginValidityChanged.emit();
-
-    m_signal_SimulRunChanged.emit();
+    checkDateTimeCoherence();
   }
 }
 
@@ -244,8 +234,6 @@ void SimulRunModelImpl::setBegin(std::string Begin)
 
 void SimulRunModelImpl::setEnd(std::string End)
 {
-  bool CurrentValidity = m_isCurrentEndValid;
-
   if (End != getEnd())
   {
     openfluid::core::DateTime DT;
@@ -256,11 +244,39 @@ void SimulRunModelImpl::setEnd(std::string End)
     } else
       m_isCurrentEndValid = false;
 
-    if (CurrentValidity != m_isCurrentEndValid)
-      m_signal_FromAppEndValidityChanged.emit();
-
-    m_signal_SimulRunChanged.emit();
+    checkDateTimeCoherence();
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunModelImpl::checkDateTimeCoherence()
+{
+  m_isDateTimeCoherent
+      = (mp_RunDesc->getBeginDate() < mp_RunDesc->getEndDate());
+
+  if (!m_isCurrentBeginValid)
+    m_BeginColorString = "red";
+  if (!m_isCurrentEndValid)
+    m_EndColorString = "red";
+
+  if (m_isCurrentBeginValid && m_isDateTimeCoherent)
+    m_BeginColorString = "white";
+  if (m_isCurrentEndValid && m_isDateTimeCoherent)
+    m_EndColorString = "white";
+
+  if (m_isCurrentBeginValid && !m_isDateTimeCoherent)
+    m_BeginColorString = "orange";
+  if (m_isCurrentEndValid && !m_isDateTimeCoherent)
+    m_EndColorString = "orange";
+
+  m_isDateTimeValid = (m_isCurrentBeginValid && m_isCurrentEndValid && m_isDateTimeCoherent);
+
+  m_signal_FromAppValidityChanged.emit();
+
+  m_signal_SimulRunChanged.emit();
 }
 
 // =====================================================================

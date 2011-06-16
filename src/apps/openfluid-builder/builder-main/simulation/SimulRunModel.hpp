@@ -66,9 +66,7 @@ class SimulRunModel
 
     virtual sigc::signal<void> signal_FromAppDescriptorChanged() = 0;
 
-    virtual sigc::signal<void> signal_FromAppBeginValidityChanged() = 0;
-
-    virtual sigc::signal<void> signal_FromAppEndValidityChanged() = 0;
+    virtual sigc::signal<void> signal_FromAppValidityChanged() = 0;
 
     virtual sigc::signal<void> signal_SimulRunChanged() = 0;
 
@@ -77,9 +75,13 @@ class SimulRunModel
 
     virtual int getDelta() = 0;
 
-    virtual bool isBeginValid() = 0;
+    virtual std::string getBeginColor() = 0;
 
-    virtual bool isEndValid() = 0;
+    virtual std::string getEndColor() = 0;
+
+    virtual bool isDateTimeCoherent() = 0;
+
+    virtual bool isDateTimeValid() = 0;
 
     virtual std::string getBegin() = 0;
 
@@ -110,23 +112,23 @@ class SimulRunModelImpl: public SimulRunModel
 
     sigc::signal<void> m_signal_FromAppDescriptorChanged;
 
-    sigc::signal<void> m_signal_FromAppBeginValidityChanged;
-
-    sigc::signal<void> m_signal_FromAppEndValidityChanged;
+    sigc::signal<void> m_signal_FromAppValidityChanged;
 
     sigc::signal<void> m_signal_SimulRunChanged;
 
     openfluid::base::RunDescriptor* mp_RunDesc;
 
     bool m_isCurrentBeginValid;
-
     bool m_isCurrentEndValid;
 
-    openfluid::core::DateTime m_EndTmp;
+    bool m_isDateTimeCoherent;
 
-    void setBegin(openfluid::core::DateTime DateTime);
+    bool m_isDateTimeValid;
 
-    void setEnd(openfluid::core::DateTime DateTime);
+    std::string m_BeginColorString;
+    std::string m_EndColorString;
+
+    void checkDateTimeCoherence();
 
   public:
 
@@ -134,9 +136,7 @@ class SimulRunModelImpl: public SimulRunModel
 
     sigc::signal<void> signal_FromAppDescriptorChanged();
 
-    sigc::signal<void> signal_FromAppBeginValidityChanged();
-
-    sigc::signal<void> signal_FromAppEndValidityChanged();
+    sigc::signal<void> signal_FromAppValidityChanged();
 
     sigc::signal<void> signal_SimulRunChanged();
 
@@ -144,16 +144,17 @@ class SimulRunModelImpl: public SimulRunModel
 
     int getDelta();
 
-    bool isBeginValid();
+    std::string getBeginColor();
+    std::string getEndColor();
 
-    bool isEndValid();
+    bool isDateTimeValid();
+
+    bool isDateTimeCoherent();
 
     std::string getBegin();
-
     std::string getEnd();
 
     int getValuesBuff();
-
     bool isValuesBuffSet();
 
     int getFilesBuff();
@@ -161,11 +162,9 @@ class SimulRunModelImpl: public SimulRunModel
     void setDelta(int Value);
 
     void setBegin(std::string Begin);
-
     void setEnd(std::string End);
 
     void setValuesBuffIsSet(bool IsSet);
-
     void setValuesBuff(int Value);
 
     void setFilesBuff(int Value);

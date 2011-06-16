@@ -57,68 +57,17 @@
 #include "SimulRunModel.hpp"
 #include "SimulRunView.hpp"
 
-void SimulRunPresenter::whenFromAppDescriptorChanged()
-{
-  m_HaveValuesToBeStore = false;
+// =====================================================================
+// =====================================================================
 
-  m_View.setDelta(m_Model.getDelta());
-  m_View.setBegin(m_Model.getBegin());
-  m_View.setEnd(m_Model.getEnd());
-
-  m_View.setValuesBuff(m_Model.getValuesBuff());
-  m_View.setValuesBuffIsSet(m_Model.isValuesBuffSet());
-
-  m_View.setFilesBuff(m_Model.getFilesBuff());
-
-  m_HaveValuesToBeStore = true;
-}
-void SimulRunPresenter::whenFromAppBeginValidityChanged()
-{
-  m_View.setBeginBG(m_Model.isBeginValid());
-}
-void SimulRunPresenter::whenFromAppEndValidityChanged()
-{
-  m_View.setEndBG(m_Model.isEndValid());
-}
-void SimulRunPresenter::whenFromUserValuesBufferSetToggled()
-{
-  if (m_HaveValuesToBeStore)
-  {
-    m_View.setValuesBuffIsSet(m_View.isValuesBuffSet());
-    m_Model.setValuesBuffIsSet(m_View.isValuesBuffSet());
-  }
-}
-void SimulRunPresenter::whenFromUserBeginChanged()
-{
-  m_Model.setBegin(m_View.getBegin());
-}
-void SimulRunPresenter::whenFromUserEndChanged()
-{
-  m_Model.setEnd(m_View.getEnd());
-}
-void SimulRunPresenter::whenFromUserDeltaChanged()
-{
-  m_Model.setDelta(m_View.getDelta());
-}
-void SimulRunPresenter::whenFromUserFilesBuffChanged()
-{
-  m_Model.setFilesBuff(m_View.getFilesBuff());
-}
-void SimulRunPresenter::whenFromUserValuesBuffChanged()
-{
-  if (m_HaveValuesToBeStore)
-    m_Model.setValuesBuff(m_View.getValuesBuff());
-}
 
 SimulRunPresenter::SimulRunPresenter(SimulRunModel& Model, SimulRunView& View) :
   m_Model(Model), m_View(View), m_HaveValuesToBeStore(true)
 {
   m_Model.signal_FromAppDescriptorChanged().connect(sigc::mem_fun(*this,
       &SimulRunPresenter::whenFromAppDescriptorChanged));
-  m_Model.signal_FromAppBeginValidityChanged().connect(sigc::mem_fun(*this,
-      &SimulRunPresenter::whenFromAppBeginValidityChanged));
-  m_Model.signal_FromAppEndValidityChanged().connect(sigc::mem_fun(*this,
-      &SimulRunPresenter::whenFromAppEndValidityChanged));
+  m_Model.signal_FromAppValidityChanged().connect(sigc::mem_fun(*this,
+      &SimulRunPresenter::whenFromAppValidityChanged));
 
   m_View.signal_ValuesBuffToggle().connect(sigc::mem_fun(*this,
       &SimulRunPresenter::whenFromUserValuesBufferSetToggled));
@@ -133,3 +82,95 @@ SimulRunPresenter::SimulRunPresenter(SimulRunModel& Model, SimulRunView& View) :
   m_View.signal_ValuesBuffChanged().connect(sigc::mem_fun(*this,
       &SimulRunPresenter::whenFromUserValuesBuffChanged));
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromAppDescriptorChanged()
+{
+  m_HaveValuesToBeStore = false;
+
+  m_View.setDelta(m_Model.getDelta());
+  m_View.setBegin(m_Model.getBegin());
+  m_View.setEnd(m_Model.getEnd());
+
+  m_View.setValuesBuff(m_Model.getValuesBuff());
+  m_View.setValuesBuffIsSet(m_Model.isValuesBuffSet());
+
+  m_View.setFilesBuff(m_Model.getFilesBuff());
+
+  m_HaveValuesToBeStore = true;
+
+  whenFromAppValidityChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromAppValidityChanged()
+{
+  m_View.setBeginBG(m_Model.getBeginColor());
+  m_View.setEndBG(m_Model.getEndColor());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromUserValuesBufferSetToggled()
+{
+  if (m_HaveValuesToBeStore)
+  {
+    m_View.setValuesBuffIsSet(m_View.isValuesBuffSet());
+    m_Model.setValuesBuffIsSet(m_View.isValuesBuffSet());
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromUserBeginChanged()
+{
+  m_Model.setBegin(m_View.getBegin());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromUserEndChanged()
+{
+  m_Model.setEnd(m_View.getEnd());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromUserDeltaChanged()
+{
+  m_Model.setDelta(m_View.getDelta());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromUserFilesBuffChanged()
+{
+  m_Model.setFilesBuff(m_View.getFilesBuff());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunPresenter::whenFromUserValuesBuffChanged()
+{
+  if (m_HaveValuesToBeStore)
+    m_Model.setValuesBuff(m_View.getValuesBuff());
+}
+

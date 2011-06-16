@@ -77,10 +77,15 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     std::string OutputsMsg;
 
+    bool RunConfig;
+
+    std::string RunConfigMsg;
+
     BuilderPretestInfo();
 
     void addBuilderInfo(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob);
+        openfluid::machine::SimulationBlob* SimBlob,
+        openfluid::base::RunDescriptor& RunDesc);
 
     bool getGlobalCheckState();
 };

@@ -165,27 +165,6 @@ BOOST_AUTO_TEST_CASE(test_changeValuesBuff)
   BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
 }
 
-BOOST_AUTO_TEST_CASE(test_getColorForBGValidState)
-{
-  BOOST_CHECK_EQUAL(mp_View->getColorForBGValidState(true),"white");
-  BOOST_CHECK_EQUAL(mp_View->getColorForBGValidState(false),"red");
-}
-
-BOOST_AUTO_TEST_CASE(test_setPeriodBG)
-{
-  mp_View->setBeginBG(false);
-  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),Gdk::Color("red").to_string());
-
-  mp_View->setBeginBG(true);
-  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),Gdk::Color("white").to_string());
-
-  mp_View->setEndBG(false);
-  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("red").to_string());
-
-  mp_View->setEndBG(true);
-  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("white").to_string());
-}
-
 BOOST_AUTO_TEST_CASE(test_setInvalidDateTimeValue)
 {
   mp_View->setBegin("99/99/99");
@@ -197,17 +176,17 @@ BOOST_AUTO_TEST_CASE(test_setInvalidDateTimeValue)
   BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("red").to_string());
 }
 
-BOOST_AUTO_TEST_CASE(test_setValidDateTimeValue)
+BOOST_AUTO_TEST_CASE(test_setUncoherentDateTimeValue)
 {
   mp_View->setBegin("99/99/99");
   mp_View->setBegin("2012-11-10 01:23:45");
 
-  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),Gdk::Color("white").to_string());
+  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),Gdk::Color("orange").to_string());
 
   mp_View->setEnd("99/99/99");
   mp_View->setEnd("2010-11-12 02:34:56");
 
-  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("white").to_string());
+  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("orange").to_string());
 }
 
 // =====================================================================

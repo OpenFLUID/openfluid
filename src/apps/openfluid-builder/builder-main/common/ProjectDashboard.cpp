@@ -131,6 +131,12 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row[m_Columns.m_StateInfo] = CheckInfo.Project ? "ok" : CheckInfo.ProjectMsg;
 
   Row = *mref_TreeModel->append();
+  Row[m_Columns.m_Title] = _("Run configuration");
+  Row[m_Columns.m_StateIcon] = CheckInfo.RunConfig ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] = CheckInfo.RunConfig ? "ok"
+      : CheckInfo.RunConfigMsg;
+
+  Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Outputs");
   Row[m_Columns.m_StateIcon] = CheckInfo.Outputs ? m_GreenIcon : m_OrangeIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.Outputs ? "ok" : CheckInfo.OutputsMsg;

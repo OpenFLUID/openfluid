@@ -63,21 +63,33 @@ class SimulRunView;
 class SimulRunPresenter
 {
   private:
+
     SimulRunModel& m_Model;
+
     SimulRunView& m_View;
+
     bool m_HaveValuesToBeStore;
+
     void whenFromAppDescriptorChanged();
-    void whenFromAppBeginValidityChanged();
-    void whenFromAppEndValidityChanged();
+
+    void whenFromAppValidityChanged();
+
     void whenFromUserValuesBufferSetToggled();
+
     void whenFromUserBeginChanged();
+
     void whenFromUserEndChanged();
+
     void whenFromUserDeltaChanged();
+
     void whenFromUserFilesBuffChanged();
+
     void whenFromUserValuesBuffChanged();
 
   public:
+
     SimulRunPresenter(SimulRunModel& Model, SimulRunView& View);
+
 };
 
 #endif /* __SIMULRUNPRESENTER_HPP__ */

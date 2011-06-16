@@ -57,224 +57,191 @@
 #include <glibmm/i18n.h>
 
 #include "BuilderFrame.hpp"
+#include <openfluid/core/DateTime.hpp>
 
-void SimulRunViewImpl::onDeltaChanged()
-{
-  m_signal_DeltaChanged.emit();
-}
-void SimulRunViewImpl::onBeginChanged()
-{
-  m_signal_BeginChanged.emit();
-}
-void SimulRunViewImpl::onEndChanged()
-{
-  m_signal_EndChanged.emit();
-}
-void SimulRunViewImpl::onValuesBuffToggle()
-{
-  m_signal_ValuesBuffToggle.emit();
-}
-void SimulRunViewImpl::onValuesBuffChanged()
-{
-  m_signal_ValuesBuffChanged.emit();
-}
-void SimulRunViewImpl::onFilesBuffChanged()
-{
-  m_signal_FilesBuffChanged.emit();
-}
+// =====================================================================
+// =====================================================================
 
-std::string SimulRunViewImpl::getColorForBGValidState(bool IsValid)
-{
-  if (IsValid)
-    return "white";
-  return "red";
-}
 
 SimulRunViewImpl::SimulRunViewImpl()
 {
-  Gtk::Label* DeltaLabel = Gtk::manage(new Gtk::Label(_("Delta T")));
-  Gtk::Label* DeltaUnit = Gtk::manage(new Gtk::Label(_("seconds")));
+  /*
+   * Time frame
+   */
+
   mp_DeltaSpin = Gtk::manage(new Gtk::SpinButton());
   mp_DeltaSpin->set_range(1.0, 86400.0); //->24h
   mp_DeltaSpin->set_increments(1, 3600);
   mp_DeltaSpin->set_numeric(true);
-  mp_DeltaSpin->signal_value_changed().connect(sigc::mem_fun(*this,
+  mp_DeltaSpin->signal_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onDeltaChanged));
 
-  Gtk::Label* FilesBuffLabel = Gtk::manage(new Gtk::Label(_("Output files buffer")));
-  Gtk::Label* FilesBuffUnit = Gtk::manage(new Gtk::Label(_("KB")));
-  mp_FilesBuffSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_FilesBuffSpin->set_range(1.0, 999.0);
-  mp_FilesBuffSpin->set_increments(1, 10);
-  mp_FilesBuffSpin->set_numeric(true);
-  mp_FilesBuffSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onFilesBuffChanged));
-
-  Gtk::Label* BeginLabel = Gtk::manage(new Gtk::Label(_("Period begin")));
   mp_BeginEntry = Gtk::manage(new Gtk::Entry());
   mp_BeginEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onBeginChanged));
+      &SimulRunViewImpl::onBeginEntryChanged));
 
-  Gtk::Label* EndLabel = Gtk::manage(new Gtk::Label(_("Period end")));
+  Gtk::Button* DateBeginButton = Gtk::manage(new Gtk::Button("..."));
+  DateBeginButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onDateBeginButtonClicked));
+
+  mp_BeginHSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_BeginHSpin->set_range(0.0, 23.0);
+  mp_BeginHSpin->set_increments(1, 1);
+  mp_BeginHSpin->set_numeric(true);
+  mp_BeginHSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onBeginValueChanged));
+
+  mp_BeginMSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_BeginMSpin->set_range(0.0, 59.0);
+  mp_BeginMSpin->set_increments(1, 10);
+  mp_BeginMSpin->set_numeric(true);
+  mp_BeginMSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onBeginValueChanged));
+
+  mp_BeginSSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_BeginSSpin->set_range(0.0, 59.0);
+  mp_BeginSSpin->set_increments(1, 10);
+  mp_BeginSSpin->set_numeric(true);
+  mp_BeginSSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onBeginValueChanged));
+
   mp_EndEntry = Gtk::manage(new Gtk::Entry());
   mp_EndEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onEndChanged));
+      &SimulRunViewImpl::onEndEntryChanged));
 
-  //  Gtk::Label* ValuesBuffCBLabel = Gtk::manage(
-  //      new Gtk::Label(_("Values Buffer")));
-  mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton(_("Values buffer")));
-  mp_ValuesBuffCB->signal_clicked().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onValuesBuffToggle));
+  Gtk::Button* DateEndButton = Gtk::manage(new Gtk::Button("..."));
+  DateEndButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onDateEndButtonClicked));
 
-  Gtk::Label* ValuesBuffValueLabel = Gtk::manage(new Gtk::Label(_("steps")));
-  mp_ValuesBuffSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_ValuesBuffSpin->set_range(1.0, 999.0);
-  mp_ValuesBuffSpin->set_increments(1, 10);
-  mp_ValuesBuffSpin->set_numeric(true);
-  mp_ValuesBuffSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onValuesBuffChanged));
+  mp_EndHSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_EndHSpin->set_range(0.0, 23.0);
+  mp_EndHSpin->set_increments(1, 1);
+  mp_EndHSpin->set_numeric(true);
+  mp_EndHSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onEndValueChanged));
 
-  ////////////////
-  // New layout //
-  ////////////////
+  mp_EndMSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_EndMSpin->set_range(0.0, 59.0);
+  mp_EndMSpin->set_increments(1, 10);
+  mp_EndMSpin->set_numeric(true);
+  mp_EndMSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onEndValueChanged));
 
-  DeltaLabel->set_alignment(0,0.5);
-  BeginLabel->set_alignment(0,0.5);
-  EndLabel->set_alignment(0,0.5);
-  FilesBuffLabel->set_alignment(0,0.5);
-  mp_ValuesBuffCB->set_alignment(0,0.5);
+  mp_EndSSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_EndSSpin->set_range(0.0, 59.0);
+  mp_EndSSpin->set_increments(1, 10);
+  mp_EndSSpin->set_numeric(true);
+  mp_EndSSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onEndValueChanged));
 
   Gtk::HBox* DeltaBox = Gtk::manage(new Gtk::HBox());
   DeltaBox->pack_start(*mp_DeltaSpin, Gtk::PACK_SHRINK, 5);
-  DeltaBox->pack_start(*DeltaUnit, Gtk::PACK_SHRINK, 0);
-
-  Gtk::Button* DateBeginButton = Gtk::manage(new Gtk::Button("..."));
-  DateBeginButton->set_sensitive(false);
-
-  Gtk::Button* DateEndButton = Gtk::manage(new Gtk::Button("..."));
-  DateEndButton->set_sensitive(false);
+  DeltaBox->pack_start(*Gtk::manage(new Gtk::Label(_("seconds"))),
+      Gtk::PACK_SHRINK);
 
   Gtk::HBox* DateBeginBox = Gtk::manage(new Gtk::HBox());
   DateBeginBox->pack_start(*mp_BeginEntry, Gtk::PACK_SHRINK, 5);
-  DateBeginBox->pack_start(*DateBeginButton, Gtk::PACK_SHRINK, 0);
+  DateBeginBox->pack_start(*DateBeginButton, Gtk::PACK_SHRINK);
+
+  Gtk::HBox* TimeBeginBox = Gtk::manage(new Gtk::HBox());
+  TimeBeginBox->pack_start(*mp_BeginHSpin, Gtk::PACK_SHRINK, 5);
+  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("h"))),
+      Gtk::PACK_SHRINK);
+  TimeBeginBox->pack_start(*mp_BeginMSpin, Gtk::PACK_SHRINK, 5);
+  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("m"))),
+      Gtk::PACK_SHRINK);
+  TimeBeginBox->pack_start(*mp_BeginSSpin, Gtk::PACK_SHRINK, 5);
+  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))),
+      Gtk::PACK_SHRINK);
 
   Gtk::HBox* DateEndBox = Gtk::manage(new Gtk::HBox());
   DateEndBox->pack_start(*mp_EndEntry, Gtk::PACK_SHRINK, 5);
-  DateEndBox->pack_start(*DateEndButton, Gtk::PACK_SHRINK, 0);
-
-  Gtk::SpinButton* BeginHSpin = Gtk::manage(new Gtk::SpinButton());
-  BeginHSpin->set_range(0.0, 24.0);
-  BeginHSpin->set_numeric(true);
-  //  BeginHSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-  //        &SimulRunViewImpl::onBeginHValueChanged));
-
-  Gtk::SpinButton* BeginMSpin = Gtk::manage(new Gtk::SpinButton());
-  BeginMSpin->set_range(0.0, 60.0);
-  BeginMSpin->set_numeric(true);
-  //  BeginMSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-  //        &SimulRunViewImpl::onBeginMValueChanged));
-
-  Gtk::SpinButton* BeginSSpin = Gtk::manage(new Gtk::SpinButton());
-  BeginSSpin->set_range(0.0, 60.0);
-  BeginSSpin->set_numeric(true);
-  //  BeginSSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-  //        &SimulRunViewImpl::onBeginSValueChanged));
-
-  Gtk::SpinButton* EndHSpin = Gtk::manage(new Gtk::SpinButton());
-  EndHSpin->set_range(0.0, 24.0);
-  EndHSpin->set_numeric(true);
-  //  EndHSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-  //        &SimulRunViewImpl::onEndHValueChanged));
-
-  Gtk::SpinButton* EndMSpin = Gtk::manage(new Gtk::SpinButton());
-  EndMSpin->set_range(0.0, 60.0);
-  EndMSpin->set_numeric(true);
-  //  EndMSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-  //        &SimulRunViewImpl::onEndMValueChanged));
-
-  Gtk::SpinButton* EndSSpin = Gtk::manage(new Gtk::SpinButton());
-  EndSSpin->set_range(0.0, 60.0);
-  EndSSpin->set_numeric(true);
-  //  EndSSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-  //        &SimulRunViewImpl::onEndSValueChanged));
-
-  Gtk::HBox* TimeBeginBox = Gtk::manage(new Gtk::HBox());
-  TimeBeginBox->pack_start(*BeginHSpin, Gtk::PACK_SHRINK, 5);
-  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("h"))),
-      Gtk::PACK_SHRINK, 0);
-  TimeBeginBox->pack_start(*BeginMSpin, Gtk::PACK_SHRINK, 5);
-  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("m"))),
-      Gtk::PACK_SHRINK, 0);
-  TimeBeginBox->pack_start(*BeginSSpin, Gtk::PACK_SHRINK, 5);
-  TimeBeginBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))),
-      Gtk::PACK_SHRINK, 0);
-  TimeBeginBox->set_sensitive(false);
+  DateEndBox->pack_start(*DateEndButton, Gtk::PACK_SHRINK);
 
   Gtk::HBox* TimeEndBox = Gtk::manage(new Gtk::HBox());
-  TimeEndBox->pack_start(*EndHSpin, Gtk::PACK_SHRINK, 5);
-  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("h"))),
-      Gtk::PACK_SHRINK, 0);
-  TimeEndBox->pack_start(*EndMSpin, Gtk::PACK_SHRINK, 5);
-  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("m"))),
-      Gtk::PACK_SHRINK, 0);
-  TimeEndBox->pack_start(*EndSSpin, Gtk::PACK_SHRINK, 5);
-  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))),
-      Gtk::PACK_SHRINK, 0);
-  TimeEndBox->set_sensitive(false);
+  TimeEndBox->pack_start(*mp_EndHSpin, Gtk::PACK_SHRINK, 5);
+  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("h"))), Gtk::PACK_SHRINK);
+  TimeEndBox->pack_start(*mp_EndMSpin, Gtk::PACK_SHRINK, 5);
+  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("m"))), Gtk::PACK_SHRINK);
+  TimeEndBox->pack_start(*mp_EndSSpin, Gtk::PACK_SHRINK, 5);
+  TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))), Gtk::PACK_SHRINK);
 
   Gtk::Table* TopTable = Gtk::manage(new Gtk::Table());
   TopTable->set_border_width(15);
   TopTable->set_spacings(15);
-  TopTable->attach(*DeltaLabel, 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*DeltaBox, 1, 2, 0, 1, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*BeginLabel, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"))), 0, 1, 3, 4, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*DateBeginBox, 1, 2, 3, 4, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"))), 0, 1, 4, 5, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*TimeBeginBox, 1, 2, 4, 5, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 5, 6, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*EndLabel, 0, 1, 6, 7, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"))), 0, 1, 7, 8, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*DateEndBox, 1, 2, 7, 8, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"))), 0, 1, 8, 9, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  TopTable->attach(*TimeEndBox, 1, 2, 8, 9, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Delta T"), 1, 0.5)), 0, 1, 0,
+      1, Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*DeltaBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL
+      | Gtk::EXPAND, Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Period begin"), 0, 0.5)), 0,
+      1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"), 1, 0.5)), 0, 1, 3, 4,
+      Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*DateBeginBox, 1, 2, 3, 4, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"), 1, 0.5)), 0, 1, 4, 5,
+      Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*TimeBeginBox, 1, 2, 4, 5, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 5, 6, Gtk::FILL
+      | Gtk::EXPAND, Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Period end"), 0, 0.5)), 0, 1,
+      6, 7, Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"), 1, 0.5)), 0, 1, 7, 8,
+      Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*DateEndBox, 1, 2, 7, 8, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
+  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"), 1, 0.5)), 0, 1, 8, 9,
+      Gtk::FILL, Gtk::SHRINK);
+  TopTable->attach(*TimeEndBox, 1, 2, 8, 9, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
+
+  /*
+   * Memory frame
+   */
+
+  mp_FilesBuffSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_FilesBuffSpin->set_range(1.0, 999.0);
+  mp_FilesBuffSpin->set_increments(1, 10);
+  mp_FilesBuffSpin->set_numeric(true);
+  mp_FilesBuffSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onFilesBuffChanged));
+
+  mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton(_("Values buffer")));
+  mp_ValuesBuffCB->set_alignment(0, 0.5);
+  mp_ValuesBuffCB->signal_clicked().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onValuesBuffToggle));
+
+  mp_ValuesBuffSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_ValuesBuffSpin->set_range(1.0, 999.0);
+  mp_ValuesBuffSpin->set_increments(1, 10);
+  mp_ValuesBuffSpin->set_numeric(true);
+  mp_ValuesBuffSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onValuesBuffChanged));
 
   Gtk::HBox* FilesBufferBox = Gtk::manage(new Gtk::HBox());
   FilesBufferBox->pack_start(*mp_FilesBuffSpin, Gtk::PACK_SHRINK, 5);
-  FilesBufferBox->pack_start(*FilesBuffUnit, Gtk::PACK_SHRINK, 0);
+  FilesBufferBox->pack_start(*Gtk::manage(new Gtk::Label(_("KB"))),
+      Gtk::PACK_SHRINK);
 
   Gtk::HBox* ValuesBufferBox = Gtk::manage(new Gtk::HBox());
   ValuesBufferBox->pack_start(*mp_ValuesBuffSpin, Gtk::PACK_SHRINK, 5);
-  ValuesBufferBox->pack_start(*ValuesBuffValueLabel, Gtk::PACK_SHRINK, 0);
+  ValuesBufferBox->pack_start(*Gtk::manage(new Gtk::Label(_("steps"))),
+      Gtk::PACK_SHRINK);
 
   Gtk::Table* BottomTable = Gtk::manage(new Gtk::Table());
   BottomTable->set_border_width(15);
   BottomTable->set_spacings(15);
-  BottomTable->attach(*FilesBuffLabel, 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK, 0,
-      0);
-  BottomTable->attach(*FilesBufferBox, 1, 2, 0, 1, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  BottomTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK, 0,
-      0);
-  BottomTable->attach(*mp_ValuesBuffCB, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK,
-      0, 0);
-  BottomTable->attach(*ValuesBufferBox, 1, 2, 2, 3, Gtk::FILL|Gtk::EXPAND, Gtk::SHRINK,
-      0, 0);
+  BottomTable->attach(*Gtk::manage(new Gtk::Label(_("Output files buffer"), 0,
+      0.5)), 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
+  BottomTable->attach(*FilesBufferBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
+  BottomTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  BottomTable->attach(*mp_ValuesBuffCB, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  BottomTable->attach(*ValuesBufferBox, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
 
   BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
   TopFrame->setLabelText(_("Time"));
@@ -285,150 +252,446 @@ SimulRunViewImpl::SimulRunViewImpl()
   BottomFrame->add(*BottomTable);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*TopFrame,Gtk::PACK_SHRINK,15);
-  mp_MainBox->pack_start(*BottomFrame,Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*TopFrame, Gtk::PACK_SHRINK, 15);
+  mp_MainBox->pack_start(*BottomFrame, Gtk::PACK_SHRINK);
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
-//  mp_MainPaned = Gtk::manage(new Gtk::VPaned());
-//  mp_MainPaned->pack1(*TopFrame, false, false);
-//  mp_MainPaned->pack2(*BottomFrame, false, false);
-//  mp_MainPaned->set_visible(true);
-//  mp_MainPaned->show_all_children();
 
-  ////////////////
-  // Old layout //
-  ////////////////
+  /*
+   * cf. http://www.kksou.com/php-gtk2/articles/let-user-enter-date-with-a-popup-calendar---Part-2.php
+   */
+  mp_Calendar = Gtk::manage(new Gtk::Calendar());
+  mp_Calendar->signal_day_selected().connect(sigc::bind<bool>(sigc::mem_fun(
+      *this, &SimulRunViewImpl::onCalendarDaySelected), false));
+  mp_Calendar->signal_month_changed().connect(sigc::bind<bool>(sigc::mem_fun(
+      *this, &SimulRunViewImpl::onCalendarDaySelected), true));
+  mp_Calendar->signal_button_press_event().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onCalendarButtonPressEvent));
 
-  //  mp_Table = Gtk::manage(new Gtk::Table(2, 9, false));
-  //  mp_Table->set_col_spacings(10);
-  //  //Top Row
-  //  mp_Table->attach(*DeltaLabel, 0, 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*mp_DeltaSpin, 1, 2, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*DeltaUnit, 2, 3, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 0, 1);
-  //  mp_Table->attach(*BeginLabel, 4, 5, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*mp_BeginEntry, 5, 6, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 6, 7, 0, 1);
-  //  mp_Table->attach(*ValuesBuffCBLabel, 7, 8, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*mp_ValuesBuffCB, 8, 9, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  //  //Bottom Row
-  //  mp_Table->attach(*FilesBuffLabel, 0, 1, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*mp_FilesBuffSpin, 1, 2, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*FilesBuffUnit, 2, 3, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 1, 2);
-  //  mp_Table->attach(*EndLabel, 4, 5, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*mp_EndEntry, 5, 6, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*Gtk::manage(new Gtk::VSeparator()), 6, 7, 1, 2);
-  //  mp_Table->attach(*ValuesBuffValueLabel, 7, 8, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //  mp_Table->attach(*mp_ValuesBuffSpin, 8, 9, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  //
-  //  mp_Table->set_visible(true);
-  //  mp_Table->show_all_children();
+  mp_CalendarDialog = new Gtk::Dialog();
+  mp_CalendarDialog->get_vbox()->pack_start(*mp_Calendar);
+  mp_CalendarDialog->show_all_children();
+
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onDeltaChanged()
+{
+  mp_DeltaSpin->update();
+  m_signal_DeltaChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onBeginEntryChanged()
+{
+  Glib::ustring Begin = mp_BeginEntry->get_text();
+  openfluid::core::DateTime DT;
+
+  if (DT.setFromISOString(Begin))
+  {
+    mp_BeginHSpin->set_value(DT.getHour());
+    mp_BeginMSpin->set_value(DT.getMinute());
+    mp_BeginSSpin->set_value(DT.getSecond());
+  }
+
+  m_signal_BeginChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onDateBeginButtonClicked()
+{
+  openfluid::core::DateTime DT;
+
+  if (DT.setFromISOString(mp_BeginEntry->get_text()))
+  {
+    mp_Calendar->select_month(DT.getMonth() - 1, DT.getYear());
+    mp_Calendar->select_day(DT.getDay());
+  }
+
+  if (mp_CalendarDialog->run() == Gtk::RESPONSE_OK)
+  {
+    unsigned int Y, M, D;
+    mp_Calendar->get_date(Y, M, D);
+
+    openfluid::core::DateTime DT(Y, M + 1, D,
+        mp_BeginHSpin->get_value_as_int(), mp_BeginMSpin->get_value_as_int(),
+        mp_BeginSSpin->get_value_as_int());
+
+    mp_BeginEntry->set_text(DT.getAsISOString());
+  }
+
+  mp_CalendarDialog->hide();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onBeginValueChanged()
+{
+  mp_BeginHSpin->update();
+  mp_BeginMSpin->update();
+  mp_BeginSSpin->update();
+
+  openfluid::core::DateTime DT;
+
+  if (DT.setFromISOString(mp_BeginEntry->get_text()))
+  {
+    openfluid::core::DateTime NewDT(DT.getYear(), DT.getMonth(), DT.getDay(),
+        mp_BeginHSpin->get_value_as_int(), mp_BeginMSpin->get_value_as_int(),
+        mp_BeginSSpin->get_value_as_int());
+
+    mp_BeginEntry->set_text(NewDT.getAsISOString());
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onEndEntryChanged()
+{
+  Glib::ustring End = mp_EndEntry->get_text();
+  openfluid::core::DateTime DT;
+
+  if (DT.setFromISOString(End))
+  {
+    mp_EndHSpin->set_value(DT.getHour());
+    mp_EndMSpin->set_value(DT.getMinute());
+    mp_EndSSpin->set_value(DT.getSecond());
+  }
+
+  m_signal_EndChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onDateEndButtonClicked()
+{
+  openfluid::core::DateTime DT;
+
+  if (DT.setFromISOString(mp_EndEntry->get_text()))
+  {
+    mp_Calendar->select_month(DT.getMonth() - 1, DT.getYear());
+    mp_Calendar->select_day(DT.getDay());
+  }
+
+  if (mp_CalendarDialog->run() == Gtk::RESPONSE_OK)
+  {
+    unsigned int Y, M, D;
+    mp_Calendar->get_date(Y, M, D);
+
+    openfluid::core::DateTime DT(Y, M + 1, D, mp_EndHSpin->get_value_as_int(),
+        mp_EndMSpin->get_value_as_int(), mp_EndSSpin->get_value_as_int());
+
+    mp_EndEntry->set_text(DT.getAsISOString());
+  }
+
+  mp_CalendarDialog->hide();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onEndValueChanged()
+{
+  mp_EndHSpin->update();
+  mp_EndMSpin->update();
+  mp_EndSSpin->update();
+
+  openfluid::core::DateTime DT;
+
+  if (DT.setFromISOString(mp_EndEntry->get_text()))
+  {
+    openfluid::core::DateTime NewDT(DT.getYear(), DT.getMonth(), DT.getDay(),
+        mp_EndHSpin->get_value_as_int(), mp_EndMSpin->get_value_as_int(),
+        mp_EndSSpin->get_value_as_int());
+
+    mp_EndEntry->set_text(NewDT.getAsISOString());
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onCalendarDaySelected(bool IsMonthChange)
+{
+  m_IsMonthChanged = IsMonthChange;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulRunViewImpl::onCalendarButtonPressEvent(GdkEventButton* /*Event*/)
+{
+  if (!m_IsMonthChanged)
+    mp_CalendarDialog->response(Gtk::RESPONSE_OK);
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onValuesBuffToggle()
+{
+  m_signal_ValuesBuffToggle.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onValuesBuffChanged()
+{
+  mp_ValuesBuffSpin->update();
+  m_signal_ValuesBuffChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onFilesBuffChanged()
+{
+  mp_FilesBuffSpin->update();
+  m_signal_FilesBuffChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunViewImpl::signal_DeltaChanged()
 {
   return m_signal_DeltaChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunViewImpl::signal_BeginChanged()
 {
   return m_signal_BeginChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunViewImpl::signal_EndChanged()
 {
   return m_signal_EndChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunViewImpl::signal_ValuesBuffToggle()
 {
   return m_signal_ValuesBuffToggle;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunViewImpl::signal_ValuesBuffChanged()
 {
   return m_signal_ValuesBuffChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulRunViewImpl::signal_FilesBuffChanged()
 {
   return m_signal_FilesBuffChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunViewImpl::setDelta(int Value)
 {
   mp_DeltaSpin->set_value(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunViewImpl::setBegin(std::string Value)
 {
   mp_BeginEntry->set_text(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunViewImpl::setEnd(std::string Value)
 {
   mp_EndEntry->set_text(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunViewImpl::setValuesBuffIsSet(bool IsSet)
 {
   mp_ValuesBuffCB->set_active(IsSet);
   mp_ValuesBuffSpin->set_sensitive(IsSet);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunViewImpl::setValuesBuff(int Value)
 {
   mp_ValuesBuffSpin->set_value(Value);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulRunViewImpl::setFilesBuff(int Value)
 {
   mp_FilesBuffSpin->set_value(Value);
 }
-void SimulRunViewImpl::setBeginBG(bool IsValid)
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::setBeginBG(std::string ColorString)
 {
-  mp_BeginEntry->modify_base(mp_BeginEntry->get_state(), Gdk::Color(
-      getColorForBGValidState(IsValid)));
+  mp_BeginEntry->modify_base(mp_BeginEntry->get_state(),
+      Gdk::Color(ColorString));
 }
-void SimulRunViewImpl::setEndBG(bool IsValid)
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::setEndBG(std::string ColorString)
 {
-  mp_EndEntry->modify_base(mp_EndEntry->get_state(), Gdk::Color(
-      getColorForBGValidState(IsValid)));
+  mp_EndEntry->modify_base(mp_EndEntry->get_state(), Gdk::Color(ColorString));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulRunViewImpl::getDelta()
 {
   return mp_DeltaSpin->get_value_as_int();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulRunViewImpl::getBegin()
 {
   return mp_BeginEntry->get_text();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulRunViewImpl::getEnd()
 {
   return mp_EndEntry->get_text();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool SimulRunViewImpl::isValuesBuffSet()
 {
   return mp_ValuesBuffCB->get_active();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulRunViewImpl::getValuesBuff()
 {
   return mp_ValuesBuffSpin->get_value_as_int();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int SimulRunViewImpl::getFilesBuff()
 {
   return mp_FilesBuffSpin->get_value_as_int();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* SimulRunViewImpl::asWidget()
 {
-  //  return mp_Table;
-//  return mp_MainPaned;
   return mp_MainBox;
 }
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 
 bool SimulRunViewSub::isValuesBuffSpinSensitive()
 {
   return mp_ValuesBuffSpin->get_sensitive();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulRunViewSub::getBeginBGColor()
 {
   return mp_BeginEntry->get_modifier_style()->get_base(
       mp_BeginEntry->get_state()).to_string();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulRunViewSub::getEndBGColor()
 {
   return mp_EndEntry->get_modifier_style()->get_base(mp_EndEntry->get_state()).to_string();
 }
-std::string SimulRunViewSub::getColorForBGValidState(bool IsValid)
-{
-  return SimulRunViewImpl::getColorForBGValidState(IsValid);
-}
+

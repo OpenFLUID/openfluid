@@ -102,8 +102,8 @@ BOOST_AUTO_TEST_CASE(test_setRunDescriptor)
   BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
 
   BOOST_CHECK_EQUAL(mp_Model->getDelta(), 3600);
-  BOOST_CHECK_EQUAL(mp_Model->isBeginValid(), true);
-  BOOST_CHECK_EQUAL(mp_Model->isEndValid(), true);
+  BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "white");
+  BOOST_CHECK_EQUAL(mp_Model->getEndColor(), "white");
   BOOST_CHECK_EQUAL(mp_Model->getBegin(), "2000-01-01 00:00:00");
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2000-01-01 06:00:00");
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
@@ -123,18 +123,18 @@ BOOST_AUTO_TEST_CASE(test_setInvalidDateTime)
 
   mp_Model->setBegin("99/99/99");
 
-  BOOST_CHECK_EQUAL(mp_Model->isBeginValid(), false);
+  BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "red");
   BOOST_CHECK_EQUAL(mp_Model->getBegin(), "2000-01-01 00:00:00");
 
   mp_Model->setEnd("99/99/99");
 
-  BOOST_CHECK_EQUAL(mp_Model->isEndValid(), false);
+  BOOST_CHECK_EQUAL(mp_Model->getEndColor(), "red");
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2000-01-01 06:00:00");
 
   delete p_EngProject;
 }
 
-BOOST_AUTO_TEST_CASE(test_setValidDateTime)
+BOOST_AUTO_TEST_CASE(test_setUncoherentDateTime)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
@@ -144,13 +144,13 @@ BOOST_AUTO_TEST_CASE(test_setValidDateTime)
 
   mp_Model->setBegin("2012-11-10 01:23:45");
 
-  BOOST_CHECK_EQUAL(mp_Model->isBeginValid(), true);
+  BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "orange");
   BOOST_CHECK_EQUAL(mp_Model->getBegin(), "2012-11-10 01:23:45");
   BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getBeginDate().getAsISOString(), "2012-11-10 01:23:45");
 
   mp_Model->setEnd("2010-11-12 02:34:56");
 
-  BOOST_CHECK_EQUAL(mp_Model->isEndValid(), true);
+  BOOST_CHECK_EQUAL(mp_Model->getEndColor(), "orange");
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2010-11-12 02:34:56");
   BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getEndDate().getAsISOString(), "2010-11-12 02:34:56");
 

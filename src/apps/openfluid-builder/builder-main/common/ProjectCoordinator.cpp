@@ -324,7 +324,7 @@ void ProjectCoordinator::checkProject()
   m_EngineProject.check(CheckInfo);
 
   CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
-      m_EngineProject.getSimBlob());
+      m_EngineProject.getSimBlob(), m_EngineProject.getRunDescriptor());
 
   m_ProjectDashboard.setCheckInfo(CheckInfo);
 
@@ -423,6 +423,8 @@ void ProjectCoordinator::whenRunChanged()
   m_ExplorerModel.updateSimulationAsked();
 
   updateWorkspaceModules();
+
+  checkProject();
 
   m_signal_ChangeHappened.emit();
 }

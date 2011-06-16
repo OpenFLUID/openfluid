@@ -57,83 +57,166 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
+#include <gtkmm/label.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/calendar.h>
+#include <gtkmm/table.h>
+#include <gtkmm/dialog.h>
 
 class SimulRunView
 {
   public:
+
     virtual sigc::signal<void> signal_DeltaChanged() = 0;
+
     virtual sigc::signal<void> signal_BeginChanged() = 0;
+
     virtual sigc::signal<void> signal_EndChanged() = 0;
+
     virtual sigc::signal<void> signal_ValuesBuffToggle() = 0;
+
     virtual sigc::signal<void> signal_ValuesBuffChanged() = 0;
+
     virtual sigc::signal<void> signal_FilesBuffChanged() = 0;
+
     virtual void setDelta(int Value) = 0;
+
     virtual void setBegin(std::string Value) = 0;
+
     virtual void setEnd(std::string Value) = 0;
+
     virtual void setValuesBuffIsSet(bool IsSet) = 0;
+
     virtual void setValuesBuff(int Value) = 0;
+
     virtual void setFilesBuff(int Value) = 0;
-    virtual void setBeginBG(bool IsValid) = 0;
-    virtual void setEndBG(bool IsValid) = 0;
+
+    virtual void setBeginBG(std::string ColorString) = 0;
+
+    virtual void setEndBG(std::string ColorString) = 0;
+
     virtual int getDelta() = 0;
+
     virtual std::string getBegin() = 0;
+
     virtual std::string getEnd() = 0;
+
     virtual bool isValuesBuffSet() = 0;
+
     virtual int getValuesBuff() = 0;
+
     virtual int getFilesBuff() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
 };
 
 class SimulRunViewImpl: public SimulRunView
 {
   private:
+
     sigc::signal<void> m_signal_DeltaChanged;
+
     sigc::signal<void> m_signal_BeginChanged;
+
     sigc::signal<void> m_signal_EndChanged;
+
     sigc::signal<void> m_signal_ValuesBuffToggle;
     sigc::signal<void> m_signal_ValuesBuffChanged;
+
     sigc::signal<void> m_signal_FilesBuffChanged;
+
     Gtk::Table* mp_Table;
+
+    Gtk::Dialog* mp_CalendarDialog;
+    Gtk::Calendar* mp_Calendar;
+    bool m_IsMonthChanged;
+
     void onDeltaChanged();
-    void onBeginChanged();
-    void onEndChanged();
+
+    void onBeginEntryChanged();
+    void onDateBeginButtonClicked();
+    void onBeginValueChanged();
+
+    void onEndEntryChanged();
+    void onDateEndButtonClicked();
+    void onEndValueChanged();
+
+    void onCalendarDaySelected(bool IsMonthChange);
+    bool onCalendarButtonPressEvent(GdkEventButton* Event);
+
     void onValuesBuffToggle();
     void onValuesBuffChanged();
+
     void onFilesBuffChanged();
+
   protected:
-//    Gtk::VPaned* mp_MainPaned;
+
     Gtk::Box* mp_MainBox;
+
     Gtk::SpinButton* mp_DeltaSpin;
+
     Gtk::Entry* mp_BeginEntry;
+    Gtk::SpinButton* mp_BeginHSpin;
+    Gtk::SpinButton* mp_BeginMSpin;
+    Gtk::SpinButton* mp_BeginSSpin;
+
     Gtk::Entry* mp_EndEntry;
+    Gtk::SpinButton* mp_EndHSpin;
+    Gtk::SpinButton* mp_EndMSpin;
+    Gtk::SpinButton* mp_EndSSpin;
+
     Gtk::CheckButton* mp_ValuesBuffCB;
     Gtk::SpinButton* mp_ValuesBuffSpin;
+
     Gtk::SpinButton* mp_FilesBuffSpin;
-    std::string getColorForBGValidState(bool IsValid);
+
   public:
+
     SimulRunViewImpl();
+
     sigc::signal<void> signal_DeltaChanged();
+
     sigc::signal<void> signal_BeginChanged();
+
     sigc::signal<void> signal_EndChanged();
+
     sigc::signal<void> signal_ValuesBuffToggle();
+
     sigc::signal<void> signal_ValuesBuffChanged();
+
     sigc::signal<void> signal_FilesBuffChanged();
+
     void setDelta(int Value);
+
     void setBegin(std::string Value);
+
     void setEnd(std::string Value);
+
     void setValuesBuffIsSet(bool IsSet);
+
     void setValuesBuff(int Value);
+
     void setFilesBuff(int Value);
-    void setBeginBG(bool IsValid);
-    void setEndBG(bool IsValid);
+
+    void setBeginBG(std::string ColorString);
+
+    void setEndBG(std::string ColorString);
+
     int getDelta();
+
     std::string getBegin();
+
     std::string getEnd();
+
     bool isValuesBuffSet();
+
     int getValuesBuff();
+
     int getFilesBuff();
+
     Gtk::Widget* asWidget();
+
 };
 
 class SimulRunViewSub: public SimulRunViewImpl
@@ -142,7 +225,6 @@ class SimulRunViewSub: public SimulRunViewImpl
     bool isValuesBuffSpinSensitive();
     std::string getBeginBGColor();
     std::string getEndBGColor();
-    std::string getColorForBGValidState(bool IsValid);
 };
 
 #endif /* __SIMULRUNVIEW_HPP__ */
