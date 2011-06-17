@@ -59,7 +59,7 @@
 namespace openfluid { namespace machine {
 
 
-FixedGenerator::FixedGenerator() : Generator()
+FixedGenerator::FixedGenerator() : Generator(), m_VarValue(0)
 {
 
 }
@@ -75,19 +75,26 @@ FixedGenerator::~FixedGenerator()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool FixedGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+{
+  if (!OPENFLUID_GetFunctionParameter(Params,"fixedvalue",&m_VarValue))
+    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::initParams","missing fixed value for generator");
+
+  return true;
+};
+
+
 // =====================================================================
 // =====================================================================
 
 
 bool FixedGenerator::checkConsistency()
 {
-  if (m_GenDesc.getParameters().find("fixedvalue") != m_GenDesc.getParameters().end())
-  {
-    if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["fixedvalue"],&m_VarValue))
-      throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","wrong fixedvalue format for generator");
-  }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","missing value for generator");
 
   return true;
 }
@@ -114,15 +121,15 @@ bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatu
 
   DECLARE_UNITS_ORDERED_LOOP(1);
 
-  BEGIN_UNITS_ORDERED_LOOP(1,m_GenDesc.getUnitClass(),LU)
+  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU)
 
-    if (m_GenDesc.isVectorVariable())
+    if (isVectorVariable())
     {
-      openfluid::core::VectorValue VV(m_GenDesc.getVariableSize(),m_VarValue);
-      OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),VV);
+      openfluid::core::VectorValue VV(m_VarSize,m_VarValue);
+      OPENFLUID_AppendVariable(LU,m_VarName,VV);
     }
     else
-      OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),m_VarValue);
+      OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
 
   END_LOOP
 

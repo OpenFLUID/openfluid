@@ -84,26 +84,25 @@ RandomGenerator::~RandomGenerator()
 // =====================================================================
 
 
+bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+{
+  if (!OPENFLUID_GetFunctionParameter(Params,"min",&m_Min))
+    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing min value for generator");
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"max",&m_Max))
+    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
+
+
+  return true;
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool RandomGenerator::checkConsistency()
 {
-  if (m_GenDesc.getParameters().find("min") != m_GenDesc.getParameters().end())
-  {
-    if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["min"],&m_Min))
-      throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::checkConsistency","wrong format for min value");
-  }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","missing min value for generator");
-
-
-  if (m_GenDesc.getParameters().find("max") != m_GenDesc.getParameters().end())
-  {
-    if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["max"],&m_Max))
-      throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::checkConsistency","wrong format for max value");
-  }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","missing max value for generator");
-
-
   if ( m_Min > m_Max)
     throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
 
@@ -138,17 +137,17 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
 
   DECLARE_UNITS_ORDERED_LOOP(1);
 
-  BEGIN_UNITS_ORDERED_LOOP(1,m_GenDesc.getUnitClass(),LU)
+  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU)
 
     Value = Random();
 
-    if (m_GenDesc.isVectorVariable())
+    if (isVectorVariable())
     {
-      openfluid::core::VectorValue VV(m_GenDesc.getVariableSize(),Value);
-      OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),VV);
+      openfluid::core::VectorValue VV(m_VarSize,Value);
+      OPENFLUID_AppendVariable(LU,m_VarName,VV);
     }
     else
-      OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),Value);
+      OPENFLUID_AppendVariable(LU,m_VarName,Value);
 
   END_LOOP
 

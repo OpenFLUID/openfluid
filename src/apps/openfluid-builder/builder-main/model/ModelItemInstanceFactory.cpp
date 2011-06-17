@@ -136,22 +136,16 @@ openfluid::machine::Generator* ModelItemInstanceFactory::createGeneratorFunction
   if (Id.find("(generator) Fixed") != std::string::npos)
   {
     GeneratorFunction = new openfluid::machine::FixedGenerator();
-    openfluid::base::GeneratorDescriptor GenDesc(VarName, ClassName,
-        openfluid::base::GeneratorDescriptor::Fixed, VarSize);
-    GeneratorFunction->setDescriptor(GenDesc);
+    GeneratorFunction->setInfos(VarName, ClassName, openfluid::base::GeneratorDescriptor::Fixed, VarSize);
 
   } else if (Id.find("(generator) Random") != std::string::npos)
   {
     GeneratorFunction = new openfluid::machine::RandomGenerator();
-    openfluid::base::GeneratorDescriptor GenDesc(VarName, ClassName,
-        openfluid::base::GeneratorDescriptor::Random, VarSize);
-    GeneratorFunction->setDescriptor(GenDesc);
+    GeneratorFunction->setInfos(VarName, ClassName, openfluid::base::GeneratorDescriptor::Fixed, VarSize);
   } else if (Id.find("(generator) Interp") != std::string::npos)
   {
     GeneratorFunction = new openfluid::machine::InterpGenerator();
-    openfluid::base::GeneratorDescriptor GenDesc(VarName, ClassName,
-        openfluid::base::GeneratorDescriptor::Interp, VarSize);
-    GeneratorFunction->setDescriptor(GenDesc);
+    GeneratorFunction->setInfos(VarName, ClassName, openfluid::base::GeneratorDescriptor::Fixed, VarSize);
   } else
     throw openfluid::base::OFException("OpenFLUID Builder",
         "ModelItemInstanceFactory::createGeneratorFunctionFromId",

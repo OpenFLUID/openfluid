@@ -57,9 +57,8 @@
 #define __GENERATOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-
+#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -67,7 +66,14 @@ class DLLEXPORT Generator : public openfluid::base::PluggableFunction
 {
   protected:
 
-    openfluid::base::GeneratorDescriptor m_GenDesc;
+    openfluid::core::VariableName_t m_VarName;
+
+    openfluid::core::UnitClass_t m_UnitClass;
+
+    openfluid::base::GeneratorDescriptor::GeneratorMethod m_GenMethod;
+
+    unsigned int m_VarSize;
+
 
   public:
 
@@ -75,13 +81,25 @@ class DLLEXPORT Generator : public openfluid::base::PluggableFunction
 
     ~Generator();
 
-    void setDescriptor(openfluid::base::GeneratorDescriptor GenDesc) { m_GenDesc = GenDesc; };
 
-    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/) { return true; };
+    void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitClass_t UnitClass,
+                  openfluid::base::GeneratorDescriptor::GeneratorMethod GenMethod, unsigned int VarSize=1)
+      { m_VarName = VarName; m_UnitClass = UnitClass; m_GenMethod = GenMethod; m_VarSize = VarSize; };
+
+    openfluid::core::VariableName_t getVariableName() const { return m_VarName; };
+
+    openfluid::core::UnitClass_t getUnitClass() const { return m_UnitClass; };
+
+    openfluid::base::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const { return m_GenMethod; };
+
+    inline bool isVectorVariable() const { return (m_VarSize > 1); };
+
+    inline bool isScalarVariable() const { return (!isVectorVariable()); };
+
+    inline unsigned int getVariableSize() const { return m_VarSize; };
+
 
     bool prepareData()  { return true; };
-
-    const openfluid::base::GeneratorDescriptor& getDescriptor() const { return m_GenDesc; };
 
 };
 

@@ -61,10 +61,10 @@
 namespace openfluid { namespace machine {
 
 
-InterpGenerator::InterpGenerator() : Generator()
+InterpGenerator::InterpGenerator() : Generator(),
+  m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
+  m_SourcesFile(""),m_DistriFile("")
 {
-  m_IsMax = false;
-  m_IsMin = false;
 
 }
 
@@ -79,6 +79,26 @@ InterpGenerator::~InterpGenerator()
 
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool InterpGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+{
+  if (!OPENFLUID_GetFunctionParameter(Params,"sources",&m_SourcesFile))
+    throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing sources value for generator");
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"distribution",&m_DistriFile))
+    throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing distribution value for generator");
+
+
+  if (OPENFLUID_GetFunctionParameter(Params,"thresholdmin",&m_Min)) m_IsMin = true;
+
+  if (OPENFLUID_GetFunctionParameter(Params,"thresholdmax",&m_Max)) m_IsMax = true;
+
+  return true;
+};
+
 
 // =====================================================================
 // =====================================================================
@@ -86,24 +106,8 @@ InterpGenerator::~InterpGenerator()
 
 bool InterpGenerator::checkConsistency()
 {
-
-  if (m_GenDesc.getParameters()["thresholdmin"] != "")
-  {
-    if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["thresholdmin"],&m_Min))
-      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","wrong format for threshold min value");
-    m_IsMin = true;
-  }
-
-  if (m_GenDesc.getParameters()["thresholdmax"] != "")
-  {
-    if (!openfluid::tools::ConvertString(m_GenDesc.getParameters()["thresholdmax"],&m_Max))
-      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","wrong format for threshold max value");
-    m_IsMax = true;
-  }
-
   if (m_IsMin && m_IsMax && m_Min > m_Max)
     throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","threshold max value must be greater or equal to threshold min value for generator");
-
 
   return true;
 }
@@ -119,7 +123,7 @@ bool InterpGenerator::initializeRun(const openfluid::base::SimulationInfo* SimIn
 
   OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
 
-  m_DataPool.setConfig(InputDir,m_GenDesc.getParameters()["sources"],m_GenDesc.getParameters()["distribution"],
+  m_DataPool.setConfig(InputDir,m_SourcesFile,m_DistriFile,
                        //openfluid::tools::SERIEPREPCS_CUMULATE,
                        openfluid::tools::SERIEPREPCS_NONE,
                        SimInfo->getStartTime(),SimInfo->getEndTime(),SimInfo->getTimeStep());
@@ -141,29 +145,29 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
   int ID;
 
   DECLARE_UNITS_ORDERED_LOOP(1);
-  BEGIN_UNITS_ORDERED_LOOP(1,m_GenDesc.getUnitClass(),LU);
+  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU);
 
     ID = LU->getID();
 
     if (m_DataPool.getValue(ID,SimStatus->getCurrentStep(),&CurrentValue))
     {
       if (boost::math::isnan(CurrentValue))
-        throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","interpolated value for variable " + m_GenDesc.getVariableName() + " is NaN");
+        throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","interpolated value for variable " + m_VarName + " is NaN");
 
       if (m_IsMax && CurrentValue > m_IsMax) CurrentValue = m_Max;
       if (m_IsMin && CurrentValue < m_IsMin) CurrentValue = m_Min;
 
 
-      if (m_GenDesc.isVectorVariable())
+      if (isVectorVariable())
       {
-        openfluid::core::VectorValue VV(m_GenDesc.getVariableSize(),CurrentValue);
-        OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),VV);
+        openfluid::core::VectorValue VV(m_VarSize,CurrentValue);
+        OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
       else
-        OPENFLUID_AppendVariable(LU,m_GenDesc.getVariableName(),CurrentValue);
+        OPENFLUID_AppendVariable(LU,m_VarName,CurrentValue);
     }
     else
-      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","error interpolating value for variable " + m_GenDesc.getVariableName());
+      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","error interpolating value for variable " + m_VarName);
 
 
   END_LOOP;

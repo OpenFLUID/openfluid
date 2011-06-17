@@ -74,6 +74,8 @@ class DLLEXPORT RandomGenerator : public Generator
 
     ~RandomGenerator();
 
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
+
     bool checkConsistency();
 
     bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);

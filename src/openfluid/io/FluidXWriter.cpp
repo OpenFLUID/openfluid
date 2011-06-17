@@ -159,9 +159,15 @@ void FluidXWriter::setModelToWrite(openfluid::machine::ModelInstance& MInstance)
 
       if ((*itFuncs)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
       {
-        Contents << m_IndentStr << m_IndentStr << "<generator varname=\"" << ((openfluid::machine::Generator*)(*itFuncs)->Function)->getDescriptor().getVariableName() << "\" "
-                                               << "unitclass=\"" <<  ((openfluid::machine::Generator*)(*itFuncs)->Function)->getDescriptor().getUnitClass()  << "\" "
-                                               << "method=\"" <<  getGeneratorMethodAsStr(((openfluid::machine::Generator*)(*itFuncs)->Function)->getDescriptor().getGeneratorMethod()) << "\">\n";
+        Contents << m_IndentStr << m_IndentStr << "<generator varname=\"" << ((openfluid::machine::Generator*)(*itFuncs)->Function)->getVariableName() << "\" "
+                                               << "unitclass=\"" <<  ((openfluid::machine::Generator*)(*itFuncs)->Function)->getUnitClass()  << "\" "
+                                               << "method=\"" <<  getGeneratorMethodAsStr(((openfluid::machine::Generator*)(*itFuncs)->Function)->getGeneratorMethod()) << "\"";
+
+
+        if (((openfluid::machine::Generator*)(*itFuncs)->Function)->isVectorVariable())
+          Contents << " varsize=\"" <<  ((openfluid::machine::Generator*)(*itFuncs)->Function)->getVariableSize() << "\"";
+
+        Contents << ">\n";
         Contents << getParamsAsStr((*itFuncs)->Params);
         Contents << m_IndentStr << m_IndentStr << "</generator>\n";
       }

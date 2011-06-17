@@ -74,8 +74,6 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
                                         openfluid::base::ExecutionMessages& ExecMsgs,
                                         openfluid::core::CoreRepository& CoreRepos)
 {
-//  openfluid::core::CoreRepository* Repository = openfluid::core::CoreRepository::getInstance();
-//  openfluid::base::ExecutionMessages* ExecMsgs = openfluid::base::ExecutionMessages::getInstance();
 
   // ============== Domain definition ==============
 
@@ -289,7 +287,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       if (GenInstance == NULL)
         throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
-      GenInstance->setDescriptor(*GenDesc);
+      GenInstance->setInfos(GenDesc->getVariableName(),GenDesc->getUnitClass(),GenDesc->getGeneratorMethod(),GenDesc->getVariableSize());
       IInstance->Function = GenInstance;
       IInstance->Signature = Signature;
 
@@ -362,11 +360,11 @@ std::string Factory::buildGeneratorID(const openfluid::core::VariableName_t& Var
                                       bool IsVector,
                                       const openfluid::core::UnitClass_t ClassName)
 {
-  std::string GenID("(generator)");
-
+  std::string GenID("GENERATOR__");
+  if (IsVector) GenID += "VECTOR__";
+  else GenID += "SCALAR__";
   GenID += VarName;
-  if (IsVector) GenID += "[]";
-  GenID += "#";
+  GenID += "__";
   GenID += ClassName;
 
   return GenID;

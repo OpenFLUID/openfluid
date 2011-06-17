@@ -74,11 +74,16 @@ class DLLEXPORT InterpGenerator : public Generator
     double m_Min;
     double m_Max;
 
+    std::string m_SourcesFile;
+    std::string m_DistriFile;
+
   public:
 
     InterpGenerator();
 
     ~InterpGenerator();
+
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
     bool checkConsistency();
 
