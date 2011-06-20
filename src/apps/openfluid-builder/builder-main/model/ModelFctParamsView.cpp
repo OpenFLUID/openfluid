@@ -153,7 +153,6 @@ sigc::signal<void, std::string, std::string> ModelFctParamsViewImpl::signal_Para
   return m_signal_ParamValueChanged;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -162,7 +161,6 @@ sigc::signal<void> ModelFctParamsViewImpl::signal_RequiredFileChanged()
 {
   return m_signal_RequiredFileChanged;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -183,6 +181,25 @@ void ModelFctParamsViewImpl::setParamValues(
 // =====================================================================
 
 
+void ModelFctParamsViewImpl::updateFiles(
+    std::vector<std::string> RequiredFiles, std::vector<std::string> UsedFiles)
+{
+  while (!mp_FilesTable->children().empty())
+    mp_FilesTable->remove(*mp_FilesTable->children().begin()->get_widget());
+
+  m_ByFileNameFileRow.clear();
+
+  m_FilesTableBottom = 0;
+
+  setRequiredFiles(RequiredFiles);
+  setUsedFiles(UsedFiles);
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctParamsViewImpl::setRequiredFiles(std::vector<std::string> Files)
 {
   Gtk::Label* RequiredFilesLabel = Gtk::manage(new Gtk::Label(
@@ -195,12 +212,15 @@ void ModelFctParamsViewImpl::setRequiredFiles(std::vector<std::string> Files)
 
   for (unsigned int i = 0; i < Files.size(); i++)
   {
-    ModelFctFileRow* FileRow = new ModelFctFileRow(Files[i]);
-    attachTableRow(*FileRow, mp_FilesTable, m_FilesTableBottom);
-    m_ByFileNameFileRow[Files[i]] = FileRow;
+    if (!Files[i].empty())
+    {
+      ModelFctFileRow* FileRow = new ModelFctFileRow(Files[i]);
+      attachTableRow(*FileRow, mp_FilesTable, m_FilesTableBottom);
+      m_ByFileNameFileRow[Files[i]] = FileRow;
 
-    FileRow->signal_FileChanged().connect(sigc::mem_fun(*this,
-        &ModelFctParamsViewImpl::whenRequiredFileChanged));
+      FileRow->signal_FileChanged().connect(sigc::mem_fun(*this,
+          &ModelFctParamsViewImpl::whenRequiredFileChanged));
+    }
   }
 
 }
@@ -211,7 +231,7 @@ void ModelFctParamsViewImpl::setRequiredFiles(std::vector<std::string> Files)
 
 void ModelFctParamsViewImpl::setUsedFiles(std::vector<std::string> Files)
 {
-  Gtk::Label* UsedFilesLabel = Gtk::manage(new Gtk::Label(_("Used files :"),
+  Gtk::Label* UsedFilesLabel = Gtk::manage(new Gtk::Label(_("Used files:"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
   UsedFilesLabel->set_visible(true);
 
@@ -221,9 +241,12 @@ void ModelFctParamsViewImpl::setUsedFiles(std::vector<std::string> Files)
 
   for (unsigned int i = 0; i < Files.size(); i++)
   {
-    ModelFctFileRow* FileRow = new ModelFctFileRow(Files[i]);
-    attachTableRow(*FileRow, mp_FilesTable, m_FilesTableBottom);
-    m_ByFileNameFileRow[Files[i]] = FileRow;
+    if (!Files[i].empty())
+    {
+      ModelFctFileRow* FileRow = new ModelFctFileRow(Files[i]);
+      attachTableRow(*FileRow, mp_FilesTable, m_FilesTableBottom);
+      m_ByFileNameFileRow[Files[i]] = FileRow;
+    }
   }
 
 }
@@ -256,7 +279,6 @@ void ModelFctParamsViewImpl::whenRequiredFileChanged()
 {
   m_signal_RequiredFileChanged.emit();
 }
-
 
 // =====================================================================
 // =====================================================================

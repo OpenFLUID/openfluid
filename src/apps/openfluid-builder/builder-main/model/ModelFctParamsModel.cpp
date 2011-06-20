@@ -57,6 +57,8 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
+#include "GeneratorSignature.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -91,6 +93,13 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
 
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, mp_Item->Signature->HandledData.FunctionParams)
 {  ParamsMap[Param.DataName] = Param.DataUnit;
+}
+
+for(openfluid::core::FuncParamsMap_t::iterator it = mp_Item->Params.begin(); it != mp_Item->Params.end(); ++it)
+{
+  //add possible params which are not in signature
+  if(ParamsMap.find(it->first) == ParamsMap.end())
+  ParamsMap[it->first];
 }
 
 return ParamsMap;
@@ -131,7 +140,31 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
     std::string ParamValue)
 {
   mp_Item->Params[ParamName] = ParamValue;
+
+  //for interp generator required files
+  if (mp_Item->ItemType == openfluid::base::ModelItemDescriptor::Generator
+      && (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod
+          == openfluid::base::GeneratorDescriptor::Interp && (ParamName
+      == "sources" || ParamName == "distribution"))
+    updateInterpGeneratorRequiredExtraFiles();
+
   m_signal_ParamsChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
+{
+  mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
+
+  mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(
+      mp_Item->Params["sources"]);
+  mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(
+      mp_Item->Params["distribution"]);
+
+  m_signal_RequiredFilesChangedFromApp.emit();
 }
 
 // =====================================================================
@@ -205,4 +238,13 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFileChanged()
 sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChanged()
 {
   return m_signal_ParamsChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFilesChangedFromApp()
+{
+  return m_signal_RequiredFilesChangedFromApp;
 }

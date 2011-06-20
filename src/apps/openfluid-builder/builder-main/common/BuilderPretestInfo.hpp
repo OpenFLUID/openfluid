@@ -66,6 +66,7 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
     std::string DomainMsg;
 
     bool Params;
+    bool GeneratorParams;
 
     std::string ParamsMsg;
 

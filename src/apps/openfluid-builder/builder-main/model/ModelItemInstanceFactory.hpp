@@ -54,12 +54,6 @@
 
 class ModelItemInstanceFactory
 {
-  protected:
-
-    static openfluid::machine::Generator* createGeneratorFunctionFromId(
-        Glib::ustring Id, std::string VarName, std::string ClassName,
-        unsigned int VarSize);
-
   public:
 
     static openfluid::machine::ModelItemInstance
@@ -70,6 +64,12 @@ class ModelItemInstanceFactory
     * createGeneratorItemFromSignature(
         openfluid::machine::SignatureItemInstance& Signature,
         std::string VarName, std::string ClassName, std::string VarSize);
+
+    static openfluid::machine::ModelItemInstance
+    * createGeneratorItemFromSignatureWithDialog(
+        openfluid::machine::SignatureItemInstance& Signature,
+        openfluid::core::CoreRepository& CoreRepos,
+        openfluid::machine::ModelInstance* ModelInstance);
 
 };
 

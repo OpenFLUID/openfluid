@@ -68,27 +68,24 @@
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  FixedGeneratorSignature Sign;
+  GeneratorSignature Sign(openfluid::base::GeneratorDescriptor::Fixed);
 
-  BOOST_CHECK_EQUAL(Sign.ItemType,openfluid::base::ModelItemDescriptor::Generator);
-  BOOST_CHECK_EQUAL(Sign.Signature->ID,"(generator) Fixed");
-  BOOST_CHECK_EQUAL(Sign.Signature->HandledData.FunctionParams.size(),4);
+  BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
+  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
 }
 
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  RandomGeneratorSignature Sign;
+  GeneratorSignature Sign(openfluid::base::GeneratorDescriptor::Random);
 
-  BOOST_CHECK_EQUAL(Sign.ItemType,openfluid::base::ModelItemDescriptor::Generator);
-  BOOST_CHECK_EQUAL(Sign.Signature->ID,"(generator) Random");
-  BOOST_CHECK_EQUAL(Sign.Signature->HandledData.FunctionParams.size(),5);
+  BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
+  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
 }
 
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  InterpGeneratorSignature Sign;
+  GeneratorSignature Sign(openfluid::base::GeneratorDescriptor::Interp);
 
-  BOOST_CHECK_EQUAL(Sign.ItemType,openfluid::base::ModelItemDescriptor::Generator);
-  BOOST_CHECK_EQUAL(Sign.Signature->ID,"(generator) Interp");
-  BOOST_CHECK_EQUAL(Sign.Signature->HandledData.FunctionParams.size(),7);
+  BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
+  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);
 }

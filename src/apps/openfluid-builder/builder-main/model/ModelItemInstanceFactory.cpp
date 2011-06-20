@@ -54,6 +54,9 @@
 
 #include "ModelItemInstanceFactory.hpp"
 
+#include "GeneratorSignature.hpp"
+#include "ModelGeneratorCreationDialog.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -71,10 +74,32 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggable
   {
     Item = openfluid::machine::PluginManager::getInstance()->getPlugin(
         Signature.Signature->ID);
+
     if (Item)
       Item->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
   }
+
   return Item;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGeneratorItemFromSignatureWithDialog(
+    openfluid::machine::SignatureItemInstance& Signature,
+    openfluid::core::CoreRepository& CoreRepos,
+    openfluid::machine::ModelInstance* ModelInstance)
+{
+  ModelGeneratorCreationDialog Dialog(CoreRepos, ModelInstance);
+
+  std::map<std::string, std::string> GenInfo = Dialog.show();
+
+  if (GenInfo.size() == 3)
+    return ModelItemInstanceFactory::createGeneratorItemFromSignature(
+        Signature, GenInfo["varname"], GenInfo["classname"], GenInfo["varsize"]);
+  else
+    return (openfluid::machine::ModelItemInstance*) 0;
 }
 
 // =====================================================================
@@ -85,40 +110,72 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
     openfluid::machine::SignatureItemInstance& Signature, std::string VarName,
     std::string ClassName, std::string VarSize)
 {
-  openfluid::machine::ModelItemInstance* Item =
-      new openfluid::machine::ModelItemInstance();
+  openfluid::machine::ModelItemInstance* Item = 0;
 
   if (!Signature.Signature)
-    throw openfluid::base::OFException("OpenFLUID Builder",
-        "ModelItemInstanceFactory::createGeneratorItemFromSignature",
-        "Function Signature is not set. Creation is impossible.");
-  else
   {
-    Item->SDKCompatible = true;
-    Item->ItemType = openfluid::base::ModelItemDescriptor::Generator;
+    std::cerr
+        << "OpenFLUID Builder : ModelItemInstanceFactory::createGeneratorItemFromSignature : Function Signature is not set. Creation is impossible."
+        << std::endl;
 
-    openfluid::base::FunctionSignature* ItemSignature =
-        new openfluid::base::FunctionSignature(*Signature.Signature);
-
-    openfluid::base::SignatureHandledDataItem ProducedVar(VarName, ClassName,
-        "", "");
-    ItemSignature->HandledData.ProducedVars.push_back(ProducedVar);
-
-    std::istringstream ss(VarSize);
-    unsigned int VarSizeInt;
-    ss >> VarSizeInt;
-
-    openfluid::machine::Generator* GeneratorFunction =
-        ModelItemInstanceFactory::createGeneratorFunctionFromId(
-            ItemSignature->ID, VarName, ClassName, VarSizeInt);
-
-    ItemSignature->ID = openfluid::machine::Factory::buildGeneratorID(VarName,
-        (VarSizeInt > 1), ClassName);
-
-    Item->Signature = ItemSignature;
-
-    Item->Function = GeneratorFunction;
+    return Item;
   }
+
+  unsigned int VarSizeInt;
+  openfluid::tools::ConvertString(VarSize, &VarSizeInt);
+
+  std::string VarSizedName = VarName;
+  if (VarSizeInt > 1)
+    VarSizedName.append("[]");
+
+  openfluid::base::GeneratorDescriptor::GeneratorMethod
+      Method =
+          (static_cast<GeneratorSignature*> (Signature.Signature))->m_GeneratorMethod;
+
+  GeneratorSignature* GeneratorSign = new GeneratorSignature(Method);
+
+  GeneratorSign->ID = openfluid::machine::Factory::buildGeneratorID(
+      VarSizedName, (VarSizeInt > 1), ClassName);
+
+  GeneratorSign->HandledData.ProducedVars.push_back(
+      openfluid::base::SignatureHandledDataItem(VarSizedName, ClassName, "", ""));
+
+  openfluid::machine::Generator* GeneratorFunction = 0;
+
+  switch (Method)
+  {
+    case openfluid::base::GeneratorDescriptor::Fixed:
+      GeneratorFunction = new openfluid::machine::FixedGenerator();
+      break;
+
+    case openfluid::base::GeneratorDescriptor::Random:
+      GeneratorFunction = new openfluid::machine::RandomGenerator();
+      break;
+
+    case openfluid::base::GeneratorDescriptor::Interp:
+      GeneratorFunction = new openfluid::machine::InterpGenerator();
+      break;
+
+    default:
+      std::cerr
+          << "OpenFLUID Builder : ModelItemInstanceFactory::createGeneratorItemFromSignature : bad ModelItemDescriptor type"
+          << std::endl;
+
+      return Item;
+      break;
+  }
+
+  GeneratorFunction->setInfos(VarName, ClassName, Method, VarSizeInt);
+
+  Item = new openfluid::machine::ModelItemInstance();
+
+  Item->Signature = GeneratorSign;
+
+  Item->Function = GeneratorFunction;
+
+  Item->SDKCompatible = true;
+
+  Item->ItemType = openfluid::base::ModelItemDescriptor::Generator;
 
   return Item;
 }
@@ -126,31 +183,4 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
 // =====================================================================
 // =====================================================================
 
-
-openfluid::machine::Generator* ModelItemInstanceFactory::createGeneratorFunctionFromId(
-    Glib::ustring Id, std::string VarName, std::string ClassName,
-    unsigned int VarSize)
-{
-  openfluid::machine::Generator* GeneratorFunction = 0;
-
-  if (Id.find("(generator) Fixed") != std::string::npos)
-  {
-    GeneratorFunction = new openfluid::machine::FixedGenerator();
-    GeneratorFunction->setInfos(VarName, ClassName, openfluid::base::GeneratorDescriptor::Fixed, VarSize);
-
-  } else if (Id.find("(generator) Random") != std::string::npos)
-  {
-    GeneratorFunction = new openfluid::machine::RandomGenerator();
-    GeneratorFunction->setInfos(VarName, ClassName, openfluid::base::GeneratorDescriptor::Fixed, VarSize);
-  } else if (Id.find("(generator) Interp") != std::string::npos)
-  {
-    GeneratorFunction = new openfluid::machine::InterpGenerator();
-    GeneratorFunction->setInfos(VarName, ClassName, openfluid::base::GeneratorDescriptor::Fixed, VarSize);
-  } else
-    throw openfluid::base::OFException("OpenFLUID Builder",
-        "ModelItemInstanceFactory::createGeneratorFunctionFromId",
-        "unknown generator type");
-
-  return GeneratorFunction;
-}
 

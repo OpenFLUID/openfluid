@@ -45,65 +45,65 @@
  with the terms contained in the written agreement between You and INRA.
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_ModelItemInstanceFactory
-#include <boost/test/unit_test.hpp>
+/**
+ \file ModelGeneratorCreationDialog.hpp
+ \brief Header of ...
 
-#include "ModelItemInstanceFactory.hpp"
-#include "GeneratorSignature.hpp"
+ \author Aline LIBRES <libres@supagro.inra.fr>
+ */
 
-BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
+#ifndef __MODELGENERATORCREATIONDIALOG_HPP__
+#define __MODELGENERATORCREATIONDIALOG_HPP__
+
+#include <gtkmm/dialog.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/infobar.h>
+
+#include <set>
+
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
+class ModelGeneratorCreationDialog
 {
-  openfluid::machine::SignatureItemInstance Plug;
+  private:
 
-  // throw "Function Signature is not set. Creation is impossible."
-  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
+    openfluid::core::CoreRepository* mp_CoreRepos;
 
-  // create an unavailable function
-  openfluid::base::FunctionSignature* PlugSignature =
-      new openfluid::base::FunctionSignature();
-  PlugSignature->ID = "inexistant function id";
-  Plug.Signature = PlugSignature;
+    openfluid::machine::ModelInstance* mp_ModelInstance;
 
-  // throw OFException from openfluid::machine::PluginManager
-  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
+    Gtk::Dialog* mp_Dialog;
 
-  delete PlugSignature;
-}
+    Gtk::RadioButton* mp_ScalarRadio;
 
-BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
-{
-  // create a generator signature
-  GeneratorSignature FixedGenSignature(openfluid::base::GeneratorDescriptor::Fixed);
+    Gtk::RadioButton* mp_VectorRadio;
 
-  openfluid::machine::SignatureItemInstance Sign;
-  Sign.Signature = &FixedGenSignature;
+    Gtk::Entry* mp_VarNameEntry;
 
-  openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createGeneratorItemFromSignature(
-          Sign, "MyVar", "MyClass", "1");
+    Gtk::ComboBoxText* mp_ClassCombo;
 
-  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::Generator);
-  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
-  BOOST_CHECK_EQUAL(Item->Signature->ID,openfluid::machine::Factory::buildGeneratorID("MyVar",false,"MyClass"));
+    Gtk::SpinButton* mp_VarSizeSpin;
 
-  delete Item;
-}
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
-{
-  openfluid::machine::SignatureItemInstance FctSignature =
-      *openfluid::machine::PluginManager::getInstance()->getPlugin(
-          "tests.primitives.use");
+    std::set<std::string> m_ExistingVars;
 
-  openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
+    void init();
 
-  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::PluggedFunction);
-  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
-  BOOST_CHECK_EQUAL(Item->Signature->ID,FctSignature.Signature->ID);
+    void onVarNameEntryChanged();
 
-  delete Item;
-}
+  public:
+
+    ModelGeneratorCreationDialog(openfluid::core::CoreRepository& CoreRepos,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    ~ModelGeneratorCreationDialog();
+
+    std::map<std::string, std::string> show();
+};
+
+#endif /* __MODELGENERATORCREATIONDIALOG_HPP__ */

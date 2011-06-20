@@ -74,6 +74,8 @@ class ModelFctParamsModel
 
     virtual sigc::signal<void> signal_ParamsChanged() = 0;
 
+    virtual sigc::signal<void> signal_RequiredFilesChangedFromApp() = 0;
+
     virtual void setModelItemInstance(openfluid::machine::ModelItemInstance* Item) = 0;
 
     virtual std::map<std::string,std::string> getParams() = 0;
@@ -109,7 +111,11 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void> m_signal_ParamsChanged;
 
+    sigc::signal<void> m_signal_RequiredFilesChangedFromApp;
+
     openfluid::machine::ModelItemInstance* mp_Item;
+
+    void updateInterpGeneratorRequiredExtraFiles();
 
     bool fileExists(std::string FileName);
 
@@ -128,6 +134,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
     sigc::signal<void> signal_RequiredFileChanged();
 
     sigc::signal<void> signal_ParamsChanged();
+
+    sigc::signal<void> signal_RequiredFilesChangedFromApp();
 
     std::map<std::string,std::string> getParams();
 

@@ -124,7 +124,7 @@ void ModelStructureModule::compose()
   TopPanel->set_border_width(5);
   TopPanel->pack_start(*mp_ModelStructureMVP->asWidget(),Gtk::PACK_EXPAND_WIDGET,5);
   TopPanel->pack_start(*ButtonsPanel, Gtk::PACK_SHRINK,5);
-  TopPanel->pack_start(*mp_ModelFctDetailMVP->asWidget(),Gtk::PACK_EXPAND_WIDGET,5);
+  TopPanel->pack_start(*mp_ModelFctDetailMVP->asWidget(),Gtk::PACK_SHRINK,5);
   TopPanel->set_visible(true);
   TopPanel->set_border_width(6);
 

@@ -57,6 +57,8 @@
 #include <glibmm/i18n.h>
 #include <boost/foreach.hpp>
 
+#include "GeneratorSignature.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -118,13 +120,38 @@ void BuilderPretestInfo::addBuilderInfo(
     RunConfigMsg = _("Run end date is not later than run begin date");
   }
 
-  Params = Project = true;
+  Params = GeneratorParams = Project = true;
   ParamsMsg = ProjectMsg = "";
 
   bool CheckVar;
 
   BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
-{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
+{ // check Generators params consistency
+  if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+  {
+    openfluid::base::GeneratorDescriptor::GeneratorMethod
+    Method =
+    (static_cast<GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
+
+    if(Method == openfluid::base::GeneratorDescriptor::Random
+        && Item->Params.find("min")!= Item->Params.end()
+        && Item->Params.find("max")!= Item->Params.end()
+        && Item->Params["min"] > Item->Params["max"])
+    {
+      GeneratorParams = false;
+      ParamsMsg.append(Glib::ustring::compose(_("min >= max in %1\n"),Item->Signature->ID));
+    }
+    else if(Method == openfluid::base::GeneratorDescriptor::Interp
+        && Item->Params.find("thresholdmin")!= Item->Params.end()
+        && Item->Params.find("thresholdmax")!= Item->Params.end()
+        && Item->Params["thresholdmin"] > Item->Params["thresholdmax"])
+    {
+      GeneratorParams = false;
+      ParamsMsg.append(Glib::ustring::compose(_("thresholdmin >= thresholdmax in %1\n"),Item->Signature->ID));
+    }
+  }
+
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
   {
     CheckVar = true;
 
@@ -133,8 +160,11 @@ void BuilderPretestInfo::addBuilderInfo(
 
     if(!CheckVar)
     {
+      if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+      GeneratorParams = false;
+      else
       Params = false;
-      ParamsMsg.append(Glib::ustring::compose(_("%1 is missing\n"),Param.DataName));
+      ParamsMsg.append(Glib::ustring::compose(_("%1 is missing in %2\n"),Param.DataName, Item->Signature->ID));
     }
   }
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
@@ -194,5 +224,6 @@ void BuilderPretestInfo::addBuilderInfo(
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {
-  return (ExtraFiles && Inputdata && Model && Project && RunConfig);
+  return (ExtraFiles && Inputdata && Model && GeneratorParams && Project
+      && RunConfig);
 }

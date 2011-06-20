@@ -55,7 +55,8 @@
 #ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
 #define __FUNCTIONSIGNATUREREGISTRY_HPP__
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/machine.hpp>
+#include <openfluid/base.hpp>
 
 class FunctionSignatureRegistry
 {

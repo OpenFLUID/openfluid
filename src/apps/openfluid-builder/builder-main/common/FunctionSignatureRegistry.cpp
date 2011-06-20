@@ -54,6 +54,8 @@
 
 #include "FunctionSignatureRegistry.hpp"
 
+#include "GeneratorSignature.hpp"
+
 FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 
 // =====================================================================
@@ -62,9 +64,24 @@ FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 
 FunctionSignatureRegistry::FunctionSignatureRegistry()
 {
-  addAGeneratorSignature(new FixedGeneratorSignature());
-  addAGeneratorSignature(new RandomGeneratorSignature());
-  addAGeneratorSignature(new InterpGeneratorSignature());
+  openfluid::machine::SignatureItemInstance* FixedSignature =
+      new openfluid::machine::SignatureItemInstance();
+  FixedSignature->SDKCompatible = true;
+  FixedSignature->Signature = new GeneratorSignature(openfluid::base::GeneratorDescriptor::Fixed);
+  addAGeneratorSignature(FixedSignature);
+
+  openfluid::machine::SignatureItemInstance* RandomSignature =
+      new openfluid::machine::SignatureItemInstance();
+  RandomSignature->SDKCompatible = true;
+  RandomSignature->Signature = new GeneratorSignature(openfluid::base::GeneratorDescriptor::Random);
+  addAGeneratorSignature(RandomSignature);
+
+  openfluid::machine::SignatureItemInstance* InterpSignature =
+      new openfluid::machine::SignatureItemInstance();
+  InterpSignature->SDKCompatible = true;
+  InterpSignature->Signature = new GeneratorSignature(openfluid::base::GeneratorDescriptor::Interp);
+  addAGeneratorSignature(InterpSignature);
+
 }
 
 // =====================================================================
@@ -102,6 +119,8 @@ void FunctionSignatureRegistry::addAPluggableSignature(
 void FunctionSignatureRegistry::addAGeneratorSignature(
     openfluid::machine::SignatureItemInstance* Signature)
 {
+  Signature->ItemType = openfluid::base::ModelItemDescriptor::Generator;
+
   m_Signatures[openfluid::base::ModelItemDescriptor::Generator].push_back(
       Signature);
 }
@@ -121,7 +140,7 @@ void FunctionSignatureRegistry::updatePluggableSignatures()
 
   for (unsigned int i = 0; i < Signatures.size(); i++)
   {
-    addAPluggableSignature( Signatures[i]);
+    addAPluggableSignature(Signatures[i]);
   }
 }
 

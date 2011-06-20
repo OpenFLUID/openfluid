@@ -61,6 +61,8 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/core/DateTime.hpp>
 
+#include "GeneratorSignature.hpp"
+
 #include <boost/filesystem.hpp>
 
 // =====================================================================
@@ -125,6 +127,30 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
+
+      //add specific GeneratorSignature to Generators
+      std::list<openfluid::machine::ModelItemInstance*> Items =
+          mp_ModelInstance->getItems();
+      for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+          Items.begin(); it != Items.end(); ++it)
+      {
+        if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+        {
+          openfluid::base::GeneratorDescriptor::GeneratorMethod
+              GeneratorMethod =
+                  (static_cast<openfluid::machine::Generator*> ((*it)->Function))->getGeneratorMethod();
+
+          GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
+
+          GenSign->ID = (*it)->Signature->ID;
+
+          GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
+
+          GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
+
+          (*it)->Signature = GenSign;
+        }
+      }
     } catch (openfluid::base::OFException e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());

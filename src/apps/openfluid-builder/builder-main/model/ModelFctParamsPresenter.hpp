@@ -78,6 +78,8 @@ class ModelFctParamsPresenter: public sigc::trackable
 
     void whenGlobalValueUnset(std::string ParamName);
 
+    void whenRequiredFilesChangedFromApp();
+
     void whenRequiredFileChanged();
 
   public:

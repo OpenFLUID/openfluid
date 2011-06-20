@@ -81,9 +81,6 @@ class DLLEXPORT DialogBoxFactory
     static std::string showTextEntryDialog(Glib::ustring MessageText,
         Glib::ustring LabelText);
 
-    static std::map<std::string, std::string>
-    showGeneratorCreationDialog(std::vector<std::string> Classes);
-
     static int showCloseProjectDialog(bool HasToBeSaved);
 
     static std::string showDomainIDataEditDialog(int Id, std::string DataName,

@@ -63,6 +63,7 @@
 #include "ModelFctParamsModel.hpp"
 #include "BuilderListToolBox.hpp"
 #include "ModelAddFunctionModule.hpp"
+#include "ModelItemInstanceFactory.hpp"
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/config.hpp>
 
@@ -106,26 +107,40 @@ void ModelStructureCoordinator::whenAddFctAsked()
   openfluid::machine::SignatureItemInstance* Signature =
       mp_AddFctModule->showDialog();
 
-  if (Signature)
+  if (!Signature)
+    return;
+
+  openfluid::machine::ModelItemInstance* Item = 0;
+
+  switch (Signature->ItemType)
   {
-    openfluid::machine::ModelItemInstance* Item = 0;
-    try
-    {
-      Item = m_StructureModel.appendFunction(*Signature);
-    } catch (openfluid::base::OFException e)
-    {
-      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
-    }
-
-    if (Item)
-    {
-      updateStructureListToolBox();
-
-      createModelFctParamsComponent(Item);
-
-      m_signal_ModelChanged.emit();
-    }
+    case openfluid::base::ModelItemDescriptor::PluggedFunction:
+      Item = ModelItemInstanceFactory::createPluggableItemFromSignature(
+          *Signature);
+      break;
+    case openfluid::base::ModelItemDescriptor::Generator:
+      Item
+          = ModelItemInstanceFactory::createGeneratorItemFromSignatureWithDialog(
+              *Signature, mp_SimBlob->getCoreRepository(), mp_ModelInstance);
+      break;
+    default:
+      std::cerr
+          << "ModelStructureCoordinator::whenAddFctAsked : bad ModelItemDescriptor type"
+          << std::endl;
+      break;
   }
+
+  if (Item)
+  {
+    m_StructureModel.appendFunction(Item);
+
+    updateStructureListToolBox();
+
+    createModelFctParamsComponent(Item);
+
+    m_signal_ModelChanged.emit();
+  }
+
 }
 
 // =====================================================================
@@ -309,71 +324,99 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
 
   try
   {
-    typedef std::vector<
-        std::pair<std::string, openfluid::core::FuncParamsMap_t> > TempItems_t;
-    TempItems_t TempItems;
+    std::vector<std::pair<std::string, openfluid::core::FuncParamsMap_t> >
+        TempItems;
+
+    std::map<std::string, openfluid::machine::ModelItemInstance*>
+        TempGenerators;
 
     std::list<openfluid::machine::ModelItemInstance*> ModelItems =
         mp_ModelInstance->getItems();
-    std::list<openfluid::machine::ModelItemInstance*>::iterator it;
-    for (it = ModelItems.begin(); it != ModelItems.end(); ++it)
+
+    // create temp structures to keep order and info about model items
+    for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+        ModelItems.begin(); it != ModelItems.end(); ++it)
     {
+      // it's a Generator, we store it as is in TempGenerators
+      if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+        TempGenerators[(*it)->Signature->ID] = *it;
+
       TempItems.push_back(std::make_pair((*it)->Signature->ID, (*it)->Params));
     }
 
+    // clear the model
     int n = TempItems.size();
     for (int i = 0; i < n; i++)
     {
       eraseModelFctParamsComponent(TempItems[i].first);
-
       m_StructureModel.removeFunctionAt(0);
     }
 
+    // re-populate the model according to temp structures info
     for (int i = 0; i < n; i++)
     {
-      try
+      // it's a Generator, we just append the stored ModelItemInstance to the model
+      if (TempGenerators.find(TempItems[i].first) != TempGenerators.end())
       {
+        openfluid::machine::ModelItemInstance* Item =
+            TempGenerators[TempItems[i].first];
 
-        openfluid::machine::SignatureItemInstance
-            * Signature =
-                openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
-                    TempItems[i].first + openfluid::config::PLUGINS_EXT);
+        mp_ModelInstance->appendItem(Item);
 
-        if (Signature)
+        createModelFctParamsComponent(Item);
+      }
+      // it's a Pluggable function, we re-create it according to temp info
+      else
+      {
+        try
         {
-          Signature->ItemType
-              = openfluid::base::ModelItemDescriptor::PluggedFunction;
-          openfluid::machine::ModelItemInstance* Item =
-              m_StructureModel.appendFunction(*Signature);
-          if (Item)
+          openfluid::machine::SignatureItemInstance
+              * Signature =
+                  openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
+                      TempItems[i].first + openfluid::config::PLUGINS_EXT);
+
+          if (Signature)
           {
-            Item->Params = TempItems[i].second;
-            createModelFctParamsComponent(Item);
+            Signature->ItemType
+                = openfluid::base::ModelItemDescriptor::PluggedFunction;
+
+            openfluid::machine::ModelItemInstance* Item =
+                ModelItemInstanceFactory::createPluggableItemFromSignature(
+                    *Signature);
+
+            if (Item)
+            {
+              Item->Params = TempItems[i].second;
+
+              m_StructureModel.appendFunction(Item);
+
+              createModelFctParamsComponent(Item);
+            } else
+            {
+              openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+                  Glib::ustring::compose(
+                      "Unable to create function %1,\nit will be ignored.",
+                      TempItems[i].first));
+            }
           } else
-          {
             openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
                 Glib::ustring::compose(
-                    "Unable to create function %1,\nit will be ignored.",
+                    "Unable to load plugin %1,\nit will be ignored.",
                     TempItems[i].first));
-          }
-        } else
+        } catch (openfluid::base::OFException e)
+        {
           openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
               Glib::ustring::compose(
                   "Unable to load plugin %1,\nit will be ignored.",
                   TempItems[i].first));
-      } catch (openfluid::base::OFException e)
-      {
-        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-            Glib::ustring::compose(
-                "Unable to load plugin %1,\nit will be ignored.",
-                TempItems[i].first));
+        }
       }
     }
 
   } catch (openfluid::base::OFException e)
   {
-        std::cerr << "ModelStructureCoordinator::updateFctParamsComponents : "
-            << e.what() << std::endl;
+    std::cerr << "ModelStructureCoordinator::updateFctParamsComponents : "
+        << e.what() << std::endl;
   }
 }
 

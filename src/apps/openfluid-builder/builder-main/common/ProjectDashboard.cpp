@@ -105,8 +105,19 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model parameters");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Params ? m_GreenIcon : m_OrangeIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Params ? "ok" : CheckInfo.ParamsMsg;
+  if (CheckInfo.Params && CheckInfo.GeneratorParams)
+  {
+    Row[m_Columns.m_StateIcon] = m_GreenIcon;
+    Row[m_Columns.m_StateInfo] = "ok";
+  } else
+  {
+    if (!CheckInfo.GeneratorParams)
+      Row[m_Columns.m_StateIcon] = m_RedIcon;
+    else
+      Row[m_Columns.m_StateIcon] = m_OrangeIcon;
+
+    Row[m_Columns.m_StateInfo] = CheckInfo.ParamsMsg;
+  }
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Required files");

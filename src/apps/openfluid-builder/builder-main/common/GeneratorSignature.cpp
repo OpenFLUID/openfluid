@@ -46,94 +46,96 @@
  */
 
 /**
- \file ModelFctParamsPresenter.cpp
+ \file GeneratorSignature.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "ModelFctParamsPresenter.hpp"
-
-#include "ModelFctParamsModel.hpp"
-#include "ModelFctParamsView.hpp"
+#include "GeneratorSignature.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamsPresenter::whenSignatureInit()
+GeneratorSignature::GeneratorSignature(
+    openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod)
 {
-  m_View.setParams(m_Model.getParams());
-  m_View.setParamValues(m_Model.getParamValues());
-  m_View.updateFiles(m_Model.getRequiredFiles(), m_Model.getUsedFiles());
+  m_GeneratorMethod = GeneratorMethod;
+
+  switch (m_GeneratorMethod)
+  {
+    case openfluid::base::GeneratorDescriptor::Fixed:
+      setFixedInfo();
+      break;
+    case openfluid::base::GeneratorDescriptor::Random:
+      setRandomInfo();
+      break;
+    case openfluid::base::GeneratorDescriptor::Interp:
+      setInterpInfo();
+      break;
+    default:
+      std::cerr
+          << "GeneratorSignature::GeneratorSignature : unknown Generator method"
+          << std::endl;
+      break;
+  }
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamsPresenter::whenParamValueChanged(std::string ParamName,
-    std::string ParamValue)
+void GeneratorSignature::setFixedInfo()
 {
-  m_Model.setParamValue(ParamName, ParamValue);
+  ID = "Fixed Generator";
+  Name = "Fixed Generator";
+  Description = "Generates a constant value";
+
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("fixedvalue",
+          "", "Value to produce", "-"));
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamsPresenter::whenGlobalValueChanged(std::string ParamName,
-    std::string GlobalValue)
+void GeneratorSignature::setRandomInfo()
 {
-  m_View.setGlobalValue(ParamName, GlobalValue);
+  ID = "Random Generator";
+  Name = "Random Generator";
+  Description = "Generates a random value in a range";
+
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("min",
+          "", "Lower bound of the random range for the value to produce", "-"));
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("max",
+          "", "Upper bound of the random range for the value to produce", "-"));
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ModelFctParamsPresenter::whenGlobalValueUnset(std::string ParamName)
+void GeneratorSignature::setInterpInfo()
 {
-  m_View.unsetGlobalValue(ParamName);
+  ID = "Interp Generator";
+  Name = "Interpolation Generator";
+  Description = "Generates an interpolated value from given data series";
+
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("thresholdmin",
+          "", "Threshold min value", "-"));
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("thresholdmax",
+          "", "Threshold max value", "-"));
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("sources",
+          "", "Data sources filename for the value to produce", "-"));
+  HandledData.FunctionParams.push_back(
+      openfluid::base::SignatureHandledDataItem("distribution",
+          "", "Distribution filename for the value to produce", "-"));
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void ModelFctParamsPresenter::whenRequiredFilesChangedFromApp()
-{
-  m_View.updateFiles(m_Model.getRequiredFiles(), m_Model.getUsedFiles());
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelFctParamsPresenter::whenRequiredFileChanged()
-{
-  m_Model.whenRequiredFileChanged();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
-    ModelFctParamsView& View) :
-  m_Model(Model), m_View(View)
-{
-  m_Model.signal_ItemInit().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenSignatureInit));
-  m_Model.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenGlobalValueChanged));
-  m_Model.signal_GlobalValueUnset().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenGlobalValueUnset));
-  m_Model.signal_RequiredFilesChangedFromApp().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenRequiredFilesChangedFromApp));
-
-  m_View.signal_ParamValueChanged().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenParamValueChanged));
-  m_View.signal_RequiredFileChanged().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenRequiredFileChanged));
-}

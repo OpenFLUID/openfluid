@@ -206,75 +206,17 @@ openfluid::machine::ModelInstance* ModelStructureModelImpl::getModelInstance()
 // =====================================================================
 
 
-openfluid::machine::ModelItemInstance* ModelStructureModelImpl::appendFunction(
-    openfluid::machine::SignatureItemInstance& Signature)
+void ModelStructureModelImpl::appendFunction(
+    openfluid::machine::ModelItemInstance* Item)
 {
-  openfluid::machine::ModelItemInstance* Item = 0;
-
-  if (isModelInstance())
+  if (isModelInstance() && Item)
   {
-    if (Signature.ItemType
-        == openfluid::base::ModelItemDescriptor::PluggedFunction)
-    {
-      Item = ModelItemInstanceFactory::createPluggableItemFromSignature(
-          Signature);
+    mp_ModelInstance->appendItem(Item);
 
-    } else if (Signature.ItemType
-        == openfluid::base::ModelItemDescriptor::Generator)
-    {
-      if (!mp_CoreRepos)
-      {
-        throw openfluid::base::OFException("OpenFLUID Builder",
-            "ModelStructureModelImpl::appendFunction", "no Core Repository");
-        return (openfluid::machine::ModelItemInstance*) 0;
-      }
+    signal_FromAppModelChanged().emit();
 
-      if (mp_CoreRepos->getUnitsGlobally()->empty())
-      {
-        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-            "You can't create a generator now :\n Model is empty");
-        return (openfluid::machine::ModelItemInstance*) 0;
-      } else
-      {
-        std::vector<std::string> Classes;
-        for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
-            mp_CoreRepos->getUnitsByClass()->begin(); it
-            != mp_CoreRepos->getUnitsByClass()->end(); ++it)
-        {
-          Classes.push_back(it->first);
-        }
-
-        std::map<std::string, std::string>
-            GenInfo =
-                openfluid::guicommon::DialogBoxFactory::showGeneratorCreationDialog(
-                    Classes);
-
-        if (GenInfo.size() != 3)
-          return (openfluid::machine::ModelItemInstance*) 0;
-
-        Item = ModelItemInstanceFactory::createGeneratorItemFromSignature(
-            Signature, GenInfo["varname"], GenInfo["classname"],
-            GenInfo["varsize"]);
-      }
-    } else
-    {
-      throw openfluid::base::OFException("OpenFLUID Builder",
-          "ModelStructureModelImpl::appendFunction",
-          "bad ModelItemDescriptor type");
-      return (openfluid::machine::ModelItemInstance*) 0;
-    }
-
-    if (Item)
-    {
-      mp_ModelInstance->appendItem(Item);
-
-      signal_FromAppModelChanged().emit();
-      requestSelectionByAppAt(getLastPosition());
-    }
-
+    requestSelectionByAppAt(getLastPosition());
   }
-
-  return Item;
 }
 
 // =====================================================================

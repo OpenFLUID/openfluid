@@ -55,80 +55,25 @@
 #ifndef __GENERATORSIGNATURE_HPP__
 #define __GENERATORSIGNATURE_HPP__
 
-#include <openfluid/machine.hpp>
+#include <openfluid/base.hpp>
 
-class GeneratorSignature: public openfluid::machine::ModelItemInstance
+class GeneratorSignature: public openfluid::base::FunctionSignature
 {
-  public:
-    GeneratorSignature() :
-      EMPTY_UNIT_SUBSTITUTE("-")
-    {
-      ItemType = openfluid::base::ModelItemDescriptor::Generator;
-      SDKCompatible = true;
-      Signature = new openfluid::base::FunctionSignature();
-      addCommonFunctionParams();
-    }
-  protected:
-    std::string EMPTY_UNIT_SUBSTITUTE;
-    void addFunctionParam(std::string Name, std::string Description = "",
-        openfluid::core::UnitClass_t UnitClass = "", std::string Unit = "")
-    {
-      Unit = Unit == "" ? EMPTY_UNIT_SUBSTITUTE : Unit;
-      openfluid::base::SignatureHandledDataItem Param(Name, UnitClass,
-          Description, Unit);
-      Signature->HandledData.FunctionParams.push_back(Param);
-    }
   private:
-    void addCommonFunctionParams()
-    {
-      addFunctionParam("varname", "Name of the produced variable");
-      addFunctionParam("unitclass", "Unit class of the produced variable");
-      addFunctionParam("varsize",
-          "Optionnal : to produce a vector variable instead of a scalar variable");
-    }
-};
 
-class FixedGeneratorSignature: public GeneratorSignature
-{
+    void setFixedInfo();
+
+    void setRandomInfo();
+
+    void setInterpInfo();
+
   public:
-    FixedGeneratorSignature() : GeneratorSignature()
-    {
-      Signature->ID = "(generator) Fixed";
-      Signature->Name = "Fixed Generator";
-      Signature->Description = "Generates a constant value";
 
-      addFunctionParam("fixedvalue", "Value to produce");
-    }
-};
+    GeneratorSignature(
+        openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
-class RandomGeneratorSignature: public GeneratorSignature
-{
-  public:
-    RandomGeneratorSignature() : GeneratorSignature()
-    {
-      Signature->ID = "(generator) Random";
-      Signature->Name = "Random Generator";
-      Signature->Description = "Generates a random value in a range";
+    openfluid::base::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
 
-      addFunctionParam("min", "Lower bound of the random range for the value to produce");
-      addFunctionParam("max", "Upper bound of the random range for the value to produce");
-    }
-};
-
-class InterpGeneratorSignature: public GeneratorSignature
-{
-  public:
-    InterpGeneratorSignature() : GeneratorSignature()
-    {
-      Signature->ID = "(generator) Interp";
-      Signature->Name = "Interpolation Generator";
-      Signature->Description = "Generates an interpolated value from given data series";
-
-      addFunctionParam("thresholdmin", "Threshold min value");
-      addFunctionParam("thresholdmax", "Threshold max value");
-      addFunctionParam("sources", "Data sources filename for the value to produce");
-      addFunctionParam("distribution", "Distribution filename for the value to produce");
-    }
 };
 
 #endif /* __GENERATORSIGNATURE_HPP__ */

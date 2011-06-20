@@ -80,16 +80,20 @@ ModelFctDetailViewImpl::ModelFctDetailViewImpl(ModelFctDetailColumns& Columns) :
   mp_VarsTreeView->append_column(_("Unit"), m_Columns.m_Unit);
   mp_VarsTreeView->append_column(_("Unit class"), m_Columns.m_Class);
   mp_VarsTreeView->append_column(_("Description"), m_Columns.m_Description);
+  mp_VarsTreeView->set_visible(true);
 
   mp_IDataTreeView = Gtk::manage(new Gtk::TreeView());
   mp_IDataTreeView->append_column(_("Name"), m_Columns.m_Name);
   mp_IDataTreeView->append_column(_("Unit class"), m_Columns.m_Class);
+  mp_IDataTreeView->set_visible(true);
 
   mp_EventsTreeView = Gtk::manage(new Gtk::TreeView());
   mp_EventsTreeView->append_column(_("Unit class"), m_Columns.m_Class);
+  mp_EventsTreeView->set_visible(true);
 
   mp_ExtraFilesTreeView = Gtk::manage(new Gtk::TreeView());
   mp_ExtraFilesTreeView->append_column(_("Name"), m_Columns.m_Name);
+  mp_ExtraFilesTreeView->set_visible(true);
 
   Gtk::ScrolledWindow* ParamsWin = Gtk::manage(new Gtk::ScrolledWindow());
   ParamsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -132,10 +136,6 @@ ModelFctDetailViewImpl::ModelFctDetailViewImpl(ModelFctDetailColumns& Columns) :
 void ModelFctDetailViewImpl::setPluggableElementsVisible(bool Visible)
 {
   mp_InfoPage->setPluggableElementsVisible(Visible);
-  mp_VarsTreeView->set_visible(Visible);
-  mp_IDataTreeView->set_visible(Visible);
-  mp_EventsTreeView->set_visible(Visible);
-  mp_ExtraFilesTreeView->set_visible(Visible);
 }
 
 // =====================================================================

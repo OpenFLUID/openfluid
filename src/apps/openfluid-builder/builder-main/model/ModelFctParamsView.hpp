@@ -78,9 +78,7 @@ class ModelFctParamsView
 
     virtual sigc::signal<void> signal_RequiredFileChanged() = 0;
 
-    virtual void setRequiredFiles(std::vector<std::string> Files) = 0;
-
-    virtual void setUsedFiles(std::vector<std::string> Files) = 0;
+    virtual void updateFiles(std::vector<std::string> RequiredFiles,std::vector<std::string> UsedFiles) = 0;
 
     virtual void setGlobalValue(std::string ParamName,std::string GlobalValue) = 0;
 
@@ -119,6 +117,10 @@ class ModelFctParamsViewImpl: public ModelFctParamsView
 
     void onParamValueChanged(ModelFctParamRow* FctParamRow);
 
+    void setRequiredFiles(std::vector<std::string> Files);
+
+    void setUsedFiles(std::vector<std::string> Files);
+
   public:
 
     ModelFctParamsViewImpl();
@@ -131,9 +133,7 @@ class ModelFctParamsViewImpl: public ModelFctParamsView
 
     void setParamValues(std::map<std::string,std::string> ParamValuesMap);
 
-    void setRequiredFiles(std::vector<std::string> Files);
-
-    void setUsedFiles(std::vector<std::string> Files);
+    void updateFiles(std::vector<std::string> RequiredFiles,std::vector<std::string> UsedFiles);
 
     void setGlobalValue(std::string ParamName,std::string GlobalValue);
 
