@@ -62,24 +62,23 @@
 
 class ModelGlobalParamRow;
 
-
 class ModelGlobalParamsView
 {
   public:
 
-    virtual sigc::signal<void,std::string> signal_GlobalValueChanged() = 0;
+    virtual sigc::signal<void, std::string> signal_GlobalValueChanged() = 0;
 
-    virtual sigc::signal<void,std::string> signal_GlobalParamSetAsked() = 0;
+    virtual sigc::signal<void, std::string> signal_GlobalParamSetAsked() = 0;
 
-    virtual sigc::signal<void,std::string> signal_GlobalParamUnsetAsked() = 0;
+    virtual sigc::signal<void, std::string> signal_GlobalParamUnsetAsked() = 0;
 
     virtual void setComboParams(std::set<std::string> Params) = 0;
 
-    virtual void removeGlobalParamsRow(std::string ParamName) = 0;
+    virtual void setGlobalParamsRow(std::map<std::string, std::pair<
+        std::string, std::string> > GlobalParams) = 0;
 
-    virtual void removeGlobalParamsRows(std::vector<std::string> ParamNames) = 0;
-
-    virtual void addGlobalParamsRow(std::string ParamName, std::string ParamUnit) = 0;
+    virtual void addGlobalParamsRow(std::string ParamName,
+        std::string ParamUnit) = 0;
 
     virtual std::string getGlobalValue(std::string ParamName) = 0;
 
@@ -87,16 +86,15 @@ class ModelGlobalParamsView
 
 };
 
-
 class ModelGlobalParamsViewImpl: public ModelGlobalParamsView
 {
   private:
 
-    sigc::signal<void,std::string> m_signal_GlobalValueChanged;
+    sigc::signal<void, std::string> m_signal_GlobalValueChanged;
 
-    sigc::signal<void,std::string> m_signal_GlobalParamSetAsked;
+    sigc::signal<void, std::string> m_signal_GlobalParamSetAsked;
 
-    sigc::signal<void,std::string> m_signal_GlobalParamUnsetAsked;
+    sigc::signal<void, std::string> m_signal_GlobalParamUnsetAsked;
 
     Gtk::Box* mp_MainBox;
 
@@ -108,7 +106,7 @@ class ModelGlobalParamsViewImpl: public ModelGlobalParamsView
 
     unsigned int m_CurrentTableBottom;
 
-    std::map<std::string,ModelGlobalParamRow*> m_ByParamNameParamRow;
+    std::map<std::string, ModelGlobalParamRow*> m_ByParamNameParamRow;
 
     void onGlobalValueChanged(std::string ParamName);
 
@@ -120,25 +118,23 @@ class ModelGlobalParamsViewImpl: public ModelGlobalParamsView
 
     void setComboParams(std::set<std::string> Params);
 
-    void removeGlobalParamsRow(std::string ParamName);
-
-    void removeGlobalParamsRows(std::vector<std::string> ParamNames);
+    void setGlobalParamsRow(std::map<std::string, std::pair<std::string,
+        std::string> > GlobalParams);
 
     void addGlobalParamsRow(std::string ParamName, std::string ParamUnit);
 
     void onRowRemoveAsked(std::string ParamName);
 
-    sigc::signal<void,std::string> signal_GlobalValueChanged();
+    sigc::signal<void, std::string> signal_GlobalValueChanged();
 
-    sigc::signal<void,std::string> signal_GlobalParamSetAsked();
+    sigc::signal<void, std::string> signal_GlobalParamSetAsked();
 
-    sigc::signal<void,std::string> signal_GlobalParamUnsetAsked();
+    sigc::signal<void, std::string> signal_GlobalParamUnsetAsked();
 
     std::string getGlobalValue(std::string ParamName);
 
     Gtk::Widget* asWidget();
 
 };
-
 
 #endif /* __MODELGLOBALPARAMSVIEW_H__ */

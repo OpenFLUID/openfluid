@@ -58,6 +58,7 @@
 #include <boost/foreach.hpp>
 
 #include "GeneratorSignature.hpp"
+#include <openfluid/tools/SwissTools.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -79,6 +80,8 @@ void BuilderPretestInfo::addBuilderInfo(
     openfluid::machine::SimulationBlob* SimBlob,
     openfluid::base::RunDescriptor& RunDesc)
 {
+  m_GlobalParams = ModelInstance->getGlobalParameters();
+
   if (ModelInstance->getItemsCount() == 0)
   {
     Model = false;
@@ -126,37 +129,12 @@ void BuilderPretestInfo::addBuilderInfo(
   bool CheckVar;
 
   BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
-{ // check Generators params consistency
-  if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
-  {
-    openfluid::base::GeneratorDescriptor::GeneratorMethod
-    Method =
-    (static_cast<GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
-
-    if(Method == openfluid::base::GeneratorDescriptor::Random
-        && Item->Params.find("min")!= Item->Params.end()
-        && Item->Params.find("max")!= Item->Params.end()
-        && Item->Params["min"] > Item->Params["max"])
-    {
-      GeneratorParams = false;
-      ParamsMsg.append(Glib::ustring::compose(_("min >= max in %1\n"),Item->Signature->ID));
-    }
-    else if(Method == openfluid::base::GeneratorDescriptor::Interp
-        && Item->Params.find("thresholdmin")!= Item->Params.end()
-        && Item->Params.find("thresholdmax")!= Item->Params.end()
-        && Item->Params["thresholdmin"] > Item->Params["thresholdmax"])
-    {
-      GeneratorParams = false;
-      ParamsMsg.append(Glib::ustring::compose(_("thresholdmin >= thresholdmax in %1\n"),Item->Signature->ID));
-    }
-  }
+{  bool RandomMinMaxChecked = false;
+  bool InterpMinMaxChecked = false;
 
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
   {
-    CheckVar = true;
-
-    CheckVar = (Item->Params.find(Param.DataName) != Item->Params.end()
-        && Item->Params[Param.DataName] != "");
+    CheckVar = localParamIsSet(Item,Param.DataName) || globalParamIsSet(Param.DataName);
 
     if(!CheckVar)
     {
@@ -164,9 +142,53 @@ void BuilderPretestInfo::addBuilderInfo(
       GeneratorParams = false;
       else
       Params = false;
+
       ParamsMsg.append(Glib::ustring::compose(_("%1 is missing in %2\n"),Param.DataName, Item->Signature->ID));
     }
+
+    // check Generators params consistency
+    if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+    {
+      openfluid::base::GeneratorDescriptor::GeneratorMethod
+      Method =
+      (static_cast<GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
+
+      if(Method == openfluid::base::GeneratorDescriptor::Random && !RandomMinMaxChecked
+          && (localParamIsSet(Item,"min") || globalParamIsSet("min"))
+          && (localParamIsSet(Item,"max") || globalParamIsSet("max")))
+      {
+        double Min,Max;
+
+        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"min") ? Item->Params["min"] : m_GlobalParams["min"], &Min);
+        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"max") ? Item->Params["max"] : m_GlobalParams["max"], &Max);
+
+        if(Min>Max)
+        {
+          GeneratorParams = false;
+          ParamsMsg.append(Glib::ustring::compose(_("min >= max in %1\n"),Item->Signature->ID));
+        }
+
+        RandomMinMaxChecked = true;
+      }
+      else if(Method == openfluid::base::GeneratorDescriptor::Interp && !InterpMinMaxChecked
+          && (localParamIsSet(Item,"thresholdmin") || globalParamIsSet("thresholdmin"))
+          && (localParamIsSet(Item,"thresholdmax") || globalParamIsSet("thresholdmax")))
+      {
+        double Min,Max;
+
+        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"thresholdmin") ? Item->Params["thresholdmin"] : m_GlobalParams["thresholdmin"], &Min);
+        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"thresholdmax") ? Item->Params["thresholdmax"] : m_GlobalParams["thresholdmax"], &Max);
+
+        if(Min>Max)
+        { GeneratorParams = false;
+          ParamsMsg.append(Glib::ustring::compose(_("thresholdmin >= thresholdmax in %1\n"),Item->Signature->ID));
+        }
+
+        InterpMinMaxChecked = true;
+      }
+    }
   }
+
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
   {
     CheckVar = true;
@@ -179,6 +201,7 @@ void BuilderPretestInfo::addBuilderInfo(
       ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable produced by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
     }
   }
+
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredVars)
   {
     CheckVar = true;
@@ -191,6 +214,7 @@ void BuilderPretestInfo::addBuilderInfo(
       ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable required by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
     }
   }
+
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredPrevVars)
   {
     CheckVar = true;
@@ -203,6 +227,7 @@ void BuilderPretestInfo::addBuilderInfo(
       ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable previously required by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
     }
   }
+
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
   {
     CheckVar = true;
@@ -217,6 +242,26 @@ void BuilderPretestInfo::addBuilderInfo(
   }
 }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+bool BuilderPretestInfo::localParamIsSet(
+    openfluid::machine::ModelItemInstance* Item, std::string ParamName)
+{
+  return (Item->Params.find(ParamName) != Item->Params.end()
+      && Item->Params[ParamName] != "");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool BuilderPretestInfo::globalParamIsSet(std::string ParamName)
+{
+  return (m_GlobalParams.find(ParamName) != m_GlobalParams.end()
+      && m_GlobalParams[ParamName] != "");
 }
 
 // =====================================================================

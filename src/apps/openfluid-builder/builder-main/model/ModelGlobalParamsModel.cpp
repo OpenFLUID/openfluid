@@ -92,16 +92,14 @@ sigc::signal<void, std::string> ModelGlobalParamsModelImpl::signal_GlobalParamUn
   return m_signal_GlobalParamUnset;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void,std::string> ModelGlobalParamsModelImpl::signal_GlobalValueChanged()
+sigc::signal<void, std::string> ModelGlobalParamsModelImpl::signal_GlobalValueChanged()
 {
   return m_signal_GlobalValueChanged;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -124,22 +122,21 @@ void ModelGlobalParamsModelImpl::update()
   if (!mp_ModelInstance)
     return;
 
-    m_GloballyNotUsed.clear();
-    m_TempNewGloballyUsed.clear();
-    m_GloballyNoMoreUsed.clear();
+  m_GloballyNotUsed.clear();
 
-    for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-        mp_ModelInstance->getItems().begin(); it
-        != mp_ModelInstance->getItems().end(); ++it)
-    {
-      BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, (*it)->Signature->HandledData.FunctionParams)
-{      dispatchParam (Param.DataName);
-      m_ByParamNameParamUnit[Param.DataName] = Param.DataUnit;
-    }
+  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
+      mp_ModelInstance->getItems().begin(); it
+      != mp_ModelInstance->getItems().end(); ++it)
+  {
+    BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, (*it)->Signature->HandledData.FunctionParams)
+{    if(!isGloballyDefined(Param.DataName))
+    m_GloballyNotUsed.insert(Param.DataName);
+
+    m_ByParamNameParamUnit[Param.DataName] = Param.DataUnit;
   }
-  afterDispatch();
+}
 
-  m_signal_FromAppModelChanged.emit();
+m_signal_FromAppModelChanged.emit();
 
 }
 
@@ -147,40 +144,17 @@ void ModelGlobalParamsModelImpl::update()
 // =====================================================================
 
 
-void ModelGlobalParamsModelImpl::dispatchParam(std::string ParamName)
+std::map<std::string, std::pair<std::string, std::string> > ModelGlobalParamsModelImpl::getGloballyUsed()
 {
-  if (m_GloballyUsed.find(ParamName) != m_GloballyUsed.end())
-  {
-    m_TempNewGloballyUsed[ParamName] = m_GloballyUsed[ParamName];
-    m_GloballyUsed.erase(ParamName);
-  } else
-  {
-    m_GloballyNotUsed.insert(ParamName);
-  }
-}
+  std::map<std::string, std::pair<std::string, std::string> > GlobalParams;
 
-// =====================================================================
-// =====================================================================
+  for (openfluid::core::FuncParamsMap_t::iterator it =
+      mp_ModelInstance->getGlobalParameters().begin(); it
+      != mp_ModelInstance->getGlobalParameters().end(); ++it)
+    GlobalParams[it->first] = std::make_pair(m_ByParamNameParamUnit[it->first],
+        it->second);
 
-
-void ModelGlobalParamsModelImpl::afterDispatch()
-{
-  for (std::map<std::string, std::string>::iterator it = m_GloballyUsed.begin(); it
-      != m_GloballyUsed.end(); ++it)
-  {
-    m_GloballyNoMoreUsed.push_back(it->first);
-  }
-
-  m_GloballyUsed = m_TempNewGloballyUsed;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::map<std::string, std::string> ModelGlobalParamsModelImpl::getGloballyUsed()
-{
-  return m_GloballyUsed;
+  return GlobalParams;
 }
 
 // =====================================================================
@@ -196,19 +170,10 @@ std::set<std::string> ModelGlobalParamsModelImpl::getGloballyNotUsed()
 // =====================================================================
 
 
-std::vector<std::string> ModelGlobalParamsModelImpl::getGloballyNoMoreUsed()
-{
-  return m_GloballyNoMoreUsed;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 std::string ModelGlobalParamsModelImpl::fromUserGloballyUsedSet(
     std::string ParamName)
 {
-  m_GloballyUsed[ParamName];
+  mp_ModelInstance->setGlobalParameter(ParamName, "");
   m_GloballyNotUsed.erase(ParamName);
 
   m_signal_GlobalParamSet.emit(ParamName);
@@ -224,22 +189,22 @@ void ModelGlobalParamsModelImpl::fromUserGloballyUsedUnset(
     std::string ParamName)
 {
   m_GloballyNotUsed.insert(ParamName);
-  m_GloballyUsed.erase(ParamName);
+  mp_ModelInstance->getGlobalParameters().erase(ParamName);
 
   m_signal_GlobalParamUnset.emit(ParamName);
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void ModelGlobalParamsModelImpl::setGlobalValue(std::string ParamName, std::string ParamValue)
+void ModelGlobalParamsModelImpl::setGlobalValue(std::string ParamName,
+    std::string ParamValue)
 {
-  m_GloballyUsed[ParamName] = ParamValue;
+  mp_ModelInstance->setGlobalParameter(ParamName, ParamValue);
+
   m_signal_GlobalValueChanged.emit(ParamName);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -247,12 +212,11 @@ void ModelGlobalParamsModelImpl::setGlobalValue(std::string ParamName, std::stri
 
 std::string ModelGlobalParamsModelImpl::getGlobalValue(std::string ParamName)
 {
-  if(isGloballyDefined(ParamName))
-    return m_GloballyUsed[ParamName];
+  if (isGloballyDefined(ParamName))
+    return mp_ModelInstance->getGlobalParameters()[ParamName];
 
   return "";
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -260,40 +224,30 @@ std::string ModelGlobalParamsModelImpl::getGlobalValue(std::string ParamName)
 
 bool ModelGlobalParamsModelImpl::isGloballyDefined(std::string ParamName)
 {
-  return (m_GloballyUsed.find(ParamName) != m_GloballyUsed.end());
+  return (mp_ModelInstance->getGlobalParameters().find(ParamName)
+      != mp_ModelInstance->getGlobalParameters().end());
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-std::map<std::string,std::string> ModelGlobalParamsModelImpl::getGlobalValues(openfluid::machine::ModelItemInstance* Item)
+std::map<std::string, std::string> ModelGlobalParamsModelImpl::getGlobalValues(
+    openfluid::machine::ModelItemInstance* Item)
 {
-  std::map<std::string,std::string> GlobalValues;
+  std::map<std::string, std::string> GlobalValues;
 
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
-    {
-      if(m_GloballyUsed.find(Param.DataName) != m_GloballyUsed.end())
-        GlobalValues[Param.DataName] = m_GloballyUsed[Param.DataName];
-    }
+{  if(isGloballyDefined(Param.DataName))
+  GlobalValues[Param.DataName] = mp_ModelInstance->getGlobalParameters()[Param.DataName];
 
-  return GlobalValues;
 }
 
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelGlobalParamsModelSub::setGloballyUsed(std::map<std::string,
-    std::string> Map)
-{
-  m_GloballyUsed = Map;
+return GlobalValues;
 }
+
+// =====================================================================
+// =====================================================================
 
 // =====================================================================
 // =====================================================================
@@ -316,44 +270,3 @@ void ModelGlobalParamsModelSub::clearGloballyNotUsed()
 // =====================================================================
 // =====================================================================
 
-
-void ModelGlobalParamsModelSub::clearTempNewGloballyUsed()
-{
-  m_TempNewGloballyUsed.clear();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelGlobalParamsModelSub::clearGloballyNoMoreUsed()
-{
-  m_GloballyNoMoreUsed.clear();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::map<std::string, std::string> ModelGlobalParamsModelSub::getTempNewGloballyUsed()
-{
-  return m_TempNewGloballyUsed;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelGlobalParamsModelSub::dispatchParam(std::string ParamName)
-{
-  ModelGlobalParamsModelImpl::dispatchParam(ParamName);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelGlobalParamsModelSub::afterDispatch()
-{
-  ModelGlobalParamsModelImpl::afterDispatch();
-}

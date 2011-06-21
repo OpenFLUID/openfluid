@@ -115,13 +115,15 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     openfluid::machine::ModelItemInstance* mp_Item;
 
+    openfluid::machine::ModelInstance* mp_ModelInstance;
+
     void updateInterpGeneratorRequiredExtraFiles();
 
     bool fileExists(std::string FileName);
 
   public:
 
-    ModelFctParamsModelImpl();
+    ModelFctParamsModelImpl(openfluid::machine::ModelInstance* ModelInstance);
 
     void setModelItemInstance(openfluid::machine::ModelItemInstance* Item);
 

@@ -95,200 +95,200 @@ BOOST_FIXTURE_TEST_SUITE(ModelGlobalParamsModelTest, init_Model)
 // =====================================================================
 BOOST_AUTO_TEST_CASE(test_dispatchParamWithNoExistingUsedParam)
 {
-  std::vector<std::string> IncomingParams;
-  IncomingParams.push_back("A");
-  IncomingParams.push_back("B");
-  IncomingParams.push_back("C");
-
-  mp_Model->clearGloballyNotUsed();
-  mp_Model->clearTempNewGloballyUsed();
-  mp_Model->clearGloballyNoMoreUsed();
-  for(unsigned int i=0; i<IncomingParams.size(); i++)
-  {
-    mp_Model->dispatchParam(IncomingParams[i]);
-  }
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),3);
-  BOOST_CHECK_EQUAL(mp_Model->getTempNewGloballyUsed().size(),0);
+//  std::vector<std::string> IncomingParams;
+//  IncomingParams.push_back("A");
+//  IncomingParams.push_back("B");
+//  IncomingParams.push_back("C");
+//
+//  mp_Model->clearGloballyNotUsed();
+//  mp_Model->clearTempNewGloballyUsed();
+//  mp_Model->clearGloballyNoMoreUsed();
+//  for(unsigned int i=0; i<IncomingParams.size(); i++)
+//  {
+//    mp_Model->dispatchParam(IncomingParams[i]);
+//  }
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),3);
+//  BOOST_CHECK_EQUAL(mp_Model->getTempNewGloballyUsed().size(),0);
 }
-
-BOOST_AUTO_TEST_CASE(test_dispatchParamWithExistingUsedParams)
-{
-  std::set<std::string> NotUsed;
-  NotUsed.insert("A");
-  NotUsed.insert("C");
-
-  std::map<std::string,std::string> Used;
-  Used["B"] = "valB";
-  Used["E"] = "valE";
-
-  mp_Model->setGloballyNotUsed(NotUsed);
-  mp_Model->setGloballyUsed(Used);
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getTempNewGloballyUsed().size(),0);
-
-  std::vector<std::string> IncomingParams;
-  IncomingParams.push_back("C");
-  IncomingParams.push_back("B");
-  IncomingParams.push_back("D");
-
-  mp_Model->clearGloballyNotUsed();
-  mp_Model->clearTempNewGloballyUsed();
-  mp_Model->clearGloballyNoMoreUsed();
-  for(unsigned int i=0; i<IncomingParams.size(); i++)
-  {
-    mp_Model->dispatchParam(IncomingParams[i]);
-  }
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getTempNewGloballyUsed().size(),1);
-}
-
-BOOST_AUTO_TEST_CASE(test_simulUpdateWithNoExistingUsedParam)
-{
-  std::vector<std::string> IncomingParams;
-  IncomingParams.push_back("A");
-  IncomingParams.push_back("B");
-  IncomingParams.push_back("C");
-
-  mp_Model->clearGloballyNotUsed();
-  mp_Model->clearTempNewGloballyUsed();
-  mp_Model->clearGloballyNoMoreUsed();
-  for(unsigned int i=0; i<IncomingParams.size(); i++)
-  {
-    mp_Model->dispatchParam(IncomingParams[i]);
-  }
-  mp_Model->afterDispatch();
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),3);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-}
-
-BOOST_AUTO_TEST_CASE(test_simulUpdateWithExistingUsedParams)
-{
-  std::set<std::string> NotUsed;
-  NotUsed.insert("A");
-  NotUsed.insert("C");
-
-  std::map<std::string,std::string> Used;
-  Used["B"] = "valB";
-  Used["E"] = "valE";
-
-  mp_Model->setGloballyNotUsed(NotUsed);
-  mp_Model->setGloballyUsed(Used);
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-
-  std::vector<std::string> IncomingParams;
-  IncomingParams.push_back("C");
-  IncomingParams.push_back("B");
-  IncomingParams.push_back("D");
-
-  mp_Model->clearGloballyNotUsed();
-  mp_Model->clearTempNewGloballyUsed();
-  mp_Model->clearGloballyNoMoreUsed();
-  for(unsigned int i=0; i<IncomingParams.size(); i++)
-  {
-    mp_Model->dispatchParam(IncomingParams[i]);
-  }
-  mp_Model->afterDispatch();
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().begin()->first,"B");
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().begin()->second,"valB");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
-  std::set<std::string>::iterator it = mp_Model->getGloballyNotUsed().begin();
-  BOOST_CHECK_EQUAL(*it,"C");
-  it++;
-  BOOST_CHECK_EQUAL(*it,"D");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed()[0],"E");
-}
-
-BOOST_AUTO_TEST_CASE(test_setEngineRequirement)
-{
-  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-}
-
-BOOST_AUTO_TEST_CASE(test_updateWithNoExistingUsedParam)
-{
-  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
-
-  mp_EngProject->getModelInstance()->deleteItem(1);
-  mp_Model->update();
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-
-  mp_EngProject->getModelInstance()->appendItem(
-      openfluid::machine::PluginManager::getInstance()->getPlugin("tests.primitives.use"));
-  mp_Model->update();
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-}
-
-BOOST_AUTO_TEST_CASE(test_fromUserGloballyUsedSet)
-{
-  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
-
-  std::string ParamUnit = mp_Model->fromUserGloballyUsedSet("longparam");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-  BOOST_CHECK_EQUAL(ParamUnit,"-");
-
-  ParamUnit = mp_Model->fromUserGloballyUsedSet("doublearrayparam");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),4);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-  BOOST_CHECK_EQUAL(ParamUnit,"-");
-}
-
-BOOST_AUTO_TEST_CASE(test_fromUserGloballyUsedUnset)
-{
-  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
-
-  mp_Model->fromUserGloballyUsedSet("longparam");
-  mp_Model->fromUserGloballyUsedSet("doublearrayparam");
-  mp_Model->fromUserGloballyUsedSet("strparam");
-
-  mp_Model->fromUserGloballyUsedUnset("doublearrayparam");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),4);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-
-  mp_Model->fromUserGloballyUsedUnset("longparam");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-
-  mp_Model->fromUserGloballyUsedUnset("strparam");
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
-
-}
+//
+//BOOST_AUTO_TEST_CASE(test_dispatchParamWithExistingUsedParams)
+//{
+//  std::set<std::string> NotUsed;
+//  NotUsed.insert("A");
+//  NotUsed.insert("C");
+//
+//  std::map<std::string,std::string> Used;
+//  Used["B"] = "valB";
+//  Used["E"] = "valE";
+//
+//  mp_Model->setGloballyNotUsed(NotUsed);
+//  mp_Model->setGloballyUsed(Used);
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getTempNewGloballyUsed().size(),0);
+//
+//  std::vector<std::string> IncomingParams;
+//  IncomingParams.push_back("C");
+//  IncomingParams.push_back("B");
+//  IncomingParams.push_back("D");
+//
+//  mp_Model->clearGloballyNotUsed();
+//  mp_Model->clearTempNewGloballyUsed();
+//  mp_Model->clearGloballyNoMoreUsed();
+//  for(unsigned int i=0; i<IncomingParams.size(); i++)
+//  {
+//    mp_Model->dispatchParam(IncomingParams[i]);
+//  }
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getTempNewGloballyUsed().size(),1);
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_simulUpdateWithNoExistingUsedParam)
+//{
+//  std::vector<std::string> IncomingParams;
+//  IncomingParams.push_back("A");
+//  IncomingParams.push_back("B");
+//  IncomingParams.push_back("C");
+//
+//  mp_Model->clearGloballyNotUsed();
+//  mp_Model->clearTempNewGloballyUsed();
+//  mp_Model->clearGloballyNoMoreUsed();
+//  for(unsigned int i=0; i<IncomingParams.size(); i++)
+//  {
+//    mp_Model->dispatchParam(IncomingParams[i]);
+//  }
+//  mp_Model->afterDispatch();
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),3);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_simulUpdateWithExistingUsedParams)
+//{
+//  std::set<std::string> NotUsed;
+//  NotUsed.insert("A");
+//  NotUsed.insert("C");
+//
+//  std::map<std::string,std::string> Used;
+//  Used["B"] = "valB";
+//  Used["E"] = "valE";
+//
+//  mp_Model->setGloballyNotUsed(NotUsed);
+//  mp_Model->setGloballyUsed(Used);
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//
+//  std::vector<std::string> IncomingParams;
+//  IncomingParams.push_back("C");
+//  IncomingParams.push_back("B");
+//  IncomingParams.push_back("D");
+//
+//  mp_Model->clearGloballyNotUsed();
+//  mp_Model->clearTempNewGloballyUsed();
+//  mp_Model->clearGloballyNoMoreUsed();
+//  for(unsigned int i=0; i<IncomingParams.size(); i++)
+//  {
+//    mp_Model->dispatchParam(IncomingParams[i]);
+//  }
+//  mp_Model->afterDispatch();
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().begin()->first,"B");
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().begin()->second,"valB");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
+//  std::set<std::string>::iterator it = mp_Model->getGloballyNotUsed().begin();
+//  BOOST_CHECK_EQUAL(*it,"C");
+//  it++;
+//  BOOST_CHECK_EQUAL(*it,"D");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),1);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed()[0],"E");
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_setEngineRequirement)
+//{
+//  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_updateWithNoExistingUsedParam)
+//{
+//  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
+//
+//  mp_EngProject->getModelInstance()->deleteItem(1);
+//  mp_Model->update();
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//
+//  mp_EngProject->getModelInstance()->appendItem(
+//      openfluid::machine::PluginManager::getInstance()->getPlugin("tests.primitives.use"));
+//  mp_Model->update();
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_fromUserGloballyUsedSet)
+//{
+//  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
+//
+//  std::string ParamUnit = mp_Model->fromUserGloballyUsedSet("longparam");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//  BOOST_CHECK_EQUAL(ParamUnit,"-");
+//
+//  ParamUnit = mp_Model->fromUserGloballyUsedSet("doublearrayparam");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),4);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//  BOOST_CHECK_EQUAL(ParamUnit,"-");
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_fromUserGloballyUsedUnset)
+//{
+//  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
+//
+//  mp_Model->fromUserGloballyUsedSet("longparam");
+//  mp_Model->fromUserGloballyUsedSet("doublearrayparam");
+//  mp_Model->fromUserGloballyUsedSet("strparam");
+//
+//  mp_Model->fromUserGloballyUsedUnset("doublearrayparam");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),4);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//
+//  mp_Model->fromUserGloballyUsedUnset("longparam");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//
+//  mp_Model->fromUserGloballyUsedUnset("strparam");
+//
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
+//  BOOST_CHECK_EQUAL(mp_Model->getGloballyNoMoreUsed().size(),0);
+//
+//}
 
 // =====================================================================
 // =====================================================================

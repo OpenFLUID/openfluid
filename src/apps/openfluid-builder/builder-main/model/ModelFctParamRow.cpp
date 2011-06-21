@@ -60,10 +60,9 @@
 // =====================================================================
 
 
-ModelFctParamRow::ModelFctParamRow(std::string ParamName, std::string ParamUnit) :
-  m_GlobalValue(""), m_isGloballySet(false)
+ModelFctParamRow::ModelFctParamRow(std::string ParamName, std::string ParamUnit)
 {
-  m_ColumnCount = 5;
+  m_ColumnCount = 4;
 
   mp_ParamNameLabel = Gtk::manage(new Gtk::Label(ParamName, Gtk::ALIGN_LEFT,
       Gtk::ALIGN_CENTER));
@@ -81,28 +80,12 @@ ModelFctParamRow::ModelFctParamRow(std::string ParamName, std::string ParamUnit)
   mp_ParamUnitLabel->set_visible(true);
   m_RowWidgets.push_back(mp_ParamUnitLabel);
 
-  mp_GlobalCheck = Gtk::manage(new Gtk::CheckButton());
-  mp_GlobalCheck->set_visible(false);
-  mp_GlobalCheck->set_tooltip_text(_("Use the global value of this parameter"));
-  mp_GlobalCheck->signal_clicked().connect(sigc::mem_fun(*this,
-      &ModelFctParamRow::onGlobalCheckClicked));
-  m_RowWidgets.push_back(mp_GlobalCheck);
-
   mp_GlobalValueLabel = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,
       Gtk::ALIGN_CENTER));
   mp_GlobalValueLabel->set_visible(false);
   mp_GlobalValueLabel->set_sensitive(false);
   m_RowWidgets.push_back(mp_GlobalValueLabel);
 
-}
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> ModelFctParamRow::signal_GobalDefinedAsked()
-{
-  return m_signal_GobalDefinedAsked;
 }
 
 // =====================================================================
@@ -118,22 +101,10 @@ sigc::signal<void> ModelFctParamRow::signal_ValueChanged()
 // =====================================================================
 
 
-void ModelFctParamRow::onGlobalCheckClicked()
-{
-  m_isGloballySet = mp_GlobalCheck->get_active();
-
-  mp_GlobalValueLabel->set_sensitive(m_isGloballySet);
-  mp_ParamValueEntry->set_sensitive(!m_isGloballySet);
-
-  m_signal_ValueChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelFctParamRow::onParamValueChanged()
 {
+  mp_GlobalValueLabel->set_sensitive(mp_ParamValueEntry->get_text().empty());
+
   m_signal_ValueChanged.emit();
 }
 
@@ -152,10 +123,7 @@ void ModelFctParamRow::setValue(std::string Value)
 
 std::string ModelFctParamRow::getValue()
 {
-  if (m_isGloballySet)
-    return m_GlobalValue;
-  else
-    return mp_ParamValueEntry->get_text();
+  return mp_ParamValueEntry->get_text();
 }
 
 // =====================================================================
@@ -173,14 +141,10 @@ std::string ModelFctParamRow::getParamName()
 
 void ModelFctParamRow::setGlobalValue(std::string Value)
 {
-  m_GlobalValue = Value;
-  mp_GlobalValueLabel->set_text(Glib::ustring::compose("%1: \"%2\"",
-      _("use global value"), Value));
+  mp_GlobalValueLabel->set_text(Glib::ustring::compose("(%1: \"%2\")",
+      _("global value"), Value));
 
-  mp_GlobalCheck->set_visible(true);
   mp_GlobalValueLabel->set_visible(true);
-
-  m_signal_ValueChanged.emit();
 }
 
 // =====================================================================
@@ -189,12 +153,7 @@ void ModelFctParamRow::setGlobalValue(std::string Value)
 
 void ModelFctParamRow::unsetGlobalValue()
 {
-  m_GlobalValue = "";
   mp_GlobalValueLabel->set_text("");
-  mp_GlobalCheck->set_active(false);
 
-  mp_GlobalCheck->set_visible(false);
   mp_GlobalValueLabel->set_visible(false);
-
-  m_signal_ValueChanged.emit();
 }

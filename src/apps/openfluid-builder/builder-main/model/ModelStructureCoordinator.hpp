@@ -98,6 +98,12 @@ class ModelStructureCoordinator: public sigc::trackable
 
     ModelAddFunctionModule* mp_AddFctModule;
 
+    /*
+     * set it to false to avoid recursive updates
+     * (ie. global params update if change comes from global params)
+     */
+    bool m_HasToUpdate;
+
     void updateStructureListToolBox();
 
     void whenStructureFctSelectionChanged();

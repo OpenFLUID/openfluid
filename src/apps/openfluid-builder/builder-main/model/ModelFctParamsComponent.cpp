@@ -63,9 +63,10 @@
 
 
 ModelFctParamsComponent::ModelFctParamsComponent(
-    openfluid::machine::ModelItemInstance* Item)
+    openfluid::machine::ModelItemInstance* Item,
+    openfluid::machine::ModelInstance* ModelInstance)
 {
-  mp_Model = new ModelFctParamsModelImpl();
+  mp_Model = new ModelFctParamsModelImpl(ModelInstance);
   mp_View = new ModelFctParamsViewImpl();
   mp_Presenter = new ModelFctParamsPresenter(*mp_Model, *mp_View);
 

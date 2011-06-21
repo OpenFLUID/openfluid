@@ -77,11 +77,11 @@ class ModelGlobalParamsModel
 
     virtual void update() = 0;
 
-    virtual std::map<std::string, std::string> getGloballyUsed() = 0;
+    // map<param name,pair<param unit,param value> >
+    virtual std::map<std::string, std::pair<std::string, std::string> >
+    getGloballyUsed() = 0;
 
     virtual std::set<std::string> getGloballyNotUsed() = 0;
-
-    virtual std::vector<std::string> getGloballyNoMoreUsed() = 0;
 
     virtual std::string fromUserGloballyUsedSet(std::string ParamName) = 0;
 
@@ -94,7 +94,8 @@ class ModelGlobalParamsModel
 
     virtual bool isGloballyDefined(std::string ParamName) = 0;
 
-    virtual std::map<std::string,std::string> getGlobalValues(openfluid::machine::ModelItemInstance* Item) = 0;
+    virtual std::map<std::string, std::string> getGlobalValues(
+        openfluid::machine::ModelItemInstance* Item) = 0;
 
 };
 
@@ -116,17 +117,8 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
   protected:
 
-    std::map<std::string, std::string> m_GloballyUsed;
-
+    // set<param name>
     std::set<std::string> m_GloballyNotUsed;
-
-    std::vector<std::string> m_GloballyNoMoreUsed;
-
-    std::map<std::string, std::string> m_TempNewGloballyUsed;
-
-    void dispatchParam(std::string ParamName);
-
-    void afterDispatch();
 
   public:
 
@@ -145,11 +137,11 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     void update();
 
-    std::map<std::string, std::string> getGloballyUsed();
+    // map<param name,pair<param unit,param value> >
+    std::map<std::string, std::pair<std::string, std::string> >
+    getGloballyUsed();
 
     std::set<std::string> getGloballyNotUsed();
-
-    std::vector<std::string> getGloballyNoMoreUsed();
 
     std::string fromUserGloballyUsedSet(std::string ParamName);
 
@@ -161,7 +153,8 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     bool isGloballyDefined(std::string ParamName);
 
-    std::map<std::string,std::string> getGlobalValues(openfluid::machine::ModelItemInstance* Item);
+    std::map<std::string, std::string> getGlobalValues(
+        openfluid::machine::ModelItemInstance* Item);
 
 };
 
@@ -169,21 +162,9 @@ class ModelGlobalParamsModelSub: public ModelGlobalParamsModelImpl
 {
   public:
 
-    void setGloballyUsed(std::map<std::string, std::string> Map);
-
     void setGloballyNotUsed(std::set<std::string> Set);
 
     void clearGloballyNotUsed();
-
-    void clearTempNewGloballyUsed();
-
-    void clearGloballyNoMoreUsed();
-
-    std::map<std::string, std::string> getTempNewGloballyUsed();
-
-    void dispatchParam(std::string ParamName);
-
-    void afterDispatch();
 
 };
 #endif /* __MODELGLOBALPARAMSMODEL_H__ */

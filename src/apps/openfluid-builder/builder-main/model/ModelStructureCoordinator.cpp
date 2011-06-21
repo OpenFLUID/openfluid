@@ -197,6 +197,11 @@ void ModelStructureCoordinator::whenGlobalValueChanged(std::string ParamName)
   {
     it->second->getModel()->setGlobalValue(ParamName, GlobalValue);
   }
+
+  m_HasToUpdate = false;
+  m_signal_ModelChanged.emit();
+  m_HasToUpdate = true;
+
 }
 
 // =====================================================================
@@ -211,6 +216,10 @@ void ModelStructureCoordinator::whenGlobalParamUnset(std::string ParamName)
   {
     it->second->getModel()->unsetGlobalValue(ParamName);
   }
+
+  m_HasToUpdate = false;
+  m_signal_ModelChanged.emit();
+  m_HasToUpdate = true;
 }
 
 // =====================================================================
@@ -223,7 +232,7 @@ ModelStructureCoordinator::ModelStructureCoordinator(
     BuilderListToolBox& StructureListToolBox) :
   m_FctDetailModel(FctDetailModel), m_StructureModel(StructureModel),
       m_GlobalParamsModel(GlobalParamsModel), m_ParamsPanel(ParamsPanel),
-      m_StructureListToolBox(StructureListToolBox)
+      m_StructureListToolBox(StructureListToolBox), m_HasToUpdate(true)
 {
   m_StructureListToolBox.setAddCommandAvailable(true);
 
@@ -273,9 +282,9 @@ void ModelStructureCoordinator::setEngineRequirements(
 
   mp_AddFctModule->setEngineRequirements(ModelInstance);
 
-  initParams();
-
   m_GlobalParamsModel.setEngineRequirements(ModelInstance);
+
+  initParams();
 }
 
 // =====================================================================
@@ -294,8 +303,11 @@ void ModelStructureCoordinator::setCurrentFunction(std::string FunctionName)
 
 void ModelStructureCoordinator::update()
 {
-  m_StructureModel.update();
-  m_GlobalParamsModel.update();
+  if (m_HasToUpdate)
+  {
+    m_StructureModel.update();
+    m_GlobalParamsModel.update();
+  }
 }
 
 // =====================================================================
@@ -427,7 +439,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
 void ModelStructureCoordinator::createModelFctParamsComponent(
     openfluid::machine::ModelItemInstance* Item)
 {
-  ModelFctParamsComponent* FctParams = new ModelFctParamsComponent(Item);
+  ModelFctParamsComponent* FctParams = new ModelFctParamsComponent(Item,mp_ModelInstance);
 
   std::string FctName = Item->Signature->ID;
 

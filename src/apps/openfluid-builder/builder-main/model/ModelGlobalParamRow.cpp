@@ -105,6 +105,15 @@ std::string ModelGlobalParamRow::getValue()
 // =====================================================================
 
 
+void ModelGlobalParamRow::setValue(std::string Value)
+{
+  mp_ParamValueEntry->set_text(Value);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void, std::string> ModelGlobalParamRow::signal_valueChanged()
 {
   return m_signal_valueChanged;

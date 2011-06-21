@@ -79,7 +79,8 @@ class ModelFctParamsComponent: public BuilderMVPComponent
 
   public:
 
-    ModelFctParamsComponent(openfluid::machine::ModelItemInstance* Item);
+    ModelFctParamsComponent(openfluid::machine::ModelItemInstance* Item,
+        openfluid::machine::ModelInstance* ModelInstance);
 
     ~ModelFctParamsComponent();
 

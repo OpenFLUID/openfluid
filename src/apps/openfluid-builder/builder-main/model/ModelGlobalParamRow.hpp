@@ -87,6 +87,8 @@ class ModelGlobalParamRow: public BuilderTableRowWidget
 
     std::string getValue();
 
+    void setValue(std::string Value);
+
     sigc::signal<void,std::string> signal_valueChanged();
 
     sigc::signal<void,std::string> signal_removeAsked();

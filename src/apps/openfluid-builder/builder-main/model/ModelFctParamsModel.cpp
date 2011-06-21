@@ -63,10 +63,10 @@
 // =====================================================================
 
 
-ModelFctParamsModelImpl::ModelFctParamsModelImpl() :
-  mp_Item(0)
+ModelFctParamsModelImpl::ModelFctParamsModelImpl(
+    openfluid::machine::ModelInstance* ModelInstance) :
+  mp_Item(0), mp_ModelInstance(ModelInstance)
 {
-
 }
 
 // =====================================================================
@@ -141,12 +141,7 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
 {
   mp_Item->Params[ParamName] = ParamValue;
 
-  //for interp generator required files
-  if (mp_Item->ItemType == openfluid::base::ModelItemDescriptor::Generator
-      && (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod
-          == openfluid::base::GeneratorDescriptor::Interp && (ParamName
-      == "sources" || ParamName == "distribution"))
-    updateInterpGeneratorRequiredExtraFiles();
+  updateInterpGeneratorRequiredExtraFiles();
 
   m_signal_ParamsChanged.emit();
 }
@@ -157,14 +152,35 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
 
 void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 {
-  mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
+  if (mp_Item->ItemType == openfluid::base::ModelItemDescriptor::Generator
+      && (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod
+          == openfluid::base::GeneratorDescriptor::Interp)
+  {
+    openfluid::core::FuncParamsMap_t GlobalParams = mp_ModelInstance->getGlobalParameters();
 
-  mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(
-      mp_Item->Params["sources"]);
-  mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(
-      mp_Item->Params["distribution"]);
+    std::string Sources = "";
+    if (mp_Item->Params.find("sources") != mp_Item->Params.end()
+        && mp_Item->Params["sources"] != "")
+      Sources = mp_Item->Params["sources"];
+    else if (GlobalParams.find("sources") != GlobalParams.end()
+        && GlobalParams["sources"] != "")
+      Sources = GlobalParams["sources"];
 
-  m_signal_RequiredFilesChangedFromApp.emit();
+    std::string Distrib = "";
+    if (mp_Item->Params.find("distribution") != mp_Item->Params.end()
+        && mp_Item->Params["distribution"] != "")
+      Distrib = mp_Item->Params["distribution"];
+    else if (GlobalParams.find("distribution") != GlobalParams.end()
+        && GlobalParams["distribution"] != "")
+      Distrib = GlobalParams["distribution"];
+
+    mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
+
+    mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Sources);
+    mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Distrib);
+
+    m_signal_RequiredFilesChangedFromApp.emit();
+  }
 }
 
 // =====================================================================
@@ -174,6 +190,8 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 void ModelFctParamsModelImpl::setGlobalValue(std::string ParamName,
     std::string GlobalValue)
 {
+  updateInterpGeneratorRequiredExtraFiles();
+
   m_signal_GlobalValueChanged.emit(ParamName, GlobalValue);
 }
 
@@ -183,6 +201,8 @@ void ModelFctParamsModelImpl::setGlobalValue(std::string ParamName,
 
 void ModelFctParamsModelImpl::unsetGlobalValue(std::string ParamName)
 {
+  updateInterpGeneratorRequiredExtraFiles();
+
   m_signal_GlobalValueUnset.emit(ParamName);
 }
 

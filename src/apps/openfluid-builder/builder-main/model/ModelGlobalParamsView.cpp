@@ -58,6 +58,8 @@
 
 #include "ModelGlobalParamRow.hpp"
 
+#include <iostream>
+
 // =====================================================================
 // =====================================================================
 
@@ -123,34 +125,25 @@ void ModelGlobalParamsViewImpl::setComboParams(std::set<std::string> Params)
 // =====================================================================
 // =====================================================================
 
-void ModelGlobalParamsViewImpl::removeGlobalParamsRow(std::string ParamName)
+
+void ModelGlobalParamsViewImpl::setGlobalParamsRow(std::map<std::string,
+    std::pair<std::string, std::string> > GlobalParams)
 {
-  if (m_ByParamNameParamRow.find(ParamName) != m_ByParamNameParamRow.end())
+  int TableWidgetCount = mp_Table->children().size();
+
+  for (int i = 0; i < TableWidgetCount; i++)
+    mp_Table->remove(*mp_Table->children().begin()->get_widget());
+
+  m_ByParamNameParamRow.clear();
+  m_CurrentTableBottom = 0;
+
+  for (std::map<std::string, std::pair<std::string, std::string> >::iterator
+      it = GlobalParams.begin(); it != GlobalParams.end(); ++it)
   {
-    for (unsigned int j = 0; j
-        < m_ByParamNameParamRow[ParamName]->getWidgetCount(); j++)
-    {
-      mp_Table->remove(*m_ByParamNameParamRow[ParamName]->getWidgets()[j]);
-    }
-    /* it seems that Gtk::Table doesn't update attachment indexes
-     when a widget is removed from container directly */
-    //    m_CurrentTableBottom--;
-
-    m_ByParamNameParamRow.erase(ParamName);
+    addGlobalParamsRow(it->first, it->second.first);
+    m_ByParamNameParamRow[it->first]->setValue(it->second.second);
   }
-}
 
-// =====================================================================
-// =====================================================================
-
-
-void ModelGlobalParamsViewImpl::removeGlobalParamsRows(
-    std::vector<std::string> ParamNames)
-{
-  for (unsigned int i = 0; i < ParamNames.size(); i++)
-  {
-    removeGlobalParamsRow(ParamNames[i]);
-  }
 }
 
 // =====================================================================

@@ -64,7 +64,7 @@
 void ModelGlobalParamsPresenter::whenFromAppModelChanged()
 {
   m_View.setComboParams(m_Model.getGloballyNotUsed());
-  m_View.removeGlobalParamsRows(m_Model.getGloballyNoMoreUsed());
+  m_View.setGlobalParamsRow(m_Model.getGloballyUsed());
 }
 
 // =====================================================================
@@ -87,10 +87,10 @@ void ModelGlobalParamsPresenter::whenFromUserGloballyUnsetAsked(
     std::string ParamName)
 {
   m_Model.fromUserGloballyUsedUnset(ParamName);
-  m_View.removeGlobalParamsRow(ParamName);
-  m_View.setComboParams(m_Model.getGloballyNotUsed());
-}
 
+  m_View.setComboParams(m_Model.getGloballyNotUsed());
+  m_View.setGlobalParamsRow(m_Model.getGloballyUsed());
+}
 
 // =====================================================================
 // =====================================================================
@@ -98,9 +98,8 @@ void ModelGlobalParamsPresenter::whenFromUserGloballyUnsetAsked(
 
 void ModelGlobalParamsPresenter::whenGlobalValueChanged(std::string ParamName)
 {
-  m_Model.setGlobalValue(ParamName,m_View.getGlobalValue(ParamName));
+  m_Model.setGlobalValue(ParamName, m_View.getGlobalValue(ParamName));
 }
-
 
 // =====================================================================
 // =====================================================================

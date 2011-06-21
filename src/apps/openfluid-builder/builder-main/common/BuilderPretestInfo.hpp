@@ -56,6 +56,7 @@
 #define __BUILDERPRESTESTINFO_HPP__
 
 #include <openfluid/machine.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 {
@@ -89,6 +90,15 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
         openfluid::base::RunDescriptor& RunDesc);
 
     bool getGlobalCheckState();
+
+  private:
+
+    openfluid::core::FuncParamsMap_t m_GlobalParams;
+
+    bool localParamIsSet(openfluid::machine::ModelItemInstance* Item,
+        std::string ParamName);
+
+    bool globalParamIsSet(std::string ParamName);
 };
 
 #endif /* __BUILDERPRESTESTINFO_HPP__ */
