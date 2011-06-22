@@ -62,6 +62,7 @@
 #include "SimulationOutModule.hpp"
 #include "ResultsSetModule.hpp"
 
+#include "MapViewModule.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -71,7 +72,6 @@ BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
   mp_EngineProject(EngProject)
 {
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -95,7 +95,6 @@ BuilderModule* BuilderModuleFactory::createModelStructureModule()
   return Module;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -107,7 +106,6 @@ BuilderModule* BuilderModuleFactory::createDomainStructureModule()
       *mp_EngineProject.getSimBlob());
   return Module;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -121,7 +119,6 @@ BuilderModule* BuilderModuleFactory::createDomainClassModule()
   return Module;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -133,7 +130,6 @@ BuilderModule* BuilderModuleFactory::createSimulationRunModule()
       *mp_EngineProject.getSimBlob());
   return Module;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -147,7 +143,6 @@ BuilderModule* BuilderModuleFactory::createSimulationOutModule()
   return Module;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -158,4 +153,13 @@ BuilderModule* BuilderModuleFactory::createResultsSetModule()
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
       *mp_EngineProject.getSimBlob());
   return Module;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+BuilderModule* BuilderModuleFactory::createMapViewModule()
+{
+  return new MapViewModule();
 }

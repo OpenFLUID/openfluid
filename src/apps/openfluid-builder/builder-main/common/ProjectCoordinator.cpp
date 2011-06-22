@@ -527,9 +527,9 @@ void ProjectCoordinator::onDirMonitorChanged(
     m_FileMonitorHasChanged = true;
   else if (!mp_FileMonitorDialog->is_popup())
   {
-    std::string Msg =
-        _( "Changes occur in your plugin list.\nDo you want to reload it ?\n"
-            "(if not, it's at your own risks, think of reload manually)");
+    std::string Msg = _(
+        "Changes occur in your plugin list.\nDo you want to reload it ?\n"
+          "(if not, it's at your own risks, think of reload manually)");
     mp_FileMonitorDialog->set_message(Msg);
     mp_FileMonitorDialog->show_all();
   }
@@ -584,8 +584,9 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
     {
       std::string
           Msg =
-              _( "Changes occur in your plugin list while simulation ran.\nDo you want to reload it ?\n"
-                  "(if not, it's at your own risks, think of reload manually)");
+              _(
+                  "Changes occur in your plugin list while simulation ran.\nDo you want to reload it ?\n"
+                    "(if not, it's at your own risks, think of reload manually)");
       mp_FileMonitorDialog->set_message(Msg);
       mp_FileMonitorDialog->show_all();
     }
@@ -617,6 +618,30 @@ void ProjectCoordinator::updatePluginPathsMonitors()
 
     m_DirMonitors.push_back(DirMonitor);
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenMapViewAsked()
+{
+  std::string PageName = "MapView";
+  ProjectWorkspaceModule* Module;
+
+  if (m_Workspace.existsPageName(PageName))
+  {
+    Module = m_ModulesByPageNameMap[PageName];
+  } else
+  {
+    Module
+        = (ProjectWorkspaceModule*) mp_ModuleFactory->createMapViewModule();
+
+    m_ModulesByPageNameMap[PageName] = Module;
+    m_Workspace.appendPage(PageName, Module->composeAndGetAsWidget());
+  }
+
+  m_Workspace.setCurrentPage(PageName);
 }
 
 // =====================================================================

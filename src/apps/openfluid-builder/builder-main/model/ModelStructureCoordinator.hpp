@@ -99,8 +99,8 @@ class ModelStructureCoordinator: public sigc::trackable
     ModelAddFunctionModule* mp_AddFctModule;
 
     /*
-     * set it to false to avoid recursive updates
-     * (ie. global params update if change comes from global params)
+     * set it to false to avoid recursive updates, when an update request comes from THIS coordinator
+     * (because update of this coordinator (this module) components are made from here directly)
      */
     bool m_HasToUpdate;
 
@@ -116,9 +116,7 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void whenMoveTowardTheEndAsked();
 
-    void whenGlobalValueChanged(std::string ParamName);
-
-    void whenGlobalParamUnset(std::string ParamName);
+    void whenGlobalValueChanged();
 
     void whenParamsChanged();
 
@@ -140,7 +138,7 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void update();
 
-    void initParams();
+    void createParamsComponents();
 
     void updateWithFctParamsComponents();
 

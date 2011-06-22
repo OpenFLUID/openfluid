@@ -161,6 +161,8 @@ class ProjectCoordinator
 
     void updatePluginPathsMonitors();
 
+    void whenMapViewAsked();
+
 };
 
 class ProjectCoordinatorSub: public ProjectCoordinator

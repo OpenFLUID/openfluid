@@ -113,6 +113,10 @@ ADD_BUILDER_UNITTEST(builder-unittest-ModelStructurePresenter
 ADD_BUILDER_UNITTEST(builder-unittest-ModelGlobalParamsModel
                      builder_unittest_ModelGlobalParamsModel_TEST
                      ModelGlobalParamsModel_TEST.cpp)
+                     
+ADD_BUILDER_UNITTEST(builder-unittest-ModelGlobalParamsPresenter
+                     builder_unittest_ModelGlobalParamsPresenter_TEST
+                     ModelGlobalParamsPresenter_TEST.cpp)
 
 ### DOMAIN ###
                    

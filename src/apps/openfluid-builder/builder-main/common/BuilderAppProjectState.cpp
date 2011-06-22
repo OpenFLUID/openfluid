@@ -161,7 +161,7 @@ void BuilderAppProjectState::whenSaveAsAsked()
 
 void BuilderAppProjectState::whenMapViewAsked()
 {
-  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->mapViewAsked();
 }
 
 // =====================================================================

@@ -59,16 +59,13 @@
 
 #include <openfluid/machine.hpp>
 
-
 class ModelFctParamsModel
 {
   public:
 
     virtual sigc::signal<void> signal_ItemInit() = 0;
 
-    virtual sigc::signal<void, std::string, std::string> signal_GlobalValueChanged() = 0;
-
-    virtual sigc::signal<void, std::string> signal_GlobalValueUnset() = 0;
+    virtual sigc::signal<void> signal_GlobalValueChanged() = 0;
 
     virtual sigc::signal<void> signal_RequiredFileChanged() = 0;
 
@@ -76,26 +73,27 @@ class ModelFctParamsModel
 
     virtual sigc::signal<void> signal_RequiredFilesChangedFromApp() = 0;
 
-    virtual void setModelItemInstance(openfluid::machine::ModelItemInstance* Item) = 0;
+    virtual void setModelItemInstance(
+        openfluid::machine::ModelItemInstance* Item) = 0;
 
-    virtual std::map<std::string,std::string> getParams() = 0;
+    virtual std::map<std::string, std::string> getParams() = 0;
 
     virtual std::vector<std::string> getRequiredFiles() = 0;
 
     virtual std::vector<std::string> getUsedFiles() = 0;
 
-    virtual std::map<std::string,std::string> getParamValues() = 0;
+    virtual std::map<std::string, std::string> getParamValues() = 0;
 
-    virtual void setParamValue(std::string ParamName,std::string ParamValue) = 0;
+    virtual std::map<std::string, std::string> getGlobalValues() = 0;
 
-    virtual void setGlobalValue(std::string ParamName,std::string GlobalValue) = 0;
+    virtual void
+        setParamValue(std::string ParamName, std::string ParamValue) = 0;
 
-    virtual void unsetGlobalValue(std::string ParamName) = 0;
+    virtual void updateGlobalValues() = 0;
 
     virtual void whenRequiredFileChanged() = 0;
 
 };
-
 
 class ModelFctParamsModelImpl: public ModelFctParamsModel
 {
@@ -103,13 +101,11 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void> m_signal_ItemInit;
 
-    sigc::signal<void, std::string, std::string> m_signal_GlobalValueChanged;
-
-    sigc::signal<void, std::string> m_signal_GlobalValueUnset;
-
     sigc::signal<void> m_signal_RequiredFileChanged;
 
     sigc::signal<void> m_signal_ParamsChanged;
+
+    sigc::signal<void> m_signal_GlobalValueChanged;
 
     sigc::signal<void> m_signal_RequiredFilesChangedFromApp;
 
@@ -129,9 +125,7 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void> signal_ItemInit();
 
-    sigc::signal<void, std::string, std::string> signal_GlobalValueChanged();
-
-    sigc::signal<void, std::string> signal_GlobalValueUnset();
+    sigc::signal<void> signal_GlobalValueChanged();
 
     sigc::signal<void> signal_RequiredFileChanged();
 
@@ -139,19 +133,19 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void> signal_RequiredFilesChangedFromApp();
 
-    std::map<std::string,std::string> getParams();
+    std::map<std::string, std::string> getParams();
 
     std::vector<std::string> getRequiredFiles();
 
     std::vector<std::string> getUsedFiles();
 
-    std::map<std::string,std::string> getParamValues();
+    std::map<std::string, std::string> getParamValues();
 
-    void setParamValue(std::string ParamName,std::string ParamValue);
+    std::map<std::string, std::string> getGlobalValues();
 
-    void setGlobalValue(std::string ParamName,std::string GlobalValue);
+    void setParamValue(std::string ParamName, std::string ParamValue);
 
-    void unsetGlobalValue(std::string ParamName);
+    void updateGlobalValues();
 
     void whenRequiredFileChanged();
 

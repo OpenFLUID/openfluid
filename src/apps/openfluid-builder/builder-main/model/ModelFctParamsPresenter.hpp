@@ -74,9 +74,7 @@ class ModelFctParamsPresenter: public sigc::trackable
 
     void whenParamValueChanged(std::string ParamName, std::string ParamValue);
 
-    void whenGlobalValueChanged(std::string ParamName, std::string GlobalValue);
-
-    void whenGlobalValueUnset(std::string ParamName);
+    void whenGlobalValueChanged();
 
     void whenRequiredFilesChangedFromApp();
 

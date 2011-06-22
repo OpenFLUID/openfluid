@@ -46,92 +46,30 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
- \brief Header of ...
+ \file MapViewModule.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
+#include "MapViewModule.hpp"
 
-#include <gtkmm.h>
-#include <glibmm/i18n.h>
+// =====================================================================
+// =====================================================================
 
-#include <sigc++/sigc++.h>
 
-#include "BuilderModule.hpp"
-#include "EngineProject.hpp"
-
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
+MapViewModule::MapViewModule()
 {
-  private:
+  mp_DummyLabel = Gtk::manage(new Gtk::Label("Here MapView Component..."));
+  mp_DummyLabel->set_visible(true);
+}
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
+// =====================================================================
+// =====================================================================
 
-    sigc::signal<void> m_signal_ChangeHappened;
 
-    sigc::signal<void> m_signal_SaveHappened;
+Gtk::Widget* MapViewModule::asWidget()
+{
+  return mp_DummyLabel;
+}
 
-    EngineProject* mp_EngineProject;
-
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
-
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
-
-    ProjectWorkspace* mp_Workspace;
-
-    ProjectDashboard* mp_ProjectDashboard;
-
-    ProjectCoordinator* mp_Coordinator;
-
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
-
-    void whenRunHappened();
-
-  protected:
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-  public:
-
-    BuilderProjectWithExplorer(std::string ProjectFolder);
-
-    sigc::signal<void, bool> signal_CheckHappened();
-
-    sigc::signal<void> signal_ChangeHappened();
-
-    sigc::signal<void> signal_SaveHappened();
-
-    ~BuilderProjectWithExplorer();
-
-    void runAsked();
-
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-};
-
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */

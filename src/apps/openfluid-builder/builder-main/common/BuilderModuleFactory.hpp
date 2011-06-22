@@ -89,6 +89,8 @@ class BuilderModuleFactory
 
     BuilderModule* createResultsSetModule();
 
+    BuilderModule* createMapViewModule();
+
 };
 
 #endif /* __BUILDERMODULEFACTORY_HPP__ */

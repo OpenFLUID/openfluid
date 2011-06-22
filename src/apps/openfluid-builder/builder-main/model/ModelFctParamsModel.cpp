@@ -118,6 +118,15 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 // =====================================================================
 
 
+std::map<std::string, std::string> ModelFctParamsModelImpl::getGlobalValues()
+{
+  return mp_ModelInstance->getGlobalParameters();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> ModelFctParamsModelImpl::getRequiredFiles()
 {
   return mp_Item->Signature->HandledData.RequiredExtraFiles;
@@ -156,7 +165,8 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
       && (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod
           == openfluid::base::GeneratorDescriptor::Interp)
   {
-    openfluid::core::FuncParamsMap_t GlobalParams = mp_ModelInstance->getGlobalParameters();
+    openfluid::core::FuncParamsMap_t GlobalParams =
+        mp_ModelInstance->getGlobalParameters();
 
     std::string Sources = "";
     if (mp_Item->Params.find("sources") != mp_Item->Params.end()
@@ -187,23 +197,11 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 // =====================================================================
 
 
-void ModelFctParamsModelImpl::setGlobalValue(std::string ParamName,
-    std::string GlobalValue)
+void ModelFctParamsModelImpl::updateGlobalValues()
 {
   updateInterpGeneratorRequiredExtraFiles();
 
-  m_signal_GlobalValueChanged.emit(ParamName, GlobalValue);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelFctParamsModelImpl::unsetGlobalValue(std::string ParamName)
-{
-  updateInterpGeneratorRequiredExtraFiles();
-
-  m_signal_GlobalValueUnset.emit(ParamName);
+  m_signal_GlobalValueChanged.emit();
 }
 
 // =====================================================================
@@ -228,18 +226,9 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_ItemInit()
 // =====================================================================
 
 
-sigc::signal<void, std::string, std::string> ModelFctParamsModelImpl::signal_GlobalValueChanged()
+sigc::signal<void> ModelFctParamsModelImpl::signal_GlobalValueChanged()
 {
   return m_signal_GlobalValueChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void, std::string> ModelFctParamsModelImpl::signal_GlobalValueUnset()
-{
-  return m_signal_GlobalValueUnset;
 }
 
 // =====================================================================

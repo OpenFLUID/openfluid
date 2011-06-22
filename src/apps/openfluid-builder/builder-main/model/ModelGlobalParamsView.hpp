@@ -62,6 +62,10 @@
 
 class ModelGlobalParamRow;
 
+// =====================================================================
+// =====================================================================
+
+
 class ModelGlobalParamsView
 {
   public:
@@ -86,6 +90,10 @@ class ModelGlobalParamsView
 
 };
 
+// =====================================================================
+// =====================================================================
+
+
 class ModelGlobalParamsViewImpl: public ModelGlobalParamsView
 {
   private:
@@ -98,19 +106,21 @@ class ModelGlobalParamsViewImpl: public ModelGlobalParamsView
 
     Gtk::Box* mp_MainBox;
 
-    Gtk::ComboBoxText* mp_Combo;
-
-    Gtk::Button* mp_AddButton;
-
     Gtk::Table* mp_Table;
 
     unsigned int m_CurrentTableBottom;
 
-    std::map<std::string, ModelGlobalParamRow*> m_ByParamNameParamRow;
-
     void onGlobalValueChanged(std::string ParamName);
 
     void onAddButtonClicked();
+
+  protected:
+
+    Gtk::ComboBoxText* mp_Combo;
+
+    Gtk::Button* mp_AddButton;
+
+    std::map<std::string, ModelGlobalParamRow*> m_ByParamNameParamRow;
 
   public:
 
@@ -134,6 +144,22 @@ class ModelGlobalParamsViewImpl: public ModelGlobalParamsView
     std::string getGlobalValue(std::string ParamName);
 
     Gtk::Widget* asWidget();
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+class ModelGlobalParamsViewSub: public ModelGlobalParamsViewImpl
+{
+  public:
+
+    std::map<std::string, ModelGlobalParamRow*> getByParamNameParamRow();
+
+    Gtk::ComboBoxText* getCombo();
+
+    Gtk::Button* getAddButton();
 
 };
 

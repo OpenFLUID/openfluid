@@ -55,11 +55,14 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_ModelGlobalParamsModel
+#define BOOST_TEST_MODULE builder_unittest_ModelGlobalParamsPresenter
 #include <boost/test/unit_test.hpp>
 
 #include "BuilderTestHelper.hpp"
+#include "ModelGlobalParamsComponent.hpp"
 #include "ModelGlobalParamsModel.hpp"
+#include "ModelGlobalParamsView.hpp"
+#include "ModelGlobalParamRow.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 #include <openfluid/machine.hpp>
@@ -67,29 +70,38 @@
 // =====================================================================
 // =====================================================================
 
-struct init_Model
+struct init_Presenter
 {
+    ModelGlobalParamsComponent* mp_Component;
+
     ModelGlobalParamsModel* mp_Model;
+    ModelGlobalParamsViewSub* mp_View;
+
     EngineProject* mp_EngProject;
 
-    init_Model()
+    init_Presenter()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Model = new ModelGlobalParamsModelImpl();
+      mp_Component = new ModelGlobalParamsComponent();
+
+      mp_Model = mp_Component->getModel();
+      mp_View
+          = static_cast<ModelGlobalParamsViewSub*> (mp_Component->getView());
+
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
     }
 
-    ~init_Model()
+    ~init_Presenter()
     {
-      delete mp_Model;
+      delete mp_Component;
       delete mp_EngProject;
     }
 };
 
-BOOST_FIXTURE_TEST_SUITE(ModelGlobalParamsModelTest, init_Model)
+BOOST_FIXTURE_TEST_SUITE(ModelGlobalParamsModelTest, init_Presenter)
 
 // =====================================================================
 // =====================================================================
@@ -100,70 +112,51 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
 
   mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),0);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),6);
 
-  // adding a global parameter (from ModelInstance)
+  // adding a global parameter (from Model)
 
   mp_EngProject->getModelInstance()->setGlobalParameter("longparam","123");
   mp_Model->update();
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["longparam"].second,"123");
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),1);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),5);
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["longparam"]->getValue(),"123");
 
-  std::set<std::string> Globals = mp_Model->getGloballyNotUsed();
+  // adding a second global parameter (from View)
 
-  BOOST_CHECK(Globals.find("longparam") == Globals.end());
+  mp_View->getCombo()->set_active_text("strparam");
+  mp_View->getAddButton()->clicked();
 
-  // adding a second global parameter (from User)
-
-  mp_Model->fromUserGloballyUsedSet("strparam");
-  mp_Model->update();
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),4);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["longparam"].second,"123");
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["strparam"].second,"");
-
-  Globals = mp_Model->getGloballyNotUsed();
-
-  BOOST_CHECK(Globals.find("longparam") == Globals.end());
-  BOOST_CHECK(Globals.find("strparam") == Globals.end());
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),2);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),4);
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"");
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters().size(),2);
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"],"");
 
   // changing a global parameter value
 
-  mp_Model->setGlobalValue("strparam","abc");
-  mp_Model->update();
+  mp_View->getByParamNameParamRow()["strparam"]->setValue("abc");
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["strparam"].second,"abc");
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"abc");
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"],"abc");
 
-  // removing a global parameter (from ModelInstance)
+  // removing a global parameter (from Model)
 
   mp_EngProject->getModelInstance()->getGlobalParameters().erase("longparam");
   mp_Model->update();
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["strparam"].second,"abc");
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),1);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),5);
 
-  Globals = mp_Model->getGloballyNotUsed();
+  // removing last global parameter (from View)
 
-  BOOST_CHECK(Globals.find("longparam") != Globals.end());
-  BOOST_CHECK(Globals.find("strparam") == Globals.end());
+  mp_View->getByParamNameParamRow()["strparam"]->signal_removeAsked().emit("strparam");
 
-  // removing last global parameter (from User)
-
-  mp_Model->fromUserGloballyUsedUnset("strparam");
-  mp_Model->update();
-
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
-
-  Globals = mp_Model->getGloballyNotUsed();
-
-  BOOST_CHECK(Globals.find("longparam") != Globals.end());
-  BOOST_CHECK(Globals.find("strparam") != Globals.end());
+  BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),0);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),6);
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters().size(),0);
 }
 
 // =====================================================================

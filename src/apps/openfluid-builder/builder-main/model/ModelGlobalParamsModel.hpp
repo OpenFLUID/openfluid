@@ -60,17 +60,17 @@
 
 #include <openfluid/machine.hpp>
 
+// =====================================================================
+// =====================================================================
+
+
 class ModelGlobalParamsModel
 {
   public:
 
     virtual sigc::signal<void> signal_FromAppModelChanged() = 0;
 
-    virtual sigc::signal<void, std::string> signal_GlobalParamSet() = 0;
-
-    virtual sigc::signal<void, std::string> signal_GlobalParamUnset() = 0;
-
-    virtual sigc::signal<void, std::string> signal_GlobalValueChanged() = 0;
+    virtual sigc::signal<void> signal_GlobalValueChanged() = 0;
 
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance) = 0;
@@ -90,14 +90,11 @@ class ModelGlobalParamsModel
     virtual void
     setGlobalValue(std::string ParamName, std::string ParamValue) = 0;
 
-    virtual std::string getGlobalValue(std::string ParamName) = 0;
-
-    virtual bool isGloballyDefined(std::string ParamName) = 0;
-
-    virtual std::map<std::string, std::string> getGlobalValues(
-        openfluid::machine::ModelItemInstance* Item) = 0;
-
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 {
@@ -105,11 +102,7 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     sigc::signal<void> m_signal_FromAppModelChanged;
 
-    sigc::signal<void, std::string> m_signal_GlobalParamSet;
-
-    sigc::signal<void, std::string> m_signal_GlobalParamUnset;
-
-    sigc::signal<void, std::string> m_signal_GlobalValueChanged;
+    sigc::signal<void> m_signal_GlobalValueChanged;
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
@@ -126,11 +119,7 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     sigc::signal<void> signal_FromAppModelChanged();
 
-    sigc::signal<void, std::string> signal_GlobalParamSet();
-
-    sigc::signal<void, std::string> signal_GlobalParamUnset();
-
-    sigc::signal<void, std::string> signal_GlobalValueChanged();
+    sigc::signal<void> signal_GlobalValueChanged();
 
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
@@ -149,22 +138,6 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     void setGlobalValue(std::string ParamName, std::string ParamValue);
 
-    std::string getGlobalValue(std::string ParamName);
-
-    bool isGloballyDefined(std::string ParamName);
-
-    std::map<std::string, std::string> getGlobalValues(
-        openfluid::machine::ModelItemInstance* Item);
-
 };
 
-class ModelGlobalParamsModelSub: public ModelGlobalParamsModelImpl
-{
-  public:
-
-    void setGloballyNotUsed(std::set<std::string> Set);
-
-    void clearGloballyNotUsed();
-
-};
 #endif /* __MODELGLOBALPARAMSMODEL_H__ */
