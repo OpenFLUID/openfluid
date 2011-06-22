@@ -247,3 +247,32 @@ Gtk::Widget* ModelGlobalParamsViewImpl::asWidget()
   return mp_MainBox;
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string, ModelGlobalParamRow*> ModelGlobalParamsViewSub::getByParamNameParamRow()
+{
+  return m_ByParamNameParamRow;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::ComboBoxText* ModelGlobalParamsViewSub::getCombo()
+{
+  return mp_Combo;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Button* ModelGlobalParamsViewSub::getAddButton()
+{
+  return mp_AddButton;
+}

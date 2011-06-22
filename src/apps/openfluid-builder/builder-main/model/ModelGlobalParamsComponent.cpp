@@ -58,23 +58,51 @@
 #include "ModelGlobalParamsView.hpp"
 #include "ModelGlobalParamsPresenter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 ModelGlobalParamsComponent::ModelGlobalParamsComponent()
 {
   mp_Model = new ModelGlobalParamsModelImpl();
   mp_View = new ModelGlobalParamsViewImpl();
   mp_Presenter = new ModelGlobalParamsPresenter(*mp_Model, *mp_View);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelGlobalParamsComponent::~ModelGlobalParamsComponent()
 {
   delete mp_Presenter;
   delete mp_Model;
   delete mp_View;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* ModelGlobalParamsComponent::asWidget()
 {
   return mp_View->asWidget();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelGlobalParamsModel* ModelGlobalParamsComponent::getModel()
 {
   return mp_Model;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+ModelGlobalParamsView* ModelGlobalParamsComponent::getView()
+{
+  return mp_View;
 }

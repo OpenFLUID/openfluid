@@ -183,19 +183,18 @@ void ModelStructureCoordinator::whenMoveTowardTheEndAsked()
   m_signal_ModelChanged.emit();
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void ModelStructureCoordinator::whenGlobalValueChanged(std::string ParamName)
+void ModelStructureCoordinator::whenGlobalValueChanged()
 {
-  std::string GlobalValue = m_GlobalParamsModel.getGlobalValue(ParamName);
-
   for (std::map<std::string, ModelFctParamsComponent*>::iterator it =
       m_ByNameFctParamsComponents.begin(); it
       != m_ByNameFctParamsComponents.end(); ++it)
   {
-    it->second->getModel()->setGlobalValue(ParamName, GlobalValue);
+    it->second->updateGlobalValues();
   }
 
   m_HasToUpdate = false;
@@ -204,23 +203,6 @@ void ModelStructureCoordinator::whenGlobalValueChanged(std::string ParamName)
 
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void ModelStructureCoordinator::whenGlobalParamUnset(std::string ParamName)
-{
-  for (std::map<std::string, ModelFctParamsComponent*>::iterator it =
-      m_ByNameFctParamsComponents.begin(); it
-      != m_ByNameFctParamsComponents.end(); ++it)
-  {
-    it->second->getModel()->unsetGlobalValue(ParamName);
-  }
-
-  m_HasToUpdate = false;
-  m_signal_ModelChanged.emit();
-  m_HasToUpdate = true;
-}
 
 // =====================================================================
 // =====================================================================
@@ -248,10 +230,6 @@ ModelStructureCoordinator::ModelStructureCoordinator(
   m_StructureListToolBox.signal_DownCommandAsked().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenMoveTowardTheEndAsked));
 
-  m_GlobalParamsModel.signal_GlobalParamSet().connect(sigc::mem_fun(*this,
-      &ModelStructureCoordinator::whenGlobalValueChanged));
-  m_GlobalParamsModel.signal_GlobalParamUnset().connect(sigc::mem_fun(*this,
-      &ModelStructureCoordinator::whenGlobalParamUnset));
   m_GlobalParamsModel.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenGlobalValueChanged));
 
@@ -284,7 +262,7 @@ void ModelStructureCoordinator::setEngineRequirements(
 
   m_GlobalParamsModel.setEngineRequirements(ModelInstance);
 
-  initParams();
+  createParamsComponents();
 }
 
 // =====================================================================
@@ -314,7 +292,7 @@ void ModelStructureCoordinator::update()
 // =====================================================================
 
 
-void ModelStructureCoordinator::initParams()
+void ModelStructureCoordinator::createParamsComponents()
 {
   for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
       mp_ModelInstance->getItems().begin(); it
@@ -446,20 +424,11 @@ void ModelStructureCoordinator::createModelFctParamsComponent(
   m_ParamsPanel.addAFctParamsPage(FctParams->asWidget(), FctName);
   m_ByNameFctParamsComponents[FctName] = FctParams;
 
-  std::map<std::string, std::string> GlobalValues =
-      m_GlobalParamsModel.getGlobalValues(Item);
-  for (std::map<std::string, std::string>::iterator it = GlobalValues.begin(); it
-      != GlobalValues.end(); ++it)
-  {
-    FctParams->getModel()->setGlobalValue(it->first, it->second);
-  }
-
-  FctParams->getModel()->signal_RequiredFileChanged().connect(sigc::mem_fun(
+  FctParams->signal_RequiredFileChanged().connect(sigc::mem_fun(
       *this, &ModelStructureCoordinator::whenRequiredFileChanged));
 
   FctParams->signal_ParamsChanged().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenParamsChanged));
-
 }
 
 // =====================================================================

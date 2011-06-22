@@ -69,6 +69,8 @@ class ModelFctParamsComponent: public BuilderMVPComponent
 
     sigc::signal<void> m_signal_ParamsChanged;
 
+    sigc::signal<void> m_signal_RequiredFileChanged;
+
     ModelFctParamsModel* mp_Model;
 
     ModelFctParamsView* mp_View;
@@ -76,6 +78,8 @@ class ModelFctParamsComponent: public BuilderMVPComponent
     ModelFctParamsPresenter* mp_Presenter;
 
     void whenParamsChanged();
+
+    void whenRequiredFileChanged();
 
   public:
 
@@ -88,7 +92,11 @@ class ModelFctParamsComponent: public BuilderMVPComponent
 
     ModelFctParamsModel* getModel();
 
+    void updateGlobalValues();
+
     sigc::signal<void> signal_ParamsChanged();
+
+    sigc::signal<void> signal_RequiredFileChanged();
 
 };
 

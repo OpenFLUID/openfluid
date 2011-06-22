@@ -65,6 +65,7 @@ void ModelFctParamsPresenter::whenSignatureInit()
 {
   m_View.setParams(m_Model.getParams());
   m_View.setParamValues(m_Model.getParamValues());
+  m_View.updateGlobalValues(m_Model.getGlobalValues());
   m_View.updateFiles(m_Model.getRequiredFiles(), m_Model.getUsedFiles());
 }
 
@@ -82,19 +83,9 @@ void ModelFctParamsPresenter::whenParamValueChanged(std::string ParamName,
 // =====================================================================
 
 
-void ModelFctParamsPresenter::whenGlobalValueChanged(std::string ParamName,
-    std::string GlobalValue)
+void ModelFctParamsPresenter::whenGlobalValueChanged()
 {
-  m_View.setGlobalValue(ParamName, GlobalValue);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelFctParamsPresenter::whenGlobalValueUnset(std::string ParamName)
-{
-  m_View.unsetGlobalValue(ParamName);
+  m_View.updateGlobalValues(m_Model.getGlobalValues());
 }
 
 // =====================================================================
@@ -127,8 +118,6 @@ ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
       &ModelFctParamsPresenter::whenSignatureInit));
   m_Model.signal_GlobalValueChanged().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenGlobalValueChanged));
-  m_Model.signal_GlobalValueUnset().connect(sigc::mem_fun(*this,
-      &ModelFctParamsPresenter::whenGlobalValueUnset));
   m_Model.signal_RequiredFilesChangedFromApp().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenRequiredFilesChangedFromApp));
 

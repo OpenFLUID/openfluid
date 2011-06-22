@@ -64,13 +64,24 @@ class ModelGlobalParamsPresenter;
 class ModelGlobalParamsComponent: public BuilderMVPComponent
 {
   private:
+
     ModelGlobalParamsModel* mp_Model;
+
     ModelGlobalParamsView* mp_View;
+
     ModelGlobalParamsPresenter* mp_Presenter;
+
   public:
+
     ModelGlobalParamsComponent();
+
     ~ModelGlobalParamsComponent();
+
     Gtk::Widget* asWidget();
+
     ModelGlobalParamsModel* getModel();
+
+    ModelGlobalParamsView* getView();
+
 };
 #endif /* __MODELGLOBALPARAMSCOMPONENT_H__ */

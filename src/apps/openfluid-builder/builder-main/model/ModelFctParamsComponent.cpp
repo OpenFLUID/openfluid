@@ -73,6 +73,9 @@ ModelFctParamsComponent::ModelFctParamsComponent(
   mp_Model->signal_ParamsChanged().connect(sigc::mem_fun(*this,
       &ModelFctParamsComponent::whenParamsChanged));
 
+  mp_Model->signal_RequiredFileChanged().connect(sigc::mem_fun(*this,
+      &ModelFctParamsComponent::whenRequiredFileChanged));
+
   mp_Model->setModelItemInstance(Item);
 }
 
@@ -109,9 +112,27 @@ ModelFctParamsModel* ModelFctParamsComponent::getModel()
 // =====================================================================
 
 
+void ModelFctParamsComponent::updateGlobalValues()
+{
+  mp_Model->updateGlobalValues();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctParamsComponent::whenParamsChanged()
 {
   m_signal_ParamsChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsComponent::whenRequiredFileChanged()
+{
+  m_signal_RequiredFileChanged.emit();
 }
 
 // =====================================================================
@@ -123,3 +144,11 @@ sigc::signal<void> ModelFctParamsComponent::signal_ParamsChanged()
   return m_signal_ParamsChanged;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsComponent::signal_RequiredFileChanged()
+{
+  return m_signal_RequiredFileChanged;
+}
