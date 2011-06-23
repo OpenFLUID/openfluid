@@ -4,7 +4,7 @@
 FILE(MAKE_DIRECTORY "${BUILDEREXT_OUTPUT_PATH}")
 
 PKG_CHECK_MODULES(GTKMM REQUIRED gtkmm-2.4)
-
+FIND_PACKAGE(GDAL REQUIRED)
 
 
 FILE(READ "${PROJECT_SOURCE_DIR}/COPYING" BUILDER_LICENSE_TEXT)
@@ -29,7 +29,8 @@ LINK_DIRECTORIES(${GTKMM_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
-
+INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS})
+LINK_DIRECTORIES(${GDAL_LIBRARY_DIRS})
 
 ADD_SUBDIRECTORY(builder-main)
 
@@ -52,6 +53,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
                       ${GTKMM_LIBRARIES}
+                      ${GDAL_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core

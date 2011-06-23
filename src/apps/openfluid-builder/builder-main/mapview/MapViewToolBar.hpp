@@ -46,80 +46,80 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewToolBar.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWTOOLBAR_HPP__
+#define __MAPVIEWTOOLBAR_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <iostream>
 
-#include <gtkmm/label.h>
+#include <gtkmm/toolbar.h>
+#include <gtkmm/toolbutton.h>
+#include <gtkmm/menutoolbutton.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/menu.h>
+#include <gtkmm/separatortoolitem.h>
 
+#include <glibmm/i18n.h>
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
 #include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
 #include "MapViewTreeLayer.hpp"
 
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewToolBar: public Gtk::Toolbar
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    Glib::RefPtr<Gtk::AccelGroup> mref_MenuToolButtonZoomAccelGroup;
+    Glib::RefPtr<Gtk::AccelGroup> mref_MenuToolButtonUnzoomAccelGroup;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Gtk::MenuToolButton * mp_MenuButtonZoom;
+    Gtk::MenuToolButton * mp_MenuButtonUnzoom;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::Menu * mp_MenuZoom;
+    Gtk::Menu * mp_MenuUnzoom;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::ImageMenuItem * mp_ZoomCursor;
+    Gtk::ImageMenuItem * mp_ZoomFrame;
+    Gtk::ImageMenuItem * mp_ZoomObject;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    Gtk::ImageMenuItem * mp_UnzoomCursor;
+    Gtk::ImageMenuItem * mp_UnzoomObject;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+    Gtk::ToggleToolButton * mp_ToggleButtonMove;
+    Gtk::ToggleToolButton * mp_ToggleButtonSelect;
 
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    Gtk::SeparatorToolItem * setSeparator();
+
+    MapViewTreeLayer& mref_MapViewTreeLayer;
+
+    void onAddNewLayer();
+    void onRemoveLayer();
+    void onSelect();
+    void onMove();
+    void onShow100();
+    void onInfo();
+
+    void onZoomCursor();
+    void onZoomFrame();
+    void onZoomObject();
+    void onUnzoomCursor();
+    void onUnzoomObject();
+
+    void onChangeZoomCursor(MapViewAction&);
+    void onChangeZoomFrame(MapViewAction&);
+    void onChangeZoomObject(MapViewAction&);
+    void onChangeUnzoomCursor(MapViewAction&);
+    void onChangeUnzoomObject(MapViewAction&);
 
   public:
 
-    MapViewModule();
-
-    Gtk::Widget* asWidget();
-
-    void compose(){};
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
-
-    void update(){};
-
-    sigc::signal<void> signal_ModuleChanged(){};
+    MapViewToolBar(MapViewAction&, MapViewTreeLayer&);
+    virtual ~MapViewToolBar();
 
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWTOOLBAR_HPP__ */

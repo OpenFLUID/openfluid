@@ -46,80 +46,60 @@
  */
 
 /**
- \file MapViewModule.hpp
- \brief Header of ...
+ \file MapViewTreeLayerObjectBackgroundExpander.cpp
+ \brief Implements ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#include "MapViewTreeLayerObjectBackgroundExpander.hpp"
 
-#include "ProjectWorkspaceModule.hpp"
-
-#include <gtkmm/label.h>
-
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+MapViewTreeLayerObjectBackgroundExpander::MapViewTreeLayerObjectBackgroundExpander()
 {
-  private:
+  mp_MainTableExpander = Gtk::manage(new Gtk::Table(4, 2, false));
+  mp_HScale = Gtk::manage(new Gtk::HScale(0, 101, 1));
+  mp_FileChooserButton = Gtk::manage(new Gtk::FileChooserButton());
+  mp_Separator = Gtk::manage(new Gtk::HSeparator());
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+  m_LabelHScale.set_label("Opacity");
+  m_LabelFileChooserButton.set_label("Choose");
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+  m_LabelHScale.set_alignment(.02, 0);
+  m_LabelFileChooserButton.set_alignment(.02, 0);
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+  mp_HScale->set_value_pos(Gtk::POS_LEFT);
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+  mp_MainTableExpander->attach(m_LabelFileChooserButton, 0, 1, 0, 1,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  mp_MainTableExpander->attach(m_LabelHScale, 0, 1, 2, 3,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+  mp_MainTableExpander->attach(*mp_FileChooserButton, 1, 2, 0, 1,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  mp_MainTableExpander->attach(*mp_HScale, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK);
 
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+  mp_MainTableExpander->attach(*mp_Separator, 0, 2, 1, 2,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
-  public:
+}
 
-    MapViewModule();
+// =====================================================================
+// =====================================================================
 
-    Gtk::Widget* asWidget();
+MapViewTreeLayerObjectBackgroundExpander::~MapViewTreeLayerObjectBackgroundExpander()
+{
 
-    void compose(){};
+}
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+// =====================================================================
+// =====================================================================
 
-    void update(){};
+Gtk::Widget * MapViewTreeLayerObjectBackgroundExpander::asWidget()
+{
+  return mp_MainTableExpander;
+}
 
-    sigc::signal<void> signal_ModuleChanged(){};
-
-};
-
-#endif /* __MAPVIEWMODULE_HPP__ */
+// =====================================================================
+// =====================================================================

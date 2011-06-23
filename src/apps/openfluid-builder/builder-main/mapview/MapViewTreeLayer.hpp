@@ -46,80 +46,64 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewTreeLayer.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWTREELAYER_HPP__
+#define __MAPVIEWTREELAYER_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm.h>
+#include <iostream>
+#include <vector>
 
-#include <gtkmm/label.h>
-
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
+//#include "MapViewAction.hpp"
+//#include "MapViewTreeLayerObject.hpp"
+#include "MapViewTreeLayerObjectBase.hpp"
+#include "MapViewTreeLayerObjectResult.hpp"
+#include "MapViewTreeLayerObjectBackground.hpp"
 #include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
 
-class MapViewModule : public ProjectWorkspaceModule
+
+class MapViewTreeLayer
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    int m_NumLayer;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Gtk::VBox * mp_MainVBox;
+    Gtk::VBox * mp_VBoxLayer;
+    Gtk::VBox * mp_VBoxBackgroundResultLayer;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    MapViewTreeLayerObjectResult* mp_ResultLayer;
+    MapViewTreeLayerObjectBackground* mp_BackgroundLayer;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::ScrolledWindow * mp_ScrolledWindowLayer;
+    Gtk::Viewport * mp_ViewportLayer;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    MapViewDrawingArea& mref_DrawLayer;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    std::vector<MapViewTreeLayerObjectBase*> m_ObjectLayer;
+    void onUpLayer(int);
+    void onDownLayer(int);
+    void onRemoveLayer(int);
+    void onColorLayer(int, int, int, double, double, double, double);
+    void onIsDisplay(int, bool);
 
   public:
 
-    MapViewModule();
+    MapViewTreeLayer(MapViewDrawingArea&);
+    virtual ~MapViewTreeLayer();
 
-    Gtk::Widget* asWidget();
+    Gtk::Widget * asWidget();
+    void addLayer(Glib::ustring, std::string, std::string);
+    void deleteLayer(int);
+    MapViewDrawingArea& getDrawLayer();
 
-    void compose(){};
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
-
-    void update(){};
-
-    sigc::signal<void> signal_ModuleChanged(){};
 
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWTREELAYER_HPP__ */

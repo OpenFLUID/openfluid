@@ -46,80 +46,78 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewTreeLayerObjectBaseExpander.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWTREELAYEROBJECTBASEEXPANDER_HPP__
+#define __MAPVIEWTREELAYEROBJECTBASEEXPANDER_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm.h>
+#include <gdkmm-2.4/gdkmm.h>
+#include <glibmm/i18n.h>
+#include <iostream>
+#include <stdlib.h>
+#include <ctime>
 
-#include <gtkmm/label.h>
 
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewTreeLayerObjectBaseExpander
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    Gtk::Table* mp_MainTableExpander;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Gtk::HSeparator* mp_Separator;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::Label m_LabelColor;
+    Gtk::Label m_LabelCheckButton;
+    Gtk::Label m_LabelHScale;
+    Gtk::Label m_LabelSpinButton;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::ColorButton* mp_ColorButton;
+    Gtk::CheckButton* mp_CheckButton;
+    Gtk::HScale* mp_HScale;
+    Gtk::Adjustment* mp_AdjustmentHScale;
+    Gtk::Adjustment* mp_AdjustmentSpinButton;
+    Gtk::SpinButton* mp_SpinButton;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
 
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    Gdk::Color m_Color;
+    double m_Alpha;
+    int m_Id;
+    int m_Position;
+    int m_SizeLine;
 
   public:
 
-    MapViewModule();
+    MapViewTreeLayerObjectBaseExpander();
+    virtual ~MapViewTreeLayerObjectBaseExpander();
 
     Gtk::Widget* asWidget();
 
-    void compose(){};
+    void onColor();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+    typedef sigc::signal<void, int, int, int, double, double, double, double> mtype_Signal;
+    mtype_Signal signalColor();
 
-    void update(){};
+    int getId();
+    int getPosition();
+    int getSizeLine();
 
-    sigc::signal<void> signal_ModuleChanged(){};
+    void randColor();
+    void setAlphaPercent();
+    void setId(int);
+
+    void setPosition(int);
+    void setSizeLine(int);
+
+  protected:
+
+    mtype_Signal msigc_signalColor;
 
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWTREELAYEROBJECTBASEEXPANDER_HPP__ */

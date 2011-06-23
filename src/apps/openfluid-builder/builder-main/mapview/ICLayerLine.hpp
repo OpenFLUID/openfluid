@@ -46,80 +46,40 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file ICLayerLine.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __ICLAYERLINE_HPP__
+#define __ICLAYERLINE_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <vector>
 
-#include <gtkmm/label.h>
+#include "ICLayer.hpp"
+#include <cairomm-1.0/cairomm/context.h>
+#include <gdal/ogrsf_frmts.h>
 
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class ICLayerLine : public ICLayer
 {
-  private:
-
-    MapViewDrawingArea* mp_DrawingAreaMAp;
-
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
-
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
-
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
-
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
 
   public:
 
-    MapViewModule();
+    ICLayerLine();
+    virtual ~ICLayerLine();
 
-    Gtk::Widget* asWidget();
+    OGRLineString* recoverLine(int);
 
-    void compose(){};
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+    std::vector<  std::vector< std::pair<double, double> >  > ICLine;
 
-    void update(){};
-
-    sigc::signal<void> signal_ModuleChanged(){};
-
+    void drawLine(Cairo::RefPtr<Cairo::Context>, int, double);
+    void draw(Cairo::RefPtr<Cairo::Context>, double);
+    void addObjectGeo(OGRGeometry* ObjectGeo);
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __ICLAYERLINE_HPP__ */

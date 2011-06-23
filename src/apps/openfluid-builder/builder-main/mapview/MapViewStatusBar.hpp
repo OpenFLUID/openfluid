@@ -46,80 +46,47 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewStatusBar.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWSTATUSBAR_HPP__
+#define __MAPVIEWSTATUSBAR_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
-
+#include <gtkmm/statusbar.h>
+#include <gtkmm/box.h>
+#include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewStatusBar
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    Gtk::Statusbar* mp_MainStatusbar;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Gtk::HBox* mp_HBox;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::Entry* mp_XEntry;
+    Gtk::Entry* mp_YEntry;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::Label m_XLabel;
+    Gtk::Label m_YLabel;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
 
   public:
 
-    MapViewModule();
+    MapViewStatusBar();
+    virtual ~MapViewStatusBar();
 
-    Gtk::Widget* asWidget();
-
-    void compose(){};
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
-
-    void update(){};
-
-    sigc::signal<void> signal_ModuleChanged(){};
-
+    Gtk::Widget * asWidget();
+    Gtk::Entry* getXEntry();
+    Gtk::Entry* getYEntry();
+    void setXEntryText(Glib::ustring);
+    void setYEntryText(Glib::ustring);
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWSTATUSBAR_HPP__ */

@@ -46,80 +46,55 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewTreeLayerObject.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWTREELAYEROBJECT_HPP__
+#define __MAPVIEWTREELAYEROBJECT_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm.h>
+#include <glibmm/i18n.h>
+#include <iostream>
 
-#include <gtkmm/label.h>
-
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewTreeLayerObject
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    int m_Id;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::VBox* mp_MainVBox;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::Table* mp_TableExpander;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    Gtk::Expander* mp_Expander;
+    Gtk::Label m_LayerLabel;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
 
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    Gtk::ScrolledWindow* mp_ScrolledWindowExpander;
 
   public:
 
-    MapViewModule();
+    MapViewTreeLayerObject(const Glib::ustring&, int);
+    virtual ~MapViewTreeLayerObject();
 
-    Gtk::Widget* asWidget();
+    Gtk::Widget * asWidget();
 
-    void compose(){};
+    int getId();
+    Glib::ustring getLabel();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+    void setLabel(Glib::ustring);
 
-    void update(){};
+  protected:
 
-    sigc::signal<void> signal_ModuleChanged(){};
+    int m_IsDisplay;
 
+    Gtk::CheckButton* mp_CheckButton;
+    Gtk::Table* mp_MainTable;
+    Gtk::Viewport* mp_ViewportExpander;
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWTREELAYEROBJECT_HPP__ */

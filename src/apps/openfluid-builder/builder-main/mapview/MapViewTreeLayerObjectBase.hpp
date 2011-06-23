@@ -46,80 +46,79 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewTreeLayerObjectBase.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWTREELAYEROBJECTBASE_HPP__
+#define __MAPVIEWTREELAYEROBJECTBASE_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm.h>
+#include <glibmm/i18n.h>
+#include <iostream>
 
-#include <gtkmm/label.h>
+#include "MapViewTreeLayerObject.hpp"
+#include "MapViewTreeLayerObjectBaseExpander.hpp"
 
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewTreeLayerObjectBase : public MapViewTreeLayerObject
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    int m_Position;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Gtk::ToolItem* mp_ButtonUp;
+    Gtk::ToolItem* mp_ButtonDown;
+    Gtk::ToolItem* mp_ButtonRemove;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::VBox * mp_VBoxButtonUpDown;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Glib::RefPtr<Gtk::Action> mref_UpLayer;
+    Glib::RefPtr<Gtk::Action> mref_DownLayer;
+    Glib::RefPtr<Gtk::Action> mref_RemoveLayer;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    Gtk::Image * mp_ImageType;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    MapViewTreeLayerObjectBaseExpander* mp_MapViewTreeLayerObjectBaseExpander;
 
   public:
 
-    MapViewModule();
+    MapViewTreeLayerObjectBase(const Glib::ustring &, int, int);
+    virtual ~MapViewTreeLayerObjectBase();
 
-    Gtk::Widget* asWidget();
+    int getPosition();
+    void setPosition(int);
+    Gtk::ToolItem* getButtonUp();
+    Gtk::ToolItem* getButtonDown();
+    MapViewTreeLayerObjectBaseExpander* getMapViewTreeLayerObjectBaseExpander();
 
-    void compose(){};
+    Glib::RefPtr<Gtk::Action> getUpLayerAction();
+    Glib::RefPtr<Gtk::Action> getDownLayerAction();
+    Glib::RefPtr<Gtk::Action> getRemoveLayerAction();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+    void onUpLayer();
+    void onDownLayer();
+    void onRemoveLayer();
+    void onIsDisplay();
+    // signals :
+    typedef sigc::signal<void, int> mtype_Signal;
+    mtype_Signal signalUpLayer();
+    mtype_Signal signalDownLayer();
+    mtype_Signal signalRemoveLayer();
 
-    void update(){};
+    typedef sigc::signal<void, int, bool>
+            mtype_SignalDisplay;
+    mtype_SignalDisplay signalDisplay();
 
-    sigc::signal<void> signal_ModuleChanged(){};
 
+  protected:
+
+    mtype_Signal msigc_signalUpLayer;
+    mtype_Signal msigc_signalDownLayer;
+    mtype_Signal msigc_signalRemoveLayer;
+
+    mtype_SignalDisplay msigc_signalDisplay;
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWTREELAYEROBJECTBASE_HPP__ */

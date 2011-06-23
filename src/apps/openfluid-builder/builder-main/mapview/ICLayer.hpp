@@ -46,80 +46,91 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file ICLayer.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __ICLAYER_HPP__
+#define __ICLAYER_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <vector>
 
-#include <gtkmm/label.h>
+#include <cairomm-1.0/cairomm/context.h>
+#include <gdal/ogrsf_frmts.h>
 
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class ICLayer
 {
-  private:
+  protected:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    int m_Id;
+    int m_Position;
+    int m_type;
+    int m_SizeLine;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    bool m_IsDisplay;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    std::vector<OGRGeometry*> m_ObjectGeo;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    double m_maxX;
+    double m_maxY;
+    double m_minX;
+    double m_minY;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    double m_Red;
+    double m_Green;
+    double m_Blue;
+    double m_Alpha;
 
   public:
 
-    MapViewModule();
+    ICLayer();
+    virtual ~ICLayer();
 
-    Gtk::Widget* asWidget();
+    virtual void draw(Cairo::RefPtr<Cairo::Context>, double)=0;
 
-    void compose(){};
+    double getmaxX();
+    double getmaxY();
+    double getminX();
+    double getminY();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+    double getRed();
+    double getGreen();
+    double getBlue();
+    double getAlpha();
 
-    void update(){};
+    int gettype();
+    int getId();
+    int getPosition();
+    int getSizeLine();
 
-    sigc::signal<void> signal_ModuleChanged(){};
+    bool getIsDisplay();
+
+    std::vector<OGRGeometry*> getObjectGeo();
+
+    virtual void addObjectGeo(OGRGeometry* ObjectGeo);
+
+    void setmaxX(double);
+    void setmaxY(double);
+    void setminX(double);
+    void setminY(double);
+
+    void setRed(double);
+    void setGreen(double);
+    void setBlue(double);
+    void setAlpha(double);
+
+    void settype(int);
+    void setId(int);
+    void setPosition(int);
+    void setSizeLine(int);
+
+    void setIsDisplay(bool);
 
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __ICLAYER_HPP__ */

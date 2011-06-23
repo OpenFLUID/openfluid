@@ -49,7 +49,7 @@
  \file MapViewModule.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
 #include "MapViewModule.hpp"
@@ -57,19 +57,81 @@
 // =====================================================================
 // =====================================================================
 
-
 MapViewModule::MapViewModule()
 {
-  mp_DummyLabel = Gtk::manage(new Gtk::Label("Here MapView Component..."));
-  mp_DummyLabel->set_visible(true);
+  mp_MainScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_HVisuPaned = Gtk::manage(new Gtk::HPaned());
+  mp_VBoxToolFrame = Gtk::manage(new Gtk::VBox());
+  mp_VBoxStatusbarDrawingArea = Gtk::manage(new Gtk::VBox());
+  mp_Statusbar = new MapViewStatusBar();
+  mp_DrawFrame = Gtk::manage(new Gtk::Frame());
+  mp_DrawingAreaMAp = Gtk::manage(new MapViewDrawingArea(*mp_Statusbar));
+  mp_ViewportDrawScrolledWindow = Gtk::manage(
+      new Gtk::Viewport(*manage(new Gtk::Adjustment(0, 0, 1)),
+          *manage(new Gtk::Adjustment(0, 0, 1))));
+  mp_ViewportMenuControlScrolledWindow = Gtk::manage(
+      new Gtk::Viewport(*manage(new Gtk::Adjustment(0, 0, 1)),
+          *manage(new Gtk::Adjustment(0, 0, 1))));
+  mp_DrawScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MenuScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_MenuControlScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_VMenuPaned = Gtk::manage(new Gtk::VPaned());
+  mp_ControlMenuFrame = Gtk::manage(new Gtk::Frame());
+  mp_InfoMenuFrame = Gtk::manage(new Gtk::Frame());
+  mp_ToolBarAction = new MapViewAction();
+  mp_MapViewTreeLayer = new MapViewTreeLayer(*mp_DrawingAreaMAp);
+  mp_ToolBar = Gtk::manage(new MapViewToolBar(*mp_ToolBarAction, *mp_MapViewTreeLayer));
+
+  mp_MainScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
+      Gtk::POLICY_AUTOMATIC);
+  mp_DrawScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
+      Gtk::POLICY_AUTOMATIC);
+  mp_MenuScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
+      Gtk::POLICY_AUTOMATIC);
+
+  mp_DrawFrame->set_label("Map");
+  mp_ControlMenuFrame->set_label("Control");
+  mp_InfoMenuFrame->set_label("Info");
+
+  mp_MenuScrolledWindow->set_border_width(Gtk::SHADOW_NONE);
+
+  mp_DrawFrame->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+  mp_ControlMenuFrame->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+  mp_InfoMenuFrame->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+
+  mp_ViewportMenuControlScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+
+  mp_MenuControlScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+  mp_MainScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+  mp_DrawScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+  mp_MenuScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+
+  mp_ViewportMenuControlScrolledWindow->add(*mp_MapViewTreeLayer->asWidget());
+  mp_MenuControlScrolledWindow->add(*mp_ViewportMenuControlScrolledWindow);
+  mp_ControlMenuFrame->add(*mp_MenuControlScrolledWindow);
+  mp_ViewportDrawScrolledWindow->add(*mp_DrawingAreaMAp);
+  mp_DrawScrolledWindow->add(*mp_ViewportDrawScrolledWindow);
+  mp_DrawFrame->add(*mp_DrawScrolledWindow);
+  mp_VMenuPaned->pack1(*mp_ControlMenuFrame);
+  mp_VMenuPaned->pack2(*mp_InfoMenuFrame);
+  mp_MenuScrolledWindow->add(*mp_VMenuPaned);
+  mp_VBoxStatusbarDrawingArea->pack_start(*mp_DrawFrame, Gtk::PACK_EXPAND_WIDGET);
+  mp_VBoxStatusbarDrawingArea->pack_start(*mp_Statusbar->asWidget(), Gtk::PACK_SHRINK);
+  mp_HVisuPaned->pack1(*mp_VBoxStatusbarDrawingArea, Gtk::EXPAND);
+  mp_HVisuPaned->pack2(*mp_MenuScrolledWindow, Gtk::FILL | Gtk::EXPAND);
+  mp_VBoxToolFrame->pack_start(*mp_ToolBar, Gtk::PACK_SHRINK);
+  mp_VBoxToolFrame->pack_end(*mp_HVisuPaned, Gtk::PACK_EXPAND_WIDGET);
+  mp_MainScrolledWindow->add(*mp_VBoxToolFrame);
+
+  mp_MainScrolledWindow->show_all_children();
+  mp_MainScrolledWindow->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-
 Gtk::Widget* MapViewModule::asWidget()
 {
-  return mp_DummyLabel;
+  return mp_MainScrolledWindow;
 }
 

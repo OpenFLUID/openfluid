@@ -46,80 +46,87 @@
  */
 
 /**
- \file MapViewModule.hpp
- \brief Header of ...
+ \file MapViewStatusBar.cpp
+ \brief Implements ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
-
-#include "ProjectWorkspaceModule.hpp"
-
-#include <gtkmm/label.h>
-
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
 #include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
 
-class MapViewModule : public ProjectWorkspaceModule
+MapViewStatusBar::MapViewStatusBar()
 {
-  private:
+  mp_MainStatusbar = Gtk::manage(new Gtk::Statusbar());
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+  mp_HBox = Gtk::manage(new Gtk::HBox());
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+  mp_XEntry = Gtk::manage(new Gtk::Entry());
+  mp_YEntry = Gtk::manage(new Gtk::Entry());
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+//  mp_XEntry->set_size_request(5,10);
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+  mp_MainStatusbar->set_border_width(3);
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+  mp_XEntry->set_sensitive(false);
+  mp_YEntry->set_sensitive(false);
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+  m_XLabel.set_label("X : ");
+  m_YLabel.set_label("Y : ");
 
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+  mp_MainStatusbar->pack_start(m_XLabel, Gtk::PACK_SHRINK);
+  mp_MainStatusbar->pack_start(*mp_XEntry, Gtk::PACK_SHRINK);
+  mp_MainStatusbar->pack_start(m_YLabel, Gtk::PACK_SHRINK);
+  mp_MainStatusbar->pack_start(*mp_YEntry, Gtk::PACK_SHRINK);
 
-  public:
+//  mp_MainStatusbar->pack_start(*mp_HBox);
+}
 
-    MapViewModule();
+// =====================================================================
+// =====================================================================
 
-    Gtk::Widget* asWidget();
+MapViewStatusBar::~MapViewStatusBar()
+{
+}
 
-    void compose(){};
+// =====================================================================
+// =====================================================================
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+Gtk::Widget * MapViewStatusBar::asWidget()
+{
+  return mp_MainStatusbar;
+}
 
-    void update(){};
+// =====================================================================
+// =====================================================================
 
-    sigc::signal<void> signal_ModuleChanged(){};
+Gtk::Entry* MapViewStatusBar::getXEntry()
+{
+  return mp_XEntry;
+}
 
-};
+// =====================================================================
+// =====================================================================
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+Gtk::Entry* MapViewStatusBar::getYEntry()
+{
+  return mp_YEntry;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MapViewStatusBar::setXEntryText(Glib::ustring XEntryText)
+{
+  mp_XEntry->set_text(XEntryText);
+}
+
+// =====================================================================
+// =====================================================================
+
+void MapViewStatusBar::setYEntryText(Glib::ustring YEntryText)
+{
+  mp_YEntry->set_text(YEntryText);
+}
+
+// =====================================================================
+// =====================================================================

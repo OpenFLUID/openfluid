@@ -46,80 +46,41 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewTreeLayerObjectResultExpander.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWTREELAYEROBJECTRESULTEXPANDER_HPP__
+#define __MAPVIEWTREELAYEROBJECTRESULTEXPANDER_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm.h>
+#include <glibmm/i18n.h>
+#include <iostream>
 
-#include <gtkmm/label.h>
-
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewTreeLayerObjectResultExpander
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    Gtk::Table* mp_MainTableExpander;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Gtk::HSeparator* mp_Separator;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::Label m_LabelFileChooserButton;
+    Gtk::Label m_LabelHScale;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::HScale* mp_HScale;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    Gtk::FileChooserButton* mp_FileChooserButton;
 
   public:
 
-    MapViewModule();
+    MapViewTreeLayerObjectResultExpander();
+    virtual ~MapViewTreeLayerObjectResultExpander();
 
     Gtk::Widget* asWidget();
 
-    void compose(){};
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
-
-    void update(){};
-
-    sigc::signal<void> signal_ModuleChanged(){};
-
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWTREELAYEROBJECTRESULTEXPANDER_HPP__ */

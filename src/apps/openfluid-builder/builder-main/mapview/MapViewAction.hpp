@@ -46,80 +46,77 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file MapViewAction.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MAPVIEWACTION_HPP__
+#define __MAPVIEWACTION_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <gtkmm.h>
 
-#include <gtkmm/label.h>
-
-
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-
-#include "MapViewDrawingArea.hpp"
-#include "MapViewAction.hpp"
-#include "MapViewToolBar.hpp"
-#include "MapViewInfo.hpp"
-#include "MapViewStatusBar.hpp"
-#include "MapViewTreeLayer.hpp"
-
-class MapViewModule : public ProjectWorkspaceModule
+class MapViewAction
 {
   private:
 
-    MapViewDrawingArea* mp_DrawingAreaMAp;
+    Glib::RefPtr<Gtk::UIManager> mref_UIToolBarManager;
 
-    MapViewAction* mp_ToolBarAction;
-    MapViewToolBar* mp_ToolBar;
-    MapViewStatusBar* mp_Statusbar;
-    MapViewTreeLayer* mp_MapViewTreeLayer;
+    Glib::RefPtr<Gtk::ActionGroup> mref_ToolBarActionGroup;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Glib::ustring m_ToolBarUiXml;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    void createToolBarUiXml();
+    void createToolBarActionGroup();
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    Glib::RefPtr<Gtk::Action> mref_ZoomCursor;
+    Glib::RefPtr<Gtk::Action> mref_ZoomFrame;
+    Glib::RefPtr<Gtk::Action> mref_ZoomObject;
+    Glib::RefPtr<Gtk::Action> mref_UnzoomCursor;
+    Glib::RefPtr<Gtk::Action> mref_UnzoomObject;
 
-    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    Gtk::Viewport* mp_ViewportDrawScrolledWindow;
-    Gtk::Viewport* mp_ViewportMenuControlScrolledWindow;
+    Glib::RefPtr<Gtk::Action> mref_ChangeZoomCursor;
+    Glib::RefPtr<Gtk::Action> mref_ChangeZoomFrame;
+    Glib::RefPtr<Gtk::Action> mref_ChangeZoomObject;
+    Glib::RefPtr<Gtk::Action> mref_ChangeUnzoomCursor;
+    Glib::RefPtr<Gtk::Action> mref_ChangeUnzoomObject;
 
   public:
 
-    MapViewModule();
+    MapViewAction();
 
-    Gtk::Widget* asWidget();
+    Gtk::Widget* getToolBarWidget();
 
-    void compose(){};
+    Glib::RefPtr<Gtk::AccelGroup> getAccelGroup();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+    Glib::RefPtr<Gtk::UIManager> getUIManager();
 
-    void update(){};
+    void setToolBarActionGroupSensitive(bool Sensitive);
+    void setToolBarActionGroupVisible(bool Visible);
 
-    sigc::signal<void> signal_ModuleChanged(){};
+    Glib::RefPtr<Gtk::Action> getAddNewLayerAction();
+    Glib::RefPtr<Gtk::Action> getRemoveLayerAction();
+    Glib::RefPtr<Gtk::Action> getSelectAction();
+    Glib::RefPtr<Gtk::Action> getMoveAction();
+    Glib::RefPtr<Gtk::Action> getShow100Action();
 
+    Glib::RefPtr<Gtk::Action> getZoomCursorAction();
+    Glib::RefPtr<Gtk::Action> getZoomFrameAction();
+    Glib::RefPtr<Gtk::Action> getZoomObjectAction();
+
+    Glib::RefPtr<Gtk::Action> getChangeZoomCursorAction();
+    Glib::RefPtr<Gtk::Action> getChangeZoomFrameAction();
+    Glib::RefPtr<Gtk::Action> getChangeZoomObjectAction();
+
+    Glib::RefPtr<Gtk::Action> getUnzoomCursorAction();
+    Glib::RefPtr<Gtk::Action> getUnzoomObjectAction();
+
+    Glib::RefPtr<Gtk::Action> getChangeUnzoomCursorAction();
+    Glib::RefPtr<Gtk::Action> getChangeUnzoomObjectAction();
+
+    Glib::RefPtr<Gtk::Action> getInfoAction();
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MAPVIEWACTION_HPP__ */
+
