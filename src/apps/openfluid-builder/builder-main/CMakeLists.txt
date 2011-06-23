@@ -13,6 +13,9 @@ INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
                     
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
                  ${GTKMM_LIBRARY_DIRS})
+                 
+INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS})
+LINK_DIRECTORIES(${GDAL_LIBRARY_DIRS})
 
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} . common model domain simulation results mapview)
@@ -32,6 +35,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
                       ${GTKMM_LIBRARIES}
+                      ${GDAL_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
