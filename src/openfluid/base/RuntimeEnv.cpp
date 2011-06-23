@@ -368,6 +368,17 @@ std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
       + RelativeFilePath).string();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getLocaleDir() const
+{
+  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::NLS_SHARE_LOCALE_PATH).string();
+}
+
+
 // =====================================================================
 // =====================================================================
 

@@ -72,7 +72,7 @@ class BuilderGtkInit
       m_Kit(argc, argv)
     {
       // Native Language Support setup
-      if (OPENFLUID_NLS_ENABLE)
+      if (openfluid::config::NLS_ENABLE)
       {
         i18nManager::getInstance()->setNLSEnable(true);
 
@@ -81,8 +81,8 @@ class BuilderGtkInit
 
         if (!PrefLang.empty())
           i18nManager::getInstance()->tryToSetCurrentLanguage(PrefLang);
-      } else
-        i18nManager::getInstance()->setNLSEnable(false);
+      }
+      else i18nManager::getInstance()->setNLSEnable(false);
 
     }
 

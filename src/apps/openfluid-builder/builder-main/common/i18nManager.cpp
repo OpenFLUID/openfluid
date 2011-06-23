@@ -56,6 +56,7 @@
 
 #include <boost/filesystem.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <glibmm/i18n.h>
 #include <glibmm/miscutils.h>
 #include <langinfo.h>
@@ -156,11 +157,11 @@ void i18nManager::tryToSetCurrentLanguage(Glib::ustring Language)
       setToDefaultLanguage();
   }
 
-  bindtextdomain(OPENFLUID_NLS_PACKAGE, OPENFLUID_NLS_LOCALEDIR);
-  bind_textdomain_codeset(OPENFLUID_NLS_PACKAGE, "UTF-8");
-  textdomain(OPENFLUID_NLS_PACKAGE);
-
+  bindtextdomain(openfluid::config::NLS_PACKAGE.c_str(), openfluid::base::RuntimeEnvironment::getInstance()->getLocaleDir().c_str());
+  bind_textdomain_codeset(openfluid::config::NLS_PACKAGE.c_str(), "UTF-8");
+  textdomain(openfluid::config::NLS_PACKAGE.c_str());
 }
+
 
 // =====================================================================
 // =====================================================================
