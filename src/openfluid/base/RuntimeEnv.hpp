@@ -336,6 +336,12 @@ class DLLEXPORT RuntimeEnvironment
     std::string getAppResourceFilePath(std::string AppName, std::string RelativeFilePath) const;
 
     /**
+      Returns the locale directory
+      @return the path for locale directory
+    */
+    std::string getLocaleDir()const;
+
+    /**
       Returns the extra properties list
       @return the extra properties list
     */

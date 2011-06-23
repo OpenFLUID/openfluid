@@ -53,6 +53,7 @@
  */
 
 #include "MapViewTreeLayerObjectBase.hpp"
+#include "BuilderGraphicsHelper.hpp"
 
 MapViewTreeLayerObjectBase::MapViewTreeLayerObjectBase(
     const Glib::ustring & Label, int IdPositionInit, int Type) :
@@ -70,24 +71,19 @@ MapViewTreeLayerObjectBase::MapViewTreeLayerObjectBase(
   switch (Type)
   {
     case 1:
-      im = Gdk::Pixbuf::create_from_file("/home/chabert/points.png", 22, 22,
-          true);
+      im = Gdk::Pixbuf::create_from_file(BuilderGraphicsHelper::getPathForFileName("points.png"),22,22,true);
       break;
     case 2:
-      im = Gdk::Pixbuf::create_from_file("/home/chabert/lignes.png", 22, 22,
-          true);
+      im = Gdk::Pixbuf::create_from_file(BuilderGraphicsHelper::getPathForFileName("lines.png"),22,22,true);
       break;
     case 3:
-      im
-          = Gdk::Pixbuf::create_from_file("/home/chabert/poly.png", 22, 22,
-              true);
+      im = Gdk::Pixbuf::create_from_file(BuilderGraphicsHelper::getPathForFileName("polygons.png"),22,22,true);
       break;
     default:
       break;
   }
 
   mp_ImageType = Gtk::manage(new Gtk::Image(im));
-
   Gtk::Toolbar* tup = Gtk::manage(new Gtk::Toolbar());
   Gtk::Toolbar* tdown = Gtk::manage(new Gtk::Toolbar());
 
