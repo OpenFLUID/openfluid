@@ -66,7 +66,6 @@
 #include "MapViewTreeLayerObjectBackground.hpp"
 #include "MapViewDrawingArea.hpp"
 
-
 class MapViewTreeLayer
 {
   private:
@@ -90,6 +89,7 @@ class MapViewTreeLayer
     void onDownLayer(int);
     void onRemoveLayer(int);
     void onColorLayer(int, int, int, double, double, double, double);
+    void onIsSelected(int, bool);
     void onIsDisplay(int, bool);
 
   public:
@@ -101,8 +101,6 @@ class MapViewTreeLayer
     void addLayer(Glib::ustring, std::string, std::string);
     void deleteLayer(int);
     MapViewDrawingArea& getDrawLayer();
-
-
 
 };
 

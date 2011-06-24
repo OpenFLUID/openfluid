@@ -65,6 +65,7 @@ class MapViewTreeLayerObject
 
     int m_Id;
 
+    bool m_IsSelected;
 
     Gtk::VBox* mp_MainVBox;
 
@@ -72,7 +73,7 @@ class MapViewTreeLayerObject
 
     Gtk::Expander* mp_Expander;
     Gtk::Label m_LayerLabel;
-
+    Gtk::EventBox* mp_Eventbox;
 
     Gtk::ScrolledWindow* mp_ScrolledWindowExpander;
 
@@ -84,17 +85,31 @@ class MapViewTreeLayerObject
     Gtk::Widget * asWidget();
 
     int getId();
-    Glib::ustring getLabel();
 
+    bool getIsSelected();
+    void setIsSelected(bool);
+
+    Glib::ustring getLabel();
     void setLabel(Glib::ustring);
+
+    Gtk::EventBox* getEventbox();
+
+    void onIsSelected();
+
+    typedef sigc::signal<void, int, bool> mtype_SignalSelected;
+    mtype_SignalSelected signalSelected();
 
   protected:
 
     int m_IsDisplay;
 
+    mtype_SignalSelected msigc_signalSelected;
+
     Gtk::CheckButton* mp_CheckButton;
     Gtk::Table* mp_MainTable;
     Gtk::Viewport* mp_ViewportExpander;
+
+    bool on_event_happend(GdkEvent* event);
 };
 
 #endif /* __MAPVIEWTREELAYEROBJECT_HPP__ */

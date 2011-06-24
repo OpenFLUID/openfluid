@@ -99,7 +99,7 @@ MapViewDrawingArea::MapViewDrawingArea(MapViewStatusBar& Statusbar) :
 
 MapViewDrawingArea::~MapViewDrawingArea()
 {
-  for (int i = 0; i < m_ICLayer.size(); i++)
+  for (unsigned int i = 0; i < m_ICLayer.size(); i++)
   {
     delete m_ICLayer[i];
     m_ICLayer[i] = 0;
@@ -112,6 +112,8 @@ MapViewDrawingArea::~MapViewDrawingArea()
 bool MapViewDrawingArea::on_expose_event(GdkEventExpose* event)
 {
   geton_expose_event();
+
+  return true;
 }
 
 // =====================================================================
@@ -119,7 +121,7 @@ bool MapViewDrawingArea::on_expose_event(GdkEventExpose* event)
 
 void MapViewDrawingArea::calulMaxMinCoordinate()
 {
-  for (int index = 0; index < m_ICLayer.size(); index++)
+  for (unsigned int index = 0; index < m_ICLayer.size(); index++)
   {
     if (index == 0)
     {
@@ -261,6 +263,7 @@ void MapViewDrawingArea::loadShapefile(std::string path, std::string file)
     ICLayer->setPosition(m_NumLayer);
     ICLayer->setIsDisplay(true);
     ICLayer->settype(type);
+    ICLayer->setIsSelected(false);
 
   } else
     std::cerr << "layer of file " << file << "not found" << std::endl;
@@ -359,7 +362,7 @@ bool MapViewDrawingArea::geton_expose_event()
       //      get_window()->set_cursor(Cursor);
       while (compt >= 0)
       {
-        for (int index = 0; index < m_ICLayer.size(); index++)
+        for (unsigned int index = 0; index < m_ICLayer.size(); index++)
         {
           //TODO finir le changement pour que les couleur s'affiche en fonction des position
 
@@ -455,7 +458,7 @@ bool MapViewDrawingArea::on_event_happend(GdkEvent* event)
     //    std::cout << "Press1: X= " << m_XPress << " Y= " << m_YPress << std::endl;
     m_XPress += m_XTranslateOrigine - m_XTranslate;
     m_YPress += m_YTranslateOrigine - m_YTranslate;
-    std::cout << "Press2: X= " << m_XPress << " Y= " << m_YPress << std::endl;
+//    std::cout << "Press2: X= " << m_XPress << " Y= " << m_YPress << std::endl;
     if (m_ZoomCursor)
     {
       //      std::cout << m_scale << " :: " << m_FactorScale << std::endl;

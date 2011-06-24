@@ -106,7 +106,7 @@ void ICLayerLine::drawLine(Cairo::RefPtr<Cairo::Context> cr, int index,
 void ICLayerLine::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
 {
 
-  for (int i = 0; i < m_ObjectGeo.size(); i++)
+  for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
   {
     drawLine(cr, i, scale);
   }

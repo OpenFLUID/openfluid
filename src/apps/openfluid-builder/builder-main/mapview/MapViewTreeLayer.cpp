@@ -126,6 +126,8 @@ void MapViewTreeLayer::addLayer(Glib::ustring label, std::string fileuri,
       sigc::mem_fun(*this, &MapViewTreeLayer::onColorLayer));
   Layer->signalDisplay().connect(
       sigc::mem_fun(*this, &MapViewTreeLayer::onIsDisplay));
+  Layer->signalSelected().connect(
+        sigc::mem_fun(*this, &MapViewTreeLayer::onIsSelected));
 
   Layer->getMapViewTreeLayerObjectBaseExpander()->onColor();
 
@@ -154,7 +156,7 @@ void MapViewTreeLayer::deleteLayer(int Position)
   int positionCourante = 0;
   int positionSup = 0;
   int positionInf = 0;
-  for (int i = 0; i < m_ObjectLayer.size(); i++)
+  for (unsigned int i = 0; i < m_ObjectLayer.size(); i++)
   {
     if (m_ObjectLayer.at(i)->getPosition() == Position)
       positionCourante = i;
@@ -177,7 +179,7 @@ void MapViewTreeLayer::deleteLayer(int Position)
   mref_DrawLayer.removeICLayer(positionCourante);
   m_ObjectLayer.erase(m_ObjectLayer.begin() + positionCourante);
 
-  for (int i = 0; i < m_ObjectLayer.size(); i++)
+  for (unsigned int i = 0; i < m_ObjectLayer.size(); i++)
   {
     if (m_ObjectLayer.at(i)->getPosition() > Position)
     {
@@ -200,7 +202,7 @@ void MapViewTreeLayer::onUpLayer(int Position)
 {
   int positionCourante = 0;
   int positionInf = 0;
-  for (int i = 0; i < m_ObjectLayer.size(); i++)
+  for (unsigned int i = 0; i < m_ObjectLayer.size(); i++)
   {
     if (m_ObjectLayer.at(i)->getPosition() == Position)
       positionCourante = i;
@@ -244,7 +246,7 @@ void MapViewTreeLayer::onDownLayer(int Position)
 {
   int positionCourante = 0;
   int positionSup = 0;
-  for (int i = 0; i < m_ObjectLayer.size(); i++)
+  for (unsigned int i = 0; i < m_ObjectLayer.size(); i++)
   {
     if (m_ObjectLayer.at(i)->getPosition() == Position)
       positionCourante = i;
@@ -298,7 +300,7 @@ void MapViewTreeLayer::onRemoveLayer(int Position)
 void MapViewTreeLayer::onColorLayer(int Id, int Position, int SizeLine,
     double Red, double Green, double Blue, double Alpha)
 {
-  for (int i = 0; i < mref_DrawLayer.getICLayer().size(); i++)
+  for (unsigned int i = 0; i < mref_DrawLayer.getICLayer().size(); i++)
   {
     if (mref_DrawLayer.getICLayer().at(i)->getPosition() == Position)
     {
@@ -318,10 +320,9 @@ void MapViewTreeLayer::onColorLayer(int Id, int Position, int SizeLine,
 // =====================================================================
 // =====================================================================
 
-
 void MapViewTreeLayer::onIsDisplay(int Position, bool IsDisplay)
 {
-  for (int i = 0; i < mref_DrawLayer.getICLayer().size(); i++)
+  for (unsigned int i = 0; i < mref_DrawLayer.getICLayer().size(); i++)
   {
     if (mref_DrawLayer.getICLayer().at(i)->getPosition() == Position)
     {
@@ -334,7 +335,41 @@ void MapViewTreeLayer::onIsDisplay(int Position, bool IsDisplay)
 // =====================================================================
 // =====================================================================
 
+void MapViewTreeLayer::onIsSelected(int Id, bool IsSelected)
+{
+  for (unsigned int i = 0; i < mref_DrawLayer.getICLayer().size(); i++)
+  {
+    if (mref_DrawLayer.getICLayer().at(i)->getId() == Id)
+    {
+      mref_DrawLayer.getICLayer().at(i)->setIsSelected(!IsSelected);
+    } else
+    {
+      mref_DrawLayer.getICLayer().at(i)->setIsSelected(false);
+    }
+    std::cout << mref_DrawLayer.getICLayer().at(i)->getIsSelected() << " :: "
+        << i << std::endl;
+  }
+  for (unsigned int i = 0; i < m_ObjectLayer.size(); i++)
+  {
+    if (m_ObjectLayer.at(i)->getId() == Id)
+    {
+      m_ObjectLayer.at(i)->setIsSelected(!IsSelected);
 
+    } else
+    {
+      m_ObjectLayer.at(i)->setIsSelected(false);
+    }
+    if (m_ObjectLayer.at(i)->getIsSelected())
+      m_ObjectLayer.at(i)->getEventbox()->modify_bg(Gtk::StateType(NULL),
+          Gdk::Color("#00FF00"));
+    else
+      m_ObjectLayer.at(i)-> getEventbox()->modify_bg(Gtk::StateType(NULL),
+          Gdk::Color("#F1F1F1"));
+  }
+}
+
+// =====================================================================
+// =====================================================================
 
 MapViewDrawingArea& MapViewTreeLayer::getDrawLayer()
 {
@@ -343,3 +378,5 @@ MapViewDrawingArea& MapViewTreeLayer::getDrawLayer()
 
 // =====================================================================
 // =====================================================================
+
+

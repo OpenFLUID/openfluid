@@ -71,7 +71,7 @@ class ICLayer
     int m_Position;
     int m_type;
     int m_SizeLine;
-
+    bool m_IsSelected;
     bool m_IsDisplay;
 
     std::vector<OGRGeometry*> m_ObjectGeo;
@@ -109,6 +109,7 @@ class ICLayer
     int getSizeLine();
 
     bool getIsDisplay();
+    bool getIsSelected();
 
     std::vector<OGRGeometry*> getObjectGeo();
 
@@ -130,7 +131,7 @@ class ICLayer
     void setSizeLine(int);
 
     void setIsDisplay(bool);
-
+    void setIsSelected(bool);
 };
 
 #endif /* __ICLAYER_HPP__ */

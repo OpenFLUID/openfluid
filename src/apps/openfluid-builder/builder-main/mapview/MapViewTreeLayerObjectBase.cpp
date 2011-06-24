@@ -136,6 +136,7 @@ MapViewTreeLayerObjectBase::MapViewTreeLayerObjectBase(
   mp_MainTable->attach(*mp_ButtonRemove, 3, 4, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
   mp_MainTable->attach(*mp_VBoxButtonUpDown, 4, 5, 0, 1, Gtk::SHRINK,
       Gtk::SHRINK);
+
 }
 
 // =====================================================================
@@ -185,6 +186,9 @@ void MapViewTreeLayerObjectBase::onUpLayer()
 {
   msigc_signalUpLayer.emit(m_Position);
 }
+
+// =====================================================================
+// =====================================================================
 
 void MapViewTreeLayerObjectBase::onDownLayer()
 {
@@ -273,3 +277,6 @@ void MapViewTreeLayerObjectBase::onIsDisplay()
   m_IsDisplay = mp_CheckButton->get_active();
   msigc_signalDisplay.emit(m_Position, m_IsDisplay);
 }
+
+// =====================================================================
+// =====================================================================

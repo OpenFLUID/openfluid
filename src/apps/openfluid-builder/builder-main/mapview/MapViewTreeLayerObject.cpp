@@ -63,7 +63,7 @@ MapViewTreeLayerObject::MapViewTreeLayerObject(const Glib::ustring & Label,
   mp_MainTable = Gtk::manage(new Gtk::Table(1, 5, false));
   mp_Expander = Gtk::manage(new Gtk::Expander());
   //  mp_VBoxButtonUpDown = Gtk::manage(new Gtk::VBox());
-
+  mp_Eventbox = Gtk::manage(new Gtk::EventBox());
   m_LayerLabel.set_label(Label);
   mp_CheckButton = Gtk::manage(new Gtk::CheckButton());
 
@@ -74,6 +74,7 @@ MapViewTreeLayerObject::MapViewTreeLayerObject(const Glib::ustring & Label,
   mp_TableExpander = Gtk::manage(new Gtk::Table());
 
   m_IsDisplay = true;
+  m_IsSelected = false;
 
   mp_CheckButton->set_active(m_IsDisplay);
 
@@ -81,24 +82,30 @@ MapViewTreeLayerObject::MapViewTreeLayerObject(const Glib::ustring & Label,
 
   mp_Expander->set_label("Layer Options");
 
-
   mp_ScrolledWindowExpander->add(*mp_ViewportExpander);
   mp_Expander->add(*mp_ScrolledWindowExpander);
 
-  mp_ScrolledWindowExpander->set_policy(Gtk::POLICY_NEVER,
-      Gtk::POLICY_NEVER);
+  mp_ScrolledWindowExpander->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_NEVER);
 
   mp_MainTable->attach(*mp_CheckButton, 0, 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
   mp_MainTable->attach(m_LayerLabel, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
-
+  mp_Eventbox->add(*mp_MainTable);
   Gtk::HSeparator* seperator = Gtk::manage(new Gtk::HSeparator());
-  mp_MainVBox->pack_start(*mp_MainTable, Gtk::PACK_SHRINK);
+  mp_MainVBox->pack_start(*mp_Eventbox, Gtk::PACK_SHRINK);
   if (m_Id != -2)
   {
     mp_MainVBox->pack_end(*seperator, Gtk::PACK_SHRINK);
   }
   mp_MainVBox->pack_end(*mp_Expander, Gtk::PACK_SHRINK);
+
+  //  mp_MainVBox->add_events(Gdk::BUTTON_PRESS_MASK);
+  //  mp_MainVBox->add_events(Gdk::POINTER_MOTION_MASK);
+  //  mp_MainVBox->add_events(Gdk::BUTTON_RELEASE_MASK);
+  mp_Eventbox->signal_event().connect(
+      sigc::mem_fun(*this, &MapViewTreeLayerObject::on_event_happend));
+  mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#F1F1F1"));
+
 }
 
 // =====================================================================
@@ -144,3 +151,79 @@ int MapViewTreeLayerObject::getId()
 // =====================================================================
 // =====================================================================
 
+bool MapViewTreeLayerObject::on_event_happend(GdkEvent* event)
+{
+  if (event->type == GDK_ENTER_NOTIFY)
+  {
+    double XPress = ((GdkEventMotion *) event)->x;
+    double YPress = ((GdkEventMotion *) event)->y;
+    std::cout << "motion: X= " << XPress << " Y= " << YPress << std::endl;
+    mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#66DDFF"));
+
+  }
+  if (event->type == GDK_LEAVE_NOTIFY)
+  {
+    //      double XPress = ((GdkEventMotion *) event)->x;
+    //      double YPress = ((GdkEventMotion *) event)->y;
+    //      std::cout << "motion: X= " << XPress << " Y= " << YPress << std::endl;
+    if (!m_IsSelected)
+      mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#F1F1F1"));
+    else
+      mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#00FF00"));
+  }
+  if (event->type == GDK_BUTTON_PRESS)
+  {
+    onIsSelected();
+  }
+  //  if (event->type == GDK_BUTTON_RELEASE)
+  //  {
+  //    double XPress = event->button.x;
+  //    double YPress = event->button.y;
+  //    std::cout << "Release: X= " << XPress << " Y= " << YPress << std::endl;
+  //  }
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+MapViewTreeLayerObject::mtype_SignalSelected MapViewTreeLayerObject::signalSelected()
+{
+  return msigc_signalSelected;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool MapViewTreeLayerObject::getIsSelected()
+{
+  return m_IsSelected;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MapViewTreeLayerObject::setIsSelected(bool IsSelected)
+{
+  m_IsSelected = IsSelected;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MapViewTreeLayerObject::onIsSelected()
+{
+  msigc_signalSelected.emit(m_Id, m_IsSelected);
+  std::cout << "lala" << std::endl;
+}
+
+// =====================================================================
+// =====================================================================
+
+Gtk::EventBox* MapViewTreeLayerObject::getEventbox()
+{
+  return mp_Eventbox;
+}
+
+// =====================================================================
+// =====================================================================

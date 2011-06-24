@@ -58,7 +58,7 @@
 #include <iostream>
 #include <vector>
 //#include <gtkmm-2.4/gtkmm/drawingarea.h>
-#include <cairomm-1.0/cairomm/context.h>
+#include <cairomm/context.h>
 //#include <cairomm-1.0/cairomm/matrix.h>
 #include <gdal/ogr_geometry.h>
 #include <gdal/ogr_feature.h>

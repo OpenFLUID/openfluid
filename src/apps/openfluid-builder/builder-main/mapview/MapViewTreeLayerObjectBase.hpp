@@ -119,6 +119,8 @@ class MapViewTreeLayerObjectBase : public MapViewTreeLayerObject
     mtype_Signal msigc_signalRemoveLayer;
 
     mtype_SignalDisplay msigc_signalDisplay;
+
+
 };
 
 #endif /* __MAPVIEWTREELAYEROBJECTBASE_HPP__ */
