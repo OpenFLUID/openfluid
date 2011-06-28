@@ -132,6 +132,8 @@ class ICLayer
 
     void setIsDisplay(bool);
     void setIsSelected(bool);
+
+    virtual long int SelectObject(double, double, double)=0;
 };
 
 #endif /* __ICLAYER_HPP__ */

@@ -346,8 +346,8 @@ void MapViewTreeLayer::onIsSelected(int Id, bool IsSelected)
     {
       mref_DrawLayer.getICLayer().at(i)->setIsSelected(false);
     }
-    std::cout << mref_DrawLayer.getICLayer().at(i)->getIsSelected() << " :: "
-        << i << std::endl;
+//    std::cout << mref_DrawLayer.getICLayer().at(i)->getIsSelected() << " :: "
+//        << i << std::endl;
   }
   for (unsigned int i = 0; i < m_ObjectLayer.size(); i++)
   {

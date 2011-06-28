@@ -158,8 +158,8 @@ void MapViewDrawingArea::calulMaxMinCoordinate()
   m_XTranslateOrigine = -m_minX;
   m_YTranslateOrigine = -m_maxY;
 
-  std::cout << " max min X  = " << m_maxX << " :: " << m_minX << std::endl;
-  std::cout << " max min Y  = " << m_maxY << " :: " << m_minY << std::endl;
+//  std::cout << " max min X  = " << m_maxX << " :: " << m_minX << std::endl;
+//  std::cout << " max min Y  = " << m_maxY << " :: " << m_minY << std::endl;
 
   setWidthHeight();
   setScaleOrigine();
@@ -173,8 +173,8 @@ void MapViewDrawingArea::setWidthHeight()
   Gtk::Allocation allocation = get_allocation();
   m_Width = allocation.get_width();
   m_Height = allocation.get_height();
-  std::cout << allocation.get_width() << " :: " << allocation.get_height()
-      << std::endl;
+//  std::cout << allocation.get_width() << " :: " << allocation.get_height()
+//      << std::endl;
 }
 
 // =====================================================================
@@ -217,23 +217,21 @@ void MapViewDrawingArea::loadShapefile(std::string path, std::string file)
     ICLayer* ICLayer = 0;
     if (Layer->GetFeatureCount() > 0)
     {
-      switch (Layer->GetNextFeature()->GetGeometryRef()->getGeometryType())
+      type = Layer->GetNextFeature()->GetGeometryRef()->getGeometryType();
+      switch (type)
       {
         case wkbPoint:
         {
-          type = wkbPoint;
           ICLayer = new ICLayerPoint();
           break;
         }
         case wkbPolygon:
         {
-          type = wkbPolygon;
           ICLayer = new ICLayerPoly();
           break;
         }
         case wkbLineString:
         {
-          type = wkbLineString;
           ICLayer = new ICLayerLine();
           break;
         }
@@ -338,7 +336,7 @@ bool MapViewDrawingArea::geton_expose_event()
         m_scale = m_scaleOrigine;
       //      m_scale = std::min(m_Width / (m_maxX - m_minX),
       //          m_Height / (m_maxY - m_minY));
-      Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+      Cairo::RefPtr < Cairo::Context > cr = window->create_cairo_context();
 
       // clip to the area indicated by the expose event so that we only redraw
       // the portion of the window that needs to be redrawn
@@ -458,7 +456,7 @@ bool MapViewDrawingArea::on_event_happend(GdkEvent* event)
     //    std::cout << "Press1: X= " << m_XPress << " Y= " << m_YPress << std::endl;
     m_XPress += m_XTranslateOrigine - m_XTranslate;
     m_YPress += m_YTranslateOrigine - m_YTranslate;
-//    std::cout << "Press2: X= " << m_XPress << " Y= " << m_YPress << std::endl;
+    //    std::cout << "Press2: X= " << m_XPress << " Y= " << m_YPress << std::endl;
     if (m_ZoomCursor)
     {
       //      std::cout << m_scale << " :: " << m_FactorScale << std::endl;
@@ -467,8 +465,7 @@ bool MapViewDrawingArea::on_event_happend(GdkEvent* event)
       m_XTranslate = -(m_XPress - ((m_Width / m_scale) / 2));
       m_YTranslate = -(m_YPress + ((m_Height / m_scale) / 2));
       geton_expose_event();
-    }
-    if (m_UnzoomCursor)
+    } else if (m_UnzoomCursor)
     {
       //      std::cout << m_scale << " :: " << m_FactorScale << std::endl;
       m_scale -= (m_scale / 4);
@@ -476,6 +473,73 @@ bool MapViewDrawingArea::on_event_happend(GdkEvent* event)
       m_XTranslate = -(m_XPress - ((m_Width / m_scale) / 2));
       m_YTranslate = -(m_YPress + ((m_Height / m_scale) / 2));
       geton_expose_event();
+    } else if (m_Select)
+    {
+      bool select = false;
+      for (unsigned int i = 0; i < m_ICLayer.size(); i++)
+      {
+        if (m_ICLayer.at(i)->getIsSelected())
+        {
+          select = true;
+          if ((m_ICLayer.at(i)->SelectObject(m_XPress, m_YPress, m_scale) != -1)
+              && m_ICLayer.at(i)->getIsDisplay())
+          {
+            long int index = m_ICLayer.at(i)->SelectObject(m_XPress, m_YPress,
+                m_scale);
+            int type = m_ICLayer.at(i)->gettype();
+            if (type == 1 || type == 2 || type == 3)
+            {
+              geton_expose_event();
+              //            get_window()->clear();
+              Glib::RefPtr<Gdk::Window> window = get_window();
+
+              if (window)
+              {
+                Cairo::RefPtr < Cairo::Context > cr
+                    = window->create_cairo_context();
+
+                cr->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
+
+                cr->scale(m_scale, -m_scale);
+                cr->translate(m_XTranslate, m_YTranslate);
+                cr->set_line_width(
+                    (m_ICLayer.at(i)->getSizeLine() + 2) / m_scale);
+                cr->set_source_rgba(m_ICLayer.at(i)->getRed(),
+                    m_ICLayer.at(i)->getGreen(), m_ICLayer.at(i)->getBlue(),
+                    m_ICLayer.at(i)->getAlpha());
+                switch (type)
+                {
+                  case 1:
+                    ((ICLayerPoint*) m_ICLayer.at(i))->drawPoint(cr, index,
+                        m_scale, false);
+                    break;
+                  case 2:
+                    ((ICLayerLine*) m_ICLayer.at(i))->drawLine(cr, index,
+                        m_scale, false);
+                    break;
+                  case 3:
+                    ((ICLayerPoly*) m_ICLayer.at(i))->drawPoly(cr, index,
+                        m_scale, false);
+                    break;
+                  default:
+                    break;
+                }
+              }
+            }
+
+//            std::cout << "l'index est : " << index << std::endl;
+          } else if (m_ICLayer.at(i)->SelectObject(m_XPress, m_YPress, m_scale)
+              == -1)
+            geton_expose_event();
+
+        }
+      }
+      if (!select)
+      {
+        openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+            _(
+                "You can't select an object of a layer without selected a layer before.\n\nPlease select a layer."));
+      }
     }
   }
   if (event->type == GDK_BUTTON_RELEASE)

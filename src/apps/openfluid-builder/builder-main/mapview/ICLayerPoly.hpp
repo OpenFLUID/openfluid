@@ -76,8 +76,10 @@ class ICLayerPoly : public ICLayer
 
     std::vector< std::vector< std::pair<double, double> > > ICPoly;
 
-    void drawPoly(Cairo::RefPtr<Cairo::Context> , int, double);
+    void drawPoly(Cairo::RefPtr<Cairo::Context> , int, double, bool);
     void draw(Cairo::RefPtr<Cairo::Context> , double);
+
+    long int SelectObject(double x, double y, double scale);
 
     void addObjectGeo(OGRGeometry* ObjectGeo);
 };

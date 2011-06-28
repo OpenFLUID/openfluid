@@ -111,22 +111,23 @@ MapViewToolBar::MapViewToolBar(MapViewAction& ToolBarAction,
       sigc::mem_fun(*this, &MapViewToolBar::onSelect));
 
   ToolBarAction.getAddNewLayerAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onAddNewLayer));
+      sigc::mem_fun(*this, &MapViewToolBar::onAddNewLayer));
   ToolBarAction.getRemoveLayerAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onRemoveLayer));
+      sigc::mem_fun(*this, &MapViewToolBar::onRemoveLayer));
   ToolBarAction.getShow100Action()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onShow100));
-  ToolBarAction.getInfoAction()->signal_activate().connect(sigc::mem_fun(*this, &MapViewToolBar::onInfo));
+      sigc::mem_fun(*this, &MapViewToolBar::onShow100));
+  ToolBarAction.getInfoAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &MapViewToolBar::onInfo));
   ToolBarAction.getZoomCursorAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onZoomCursor));
+      sigc::mem_fun(*this, &MapViewToolBar::onZoomCursor));
   ToolBarAction.getZoomFrameAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onZoomFrame));
+      sigc::mem_fun(*this, &MapViewToolBar::onZoomFrame));
   ToolBarAction.getZoomObjectAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onZoomObject));
+      sigc::mem_fun(*this, &MapViewToolBar::onZoomObject));
   ToolBarAction.getUnzoomCursorAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onUnzoomCursor));
+      sigc::mem_fun(*this, &MapViewToolBar::onUnzoomCursor));
   ToolBarAction.getUnzoomObjectAction()->signal_activate().connect(
-          sigc::mem_fun(*this, &MapViewToolBar::onUnzoomObject));
+      sigc::mem_fun(*this, &MapViewToolBar::onUnzoomObject));
 
   ToolBarAction.getChangeZoomCursorAction()->signal_activate().connect(
       sigc::bind<MapViewAction&>(
@@ -285,7 +286,8 @@ void MapViewToolBar::onShow100()
 {
   mref_MapViewTreeLayer.getDrawLayer().setInitTranslate(false);
   mref_MapViewTreeLayer.getDrawLayer().calulMaxMinCoordinate();
-  mref_MapViewTreeLayer.getDrawLayer().setScale(mref_MapViewTreeLayer.getDrawLayer().getScaleOrigine());
+  mref_MapViewTreeLayer.getDrawLayer().setScale(
+      mref_MapViewTreeLayer.getDrawLayer().getScaleOrigine());
   mref_MapViewTreeLayer.getDrawLayer().geton_expose_event();
 }
 
@@ -302,20 +304,20 @@ void MapViewToolBar::onInfo()
 
 void MapViewToolBar::onZoomCursor()
 {
-    if (mref_MapViewTreeLayer.getDrawLayer().getSelect())
-      {
-        mp_ToggleButtonSelect->set_active(false);
-      }
-      if (mref_MapViewTreeLayer.getDrawLayer().getMove())
-        {
-          mp_ToggleButtonMove->set_active(false);
-        }
-      Gdk::Cursor Cursor(Gdk::BOGOSITY);
-      mref_MapViewTreeLayer.getDrawLayer().get_window()->set_cursor(Cursor);
-      mref_MapViewTreeLayer.getDrawLayer().setZoomFrame(false);
-      mref_MapViewTreeLayer.getDrawLayer().setUnzoomCursor(false);
-      mref_MapViewTreeLayer.getDrawLayer().setZoomCursor(
-          !mref_MapViewTreeLayer.getDrawLayer().getZoomCursor());
+  if (mref_MapViewTreeLayer.getDrawLayer().getSelect())
+  {
+    mp_ToggleButtonSelect->set_active(false);
+  }
+  if (mref_MapViewTreeLayer.getDrawLayer().getMove())
+  {
+    mp_ToggleButtonMove->set_active(false);
+  }
+  Gdk::Cursor Cursor(Gdk::BOGOSITY);
+  mref_MapViewTreeLayer.getDrawLayer().get_window()->set_cursor(Cursor);
+  mref_MapViewTreeLayer.getDrawLayer().setZoomFrame(false);
+  mref_MapViewTreeLayer.getDrawLayer().setUnzoomCursor(false);
+  mref_MapViewTreeLayer.getDrawLayer().setZoomCursor(
+      !mref_MapViewTreeLayer.getDrawLayer().getZoomCursor());
 
 }
 
@@ -329,15 +331,16 @@ void MapViewToolBar::onZoomFrame()
     mp_ToggleButtonSelect->set_active(false);
   }
   if (mref_MapViewTreeLayer.getDrawLayer().getMove())
-    {
-      mp_ToggleButtonMove->set_active(false);
-    }
+  {
+    mp_ToggleButtonMove->set_active(false);
+  }
   Gdk::Cursor Cursor(Gdk::SIZING);
   mref_MapViewTreeLayer.getDrawLayer().get_window()->set_cursor(Cursor);
   mref_MapViewTreeLayer.getDrawLayer().setZoomCursor(false);
   mref_MapViewTreeLayer.getDrawLayer().setUnzoomCursor(false);
   mref_MapViewTreeLayer.getDrawLayer().setZoomFrame(
       !mref_MapViewTreeLayer.getDrawLayer().getZoomFrame());
+
 }
 
 // =====================================================================
@@ -353,20 +356,20 @@ void MapViewToolBar::onZoomObject()
 
 void MapViewToolBar::onUnzoomCursor()
 {
-      if (mref_MapViewTreeLayer.getDrawLayer().getSelect())
-        {
-          mp_ToggleButtonSelect->set_active(false);
-        }
-        if (mref_MapViewTreeLayer.getDrawLayer().getMove())
-          {
-            mp_ToggleButtonMove->set_active(false);
-          }
-        Gdk::Cursor Cursor(Gdk::BOX_SPIRAL);
-        mref_MapViewTreeLayer.getDrawLayer().get_window()->set_cursor(Cursor);
-        mref_MapViewTreeLayer.getDrawLayer().setZoomFrame(false);
-        mref_MapViewTreeLayer.getDrawLayer().setZoomCursor(false);
-        mref_MapViewTreeLayer.getDrawLayer().setUnzoomCursor(
-            !mref_MapViewTreeLayer.getDrawLayer().getUnzoomCursor());
+  if (mref_MapViewTreeLayer.getDrawLayer().getSelect())
+  {
+    mp_ToggleButtonSelect->set_active(false);
+  }
+  if (mref_MapViewTreeLayer.getDrawLayer().getMove())
+  {
+    mp_ToggleButtonMove->set_active(false);
+  }
+  Gdk::Cursor Cursor(Gdk::BOX_SPIRAL);
+  mref_MapViewTreeLayer.getDrawLayer().get_window()->set_cursor(Cursor);
+  mref_MapViewTreeLayer.getDrawLayer().setZoomFrame(false);
+  mref_MapViewTreeLayer.getDrawLayer().setZoomCursor(false);
+  mref_MapViewTreeLayer.getDrawLayer().setUnzoomCursor(
+      !mref_MapViewTreeLayer.getDrawLayer().getUnzoomCursor());
 }
 
 // =====================================================================

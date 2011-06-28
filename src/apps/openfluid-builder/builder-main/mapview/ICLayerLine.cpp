@@ -78,26 +78,27 @@ OGRLineString* ICLayerLine::recoverLine(int id)
 // =====================================================================
 
 void ICLayerLine::drawLine(Cairo::RefPtr<Cairo::Context> cr, int index,
-    double scale)
+    double scale, bool notselect)
 {
 
   OGRLineString* Line = recoverLine(index);
-//  cr->save();
   cr->move_to(Line->getX(0), Line->getY(0));
   for (int i = 1; i < Line->getNumPoints(); i++)
   {
     cr->line_to(Line->getX(i), Line->getY(i));
   }
-//  cr->restore();
 
-  cr->stroke();
+//  if (notselect)
+    cr->stroke();
+//  else
+//    cr->fill();
 
-//    cr->move_to(ICLine[index].at(0).first, ICLine[index].at(0).second);
-//    for (int i = 1; i < ICLine[index].size(); i++)
-//    {
-//      cr->line_to(ICLine[index].at(i).first, ICLine[index].at(i).second);
-//    }
-//    cr->stroke();
+  //    cr->move_to(ICLine[index].at(0).first, ICLine[index].at(0).second);
+  //    for (int i = 1; i < ICLine[index].size(); i++)
+  //    {
+  //      cr->line_to(ICLine[index].at(i).first, ICLine[index].at(i).second);
+  //    }
+  //    cr->stroke();
 }
 
 // =====================================================================
@@ -108,7 +109,7 @@ void ICLayerLine::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
 
   for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
   {
-    drawLine(cr, i, scale);
+    drawLine(cr, i, scale, true);
   }
 
 }
@@ -119,15 +120,15 @@ void ICLayerLine::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
 void ICLayerLine::addObjectGeo(OGRGeometry* ObjectGeo)
 {
   ICLayer::addObjectGeo(ObjectGeo);
-//  std::vector< std::pair<double, double> > ICL;
-//  for (int i = 0; i < ((OGRLineString *) ObjectGeo)->getNumPoints(); i++)
-//  {
-//    ICL.push_back(
-//        std::make_pair(((OGRLineString *) ObjectGeo)->getX(i),
-//            ((OGRLineString *) ObjectGeo)->getY(i)));
-//    std::cout << ICL.at(i).first << " :: " << ICL.at(i).second << std::endl;
-//  }
-//  ICLine.push_back(ICL);
+  //  std::vector< std::pair<double, double> > ICL;
+  //  for (int i = 0; i < ((OGRLineString *) ObjectGeo)->getNumPoints(); i++)
+  //  {
+  //    ICL.push_back(
+  //        std::make_pair(((OGRLineString *) ObjectGeo)->getX(i),
+  //            ((OGRLineString *) ObjectGeo)->getY(i)));
+  //    std::cout << ICL.at(i).first << " :: " << ICL.at(i).second << std::endl;
+  //  }
+  //  ICLine.push_back(ICL);
   OGREnvelope Env;
 
   ObjectGeo->getEnvelope(&Env);
@@ -146,6 +147,38 @@ void ICLayerLine::addObjectGeo(OGRGeometry* ObjectGeo)
     m_minY = std::min(m_minY, Env.MinY);
   }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+long int ICLayerLine::SelectObject(double x, double y, double scale)
+{
+
+  OGRPolygon* Poly =
+      static_cast<OGRPolygon*> (OGRGeometryFactory::createGeometry(wkbPolygon));
+
+  OGRLinearRing* Ring =
+      static_cast<OGRLinearRing*> (OGRGeometryFactory::createGeometry(
+          wkbLinearRing));
+
+  Ring->setPoint(0, new OGRPoint(x - 3 / scale, y - 3 / scale));
+  Ring->setPoint(1, new OGRPoint(x + 3 / scale, y - 3 / scale));
+  Ring->setPoint(2, new OGRPoint(x + 3 / scale, y + 3 / scale));
+  Ring->setPoint(3, new OGRPoint(x - 3 / scale, y + 3 / scale));
+
+  Ring->closeRings();
+
+  Poly->addRingDirectly(Ring);
+
+  for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
+  {
+    if (Poly->Intersects((OGRGeometry*) m_ObjectGeo.at(i)))
+    {
+      return i;
+    }
+  }
+  return -1;
 }
 
 // =====================================================================

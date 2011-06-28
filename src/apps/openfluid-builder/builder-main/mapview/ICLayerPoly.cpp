@@ -78,34 +78,37 @@ OGRPolygon* ICLayerPoly::recoverPoly(int id)
 // =====================================================================
 
 void ICLayerPoly::drawPoly(Cairo::RefPtr<Cairo::Context> cr, int index,
-    double scale)
+    double scale, bool notselect)
 {
 
-    OGRPolygon* Poly = recoverPoly(index);
-    //  OGRLinearRing* poLinearRing = new OGRLinearRing();
-    //  poLinearRing = Poly->getExteriorRing();
-    OGRLinearRing* poLinearRing = Poly->getExteriorRing();
+  OGRPolygon* Poly = recoverPoly(index);
+  //  OGRLinearRing* poLinearRing = new OGRLinearRing();
+  //  poLinearRing = Poly->getExteriorRing();
+  OGRLinearRing* poLinearRing = Poly->getExteriorRing();
 
-    cr->move_to(poLinearRing->getX(0), poLinearRing->getY(0));
-    for (int i = 1; i < poLinearRing->getNumPoints(); i++)
-    {
-      cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));
+  cr->move_to(poLinearRing->getX(0), poLinearRing->getY(0));
+  for (int i = 1; i < poLinearRing->getNumPoints(); i++)
+  {
+    cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));
 
-    }
+  }
 
-    cr->close_path();
+  cr->close_path();
 
+  if (notselect)
     cr->stroke();
+  else
+    cr->fill();
 
-//  cr->move_to(ICPoly[index].at(0).first, ICPoly[index].at(0).second);
-//  for (int i = 1; i < ICPoly[index].size(); i++)
-//  {
-//    cr->line_to(ICPoly[index].at(i).first, ICPoly[index].at(i).second);
-//  }
-//
-//  cr->close_path();
-//
-//  cr->stroke();
+  //  cr->move_to(ICPoly[index].at(0).first, ICPoly[index].at(0).second);
+  //  for (int i = 1; i < ICPoly[index].size(); i++)
+  //  {
+  //    cr->line_to(ICPoly[index].at(i).first, ICPoly[index].at(i).second);
+  //  }
+  //
+  //  cr->close_path();
+  //
+  //  cr->stroke();
 }
 
 // =====================================================================
@@ -116,7 +119,7 @@ void ICLayerPoly::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
 
   for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
   {
-    drawPoly(cr, i, scale);
+    drawPoly(cr, i, scale, true);
   }
 
 }
@@ -135,7 +138,7 @@ void ICLayerPoly::addObjectGeo(OGRGeometry* ObjectGeo)
     ICP.push_back(
         std::make_pair(O->getExteriorRing()->getX(i),
             O->getExteriorRing()->getY(i)));
-//    std::cout << ICP.at(i).first << " :: " << ICP.at(i).second << std::endl;
+    //    std::cout << ICP.at(i).first << " :: " << ICP.at(i).second << std::endl;
   }
   ICPoly.push_back(ICP);
 
@@ -157,6 +160,22 @@ void ICLayerPoly::addObjectGeo(OGRGeometry* ObjectGeo)
     m_minY = std::min(m_minY, Env.MinY);
   }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+long int ICLayerPoly::SelectObject(double x, double y, double scale)
+{
+  OGRPoint* p = new OGRPoint(x, y);
+  for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
+  {
+    if (m_ObjectGeo.at(i)->Contains((OGRGeometry*) p))
+    {
+      return i;
+    }
+  }
+  return -1;
 }
 
 // =====================================================================

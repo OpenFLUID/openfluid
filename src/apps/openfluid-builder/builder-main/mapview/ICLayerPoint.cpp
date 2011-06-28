@@ -79,7 +79,7 @@ OGRPoint* ICLayerPoint::recoverPoint(int id)
 // =====================================================================
 
 void ICLayerPoint::drawPoint(Cairo::RefPtr<Cairo::Context> cr, int index,
-    double scale)
+    double scale, bool notselect)
 {
 
   OGRPoint* Point = recoverPoint(index);
@@ -89,14 +89,17 @@ void ICLayerPoint::drawPoint(Cairo::RefPtr<Cairo::Context> cr, int index,
   cr->line_to(Point->getX() - (2 / scale), Point->getY() - (2 / scale));
   cr->line_to(Point->getX() + (2 / scale), Point->getY() - (2 / scale));
   cr->close_path();
-  cr->stroke();
-//  cr->move_to(ICPoint.at(index).first + (2 / scale), ICPoint.at(index).second);
-//  cr->line_to(ICPoint.at(index).first + (2 / scale), ICPoint.at(index).second + (2 / scale));
-//  cr->line_to(ICPoint.at(index).first - (2 / scale), ICPoint.at(index).second + (2 / scale));
-//  cr->line_to(ICPoint.at(index).first - (2 / scale), ICPoint.at(index).second - (2 / scale));
-//  cr->line_to(ICPoint.at(index).first + (2 / scale), ICPoint.at(index).second - (2 / scale));
-//  cr->close_path();
-//  cr->stroke();
+  if (notselect)
+    cr->stroke();
+  else
+    cr->fill();
+  //  cr->move_to(ICPoint.at(index).first + (2 / scale), ICPoint.at(index).second);
+  //  cr->line_to(ICPoint.at(index).first + (2 / scale), ICPoint.at(index).second + (2 / scale));
+  //  cr->line_to(ICPoint.at(index).first - (2 / scale), ICPoint.at(index).second + (2 / scale));
+  //  cr->line_to(ICPoint.at(index).first - (2 / scale), ICPoint.at(index).second - (2 / scale));
+  //  cr->line_to(ICPoint.at(index).first + (2 / scale), ICPoint.at(index).second - (2 / scale));
+  //  cr->close_path();
+  //  cr->stroke();
 
 }
 
@@ -108,7 +111,7 @@ void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
 
   for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
   {
-    drawPoint(cr, i, scale);
+    drawPoint(cr, i, scale, true);
   }
 
 }
@@ -122,7 +125,7 @@ void ICLayerPoint::addObjectGeo(OGRGeometry* ObjectGeo)
 
   double x = ((OGRPoint*) ObjectGeo)->getX();
   double y = ((OGRPoint*) ObjectGeo)->getY();
-  ICPoint.push_back(std::make_pair(x,y));
+  ICPoint.push_back(std::make_pair(x, y));
 
   if (m_ObjectGeo.size() == 1)
   {
@@ -137,6 +140,26 @@ void ICLayerPoint::addObjectGeo(OGRGeometry* ObjectGeo)
     m_minX = std::min(m_minX, x);
     m_minY = std::min(m_minY, y);
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+long int ICLayerPoint::SelectObject(double x, double y, double scale)
+{
+  for (unsigned int i = 0; i < m_ObjectGeo.size(); i++)
+  {
+    double X = ((OGRPoint*) m_ObjectGeo.at(i))->getX();
+    double Y = ((OGRPoint*) m_ObjectGeo.at(i))->getY();
+
+    if ((X - (2 / scale)) <= x && (X + (2 / scale)) >= x && (Y - (2 / scale))
+        <= y && (Y + (2 / scale)) >= y)
+    {
+      return i;
+    }
+  }
+
+  return -1;
 }
 
 // =====================================================================

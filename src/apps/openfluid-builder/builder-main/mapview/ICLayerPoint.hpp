@@ -76,8 +76,10 @@ class ICLayerPoint : public ICLayer
 
     std::vector< std::pair<double, double> > ICPoint;
 
-    void drawPoint(Cairo::RefPtr<Cairo::Context>, int, double);
+    void drawPoint(Cairo::RefPtr<Cairo::Context>, int, double, bool);
     void draw(Cairo::RefPtr<Cairo::Context>, double);
+
+    long int SelectObject(double x, double y, double scale);
 
     void addObjectGeo(OGRGeometry* ObjectGeo);
 };

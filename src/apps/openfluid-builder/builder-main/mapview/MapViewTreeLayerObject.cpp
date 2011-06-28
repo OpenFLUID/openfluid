@@ -157,15 +157,12 @@ bool MapViewTreeLayerObject::on_event_happend(GdkEvent* event)
   {
     double XPress = ((GdkEventMotion *) event)->x;
     double YPress = ((GdkEventMotion *) event)->y;
-    std::cout << "motion: X= " << XPress << " Y= " << YPress << std::endl;
+//    std::cout << "motion: X= " << XPress << " Y= " << YPress << std::endl;
     mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#66DDFF"));
 
   }
   if (event->type == GDK_LEAVE_NOTIFY)
   {
-    //      double XPress = ((GdkEventMotion *) event)->x;
-    //      double YPress = ((GdkEventMotion *) event)->y;
-    //      std::cout << "motion: X= " << XPress << " Y= " << YPress << std::endl;
     if (!m_IsSelected)
       mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#F1F1F1"));
     else
@@ -175,12 +172,6 @@ bool MapViewTreeLayerObject::on_event_happend(GdkEvent* event)
   {
     onIsSelected();
   }
-  //  if (event->type == GDK_BUTTON_RELEASE)
-  //  {
-  //    double XPress = event->button.x;
-  //    double YPress = event->button.y;
-  //    std::cout << "Release: X= " << XPress << " Y= " << YPress << std::endl;
-  //  }
   return false;
 }
 
@@ -214,7 +205,6 @@ void MapViewTreeLayerObject::setIsSelected(bool IsSelected)
 void MapViewTreeLayerObject::onIsSelected()
 {
   msigc_signalSelected.emit(m_Id, m_IsSelected);
-  std::cout << "lala" << std::endl;
 }
 
 // =====================================================================

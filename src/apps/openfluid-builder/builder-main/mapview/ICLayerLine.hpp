@@ -77,8 +77,11 @@ class ICLayerLine : public ICLayer
 
     std::vector<  std::vector< std::pair<double, double> >  > ICLine;
 
-    void drawLine(Cairo::RefPtr<Cairo::Context>, int, double);
+    void drawLine(Cairo::RefPtr<Cairo::Context>, int, double, bool);
     void draw(Cairo::RefPtr<Cairo::Context>, double);
+
+    long int SelectObject(double x, double y, double scale);
+
     void addObjectGeo(OGRGeometry* ObjectGeo);
 };
 

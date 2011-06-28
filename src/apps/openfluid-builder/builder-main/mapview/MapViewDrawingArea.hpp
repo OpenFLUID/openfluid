@@ -64,15 +64,17 @@
 #include <gdal/ogr_feature.h>
 #include <time.h>
 
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
 #include "ICLayer.hpp"
 #include "ICLayerPoint.hpp"
 #include "ICLayerLine.hpp"
 #include "ICLayerPoly.hpp"
 #include "MapViewStatusBar.hpp"
 
-#include <glibmm.h>
+#include <glibmm/i18n.h>
 #include <gtkmm.h>
-#include <gdkmm.h>
+
 
 class MapViewDrawingArea: public Gtk::DrawingArea
 {
