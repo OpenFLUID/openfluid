@@ -54,156 +54,28 @@
 
 #include "SimulOutCoordinator.hpp"
 
-#include "SimulOutFileDescModel.hpp"
+#include <glibmm/i18n.h>
 
+#include "SimulOutFilesAddEditDialog.hpp"
+#include "SimulOutSetsAddEditDialog.hpp"
 #include "BuilderListToolBox.hpp"
+#include "EngineHelper.hpp"
+
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-void SimulOutCoordinator::updateOutFilesListToolBox()
-{
-  m_OutFilesListToolBox.setRemoveCommandAvailable(
-      m_OutFilesModel.getSelectedFileFormat());
-  m_OutFilesListToolBox.setEditCommandAvailable(
-      m_OutFilesModel.getSelectedFileFormat());
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::updateOutSetsListToolBox()
-{
-  m_OutSetsListToolBox.setRemoveCommandAvailable(
-      m_OutSetsModel.getSelectedSet());
-  m_OutSetsListToolBox.setEditCommandAvailable(m_OutSetsModel.getSelectedSet());
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenFromUserFileFormatSelectionChanged()
-{
-  updateOutFilesListToolBox();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenFromUserSetSelectionChanged()
-{
-  updateOutSetsListToolBox();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenAddFileFormatAsked()
-{
-  m_OutFileDescModel.initialize(0, m_OutFilesModel.generateNextFormatName(),
-      m_OutFilesModel.getFilesFormatsByNameVect());
-  m_OutFileDescModel.showDialog();
-  m_OutFilesModel.addFileFormat(m_OutFileDescModel.getFileDesc(),
-      m_OutFileDescModel.getFormatName());
-
-  updateOutFilesListToolBox();
-  m_signal_SimulOutChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenAddSetAsked()
-{
-  m_OutSetDescModel.initialize(0, "",
-      m_OutFilesModel.getFilesFormatsByNameVect(),
-      m_OutSetsModel.getSetsByName());
-
-  if (!m_OutFilesModel.getFilesFormatsByNameVect().empty()
-      && !m_OutSetDescModel.getClasses().empty())
-  {
-    m_OutSetDescModel.showDialog();
-    m_OutSetsModel.addSet(m_OutSetDescModel.getSetDesc(),
-        m_OutSetDescModel.getFormatName(), m_OutSetDescModel.getFormatIndex());
-    updateOutSetsListToolBox();
-    m_signal_SimulOutChanged.emit();
-  } else
-  openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        "Impossible to create a Set :\nYou have to create at least a Unit Class and a Files Format before.");
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenRemoveFileFormatAsked()
-{
-  m_OutFilesModel.deleteSelectedFileFormat();
-  updateOutFilesListToolBox();
-  m_OutSetsModel.updateFileFormats(m_OutFilesModel.getFilesFormatsByNameVect());
-  updateOutSetsListToolBox();
-  m_signal_SimulOutChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenRemoveSetAsked()
-{
-  m_OutSetsModel.deleteSelectedSet();
-  updateOutSetsListToolBox();
-  m_signal_SimulOutChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenEditFileFormatAsked()
-{
-  m_OutFileDescModel.initialize(m_OutFilesModel.getSelectedFileFormat(),
-      m_OutFilesModel.getSelectedFileFormatName(),
-      m_OutFilesModel.getFilesFormatsByNameVect());
-  m_OutFileDescModel.showDialog();
-  m_OutFilesModel.updateSelectedFileFormat(m_OutFileDescModel.getFormatName());
-  m_signal_SimulOutChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutCoordinator::whenEditSetAsked()
-{
-  m_OutSetDescModel.initialize(m_OutSetsModel.getSelectedSet(),
-      m_OutSetsModel.getSelectedSetFormatName(),
-      m_OutFilesModel.getFilesFormatsByNameVect(),
-      m_OutSetsModel.getSetsByName());
-  m_OutSetDescModel.showDialog();
-  m_OutSetsModel.updateSelectedSet(m_OutSetDescModel.getFormatName());
-  updateOutSetsListToolBox();
-  m_signal_SimulOutChanged.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 SimulOutCoordinator::SimulOutCoordinator(SimulOutFilesModel& OutFilesModel,
-    SimulOutFileDescModel& FileDescModel,
+    SimulOutFilesAddEditDialog& OutFilesDialog,
     BuilderListToolBox& OutFilesListToolBox, SimulOutSetsModel& OutSetsModel,
-    SimulOutSetDescModel& SetDescModel, BuilderListToolBox& OutSetsListToolBox) :
-  m_OutFilesModel(OutFilesModel), m_OutFileDescModel(FileDescModel),
+    SimulOutSetsAddEditDialog& OutSetsDialog,
+    BuilderListToolBox& OutSetsListToolBox) :
+  m_OutFilesModel(OutFilesModel), m_OutFilesDialog(OutFilesDialog),
       m_OutFilesListToolBox(OutFilesListToolBox), m_OutSetsModel(OutSetsModel),
-      m_OutSetDescModel(SetDescModel), m_OutSetsListToolBox(OutSetsListToolBox)
+      m_OutSetsDialog(OutSetsDialog), m_OutSetsListToolBox(OutSetsListToolBox),
+      mp_CoreRepos(0), mp_ModelInstance(0), m_HasToUpdate(true)
 {
   m_OutFilesModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(
       *this, &SimulOutCoordinator::whenFromUserFileFormatSelectionChanged));
@@ -232,16 +104,213 @@ void SimulOutCoordinator::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
     openfluid::machine::SimulationBlob& SimBlob)
 {
+  mp_CoreRepos = &SimBlob.getCoreRepository();
+  mp_ModelInstance = &ModelInstance;
+
   m_OutFilesModel.setEngineRequirements(SimBlob.getOutputDescriptor());
-  m_OutFileDescModel.setEngineRequirements(SimBlob.getOutputDescriptor());
+  m_OutFilesDialog.setEngineRequirements(SimBlob.getOutputDescriptor());
 
-  m_OutSetsModel.setEngineRequirements(SimBlob.getOutputDescriptor());
-  m_OutSetDescModel.setEngineRequirements(SimBlob.getOutputDescriptor(), SimBlob.getCoreRepository(), ModelInstance);
+  m_OutSetsModel.setEngineRequirements(SimBlob.getOutputDescriptor(),
+      SimBlob.getCoreRepository(), ModelInstance);
+  m_OutSetsDialog.setEngineRequirements(SimBlob.getOutputDescriptor(),
+      SimBlob.getCoreRepository(), ModelInstance);
 
+  update();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::update()
+{
+  if (m_HasToUpdate)
+  {
+    m_OutFilesModel.update();
+
+    m_OutSetsModel.update();
+    m_OutSetsDialog.update();
+
+    updateOutFilesListToolBox();
+    updateOutSetsListToolBox();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenAddFileFormatAsked()
+{
+  openfluid::base::OutputFilesDescriptor* FilesDesc = m_OutFilesDialog.show();
+
+  if (FilesDesc)
+  {
+    m_OutFilesModel.addFileFormat(FilesDesc);
+
+    update();
+
+    m_HasToUpdate = false;
+    m_signal_SimulOutChanged.emit();
+    m_HasToUpdate = true;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenRemoveFileFormatAsked()
+{
+  if (m_OutFilesModel.selectedFileFormatHasSets()
+      && !openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+          _(
+              "This will delete the sets associated to this format.\nDo you want to continue ?")))
+    return;
+
+  m_OutFilesModel.deleteSelectedFileFormat();
+
+  update();
+
+  m_HasToUpdate = false;
+  m_signal_SimulOutChanged.emit();
+  m_HasToUpdate = true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenEditFileFormatAsked()
+{
+  if (m_OutFilesDialog.show(m_OutFilesModel.getSelectedFileFormat()))
+  {
+    update();
+
+    m_HasToUpdate = false;
+    m_signal_SimulOutChanged.emit();
+    m_HasToUpdate = true;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenAddSetAsked()
+{
+  if (m_OutFilesModel.isOutputEmpty())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _("Impossible to create a Set :\nno File Format available."));
+    return;
+  }
+
+  if (mp_CoreRepos->getUnitsGlobally()->empty())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _("Impossible to create a Set :\nno Unit available."));
+    return;
+  }
+
+  if (!EngineHelper::hasAtLeastAProducedVariable(mp_ModelInstance, mp_CoreRepos))
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _("Impossible to create a Set :\nno Variable available."));
+    return;
+  }
+
+  std::pair<openfluid::base::OutputSetDescriptor*, std::string> NewSetInfo =
+      m_OutSetsDialog.show();
+
+  if (NewSetInfo.first)
+  {
+    m_OutSetsModel.addSet(NewSetInfo.first, NewSetInfo.second);
+
+    update();
+
+    m_HasToUpdate = false;
+    m_signal_SimulOutChanged.emit();
+    m_HasToUpdate = true;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenRemoveSetAsked()
+{
+  m_OutSetsModel.deleteSelectedSet();
+
+  update();
+
+  m_HasToUpdate = false;
+  m_signal_SimulOutChanged.emit();
+  m_HasToUpdate = true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenEditSetAsked()
+{
+  std::pair<openfluid::base::OutputSetDescriptor*, std::string> NewSetInfo =
+      m_OutSetsDialog.show(m_OutSetsModel.getSelectedSet());
+
+  if (NewSetInfo.first)
+  {
+    m_OutSetsModel.updateSelectedSet(NewSetInfo.first, NewSetInfo.second);
+
+    update();
+
+    m_HasToUpdate = false;
+    m_signal_SimulOutChanged.emit();
+    m_HasToUpdate = true;
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenFromUserFileFormatSelectionChanged()
+{
   updateOutFilesListToolBox();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::whenFromUserSetSelectionChanged()
+{
   updateOutSetsListToolBox();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::updateOutFilesListToolBox()
+{
+  m_OutFilesListToolBox.setRemoveCommandAvailable(
+      m_OutFilesModel.getSelectedFileFormat());
+  m_OutFilesListToolBox.setEditCommandAvailable(
+      m_OutFilesModel.getSelectedFileFormat());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutCoordinator::updateOutSetsListToolBox()
+{
+  m_OutSetsListToolBox.setRemoveCommandAvailable(
+      m_OutSetsModel.getSelectedSet());
+  m_OutSetsListToolBox.setEditCommandAvailable(m_OutSetsModel.getSelectedSet());
+}
 
 // =====================================================================
 // =====================================================================

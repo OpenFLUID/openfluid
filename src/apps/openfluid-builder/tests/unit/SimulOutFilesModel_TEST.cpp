@@ -68,13 +68,13 @@
 
 struct init_Model
 {
-    SimulOutFilesModelSub* mp_Model;
+    SimulOutFilesModel* mp_Model;
 
     init_Model()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Model = new SimulOutFilesModelSub();
+      mp_Model = new SimulOutFilesModelImpl();
     }
 
     ~init_Model()
@@ -96,8 +96,7 @@ BOOST_AUTO_TEST_CASE(test_setEngineRequirements)
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"Format #1");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getName(),"Format #1");
 }
 
 BOOST_AUTO_TEST_CASE(test_getSelectedFileFormat)
@@ -108,133 +107,14 @@ BOOST_AUTO_TEST_CASE(test_getSelectedFileFormat)
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
-  mp_Model->setSelectedFileFormatIndex(0);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedFormatName(),"");
+
+  mp_Model->setSelectedFileFormatName("Format #1");
 
   openfluid::base::OutputFilesDescriptor* EngineFileDesc = &(*p_EngProject->getOutputDescriptor().getFileSets().begin());
 
   BOOST_CHECK_EQUAL(mp_Model->getSelectedFileFormat(),EngineFileDesc);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedFileFormatName(),"Format #1");
-
-  delete p_EngProject;
-}
-
-BOOST_AUTO_TEST_CASE(test_deleteSelectedFileFormat)
-{
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
-
-  mp_Model->setSelectedFileFormatIndex(0);
-  mp_Model->deleteSelectedFileFormatConfirmed();
-
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),0);
-
-  delete p_EngProject;
-}
-
-BOOST_AUTO_TEST_CASE(test_deleteSelectedFileFormat2Formats)
-{
-//  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-//  + "/OPENFLUID.IN.Primitives";
-//  EngineProject* p_EngProject = new EngineProject(Path);
-//
-//  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-//
-//  openfluid::base::OutputFilesDescriptor FileDesc;
-//  mp_Model->addFileFormat(&FileDesc,"New Format");
-//
-//
-//
-//  openfluid::base::OutputSetDescriptor SetDesc1;
-//  openfluid::base::OutputSetDescriptor SetDesc2;
-//  openfluid::base::OutputSetDescriptor SetDesc3;
-//  FileDesc.getSets().push_back(SetDesc1);
-//  FileDesc.getSets().push_back(SetDesc2);
-//  FileDesc.getSets().push_back(SetDesc3);
-//
-//
-//
-//  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),2);
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),2);
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"Format #1");
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getSets().size(),2);
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].first,"New Format");
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].second.getSets().size(),3);
-//
-//  mp_Model->setSelectedFileFormatIndex(0);
-//  mp_Model->deleteSelectedFileFormatConfirmed();
-//
-//  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"New Format");
-//  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getSets().size(),3);
-//
-//  delete p_EngProject;
-}
-
-BOOST_AUTO_TEST_CASE(test_updateFileFormats)
-{
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-
-  openfluid::base::OutputFilesDescriptor FileDesc;
-  openfluid::base::OutputSetDescriptor SetDesc1;
-  openfluid::base::OutputSetDescriptor SetDesc2;
-  openfluid::base::OutputSetDescriptor SetDesc3;
-  FileDesc.getSets().push_back(SetDesc1);
-  FileDesc.getSets().push_back(SetDesc2);
-  FileDesc.getSets().push_back(SetDesc3);
-
-  mp_Model->addFileFormat(&FileDesc,"New Format");
-
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"Format #1");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getSets().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].first,"New Format");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].second.getSets().size(),3);
-
-  mp_Model->setSelectedFileFormatIndex(0);
-  mp_Model->deleteSelectedFileFormatConfirmed();
-
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"New Format");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getSets().size(),3);
-
-  delete p_EngProject;
-}
-
-BOOST_AUTO_TEST_CASE(test_defaultFileFormat)
-{
-  EngineProject* p_EngProject = new EngineProject();
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-
-  openfluid::base::OutputFilesDescriptor DefaultFileDesc;
-
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
-
-  openfluid::base::OutputFilesDescriptor EngineFileDesc = *p_EngProject->getOutputDescriptor().getFileSets().begin();
-
-  BOOST_CHECK_EQUAL(EngineFileDesc.getColSeparator(),DefaultFileDesc.getColSeparator());
-  BOOST_CHECK_EQUAL(EngineFileDesc.getDateFormat(),DefaultFileDesc.getDateFormat());
-  BOOST_CHECK_EQUAL(EngineFileDesc.getCommentChar(),DefaultFileDesc.getCommentChar());
-  BOOST_CHECK_EQUAL(EngineFileDesc.getSets().size(),0);
-
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getColSeparator(),DefaultFileDesc.getColSeparator());
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getDateFormat(),DefaultFileDesc.getDateFormat());
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getCommentChar(),DefaultFileDesc.getCommentChar());
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"Format #1");
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedFormatName(),"Format #1");
 
   delete p_EngProject;
 }
@@ -248,17 +128,18 @@ BOOST_AUTO_TEST_CASE(test_addFileFormat)
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),1);
 
   openfluid::base::OutputFilesDescriptor FileDesc;
+  FileDesc.setName("Format #2");
   FileDesc.setColSeparator("---");
   FileDesc.setDateFormat("abcd");
   FileDesc.setCommentChar("***");
 
-  mp_Model->addFileFormat(&FileDesc,"A Name");
+  mp_Model->addFileFormat(&FileDesc);
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),2);
 
   std::vector<openfluid::base::OutputFilesDescriptor>::iterator it = p_EngProject->getOutputDescriptor().getFileSets().begin();
   it ++;
@@ -268,15 +149,15 @@ BOOST_AUTO_TEST_CASE(test_addFileFormat)
   BOOST_CHECK_EQUAL(it->getCommentChar(),"***");
   BOOST_CHECK_EQUAL(it->getSets().size(),0);
 
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].second.getColSeparator(),"---");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].second.getDateFormat(),"abcd");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].second.getCommentChar(),"***");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[1].first,"A Name");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getColSeparator(),"---");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getDateFormat(),"abcd");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getCommentChar(),"***");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getName(),"Format #2");
 
   delete p_EngProject;
 }
 
-BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
+BOOST_AUTO_TEST_CASE(test_deleteSelectedFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
@@ -284,22 +165,83 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
 
   mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
 
-  openfluid::base::OutputFilesDescriptor* EngineFileDesc = &(*p_EngProject->getOutputDescriptor().getFileSets().begin());
+  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->isOutputEmpty(), false);
 
-  EngineFileDesc->setColSeparator("---");
-  EngineFileDesc->setDateFormat("abcd");
-  EngineFileDesc->setCommentChar("***");
+  mp_Model->setSelectedFileFormatName("Format #1");
+  mp_Model->deleteSelectedFileFormat();
 
-  mp_Model->setSelectedFileFormatIndex(0);
-  mp_Model->updateSelectedFileFormat("New Name");
+  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),0);
+  BOOST_CHECK_EQUAL(mp_Model->isOutputEmpty(), true);
+
+  delete p_EngProject;
+}
+
+BOOST_AUTO_TEST_CASE(test_deleteSelectedFileFormat2Formats)
+{
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
+
+  openfluid::base::OutputFilesDescriptor FileDesc;
+  FileDesc.setName("Format #2");
+  openfluid::base::OutputSetDescriptor SetDesc1;
+  openfluid::base::OutputSetDescriptor SetDesc2;
+  openfluid::base::OutputSetDescriptor SetDesc3;
+  FileDesc.getSets().push_back(SetDesc1);
+  FileDesc.getSets().push_back(SetDesc2);
+  FileDesc.getSets().push_back(SetDesc3);
+
+  mp_Model->addFileFormat(&FileDesc);
+
+  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getName(),"Format #1");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getSets().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getName(),"Format #2");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getSets().size(),3);
+
+  mp_Model->setSelectedFileFormatName("Format #1");
+  mp_Model->deleteSelectedFileFormat();
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getName(),"Format #2");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getSets().size(),3);
 
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getColSeparator(),"---");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getDateFormat(),"abcd");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].second.getCommentChar(),"***");
-  BOOST_CHECK_EQUAL(mp_Model->getFilesFormatsByNameVect()[0].first,"New Name");
+  delete p_EngProject;
+}
+
+BOOST_AUTO_TEST_CASE(test_update)
+{
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
+
+  openfluid::base::OutputFilesDescriptor FileDesc;
+  FileDesc.setName("Format #2");
+  openfluid::base::OutputSetDescriptor SetDesc1;
+  openfluid::base::OutputSetDescriptor SetDesc2;
+  openfluid::base::OutputSetDescriptor SetDesc3;
+  FileDesc.getSets().push_back(SetDesc1);
+  FileDesc.getSets().push_back(SetDesc2);
+  FileDesc.getSets().push_back(SetDesc3);
+
+  p_EngProject->getOutputDescriptor().getFileSets().push_back(FileDesc);
+  mp_Model->update();
+
+  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getName(),"Format #1");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[0].getSets().size(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getName(),"Format #2");
+  BOOST_CHECK_EQUAL(mp_Model->getOutDescriptor()->getFileSets()[1].getSets().size(),3);
 
   delete p_EngProject;
 }

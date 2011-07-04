@@ -51,64 +51,104 @@
 #include <sigc++/sigc++.h>
 
 #include <openfluid/base.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutSetsModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppDescriptorChanged() = 0;
+
     virtual sigc::signal<void> signal_FromUserSelectionChanged() = 0;
+
     virtual void setEngineRequirements(
-        openfluid::base::OutputDescriptor& OutDesc) = 0;
-    virtual Glib::ustring generateFormatName(int Index) = 0;
-    virtual std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> >
-    getSetsByName() = 0;
+        openfluid::base::OutputDescriptor& OutDesc,
+        openfluid::core::CoreRepository& CoreRepos,
+        openfluid::machine::ModelInstance& ModelInstance) = 0;
+
+    virtual void update() = 0;
+
+    virtual openfluid::base::OutputDescriptor* getOutputDescriptor() = 0;
+
     virtual void setSelectedSetName(std::string SetName) = 0;
+
     virtual openfluid::base::OutputSetDescriptor* getSelectedSet() = 0;
-    virtual std::string getSelectedSetFormatName() = 0;
+
+    virtual std::string getSelectedSetName() = 0;
+
     virtual void deleteSelectedSet() = 0;
+
     virtual void addSet(openfluid::base::OutputSetDescriptor* SetDesc,
-        std::string FormatName, int FormatIndex) = 0;
-    virtual void updateSelectedSet(std::string NewFormatName) = 0;
-    virtual void updateFileFormats(std::vector<std::pair<std::string,
-        openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect) = 0;
+        std::string FormatName) = 0;
+
+    virtual void updateSelectedSet(
+        openfluid::base::OutputSetDescriptor* UpdatedSetDesc,
+        std::string FormatName) = 0;
+
+    virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
+
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutSetsModelImpl: public SimulOutSetsModel
 {
   private:
+
     sigc::signal<void> m_signal_FromAppDescriptorChanged;
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
-    sigc::signal<void> m_signal_FromAppShowDialogConfirmDeletionAsked;
-    std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> > m_SetsByName;
-    bool isSelectedSetValid();
-  protected:
+
     std::string m_SelectedSetName;
+
     openfluid::base::OutputDescriptor* mp_OutDesc;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    openfluid::machine::ModelInstance* mp_ModelInstance;
+
+    bool existsSetName(std::string SetName);
+
   public:
+
     SimulOutSetsModelImpl();
+
     sigc::signal<void> signal_FromAppDescriptorChanged();
+
     sigc::signal<void> signal_FromUserSelectionChanged();
-    Glib::ustring generateFormatName(int Index);
-    void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc);
-    std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> > getSetsByName();
+
+    void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc,
+        openfluid::core::CoreRepository& CoreRepos,
+        openfluid::machine::ModelInstance& ModelInstance);
+
+    void update();
+
+    openfluid::base::OutputDescriptor* getOutputDescriptor();
+
     void setSelectedSetName(std::string SetName);
+
     openfluid::base::OutputSetDescriptor* getSelectedSet();
-    std::string getSelectedSetFormatName();
+
+    std::string getSelectedSetName();
+
     void deleteSelectedSet();
+
     void addSet(openfluid::base::OutputSetDescriptor* SetDesc,
-        std::string FormatName, int FormatIndex);
-    void updateSelectedSet(std::string NewFormatName);
-    void updateFileFormats(std::vector<std::pair<std::string,
-        openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect);
-};
+        std::string FormatName);
 
-class SimulOutSetsModelSub: public SimulOutSetsModelImpl
-{
-  public:
+    void updateSelectedSet(
+        openfluid::base::OutputSetDescriptor* UpdatedSetDesc,
+        std::string FormatName);
+
+    openfluid::machine::ModelInstance* getModelInstance();
 
 };
+
 
 #endif /* SIMULOUTSETSMODEL_HPP_ */

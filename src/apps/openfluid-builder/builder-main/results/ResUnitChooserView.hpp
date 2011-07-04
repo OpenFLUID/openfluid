@@ -59,7 +59,6 @@
 
 #include <gtkmm.h>
 
-#include "SimulOutSetDescColumns.hpp"
 
 class ResUnitChooserView
 {

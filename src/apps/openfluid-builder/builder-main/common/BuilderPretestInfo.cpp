@@ -60,14 +60,15 @@
 #include "GeneratorSignature.hpp"
 #include <openfluid/tools/SwissTools.hpp>
 
+
 // =====================================================================
 // =====================================================================
 
 
 BuilderPretestInfo::BuilderPretestInfo() :
-  Domain(true), DomainMsg(""), Params(true), ParamsMsg(""), Project(true),
-      ProjectMsg(""), Outputs(true), OutputsMsg(""), RunConfig(true),
-      RunConfigMsg("")
+  Domain(true), DomainMsg(""), Params(true), GeneratorParams(true), ParamsMsg(
+      ""), Project(true), ProjectMsg(""), Outputs(true), OutputsMsg(""),
+      RunConfig(true), RunConfigMsg("")
 {
 }
 
@@ -80,172 +81,212 @@ void BuilderPretestInfo::addBuilderInfo(
     openfluid::machine::SimulationBlob* SimBlob,
     openfluid::base::RunDescriptor& RunDesc)
 {
+  mp_ModelInstance = ModelInstance;
+  mp_SimBlob = SimBlob;
+  mp_RunDesc = &RunDesc;
+
   m_GlobalParams = ModelInstance->getGlobalParameters();
 
-  if (ModelInstance->getItemsCount() == 0)
+  checkModelFilled();
+
+  checkDomainFilled();
+
+  checkOutputsFilled();
+
+  checkRunDate();
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  checkModelItemParams(Item);
+
+  checkModelItemVars(Item);
+}
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderPretestInfo::checkModelFilled()
+{
+  if (mp_ModelInstance->getItemsCount() == 0)
   {
     Model = false;
     ModelMsg = _("Model is empty");
   }
+}
 
-  if (SimBlob->getCoreRepository().getUnitsGlobally()->empty())
+// =====================================================================
+// =====================================================================
+
+
+void BuilderPretestInfo::checkDomainFilled()
+{
+  if (mp_SimBlob->getCoreRepository().getUnitsGlobally()->empty())
   {
     Domain = false;
     DomainMsg = _("Spatial domain is empty");
   }
+}
 
-  Outputs = true;
+// =====================================================================
+// =====================================================================
 
-  if (SimBlob->getOutputDescriptor().getFileSets().empty())
+
+void BuilderPretestInfo::checkOutputsFilled()
+{
+  if (mp_SimBlob->getOutputDescriptor().getFileSets().empty())
   {
     Outputs = false;
     OutputsMsg = _("No file format defined");
-  } else
-  {
-    bool SetsEmpty = true;
-    unsigned int i = 0;
-    while (i < SimBlob->getOutputDescriptor().getFileSets().size() && SetsEmpty)
-    {
-      SetsEmpty
-          = SimBlob->getOutputDescriptor().getFileSets()[i].getSets().empty();
-      i++;
-    }
-    if (SetsEmpty)
-    {
-      Outputs = false;
-      OutputsMsg = _("No set defined");
-    }
+    return;
   }
 
-  if (RunDesc.getBeginDate() >= RunDesc.getEndDate())
+  for (unsigned int i = 0; i
+      < mp_SimBlob->getOutputDescriptor().getFileSets().size(); i++)
+  {
+    if (!mp_SimBlob->getOutputDescriptor().getFileSets()[i].getSets().empty())
+      return;
+  }
+
+  Outputs = false;
+  OutputsMsg = _("No set defined");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderPretestInfo::checkRunDate()
+{
+  if (mp_RunDesc->getBeginDate() >= mp_RunDesc->getEndDate())
   {
     RunConfig = false;
     RunConfigMsg = _("Run end date is not later than run begin date");
   }
+}
 
-  Params = GeneratorParams = Project = true;
-  ParamsMsg = ProjectMsg = "";
+// =====================================================================
+// =====================================================================
 
-  bool CheckVar;
 
-  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
-{  bool RandomMinMaxChecked = false;
-  bool InterpMinMaxChecked = false;
+void BuilderPretestInfo::checkModelItemParams(
+    openfluid::machine::ModelItemInstance* Item)
+{
+  m_RandomMinMaxChecked = false;
+  m_InterpMinMaxChecked = false;
 
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
-  {
-    CheckVar = localParamIsSet(Item,Param.DataName) || globalParamIsSet(Param.DataName);
+{  checkParamFilled(Item, Param.DataName);
 
-    if(!CheckVar)
-    {
-      if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+  if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+  {
+    checkGeneratorParamsConsistency(Item);
+  }
+}
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderPretestInfo::checkParamFilled(
+    openfluid::machine::ModelItemInstance* Item, std::string ParamName)
+{
+  if (!localParamIsSet(Item, ParamName) & !globalParamIsSet(ParamName))
+  {
+    if (Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
       GeneratorParams = false;
-      else
+    else
       Params = false;
 
-      ParamsMsg.append(Glib::ustring::compose(_("%1 is missing in %2\n"),Param.DataName, Item->Signature->ID));
-    }
+    ParamsMsg.append(Glib::ustring::compose(_("%1 is missing in %2\n"),
+        ParamName, Item->Signature->ID));
+  }
+}
 
-    // check Generators params consistency
-    if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
-    {
-      openfluid::base::GeneratorDescriptor::GeneratorMethod
-      Method =
+// =====================================================================
+// =====================================================================
+
+
+void BuilderPretestInfo::checkGeneratorParamsConsistency(
+    openfluid::machine::ModelItemInstance* Item)
+{
+  openfluid::base::GeneratorDescriptor::GeneratorMethod Method =
       (static_cast<GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
 
-      if(Method == openfluid::base::GeneratorDescriptor::Random && !RandomMinMaxChecked
-          && (localParamIsSet(Item,"min") || globalParamIsSet("min"))
-          && (localParamIsSet(Item,"max") || globalParamIsSet("max")))
-      {
-        double Min,Max;
-
-        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"min") ? Item->Params["min"] : m_GlobalParams["min"], &Min);
-        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"max") ? Item->Params["max"] : m_GlobalParams["max"], &Max);
-
-        if(Min>Max)
-        {
-          GeneratorParams = false;
-          ParamsMsg.append(Glib::ustring::compose(_("min >= max in %1\n"),Item->Signature->ID));
-        }
-
-        RandomMinMaxChecked = true;
-      }
-      else if(Method == openfluid::base::GeneratorDescriptor::Interp && !InterpMinMaxChecked
-          && (localParamIsSet(Item,"thresholdmin") || globalParamIsSet("thresholdmin"))
-          && (localParamIsSet(Item,"thresholdmax") || globalParamIsSet("thresholdmax")))
-      {
-        double Min,Max;
-
-        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"thresholdmin") ? Item->Params["thresholdmin"] : m_GlobalParams["thresholdmin"], &Min);
-        openfluid::tools::ConvertString<double>(localParamIsSet(Item,"thresholdmax") ? Item->Params["thresholdmax"] : m_GlobalParams["thresholdmax"], &Max);
-
-        if(Min>Max)
-        { GeneratorParams = false;
-          ParamsMsg.append(Glib::ustring::compose(_("thresholdmin >= thresholdmax in %1\n"),Item->Signature->ID));
-        }
-
-        InterpMinMaxChecked = true;
-      }
-    }
-  }
-
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  if (Method == openfluid::base::GeneratorDescriptor::Random
+      && !m_RandomMinMaxChecked && (localParamIsSet(Item, "min")
+      || globalParamIsSet("min")) && (localParamIsSet(Item, "max")
+      || globalParamIsSet("max")))
   {
-    CheckVar = true;
+    checkRandomMinMax(Item);
 
-    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
-
-    if(!CheckVar)
-    {
-      Project = false;
-      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable produced by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
-    }
+    m_RandomMinMaxChecked = true;
   }
-
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredVars)
+  else if (Method == openfluid::base::GeneratorDescriptor::Interp
+      && !m_InterpMinMaxChecked && (localParamIsSet(Item, "thresholdmin")
+      || globalParamIsSet("thresholdmin")) && (localParamIsSet(Item,
+      "thresholdmax") || globalParamIsSet("thresholdmax")))
   {
-    CheckVar = true;
+    checkInterpMinMax(Item);
 
-    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
-
-    if(!CheckVar)
-    {
-      Project = false;
-      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable required by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
-    }
-  }
-
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredPrevVars)
-  {
-    CheckVar = true;
-
-    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
-
-    if(!CheckVar)
-    {
-      Project = false;
-      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable previously required by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
-    }
-  }
-
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
-  {
-    CheckVar = true;
-
-    CheckVar = (SimBlob->getCoreRepository().getUnits(Var.UnitClass) && !SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
-
-    if(!CheckVar)
-    {
-      Project = false;
-      ProjectMsg.append(Glib::ustring::compose(_("Unit class %1 does not exist for %2 variable updated by %3\n"),Var.UnitClass, Var.DataName, Item->Signature->ID));
-    }
+    m_InterpMinMaxChecked = true;
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderPretestInfo::checkRandomMinMax(
+    openfluid::machine::ModelItemInstance* Item)
+{
+  double Min, Max;
+
+  openfluid::tools::ConvertString<double>(
+      localParamIsSet(Item, "min") ? Item->Params["min"]
+          : m_GlobalParams["min"], &Min);
+  openfluid::tools::ConvertString<double>(
+      localParamIsSet(Item, "max") ? Item->Params["max"]
+          : m_GlobalParams["max"], &Max);
+
+  if (Min > Max)
+  {
+    GeneratorParams = false;
+    ParamsMsg.append(Glib::ustring::compose(_("min >= max in %1\n"),
+        Item->Signature->ID));
+  }
 
 }
 
 // =====================================================================
 // =====================================================================
+
+
+void BuilderPretestInfo::checkInterpMinMax(
+    openfluid::machine::ModelItemInstance* Item)
+{
+  double Min, Max;
+
+  openfluid::tools::ConvertString<double>(
+      localParamIsSet(Item, "thresholdmin") ? Item->Params["thresholdmin"]
+          : m_GlobalParams["thresholdmin"], &Min);
+  openfluid::tools::ConvertString<double>(
+      localParamIsSet(Item, "thresholdmax") ? Item->Params["thresholdmax"]
+          : m_GlobalParams["thresholdmax"], &Max);
+
+  if (Min > Max)
+  {
+    GeneratorParams = false;
+    ParamsMsg.append(Glib::ustring::compose(
+        _("thresholdmin >= thresholdmax in %1\n"), Item->Signature->ID));
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 bool BuilderPretestInfo::localParamIsSet(
     openfluid::machine::ModelItemInstance* Item, std::string ParamName)
@@ -266,6 +307,65 @@ bool BuilderPretestInfo::globalParamIsSet(std::string ParamName)
 
 // =====================================================================
 // =====================================================================
+
+
+void BuilderPretestInfo::checkModelItemVars(
+    openfluid::machine::ModelItemInstance* Item)
+{
+  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+{  if(!checkVar(Var))
+  {
+    Project = false;
+    ProjectMsg .append(Glib::ustring::compose(_("Unit class %1 doesn't exist for %2 variable produced by %3\n"), Var.UnitClass,
+            Var.DataName, Item->Signature->ID));
+  }
+
+}
+
+BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredVars)
+{
+  if(!checkVar(Var))
+  {
+    Project = false;
+    ProjectMsg .append(Glib::ustring::compose(_("Unit class %1 doesn't exist for %2 variable required by %3\n"), Var.UnitClass,
+            Var.DataName, Item->Signature->ID));
+  }
+}
+
+BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredPrevVars)
+{
+  if(!checkVar(Var))
+  {
+    Project = false;
+    ProjectMsg .append(Glib::ustring::compose(_("Unit class %1 doesn't exist for %2 variable previously required by %3\n"), Var.UnitClass,
+            Var.DataName, Item->Signature->ID));
+  }
+}
+
+BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
+{
+  if(!checkVar(Var))
+  {
+    Project = false;
+    ProjectMsg .append(Glib::ustring::compose(_("Unit class %1 doesn't exist for %2 variable updated by %3\n"), Var.UnitClass,
+            Var.DataName, Item->Signature->ID));
+  }
+}
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool BuilderPretestInfo::checkVar(openfluid::base::SignatureHandledDataItem Var)
+{
+  return (mp_SimBlob->getCoreRepository().getUnits(Var.UnitClass) != NULL)
+      && (!mp_SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());
+
+}
+// =====================================================================
+// =====================================================================
+
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {

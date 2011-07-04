@@ -174,10 +174,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-SimulOutFilesPresenter
                      builder_unittest_SimulOutFilesPresenter_TEST
                      SimulOutFilesPresenter_TEST.cpp)
 
-ADD_BUILDER_UNITTEST(builder-unittest-SimulOutFileDescPresenter
-                     builder_unittest_SimulOutFileDescPresenter_TEST
-                     SimulOutFileDescPresenter_TEST.cpp)
-
 ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsModel
                      builder_unittest_SimulOutSetsModel_TEST
                      SimulOutSetsModel_TEST.cpp)
@@ -185,10 +181,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsModel
 ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsPresenter
                      builder_unittest_SimulOutSetsPresenter_TEST
                      SimulOutSetsPresenter_TEST.cpp)
-
-ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetDescPresenter
-                     builder_unittest_SimulOutSetDescPresenter_TEST
-                     SimulOutSetDescPresenter_TEST.cpp)
 
 ### RESULTS ###
 

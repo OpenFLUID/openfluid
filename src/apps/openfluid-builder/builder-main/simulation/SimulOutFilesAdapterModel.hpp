@@ -63,34 +63,62 @@
 
 class BuilderListStore;
 
+// =====================================================================
+// =====================================================================
+
+
 class SimulOutFilesAdapterModel
 {
   public:
-    virtual void setFilesFormats(std::vector<std::pair<std::string,
-        openfluid::base::OutputFilesDescriptor> > FilesFormats) = 0;
+
+    virtual void setFilesFormats(openfluid::base::OutputDescriptor* OutDesc) = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
+
     virtual void setSelectedFile(Gtk::TreeIter SelectedIter) = 0;
-    virtual int getSelectedFileFormatIndex() = 0;
+
+    virtual std::string getSelectedFileFormatName() = 0;
+
+    virtual void setSelectedFormatName(std::string FormatName) = 0;
+
+    virtual Gtk::TreeRow getSelectedRow() = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutFilesAdapterModelImpl: public SimulOutFilesAdapterModel
 {
   private:
+
     SimulOutFilesColumns m_Columns;
-    Glib::RefPtr<BuilderListStore> m_refListStore;
+
+    Glib::RefPtr<BuilderListStore> mref_ListStore;
+
     Gtk::TreeRowReference* m_SelectedRowRef;
+
+    std::string m_BlankSubstitute;
+    std::string m_TabSubstitute;
+
+    std::string fromRealCharToSubstitute(std::string RealChar);
+
   public:
+
     SimulOutFilesAdapterModelImpl();
-    void setFilesFormats(std::vector<std::pair<std::string,
-        openfluid::base::OutputFilesDescriptor> > FilesFormats);
+
+    void setFilesFormats(openfluid::base::OutputDescriptor* OutDesc);
+
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
+
     void setSelectedFile(Gtk::TreeIter SelectedIter);
-    int getSelectedFileFormatIndex();
+
+    std::string getSelectedFileFormatName();
+
+    void setSelectedFormatName(std::string FormatName);
+
+    Gtk::TreeRow getSelectedRow();
 };
 
-class SimulOutFilesAdapterModelSub: public SimulOutFilesAdapterModelImpl
-{
-  public:
-};
 
 #endif /* __SIMULOUTFILESADAPTERMODEL_HPP__ */

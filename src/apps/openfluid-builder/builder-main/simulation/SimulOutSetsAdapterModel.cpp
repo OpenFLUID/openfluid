@@ -54,8 +54,11 @@
 
 #include "SimulOutSetsAdapterModel.hpp"
 
-
 #include "BuilderListStore.hpp"
+#include "EngineHelper.hpp"
+
+// =====================================================================
+// =====================================================================
 
 
 std::string SimulOutSetsAdapterModelImpl::extractIDsString(
@@ -66,8 +69,14 @@ std::string SimulOutSetsAdapterModelImpl::extractIDsString(
 
   return getStringListFromVect(OutSetDesc.getUnitsIDs());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetsAdapterModelImpl::extractVariablesString(
-    openfluid::base::OutputSetDescriptor OutSetDesc)
+    openfluid::base::OutputSetDescriptor OutSetDesc,
+    openfluid::machine::ModelInstance* ModelInstance)
 {
   if (OutSetDesc.isAllScalars() && OutSetDesc.isAllVectors())
     return "*";
@@ -75,8 +84,19 @@ std::string SimulOutSetsAdapterModelImpl::extractVariablesString(
   Glib::ustring StrScalar = "";
   Glib::ustring StrVector = "";
 
-  StrScalar = getStringListFromVect(OutSetDesc.getScalars());
-  StrVector = getStringListFromVect(OutSetDesc.getVectors(), true);
+  if (OutSetDesc.isAllScalars())
+    StrScalar = getStringListFromStringSet(
+        EngineHelper::getProducedScalarVarNames(OutSetDesc.getUnitsClass(),
+            ModelInstance));
+  else
+    StrScalar = getStringListFromVect(OutSetDesc.getScalars());
+
+  if (OutSetDesc.isAllVectors())
+    StrVector = getStringListFromStringSet(
+        EngineHelper::getProducedVectorVarNames(OutSetDesc.getUnitsClass(),
+            ModelInstance));
+  else
+    StrVector = getStringListFromVect(OutSetDesc.getVectors());
 
   Glib::ustring Sep = (StrScalar != "" && StrVector != "") ? ";" : "";
 
@@ -84,52 +104,152 @@ std::string SimulOutSetsAdapterModelImpl::extractVariablesString(
 
 }
 
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsAdapterModelImpl::SimulOutSetsAdapterModelImpl() :
   m_SelectedRowRef(0)
 {
-  m_refListStore = BuilderListStore::create(m_Columns);
+  mref_ListStore = BuilderListStore::create(m_Columns);
+
+  mref_ListStore->set_sort_column(m_Columns.m_Name, Gtk::SORT_ASCENDING);
 }
-void SimulOutSetsAdapterModelImpl::setSets(std::map<std::string, std::pair<
-    std::string, openfluid::base::OutputSetDescriptor> > SetsByName)
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutSetsAdapterModelImpl::setSets(
+    openfluid::base::OutputDescriptor* OutDesc,
+    openfluid::machine::ModelInstance* ModelInstance)
 {
   m_SelectedRowRef = 0;
 
-  m_refListStore->clear();
+  mref_ListStore->clear();
 
-  for (std::map<std::string, std::pair<std::string,
-      openfluid::base::OutputSetDescriptor> >::iterator it = SetsByName.begin(); it
-      != SetsByName.end(); ++it)
+  for (unsigned int i = 0; i < OutDesc->getFileSets().size(); i++)
   {
-    Gtk::TreeRow Row = *(m_refListStore->append());
+    for (unsigned int j = 0; j < OutDesc->getFileSets()[i].getSets().size(); j++)
+    {
+      openfluid::base::OutputSetDescriptor SetDesc =
+          OutDesc->getFileSets()[i].getSets()[j];
 
-    Row[m_Columns.m_Name] = it->first;
-    Row[m_Columns.m_FormatName] = it->second.first;
+      Gtk::TreeRow Row = *(mref_ListStore->append());
 
-    openfluid::base::OutputSetDescriptor OutSetDesc = it->second.second;
-
-    Row[m_Columns.m_UnitsClass] = OutSetDesc.getUnitsClass();
-    Row[m_Columns.m_Precision] = OutSetDesc.getPrecision();
-    Row[m_Columns.m_UnitsIDs] = extractIDsString(OutSetDesc);
-    Row[m_Columns.m_Vars] = extractVariablesString(OutSetDesc);
+      Row[m_Columns.m_Name] = SetDesc.getName();
+      Row[m_Columns.m_UnitsClass] = SetDesc.getUnitsClass();
+      Row[m_Columns.m_Precision] = SetDesc.getPrecision();
+      Row[m_Columns.m_UnitsIDs] = extractIDsString(SetDesc);
+      Row[m_Columns.m_Vars] = extractVariablesString(SetDesc, ModelInstance);
+      Row[m_Columns.m_FormatName] = OutDesc->getFileSets()[i].getName();
+    }
   }
+
+  mref_ListStore->sort_column_changed();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> SimulOutSetsAdapterModelImpl::getTreeModel()
 {
-  return m_refListStore;
+  return mref_ListStore;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsAdapterModelImpl::setSelectedSet(Gtk::TreeIter SelectedIter)
 {
   if (SelectedIter)
-    m_SelectedRowRef = m_refListStore->createRowRefFromIter(SelectedIter);
+    m_SelectedRowRef = mref_ListStore->createRowRefFromIter(SelectedIter);
   else
     m_SelectedRowRef = 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetsAdapterModelImpl::getSelectedSetName()
 {
   if (m_SelectedRowRef)
-    return m_refListStore->getRowFromRowRef(*m_SelectedRowRef)[m_Columns.m_Name];
+    return mref_ListStore->getRowFromRowRef(*m_SelectedRowRef)[m_Columns.m_Name];
   return "";
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutSetsAdapterModelImpl::setSelectedSetName(std::string SetName)
+{
+  Gtk::TreeModel::Children Children = mref_ListStore->children();
+
+  for (Gtk::TreeModel::Children::iterator it = Children.begin(); it
+      != Children.end(); ++it)
+  {
+    if (it->get_value(m_Columns.m_Name) == SetName)
+    {
+      m_SelectedRowRef = mref_ListStore->createRowRefFromIter(it);
+      return;
+    }
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeRow SimulOutSetsAdapterModelImpl::getSelectedRow()
+{
+  return mref_ListStore->getRowFromRowRef(*m_SelectedRowRef);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring SimulOutSetsAdapterModelImpl::getStringListFromStringSet(
+    std::set<std::string> Vect)
+{
+  Glib::ustring Str = "";
+
+  if (!Vect.empty())
+    Str = *Vect.begin();
+
+  if (Vect.size() > 1)
+  {
+    std::set<std::string>::iterator it = Vect.begin();
+    it++;
+    while (it != Vect.end())
+    {
+      Str += Glib::ustring::compose(";%1", *it);
+      ++it;
+    }
+  }
+
+  return Str;
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring SimulOutSetsAdapterModelSub::getStringListFromStringSet(std::set<
+    std::string> Vect)
+{
+  return SimulOutSetsAdapterModelImpl::getStringListFromStringSet(Vect);
+}
+
+// =====================================================================
+// =====================================================================
 
 
 std::string SimulOutSetsAdapterModelSub::extractIDsString(
@@ -137,8 +257,15 @@ std::string SimulOutSetsAdapterModelSub::extractIDsString(
 {
   return SimulOutSetsAdapterModelImpl::extractIDsString(OutSetDesc);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetsAdapterModelSub::extractVariablesString(
-    openfluid::base::OutputSetDescriptor OutSetDesc)
+    openfluid::base::OutputSetDescriptor OutSetDesc,
+    openfluid::machine::ModelInstance* ModelInstance)
 {
-  return SimulOutSetsAdapterModelImpl::extractVariablesString(OutSetDesc);
+  return SimulOutSetsAdapterModelImpl::extractVariablesString(OutSetDesc,
+      ModelInstance);
 }

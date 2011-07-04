@@ -61,23 +61,28 @@
 
 #include "SimulOutFilesColumns.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 class SimulOutFilesView
 {
   public:
 
     virtual sigc::signal<void> signal_FileSelectionChanged() = 0;
 
-    virtual sigc::signal<void> signal_DeletionConfirmed() = 0;
-
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
 
-    virtual Gtk::TreeIter getSelectedIter() = 0;
+    virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
 
-    virtual void showDialogConfirmDeletion() = 0;
+    virtual Gtk::TreeIter getSelectedIter() = 0;
 
     virtual Gtk::Widget* asWidget() = 0;
 
 };
+
+// =====================================================================
+// =====================================================================
 
 
 class SimulOutFilesViewImpl: public SimulOutFilesView
@@ -86,12 +91,9 @@ class SimulOutFilesViewImpl: public SimulOutFilesView
 
     sigc::signal<void> m_signal_FileSelectionChanged;
 
-    sigc::signal<void> m_signal_DeletionConfirmed;
-
     SimulOutFilesColumns m_Columns;
 
     void onSelectionChanged();
-
 
   protected:
 
@@ -99,23 +101,23 @@ class SimulOutFilesViewImpl: public SimulOutFilesView
 
     Gtk::ScrolledWindow* mp_MainWin;
 
-
   public:
 
     SimulOutFilesViewImpl();
 
     sigc::signal<void> signal_FileSelectionChanged();
 
-    sigc::signal<void> signal_DeletionConfirmed();
-
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
+
+    void setSelectedRow(Gtk::TreeRow Row);
 
     Gtk::TreeIter getSelectedIter();
 
-    void showDialogConfirmDeletion();
-
     Gtk::Widget* asWidget();
 };
+
+// =====================================================================
+// =====================================================================
 
 
 class SimulOutFilesViewSub: public SimulOutFilesViewImpl

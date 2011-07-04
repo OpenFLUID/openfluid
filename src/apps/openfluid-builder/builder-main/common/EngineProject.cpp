@@ -62,7 +62,9 @@
 #include <openfluid/core/DateTime.hpp>
 
 #include "GeneratorSignature.hpp"
+#include "EngineHelper.hpp"
 
+#include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
 // =====================================================================
@@ -97,7 +99,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   {
     setDefaultRunDesc();
     setDefaultOutDesc();
-  } else
+  }
+  else
   {
     try
     {
@@ -144,17 +147,29 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
           GenSign->ID = (*it)->Signature->ID;
 
-          GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
+          GenSign->HandledData.ProducedVars
+              = (*it)->Signature->HandledData.ProducedVars;
 
-          GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
+          GenSign->HandledData.RequiredExtraFiles
+              = (*it)->Signature->HandledData.RequiredExtraFiles;
 
           (*it)->Signature = GenSign;
         }
       }
-    } catch (openfluid::base::OFException e)
+    }
+    catch (openfluid::base::OFException e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
     }
+
+    dispatchOutputVariables();
+
+    Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
+    if (!OutputConsistencyMessage.empty())
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+          Glib::ustring::compose(_(
+              "Check outputs consistency leads OpenFLUID to delete :\n%1"),
+              OutputConsistencyMessage));
   }
 
 }
@@ -245,7 +260,8 @@ void EngineProject::checkAndSetDefaultRunValues(
     RunDesc.setBeginDate(m_DefaultBeginDT);
 
     BeginDT = m_DefaultBeginDT;
-  } else
+  }
+  else
     BeginDT = DT;
 
   if (!DT.setFromISOString(RunDesc.getEndDate().getAsISOString()))
@@ -301,7 +317,8 @@ std::string EngineProject::checkModelDesc(
           ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
 
       it = ModelDesc.getItems().erase(it);
-    } else
+    }
+    else
       ++it;
   }
 
@@ -485,4 +502,170 @@ EngineProject::~EngineProject()
   if (FXReader)
     delete FXReader;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::dispatchOutputVariables()
+{
+  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
+  {
+    for (unsigned int j = 0; j
+        < getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
+    {
+      openfluid::base::OutputSetDescriptor* OutSet =
+          &getOutputDescriptor().getFileSets()[i].getSets()[j];
+
+      if (!(OutSet->isAllScalars() && OutSet->isAllVectors()))
+      {
+        std::string ClassName = OutSet->getUnitsClass();
+
+        if (OutSet->isAllScalars())
+        {
+          OutSet->getScalars().clear();
+
+          BOOST_FOREACH(std::string VarName,EngineHelper::getProducedScalarVarNames(ClassName,mp_ModelInstance))
+{          OutSet->getScalars().push_back(VarName);
+        }
+      }
+
+      if(OutSet->isAllVectors())
+      {
+        OutSet->getVectors().clear();
+
+        BOOST_FOREACH(std::string VarName, EngineHelper::getProducedVectorVarNames(ClassName,mp_ModelInstance))
+        {
+          OutSet->getVectors().push_back(VarName);
+        }
+      }
+    }
+  }
+}
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring EngineProject::checkOutputsConsistency()
+{
+  Glib::ustring Message = "";
+
+  std::set<std::string> ClassNames = EngineHelper::getClassNames(
+      &getCoreRepository());
+
+  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
+  {
+    std::vector<openfluid::base::OutputSetDescriptor>::iterator itSet =
+        getOutputDescriptor().getFileSets()[i].getSets().begin();
+
+    while (itSet != getOutputDescriptor().getFileSets()[i].getSets().end())
+    {
+      std::string ClassName = itSet->getUnitsClass();
+      std::string SetName = itSet->getName();
+
+      std::set<std::string> VarNames = EngineHelper::getProducedVarNames(
+          ClassName, mp_ModelInstance);
+
+      Glib::ustring MsgDetail = "";
+
+      if (ClassNames.find(ClassName) == ClassNames.end())
+      {
+        MsgDetail = Glib::ustring::compose(_("class %1 doesn't exist"),
+            ClassName);
+      }
+      else if (VarNames.empty())
+      {
+        MsgDetail = Glib::ustring::compose(
+            _("no variable produced for class %1"), ClassName);
+      }
+      else if (!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+      {
+        MsgDetail = _("no unit selected");
+      }
+      else if (!itSet->isAllScalars() && itSet->getScalars().empty()
+          && !itSet->isAllVectors() && itSet->getVectors().empty())
+      {
+        MsgDetail = _("no variable selected");
+      }
+
+      if (MsgDetail != "")
+      {
+        Message.append(Glib::ustring::compose("- Set %1 (%2)\n", SetName,
+            MsgDetail));
+        getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+      }
+      else
+      {
+        // check Ids exist
+
+        std::vector<unsigned int>::iterator itId = itSet->getUnitsIDs().begin();
+
+        while (itId != itSet->getUnitsIDs().end())
+        {
+          if (getCoreRepository().getUnit(ClassName, *itId) == NULL)
+          {
+            Message.append(Glib::ustring::compose(_("- ID %1 of set %2\n"),
+                *itId, SetName));
+            itSet->getUnitsIDs().erase(itId);
+          }
+          else
+            itId++;
+        }
+
+        // check Var names exist
+
+        std::vector<std::string>::iterator itVar;
+
+        itVar = itSet->getVectors().begin();
+
+        while (itVar != itSet->getVectors().end())
+        {
+          if (VarNames.find(*itVar) == VarNames.end())
+          {
+            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
+                *itVar, SetName));
+            itSet->getVectors().erase(itVar);
+          }
+          else
+            itVar++;
+        }
+
+        itVar = itSet->getScalars().begin();
+
+        while (itVar != itSet->getScalars().end())
+        {
+          if (VarNames.find(*itVar) == VarNames.end())
+          {
+            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
+                *itVar, SetName));
+            itSet->getScalars().erase(itVar);
+          }
+          else
+            itVar++;
+        }
+
+        // check still at least one Id and one Var in Set
+
+        if ((!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+            || (!itSet->isAllScalars() && itSet->getScalars().empty()
+                && !itSet->isAllVectors() && itSet->getVectors().empty()))
+        {
+          Message.append(Glib::ustring::compose(_("=> Set %1\n"), SetName));
+          getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+        }
+        else
+          ++itSet;
+      }
+
+    }
+  }
+
+  return Message;
+}
+
+// =====================================================================
+// =====================================================================
+
 

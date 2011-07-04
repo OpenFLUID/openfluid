@@ -107,19 +107,21 @@ sigc::signal<void> SimulOutSetsViewImpl::signal_SetSelectionChanged()
 // =====================================================================
 
 
-sigc::signal<void> SimulOutSetsViewImpl::signal_DeletionConfirmed()
-{
-  return m_signal_DeletionConfirmed;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void SimulOutSetsViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_TreeView->set_model(Model);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutSetsViewImpl::setSelectedRow(Gtk::TreeRow Row)
+{
+  mp_TreeView->get_selection()->select(Row);
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -134,17 +136,6 @@ Gtk::TreeIter SimulOutSetsViewImpl::getSelectedIter()
 // =====================================================================
 
 
-void SimulOutSetsViewImpl::showDialogConfirmDeletion()
-{
-  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      _("This will delete the sets associated to this format.\nDo you want to continue ?")))
-    m_signal_DeletionConfirmed.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 Gtk::Widget* SimulOutSetsViewImpl::asWidget()
 {
   return mp_MainWin;
@@ -152,16 +143,6 @@ Gtk::Widget* SimulOutSetsViewImpl::asWidget()
 
 // =====================================================================
 // =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutSetsViewSub::selectRowWithIndex(int Index)
-{
-  mp_TreeView->get_selection()->select(
-      mp_TreeView->get_model()->children()[Index]);
-}
 
 // =====================================================================
 // =====================================================================

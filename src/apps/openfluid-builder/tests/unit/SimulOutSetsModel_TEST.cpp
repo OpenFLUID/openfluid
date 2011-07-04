@@ -61,13 +61,13 @@
 
 struct init_Model
 {
-    SimulOutSetsModelSub* mp_Model;
+    SimulOutSetsModel* mp_Model;
 
     init_Model()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Model = new SimulOutSetsModelSub();
+      mp_Model = new SimulOutSetsModelImpl();
     }
 
     ~init_Model()
@@ -81,50 +81,28 @@ BOOST_FIXTURE_TEST_SUITE(SimulOutSetsModelTest, init_Model)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_setEngineRequirements)
-{
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),2);
-
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->first,"full");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.first,"Format #1");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.second.getName(),"full");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.second.getUnitsClass(),"TestUnits");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.second.isAllUnits(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.second.isAllVectors(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.second.isAllScalars(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().begin()->second.second.getPrecision(),5);
-
-  delete p_EngProject;
-}
-
 BOOST_AUTO_TEST_CASE(test_getSelectedFileFormat)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
   EngineProject* p_EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(), p_EngProject->getCoreRepository(),*p_EngProject->getModelInstance() );
 
   BOOST_CHECK(mp_Model->getSelectedSet() == 0);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetFormatName(),"");
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetName(),"");
 
   mp_Model->setSelectedSetName("wrong set name");
 
   BOOST_CHECK(mp_Model->getSelectedSet() == 0);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetFormatName(),"");
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetName(),"");
 
   mp_Model->setSelectedSetName("partial");
 
   openfluid::base::OutputSetDescriptor* EngineSetDesc = &(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets()[1]);
 
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet(),EngineSetDesc);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetFormatName(),"Format #1");
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetName(),"partial");
 
   delete p_EngProject;
 }
@@ -135,30 +113,24 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedSet)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* p_EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-
-  BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),2);
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(), p_EngProject->getCoreRepository(),*p_EngProject->getModelInstance() );
 
   mp_Model->setSelectedSetName("partial");
   mp_Model->deleteSelectedSet();
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),1);
   BOOST_CHECK(mp_Model->getSelectedSet() == 0);
 
   mp_Model->setSelectedSetName("wrong set name");
   mp_Model->deleteSelectedSet();
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),1);
   BOOST_CHECK(mp_Model->getSelectedSet() == 0);
 
   mp_Model->setSelectedSetName("full");
   mp_Model->deleteSelectedSet();
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),0);
   BOOST_CHECK(mp_Model->getSelectedSet() == 0);
 
   delete p_EngProject;
@@ -170,10 +142,11 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* p_EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(), p_EngProject->getCoreRepository(),*p_EngProject->getModelInstance() );
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),2);
+
+  p_EngProject->getOutputDescriptor().getFileSets().begin()->setName("Format #1");
 
   openfluid::base::OutputSetDescriptor SetDesc;
   SetDesc.setName("New Set");
@@ -183,13 +156,11 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   SetDesc.getUnitsIDs().push_back(6);
   SetDesc.getScalars().push_back("var A");
   SetDesc.getScalars().push_back("var B");
-  SetDesc.setAllVectors(true);
   SetDesc.setPrecision(3);
 
-  mp_Model->addSet(&SetDesc,"Format #1",0);
+  mp_Model->addSet(&SetDesc,"Format #1");
 
   BOOST_CHECK_EQUAL(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets().size(),3);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),3);
 
   openfluid::base::OutputSetDescriptor EngineSetDesc = p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets()[2];
 
@@ -197,16 +168,7 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   BOOST_CHECK_EQUAL(EngineSetDesc.getUnitsClass(),"TestUnits");
   BOOST_CHECK_EQUAL(EngineSetDesc.getUnitsIDs().size(),3);
   BOOST_CHECK_EQUAL(EngineSetDesc.getScalars().size(),2);
-  BOOST_CHECK_EQUAL(EngineSetDesc.isAllVectors(),true);
   BOOST_CHECK_EQUAL(EngineSetDesc.getPrecision(),3);
-
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].first,"Format #1");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].second.getName(),"New Set");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].second.getUnitsClass(),"TestUnits");
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].second.getUnitsIDs().size(),3);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].second.getScalars().size(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].second.isAllVectors(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getSetsByName()["New Set"].second.getPrecision(),3);
 
   delete p_EngProject;
 }
@@ -217,59 +179,31 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedSet)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* p_EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(), p_EngProject->getCoreRepository(),*p_EngProject->getModelInstance() );
+
+  p_EngProject->getOutputDescriptor().getFileSets().begin()->setName("Format #1");
 
   mp_Model->setSelectedSetName("partial");
 
-  openfluid::base::OutputSetDescriptor* PartialSetDesc = &(p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets()[1]);
-  PartialSetDesc->setPrecision(7);
-  PartialSetDesc->setUnitsClass("ParentTestUnits");
-  PartialSetDesc->setAllUnits(true);
-  PartialSetDesc->getScalars().clear();
-  PartialSetDesc->getVectors().clear();
+  openfluid::base::OutputSetDescriptor PartialSetDesc = p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets()[1];
+  PartialSetDesc.setName("new set name");
+  PartialSetDesc.setPrecision(7);
+  PartialSetDesc.setUnitsClass("ParentTestUnits");
+  PartialSetDesc.setAllUnits(true);
+  PartialSetDesc.getScalars().clear();
+  PartialSetDesc.getVectors().clear();
 
-  mp_Model->updateSelectedSet("New Format");
+  mp_Model->updateSelectedSet(&PartialSetDesc,"Format #1");
 
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getName(),"partial");
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getName(),"new set name");
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getPrecision(),7);
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getUnitsClass(),"ParentTestUnits");
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->isAllUnits(),true);
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getScalars().size(),0);
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getVectors().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetFormatName(),"New Format");
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSetName(),"new set name");
 
   delete p_EngProject;
-}
-
-BOOST_AUTO_TEST_CASE(test_updateFileFormats)
-{
-  //  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  //  + "/OPENFLUID.IN.Primitives";
-  //  EngineProject* p_EngProject = new EngineProject(Path);
-  //
-  //  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor());
-  //  mp_Model->setSelectedSetName("partial");
-  //
-  //  SimulOutFilesModelImpl FilesModel;
-  //  FilesModel.setEngineRequirements(p_EngProject->getOutputDescriptor());
-  //  openfluid::base::OutputFilesDescriptor FileDesc;
-  //  openfluid::base::OutputSetDescriptor SetDesc1;
-  //  openfluid::base::OutputSetDescriptor SetDesc2;
-  //  openfluid::base::OutputSetDescriptor SetDesc3;
-  //  FileDesc.getSets().push_back(SetDesc1);
-  //  FileDesc.getSets().push_back(SetDesc2);
-  //  FileDesc.getSets().push_back(SetDesc3);
-  //  FilesModel.addFileFormat(&FileDesc,"New Format");
-  //
-  //  mp_Model->addSet()
-  //
-  //  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),3);
-  //
-  //  mp_Model->updateFileFormats(FilesModel.getFilesFormatsByNameVect());
-  //
-  //  BOOST_CHECK_EQUAL(mp_Model->getSetsByName().size(),1);
-  //
-  //  delete p_EngProject;
 }
 
 // =====================================================================

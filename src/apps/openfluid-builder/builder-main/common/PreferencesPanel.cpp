@@ -174,7 +174,7 @@ PreferencesInterfacePanel::PreferencesInterfacePanel() :
   Row[m_LanguagesColumns.m_Code] = "";
   Row[m_LanguagesColumns.m_Name] = _("System default");
 
-  mp_LanguageCombo = Gtk::manage(new Gtk::ComboBox(mref_LanguagesModel));
+  mp_LanguageCombo = Gtk::manage(new Gtk::ComboBox(static_cast<Glib::RefPtr<Gtk::TreeModel> >(mref_LanguagesModel)));
   mp_LanguageCombo->pack_start(m_LanguagesColumns.m_Name);
   m_LanguageConnection = mp_LanguageCombo->signal_changed().connect(
       sigc::mem_fun(*this, &PreferencesInterfacePanel::onLanguageChanged));

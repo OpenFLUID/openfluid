@@ -67,21 +67,30 @@ class SimulOutFilesView;
 class SimulOutFilesAdapter: public sigc::trackable
 {
   private:
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
-    sigc::signal<void> m_signal_FromUserDeletionConfirmed;
+
     SimulOutFilesAdapterModel& m_Model;
+
     SimulOutFilesView& m_View;
+
+    bool m_HasToUpdate;
+
     void whenFileSelectionChanged();
-    void whenDeletionConfirmed();
+
   public:
+
     SimulOutFilesAdapter(SimulOutFilesAdapterModel& Model,
         SimulOutFilesView& View);
+
     sigc::signal<void> signal_FromUserSelectionChanged();
-    sigc::signal<void> signal_FromUserDeletionConfirmed();
-    void setFilesFormats(std::vector<std::pair<std::string,
-        openfluid::base::OutputFilesDescriptor> > FilesFormats);
-    int getSelectedFileFormatIndex();
-    void showDialogConfirmDeletion();
+
+    void setFilesFormats(openfluid::base::OutputDescriptor* OutDesc);
+
+    void setSelectedFormat(std::string FormatName);
+
+    std::string getSelectedFileFormatName();
+
 };
 
 #endif /* __SIMULOUTFILESADAPTER_HPP__ */

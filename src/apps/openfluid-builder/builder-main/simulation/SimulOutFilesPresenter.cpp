@@ -57,22 +57,29 @@
 #include "SimulOutFilesModel.hpp"
 #include "SimulOutFilesAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesPresenter::whenDescriptorChanged()
 {
-  m_Adapter.setFilesFormats(m_Model.getFilesFormatsByNameVect());
+  m_Adapter.setFilesFormats(m_Model.getOutDescriptor());
+
+  m_Adapter.setSelectedFormat(m_Model.getSelectedFormatName());
 }
-void SimulOutFilesPresenter::whenShowDialogConfirmDeletionAsked()
-{
-  m_Adapter.showDialogConfirmDeletion();
-}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesPresenter::whenSelectionChanged()
 {
-  m_Model.setSelectedFileFormatIndex(m_Adapter.getSelectedFileFormatIndex());
+  m_Model.setSelectedFileFormatName(m_Adapter.getSelectedFileFormatName());
 }
-void SimulOutFilesPresenter::whenDeletionConfirmed()
-{
-  m_Model.deleteSelectedFileFormatConfirmed();
-}
+
+// =====================================================================
+// =====================================================================
+
 
 SimulOutFilesPresenter::SimulOutFilesPresenter(SimulOutFilesModel& Model,
     SimulOutFilesAdapter& Adapter) :
@@ -80,11 +87,7 @@ SimulOutFilesPresenter::SimulOutFilesPresenter(SimulOutFilesModel& Model,
 {
   m_Model.signal_FromAppDescriptorChanged().connect(sigc::mem_fun(*this,
       &SimulOutFilesPresenter::whenDescriptorChanged));
-  m_Model.signal_FromAppShowDialogConfirmDeletionAsked().connect(sigc::mem_fun(
-      *this, &SimulOutFilesPresenter::whenShowDialogConfirmDeletionAsked));
 
   m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutFilesPresenter::whenSelectionChanged));
-  m_Adapter.signal_FromUserDeletionConfirmed().connect(sigc::mem_fun(*this,
-      &SimulOutFilesPresenter::whenDeletionConfirmed));
 }

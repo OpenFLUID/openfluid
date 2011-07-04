@@ -54,49 +54,118 @@
 
 #include "SimulOutFilesAdapterModel.hpp"
 
+#include <glibmm/i18n.h>
+
 #include "BuilderListStore.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 SimulOutFilesAdapterModelImpl::SimulOutFilesAdapterModelImpl() :
-  m_SelectedRowRef(0)//, m_BlankSubstitute(_("[blank]"))
+  m_SelectedRowRef(0), m_BlankSubstitute(_("[blank]")), m_TabSubstitute(
+      _("[tab]"))
 {
-  m_refListStore = BuilderListStore::create(m_Columns);
+  mref_ListStore = BuilderListStore::create(m_Columns);
 }
 
-void SimulOutFilesAdapterModelImpl::setFilesFormats(std::vector<std::pair<
-    std::string, openfluid::base::OutputFilesDescriptor> > FilesFormats)
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesAdapterModelImpl::setFilesFormats(
+    openfluid::base::OutputDescriptor* OutDesc)
 {
-  m_SelectedRowRef = 0;
+  mref_ListStore->clear();
 
-  m_refListStore->clear();
-
-  for (unsigned int i = 0; i < FilesFormats.size(); i++)
+  for (unsigned int i = 0; i < OutDesc->getFileSets().size(); i++)
   {
-    Gtk::TreeRow Row = *(m_refListStore->append());
+    Gtk::TreeRow Row = *(mref_ListStore->append());
 
-    Row[m_Columns.m_Index] = i;
-    Row[m_Columns.m_Name] = FilesFormats[i].first;
-    Row[m_Columns.m_ColSeparator] = FilesFormats[i].second.getColSeparator();
-    Row[m_Columns.m_DateFormat] = FilesFormats[i].second.getDateFormat();
-    Row[m_Columns.m_CommentChar] = FilesFormats[i].second.getCommentChar();
-
+    Row[m_Columns.m_Name] = OutDesc->getFileSets()[i].getName();
+    Row[m_Columns.m_ColSeparator] = fromRealCharToSubstitute(
+        OutDesc->getFileSets()[i].getColSeparator());
+    Row[m_Columns.m_DateFormat] = OutDesc->getFileSets()[i].getDateFormat();
+    Row[m_Columns.m_CommentChar] = fromRealCharToSubstitute(
+        OutDesc->getFileSets()[i].getCommentChar());
   }
 
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> SimulOutFilesAdapterModelImpl::getTreeModel()
 {
-  return m_refListStore;
+  return mref_ListStore;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesAdapterModelImpl::setSelectedFile(Gtk::TreeIter SelectedIter)
 {
   if (SelectedIter)
-    m_SelectedRowRef = m_refListStore->createRowRefFromIter(SelectedIter);
+    m_SelectedRowRef = mref_ListStore->createRowRefFromIter(SelectedIter);
   else
     m_SelectedRowRef = 0;
 }
-int SimulOutFilesAdapterModelImpl::getSelectedFileFormatIndex()
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulOutFilesAdapterModelImpl::getSelectedFileFormatName()
 {
   if (m_SelectedRowRef)
-    return m_refListStore->getRowFromRowRef(*m_SelectedRowRef)[m_Columns.m_Index];
-  return -1;
+    return mref_ListStore->getRowFromRowRef(*m_SelectedRowRef)[m_Columns.m_Name];
+  return "";
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesAdapterModelImpl::setSelectedFormatName(
+    std::string FormatName)
+{
+  Gtk::TreeModel::Children Children = mref_ListStore->children();
+
+  for (Gtk::TreeModel::Children::iterator it = Children.begin(); it
+      != Children.end(); ++it)
+  {
+    if (it->get_value(m_Columns.m_Name) == FormatName)
+    {
+      m_SelectedRowRef = mref_ListStore->createRowRefFromIter(it);
+      return;
+    }
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeRow SimulOutFilesAdapterModelImpl::getSelectedRow()
+{
+  return mref_ListStore->getRowFromRowRef(*m_SelectedRowRef);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulOutFilesAdapterModelImpl::fromRealCharToSubstitute(
+    std::string RealChar)
+{
+  if (RealChar == " ")
+    return m_BlankSubstitute;
+
+  else if (RealChar == "\t")
+    return m_TabSubstitute;
+
+  return RealChar;
 }
 

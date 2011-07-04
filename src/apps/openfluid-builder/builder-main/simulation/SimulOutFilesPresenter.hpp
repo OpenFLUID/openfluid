@@ -63,13 +63,17 @@ class SimulOutFilesAdapter;
 class SimulOutFilesPresenter: public sigc::trackable
 {
   private:
+
     SimulOutFilesModel& m_Model;
+
     SimulOutFilesAdapter& m_Adapter;
+
     void whenDescriptorChanged();
-    void whenShowDialogConfirmDeletionAsked();
+
     void whenSelectionChanged();
-    void whenDeletionConfirmed();
+
   public:
+
     SimulOutFilesPresenter(SimulOutFilesModel& Model,
         SimulOutFilesAdapter& Adapter);
 };

@@ -45,30 +45,68 @@
  with the terms contained in the written agreement between You and INRA.
  */
 
-#ifndef SIMULOUTSETDESCCOMPONENT_HPP_
-#define SIMULOUTSETDESCCOMPONENT_HPP_
+/**
+ \file SimulOutFilesAddEditDialog.hpp
+ \brief Header of ...
 
-#include <iostream>
+ \author Aline LIBRES <libres@supagro.inra.fr>
+ */
 
-#include "BuilderMVPComponent.hpp"
+#ifndef __SIMULOUTFILESADDEDITDIALOG_HPP__
+#define __SIMULOUTFILESADDEDITDIALOG_HPP__
 
-class SimulOutSetDescModel;
-class SimulOutSetDescPresenter;
-class SimulOutSetDescView;
+#include <gtkmm/dialog.h>
+#include <gtkmm/table.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <gtkmm/comboboxentrytext.h>
+#include <gtkmm/infobar.h>
 
-class SimulOutSetDescComponent: public BuilderMVPComponent
+#include <set>
+
+#include <openfluid/base/OutputFilesDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+
+class SimulOutFilesAddEditDialog
 {
   private:
-    SimulOutSetDescModel* mp_Model;
-    SimulOutSetDescView* mp_View;
-    SimulOutSetDescPresenter* mp_Presenter;
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Table* mp_Table;
+
+    Gtk::Label* mp_FormatNameLabel;
+
+    Gtk::ComboBoxEntryText* mp_ColSepComboEntry;
+
+    Gtk::ComboBoxEntryText* mp_DateFormatComboEntry;
+
+    Gtk::ComboBoxEntryText* mp_CommentCharComboEntry;
+
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
+
+    std::string m_BlankSubstitute;
+    std::string m_TabSubstitute;
+
+    openfluid::base::OutputDescriptor* mp_OutDesc;
+
+    std::set<std::string> m_FileFormatNames;
+
+    void onValueChange();
+
+    std::string fromRealCharToSubstitute(std::string RealChar);
+
+    std::string fromSubstituteToRealChar(std::string Substitute);
 
   public:
-    SimulOutSetDescComponent();
-    ~SimulOutSetDescComponent();
-    Gtk::Widget* asWidget();
-    SimulOutSetDescModel* getModel();
-    SimulOutSetDescView* getView();
+
+    SimulOutFilesAddEditDialog();
+
+    void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc);
+
+    openfluid::base::OutputFilesDescriptor* show(
+        openfluid::base::OutputFilesDescriptor* OutFilesDesc = 0);
 };
 
-#endif /* SIMULOUTSETDESCCOMPONENT_HPP_ */
+#endif /* __SIMULOUTFILESADDEDITDIALOG_HPP__ */

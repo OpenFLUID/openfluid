@@ -62,13 +62,12 @@ class SimulOutFilesColumns: public Gtk::TreeModel::ColumnRecord
   public:
     SimulOutFilesColumns()
     {
-      add(m_Index);
       add(m_Name);
       add(m_ColSeparator);
       add(m_DateFormat);
       add(m_CommentChar);
     }
-    Gtk::TreeModelColumn<int> m_Index;
+
     Gtk::TreeModelColumn<std::string> m_Name;
     Gtk::TreeModelColumn<std::string> m_ColSeparator;
     Gtk::TreeModelColumn<std::string> m_DateFormat;

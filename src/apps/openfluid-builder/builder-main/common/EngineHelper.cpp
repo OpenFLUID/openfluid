@@ -46,90 +46,110 @@
  */
 
 /**
- \file SimulOutFilesAdapter.cpp
+ \file EngineHelper.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "SimulOutFilesAdapter.hpp"
+#include "EngineHelper.hpp"
 
-#include "SimulOutFilesAdapterModel.hpp"
-#include "SimulOutFilesView.hpp"
+#include <boost/foreach.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-void SimulOutFilesAdapter::whenFileSelectionChanged()
+std::set<std::string> EngineHelper::getClassNames(
+    openfluid::core::CoreRepository* CoreRepos)
 {
-  if (m_HasToUpdate)
-  {
-    m_Model.setSelectedFile(m_View.getSelectedIter());
+  std::set<std::string> ClassNames;
 
-    m_signal_FromUserSelectionChanged.emit();
+  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
+      CoreRepos->getUnitsByClass()->begin(); it
+      != CoreRepos->getUnitsByClass()->end(); ++it)
+  {
+    if (!it->second.getList()->empty())
+      ClassNames.insert(it->first);
+  }
+
+  return ClassNames;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::set<std::string> EngineHelper::getProducedVarNames(std::string ClassName,
+    openfluid::machine::ModelInstance* ModelInstance)
+{
+  std::set<std::string> VarNames;
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {
+    if(Var.UnitClass == ClassName)
+    VarNames.insert(Var.DataName);
   }
 }
 
-// =====================================================================
-// =====================================================================
-
-
-SimulOutFilesAdapter::SimulOutFilesAdapter(SimulOutFilesAdapterModel& Model,
-    SimulOutFilesView& View) :
-  m_Model(Model), m_View(View), m_HasToUpdate(true)
-{
-  m_View.signal_FileSelectionChanged().connect(sigc::mem_fun(*this,
-      &SimulOutFilesAdapter::whenFileSelectionChanged));
+return VarNames;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> SimulOutFilesAdapter::signal_FromUserSelectionChanged()
+std::set<std::string> EngineHelper::getProducedScalarVarNames(
+    std::string ClassName, openfluid::machine::ModelInstance* ModelInstance)
 {
-  return m_signal_FromUserSelectionChanged;
-}
+  std::set<std::string> VarNames;
 
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutFilesAdapter::setFilesFormats(
-    openfluid::base::OutputDescriptor* OutDesc)
-{
-  m_HasToUpdate = false;
-
-  m_Model.setFilesFormats(OutDesc);
-  m_View.setModel(m_Model.getTreeModel());
-
-  m_HasToUpdate = true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutFilesAdapter::setSelectedFormat(std::string FormatName)
-{
-  if (FormatName != "")
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
   {
-    m_Model.setSelectedFormatName(FormatName);
-    m_View.setSelectedRow(m_Model.getSelectedRow());
+    if(Var.UnitClass == ClassName && !openfluid::tools::IsVectorNamedVariable(Var.DataName))
+    VarNames.insert(Var.DataName);
   }
 }
 
-// =====================================================================
-// =====================================================================
-
-
-std::string SimulOutFilesAdapter::getSelectedFileFormatName()
-{
-  return m_Model.getSelectedFileFormatName();
+return VarNames;
 }
 
 // =====================================================================
 // =====================================================================
 
+
+std::set<std::string> EngineHelper::getProducedVectorVarNames(
+    std::string ClassName, openfluid::machine::ModelInstance* ModelInstance)
+{
+  std::set<std::string> VarNames;
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {
+    if(Var.UnitClass == ClassName && openfluid::tools::IsVectorNamedVariable(Var.DataName))
+    VarNames.insert(Var.DataName);
+  }
+}
+
+return VarNames;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool EngineHelper::hasAtLeastAProducedVariable(
+    openfluid::machine::ModelInstance* ModelInstance,
+    openfluid::core::CoreRepository* CoreRepos)
+{
+  BOOST_FOREACH(std::string ClassName, EngineHelper::getClassNames(CoreRepos))
+  {
+    if(!EngineHelper::getProducedVarNames(ClassName,ModelInstance).empty())
+      return true;
+  }
+
+  return false;
+}
 

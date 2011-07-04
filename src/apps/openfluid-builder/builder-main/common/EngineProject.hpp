@@ -97,6 +97,8 @@ class EngineProject
 
     std::string checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
 
+    void dispatchOutputVariables();
+
   protected:
 
     openfluid::core::DateTime m_DefaultBeginDT;
@@ -136,6 +138,8 @@ class EngineProject
     openfluid::base::OutputDescriptor& getOutputDescriptor();
 
     ~EngineProject();
+
+    Glib::ustring checkOutputsConsistency();
 
 };
 

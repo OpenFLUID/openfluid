@@ -56,6 +56,7 @@
 #include "SimulOutSetsModel.hpp"
 #include "SimulOutSetsView.hpp"
 #include "SimulOutSetsAdapterModel.hpp"
+#include "SimulOutSetsColumns.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
@@ -66,33 +67,26 @@ struct init_Presenter
 {
     SimulOutSetsComponent* mp_Component;
 
-    SimulOutSetsModelSub* mp_Model;
+    SimulOutSetsModel* mp_Model;
     SimulOutSetsViewSub* mp_View;
     SimulOutSetsAdapterModelSub * mp_AdapterModel;
 
-    EngineProject* mp_EngProject;
+    SimulOutSetsColumns m_Columns;
 
     init_Presenter()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
       mp_Component = new SimulOutSetsComponent();
-      mp_Model = (SimulOutSetsModelSub*) mp_Component->getModel();
+      mp_Model = mp_Component->getModel();
       mp_View = (SimulOutSetsViewSub*) (mp_Component->getView());
       mp_AdapterModel
           = (SimulOutSetsAdapterModelSub*) (mp_Component->getAdapterModel());
-
-      std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
-      mp_EngProject = new EngineProject(Path);
-
-      mp_Model->setEngineRequirements(mp_EngProject->getOutputDescriptor());
     }
 
     ~init_Presenter()
     {
       delete mp_Component;
-      delete mp_EngProject;
     }
 };
 
@@ -123,225 +117,189 @@ BOOST_AUTO_TEST_CASE(test_getStringListFromVectEmpty)
 BOOST_AUTO_TEST_CASE(test_getStringListFromVectOneItem)
 {
   std::vector<int> Vect;
+
   Vect.push_back(9);
 
   BOOST_CHECK_EQUAL(mp_AdapterModel->getStringListFromVect(Vect),"9");
 }
 
+BOOST_AUTO_TEST_CASE(test_getStringListFromStringSet)
+{
+  std::set<std::string> Set;
+
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getStringListFromStringSet(Set),"");
+
+  Set.insert("VarA");
+
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getStringListFromStringSet(Set),"VarA");
+
+  Set.insert("VarB[]");
+
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getStringListFromStringSet(Set),"VarA;VarB[]");
+}
+
 BOOST_AUTO_TEST_CASE(test_extractIDsString)
 {
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(),
+      p_EngProject->getCoreRepository(),
+      *p_EngProject->getModelInstance());
+
   std::vector<int> Vect;
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->extractIDsString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0]),"*");
-  BOOST_CHECK_EQUAL(mp_AdapterModel->extractIDsString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[1]),"1;5");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->extractIDsString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0]),"*");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->extractIDsString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[1]),"1;5");
+
+  delete p_EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_extractVariablesString)
 {
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(),
+      p_EngProject->getCoreRepository(),
+      *p_EngProject->getModelInstance());
+
   std::vector<int> Vect;
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0]),"*");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0], p_EngProject->getModelInstance()),"*");
 
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllScalars(false);
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllVectors(false);
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().push_back("var A");
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().push_back("var X");
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().push_back("var B");
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().push_back("var Y");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllScalars(false);
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllVectors(false);
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().push_back("var A");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().push_back("var X[]");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().push_back("var B");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().push_back("var Y[]");
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0]),"var A;var B;var X[];var Y[]");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0], p_EngProject->getModelInstance()),"var A;var B;var X[];var Y[]");
+
+  delete p_EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_SetOutDescriptor)
 {
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  p_EngProject->getOutputDescriptor().getFileSets().begin()->setName("Format #1");
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(),
+      p_EngProject->getCoreRepository(),
+      *p_EngProject->getModelInstance());
+
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),2);
   BOOST_CHECK_EQUAL(TreeView->get_columns().size(),6);
 
-  std::string Value;
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_Name),"full");
 
-  TreeView->get_model()->children().begin()->get_value(0,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getName());
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_UnitsClass),"TestUnits");
 
-  TreeView->get_model()->children().begin()->get_value(1,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsClass());
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_UnitsIDs),"*");
 
-  TreeView->get_model()->children().begin()->get_value(2,Value);
-  BOOST_CHECK_EQUAL(Value,mp_AdapterModel->extractIDsString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0]));
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_Vars),"*");
 
-  TreeView->get_model()->children().begin()->get_value(3,Value);
-  BOOST_CHECK_EQUAL(Value,mp_AdapterModel->extractVariablesString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0]));
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_FormatName),"Format #1");
 
-  TreeView->get_model()->children().begin()->get_value(4,Value);
-  BOOST_CHECK_EQUAL(Value,"Format #1");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_Precision),5);
 
-  int IntValue;
-  TreeView->get_model()->children().begin()->get_value(5,IntValue);
-  BOOST_CHECK_EQUAL(IntValue,mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getPrecision());
+  delete p_EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_selectSet)
 {
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(),
+      p_EngProject->getCoreRepository(),
+      *p_EngProject->getModelInstance());
+
   BOOST_CHECK(mp_Model->getSelectedSet() == 0);
 
-  mp_View->selectRowWithIndex(1);
+  mp_View->setSelectedRow(*mp_AdapterModel->getTreeModel()->children()[1]);
 
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet(),&mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[1]);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet(),&p_EngProject->getOutputDescriptor().getFileSets().begin()->getSets()[1]);
+
+  delete p_EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_deleteSet)
 {
-  mp_View->selectRowWithIndex(1);
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(),
+      p_EngProject->getCoreRepository(),
+      *p_EngProject->getModelInstance());
+
+  mp_View->setSelectedRow(*mp_AdapterModel->getTreeModel()->children()[1]);
 
   mp_Model->deleteSelectedSet();
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
+
+  delete p_EngProject;
 }
 
 BOOST_AUTO_TEST_CASE(test_addSet)
 {
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* p_EngProject = new EngineProject(Path);
+
+  p_EngProject->getOutputDescriptor().getFileSets().begin()->setName("Format #1");
+
+  mp_Model->setEngineRequirements(p_EngProject->getOutputDescriptor(),
+      p_EngProject->getCoreRepository(),
+      *p_EngProject->getModelInstance());
+
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),2);
 
   openfluid::base::OutputSetDescriptor SetDesc;
-  SetDesc.setName("New Set");
+  SetDesc.setName("ZZNew Set"); // ZZ for this set to be in last position
   SetDesc.setUnitsClass("TestUnits");
   SetDesc.getUnitsIDs().push_back(2);
   SetDesc.getUnitsIDs().push_back(4);
   SetDesc.getUnitsIDs().push_back(6);
   SetDesc.getScalars().push_back("var A");
   SetDesc.getScalars().push_back("var B");
-  SetDesc.setAllVectors(true);
   SetDesc.setPrecision(3);
 
-  mp_Model->addSet(&SetDesc,"Format #1",0);
+  mp_Model->addSet(&SetDesc,"Format #1");
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),3);
 
   Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
-  //  std::advance(it,2);
+  std::advance(it,2);
 
-  std::string Value;
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_Name),"ZZNew Set");
 
-  it->get_value(0,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[2].getName());
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_UnitsClass),"TestUnits");
 
-  it->get_value(1,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsClass());
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_UnitsIDs),"2;4;6");
 
-  it->get_value(2,Value);
-  BOOST_CHECK_EQUAL(Value,mp_AdapterModel->extractIDsString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[2]));
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_Vars),"var A;var B");
 
-  it->get_value(3,Value);
-  BOOST_CHECK_EQUAL(Value,mp_AdapterModel->extractVariablesString(mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[2]));
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_FormatName),"Format #1");
 
-  it->get_value(4,Value);
-  BOOST_CHECK_EQUAL(Value,"Format #1");
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_Precision),3);
 
-  int IntValue;
-  it->get_value(5,IntValue);
-  BOOST_CHECK_EQUAL(IntValue,mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[2].getPrecision());
+  delete p_EngProject;
 }
-
-//  // clear
-//  mp_View->selectRowWithIndex(0);
-//  mp_Model->deleteSelectedFileFormatConfirmed();
-//
-//  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
-//
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),0);
-//
-//  openfluid::base::OutputFilesDescriptor FileDesc;
-//  FileDesc.setColSeparator("---");
-//  FileDesc.setDateFormat("abcd");
-//  FileDesc.setCommentChar("***");
-//
-//  mp_Model->addFileFormat(&FileDesc,"A Name");
-//
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
-//
-//  std::string Value;
-//  Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
-//
-//  it->get_value(1,Value);
-//  BOOST_CHECK_EQUAL(Value,"A Name");
-//
-//  it->get_value(2,Value);
-//  BOOST_CHECK_EQUAL(Value,"---");
-//
-//  it->get_value(3,Value);
-//  BOOST_CHECK_EQUAL(Value,"abcd");
-//
-//  it->get_value(4,Value);
-//  BOOST_CHECK_EQUAL(Value,"***");
-//}
-//
-//BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
-//{
-//  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
-//
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
-//
-//  openfluid::base::OutputFilesDescriptor FileDesc;
-//  FileDesc.setColSeparator("---");
-//  FileDesc.setDateFormat("abcd");
-//  FileDesc.setCommentChar("***");
-//
-//  mp_Model->addFileFormat(&FileDesc,"A Name");
-//
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),2);
-//
-//  std::string Value;
-//
-//  Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
-//  it++;
-//
-//  it->get_value(1,Value);
-//  BOOST_CHECK_EQUAL(Value,"A Name");
-//
-//  it->get_value(2,Value);
-//  BOOST_CHECK_EQUAL(Value,"---");
-//
-//  it->get_value(3,Value);
-//  BOOST_CHECK_EQUAL(Value,"abcd");
-//
-//  it->get_value(4,Value);
-//  BOOST_CHECK_EQUAL(Value,"***");
-//}
-//
-//BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
-//{
-//  mp_View->selectRowWithIndex(0);
-//
-//  mp_EngProject->getOutputDescriptor().getFileSets().begin()->setColSeparator("---");
-//  mp_EngProject->getOutputDescriptor().getFileSets().begin()->setDateFormat("abcd");
-//  mp_EngProject->getOutputDescriptor().getFileSets().begin()->setCommentChar("***");
-//
-//  mp_Model->updateSelectedFileFormat("New Name");
-//
-//  Gtk::TreeView* TreeView =(Gtk::TreeView*)mp_View->asWidget();
-//
-//
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
-//
-//  std::string Value;
-//  Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
-//
-//  it->get_value(1,Value);
-//  BOOST_CHECK_EQUAL(Value,"New Name");
-//
-//  it->get_value(2,Value);
-//  BOOST_CHECK_EQUAL(Value,"---");
-//
-//  it->get_value(3,Value);
-//  BOOST_CHECK_EQUAL(Value,"abcd");
-//
-//  it->get_value(4,Value);
-//  BOOST_CHECK_EQUAL(Value,"***");
-//}
 
 // =====================================================================
 // =====================================================================

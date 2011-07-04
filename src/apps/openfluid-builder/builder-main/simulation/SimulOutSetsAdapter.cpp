@@ -57,44 +57,78 @@
 #include "SimulOutSetsAdapterModel.hpp"
 #include "SimulOutSetsView.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsAdapter::whenSetSelectionChanged()
 {
-  m_Model.setSelectedSet(m_View.getSelectedIter());
-  m_signal_FromUserSelectionChanged.emit();
+  if (m_HasToUpdate)
+  {
+    m_Model.setSelectedSet(m_View.getSelectedIter());
+
+    m_signal_FromUserSelectionChanged.emit();
+  }
 }
-void SimulOutSetsAdapter::whenDeletionConfirmed()
-{
-  m_signal_FromUserDeletionConfirmed.emit();
-}
+
+// =====================================================================
+// =====================================================================
+
 
 SimulOutSetsAdapter::SimulOutSetsAdapter(SimulOutSetsAdapterModel& Model,
     SimulOutSetsView& View) :
-  m_Model(Model), m_View(View)
+  m_Model(Model), m_View(View), m_HasToUpdate(true)
 {
   m_View.signal_SetSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutSetsAdapter::whenSetSelectionChanged));
-  m_View.signal_DeletionConfirmed().connect(sigc::mem_fun(*this,
-      &SimulOutSetsAdapter::whenDeletionConfirmed));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetsAdapter::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
-sigc::signal<void> SimulOutSetsAdapter::signal_FromUserDeletionConfirmed()
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutSetsAdapter::setSets(openfluid::base::OutputDescriptor* OutDesc,
+    openfluid::machine::ModelInstance* ModelInstance)
 {
-  return m_signal_FromUserDeletionConfirmed;
-}
-void SimulOutSetsAdapter::setSets(std::map<std::string, std::pair<std::string,
-    openfluid::base::OutputSetDescriptor> > SetsByName)
-{
-  m_Model.setSets(SetsByName);
+  m_HasToUpdate = false;
+
+  m_Model.setSets(OutDesc, ModelInstance);
   m_View.setModel(m_Model.getTreeModel());
+
+  m_HasToUpdate = true;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutSetsAdapter::setSelectedSet(std::string SetName)
+{
+  if (SetName != "")
+  {
+    m_Model.setSelectedSetName(SetName);
+    m_View.setSelectedRow(m_Model.getSelectedRow());
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
 std::string SimulOutSetsAdapter::getSelectedSetName()
 {
   return m_Model.getSelectedSetName();
 }
-void SimulOutSetsAdapter::showDialogConfirmDeletion()
-{
-  m_View.showDialogConfirmDeletion();
-}
+
+// =====================================================================
+// =====================================================================
+

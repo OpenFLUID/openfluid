@@ -46,39 +46,41 @@
  */
 
 /**
- \file SimulOutSetDescComponent.cpp
- \brief Implements ...
+ \file EngineHelper.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "SimulOutSetDescComponent.hpp"
+#ifndef __ENGINEHELPER_HPP__
+#define __ENGINEHELPER_HPP__
 
-#include "SimulOutSetDescModel.hpp"
-#include "SimulOutSetDescPresenter.hpp"
-#include "SimulOutSetDescView.hpp"
+#include <openfluid/core.hpp>
+#include <openfluid/machine.hpp>
 
-SimulOutSetDescComponent::SimulOutSetDescComponent()
+#include <set>
+
+class EngineHelper
 {
-  mp_Model = new SimulOutSetDescModelImpl();
-  mp_View = new SimulOutSetDescViewImpl();
-  mp_Presenter = new SimulOutSetDescPresenter(*mp_Model, *mp_View);
-}
-SimulOutSetDescComponent::~SimulOutSetDescComponent()
-{
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* SimulOutSetDescComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-SimulOutSetDescModel* SimulOutSetDescComponent::getModel()
-{
-  return mp_Model;
-}
-SimulOutSetDescView* SimulOutSetDescComponent::getView()
-{
-  return mp_View;
-}
+  public:
+
+    static std::set<std::string> getClassNames(
+        openfluid::core::CoreRepository* CoreRepos);
+
+    static std::set<std::string> getProducedVarNames(std::string ClassName,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    static std::set<std::string>
+    getProducedScalarVarNames(std::string ClassName,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    static std::set<std::string>
+    getProducedVectorVarNames(std::string ClassName,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    static bool hasAtLeastAProducedVariable(
+        openfluid::machine::ModelInstance* ModelInstance,
+        openfluid::core::CoreRepository* CoreRepos);
+};
+
+#endif /* __ENGINEHELPER_HPP__ */

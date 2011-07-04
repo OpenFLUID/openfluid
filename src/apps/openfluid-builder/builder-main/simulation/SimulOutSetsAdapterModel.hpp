@@ -51,76 +51,120 @@
 #include <gtkmm.h>
 
 #include <openfluid/base/OutputSetDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 
 #include "SimulOutSetsColumns.hpp"
 
+#include <set>
+
 class BuilderListStore;
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutSetsAdapterModel
 {
   public:
-    virtual void setSets(std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> > SetsByName) = 0;
+
+    virtual void setSets(openfluid::base::OutputDescriptor* OutDesc,
+        openfluid::machine::ModelInstance* ModelInstance) = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
+
     virtual void setSelectedSet(Gtk::TreeIter SelectedIter) = 0;
+
     virtual std::string getSelectedSetName() = 0;
+
+    virtual void setSelectedSetName(std::string SetName) = 0;
+
+    virtual Gtk::TreeRow getSelectedRow() = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutSetsAdapterModelImpl: public SimulOutSetsAdapterModel
 {
   private:
+
     SimulOutSetsColumns m_Columns;
-    Glib::RefPtr<BuilderListStore> m_refListStore;
+
+    Glib::RefPtr<BuilderListStore> mref_ListStore;
+
     Gtk::TreeRowReference* m_SelectedRowRef;
-      protected:
+
+  protected:
+
     /* leave templates in header files for boost tests to compile */
     template<class T>
-    Glib::ustring getStringListFromVect(std::vector<T> Vect, bool VectorValues =
-        false)
+    Glib::ustring getStringListFromVect(std::vector<T> Vect)
     {
       Glib::ustring Str = "";
-      Glib::ustring VectorSuffix = "";
 
-      if (VectorValues)
-        VectorSuffix = "[]";
+      if (!Vect.empty())
+        Str = Glib::ustring::compose("%1", Vect[0]); //let compose for int->ustring
 
-      int Size = Vect.size();
-
-      if (Size > 0)
-        Str = Glib::ustring::compose("%1%2", Vect[0], VectorSuffix);
-
-      for (int i = 1; i < Size; i++)
-        Str += Glib::ustring::compose(";%1%2", Vect[i], VectorSuffix);
+      for (unsigned int i = 1; i < Vect.size(); i++)
+        Str += Glib::ustring::compose(";%1", Vect[i]);
 
       return Str;
     }
     ;
+
+    Glib::ustring getStringListFromStringSet(std::set<std::string> Vect);
+
     std::string extractIDsString(
         openfluid::base::OutputSetDescriptor OutSetDesc);
+
     std::string extractVariablesString(
-        openfluid::base::OutputSetDescriptor OutSetDesc);
+        openfluid::base::OutputSetDescriptor OutSetDesc,
+        openfluid::machine::ModelInstance* ModelInstance);
+
   public:
+
     SimulOutSetsAdapterModelImpl();
-    void setSets(std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> > SetsByName);
+
+    void setSets(openfluid::base::OutputDescriptor* OutDesc,
+        openfluid::machine::ModelInstance* ModelInstance);
+
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
+
     void setSelectedSet(Gtk::TreeIter SelectedIter);
+
     std::string getSelectedSetName();
+
+    void setSelectedSetName(std::string SetName);
+
+    Gtk::TreeRow getSelectedRow();
+
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutSetsAdapterModelSub: public SimulOutSetsAdapterModelImpl
 {
   public:
+
     template<class T>
-    Glib::ustring getStringListFromVect(std::vector<T> Vect, bool VectorValues =
-        false)
+    Glib::ustring getStringListFromVect(std::vector<T> Vect)
     {
-      return SimulOutSetsAdapterModelImpl::getStringListFromVect(Vect, VectorValues);
-    };
+      return SimulOutSetsAdapterModelImpl::getStringListFromVect(Vect);
+    }
+    ;
+
+    Glib::ustring getStringListFromStringSet(std::set<std::string> Vect);
+
     std::string extractIDsString(
         openfluid::base::OutputSetDescriptor OutSetDesc);
+
     std::string extractVariablesString(
-        openfluid::base::OutputSetDescriptor OutSetDesc);
+        openfluid::base::OutputSetDescriptor OutSetDesc,
+        openfluid::machine::ModelInstance* ModelInstance);
 };
 
 #endif /* SIMULOUTSETSADAPTERMODEL_HPP_ */

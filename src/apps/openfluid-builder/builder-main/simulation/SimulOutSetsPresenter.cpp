@@ -57,14 +57,30 @@
 #include "SimulOutSetsModel.hpp"
 #include "SimulOutSetsAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsPresenter::whenDescriptorChanged()
 {
-  m_Adapter.setSets(m_Model.getSetsByName());
+  m_Adapter.setSets(m_Model.getOutputDescriptor(), m_Model.getModelInstance());
+
+  m_Adapter.setSelectedSet(m_Model.getSelectedSetName());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsPresenter::whenSelectionChanged()
 {
   m_Model.setSelectedSetName(m_Adapter.getSelectedSetName());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsPresenter::SimulOutSetsPresenter(SimulOutSetsModel& Model,
     SimulOutSetsAdapter& Adapter) :
   m_Model(Model), m_Adapter(Adapter)

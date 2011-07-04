@@ -54,142 +54,198 @@
 
 #include "SimulOutSetsModel.hpp"
 
-#include <boost/foreach.hpp>
+// =====================================================================
+// =====================================================================
 
-bool SimulOutSetsModelImpl::isSelectedSetValid()
-{
-  return (m_SetsByName.find(m_SelectedSetName) != m_SetsByName.end());
-}
 
 SimulOutSetsModelImpl::SimulOutSetsModelImpl() :
-  mp_OutDesc(0)
+  mp_OutDesc(0), mp_CoreRepos(0), mp_ModelInstance(0)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetsModelImpl::signal_FromAppDescriptorChanged()
 {
   return m_signal_FromAppDescriptorChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutSetsModelImpl::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
-Glib::ustring SimulOutSetsModelImpl::generateFormatName(int Index)
-{
-  return Glib::ustring::compose("Format #%1", Index + 1);
-}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsModelImpl::setEngineRequirements(
-    openfluid::base::OutputDescriptor& OutDesc)
+    openfluid::base::OutputDescriptor& OutDesc,
+    openfluid::core::CoreRepository& CoreRepos,
+    openfluid::machine::ModelInstance& ModelInstance)
 {
   mp_OutDesc = &OutDesc;
+  mp_CoreRepos = &CoreRepos;
+  mp_ModelInstance = &ModelInstance;
 
-  std::vector<openfluid::base::OutputFilesDescriptor> FilesFormats =
-      OutDesc.getFileSets();
-  for (unsigned int i = 0; i < FilesFormats.size(); i++)
-  {
-    std::string FormatName = generateFormatName(i);
-    BOOST_FOREACH(openfluid::base::OutputSetDescriptor OutSetDesc,FilesFormats[i].getSets())
-{    m_SetsByName [OutSetDesc.getName()] = std::make_pair(FormatName,
-        OutSetDesc);
-  }
+  m_SelectedSetName = "";
+
+  update();
 }
 
-m_SelectedSetName = "";
+// =====================================================================
+// =====================================================================
 
-m_signal_FromAppDescriptorChanged.emit();
-}
-std::map<std::string, std::pair<std::string,
-    openfluid::base::OutputSetDescriptor> > SimulOutSetsModelImpl::getSetsByName()
+
+void SimulOutSetsModelImpl::update()
 {
-  return m_SetsByName;
+  m_signal_FromAppDescriptorChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::OutputDescriptor* SimulOutSetsModelImpl::getOutputDescriptor()
+{
+  return mp_OutDesc;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsModelImpl::setSelectedSetName(std::string SetName)
 {
   m_SelectedSetName = SetName;
+
   m_signal_FromUserSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::OutputSetDescriptor* SimulOutSetsModelImpl::getSelectedSet()
 {
-  if (isSelectedSetValid())
+  if (m_SelectedSetName == "")
+    return (openfluid::base::OutputSetDescriptor*) 0;
+
+  for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
   {
-    for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+    for (unsigned int j = 0; j < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
     {
-      for (unsigned int j = 0; j
-          < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
-      {
-        if (mp_OutDesc->getFileSets()[i].getSets()[j].getName()
-            == m_SelectedSetName)
-          return &(mp_OutDesc->getFileSets()[i].getSets()[j]);
-      }
+      if (mp_OutDesc->getFileSets()[i].getSets()[j].getName()
+          == m_SelectedSetName)
+        return &(mp_OutDesc->getFileSets()[i].getSets()[j]);
     }
   }
+
   return (openfluid::base::OutputSetDescriptor*) 0;
 }
-std::string SimulOutSetsModelImpl::getSelectedSetFormatName()
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulOutSetsModelImpl::getSelectedSetName()
 {
-  if (isSelectedSetValid())
-    return m_SetsByName[m_SelectedSetName].first;
-  return "";
+  if (!existsSetName(m_SelectedSetName))
+    m_SelectedSetName = "";
+
+  return m_SelectedSetName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsModelImpl::deleteSelectedSet()
 {
-  if (isSelectedSetValid())
+  for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
   {
-    for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+    for (unsigned int j = 0; j < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
     {
-      for (unsigned int j = 0; j
-          < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
+      if (mp_OutDesc->getFileSets()[i].getSets()[j].getName()
+          == m_SelectedSetName)
       {
-        if (mp_OutDesc->getFileSets()[i].getSets()[j].getName()
-            == m_SelectedSetName)
-        {
-          mp_OutDesc->getFileSets()[i].getSets().erase(
-              mp_OutDesc->getFileSets()[i].getSets().begin() + j);
-          m_SetsByName.erase(m_SelectedSetName);
-          m_SelectedSetName = "";
+        mp_OutDesc->getFileSets()[i].getSets().erase(
+            mp_OutDesc->getFileSets()[i].getSets().begin() + j);
 
-          m_signal_FromAppDescriptorChanged.emit();
-        }
+        m_SelectedSetName = "";
+
+        m_signal_FromAppDescriptorChanged.emit();
       }
     }
   }
 }
+
+// =====================================================================
+// =====================================================================
+
 void SimulOutSetsModelImpl::addSet(
-    openfluid::base::OutputSetDescriptor* SetDesc, std::string FormatName,
-    int FormatIndex)
+    openfluid::base::OutputSetDescriptor* SetDesc, std::string FormatName)
 {
   if (SetDesc)
   {
-    mp_OutDesc->getFileSets()[FormatIndex].getSets().push_back(*SetDesc);
-    m_SetsByName[SetDesc->getName()] = std::make_pair(FormatName, *SetDesc);
-    m_SelectedSetName = "";
+    std::string SetName = SetDesc->getName();
+
+    for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+    {
+      if (mp_OutDesc->getFileSets()[i].getName() == FormatName)
+        mp_OutDesc->getFileSets()[i].getSets().push_back(*SetDesc);
+    }
+
+    m_SelectedSetName = SetName;
+
     m_signal_FromAppDescriptorChanged.emit();
   }
 }
-void SimulOutSetsModelImpl::updateSelectedSet(std::string NewFormatName)
-{
-  m_SetsByName[m_SelectedSetName] = std::make_pair(NewFormatName,
-      *getSelectedSet());
 
-  m_signal_FromAppDescriptorChanged.emit();
-}
-void SimulOutSetsModelImpl::updateFileFormats(
-    std::vector<std::pair<std::string, openfluid::base::OutputFilesDescriptor> > FilesFormatsByNameVect)
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutSetsModelImpl::updateSelectedSet(
+    openfluid::base::OutputSetDescriptor* UpdatedSetDesc,
+    std::string FormatName)
 {
-  m_SetsByName.clear();
-  for (unsigned int i = 0; i < FilesFormatsByNameVect.size(); i++)
+  if (UpdatedSetDesc)
   {
-    std::string FormatName = FilesFormatsByNameVect[i].first;
-    openfluid::base::OutputFilesDescriptor Formats =
-        FilesFormatsByNameVect[i].second;
+    deleteSelectedSet();
 
-    BOOST_FOREACH(openfluid::base::OutputSetDescriptor OutDesc,FilesFormatsByNameVect[i].second.getSets())
-{
-    m_SetsByName [OutDesc.getName()] = std::make_pair(FormatName,
-        OutDesc);
+    addSet(UpdatedSetDesc, FormatName);
   }
 }
 
-m_SelectedSetName = "";
-m_signal_FromAppDescriptorChanged.emit();
+// =====================================================================
+// =====================================================================
+
+openfluid::machine::ModelInstance* SimulOutSetsModelImpl::getModelInstance()
+{
+  return mp_ModelInstance;
 }
 
+// =====================================================================
+// =====================================================================
+
+
+bool SimulOutSetsModelImpl::existsSetName(std::string SetName)
+{
+  for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+  {
+    for (unsigned int j = 0; j < mp_OutDesc->getFileSets()[i].getSets().size(); j++)
+    {
+      if (mp_OutDesc->getFileSets()[i].getSets()[j].getName() == SetName)
+        return true;
+    }
+  }
+
+  return false;
+}

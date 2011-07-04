@@ -63,6 +63,7 @@
 #include "SimulOutFilesModel.hpp"
 #include "SimulOutFilesView.hpp"
 #include "SimulOutFilesAdapterModel.hpp"
+#include "SimulOutFilesColumns.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
@@ -73,9 +74,11 @@ struct init_Presenter
 {
     SimulOutFilesComponent* mp_Component;
 
-    SimulOutFilesModelSub* mp_Model;
+    SimulOutFilesModel* mp_Model;
     SimulOutFilesViewSub* mp_View;
-    SimulOutFilesAdapterModelSub * mp_AdapterModel;
+    SimulOutFilesAdapterModel * mp_AdapterModel;
+
+    SimulOutFilesColumns m_Columns;
 
     EngineProject* mp_EngProject;
 
@@ -84,10 +87,9 @@ struct init_Presenter
       BuilderTestHelper::getInstance()->initGtk();
 
       mp_Component = new SimulOutFilesComponent();
-      mp_Model = (SimulOutFilesModelSub*) mp_Component->getModel();
+      mp_Model = mp_Component->getModel();
       mp_View = (SimulOutFilesViewSub*) (mp_Component->getView());
-      mp_AdapterModel
-          = (SimulOutFilesAdapterModelSub*) (mp_Component->getAdapterModel());
+      mp_AdapterModel = mp_Component->getAdapterModel();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
@@ -108,16 +110,6 @@ BOOST_FIXTURE_TEST_SUITE(SimulOutFilesPresenterTest, init_Presenter)
 // =====================================================================
 // =====================================================================
 
-//BOOST_AUTO_TEST_CASE(test_replacedBlankStr)
-//{
-//  std::string Blank = mp_AdapterModel->getBlankSubstitute();
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->replacedBlankStr("smth"),"smth");
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->replacedBlankStr("  smth  "),Blank+Blank+"smth"+Blank+Blank);
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->replacedBlankStr("  "),Blank+Blank);
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->replacedBlankStr(" "),Blank);
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->replacedBlankStr(""),"");
-//}
-
 BOOST_AUTO_TEST_CASE(test_SetOutDescriptor)
 {
   Gtk::TreeView* TreeView = mp_View->getTreeView();
@@ -126,33 +118,29 @@ BOOST_AUTO_TEST_CASE(test_SetOutDescriptor)
 
   std::string Value;
 
-  TreeView->get_model()->children().begin()->get_value(1,Value);
-  BOOST_CHECK_EQUAL(Value,"Format #1");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_Name),"Format #1");
 
-  TreeView->get_model()->children().begin()->get_value(2,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets().begin()->getColSeparator());
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_ColSeparator),"[blank]");
 
-  TreeView->get_model()->children().begin()->get_value(3,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets().begin()->getDateFormat());
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_DateFormat),"%Y %m %d %H %M %S");
 
-  TreeView->get_model()->children().begin()->get_value(4,Value);
-  BOOST_CHECK_EQUAL(Value,mp_EngProject->getOutputDescriptor().getFileSets().begin()->getCommentChar());
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_CommentChar),"%");
 }
 
 BOOST_AUTO_TEST_CASE(test_selectFileFormat)
 {
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedFileFormatIndex(),-1);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedFormatName(),"");
 
   mp_View->selectRowWithIndex(0);
 
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedFileFormatIndex(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedFormatName(),"Format #1");
 }
 
 BOOST_AUTO_TEST_CASE(test_deleteFileFormat)
 {
   mp_View->selectRowWithIndex(0);
 
-  mp_Model->deleteSelectedFileFormatConfirmed();
+  mp_Model->deleteSelectedFileFormat();
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),0);
@@ -162,35 +150,29 @@ BOOST_AUTO_TEST_CASE(test_addFileFormatToEmptyFilesSet)
 {
   // clear
   mp_View->selectRowWithIndex(0);
-  mp_Model->deleteSelectedFileFormatConfirmed();
+  mp_Model->deleteSelectedFileFormat();
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),0);
 
   openfluid::base::OutputFilesDescriptor FileDesc;
+  FileDesc.setName("Format #1");
   FileDesc.setColSeparator("---");
   FileDesc.setDateFormat("abcd");
   FileDesc.setCommentChar("***");
 
-  mp_Model->addFileFormat(&FileDesc,"A Name");
+  mp_Model->addFileFormat(&FileDesc);
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 
-  std::string Value;
-  Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_Name),"Format #1");
 
-  it->get_value(1,Value);
-  BOOST_CHECK_EQUAL(Value,"A Name");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_ColSeparator),"---");
 
-  it->get_value(2,Value);
-  BOOST_CHECK_EQUAL(Value,"---");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_DateFormat),"abcd");
 
-  it->get_value(3,Value);
-  BOOST_CHECK_EQUAL(Value,"abcd");
-
-  it->get_value(4,Value);
-  BOOST_CHECK_EQUAL(Value,"***");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_CommentChar),"***");
 }
 
 BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
@@ -200,11 +182,12 @@ BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 
   openfluid::base::OutputFilesDescriptor FileDesc;
+  FileDesc.setName("Format #2");
   FileDesc.setColSeparator("---");
   FileDesc.setDateFormat("abcd");
   FileDesc.setCommentChar("***");
 
-  mp_Model->addFileFormat(&FileDesc,"A Name");
+  mp_Model->addFileFormat(&FileDesc);
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),2);
 
@@ -213,17 +196,13 @@ BOOST_AUTO_TEST_CASE(test_addFileFormatToNotEmptyFilesSet)
   Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
   it++;
 
-  it->get_value(1,Value);
-  BOOST_CHECK_EQUAL(Value,"A Name");
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_Name),"Format #2");
 
-  it->get_value(2,Value);
-  BOOST_CHECK_EQUAL(Value,"---");
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_ColSeparator),"---");
 
-  it->get_value(3,Value);
-  BOOST_CHECK_EQUAL(Value,"abcd");
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_DateFormat),"abcd");
 
-  it->get_value(4,Value);
-  BOOST_CHECK_EQUAL(Value,"***");
+  BOOST_CHECK_EQUAL(it->get_value(m_Columns.m_CommentChar),"***");
 }
 
 BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
@@ -234,26 +213,19 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedFileFormat)
   mp_EngProject->getOutputDescriptor().getFileSets().begin()->setDateFormat("abcd");
   mp_EngProject->getOutputDescriptor().getFileSets().begin()->setCommentChar("***");
 
-  mp_Model->updateSelectedFileFormat("New Name");
+  mp_Model->update();
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 
   BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),1);
 
-  std::string Value;
-  Gtk::TreeModel::Children::iterator it = TreeView->get_model()->children().begin();
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_Name),"Format #1");
 
-  it->get_value(1,Value);
-  BOOST_CHECK_EQUAL(Value,"New Name");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_ColSeparator),"---");
 
-  it->get_value(2,Value);
-  BOOST_CHECK_EQUAL(Value,"---");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_DateFormat),"abcd");
 
-  it->get_value(3,Value);
-  BOOST_CHECK_EQUAL(Value,"abcd");
-
-  it->get_value(4,Value);
-  BOOST_CHECK_EQUAL(Value,"***");
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().begin()->get_value(m_Columns.m_CommentChar),"***");
 }
 
 // =====================================================================
