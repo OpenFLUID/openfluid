@@ -61,8 +61,9 @@
 // =====================================================================
 
 
-void DomainIDataViewImpl::onDataEditingStarted(Gtk::CellEditable* /*CellEditable*/,
-    const Glib::ustring& Path, std::string DataName, int ColIndex)
+void DomainIDataViewImpl::onDataEditingStarted(
+    Gtk::CellEditable* /*CellEditable*/, const Glib::ustring& Path,
+    std::string DataName, int ColIndex)
 {
 
   Gtk::TreePath path(Path);
@@ -90,7 +91,7 @@ DomainIDataViewImpl::DomainIDataViewImpl()
   mp_TreeView->set_visible(true);
 
   mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_MainWin->set_visible(true);
   mp_MainWin->add(*mp_TreeView);
 }
@@ -117,8 +118,16 @@ void DomainIDataViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel,
   for (std::map<std::string, Gtk::TreeModelColumn<std::string>*>::iterator it =
       ColumnsByTitle.begin(); it != ColumnsByTitle.end(); ++it)
   {
-    int ColIndex = mp_TreeView->append_column_editable(it->first, *it->second)
-        - 1;
+    int ColIndex = mp_TreeView->append_column_editable("", *it->second) - 1;
+
+    /*
+     * use of a widget label instead of a column title because
+     * in column title, underscores have to be escaped by another one
+     * (same as Label::set_use_underline(true))
+     */
+    Gtk::Label* TitleLabel = Gtk::manage(new Gtk::Label(it->first));
+    TitleLabel->set_visible(true);
+    mp_TreeView->get_column(ColIndex)->set_widget(*TitleLabel);
 
     mp_TreeView->get_column(ColIndex)->set_sort_column(*it->second);
 
