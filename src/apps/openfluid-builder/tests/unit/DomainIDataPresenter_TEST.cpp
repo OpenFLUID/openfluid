@@ -64,6 +64,7 @@
 #include "DomainIDataView.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
+#include <set>
 
 // =====================================================================
 // =====================================================================
@@ -198,9 +199,32 @@ BOOST_AUTO_TEST_CASE(test_addData)
 
   BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
 
-  mp_Model->addData(std::make_pair("NewIndata","DefaultVal"));
+  mp_Model->addData("NewIndata","DefaultVal");
 
   BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),5);
+}
+
+BOOST_AUTO_TEST_CASE(test_changeDataName)
+{
+  mp_Model->setClass("TestUnits");
+
+  mp_Model->changeDataName("indataB","newDataB");
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
+
+  std::vector<Gtk::TreeViewColumn*> Columns = mp_View->getTreeView()->get_columns();
+
+  std::set<std::string> Titles;
+
+  for(unsigned int i=0; i<Columns.size(); i++)
+  {
+    if(Columns[i]->get_widget())
+    Titles.insert((static_cast<Gtk::Label*>(Columns[i]->get_widget()))->get_text());
+  }
+
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
+  BOOST_CHECK_EQUAL(Titles.find("indataB") != Titles.end(),false);
+  BOOST_CHECK_EQUAL(Titles.find("newDataB") != Titles.end(),true);
 }
 
 // =====================================================================

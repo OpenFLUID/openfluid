@@ -54,7 +54,6 @@
 
 #include "DomainIDataModel.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -152,10 +151,10 @@ void DomainIDataModelImpl::removeData(std::string DataName)
 // =====================================================================
 
 
-void DomainIDataModelImpl::addData(std::pair<std::string, std::string> DataInfo)
+void DomainIDataModelImpl::addData(std::string DataName, std::string DefaultValue)
 {
 
-  if (DataInfo.first == "" || DataInfo.second == "")
+  if (DataName == "" || DefaultValue == "")
     return;
 
   openfluid::core::UnitsList_t::iterator it;
@@ -165,13 +164,40 @@ void DomainIDataModelImpl::addData(std::pair<std::string, std::string> DataInfo)
     openfluid::core::Unit* TheUnit =
         const_cast<openfluid::core::Unit*> (&(*it));
 
-    TheUnit->getInputData()->setValue(DataInfo.first, DataInfo.second);
+    TheUnit->getInputData()->setValue(DataName, DefaultValue);
   }
 
   m_signal_FromAppDataInit.emit();
 
   m_signal_IDataChanged.emit();
 
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataModelImpl::changeDataName(std::string OldDataName,
+    std::string NewDataName)
+{
+  if (OldDataName == "" || NewDataName == "")
+    return;
+
+  openfluid::core::UnitsList_t::iterator it;
+  for (it = m_UnitsColl->getList()->begin(); it
+      != m_UnitsColl->getList()->end(); ++it)
+  {
+    openfluid::core::Unit* TheUnit =
+        const_cast<openfluid::core::Unit*> (&(*it));
+
+    std::string Value;
+
+    TheUnit->getInputData()->getValue(OldDataName, &Value);
+
+    TheUnit->getInputData()->setValue(NewDataName, Value);
+  }
+
+  removeData(OldDataName);
 }
 
 // =====================================================================

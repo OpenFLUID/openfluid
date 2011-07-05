@@ -46,96 +46,60 @@
  */
 
 /**
- \file DomainIDataModel.hpp
+ \file DomainIDataEditDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DOMAINIDATAMODEL_HPP__
-#define __DOMAINIDATAMODEL_HPP__
+#ifndef __DOMAINIDATAEDITDIALOG_HPP__
+#define __DOMAINIDATAEDITDIALOG_HPP__
 
-#include <sigc++/sigc++.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/comboboxtext.h>
 
-#include <openfluid/core.hpp>
+#include <set>
 
-class DomainIDataModel
-{
-  public:
+#include <openfluid/core/CoreRepository.hpp>
 
-    virtual sigc::signal<void> signal_FromAppDataInit() = 0;
-
-    virtual sigc::signal<void> signal_IDataChanged() = 0;
-
-    virtual bool isEmptyDataList() = 0;
-
-    virtual void setEngineRequirements(
-        openfluid::core::CoreRepository& CoreRepos) = 0;
-
-    virtual void update() = 0;
-
-    virtual openfluid::core::UnitsCollection* getUnitsCollection() = 0;
-
-    virtual void removeData(std::string DataName) = 0;
-
-    virtual void addData(std::string DataName, std::string DefaultValue) = 0;
-
-    virtual void changeDataName(std::string OldDataName, std::string NewDataName) = 0;
-
-    virtual void setClass(std::string ClassName) = 0;
-
-};
-
-// =====================================================================
-// =====================================================================
-
-class DomainIDataModelImpl: public DomainIDataModel
+class DomainIDataEditDialog
 {
   private:
 
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::ComboBoxText* mp_Combo;
+
+    Gtk::Entry* mp_NewNameEntry;
+
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
+
     openfluid::core::CoreRepository* mp_CoreRepos;
-
-    sigc::signal<void> m_signal_FromAppDataInit;
-
-    sigc::signal<void> m_signal_IDataChanged;
 
     std::string m_ClassName;
 
-    openfluid::core::UnitsCollection* m_UnitsColl;
+    std::set<std::string> m_IDataNames;
+
+    bool m_IsValid;
+
+    void onChanged();
+
+    bool isEmptyString(std::string Str);
 
   public:
 
-    DomainIDataModelImpl();
-
-    sigc::signal<void> signal_FromAppDataInit();
-
-    sigc::signal<void> signal_IDataChanged();
-
-    bool isEmptyDataList();
+    DomainIDataEditDialog();
 
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 
-    void update();
-
-    openfluid::core::UnitsCollection* getUnitsCollection();
-
-    void removeData(std::string DataName);
-
-    void addData(std::string DataName, std::string DefaultValue);
-
-    void changeDataName(std::string OldDataName, std::string NewDataName);
-
     void setClass(std::string ClassName);
 
+    void update();
+
+    std::pair<std::string, std::string> show();
 };
 
-// =====================================================================
-// =====================================================================
-
-
-class DomainIDataModelSub: public DomainIDataModelImpl
-{
-  public:
-};
-
-#endif /* __DOMAINIDATAMODEL_HPP__ */
+#endif /* __DOMAINIDATAEDITDIALOG_HPP__ */

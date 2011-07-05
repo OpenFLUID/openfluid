@@ -155,12 +155,30 @@ BOOST_AUTO_TEST_CASE(test_addData)
 
   BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("NewIndata"),false);
 
-  mp_Model->addData(std::make_pair("NewIndata","DefaultVal"));
+  mp_Model->addData("NewIndata","DefaultVal");
 
   BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->isDataExist("NewIndata"),true);
   std::string Val;
   mp_EngProject->getCoreRepository().getUnit("TestUnits",1)->getInputData()->getValue("NewIndata",&Val);
   BOOST_CHECK_EQUAL(Val,"DefaultVal");
+}
+
+BOOST_AUTO_TEST_CASE(test_changeDataName)
+{
+  mp_Model->setClass("TestUnits");
+
+  std::string ValOrigine;
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",6)->getInputData()->getValue("indataB",&ValOrigine);
+
+  mp_Model->changeDataName("indataB","newDataB");
+
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",6)->getInputData()->isDataExist("indataB"),false);
+  BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("TestUnits",6)->getInputData()->isDataExist("newDataB"),true);
+
+  std::string ValNew;
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",6)->getInputData()->getValue("newDataB",&ValNew);
+
+  BOOST_CHECK_EQUAL(ValOrigine,ValNew);
 }
 
 // =====================================================================

@@ -60,6 +60,7 @@
 class DomainIDataComponent;
 class DomainIDataAddDialog;
 class DomainIDataRemoveDialog;
+class DomainIDataEditDialog;
 class DomainEventsComponent;
 class BuilderListToolBox;
 class DomainClassCoordinator;
@@ -67,6 +68,7 @@ class DomainClassCoordinator;
 class DomainClassModule: public ProjectWorkspaceModule
 {
   private:
+
     Gtk::Box* mp_MainPanel;
 
   protected:
@@ -75,6 +77,7 @@ class DomainClassModule: public ProjectWorkspaceModule
     BuilderListToolBox* mp_IDataListToolBox;
     DomainIDataAddDialog* mp_IDataAddDialog;
     DomainIDataRemoveDialog* mp_IDataRemoveDialog;
+    DomainIDataEditDialog* mp_IDataEditDialog;
 
     DomainEventsComponent* mp_DomainEventsMVP;
     BuilderListToolBox* mp_EventsListToolBox;
