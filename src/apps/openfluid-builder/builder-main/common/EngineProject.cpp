@@ -70,21 +70,40 @@
 // =====================================================================
 // =====================================================================
 
+Glib::ustring Msg = "";
+
+void MyErrorHandler(void* /*userData*/, xmlErrorPtr error)
+{
+  Msg = Glib::ustring::compose(
+      _("Xml error :\n%1\n\n during parse of file:\n%2\n\n"
+          "Project can't be opened."), error->message, error->file);
+}
+;
+
+// =====================================================================
+// =====================================================================
+
 
 EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
-  m_WithProjectManager(WithProjectManager), FXReader(0)
+  m_WithProjectManager(WithProjectManager), FXReader(0), mp_SimBlob(0),
+      mp_RunEnv(0), mp_IOListener(0), mp_Listener(0), mp_ModelInstance(0),
+      mp_Engine(0)
 {
   std::string Now = boost::posix_time::to_iso_extended_string(
       boost::posix_time::microsec_clock::local_time());
   Now[10] = ' ';
   m_DefaultBeginDT.setFromISOString(Now);
+
   m_DefaultDeltaT = openfluid::core::DateTime::Minutes(5);
 
   mp_SimBlob = new openfluid::machine::SimulationBlob();
+
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   if (m_WithProjectManager)
     mp_RunEnv->linkToProject();
+
   mp_IOListener = new openfluid::io::IOListener();
+
   mp_Listener = new openfluid::guicommon::RunDialogMachineListener();
 
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
@@ -102,6 +121,11 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   }
   else
   {
+    //reset the generic error handler
+    initGenericErrorDefaultFunc(NULL);
+    //supply custom error handler
+    xmlSetStructuredErrorFunc(NULL, MyErrorHandler);
+
     try
     {
       FXReader = new openfluid::io::FluidXReader(mp_IOListener);
@@ -109,66 +133,65 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       FXReader->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
               : FolderIn);
+    }
+    catch (openfluid::base::OFException e)
+    {
+      if (Msg.empty())
+        Msg = EngineHelper::minimiseInfoString(e.what());
 
-      openfluid::base::RunDescriptor RunDesc = FXReader->getRunDescriptor();
-      checkAndSetDefaultRunValues(RunDesc);
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(Msg);
 
-      openfluid::base::OutputDescriptor OutDesc =
-          FXReader->getOutputDescriptor();
-      checkAndSetDefaultOutputValues(OutDesc);
+      //because we're in a constructor catch, so destructor isn't called
+      deleteEngineObjects();
+      Msg = "";
+      throw;
+    }
 
-      openfluid::base::ModelDescriptor ModelDesc =
-          FXReader->getModelDescriptor();
+    openfluid::base::RunDescriptor RunDesc = FXReader->getRunDescriptor();
+    checkAndSetDefaultRunValues(RunDesc);
 
-      std::string MissingFunctions = checkModelDesc(ModelDesc);
-      if (MissingFunctions != "")
-        openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-            "Unable to find plugin file(s):\n\n" + MissingFunctions);
+    openfluid::base::OutputDescriptor OutDesc = FXReader->getOutputDescriptor();
+    checkAndSetDefaultOutputValues(OutDesc);
 
+    openfluid::base::ModelDescriptor ModelDesc = FXReader->getModelDescriptor();
+
+    checkModelDesc(ModelDesc);
+
+    try
+    {
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
           FXReader->getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
-
-      //add specific GeneratorSignature to Generators
-      std::list<openfluid::machine::ModelItemInstance*> Items =
-          mp_ModelInstance->getItems();
-      for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
-          Items.begin(); it != Items.end(); ++it)
-      {
-        if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
-        {
-          openfluid::base::GeneratorDescriptor::GeneratorMethod
-              GeneratorMethod =
-                  (static_cast<openfluid::machine::Generator*> ((*it)->Function))->getGeneratorMethod();
-
-          GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
-
-          GenSign->ID = (*it)->Signature->ID;
-
-          GenSign->HandledData.ProducedVars
-              = (*it)->Signature->HandledData.ProducedVars;
-
-          GenSign->HandledData.RequiredExtraFiles
-              = (*it)->Signature->HandledData.RequiredExtraFiles;
-
-          (*it)->Signature = GenSign;
-        }
-      }
     }
     catch (openfluid::base::OFException e)
     {
-      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
+      Glib::ustring
+          Msg =
+              Glib::ustring::compose(
+                  _("Warning:\n%1.\n\nSome files may be overwritten.\nDo you want to continue ?"),
+                  EngineHelper::minimiseInfoString(e.what()));
+
+      if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+          Msg))
+      {
+        //because we're in a constructor catch, so destructor isn't called
+        deleteEngineObjects();
+        throw;
+      }
     }
+
+    addSignatureToGenerators();
 
     dispatchOutputVariables();
 
     Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
+
     if (!OutputConsistencyMessage.empty())
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
           Glib::ustring::compose(_(
-              "Check outputs consistency leads OpenFLUID to delete :\n%1"),
+              "Check outputs consistency leads OpenFLUID to delete :\n\n%1"),
               OutputConsistencyMessage));
   }
 
@@ -296,8 +319,7 @@ void EngineProject::checkAndSetDefaultOutputValues(
 // =====================================================================
 
 
-std::string EngineProject::checkModelDesc(
-    openfluid::base::ModelDescriptor& ModelDesc)
+void EngineProject::checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc)
 {
   std::string MissingFunctions = "";
 
@@ -313,8 +335,8 @@ std::string EngineProject::checkModelDesc(
         && openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(
             ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()).empty())
     {
-      MissingFunctions.append(
-          ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
+      MissingFunctions.append("- "
+          + ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
 
       it = ModelDesc.getItems().erase(it);
     }
@@ -322,7 +344,55 @@ std::string EngineProject::checkModelDesc(
       ++it;
   }
 
-  return MissingFunctions;
+  if (MissingFunctions != "")
+  {
+    Glib::ustring Msg = Glib::ustring::compose(
+        _("Unable to find plugin file(s):\n%1\n\n"
+            "Corresponding simulation functions will be removed from the model.\n"
+            "Do you want to continue?"), MissingFunctions);
+
+    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+        Msg))
+    {
+      //because we're in a constructor catch, so destructor isn't called
+      deleteEngineObjects();
+      throw openfluid::base::OFException("");
+    }
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::addSignatureToGenerators()
+{
+  std::list<openfluid::machine::ModelItemInstance*> Items =
+      mp_ModelInstance->getItems();
+
+  for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+    {
+      openfluid::base::GeneratorDescriptor::GeneratorMethod
+          GeneratorMethod =
+              (static_cast<openfluid::machine::Generator*> ((*it)->Function))->getGeneratorMethod();
+
+      GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
+
+      GenSign->ID = (*it)->Signature->ID;
+
+      GenSign->HandledData.ProducedVars
+          = (*it)->Signature->HandledData.ProducedVars;
+
+      GenSign->HandledData.RequiredExtraFiles
+          = (*it)->Signature->HandledData.RequiredExtraFiles;
+
+      (*it)->Signature = GenSign;
+    }
+  }
 }
 
 // =====================================================================
@@ -488,9 +558,21 @@ openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
 
 EngineProject::~EngineProject()
 {
+  deleteEngineObjects();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::deleteEngineObjects()
+{
   //mp_ModelInstance->clear() crashes
-  for (unsigned int i = 0; i < mp_ModelInstance->getItemsCount(); i++)
-    mp_ModelInstance->deleteItem(0);
+  if (mp_ModelInstance)
+  {
+    for (unsigned int i = 0; i < mp_ModelInstance->getItemsCount(); i++)
+      mp_ModelInstance->deleteItem(0);
+  }
   delete mp_ModelInstance;
   delete mp_Listener;
   delete mp_IOListener;
@@ -499,8 +581,7 @@ EngineProject::~EngineProject()
   if (m_WithProjectManager)
     getRunEnv()->detachFromProject();
   delete mp_Engine;
-  if (FXReader)
-    delete FXReader;
+  delete FXReader;
 }
 
 // =====================================================================

@@ -222,7 +222,6 @@ void BuilderAppCoordinator::whenSaveAsAsked()
   mp_CurrentState->whenSaveAsAsked();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -394,7 +393,8 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
         openfluid::base::ProjectManager::getInstance()->getName());
     openfluid::guicommon::PreferencesManager::getInstance()->save();
 
-  } else
+  }
+  else
   {
     throw openfluid::base::OFException("OpenFLUID Builder",
         "BuilderAppCoordinator::setProjectModule",
@@ -503,9 +503,17 @@ void BuilderAppCoordinator::openProject(std::string ProjectPath)
 
   openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
 
-  setProjectModule(ProjectFolder);
+  try
+  {
+    setProjectModule(ProjectFolder);
 
-  setState(*getProjectState());
+    setState(*getProjectState());
+  }
+  catch (openfluid::base::OFException e)
+  {
+    openfluid::base::ProjectManager::getInstance()->close();
+    return;
+  }
 
 }
 
@@ -521,15 +529,23 @@ void BuilderAppCoordinator::createProject()
 
   openfluid::base::ProjectManager::getInstance()->open(ProjectFolder);
 
-  /* to create ("") or open (ProjectFolder) a Project,
-   * because ProjectFolder.empty() means Cancel on NewProjectDialog
-   */
-  if (mp_NewProjectDialog->getImportDir().empty())
-    setProjectModule("");
-  else
-    setProjectModule(ProjectFolder);
+  try
+  {
+    /* to create ("") or open (ProjectFolder) a Project,
+     * because ProjectFolder.empty() means Cancel on NewProjectDialog
+     */
+    if (mp_NewProjectDialog->getImportDir().empty())
+      setProjectModule("");
+    else
+      setProjectModule(ProjectFolder);
 
-  setState(*getProjectState());
+    setState(*getProjectState());
+  }
+  catch (openfluid::base::OFException e)
+  {
+    openfluid::base::ProjectManager::getInstance()->close();
+    return;
+  }
 
 }
 

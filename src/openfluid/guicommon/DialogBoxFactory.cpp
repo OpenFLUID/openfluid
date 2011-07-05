@@ -69,6 +69,8 @@ bool DialogBoxFactory::showSimpleOkCancelQuestionDialog(Glib::ustring Message)
   Gtk::MessageDialog Dialog(Message, false, Gtk::MESSAGE_QUESTION,
       Gtk::BUTTONS_OK_CANCEL);
 
+  Dialog.set_default_response(Gtk::RESPONSE_OK);
+
   return (Dialog.run() == Gtk::RESPONSE_OK);
 }
 
@@ -80,6 +82,7 @@ void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,
       Gtk::BUTTONS_OK);
+
   if (Dialog.run())
     Dialog.hide();
 }
@@ -92,6 +95,7 @@ void DialogBoxFactory::showSimpleWarningMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_WARNING,
       Gtk::BUTTONS_OK);
+
   if (Dialog.run())
     Dialog.hide();
 }

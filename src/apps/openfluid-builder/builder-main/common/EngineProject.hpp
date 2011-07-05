@@ -95,9 +95,13 @@ class EngineProject
     void checkAndSetDefaultOutputValues(
         openfluid::base::OutputDescriptor& OutDesc);
 
-    std::string checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
+    void checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
+
+    void addSignatureToGenerators();
 
     void dispatchOutputVariables();
+
+    void deleteEngineObjects();
 
   protected:
 

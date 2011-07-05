@@ -55,6 +55,7 @@
 #include "ProjectDashboard.hpp"
 
 #include "BuilderGraphicsHelper.hpp"
+#include "EngineHelper.hpp"
 
 ProjectDashboard::ProjectDashboard()
 {
@@ -100,8 +101,8 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model definition");
   Row[m_Columns.m_StateIcon] = CheckInfo.Model ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Model ? "ok" : minimiseInfoString(
-      CheckInfo.ModelMsg);
+  Row[m_Columns.m_StateInfo] = CheckInfo.Model ? "ok"
+      : EngineHelper::minimiseInfoString(CheckInfo.ModelMsg);
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model parameters");
@@ -109,7 +110,8 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   {
     Row[m_Columns.m_StateIcon] = m_GreenIcon;
     Row[m_Columns.m_StateInfo] = "ok";
-  } else
+  }
+  else
   {
     if (!CheckInfo.GeneratorParams)
       Row[m_Columns.m_StateIcon] = m_RedIcon;
@@ -123,7 +125,7 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row[m_Columns.m_Title] = _("Required files");
   Row[m_Columns.m_StateIcon] = CheckInfo.ExtraFiles ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.ExtraFiles ? "ok"
-      : minimiseInfoString(CheckInfo.ExtraFilesMsg);
+      : EngineHelper::minimiseInfoString(CheckInfo.ExtraFilesMsg);
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Spatial representation");
@@ -133,8 +135,8 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Inputdata");
   Row[m_Columns.m_StateIcon] = CheckInfo.Inputdata ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Inputdata ? "ok" : minimiseInfoString(
-      CheckInfo.InputdataMsg);
+  Row[m_Columns.m_StateInfo] = CheckInfo.Inputdata ? "ok"
+      : EngineHelper::minimiseInfoString(CheckInfo.InputdataMsg);
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Project consistency");
@@ -152,22 +154,6 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   Row[m_Columns.m_StateIcon] = CheckInfo.Outputs ? m_GreenIcon : m_OrangeIcon;
   Row[m_Columns.m_StateInfo] = CheckInfo.Outputs ? "ok" : CheckInfo.OutputsMsg;
 
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ProjectDashboard::minimiseInfoString(std::string InfoString)
-{
-  std::size_t i = InfoString.find("(sent by");
-  if (i != std::string::npos)
-  {
-    Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
-    return MinimizedStr;
-  }
-
-  return InfoString;
 }
 
 // =====================================================================

@@ -81,6 +81,8 @@ class EngineHelper
     static bool hasAtLeastAProducedVariable(
         openfluid::machine::ModelInstance* ModelInstance,
         openfluid::core::CoreRepository* CoreRepos);
+
+    static std::string minimiseInfoString(std::string InfoString);
 };
 
 #endif /* __ENGINEHELPER_HPP__ */

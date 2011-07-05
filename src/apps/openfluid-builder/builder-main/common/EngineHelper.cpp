@@ -145,11 +145,25 @@ bool EngineHelper::hasAtLeastAProducedVariable(
     openfluid::core::CoreRepository* CoreRepos)
 {
   BOOST_FOREACH(std::string ClassName, EngineHelper::getClassNames(CoreRepos))
-  {
-    if(!EngineHelper::getProducedVarNames(ClassName,ModelInstance).empty())
-      return true;
-  }
-
-  return false;
+{  if(!EngineHelper::getProducedVarNames(ClassName,ModelInstance).empty())
+  return true;
 }
 
+return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string EngineHelper::minimiseInfoString(std::string InfoString)
+{
+  std::size_t i = InfoString.find("(sent by");
+  if (i != std::string::npos)
+  {
+    Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
+    return MinimizedStr;
+  }
+
+  return InfoString;
+}
