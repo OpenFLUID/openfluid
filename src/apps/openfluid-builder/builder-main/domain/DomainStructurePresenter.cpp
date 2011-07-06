@@ -57,26 +57,54 @@
 #include "DomainStructureModel.hpp"
 #include "DomainStructureAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenDomainChanged()
 {
   m_Adapter.setDomainStructure(m_Model.getUnitListByClass());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenUnitDeleted()
 {
   m_Adapter.deleteCurrentUnit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenUnitAdded(openfluid::core::Unit& Unit)
 {
   m_Adapter.addUnit(Unit);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenUnitAltered(int NewProcessOrder)
 {
   m_Adapter.setSelectedUnitNewPcsOrder(NewProcessOrder);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenSelectionChanged()
 {
   m_Model.setCurrentSelectionByUser(m_Adapter.getSelectedUnitInfos());
 }
+
+// =====================================================================
+// =====================================================================
+
 
 DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
     DomainStructureAdapter& Adapter) :

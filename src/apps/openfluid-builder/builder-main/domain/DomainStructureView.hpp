@@ -63,48 +63,88 @@
 #include "DomainStructureColumns.hpp"
 #include "BuilderByClassTreeView.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainStructureView
 {
   public:
+
     virtual sigc::signal<void> signal_ClassSelectionChanged() = 0;
+
     virtual sigc::signal<void> signal_UnitSelectionChanged() = 0;
+
     virtual void
     setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel) = 0;
+
     virtual void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel) = 0;
+
     virtual void requestClassSelection(Gtk::TreeIter Iter) = 0;
+
     virtual void requestUnitSelection(Gtk::TreeIter Iter) = 0;
+
     virtual Gtk::TreeIter getSelectedClassIter() = 0;
+
     virtual Gtk::TreeIter getSelectedUnitIter() = 0;
+
     virtual Gtk::Widget* asWidget() = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainStructureViewImpl: public BuilderByClassTreeView,
     public DomainStructureView
 {
   protected:
+
     DomainStructureColumns& m_Columns;
+
   public:
+
     DomainStructureViewImpl(DomainStructureColumns& Columns);
+
     sigc::signal<void> signal_ClassSelectionChanged();
+
     sigc::signal<void> signal_UnitSelectionChanged();
+
     void setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel);
+
     void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel);
+
     void requestClassSelection(Gtk::TreeIter Iter);
+
     void requestUnitSelection(Gtk::TreeIter Iter);
+
     Gtk::TreeIter getSelectedClassIter();
+
     Gtk::TreeIter getSelectedUnitIter();
+
     Gtk::Widget* asWidget();
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainStructureViewSub: public DomainStructureViewImpl
 {
   public:
+
     DomainStructureViewSub(DomainStructureColumns& Columns);
+
     int getClassesViewRowCount();
+
     int getUnitsViewRowCount();
+
     std::string getSelectedClassName();
+
     int getSelectedUnitId();
+
     void selectClassWithIndex(int Index);
+
     void selectUnitWithIndex(int Index);
 };
 

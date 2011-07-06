@@ -67,27 +67,45 @@ class DomainStructureView;
 class DomainStructureAdapter: public sigc::trackable
 {
   private:
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
+
     DomainStructureAdapterModel& m_Model;
+
     DomainStructureView& m_View;
+
     /*
      * to avoid empty class selection effect when ClassesTreeModel is set,
      * (sigc::connection::block()/unblock() doesn't get expected result)
      */
     bool m_hasClassSelectionToBeStored;
+
+    bool m_hasIdSelectionToBeStored;
+
     void whenClassSelectionChanged();
+
     void whenUnitSelectionChanged();
+
   public:
+
     DomainStructureAdapter(DomainStructureAdapterModel& Model,
         DomainStructureView& View);
+
     sigc::signal<void> signal_FromUserSelectionChanged();
+
     void setDomainStructure(
         openfluid::core::UnitsListByClassMap_t UnitListByClass);
+
     std::pair<Gtk::TreeIter, Gtk::TreeIter> getSelectedUnitIters();
+
     std::pair<std::string, int> getSelectedUnitInfos();
+
     void deleteCurrentUnit();
+
     void addUnit(openfluid::core::Unit& Unit);
+
     void setSelectedUnitNewPcsOrder(int NewProcessOrder);
+
 };
 
 #endif /* __DOMAINSTRUCTUREADAPTER_HPP__ */

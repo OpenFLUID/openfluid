@@ -56,6 +56,9 @@
 
 #include <boost/foreach.hpp>
 
+// =====================================================================
+// =====================================================================
+
 
 void DomainStructureAdapterModelImpl::appendUnitRowToUnitListStore(
     Glib::RefPtr<BuilderListStore> ClassListStore, openfluid::core::Unit* Unit)
@@ -65,25 +68,90 @@ void DomainStructureAdapterModelImpl::appendUnitRowToUnitListStore(
   Row[m_Columns.m_Id] = Unit->getID();
   Row[m_Columns.m_PcsOrder] = Unit->getProcessOrder();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::createUnitStoreForClass(
     std::string ClassName)
 {
   Glib::RefPtr<BuilderListStore> List = BuilderListStore::create(m_Columns);
   m_ByClassUnitsStores[ClassName] = List;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool DomainStructureAdapterModelImpl::isClassNameValid(std::string ClassName)
 {
   return m_ByClassUnitsStores.find(ClassName) != m_ByClassUnitsStores.end();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool DomainStructureAdapterModelImpl::isClassNameEmpty(std::string ClassName)
 {
   return m_ByClassUnitsStores[ClassName]->children().empty();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::setFirstClassSelected()
 {
-  if (!m_ByClassUnitsStores.empty())
-    m_RequestedSelectedClass = m_ByClassUnitsStores.begin()->first;
+  if (!mref_ClassStore->children().empty())
+    m_RequestedSelectedClass = mref_ClassStore->getFirstClassName();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructureAdapterModelImpl::setLastClassSelected()
+{
+  if (!mref_ClassStore->children().empty())
+  {
+    Gtk::TreeIter it = mref_ClassStore->children().end();
+    it--;
+    m_RequestedSelectedClass = mref_ClassStore->getClassNameFromIter(it);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructureAdapterModelImpl::setFirstUnitSelected(
+    std::string ClassName)
+{
+  if (isClassNameValid(ClassName) && !isClassNameEmpty(ClassName))
+    m_ByClassSelectedUnits[ClassName]
+        = m_ByClassUnitsStores[ClassName]->children().begin()->get_value(
+            m_Columns.m_Id);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructureAdapterModelImpl::setLastUnitSelected(std::string ClassName)
+{
+  if (isClassNameValid(ClassName) && !isClassNameEmpty(ClassName))
+  {
+    Gtk::TreeIter it = m_ByClassUnitsStores[ClassName]->children().end();
+    it--;
+    m_ByClassSelectedUnits[ClassName] = it->get_value(m_Columns.m_Id);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 
 DomainStructureAdapterModelImpl::DomainStructureAdapterModelImpl(
     DomainStructureColumns& Columns) :
@@ -91,10 +159,30 @@ DomainStructureAdapterModelImpl::DomainStructureAdapterModelImpl(
       m_RequestedSelectedClass("")
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::setDomainStructure(
     openfluid::core::UnitsListByClassMap_t UnitListByClass)
 {
+  // store existing sorts
+  std::map<std::string, std::pair<int, Gtk::SortType> > ByClassSorts;
+
+  for (std::map<std::string, Glib::RefPtr<BuilderListStore> >::iterator it =
+      m_ByClassUnitsStores.begin(); it != m_ByClassUnitsStores.end(); ++it)
+  {
+    int SortId;
+    Gtk::SortType SortType;
+
+    it->second->get_sort_column_id(SortId, SortType);
+
+    ByClassSorts[it->first] = std::make_pair(SortId, SortType);
+  }
+
   m_ByClassUnitsStores.clear();
+
   mref_ClassStore->clear();
 
   std::vector<std::string> ClassNames;
@@ -102,43 +190,112 @@ void DomainStructureAdapterModelImpl::setDomainStructure(
   for (openfluid::core::UnitsListByClassMap_t::iterator it =
       UnitListByClass.begin(); it != UnitListByClass.end(); ++it)
   {
-    ClassNames.push_back(it->first);
-    createUnitStoreForClass(it->first);
-    BOOST_FOREACH(openfluid::core::Unit Unit,*(it->second.getList()))
-          {
-            appendUnitRowToUnitListStore(m_ByClassUnitsStores[Unit.getClass()],
-                &Unit);
-          }
-  }
-  mref_ClassStore->setClasses(ClassNames);
+    std::string ClassName = it->first;
 
-  setFirstClassSelected();
+    ClassNames.push_back(ClassName);
+
+    createUnitStoreForClass(ClassName);
+
+    BOOST_FOREACH(openfluid::core::Unit Unit,*(it->second.getList()))
+{    appendUnitRowToUnitListStore(m_ByClassUnitsStores[Unit.getClass()],
+        &Unit);
+  }
+
+  if(ByClassSorts.find(ClassName) != ByClassSorts.end())
+  m_ByClassUnitsStores[ClassName]->set_sort_column(ByClassSorts[ClassName].first,ByClassSorts[ClassName].second);
+  else
+  m_ByClassUnitsStores[ClassName]->set_sort_column(m_Columns.m_Id,Gtk::SORT_ASCENDING);
+
+  if (m_ByClassSelectedUnits.find(ClassName) == m_ByClassSelectedUnits.end())
+  setFirstUnitSelected(ClassName);
 }
+
+mref_ClassStore->setClasses(ClassNames);
+
+// if no class already selected, select the first one
+if(!isClassNameValid(m_RequestedSelectedClass))
+setFirstClassSelected();
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> DomainStructureAdapterModelImpl::getClassesTreeModel()
 {
   return mref_ClassStore;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> DomainStructureAdapterModelImpl::getUnitsTreeModel()
 {
   if (isClassNameValid(m_RequestedSelectedClass))
     return m_ByClassUnitsStores[m_RequestedSelectedClass];
   return Gtk::ListStore::create(m_Columns);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::TreeIter DomainStructureAdapterModelImpl::getRequestedClassSelection()
 {
   return mref_ClassStore->getIterFromClassName(m_RequestedSelectedClass);
 }
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeIter DomainStructureAdapterModelImpl::getRequestedUnitSelection()
+{
+  if (isClassNameValid(m_RequestedSelectedClass))
+  {
+    int SelectedUnit = m_ByClassSelectedUnits[m_RequestedSelectedClass];
+
+    Gtk::TreeModel::Children Children =
+        m_ByClassUnitsStores[m_RequestedSelectedClass]->children();
+
+    for (unsigned int i = 0; i < Children.size(); i++)
+    {
+      if (Children[i]->get_value(m_Columns.m_Id) == SelectedUnit)
+        return Children[i];
+    }
+  }
+
+  return (Gtk::TreeIter) 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainStructureAdapterModelImpl::getClassNameFromIter(
     Gtk::TreeIter Iter)
 {
   return mref_ClassStore->getClassNameFromIter(Iter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 int DomainStructureAdapterModelImpl::getUnitIdFromIter(Gtk::TreeIter Iter)
 {
   if (Iter)
     return Iter->get_value(m_Columns.m_Id);
+
   return -1;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::deleteUnit(std::pair<Gtk::TreeIter,
     Gtk::TreeIter> UnitIters)
 {
@@ -146,16 +303,46 @@ void DomainStructureAdapterModelImpl::deleteUnit(std::pair<Gtk::TreeIter,
   {
     std::string ClassName = getClassNameFromIter(UnitIters.first);
 
-    m_ByClassUnitsStores[ClassName]->erase(UnitIters.second);
+    Gtk::TreeIter NextUnitIter = m_ByClassUnitsStores[ClassName]->erase(
+        UnitIters.second);
 
     if (isClassNameEmpty(ClassName))
     {
-      mref_ClassStore->erase(UnitIters.first);
-      m_ByClassUnitsStores.erase(m_ByClassUnitsStores.find(ClassName));
-      setFirstClassSelected();
+      deleteClass(ClassName);
+    }
+    else
+    {
+      if (NextUnitIter != m_ByClassUnitsStores[ClassName]->children().end())
+        m_ByClassSelectedUnits[ClassName] = NextUnitIter->get_value(
+            m_Columns.m_Id);
+      else
+        setLastUnitSelected(ClassName);
     }
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructureAdapterModelImpl::deleteClass(std::string ClassName)
+{
+  Gtk::TreeIter NextClassIter = mref_ClassStore->erase(
+      mref_ClassStore->getIterFromClassName(ClassName));
+
+  m_ByClassUnitsStores.erase(m_ByClassUnitsStores.find(ClassName));
+
+  if (NextClassIter != mref_ClassStore->children().end())
+    m_RequestedSelectedClass = mref_ClassStore->getClassNameFromIter(
+        NextClassIter);
+  else
+    setLastClassSelected();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::addUnit(openfluid::core::Unit& Unit)
 {
   std::string ClassName = Unit.getClass();
@@ -163,16 +350,41 @@ void DomainStructureAdapterModelImpl::addUnit(openfluid::core::Unit& Unit)
   if (!isClassNameValid(ClassName))
   {
     mref_ClassStore->appendClass(ClassName);
+
     createUnitStoreForClass(ClassName);
   }
+
   appendUnitRowToUnitListStore(m_ByClassUnitsStores[ClassName], &Unit);
+
+  m_ByClassSelectedUnits[ClassName] = Unit.getID();
 
   m_RequestedSelectedClass = ClassName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::setSelectedClass(Gtk::TreeIter Iter)
 {
   m_RequestedSelectedClass = getClassNameFromIter(Iter);
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructureAdapterModelImpl::setSelectedUnit(Gtk::TreeIter UnitIter)
+{
+  if (isClassNameValid(m_RequestedSelectedClass))
+    m_ByClassSelectedUnits[m_RequestedSelectedClass] = getUnitIdFromIter(
+        UnitIter);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureAdapterModelImpl::setNewPcsOrder(std::pair<Gtk::TreeIter,
     Gtk::TreeIter> UnitIters, int NewProcessOrder)
 {
@@ -180,19 +392,41 @@ void DomainStructureAdapterModelImpl::setNewPcsOrder(std::pair<Gtk::TreeIter,
     UnitIters.second->set_value(m_Columns.m_PcsOrder, NewProcessOrder);
 }
 
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 DomainStructureAdapterModelSub::DomainStructureAdapterModelSub(
     DomainStructureColumns& Columns) :
   DomainStructureAdapterModelImpl(Columns)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, Glib::RefPtr<BuilderListStore> > DomainStructureAdapterModelSub::getByClassUnitsStores()
 {
   return m_ByClassUnitsStores;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::string DomainStructureAdapterModelSub::getRequestedSelectedClass()
 {
   return m_RequestedSelectedClass;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<BuilderClassListStore> DomainStructureAdapterModelSub::getClassStore()
 {
   return mref_ClassStore;
