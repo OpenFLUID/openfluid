@@ -183,7 +183,6 @@ void ModelStructureCoordinator::whenMoveTowardTheEndAsked()
   m_signal_ModelChanged.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -200,9 +199,7 @@ void ModelStructureCoordinator::whenGlobalValueChanged()
   m_HasToUpdate = false;
   m_signal_ModelChanged.emit();
   m_HasToUpdate = true;
-
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -284,6 +281,7 @@ void ModelStructureCoordinator::update()
   if (m_HasToUpdate)
   {
     m_StructureModel.update();
+
     m_GlobalParamsModel.update();
   }
 }
@@ -308,6 +306,10 @@ void ModelStructureCoordinator::createParamsComponents()
 
 void ModelStructureCoordinator::updateWithFctParamsComponents()
 {
+  std::string SelectedPageName = m_ParamsPanel.getCurrentPageName();
+  std::string SelectedStructureFunctionName =
+      m_StructureModel.getCurrentSelectionName();
+
   update();
 
   mp_AddFctModule->setSignatures(*FunctionSignatureRegistry::getInstance());
@@ -381,19 +383,22 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
               m_StructureModel.appendFunction(Item);
 
               createModelFctParamsComponent(Item);
-            } else
+            }
+            else
             {
               openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
                   Glib::ustring::compose(
                       "Unable to create function %1,\nit will be ignored.",
                       TempItems[i].first));
             }
-          } else
+          }
+          else
             openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
                 Glib::ustring::compose(
                     "Unable to load plugin %1,\nit will be ignored.",
                     TempItems[i].first));
-        } catch (openfluid::base::OFException e)
+        }
+        catch (openfluid::base::OFException e)
         {
           openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
               Glib::ustring::compose(
@@ -403,11 +408,15 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
       }
     }
 
-  } catch (openfluid::base::OFException e)
+  }
+  catch (openfluid::base::OFException e)
   {
     std::cerr << "ModelStructureCoordinator::updateFctParamsComponents : "
         << e.what() << std::endl;
   }
+
+  m_ParamsPanel.setCurrentPage(SelectedPageName);
+  m_StructureModel.requestSelectionByApp(SelectedStructureFunctionName);
 }
 
 // =====================================================================
@@ -417,18 +426,21 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
 void ModelStructureCoordinator::createModelFctParamsComponent(
     openfluid::machine::ModelItemInstance* Item)
 {
-  ModelFctParamsComponent* FctParams = new ModelFctParamsComponent(Item,mp_ModelInstance);
+  ModelFctParamsComponent* FctParams = new ModelFctParamsComponent(Item,
+      mp_ModelInstance);
 
   std::string FctName = Item->Signature->ID;
 
   m_ParamsPanel.addAFctParamsPage(FctParams->asWidget(), FctName);
   m_ByNameFctParamsComponents[FctName] = FctParams;
 
-  FctParams->signal_RequiredFileChanged().connect(sigc::mem_fun(
-      *this, &ModelStructureCoordinator::whenRequiredFileChanged));
+  FctParams->signal_RequiredFileChanged().connect(sigc::mem_fun(*this,
+      &ModelStructureCoordinator::whenRequiredFileChanged));
 
   FctParams->signal_ParamsChanged().connect(sigc::mem_fun(*this,
       &ModelStructureCoordinator::whenParamsChanged));
+
+  m_ParamsPanel.setCurrentPage(FctName);
 }
 
 // =====================================================================
@@ -458,4 +470,7 @@ void ModelStructureCoordinator::whenParamsChanged()
 {
   m_signal_ModelChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
 
