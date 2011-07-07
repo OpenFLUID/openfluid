@@ -3,7 +3,11 @@
 The \OFname \ software is available on Linux, Windows and MacOSX platforms.
 It is made of the \OFname \ framework and \OFname \ applications. 
 We encourage you to use the \OFname \ software on Linux platform as it is the
-development and usually used platform.
+development and usually used platform.\\
+This usage information is for a command-line use of OpenFLUID. For usage through
+the graphical user interface, you have to run the \texttt{openfluid-builder} software 
+which is not presented in this document.\\ 
+
 
 \section{Installation}
 
@@ -89,7 +93,14 @@ specialized sotware, such as spreadsheets or Geographic Information Systems
 \section{Run the simulation}
 
 To run the simulation, if the dataset is located in the default searched directory, simply run the command \texttt{openfluid-engine} in your favorite terminal. 
-To specify a different input dataset directory, use the \texttt{-i} or \verb?--?\texttt{input-dir} command line option.    
+To specify a different input dataset directory, use the \texttt{-i} or \verb?--?\texttt{input-dir} command line option.\\
+
+You can also run a simulation from an OpenFLUID project, using the \texttt{-w} 
+or \verb?--?\texttt{project} command line option, followed by the path to the project directory. 
+In this case, the project must be a valid OpenFLUID project. Its structure is described in the appendix section.
+It can be created by hand, or using the OpenFLUID-Builder software.\\
+
+
 
 \bigskip
 
