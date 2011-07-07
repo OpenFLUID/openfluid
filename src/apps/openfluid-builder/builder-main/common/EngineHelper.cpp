@@ -56,6 +56,8 @@
 
 #include <boost/foreach.hpp>
 
+#include <openfluid/core/DateTime.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -167,3 +169,38 @@ std::string EngineHelper::minimiseInfoString(std::string InfoString)
 
   return InfoString;
 }
+
+// =====================================================================
+// =====================================================================
+
+struct SortById
+{
+    bool operator ()(openfluid::core::Unit& U1, openfluid::core::Unit& U2) const
+    {
+      return (U1.getID() <= U2.getID());
+    }
+};
+
+void EngineHelper::sortUnitsCollectionById(
+    openfluid::core::UnitsCollection& Coll)
+{
+  Coll.getList()->sort(SortById());
+}
+
+// =====================================================================
+// =====================================================================
+
+struct SortByDateTime
+{
+    bool operator ()(openfluid::core::Event& E1, openfluid::core::Event& E2) const
+    {
+      return (E1.getDateTime() <= E2.getDateTime());
+    }
+};
+
+void EngineHelper::sortEventsListByDateTime(
+    std::list<openfluid::core::Event>& Events)
+{
+  Events.sort(SortByDateTime());
+}
+

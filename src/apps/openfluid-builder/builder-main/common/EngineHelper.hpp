@@ -83,6 +83,11 @@ class EngineHelper
         openfluid::core::CoreRepository* CoreRepos);
 
     static std::string minimiseInfoString(std::string InfoString);
+
+    static void sortUnitsCollectionById(openfluid::core::UnitsCollection& Coll);
+
+    static void sortEventsListByDateTime(std::list<openfluid::core::Event>& Events);
+
 };
 
 #endif /* __ENGINEHELPER_HPP__ */
