@@ -206,13 +206,14 @@ ENDIF(NOT NOFUNC2DOC)
 
 
 # =========================================================================
-#   headers dirs for wx and other libraries
+#   include and link directories
 # =========================================================================
+
 INCLUDE_DIRECTORIES(${openfluid_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${FUNC_INCLUDE_DIRS})
 
 LINK_DIRECTORIES(${openfluid_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
-INCLUDE_DIRECTORIES(${FUNC_LIBRARY_DIRS})
+LINK_DIRECTORIES(${FUNC_LIBRARY_DIRS})
 
 
 # =========================================================================   
@@ -226,23 +227,23 @@ IF(FUNC_FORTRAN)
 ENDIF(FUNC_FORTRAN)
 
 
+# =========================================================================
+#   definitions
+# =========================================================================
+
+ADD_DEFINITIONS(-DOPENFLUID_VERSION=${openfluid_VERSION})
+ADD_DEFINITIONS(${openfluid_CFLAGS})
+ADD_DEFINITIONS(${FUNC_DEFINITIONS})
+
 
 # =========================================================================
 #   function build
 # =========================================================================
 
 ADD_LIBRARY(${FUNC_ID} MODULE ${FUNC_CPP} ${FUNC_FORTRAN})
-ADD_DEFINITIONS(-DOPENFLUID_VERSION=${openfluid_VERSION})
-ADD_DEFINITIONS(${openfluid_CFLAGS})
-ADD_DEFINITIONS(${FUNC_DEFINITIONS})
 SET_TARGET_PROPERTIES(${FUNC_ID} PROPERTIES PREFIX "" SUFFIX "${CMAKE_SHARED_LIBRARY_SUFFIX}mpi")
-
-IF(MSYS)
-  SET_TARGET_PROPERTIES(${FUNC_ID} PROPERTIES LINK_FLAGS "-shared")
-ENDIF(MSYS)
   
 TARGET_LINK_LIBRARIES(${FUNC_ID} ${openfluid_LIBRARIES} ${Boost_LIBRARIES} ${FORTRAN_LINK_LIBS} ${FUNC_LINK_LIBS})
-
 
 
 # =========================================================================
@@ -261,17 +262,15 @@ IF(PDFLATEX_COMPILER AND NOT NOFUNC2DOC)
     SET(DOCS_OUTPUT_PATH "${PROJECT_BINARY_DIR}")
   ENDIF(NOT DOCS_OUTPUT_PATH)
 
+  IF(FUNC2DOC_TPLFILE)
+    SET (TPLFILE_OPTION ",tplfile=${FUNC2DOC_TPLFILE}")
+  ENDIF(FUNC2DOC_TPLFILE)
 
-  IF(NOT FUNC2DOC_TPLFILE)
-    SET(FUNC2DOC_TPLFILE "/usr/share/openfluid/func2doc/template/func2doc_tpl.tex")
-  ENDIF(NOT FUNC2DOC_TPLFILE)
-
-  # latex command for doc build
   ADD_CUSTOM_COMMAND(
     OUTPUT "${DOCS_OUTPUT_PATH}/${FUNC_ID}.pdf"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${CPP_FOR_DOC}"
     COMMAND "openfluid-engine"
-    ARGS "--buddy" "func2doc" "--buddyopts" "inputcpp=${CMAKE_CURRENT_SOURCE_DIR}/${CPP_FOR_DOC},outputdir=${DOCS_OUTPUT_PATH},tplfile=${FUNC2DOC_TPLFILE},pdf=1"     
+    ARGS "--buddy" "func2doc" "--buddyopts" "inputcpp=${CMAKE_CURRENT_SOURCE_DIR}/${CPP_FOR_DOC},outputdir=${DOCS_OUTPUT_PATH},pdf=1${TPLFILE_OPTION}"     
   )
 
   ADD_CUSTOM_TARGET(${FUNC_ID}-doc ALL DEPENDS "${DOCS_OUTPUT_PATH}/${FUNC_ID}.pdf")
