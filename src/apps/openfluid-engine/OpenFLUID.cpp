@@ -567,7 +567,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("max-threads,t",boost::program_options::value< unsigned int >(),std::string("change maximum number of threads for threaded spatial loops (default is "+DefaultMaxThreadsStr+")").c_str())
       ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of functions matching the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
-      ("project,w",boost::program_options::value< std::string >(),"set project")
+      ("project,w",boost::program_options::value< std::string >(),"set project directory")
       ("version","get version (do not run the simulation)")
       ("no-result,z","do not write results files")
   ;
