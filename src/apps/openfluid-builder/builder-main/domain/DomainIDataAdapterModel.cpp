@@ -62,7 +62,7 @@
 
 DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl() :
   mp_UnitsColl(0), mp_Columns(new DomainIDataColumns()), mref_ListStore(
-      BuilderListStore::create(*mp_Columns))
+      BuilderListStore::create(*mp_Columns)), m_SelectedUnit(-1)
 {
 }
 
@@ -73,6 +73,15 @@ DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl() :
 void DomainIDataAdapterModelImpl::dataInit(
     openfluid::core::UnitsCollection* UnitsColl)
 {
+  // store existing sort
+  int SortColumnId;
+  Gtk::SortType SortType;
+
+  mref_ListStore->get_sort_column_id(SortColumnId, SortType);
+
+  std::string SortColumnTitle = mp_Columns->getColumnTitleWithIndex(
+      SortColumnId);
+
   mp_UnitsColl = UnitsColl;
 
   delete mp_Columns;
@@ -107,6 +116,47 @@ BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
   }
 }
 
+// apply stored sort
+int NewSortColumnId = mp_Columns->getColumnIndexWithTitle(SortColumnTitle);
+
+if(SortColumnId == 0) /* Id column was sorted, we sort it */
+{
+  mref_ListStore->set_sort_column(0,SortType);
+}
+else if(SortColumnId > 0 && NewSortColumnId!= -1) /* an IData column was sorted and still exists, we sort it*/
+{
+  mref_ListStore->set_sort_column(NewSortColumnId,SortType);
+}
+else /* no sort existed or sorted IData column doesn't exist no more, we apply the default (Id) sort */
+{
+  mref_ListStore->set_sort_column(0,Gtk::SORT_ASCENDING);
+}
+
+if(! getRequestedUnitSelection())
+setFirstUnitSelected();
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataAdapterModelImpl::setFirstUnitSelected()
+{
+  if (!mref_ListStore->children().empty())
+    mref_ListStore->children().begin()->get_value(0, m_SelectedUnit);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataAdapterModelImpl::setSelectedUnit(Gtk::TreeIter Iter)
+{
+  if (Iter)
+    Iter->get_value(0, m_SelectedUnit);
+  else
+    m_SelectedUnit = -1;
 }
 
 // =====================================================================
@@ -125,6 +175,26 @@ Glib::RefPtr<Gtk::TreeModel> DomainIDataAdapterModelImpl::getTreeModel()
 DomainIDataColumns* DomainIDataAdapterModelImpl::getColumns()
 {
   return mp_Columns;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeIter DomainIDataAdapterModelImpl::getRequestedUnitSelection()
+{
+  Gtk::TreeModel::Children Children = mref_ListStore->children();
+
+  for (unsigned int i = 0; i < Children.size(); i++)
+  {
+    int IdValue;
+    Children[i]->get_value(0, IdValue);
+
+    if (IdValue == m_SelectedUnit)
+      return Children[i];
+  }
+
+  return (Gtk::TreeIter) 0;
 }
 
 // =====================================================================

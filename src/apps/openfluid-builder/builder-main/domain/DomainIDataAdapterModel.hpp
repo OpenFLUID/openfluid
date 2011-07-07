@@ -70,9 +70,13 @@ class DomainIDataAdapterModel
     virtual void
     dataInit(openfluid::core::UnitsCollection* UnitsColl) = 0;
 
+    virtual void setSelectedUnit(Gtk::TreeIter Iter) = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 
     virtual DomainIDataColumns* getColumns() = 0;
+
+    virtual Gtk::TreeIter getRequestedUnitSelection() = 0;
 
     virtual void updateData(const Glib::ustring PathString,
         const std::string NewText, std::string DataName, int ColIndex) = 0;
@@ -96,17 +100,25 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 
     sigc::signal<void> m_signal_DataChanged;
 
+    int m_SelectedUnit;
+
+    void setFirstUnitSelected();
+
   public:
 
     DomainIDataAdapterModelImpl();
 
     void dataInit(openfluid::core::UnitsCollection* UnitsColl);
 
+    void setSelectedUnit(Gtk::TreeIter Iter);
+
     sigc::signal<void> signal_DataChanged();
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 
     DomainIDataColumns* getColumns();
+
+    Gtk::TreeIter getRequestedUnitSelection();
 
     void updateData(const Glib::ustring PathString, const std::string NewText,
         std::string DataName, int ColIndex);

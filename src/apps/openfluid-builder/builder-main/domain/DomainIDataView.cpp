@@ -140,6 +140,46 @@ void DomainIDataViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel,
         it->first, ColIndex));
   }
 
+  mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
+      &DomainIDataViewImpl::onUnitSelectionChanged));
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataViewImpl::onUnitSelectionChanged()
+{
+  m_signal_UnitSelectionChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> DomainIDataViewImpl::signal_UnitSelectionChanged()
+{
+  return m_signal_UnitSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::TreeIter DomainIDataViewImpl::getSelectedUnitIter()
+{
+  return mp_TreeView->get_selection()->get_selected();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainIDataViewImpl::requestUnitSelection(Gtk::TreeIter Iter)
+{
+  if (Iter)
+    mp_TreeView->get_selection()->select(Iter);
 }
 
 // =====================================================================
