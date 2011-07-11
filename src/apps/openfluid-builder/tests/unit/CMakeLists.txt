@@ -139,10 +139,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitEditionModel
 ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitEditionPresenter
                      builder_unittest_DomainUnitEditionPresenter_TEST
                      DomainUnitEditionPresenter_TEST.cpp)
-                     
-ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitCreationPresenter
-                     builder_unittest_DomainUnitCreationPresenter_TEST
-                     DomainUnitCreationPresenter_TEST.cpp)
 
 ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataModel
                      builder_unittest_DomainIDataModel_TEST

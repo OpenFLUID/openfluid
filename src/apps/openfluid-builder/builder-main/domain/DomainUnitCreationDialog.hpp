@@ -46,39 +46,61 @@
  */
 
 /**
- \file DomainUnitCreationComponent.cpp
- \brief Implements ...
+ \file DomainUnitCreationDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainUnitCreationComponent.hpp"
+#ifndef __DOMAINUNITCREATIONDIALOG_HPP__
+#define __DOMAINUNITCREATIONDIALOG_HPP__
 
-#include "DomainUnitCreationModel.hpp"
-#include "DomainUnitCreationPresenter.hpp"
-#include "DomainUnitCreationView.hpp"
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/table.h>
+#include <gtkmm/comboboxentrytext.h>
 
-DomainUnitCreationComponent::DomainUnitCreationComponent()
+#include <openfluid/core/CoreRepository.hpp>
+
+#include <set>
+
+class DomainUnitCreationDialog
 {
-  mp_Model = new DomainUnitCreationModelImpl();
-  mp_View = new DomainUnitCreationViewImpl();
-  mp_Presenter = new DomainUnitCreationPresenter(*mp_Model, *mp_View);
-}
-DomainUnitCreationComponent::~DomainUnitCreationComponent()
-{
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* DomainUnitCreationComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-DomainUnitCreationModel* DomainUnitCreationComponent::getModel()
-{
-  return mp_Model;
-}
-DomainUnitCreationView* DomainUnitCreationComponent::getView()
-{
-  return mp_View;
-}
+  private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Table* mp_InfoTable;
+
+    Gtk::InfoBar* mp_InfoBar;
+
+    Gtk::Label* mp_InfoBarLabel;
+
+    Gtk::ComboBoxEntryText* mp_ClassComboEntryText;
+
+    Gtk::SpinButton* mp_IdSpin;
+
+    Gtk::SpinButton* mp_PcsOrderSpin;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    std::set<int> m_IDs;
+
+    void onClassChanged();
+
+    void onIdChanged();
+
+  public:
+
+    DomainUnitCreationDialog();
+
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+
+    void update();
+
+    openfluid::core::Unit* show(std::string SelectedClass="");
+};
+
+#endif /* __DOMAINUNITCREATIONDIALOG_HPP__ */

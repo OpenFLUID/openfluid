@@ -67,6 +67,9 @@ class EngineHelper
     static std::set<std::string> getClassNames(
         openfluid::core::CoreRepository* CoreRepos);
 
+    static std::set<int> getIDs(openfluid::core::CoreRepository* CoreRepos,
+        std::string ClassName);
+
     static std::set<std::string> getProducedVarNames(std::string ClassName,
         openfluid::machine::ModelInstance* ModelInstance);
 
@@ -86,7 +89,10 @@ class EngineHelper
 
     static void sortUnitsCollectionById(openfluid::core::UnitsCollection& Coll);
 
-    static void sortEventsListByDateTime(std::list<openfluid::core::Event>& Events);
+    static void sortEventsListByDateTime(
+        std::list<openfluid::core::Event>& Events);
+
+    static bool isEmptyString(std::string Str);
 
 };
 

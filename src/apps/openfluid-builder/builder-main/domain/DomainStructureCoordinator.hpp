@@ -61,7 +61,7 @@
 
 class DomainStructureModel;
 class DomainUnitEditionModel;
-class DomainUnitCreationModel;
+class DomainUnitCreationDialog;
 class BuilderListToolBox;
 
 class DomainStructureCoordinator: public sigc::trackable
@@ -74,7 +74,7 @@ class DomainStructureCoordinator: public sigc::trackable
 
     DomainUnitEditionModel& m_UnitEditionModel;
 
-    DomainUnitCreationModel& m_UnitCreationModel;
+    DomainUnitCreationDialog& m_UnitCreationDialog;
 
     BuilderListToolBox& m_StructureListToolBox;
 
@@ -92,7 +92,7 @@ class DomainStructureCoordinator: public sigc::trackable
 
     DomainStructureCoordinator(DomainStructureModel& StructureModel,
         DomainUnitEditionModel& UnitEditionModel,
-        DomainUnitCreationModel& UnitCreationModel,
+        DomainUnitCreationDialog& UnitCreationDialog,
         BuilderListToolBox& StructureListToolBox);
 
     sigc::signal<void> signal_DomainChanged();

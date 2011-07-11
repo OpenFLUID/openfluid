@@ -56,7 +56,7 @@
 
 #include "DomainStructureComponent.hpp"
 #include "DomainUnitEditionComponent.hpp"
-#include "DomainUnitCreationComponent.hpp"
+#include "DomainUnitCreationDialog.hpp"
 
 #include "DomainStructureCoordinator.hpp"
 #include "BuilderListToolBoxFactory.hpp"
@@ -74,13 +74,15 @@ DomainStructureModule::DomainStructureModule()
 
   mp_DomainStructureMVP = new DomainStructureComponent();
   mp_DomainUnitEditionMVP = new DomainUnitEditionComponent();
-  mp_DomainUnitCreationMVP = new DomainUnitCreationComponent();
+  mp_DomainUnitCreationDialog = new DomainUnitCreationDialog();
+
 
   mp_StructureListToolBox = BuilderListToolBoxFactory::createDomainStructureToolBox();
 
   mp_Coordinator = new DomainStructureCoordinator(*mp_DomainStructureMVP->getModel(),
       *mp_DomainUnitEditionMVP->getModel(),
-      *mp_DomainUnitCreationMVP->getModel(), *mp_StructureListToolBox);
+      *mp_DomainUnitCreationDialog,
+      *mp_StructureListToolBox);
 
   mp_Coordinator->signal_DomainChanged().connect(sigc::mem_fun(*this,
       &DomainStructureModule::whenDomainChanged));
@@ -94,7 +96,7 @@ DomainStructureModule::~DomainStructureModule()
 {
   delete mp_Coordinator;
   delete mp_DomainUnitEditionMVP;
-  delete mp_DomainUnitCreationMVP;
+  delete mp_DomainUnitCreationDialog;
   delete mp_StructureListToolBox;
   delete mp_DomainStructureMVP;
 }
