@@ -59,7 +59,12 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <glibmm/i18n.h>
 #include <glibmm/miscutils.h>
+
+#ifdef WIN32
+#include <windows.h>
+#else
 #include <langinfo.h>
+#endif
 
 // =====================================================================
 // =====================================================================
@@ -72,21 +77,29 @@ i18nManager* i18nManager::mp_Instance = 0;
 
 
 i18nManager::i18nManager() :
-  m_DefaultLanguage("en_US.UTF-8")
+  m_DefaultLanguage("en_US")
 {
   m_CurrentLanguage = "";
 
   m_AvailableLanguages[m_DefaultLanguage] = _("English (US)");
-  m_AvailableLanguages["fr_FR.UTF-8"] = _("French (France)");
-  m_AvailableLanguages["es_ES.UTF-8"] = _("Spanish (Spain)");
-  m_AvailableLanguages["it_IT.UTF-8"] = _("Italian (Italy)");
+  m_AvailableLanguages["fr_FR"] = _("French (France)");
+//  m_AvailableLanguages["es_ES"] = _("Spanish (Spain)");
+//  m_AvailableLanguages["it_IT"] = _("Italian (Italy)");
 
-  Glib::ustring EnvLang = Glib::getenv("LANG");
+  Glib::ustring EnvLang;
 
-  Glib::ustring Codeset = nl_langinfo(CODESET);
-  EnvLang.replace(6, Codeset.size(), Codeset);
+#ifdef WIN32
+
+  EnvLang = g_win32_getlocale();
+
+#else
+
+  EnvLang = Glib::getenv("LANG");
+
+#endif
 
   tryToSetCurrentLanguage(EnvLang);
+
 }
 
 // =====================================================================
@@ -125,10 +138,29 @@ Glib::ustring i18nManager::getCurrentLanguage()
 
 void i18nManager::tryToSetCurrentLanguage(Glib::ustring Language)
 {
+  Language = Language.substr(0, 5);
+
   if (m_AvailableLanguages.find(Language) != m_AvailableLanguages.end())
   {
+
+#ifdef WIN32
+
+    m_CurrentLanguage = Language;
+
+    Glib::setenv("LANGUAGE", m_CurrentLanguage);
+    Glib::setenv("LANG", m_CurrentLanguage);
+
+#else
+
     try
     {
+      Language.append(".");
+
+      /*
+       * Returns well uppercased or lowercased "utf-8/UTF-8"
+       */
+      Language.append(nl_langinfo(CODESET));
+
       /*
        * Throws runtime_error if locale is not available on the system
        */
@@ -140,28 +172,32 @@ void i18nManager::tryToSetCurrentLanguage(Glib::ustring Language)
 
       Glib::setenv("LANGUAGE", m_CurrentLanguage);
       Glib::setenv("LANG", m_CurrentLanguage);
-    } catch (std::runtime_error const& e)
+    }
+    catch (std::runtime_error const& e)
     {
       /*
-       * Keep unchanged if language already set, otherwise set to default one
+       * Remains unchanged if language already set, otherwise set to default one
        */
       if (m_CurrentLanguage.empty())
         setToDefaultLanguage();
     }
-  } else
+#endif
+  }
+  else
   {
     /*
-     * Keep unchanged if language already set, otherwise set to default one
+     * Remains unchanged if language already set, otherwise set to default one
      */
     if (m_CurrentLanguage.empty())
       setToDefaultLanguage();
   }
 
-  bindtextdomain(openfluid::config::NLS_PACKAGE.c_str(), openfluid::base::RuntimeEnvironment::getInstance()->getLocaleDir().c_str());
+  bindtextdomain(
+      openfluid::config::NLS_PACKAGE.c_str(),
+      openfluid::base::RuntimeEnvironment::getInstance()->getLocaleDir().c_str());
   bind_textdomain_codeset(openfluid::config::NLS_PACKAGE.c_str(), "UTF-8");
   textdomain(openfluid::config::NLS_PACKAGE.c_str());
 }
-
 
 // =====================================================================
 // =====================================================================
