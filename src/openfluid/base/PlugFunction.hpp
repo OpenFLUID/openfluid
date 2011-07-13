@@ -280,7 +280,7 @@
   Macro for declaration of a loop processing events in an event collection
 */
 #define DECLARE_EVENT_COLLECTION_LOOP \
-  std::list<openfluid::core::Event>::iterator _M_EvListiter;
+  openfluid::core::EventsList_t::iterator _M_EvListiter;
 
 /**
   Macro for the beginning of a loop processing an event list from an event collection
