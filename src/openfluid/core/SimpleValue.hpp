@@ -45,17 +45,39 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
-  @brief
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \file SimpleValue.hpp
+  \brief Header of ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#include <openfluid/core/ValueFactory.hpp>
+#ifndef __SIMPLEVALUE_HPP__
+#define __SIMPLEVALUE_HPP__
+
+#include <openfluid/core/Value.hpp>
+#include <openfluid/dllexport.hpp>
 
 
+namespace openfluid { namespace core {
+
+class DLLEXPORT SimpleValue : public Value
+{
+
+  public:
+
+    inline bool isSimple() const { return true; };
+
+    inline bool isCompound() const { return false; };
+};
 
 
+} }  // namespaces
 
+
+// =====================================================================
+// =====================================================================
+
+
+#endif /* __SIMPLEVALUE_HPP__ */

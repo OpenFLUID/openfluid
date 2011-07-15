@@ -47,57 +47,83 @@
 
 
 /**
-  @file
+  \file StringValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
+#ifndef __STRINGVALUE_HPP___
+#define __STRINGVALUE_HPP___
 
 
-#ifndef __VALUEFACTORY_H__
-#define __VALUEFACTORY_H__
-
+#include <openfluid/core/SimpleValue.hpp>
 #include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace core {
 
-/**
-  @file
-
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
-template <class T>
-class DLLEXPORT ValueFactory
+class DLLEXPORT StringValue : public SimpleValue
 {
-
   private:
 
-    T m_Multiplier;
+    std::string m_Value;
 
   public:
 
     /**
-      Constructor
-    */
-    ValueFactory(T Multiplier) { m_Multiplier = Multiplier;};
-
-    /**
       Default constructor
     */
-    ValueFactory() { m_Multiplier = 1;};
+    StringValue() : m_Value("") {};
 
+    /**
+      Copy constructor
+    */
+    StringValue(const StringValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
 
-    T create(T Input) {return (Input * m_Multiplier); };
+    StringValue(const std::string& POD) : SimpleValue(), m_Value(POD) {};
 
-    T getMin(T Val1, T Val2) { if (Val1 < Val2) return Val1; else return Val2; };
+    virtual ~StringValue() {};
 
-    T getMax(T Val1, T Val2) { if (Val1 > Val2) return Val1; else return Val2; };
+    inline Type getType() const { return Value::STRING; };
+
+    inline std::string& get() { return m_Value; };
+
+    inline const std::string& get() const { return m_Value; };
+
+    inline void set(const std::string& Val) { m_Value = Val; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+    bool toDouble(double& Val);
+
+    bool toDoubleValue(DoubleValue& Val);
+
+    bool toBoolean(bool& Val);
+
+    bool toBooleanValue(BooleanValue& Val);
+
+    bool toInteger(long& Val);
+
+    bool toIntegerValue(IntegerValue& Val);
+
+    bool toVectorValue(const std::string& Sep, VectorValue& Val);
+
+    bool toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val);
+
+    bool toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val);
+
+    bool toArrayValue(const std::string& ColSep, const std::string& RowSep, ArrayValue& Val);
+
+    bool toArrayValue(const std::string& Sep, const unsigned int& RowLength, ArrayValue& Val);
+
+    bool toMapValue(const std::string& Sep, MapValue& Val);
 
 };
 
-} } // namespace openfluid::core
+
+} }  // namespaces
 
 
-#endif
 
+#endif /* __STRINGVALUE_HPP___ */

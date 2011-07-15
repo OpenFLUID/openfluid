@@ -45,29 +45,61 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file MatrixValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __MATRIXVALUE_HPP__
+#define __MATRIXVALUE_HPP__
+
+#include <openfluid/core/CompoundValue.hpp>
+#include <openfluid/core/Matrix.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+namespace openfluid { namespace core {
 
-#endif /* __CORE_HPP___ */
+class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
+{
+
+  public:
+
+    /**
+      Default constructor
+    */
+    MatrixValue() : CompoundValue(), Matrix<double>() {};
+
+    /**
+      Copy constructor
+    */
+    MatrixValue(const MatrixValue& Val) : CompoundValue(static_cast<const CompoundValue&>(Val)), Matrix<double>(static_cast<const Matrix<double>& >(Val)) {};
+
+    /**
+      Constructor, creates a Matrix containing Size elements
+    */
+    MatrixValue(unsigned long Size1,unsigned long Size2) : CompoundValue(), Matrix<double>(Size1,Size2) {};
+
+    /**
+      Constructor, creates a Matrix containing Size elements, initialized with value InitValue
+    */
+    MatrixValue(unsigned long Size1, unsigned long Size2, double InitValue) : CompoundValue(), Matrix<double>(Size1,Size2,InitValue) {};
+
+
+    virtual ~MatrixValue() {};
+
+    inline Type getType() const { return Value::MATRIX; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+
+} }  // namespaces
+
+
+
+#endif /* __MATRIXVALUE_HPP__ */

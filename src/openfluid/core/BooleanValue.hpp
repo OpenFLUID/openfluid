@@ -47,27 +47,59 @@
 
 
 /**
-  @file
+  \file BooleanValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __BOOLEANVALUE_HPP___
+#define __BOOLEANVALUE_HPP___
+
+#include <openfluid/core/SimpleValue.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+namespace openfluid { namespace core {
 
-#endif /* __CORE_HPP___ */
+class DLLEXPORT BooleanValue : public SimpleValue
+{
+  private:
+
+    bool m_Value;
+
+  public:
+
+    /**
+      Default constructor
+    */
+    BooleanValue() : m_Value(false) {};
+
+    /**
+      Copy constructor
+    */
+    BooleanValue(const BooleanValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
+
+    BooleanValue(const bool& POD) : SimpleValue(), m_Value(POD) {};
+
+    virtual ~BooleanValue() {};
+
+    inline Type getType() const { return Value::BOOLEAN; };
+
+    inline bool& get() { return m_Value; };
+
+    inline const bool& get() const { return m_Value; };
+
+    inline void set(const bool& Val) { m_Value = Val; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+
+} }  // namespaces
+
+
+
+#endif /* __BOOLEANVALUE_HPP___ */

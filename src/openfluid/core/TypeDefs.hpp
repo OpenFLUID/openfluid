@@ -59,7 +59,7 @@
 #include <list>
 #include <map>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/Vector.hpp>
+#include <openfluid/core/VectorValue.hpp>
 
 
 namespace openfluid { namespace core {
@@ -132,7 +132,7 @@ typedef double ScalarValue;
  @endcode
 
  */
-typedef Vector<ScalarValue> VectorValue;
+//typedef Vector<ScalarValue> VectorValue;
 
 typedef std::string InputDataValue;
 

@@ -47,27 +47,65 @@
 
 
 /**
-  @file
+  \file VectorValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __VECTORVALUE_HPP___
+#define __VECTORVALUE_HPP___
 
-
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
+#include <openfluid/core/CompoundValue.hpp>
 #include <openfluid/core/Vector.hpp>
+#include <openfluid/dllexport.hpp>
 
-#endif /* __CORE_HPP___ */
+
+namespace openfluid { namespace core {
+
+class DLLEXPORT VectorValue : public CompoundValue, public Vector<double>
+{
+
+  public:
+
+    /**
+      Default constructor
+    */
+    VectorValue() : CompoundValue(), Vector<double>() {};
+
+    /**
+      Copy constructor
+    */
+    VectorValue(const VectorValue& Val) : CompoundValue(static_cast<const CompoundValue&>(Val)), Vector<double>(static_cast<const Vector<double>& >(Val)) {};
+
+    /**
+      Constructor, creates a vector containing Size elements
+    */
+    VectorValue(unsigned long Size) : CompoundValue(), Vector<double>(Size) {};
+
+    /**
+      Constructor, creates a vector containing Size elements, initialized with value InitValue
+    */
+    VectorValue(unsigned long Size, double InitValue) : CompoundValue(), Vector<double>(Size,InitValue) {};
+
+    /**
+      Constructor, creates a vector of size Size, containing Data
+    */
+    VectorValue(double* Data, unsigned long Size) : CompoundValue(), Vector<double>(Data,Size) {};
+
+
+    virtual ~VectorValue() {};
+
+    inline Type getType() const { return Value::VECTOR; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+
+} }  // namespaces
+
+
+
+#endif /* __VECTORVALUE_HPP___ */

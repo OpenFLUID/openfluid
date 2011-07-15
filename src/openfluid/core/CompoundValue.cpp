@@ -47,27 +47,42 @@
 
 
 /**
-  @file
+  \file CompoundValue.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#include <openfluid/core/CompoundValue.hpp>
+#include <boost/assign/list_of.hpp>
+
+namespace openfluid { namespace core {
+
+CompoundValue::SeparatorsByLevels_t CompoundValue::m_StreamSeparators = boost::assign::list_of(";")("|");
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+// =====================================================================
+// =====================================================================
 
-#endif /* __CORE_HPP___ */
+
+std::string CompoundValue::getStreamSeparator(const unsigned int& Level)
+{
+  if (Level > m_StreamSeparators.size()) return "";
+  return m_StreamSeparators[Level-1];
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CompoundValue::setStreamSeparator(const unsigned int& Level, const std::string& Sep)
+{
+  if (Level <= m_StreamSeparators.size()) m_StreamSeparators[Level-1] = Sep;
+}
+
+
+} }  // namespaces
+
+

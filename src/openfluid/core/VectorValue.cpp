@@ -47,27 +47,39 @@
 
 
 /**
-  @file
+  \file VectorValue.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#include <openfluid/core/VectorValue.hpp>
+
+namespace openfluid { namespace core {
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+void VectorValue::writeToStream(std::ostream& OutStm) const
+{
+  const unsigned int s = getSize();
 
-#endif /* __CORE_HPP___ */
+  if (s == 0)
+  {
+    OutStm << "empty";
+  }
+  else
+  {
+    for (unsigned int i = 0; i<s ;i++ )
+    {
+      OutStm << m_Data[i];
+      if (i != s-1) OutStm << m_StreamSeparators[0];
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} }  // namespaces

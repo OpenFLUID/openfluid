@@ -45,29 +45,61 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file ArrayValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __ARRAYVALUE_HPP__
+#define __ARRAYVALUE_HPP__
+
+#include <boost/multi_array.hpp>
+
+#include <openfluid/core/CompoundValue.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+namespace openfluid { namespace core {
 
-#endif /* __CORE_HPP___ */
+class DLLEXPORT ArrayValue : public CompoundValue
+{
+  public:
+    typedef boost::multi_array<Value*,2> Array_t;
+
+
+  private:
+
+    Array_t m_Value;
+
+  public:
+
+    /**
+      Default constructor
+    */
+    ArrayValue() : CompoundValue() {};
+
+    /**
+      Copy constructor
+    */
+    ArrayValue(const ArrayValue& Val) : CompoundValue(Val) {};
+
+    ArrayValue(const Array_t& Val) : CompoundValue() {};
+
+    virtual ~ArrayValue() {};
+
+    inline Type getType() const { return Value::MAP; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+} }  // namespaces
+
+// =====================================================================
+// =====================================================================
+
+
+#endif /* __ARRAYVALUE_HPP__ */

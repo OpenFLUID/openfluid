@@ -47,27 +47,53 @@
 
 
 /**
-  @file
+  \file NullValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __NULLVALUE_HPP___
+#define __NULLVALUE_HPP___
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
 
-#endif /* __CORE_HPP___ */
+
+#include <openfluid/core/Value.hpp>
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace core {
+
+class DLLEXPORT NullValue : public Value
+{
+  public:
+
+    /**
+      Default constructor
+    */
+    NullValue() {};
+
+    /**
+      Copy constructor
+    */
+    NullValue(const NullValue& Val): Value(Val) {};
+
+    virtual ~NullValue() {};
+
+    inline Type getType() const { return Value::NULLL; };
+
+    inline bool isSimple() const { return false; };
+
+    inline bool isCompound() const { return false; };
+
+    void writeToStream(std::ostream& OutStm) const;
+};
+
+
+} }  // namespaces
+
+
+
+#endif /* __NULLVALUE_HPP___ */

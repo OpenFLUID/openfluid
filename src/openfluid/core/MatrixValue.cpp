@@ -47,27 +47,49 @@
 
 
 /**
-  @file
+  \file MatrixValue.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
-
-
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+#include <openfluid/core/MatrixValue.hpp>
 
-#endif /* __CORE_HPP___ */
+namespace openfluid { namespace core {
+
+
+void MatrixValue::writeToStream(std::ostream& OutStm) const
+{
+  const unsigned long s = getSize();
+
+  if (s == 0)
+  {
+    OutStm << "empty";
+  }
+  else
+  {
+    const unsigned long s1 = getSize1();
+    const unsigned long s2 = getSize2();
+
+    for (unsigned int i = 0; i<s1 ;i++ )
+    {
+
+      for (unsigned int j = 0; j<s2 ;j++ )
+      {
+        OutStm << m_Data[i][j];
+        if (j != s2-1) OutStm << m_StreamSeparators[0];
+      }
+      if (i != s1-1) OutStm << m_StreamSeparators[1];
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+} }  // namespaces
+
+
+

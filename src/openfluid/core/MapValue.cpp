@@ -47,27 +47,27 @@
 
 
 /**
-  @file
+  \file MapValue.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+*/
+
+#include <openfluid/core/MapValue.hpp>
+
+namespace openfluid { namespace core {
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+void MapValue::writeToStream(std::ostream& OutStm) const
+{
+  OutStm << "empty";
+}
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+// =====================================================================
+// =====================================================================
 
-#endif /* __CORE_HPP___ */
+} }  // namespaces
+
+
+

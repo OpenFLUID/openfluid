@@ -47,27 +47,29 @@
 
 
 /**
-  @file
+  \file NullValue.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#include <openfluid/core/NullValue.hpp>
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+namespace openfluid { namespace core {
 
-#endif /* __CORE_HPP___ */
+
+void NullValue::writeToStream(std::ostream& OutStm) const
+{
+  OutStm << "null";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} }  // namespaces
+
+

@@ -47,27 +47,60 @@
 
 
 /**
-  @file
+  \file IntegerValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __INTEGERVALUE_HPP___
+#define __INTEGERVALUE_HPP___
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
 
-#endif /* __CORE_HPP___ */
+#include <openfluid/core/SimpleValue.hpp>
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace core {
+
+class DLLEXPORT IntegerValue : public SimpleValue
+{
+  private:
+
+    long m_Value;
+
+  public:
+
+    /**
+      Default constructor
+    */
+    IntegerValue() : m_Value(0) {};
+
+    /**
+      Copy constructor
+    */
+    IntegerValue(const IntegerValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
+
+    IntegerValue(const long& POD) : SimpleValue(), m_Value(POD) {};
+
+    virtual ~IntegerValue() {};
+
+    inline Type getType() const { return Value::INTEGER; };
+
+    inline long& get() { return m_Value; };
+
+    inline const long& get() const { return m_Value; };
+
+    inline void set(const long& Val) { m_Value = Val; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+
+} }  // namespaces
+
+
+#endif /* __INTEGERVALUE_HPP___ */

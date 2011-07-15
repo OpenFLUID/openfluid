@@ -45,29 +45,64 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file MapValue.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __MAPVALUE_HPP__
+#define __MAPVALUE_HPP__
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-//#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+#include <map>
 
-#endif /* __CORE_HPP___ */
+#include <openfluid/core/CompoundValue.hpp>
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace core {
+
+class DLLEXPORT MapValue : public CompoundValue
+{
+  public:
+    typedef std::map<std::string,Value*> Map_t;
+
+
+  private:
+
+    Map_t m_Value;
+
+  public:
+
+    /**
+      Default constructor
+    */
+    MapValue() : CompoundValue() {};
+
+    /**
+      Copy constructor
+    */
+    MapValue(const MapValue& Val) : CompoundValue(Val) {};
+
+    MapValue(const Map_t& Val) : CompoundValue() {};
+
+    virtual ~MapValue() {};
+
+    inline Type getType() const { return Value::MAP; };
+
+    void writeToStream(std::ostream& OutStm) const;
+
+};
+
+
+} }  // namespaces
+
+
+// =====================================================================
+// =====================================================================
+
+
+#endif /* __MAPVALUE_HPP__ */
