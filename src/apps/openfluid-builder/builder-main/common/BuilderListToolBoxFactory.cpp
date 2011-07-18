@@ -108,9 +108,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
   ToolBox->setDownCommandVisible(false);
   ToolBox->setEditCommandVisible(false);
   ToolBox->setAddCommandTooltipText(Glib::ustring::compose(_(
-      "Add a %1 unit to the unit"), RelationName));
+      "Add a \"%1\" unit to the unit"), RelationName));
   ToolBox->setRemoveCommandTooltipText(Glib::ustring::compose(_(
-      "Remove the selected %1 unit"), RelationName));
+      "Remove the selected \"%1\" unit"), RelationName));
   return ToolBox;
 }
 

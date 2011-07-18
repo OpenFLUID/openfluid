@@ -143,8 +143,8 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U);
 
   BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class A",100));
   BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class A");
@@ -153,8 +153,8 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
   BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
   BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),100);
 
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
+  openfluid::core::Unit* U2 = new openfluid::core::Unit("class B",200,3, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U2);
 
   BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class B",200));
   BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
@@ -163,8 +163,8 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
   BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
   BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),200);
 
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U3);
+  openfluid::core::Unit* U3 = new openfluid::core::Unit("class B",300,4, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U3);
 
   BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class B",300));
   BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
@@ -208,12 +208,12 @@ BOOST_AUTO_TEST_CASE(test_selectUnit)
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U3);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U);
+  openfluid::core::Unit* U2 = new openfluid::core::Unit("class B",200,3, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U2);
+  openfluid::core::Unit* U3 = new openfluid::core::Unit("class B",300,4, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U3);
 
   // select U3
   mp_View->selectUnitWithIndex(1);
@@ -243,12 +243,12 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U3);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U);
+  openfluid::core::Unit* U2 = new openfluid::core::Unit("class B",200,3, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U2);
+  openfluid::core::Unit* U3 = new openfluid::core::Unit("class B",300,4, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U3);
 
   // select U2
   mp_View->selectClassWithIndex(1);
@@ -288,33 +288,6 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
   delete EngProject;
 }
 
-BOOST_AUTO_TEST_CASE(test_alterUnit)
-{
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
-
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U3);
-
-  // select U2
-  mp_View->selectClassWithIndex(1);
-  mp_View->selectUnitWithIndex(0);
-
-  EngProject->getCoreRepository().getUnit("class B",200)->setProcessOrder(30);
-
-  mp_Model->alterSelectedUnit();
-
-  int DisplayedPcsOrder = 0;
-  mp_View->getSelectedUnitIter()->get_value(1,DisplayedPcsOrder);
-  BOOST_CHECK_EQUAL(DisplayedPcsOrder,30);
-
-  delete EngProject;
-}
 // =====================================================================
 // =====================================================================
 

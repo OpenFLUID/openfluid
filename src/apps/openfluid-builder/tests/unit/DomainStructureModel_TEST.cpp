@@ -193,8 +193,8 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::DESCRIPTOR);
+  mp_Model->addUnit(U);
 
   BOOST_CHECK_EQUAL(mp_Model->isEmpty(),false);
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 1);
@@ -219,12 +219,12 @@ BOOST_AUTO_TEST_CASE(test_addUnits)
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
   // addUnits
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U3);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U);
+  openfluid::core::Unit* U2 = new openfluid::core::Unit("class B",200,3, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U2);
+  openfluid::core::Unit* U3 = new openfluid::core::Unit("class B",300,4, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U3);
 
   openfluid::core::UnitsList_t ListA = *(mp_Model->getUnitListByClass()["class A"].getList());
   openfluid::core::UnitsList_t ListB = *(mp_Model->getUnitListByClass()["class B"].getList());
@@ -259,12 +259,12 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
   // addUnits
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class A",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U);
+  openfluid::core::Unit* U2 = new openfluid::core::Unit("class A",200,3, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U2);
 
-  mp_Model->deleteUnit(&U);
+  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("class A",100));
 
   openfluid::core::UnitsList_t ListA = *(mp_Model->getUnitListByClass()["class A"].getList());
   openfluid::core::UnitsList_t::iterator itA = ListA.begin();
@@ -290,13 +290,13 @@ BOOST_AUTO_TEST_CASE(test_deleteLastUnitOfClass)
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
   // addUnits
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class A",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
+  openfluid::core::Unit* U = new openfluid::core::Unit("class A",100,2, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U);
+  openfluid::core::Unit* U2 = new openfluid::core::Unit("class A",200,3, openfluid::core::Unit::SIMULATION);
+  mp_Model->addUnit(U2);
 
-  mp_Model->deleteUnit(&U);
-  mp_Model->deleteUnit(&U2);
+  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("class A",100));
+  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("class A",200));
 
   BOOST_CHECK_EQUAL(mp_Model->isEmpty(),true);
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(), true);

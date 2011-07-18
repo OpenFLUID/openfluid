@@ -46,14 +46,14 @@
  */
 
 /**
- \file DomainUnitCreationDialog.hpp
+ \file DomainUnitAddEditDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DOMAINUNITCREATIONDIALOG_HPP__
-#define __DOMAINUNITCREATIONDIALOG_HPP__
+#ifndef __DOMAINUNITADDEDITDIALOG_HPP__
+#define __DOMAINUNITADDEDITDIALOG_HPP__
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
@@ -66,7 +66,15 @@
 
 #include <set>
 
-class DomainUnitCreationDialog
+#include "DomainUnitRelationWidget.hpp"
+
+class DomainUnitRelationAddDialog;
+
+// =====================================================================
+// =====================================================================
+
+
+class DomainUnitAddEditDialog
 {
   private:
 
@@ -78,6 +86,10 @@ class DomainUnitCreationDialog
 
     Gtk::Label* mp_InfoBarLabel;
 
+    Gtk::Label* mp_ClassLabel;
+
+    Gtk::Label* mp_IdLabel;
+
     Gtk::ComboBoxEntryText* mp_ClassComboEntryText;
 
     Gtk::SpinButton* mp_IdSpin;
@@ -88,19 +100,114 @@ class DomainUnitCreationDialog
 
     std::set<int> m_IDs;
 
+    DomainUnitRelationAddDialog& m_AddDialog;
+
+    std::set<std::string> m_Classes;
+
+  protected:
+
+    openfluid::core::Unit* mp_Unit;
+
+    DomainUnitRelationWidget* mp_FromWidget;
+    DomainUnitRelationWidget* mp_ToWidget;
+    DomainUnitRelationWidget* mp_ParentWidget;
+    DomainUnitRelationWidget* mp_ChildWidget;
+
+    void initEditionMode();
+
+    void initCreationMode(std::string SelectedClass);
+
+    void clearAllRelations();
+
+    void createAllRelationsFromRelationWidgets();
+
     void onClassChanged();
 
     void onIdChanged();
 
   public:
 
-    DomainUnitCreationDialog();
+        DomainUnitAddEditDialog(
+            DomainUnitRelationAddDialog& UnitRelationAddDialog);
 
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 
     void update();
 
-    openfluid::core::Unit* show(std::string SelectedClass="");
+    openfluid::core::Unit* show(std::string SelectedClass = "",
+        openfluid::core::Unit* Unit = 0);
+
 };
 
-#endif /* __DOMAINUNITCREATIONDIALOG_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
+{
+  public:
+
+    DomainUnitAddEditDialogSub(
+        DomainUnitRelationAddDialog& UnitRelationAddDialog) :
+      DomainUnitAddEditDialog(UnitRelationAddDialog)
+    {
+    }
+
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos)
+    {
+      DomainUnitAddEditDialog::setEngineRequirements(CoreRepos);
+    }
+
+    void initEditionMode()
+    {
+      DomainUnitAddEditDialog::initEditionMode();
+    }
+
+    void initCreationMode(std::string SelectedClass)
+    {
+      DomainUnitAddEditDialog::initCreationMode(SelectedClass);
+    }
+
+    void clearAllRelations()
+    {
+      DomainUnitAddEditDialog::clearAllRelations();
+    }
+
+    void createAllRelations()
+    {
+      DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets();
+    }
+
+    void setUnit(openfluid::core::Unit* Unit)
+    {
+      mp_Unit = Unit;
+    }
+
+    openfluid::core::Unit* getUnit()
+    {
+      return mp_Unit;
+    }
+
+    DomainUnitRelationWidgetSub* getFromWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_FromWidget;
+    }
+
+    DomainUnitRelationWidgetSub* getToWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_ToWidget;
+    }
+
+    DomainUnitRelationWidgetSub* getParentWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_ParentWidget;
+    }
+
+    DomainUnitRelationWidgetSub* getChildWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_ChildWidget;
+    }
+
+};
+
+#endif /* __DOMAINUNITADDEDITDIALOG_HPP__ */

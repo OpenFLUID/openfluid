@@ -131,15 +131,6 @@ sigc::signal<void, openfluid::core::Unit&> DomainStructureModelImpl::signal_From
 // =====================================================================
 
 
-sigc::signal<void, int> DomainStructureModelImpl::signal_FromAppUnitAltered()
-{
-  return m_signal_FromAppUnitAltered;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 sigc::signal<void> DomainStructureModelImpl::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
@@ -154,7 +145,6 @@ void DomainStructureModelImpl::setEngineRequirements(
 {
   mp_CoreRepos = &CoreRepos;
   update();
-  //  m_signal_FromAppDomainChanged.emit();
 }
 
 // =====================================================================
@@ -200,6 +190,7 @@ void DomainStructureModelImpl::addUnit(openfluid::core::Unit* Unit)
     mp_CoreRepos->addUnit(*Unit);
     openfluid::core::Unit* createdUnit = mp_CoreRepos->getUnit(
         Unit->getClass(), Unit->getID());
+    delete Unit; // Corerepos.addUnit create new Unit ptr
     m_signal_FromAppUnitAdded.emit(*createdUnit);
   }
 }
@@ -214,15 +205,6 @@ void DomainStructureModelImpl::deleteSelectedUnit()
   {
     deleteUnit(mp_SelectedUnit);
   }
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainStructureModelImpl::alterSelectedUnit()
-{
-  m_signal_FromAppUnitAltered.emit(mp_SelectedUnit->getProcessOrder());
 }
 
 // =====================================================================
@@ -282,7 +264,6 @@ openfluid::core::CoreRepository* DomainStructureModelSub::getCoreRepos()
 {
   return DomainStructureModelImpl::getCoreRepos();
 }
-
 
 // =====================================================================
 // =====================================================================

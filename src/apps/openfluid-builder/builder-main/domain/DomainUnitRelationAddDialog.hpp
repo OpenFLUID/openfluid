@@ -46,62 +46,63 @@
  */
 
 /**
- \file DomainUnitRelationTreeView.hpp
+ \file DomainUnitRelationAddDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DOMAINUNITRELATIONTREEVIEW_HPP__
-#define __DOMAINUNITRELATIONTREEVIEW_HPP__
+#ifndef __DOMAINUNITRELATIONADDDIALOG_HPP__
+#define __DOMAINUNITRELATIONADDDIALOG_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
 
-#include "DomainUnitRelationColumns.hpp"
+#include <openfluid/core.hpp>
 
-class DomainUnitRelationTreeView: public Gtk::TreeView
+#include <set>
+
+class DomainUnitRelationAddDialog
 {
   private:
-    DomainUnitRelationColumns m_Columns;
-    std::string m_RelationName;
-  public:
-    DomainUnitRelationTreeView(std::string RelationName):
-      m_RelationName(RelationName)
-    {
-      append_column("Class", m_Columns.m_Class);
-      append_column("ID", m_Columns.m_Id);
-      get_column(0)->set_sort_column(m_Columns.m_Class);
-      get_column(1)->set_sort_column(m_Columns.m_Id);
-    }
-    Gtk::TreeIter getSelectedUnitIter()
-    {
-      return get_selection()->get_selected();
-    }
-    std::pair<std::string,int> getSelectedUnitInfo()
-    {
-      std::string SelectedClass = "";
-      int SelectedId = 0;
 
-      Gtk::TreeIter Iter = getSelectedUnitIter();
-      if(Iter)
-      {
-        SelectedClass = Iter->get_value(m_Columns.m_Class);
-        SelectedId = Iter->get_value(m_Columns.m_Id);
-      }
-      return std::make_pair(SelectedClass,SelectedId);
-    }
-    std::string getRelationName()
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::ScrolledWindow* mp_ScrolledWin;
+
+    Gtk::TreeView* mp_TreeView;
+
+    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+
+    class DomainUnitRelationIdsColumns: public Gtk::TreeModel::ColumnRecord
     {
-      return m_RelationName;
-    }
-    std::pair<std::string, std::pair<std::string, int> > getSelectedRelation()
-    {
-      return std::make_pair(m_RelationName,getSelectedUnitInfo());
-    }
-    std::pair<std::string,Gtk::TreeIter> getSelectedRelationIter()
-    {
-      return std::make_pair(m_RelationName,getSelectedUnitIter());
-    }
+      public:
+        DomainUnitRelationIdsColumns()
+        {
+          add(m_Text);
+          add(m_Class);
+          add(m_Id);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Text;
+        Gtk::TreeModelColumn<std::string> m_Class;
+        Gtk::TreeModelColumn<int> m_Id;
+    };
+
+    DomainUnitRelationIdsColumns m_Columns;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+  public:
+
+    DomainUnitRelationAddDialog();
+
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+
+    void update(std::set<std::string> ClassNames);
+
+    std::list<openfluid::core::Unit*> show();
 };
 
-#endif /* __DOMAINUNITRELATIONTREEVIEW_HPP__ */
+#endif /* __DOMAINUNITRELATIONADDDIALOG_HPP__ */

@@ -59,8 +59,8 @@
 
 class DomainStructureComponent;
 
-class DomainUnitEditionComponent;
-class DomainUnitCreationDialog;
+class DomainUnitRelationAddDialog;
+class DomainUnitAddEditDialog;
 
 class DomainStructureCoordinator;
 class BuilderListToolBox;
@@ -73,8 +73,8 @@ class DomainStructureModule: public ProjectWorkspaceModule
   protected:
 
     DomainStructureComponent* mp_DomainStructureMVP;
-    DomainUnitEditionComponent* mp_DomainUnitEditionMVP;
-    DomainUnitCreationDialog* mp_DomainUnitCreationDialog;
+    DomainUnitRelationAddDialog* mp_DomainUnitRelationAddDialog;
+    DomainUnitAddEditDialog* mp_DomainUnitAddEditDialog;
 
     BuilderListToolBox* mp_StructureListToolBox;
     DomainStructureCoordinator* mp_Coordinator;

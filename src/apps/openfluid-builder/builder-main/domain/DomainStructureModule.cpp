@@ -55,8 +55,8 @@
 #include "DomainStructureModule.hpp"
 
 #include "DomainStructureComponent.hpp"
-#include "DomainUnitEditionComponent.hpp"
-#include "DomainUnitCreationDialog.hpp"
+#include "DomainUnitRelationAddDialog.hpp"
+#include "DomainUnitAddEditDialog.hpp"
 
 #include "DomainStructureCoordinator.hpp"
 #include "BuilderListToolBoxFactory.hpp"
@@ -73,15 +73,14 @@ DomainStructureModule::DomainStructureModule()
   mp_MainPanel = 0;
 
   mp_DomainStructureMVP = new DomainStructureComponent();
-  mp_DomainUnitEditionMVP = new DomainUnitEditionComponent();
-  mp_DomainUnitCreationDialog = new DomainUnitCreationDialog();
+  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog();
+  mp_DomainUnitAddEditDialog = new DomainUnitAddEditDialog(*mp_DomainUnitRelationAddDialog);
 
 
   mp_StructureListToolBox = BuilderListToolBoxFactory::createDomainStructureToolBox();
 
   mp_Coordinator = new DomainStructureCoordinator(*mp_DomainStructureMVP->getModel(),
-      *mp_DomainUnitEditionMVP->getModel(),
-      *mp_DomainUnitCreationDialog,
+      *mp_DomainUnitAddEditDialog,
       *mp_StructureListToolBox);
 
   mp_Coordinator->signal_DomainChanged().connect(sigc::mem_fun(*this,
@@ -95,8 +94,8 @@ DomainStructureModule::DomainStructureModule()
 DomainStructureModule::~DomainStructureModule()
 {
   delete mp_Coordinator;
-  delete mp_DomainUnitEditionMVP;
-  delete mp_DomainUnitCreationDialog;
+  delete mp_DomainUnitAddEditDialog;
+  delete mp_DomainUnitRelationAddDialog;
   delete mp_StructureListToolBox;
   delete mp_DomainStructureMVP;
 }

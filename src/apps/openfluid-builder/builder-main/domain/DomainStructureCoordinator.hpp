@@ -60,8 +60,7 @@
 #include <openfluid/machine.hpp>
 
 class DomainStructureModel;
-class DomainUnitEditionModel;
-class DomainUnitCreationDialog;
+class DomainUnitAddEditDialog;
 class BuilderListToolBox;
 
 class DomainStructureCoordinator: public sigc::trackable
@@ -72,9 +71,7 @@ class DomainStructureCoordinator: public sigc::trackable
 
     DomainStructureModel& m_StructureModel;
 
-    DomainUnitEditionModel& m_UnitEditionModel;
-
-    DomainUnitCreationDialog& m_UnitCreationDialog;
+    DomainUnitAddEditDialog& m_UnitAddEditDialog;
 
     BuilderListToolBox& m_StructureListToolBox;
 
@@ -91,8 +88,7 @@ class DomainStructureCoordinator: public sigc::trackable
   public:
 
     DomainStructureCoordinator(DomainStructureModel& StructureModel,
-        DomainUnitEditionModel& UnitEditionModel,
-        DomainUnitCreationDialog& UnitCreationDialog,
+        DomainUnitAddEditDialog& UnitAddEditDialog,
         BuilderListToolBox& StructureListToolBox);
 
     sigc::signal<void> signal_DomainChanged();

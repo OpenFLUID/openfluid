@@ -46,77 +46,124 @@
  */
 
 /**
- \file DomainStructurePresenter.cpp
- \brief Implements ...
+ \file DomainUnitRelationWidget.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainStructurePresenter.hpp"
+#ifndef __DOMAINUNITRELATIONWIDGET_HPP__
+#define __DOMAINUNITRELATIONWIDGET_HPP__
 
-#include "DomainStructureModel.hpp"
-#include "DomainStructureAdapter.hpp"
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treeviewcolumn.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/scrolledwindow.h>
+
+#include <openfluid/core/Unit.hpp>
+
+class BuilderListToolBox;
+class DomainUnitRelationAddDialog;
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainStructurePresenter::whenDomainChanged()
+class DomainUnitRelationWidget
 {
-  m_Adapter.setDomainStructure(m_Model.getUnitListByClass());
-}
+  private:
+
+    class DomainUnitRelationColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DomainUnitRelationColumns()
+        {
+          add(m_Unit);
+          add(m_Class);
+          add(m_Id);
+        }
+        Gtk::TreeModelColumn<openfluid::core::Unit*> m_Unit;
+        Gtk::TreeModelColumn<std::string> m_Class;
+        Gtk::TreeModelColumn<int> m_Id;
+    };
+
+    DomainUnitRelationColumns m_Columns;
+
+    BuilderListToolBox* mp_ToolBox;
+
+    Gtk::ScrolledWindow* mp_ScrolledWin;
+
+    Gtk::Expander* mp_MainExpander;
+
+    DomainUnitRelationAddDialog* mp_AddDialog;
+
+    bool alreadyExistsUnit(openfluid::core::Unit* Unit);
+
+    void updateToolBox();
+
+    void updateExpander();
+
+    void onAddClicked();
+
+  protected:
+
+    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
+
+    Gtk::TreeView* mp_TreeView;
+
+    void onRemoveClicked();
+
+    void addUnits(std::list<openfluid::core::Unit*> UnitsToAdd);
+
+  public:
+
+    DomainUnitRelationWidget(Glib::ustring RelationName,
+        DomainUnitRelationAddDialog& AddDialog);
+
+    Gtk::Widget* asWidget();
+
+    void clearUnits();
+
+    void appendUnits(std::list<openfluid::core::Unit*> Units);
+
+    std::list<openfluid::core::Unit*> getUnits();
+};
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainStructurePresenter::whenUnitDeleted()
+class DomainUnitRelationWidgetSub: DomainUnitRelationWidget
 {
-  m_Adapter.deleteCurrentUnit();
-}
+  public:
 
-// =====================================================================
-// =====================================================================
+    DomainUnitRelationWidgetSub();
 
+    void onRemoveClicked()
+    {
+      DomainUnitRelationWidget::onRemoveClicked();
+    }
 
-void DomainStructurePresenter::whenUnitAdded(openfluid::core::Unit& Unit)
-{
-  m_Adapter.addUnit(Unit);
-}
+    void addUnits(std::list<openfluid::core::Unit*> Units)
+    {
+      DomainUnitRelationWidget::addUnits(Units);
+    }
 
-// =====================================================================
-// =====================================================================
+    std::list<openfluid::core::Unit*> getUnits()
+    {
+      return DomainUnitRelationWidget::getUnits();
+    }
 
+    Glib::RefPtr<Gtk::ListStore> getTreeModel()
+    {
+      return mref_TreeModel;
+    }
 
-void DomainStructurePresenter::whenUnitAltered(int NewProcessOrder)
-{
-  m_Adapter.setSelectedUnitNewPcsOrder(NewProcessOrder);
-}
+    Gtk::TreeView* getTreeView()
+    {
+      return mp_TreeView;
+    }
 
-// =====================================================================
-// =====================================================================
-
-
-void DomainStructurePresenter::whenSelectionChanged()
-{
-  m_Model.setCurrentSelectionByUser(m_Adapter.getSelectedUnitInfos());
-}
-
-// =====================================================================
-// =====================================================================
-
-
-DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
-    DomainStructureAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
-{
-  m_Model.signal_FromAppDomainChanged().connect(sigc::mem_fun(*this,
-      &DomainStructurePresenter::whenDomainChanged));
-  m_Model.signal_FromAppUnitDeleted().connect(sigc::mem_fun(*this,
-      &DomainStructurePresenter::whenUnitDeleted));
-  m_Model.signal_FromAppUnitAdded().connect(sigc::mem_fun(*this,
-      &DomainStructurePresenter::whenUnitAdded));
-
-  m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
-      &DomainStructurePresenter::whenSelectionChanged));
-}
+};
+#endif /* __DOMAINUNITRELATIONWIDGET_HPP__ */

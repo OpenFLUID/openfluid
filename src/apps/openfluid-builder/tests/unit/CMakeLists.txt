@@ -132,13 +132,9 @@ ADD_BUILDER_UNITTEST(builder-unittest-DomainStructurePresenter
                      builder_unittest_DomainStructurePresenter_TEST
                      DomainStructurePresenter_TEST.cpp)             
 
-ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitEditionModel
-                     builder_unittest_DomainUnitEditionModel_TEST
-                     DomainUnitEditionModel_TEST.cpp)
-                     
-ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitEditionPresenter
-                     builder_unittest_DomainUnitEditionPresenter_TEST
-                     DomainUnitEditionPresenter_TEST.cpp)
+ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitAddEditDialog
+                     builder_unittest_DomainUnitAddEditDialog_TEST
+                     DomainUnitAddEditDialog_TEST.cpp)
 
 ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataModel
                      builder_unittest_DomainIDataModel_TEST

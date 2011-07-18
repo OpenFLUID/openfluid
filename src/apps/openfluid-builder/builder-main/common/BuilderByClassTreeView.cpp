@@ -166,6 +166,7 @@ void BuilderByClassTreeView::requestClassSelection(Gtk::TreeIter Iter)
   if (Iter)
   {
     mp_ClassesView->get_selection()->select(Iter);
+    mp_ClassesView->scroll_to_row(mp_ClassesView->get_model()->get_path(Iter));
   }
 }
 
@@ -176,7 +177,10 @@ void BuilderByClassTreeView::requestClassSelection(Gtk::TreeIter Iter)
 void BuilderByClassTreeView::requestUnitSelection(Gtk::TreeIter Iter)
 {
   if (Iter)
+  {
     mp_UnitsView->get_selection()->select(Iter);
+    mp_UnitsView->scroll_to_row(mp_UnitsView->get_model()->get_path(Iter));
+  }
 }
 
 // =====================================================================
