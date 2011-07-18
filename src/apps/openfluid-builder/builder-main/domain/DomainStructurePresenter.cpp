@@ -106,6 +106,15 @@ void DomainStructurePresenter::whenSelectionChanged()
 // =====================================================================
 
 
+void DomainStructurePresenter::whenActivated()
+{
+  m_Model.signal_Activated().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
     DomainStructureAdapter& Adapter) :
   m_Model(Model), m_Adapter(Adapter)
@@ -119,4 +128,7 @@ DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
 
   m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &DomainStructurePresenter::whenSelectionChanged));
+
+  m_Adapter.signal_Activated().connect(sigc::mem_fun(*this,
+      &DomainStructurePresenter::whenActivated));
 }

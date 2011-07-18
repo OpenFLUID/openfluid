@@ -75,12 +75,24 @@ void SimulOutFilesAdapter::whenFileSelectionChanged()
 // =====================================================================
 
 
+void SimulOutFilesAdapter::whenActivated()
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutFilesAdapter::SimulOutFilesAdapter(SimulOutFilesAdapterModel& Model,
     SimulOutFilesView& View) :
   m_Model(Model), m_View(View), m_HasToUpdate(true)
 {
   m_View.signal_FileSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutFilesAdapter::whenFileSelectionChanged));
+
+  m_View.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutFilesAdapter::whenActivated));
 }
 
 // =====================================================================
@@ -90,6 +102,15 @@ SimulOutFilesAdapter::SimulOutFilesAdapter(SimulOutFilesAdapterModel& Model,
 sigc::signal<void> SimulOutFilesAdapter::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulOutFilesAdapter::signal_Activated()
+{
+  return m_signal_Activated;
 }
 
 // =====================================================================

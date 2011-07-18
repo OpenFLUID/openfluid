@@ -78,6 +78,16 @@ void BuilderByClassTreeView::onUnitsViewSelectionChanged()
 // =====================================================================
 
 
+void BuilderByClassTreeView::onRowActivated(
+    const Gtk::TreeModel::Path& /*Path*/, Gtk::TreeViewColumn* /*Column*/)
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::setTreeModel(
     Glib::RefPtr<Gtk::TreeModel> TreeModel)
 {
@@ -100,6 +110,8 @@ BuilderByClassTreeView::BuilderByClassTreeView()
   mp_UnitsView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &BuilderByClassTreeView::onUnitsViewSelectionChanged));
   mp_UnitsView->set_visible(true);
+  mp_UnitsView->signal_row_activated().connect(sigc::mem_fun(*this,
+      &BuilderByClassTreeView::onRowActivated));
 
   mp_ClassesWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_ClassesWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -135,6 +147,15 @@ sigc::signal<void> BuilderByClassTreeView::signal_ClassSelectionChanged()
 sigc::signal<void> BuilderByClassTreeView::signal_UnitSelectionChanged()
 {
   return m_signal_UnitSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> BuilderByClassTreeView::signal_Activated()
+{
+  return m_signal_Activated;
 }
 
 // =====================================================================

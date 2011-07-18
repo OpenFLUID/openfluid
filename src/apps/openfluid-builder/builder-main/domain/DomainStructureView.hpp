@@ -75,6 +75,8 @@ class DomainStructureView
 
     virtual sigc::signal<void> signal_UnitSelectionChanged() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual void
     setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel) = 0;
 
@@ -109,6 +111,8 @@ class DomainStructureViewImpl: public BuilderByClassTreeView,
     sigc::signal<void> signal_ClassSelectionChanged();
 
     sigc::signal<void> signal_UnitSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel);
 

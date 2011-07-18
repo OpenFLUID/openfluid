@@ -80,6 +80,8 @@ class DomainStructurePresenter: public sigc::trackable
 
     void whenSelectionChanged();
 
+    void whenActivated();
+
   public:
 
     DomainStructurePresenter(DomainStructureModel& Model,

@@ -60,6 +60,8 @@ class SimulOutSetsView
 
     virtual sigc::signal<void> signal_SetSelectionChanged() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
 
     virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
@@ -76,9 +78,14 @@ class SimulOutSetsViewImpl: public SimulOutSetsView
 
     sigc::signal<void> m_signal_SetSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     SimulOutSetsColumns m_Columns;
 
     void onSelectionChanged();
+
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+        Gtk::TreeViewColumn* Column);
 
   protected:
 
@@ -91,6 +98,8 @@ class SimulOutSetsViewImpl: public SimulOutSetsView
     SimulOutSetsViewImpl();
 
     sigc::signal<void> signal_SetSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
 

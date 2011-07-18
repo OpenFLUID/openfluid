@@ -65,6 +65,8 @@ class SimulOutSetsModel
 
     virtual sigc::signal<void> signal_FromUserSelectionChanged() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual void setEngineRequirements(
         openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,
@@ -105,6 +107,8 @@ class SimulOutSetsModelImpl: public SimulOutSetsModel
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     std::string m_SelectedSetName;
 
     openfluid::base::OutputDescriptor* mp_OutDesc;
@@ -122,6 +126,8 @@ class SimulOutSetsModelImpl: public SimulOutSetsModel
     sigc::signal<void> signal_FromAppDescriptorChanged();
 
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,

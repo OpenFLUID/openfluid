@@ -79,6 +79,8 @@ SimulOutCoordinator::SimulOutCoordinator(SimulOutFilesModel& OutFilesModel,
 {
   m_OutFilesModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(
       *this, &SimulOutCoordinator::whenFromUserFileFormatSelectionChanged));
+  m_OutFilesModel.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutCoordinator::whenEditFileFormatAsked));
   m_OutFilesListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &SimulOutCoordinator::whenAddFileFormatAsked));
   m_OutFilesListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(
@@ -88,6 +90,8 @@ SimulOutCoordinator::SimulOutCoordinator(SimulOutFilesModel& OutFilesModel,
 
   m_OutSetsModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutCoordinator::whenFromUserSetSelectionChanged));
+  m_OutSetsModel.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutCoordinator::whenEditSetAsked));
   m_OutSetsListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &SimulOutCoordinator::whenAddSetAsked));
   m_OutSetsListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,

@@ -71,6 +71,8 @@ class SimulOutFilesView
 
     virtual sigc::signal<void> signal_FileSelectionChanged() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
 
     virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
@@ -91,9 +93,14 @@ class SimulOutFilesViewImpl: public SimulOutFilesView
 
     sigc::signal<void> m_signal_FileSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     SimulOutFilesColumns m_Columns;
 
     void onSelectionChanged();
+
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+        Gtk::TreeViewColumn* Column);
 
   protected:
 
@@ -106,6 +113,8 @@ class SimulOutFilesViewImpl: public SimulOutFilesView
     SimulOutFilesViewImpl();
 
     sigc::signal<void> signal_FileSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
 

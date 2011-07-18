@@ -140,6 +140,15 @@ sigc::signal<void> DomainStructureModelImpl::signal_FromUserSelectionChanged()
 // =====================================================================
 
 
+sigc::signal<void> DomainStructureModelImpl::signal_Activated()
+{
+  return m_signal_Activated;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructureModelImpl::setEngineRequirements(
     openfluid::core::CoreRepository& CoreRepos)
 {

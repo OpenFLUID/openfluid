@@ -71,6 +71,8 @@ class DomainStructureModel
 
     virtual sigc::signal<void> signal_FromAppUnitDeleted() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual sigc::signal<void, openfluid::core::Unit&>
     signal_FromAppUnitAdded() = 0;
 
@@ -113,6 +115,8 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     sigc::signal<void> m_signal_FromAppUnitDeleted;
 
+    sigc::signal<void> m_signal_Activated;
+
     sigc::signal<void, openfluid::core::Unit&> m_signal_FromAppUnitAdded;
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
@@ -140,6 +144,8 @@ class DomainStructureModelImpl: public DomainStructureModel
     sigc::signal<void, openfluid::core::Unit&> signal_FromAppUnitAdded();
 
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 

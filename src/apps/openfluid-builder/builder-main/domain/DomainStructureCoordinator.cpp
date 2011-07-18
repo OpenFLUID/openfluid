@@ -151,6 +151,8 @@ DomainStructureCoordinator::DomainStructureCoordinator(
 
   m_StructureModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(
       *this, &DomainStructureCoordinator::whenStructureSelectionChanged));
+  m_StructureModel.signal_Activated().connect(sigc::mem_fun(
+        *this, &DomainStructureCoordinator::whenEditUnitAsked));
 }
 
 // =====================================================================

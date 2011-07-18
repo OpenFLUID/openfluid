@@ -71,6 +71,16 @@ void SimulOutSetsViewImpl::onSelectionChanged()
 // =====================================================================
 
 
+void SimulOutSetsViewImpl::onRowActivated(const Gtk::TreeModel::Path& /*Path*/,
+    Gtk::TreeViewColumn* /*Column*/)
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
@@ -84,6 +94,8 @@ SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutSetsViewImpl::onSelectionChanged));
+  mp_TreeView->signal_row_activated().connect(sigc::mem_fun(*this,
+      &SimulOutSetsViewImpl::onRowActivated));
 
   mp_TreeView->set_visible(true);
 
@@ -107,11 +119,19 @@ sigc::signal<void> SimulOutSetsViewImpl::signal_SetSelectionChanged()
 // =====================================================================
 
 
+sigc::signal<void> SimulOutSetsViewImpl::signal_Activated()
+{
+  return m_signal_Activated;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 {
   mp_TreeView->set_model(Model);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -121,7 +141,6 @@ void SimulOutSetsViewImpl::setSelectedRow(Gtk::TreeRow Row)
 {
   mp_TreeView->get_selection()->select(Row);
 }
-
 
 // =====================================================================
 // =====================================================================
