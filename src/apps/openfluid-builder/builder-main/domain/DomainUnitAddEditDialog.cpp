@@ -134,8 +134,7 @@ DomainUnitAddEditDialog::DomainUnitAddEditDialog(
   mp_Dialog->get_vbox()->pack_start(*mp_InfoTable, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*mp_FromWidget->asWidget(),
       Gtk::PACK_SHRINK);
-  mp_Dialog->get_vbox()->pack_start(*mp_ToWidget->asWidget(),
-      Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*mp_ToWidget->asWidget(), Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*mp_ParentWidget->asWidget(),
       Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*mp_ChildWidget->asWidget(),
@@ -237,8 +236,8 @@ void DomainUnitAddEditDialog::update()
 // =====================================================================
 
 
-openfluid::core::Unit* DomainUnitAddEditDialog::show(
-    std::string SelectedClass, openfluid::core::Unit* Unit)
+openfluid::core::Unit* DomainUnitAddEditDialog::show(std::string SelectedClass,
+    openfluid::core::Unit* Unit)
 {
   mp_Unit = Unit;
 
@@ -251,19 +250,14 @@ openfluid::core::Unit* DomainUnitAddEditDialog::show(
   {
     mp_PcsOrderSpin->update();
 
-    unsigned int PcsOrder =
-        static_cast<unsigned int> (mp_PcsOrderSpin->get_value_as_int());
-
     if (mp_Unit)
     {
-      mp_Unit->setProcessOrder(PcsOrder);
+      mp_Unit->setProcessOrder(
+          static_cast<unsigned int> (mp_PcsOrderSpin->get_value_as_int()));
     }
     else
     {
-      mp_Unit = new openfluid::core::Unit(
-          mp_ClassComboEntryText->get_entry()->get_text(),
-          mp_IdSpin->get_value_as_int(), PcsOrder,
-          openfluid::core::Unit::DESCRIPTOR);
+      createUnit();
     }
 
     clearAllRelations();
@@ -357,6 +351,25 @@ void DomainUnitAddEditDialog::initCreationMode(std::string SelectedClass)
 // =====================================================================
 
 
+void DomainUnitAddEditDialog::createUnit()
+{
+  std::string ClassName = mp_ClassComboEntryText->get_entry()->get_text();
+  int ID = mp_IdSpin->get_value_as_int();
+  unsigned int PcsOrder =
+      static_cast<unsigned int> (mp_PcsOrderSpin->get_value_as_int());
+
+  openfluid::core::Unit NewUnit(ClassName, ID, PcsOrder,
+      openfluid::core::Unit::DESCRIPTOR);
+
+  mp_CoreRepos->addUnit(NewUnit);
+
+  mp_Unit = mp_CoreRepos->getUnit(ClassName, ID);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainUnitAddEditDialog::clearAllRelations()
 {
   if (!mp_Unit)
@@ -372,7 +385,8 @@ void DomainUnitAddEditDialog::clearAllRelations()
     if (mp_Unit->getFromUnits(*it) != NULL)
     {
       Relations = *mp_Unit->getFromUnits(*it);
-      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it != Relations.end(); ++it)
+      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
+          != Relations.end(); ++it)
       {
         mp_CoreRepos->removeFromToConnection(*it, mp_Unit);
       }
@@ -381,7 +395,8 @@ void DomainUnitAddEditDialog::clearAllRelations()
     if (mp_Unit->getToUnits(*it) != NULL)
     {
       Relations = *mp_Unit->getToUnits(*it);
-      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it != Relations.end(); ++it)
+      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
+          != Relations.end(); ++it)
       {
         mp_CoreRepos->removeFromToConnection(mp_Unit, *it);
       }
@@ -390,7 +405,8 @@ void DomainUnitAddEditDialog::clearAllRelations()
     if (mp_Unit->getParentUnits(*it) != NULL)
     {
       Relations = *mp_Unit->getParentUnits(*it);
-      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it != Relations.end(); ++it)
+      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
+          != Relations.end(); ++it)
       {
         mp_CoreRepos->removeChildParentConnection(mp_Unit, *it);
       }
@@ -399,7 +415,8 @@ void DomainUnitAddEditDialog::clearAllRelations()
     if (mp_Unit->getChildrenUnits(*it) != NULL)
     {
       Relations = *mp_Unit->getChildrenUnits(*it);
-      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it != Relations.end(); ++it)
+      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
+          != Relations.end(); ++it)
       {
         mp_CoreRepos->removeChildParentConnection(*it, mp_Unit);
       }

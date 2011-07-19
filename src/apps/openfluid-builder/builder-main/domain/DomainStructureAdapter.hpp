@@ -110,8 +110,6 @@ class DomainStructureAdapter: public sigc::trackable
 
     void addUnit(openfluid::core::Unit& Unit);
 
-    void setSelectedUnitNewPcsOrder(int NewProcessOrder);
-
 };
 
 #endif /* __DOMAINSTRUCTUREADAPTER_HPP__ */

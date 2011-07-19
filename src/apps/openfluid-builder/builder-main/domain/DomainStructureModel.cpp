@@ -54,6 +54,8 @@
 
 #include "DomainStructureModel.hpp"
 
+#include "EngineHelper.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -89,6 +91,7 @@ void DomainStructureModelImpl::deleteUnit(openfluid::core::Unit* Unit)
 {
   mp_CoreRepos->deleteUnit(Unit);
   m_signal_FromAppUnitDeleted.emit();
+  updateUnitListByClass();
 }
 
 // =====================================================================
@@ -162,8 +165,15 @@ void DomainStructureModelImpl::setEngineRequirements(
 
 openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByClass()
 {
-  // warn : copies only base info of units, not relations
-  openfluid::core::UnitsListByClassMap_t UnitsMapWithNoEmpty;
+  return m_UnitsMapWithNoEmpty;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainStructureModelImpl::updateUnitListByClass()
+{
+  m_UnitsMapWithNoEmpty.clear();
 
   if (mp_CoreRepos)
   {
@@ -173,10 +183,10 @@ openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByCl
         != UnitsMap.end(); ++it)
     {
       if (!it->second.getList()->empty())
-        UnitsMapWithNoEmpty[it->first] = it->second;
+        m_UnitsMapWithNoEmpty[it->first] = it->second;
     }
   }
-  return UnitsMapWithNoEmpty;
+
 }
 
 // =====================================================================
@@ -185,7 +195,7 @@ openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByCl
 
 bool DomainStructureModelImpl::isEmpty()
 {
-  return getUnitListByClass().empty();
+  return m_UnitsMapWithNoEmpty.empty();
 }
 
 // =====================================================================
@@ -196,11 +206,8 @@ void DomainStructureModelImpl::addUnit(openfluid::core::Unit* Unit)
 {
   if (Unit)
   {
-    mp_CoreRepos->addUnit(*Unit);
-    openfluid::core::Unit* createdUnit = mp_CoreRepos->getUnit(
-        Unit->getClass(), Unit->getID());
-    delete Unit; // Corerepos.addUnit create new Unit ptr
-    m_signal_FromAppUnitAdded.emit(*createdUnit);
+    m_signal_FromAppUnitAdded.emit(*Unit);
+    updateUnitListByClass();
   }
 }
 
@@ -259,6 +266,7 @@ std::string DomainStructureModelImpl::getSelectedClass()
 
 void DomainStructureModelImpl::update()
 {
+  updateUnitListByClass();
   m_signal_FromAppDomainChanged.emit();
 }
 

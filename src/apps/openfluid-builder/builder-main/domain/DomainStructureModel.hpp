@@ -125,7 +125,11 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     std::string m_SelectedClass;
 
+    openfluid::core::UnitsListByClassMap_t m_UnitsMapWithNoEmpty;
+
     bool isCoreRepos();
+
+    void updateUnitListByClass();
 
   protected:
 

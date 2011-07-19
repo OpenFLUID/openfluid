@@ -88,6 +88,8 @@ void DomainStructureCoordinator::whenAddUnitAsked()
 
     updateStructureListToolBox();
 
+    m_UnitAddEditDialog.update();
+
     m_signal_DomainChanged.emit();
   }
 }
@@ -101,6 +103,8 @@ void DomainStructureCoordinator::whenRemoveUnitAsked()
   m_StructureModel.deleteSelectedUnit();
 
   updateStructureListToolBox();
+
+  m_UnitAddEditDialog.update();
 
   m_signal_DomainChanged.emit();
 }
@@ -116,7 +120,7 @@ void DomainStructureCoordinator::whenEditUnitAsked()
 
   if (AlteredUnit)
   {
-    update(); // ?
+    m_StructureModel.update();
 
     m_signal_DomainChanged.emit();
   }

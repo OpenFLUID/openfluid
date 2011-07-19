@@ -90,10 +90,6 @@ class DomainUnitAddEditDialog
 
     Gtk::Label* mp_IdLabel;
 
-    Gtk::ComboBoxEntryText* mp_ClassComboEntryText;
-
-    Gtk::SpinButton* mp_IdSpin;
-
     Gtk::SpinButton* mp_PcsOrderSpin;
 
     openfluid::core::CoreRepository* mp_CoreRepos;
@@ -108,6 +104,10 @@ class DomainUnitAddEditDialog
 
     openfluid::core::Unit* mp_Unit;
 
+    Gtk::ComboBoxEntryText* mp_ClassComboEntryText;
+
+    Gtk::SpinButton* mp_IdSpin;
+
     DomainUnitRelationWidget* mp_FromWidget;
     DomainUnitRelationWidget* mp_ToWidget;
     DomainUnitRelationWidget* mp_ParentWidget;
@@ -116,6 +116,8 @@ class DomainUnitAddEditDialog
     void initEditionMode();
 
     void initCreationMode(std::string SelectedClass);
+
+    void createUnit();
 
     void clearAllRelations();
 
@@ -127,8 +129,7 @@ class DomainUnitAddEditDialog
 
   public:
 
-        DomainUnitAddEditDialog(
-            DomainUnitRelationAddDialog& UnitRelationAddDialog);
+    DomainUnitAddEditDialog(DomainUnitRelationAddDialog& UnitRelationAddDialog);
 
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 
@@ -168,6 +169,11 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
       DomainUnitAddEditDialog::initCreationMode(SelectedClass);
     }
 
+    void createUnit()
+    {
+      DomainUnitAddEditDialog::createUnit();
+    }
+
     void clearAllRelations()
     {
       DomainUnitAddEditDialog::clearAllRelations();
@@ -186,6 +192,16 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
     openfluid::core::Unit* getUnit()
     {
       return mp_Unit;
+    }
+
+    Gtk::ComboBoxEntryText* getClassComboEntryText()
+    {
+      return mp_ClassComboEntryText;
+    }
+
+    Gtk::SpinButton* getIdSpinValue()
+    {
+      return mp_IdSpin;
     }
 
     DomainUnitRelationWidgetSub* getFromWidget()

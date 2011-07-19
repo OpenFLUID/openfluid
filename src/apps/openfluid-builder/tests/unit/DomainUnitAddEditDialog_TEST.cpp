@@ -368,6 +368,27 @@ BOOST_AUTO_TEST_CASE(test_removeRelation)
   BOOST_CHECK_EQUAL(mp_EngProject->getCoreRepository().getUnit("ParentTestUnits",2)->getChildrenUnits("TestUnits")->size(),3);
 }
 
+BOOST_AUTO_TEST_CASE(test_addUnit)
+{
+  mp_Dialog->initCreationMode("");
+
+  mp_Dialog->getClassComboEntryText()->get_entry()->set_text("class A");
+  mp_Dialog->getIdSpinValue()->set_value(100);
+
+  std::list<openfluid::core::Unit*> UnitsToAdd;
+  UnitsToAdd.push_back(mp_EngProject->getCoreRepository().getUnit("TestUnits",4));
+
+  mp_Dialog->getFromWidget()->addUnits(UnitsToAdd);
+
+  mp_Dialog->createUnit();
+
+  mp_Dialog->clearAllRelations();
+  mp_Dialog->createAllRelations();
+
+  BOOST_CHECK_EQUAL((*mp_EngProject->getCoreRepository().getUnit("class A",100)->getFromUnits("TestUnits")->begin())->getID(),4);
+  BOOST_CHECK_EQUAL((*mp_EngProject->getCoreRepository().getUnit("TestUnits",4)->getToUnits("class A")->begin())->getID(),100);
+}
+
 // =====================================================================
 // =====================================================================
 

@@ -199,11 +199,3 @@ void DomainStructureAdapter::addUnit(openfluid::core::Unit& Unit)
   m_View.requestUnitSelection(m_Model.getRequestedUnitSelection());
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void DomainStructureAdapter::setSelectedUnitNewPcsOrder(int NewProcessOrder)
-{
-  m_Model.setNewPcsOrder(getSelectedUnitIters(), NewProcessOrder);
-}

@@ -76,8 +76,6 @@ class DomainStructurePresenter: public sigc::trackable
 
     void whenUnitAdded(openfluid::core::Unit& Unit);
 
-    void whenUnitAltered(int NewProcessOrder);
-
     void whenSelectionChanged();
 
     void whenActivated();

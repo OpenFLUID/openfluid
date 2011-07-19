@@ -88,15 +88,6 @@ void DomainStructurePresenter::whenUnitAdded(openfluid::core::Unit& Unit)
 // =====================================================================
 
 
-void DomainStructurePresenter::whenUnitAltered(int NewProcessOrder)
-{
-  m_Adapter.setSelectedUnitNewPcsOrder(NewProcessOrder);
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void DomainStructurePresenter::whenSelectionChanged()
 {
   m_Model.setCurrentSelectionByUser(m_Adapter.getSelectedUnitInfos());
