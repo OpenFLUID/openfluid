@@ -83,8 +83,11 @@ i18nManager::i18nManager() :
 
   m_AvailableLanguages[m_DefaultLanguage] = _("English (US)");
   m_AvailableLanguages["fr_FR"] = _("French (France)");
+
+  // Languages for further works on translations
 //  m_AvailableLanguages["es_ES"] = _("Spanish (Spain)");
 //  m_AvailableLanguages["it_IT"] = _("Italian (Italy)");
+
 
   Glib::ustring EnvLang;
 
