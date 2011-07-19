@@ -270,7 +270,10 @@ void MarketClient::parseCatalogData(const std::string& CatalogData)
       }
     }
   }
-  catch (...) {};
+  catch (...)
+  {
+    // TODO check this!
+  };
 }
 
 

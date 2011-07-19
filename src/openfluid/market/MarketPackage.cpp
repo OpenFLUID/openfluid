@@ -145,12 +145,12 @@ void MarketPackage::initialize(bool EnableLog = false)
 
 void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir)
 {
-  m_TempDir = TempDir;
-  m_TempBuildsDir = TempDir+"/"+BUILDS_SUBDIR;
-  m_TempDownloadsDir = TempDir+"/"+DLOADS_SUBDIR;
-  m_MarketBagBinDir = MarketBagBinDir;
-  m_MarketBagSrcDir = MarketBagSrcDir;
-  m_LogFile = TempDir+"/"+LOG_FILENAME;
+  m_TempDir = boost::filesystem::path(TempDir).string();
+  m_TempBuildsDir = boost::filesystem::path(TempDir+"/"+BUILDS_SUBDIR).string();
+  m_TempDownloadsDir = boost::filesystem::path(TempDir+"/"+DLOADS_SUBDIR).string();
+  m_MarketBagBinDir = boost::filesystem::path(MarketBagBinDir).string();
+  m_MarketBagSrcDir = boost::filesystem::path(MarketBagSrcDir).string();
+  m_LogFile = boost::filesystem::path(TempDir+"/"+LOG_FILENAME).string();
 
   m_Initialized = false;
 }

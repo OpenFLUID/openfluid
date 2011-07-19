@@ -58,7 +58,7 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/market/MarketInfos.hpp>
 
 

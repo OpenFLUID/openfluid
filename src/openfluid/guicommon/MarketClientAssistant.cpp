@@ -262,8 +262,8 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesReviewBox.pack_start(m_LicensesReviewSWindow,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_LicensesAcceptRadio.set_label(_("Accept all packages licenses"));
-  m_LicensesDoNotRadio.set_label(_("Do not accept packages licenses"));
+  m_LicensesAcceptRadio.set_label(_("I accept the terms of the license(s) agreement(s)"));
+  m_LicensesDoNotRadio.set_label(_("I do not accept the terms of the license(s) agreement(s)"));
   Gtk::RadioButton::Group Group = m_LicensesAcceptRadio.get_group();
   m_LicensesDoNotRadio.set_group(Group);
   m_LicensesDoNotRadio.set_active(true);
