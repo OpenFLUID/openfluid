@@ -114,24 +114,36 @@ BOOST_AUTO_TEST_CASE(test_updateData)
 {
   mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("TestUnits"));
 
-  mp_AdapterModel->updateData("0","NewData","indataA",1);
+  Gtk::TreeIter IterUnitIndex0 = mp_AdapterModel->getTreeModel()->children()[0];
 
-  std::string IndataVal;
-  mp_AdapterModel->getTreeModel()->children()[0]->get_value(1,IndataVal);
+  mp_AdapterModel->setSelectedUnit(IterUnitIndex0);
 
-  BOOST_CHECK_EQUAL(IndataVal,"NewData");
+  mp_AdapterModel->updateData("NewData","indataA");
 
-  mp_AdapterModel->updateData("0","NewDataAgain","indataA",1);
+  openfluid::core::Unit* Unit0 = mp_EngProject->getCoreRepository().getUnit("TestUnits",IterUnitIndex0->get_value(*mp_AdapterModel->getColumns()->getIdColumn()));
 
-  mp_AdapterModel->getTreeModel()->children()[0]->get_value(1,IndataVal);
+  std::string Val;
+  Unit0->getInputData()->getValue("indataA",&Val);
 
-  BOOST_CHECK_EQUAL(IndataVal,"NewDataAgain");
+  BOOST_CHECK_EQUAL(Val,"NewData");
 
-  mp_AdapterModel->updateData("5","NewData","indataC",3);
+  mp_AdapterModel->updateData("NewDataAgain","indataA");
 
-  mp_AdapterModel->getTreeModel()->children()[5]->get_value(3,IndataVal);
+  Unit0->getInputData()->getValue("indataA",&Val);
 
-  BOOST_CHECK_EQUAL(IndataVal,"NewData");
+  BOOST_CHECK_EQUAL(Val,"NewDataAgain");
+
+  Gtk::TreeIter IterUnitIndex5 = mp_AdapterModel->getTreeModel()->children()[5];
+
+  mp_AdapterModel->setSelectedUnit(IterUnitIndex5);
+
+  mp_AdapterModel->updateData("NewData","indataC");
+
+  openfluid::core::Unit* Unit5 = mp_EngProject->getCoreRepository().getUnit("TestUnits",IterUnitIndex5->get_value(*mp_AdapterModel->getColumns()->getIdColumn()));
+
+  Unit5->getInputData()->getValue("indataC",&Val);
+
+  BOOST_CHECK_EQUAL(Val,"NewData");
 }
 
 // =====================================================================

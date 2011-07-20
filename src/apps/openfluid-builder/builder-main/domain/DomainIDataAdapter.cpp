@@ -61,10 +61,12 @@
 // =====================================================================
 
 
-void DomainIDataAdapter::whenDataEdited(const Glib::ustring PathString,
-    const std::string NewText, std::string DataName, int ColIndex)
+void DomainIDataAdapter::whenDataEdited(const Glib::ustring& NewText,
+    std::string DataName)
 {
-  m_Model.updateData(PathString, NewText, DataName, ColIndex);
+  m_Model.updateData(NewText, DataName);
+
+  m_signal_FromUserDataChanged.emit();
 }
 
 // =====================================================================
@@ -80,18 +82,6 @@ DomainIDataAdapter::DomainIDataAdapter(DomainIDataAdapterModel& Model,
 
   m_View.signal_UnitSelectionChanged().connect(sigc::mem_fun(*this,
       &DomainIDataAdapter::whenUnitSelectionChanged));
-
-  m_Model.signal_DataChanged().connect(sigc::mem_fun(*this,
-      &DomainIDataAdapter::whenDataChanged));
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataAdapter::whenDataChanged()
-{
-  m_signal_FromUserDataChanged.emit();
 }
 
 // =====================================================================

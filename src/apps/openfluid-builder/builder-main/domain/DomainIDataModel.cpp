@@ -119,6 +119,7 @@ void DomainIDataModelImpl::update()
   if (mp_CoreRepos && mp_CoreRepos->getUnits(m_ClassName))
   {
     m_UnitsColl = mp_CoreRepos->getUnits(m_ClassName);
+
     m_signal_FromAppDataInit.emit();
   }
 }
@@ -151,7 +152,8 @@ void DomainIDataModelImpl::removeData(std::string DataName)
 // =====================================================================
 
 
-void DomainIDataModelImpl::addData(std::string DataName, std::string DefaultValue)
+void DomainIDataModelImpl::addData(std::string DataName,
+    std::string DefaultValue)
 {
 
   if (DataName == "" || DefaultValue == "")

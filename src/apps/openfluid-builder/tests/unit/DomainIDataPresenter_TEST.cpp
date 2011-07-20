@@ -134,42 +134,6 @@ BOOST_AUTO_TEST_CASE(test_constructors)
   BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(),2);
 }
 
-BOOST_AUTO_TEST_CASE(test_updateData)
-{
-  mp_Model->setClass("TestUnits");
-
-  mp_View->signal_DataEdited().emit("0", "NewVal", "indataA", 1);
-
-  int Id;
-  std::string DataValFromView;
-  std::string DataValFromCoreRepos;
-
-  mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
-  mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",&DataValFromCoreRepos);
-
-  BOOST_CHECK_EQUAL(DataValFromView,"NewVal");
-  BOOST_CHECK_EQUAL(DataValFromCoreRepos,"NewVal");
-
-  mp_View->signal_DataEdited().emit("0", "NewValAgain", "indataA", 1);
-
-  mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
-  mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",&DataValFromCoreRepos);
-
-  BOOST_CHECK_EQUAL(DataValFromView,"NewValAgain");
-  BOOST_CHECK_EQUAL(DataValFromCoreRepos,"NewValAgain");
-
-  mp_View->signal_DataEdited().emit("5", "NewVal", "indataC", 3);
-
-  mp_View->getTreeView()->get_model()->children()[5]->get_value(0,Id);
-  mp_View->getTreeView()->get_model()->children()[5]->get_value(3,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataC",&DataValFromCoreRepos);
-
-  BOOST_CHECK_EQUAL(DataValFromView,"NewVal");
-  BOOST_CHECK_EQUAL(DataValFromCoreRepos,"NewVal");
-}
-
 BOOST_AUTO_TEST_CASE(test_removeData)
 {
   mp_Model->setClass("TestUnits");
