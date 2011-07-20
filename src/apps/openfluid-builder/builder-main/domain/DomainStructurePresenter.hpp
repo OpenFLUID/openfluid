@@ -65,14 +65,23 @@ class DomainStructureAdapter;
 class DomainStructurePresenter: public sigc::trackable
 {
   private:
+
     DomainStructureModel& m_Model;
+
     DomainStructureAdapter& m_Adapter;
+
     void whenDomainChanged();
+
     void whenUnitDeleted();
+
     void whenUnitAdded(openfluid::core::Unit& Unit);
-    void whenUnitAltered(int NewProcessOrder);
+
     void whenSelectionChanged();
+
+    void whenActivated();
+
   public:
+
     DomainStructurePresenter(DomainStructureModel& Model,
         DomainStructureAdapter& Adapter);
 };

@@ -57,44 +57,100 @@
 #include "SimulOutFilesAdapterModel.hpp"
 #include "SimulOutFilesView.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesAdapter::whenFileSelectionChanged()
 {
-  m_Model.setSelectedFile(m_View.getSelectedIter());
-  m_signal_FromUserSelectionChanged.emit();
+  if (m_HasToUpdate)
+  {
+    m_Model.setSelectedFile(m_View.getSelectedIter());
+
+    m_signal_FromUserSelectionChanged.emit();
+  }
 }
-void SimulOutFilesAdapter::whenDeletionConfirmed()
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesAdapter::whenActivated()
 {
-  m_signal_FromUserDeletionConfirmed.emit();
+  m_signal_Activated.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
 
 SimulOutFilesAdapter::SimulOutFilesAdapter(SimulOutFilesAdapterModel& Model,
     SimulOutFilesView& View) :
-  m_Model(Model), m_View(View)
+  m_Model(Model), m_View(View), m_HasToUpdate(true)
 {
   m_View.signal_FileSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutFilesAdapter::whenFileSelectionChanged));
-  m_View.signal_DeletionConfirmed().connect(sigc::mem_fun(*this,
-      &SimulOutFilesAdapter::whenDeletionConfirmed));
+
+  m_View.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutFilesAdapter::whenActivated));
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFilesAdapter::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
-sigc::signal<void> SimulOutFilesAdapter::signal_FromUserDeletionConfirmed()
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulOutFilesAdapter::signal_Activated()
 {
-  return m_signal_FromUserDeletionConfirmed;
+  return m_signal_Activated;
 }
-void SimulOutFilesAdapter::setFilesFormats(std::vector<std::pair<std::string,
-    openfluid::base::OutputFilesDescriptor> > FilesFormats)
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesAdapter::setFilesFormats(
+    openfluid::base::OutputDescriptor* OutDesc)
 {
-  m_Model.setFilesFormats(FilesFormats);
+  m_HasToUpdate = false;
+
+  m_Model.setFilesFormats(OutDesc);
   m_View.setModel(m_Model.getTreeModel());
+
+  m_HasToUpdate = true;
 }
-int SimulOutFilesAdapter::getSelectedFileFormatIndex()
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesAdapter::setSelectedFormat(std::string FormatName)
 {
-  return m_Model.getSelectedFileFormatIndex();
+  if (FormatName != "")
+  {
+    m_Model.setSelectedFormatName(FormatName);
+    m_View.setSelectedRow(m_Model.getSelectedRow());
+  }
 }
-void SimulOutFilesAdapter::showDialogConfirmDeletion()
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulOutFilesAdapter::getSelectedFileFormatName()
 {
-  m_View.showDialogConfirmDeletion();
+  return m_Model.getSelectedFileFormatName();
 }
+
+// =====================================================================
+// =====================================================================
+
+

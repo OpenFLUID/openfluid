@@ -71,6 +71,16 @@ void SimulOutSetsViewImpl::onSelectionChanged()
 // =====================================================================
 
 
+void SimulOutSetsViewImpl::onRowActivated(const Gtk::TreeModel::Path& /*Path*/,
+    Gtk::TreeViewColumn* /*Column*/)
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
@@ -84,6 +94,8 @@ SimulOutSetsViewImpl::SimulOutSetsViewImpl()
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutSetsViewImpl::onSelectionChanged));
+  mp_TreeView->signal_row_activated().connect(sigc::mem_fun(*this,
+      &SimulOutSetsViewImpl::onRowActivated));
 
   mp_TreeView->set_visible(true);
 
@@ -107,9 +119,9 @@ sigc::signal<void> SimulOutSetsViewImpl::signal_SetSelectionChanged()
 // =====================================================================
 
 
-sigc::signal<void> SimulOutSetsViewImpl::signal_DeletionConfirmed()
+sigc::signal<void> SimulOutSetsViewImpl::signal_Activated()
 {
-  return m_signal_DeletionConfirmed;
+  return m_signal_Activated;
 }
 
 // =====================================================================
@@ -125,20 +137,18 @@ void SimulOutSetsViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
 // =====================================================================
 
 
-Gtk::TreeIter SimulOutSetsViewImpl::getSelectedIter()
+void SimulOutSetsViewImpl::setSelectedRow(Gtk::TreeRow Row)
 {
-  return mp_TreeView->get_selection()->get_selected();
+  mp_TreeView->get_selection()->select(Row);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void SimulOutSetsViewImpl::showDialogConfirmDeletion()
+Gtk::TreeIter SimulOutSetsViewImpl::getSelectedIter()
 {
-  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      _("This will delete the sets associated to this format.\nDo you want to continue ?")))
-    m_signal_DeletionConfirmed.emit();
+  return mp_TreeView->get_selection()->get_selected();
 }
 
 // =====================================================================
@@ -152,16 +162,6 @@ Gtk::Widget* SimulOutSetsViewImpl::asWidget()
 
 // =====================================================================
 // =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutSetsViewSub::selectRowWithIndex(int Index)
-{
-  mp_TreeView->get_selection()->select(
-      mp_TreeView->get_model()->children()[Index]);
-}
 
 // =====================================================================
 // =====================================================================

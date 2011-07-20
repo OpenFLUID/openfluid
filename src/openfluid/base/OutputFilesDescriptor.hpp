@@ -72,6 +72,7 @@ class DLLEXPORT OutputFilesDescriptor
     std::string m_ColSeparator;
     std::string m_DateFormat;
     std::string m_CommentChar;
+    std::string m_Name;
 
 
   public:
@@ -95,6 +96,10 @@ class DLLEXPORT OutputFilesDescriptor
     inline std::string getCommentChar() const { return m_CommentChar; };
 
     inline void setCommentChar(const std::string& CommentChar) { m_CommentChar = CommentChar; };
+
+    inline void setName(const std::string Name) { m_Name = Name; };
+
+    inline std::string getName() const { return m_Name; };
 
 };
 

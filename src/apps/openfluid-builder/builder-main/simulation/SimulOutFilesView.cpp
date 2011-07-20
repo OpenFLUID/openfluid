@@ -58,7 +58,6 @@
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
-
 // =====================================================================
 // =====================================================================
 
@@ -68,6 +67,15 @@ void SimulOutFilesViewImpl::onSelectionChanged()
   m_signal_FileSelectionChanged.emit();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesViewImpl::onRowActivated(
+    const Gtk::TreeModel::Path& /*Path*/, Gtk::TreeViewColumn* /*Column*/)
+{
+  m_signal_Activated.emit();
+}
 
 // =====================================================================
 // =====================================================================
@@ -84,16 +92,17 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesViewImpl::onSelectionChanged));
+  mp_TreeView->signal_row_activated().connect(sigc::mem_fun(*this,
+      &SimulOutFilesViewImpl::onRowActivated));
 
   mp_TreeView->set_visible(true);
 
   mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC,Gtk::POLICY_AUTOMATIC);
+  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_MainWin->add(*mp_TreeView);
   mp_MainWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   mp_MainWin->set_visible(true);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -104,16 +113,14 @@ sigc::signal<void> SimulOutFilesViewImpl::signal_FileSelectionChanged()
   return m_signal_FileSelectionChanged;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> SimulOutFilesViewImpl::signal_DeletionConfirmed()
+sigc::signal<void> SimulOutFilesViewImpl::signal_Activated()
 {
-  return m_signal_DeletionConfirmed;
+  return m_signal_Activated;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -124,6 +131,14 @@ void SimulOutFilesViewImpl::setModel(Glib::RefPtr<Gtk::TreeModel> Model)
   mp_TreeView->set_model(Model);
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesViewImpl::setSelectedRow(Gtk::TreeRow Row)
+{
+  mp_TreeView->get_selection()->select(Row);
+}
 
 // =====================================================================
 // =====================================================================
@@ -134,19 +149,6 @@ Gtk::TreeIter SimulOutFilesViewImpl::getSelectedIter()
   return mp_TreeView->get_selection()->get_selected();
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulOutFilesViewImpl::showDialogConfirmDeletion()
-{
-  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      _("This will delete the sets associated to this format.\nDo you want to continue ?")))
-    m_signal_DeletionConfirmed.emit();
-}
-
-
 // =====================================================================
 // =====================================================================
 
@@ -155,7 +157,6 @@ Gtk::Widget* SimulOutFilesViewImpl::asWidget()
 {
   return mp_MainWin;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -169,7 +170,6 @@ void SimulOutFilesViewSub::selectRowWithIndex(int Index)
   mp_TreeView->get_selection()->select(
       mp_TreeView->get_model()->children()[Index]);
 }
-
 
 // =====================================================================
 // =====================================================================

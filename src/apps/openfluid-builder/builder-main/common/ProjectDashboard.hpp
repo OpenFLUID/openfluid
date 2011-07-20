@@ -90,8 +90,6 @@ class ProjectDashboard
 
     Gtk::ScrolledWindow* mp_MainWin;
 
-    std::string minimiseInfoString(std::string InfoString);
-
   public:
 
     ProjectDashboard();

@@ -59,70 +59,96 @@
 
 #include <openfluid/base.hpp>
 
+// =====================================================================
+// =====================================================================
+
+
 class SimulOutFilesModel
 {
   public:
+
     virtual sigc::signal<void> signal_FromAppDescriptorChanged() = 0;
+
     virtual sigc::signal<void> signal_FromUserSelectionChanged() = 0;
-    virtual sigc::signal<void>
-    signal_FromAppShowDialogConfirmDeletionAsked() = 0;
+
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual void setEngineRequirements(
         openfluid::base::OutputDescriptor& OutDesc) = 0;
-    virtual Glib::ustring generateNextFormatName() = 0;
-    virtual std::vector<std::pair<std::string,
-        openfluid::base::OutputFilesDescriptor> >
-    getFilesFormatsByNameVect() = 0;
-    virtual void setSelectedFileFormatIndex(int Index) = 0;
+
+    virtual openfluid::base::OutputDescriptor* getOutDescriptor() = 0;
+
+    virtual void setSelectedFileFormatName(std::string FileFormatName) = 0;
+
     virtual openfluid::base::OutputFilesDescriptor* getSelectedFileFormat() = 0;
-    virtual std::string getSelectedFileFormatName() = 0;
+
+    virtual std::string getSelectedFormatName() = 0;
+
     virtual void deleteSelectedFileFormat() = 0;
-    virtual void deleteSelectedFileFormatConfirmed() = 0;
+
     virtual void
-    addFileFormat(openfluid::base::OutputFilesDescriptor* FileDesc, std::string FormatName) = 0;
-    virtual void updateSelectedFileFormat(std::string FormatName) = 0;
+    addFileFormat(openfluid::base::OutputFilesDescriptor* FileDesc) = 0;
+
+    virtual void update() = 0;
+
+    virtual bool selectedFileFormatHasSets() = 0;
+
+    virtual bool isOutputEmpty() = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulOutFilesModelImpl: public SimulOutFilesModel
 {
   private:
+
     sigc::signal<void> m_signal_FromAppDescriptorChanged;
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
-    sigc::signal<void> m_signal_FromAppShowDialogConfirmDeletionAsked;
-    std::vector<std::pair<std::string, openfluid::base::OutputFilesDescriptor> >
-        m_FilesFormatsByNameVect;
-    int m_CurrentFormatNameIndex;
-    bool isSelectedFileFormatIndexValid();
-  protected:
-    int m_SelectedFileFormatIndex;
+
+    sigc::signal<void> m_signal_Activated;
+
+    std::string m_SelectedFileFormatName;
+
     openfluid::base::OutputDescriptor* mp_OutDesc;
-    //    std::string replacedBlankStr(std::string Str)
-    //    {
-    //      std::string::size_type Pos;
-    //      while ((Pos = Str.find(" ")) != std::string::npos)
-    //        Str.replace(Pos, 1, m_BlankSubstitute);
-    //      return Str;
-    //    }
+
+    std::map<std::string, openfluid::base::OutputFilesDescriptor*>
+        m_ByNameOutFilesDesc;
+
+    bool existsFormatName(std::string FormatName);
+
   public:
-    SimulOutFilesModelImpl() ;
+
+    SimulOutFilesModelImpl();
+
     sigc::signal<void> signal_FromAppDescriptorChanged();
+
     sigc::signal<void> signal_FromUserSelectionChanged();
-    sigc::signal<void> signal_FromAppShowDialogConfirmDeletionAsked();
-    Glib::ustring generateNextFormatName();
+
+    sigc::signal<void> signal_Activated();
+
     void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc);
-    std::vector<std::pair<std::string, openfluid::base::OutputFilesDescriptor> > getFilesFormatsByNameVect();
-    void setSelectedFileFormatIndex(int Index);
+
+    openfluid::base::OutputDescriptor* getOutDescriptor();
+
+    void setSelectedFileFormatName(std::string FileFormatName);
+
     openfluid::base::OutputFilesDescriptor* getSelectedFileFormat();
-    std::string getSelectedFileFormatName();
+
+    std::string getSelectedFormatName();
+
     void deleteSelectedFileFormat();
-    void deleteSelectedFileFormatConfirmed();
-    void addFileFormat(openfluid::base::OutputFilesDescriptor* FileDesc, std::string FormatName);
-    void updateSelectedFileFormat(std::string FormatName);
+
+    void addFileFormat(openfluid::base::OutputFilesDescriptor* FileDesc);
+
+    void update();
+
+    bool selectedFileFormatHasSets();
+
+    bool isOutputEmpty();
 };
 
-class SimulOutFilesModelSub: public SimulOutFilesModelImpl
-{
-  public:
-    int getSelectedFileFormatIndex();
-};
 
 #endif /* __SIMULOUTFILESMODEL_HPP__ */

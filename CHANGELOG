@@ -3,8 +3,10 @@
   * Released OpenFLUID-Builder application (GUI), as a preview release
   * Released OpenFLUID::guicommon API, as a preview release
   * Added OpenFLUID Market system
+  * Added OpenFLUID projects management, embedding simulation input and output datasets
   * Added automatic parallelization capabilities based on spatial independancy 
     (using multi-threading) 
+  * Added simulation profiling capabilities  
   * Updated .fluidX files I/O
   * Removed .xml file extensions as standard file extension for input dataset
   * Updated OpenFLUID API

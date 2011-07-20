@@ -68,6 +68,7 @@ OutputFilesDescriptor::OutputFilesDescriptor()
   m_ColSeparator = "\t";
   m_DateFormat = "%Y%m%dT%H%M%S";
   m_CommentChar = "%";
+  m_Name = "";
 }
 
 

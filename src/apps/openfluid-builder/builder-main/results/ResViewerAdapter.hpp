@@ -66,17 +66,26 @@ class ResViewerView;
 class ResViewerAdapter: public sigc::trackable
 {
   private:
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
+
     ResViewerAdapterModel& m_Model;
+
     ResViewerView& m_View;
+
   public:
+
     ResViewerAdapter(ResViewerAdapterModel& Model, ResViewerView& View);
+
     sigc::signal<void> signal_FromUserSelectionChanged();
+
     void init(openfluid::core::Unit* Unit, std::vector<std::string> VarNames,
         openfluid::base::SimulationStatus* SimStatus, unsigned int Precision,
         std::string SetName, bool ShowFiles, std::string ColSep,
         std::string CommentChar, std::string DateFormat);
+
     void clear();
+
 };
 
 #endif /* __RESVIEWERADAPTER_HPP__ */

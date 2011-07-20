@@ -69,6 +69,8 @@ bool DialogBoxFactory::showSimpleOkCancelQuestionDialog(Glib::ustring Message)
   Gtk::MessageDialog Dialog(Message, false, Gtk::MESSAGE_QUESTION,
       Gtk::BUTTONS_OK_CANCEL);
 
+  Dialog.set_default_response(Gtk::RESPONSE_OK);
+
   return (Dialog.run() == Gtk::RESPONSE_OK);
 }
 
@@ -80,6 +82,7 @@ void DialogBoxFactory::showSimpleErrorMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,
       Gtk::BUTTONS_OK);
+
   if (Dialog.run())
     Dialog.hide();
 }
@@ -92,6 +95,7 @@ void DialogBoxFactory::showSimpleWarningMessage(Glib::ustring MessageText)
 {
   Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_WARNING,
       Gtk::BUTTONS_OK);
+
   if (Dialog.run())
     Dialog.hide();
 }
@@ -160,10 +164,12 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
     Label.set_text(_("Do you want to save this project before closing?"));
     Dialog.add_button(_("Close project without saving"), 1);
     Dialog.add_button(_("Save and close project"), 2);
+    Dialog.set_default_response(2);
   } else
   {
     Label.set_text(_("Are you sure you want to close this project?"));
     Dialog.add_button(Gtk::Stock::OK, 1);
+    Dialog.set_default_response(1);
   }
 
   Dialog.show_all_children();

@@ -344,6 +344,21 @@ openfluid::machine::SignatureItemInstance* ModelStructureModelImpl::getCurrentSe
 // =====================================================================
 
 
+std::string ModelStructureModelImpl::getCurrentSelectionName()
+{
+  openfluid::machine::SignatureItemInstance* SelectedSignature =
+      getCurrentSelectionSignature();
+
+  if (SelectedSignature)
+    return SelectedSignature->Signature->ID;
+
+  return "";
+}
+
+// =====================================================================
+// =====================================================================
+
+
 unsigned int ModelStructureModelImpl::getFctCount()
 {
   if (mp_ModelInstance)
@@ -360,7 +375,7 @@ void ModelStructureModelImpl::requestSelectionByAppAt(int Position)
 {
   m_AppRequestedSelection = Position;
 
-  if (Position != m_CurrentSelection)
+//  if (Position != m_CurrentSelection)
     m_signal_FromAppSelectionRequested.emit();
 }
 

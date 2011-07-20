@@ -59,15 +59,17 @@
 #include "EngineProject.hpp"
 #include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
+#include "BuilderPretestInfo.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 #include "ModelStructureModule.hpp"
 #include "DomainClassModule.hpp"
 #include "ResultsSetModule.hpp"
 
-#include <boost/foreach.hpp>
-#include "BuilderPretestInfo.hpp"
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
-#include "FunctionSignatureRegistry.hpp"
+#include <boost/foreach.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -151,7 +153,8 @@ void ProjectCoordinator::whenActivationChanged()
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
-      } else
+      }
+      else
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createModelStructureModule();
@@ -171,7 +174,8 @@ void ProjectCoordinator::whenActivationChanged()
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
-      } else
+      }
+      else
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createDomainStructureModule();
@@ -189,7 +193,8 @@ void ProjectCoordinator::whenActivationChanged()
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
-      } else
+      }
+      else
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createDomainClassModule();
@@ -210,7 +215,8 @@ void ProjectCoordinator::whenActivationChanged()
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
-      } else
+      }
+      else
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createSimulationRunModule();
@@ -227,7 +233,8 @@ void ProjectCoordinator::whenActivationChanged()
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
-      } else
+      }
+      else
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createSimulationOutModule();
@@ -245,7 +252,8 @@ void ProjectCoordinator::whenActivationChanged()
       if (m_Workspace.existsPageName(PageName))
       {
         Module = m_ModulesByPageNameMap[PageName];
-      } else
+      }
+      else
       {
         Module
             = (ProjectWorkspaceModule*) mp_ModuleFactory->createResultsSetModule();
@@ -289,6 +297,13 @@ std::string ProjectCoordinator::constructSetPageName(std::string SetName)
 
 void ProjectCoordinator::whenModelChanged()
 {
+  Glib::ustring OutputConsistencyMessage = m_EngineProject.checkOutputsConsistency();
+
+  if (!OutputConsistencyMessage.empty())
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        Glib::ustring::compose(_(
+            "This change leads OpenFLUID to delete :\n%1"), OutputConsistencyMessage));
+
   updateResults();
 
   m_ExplorerModel.updateModelAsked();
@@ -360,6 +375,13 @@ void ProjectCoordinator::whenRunHappened()
 
 void ProjectCoordinator::whenDomainChanged()
 {
+  Glib::ustring OutputConsistencyMessage = m_EngineProject.checkOutputsConsistency();
+
+  if (!OutputConsistencyMessage.empty())
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        Glib::ustring::compose(_(
+            "This change leads OpenFLUID to delete :\n%1"), OutputConsistencyMessage));
+
   updateResults();
   m_ExplorerModel.updateDomainAsked();
 
@@ -552,7 +574,8 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   if (m_Workspace.existsPageName(m_ModelPageName))
   {
     (static_cast<ModelStructureModule*> (m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
-  } else
+  }
+  else
   {
     ModelStructureModule
         * TempModelModule =

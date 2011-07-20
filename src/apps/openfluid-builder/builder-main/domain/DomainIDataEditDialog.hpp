@@ -46,39 +46,60 @@
  */
 
 /**
- \file SimulOutSetDescComponent.cpp
- \brief Implements ...
+ \file DomainIDataEditDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "SimulOutSetDescComponent.hpp"
+#ifndef __DOMAINIDATAEDITDIALOG_HPP__
+#define __DOMAINIDATAEDITDIALOG_HPP__
 
-#include "SimulOutSetDescModel.hpp"
-#include "SimulOutSetDescPresenter.hpp"
-#include "SimulOutSetDescView.hpp"
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/comboboxtext.h>
 
-SimulOutSetDescComponent::SimulOutSetDescComponent()
+#include <set>
+
+#include <openfluid/core/CoreRepository.hpp>
+
+class DomainIDataEditDialog
 {
-  mp_Model = new SimulOutSetDescModelImpl();
-  mp_View = new SimulOutSetDescViewImpl();
-  mp_Presenter = new SimulOutSetDescPresenter(*mp_Model, *mp_View);
-}
-SimulOutSetDescComponent::~SimulOutSetDescComponent()
-{
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* SimulOutSetDescComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-SimulOutSetDescModel* SimulOutSetDescComponent::getModel()
-{
-  return mp_Model;
-}
-SimulOutSetDescView* SimulOutSetDescComponent::getView()
-{
-  return mp_View;
-}
+  private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::ComboBoxText* mp_Combo;
+
+    Gtk::Entry* mp_NewNameEntry;
+
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    std::string m_ClassName;
+
+    std::set<std::string> m_IDataNames;
+
+    bool m_IsValid;
+
+    void onChanged();
+
+    bool isEmptyString(std::string Str);
+
+  public:
+
+    DomainIDataEditDialog();
+
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+
+    void setClass(std::string ClassName);
+
+    void update();
+
+    std::pair<std::string, std::string> show();
+};
+
+#endif /* __DOMAINIDATAEDITDIALOG_HPP__ */

@@ -78,7 +78,9 @@ class DomainIDataModel
 
     virtual void removeData(std::string DataName) = 0;
 
-    virtual void addData(std::pair<std::string, std::string> DataInfo) = 0;
+    virtual void addData(std::string DataName, std::string DefaultValue) = 0;
+
+    virtual void changeDataName(std::string OldDataName, std::string NewDataName) = 0;
 
     virtual void setClass(std::string ClassName) = 0;
 
@@ -119,7 +121,9 @@ class DomainIDataModelImpl: public DomainIDataModel
 
     void removeData(std::string DataName);
 
-    void addData(std::pair<std::string, std::string> DataInfo);
+    void addData(std::string DataName, std::string DefaultValue);
+
+    void changeDataName(std::string OldDataName, std::string NewDataName);
 
     void setClass(std::string ClassName);
 

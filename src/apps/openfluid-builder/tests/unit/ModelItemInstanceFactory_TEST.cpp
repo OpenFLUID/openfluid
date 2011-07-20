@@ -53,6 +53,12 @@
 
 #include "ModelItemInstanceFactory.hpp"
 #include "GeneratorSignature.hpp"
+#include "tests-builderconfig.hpp"
+
+BOOST_AUTO_TEST_CASE(test_init)
+{
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+}
 
 BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
 {

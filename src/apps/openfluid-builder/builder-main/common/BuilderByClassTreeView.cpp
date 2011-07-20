@@ -78,6 +78,16 @@ void BuilderByClassTreeView::onUnitsViewSelectionChanged()
 // =====================================================================
 
 
+void BuilderByClassTreeView::onRowActivated(
+    const Gtk::TreeModel::Path& /*Path*/, Gtk::TreeViewColumn* /*Column*/)
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::setTreeModel(
     Glib::RefPtr<Gtk::TreeModel> TreeModel)
 {
@@ -100,6 +110,8 @@ BuilderByClassTreeView::BuilderByClassTreeView()
   mp_UnitsView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &BuilderByClassTreeView::onUnitsViewSelectionChanged));
   mp_UnitsView->set_visible(true);
+  mp_UnitsView->signal_row_activated().connect(sigc::mem_fun(*this,
+      &BuilderByClassTreeView::onRowActivated));
 
   mp_ClassesWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_ClassesWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -141,6 +153,15 @@ sigc::signal<void> BuilderByClassTreeView::signal_UnitSelectionChanged()
 // =====================================================================
 
 
+sigc::signal<void> BuilderByClassTreeView::signal_Activated()
+{
+  return m_signal_Activated;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderByClassTreeView::setClassesTreeModel(
     Glib::RefPtr<Gtk::TreeModel> ClassesModel)
 {
@@ -166,6 +187,7 @@ void BuilderByClassTreeView::requestClassSelection(Gtk::TreeIter Iter)
   if (Iter)
   {
     mp_ClassesView->get_selection()->select(Iter);
+    mp_ClassesView->scroll_to_row(mp_ClassesView->get_model()->get_path(Iter));
   }
 }
 
@@ -176,7 +198,10 @@ void BuilderByClassTreeView::requestClassSelection(Gtk::TreeIter Iter)
 void BuilderByClassTreeView::requestUnitSelection(Gtk::TreeIter Iter)
 {
   if (Iter)
+  {
     mp_UnitsView->get_selection()->select(Iter);
+    mp_UnitsView->scroll_to_row(mp_UnitsView->get_model()->get_path(Iter));
+  }
 }
 
 // =====================================================================

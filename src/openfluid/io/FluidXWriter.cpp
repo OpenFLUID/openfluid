@@ -351,8 +351,8 @@ void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository& CoreD
     {
       if ((*itAllUnits)->getInstantiationType() == m_InstType && (*itAllUnits)->getEvents()->getCount() > 0)
       {
-        std::list<openfluid::core::Event> *Events = (*itAllUnits)->getEvents()->getEventsList();
-        std::list<openfluid::core::Event>::iterator itEvents;
+        openfluid::core::EventsList_t *Events = (*itAllUnits)->getEvents()->getEventsList();
+        openfluid::core::EventsList_t::iterator itEvents;
 
         for (itEvents = Events->begin();itEvents != Events->end();++itEvents)
         {

@@ -56,113 +56,191 @@
 
 #include <boost/foreach.hpp>
 
-bool SimulOutFilesModelImpl::isSelectedFileFormatIndexValid()
-{
-  return (m_SelectedFileFormatIndex > -1 && m_SelectedFileFormatIndex
-      < (int) m_FilesFormatsByNameVect.size());
-}
+// =====================================================================
+// =====================================================================
+
 
 SimulOutFilesModelImpl::SimulOutFilesModelImpl() :
-  m_CurrentFormatNameIndex(0), m_SelectedFileFormatIndex(-1), mp_OutDesc(0)
+  m_SelectedFileFormatName(""), mp_OutDesc(0)
 {
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFilesModelImpl::signal_FromAppDescriptorChanged()
 {
   return m_signal_FromAppDescriptorChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> SimulOutFilesModelImpl::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
-sigc::signal<void> SimulOutFilesModelImpl::signal_FromAppShowDialogConfirmDeletionAsked()
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulOutFilesModelImpl::signal_Activated()
 {
-  return m_signal_FromAppShowDialogConfirmDeletionAsked;
+  return m_signal_Activated;
 }
-Glib::ustring SimulOutFilesModelImpl::generateNextFormatName()
-{
-  m_CurrentFormatNameIndex++;
-  return Glib::ustring::compose("Format #%1", m_CurrentFormatNameIndex);
-}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesModelImpl::setEngineRequirements(
     openfluid::base::OutputDescriptor& OutDesc)
 {
   mp_OutDesc = &OutDesc;
-  std::vector<openfluid::base::OutputFilesDescriptor> FilesFormats =
-      OutDesc.getFileSets();
-  for (unsigned int i = 0; i < FilesFormats.size(); i++)
-    m_FilesFormatsByNameVect.push_back(std::make_pair(generateNextFormatName(),
-        FilesFormats[i]));
 
-  m_SelectedFileFormatIndex = -1;
+  update();
+}
 
-  m_signal_FromAppDescriptorChanged.emit();
-}
-std::vector<std::pair<std::string, openfluid::base::OutputFilesDescriptor> > SimulOutFilesModelImpl::getFilesFormatsByNameVect()
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::OutputDescriptor* SimulOutFilesModelImpl::getOutDescriptor()
 {
-  return m_FilesFormatsByNameVect;
+  return mp_OutDesc;
 }
-void SimulOutFilesModelImpl::setSelectedFileFormatIndex(int Index)
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesModelImpl::setSelectedFileFormatName(
+    std::string FileFormatName)
 {
-  m_SelectedFileFormatIndex = Index;
+  m_SelectedFileFormatName = FileFormatName;
+
   m_signal_FromUserSelectionChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::base::OutputFilesDescriptor* SimulOutFilesModelImpl::getSelectedFileFormat()
 {
-  if (isSelectedFileFormatIndexValid())
-    return &mp_OutDesc->getFileSets()[m_SelectedFileFormatIndex];
-  return (openfluid::base::OutputFilesDescriptor*) 0;
+  if (m_ByNameOutFilesDesc.find(m_SelectedFileFormatName)
+      != m_ByNameOutFilesDesc.end())
+    return m_ByNameOutFilesDesc[m_SelectedFileFormatName];
+  else
+    return (openfluid::base::OutputFilesDescriptor*) 0;
 }
-std::string SimulOutFilesModelImpl::getSelectedFileFormatName()
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulOutFilesModelImpl::getSelectedFormatName()
 {
-  if (isSelectedFileFormatIndexValid())
-    return m_FilesFormatsByNameVect[m_SelectedFileFormatIndex].first;
-  return "";
+  if (!existsFormatName(m_SelectedFileFormatName))
+    m_SelectedFileFormatName = "";
+
+  return m_SelectedFileFormatName;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesModelImpl::deleteSelectedFileFormat()
 {
-  if (isSelectedFileFormatIndexValid())
+  for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
   {
-    if (!mp_OutDesc->getFileSets()[m_SelectedFileFormatIndex].getSets().empty())
-      m_signal_FromAppShowDialogConfirmDeletionAsked.emit();
-    else
-      deleteSelectedFileFormatConfirmed();
+    if (mp_OutDesc->getFileSets()[i].getName() == m_SelectedFileFormatName)
+    {
+      mp_OutDesc->getFileSets().erase(mp_OutDesc->getFileSets().begin() + i);
+      m_ByNameOutFilesDesc.erase(m_SelectedFileFormatName);
+      m_SelectedFileFormatName = "";
+      m_signal_FromAppDescriptorChanged.emit();
+      break;
+    }
   }
 }
-void SimulOutFilesModelImpl::deleteSelectedFileFormatConfirmed()
-{
-  mp_OutDesc->getFileSets().erase(mp_OutDesc->getFileSets().begin()
-      + m_SelectedFileFormatIndex);
 
-  m_FilesFormatsByNameVect.erase(m_FilesFormatsByNameVect.begin()
-      + m_SelectedFileFormatIndex);
+// =====================================================================
+// =====================================================================
 
-  m_SelectedFileFormatIndex = -1;
-  m_signal_FromAppDescriptorChanged.emit();
-}
+
 void SimulOutFilesModelImpl::addFileFormat(
-    openfluid::base::OutputFilesDescriptor* FileDesc, std::string FormatName)
+    openfluid::base::OutputFilesDescriptor* FileDesc)
 {
   if (FileDesc)
   {
     mp_OutDesc->getFileSets().push_back(*FileDesc);
 
-    m_FilesFormatsByNameVect.push_back(std::make_pair(FormatName, *FileDesc));
+    m_ByNameOutFilesDesc[FileDesc->getName()] = FileDesc;
 
-    m_SelectedFileFormatIndex = -1;
+    m_SelectedFileFormatName = FileDesc->getName();
+
     m_signal_FromAppDescriptorChanged.emit();
   }
 }
-void SimulOutFilesModelImpl::updateSelectedFileFormat(std::string FormatName)
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulOutFilesModelImpl::update()
 {
-  m_FilesFormatsByNameVect[m_SelectedFileFormatIndex].first = FormatName;
-  m_FilesFormatsByNameVect[m_SelectedFileFormatIndex].second
-      = *getSelectedFileFormat();
+  m_ByNameOutFilesDesc.clear();
+
+  int CurrentUnnamedFormatIndex = 1;
+
+  for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+  {
+    if (mp_OutDesc->getFileSets()[i].getName() == "")
+      mp_OutDesc->getFileSets()[i].setName(Glib::ustring::compose("Format #%1",
+          CurrentUnnamedFormatIndex++));
+
+    m_ByNameOutFilesDesc[mp_OutDesc->getFileSets()[i].getName()]
+        = &mp_OutDesc->getFileSets()[i];
+  }
 
   m_signal_FromAppDescriptorChanged.emit();
 }
 
-int SimulOutFilesModelSub::getSelectedFileFormatIndex()
+// =====================================================================
+// =====================================================================
+
+
+bool SimulOutFilesModelImpl::selectedFileFormatHasSets()
 {
-  return m_SelectedFileFormatIndex;
+  return (!getSelectedFileFormat()->getSets().empty());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulOutFilesModelImpl::isOutputEmpty()
+{
+  return mp_OutDesc->getFileSets().empty();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulOutFilesModelImpl::existsFormatName(std::string FormatName)
+{
+  for (unsigned int i = 0; i < mp_OutDesc->getFileSets().size(); i++)
+  {
+    if (mp_OutDesc->getFileSets()[i].getName() == FormatName)
+      return true;
+  }
+
+  return false;
 }
 

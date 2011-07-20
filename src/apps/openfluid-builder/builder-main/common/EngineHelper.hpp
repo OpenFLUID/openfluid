@@ -45,30 +45,55 @@
  with the terms contained in the written agreement between You and INRA.
  */
 
-#ifndef SIMULOUTSETDESCCOMPONENT_HPP_
-#define SIMULOUTSETDESCCOMPONENT_HPP_
+/**
+ \file EngineHelper.hpp
+ \brief Header of ...
 
-#include <iostream>
+ \author Aline LIBRES <libres@supagro.inra.fr>
+ */
 
-#include "BuilderMVPComponent.hpp"
+#ifndef __ENGINEHELPER_HPP__
+#define __ENGINEHELPER_HPP__
 
-class SimulOutSetDescModel;
-class SimulOutSetDescPresenter;
-class SimulOutSetDescView;
+#include <openfluid/core.hpp>
+#include <openfluid/machine.hpp>
 
-class SimulOutSetDescComponent: public BuilderMVPComponent
+#include <set>
+
+class EngineHelper
 {
-  private:
-    SimulOutSetDescModel* mp_Model;
-    SimulOutSetDescView* mp_View;
-    SimulOutSetDescPresenter* mp_Presenter;
-
   public:
-    SimulOutSetDescComponent();
-    ~SimulOutSetDescComponent();
-    Gtk::Widget* asWidget();
-    SimulOutSetDescModel* getModel();
-    SimulOutSetDescView* getView();
+
+    static std::set<std::string> getClassNames(
+        openfluid::core::CoreRepository* CoreRepos);
+
+    static std::set<int> getIDs(openfluid::core::CoreRepository* CoreRepos,
+        std::string ClassName);
+
+    static std::set<std::string> getProducedVarNames(std::string ClassName,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    static std::set<std::string>
+    getProducedScalarVarNames(std::string ClassName,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    static std::set<std::string>
+    getProducedVectorVarNames(std::string ClassName,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    static bool hasAtLeastAProducedVariable(
+        openfluid::machine::ModelInstance* ModelInstance,
+        openfluid::core::CoreRepository* CoreRepos);
+
+    static std::string minimiseInfoString(std::string InfoString);
+
+    static void sortUnitsCollectionById(openfluid::core::UnitsCollection& Coll);
+
+    static void sortEventsListByDateTime(
+        openfluid::core::EventsList_t& Events);
+
+    static bool isEmptyString(std::string Str);
+
 };
 
-#endif /* SIMULOUTSETDESCCOMPONENT_HPP_ */
+#endif /* __ENGINEHELPER_HPP__ */

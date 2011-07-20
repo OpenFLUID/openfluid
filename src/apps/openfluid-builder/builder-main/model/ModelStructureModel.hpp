@@ -92,6 +92,8 @@ class ModelStructureModel
     virtual openfluid::machine::SignatureItemInstance
     * getCurrentSelectionSignature() = 0;
 
+    virtual std::string getCurrentSelectionName() = 0;
+
     virtual unsigned int getFctCount() = 0;
 
     virtual void requestSelectionByAppAt(int Position) = 0;
@@ -170,6 +172,8 @@ class ModelStructureModelImpl: public ModelStructureModel
     int getCurrentSelection();
 
     openfluid::machine::SignatureItemInstance* getCurrentSelectionSignature();
+
+    std::string getCurrentSelectionName();
 
     unsigned int getFctCount();
 

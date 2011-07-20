@@ -91,9 +91,44 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     bool getGlobalCheckState();
 
+  protected:
+
+    openfluid::machine::ModelInstance* mp_ModelInstance;
+
+    openfluid::machine::SimulationBlob* mp_SimBlob;
+
+    openfluid::base::RunDescriptor* mp_RunDesc;
+
+    void checkModelFilled();
+
+    void checkDomainFilled();
+
+    void checkOutputsFilled();
+
+    void checkRunDate();
+
+    void checkModelItemParams(openfluid::machine::ModelItemInstance* Item);
+
+    void checkParamFilled(openfluid::machine::ModelItemInstance* Item,
+        std::string ParamName);
+
+    void checkGeneratorParamsConsistency(
+        openfluid::machine::ModelItemInstance* Item);
+
+    void checkRandomMinMax(openfluid::machine::ModelItemInstance* Item);
+
+    void checkInterpMinMax(openfluid::machine::ModelItemInstance* Item);
+
+    void checkModelItemVars(openfluid::machine::ModelItemInstance* Item);
+
+    bool checkVar(openfluid::base::SignatureHandledDataItem Var);
+
   private:
 
     openfluid::core::FuncParamsMap_t m_GlobalParams;
+
+    bool m_RandomMinMaxChecked;
+    bool m_InterpMinMaxChecked;
 
     bool localParamIsSet(openfluid::machine::ModelItemInstance* Item,
         std::string ParamName);

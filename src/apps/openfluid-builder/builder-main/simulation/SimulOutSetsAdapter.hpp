@@ -51,6 +51,8 @@
 #include <sigc++/sigc++.h>
 
 #include <openfluid/base/OutputSetDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 
 class SimulOutSetsAdapterModel;
 class SimulOutSetsView;
@@ -58,21 +60,37 @@ class SimulOutSetsView;
 class SimulOutSetsAdapter: public sigc::trackable
 {
   private:
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
-    sigc::signal<void> m_signal_FromUserDeletionConfirmed;
+
+    sigc::signal<void> m_signal_Activated;
+
     SimulOutSetsAdapterModel& m_Model;
+
     SimulOutSetsView& m_View;
+
+    bool m_HasToUpdate;
+
     void whenSetSelectionChanged();
-    void whenDeletionConfirmed();
+
+    void whenActivated();
+
   public:
+
         SimulOutSetsAdapter(SimulOutSetsAdapterModel& Model,
             SimulOutSetsView& View);
+
     sigc::signal<void> signal_FromUserSelectionChanged();
-    sigc::signal<void> signal_FromUserDeletionConfirmed();
-    void setSets(std::map<std::string, std::pair<std::string,
-        openfluid::base::OutputSetDescriptor> > SetsByName);
+
+    sigc::signal<void> signal_Activated();
+
+    void setSets(openfluid::base::OutputDescriptor* OutDesc,
+        openfluid::machine::ModelInstance* ModelInstance);
+
+    void setSelectedSet(std::string SetName);
+
     std::string getSelectedSetName();
-    void showDialogConfirmDeletion();
+
 };
 
 #endif /* SIMULOUTSETSADAPTER_HPP_ */

@@ -61,10 +61,10 @@
 
 #include "SimulOutFilesModel.hpp"
 #include "SimulOutSetsModel.hpp"
-#include "SimulOutSetDescModel.hpp"
 #include "BuilderListToolBox.hpp"
 
-class SimulOutFileDescModel;
+class SimulOutFilesAddEditDialog;
+class SimulOutSetsAddEditDialog;
 
 class SimulOutCoordinator: public sigc::trackable
 {
@@ -73,16 +73,17 @@ class SimulOutCoordinator: public sigc::trackable
     sigc::signal<void> m_signal_SimulOutChanged;
 
     SimulOutFilesModel& m_OutFilesModel;
-
-    SimulOutFileDescModel& m_OutFileDescModel;
-
+    SimulOutFilesAddEditDialog& m_OutFilesDialog;
     BuilderListToolBox& m_OutFilesListToolBox;
 
     SimulOutSetsModel& m_OutSetsModel;
-
-    SimulOutSetDescModel& m_OutSetDescModel;
-
+    SimulOutSetsAddEditDialog& m_OutSetsDialog;
     BuilderListToolBox& m_OutSetsListToolBox;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::machine::ModelInstance* mp_ModelInstance;
+
+    bool m_HasToUpdate;
 
     void updateOutFilesListToolBox();
 
@@ -107,14 +108,17 @@ class SimulOutCoordinator: public sigc::trackable
   public:
 
     SimulOutCoordinator(SimulOutFilesModel& OutFilesModel,
-        SimulOutFileDescModel& FileDescModel,
+        SimulOutFilesAddEditDialog& OutFilesDialog,
         BuilderListToolBox& OutFilesListToolBox,
-        SimulOutSetsModel& OutSetsModel, SimulOutSetDescModel& SetDescModel,
+        SimulOutSetsModel& OutSetsModel,
+        SimulOutSetsAddEditDialog& OutSetsDialog,
         BuilderListToolBox& OutSetsListToolBox);
 
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::machine::SimulationBlob& SimbLob);
+
+    void update();
 
     sigc::signal<void> signal_SimulOutChanged();
 

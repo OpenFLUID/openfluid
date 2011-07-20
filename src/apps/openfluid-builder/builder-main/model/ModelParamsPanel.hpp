@@ -66,7 +66,6 @@ class ModelParamsPanel
 
     std::map<std::string,Gtk::Widget*> m_ByFctNamePages;
 
-
   public:
 
     ModelParamsPanel();
@@ -79,7 +78,10 @@ class ModelParamsPanel
 
     void setCurrentPage(std::string PageLabel);
 
+    std::string getCurrentPageName();
+
     Gtk::Widget* asWidget();
+
 };
 
 #endif /* __MODELPARAMSPANEL_HPP__ */

@@ -61,23 +61,30 @@
 
 #include "SimulOutFilesColumns.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 class SimulOutFilesView
 {
   public:
 
     virtual sigc::signal<void> signal_FileSelectionChanged() = 0;
 
-    virtual sigc::signal<void> signal_DeletionConfirmed() = 0;
+    virtual sigc::signal<void> signal_Activated() = 0;
 
     virtual void setModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
 
-    virtual Gtk::TreeIter getSelectedIter() = 0;
+    virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
 
-    virtual void showDialogConfirmDeletion() = 0;
+    virtual Gtk::TreeIter getSelectedIter() = 0;
 
     virtual Gtk::Widget* asWidget() = 0;
 
 };
+
+// =====================================================================
+// =====================================================================
 
 
 class SimulOutFilesViewImpl: public SimulOutFilesView
@@ -86,12 +93,14 @@ class SimulOutFilesViewImpl: public SimulOutFilesView
 
     sigc::signal<void> m_signal_FileSelectionChanged;
 
-    sigc::signal<void> m_signal_DeletionConfirmed;
+    sigc::signal<void> m_signal_Activated;
 
     SimulOutFilesColumns m_Columns;
 
     void onSelectionChanged();
 
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+        Gtk::TreeViewColumn* Column);
 
   protected:
 
@@ -99,23 +108,25 @@ class SimulOutFilesViewImpl: public SimulOutFilesView
 
     Gtk::ScrolledWindow* mp_MainWin;
 
-
   public:
 
     SimulOutFilesViewImpl();
 
     sigc::signal<void> signal_FileSelectionChanged();
 
-    sigc::signal<void> signal_DeletionConfirmed();
+    sigc::signal<void> signal_Activated();
 
     void setModel(Glib::RefPtr<Gtk::TreeModel> Model);
 
-    Gtk::TreeIter getSelectedIter();
+    void setSelectedRow(Gtk::TreeRow Row);
 
-    void showDialogConfirmDeletion();
+    Gtk::TreeIter getSelectedIter();
 
     Gtk::Widget* asWidget();
 };
+
+// =====================================================================
+// =====================================================================
 
 
 class SimulOutFilesViewSub: public SimulOutFilesViewImpl

@@ -62,27 +62,48 @@
 #include <openfluid/core/DateTime.hpp>
 
 #include "GeneratorSignature.hpp"
+#include "EngineHelper.hpp"
 
+#include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
+
+// =====================================================================
+// =====================================================================
+
+Glib::ustring Msg = "";
+
+void MyErrorHandler(void* /*userData*/, xmlErrorPtr error)
+{
+  Msg = Glib::ustring::compose(
+      _("Xml error :\n%1\n\n during parse of file:\n%2\n\n"
+          "Project can't be opened."), error->message, error->file);
+}
+;
 
 // =====================================================================
 // =====================================================================
 
 
 EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
-  m_WithProjectManager(WithProjectManager), FXReader(0)
+  m_WithProjectManager(WithProjectManager), FXReader(0), mp_SimBlob(0),
+      mp_RunEnv(0), mp_IOListener(0), mp_Listener(0), mp_ModelInstance(0),
+      mp_Engine(0)
 {
   std::string Now = boost::posix_time::to_iso_extended_string(
       boost::posix_time::microsec_clock::local_time());
   Now[10] = ' ';
   m_DefaultBeginDT.setFromISOString(Now);
+
   m_DefaultDeltaT = openfluid::core::DateTime::Minutes(5);
 
   mp_SimBlob = new openfluid::machine::SimulationBlob();
+
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   if (m_WithProjectManager)
     mp_RunEnv->linkToProject();
+
   mp_IOListener = new openfluid::io::IOListener();
+
   mp_Listener = new openfluid::guicommon::RunDialogMachineListener();
 
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
@@ -97,8 +118,14 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   {
     setDefaultRunDesc();
     setDefaultOutDesc();
-  } else
+  }
+  else
   {
+    //reset the generic error handler
+    initGenericErrorDefaultFunc(NULL);
+    //supply custom error handler
+    xmlSetStructuredErrorFunc(NULL, MyErrorHandler);
+
     try
     {
       FXReader = new openfluid::io::FluidXReader(mp_IOListener);
@@ -106,55 +133,66 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       FXReader->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
               : FolderIn);
+    }
+    catch (openfluid::base::OFException e)
+    {
+      if (Msg.empty())
+        Msg = EngineHelper::minimiseInfoString(e.what());
 
-      openfluid::base::RunDescriptor RunDesc = FXReader->getRunDescriptor();
-      checkAndSetDefaultRunValues(RunDesc);
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(Msg);
 
-      openfluid::base::OutputDescriptor OutDesc =
-          FXReader->getOutputDescriptor();
-      checkAndSetDefaultOutputValues(OutDesc);
+      //because we're in a constructor catch, so destructor isn't called
+      deleteEngineObjects();
+      Msg = "";
+      throw;
+    }
 
-      openfluid::base::ModelDescriptor ModelDesc =
-          FXReader->getModelDescriptor();
+    openfluid::base::RunDescriptor RunDesc = FXReader->getRunDescriptor();
+    checkAndSetDefaultRunValues(RunDesc);
 
-      std::string MissingFunctions = checkModelDesc(ModelDesc);
-      if (MissingFunctions != "")
-        openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-            "Unable to find plugin file(s):\n\n" + MissingFunctions);
+    openfluid::base::OutputDescriptor OutDesc = FXReader->getOutputDescriptor();
+    checkAndSetDefaultOutputValues(OutDesc);
 
+    openfluid::base::ModelDescriptor ModelDesc = FXReader->getModelDescriptor();
+
+    checkModelDesc(ModelDesc);
+
+    try
+    {
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
           FXReader->getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
-
-      //add specific GeneratorSignature to Generators
-      std::list<openfluid::machine::ModelItemInstance*> Items =
-          mp_ModelInstance->getItems();
-      for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
-          Items.begin(); it != Items.end(); ++it)
-      {
-        if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
-        {
-          openfluid::base::GeneratorDescriptor::GeneratorMethod
-              GeneratorMethod =
-                  (static_cast<openfluid::machine::Generator*> ((*it)->Function))->getGeneratorMethod();
-
-          GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
-
-          GenSign->ID = (*it)->Signature->ID;
-
-          GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
-
-          GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
-
-          (*it)->Signature = GenSign;
-        }
-      }
-    } catch (openfluid::base::OFException e)
-    {
-      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(e.what());
     }
+    catch (openfluid::base::OFException e)
+    {
+      Glib::ustring
+          Msg =
+              Glib::ustring::compose(
+                  _("Warning:\n%1.\n\nSome files may be overwritten.\nDo you want to continue ?"),
+                  EngineHelper::minimiseInfoString(e.what()));
+
+      if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+          Msg))
+      {
+        //because we're in a constructor catch, so destructor isn't called
+        deleteEngineObjects();
+        throw;
+      }
+    }
+
+    addSignatureToGenerators();
+
+    dispatchOutputVariables();
+
+    Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
+
+    if (!OutputConsistencyMessage.empty())
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+          Glib::ustring::compose(_(
+              "Check outputs consistency leads OpenFLUID to delete :\n\n%1"),
+              OutputConsistencyMessage));
   }
 
 }
@@ -245,7 +283,8 @@ void EngineProject::checkAndSetDefaultRunValues(
     RunDesc.setBeginDate(m_DefaultBeginDT);
 
     BeginDT = m_DefaultBeginDT;
-  } else
+  }
+  else
     BeginDT = DT;
 
   if (!DT.setFromISOString(RunDesc.getEndDate().getAsISOString()))
@@ -280,8 +319,7 @@ void EngineProject::checkAndSetDefaultOutputValues(
 // =====================================================================
 
 
-std::string EngineProject::checkModelDesc(
-    openfluid::base::ModelDescriptor& ModelDesc)
+void EngineProject::checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc)
 {
   std::string MissingFunctions = "";
 
@@ -297,15 +335,64 @@ std::string EngineProject::checkModelDesc(
         && openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(
             ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()).empty())
     {
-      MissingFunctions.append(
-          ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
+      MissingFunctions.append("- "
+          + ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
 
       it = ModelDesc.getItems().erase(it);
-    } else
+    }
+    else
       ++it;
   }
 
-  return MissingFunctions;
+  if (MissingFunctions != "")
+  {
+    Glib::ustring Msg = Glib::ustring::compose(
+        _("Unable to find plugin file(s):\n%1\n\n"
+            "Corresponding simulation functions will be removed from the model.\n"
+            "Do you want to continue?"), MissingFunctions);
+
+    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+        Msg))
+    {
+      //because we're in a constructor catch, so destructor isn't called
+      deleteEngineObjects();
+      throw openfluid::base::OFException("");
+    }
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::addSignatureToGenerators()
+{
+  std::list<openfluid::machine::ModelItemInstance*> Items =
+      mp_ModelInstance->getItems();
+
+  for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+    {
+      openfluid::base::GeneratorDescriptor::GeneratorMethod
+          GeneratorMethod =
+              (static_cast<openfluid::machine::Generator*> ((*it)->Function))->getGeneratorMethod();
+
+      GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
+
+      GenSign->ID = (*it)->Signature->ID;
+
+      GenSign->HandledData.ProducedVars
+          = (*it)->Signature->HandledData.ProducedVars;
+
+      GenSign->HandledData.RequiredExtraFiles
+          = (*it)->Signature->HandledData.RequiredExtraFiles;
+
+      (*it)->Signature = GenSign;
+    }
+  }
 }
 
 // =====================================================================
@@ -471,9 +558,21 @@ openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
 
 EngineProject::~EngineProject()
 {
+  deleteEngineObjects();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::deleteEngineObjects()
+{
   //mp_ModelInstance->clear() crashes
-  for (unsigned int i = 0; i < mp_ModelInstance->getItemsCount(); i++)
-    mp_ModelInstance->deleteItem(0);
+  if (mp_ModelInstance)
+  {
+    for (unsigned int i = 0; i < mp_ModelInstance->getItemsCount(); i++)
+      mp_ModelInstance->deleteItem(0);
+  }
   delete mp_ModelInstance;
   delete mp_Listener;
   delete mp_IOListener;
@@ -482,7 +581,172 @@ EngineProject::~EngineProject()
   if (m_WithProjectManager)
     getRunEnv()->detachFromProject();
   delete mp_Engine;
-  if (FXReader)
-    delete FXReader;
+  delete FXReader;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineProject::dispatchOutputVariables()
+{
+  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
+  {
+    for (unsigned int j = 0; j
+        < getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
+    {
+      openfluid::base::OutputSetDescriptor* OutSet =
+          &getOutputDescriptor().getFileSets()[i].getSets()[j];
+
+      if (!(OutSet->isAllScalars() && OutSet->isAllVectors()))
+      {
+        std::string ClassName = OutSet->getUnitsClass();
+
+        if (OutSet->isAllScalars())
+        {
+          OutSet->getScalars().clear();
+
+          BOOST_FOREACH(std::string VarName,EngineHelper::getProducedScalarVarNames(ClassName,mp_ModelInstance))
+{          OutSet->getScalars().push_back(VarName);
+        }
+      }
+
+      if(OutSet->isAllVectors())
+      {
+        OutSet->getVectors().clear();
+
+        BOOST_FOREACH(std::string VarName, EngineHelper::getProducedVectorVarNames(ClassName,mp_ModelInstance))
+        {
+          OutSet->getVectors().push_back(VarName);
+        }
+      }
+    }
+  }
+}
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring EngineProject::checkOutputsConsistency()
+{
+  Glib::ustring Message = "";
+
+  std::set<std::string> ClassNames = EngineHelper::getClassNames(
+      &getCoreRepository());
+
+  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
+  {
+    std::vector<openfluid::base::OutputSetDescriptor>::iterator itSet =
+        getOutputDescriptor().getFileSets()[i].getSets().begin();
+
+    while (itSet != getOutputDescriptor().getFileSets()[i].getSets().end())
+    {
+      std::string ClassName = itSet->getUnitsClass();
+      std::string SetName = itSet->getName();
+
+      std::set<std::string> VarNames = EngineHelper::getProducedVarNames(
+          ClassName, mp_ModelInstance);
+
+      Glib::ustring MsgDetail = "";
+
+      if (ClassNames.find(ClassName) == ClassNames.end())
+      {
+        MsgDetail = Glib::ustring::compose(_("class %1 doesn't exist"),
+            ClassName);
+      }
+      else if (VarNames.empty())
+      {
+        MsgDetail = Glib::ustring::compose(
+            _("no variable produced for class %1"), ClassName);
+      }
+      else if (!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+      {
+        MsgDetail = _("no unit selected");
+      }
+      else if (!itSet->isAllScalars() && itSet->getScalars().empty()
+          && !itSet->isAllVectors() && itSet->getVectors().empty())
+      {
+        MsgDetail = _("no variable selected");
+      }
+
+      if (MsgDetail != "")
+      {
+        Message.append(Glib::ustring::compose("- Set %1 (%2)\n", SetName,
+            MsgDetail));
+        getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+      }
+      else
+      {
+        // check Ids exist
+
+        std::vector<unsigned int>::iterator itId = itSet->getUnitsIDs().begin();
+
+        while (itId != itSet->getUnitsIDs().end())
+        {
+          if (getCoreRepository().getUnit(ClassName, *itId) == NULL)
+          {
+            Message.append(Glib::ustring::compose(_("- ID %1 of set %2\n"),
+                *itId, SetName));
+            itSet->getUnitsIDs().erase(itId);
+          }
+          else
+            itId++;
+        }
+
+        // check Var names exist
+
+        std::vector<std::string>::iterator itVar;
+
+        itVar = itSet->getVectors().begin();
+
+        while (itVar != itSet->getVectors().end())
+        {
+          if (VarNames.find(*itVar) == VarNames.end())
+          {
+            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
+                *itVar, SetName));
+            itSet->getVectors().erase(itVar);
+          }
+          else
+            itVar++;
+        }
+
+        itVar = itSet->getScalars().begin();
+
+        while (itVar != itSet->getScalars().end())
+        {
+          if (VarNames.find(*itVar) == VarNames.end())
+          {
+            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
+                *itVar, SetName));
+            itSet->getScalars().erase(itVar);
+          }
+          else
+            itVar++;
+        }
+
+        // check still at least one Id and one Var in Set
+
+        if ((!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+            || (!itSet->isAllScalars() && itSet->getScalars().empty()
+                && !itSet->isAllVectors() && itSet->getVectors().empty()))
+        {
+          Message.append(Glib::ustring::compose(_("=> Set %1\n"), SetName));
+          getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+        }
+        else
+          ++itSet;
+      }
+
+    }
+  }
+
+  return Message;
+}
+
+// =====================================================================
+// =====================================================================
+
 

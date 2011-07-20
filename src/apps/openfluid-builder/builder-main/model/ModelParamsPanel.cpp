@@ -68,7 +68,6 @@ ModelParamsPanel::ModelParamsPanel()
   mp_Notebook->set_visible(true);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -101,6 +100,7 @@ void ModelParamsPanel::addAFctParamsPage(Gtk::Widget* FctParamsPage,
   m_ByFctNamePages[PageLabel] = FctParamsPage;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -127,6 +127,17 @@ void ModelParamsPanel::setCurrentPage(std::string PageLabel)
   }
 }
 
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ModelParamsPanel::getCurrentPageName()
+{
+  return mp_Notebook->get_current()->get_tab_label_text();
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -135,3 +146,4 @@ Gtk::Widget* ModelParamsPanel::asWidget()
 {
   return mp_Notebook;
 }
+

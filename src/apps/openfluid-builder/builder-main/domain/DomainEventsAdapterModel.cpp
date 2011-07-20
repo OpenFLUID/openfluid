@@ -54,6 +54,8 @@
 
 #include "DomainEventsAdapterModel.hpp"
 
+#include "EngineHelper.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -61,7 +63,6 @@
 DomainEventsAdapterModelImpl::DomainEventsAdapterModelImpl()
 {
   mref_TreeModel = Gtk::TreeStore::create(m_Columns);
-
 }
 
 // =====================================================================
@@ -76,6 +77,8 @@ void DomainEventsAdapterModelImpl::setUnitsColl(
   if (!UnitsColl)
     return;
 
+  EngineHelper::sortUnitsCollectionById(*UnitsColl);
+
   openfluid::core::UnitsList_t::iterator it;
   for (it = UnitsColl->getList()->begin(); it != UnitsColl->getList()->end(); ++it)
   {
@@ -87,10 +90,12 @@ void DomainEventsAdapterModelImpl::setUnitsColl(
       Gtk::TreeRow UnitRow = *mref_TreeModel->append();
       UnitRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1", TheUnit->getID());
 
-      std::list<openfluid::core::Event>* Events =
+      openfluid::core::EventsList_t* Events =
           TheUnit->getEvents()->getEventsList();
 
-      std::list<openfluid::core::Event>::iterator itEvents;
+      EngineHelper::sortEventsListByDateTime(*Events);
+
+      openfluid::core::EventsList_t::iterator itEvents;
       for (itEvents = Events->begin(); itEvents != Events->end(); ++itEvents)
       {
         Gtk::TreeRow EventRow = *mref_TreeModel->append(UnitRow->children());

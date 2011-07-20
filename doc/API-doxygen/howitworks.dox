@@ -20,6 +20,8 @@ These libraries mainly rely on external libraries:
   <li>The boost libraries : http://www.boost.org/   
   <li>The libXML2 library for XML file handling : http://xmlsoft.org/
   <li>The C++ Standard Type Library (STL) for common data structures : http://www.sgi.com/tech/stl/ 
+  <li>The Glibmm/Gtkmm library for GUI development and convenience features: http://www.gtkmm.org/
+  <li>The libCURL library for networking capabilities : http://curl.haxx.se/
 </ul>
 \n
 \n

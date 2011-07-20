@@ -56,11 +56,19 @@ class SimulOutSetsAdapter;
 class SimulOutSetsPresenter: public sigc::trackable
 {
   private:
+
     SimulOutSetsModel& m_Model;
+
     SimulOutSetsAdapter& m_Adapter;
+
     void whenDescriptorChanged();
+
     void whenSelectionChanged();
+
+    void whenActivated();
+
   public:
+
     SimulOutSetsPresenter(SimulOutSetsModel& Model,
         SimulOutSetsAdapter& Adapter);
 };

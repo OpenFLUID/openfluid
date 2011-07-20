@@ -46,39 +46,67 @@
  */
 
 /**
- \file SimulOutFileDescComponent.cpp
- \brief Implements ...
+ \file SimulOutFilesAddEditDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "SimulOutFileDescComponent.hpp"
+#ifndef __SIMULOUTFILESADDEDITDIALOG_HPP__
+#define __SIMULOUTFILESADDEDITDIALOG_HPP__
 
-#include "SimulOutFileDescModel.hpp"
-#include "SimulOutFileDescPresenter.hpp"
-#include "SimulOutFileDescView.hpp"
+#include <gtkmm/dialog.h>
+#include <gtkmm/table.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <gtkmm/comboboxentrytext.h>
+#include <gtkmm/infobar.h>
 
-SimulOutFileDescComponent::SimulOutFileDescComponent()
+#include <set>
+
+#include <openfluid/base/OutputFilesDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+
+class SimulOutFilesAddEditDialog
 {
-  mp_Model = new SimulOutFileDescModelImpl();
-  mp_View = new SimulOutFileDescViewImpl();
-  mp_Presenter = new SimulOutFileDescPresenter(*mp_Model, *mp_View);
-}
-SimulOutFileDescComponent::~SimulOutFileDescComponent()
-{
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* SimulOutFileDescComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-SimulOutFileDescModel* SimulOutFileDescComponent::getModel()
-{
-  return mp_Model;
-}
-SimulOutFileDescView* SimulOutFileDescComponent::getView()
-{
-  return mp_View;
-}
+  private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Table* mp_Table;
+
+    Gtk::Label* mp_FormatNameLabel;
+
+    Gtk::ComboBoxEntryText* mp_ColSepComboEntry;
+
+    Gtk::ComboBoxEntryText* mp_DateFormatComboEntry;
+
+    Gtk::ComboBoxEntryText* mp_CommentCharComboEntry;
+
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
+
+    std::string m_BlankSubstitute;
+    std::string m_TabSubstitute;
+
+    openfluid::base::OutputDescriptor* mp_OutDesc;
+
+    std::set<std::string> m_FileFormatNames;
+
+    void onValueChange();
+
+    std::string fromRealCharToSubstitute(std::string RealChar);
+
+    std::string fromSubstituteToRealChar(std::string Substitute);
+
+  public:
+
+    SimulOutFilesAddEditDialog();
+
+    void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc);
+
+    openfluid::base::OutputFilesDescriptor* show(
+        openfluid::base::OutputFilesDescriptor* OutFilesDesc = 0);
+};
+
+#endif /* __SIMULOUTFILESADDEDITDIALOG_HPP__ */

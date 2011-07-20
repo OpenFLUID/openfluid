@@ -57,26 +57,54 @@
 #include "DomainStructureModel.hpp"
 #include "DomainStructureAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenDomainChanged()
 {
   m_Adapter.setDomainStructure(m_Model.getUnitListByClass());
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenUnitDeleted()
 {
   m_Adapter.deleteCurrentUnit();
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenUnitAdded(openfluid::core::Unit& Unit)
 {
   m_Adapter.addUnit(Unit);
 }
-void DomainStructurePresenter::whenUnitAltered(int NewProcessOrder)
-{
-  m_Adapter.setSelectedUnitNewPcsOrder(NewProcessOrder);
-}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainStructurePresenter::whenSelectionChanged()
 {
   m_Model.setCurrentSelectionByUser(m_Adapter.getSelectedUnitInfos());
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void DomainStructurePresenter::whenActivated()
+{
+  m_Model.signal_Activated().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
 
 DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
     DomainStructureAdapter& Adapter) :
@@ -88,9 +116,10 @@ DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
       &DomainStructurePresenter::whenUnitDeleted));
   m_Model.signal_FromAppUnitAdded().connect(sigc::mem_fun(*this,
       &DomainStructurePresenter::whenUnitAdded));
-  m_Model.signal_FromAppUnitAltered().connect(sigc::mem_fun(*this,
-      &DomainStructurePresenter::whenUnitAltered));
 
   m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &DomainStructurePresenter::whenSelectionChanged));
+
+  m_Adapter.signal_Activated().connect(sigc::mem_fun(*this,
+      &DomainStructurePresenter::whenActivated));
 }

@@ -66,6 +66,7 @@ namespace openfluid { namespace core {
 
 class DLLEXPORT Event;
 
+typedef std::list<Event> EventsList_t;
 
 /**
   @brief Class defining a collection of discrete events
@@ -73,7 +74,7 @@ class DLLEXPORT Event;
 class DLLEXPORT EventsCollection
 {
   private:
-    std::list<Event> m_Events;
+    EventsList_t m_Events;
 
   public:
     EventsCollection();
@@ -96,7 +97,7 @@ class DLLEXPORT EventsCollection
     /**
       Returns the event collection as a list
     */
-    inline std::list<Event>* getEventsList() { return &m_Events; };
+    inline EventsList_t* getEventsList() { return &m_Events; };
 
     /**
       Returns number of events in the event collection

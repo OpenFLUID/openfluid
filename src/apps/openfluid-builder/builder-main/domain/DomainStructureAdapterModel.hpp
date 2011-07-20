@@ -62,64 +62,130 @@
 #include "BuilderClassListStore.hpp"
 #include "DomainStructureColumns.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainStructureAdapterModel
 {
   public:
+
     virtual void
         setDomainStructure(
             openfluid::core::UnitsListByClassMap_t UnitListByClass) = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getUnitsTreeModel() = 0;
+
     virtual Gtk::TreeIter getRequestedClassSelection() = 0;
+
+    virtual Gtk::TreeIter getRequestedUnitSelection() = 0;
+
     virtual std::string getClassNameFromIter(Gtk::TreeIter Iter) = 0;
+
     virtual int getUnitIdFromIter(Gtk::TreeIter Iter) = 0;
+
     virtual void
     deleteUnit(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters) = 0;
+
+    virtual void deleteClass(std::string ClassName) = 0;
+
     virtual void addUnit(openfluid::core::Unit& Unit) = 0;
+
     virtual void setSelectedClass(Gtk::TreeIter Iter) = 0;
+
+    virtual void setSelectedUnit(Gtk::TreeIter UnitIter) = 0;
+
     virtual void
-        setNewPcsOrder(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters,
-            int NewProcessOrder) = 0;
+    setNewPcsOrder(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters,
+        int NewProcessOrder) = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class DomainStructureAdapterModelImpl: public DomainStructureAdapterModel
 {
   protected:
+
     DomainStructureColumns& m_Columns;
+
     std::map<std::string, Glib::RefPtr<BuilderListStore> > m_ByClassUnitsStores;
+
     Glib::RefPtr<BuilderClassListStore> mref_ClassStore;
+
     std::string m_RequestedSelectedClass;
+
+    std::map<std::string, int> m_ByClassSelectedUnits;
 
     void appendUnitRowToUnitListStore(
         Glib::RefPtr<BuilderListStore> ClassListStore,
         openfluid::core::Unit* Unit);
+
     void createUnitStoreForClass(std::string ClassName);
+
     bool isClassNameValid(std::string ClassName);
+
     bool isClassNameEmpty(std::string ClassName);
+
     void setFirstClassSelected();
+
+    void setLastClassSelected();
+
+    void setFirstUnitSelected(std::string ClassName);
+
+    void setLastUnitSelected(std::string ClassName);
+
   public:
+
     DomainStructureAdapterModelImpl(DomainStructureColumns& Columns);
+
     void setDomainStructure(
         openfluid::core::UnitsListByClassMap_t UnitListByClass);
+
     Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel();
+
     Glib::RefPtr<Gtk::TreeModel> getUnitsTreeModel();
+
     Gtk::TreeIter getRequestedClassSelection();
+
+    Gtk::TreeIter getRequestedUnitSelection();
+
     std::string getClassNameFromIter(Gtk::TreeIter Iter);
+
     int getUnitIdFromIter(Gtk::TreeIter Iter);
+
     void deleteUnit(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters);
+
+    void deleteClass(std::string ClassName);
+
     void addUnit(openfluid::core::Unit& Unit);
+
     void setSelectedClass(Gtk::TreeIter Iter);
+
+    void setSelectedUnit(Gtk::TreeIter UnitIter);
+
     void setNewPcsOrder(std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters,
         int NewProcessOrder);
 };
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainStructureAdapterModelSub: public DomainStructureAdapterModelImpl
 {
   public:
+
     DomainStructureAdapterModelSub(DomainStructureColumns& Columns);
+
     std::map<std::string, Glib::RefPtr<BuilderListStore> >
-        getByClassUnitsStores();
+    getByClassUnitsStores();
+
     std::string getRequestedSelectedClass();
+
     Glib::RefPtr<BuilderClassListStore> getClassStore();
 };
 

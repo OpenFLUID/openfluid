@@ -62,12 +62,22 @@
 
 class DomainIDataColumns;
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainIDataView
 {
   public:
 
+    virtual void requestUnitSelection(Gtk::TreeIter Iter) = 0;
+
     virtual sigc::signal<void, const Glib::ustring, const std::string,
         std::string, int> signal_DataEdited() = 0;
+
+    virtual sigc::signal<void> signal_UnitSelectionChanged() = 0;
+
+    virtual Gtk::TreeIter getSelectedUnitIter() = 0;
 
     virtual Gtk::Widget* asWidget() = 0;
 
@@ -85,8 +95,12 @@ class DomainIDataViewImpl: public DomainIDataView
     sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
         m_signal_DataEdited;
 
+    sigc::signal<void> m_signal_UnitSelectionChanged;
+
     void onDataEditingStarted(Gtk::CellEditable* CellEditable,
         const Glib::ustring& /* Path */, std::string DataName, int ColIndex);
+
+    void onUnitSelectionChanged();
 
   protected:
 
@@ -98,8 +112,14 @@ class DomainIDataViewImpl: public DomainIDataView
 
     DomainIDataViewImpl();
 
+    void requestUnitSelection(Gtk::TreeIter Iter);
+
     sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
     signal_DataEdited();
+
+    sigc::signal<void> signal_UnitSelectionChanged();
+
+    Gtk::TreeIter getSelectedUnitIter();
 
     Gtk::Widget* asWidget();
 

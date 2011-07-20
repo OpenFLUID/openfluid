@@ -55,9 +55,9 @@
 #include "SimulationOutModule.hpp"
 
 #include "SimulOutFilesComponent.hpp"
-#include "SimulOutFileDescComponent.hpp"
 #include "SimulOutSetsComponent.hpp"
-#include "SimulOutSetDescComponent.hpp"
+#include "SimulOutFilesAddEditDialog.hpp"
+#include "SimulOutSetsAddEditDialog.hpp"
 #include "SimulOutCoordinator.hpp"
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
@@ -72,18 +72,18 @@ SimulationOutModule::SimulationOutModule()
   mp_MainPanel = 0;
 
   mp_SimulOutFilesMVP = new SimulOutFilesComponent();
-  mp_SimulOutFileDescMVP = new SimulOutFileDescComponent();
-
-  mp_OutFilesListToolBox = BuilderListToolBoxFactory::createSimulOutFilesToolBox();
+  mp_OutFilesDialog = new SimulOutFilesAddEditDialog();
+  mp_OutFilesListToolBox
+      = BuilderListToolBoxFactory::createSimulOutFilesToolBox();
 
   mp_SimulOutSetsMVP = new SimulOutSetsComponent();
-  mp_SimulOutSetDescMVP = new SimulOutSetDescComponent();
-
-  mp_OutSetsListToolBox = BuilderListToolBoxFactory::createSimulOutSetsToolBox();
+  mp_OutSetsDialog = new SimulOutSetsAddEditDialog();
+  mp_OutSetsListToolBox
+      = BuilderListToolBoxFactory::createSimulOutSetsToolBox();
 
   mp_Coordinator = new SimulOutCoordinator(*mp_SimulOutFilesMVP->getModel(),
-      *mp_SimulOutFileDescMVP->getModel(), *mp_OutFilesListToolBox,
-      *mp_SimulOutSetsMVP->getModel(), *mp_SimulOutSetDescMVP->getModel(),
+      *mp_OutFilesDialog, *mp_OutFilesListToolBox,
+      *mp_SimulOutSetsMVP->getModel(), *mp_OutSetsDialog,
       *mp_OutSetsListToolBox);
 
   mp_Coordinator->signal_SimulOutChanged().connect(sigc::mem_fun(*this,
@@ -97,11 +97,13 @@ SimulationOutModule::SimulationOutModule()
 SimulationOutModule::~SimulationOutModule()
 {
   delete mp_Coordinator;
+
   delete mp_SimulOutFilesMVP;
-  delete mp_SimulOutFileDescMVP;
+  delete mp_OutFilesDialog;
   delete mp_OutFilesListToolBox;
+
   delete mp_SimulOutSetsMVP;
-  delete mp_SimulOutSetDescMVP;
+  delete mp_OutSetsDialog;
   delete mp_OutSetsListToolBox;
 }
 
@@ -114,27 +116,25 @@ void SimulationOutModule::compose()
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
   Gtk::VBox* FilesButtonsPanel = Gtk::manage(new Gtk::VBox());
-  FilesButtonsPanel->pack_start(*mp_OutFilesListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  FilesButtonsPanel->pack_start(*mp_OutFilesListToolBox->asWidget(),
+      Gtk::PACK_SHRINK);
   FilesButtonsPanel->set_visible(true);
-
 
   Gtk::HBox* MiddlePanel = Gtk::manage(new Gtk::HBox());
   MiddlePanel->set_border_width(5);
   MiddlePanel->pack_start(*mp_SimulOutFilesMVP->asWidget());
-  MiddlePanel->pack_start(*FilesButtonsPanel, Gtk::PACK_SHRINK,5);
+  MiddlePanel->pack_start(*FilesButtonsPanel, Gtk::PACK_SHRINK, 5);
   MiddlePanel->set_visible(true);
 
-
-
   Gtk::VBox* SetsButtonsPanel = Gtk::manage(new Gtk::VBox());
-  SetsButtonsPanel->pack_start(*mp_OutSetsListToolBox->asWidget(),Gtk::PACK_SHRINK);
+  SetsButtonsPanel->pack_start(*mp_OutSetsListToolBox->asWidget(),
+      Gtk::PACK_SHRINK);
   SetsButtonsPanel->set_visible(true);
-
 
   Gtk::HBox* BottomPanel = Gtk::manage(new Gtk::HBox());
   BottomPanel->set_border_width(5);
   BottomPanel->pack_start(*mp_SimulOutSetsMVP->asWidget());
-  BottomPanel->pack_start(*SetsButtonsPanel, Gtk::PACK_SHRINK,5);
+  BottomPanel->pack_start(*SetsButtonsPanel, Gtk::PACK_SHRINK, 5);
   BottomPanel->set_visible(true);
 
   BuilderFrame* MiddleFrame = Gtk::manage(new BuilderFrame());
@@ -202,6 +202,6 @@ void SimulationOutModule::whenOutChanged()
 
 void SimulationOutModule::update()
 {
-  //  mp_SimulRunMVP->getModel()->update();
+  mp_Coordinator->update();
 }
 

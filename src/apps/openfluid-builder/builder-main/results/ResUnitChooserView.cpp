@@ -56,7 +56,7 @@
 
 #include <glibmm/i18n.h>
 
-#include <iostream>
+#include <set>
 
 // =====================================================================
 // =====================================================================
@@ -71,14 +71,26 @@ void ResUnitChooserViewImpl::onOkButtonClicked()
 // =====================================================================
 
 
-ResUnitChooserViewImpl::ResUnitChooserViewImpl():
-    mp_MessageLabel(0)
+void ResUnitChooserViewImpl::onTreeViewCBToggled(const Glib::ustring& /*Path*/)
+{
+  onOkButtonClicked();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+ResUnitChooserViewImpl::ResUnitChooserViewImpl() :
+  mp_MessageLabel(0)
 {
   Gtk::Label* ClassNameLabel = Gtk::manage(new Gtk::Label(_("Class: ")));
-  Gtk::Label* IDsLabel = Gtk::manage(new Gtk::Label(_("ID:") + std::string("")));
+  Gtk::Label* IDsLabel =
+      Gtk::manage(new Gtk::Label(_("ID:") + std::string("")));
 
   mp_ShowFilesCB = Gtk::manage(new Gtk::CheckButton(_("Show file(s)")));
   mp_ShowFilesCB->set_active(true);
+  mp_ShowFilesCB->signal_toggled().connect(sigc::mem_fun(*this,
+      &ResUnitChooserViewImpl::onOkButtonClicked));
 
   //  mp_MessageLabel = Gtk::manage(new Gtk::Label(""));
   //  mp_MessageLabel->set_visible(true);
@@ -88,6 +100,8 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl():
   mp_ClassNameValue = Gtk::manage(new Gtk::Label());
 
   mp_IdCombo = Gtk::manage(new Gtk::ComboBoxText());
+  mp_IdCombo->signal_changed().connect(sigc::mem_fun(*this,
+      &ResUnitChooserViewImpl::onOkButtonClicked));
 
   mp_OkButton = Gtk::manage(new Gtk::Button(_("Update")));
   mp_OkButton->signal_clicked().connect(sigc::mem_fun(*this,
@@ -101,12 +115,18 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl():
   mp_ScalarsTreeView->set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_NONE);
   mp_ScalarsTreeView->append_column_editable("", m_VarsColumns.m_isChecked);
   mp_ScalarsTreeView->append_column("", m_VarsColumns.m_VarName);
+  (static_cast<Gtk::CellRendererToggle*> (mp_ScalarsTreeView->get_column_cell_renderer(
+      0)))->signal_toggled().connect(sigc::mem_fun(*this,
+      &ResUnitChooserViewImpl::onTreeViewCBToggled));
 
   mp_VectorsTreeView = Gtk::manage(new Gtk::TreeView(mref_VectorsListStore));
   mp_VectorsTreeView->set_headers_visible(false);
   mp_VectorsTreeView->set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_NONE);
   mp_VectorsTreeView->append_column_editable("", m_VarsColumns.m_isChecked);
   mp_VectorsTreeView->append_column("", m_VarsColumns.m_VarName);
+  (static_cast<Gtk::CellRendererToggle*> (mp_VectorsTreeView->get_column_cell_renderer(
+      0)))->signal_toggled().connect(sigc::mem_fun(*this,
+      &ResUnitChooserViewImpl::onTreeViewCBToggled));
 
   Gtk::Box* TopBox = Gtk::manage(new Gtk::HBox());
   TopBox->pack_start(*ClassNameLabel, Gtk::PACK_SHRINK, 5);
@@ -164,12 +184,18 @@ void ResUnitChooserViewImpl::setClassName(std::string ClassName)
 
 void ResUnitChooserViewImpl::setIDs(std::vector<unsigned int> IDs)
 {
+  Glib::ustring ExistingSelection = mp_IdCombo->get_active_text();
+
   mp_IdCombo->clear_items();
 
   for (unsigned int i = 0; i < IDs.size(); i++)
   {
     mp_IdCombo->append_text(Glib::ustring::compose("%1", IDs[i]));
   }
+
+  mp_IdCombo->set_active_text(ExistingSelection);
+  if (mp_IdCombo->get_active_text() == "")
+    mp_IdCombo->set_active(0);
 }
 
 // =====================================================================
@@ -178,13 +204,28 @@ void ResUnitChooserViewImpl::setIDs(std::vector<unsigned int> IDs)
 
 void ResUnitChooserViewImpl::setScalars(std::vector<std::string> Values)
 {
+  bool IsFirstTurn = mref_ScalarsListStore->children().empty();
+
+  std::set<std::string> ExistingSelectedVars;
+
+  if (!IsFirstTurn)
+  {
+    for (unsigned int i = 0; i < mref_ScalarsListStore->children().size(); i++)
+    {
+      Gtk::TreeRow Row = mref_ScalarsListStore->children()[i];
+      if (Row[m_VarsColumns.m_isChecked])
+        ExistingSelectedVars.insert(Row[m_VarsColumns.m_VarName]);
+    }
+  }
+
   mref_ScalarsListStore->clear();
 
   for (unsigned int i = 0; i < Values.size(); i++)
   {
     Gtk::TreeRow Row = *(mref_ScalarsListStore->append());
     Row[m_VarsColumns.m_VarName] = Values[i];
-    Row[m_VarsColumns.m_isChecked] = true;
+    Row[m_VarsColumns.m_isChecked] = IsFirstTurn ? true
+        : ExistingSelectedVars.find(Values[i]) != ExistingSelectedVars.end();
   }
 
   mp_ScalarsTreeView->set_model(mref_ScalarsListStore);
@@ -196,13 +237,28 @@ void ResUnitChooserViewImpl::setScalars(std::vector<std::string> Values)
 
 void ResUnitChooserViewImpl::setVectors(std::vector<std::string> Values)
 {
+  bool IsFirstTurn = mref_VectorsListStore->children().empty();
+
+  std::set<std::string> ExistingSelectedVars;
+
+  if (!IsFirstTurn)
+  {
+    for (unsigned int i = 0; i < mref_VectorsListStore->children().size(); i++)
+    {
+      Gtk::TreeRow Row = mref_VectorsListStore->children()[i];
+      if (Row[m_VarsColumns.m_isChecked])
+        ExistingSelectedVars.insert(Row[m_VarsColumns.m_VarName]);
+    }
+  }
+
   mref_VectorsListStore->clear();
 
   for (unsigned int i = 0; i < Values.size(); i++)
   {
     Gtk::TreeRow Row = *(mref_VectorsListStore->append());
     Row[m_VarsColumns.m_VarName] = Values[i];
-    Row[m_VarsColumns.m_isChecked] = true;
+    Row[m_VarsColumns.m_isChecked] = IsFirstTurn ? true
+        : ExistingSelectedVars.find(Values[i]) != ExistingSelectedVars.end();
   }
 
   mp_VectorsTreeView->set_model(mref_VectorsListStore);
@@ -212,9 +268,9 @@ void ResUnitChooserViewImpl::setVectors(std::vector<std::string> Values)
 // =====================================================================
 
 
-void ResUnitChooserViewImpl::selectFirstItem()
+void ResUnitChooserViewImpl::initSelection()
 {
-  mp_IdCombo->set_active(0);
+  onOkButtonClicked();
 }
 
 // =====================================================================
@@ -306,24 +362,3 @@ void ResUnitChooserViewImpl::clearMessage()
 // =====================================================================
 // =====================================================================
 
-
-//std::string ResUnitChooserViewSub::getClassName()
-//{
-//  return mp_ClassNameValue->get_text();
-//}
-//void ResUnitChooserViewSub::selectSetName(std::string Value)
-//{
-//  mp_SetCombo->set_active_text(Value);
-//}
-//void ResUnitChooserViewSub::selectId(int Index)
-//{
-//  mp_IdCombo->set_active(mp_IdCombo->get_model()->children().begin() + Index);
-//}
-//std::map<std::string, std::string> ResUnitChooserViewSub::getBySetNameClassNames()
-//{
-//  return m_BySetNameClassNames;
-//}
-//std::map<std::string, Glib::RefPtr<Gtk::ListStore> > ResUnitChooserViewSub::getBySetNameIDsListStores()
-//{
-//  return m_BySetNameIDsListStores;
-//}

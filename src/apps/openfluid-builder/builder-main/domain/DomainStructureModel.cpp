@@ -54,6 +54,8 @@
 
 #include "DomainStructureModel.hpp"
 
+#include "EngineHelper.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -89,6 +91,7 @@ void DomainStructureModelImpl::deleteUnit(openfluid::core::Unit* Unit)
 {
   mp_CoreRepos->deleteUnit(Unit);
   m_signal_FromAppUnitDeleted.emit();
+  updateUnitListByClass();
 }
 
 // =====================================================================
@@ -131,18 +134,18 @@ sigc::signal<void, openfluid::core::Unit&> DomainStructureModelImpl::signal_From
 // =====================================================================
 
 
-sigc::signal<void, int> DomainStructureModelImpl::signal_FromAppUnitAltered()
+sigc::signal<void> DomainStructureModelImpl::signal_FromUserSelectionChanged()
 {
-  return m_signal_FromAppUnitAltered;
+  return m_signal_FromUserSelectionChanged;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> DomainStructureModelImpl::signal_FromUserSelectionChanged()
+sigc::signal<void> DomainStructureModelImpl::signal_Activated()
 {
-  return m_signal_FromUserSelectionChanged;
+  return m_signal_Activated;
 }
 
 // =====================================================================
@@ -154,7 +157,6 @@ void DomainStructureModelImpl::setEngineRequirements(
 {
   mp_CoreRepos = &CoreRepos;
   update();
-  //  m_signal_FromAppDomainChanged.emit();
 }
 
 // =====================================================================
@@ -163,8 +165,15 @@ void DomainStructureModelImpl::setEngineRequirements(
 
 openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByClass()
 {
-  // warn : copies only base info of units, not relations
-  openfluid::core::UnitsListByClassMap_t UnitsMapWithNoEmpty;
+  return m_UnitsMapWithNoEmpty;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainStructureModelImpl::updateUnitListByClass()
+{
+  m_UnitsMapWithNoEmpty.clear();
 
   if (mp_CoreRepos)
   {
@@ -174,10 +183,10 @@ openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByCl
         != UnitsMap.end(); ++it)
     {
       if (!it->second.getList()->empty())
-        UnitsMapWithNoEmpty[it->first] = it->second;
+        m_UnitsMapWithNoEmpty[it->first] = it->second;
     }
   }
-  return UnitsMapWithNoEmpty;
+
 }
 
 // =====================================================================
@@ -186,7 +195,7 @@ openfluid::core::UnitsListByClassMap_t DomainStructureModelImpl::getUnitListByCl
 
 bool DomainStructureModelImpl::isEmpty()
 {
-  return getUnitListByClass().empty();
+  return m_UnitsMapWithNoEmpty.empty();
 }
 
 // =====================================================================
@@ -197,10 +206,8 @@ void DomainStructureModelImpl::addUnit(openfluid::core::Unit* Unit)
 {
   if (Unit)
   {
-    mp_CoreRepos->addUnit(*Unit);
-    openfluid::core::Unit* createdUnit = mp_CoreRepos->getUnit(
-        Unit->getClass(), Unit->getID());
-    m_signal_FromAppUnitAdded.emit(*createdUnit);
+    m_signal_FromAppUnitAdded.emit(*Unit);
+    updateUnitListByClass();
   }
 }
 
@@ -214,15 +221,6 @@ void DomainStructureModelImpl::deleteSelectedUnit()
   {
     deleteUnit(mp_SelectedUnit);
   }
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainStructureModelImpl::alterSelectedUnit()
-{
-  m_signal_FromAppUnitAltered.emit(mp_SelectedUnit->getProcessOrder());
 }
 
 // =====================================================================
@@ -268,6 +266,7 @@ std::string DomainStructureModelImpl::getSelectedClass()
 
 void DomainStructureModelImpl::update()
 {
+  updateUnitListByClass();
   m_signal_FromAppDomainChanged.emit();
 }
 
@@ -282,7 +281,6 @@ openfluid::core::CoreRepository* DomainStructureModelSub::getCoreRepos()
 {
   return DomainStructureModelImpl::getCoreRepos();
 }
-
 
 // =====================================================================
 // =====================================================================

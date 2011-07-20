@@ -73,10 +73,14 @@ class DomainIDataAdapter: public sigc::trackable
 
     DomainIDataView& m_View;
 
+    bool m_hasIdSelectionToBeStored;
+
     void whenDataEdited(const Glib::ustring PathString,
         const std::string NewText, std::string DataName, int ColIndex);
 
     void whenDataChanged();
+
+    void whenUnitSelectionChanged();
 
   public:
 

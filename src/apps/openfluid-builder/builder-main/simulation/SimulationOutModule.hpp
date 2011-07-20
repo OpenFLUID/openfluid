@@ -58,9 +58,9 @@
 #include "ProjectWorkspaceModule.hpp"
 
 class SimulOutFilesComponent;
-class SimulOutFileDescComponent;
 class SimulOutSetsComponent;
-class SimulOutSetDescComponent;
+class SimulOutFilesAddEditDialog;
+class SimulOutSetsAddEditDialog;
 class SimulOutCoordinator;
 class BuilderListToolBox;
 
@@ -72,11 +72,13 @@ class SimulationOutModule: public ProjectWorkspaceModule
   protected:
 
     SimulOutFilesComponent* mp_SimulOutFilesMVP;
-    SimulOutFileDescComponent* mp_SimulOutFileDescMVP;
+    SimulOutFilesAddEditDialog* mp_OutFilesDialog;
     BuilderListToolBox* mp_OutFilesListToolBox;
+
     SimulOutSetsComponent* mp_SimulOutSetsMVP;
-    SimulOutSetDescComponent* mp_SimulOutSetDescMVP;
+    SimulOutSetsAddEditDialog* mp_OutSetsDialog;
     BuilderListToolBox* mp_OutSetsListToolBox;
+
     SimulOutCoordinator* mp_Coordinator;
 
     sigc::signal<void> m_signal_SimulationOutChanged;

@@ -46,19 +46,189 @@
  */
 
 /**
- \file DomainUnitCreationView.cpp
+ \file EngineHelper.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainUnitCreationView.hpp"
+#include "EngineHelper.hpp"
 
-#include <glibmm/i18n.h>
+#include <boost/foreach.hpp>
 
-void DomainUnitCreationViewImpl::onClassChanged()
+#include <openfluid/core/DateTime.hpp>
+
+// =====================================================================
+// =====================================================================
+
+
+std::set<std::string> EngineHelper::getClassNames(
+    openfluid::core::CoreRepository* CoreRepos)
 {
-  m_signal_ClassChanged.emit();
+  std::set<std::string> ClassNames;
+
+  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
+      CoreRepos->getUnitsByClass()->begin(); it
+      != CoreRepos->getUnitsByClass()->end(); ++it)
+  {
+    if (!it->second.getList()->empty())
+      ClassNames.insert(it->first);
+  }
+
+  return ClassNames;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::set<int> EngineHelper::getIDs(openfluid::core::CoreRepository* CoreRepos,
+    std::string ClassName)
+{
+  std::set<int> IDs;
+
+  if (CoreRepos->getUnits(ClassName) != NULL)
+  {
+    std::list<openfluid::core::Unit>* p_Units =
+        CoreRepos->getUnits(ClassName)->getList();
+
+    for (std::list<openfluid::core::Unit>::iterator it = p_Units->begin(); it
+        != p_Units->end(); ++it)
+      IDs.insert(static_cast<int> (it->getID()));
+  }
+
+  return IDs;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::set<std::string> EngineHelper::getProducedVarNames(std::string ClassName,
+    openfluid::machine::ModelInstance* ModelInstance)
+{
+  std::set<std::string> VarNames;
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {
+    if(Var.UnitClass == ClassName)
+    VarNames.insert(Var.DataName);
+  }
+}
+
+return VarNames;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::set<std::string> EngineHelper::getProducedScalarVarNames(
+    std::string ClassName, openfluid::machine::ModelInstance* ModelInstance)
+{
+  std::set<std::string> VarNames;
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {
+    if(Var.UnitClass == ClassName && !openfluid::tools::IsVectorNamedVariable(Var.DataName))
+    VarNames.insert(Var.DataName);
+  }
+}
+
+return VarNames;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::set<std::string> EngineHelper::getProducedVectorVarNames(
+    std::string ClassName, openfluid::machine::ModelInstance* ModelInstance)
+{
+  std::set<std::string> VarNames;
+
+  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
+{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {
+    if(Var.UnitClass == ClassName && openfluid::tools::IsVectorNamedVariable(Var.DataName))
+    VarNames.insert(Var.DataName);
+  }
+}
+
+return VarNames;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool EngineHelper::hasAtLeastAProducedVariable(
+    openfluid::machine::ModelInstance* ModelInstance,
+    openfluid::core::CoreRepository* CoreRepos)
+{
+  BOOST_FOREACH(std::string ClassName, EngineHelper::getClassNames(CoreRepos))
+{  if(!EngineHelper::getProducedVarNames(ClassName,ModelInstance).empty())
+  return true;
+}
+
+return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string EngineHelper::minimiseInfoString(std::string InfoString)
+{
+  std::size_t i = InfoString.find("(sent by");
+  if (i != std::string::npos)
+  {
+    Glib::ustring MinimizedStr = InfoString.erase(i, InfoString.length() - i);
+    return MinimizedStr;
+  }
+
+  return InfoString;
+}
+
+// =====================================================================
+// =====================================================================
+
+struct SortById
+{
+    bool operator ()(openfluid::core::Unit& U1, openfluid::core::Unit& U2) const
+    {
+      return (U1.getID() <= U2.getID());
+    }
+};
+
+void EngineHelper::sortUnitsCollectionById(
+    openfluid::core::UnitsCollection& Coll)
+{
+  Coll.getList()->sort(SortById());
+}
+
+// =====================================================================
+// =====================================================================
+
+struct SortByDateTime
+{
+    bool operator ()(openfluid::core::Event& E1, openfluid::core::Event& E2) const
+    {
+      return (E1.getDateTime() <= E2.getDateTime());
+    }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+void EngineHelper::sortEventsListByDateTime(
+    openfluid::core::EventsList_t& Events)
+{
+  Events.sort(SortByDateTime());
 }
 
 
@@ -66,189 +236,13 @@ void DomainUnitCreationViewImpl::onClassChanged()
 // =====================================================================
 
 
-void DomainUnitCreationViewImpl::onIdChanged()
+bool EngineHelper::isEmptyString(std::string Str)
 {
-  m_signal_IdChanged.emit();
+  for (unsigned int i = 0; i < Str.size(); i++)
+  {
+    if (!std::isspace(Str[i]))
+      return false;
+  }
+
+  return true;
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::onOkButtonClicked()
-{
-  m_signal_SaveAsked.emit();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-DomainUnitCreationViewImpl::DomainUnitCreationViewImpl()
-{
-  Gtk::Label* ClassLabel = Gtk::manage(new Gtk::Label(_("Unit class")));
-
-  mp_ClassComboEntry = Gtk::manage(new Gtk::ComboBoxEntryText());
-  mp_ClassComboEntry->get_entry()->signal_changed().connect(sigc::mem_fun(
-      *this, &DomainUnitCreationViewImpl::onClassChanged));
-
-  Gtk::Label* IdLabel = Gtk::manage(new Gtk::Label(_("ID")));
-
-  mp_IdSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_IdSpin->set_range(1.0, 9999.0);
-  mp_IdSpin->set_increments(1, 10);
-  mp_IdSpin->set_numeric(true);
-  mp_IdSpin->signal_value_changed().connect(sigc::mem_fun(*this,
-      &DomainUnitCreationViewImpl::onIdChanged));
-
-  mp_InfoTable = Gtk::manage(new Gtk::Table());
-  mp_InfoTable->attach(*ClassLabel, 0, 1, 0, 1);
-  mp_InfoTable->attach(*IdLabel, 0, 1, 1, 2);
-  mp_InfoTable->attach(*mp_ClassComboEntry, 1, 2, 0, 1);
-  mp_InfoTable->attach(*mp_IdSpin, 1, 2, 1, 2);
-
-  mp_Dialog = new Gtk::Dialog();
-  mp_Dialog->get_vbox()->pack_start(*mp_InfoTable);
-
-  mp_CancelCreateButton = mp_Dialog->add_button(Gtk::Stock::CANCEL,
-      Gtk::RESPONSE_CANCEL);
-
-  mp_OkCreateButton = Gtk::manage(new Gtk::Button(Gtk::Stock::OK));
-  mp_OkCreateButton->signal_clicked().connect(sigc::mem_fun(*this,
-      &DomainUnitCreationViewImpl::onOkButtonClicked));
-  mp_Dialog->get_action_area()->pack_start(*mp_OkCreateButton);
-
-  mp_Dialog->set_title(_("Unit creation"));
-
-  mp_Dialog->show_all_children();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> DomainUnitCreationViewImpl::signal_ClassChanged()
-{
-  return m_signal_ClassChanged;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> DomainUnitCreationViewImpl::signal_IdChanged()
-{
-  return m_signal_IdChanged;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> DomainUnitCreationViewImpl::signal_SaveAsked()
-{
-  return m_signal_SaveAsked;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::setClassNames(
-    std::vector<std::string> ClassNames)
-{
-  mp_ClassComboEntry->clear_items();
-  for (unsigned int i = 0; i < ClassNames.size(); i++)
-    mp_ClassComboEntry->append_text(ClassNames[i]);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::setClass(std::string ClassName)
-{
-  mp_ClassComboEntry->get_entry()->set_text(ClassName);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::setId(int Id)
-{
-  mp_IdSpin->set_value(Id);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string DomainUnitCreationViewImpl::getClassName()
-{
-  return mp_ClassComboEntry->get_entry()->get_text();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-int DomainUnitCreationViewImpl::getId()
-{
-  return mp_IdSpin->get_value_as_int();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::closeDialog()
-{
-  mp_Dialog->hide();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::showDialog()
-{
-  if (mp_Dialog->run() == Gtk::RESPONSE_CANCEL)
-    closeDialog();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* DomainUnitCreationViewImpl::asWidget()
-{
-  return mp_InfoTable;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitCreationViewImpl::showErrorMessageDialog(std::string MessageText)
-{
-  Gtk::MessageDialog Dialog(MessageText, false, Gtk::MESSAGE_ERROR,
-      Gtk::BUTTONS_OK);
-  if (Dialog.run())
-    Dialog.hide();
-}
-

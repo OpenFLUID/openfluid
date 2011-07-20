@@ -73,10 +73,13 @@ void DomainIDataAdapter::whenDataEdited(const Glib::ustring PathString,
 
 DomainIDataAdapter::DomainIDataAdapter(DomainIDataAdapterModel& Model,
     DomainIDataView& View) :
-  m_Model(Model), m_View(View)
+  m_Model(Model), m_View(View), m_hasIdSelectionToBeStored(false)
 {
   m_View.signal_DataEdited().connect(sigc::mem_fun(*this,
       &DomainIDataAdapter::whenDataEdited));
+
+  m_View.signal_UnitSelectionChanged().connect(sigc::mem_fun(*this,
+      &DomainIDataAdapter::whenUnitSelectionChanged));
 
   m_Model.signal_DataChanged().connect(sigc::mem_fun(*this,
       &DomainIDataAdapter::whenDataChanged));
@@ -95,6 +98,16 @@ void DomainIDataAdapter::whenDataChanged()
 // =====================================================================
 
 
+void DomainIDataAdapter::whenUnitSelectionChanged()
+{
+  if (m_hasIdSelectionToBeStored)
+    m_Model.setSelectedUnit(m_View.getSelectedUnitIter());
+}
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> DomainIDataAdapter::signal_FromUserDataEdited()
 {
   return m_signal_FromUserDataChanged;
@@ -106,8 +119,13 @@ sigc::signal<void> DomainIDataAdapter::signal_FromUserDataEdited()
 
 void DomainIDataAdapter::dataInit(openfluid::core::UnitsCollection* UnitsColl)
 {
-  m_Model.dataInit(UnitsColl);
+  m_hasIdSelectionToBeStored = false;
 
+  m_Model.dataInit(UnitsColl);
   m_View.setTreeModel(m_Model.getTreeModel(), m_Model.getColumns());
+
+  m_hasIdSelectionToBeStored = true;
+
+  m_View.requestUnitSelection(m_Model.getRequestedUnitSelection());
 }
 

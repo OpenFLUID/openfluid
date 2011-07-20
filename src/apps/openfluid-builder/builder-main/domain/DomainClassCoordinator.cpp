@@ -59,6 +59,7 @@
 #include "DomainIDataModel.hpp"
 #include "DomainIDataAddDialog.hpp"
 #include "DomainIDataRemoveDialog.hpp"
+#include "DomainIDataEditDialog.hpp"
 #include "DomainEventsModel.hpp"
 #include "BuilderListToolBox.hpp"
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
@@ -79,7 +80,8 @@ void DomainClassCoordinator::updateIDataListToolBox()
 void DomainClassCoordinator::whenAddIDataAsked()
 {
   std::pair<std::string, std::string> Data = m_IDataAddDialog.show();
-  m_IDataModel.addData(Data);
+
+  m_IDataModel.addData(Data.first,Data.second);
 
   updateIDataListToolBox();
 }
@@ -100,10 +102,22 @@ void DomainClassCoordinator::whenRemoveIDataAsked()
 // =====================================================================
 
 
+void DomainClassCoordinator::whenEditIDataAsked()
+{
+  std::pair<std::string, std::string> Data = m_IDataEditDialog.show();
+
+  m_IDataModel.changeDataName(Data.first,Data.second);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void DomainClassCoordinator::whenIDataChanged()
 {
   m_IDataAddDialog.update();
   m_IDataRemoveDialog.update();
+  m_IDataEditDialog.update();
 
   m_signal_DomainClassChanged.emit();
 }
@@ -132,16 +146,20 @@ void DomainClassCoordinator::whenRemoveEventAsked()
 
 DomainClassCoordinator::DomainClassCoordinator(DomainIDataModel& IDataModel,
     BuilderListToolBox& IDataListToolBox, DomainIDataAddDialog& IDataAddDialog,
-    DomainIDataRemoveDialog& IDataRemoveDialog, DomainEventsModel& EventsModel,
+    DomainIDataRemoveDialog& IDataRemoveDialog,
+    DomainIDataEditDialog& IDataEditDialog, DomainEventsModel& EventsModel,
     BuilderListToolBox& EventsListToolBox) :
   m_IDataModel(IDataModel), m_IDataListToolBox(IDataListToolBox),
       m_IDataAddDialog(IDataAddDialog), m_IDataRemoveDialog(IDataRemoveDialog),
-      m_EventsModel(EventsModel), m_EventsListToolBox(EventsListToolBox)
+      m_IDataEditDialog(IDataEditDialog), m_EventsModel(EventsModel),
+      m_EventsListToolBox(EventsListToolBox)
 {
   m_IDataListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenAddIDataAsked));
   m_IDataListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenRemoveIDataAsked));
+  m_IDataListToolBox.signal_EditCommandAsked().connect(sigc::mem_fun(*this,
+      &DomainClassCoordinator::whenEditIDataAsked));
 
   m_IDataModel.signal_IDataChanged().connect(sigc::mem_fun(*this,
       &DomainClassCoordinator::whenIDataChanged));
@@ -173,6 +191,7 @@ void DomainClassCoordinator::setEngineRequirements(
 
   m_IDataAddDialog.setEngineRequirements(SimBlob.getCoreRepository());
   m_IDataRemoveDialog.setEngineRequirements(SimBlob.getCoreRepository());
+  m_IDataEditDialog.setEngineRequirements(SimBlob.getCoreRepository());
 
   m_EventsModel.setEngineRequirements(SimBlob.getCoreRepository());
 }
@@ -186,6 +205,7 @@ void DomainClassCoordinator::setSelectedClassFromApp(std::string ClassName)
   m_IDataModel.setClass(ClassName);
   m_IDataAddDialog.setClass(ClassName);
   m_IDataRemoveDialog.setClass(ClassName);
+  m_IDataEditDialog.setClass(ClassName);
   m_EventsModel.setClass(ClassName);
 
   updateIDataListToolBox();
@@ -200,6 +220,7 @@ void DomainClassCoordinator::update()
   m_IDataModel.update();
   m_IDataAddDialog.update();
   m_IDataRemoveDialog.update();
+  m_IDataEditDialog.update();
 
   updateIDataListToolBox();
 }

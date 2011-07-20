@@ -57,11 +57,9 @@
 #include <glibmm/i18n.h>
 
 #include "DomainStructureModel.hpp"
-#include "DomainUnitEditionModel.hpp"
-#include "DomainUnitCreationModel.hpp"
+#include "DomainUnitAddEditDialog.hpp"
 
 #include "BuilderListToolBox.hpp"
-
 
 // =====================================================================
 // =====================================================================
@@ -81,13 +79,19 @@ void DomainStructureCoordinator::updateStructureListToolBox()
 
 void DomainStructureCoordinator::whenAddUnitAsked()
 {
-  m_UnitCreationModel.initialize(m_StructureModel.getSelectedClass());
-  m_UnitCreationModel.showDialog();
-  m_StructureModel.addUnit(m_UnitCreationModel.getUnit());
-  delete m_UnitCreationModel.getUnit(); // Corerepos.addUnit create new Unit ptr. //TODO: use smart ptr
-  updateStructureListToolBox();
+  openfluid::core::Unit* NewUnit = m_UnitAddEditDialog.show(
+      m_StructureModel.getSelectedClass());
 
-  m_signal_DomainChanged.emit();
+  if (NewUnit)
+  {
+    m_StructureModel.addUnit(NewUnit);
+
+    updateStructureListToolBox();
+
+    m_UnitAddEditDialog.update();
+
+    m_signal_DomainChanged.emit();
+  }
 }
 
 // =====================================================================
@@ -97,7 +101,10 @@ void DomainStructureCoordinator::whenAddUnitAsked()
 void DomainStructureCoordinator::whenRemoveUnitAsked()
 {
   m_StructureModel.deleteSelectedUnit();
+
   updateStructureListToolBox();
+
+  m_UnitAddEditDialog.update();
 
   m_signal_DomainChanged.emit();
 }
@@ -108,11 +115,15 @@ void DomainStructureCoordinator::whenRemoveUnitAsked()
 
 void DomainStructureCoordinator::whenEditUnitAsked()
 {
-  m_UnitEditionModel.initialize(*m_StructureModel.getSelectedUnit());
-  m_UnitEditionModel.showDialog();
-  m_StructureModel.alterSelectedUnit();
+  openfluid::core::Unit* AlteredUnit = m_UnitAddEditDialog.show(
+      m_StructureModel.getSelectedClass(), m_StructureModel.getSelectedUnit());
 
-  m_signal_DomainChanged.emit(); //? useful
+  if (AlteredUnit)
+  {
+    m_StructureModel.update();
+
+    m_signal_DomainChanged.emit();
+  }
 }
 
 // =====================================================================
@@ -130,12 +141,10 @@ void DomainStructureCoordinator::whenStructureSelectionChanged()
 
 DomainStructureCoordinator::DomainStructureCoordinator(
     DomainStructureModel& StructureModel,
-    DomainUnitEditionModel& UnitEditionModel,
-    DomainUnitCreationModel& UnitCreationModel,
+    DomainUnitAddEditDialog& UnitAddEditDialog,
     BuilderListToolBox& StructureListToolBox) :
-  m_StructureModel(StructureModel), m_UnitEditionModel(UnitEditionModel),
-      m_UnitCreationModel(UnitCreationModel), m_StructureListToolBox(
-          StructureListToolBox)
+  m_StructureModel(StructureModel), m_UnitAddEditDialog(UnitAddEditDialog),
+      m_StructureListToolBox(StructureListToolBox)
 {
   m_StructureListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &DomainStructureCoordinator::whenAddUnitAsked));
@@ -146,8 +155,9 @@ DomainStructureCoordinator::DomainStructureCoordinator(
 
   m_StructureModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(
       *this, &DomainStructureCoordinator::whenStructureSelectionChanged));
+  m_StructureModel.signal_Activated().connect(sigc::mem_fun(
+        *this, &DomainStructureCoordinator::whenEditUnitAsked));
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -158,7 +168,6 @@ sigc::signal<void> DomainStructureCoordinator::signal_DomainChanged()
   return m_signal_DomainChanged;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -168,11 +177,9 @@ void DomainStructureCoordinator::setEngineRequirements(
     openfluid::machine::SimulationBlob& SimBlob)
 {
   m_StructureModel.setEngineRequirements(SimBlob.getCoreRepository());
-  m_UnitEditionModel.setEngineRequirements(SimBlob.getCoreRepository());
-  m_UnitCreationModel.setEngineRequirements(SimBlob.getCoreRepository());
+  m_UnitAddEditDialog.setEngineRequirements(SimBlob.getCoreRepository());
   updateStructureListToolBox();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -181,4 +188,5 @@ void DomainStructureCoordinator::setEngineRequirements(
 void DomainStructureCoordinator::update()
 {
   m_StructureModel.update();
+  m_UnitAddEditDialog.update();
 }

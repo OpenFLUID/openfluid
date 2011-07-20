@@ -60,34 +60,65 @@
 class DomainIDataColumns: public Gtk::TreeModel::ColumnRecord
 {
   private:
-    std::map<std::string, Gtk::TreeModelColumn<std::string>* > m_ByTitleColumn;
+
+    std::map<std::string, Gtk::TreeModelColumn<std::string>*> m_ByTitleColumn;
+
     Gtk::TreeModelColumn<int> m_Id;
+
   public:
+
     DomainIDataColumns()
     {
       add(m_Id);
     }
+
     void addWithTitle(std::string ColumnTitle,
         Gtk::TreeModelColumn<std::string>& Column)
     {
       add(Column);
       m_ByTitleColumn[ColumnTitle] = &Column;
     }
+
     Gtk::TreeModelColumn<std::string>* getColumnWithTitle(
         std::string ColumnTitle)
     {
-      std::map<std::string, Gtk::TreeModelColumn<std::string>* >::iterator it = m_ByTitleColumn.find(ColumnTitle);
-      if(it != m_ByTitleColumn.end())
+      std::map<std::string, Gtk::TreeModelColumn<std::string>*>::iterator it =
+          m_ByTitleColumn.find(ColumnTitle);
+      if (it != m_ByTitleColumn.end())
         return it->second;
-      return (Gtk::TreeModelColumn<std::string>*)0;
+      return (Gtk::TreeModelColumn<std::string>*) 0;
     }
+
     Gtk::TreeModelColumn<int>* getIdColumn()
     {
       return &m_Id;
     }
-    std::map<std::string, Gtk::TreeModelColumn<std::string>* > getByTitleColumns()
+
+    std::map<std::string, Gtk::TreeModelColumn<std::string>*> getByTitleColumns()
     {
       return m_ByTitleColumn;
+    }
+
+    std::string getColumnTitleWithIndex(int ColumnIndex)
+    {
+      for (std::map<std::string, Gtk::TreeModelColumn<std::string>*>::iterator
+          it = m_ByTitleColumn.begin(); it != m_ByTitleColumn.end(); ++it)
+      {
+        if (it->second->index() == ColumnIndex)
+          return it->first;
+      }
+
+      return "";
+    }
+
+    int getColumnIndexWithTitle(std::string ColumnTitle)
+    {
+      Gtk::TreeModelColumn<std::string>* Column = getColumnWithTitle(ColumnTitle);
+
+      if(Column)
+        return Column->index();
+
+      return -1;
     }
 };
 

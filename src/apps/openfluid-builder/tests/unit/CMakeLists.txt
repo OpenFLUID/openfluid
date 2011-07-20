@@ -132,17 +132,9 @@ ADD_BUILDER_UNITTEST(builder-unittest-DomainStructurePresenter
                      builder_unittest_DomainStructurePresenter_TEST
                      DomainStructurePresenter_TEST.cpp)             
 
-ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitEditionModel
-                     builder_unittest_DomainUnitEditionModel_TEST
-                     DomainUnitEditionModel_TEST.cpp)
-                     
-ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitEditionPresenter
-                     builder_unittest_DomainUnitEditionPresenter_TEST
-                     DomainUnitEditionPresenter_TEST.cpp)
-                     
-ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitCreationPresenter
-                     builder_unittest_DomainUnitCreationPresenter_TEST
-                     DomainUnitCreationPresenter_TEST.cpp)
+ADD_BUILDER_UNITTEST(builder-unittest-DomainUnitAddEditDialog
+                     builder_unittest_DomainUnitAddEditDialog_TEST
+                     DomainUnitAddEditDialog_TEST.cpp)
 
 ADD_BUILDER_UNITTEST(builder-unittest-DomainIDataModel
                      builder_unittest_DomainIDataModel_TEST
@@ -174,10 +166,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-SimulOutFilesPresenter
                      builder_unittest_SimulOutFilesPresenter_TEST
                      SimulOutFilesPresenter_TEST.cpp)
 
-ADD_BUILDER_UNITTEST(builder-unittest-SimulOutFileDescPresenter
-                     builder_unittest_SimulOutFileDescPresenter_TEST
-                     SimulOutFileDescPresenter_TEST.cpp)
-
 ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsModel
                      builder_unittest_SimulOutSetsModel_TEST
                      SimulOutSetsModel_TEST.cpp)
@@ -185,10 +173,6 @@ ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsModel
 ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsPresenter
                      builder_unittest_SimulOutSetsPresenter_TEST
                      SimulOutSetsPresenter_TEST.cpp)
-
-ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetDescPresenter
-                     builder_unittest_SimulOutSetDescPresenter_TEST
-                     SimulOutSetDescPresenter_TEST.cpp)
 
 ### RESULTS ###
 
