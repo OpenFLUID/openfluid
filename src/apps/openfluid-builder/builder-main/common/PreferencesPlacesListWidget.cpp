@@ -78,9 +78,9 @@ PreferencesPlacesListWidget::PreferencesPlacesListWidget()
   mp_ToolBox->setAddCommandVisible();
   mp_ToolBox->setRemoveCommandVisible();
 
-  mp_ToolBox->setAddCommandTooltipText(_("Add a place"));
+  mp_ToolBox->setAddCommandTooltipText(_("Add a marketplace"));
   mp_ToolBox->setRemoveCommandTooltipText(_(
-      "Remove the selected place"));
+      "Remove the selected marketplace"));
 
   mp_ToolBox->signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &PreferencesPlacesListWidget::whenAddPlaceAsked));
@@ -110,13 +110,13 @@ PreferencesPlacesListWidget::PreferencesPlacesListWidget()
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  mp_NameLabel = Gtk::manage(new Gtk::Label(_("Place Name:"), 0, 0.5));
+  mp_NameLabel = Gtk::manage(new Gtk::Label(_("Marketplace Name:"), 0, 0.5));
   mp_NameEntry = Gtk::manage(new Gtk::Entry());
   mp_NameEntry->set_activates_default(true);
   mp_NameEntry->signal_changed().connect(sigc::mem_fun(*this,
       &PreferencesPlacesListWidget::whenEntryChanged));
 
-  mp_UrlLabel = Gtk::manage(new Gtk::Label(_("Place Url:"), 0, 0.5));
+  mp_UrlLabel = Gtk::manage(new Gtk::Label(_("Marketplace URL:"), 0, 0.5));
   mp_UrlEntry = Gtk::manage(new Gtk::Entry());
   mp_UrlEntry->set_activates_default(true);
   mp_UrlEntry->signal_changed().connect(sigc::mem_fun(*this,
@@ -202,11 +202,11 @@ void PreferencesPlacesListWidget::whenEntryChanged()
           openfluid::guicommon::PreferencesManager::getInstance()->getMarketplaces();
 
   if (mp_NameEntry->get_text().empty())
-    mp_InfoBarLabel->set_text(_("Place name cannot be empty"));
+    mp_InfoBarLabel->set_text(_("The marketplace name cannot be empty"));
   else if (Places.find(mp_NameEntry->get_text()) != Places.end())
-    mp_InfoBarLabel->set_text(_("This place name already exists"));
+    mp_InfoBarLabel->set_text(_("This marketplace name already exists"));
   else if (mp_UrlEntry->get_text().empty())
-    mp_InfoBarLabel->set_text(_("Place url cannot be empty"));
+    mp_InfoBarLabel->set_text(_("The marketplace URL cannot be empty"));
   else
     m_IsValid = true;
 

@@ -103,9 +103,9 @@ PreferencesPathListWidget::PreferencesPathListWidget()
   mp_ToolBox->setRemoveCommandTooltipText(_(
       "Remove the selected directory"));
   mp_ToolBox->setUpCommandTooltipText(_(
-      "Set the selected directory to be scanned before"));
+      "Move up the selected directory"));
   mp_ToolBox->setDownCommandTooltipText(_(
-      "Set the selected directory to be scanned after"));
+      "Move down the selected directory"));
 
   mp_ToolBox->signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &PreferencesPathListWidget::whenAddPathAsked));

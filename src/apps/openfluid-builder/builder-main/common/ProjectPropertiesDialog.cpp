@@ -118,7 +118,7 @@ ProjectPropertiesDialog::ProjectPropertiesDialog()
   MainTable->attach(*Gtk::manage(new Gtk::Label(_("Last modification date:"),
       1, 0.5)), 0, 1, 5, 6, Gtk::FILL, Gtk::SHRINK);
   MainTable->attach(*mp_ModificationDateValueLabel, 1, 2, 5, 6);
-  MainTable->attach(*Gtk::manage(new Gtk::Label(_("Use incremental outputs:"),
+  MainTable->attach(*Gtk::manage(new Gtk::Label(_("Enable incremental outputs:"),
       1, 0.5)), 0, 1, 6, 7, Gtk::FILL, Gtk::SHRINK);
   MainTable->attach(*mp_IncrementalOutputCheckButton, 1, 2, 6, 7);
   MainTable->set_border_width(8);

@@ -80,7 +80,7 @@ sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_FunctionsChanged()
 void ModelAvailFctAdapterModelImpl::createTitleRows()
 {
   mp_PluggableTitleRowRef = mref_TreeModel->appendATitleRow(_(
-      "Simulation Functions"));
+      "Simulation functions"));
   mp_GeneratorTitleRowRef = mref_TreeModel->appendATitleRow(_("Generators"));
 }
 

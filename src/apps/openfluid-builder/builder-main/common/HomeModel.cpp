@@ -67,7 +67,7 @@ HomeModelImpl::HomeModelImpl()
   m_OFVersionTxt
       = "OpenFLUID v" + openfluid::config::FULL_VERSION + std::string(
           "\n\n<span color='#FBAF40' font-style='italic'>")
-          + _("This is a preview release of OpenFLUID-builder software.\nSome features have been temporarily disabled.\nUnexpected crashes may happen.")
+          + _("This is a preview release of OpenFLUID-Builder software.\nSome features have been temporarily disabled.")
           + std::string("</span>");
   m_OFWebSite = "http://www.umr-lisah.fr/openfluid/";
 }

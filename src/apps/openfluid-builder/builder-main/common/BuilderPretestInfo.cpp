@@ -161,7 +161,7 @@ void BuilderPretestInfo::checkRunDate()
   if (mp_RunDesc->getBeginDate() >= mp_RunDesc->getEndDate())
   {
     RunConfig = false;
-    RunConfigMsg = _("Run end date is not later than run begin date");
+    RunConfigMsg = _("End date must be after begin date in run period");
   }
 }
 

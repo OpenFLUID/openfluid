@@ -116,7 +116,7 @@ void ModelFctFileRow::onFileButtonClicked()
         if (ChoosedFile != m_FilePath
             && openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
                 Glib::ustring::compose(
-                    _("File %1 already exists,\ndo you really want to overwrite it ?"),
+                    _("File %1 already exists,\nDo you really want to overwrite it ?"),
                     m_FileName)))
         {
           boost::filesystem::remove(m_FilePath);
