@@ -70,7 +70,9 @@
 
 void DomainClassCoordinator::updateIDataListToolBox()
 {
-  m_IDataListToolBox.setRemoveCommandAvailable(!m_IDataModel.isEmptyDataList());
+  bool HasAtLeastAnIData = !m_IDataModel.isEmptyDataList();
+  m_IDataListToolBox.setRemoveCommandAvailable(HasAtLeastAnIData);
+  m_IDataListToolBox.setEditCommandAvailable(HasAtLeastAnIData);
 }
 
 // =====================================================================
@@ -81,7 +83,7 @@ void DomainClassCoordinator::whenAddIDataAsked()
 {
   std::pair<std::string, std::string> Data = m_IDataAddDialog.show();
 
-  m_IDataModel.addData(Data.first,Data.second);
+  m_IDataModel.addData(Data.first, Data.second);
 
   updateIDataListToolBox();
 }
@@ -106,7 +108,7 @@ void DomainClassCoordinator::whenEditIDataAsked()
 {
   std::pair<std::string, std::string> Data = m_IDataEditDialog.show();
 
-  m_IDataModel.changeDataName(Data.first,Data.second);
+  m_IDataModel.changeDataName(Data.first, Data.second);
 }
 
 // =====================================================================
