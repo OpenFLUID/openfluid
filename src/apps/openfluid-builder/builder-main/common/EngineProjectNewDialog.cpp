@@ -192,7 +192,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
       &EngineProjectNewDialog::onCheckToggled));
 
   Gtk::TreeView::Column* MyColumn = Gtk::manage(new Gtk::TreeView::Column(
-      "Files to import"));
+      _("Files to import")));
   MyColumn->pack_start(*MyCellRend, false);
   MyColumn->pack_start(m_Columns.m_FileName);
   MyColumn->add_attribute(*MyCellRend, "active", m_Columns.m_IsSelected);

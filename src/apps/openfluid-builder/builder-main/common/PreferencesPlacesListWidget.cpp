@@ -70,8 +70,8 @@ PreferencesPlacesListWidget::PreferencesPlacesListWidget()
   mref_PlacesModel = Gtk::ListStore::create(m_PlacesColumns);
 
   mp_PlacesTreeView = Gtk::manage(new Gtk::TreeView(mref_PlacesModel));
-  mp_PlacesTreeView->append_column("Name", m_PlacesColumns.m_Name);
-  mp_PlacesTreeView->append_column("Url", m_PlacesColumns.m_Path);
+  mp_PlacesTreeView->append_column(_("Name"), m_PlacesColumns.m_Name);
+  mp_PlacesTreeView->append_column("URL", m_PlacesColumns.m_Path);
   mp_PlacesTreeView->set_visible(true);
 
   mp_ToolBox = new BuilderListToolBoxImpl();

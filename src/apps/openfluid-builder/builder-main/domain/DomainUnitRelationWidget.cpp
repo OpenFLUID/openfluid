@@ -99,7 +99,7 @@ DomainUnitRelationWidget::DomainUnitRelationWidget(Glib::ustring RelationName,
   MainBox->set_visible(true);
 
   mp_MainExpander = Gtk::manage(new Gtk::Expander(Glib::ustring::compose(
-      _("%1 units"), RelationName)));
+      _("\"%1\" units"), RelationName)));
   mp_MainExpander->add(*MainBox);
   mp_MainExpander->set_visible(true);
 

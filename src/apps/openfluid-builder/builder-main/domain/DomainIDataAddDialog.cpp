@@ -68,7 +68,7 @@
 DomainIDataAddDialog::DomainIDataAddDialog() :
   mp_CoreRepos(0), m_ClassName(""), m_IsValid(false)
 {
-  mp_Dialog = new Gtk::Dialog("Adding Inputdata field");
+  mp_Dialog = new Gtk::Dialog(_("Adding Inputdata field"));
   mp_Dialog->set_default_size(10, 10);
 
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
@@ -93,9 +93,10 @@ DomainIDataAddDialog::DomainIDataAddDialog() :
   mp_DefaultValueEntry->set_activates_default(true);
 
   Gtk::Table* Table = Gtk::manage(new Gtk::Table());
-  Table->attach(*NameLabel, 0, 1, 0, 1);
+  Table->set_col_spacings(3);
+  Table->attach(*NameLabel, 0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
   Table->attach(*mp_NameEntry, 1, 2, 0, 1);
-  Table->attach(*DefaultValueLabel, 0, 1, 1, 2);
+  Table->attach(*DefaultValueLabel, 0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
   Table->attach(*mp_DefaultValueEntry, 1, 2, 1, 2);
 
   mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
@@ -125,23 +126,25 @@ void DomainIDataAddDialog::onChanged()
   if (Name == "" || isEmptyString(Name))
   {
     mp_InfoBarLabel->set_text(_("Inputdata name can not be empty"));
-  } else if (std::find(m_IDataNames.begin(), m_IDataNames.end(), Name)
+  }
+  else if (std::find(m_IDataNames.begin(), m_IDataNames.end(), Name)
       != m_IDataNames.end())
   {
     mp_InfoBarLabel->set_text(_("Inputdata name already exists"));
-  } else if (Val == "" || isEmptyString(Val))
+  }
+  else if (Val == "" || isEmptyString(Val))
   {
     mp_InfoBarLabel->set_text(_("Default value cannot be empty"));
-  } else
+  }
+  else
   {
     m_IsValid = true;
   }
 
   mp_InfoBar->set_visible(!m_IsValid);
   mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, m_IsValid);
-  mp_Dialog->resize(10,10);
+  mp_Dialog->resize(10, 10);
 }
-
 
 // =====================================================================
 // =====================================================================
