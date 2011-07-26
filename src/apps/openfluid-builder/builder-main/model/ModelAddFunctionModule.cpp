@@ -154,18 +154,22 @@ openfluid::machine::SignatureItemInstance* ModelAddFunctionModule::showDialog()
 
 void ModelAddFunctionModule::whenAvailFctSelectionChanged()
 {
-  std::string SelectedFctId =
-      mp_Coordinator->getSelectedSignature()->Signature->ID;
   bool SelectedFctAlreadyInModel = false;
 
-  std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
-  for (it = mp_ModelInstance->getItems().begin(); it
-      != mp_ModelInstance->getItems().end(); ++it)
+  if (mp_Coordinator->getSelectedSignature())
   {
-    if ((*it)->Signature->ID == SelectedFctId)
+    std::string SelectedFctId =
+        mp_Coordinator->getSelectedSignature()->Signature->ID;
+
+    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
+    for (it = mp_ModelInstance->getItems().begin(); it
+        != mp_ModelInstance->getItems().end(); ++it)
     {
-      SelectedFctAlreadyInModel = true;
-      break;
+      if ((*it)->Signature->ID == SelectedFctId)
+      {
+        SelectedFctAlreadyInModel = true;
+        break;
+      }
     }
   }
 

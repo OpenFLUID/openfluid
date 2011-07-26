@@ -46,76 +46,123 @@
  */
 
 /**
- \file DomainIDataAdapter.cpp
+ \file DomainUnitRelationAddDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainIDataAdapter.hpp"
+#include "DomainUnitRelationAddDialog.hpp"
 
-#include "DomainIDataAdapterModel.hpp"
-#include "DomainIDataView.hpp"
+#include <glibmm/i18n.h>
+#include <gtkmm/stock.h>
+
+#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainIDataAdapter::whenDataEdited(const Glib::ustring& NewText,
-    std::string DataName)
+DomainUnitRelationAddDialog::DomainUnitRelationAddDialog() :
+  mp_CoreRepos(0)
 {
-  m_Model.updateData(NewText, DataName);
+  mp_Dialog = new Gtk::Dialog(_("Choose Units to link to"));
 
-  m_signal_FromUserDataChanged.emit();
+  mref_TreeModel = Gtk::TreeStore::create(m_Columns);
+
+  mp_TreeView = Gtk::manage(new Gtk::TreeView(mref_TreeModel));
+
+  mp_TreeView->append_column("Unit", m_Columns.m_Text);
+
+  mp_TreeView->get_column(0)->set_sort_column(m_Columns.m_Id);
+
+  mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+
+  mp_TreeView->expand_all();
+
+  mp_ScrolledWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ScrolledWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ScrolledWin->add(*mp_TreeView);
+
+  mp_Dialog->get_vbox()->pack_start(*mp_ScrolledWin);
+
+  mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
+
+  mp_Dialog->set_default_size(150, 150);
+
+  mp_Dialog->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-DomainIDataAdapter::DomainIDataAdapter(DomainIDataAdapterModel& Model,
-    DomainIDataView& View) :
-  m_Model(Model), m_View(View), m_hasIdSelectionToBeStored(false)
+void DomainUnitRelationAddDialog::setEngineRequirements(
+    openfluid::core::CoreRepository& CoreRepos)
 {
-  m_View.signal_DataEdited().connect(sigc::mem_fun(*this,
-      &DomainIDataAdapter::whenDataEdited));
-
-  m_View.signal_UnitSelectionChanged().connect(sigc::mem_fun(*this,
-      &DomainIDataAdapter::whenUnitSelectionChanged));
+  mp_CoreRepos = &CoreRepos;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainIDataAdapter::whenUnitSelectionChanged()
+void DomainUnitRelationAddDialog::update(std::set<std::string> ClassNames)
 {
-  if (m_hasIdSelectionToBeStored)
-    m_Model.setSelectedUnit(m_View.getSelectedUnitIter());
+  mref_TreeModel->clear();
+
+  for (std::set<std::string>::iterator itClass = ClassNames.begin(); itClass
+      != ClassNames.end(); ++itClass)
+  {
+    Gtk::TreeRow ClassRow = *mref_TreeModel->append();
+    ClassRow[m_Columns.m_Class] = *itClass;
+    ClassRow[m_Columns.m_Text] = *itClass;
+
+    std::set<int> Ids = EngineHelper::getIDs(mp_CoreRepos, *itClass);
+
+    for (std::set<int>::iterator itId = Ids.begin(); itId != Ids.end(); ++itId)
+    {
+      Gtk::TreeRow Row = *mref_TreeModel->append(ClassRow->children());
+      Row[m_Columns.m_Class] = *itClass;
+      Row[m_Columns.m_Id] = *itId;
+      Row[m_Columns.m_Text] = Glib::ustring::compose("%1", *itId);
+    }
+  }
+
+  mp_TreeView->expand_all();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-sigc::signal<void> DomainIDataAdapter::signal_FromUserDataEdited()
+std::list<openfluid::core::Unit*> DomainUnitRelationAddDialog::show()
 {
-  return m_signal_FromUserDataChanged;
+  mp_TreeView->get_selection()->unselect_all();
+
+  std::list<openfluid::core::Unit*> SelectedUnits;
+
+  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  {
+    Gtk::TreeSelection::ListHandle_Path Selecteds =
+        mp_TreeView->get_selection()->get_selected_rows();
+
+    for (Gtk::TreeSelection::ListHandle_Path::iterator it = Selecteds.begin(); it
+        != Selecteds.end(); ++it)
+    {
+      std::string Class = mref_TreeModel->get_iter(*it)->get_value(
+          m_Columns.m_Class);
+      int Id = mref_TreeModel->get_iter(*it)->get_value(m_Columns.m_Id);
+
+      if (Id)
+        SelectedUnits.push_back(mp_CoreRepos->getUnit(Class, Id));
+    }
+  }
+
+  mp_Dialog->hide();
+
+  return SelectedUnits;
 }
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataAdapter::dataInit(openfluid::core::UnitsCollection* UnitsColl)
-{
-  m_hasIdSelectionToBeStored = false;
-
-  m_Model.dataInit(UnitsColl);
-  m_View.setTreeModel(m_Model.getTreeModel(), m_Model.getColumns());
-
-  m_hasIdSelectionToBeStored = true;
-
-  m_View.requestUnitSelection(m_Model.getRequestedUnitSelection());
-}
-

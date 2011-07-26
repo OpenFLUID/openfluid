@@ -63,6 +63,8 @@ class SimulOutSetsAdapter: public sigc::trackable
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     SimulOutSetsAdapterModel& m_Model;
 
     SimulOutSetsView& m_View;
@@ -71,12 +73,16 @@ class SimulOutSetsAdapter: public sigc::trackable
 
     void whenSetSelectionChanged();
 
+    void whenActivated();
+
   public:
 
         SimulOutSetsAdapter(SimulOutSetsAdapterModel& Model,
             SimulOutSetsView& View);
 
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setSets(openfluid::base::OutputDescriptor* OutDesc,
         openfluid::machine::ModelInstance* ModelInstance);

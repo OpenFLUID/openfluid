@@ -105,7 +105,7 @@ bool EventsCollection::addEvent(Event* Ev)
       else
       {
         // event has to be inserted somewhere in the collection
-        std::list<Event>::iterator DEiter;
+        EventsList_t::iterator DEiter;
 
         for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
         {
@@ -132,7 +132,7 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
     EventsCollection *Events)
 {
 
-  std::list<Event>::iterator DEiter;
+  EventsList_t::iterator DEiter;
 
   for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
   {
@@ -152,7 +152,7 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
 
 void EventsCollection::println()
 {
-  std::list<Event>::iterator DEiter;
+  EventsList_t::iterator DEiter;
 
     for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
     {
@@ -167,7 +167,7 @@ void EventsCollection::println()
 
 void EventsCollection::clear(const InstantiationInfo::Type& InstType)
 {
-  std::list<Event>::iterator EventIt = m_Events.begin();
+  EventsList_t::iterator EventIt = m_Events.begin();
 
   while (EventIt != m_Events.end())
   {

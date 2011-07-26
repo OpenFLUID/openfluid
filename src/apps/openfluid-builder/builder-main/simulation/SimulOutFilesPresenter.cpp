@@ -81,6 +81,15 @@ void SimulOutFilesPresenter::whenSelectionChanged()
 // =====================================================================
 
 
+void SimulOutFilesPresenter::whenActivated()
+{
+  m_Model.signal_Activated().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutFilesPresenter::SimulOutFilesPresenter(SimulOutFilesModel& Model,
     SimulOutFilesAdapter& Adapter) :
   m_Model(Model), m_Adapter(Adapter)
@@ -90,4 +99,7 @@ SimulOutFilesPresenter::SimulOutFilesPresenter(SimulOutFilesModel& Model,
 
   m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutFilesPresenter::whenSelectionChanged));
+
+  m_Adapter.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutFilesPresenter::whenActivated));
 }

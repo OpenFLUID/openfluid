@@ -71,6 +71,16 @@ void SimulOutFilesViewImpl::onSelectionChanged()
 // =====================================================================
 
 
+void SimulOutFilesViewImpl::onRowActivated(
+    const Gtk::TreeModel::Path& /*Path*/, Gtk::TreeViewColumn* /*Column*/)
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutFilesViewImpl::SimulOutFilesViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
@@ -82,6 +92,8 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesViewImpl::onSelectionChanged));
+  mp_TreeView->signal_row_activated().connect(sigc::mem_fun(*this,
+      &SimulOutFilesViewImpl::onRowActivated));
 
   mp_TreeView->set_visible(true);
 
@@ -99,6 +111,15 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
 sigc::signal<void> SimulOutFilesViewImpl::signal_FileSelectionChanged()
 {
   return m_signal_FileSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulOutFilesViewImpl::signal_Activated()
+{
+  return m_signal_Activated;
 }
 
 // =====================================================================

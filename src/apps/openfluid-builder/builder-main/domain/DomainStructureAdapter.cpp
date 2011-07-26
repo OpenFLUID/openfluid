@@ -95,6 +95,15 @@ void DomainStructureAdapter::whenUnitSelectionChanged()
 // =====================================================================
 
 
+void DomainStructureAdapter::whenActivated()
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 DomainStructureAdapter::DomainStructureAdapter(
     DomainStructureAdapterModel& Model, DomainStructureView& View) :
   m_Model(Model), m_View(View), m_hasClassSelectionToBeStored(false),
@@ -105,6 +114,9 @@ DomainStructureAdapter::DomainStructureAdapter(
 
   m_View.signal_UnitSelectionChanged().connect(sigc::mem_fun(*this,
       &DomainStructureAdapter::whenUnitSelectionChanged));
+
+  m_View.signal_Activated().connect(sigc::mem_fun(*this,
+      &DomainStructureAdapter::whenActivated));
 }
 
 // =====================================================================
@@ -114,6 +126,15 @@ DomainStructureAdapter::DomainStructureAdapter(
 sigc::signal<void> DomainStructureAdapter::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> DomainStructureAdapter::signal_Activated()
+{
+  return m_signal_Activated;
 }
 
 // =====================================================================
@@ -178,11 +199,3 @@ void DomainStructureAdapter::addUnit(openfluid::core::Unit& Unit)
   m_View.requestUnitSelection(m_Model.getRequestedUnitSelection());
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void DomainStructureAdapter::setSelectedUnitNewPcsOrder(int NewProcessOrder)
-{
-  m_Model.setNewPcsOrder(getSelectedUnitIters(), NewProcessOrder);
-}

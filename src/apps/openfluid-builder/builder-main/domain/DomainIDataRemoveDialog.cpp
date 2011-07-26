@@ -67,24 +67,26 @@
 DomainIDataRemoveDialog::DomainIDataRemoveDialog() :
   mp_CoreRepos(0), m_ClassName("")
 {
-  mp_Dialog = new Gtk::Dialog("Removing Inputdata field");
+  mp_Dialog = new Gtk::Dialog(_("Removing Inputdata"));
 
-  Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
-      _("All values of this data will be destroyed")));
+  //  Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
+  //      _("All values of this data will be destroyed")));
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name"),
+  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name:"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
   Gtk::HBox* HBox = Gtk::manage(new Gtk::HBox());
-  HBox->pack_start(*NameLabel);
+  HBox->pack_start(*NameLabel, Gtk::PACK_SHRINK, 3);
   HBox->pack_start(*mp_Combo);
 
-  mp_Dialog->get_vbox()->pack_start(*HBox, true, true, 10);
+  mp_Dialog->get_vbox()->pack_start(*HBox, Gtk::PACK_SHRINK, 5);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
   mp_Dialog->show_all_children();
 }
@@ -103,8 +105,7 @@ void DomainIDataRemoveDialog::setEngineRequirements(
 // =====================================================================
 
 
-void DomainIDataRemoveDialog::setClass(
-    std::string ClassName)
+void DomainIDataRemoveDialog::setClass(std::string ClassName)
 {
   m_ClassName = ClassName;
 
@@ -125,7 +126,7 @@ void DomainIDataRemoveDialog::update()
     BOOST_FOREACH(std::string DataName,mp_CoreRepos->getUnits(m_ClassName)->getList()->begin()->getInputData()->getInputDataNames())
 {    mp_Combo->append_text(DataName);
   }
-    mp_Combo->set_active(0);
+  mp_Combo->set_active(0);
 }
 
 }

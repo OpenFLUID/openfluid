@@ -78,10 +78,8 @@ class DomainIDataAdapterModel
 
     virtual Gtk::TreeIter getRequestedUnitSelection() = 0;
 
-    virtual void updateData(const Glib::ustring PathString,
-        const std::string NewText, std::string DataName, int ColIndex) = 0;
+    virtual void updateData(const std::string NewText, std::string DataName) = 0;
 
-    virtual sigc::signal<void> signal_DataChanged() = 0;
 };
 
 // =====================================================================
@@ -98,8 +96,6 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 
     Glib::RefPtr<BuilderListStore> mref_ListStore;
 
-    sigc::signal<void> m_signal_DataChanged;
-
     int m_SelectedUnit;
 
     void setFirstUnitSelected();
@@ -112,25 +108,13 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 
     void setSelectedUnit(Gtk::TreeIter Iter);
 
-    sigc::signal<void> signal_DataChanged();
-
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 
     DomainIDataColumns* getColumns();
 
     Gtk::TreeIter getRequestedUnitSelection();
 
-    void updateData(const Glib::ustring PathString, const std::string NewText,
-        std::string DataName, int ColIndex);
-};
-
-// =====================================================================
-// =====================================================================
-
-
-class DomainIDataAdapterModelSub: public DomainIDataAdapterModelImpl
-{
-  public:
+    void updateData(const std::string NewText, std::string DataName);
 
 };
 

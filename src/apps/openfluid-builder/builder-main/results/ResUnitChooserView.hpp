@@ -59,7 +59,6 @@
 
 #include <gtkmm.h>
 
-
 class ResUnitChooserView
 {
   public:
@@ -74,7 +73,7 @@ class ResUnitChooserView
 
     virtual void setVectors(std::vector<std::string> Values) = 0;
 
-    virtual void selectFirstItem() = 0;
+    virtual void initSelection() = 0;
 
     virtual int getSelectedID() = 0;
 
@@ -117,6 +116,8 @@ class ResUnitChooserViewImpl: public ResUnitChooserView
 
     void onOkButtonClicked();
 
+    void onTreeViewCBToggled(const Glib::ustring& Path);
+
   protected:
 
     Gtk::Label* mp_MessageLabel;
@@ -151,7 +152,7 @@ class ResUnitChooserViewImpl: public ResUnitChooserView
 
     void setVectors(std::vector<std::string> Values);
 
-    void selectFirstItem();
+    void initSelection();
 
     int getSelectedID();
 
@@ -165,17 +166,6 @@ class ResUnitChooserViewImpl: public ResUnitChooserView
 
     void clearMessage();
 
-};
-
-class ResUnitChooserViewSub: public ResUnitChooserViewImpl
-{
-  public:
-    //    std::string getClassName();
-    //    void selectSetName(std::string Value);
-    //    void selectId(int Index);
-    //    std::map<std::string, std::string> getBySetNameClassNames();
-    //    std::map<std::string, Glib::RefPtr<Gtk::ListStore> >
-    //    getBySetNameIDsListStores();
 };
 
 #endif /* __RESUNITCHOOSERVIEW_HPP__ */

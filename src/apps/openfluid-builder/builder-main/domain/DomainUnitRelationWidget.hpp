@@ -46,110 +46,124 @@
  */
 
 /**
- \file DomainStructureView.hpp
+ \file DomainUnitRelationWidget.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DOMAINSTRUCTUREVIEW_HPP__
-#define __DOMAINSTRUCTUREVIEW_HPP__
+#ifndef __DOMAINUNITRELATIONWIDGET_HPP__
+#define __DOMAINUNITRELATIONWIDGET_HPP__
 
-#include <sigc++/sigc++.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treeviewcolumn.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/scrolledwindow.h>
 
-#include <gtkmm.h>
-#include <glibmm/i18n.h>
+#include <openfluid/core/Unit.hpp>
 
-#include "DomainStructureColumns.hpp"
-#include "BuilderByClassTreeView.hpp"
+class BuilderListToolBox;
+class DomainUnitRelationAddDialog;
 
 // =====================================================================
 // =====================================================================
 
 
-class DomainStructureView
+class DomainUnitRelationWidget
 {
-  public:
+  private:
 
-    virtual sigc::signal<void> signal_ClassSelectionChanged() = 0;
+    class DomainUnitRelationColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DomainUnitRelationColumns()
+        {
+          add(m_Unit);
+          add(m_Class);
+          add(m_Id);
+        }
+        Gtk::TreeModelColumn<openfluid::core::Unit*> m_Unit;
+        Gtk::TreeModelColumn<std::string> m_Class;
+        Gtk::TreeModelColumn<int> m_Id;
+    };
 
-    virtual sigc::signal<void> signal_UnitSelectionChanged() = 0;
+    DomainUnitRelationColumns m_Columns;
 
-    virtual sigc::signal<void> signal_Activated() = 0;
+    BuilderListToolBox* mp_ToolBox;
 
-    virtual void
-    setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel) = 0;
+    Gtk::ScrolledWindow* mp_ScrolledWin;
 
-    virtual void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel) = 0;
+    Gtk::Expander* mp_MainExpander;
 
-    virtual void requestClassSelection(Gtk::TreeIter Iter) = 0;
+    DomainUnitRelationAddDialog* mp_AddDialog;
 
-    virtual void requestUnitSelection(Gtk::TreeIter Iter) = 0;
+    bool alreadyExistsUnit(openfluid::core::Unit* Unit);
 
-    virtual Gtk::TreeIter getSelectedClassIter() = 0;
+    void updateToolBox();
 
-    virtual Gtk::TreeIter getSelectedUnitIter() = 0;
+    void updateExpander();
 
-    virtual Gtk::Widget* asWidget() = 0;
-};
+    void onAddClicked();
 
-// =====================================================================
-// =====================================================================
-
-
-class DomainStructureViewImpl: public BuilderByClassTreeView,
-    public DomainStructureView
-{
   protected:
 
-    DomainStructureColumns& m_Columns;
+    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
+
+    Gtk::TreeView* mp_TreeView;
+
+    void onRemoveClicked();
+
+    void addUnits(std::list<openfluid::core::Unit*> UnitsToAdd);
 
   public:
 
-    DomainStructureViewImpl(DomainStructureColumns& Columns);
-
-    sigc::signal<void> signal_ClassSelectionChanged();
-
-    sigc::signal<void> signal_UnitSelectionChanged();
-
-    sigc::signal<void> signal_Activated();
-
-    void setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel);
-
-    void setUnitsTreeModel(Glib::RefPtr<Gtk::TreeModel> UnitsModel);
-
-    void requestClassSelection(Gtk::TreeIter Iter);
-
-    void requestUnitSelection(Gtk::TreeIter Iter);
-
-    Gtk::TreeIter getSelectedClassIter();
-
-    Gtk::TreeIter getSelectedUnitIter();
+    DomainUnitRelationWidget(Glib::ustring RelationName,
+        DomainUnitRelationAddDialog& AddDialog);
 
     Gtk::Widget* asWidget();
+
+    void clearUnits();
+
+    void appendUnits(std::list<openfluid::core::Unit*> Units);
+
+    std::list<openfluid::core::Unit*> getUnits();
 };
 
 // =====================================================================
 // =====================================================================
 
 
-class DomainStructureViewSub: public DomainStructureViewImpl
+class DomainUnitRelationWidgetSub: DomainUnitRelationWidget
 {
   public:
 
-    DomainStructureViewSub(DomainStructureColumns& Columns);
+    DomainUnitRelationWidgetSub();
 
-    int getClassesViewRowCount();
+    void onRemoveClicked()
+    {
+      DomainUnitRelationWidget::onRemoveClicked();
+    }
 
-    int getUnitsViewRowCount();
+    void addUnits(std::list<openfluid::core::Unit*> Units)
+    {
+      DomainUnitRelationWidget::addUnits(Units);
+    }
 
-    std::string getSelectedClassName();
+    std::list<openfluid::core::Unit*> getUnits()
+    {
+      return DomainUnitRelationWidget::getUnits();
+    }
 
-    int getSelectedUnitId();
+    Glib::RefPtr<Gtk::ListStore> getTreeModel()
+    {
+      return mref_TreeModel;
+    }
 
-    void selectClassWithIndex(int Index);
+    Gtk::TreeView* getTreeView()
+    {
+      return mp_TreeView;
+    }
 
-    void selectUnitWithIndex(int Index);
 };
-
-#endif /* __DOMAINSTRUCTUREVIEW_HPP__ */
+#endif /* __DOMAINUNITRELATIONWIDGET_HPP__ */

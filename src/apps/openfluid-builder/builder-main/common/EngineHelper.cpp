@@ -82,6 +82,28 @@ std::set<std::string> EngineHelper::getClassNames(
 // =====================================================================
 
 
+std::set<int> EngineHelper::getIDs(openfluid::core::CoreRepository* CoreRepos,
+    std::string ClassName)
+{
+  std::set<int> IDs;
+
+  if (CoreRepos->getUnits(ClassName) != NULL)
+  {
+    std::list<openfluid::core::Unit>* p_Units =
+        CoreRepos->getUnits(ClassName)->getList();
+
+    for (std::list<openfluid::core::Unit>::iterator it = p_Units->begin(); it
+        != p_Units->end(); ++it)
+      IDs.insert(static_cast<int> (it->getID()));
+  }
+
+  return IDs;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 std::set<std::string> EngineHelper::getProducedVarNames(std::string ClassName,
     openfluid::machine::ModelInstance* ModelInstance)
 {
@@ -198,9 +220,29 @@ struct SortByDateTime
     }
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
 void EngineHelper::sortEventsListByDateTime(
-    std::list<openfluid::core::Event>& Events)
+    openfluid::core::EventsList_t& Events)
 {
   Events.sort(SortByDateTime());
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool EngineHelper::isEmptyString(std::string Str)
+{
+  for (unsigned int i = 0; i < Str.size(); i++)
+  {
+    if (!std::isspace(Str[i]))
+      return false;
+  }
+
+  return true;
+}

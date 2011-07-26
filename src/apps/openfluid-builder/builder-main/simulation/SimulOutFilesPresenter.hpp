@@ -72,6 +72,8 @@ class SimulOutFilesPresenter: public sigc::trackable
 
     void whenSelectionChanged();
 
+    void whenActivated();
+
   public:
 
     SimulOutFilesPresenter(SimulOutFilesModel& Model,

@@ -71,7 +71,6 @@ DomainStructureViewImpl::DomainStructureViewImpl(
   mp_UnitsView->get_column(1)->set_sort_column(m_Columns.m_PcsOrder);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -80,7 +79,6 @@ sigc::signal<void> DomainStructureViewImpl::signal_ClassSelectionChanged()
 {
   return BuilderByClassTreeView::signal_ClassSelectionChanged();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -91,6 +89,14 @@ sigc::signal<void> DomainStructureViewImpl::signal_UnitSelectionChanged()
   return BuilderByClassTreeView::signal_UnitSelectionChanged();
 }
 
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> DomainStructureViewImpl::signal_Activated()
+{
+  return BuilderByClassTreeView::signal_Activated();
+}
 
 // =====================================================================
 // =====================================================================
@@ -102,7 +108,6 @@ void DomainStructureViewImpl::setClassesTreeModel(
   BuilderByClassTreeView::setClassesTreeModel(ClassesModel);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -113,7 +118,6 @@ void DomainStructureViewImpl::setUnitsTreeModel(
   BuilderByClassTreeView::setUnitsTreeModel(UnitsModel);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -122,7 +126,6 @@ void DomainStructureViewImpl::requestClassSelection(Gtk::TreeIter Iter)
 {
   BuilderByClassTreeView::requestClassSelection(Iter);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -133,7 +136,6 @@ void DomainStructureViewImpl::requestUnitSelection(Gtk::TreeIter Iter)
   BuilderByClassTreeView::requestUnitSelection(Iter);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -142,7 +144,6 @@ Gtk::TreeIter DomainStructureViewImpl::getSelectedClassIter()
 {
   return BuilderByClassTreeView::getSelectedClassIter();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -153,7 +154,6 @@ Gtk::TreeIter DomainStructureViewImpl::getSelectedUnitIter()
   return BuilderByClassTreeView::getSelectedUnitIter();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -163,7 +163,6 @@ Gtk::Widget* DomainStructureViewImpl::asWidget()
   return BuilderByClassTreeView::asWidget();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -172,7 +171,6 @@ DomainStructureViewSub::DomainStructureViewSub(DomainStructureColumns& Columns) 
   DomainStructureViewImpl(Columns)
 {
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -185,7 +183,6 @@ int DomainStructureViewSub::getClassesViewRowCount()
   return 0;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -196,7 +193,6 @@ int DomainStructureViewSub::getUnitsViewRowCount()
     return mp_UnitsView->get_model()->children().size();
   return 0;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -209,7 +205,6 @@ std::string DomainStructureViewSub::getSelectedClassName()
   return "";
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -221,7 +216,6 @@ int DomainStructureViewSub::getSelectedUnitId()
   return -1;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -230,7 +224,6 @@ void DomainStructureViewSub::selectClassWithIndex(int Index)
 {
   requestClassSelection(mp_ClassesView->get_model()->children()[Index]);
 }
-
 
 // =====================================================================
 // =====================================================================

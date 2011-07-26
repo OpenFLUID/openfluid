@@ -134,8 +134,7 @@ void BuilderAppActions::createProjectUiXml()
     "  </placeholder>"
     "  <placeholder name='ProjectSimulationPlaceholder'>"
     "    <menu action='SimulationMenu'>"
-    "      <menuitem action='SimulationConfig'/>"
-    "      <menuitem action='SimulationOutputs'/>"
+    "      <menuitem action='Refresh'/>"
     "      <separator/>"
     "      <menuitem action='SimulationRun'/>"
     "    </menu>"
@@ -148,8 +147,6 @@ void BuilderAppActions::createProjectUiXml()
     "    <toolitem action='FileClose'/>"
     "  </placeholder>"
     "  <placeholder name='SimulationPlaceholder'>"
-    "    <separator/>"
-    "    <toolitem action='Refresh'/>"
     "    <separator/>"
     "    <toolitem action='MapView'/>"
     "    <separator/>"
@@ -226,7 +223,7 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(Gtk::Action::create("DataDomainMenu",
       _("Import spatial domain from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataInputdataMenu",
-      _("Import inputdata from")));
+      _("Import Inputdata from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataEventsMenu",
       _("Import events from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu",
@@ -235,10 +232,9 @@ void BuilderAppActions::createProjectActionGroup()
   //Simulation menu
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu",
       _("_Simulation")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationConfig",
-      _("Configuration")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("SimulationOutputs",
-      _("Outputs")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",
+      Gtk::Stock::REFRESH, _("Reload sim. funcs."),
+      _("Reload simulation functions")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun",
       Gtk::Stock::MEDIA_PLAY, _("Run...")));
 
@@ -246,11 +242,6 @@ void BuilderAppActions::createProjectActionGroup()
       Gtk::Action::create("MapView",
           *BuilderGraphicsHelper::createBuilderIconStockId("mapview.png",
               "mapview"), _("Map View"), _("Map View")));
-
-  mref_ProjectActionGroup->add(Gtk::Action::create("Refresh",
-      Gtk::Stock::REFRESH, _("Reload sim. funcs."),
-      _("Reload simulation functions")));
-
 }
 
 // =====================================================================
@@ -270,7 +261,8 @@ BuilderAppActions::BuilderAppActions()
   {
     mref_UIManager->add_ui_from_string(m_AppUiXml);
     mref_UIManager->add_ui_from_string(m_ProjectUiXml);
-  } catch (const Glib::Error& ex)
+  }
+  catch (const Glib::Error& ex)
   {
     std::cerr << "building menus failed: " << ex.what();
   }
@@ -370,6 +362,15 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getFileQuitAction()
 // =====================================================================
 
 
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getRefreshAction()
+{
+  return mref_ProjectActionGroup->get_action("Refresh");
+}
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getSimulationRunAction()
 {
   return mref_ProjectActionGroup->get_action("SimulationRun");
@@ -463,14 +464,5 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
 {
   return mref_ProjectActionGroup->get_action("MapView");
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Glib::RefPtr<Gtk::Action> BuilderAppActions::getRefreshAction()
-{
-  return mref_ProjectActionGroup->get_action("Refresh");
 }
 

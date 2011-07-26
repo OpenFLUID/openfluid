@@ -65,6 +65,8 @@ class SimulOutSetsPresenter: public sigc::trackable
 
     void whenSelectionChanged();
 
+    void whenActivated();
+
   public:
 
     SimulOutSetsPresenter(SimulOutSetsModel& Model,

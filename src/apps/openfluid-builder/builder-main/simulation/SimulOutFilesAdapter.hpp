@@ -70,6 +70,8 @@ class SimulOutFilesAdapter: public sigc::trackable
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     SimulOutFilesAdapterModel& m_Model;
 
     SimulOutFilesView& m_View;
@@ -78,12 +80,16 @@ class SimulOutFilesAdapter: public sigc::trackable
 
     void whenFileSelectionChanged();
 
+    void whenActivated();
+
   public:
 
     SimulOutFilesAdapter(SimulOutFilesAdapterModel& Model,
         SimulOutFilesView& View);
 
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setFilesFormats(openfluid::base::OutputDescriptor* OutDesc);
 

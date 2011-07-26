@@ -46,39 +46,63 @@
  */
 
 /**
- \file DomainUnitCreationComponent.cpp
- \brief Implements ...
+ \file DomainUnitRelationAddDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainUnitCreationComponent.hpp"
+#ifndef __DOMAINUNITRELATIONADDDIALOG_HPP__
+#define __DOMAINUNITRELATIONADDDIALOG_HPP__
 
-#include "DomainUnitCreationModel.hpp"
-#include "DomainUnitCreationPresenter.hpp"
-#include "DomainUnitCreationView.hpp"
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
 
-DomainUnitCreationComponent::DomainUnitCreationComponent()
+#include <openfluid/core.hpp>
+
+#include <set>
+
+class DomainUnitRelationAddDialog
 {
-  mp_Model = new DomainUnitCreationModelImpl();
-  mp_View = new DomainUnitCreationViewImpl();
-  mp_Presenter = new DomainUnitCreationPresenter(*mp_Model, *mp_View);
-}
-DomainUnitCreationComponent::~DomainUnitCreationComponent()
-{
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* DomainUnitCreationComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-DomainUnitCreationModel* DomainUnitCreationComponent::getModel()
-{
-  return mp_Model;
-}
-DomainUnitCreationView* DomainUnitCreationComponent::getView()
-{
-  return mp_View;
-}
+  private:
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::ScrolledWindow* mp_ScrolledWin;
+
+    Gtk::TreeView* mp_TreeView;
+
+    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+
+    class DomainUnitRelationIdsColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DomainUnitRelationIdsColumns()
+        {
+          add(m_Text);
+          add(m_Class);
+          add(m_Id);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Text;
+        Gtk::TreeModelColumn<std::string> m_Class;
+        Gtk::TreeModelColumn<int> m_Id;
+    };
+
+    DomainUnitRelationIdsColumns m_Columns;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+  public:
+
+    DomainUnitRelationAddDialog();
+
+    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+
+    void update(std::set<std::string> ClassNames);
+
+    std::list<openfluid::core::Unit*> show();
+};
+
+#endif /* __DOMAINUNITRELATIONADDDIALOG_HPP__ */

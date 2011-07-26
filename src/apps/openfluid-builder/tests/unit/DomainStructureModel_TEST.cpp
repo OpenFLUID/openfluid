@@ -187,94 +187,24 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(test_addUnit)
+BOOST_AUTO_TEST_CASE(test_deleteUnit)
 {
-  EngineProject* EngProject = new EngineProject();
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
+  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("ParentTestUnits",1));
 
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),false);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 1);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().begin()->first, "class A");
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().begin()->second.getList()->size(), 1);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().begin()->second.getList()->begin()->getID(), 100);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().begin()->second.getList()->begin()->getProcessOrder(), 2);
-
-  BOOST_CHECK_EQUAL((*EngProject->getCoreRepository().getUnitsGlobally()->begin())->getClass(),"class A");
-
-  delete EngProject;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_addUnits)
-{
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
-
-  // addUnits
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U3);
-
-  openfluid::core::UnitsList_t ListA = *(mp_Model->getUnitListByClass()["class A"].getList());
-  openfluid::core::UnitsList_t ListB = *(mp_Model->getUnitListByClass()["class B"].getList());
+  openfluid::core::UnitsList_t ListA = *(mp_Model->getUnitListByClass()["ParentTestUnits"].getList());
   openfluid::core::UnitsList_t::iterator itA = ListA.begin();
-  openfluid::core::UnitsList_t::iterator itB = ListB.begin();
 
   BOOST_CHECK_EQUAL(mp_Model->isEmpty(),false);
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 2);
 
   BOOST_CHECK_EQUAL(ListA.size(),1);
-  BOOST_CHECK_EQUAL(itA->getID(),100);
-  BOOST_CHECK_EQUAL(itA->getProcessOrder(),2);
-
-  BOOST_CHECK_EQUAL(ListB.size(),2);
-  BOOST_CHECK_EQUAL(itB->getID(),200);
-  BOOST_CHECK_EQUAL(itB->getProcessOrder(),3);
-  itB ++;
-  BOOST_CHECK_EQUAL(itB->getID(),300);
-  BOOST_CHECK_EQUAL(itB->getProcessOrder(),4);
-
-  delete EngProject;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_deleteUnit)
-{
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
-
-  // addUnits
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class A",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
-
-  mp_Model->deleteUnit(&U);
-
-  openfluid::core::UnitsList_t ListA = *(mp_Model->getUnitListByClass()["class A"].getList());
-  openfluid::core::UnitsList_t::iterator itA = ListA.begin();
-
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),false);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 1);
-
-  BOOST_CHECK_EQUAL(ListA.size(),1);
-  BOOST_CHECK_EQUAL(itA->getID(),200);
-  BOOST_CHECK_EQUAL(itA->getProcessOrder(),3);
+  BOOST_CHECK_EQUAL(itA->getID(),2);
 
   delete EngProject;
 }
@@ -285,21 +215,16 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
 
 BOOST_AUTO_TEST_CASE(test_deleteLastUnitOfClass)
 {
-  EngineProject* EngProject = new EngineProject();
+  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+  + "/OPENFLUID.IN.Primitives";
+  EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(EngProject->getCoreRepository());
 
-  // addUnits
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U);
-  openfluid::core::Unit U2("class A",200,3, openfluid::core::Unit::SIMULATION);
-  mp_Model->addUnit(&U2);
+  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("ParentTestUnits",1));
+  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("ParentTestUnits",2));
 
-  mp_Model->deleteUnit(&U);
-  mp_Model->deleteUnit(&U2);
-
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(), true);
+  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(),1);
 
   delete EngProject;
 }

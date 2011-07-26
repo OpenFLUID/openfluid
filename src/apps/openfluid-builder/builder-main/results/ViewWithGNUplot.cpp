@@ -91,7 +91,7 @@ void ViewWithGNUplot::FindGNUplot()
 #endif
 
 #if WIN32
-  GNUplotFile = "gnuplot.exe";
+  GNUplotFile = "pgnuplot.exe";
 #endif
 
   if (!GNUplotFile.empty())
@@ -247,7 +247,7 @@ void ViewWithGNUplot::run(const std::string& Data,
 
     ScriptFile.close();
 
-    if(system(std::string(m_GNUplotProgram + " -persist " + ScriptFilename).c_str()) != 0)
+    if(system(std::string(m_GNUplotProgram + " --persist " + ScriptFilename).c_str()) != 0)
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("GNUplot error"));
   }
   else
@@ -268,7 +268,7 @@ void ViewWithGNUplot::run(const std::string& Data,
       ScriptFile << "plot \""<< DataFilename << "\" using 1:"<< (i+2) <<" with lines\n";
       ScriptFile.close();
 
-      if(system(std::string(m_GNUplotProgram + " -persist " + ScriptFilename).c_str()) != 0)
+      if(system(std::string(m_GNUplotProgram + " --persist " + ScriptFilename).c_str()) != 0)
         openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("GNUplot error"));
 
     }

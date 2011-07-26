@@ -70,6 +70,8 @@ class DomainStructureAdapter: public sigc::trackable
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     DomainStructureAdapterModel& m_Model;
 
     DomainStructureView& m_View;
@@ -86,12 +88,16 @@ class DomainStructureAdapter: public sigc::trackable
 
     void whenUnitSelectionChanged();
 
+    void whenActivated();
+
   public:
 
     DomainStructureAdapter(DomainStructureAdapterModel& Model,
         DomainStructureView& View);
 
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setDomainStructure(
         openfluid::core::UnitsListByClassMap_t UnitListByClass);
@@ -103,8 +109,6 @@ class DomainStructureAdapter: public sigc::trackable
     void deleteCurrentUnit();
 
     void addUnit(openfluid::core::Unit& Unit);
-
-    void setSelectedUnitNewPcsOrder(int NewProcessOrder);
 
 };
 

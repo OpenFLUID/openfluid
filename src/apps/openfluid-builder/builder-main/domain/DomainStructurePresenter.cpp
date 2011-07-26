@@ -88,18 +88,18 @@ void DomainStructurePresenter::whenUnitAdded(openfluid::core::Unit& Unit)
 // =====================================================================
 
 
-void DomainStructurePresenter::whenUnitAltered(int NewProcessOrder)
+void DomainStructurePresenter::whenSelectionChanged()
 {
-  m_Adapter.setSelectedUnitNewPcsOrder(NewProcessOrder);
+  m_Model.setCurrentSelectionByUser(m_Adapter.getSelectedUnitInfos());
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainStructurePresenter::whenSelectionChanged()
+void DomainStructurePresenter::whenActivated()
 {
-  m_Model.setCurrentSelectionByUser(m_Adapter.getSelectedUnitInfos());
+  m_Model.signal_Activated().emit();
 }
 
 // =====================================================================
@@ -116,9 +116,10 @@ DomainStructurePresenter::DomainStructurePresenter(DomainStructureModel& Model,
       &DomainStructurePresenter::whenUnitDeleted));
   m_Model.signal_FromAppUnitAdded().connect(sigc::mem_fun(*this,
       &DomainStructurePresenter::whenUnitAdded));
-  m_Model.signal_FromAppUnitAltered().connect(sigc::mem_fun(*this,
-      &DomainStructurePresenter::whenUnitAltered));
 
   m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &DomainStructurePresenter::whenSelectionChanged));
+
+  m_Adapter.signal_Activated().connect(sigc::mem_fun(*this,
+      &DomainStructurePresenter::whenActivated));
 }

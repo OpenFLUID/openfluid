@@ -72,7 +72,7 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuil
   set_border_width(6);
 
   Gtk::Label* InfoLabel = Gtk::manage(new Gtk::Label());
-  InfoLabel->set_markup(std::string("<i>")+_("These options control the builds of source packages\nChanging this is at your own risk.")+std::string("</i>"));
+  InfoLabel->set_markup(std::string("<i>")+_("These options control the builds of source packages.\nChanging this is at your own risk.")+std::string("</i>"));
   InfoLabel->set_justify(Gtk::JUSTIFY_CENTER);
 
   get_vbox()->pack_start(*InfoLabel);

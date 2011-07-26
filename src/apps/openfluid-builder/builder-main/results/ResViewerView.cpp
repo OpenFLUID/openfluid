@@ -161,6 +161,12 @@ void ResViewerViewImpl::setTitle(std::string Text)
 void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
     Glib::RefPtr<Gtk::TextBuffer> > FileContents)
 {
+  Glib::ustring ExistingTabSelection = "";
+  if (mp_Notebook->get_current())
+    ExistingTabSelection = mp_Notebook->get_current()->get_tab_label_text();
+
+  int TabToSelect = 0;
+
   while (mp_Notebook->get_n_pages() > 1)
     mp_Notebook->remove_page(1);
 
@@ -181,24 +187,35 @@ void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
     Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(it->first,
         Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
-
-    Gtk::Button* SingleGNUplotButton = Gtk::manage(new Gtk::Button(_("Plot file with GNUplot\n(All-in-one window)")));
-    Gtk::Button* MultiGNUplotButton = Gtk::manage(new Gtk::Button(_("Plot file with GNUplot\n(Multiple windows)")));
+    Gtk::Button* SingleGNUplotButton = Gtk::manage(new Gtk::Button(
+        _("Plot file with GNUplot\n(All-in-one window)")));
+    Gtk::Button* MultiGNUplotButton = Gtk::manage(new Gtk::Button(
+        _("Plot file with GNUplot\n(Multiple windows)")));
 
     Gtk::VBox* RightButtonsBox = Gtk::manage(new Gtk::VBox());
-    RightButtonsBox->pack_start(*SingleGNUplotButton,Gtk::PACK_SHRINK);
-    RightButtonsBox->pack_start(*MultiGNUplotButton,Gtk::PACK_SHRINK,5);
+    RightButtonsBox->pack_start(*SingleGNUplotButton, Gtk::PACK_SHRINK);
+    RightButtonsBox->pack_start(*MultiGNUplotButton, Gtk::PACK_SHRINK, 5);
     RightButtonsBox->show_all_children(true);
     RightButtonsBox->set_visible(true);
 
+#if WIN32
+    SingleGNUplotButton->set_sensitive(false);
+    MultiGNUplotButton->set_sensitive(false);
+#else
     if (ViewWithGNUplot::IsGNUplotAvailable())
     {
-      SingleGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<Gtk::TextBuffer>,std::string,std::string,std::string,bool>(sigc::mem_fun(*this,
-                  &ResViewerViewImpl::onGNUplotClicked),(Glib::RefPtr<Gtk::TextBuffer>)(it->second),m_DateFormat,m_ColSep,m_CommentChar,true));
+      SingleGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<
+          Gtk::TextBuffer>, std::string, std::string, std::string, bool>(
+          sigc::mem_fun(*this, &ResViewerViewImpl::onGNUplotClicked),
+          (Glib::RefPtr<Gtk::TextBuffer>) (it->second), m_DateFormat, m_ColSep,
+          m_CommentChar, true));
       SingleGNUplotButton->set_sensitive(true);
 
-      MultiGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<Gtk::TextBuffer>,std::string,std::string,std::string,bool>(sigc::mem_fun(*this,
-                  &ResViewerViewImpl::onGNUplotClicked),(Glib::RefPtr<Gtk::TextBuffer>)(it->second),m_DateFormat,m_ColSep,m_CommentChar,false));
+      MultiGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<
+          Gtk::TextBuffer>, std::string, std::string, std::string, bool>(
+          sigc::mem_fun(*this, &ResViewerViewImpl::onGNUplotClicked),
+          (Glib::RefPtr<Gtk::TextBuffer>) (it->second), m_DateFormat, m_ColSep,
+          m_CommentChar, false));
       MultiGNUplotButton->set_sensitive(true);
     }
     else
@@ -206,30 +223,38 @@ void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
       SingleGNUplotButton->set_sensitive(false);
       MultiGNUplotButton->set_sensitive(false);
     }
-
+#endif
 
     Gtk::HBox* MainHBox = Gtk::manage(new Gtk::HBox());
-    MainHBox->pack_start(*Win,Gtk::PACK_EXPAND_WIDGET,5);
-    MainHBox->pack_start(*RightButtonsBox,Gtk::PACK_SHRINK,5);
+    MainHBox->pack_start(*Win, Gtk::PACK_EXPAND_WIDGET, 5);
+    MainHBox->pack_start(*RightButtonsBox, Gtk::PACK_SHRINK, 5);
     MainHBox->set_border_width(8);
     MainHBox->set_visible(true);
 
-    mp_Notebook->append_page(*MainHBox, *TabLabel, *MenuLabel);
+    int PageNum = mp_Notebook->append_page(*MainHBox, *TabLabel, *MenuLabel);
+
+    if (it->first == ExistingTabSelection)
+      TabToSelect = PageNum;
+
     mp_Notebook->set_tab_reorderable(*Win, true);
   }
+
+  mp_Notebook->set_current_page(TabToSelect);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ResViewerViewImpl::onGNUplotClicked(Glib::RefPtr<Gtk::TextBuffer> Text, const std::string& DateFormat ,const std::string& ColSeparator,const std::string& CommentChar, bool SingleWindow)
+void ResViewerViewImpl::onGNUplotClicked(Glib::RefPtr<Gtk::TextBuffer> Text,
+    const std::string& DateFormat, const std::string& ColSeparator,
+    const std::string& CommentChar, bool SingleWindow)
 {
   ViewWithGNUplot GNUplotView;
 
-  GNUplotView.run(Text->get_text(), DateFormat, ColSeparator, CommentChar,SingleWindow);
+  GNUplotView.run(Text->get_text(), DateFormat, ColSeparator, CommentChar,
+      SingleWindow);
 }
-
 
 // =====================================================================
 // =====================================================================

@@ -81,6 +81,15 @@ void SimulOutSetsPresenter::whenSelectionChanged()
 // =====================================================================
 
 
+void SimulOutSetsPresenter::whenActivated()
+{
+  m_Model.signal_Activated().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsPresenter::SimulOutSetsPresenter(SimulOutSetsModel& Model,
     SimulOutSetsAdapter& Adapter) :
   m_Model(Model), m_Adapter(Adapter)
@@ -90,5 +99,7 @@ SimulOutSetsPresenter::SimulOutSetsPresenter(SimulOutSetsModel& Model,
 
   m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutSetsPresenter::whenSelectionChanged));
+  m_Adapter.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutSetsPresenter::whenActivated));
 }
 

@@ -80,7 +80,8 @@ class DomainIDataModel
 
     virtual void addData(std::string DataName, std::string DefaultValue) = 0;
 
-    virtual void changeDataName(std::string OldDataName, std::string NewDataName) = 0;
+    virtual void changeDataName(std::string OldDataName,
+        std::string NewDataName) = 0;
 
     virtual void setClass(std::string ClassName) = 0;
 
@@ -127,15 +128,6 @@ class DomainIDataModelImpl: public DomainIDataModel
 
     void setClass(std::string ClassName);
 
-};
-
-// =====================================================================
-// =====================================================================
-
-
-class DomainIDataModelSub: public DomainIDataModelImpl
-{
-  public:
 };
 
 #endif /* __DOMAINIDATAMODEL_HPP__ */

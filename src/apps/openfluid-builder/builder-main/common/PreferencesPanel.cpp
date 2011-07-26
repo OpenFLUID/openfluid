@@ -203,7 +203,7 @@ PreferencesInterfacePanel::PreferencesInterfacePanel() :
    */
 
   Gtk::Label* RecentsLabel = Gtk::manage(new Gtk::Label(
-      _("Maximum projects in Recents projects:")));
+      _("Maximum number of recent projects:")));
 
   mp_RecentsMaxSpinButton = Gtk::manage(new Gtk::SpinButton());
   mp_RecentsMaxSpinButton->set_numeric(true);

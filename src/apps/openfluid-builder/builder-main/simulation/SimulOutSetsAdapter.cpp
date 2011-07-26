@@ -75,12 +75,23 @@ void SimulOutSetsAdapter::whenSetSelectionChanged()
 // =====================================================================
 
 
+void SimulOutSetsAdapter::whenActivated()
+{
+  m_signal_Activated.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 SimulOutSetsAdapter::SimulOutSetsAdapter(SimulOutSetsAdapterModel& Model,
     SimulOutSetsView& View) :
   m_Model(Model), m_View(View), m_HasToUpdate(true)
 {
   m_View.signal_SetSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutSetsAdapter::whenSetSelectionChanged));
+  m_View.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutSetsAdapter::whenActivated));
 }
 
 // =====================================================================
@@ -90,6 +101,15 @@ SimulOutSetsAdapter::SimulOutSetsAdapter(SimulOutSetsAdapterModel& Model,
 sigc::signal<void> SimulOutSetsAdapter::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulOutSetsAdapter::signal_Activated()
+{
+  return m_signal_Activated;
 }
 
 // =====================================================================

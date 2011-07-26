@@ -89,13 +89,30 @@ PreferencesManager::PreferencesManager()
     m_FileName
         = openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile();
 
+  boost::filesystem::path UserDir =
+      boost::filesystem::path(m_FileName).parent_path();
+
+  if (!boost::filesystem::exists(UserDir))
+  {
+    try
+    {
+      boost::filesystem::create_directory(UserDir);
+    }
+    catch (boost::filesystem::filesystem_error e)
+    {
+      std::cerr << "PreferencesManager: Problem creating user directory: "
+          << e.what() << std::endl;
+    }
+  }
+
   mp_KFile = new Glib::KeyFile();
 
   if (!boost::filesystem::exists(m_FileName))
   {
     setDefaultValues();
     save();
-  } else
+  }
+  else
   {
     loadKeyFile();
   }
@@ -133,11 +150,13 @@ void PreferencesManager::loadKeyFile()
         | Glib::KEY_FILE_KEEP_TRANSLATIONS))
       std::cerr << "PreferencesManager: Problem loading key file "
           << m_FileName << std::endl;
-  } catch (Glib::FileError e)
+  }
+  catch (Glib::FileError e)
   {
     std::cerr << "PreferencesManager: FileError with file " << m_FileName
         << " : " << e.what() << std::endl;
-  } catch (Glib::KeyFileError e)
+  }
+  catch (Glib::KeyFileError e)
   {
     std::cerr << "PreferencesManager: KeyFileError with file " << m_FileName
         << " : " << e.what() << std::endl;
@@ -468,7 +487,6 @@ bool PreferencesManager::addMarketplace(Glib::ustring PlaceName,
   mp_KFile->set_string("openfluid.market.marketplaces", PlaceName, PlaceUrl);
   return true;
 }
-
 
 // =====================================================================
 // =====================================================================

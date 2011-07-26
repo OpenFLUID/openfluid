@@ -67,6 +67,8 @@ class BuilderByClassTreeView
 
     sigc::signal<void> m_signal_UnitSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     BuilderClassListColumns m_ClassColumns;
 
     Gtk::TreeView* mp_ClassesView;
@@ -83,8 +85,10 @@ class BuilderByClassTreeView
 
     void onUnitsViewSelectionChanged();
 
-    void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel);
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+        Gtk::TreeViewColumn* Column);
 
+    void setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel);
 
   public:
 
@@ -93,6 +97,8 @@ class BuilderByClassTreeView
     sigc::signal<void> signal_ClassSelectionChanged();
 
     sigc::signal<void> signal_UnitSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setClassesTreeModel(Glib::RefPtr<Gtk::TreeModel> ClassesModel);
 
@@ -109,7 +115,6 @@ class BuilderByClassTreeView
     Gtk::Widget* asWidget();
 
 };
-
 
 class BuilderByClassTreeViewSub: public BuilderByClassTreeView
 {

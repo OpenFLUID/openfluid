@@ -55,30 +55,15 @@
 #include "DomainIDataView.hpp"
 
 #include "DomainIDataColumns.hpp"
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-void DomainIDataViewImpl::onDataEditingStarted(
-    Gtk::CellEditable* /*CellEditable*/, const Glib::ustring& Path,
-    std::string DataName, int ColIndex)
+void DomainIDataViewImpl::onDataEdited(const Glib::ustring& /*Path*/,
+    const Glib::ustring& NewText, std::string DataName)
 {
-
-  Gtk::TreePath path(Path);
-
-  int Id;
-  mp_TreeView->get_model()->get_iter(path)->get_value(0, Id);
-
-  std::string Val;
-  mp_TreeView->get_model()->get_iter(path)->get_value(ColIndex, Val);
-
-  std::string NewVal =
-      openfluid::guicommon::DialogBoxFactory::showDomainIDataEditDialog(Id,
-          DataName, Val);
-
-  m_signal_DataEdited.emit(Path, NewVal, DataName, ColIndex);
+  m_signal_DataEdited.emit(NewText, DataName);
 }
 
 // =====================================================================
@@ -135,9 +120,8 @@ void DomainIDataViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel,
         (Gtk::CellRendererText *) mp_TreeView->get_column_cell_renderer(
             ColIndex);
 
-    CellRend->signal_editing_started().connect(sigc::bind<std::string, int>(
-        sigc::mem_fun(*this, &DomainIDataViewImpl::onDataEditingStarted),
-        it->first, ColIndex));
+    CellRend->signal_edited().connect(sigc::bind<std::string>(sigc::mem_fun(
+        *this, &DomainIDataViewImpl::onDataEdited), it->first));
   }
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
@@ -186,7 +170,7 @@ void DomainIDataViewImpl::requestUnitSelection(Gtk::TreeIter Iter)
 // =====================================================================
 
 
-sigc::signal<void, const Glib::ustring, const std::string, std::string, int> DomainIDataViewImpl::signal_DataEdited()
+sigc::signal<void, const Glib::ustring&, std::string> DomainIDataViewImpl::signal_DataEdited()
 {
   return m_signal_DataEdited;
 }

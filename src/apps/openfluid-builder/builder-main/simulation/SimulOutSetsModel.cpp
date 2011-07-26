@@ -85,6 +85,15 @@ sigc::signal<void> SimulOutSetsModelImpl::signal_FromUserSelectionChanged()
 // =====================================================================
 
 
+sigc::signal<void> SimulOutSetsModelImpl::signal_Activated()
+{
+  return m_signal_Activated;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutSetsModelImpl::setEngineRequirements(
     openfluid::base::OutputDescriptor& OutDesc,
     openfluid::core::CoreRepository& CoreRepos,

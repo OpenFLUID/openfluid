@@ -108,18 +108,17 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
 
-  std::string UntarCommand = m_CMakeCommand +" -E chdir " + SrcInstallDir+ " " + m_CMakeCommand + " -E tar xfvz " + m_PackageDest;
+  std::string UntarCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + SrcInstallDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfvz \"" + m_PackageDest + "\"";
 
-  std::string BuildConfigCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " " + SrcInstallDir + BuildConfigOptions;
+  std::string BuildConfigCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + BuildDir+ "\" \"" + m_CMakeCommand + "\" \"" + SrcInstallDir + "\"" + BuildConfigOptions;
 
-  std::string BuildCommand = m_CMakeCommand +" -E chdir " + BuildDir+ " " + m_CMakeCommand + " --build .";
+  std::string BuildCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + BuildDir+ "\" \"" + m_CMakeCommand + "\" --build .";
 
 
   // uncompressing package
   try
   {
     appendToLogFile(m_PackageFilename,"uncompressing sources",UntarCommand);
-
 
     StrOut.clear();
     StrErr.clear();

@@ -55,7 +55,7 @@
 
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
 #include <fstream>
-
+#include <glibmm/i18n.h>
 
 namespace openfluid { namespace guicommon {
 
@@ -69,9 +69,9 @@ ViewLogFileWindow::ViewLogFileWindow(const std::string& PathToLogFile)
   set_default_size(500, 350);
   set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 
-  set_title("Install log");
+  set_title(_("Install log"));
 
-  m_CloseButton.set_label("Close");
+  m_CloseButton.set_label(_("Close"));
 
   m_RefLogTextBuffer = Gtk::TextBuffer::create();
   m_RefLogTextBuffer->set_text("");

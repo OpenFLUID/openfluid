@@ -87,6 +87,15 @@ sigc::signal<void> SimulOutFilesModelImpl::signal_FromUserSelectionChanged()
 // =====================================================================
 
 
+sigc::signal<void> SimulOutFilesModelImpl::signal_Activated()
+{
+  return m_signal_Activated;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulOutFilesModelImpl::setEngineRequirements(
     openfluid::base::OutputDescriptor& OutDesc)
 {

@@ -59,6 +59,10 @@
 
 #include <openfluid/core.hpp>
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainStructureModel
 {
   public:
@@ -67,10 +71,10 @@ class DomainStructureModel
 
     virtual sigc::signal<void> signal_FromAppUnitDeleted() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual sigc::signal<void, openfluid::core::Unit&>
     signal_FromAppUnitAdded() = 0;
-
-    virtual sigc::signal<void, int> signal_FromAppUnitAltered() = 0;
 
     virtual sigc::signal<void>
     signal_FromUserSelectionChanged() = 0;
@@ -86,8 +90,6 @@ class DomainStructureModel
 
     virtual void deleteSelectedUnit() = 0;
 
-    virtual void alterSelectedUnit() = 0;
-
     virtual void setCurrentSelectionByUser(
         std::pair<std::string, int> UnitInfos) = 0;
 
@@ -99,6 +101,10 @@ class DomainStructureModel
 
 };
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainStructureModelImpl: public DomainStructureModel
 {
   private:
@@ -109,9 +115,9 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     sigc::signal<void> m_signal_FromAppUnitDeleted;
 
-    sigc::signal<void, openfluid::core::Unit&> m_signal_FromAppUnitAdded;
+    sigc::signal<void> m_signal_Activated;
 
-    sigc::signal<void, int> m_signal_FromAppUnitAltered;
+    sigc::signal<void, openfluid::core::Unit&> m_signal_FromAppUnitAdded;
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
@@ -119,7 +125,11 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     std::string m_SelectedClass;
 
+    openfluid::core::UnitsListByClassMap_t m_UnitsMapWithNoEmpty;
+
     bool isCoreRepos();
+
+    void updateUnitListByClass();
 
   protected:
 
@@ -137,9 +147,9 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     sigc::signal<void, openfluid::core::Unit&> signal_FromAppUnitAdded();
 
-    sigc::signal<void, int> signal_FromAppUnitAltered();
-
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
 
@@ -151,8 +161,6 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     void deleteSelectedUnit();
 
-    void alterSelectedUnit();
-
     void setCurrentSelectionByUser(std::pair<std::string, int> UnitInfos);
 
     openfluid::core::Unit* getSelectedUnit();
@@ -162,10 +170,16 @@ class DomainStructureModelImpl: public DomainStructureModel
     void update();
 };
 
+// =====================================================================
+// =====================================================================
+
+
 class DomainStructureModelSub: public DomainStructureModelImpl
 {
   public:
+
     openfluid::core::CoreRepository* getCoreRepos();
+
     void deleteUnit(openfluid::core::Unit* Unit);
 };
 

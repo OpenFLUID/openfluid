@@ -79,6 +79,8 @@ SimulOutCoordinator::SimulOutCoordinator(SimulOutFilesModel& OutFilesModel,
 {
   m_OutFilesModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(
       *this, &SimulOutCoordinator::whenFromUserFileFormatSelectionChanged));
+  m_OutFilesModel.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutCoordinator::whenEditFileFormatAsked));
   m_OutFilesListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &SimulOutCoordinator::whenAddFileFormatAsked));
   m_OutFilesListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(
@@ -88,6 +90,8 @@ SimulOutCoordinator::SimulOutCoordinator(SimulOutFilesModel& OutFilesModel,
 
   m_OutSetsModel.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
       &SimulOutCoordinator::whenFromUserSetSelectionChanged));
+  m_OutSetsModel.signal_Activated().connect(sigc::mem_fun(*this,
+      &SimulOutCoordinator::whenEditSetAsked));
   m_OutSetsListToolBox.signal_AddCommandAsked().connect(sigc::mem_fun(*this,
       &SimulOutCoordinator::whenAddSetAsked));
   m_OutSetsListToolBox.signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
@@ -202,21 +206,21 @@ void SimulOutCoordinator::whenAddSetAsked()
   if (m_OutFilesModel.isOutputEmpty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _("Impossible to create a Set :\nno File Format available."));
+        _("Impossible to create a Set:\nno File Format available."));
     return;
   }
 
   if (mp_CoreRepos->getUnitsGlobally()->empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _("Impossible to create a Set :\nno Unit available."));
+        _("Impossible to create a Set:\nno Unit available."));
     return;
   }
 
   if (!EngineHelper::hasAtLeastAProducedVariable(mp_ModelInstance, mp_CoreRepos))
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _("Impossible to create a Set :\nno Variable available."));
+        _("Impossible to create a Set:\nno Variable available."));
     return;
   }
 

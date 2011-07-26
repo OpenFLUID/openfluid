@@ -71,6 +71,8 @@ class SimulOutFilesModel
 
     virtual sigc::signal<void> signal_FromUserSelectionChanged() = 0;
 
+    virtual sigc::signal<void> signal_Activated() = 0;
+
     virtual void setEngineRequirements(
         openfluid::base::OutputDescriptor& OutDesc) = 0;
 
@@ -106,6 +108,8 @@ class SimulOutFilesModelImpl: public SimulOutFilesModel
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
+    sigc::signal<void> m_signal_Activated;
+
     std::string m_SelectedFileFormatName;
 
     openfluid::base::OutputDescriptor* mp_OutDesc;
@@ -122,6 +126,8 @@ class SimulOutFilesModelImpl: public SimulOutFilesModel
     sigc::signal<void> signal_FromAppDescriptorChanged();
 
     sigc::signal<void> signal_FromUserSelectionChanged();
+
+    sigc::signal<void> signal_Activated();
 
     void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc);
 
