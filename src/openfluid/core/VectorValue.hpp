@@ -94,10 +94,11 @@ class DLLEXPORT VectorValue : public CompoundValue, public Vector<double>
     */
     VectorValue(double* Data, unsigned long Size) : CompoundValue(), Vector<double>(Data,Size) {};
 
-
     virtual ~VectorValue() {};
 
     inline Type getType() const { return Value::VECTOR; };
+
+    Value* clone() const { return new VectorValue(*this); };
 
     void writeToStream(std::ostream& OutStm) const;
 

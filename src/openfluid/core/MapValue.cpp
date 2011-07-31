@@ -53,19 +53,117 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
+
 #include <openfluid/core/MapValue.hpp>
+#include <openfluid/base/OFException.hpp>
+
 
 namespace openfluid { namespace core {
 
 
+// =====================================================================
+// =====================================================================
+
+
+MapValue::MapValue(const MapValue& Val)
+: CompoundValue()
+{
+  for (Map_t::const_iterator it=Val.m_Value.begin();it!=Val.m_Value.end();++it)
+  {
+    m_Value[(*it).first].reset((*(*it).second).clone());
+  }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+MapValue::~MapValue()
+{
+  clear();
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MapValue::writeToStream(std::ostream& OutStm) const
 {
-  OutStm << "empty";
+
+  if (m_Value.empty())
+  {
+    OutStm << "empty";
+  }
+  else
+  {
+    Map_t::const_iterator it;
+
+    for (it=m_Value.begin(); it!=m_Value.end(); ++it)
+    {
+      if (it != m_Value.begin()) OutStm << m_StreamSeparators[0];
+      OutStm << (*it).first << "=" << (*(*it).second);
+    }
+  }
+
 }
 
 
 // =====================================================================
 // =====================================================================
+
+
+void MapValue::set(const std::string& Key, Value* Element)
+{
+  m_Value[Key].reset(Element);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Value& MapValue::operator[](const std::string& Key)
+{
+  if (!isKeyExist(Key))
+    throw openfluid::base::OFException("OpenFLUID framework","MapValue::operator[]","Requested key " + Key + " does not exist");
+
+  return (*(m_Value[Key]));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Value& MapValue::get(const std::string& Key)
+{
+  if (!isKeyExist(Key))
+    throw openfluid::base::OFException("OpenFLUID framework","MapValue::get","Requested key " + Key + " does not exist");
+
+  return (*(m_Value[Key]));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MapValue::remove(const std::string& Key)
+{
+  return (m_Value.erase(Key) == 1);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapValue::clear()
+{
+  m_Value.clear();
+}
 
 } }  // namespaces
 

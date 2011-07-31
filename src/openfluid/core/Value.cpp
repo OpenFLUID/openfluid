@@ -67,8 +67,6 @@
 #include <openfluid/core/ArrayValue.hpp>
 #include <openfluid/core/MapValue.hpp>
 
-#include <openfluid/base/OFException.hpp>
-
 
 namespace openfluid { namespace core {
 
@@ -224,6 +222,7 @@ VectorValue& Value::asVectorValue()
 // =====================================================================
 // =====================================================================
 
+
 const MatrixValue& Value::asMatrixValue() const
 {
   if (!isMatrixValue())
@@ -244,6 +243,59 @@ MatrixValue& Value::asMatrixValue()
 
   return static_cast<MatrixValue&>(*this);
 }
+
+// =====================================================================
+// =====================================================================
+
+
+const ArrayValue& Value::asArrayValue() const
+{
+  if (!isArrayValue())
+    throw openfluid::base::OFException("OpenFLUID framework","Value::asArrayValue","Value is not an ArrayValue");
+
+  return static_cast<const ArrayValue&>(*this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ArrayValue& Value::asArrayValue()
+{
+  if (!isArrayValue())
+    throw openfluid::base::OFException("OpenFLUID framework","Value::asArrayValue","Value is not an ArrayValue");
+
+  return static_cast<ArrayValue&>(*this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const MapValue& Value::asMapValue() const
+{
+  if (!isMapValue())
+    throw openfluid::base::OFException("OpenFLUID framework","Value::asMapValue","Value is not a MapValue");
+
+  return static_cast<const MapValue&>(*this);
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+MapValue& Value::asMapValue()
+{
+  if (!isMapValue())
+    throw openfluid::base::OFException("OpenFLUID framework","Value::asMapValue","Value is not a MapValue");
+
+  return static_cast<MapValue&>(*this);
+}
+
 
 
 // =====================================================================

@@ -84,6 +84,8 @@ class DLLEXPORT NullValue : public Value
 
     inline Type getType() const { return Value::NULLL; };
 
+    Value* clone() const { return new NullValue(*this); };
+
     inline bool isSimple() const { return false; };
 
     inline bool isCompound() const { return false; };

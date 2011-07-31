@@ -87,6 +87,8 @@ class DLLEXPORT DoubleValue : public SimpleValue
 
     inline Type getType() const { return Value::DOUBLE; };
 
+    Value* clone() const { return new DoubleValue(*this); };
+
     inline double& get() { return m_Value; };
 
     inline const double& get() const { return m_Value; };

@@ -61,6 +61,11 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/circular_buffer.hpp>
+#include <boost/scoped_ptr.hpp>
+
+
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/IntegerValue.hpp>
@@ -73,11 +78,33 @@
 
 #include <list>
 
+
+#define DECLARE_TEST_TICKER(name) \
+  boost::posix_time::ptime _M_Start_##name; \
+  boost::posix_time::ptime _M_Stop_##name; \
+  boost::posix_time::time_duration _M_Duration_##name;
+
+
+#define START_TEST_TICKER(name) \
+  _M_Start_##name = boost::posix_time::microsec_clock::local_time();
+
+
+#define MARK_TEST_TICKER(name) \
+  _M_Stop_##name = boost::posix_time::microsec_clock::local_time(); \
+  _M_Duration_##name = _M_Stop_##name - _M_Start_##name; \
+
+
+#define TEST_DURATION_AS_STRING(name) \
+  (boost::posix_time::to_simple_string(_M_Duration_##name))
+
+
 // =====================================================================
 // =====================================================================
 
 BOOST_AUTO_TEST_CASE(check_null)
 {
+  std::cout << "======== check_null ========" << std::endl;
+
   openfluid::core::NullValue Val1;
 
   std::cout << Val1 << std::endl;
@@ -93,8 +120,10 @@ BOOST_AUTO_TEST_CASE(check_null)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_interegr)
+BOOST_AUTO_TEST_CASE(check_integer)
 {
+  std::cout << "======== check_integer ========" << std::endl;
+
   openfluid::core::IntegerValue Val1;
 
   std::cout << Val1 << std::endl;
@@ -122,6 +151,8 @@ BOOST_AUTO_TEST_CASE(check_interegr)
 
 BOOST_AUTO_TEST_CASE(check_double)
 {
+  std::cout << "======== check_double ========" << std::endl;
+
   openfluid::core::DoubleValue Val1;
 
   std::cout << Val1 << std::endl;
@@ -149,6 +180,8 @@ BOOST_AUTO_TEST_CASE(check_double)
 
 BOOST_AUTO_TEST_CASE(check_boolean)
 {
+  std::cout << "======== check_boolean ========" << std::endl;
+
   openfluid::core::BooleanValue Val1;
 
   std::cout << Val1 << std::endl;
@@ -175,6 +208,8 @@ BOOST_AUTO_TEST_CASE(check_boolean)
 
 BOOST_AUTO_TEST_CASE(check_vector)
 {
+  std::cout << "======== check_vector ========" << std::endl;
+
   openfluid::core::VectorValue Val1;
 
 
@@ -222,6 +257,8 @@ BOOST_AUTO_TEST_CASE(check_vector)
 
 BOOST_AUTO_TEST_CASE(check_matrix)
 {
+  std::cout << "======== check_matrix ========" << std::endl;
+
   openfluid::core::MatrixValue Val1;
 
   std::cout << Val1 << std::endl;
@@ -277,6 +314,8 @@ BOOST_AUTO_TEST_CASE(check_matrix)
 
 BOOST_AUTO_TEST_CASE(check_array)
 {
+  std::cout << "======== check_array ========" << std::endl;
+
   openfluid::core::ArrayValue Val1;
 
 }
@@ -288,7 +327,61 @@ BOOST_AUTO_TEST_CASE(check_array)
 
 BOOST_AUTO_TEST_CASE(check_map)
 {
+  std::cout << "======== check_map ========" << std::endl;
+
   openfluid::core::MapValue Val1;
+
+  std::cout << Val1 << std::endl;
+  BOOST_REQUIRE_EQUAL(Val1.isMapValue(),true);
+  BOOST_REQUIRE_EQUAL(Val1.isSimple(),false);
+  BOOST_REQUIRE_EQUAL(Val1.isCompound(),true);
+  BOOST_REQUIRE_EQUAL(Val1.getSize(),0);
+  BOOST_REQUIRE_EQUAL(Val1.isKeyExist("foo"),false);
+
+  Val1.set("foo", new openfluid::core::DoubleValue(1.5));
+  BOOST_REQUIRE_EQUAL(Val1["foo"].getType(),openfluid::core::Value::DOUBLE);
+  BOOST_REQUIRE_EQUAL(Val1.isKeyExist("foo"),true);
+  BOOST_REQUIRE_CLOSE(Val1["foo"].asDoubleValue().get(),1.5,0.000001);
+  BOOST_REQUIRE_EQUAL(Val1.getSize(),1);
+  std::cout << Val1 << std::endl;
+
+  Val1.set("bar", new openfluid::core::VectorValue(5,5.5));
+  Val1.setString("foobar", "you're talking to me?");
+  Val1.setBoolean("foofoobar", true);
+  BOOST_REQUIRE_EQUAL(Val1.getSize(),4);
+  BOOST_REQUIRE_CLOSE(Val1.getDouble("foo"),1.5,0.0001);
+  BOOST_REQUIRE_EQUAL(Val1.get("bar").asVectorValue().getSize(),5);
+  BOOST_REQUIRE_EQUAL(Val1.get("foofoobar").asBooleanValue().get(),true);
+  BOOST_REQUIRE_EQUAL(Val1.get("foobar").asStringValue().get(),"you're talking to me?");
+
+  Val1.setVectorValue("bar",openfluid::core::VectorValue(7,7.7));
+  BOOST_REQUIRE_EQUAL(Val1.getVectorValue("bar").getSize(),7);
+  std::cout << Val1 << std::endl;
+
+  Val1.remove("foobar");
+
+  BOOST_REQUIRE_EQUAL(Val1.getSize(),3);
+  Val1.setInteger("bar",17);
+  BOOST_REQUIRE_EQUAL(Val1["bar"].getType(),openfluid::core::Value::INTEGER);
+  BOOST_REQUIRE_EQUAL(Val1["bar"].asIntegerValue().get(),17);
+  std::cout << Val1 << std::endl;
+
+  openfluid::core::MapValue Val2 = Val1;
+
+  BOOST_REQUIRE_EQUAL(Val2.getSize(),3);
+  BOOST_REQUIRE_CLOSE(Val2.getDouble("foo"),1.5,0.0001);
+  BOOST_REQUIRE_EQUAL(Val2.get("bar").asIntegerValue().get(),17);
+  BOOST_REQUIRE_EQUAL(Val2.get("foofoobar").asBooleanValue().get(),true);
+
+  Val2.setMatrixValue("foofoobar",openfluid::core::MatrixValue(5,9,29.5));
+  BOOST_REQUIRE_EQUAL(Val1["foofoobar"].getType(),openfluid::core::Value::BOOLEAN);
+  BOOST_REQUIRE_EQUAL(Val2["foofoobar"].getType(),openfluid::core::Value::MATRIX);
+  BOOST_REQUIRE_EQUAL(Val2["foofoobar"].asMatrixValue().getSize1(),5);
+  BOOST_REQUIRE_EQUAL(Val2.getMatrixValue("foofoobar").getSize2(),9);
+
+  BOOST_REQUIRE_THROW(Val2.getMatrixValue("foo"),openfluid::base::OFException);
+  BOOST_REQUIRE_THROW(Val2.get("foo").asIntegerValue(),openfluid::base::OFException);
+  BOOST_REQUIRE_THROW(Val2.get("wrongfoo"),openfluid::base::OFException);
 }
 
 
@@ -298,6 +391,8 @@ BOOST_AUTO_TEST_CASE(check_map)
 
 BOOST_AUTO_TEST_CASE(check_string)
 {
+  std::cout << "======== check_string ========" << std::endl;
+
   openfluid::core::StringValue Val1;
 
 }
@@ -316,6 +411,7 @@ BOOST_AUTO_TEST_CASE(check_sequence)
 
 
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::DoubleValue>(new openfluid::core::DoubleValue(3.7)));
+  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::MapValue>(new openfluid::core::MapValue()));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::BooleanValue>(new openfluid::core::BooleanValue(true)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::VectorValue>(new openfluid::core::VectorValue(500,17.0)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::MatrixValue>(new openfluid::core::MatrixValue(29,47,1955.19)));
@@ -383,6 +479,13 @@ BOOST_AUTO_TEST_CASE(check_sequence)
       Processed = true;
     }
 
+    if (ValuesSeq.front()->isMapValue())
+    {
+      BOOST_REQUIRE_EQUAL(ValuesSeq.front().get()->asMapValue().getSize(),0);
+
+      Processed = true;
+    }
+
 
 
     if (ValuesSeq.front()->isNullValue())
@@ -399,3 +502,77 @@ BOOST_AUTO_TEST_CASE(check_sequence)
     BOOST_REQUIRE(Processed);
   }
 }
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_performance)
+{
+
+  DECLARE_TEST_TICKER();
+
+  const unsigned int ElementsNbr = 10000000;
+  const unsigned int BufferSize = 5;
+
+  boost::circular_buffer<double> BufferDouble(BufferSize);
+  boost::circular_buffer<boost::shared_ptr<openfluid::core::Value> > BufferValue(5000);
+
+
+
+
+
+  START_TEST_TICKER();
+
+  for (unsigned int i=0; i< ElementsNbr;i++)
+  {
+    BufferDouble.push_back(static_cast<double>(i)/ElementsNbr);
+  }
+
+  MARK_TEST_TICKER();
+  std::cout << "Duration [double], populating: " << TEST_DURATION_AS_STRING() << std::endl;
+
+
+
+  START_TEST_TICKER();
+
+  for (unsigned int i=0; i< ElementsNbr;i++)
+  {
+    BufferValue.push_back(boost::shared_ptr<openfluid::core::Value>(new openfluid::core::DoubleValue(static_cast<double>(i)/ElementsNbr)));
+  }
+
+  MARK_TEST_TICKER();
+  std::cout << "Duration [DoubleValue], populating: " << TEST_DURATION_AS_STRING() << std::endl;
+
+
+  START_TEST_TICKER();
+
+  for (unsigned int i=0; i< BufferSize;i++)
+  {
+    double Tmp = BufferDouble[i];
+  }
+
+  MARK_TEST_TICKER();
+  std::cout << "Duration [double], accessing: " << TEST_DURATION_AS_STRING() << std::endl;
+
+
+
+  START_TEST_TICKER();
+
+  for (unsigned int i=0; i< BufferSize;i++)
+  {
+    double Tmp = BufferValue[i].get()->asDoubleValue().get();
+    std::cout << Tmp << std::endl;
+  }
+
+  MARK_TEST_TICKER();
+  std::cout << "Duration [DoubleValue], accessing: " << TEST_DURATION_AS_STRING() << std::endl;
+
+
+
+
+}
+
+

@@ -88,10 +88,11 @@ class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
     */
     MatrixValue(unsigned long Size1, unsigned long Size2, double InitValue) : CompoundValue(), Matrix<double>(Size1,Size2,InitValue) {};
 
-
     virtual ~MatrixValue() {};
 
     inline Type getType() const { return Value::MATRIX; };
+
+    Value* clone() const { return new MatrixValue(*this); };
 
     void writeToStream(std::ostream& OutStm) const;
 

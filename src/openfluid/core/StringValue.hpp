@@ -87,6 +87,8 @@ class DLLEXPORT StringValue : public SimpleValue
 
     inline Type getType() const { return Value::STRING; };
 
+    Value* clone() const { return new StringValue(*this); };
+
     inline std::string& get() { return m_Value; };
 
     inline const std::string& get() const { return m_Value; };

@@ -143,12 +143,12 @@ class DLLEXPORT Matrix
     /**
       Returns the element of the Matrix for index Index
     */
-    T at(unsigned long Index1, unsigned long Index2) const { return getElement(Index1,Index2); };
+    inline T at(unsigned long Index1, unsigned long Index2) const { return getElement(Index1,Index2); };
 
     /**
       Returns the element of the Matrix for index Index
     */
-    T get(unsigned long Index1, unsigned long Index2) const { return getElement(Index1,Index2); };
+    inline T get(unsigned long Index1, unsigned long Index2) const { return getElement(Index1,Index2); };
 
 
     /**
@@ -159,7 +159,7 @@ class DLLEXPORT Matrix
     /**
       Sets a new value for element at the given index
     */
-    void set(unsigned long Index1, unsigned long Index2, T Element) { setElement(Index1,Index2,Element); };
+    inline void set(unsigned long Index1, unsigned long Index2, T Element) { setElement(Index1,Index2,Element); };
 
     /**
       Allocation operator

@@ -58,8 +58,15 @@
 
 
 #include <map>
+#include <boost/shared_ptr.hpp>
 
 #include <openfluid/core/CompoundValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/StringValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -68,7 +75,7 @@ namespace openfluid { namespace core {
 class DLLEXPORT MapValue : public CompoundValue
 {
   public:
-    typedef std::map<std::string,Value*> Map_t;
+    typedef std::map<std::string,boost::shared_ptr<Value> > Map_t;
 
 
   private:
@@ -85,15 +92,116 @@ class DLLEXPORT MapValue : public CompoundValue
     /**
       Copy constructor
     */
-    MapValue(const MapValue& Val) : CompoundValue(Val) {};
+    MapValue(const MapValue& Val);
 
-    MapValue(const Map_t& Val) : CompoundValue() {};
+    MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val) {};
 
-    virtual ~MapValue() {};
+    ~MapValue();
 
     inline Type getType() const { return Value::MAP; };
 
+    Value* clone() const { return new MapValue(*this); };
+
     void writeToStream(std::ostream& OutStm) const;
+
+    /**
+      Sets a new value for element at the given key
+    */
+    void set(const std::string& Key, Value* Element);
+
+    /**
+      Sets a new double value for element at the given key
+    */
+    inline void setDouble(const std::string& Key, const double& Val)
+      { set(Key,new DoubleValue(Val)); };
+
+    /**
+      Sets a new double value for element at the given key
+    */
+    inline void setInteger(const std::string& Key, const long& Val)
+      { set(Key,new IntegerValue(Val)); };
+
+    /**
+      Sets a new boolean value for element at the given key
+    */
+    inline void setBoolean(const std::string& Key, const bool& Val)
+      { set(Key,new BooleanValue(Val)); };
+
+    /**
+      Sets a new string value for element at the given key
+    */
+    inline void setString(const std::string& Key, const std::string& Val)
+      { set(Key,new StringValue(Val)); };
+
+    /**
+      Sets a new VectorValue value for element at the given key
+    */
+    inline void setVectorValue(const std::string& Key, const VectorValue& Val)
+      { set(Key,new VectorValue(Val)); };
+
+    /**
+      Sets a new MatrixValue value for element at the given key
+    */
+    inline void setMatrixValue(const std::string& Key, const MatrixValue& Val)
+      { set(Key,new MatrixValue(Val)); };
+
+    /**
+      Operator to get/set a new value for element given between []
+    */
+    Value& operator[](const std::string& Key);
+
+    /**
+      Returns the element of the map for key Key
+    */
+    Value& get(const std::string& Key);
+
+    /**
+      Returns the double element of the map for key Key
+    */
+    inline double getDouble(const std::string& Key) { return get(Key).asDoubleValue().get(); };
+
+    /**
+      Returns the double element of the map for key Key
+    */
+    inline long getInteger(const std::string& Key) { return get(Key).asIntegerValue().get(); };
+
+    /**
+      Returns the double element of the map for key Key
+    */
+    inline bool getBoolean(const std::string& Key) { return get(Key).asBooleanValue().get(); };
+
+    /**
+      Returns the double element of the map for key Key
+    */
+    inline std::string getString(const std::string& Key) { return get(Key).asStringValue().get(); };
+
+    /**
+      Returns the double element of the map for key Key
+    */
+    inline VectorValue getVectorValue(const std::string& Key) { return get(Key).asVectorValue(); };
+
+    /**
+      Returns the double element of the map for key Key
+    */
+    inline MatrixValue getMatrixValue(const std::string& Key) { return get(Key).asMatrixValue(); };
+
+
+
+    bool remove(const std::string& Key);
+
+    /**
+      Returns the size of the map
+    */
+    inline unsigned long getSize() const { return m_Value.size(); };
+
+    /**
+      Returns the size of the map
+    */
+    unsigned long size() const { return m_Value.size(); };
+
+    inline bool isKeyExist(const std::string& Key) const { return (m_Value.find(Key) != m_Value.end()); };
+
+    void clear();
 
 };
 

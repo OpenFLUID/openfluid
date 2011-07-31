@@ -89,6 +89,8 @@ class DLLEXPORT IntegerValue : public SimpleValue
 
     inline Type getType() const { return Value::INTEGER; };
 
+    Value* clone() const { return new IntegerValue(*this); };
+
     inline long& get() { return m_Value; };
 
     inline const long& get() const { return m_Value; };

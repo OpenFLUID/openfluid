@@ -58,6 +58,8 @@
 #define __VALUE_HPP___
 
 #include <iostream>
+#include <openfluid/base/OFException.hpp>
+
 
 namespace openfluid { namespace core {
 
@@ -92,6 +94,8 @@ class Value
     virtual ~Value() {};
 
     virtual Type getType() const = 0;
+
+    virtual Value* clone() const { throw openfluid::base::OFException("OpenFLUID framework","Value::clone","Value is not cloneable"); };
 
     inline virtual bool isSimple() const = 0;
 
@@ -154,16 +158,16 @@ class Value
 
     inline bool isArrayValue() const { return getType() == Value::ARRAY; };
 
-    const VectorValue& asArrayValue() const;
+    const ArrayValue& asArrayValue() const;
 
-    VectorValue& asArrayValue();
+    ArrayValue& asArrayValue();
 
 
     inline bool isMapValue() const { return getType() == Value::MAP; };
 
-    const VectorValue& asMapValue() const;
+    const MapValue& asMapValue() const;
 
-    VectorValue& asMapValue();
+    MapValue& asMapValue();
 
 
     std::string toString() const;

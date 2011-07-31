@@ -87,6 +87,8 @@ class DLLEXPORT BooleanValue : public SimpleValue
 
     inline Type getType() const { return Value::BOOLEAN; };
 
+    Value* clone() const { return new BooleanValue(*this); };
+
     inline bool& get() { return m_Value; };
 
     inline const bool& get() const { return m_Value; };

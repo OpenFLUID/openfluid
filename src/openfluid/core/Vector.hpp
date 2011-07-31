@@ -134,12 +134,24 @@ class DLLEXPORT Vector
     /**
       Returns the element of the vector for index Index
     */
-    T at(unsigned long Index) const { return getElement(Index); };
+    inline T at(unsigned long Index) const { return getElement(Index); };
+
+    /**
+      Returns the element of the vector for index Index
+    */
+    inline T get(unsigned long Index) const { return getElement(Index); };
+
 
     /**
       Sets a new value for element at the given index
     */
     void setElement(unsigned long Index, T Element);
+
+    /**
+      Sets a new value for element at the given index
+    */
+    inline void set(unsigned long Index, T Element) { setElement(Index,Element); };
+
 
     /**
       Operator to set a new value for element given between []
