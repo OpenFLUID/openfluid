@@ -69,8 +69,8 @@ void MatrixValue::writeToStream(std::ostream& OutStm) const
   }
   else
   {
-    const unsigned long s1 = getSize1();
-    const unsigned long s2 = getSize2();
+    const unsigned long s1 = getColsNbr();
+    const unsigned long s2 = getRowsNbr();
 
     for (unsigned int i = 0; i<s1 ;i++ )
     {

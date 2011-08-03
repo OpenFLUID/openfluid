@@ -86,7 +86,7 @@ class DLLEXPORT ArrayValue : public CompoundValue
     */
     ArrayValue(const ArrayValue& Val) : CompoundValue(Val) {};
 
-    ArrayValue(const Array_t& Val) : CompoundValue() {};
+    ArrayValue(const Array_t& /*Val*/) : CompoundValue() {};
 
     virtual ~ArrayValue() {};
 

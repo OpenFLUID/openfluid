@@ -77,9 +77,9 @@ class DLLEXPORT Matrix
 
     boost::multi_array<T, 2> m_Data;
 
-    unsigned long m_Size1;
+    unsigned long m_ColsNbr;
 
-    unsigned long m_Size2;
+    unsigned long m_RowsNbr;
 
 
   public :
@@ -97,12 +97,12 @@ class DLLEXPORT Matrix
   /**
     Constructor, creates a Matrix containing Size elements
   */
-    Matrix(unsigned long Size1,unsigned long Size2);
+    Matrix(unsigned long ColsNbr,unsigned long RowsNbr);
 
   /**
     Constructor, creates a Matrix containing Size elements, initialized with value InitValue
   */
-    Matrix(unsigned long Size1,unsigned long Size2, T InitValue);
+    Matrix(unsigned long ColsNbr,unsigned long RowsNbr, T InitValue);
 
     /**
       Destructor
@@ -112,22 +112,22 @@ class DLLEXPORT Matrix
     /**
       Returns the size of the 1st dimension of the Matrix
     */
-    unsigned long getSize1() const { return m_Size1; };
+    unsigned long getColsNbr() const { return m_ColsNbr; };
 
     /**
       Returns the size of the 2nd dimension of the Matrix
     */
-    unsigned long getSize2() const { return m_Size2; };
+    unsigned long getRowsNbr() const { return m_RowsNbr; };
 
     /**
       Returns the full size of the Matrix
     */
-    unsigned long getSize() const { return (m_Size1 * m_Size2); };
+    unsigned long getSize() const { return (m_ColsNbr * m_RowsNbr); };
 
     /**
       Returns the full size of the Matrix
     */
-    unsigned long size() const { return (m_Size1 * m_Size2); };
+    unsigned long size() const { return (m_ColsNbr * m_RowsNbr); };
 
 
     /**
@@ -138,28 +138,28 @@ class DLLEXPORT Matrix
     /**
       Returns the element of the Matrix for index Index
     */
-    T getElement(unsigned long Index1, unsigned long Index2) const;
+    T getElement(unsigned long ColIndex, unsigned long RowIndex) const;
 
     /**
       Returns the element of the Matrix for index Index
     */
-    inline T at(unsigned long Index1, unsigned long Index2) const { return getElement(Index1,Index2); };
+    inline T at(unsigned long ColIndex, unsigned long RowIndex) const { return getElement(ColIndex,RowIndex); };
 
     /**
       Returns the element of the Matrix for index Index
     */
-    inline T get(unsigned long Index1, unsigned long Index2) const { return getElement(Index1,Index2); };
+    inline T get(unsigned long ColIndex, unsigned long RowIndex) const { return getElement(ColIndex,RowIndex); };
 
 
     /**
       Sets a new value for element at the given index
     */
-    void setElement(unsigned long Index1, unsigned long Index2, T Element);
+    void setElement(unsigned long ColIndex, unsigned long RowIndex, T Element);
 
     /**
       Sets a new value for element at the given index
     */
-    inline void set(unsigned long Index1, unsigned long Index2, T Element) { setElement(Index1,Index2,Element); };
+    inline void set(unsigned long ColIndex, unsigned long RowIndex, T Element) { setElement(ColIndex,RowIndex,Element); };
 
     /**
       Allocation operator
@@ -184,7 +184,7 @@ class DLLEXPORT Matrix
 template <class T>
 Matrix<T>::Matrix():
   m_Data(boost::extents[0][0],boost::fortran_storage_order()),
-  m_Size1(0),m_Size2(0)
+  m_ColsNbr(0),m_RowsNbr(0)
 {
 }
 
@@ -194,8 +194,8 @@ Matrix<T>::Matrix():
 
 template <class T>
 Matrix<T>::Matrix(const Matrix &A):
-  m_Data(boost::extents[A.m_Size1][A.m_Size2],boost::fortran_storage_order()),
-  m_Size1(A.m_Size1),m_Size2(A.m_Size2)
+  m_Data(boost::extents[A.m_ColsNbr][A.m_RowsNbr],boost::fortran_storage_order()),
+  m_ColsNbr(A.m_ColsNbr),m_RowsNbr(A.m_RowsNbr)
 {
   m_Data = A.m_Data;
 }
@@ -205,9 +205,9 @@ Matrix<T>::Matrix(const Matrix &A):
 // =====================================================================
 
 template <class T>
-Matrix<T>::Matrix(unsigned long Size1, unsigned long Size2) :
-  m_Data(boost::extents[Size1][Size2],boost::fortran_storage_order()),
-  m_Size1(Size1),m_Size2(Size2)
+Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr) :
+  m_Data(boost::extents[ColsNbr][RowsNbr],boost::fortran_storage_order()),
+  m_ColsNbr(ColsNbr),m_RowsNbr(RowsNbr)
 {
   fill(0);
 }
@@ -218,9 +218,9 @@ Matrix<T>::Matrix(unsigned long Size1, unsigned long Size2) :
 
 
 template <class T>
-Matrix<T>::Matrix(unsigned long Size1, unsigned long Size2, T InitValue) :
-  m_Data(boost::extents[Size1][Size2],boost::fortran_storage_order()),
-  m_Size1(Size1),m_Size2(Size2)
+Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue) :
+  m_Data(boost::extents[ColsNbr][RowsNbr],boost::fortran_storage_order()),
+  m_ColsNbr(ColsNbr),m_RowsNbr(RowsNbr)
 {
   fill(InitValue);
 }
@@ -231,10 +231,10 @@ Matrix<T>::Matrix(unsigned long Size1, unsigned long Size2, T InitValue) :
 
 
 template <class T>
-T Matrix<T>::getElement(unsigned long Index1, unsigned long Index2) const
+T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 {
-  if (Index1 >= m_Size1 || Index2 >= m_Size2) throw openfluid::base::OFException("OpenFLUID framework","Matrix::getElement","element access range error");
-  return m_Data[Index1][Index2];
+  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::OFException("OpenFLUID framework","Matrix::getElement","element access range error");
+  return m_Data[ColIndex][RowIndex];
 }
 
 
@@ -243,10 +243,10 @@ T Matrix<T>::getElement(unsigned long Index1, unsigned long Index2) const
 
 
 template <class T>
-void Matrix<T>::setElement(unsigned long Index1, unsigned long Index2, T Element)
+void Matrix<T>::setElement(unsigned long ColIndex, unsigned long RowIndex, T Element)
 {
-  if (Index1 >= m_Size1 || Index2 >= m_Size2) throw openfluid::base::OFException("OpenFLUID framework","Matrix::setElement","element access range error");
-  m_Data[Index1][Index2] = Element;
+  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::OFException("OpenFLUID framework","Matrix::setElement","element access range error");
+  m_Data[ColIndex][RowIndex] = Element;
 }
 
 
@@ -260,10 +260,10 @@ Matrix<T>& Matrix<T>::operator=(const Matrix &A)
 
   if (this == &A) return *this; // in case somebody tries assign array to itself
 
-  m_Data.resize(boost::extents[A.m_Size1][A.m_Size2]);
+  m_Data.resize(boost::extents[A.m_ColsNbr][A.m_RowsNbr]);
   m_Data = A.m_Data;
-  m_Size1 = A.m_Size1;
-  m_Size2 = A.m_Size2;
+  m_ColsNbr = A.m_ColsNbr;
+  m_RowsNbr = A.m_RowsNbr;
 
   return *this;
 }
@@ -276,8 +276,8 @@ Matrix<T>& Matrix<T>::operator=(const Matrix &A)
 template <class T>
 void Matrix<T>::fill(const T& Val)
 {
-  for (unsigned long i=0;i<m_Size1;i++)
-    for (unsigned long j=0;j<m_Size2;j++)
+  for (unsigned long i=0;i<m_ColsNbr;i++)
+    for (unsigned long j=0;j<m_RowsNbr;j++)
       m_Data[i][j] = Val;
 }
 
@@ -289,8 +289,8 @@ template <class T>
 void Matrix<T>::clear()
 {
   m_Data.resize(boost::extents[0][0]);
-  m_Size1=0;
-  m_Size2=0;
+  m_ColsNbr=0;
+  m_RowsNbr=0;
 }
 
 

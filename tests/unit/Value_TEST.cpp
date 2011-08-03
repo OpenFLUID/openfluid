@@ -263,8 +263,8 @@ BOOST_AUTO_TEST_CASE(check_matrix)
 
   std::cout << Val1 << std::endl;
   BOOST_REQUIRE(Val1.isMatrixValue());
-  BOOST_REQUIRE_EQUAL( Val1.getSize1(), 0 );
-  BOOST_REQUIRE_EQUAL( Val1.getSize2(), 0 );
+  BOOST_REQUIRE_EQUAL( Val1.getColsNbr(), 0 );
+  BOOST_REQUIRE_EQUAL( Val1.getRowsNbr(), 0 );
 
   BOOST_REQUIRE_EQUAL(Val1.isSimple(),false);
   BOOST_REQUIRE_EQUAL(Val1.isCompound(),true);
@@ -272,8 +272,8 @@ BOOST_AUTO_TEST_CASE(check_matrix)
 
   Val1 = openfluid::core::MatrixValue(20,30,1.35);
 
-  BOOST_REQUIRE_EQUAL( Val1.getSize1(), 20 );
-  BOOST_REQUIRE_EQUAL( Val1.getSize2(), 30 );
+  BOOST_REQUIRE_EQUAL( Val1.getColsNbr(), 20 );
+  BOOST_REQUIRE_EQUAL( Val1.getRowsNbr(), 30 );
   BOOST_REQUIRE_CLOSE( Val1.at(16,17), 1.35,0.000001 );
   BOOST_REQUIRE_CLOSE( Val1.get(19,29), 1.35,0.000001 );
 
@@ -301,8 +301,8 @@ BOOST_AUTO_TEST_CASE(check_matrix)
 
   Val2.clear();
   BOOST_REQUIRE_EQUAL(Val2.getSize(),0);
-  BOOST_REQUIRE_EQUAL(Val2.getSize1(),0);
-  BOOST_REQUIRE_EQUAL(Val2.getSize2(),0);
+  BOOST_REQUIRE_EQUAL(Val2.getColsNbr(),0);
+  BOOST_REQUIRE_EQUAL(Val2.getRowsNbr(),0);
   BOOST_REQUIRE_EQUAL(Val1.getSize(),600);
 
 }
@@ -376,8 +376,8 @@ BOOST_AUTO_TEST_CASE(check_map)
   Val2.setMatrixValue("foofoobar",openfluid::core::MatrixValue(5,9,29.5));
   BOOST_REQUIRE_EQUAL(Val1["foofoobar"].getType(),openfluid::core::Value::BOOLEAN);
   BOOST_REQUIRE_EQUAL(Val2["foofoobar"].getType(),openfluid::core::Value::MATRIX);
-  BOOST_REQUIRE_EQUAL(Val2["foofoobar"].asMatrixValue().getSize1(),5);
-  BOOST_REQUIRE_EQUAL(Val2.getMatrixValue("foofoobar").getSize2(),9);
+  BOOST_REQUIRE_EQUAL(Val2["foofoobar"].asMatrixValue().getColsNbr(),5);
+  BOOST_REQUIRE_EQUAL(Val2.getMatrixValue("foofoobar").getRowsNbr(),9);
 
   BOOST_REQUIRE_THROW(Val2.getMatrixValue("foo"),openfluid::base::OFException);
   BOOST_REQUIRE_THROW(Val2.get("foo").asIntegerValue(),openfluid::base::OFException);
@@ -394,6 +394,187 @@ BOOST_AUTO_TEST_CASE(check_string)
   std::cout << "======== check_string ========" << std::endl;
 
   openfluid::core::StringValue Val1;
+
+  std::cout << Val1 << std::endl;
+  BOOST_REQUIRE_EQUAL(Val1.isStringValue(),true);
+  BOOST_REQUIRE_EQUAL(Val1.isSimple(),true);
+  BOOST_REQUIRE_EQUAL(Val1.isCompound(),false);
+  BOOST_REQUIRE_EQUAL(Val1.get().size(),0);
+
+  Val1.set("ABCDE");
+  std::cout << Val1 << std::endl;
+  BOOST_REQUIRE_EQUAL(Val1.get(),"ABCDE");
+  BOOST_REQUIRE_EQUAL(Val1.get().size(),5);
+
+  openfluid::core::StringValue Val2 = Val1;
+  std::cout << Val2 << std::endl;
+  BOOST_REQUIRE_EQUAL(Val2.get(),"ABCDE");
+  BOOST_REQUIRE_EQUAL(Val2.get().size(),5);
+
+  Val2.set("EGDC");
+  std::cout << Val2 << std::endl;
+  BOOST_REQUIRE_EQUAL(Val2.get(),"EGDC");
+  BOOST_REQUIRE_EQUAL(Val2.get().size(),4);
+  BOOST_REQUIRE_EQUAL(Val1.get(),"ABCDE");
+  BOOST_REQUIRE_EQUAL(Val1.get().size(),5);
+
+
+  BOOST_REQUIRE_EQUAL(Val2.toString(),"EGDC");
+
+
+  openfluid::core::StringValue Val3;
+
+  openfluid::core::NullValue NullV;
+  openfluid::core::DoubleValue DoubleV;
+  openfluid::core::IntegerValue IntV;
+  openfluid::core::BooleanValue BoolV;
+  openfluid::core::VectorValue VectV;
+  openfluid::core::MatrixValue MatV;
+  openfluid::core::MapValue MapV;
+
+  // to null
+  Val3.set("null");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(Val3.toNullValue(NullV));
+  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(!Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(!Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(NullV.toString(),"null");
+  std::cout << NullV << std::endl;
+
+  // to double
+  Val3.set("2.79");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_CLOSE(DoubleV.get(),2.79,0.000001);
+  BOOST_REQUIRE_EQUAL(VectV.getSize(),1);
+  std::cout << DoubleV << std::endl;
+
+  // to int
+  Val3.set("17");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(IntV.get(),17);
+  std::cout << IntV << std::endl;
+
+
+  // to bool
+  Val3.set("true");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(!Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(!Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(BoolV.get(),true);
+  std::cout << BoolV << std::endl;
+
+  Val3.set("0");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(BoolV.get(),false);
+  std::cout << BoolV << std::endl;
+
+  // to vector
+  Val3.set("3;5;2.8;6;17.999923");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(VectV.getSize(),5);
+  BOOST_REQUIRE_CLOSE(VectV.get(1),5.000,0.00001);
+  BOOST_REQUIRE_CLOSE(VectV.get(4),17.999923,0.0000001);
+  BOOST_REQUIRE_EQUAL(MatV.getColsNbr(),5);
+  BOOST_REQUIRE_EQUAL(MatV.getRowsNbr(),1);
+  std::cout << VectV << std::endl;
+
+  // to matrix
+  Val3.set("3;5;2.8;6;17.999923|1;1;1;1;1|2.11;2.12;2.13;2.14;2.15");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(!Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(MatV.getColsNbr(),5);
+  BOOST_REQUIRE_EQUAL(MatV.getRowsNbr(),3);
+  BOOST_REQUIRE_CLOSE(MatV.get(0,0),3.000,0.00001);
+  BOOST_REQUIRE_CLOSE(MatV.get(4,2),2.15,0.00001);
+  BOOST_REQUIRE_CLOSE(MatV.get(2,1),1.00,0.00001);
+  std::cout << MatV << std::endl;
+
+  Val3.set("3;5;2.8;6;17.999923;1;1;1;1;1;2.11;2.12;2.13;2.14;2.15");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(Val3.toMatrixValue(";",5,MatV));
+  BOOST_REQUIRE(!Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(VectV.getSize(),15);
+  BOOST_REQUIRE_EQUAL(MatV.getColsNbr(),5);
+  BOOST_REQUIRE_EQUAL(MatV.getRowsNbr(),3);
+  BOOST_REQUIRE_CLOSE(MatV.get(0,0),3.000,0.00001);
+  BOOST_REQUIRE_CLOSE(MatV.get(4,2),2.15,0.00001);
+  BOOST_REQUIRE_CLOSE(MatV.get(2,1),1.00,0.00001);
+  std::cout << MatV << std::endl;
+
+
+  // to map
+  Val3.set("str=toto;dbl=12.56;int=17;bool=false");
+  std::cout << Val3 << " -> ";
+  BOOST_REQUIRE(!Val3.toNullValue(NullV));
+  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
+  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
+  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
+  BOOST_REQUIRE(!Val3.toVectorValue(";",VectV));
+  BOOST_REQUIRE(!Val3.toMatrixValue(";","|",MatV));
+  BOOST_REQUIRE(Val3.toMapValue(";",MapV));
+  BOOST_REQUIRE_EQUAL(MapV.getSize(),4);
+  BOOST_REQUIRE_EQUAL(MapV.getString("str"),"toto");
+  BOOST_REQUIRE(MapV.get("dbl").asStringValue().toDoubleValue(DoubleV));
+  BOOST_REQUIRE_CLOSE(DoubleV.get(),12.560,0.000001);
+  BOOST_REQUIRE_EQUAL(MapV.getString("dbl"),"12.56");
+  BOOST_REQUIRE(MapV.get("int").asStringValue().toIntegerValue(IntV));
+  BOOST_REQUIRE_EQUAL(IntV.get(),17);
+  BOOST_REQUIRE_EQUAL(MapV.getString("int"),"17");
+  BOOST_REQUIRE(MapV.get("bool").asStringValue().toBooleanValue(BoolV));
+  BOOST_REQUIRE_EQUAL(BoolV.get(),false);
+  BOOST_REQUIRE_EQUAL(MapV.getString("bool"),"false");
+  std::cout << MapV << std::endl;
+
+  // to array
+  // TODO
 
 }
 
@@ -415,6 +596,7 @@ BOOST_AUTO_TEST_CASE(check_sequence)
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::BooleanValue>(new openfluid::core::BooleanValue(true)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::VectorValue>(new openfluid::core::VectorValue(500,17.0)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::MatrixValue>(new openfluid::core::MatrixValue(29,47,1955.19)));
+  ValuesSeq.push_back(boost::shared_ptr<openfluid::core::StringValue>(new openfluid::core::StringValue("Welcome to the jungle!")));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::IntegerValue>(new openfluid::core::IntegerValue(1984)));
   ValuesSeq.push_back(boost::shared_ptr<openfluid::core::NullValue>(new openfluid::core::NullValue()));
 
@@ -473,11 +655,12 @@ BOOST_AUTO_TEST_CASE(check_sequence)
       BOOST_REQUIRE_EQUAL(ValuesSeq.front().get()->asMatrixValue().getSize(),(29*47));
 
       openfluid::core::MatrixValue* MatVTmp = static_cast<openfluid::core::MatrixValue*>(ValuesSeq.front().get());
-      BOOST_REQUIRE_EQUAL(MatVTmp->getSize1(),29);
-      BOOST_REQUIRE_EQUAL(MatVTmp->getSize2(),47);
+      BOOST_REQUIRE_EQUAL(MatVTmp->getColsNbr(),29);
+      BOOST_REQUIRE_EQUAL(MatVTmp->getRowsNbr(),47);
 
       Processed = true;
     }
+
 
     if (ValuesSeq.front()->isMapValue())
     {
@@ -486,6 +669,13 @@ BOOST_AUTO_TEST_CASE(check_sequence)
       Processed = true;
     }
 
+
+    if (ValuesSeq.front()->isStringValue())
+    {
+      BOOST_REQUIRE_EQUAL(ValuesSeq.front().get()->asStringValue().get(),"Welcome to the jungle!");
+
+      Processed = true;
+    }
 
 
     if (ValuesSeq.front()->isNullValue())

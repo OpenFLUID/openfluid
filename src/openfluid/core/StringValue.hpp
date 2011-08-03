@@ -58,8 +58,13 @@
 #define __STRINGVALUE_HPP___
 
 
+#include <string>
+
 #include <openfluid/core/SimpleValue.hpp>
+
 #include <openfluid/dllexport.hpp>
+
+
 
 namespace openfluid { namespace core {
 
@@ -97,29 +102,33 @@ class DLLEXPORT StringValue : public SimpleValue
 
     void writeToStream(std::ostream& OutStm) const;
 
-    bool toDouble(double& Val);
+    bool toDouble(double& Val) const;
 
-    bool toDoubleValue(DoubleValue& Val);
+    bool toDoubleValue(DoubleValue& Val) const;
 
-    bool toBoolean(bool& Val);
+    bool toBoolean(bool& Val) const;
 
-    bool toBooleanValue(BooleanValue& Val);
+    bool toBooleanValue(BooleanValue& Val) const;
 
-    bool toInteger(long& Val);
+    bool toInteger(long& Val) const;
 
-    bool toIntegerValue(IntegerValue& Val);
+    bool toIntegerValue(IntegerValue& Val) const;
 
-    bool toVectorValue(const std::string& Sep, VectorValue& Val);
+    bool toNullValue(NullValue& Val) const;
 
-    bool toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val);
+    bool toVectorValue(const std::string& Sep, VectorValue& Val) const;
 
-    bool toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val);
+    bool toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val) const;
 
-    bool toArrayValue(const std::string& ColSep, const std::string& RowSep, ArrayValue& Val);
+    bool toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val) const;
 
-    bool toArrayValue(const std::string& Sep, const unsigned int& RowLength, ArrayValue& Val);
+    bool toArrayValue(const std::string& ColSep, const std::string& RowSep, ArrayValue& Val) const;
 
-    bool toMapValue(const std::string& Sep, MapValue& Val);
+    bool toArrayValue(const std::string& Sep, const unsigned int& RowLength, ArrayValue& Val) const;
+
+    bool toMapValue(const std::string& Sep, MapValue& Val) const;
+
+    static bool convertStringToDouble(const std::string& Str, double& Dbl);
 
 };
 

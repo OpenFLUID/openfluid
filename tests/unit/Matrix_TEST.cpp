@@ -82,8 +82,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_CLOSE(V3.at(199,24),12.3,0.0001);
 
   V4 = openfluid::core::Matrix<double>(V3);
-  BOOST_REQUIRE_EQUAL(V4.getSize1(),200);
-  BOOST_REQUIRE_EQUAL(V4.getSize2(),25);
+  BOOST_REQUIRE_EQUAL(V4.getColsNbr(),200);
+  BOOST_REQUIRE_EQUAL(V4.getRowsNbr(),25);
   BOOST_REQUIRE_EQUAL(V4.size(),5000);
   BOOST_REQUIRE_CLOSE(V4.at(47,18),12.3,0.0001);
   BOOST_REQUIRE_CLOSE(V4.at(0,0),12.3,0.0001);
@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::core::Matrix<double> V1(10,10,12.3);
   openfluid::core::Matrix<double> V2,V3;
 
-  BOOST_REQUIRE_EQUAL(V1.getSize1(),10);
-  BOOST_REQUIRE_EQUAL(V1.getSize2(),10);
+  BOOST_REQUIRE_EQUAL(V1.getColsNbr(),10);
+  BOOST_REQUIRE_EQUAL(V1.getRowsNbr(),10);
 
   V1.set(1,1,-5.18);
   V1.setElement(3,3,12345.6789);
@@ -109,16 +109,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_CLOSE(V1.at(3,3),12345.6789,0.0001);
 
   V3 = V1;
-  BOOST_REQUIRE_EQUAL(V3.getSize1(),10);
-  BOOST_REQUIRE_EQUAL(V3.getSize2(),10);
+  BOOST_REQUIRE_EQUAL(V3.getColsNbr(),10);
+  BOOST_REQUIRE_EQUAL(V3.getRowsNbr(),10);
   BOOST_REQUIRE_CLOSE(V3.at(1,1),-5.18,0.0001);
   BOOST_REQUIRE_CLOSE(V3.getElement(3,3),12345.6789,0.0001);
 
   V3.clear();
   BOOST_REQUIRE_EQUAL(V3.getSize(),0);
 
-  BOOST_REQUIRE_EQUAL(V1.getSize1(),10);
-  BOOST_REQUIRE_EQUAL(V1.getSize2(),10);
+  BOOST_REQUIRE_EQUAL(V1.getColsNbr(),10);
+  BOOST_REQUIRE_EQUAL(V1.getRowsNbr(),10);
 
 
 }

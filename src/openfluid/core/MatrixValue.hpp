@@ -81,12 +81,12 @@ class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
     /**
       Constructor, creates a Matrix containing Size elements
     */
-    MatrixValue(unsigned long Size1,unsigned long Size2) : CompoundValue(), Matrix<double>(Size1,Size2) {};
+    MatrixValue(unsigned long ColsNbr,unsigned long RowsNbr) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr) {};
 
     /**
       Constructor, creates a Matrix containing Size elements, initialized with value InitValue
     */
-    MatrixValue(unsigned long Size1, unsigned long Size2, double InitValue) : CompoundValue(), Matrix<double>(Size1,Size2,InitValue) {};
+    MatrixValue(unsigned long ColsNbr, unsigned long RowsNbr, double InitValue) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr,InitValue) {};
 
     virtual ~MatrixValue() {};
 

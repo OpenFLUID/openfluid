@@ -59,8 +59,17 @@
 
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/NullValue.hpp>
+#include <openfluid/core/MapValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/ArrayValue.hpp>
 
 #include <openfluid/base/OFException.hpp>
+
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace core {
@@ -76,11 +85,11 @@ void StringValue::writeToStream(std::ostream& OutStm) const
 // =====================================================================
 
 
-bool StringValue::toDouble(double& Val)
+bool StringValue::convertStringToDouble(const std::string& Str, double& Dbl)
 {
-  std::istringstream iss(m_Value);
+  std::istringstream iss(Str);
   char c;
-  return ((iss >> Val) && !iss.get(c));
+  return ((iss >> Dbl) && !iss.get(c));
 }
 
 
@@ -88,7 +97,17 @@ bool StringValue::toDouble(double& Val)
 // =====================================================================
 
 
-bool StringValue::toDoubleValue(DoubleValue& Val)
+bool StringValue::toDouble(double& Val) const
+{
+  return convertStringToDouble(m_Value,Val);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool StringValue::toDoubleValue(DoubleValue& Val) const
 {
   double PODVal;
 
@@ -105,9 +124,25 @@ bool StringValue::toDoubleValue(DoubleValue& Val)
 // =====================================================================
 
 
-bool StringValue::toBoolean(bool& Val)
+bool StringValue::toBoolean(bool& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+
+  if (m_Value == "true")
+  {
+    Val = true;
+    return true;
+  }
+
+  if (m_Value == "false")
+  {
+    Val = false;
+    return true;
+  }
+
+
+  std::istringstream iss(m_Value);
+  char c;
+  return ((iss >> Val) && !iss.get(c));
 }
 
 
@@ -115,9 +150,16 @@ bool StringValue::toBoolean(bool& Val)
 // =====================================================================
 
 
-bool StringValue::toBooleanValue(BooleanValue& Val)
+bool StringValue::toBooleanValue(BooleanValue& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+  bool PODVal;
+
+  if (!toBoolean(PODVal))
+    return false;
+
+  Val = BooleanValue(PODVal);
+
+  return true;
 }
 
 
@@ -126,9 +168,11 @@ bool StringValue::toBooleanValue(BooleanValue& Val)
 
 
 
-bool StringValue::toInteger(long& Val)
+bool StringValue::toInteger(long& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+  std::istringstream iss(m_Value);
+  char c;
+  return ((iss >> Val) && !iss.get(c));
 }
 
 
@@ -136,9 +180,16 @@ bool StringValue::toInteger(long& Val)
 // =====================================================================
 
 
-bool StringValue::toIntegerValue(IntegerValue& Val)
+bool StringValue::toIntegerValue(IntegerValue& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+  long PODVal;
+
+  if (!toInteger(PODVal))
+    return false;
+
+  Val = IntegerValue(PODVal);
+
+  return true;
 }
 
 
@@ -146,9 +197,14 @@ bool StringValue::toIntegerValue(IntegerValue& Val)
 // =====================================================================
 
 
-bool StringValue::toVectorValue(const std::string& Sep, VectorValue& Val)
+bool StringValue::toNullValue(NullValue& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+  if (m_Value != "null")
+    return false;
+
+  Val = NullValue();
+
+  return true;
 }
 
 
@@ -156,9 +212,23 @@ bool StringValue::toVectorValue(const std::string& Sep, VectorValue& Val)
 // =====================================================================
 
 
-bool StringValue::toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val)
+bool StringValue::toVectorValue(const std::string& Sep, VectorValue& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+
+  std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
+
+  openfluid::core::VectorValue TmpVect(Splitted.size());
+  double TmpDbl;
+
+  for (unsigned long i=0;i<Splitted.size();i++)
+  {
+    if (!convertStringToDouble(Splitted[i],TmpDbl)) return false;
+    TmpVect.set(i,TmpDbl);
+  }
+
+  Val = TmpVect;
+
+  return true;
 }
 
 
@@ -166,9 +236,41 @@ bool StringValue::toMatrixValue(const std::string& ColSep, const std::string& Ro
 // =====================================================================
 
 
-bool StringValue::toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val)
+bool StringValue::toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+
+  std::vector<std::string> SplittedRows = openfluid::tools::SplitString(m_Value,RowSep);
+
+  unsigned long TmpRowsNbr = SplittedRows.size();
+  unsigned long TmpColsNbr;
+  double TmpDbl;
+
+  MatrixValue TmpMatrix(0,0);
+
+  for (unsigned long i=0;i<TmpRowsNbr;i++)
+  {
+    std::vector<std::string> SplittedCols = openfluid::tools::SplitString(SplittedRows[i],ColSep);
+
+    if (i==0)
+    {
+      TmpColsNbr = SplittedCols.size();
+      if (TmpColsNbr == 0) return false;
+      TmpMatrix = MatrixValue(TmpColsNbr,TmpRowsNbr);
+    }
+
+    if (TmpColsNbr != SplittedCols.size()) return false;
+
+
+    for (unsigned long j=0;j<TmpColsNbr;j++)
+    {
+      if (!convertStringToDouble(SplittedCols[j],TmpDbl)) return false;
+      TmpMatrix.set(j,i,TmpDbl);
+    }
+  }
+
+  Val = TmpMatrix;
+
+  return true;
 }
 
 
@@ -176,9 +278,38 @@ bool StringValue::toMatrixValue(const std::string& Sep, const unsigned int& RowL
 // =====================================================================
 
 
-bool StringValue::toArrayValue(const std::string& ColSep, const std::string& RowSep, ArrayValue& Val)
+bool StringValue::toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val) const
 {
-  throw openfluid::base::OFException("under construction");
+
+  std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
+
+  unsigned long TmpSize = Splitted.size();
+
+  if ( TmpSize % RowLength != 0 ) return false;
+
+  unsigned long TmpRowsNbr = TmpSize / RowLength;
+  unsigned long CurrentCol = 0;
+  unsigned long CurrentRow = 0;
+  double TmpDbl;
+
+  MatrixValue TmpMatrix(RowLength,TmpRowsNbr);
+
+  for (std::vector<std::string>::const_iterator it=Splitted.begin(); it!= Splitted.end(); ++it)
+  {
+    if (!convertStringToDouble(*it,TmpDbl)) return false;
+    TmpMatrix.set(CurrentCol,CurrentRow,TmpDbl);
+
+    CurrentCol++;
+    if (CurrentCol >= RowLength)
+    {
+      CurrentCol = 0;
+      CurrentRow++;
+    }
+  }
+
+  Val = TmpMatrix;
+
+  return true;
 }
 
 
@@ -186,9 +317,10 @@ bool StringValue::toArrayValue(const std::string& ColSep, const std::string& Row
 // =====================================================================
 
 
-bool StringValue::toArrayValue(const std::string& Sep, const unsigned int& RowLength, ArrayValue& Val)
+bool StringValue::toArrayValue(const std::string& /*ColSep*/, const std::string& /*RowSep*/, ArrayValue& /*Val*/) const
 {
   throw openfluid::base::OFException("under construction");
+  return false;
 }
 
 
@@ -196,9 +328,38 @@ bool StringValue::toArrayValue(const std::string& Sep, const unsigned int& RowLe
 // =====================================================================
 
 
-bool StringValue::toMapValue(const std::string& Sep, MapValue& Val)
+bool StringValue::toArrayValue(const std::string& /*Sep*/, const unsigned int& /*RowLength*/, ArrayValue& /*Val*/) const
 {
   throw openfluid::base::OFException("under construction");
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool StringValue::toMapValue(const std::string& Sep, MapValue& Val) const
+{
+  std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
+
+  unsigned long TmpSize = Splitted.size();
+
+
+  MapValue TmpMap;
+
+  for (std::vector<std::string>::const_iterator it=Splitted.begin(); it!= Splitted.end(); ++it)
+  {
+    std::vector<std::string> KeyValue = openfluid::tools::SplitString(*it,"=");
+
+    if (KeyValue.size() != 2) return false;
+
+    TmpMap.setString(KeyValue.front(),KeyValue.back());
+  }
+
+  Val = TmpMap;
+
+  return true;
 }
 
 
