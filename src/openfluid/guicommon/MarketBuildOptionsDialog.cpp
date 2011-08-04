@@ -64,6 +64,12 @@
 #include <gtkmm/label.h>
 
 
+namespace openfluid { namespace guicommon {
+
+// =====================================================================
+// =====================================================================
+
+
 MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions, const std::string FuncID)
 : Gtk::Dialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_FuncID(FuncID)
 {
@@ -120,6 +126,8 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuil
 
 // =====================================================================
 // =====================================================================
+
+} } //namespaces
 
 
 
