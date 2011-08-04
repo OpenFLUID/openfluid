@@ -156,32 +156,32 @@ class DLLEXPORT MapValue : public CompoundValue
     Value& get(const std::string& Key);
 
     /**
-      Returns the double element of the map for key Key
+      Returns a double element of the map for key Key
     */
     inline double getDouble(const std::string& Key) { return get(Key).asDoubleValue().get(); };
 
     /**
-      Returns the double element of the map for key Key
+      Returns a long element of the map for key Key
     */
     inline long getInteger(const std::string& Key) { return get(Key).asIntegerValue().get(); };
 
     /**
-      Returns the double element of the map for key Key
+      Returns a bool element of the map for key Key
     */
     inline bool getBoolean(const std::string& Key) { return get(Key).asBooleanValue().get(); };
 
     /**
-      Returns the double element of the map for key Key
+      Returns a string element of the map for key Key
     */
     inline std::string getString(const std::string& Key) { return get(Key).asStringValue().get(); };
 
     /**
-      Returns the double element of the map for key Key
+      Returns a VectorValue element of the map for key Key
     */
     inline VectorValue getVectorValue(const std::string& Key) { return get(Key).asVectorValue(); };
 
     /**
-      Returns the double element of the map for key Key
+      Returns a MatrixValue element of the map for key Key
     */
     inline MatrixValue getMatrixValue(const std::string& Key) { return get(Key).asMatrixValue(); };
 
