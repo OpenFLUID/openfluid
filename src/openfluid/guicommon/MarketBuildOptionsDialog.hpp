@@ -60,6 +60,9 @@
 #include <gtkmm/entry.h>
 #include <string>
 
+
+namespace openfluid { namespace guicommon {
+
 // =====================================================================
 // =====================================================================
 
@@ -83,6 +86,9 @@ class MarketBuildOptionsDialog : public Gtk::Dialog
 
     std::string getEditedOptions() const { return m_OptionsEntry.get_text(); };
 };
+
+
+} } //namespaces
 
 
 #endif /* __MARKETBUILDOPTIONSDIALOG_HPP__ */
