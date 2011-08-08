@@ -70,8 +70,9 @@ be overridden by local parameters of simulation functions or generators.\\
   the name of the produced variable, a \texttt{unitclass} attribute giving the 
   unit class of the produced variable, a \texttt{method} attribute giving the 
   method used to produce the variable (\texttt{fixed} for constant value,
-  \texttt{random} for random value in a range, \texttt{interp} for an
-  interpolated value from given data series). An optional \texttt{<varsize>}
+  \texttt{random} for random value in a range, \texttt{interp} for a time-interpolated
+  value from given data series, \texttt{inject} for an
+  injected value -no time interpolation- from given data series). An optional \texttt{<varsize>}
   attribute can be set in order to produce a vector variable instead of a scalar variable.
   \item Each \texttt{<generator>} tag may include zero to many \texttt{<param>}
   tags giving parameters to the generator. Each \texttt{<param>} tag must bring
@@ -86,6 +87,10 @@ be overridden by local parameters of simulation functions or generators.\\
   param named \texttt{sources} giving the data sources filename and a param
   named \texttt{distribution} giving the distribution filename for the value to
   produce (see appendix).
+  \item A generator using the \texttt{inject} method must provide a
+  param named \texttt{sources} giving the data sources filename and a param
+  named \texttt{distribution} giving the distribution filename for the value to
+  produce (see appendix).  
   \item Each \texttt{<gparams>} tag may include zero to many \texttt{<param>}
   tags giving the global parameters. Each \texttt{<param>} tag
   must bring a \texttt{name} attribute giving the name of the parameter and a \texttt{value} 

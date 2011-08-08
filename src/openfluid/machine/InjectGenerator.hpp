@@ -53,54 +53,67 @@
  */
 
 
-#ifndef __GENERATORDESCRIPTOR_HPP__
-#define __GENERATORDESCRIPTOR_HPP__
+#ifndef __INJECTGENERATOR_HPP__
+#define __INJECTGENERATOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
+#include <openfluid/machine/Generator.hpp>
+#include <openfluid/tools.hpp>
 
-namespace openfluid { namespace base {
+#include <queue>
+#include <map>
+
+namespace openfluid { namespace machine {
 
 
-class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
+class DLLEXPORT InjectGenerator : public Generator
 {
-  public:
-    enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp, Inject };
-
   private:
 
-    openfluid::core::VariableName_t m_VarName;
+    typedef std::pair<openfluid::core::DateTime,double> DatedValue_t;
+    typedef std::queue<DatedValue_t> DatedValueSerie_t;
 
-    openfluid::core::UnitClass_t m_UnitClass;
+    bool m_IsMin;
+    bool m_IsMax;
 
-    GeneratorMethod m_GenMethod;
+    double m_Min;
+    double m_Max;
 
-    unsigned int m_VarSize;
+    std::string m_SourcesFile;
+    std::string m_DistriFile;
+
+
+
+    std::map<int,DatedValueSerie_t> m_Series;
+
+    openfluid::core::IDIntMap m_SerieIDByUnit;
+
+
+    void LoadDistribution(const std::string& FilePath);
+
+    void LoadDataAsSerie(const std::string& FilePath,const int& ID);
+
 
   public:
 
-    GeneratorDescriptor();
+    InjectGenerator();
 
-    GeneratorDescriptor(openfluid::core::VariableName_t VarName, openfluid::core::UnitClass_t UnitClass,
-                        GeneratorMethod GenMethod, unsigned int VarSize=1);
+    ~InjectGenerator();
 
-    openfluid::core::VariableName_t getVariableName() const;
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
 
-    openfluid::core::UnitClass_t getUnitClass() const;
+    bool checkConsistency();
 
-    GeneratorMethod getGeneratorMethod() const;
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
 
-    inline bool isVectorVariable() const { return (m_VarSize > 1); };
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    inline bool isScalarVariable() const { return (!isVectorVariable()); };
-
-    inline unsigned int getVariableSize() const { return m_VarSize; };
-
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
 
+} } //namespaces
 
-} } // namespaces
 
-#endif /* __GENERATORDESCRIPTOR_HPP__ */
+
+#endif /* __INJECTGENERATOR_H___ */

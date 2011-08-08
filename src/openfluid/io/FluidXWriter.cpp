@@ -103,6 +103,9 @@ std::string FluidXWriter::getGeneratorMethodAsStr(openfluid::base::GeneratorDesc
   if (Method == openfluid::base::GeneratorDescriptor::Interp)
     return "interp";
 
+  if (Method == openfluid::base::GeneratorDescriptor::Inject)
+    return "inject";
+
   return "";
 }
 

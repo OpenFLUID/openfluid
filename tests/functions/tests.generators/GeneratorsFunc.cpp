@@ -225,6 +225,22 @@ class GeneratorsFunction : public openfluid::base::PluggableFunction
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpminmax variable");
 
 
+
+      OPENFLUID_GetVariable(TU,"tests.inject",SimStatus->getCurrentStep(),&SValue);
+
+      if (TU->getID() % 2 != 0)
+      {
+
+        if (!openfluid::tools::IsCloseEnough(SValue,double(SimStatus->getCurrentStep())))
+          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source3.dat)");
+      }
+      else
+      {
+        if (!openfluid::tools::IsCloseEnough(SValue,0.0))
+          OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source4.dat)");
+      }
+
+
       if (SimStatus->getCurrentStep()>0)
       {
         OPENFLUID_GetVariable(TU,"tests.fixedprev",SimStatus->getCurrentStep()-1,&VValue);

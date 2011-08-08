@@ -13,22 +13,28 @@
     </generator>
 
     <generator varname="tests.interp" unitclass="TestUnits" method="interp">
-      <param name="sources" value="sources.xml" />
+      <param name="sources" value="sourcesinterp.xml" />
       <param name="distribution" value="distri.dat" />
     </generator>
 
     <generator varname="tests.interpmin" unitclass="TestUnits" method="interp">
-      <param name="sources" value="sources.xml" />
+      <param name="sources" value="sourcesinterp.xml" />
       <param name="distribution" value="distri.dat" />
       <param name="thresholdmin" value="0" />      
     </generator>
 
     <generator varname="tests.interpminmax" unitclass="TestUnits" method="interp">
-      <param name="sources" value="sources.xml" />
+      <param name="sources" value="sourcesinterp.xml" />
       <param name="distribution" value="distri.dat" />
       <param name="thresholdmin" value="0" />      
       <param name="thresholdmax" value="20" />
     </generator>
+
+    <generator varname="tests.inject" unitclass="TestUnits" method="inject">
+      <param name="sources" value="sourcesinject.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
 
     <function fileID="tests.generators" />
 
