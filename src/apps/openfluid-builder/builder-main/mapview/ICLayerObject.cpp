@@ -46,84 +46,63 @@
  */
 
 /**
- \file MapViewModule.hpp
- \brief Header of ...
+ \file ICLayerObject.cpp
+ \brief Implements ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#include "ICLayerObject.hpp"
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
-
-#include <openfluid/core/CoreRepository.hpp>
-
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+ICLayerObject::ICLayerObject(OGRGeometry* OGRGeometryObject) :
+  mp_OGRGeometryObject(OGRGeometryObject), mp_SelfIdExist(0)
 {
 
-  private:
+}
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+// =====================================================================
+// =====================================================================
+// =====================================================================
+// =====================================================================
 
-    //GTKmm
+OGRGeometry* ICLayerObject::getOGRGeometryObject()
+{
+  return mp_OGRGeometryObject;
+}
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+// =====================================================================
+// =====================================================================
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+openfluid::core::Unit* ICLayerObject::getSelfIdExist()
+{
+  return mp_SelfIdExist;
+}
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+// =====================================================================
+// =====================================================================
 
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+void ICLayerObject::setSelfIdExist(openfluid::core::Unit* SelfIdExist)
+{
+  mp_SelfIdExist = SelfIdExist;
+}
 
-    sigc::signal<void> m_signal_MapViewChanged;
+// =====================================================================
+// =====================================================================
 
-    void whenChanged();
+void ICLayerObject::update(openfluid::core::Unit* SelfIdExist)
+{
+  setSelfIdExist(SelfIdExist);
+}
 
-  public:
+// =====================================================================
+// =====================================================================
 
-    MapViewModule();
+bool ICLayerObject::selfIdExisting()
+{
+  if(mp_SelfIdExist != NULL)
+    return true;
+  return false;
+}
 
-    Gtk::Widget* asWidget();
-
-    void compose()
-    {
-    }
-    ;
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
-};
-
-#endif /* __MAPVIEWMODULE_HPP__ */
+// =====================================================================
+// =====================================================================

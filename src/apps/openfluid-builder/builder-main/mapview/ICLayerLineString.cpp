@@ -46,15 +46,15 @@
  */
 
 /**
- \file ICLayerPoint.cpp
+ \file ICLayerLineString.cpp
  \brief Implements ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include "ICLayerPoint.hpp"
+#include "ICLayerLineString.hpp"
 
-ICLayerPoint::ICLayerPoint()
+ICLayerLineString::ICLayerLineString()
 {
 
 }
@@ -62,71 +62,66 @@ ICLayerPoint::ICLayerPoint()
 // =====================================================================
 // =====================================================================
 
-void ICLayerPoint::drawPoint(Cairo::RefPtr<Cairo::Context> cr,
-    OGRGeometry* ObjectGeo, double scale, bool notselect)
+void ICLayerLineString::drawLine(Cairo::RefPtr<Cairo::Context> cr,
+    OGRGeometry* ObjectGeo, double /*scale*/, bool /*notselect*/)
 {
 
-  OGRPoint* Point = static_cast<OGRPoint*> (ObjectGeo);
-  cr->move_to(Point->getX() + (2 / scale), Point->getY());
-  cr->line_to(Point->getX() + (2 / scale), Point->getY() + (2 / scale));
-  cr->line_to(Point->getX() - (2 / scale), Point->getY() + (2 / scale));
-  cr->line_to(Point->getX() - (2 / scale), Point->getY() - (2 / scale));
-  cr->line_to(Point->getX() + (2 / scale), Point->getY() - (2 / scale));
-  cr->close_path();
-  if (notselect)
-    cr->stroke();
-  else
-    cr->fill();
+  OGRLineString* Line = static_cast<OGRLineString*> (ObjectGeo);
+  cr->move_to(Line->getX(0), Line->getY(0));
+  for (int i = 1; i < Line->getNumPoints(); i++)
+  {
+    cr->line_to(Line->getX(i), Line->getY(i));
+  }
+  cr->stroke();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
+void ICLayerLineString::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
 {
   std::map<int, ICLayerObject*>::iterator it;
-
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
     if ((*it).second->selfIdExisting())
-      drawPoint(cr, ((*it).second)->getOGRGeometryObject(), scale, true);
+      drawLine(cr, (*it).second->getOGRGeometryObject(), scale, true);
   }
 }
 
 // =====================================================================
 // =====================================================================
 
-std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPoint::getMinMax()
+
+std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerLineString::getMinMax()
 {
   std::pair<std::pair<double, double>, std::pair<double, double> > MinMaxTemp;
 
-  double x;
-  double y;
-
+  OGREnvelope Env;
   bool first = true;
   std::map<int, ICLayerObject*>::iterator it;
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
     if ((*it).second->selfIdExisting())
     {
-      x
-          = (static_cast<OGRPoint*> ((*it).second->getOGRGeometryObject()))->getX();
-      y
-          = (static_cast<OGRPoint*> ((*it).second->getOGRGeometryObject()))->getY();
+      (*it).second->getOGRGeometryObject()->getEnvelope(&Env);
 
       if (first)
       {
-        (MinMaxTemp.second).first = x;
-        (MinMaxTemp.second).second = y;
-        (MinMaxTemp.first).first = x;
-        (MinMaxTemp.first).second = y;
+        (MinMaxTemp.second).first = Env.MaxX;
+        (MinMaxTemp.second).second = Env.MaxY;
+        (MinMaxTemp.first).first = Env.MinX;
+        (MinMaxTemp.first).second = Env.MinY;
         first = false;
       } else
       {
-        (MinMaxTemp.second).first = std::max((MinMaxTemp.second).first, x);
-        (MinMaxTemp.second).second = std::max((MinMaxTemp.second).second, y);
-        (MinMaxTemp.first).first = std::min((MinMaxTemp.first).first, x);
-        (MinMaxTemp.first).second = std::min((MinMaxTemp.first).second, y);
+        (MinMaxTemp.second).first = std::max((MinMaxTemp.second).first,
+            Env.MaxX);
+        (MinMaxTemp.second).second = std::max((MinMaxTemp.second).second,
+            Env.MaxY);
+        (MinMaxTemp.first).first = std::min((MinMaxTemp.first).first, Env.MinX);
+        (MinMaxTemp.first).second = std::min((MinMaxTemp.first).second,
+            Env.MinY);
       }
     }
   }

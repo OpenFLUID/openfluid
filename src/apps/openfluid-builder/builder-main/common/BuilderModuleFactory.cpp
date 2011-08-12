@@ -161,5 +161,8 @@ BuilderModule* BuilderModuleFactory::createResultsSetModule()
 
 BuilderModule* BuilderModuleFactory::createMapViewModule()
 {
-  return new MapViewModule();
+  MapViewModule* Module = new MapViewModule();
+  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+      *mp_EngineProject.getSimBlob());
+  return Module;
 }

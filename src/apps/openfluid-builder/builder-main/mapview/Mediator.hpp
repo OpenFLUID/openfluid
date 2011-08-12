@@ -46,84 +46,97 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file Mediator.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __MEDIATOR_HPP__
+#define __MEDIATOR_HPP__
 
-#include <gtkmm/scrolledwindow.h>
+#include <iostream>
+#include <vector>
+#include <string>
+
 #include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#include <gtkmm/separator.h>
 
 #include <openfluid/core/CoreRepository.hpp>
 
-#include "ProjectWorkspaceModule.hpp"
+#include "DrawingArea.hpp"
+#include "Info.hpp"
+#include "StatusBar.hpp"
+#include "ToolBar.hpp"
+#include "Layer.hpp"
 
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+class Mediator
 {
 
   private:
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+    DrawingArea& mref_DrawingArea;
+    Info& mref_Info;
+    StatusBar& mref_StatusBar;
+    ToolBar& mref_ToolBar;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    std::vector<Layer*> m_Layer;
+
+    std::string m_SelectedClassName;
+    std::vector<int> m_SelectedUnitId;
 
     //GTKmm
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::VBox* mp_MainVBoxMediator;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    sigc::signal<void> m_signal_DrawingAreaExposeEventChanged;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    void whenDrawingAreaChanged();
 
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+    //***************Signal ToolBar*********************
+    void whenOnShow100FocusButtonClicked();
+    void whenOnZoomSelectionFocusButtonClicked();
+    void whenOnZoomLayerFocusButtonClicked();
 
-    sigc::signal<void> m_signal_MapViewChanged;
+    void whenOnZoomCursorZoomTypeButtonClicked();
+    void whenOnZoomFrameZoomTypeButtonClicked();
 
-    void whenChanged();
+    void whenOnSelectAllPreferenceMenuClicked();
+    void whenOnToggleSelectedPreferenceMenuClicked();
+
+    void whenOnAddLayerToolButtonClicked();
+    void whenOnInfoToolButtonClicked();
+    void whenOnSelectObjectLayerToggleToolButtonClicked();
+    void whenOnMoveLayerToggleToolButtonClicked();
+    void whenOnUnzoomCursorToggleToolButtonClicked();
+    //***************Signal Layer***********************
+    void whenOnUpLayerButtonClicked(std::string);
+    void whenOnDownLayerButtonClicked(std::string);
+    void whenOnRemoveLayerButtonClicked(std::string);
+    void whenOnIsSelectedLayerClicked(std::string);
+    void whenOnIsDisplayButtonChecked();
+    void whenOnWidgetExpanderBaseChanged();
+
+    void upLayer(std::string);
+    void downLayer(std::string);
+    void removeLayer(std::string);
+    void removeAllObjectMainVBoxMediator();
+    void addAllObjectMainVBoxMediator();
 
   public:
 
-    MapViewModule();
+    Mediator(DrawingArea&, Info&, StatusBar&, ToolBar&);
 
     Gtk::Widget* asWidget();
 
-    void compose()
-    {
-    }
-    ;
+    void setEngineRequirements(openfluid::core::CoreRepository&);
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
+    sigc::signal<void> signal_DrawingAreaExposeEventChanged();
+    void redraw();
 
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
+    static Gtk::HSeparator* setHSeparator();
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __MEDIATOR_HPP__ */

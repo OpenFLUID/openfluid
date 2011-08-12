@@ -46,84 +46,70 @@
  */
 
 /**
- \file MapViewModule.hpp
- \brief Header of ...
+ \file WidgetLayerObject.cpp
+ \brief Implements ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#include "WidgetLayerObject.hpp"
+#include "WidgetObject.hpp"
+#include "WidgetExpander.hpp"
+#include "Mediator.hpp"
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
-
-#include <openfluid/core/CoreRepository.hpp>
-
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+WidgetLayerObject::WidgetLayerObject(const LayerType::LayerTypes& LayerType,
+    std::string ClassName, std::string FileName) :
+  mref_LayerType(LayerType)
 {
+  mp_MainVBoxLayer = Gtk::manage(new Gtk::VBox());
 
-  private:
+  switch (mref_LayerType)
+  {
+    case LayerType::LAYER_BASE:
+      mp_WidgetObject = new WidgetObjectBase(ClassName, FileName);
+      mp_WidgetExpander = new WidgetExpanderBase();
+      break;
+    case LayerType::LAYER_BACKGROUND:
+      break;
+    case LayerType::LAYER_RESULT:
+      break;
+    default:
+      std::cerr << "error : layer type unexpected";
+      break;
+  }
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+  mp_MainVBoxLayer->pack_start(*mp_WidgetObject->asWidget());
+  mp_MainVBoxLayer->pack_start(*mp_WidgetExpander->asWidget());
+  mp_MainVBoxLayer->pack_start(*Mediator::setHSeparator());
+  mp_MainVBoxLayer->set_visible(true);
 
-    //GTKmm
+}
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+// =====================================================================
+// =====================================================================
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+Gtk::Widget* WidgetLayerObject::asWidget()
+{
+  return mp_MainVBoxLayer;
+}
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+// =====================================================================
+// =====================================================================
 
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+WidgetObjectBase* WidgetLayerObject::getWidgetObjectBase()
+{
+  return static_cast<WidgetObjectBase*> (mp_WidgetObject);
+}
 
-    sigc::signal<void> m_signal_MapViewChanged;
+// =====================================================================
+// =====================================================================
 
-    void whenChanged();
+WidgetExpanderBase* WidgetLayerObject::getWidgetExpanderBase()
+{
+  return static_cast<WidgetExpanderBase*> (mp_WidgetExpander);
+}
 
-  public:
+// =====================================================================
+// =====================================================================
 
-    MapViewModule();
 
-    Gtk::Widget* asWidget();
-
-    void compose()
-    {
-    }
-    ;
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
-};
-
-#endif /* __MAPVIEWMODULE_HPP__ */

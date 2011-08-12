@@ -43,87 +43,35 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- */
+*/
 
 /**
- \file MapViewModule.hpp
+ \file ICLayerPolygon.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#ifndef __ICLAYERPOLYGON_HPP__
+#define __ICLAYERPOLYGON_HPP__
 
-#include <openfluid/core/CoreRepository.hpp>
+#include "ICLayer.hpp"
 
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+class ICLayerPolygon : public ICLayer
 {
 
-  private:
+  private :
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+  public :
 
-    //GTKmm
+    ICLayerPolygon();
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    void drawPoly(Cairo::RefPtr<Cairo::Context> , OGRGeometry*, double, bool);
+    void draw(Cairo::RefPtr<Cairo::Context> , double);
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
-
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    sigc::signal<void> m_signal_MapViewChanged;
-
-    void whenChanged();
-
-  public:
-
-    MapViewModule();
-
-    Gtk::Widget* asWidget();
-
-    void compose()
-    {
-    }
-    ;
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
+    std::pair< std::pair<double, double>, std::pair<double, double> > getMinMax();
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+
+#endif /* __ICLAYERPOLYGON_HPP__ */

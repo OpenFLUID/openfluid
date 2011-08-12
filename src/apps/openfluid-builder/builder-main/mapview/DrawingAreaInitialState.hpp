@@ -46,84 +46,31 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file DrawingAreaInitialState.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __DRAWINGAREAINITIALSTATE_HPP__
+#define __DRAWINGAREAINITIALSTATE_HPP__
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#include <iostream>
 
-#include <openfluid/core/CoreRepository.hpp>
+#include "DrawingAreaState.hpp"
 
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+class DrawingAreaInitialState: public DrawingAreaState
 {
 
   private:
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
-
-    //GTKmm
-
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
-
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
-
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    sigc::signal<void> m_signal_MapViewChanged;
-
-    void whenChanged();
-
   public:
 
-    MapViewModule();
+    DrawingAreaInitialState(DrawingArea&);
 
-    Gtk::Widget* asWidget();
+    void onMouseButtonPressed(GdkEvent*);
+    void onMouseButtonReleased(GdkEvent*);
 
-    void compose()
-    {
-    }
-    ;
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __DRAWINGAREAINITIALSTATE_HPP__ */

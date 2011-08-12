@@ -46,84 +46,85 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file WidgetObjectBase.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __WIDGETOBJECTBASE_HPP__
+#define __WIDGETOBJECTBASE_HPP__
 
-#include <gtkmm/scrolledwindow.h>
+#include <iostream>
+#include <gtkmm/toolitem.h>
+#include <gtkmm/image.h>
 #include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#include <gtkmm/action.h>
+#include <gtkmm/label.h>
+#include <gtkmm/checkbutton.h>
 
-#include <openfluid/core/CoreRepository.hpp>
+#include "WidgetObject.hpp"
 
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+class WidgetObjectBase: public WidgetObject
 {
 
   private:
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+    int m_OGRGeometryType;
+    bool m_IsSelected;
 
-    //GTKmm
+    //Gtkmm
+    Gtk::ToolItem* mp_ButtonUp;
+    Gtk::ToolItem* mp_ButtonDown;
+    Gtk::ToolItem* mp_ButtonRemove;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::CheckButton* mp_CheckButton;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::Label m_TitleLayerLabel;
+    Gtk::Label m_NameShapeFileLabel;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    Glib::RefPtr<Gtk::Action> mref_UpLayer;
+    Glib::RefPtr<Gtk::Action> mref_DownLayer;
+    Glib::RefPtr<Gtk::Action> mref_RemoveLayer;
 
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+    Gtk::Image* mp_ImageOGRGeometryType;
 
-    sigc::signal<void> m_signal_MapViewChanged;
+    typedef sigc::signal<void> mtype_SignalWidgetObjectBase;
 
-    void whenChanged();
+    mtype_SignalWidgetObjectBase m_signal_UpLayerButtonClicked;
+    mtype_SignalWidgetObjectBase m_signal_DownLayerButtonClicked;
+    mtype_SignalWidgetObjectBase m_signal_RemoveLayerButtonClicked;
+    mtype_SignalWidgetObjectBase m_signal_IsDisplayButtonChecked;
+    mtype_SignalWidgetObjectBase m_signal_IsSelectedLayerClicked;
+
+    //*******************Signal emit*******************
+    void onUpLayerButtonClicked();
+    void onDownLayerButtonClicked();
+    void onRemoveLayerButtonClicked();
+    void onIsDisplayButtonChecked();
+    //*************************************************
+
+    void setImageOGRGeometryType(int);
+    bool onEventHappend(GdkEvent* event);
 
   public:
 
-    MapViewModule();
+    WidgetObjectBase(std::string, std::string);
 
-    Gtk::Widget* asWidget();
+    mtype_SignalWidgetObjectBase signalUpLayerButtonClicked();
+    mtype_SignalWidgetObjectBase signalDownLayerButtonClicked();
+    mtype_SignalWidgetObjectBase signalRemoveLayerButtonClicked();
+    mtype_SignalWidgetObjectBase signalIsDisplayButtonChecked();
+    mtype_SignalWidgetObjectBase signalIsSelectedLayerClicked();
 
-    void compose()
-    {
-    }
-    ;
+    //accessor
+    //get
+    Gtk::ToolItem* getButtonDown();
+    Gtk::ToolItem* getButtonUp();
+    //set
+    void setOGRGeometryType(int);
+    void setIsSelected(bool);
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __WIDGETOBJECTBASE_HPP__ */

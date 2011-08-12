@@ -660,12 +660,29 @@ void ProjectCoordinator::whenMapViewAsked()
     Module
         = (ProjectWorkspaceModule*) mp_ModuleFactory->createMapViewModule();
 
+    Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
+        &ProjectCoordinator::whenMapViewChanged));
+
     m_ModulesByPageNameMap[PageName] = Module;
     m_Workspace.appendPage(PageName, Module->composeAndGetAsWidget());
   }
 
   m_Workspace.setCurrentPage(PageName);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenMapViewChanged()
+{
+  std::cout << "MapView has changed" << std::endl;
+  // check if update of Domain is sufficient
+//  updateWorkspaceModules();
+//  updateResults();
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -699,3 +716,4 @@ std::vector<std::string> ProjectCoordinatorSub::getWorkspacePagesToDelete()
 {
   return ProjectCoordinator::getClassPagesToDelete();
 }
+

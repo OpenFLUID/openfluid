@@ -46,84 +46,63 @@
  */
 
 /**
- \file MapViewModule.hpp
- \brief Header of ...
+ \file DrawingAreaZoomFrameState.cpp
+ \brief Implements ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#include <iostream>
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#include "DrawingAreaZoomFrameState.hpp"
 
-#include <openfluid/core/CoreRepository.hpp>
-
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+DrawingAreaZoomFrameState::DrawingAreaZoomFrameState(DrawingArea& DrawingArea) :
+  DrawingAreaState(DrawingArea)
 {
+  Gdk::Cursor Cursor(Gdk::SIZING);
+  m_Cursor = Cursor;
+}
 
-  private:
+// =====================================================================
+// =====================================================================
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+void DrawingAreaZoomFrameState::onMouseButtonPressed(GdkEvent* event)
+{
+  m_XPress = event->button.x / mref_DrawingArea.getScale();
+  m_YPress = event->button.y / mref_DrawingArea.getScale();
+}
 
-    //GTKmm
+// =====================================================================
+// =====================================================================
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+void DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEvent* event)
+{
+  double XRelease = event->button.x / mref_DrawingArea.getScale();
+  double YRelease = event->button.y / mref_DrawingArea.getScale();
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+  double XPoint, YPoint;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+  if (m_XPress < XRelease)
+    XPoint = mref_DrawingArea.getXTranslate() + m_XPress;
+  else
+    XPoint = mref_DrawingArea.getXTranslate() + XRelease;
 
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+  if (m_YPress > YRelease)
+    YPoint = mref_DrawingArea.getYTranslate() - YRelease;
+  else
+    YPoint = mref_DrawingArea.getYTranslate() - m_YPress;
 
-    sigc::signal<void> m_signal_MapViewChanged;
+  Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
+  double Width = allocation.get_width();
+  double Height = allocation.get_height();
 
-    void whenChanged();
+  double MinRatio = std::min(
+      (Width / mref_DrawingArea.getScale()) / abs(m_XPress - XRelease),
+      (Height / mref_DrawingArea.getScale()) / abs(m_YPress - YRelease));
+  double Scale = mref_DrawingArea.getScale() * MinRatio;
 
-  public:
-
-    MapViewModule();
-
-    Gtk::Widget* asWidget();
-
-    void compose()
-    {
-    }
-    ;
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
-};
-
-#endif /* __MAPVIEWMODULE_HPP__ */
+  mref_DrawingArea.setScale(Scale);
+  mref_DrawingArea.setXTranslate(XPoint);
+  mref_DrawingArea.setYTranslate(YPoint);
+//TODO Excepsion when fame zone are so little
+}

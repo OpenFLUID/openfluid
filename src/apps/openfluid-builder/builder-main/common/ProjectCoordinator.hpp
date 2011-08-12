@@ -117,6 +117,8 @@ class ProjectCoordinator
 
     void whenResultsChanged();
 
+    void whenMapViewChanged();
+
     void whenPageRemoved(std::string RemovedPageName);
 
     void updateResults();

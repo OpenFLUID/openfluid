@@ -46,84 +46,84 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file DrawingArea.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __DRAWINGAREA_HPP__
+#define __DRAWINGAREA_HPP__
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#include <gtkmm/drawingarea.h>
 
-#include <openfluid/core/CoreRepository.hpp>
+class DrawingAreaInitialState;
+class DrawingAreaMoveState;
+class DrawingAreaSelectState;
+class DrawingAreaUnzoomCursorState;
+class DrawingAreaZoomCursorState;
+class DrawingAreaZoomFrameState;
+class DrawingAreaState;
 
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+class DrawingArea: public Gtk::DrawingArea
 {
 
   private:
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+    DrawingAreaInitialState* mp_InitialState;
+    DrawingAreaMoveState* mp_MoveState;
+    DrawingAreaSelectState* mp_SelectState;
+    DrawingAreaUnzoomCursorState* mp_UnzoomCursorState;
+    DrawingAreaZoomCursorState* mp_ZoomCursorState;
+    DrawingAreaZoomFrameState* mp_ZoomFrameState;
+    DrawingAreaState* mp_CurrentState;
 
-    //GTKmm
+    double m_Scale;
+    double m_XTranslate;
+    double m_YTranslate;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    bool m_LayerExist;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
-
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
-
-    sigc::signal<void> m_signal_MapViewChanged;
-
-    void whenChanged();
+    sigc::signal<void> m_signal_ExposeEventChanged;
 
   public:
 
-    MapViewModule();
+    DrawingArea();
+    //    virtual ~DrawingArea();
 
-    Gtk::Widget* asWidget();
+    sigc::signal<void> signal_ExposeEventChanged();
 
-    void compose()
-    {
-    }
-    ;
+    void changeToInitialState();
+    void changeToMoveState();
+    void changeToSelectState();
+    void changeToUnzoomCursorState();
+    void changeToZoomCursorState();
+    void changeToZoomFrameState();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
+    void modifyScaleTranslate(
+        std::pair<std::pair<double, double>, std::pair<double, double> >);
 
-    void update()
-    {
-    }
-    ;
+    //Accessor
+    //get
+    double getScale();
+    double getXTranslate();
+    double getYTranslate();
+    //set
+    void setScale(double);
+    void setXTranslate(double);
+    void setYTranslate(double);
+    void setLayerExist(bool);
 
-    sigc::signal<void> signal_ModuleChanged();
+  protected:
+
+    virtual bool on_expose_event(GdkEventExpose*);
+    void onMouseEnterNotify(GdkEvent*);
+    void onMouseLeaveNotify(GdkEvent*);
+    void onMouseMotionNotify(GdkEvent*);
+    void onMouseButtonPressed(GdkEvent*);
+    void onMouseButtonReleased(GdkEvent*);
+    bool onAllEvents(GdkEvent*);
+
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __DRAWINGAREA_HPP__ */

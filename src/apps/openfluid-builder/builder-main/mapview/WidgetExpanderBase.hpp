@@ -46,84 +46,69 @@
  */
 
 /**
- \file MapViewModule.hpp
+ \file WidgetExpanderBase.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __MAPVIEWMODULE_HPP__
-#define __MAPVIEWMODULE_HPP__
+#ifndef __WIDGETEXPANDERBASE_HPP__
+#define __WIDGETEXPANDERBASE_HPP__
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/viewport.h>
+#include <gtkmm/label.h>
+#include <gtkmm/colorbutton.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/scale.h>
+#include <gtkmm/spinbutton.h>
 
-#include <openfluid/core/CoreRepository.hpp>
+#include "WidgetExpander.hpp"
 
-#include "ProjectWorkspaceModule.hpp"
-
-class DrawingArea;
-class StatusBar;
-class Info;
-class ToolBar;
-class Mediator;
-
-class MapViewModule: public ProjectWorkspaceModule
+class WidgetExpanderBase: public WidgetExpander
 {
 
   private:
 
-    DrawingArea* mp_DrawingArea;
-    ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
-    Info* mp_Info;
-    Mediator* mp_Mediator;
+    double m_Alpha;
+    int m_SizeLine;
 
-    //GTKmm
+    //Gtkmm
+    Gtk::Table* mp_MainTableExpander;
 
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
+    Gtk::Label m_LabelColor;
+    Gtk::Label m_LabelCheckButton;
+    Gtk::Label m_LabelHScale;
+    Gtk::Label m_LabelSpinButton;
 
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
+    Gtk::ColorButton* mp_ColorButton;
+    Gtk::CheckButton* mp_CheckButton;
+    Gtk::HScale* mp_HScale;
+    Gtk::Adjustment* mp_AdjustmentHScale;
+    Gtk::Adjustment* mp_AdjustmentSpinButton;
+    Gtk::SpinButton* mp_SpinButton;
 
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
+    Gdk::Color m_Color;
 
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+    typedef sigc::signal<void, int, double, double, double, double>
+        mtype_SignalWidgetExpanderBase;
 
-    sigc::signal<void> m_signal_MapViewChanged;
+    mtype_SignalWidgetExpanderBase m_signal_WidgetExpanderBaseChanged;
 
-    void whenChanged();
+    //    //*******************Signal emit*******************
+    //    void onWidgetExpanderBaseChanged();
+    //    //*************************************************
+
+    void randColor();
+    void setAlphaPercent();
 
   public:
 
-    MapViewModule();
+    WidgetExpanderBase();
 
-    Gtk::Widget* asWidget();
+    mtype_SignalWidgetExpanderBase signalWidgetExpanderBaseChanged();
+    //*******************Signal emit*******************
+    void onWidgetExpanderBaseChanged();
+    //*************************************************
 
-    void compose()
-    {
-    }
-    ;
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
-
-    void update()
-    {
-    }
-    ;
-
-    sigc::signal<void> signal_ModuleChanged();
 };
 
-#endif /* __MAPVIEWMODULE_HPP__ */
+#endif /* __WIDGETEXPANDERBASE_HPP__ */

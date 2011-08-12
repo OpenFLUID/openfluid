@@ -43,7 +43,7 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- */
+*/
 
 /**
  \file ICLayerPoint.hpp
@@ -52,36 +52,26 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
+
 #ifndef __ICLAYERPOINT_HPP__
 #define __ICLAYERPOINT_HPP__
 
-#include <iostream>
-#include <string>
-#include <stdlib.h>
-#include <vector>
-
 #include "ICLayer.hpp"
-#include <cairomm-1.0/cairomm/context.h>
-#include <gdal/ogrsf_frmts.h>
 
 class ICLayerPoint : public ICLayer
 {
 
-  public:
+  private :
+
+  public :
 
     ICLayerPoint();
-    virtual ~ICLayerPoint();
 
-    OGRPoint* recoverPoint(int);
-
-    std::vector< std::pair<double, double> > ICPoint;
-
-    void drawPoint(Cairo::RefPtr<Cairo::Context>, int, double, bool);
+    void drawPoint(Cairo::RefPtr<Cairo::Context>, OGRGeometry*, double, bool);
     void draw(Cairo::RefPtr<Cairo::Context>, double);
 
-    long int SelectObject(double x, double y, double scale);
+    std::pair< std::pair<double, double>, std::pair<double, double> > getMinMax();
 
-    void addObjectGeo(OGRGeometry* ObjectGeo);
 };
 
 #endif /* __ICLAYERPOINT_HPP__ */

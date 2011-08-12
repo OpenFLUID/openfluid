@@ -56,84 +56,39 @@
 #define __ICLAYER_HPP__
 
 #include <iostream>
-#include <string>
-#include <stdlib.h>
-#include <vector>
-
-#include <cairomm-1.0/cairomm/context.h>
 #include <gdal/ogrsf_frmts.h>
+#include <map>
+#include <cairomm/context.h>
+
+#include <openfluid/core/CoreRepository.hpp>
+
+#include "ICLayerObject.hpp"
 
 class ICLayer
 {
-  protected:
 
-    int m_Id;
-    int m_Position;
-    int m_type;
-    int m_SizeLine;
-    bool m_IsSelected;
-    bool m_IsDisplay;
+  private:
 
-    std::vector<OGRGeometry*> m_ObjectGeo;
-
-    double m_maxX;
-    double m_maxY;
-    double m_minX;
-    double m_minY;
-
-    double m_Red;
-    double m_Green;
-    double m_Blue;
-    double m_Alpha;
+    openfluid::core::CoreRepository* mp_CoreRepos;
 
   public:
 
     ICLayer();
-    virtual ~ICLayer();
 
-    virtual void draw(Cairo::RefPtr<Cairo::Context>, double)=0;
+    void addObjectGeo(int, OGRGeometry*);
 
-    double getmaxX();
-    double getmaxY();
-    double getminX();
-    double getminY();
+    std::map<int, ICLayerObject*> getICLayerObject();
+    virtual void draw(Cairo::RefPtr<Cairo::Context>, double) = 0;
+    virtual std::pair<std::pair<double, double>, std::pair<double, double> >
+        getMinMax() = 0;
 
-    double getRed();
-    double getGreen();
-    double getBlue();
-    double getAlpha();
+    void update(std::string);
 
-    int gettype();
-    int getId();
-    int getPosition();
-    int getSizeLine();
+    void setEngineRequirements(openfluid::core::CoreRepository&);
 
-    bool getIsDisplay();
-    bool getIsSelected();
+  protected:
+    std::map<int, ICLayerObject*> m_ICLayerObject;
 
-    std::vector<OGRGeometry*> getObjectGeo();
-
-    virtual void addObjectGeo(OGRGeometry* ObjectGeo);
-
-    void setmaxX(double);
-    void setmaxY(double);
-    void setminX(double);
-    void setminY(double);
-
-    void setRed(double);
-    void setGreen(double);
-    void setBlue(double);
-    void setAlpha(double);
-
-    void settype(int);
-    void setId(int);
-    void setPosition(int);
-    void setSizeLine(int);
-
-    void setIsDisplay(bool);
-    void setIsSelected(bool);
-
-    virtual long int SelectObject(double, double, double)=0;
 };
 
 #endif /* __ICLAYER_HPP__ */
