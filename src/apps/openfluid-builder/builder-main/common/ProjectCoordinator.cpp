@@ -140,7 +140,7 @@ ProjectCoordinator::~ProjectCoordinator()
 // =====================================================================
 // =====================================================================
 
-
+//TODO: Refactor this !
 void ProjectCoordinator::whenActivationChanged()
 {
   std::string PageName = "";

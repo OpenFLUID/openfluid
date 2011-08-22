@@ -413,7 +413,11 @@ void FluidXWriter::setOutputConfigurationToWrite(openfluid::base::OutputDescript
 
       for (unsigned int i = 0; i< FileSetDesc.size();i++)
       {
-        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << FileSetDesc[i].getColSeparator() << "\" " <<
+        std::string ColSep = FileSetDesc[i].getColSeparator();
+        if(ColSep == "\t")
+          ColSep = "&#09;";
+
+        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << ColSep/*FileSetDesc[i].getColSeparator()*/ << "\" " <<
             "dtformat=\"" << FileSetDesc[i].getDateFormat() << "\" " <<
             "commentchar=\"" << FileSetDesc[i].getCommentChar() << "\">\n";
 
