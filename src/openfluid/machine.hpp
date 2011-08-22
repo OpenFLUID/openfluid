@@ -64,6 +64,7 @@
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/machine/InjectGenerator.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/PluginManager.hpp>

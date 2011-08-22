@@ -67,6 +67,8 @@ class GeneratorSignature: public openfluid::base::FunctionSignature
 
     void setInterpInfo();
 
+    void setInjectInfo();
+
   public:
 
     GeneratorSignature(

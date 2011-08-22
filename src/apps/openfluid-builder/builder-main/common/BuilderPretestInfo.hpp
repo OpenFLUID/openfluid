@@ -129,6 +129,7 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     bool m_RandomMinMaxChecked;
     bool m_InterpMinMaxChecked;
+    bool m_InjectMinMaxChecked;
 
     bool localParamIsSet(openfluid::machine::ModelItemInstance* Item,
         std::string ParamName);
