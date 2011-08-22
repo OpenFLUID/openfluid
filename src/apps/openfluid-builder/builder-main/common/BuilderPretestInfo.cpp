@@ -378,6 +378,6 @@ bool BuilderPretestInfo::checkVar(openfluid::base::SignatureHandledDataItem Var)
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {
-  return (ExtraFiles && Inputdata && Model && GeneratorParams && Project
+  return (ExtraFiles && Inputdata && Model /*&& GeneratorParams */&& Project
       && RunConfig);
 }
