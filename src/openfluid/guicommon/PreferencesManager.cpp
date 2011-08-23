@@ -271,8 +271,14 @@ bool PreferencesManager::addRecentProject(std::string ProjectPath,
   if (!ProjectPaths.empty() && ProjectPaths.size() > 11)
     mp_KFile->remove_key("openfluid.builder.recentprojects", ProjectPaths[0]);
 
-  mp_KFile->set_string("openfluid.builder.recentprojects",
-      boost::filesystem::path(ProjectPath).string(), ProjectName);
+  std::string ProjectPathString = boost::filesystem::path(ProjectPath).string();
+
+  // to put always the recent project on the top of the list
+  if (mp_KFile->has_key("openfluid.builder.recentprojects", ProjectPathString))
+    mp_KFile->remove_key("openfluid.builder.recentprojects", ProjectPathString);
+
+  mp_KFile->set_string("openfluid.builder.recentprojects", ProjectPathString,
+      ProjectName);
 
   return true;
 }
