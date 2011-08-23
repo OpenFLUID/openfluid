@@ -55,8 +55,17 @@
 #include "EngineHelper.hpp"
 
 #include <boost/foreach.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
+#include <glibmm/i18n.h>
 
 #include <openfluid/core/DateTime.hpp>
+
+// =====================================================================
+// =====================================================================
+
+std::string EngineHelper::m_BlankSubstitute = _("[blank]");
+std::string EngineHelper::m_TabSubstitute = _("[tab]");
 
 // =====================================================================
 // =====================================================================
@@ -220,17 +229,11 @@ struct SortByDateTime
     }
 };
 
-
-// =====================================================================
-// =====================================================================
-
-
 void EngineHelper::sortEventsListByDateTime(
     openfluid::core::EventsList_t& Events)
 {
   Events.sort(SortByDateTime());
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -245,4 +248,28 @@ bool EngineHelper::isEmptyString(std::string Str)
   }
 
   return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string EngineHelper::fromRealCharToSubstitute(std::string RealChar)
+{
+  boost::algorithm::replace_all(RealChar, " ", EngineHelper::m_BlankSubstitute);
+  boost::algorithm::replace_all(RealChar, "\t", EngineHelper::m_TabSubstitute);
+
+  return RealChar;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string EngineHelper::fromSubstituteToRealChar(std::string Substitute)
+{
+  boost::algorithm::replace_all(Substitute, EngineHelper::m_BlankSubstitute, " ");
+  boost::algorithm::replace_all(Substitute, EngineHelper::m_TabSubstitute, "\t");
+
+  return Substitute;
 }

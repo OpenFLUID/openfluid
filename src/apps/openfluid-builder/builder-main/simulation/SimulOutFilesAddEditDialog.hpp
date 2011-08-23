@@ -86,18 +86,11 @@ class SimulOutFilesAddEditDialog
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;
 
-    std::string m_BlankSubstitute;
-    std::string m_TabSubstitute;
-
     openfluid::base::OutputDescriptor* mp_OutDesc;
 
     std::set<std::string> m_FileFormatNames;
 
     void onValueChange();
-
-    std::string fromRealCharToSubstitute(std::string RealChar);
-
-    std::string fromSubstituteToRealChar(std::string Substitute);
 
   public:
 
