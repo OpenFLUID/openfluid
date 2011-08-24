@@ -46,60 +46,49 @@
  */
 
 /**
- \file BuilderAppProjectState.hpp
+ \file EngineProjectSaveAsDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERAPPPROJECTSTATE_HPP__
-#define __BUILDERAPPPROJECTSTATE_HPP__
+#ifndef __ENGINEPROJECTSAVEASDIALOG_HPP__
+#define __ENGINEPROJECTSAVEASDIALOG_HPP__
 
-#include "BuilderAppState.hpp"
+#include <gtkmm/filechooserbutton.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <gtkmm/infobar.h>
 
-class BuilderAppCoordinator;
-class ProjectPropertiesDialog;
-class EngineProjectSaveAsDialog;
-
-class BuilderAppProjectState: public BuilderAppState
+class EngineProjectSaveAsDialog
 {
   private:
 
-    BuilderAppCoordinator& m_App;
+    Gtk::Dialog* mp_Dialog;
 
-    ProjectPropertiesDialog* mp_ProjectPropertiesDialog;
+    Gtk::InfoBar* mp_InfoBar;
 
-    EngineProjectSaveAsDialog* mp_SaveAsDialog;
+    Gtk::Label* mp_InfoBarLabel;
 
+    Gtk::FileChooserButton* mp_WorkdirFileChooserButton;
+
+    Gtk::Entry* mp_NameEntry;
+
+    Gtk::Label* mp_ProjectFolderName;
+
+    void onProjectFolderSelectionChanged();
+
+    void checkProject();
+
+    void fillFolderName();
 
   public:
 
-    BuilderAppProjectState(BuilderAppCoordinator& AppCoordinator);
+    EngineProjectSaveAsDialog();
 
-    void whenNewProjectAsked();
+    ~EngineProjectSaveAsDialog();
 
-    void whenOpenProjectAsked();
-
-    void whenCloseProjectAsked();
-
-    void whenQuitAsked();
-
-    void whenRunAsked();
-
-    void whenMarketAsked() {};
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenMapViewAsked();
-
-    void whenRefreshAsked();
-
-    void whenPreferencesAsked();
-
-    void whenPropertiesAsked();
-
+    Glib::ustring show();
 };
 
-#endif /* __BUILDERAPPPROJECTSTATE_HPP__ */
+#endif /* __ENGINEPROJECTSAVEASDIALOG_HPP__ */

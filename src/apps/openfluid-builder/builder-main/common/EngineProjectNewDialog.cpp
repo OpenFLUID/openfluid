@@ -423,6 +423,7 @@ void EngineProjectNewDialog::checkProject()
 // =====================================================================
 // =====================================================================
 
+//TODO: replace with boost::algorithm::replace_all_regex(Str,boost::regex("[^[:alnum:]]"),std::string("_"));
 Glib::ustring EngineProjectNewDialog::replaceInvalidChars(Glib::ustring Str)
 {
   for (unsigned int i = 0; i < Str.size(); i++)
