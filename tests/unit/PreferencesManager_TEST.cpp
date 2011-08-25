@@ -152,6 +152,18 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
   BOOST_CHECK_EQUAL(Recents[2].first,"aa/bb/file1.txt");
   BOOST_CHECK_EQUAL(Recents[2].second,"pj1");
 
+  PrefMgr->addRecentProject("aa/bb/file2.txt", "");
+
+  Recents = PrefMgr->getRecentProjects();
+
+  BOOST_CHECK_EQUAL(Recents.size(),3);
+  BOOST_CHECK_EQUAL(Recents[0].first,"aa/bb/file2.txt");
+  BOOST_CHECK_EQUAL(Recents[0].second,"");
+  BOOST_CHECK_EQUAL(Recents[1].first,"aa/bb/file3.txt");
+  BOOST_CHECK_EQUAL(Recents[1].second,"pj3");
+  BOOST_CHECK_EQUAL(Recents[2].first,"aa/bb/file1.txt");
+  BOOST_CHECK_EQUAL(Recents[2].second,"pj1");
+
   PrefMgr->clearRecentProjects();
 
   Recents = PrefMgr->getRecentProjects();
