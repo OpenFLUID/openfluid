@@ -81,8 +81,8 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_ColSepComboEntry->append_text(",");
   mp_ColSepComboEntry->append_text("#");
   mp_ColSepComboEntry->append_text("*");
-  mp_ColSepComboEntry->append_text(EngineHelper::m_BlankSubstitute);
-  mp_ColSepComboEntry->append_text(EngineHelper::m_TabSubstitute);
+  mp_ColSepComboEntry->append_text(EngineHelper::getBlankSubstitute());
+  mp_ColSepComboEntry->append_text(EngineHelper::getTabSubstitute());
   mp_ColSepComboEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesAddEditDialog::onValueChange));
 
@@ -103,8 +103,8 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_CommentCharComboEntry->append_text(",");
   mp_CommentCharComboEntry->append_text("#");
   mp_CommentCharComboEntry->append_text("*");
-  mp_CommentCharComboEntry->append_text(EngineHelper::m_BlankSubstitute);
-  mp_CommentCharComboEntry->append_text(EngineHelper::m_TabSubstitute);
+  mp_CommentCharComboEntry->append_text(EngineHelper::getBlankSubstitute());
+  mp_CommentCharComboEntry->append_text(EngineHelper::getTabSubstitute());
   mp_CommentCharComboEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesAddEditDialog::onValueChange));
 

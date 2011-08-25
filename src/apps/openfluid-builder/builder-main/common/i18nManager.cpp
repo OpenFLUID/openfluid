@@ -81,8 +81,8 @@ i18nManager::i18nManager() :
 {
   m_CurrentLanguage = "";
 
-  m_AvailableLanguages[m_DefaultLanguage] = _("English (US)");
-  m_AvailableLanguages["fr_FR"] = _("French (France)");
+  m_AvailableLanguages[m_DefaultLanguage] = "English (US)";
+  m_AvailableLanguages["fr_FR"] = "Français (France)";
 
   // Languages for further works on translations
 //  m_AvailableLanguages["es_ES"] = _("Spanish (Spain)");

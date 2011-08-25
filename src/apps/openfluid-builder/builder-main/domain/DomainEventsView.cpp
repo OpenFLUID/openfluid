@@ -63,7 +63,7 @@
 DomainEventsViewImpl::DomainEventsViewImpl()
 {
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
-  mp_TreeView->append_column(_("ID - Date - Informations"),m_Columns.m_Id_Date_Info);
+  mp_TreeView->append_column(_("ID - Date - Information"),m_Columns.m_Id_Date_Info);
 
   mp_TreeView->set_visible(true);
 

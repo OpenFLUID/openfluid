@@ -274,7 +274,7 @@ Glib::ustring EngineProjectSaveAsDialog::show()
           {
             if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
                 Glib::ustring::compose(
-                    _("File %1 already exists,\nDo you really want to overwrite it ?"),
+                    _("File %1 already exists.\nDo you really want to overwrite it?"),
                     DestPath)))
             {
               boost::filesystem::remove(DestPath);

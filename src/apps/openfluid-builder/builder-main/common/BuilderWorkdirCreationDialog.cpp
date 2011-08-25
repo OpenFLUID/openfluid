@@ -71,7 +71,7 @@ BuilderWorkdirCreationDialog::BuilderWorkdirCreationDialog()
   mp_Dialog = new Gtk::Dialog(_("OpenFLUID working directory"), true, false);
 
   mp_Label = Gtk::manage(new Gtk::Label(_(
-      "Choose the working directory to use for OpenFLUID Projects :")));
+      "Choose the working directory to use for OpenFLUID Projects:")));
 
   mp_Entry = Gtk::manage(new Gtk::Entry());
   mp_Entry->set_activates_default(true);

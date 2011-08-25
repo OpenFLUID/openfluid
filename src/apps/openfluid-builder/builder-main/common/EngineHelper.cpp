@@ -61,11 +61,6 @@
 
 #include <openfluid/core/DateTime.hpp>
 
-// =====================================================================
-// =====================================================================
-
-std::string EngineHelper::m_BlankSubstitute = _("[blank]");
-std::string EngineHelper::m_TabSubstitute = _("[tab]");
 
 // =====================================================================
 // =====================================================================
@@ -253,11 +248,34 @@ bool EngineHelper::isEmptyString(std::string Str)
 // =====================================================================
 // =====================================================================
 
+/* this way because static variables aren't translated */
+std::string EngineHelper::getBlankSubstitute()
+{
+  return _("[blank]");
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+std::string EngineHelper::getTabSubstitute()
+{
+  return _("[tab]");
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
 
 std::string EngineHelper::fromRealCharToSubstitute(std::string RealChar)
 {
-  boost::algorithm::replace_all(RealChar, " ", EngineHelper::m_BlankSubstitute);
-  boost::algorithm::replace_all(RealChar, "\t", EngineHelper::m_TabSubstitute);
+  boost::algorithm::replace_all(RealChar, " ", EngineHelper::getBlankSubstitute());
+  boost::algorithm::replace_all(RealChar, "\t", EngineHelper::getTabSubstitute());
 
   return RealChar;
 }
@@ -268,8 +286,8 @@ std::string EngineHelper::fromRealCharToSubstitute(std::string RealChar)
 
 std::string EngineHelper::fromSubstituteToRealChar(std::string Substitute)
 {
-  boost::algorithm::replace_all(Substitute, EngineHelper::m_BlankSubstitute, " ");
-  boost::algorithm::replace_all(Substitute, EngineHelper::m_TabSubstitute, "\t");
+  boost::algorithm::replace_all(Substitute, EngineHelper::getBlankSubstitute(), " ");
+  boost::algorithm::replace_all(Substitute, EngineHelper::getTabSubstitute(), "\t");
 
   return Substitute;
 }

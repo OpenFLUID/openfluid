@@ -75,7 +75,7 @@ Glib::ustring Msg = "";
 void MyErrorHandler(void* /*userData*/, xmlErrorPtr error)
 {
   Msg = Glib::ustring::compose(
-      _("Xml error :\n%1\n\n during parse of file:\n%2\n\n"
+      _("Xml error:\n%1\n\nduring parse of file:\n%2\n\n"
           "Project can't be opened."), error->message, error->file);
 }
 ;
@@ -170,7 +170,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       Glib::ustring
           Msg =
               Glib::ustring::compose(
-                  _("Warning:\n%1.\n\nSome files may be overwritten.\nDo you want to continue ?"),
+                  _("Warning:\n%1.\n\nSome files may be overwritten.\nDo you want to continue?"),
                   EngineHelper::minimiseInfoString(e.what()));
 
       if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
@@ -191,7 +191,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     if (!OutputConsistencyMessage.empty())
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
           Glib::ustring::compose(_(
-              "Check outputs consistency leads OpenFLUID to delete :\n\n%1"),
+              "Check outputs consistency leads OpenFLUID to delete:\n\n%1"),
               OutputConsistencyMessage));
   }
 
