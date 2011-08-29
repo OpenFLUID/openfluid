@@ -54,7 +54,7 @@
  */
 
 
-#include <boost/random.hpp>
+#include <ctime>
 
 #include <openfluid/machine/RandomGenerator.hpp>
 
@@ -66,6 +66,7 @@ RandomGenerator::RandomGenerator() : Generator()
   m_Min = 0.0;
   m_Max = 0.0;
 
+  m_RandomEngine.seed(std::time(0));
 }
 
 
@@ -117,7 +118,6 @@ bool RandomGenerator::checkConsistency()
 bool RandomGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
-
   return true;
 }
 
@@ -132,8 +132,8 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
   openfluid::core::ScalarValue Value;
 
   boost::uniform_real<> Distribution(m_Min, m_Max);
-  boost::mt19937 Engine;
-  boost::variate_generator<boost::mt19937, boost::uniform_real<> > Random (Engine, Distribution);
+  boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);
+
 
   DECLARE_UNITS_ORDERED_LOOP(1);
 

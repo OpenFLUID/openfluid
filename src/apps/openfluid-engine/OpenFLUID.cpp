@@ -669,7 +669,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::base::ProjectManager::getInstance()->updateOutputDir();
     }
     else
-      openfluid::base::OFException("openfluid-engine",OptionsVars["project"].as<std::string>() + " is not a correct project path");
+      throw openfluid::base::OFException("openfluid-engine",OptionsVars["project"].as<std::string>() + " is not a correct project path");
   }
 
 

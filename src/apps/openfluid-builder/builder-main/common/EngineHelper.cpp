@@ -55,8 +55,12 @@
 #include "EngineHelper.hpp"
 
 #include <boost/foreach.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
+#include <glibmm/i18n.h>
 
 #include <openfluid/core/DateTime.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -220,17 +224,11 @@ struct SortByDateTime
     }
 };
 
-
-// =====================================================================
-// =====================================================================
-
-
 void EngineHelper::sortEventsListByDateTime(
     openfluid::core::EventsList_t& Events)
 {
   Events.sort(SortByDateTime());
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -245,4 +243,51 @@ bool EngineHelper::isEmptyString(std::string Str)
   }
 
   return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+/* this way because static variables aren't translated */
+std::string EngineHelper::getBlankSubstitute()
+{
+  return _("[blank]");
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+std::string EngineHelper::getTabSubstitute()
+{
+  return _("[tab]");
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string EngineHelper::fromRealCharToSubstitute(std::string RealChar)
+{
+  boost::algorithm::replace_all(RealChar, " ", EngineHelper::getBlankSubstitute());
+  boost::algorithm::replace_all(RealChar, "\t", EngineHelper::getTabSubstitute());
+
+  return RealChar;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string EngineHelper::fromSubstituteToRealChar(std::string Substitute)
+{
+  boost::algorithm::replace_all(Substitute, EngineHelper::getBlankSubstitute(), " ");
+  boost::algorithm::replace_all(Substitute, EngineHelper::getTabSubstitute(), "\t");
+
+  return Substitute;
 }

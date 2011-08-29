@@ -60,7 +60,6 @@
 #include "GeneratorSignature.hpp"
 #include <openfluid/tools/SwissTools.hpp>
 
-
 // =====================================================================
 // =====================================================================
 
@@ -174,6 +173,7 @@ void BuilderPretestInfo::checkModelItemParams(
 {
   m_RandomMinMaxChecked = false;
   m_InterpMinMaxChecked = false;
+  m_InjectMinMaxChecked = false;
 
   BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
 {  checkParamFilled(Item, Param.DataName);
@@ -231,6 +231,15 @@ void BuilderPretestInfo::checkGeneratorParamsConsistency(
     checkInterpMinMax(Item);
 
     m_InterpMinMaxChecked = true;
+  }
+  else if (Method == openfluid::base::GeneratorDescriptor::Inject
+      && !m_InjectMinMaxChecked && (localParamIsSet(Item, "thresholdmin")
+      || globalParamIsSet("thresholdmin")) && (localParamIsSet(Item,
+      "thresholdmax") || globalParamIsSet("thresholdmax")))
+  {
+    checkInterpMinMax(Item);
+
+    m_InjectMinMaxChecked = true;
   }
 }
 
@@ -369,6 +378,6 @@ bool BuilderPretestInfo::checkVar(openfluid::base::SignatureHandledDataItem Var)
 
 bool BuilderPretestInfo::getGlobalCheckState()
 {
-  return (ExtraFiles && Inputdata && Model && GeneratorParams && Project
+  return (ExtraFiles && Inputdata && Model /*&& GeneratorParams */&& Project
       && RunConfig);
 }

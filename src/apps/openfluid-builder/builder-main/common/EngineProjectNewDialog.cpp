@@ -423,6 +423,7 @@ void EngineProjectNewDialog::checkProject()
 // =====================================================================
 // =====================================================================
 
+//TODO: replace with boost::algorithm::replace_all_regex(Str,boost::regex("[^[:alnum:]]"),std::string("_"));
 Glib::ustring EngineProjectNewDialog::replaceInvalidChars(Glib::ustring Str)
 {
   for (unsigned int i = 0; i < Str.size(); i++)
@@ -566,7 +567,7 @@ void EngineProjectNewDialog::onImportProjectButtonClicked()
     if (!openfluid::base::ProjectManager::isProject(ChoosenProjectFolder))
     {
       mp_InfoBarLabel->set_text(Glib::ustring::compose(
-          _("Error :\n%1\nis not an OpenFLUID Project directory"),
+          _("Error:\n%1\nis not an OpenFLUID Project directory"),
           ChoosenProjectFolder));
       return;
     }
@@ -736,7 +737,7 @@ void EngineProjectNewDialog::copyOnDisk(std::string SrcPath)
       {
         if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
             Glib::ustring::compose(
-                _("File %1 already exists,\nDo you really want to overwrite it ?"),
+                _("File %1 already exists.\nDo you really want to overwrite it?"),
                 DestPath)))
         {
           boost::filesystem::remove(DestPath);

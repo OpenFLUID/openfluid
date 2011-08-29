@@ -103,6 +103,9 @@ std::string FluidXWriter::getGeneratorMethodAsStr(openfluid::base::GeneratorDesc
   if (Method == openfluid::base::GeneratorDescriptor::Interp)
     return "interp";
 
+  if (Method == openfluid::base::GeneratorDescriptor::Inject)
+    return "inject";
+
   return "";
 }
 
@@ -410,9 +413,15 @@ void FluidXWriter::setOutputConfigurationToWrite(openfluid::base::OutputDescript
 
       for (unsigned int i = 0; i< FileSetDesc.size();i++)
       {
-        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << FileSetDesc[i].getColSeparator() << "\" " <<
+        std::string ColSep = FileSetDesc[i].getColSeparator();
+        boost::algorithm::replace_all(ColSep,"\t","\\t");
+
+        std::string CommentChar = FileSetDesc[i].getCommentChar();
+        boost::algorithm::replace_all(CommentChar,"\t","\\t");
+
+        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << ColSep << "\" " <<
             "dtformat=\"" << FileSetDesc[i].getDateFormat() << "\" " <<
-            "commentchar=\"" << FileSetDesc[i].getCommentChar() << "\">\n";
+            "commentchar=\"" << CommentChar << "\">\n";
 
         std::vector<openfluid::base::OutputSetDescriptor> SetsDesc = FileSetDesc[i].getSets();
 

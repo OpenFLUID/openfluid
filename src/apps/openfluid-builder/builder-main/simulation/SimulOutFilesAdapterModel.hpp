@@ -98,11 +98,6 @@ class SimulOutFilesAdapterModelImpl: public SimulOutFilesAdapterModel
 
     Gtk::TreeRowReference* m_SelectedRowRef;
 
-    std::string m_BlankSubstitute;
-    std::string m_TabSubstitute;
-
-    std::string fromRealCharToSubstitute(std::string RealChar);
-
   public:
 
     SimulOutFilesAdapterModelImpl();
@@ -119,6 +114,5 @@ class SimulOutFilesAdapterModelImpl: public SimulOutFilesAdapterModel
 
     Gtk::TreeRow getSelectedRow();
 };
-
 
 #endif /* __SIMULOUTFILESADAPTERMODEL_HPP__ */

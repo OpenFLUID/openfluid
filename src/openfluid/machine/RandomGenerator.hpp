@@ -56,8 +56,12 @@
 #ifndef __RANDOMGENERATOR_HPP__
 #define __RANDOMGENERATOR_HPP__
 
+#include <boost/random.hpp>
+
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
+
 
 namespace openfluid { namespace machine {
 
@@ -67,6 +71,8 @@ class DLLEXPORT RandomGenerator : public Generator
   private:
     openfluid::core::ScalarValue m_Min;
     openfluid::core::ScalarValue m_Max;
+
+    boost::mt19937 m_RandomEngine;
 
   public:
 

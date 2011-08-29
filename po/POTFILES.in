@@ -41,6 +41,7 @@ src/openfluid/machine/ModelItemInstance.cpp
 src/openfluid/machine/Generator.hpp
 src/openfluid/machine/InterpGenerator.cpp
 src/openfluid/machine/Factory.hpp
+src/openfluid/machine/InjectGenerator.hpp
 src/openfluid/machine/Engine.hpp
 src/openfluid/machine/DynamicLib.cpp
 src/openfluid/machine/MachineListener.cpp
@@ -55,6 +56,7 @@ src/openfluid/machine/FixedGenerator.hpp
 src/openfluid/machine/InterpGenerator.hpp
 src/openfluid/machine/SimulationBlob.hpp
 src/openfluid/machine/Generator.cpp
+src/openfluid/machine/InjectGenerator.cpp
 src/openfluid/machine/PluginManager.hpp
 src/openfluid/machine/ModelInstance.hpp
 src/openfluid/machine/ModelInstance.cpp
@@ -260,6 +262,7 @@ src/apps/openfluid-builder/builder-main/common/BuilderGraphicsHelper.hpp
 src/apps/openfluid-builder/builder-main/common/BuilderAppWindow.hpp
 src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp
 src/apps/openfluid-builder/builder-main/common/BuilderListToolBoxFactory.cpp
+src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp
 src/apps/openfluid-builder/builder-main/common/ProjectExplorerComponent.cpp
 src/apps/openfluid-builder/builder-main/common/EngineProject.cpp
 src/apps/openfluid-builder/builder-main/common/BuilderByClassTreeView.cpp
@@ -307,6 +310,7 @@ src/apps/openfluid-builder/builder-main/common/BuilderPretestInfo.cpp
 src/apps/openfluid-builder/builder-main/common/BuilderListStore.hpp
 src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp
 src/apps/openfluid-builder/builder-main/common/ProjectWorkspace.hpp
+src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.hpp
 src/apps/openfluid-builder/builder-main/common/BuilderExtensionsManager.hpp
 src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp
 src/apps/openfluid-builder/builder-main/common/BuilderTreeStore.hpp

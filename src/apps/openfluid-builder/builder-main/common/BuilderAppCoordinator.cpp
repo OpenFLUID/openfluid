@@ -370,29 +370,18 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     ProjectModule->signal_SaveHappened().connect(sigc::mem_fun(*this,
         &BuilderAppCoordinator::onSaveHappened));
 
-    ProjectModule->checkAsked();
-
-    ProjectModule->saveAsked();
-
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
     m_MainWindow.setStatusBarVisible(true);
-    m_MainWindow.set_title("OpenFLUID-Builder  ["
-        + openfluid::base::ProjectManager::getInstance()->getName() + "]");
 
-    std::string CurrentPrjStr =
-        openfluid::base::ProjectManager::getInstance()->getPath();
+    updateMainWindowInformation();
 
-    if (CurrentPrjStr.empty())
-      CurrentPrjStr = std::string("<span color='red'>") + _("(unsaved!)")
-          + std::string("</span>");
-    m_MainWindow.setStatusBarMessage("Current project path: " + CurrentPrjStr);
+    updateRecentsList();
 
-    openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
-        openfluid::base::ProjectManager::getInstance()->getPath(),
-        openfluid::base::ProjectManager::getInstance()->getName());
-    openfluid::guicommon::PreferencesManager::getInstance()->save();
+    //TODO: remove save, do only onSaveHappened() instead. Think to check messages at project start.
+    ProjectModule->saveAsked();
 
+    ProjectModule->checkAsked();
   }
   else
   {
@@ -577,4 +566,30 @@ BuilderAppCoordinator::~BuilderAppCoordinator()
 {
   delete mp_NewProjectDialog;
   delete mp_OpenProjectDialog;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::updateMainWindowInformation()
+{
+  m_MainWindow.set_title("OpenFLUID-Builder  ["
+      + openfluid::base::ProjectManager::getInstance()->getName() + "]");
+
+  m_MainWindow.setStatusBarMessage("Current project path: "
+      + openfluid::base::ProjectManager::getInstance()->getPath());
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::updateRecentsList()
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+      openfluid::base::ProjectManager::getInstance()->getPath(),
+      openfluid::base::ProjectManager::getInstance()->getName());
+
+  openfluid::guicommon::PreferencesManager::getInstance()->save();
 }

@@ -156,6 +156,10 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
       GeneratorFunction = new openfluid::machine::InterpGenerator();
       break;
 
+    case openfluid::base::GeneratorDescriptor::Inject:
+      GeneratorFunction = new openfluid::machine::InjectGenerator();
+      break;
+
     default:
       std::cerr
           << "OpenFLUID Builder : ModelItemInstanceFactory::createGeneratorItemFromSignature : bad ModelItemDescriptor type"

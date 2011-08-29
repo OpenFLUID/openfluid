@@ -169,7 +169,7 @@ void SimulOutCoordinator::whenRemoveFileFormatAsked()
   if (m_OutFilesModel.selectedFileFormatHasSets()
       && !openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
           _(
-              "This will delete the sets associated to this format.\nDo you want to continue ?")))
+              "This will delete the sets associated to this format.\nDo you want to continue?")))
     return;
 
   m_OutFilesModel.deleteSelectedFileFormat();

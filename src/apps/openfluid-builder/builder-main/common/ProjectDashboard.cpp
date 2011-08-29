@@ -113,9 +113,9 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
   }
   else
   {
-    if (!CheckInfo.GeneratorParams)
-      Row[m_Columns.m_StateIcon] = m_RedIcon;
-    else
+//    if (!CheckInfo.GeneratorParams)
+//      Row[m_Columns.m_StateIcon] = m_RedIcon;
+//    else
       Row[m_Columns.m_StateIcon] = m_OrangeIcon;
 
     Row[m_Columns.m_StateInfo] = CheckInfo.ParamsMsg;

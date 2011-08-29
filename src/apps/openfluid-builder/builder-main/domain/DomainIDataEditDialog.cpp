@@ -80,7 +80,7 @@ DomainIDataEditDialog::DomainIDataEditDialog() :
   Gtk::Label* OldNameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name:"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   Gtk::Label* NewNameLabel = Gtk::manage(new Gtk::Label(
-      _("New inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+      _("New Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 

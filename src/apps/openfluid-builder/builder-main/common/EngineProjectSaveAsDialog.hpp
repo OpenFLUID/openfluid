@@ -46,60 +46,49 @@
  */
 
 /**
- \file SimulOutFilesAddEditDialog.hpp
+ \file EngineProjectSaveAsDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __SIMULOUTFILESADDEDITDIALOG_HPP__
-#define __SIMULOUTFILESADDEDITDIALOG_HPP__
+#ifndef __ENGINEPROJECTSAVEASDIALOG_HPP__
+#define __ENGINEPROJECTSAVEASDIALOG_HPP__
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/table.h>
+#include <gtkmm/filechooserbutton.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
-#include <gtkmm/comboboxentrytext.h>
 #include <gtkmm/infobar.h>
 
-#include <set>
-
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-
-class SimulOutFilesAddEditDialog
+class EngineProjectSaveAsDialog
 {
   private:
 
     Gtk::Dialog* mp_Dialog;
 
-    Gtk::Table* mp_Table;
-
-    Gtk::Label* mp_FormatNameLabel;
-
-    Gtk::ComboBoxEntryText* mp_ColSepComboEntry;
-
-    Gtk::ComboBoxEntryText* mp_DateFormatComboEntry;
-
-    Gtk::ComboBoxEntryText* mp_CommentCharComboEntry;
-
     Gtk::InfoBar* mp_InfoBar;
+
     Gtk::Label* mp_InfoBarLabel;
 
-    openfluid::base::OutputDescriptor* mp_OutDesc;
+    Gtk::FileChooserButton* mp_WorkdirFileChooserButton;
 
-    std::set<std::string> m_FileFormatNames;
+    Gtk::Entry* mp_NameEntry;
 
-    void onValueChange();
+    Gtk::Label* mp_ProjectFolderName;
+
+    void onProjectFolderSelectionChanged();
+
+    void checkProject();
+
+    void fillFolderName();
 
   public:
 
-    SimulOutFilesAddEditDialog();
+    EngineProjectSaveAsDialog();
 
-    void setEngineRequirements(openfluid::base::OutputDescriptor& OutDesc);
+    ~EngineProjectSaveAsDialog();
 
-    openfluid::base::OutputFilesDescriptor* show(
-        openfluid::base::OutputFilesDescriptor* OutFilesDesc = 0);
+    Glib::ustring show();
 };
 
-#endif /* __SIMULOUTFILESADDEDITDIALOG_HPP__ */
+#endif /* __ENGINEPROJECTSAVEASDIALOG_HPP__ */

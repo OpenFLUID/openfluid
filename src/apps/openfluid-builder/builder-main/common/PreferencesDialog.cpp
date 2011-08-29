@@ -111,7 +111,7 @@ PreferencesDialog::PreferencesDialog() :
 
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->get_vbox()->pack_start(*mp_MainBox,Gtk::PACK_EXPAND_WIDGET, 6);
-  mp_Dialog->set_default_size(850, 500);
+  mp_Dialog->set_default_size(950, 500);
   mp_Dialog->set_border_width(6);
   mp_Dialog->set_title(_("Preferences"));
   mp_Dialog->show_all_children();

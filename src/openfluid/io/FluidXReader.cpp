@@ -55,6 +55,7 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 
 #include <openfluid/io/FluidXReader.hpp>
@@ -94,13 +95,23 @@ openfluid::base::OutputFilesDescriptor FluidXReader::extractFilesDecriptorFromNo
   openfluid::base::OutputFilesDescriptor OFD;
 
   xmlChar* xmlColSep = xmlGetProp(NodePtr,(const xmlChar*)"colsep");
-  if (xmlColSep != NULL) OFD.setColSeparator(std::string((const char*)xmlColSep));
+  if (xmlColSep != NULL)
+  {
+    std::string ColSep = std::string((const char*)xmlColSep);
+    boost::algorithm::replace_all(ColSep,"\\t","\t");
+    OFD.setColSeparator(ColSep);
+  }
 
   xmlChar* xmlDTFormat = xmlGetProp(NodePtr,(const xmlChar*)"dtformat");
   if (xmlDTFormat != NULL) OFD.setDateFormat(std::string((const char*)xmlDTFormat));
 
   xmlChar* xmlCommentChar = xmlGetProp(NodePtr,(const xmlChar*)"commentchar");
-  if (xmlCommentChar != NULL) OFD.setCommentChar(std::string((const char*)xmlCommentChar));
+  if (xmlCommentChar != NULL)
+  {
+    std::string CommentChar = std::string((const char*)xmlCommentChar);
+    boost::algorithm::replace_all(CommentChar,"\\t","\t");
+    OFD.setCommentChar(CommentChar);
+  }
 
   if (OFD.getDateFormat() == "6cols") OFD.setDateFormat("%Y\t%m\t%d\t%H\t%M\t%S");
   if (OFD.getDateFormat() == "iso") OFD.setDateFormat("%Y%m%dT%H%M%S");
@@ -355,6 +366,8 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
           GenMethod = openfluid::base::GeneratorDescriptor::Random;
         if (xmlStrcmp(xmlMethod,(const xmlChar*)"interp") == 0)
           GenMethod = openfluid::base::GeneratorDescriptor::Interp;
+        if (xmlStrcmp(xmlMethod,(const xmlChar*)"inject") == 0)
+          GenMethod = openfluid::base::GeneratorDescriptor::Inject;
 
         if (GenMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)
           throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","unknown or missing generator method (" + m_CurrentFile + ")");

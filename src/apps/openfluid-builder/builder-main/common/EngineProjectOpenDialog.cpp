@@ -70,27 +70,27 @@ EngineProjectOpenDialog::EngineProjectOpenDialog() :
   m_ProjectFolder("")
 {
   Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label());
-  NameLabel->set_markup(std::string("<i>") + _("Name") + std::string(":</i>"));
+  NameLabel->set_markup(std::string("<i>") + _("Name:") + std::string("</i>"));
   NameLabel->set_alignment(0.0, 0.5);
 
   Gtk::Label* DescLabel = Gtk::manage(new Gtk::Label());
-  DescLabel->set_markup(std::string("<i>") + _("Description") + std::string(
-      ":</i>"));
+  DescLabel->set_markup(std::string("<i>") + _("Description:") + std::string(
+      "</i>"));
   DescLabel->set_alignment(0.0, 0.5);
 
   Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label());
-  AuthorsLabel->set_markup(std::string("<i>") + _("Authors") + std::string(
-      ":</i>"));
+  AuthorsLabel->set_markup(std::string("<i>") + _("Authors:") + std::string(
+      "</i>"));
   AuthorsLabel->set_alignment(0.0, 0.5);
 
   Gtk::Label* CreationDateLabel = Gtk::manage(new Gtk::Label());
-  CreationDateLabel->set_markup(std::string("<i>") + _("Creation date")
-      + std::string(":</i>"));
+  CreationDateLabel->set_markup(std::string("<i>") + _("Creation date:")
+      + std::string("</i>"));
   CreationDateLabel->set_alignment(0.0, 0.5);
 
   Gtk::Label* LastModDateLabel = Gtk::manage(new Gtk::Label());
-  LastModDateLabel->set_markup(std::string("<i>") + _("Modification date")
-      + std::string(":</i>"));
+  LastModDateLabel->set_markup(std::string("<i>") + _("Modification date:")
+      + std::string("</i>"));
   LastModDateLabel->set_alignment(0.0, 0.5);
 
   mp_ProjectName = Gtk::manage(new Gtk::Label("", Gtk::ALIGN_LEFT,

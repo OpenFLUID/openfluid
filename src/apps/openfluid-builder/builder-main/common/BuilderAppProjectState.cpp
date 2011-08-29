@@ -57,6 +57,7 @@
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderProjectWithExplorer.hpp"
 #include "ProjectPropertiesDialog.hpp"
+#include "EngineProjectSaveAsDialog.hpp"
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -70,6 +71,8 @@ BuilderAppProjectState::BuilderAppProjectState(
   m_App(AppCoordinator)
 {
   mp_ProjectPropertiesDialog = new ProjectPropertiesDialog();
+
+  mp_SaveAsDialog = new EngineProjectSaveAsDialog();
 }
 
 // =====================================================================
@@ -152,7 +155,19 @@ void BuilderAppProjectState::whenSaveAsked()
 
 void BuilderAppProjectState::whenSaveAsAsked()
 {
-  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+  Glib::ustring NewProjectPath = mp_SaveAsDialog->show();
+
+  if (!NewProjectPath.empty())
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
+
+    m_App.updateMainWindowInformation();
+
+    m_App.updateRecentsList();
+
+    whenSaveAsked();
+  }
+
 }
 
 // =====================================================================

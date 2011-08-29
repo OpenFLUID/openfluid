@@ -57,6 +57,7 @@
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/machine/InjectGenerator.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
 #include <openfluid/tools.hpp>
@@ -282,6 +283,13 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
         GenInstance = new InterpGenerator();
+      }
+
+      if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Inject)
+      {
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        GenInstance = new InjectGenerator();
       }
 
       if (GenInstance == NULL)

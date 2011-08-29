@@ -6,7 +6,8 @@
   * Added OpenFLUID projects management, embedding simulation input and output datasets
   * Added automatic parallelization capabilities based on spatial independancy 
     (using multi-threading) 
-  * Added simulation profiling capabilities  
+  * Added simulation profiling capabilities
+  * Added new generator for injection of already time-interpolated data  
   * Updated .fluidX files I/O
   * Removed .xml file extensions as standard file extension for input dataset
   * Updated OpenFLUID API

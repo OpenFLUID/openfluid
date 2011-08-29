@@ -141,8 +141,8 @@ std::string ModelFctParamRow::getParamName()
 
 void ModelFctParamRow::setGlobalValue(std::string Value)
 {
-  mp_GlobalValueLabel->set_text(Glib::ustring::compose("(%1: \"%2\")",
-      _("global value"), Value));
+  mp_GlobalValueLabel->set_text(Glib::ustring::compose("(%1 \"%2\")",
+      _("global value:"), Value));
 
   mp_GlobalValueLabel->set_visible(true);
 }

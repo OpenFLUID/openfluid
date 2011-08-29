@@ -151,6 +151,10 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void showPreferencesDialog();
 
+    void updateMainWindowInformation();
+
+    void updateRecentsList();
+
 };
 
 #endif /* BUILDERAPPCOORDINATOR_HPP_ */

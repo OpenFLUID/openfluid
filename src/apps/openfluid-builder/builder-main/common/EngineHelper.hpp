@@ -89,10 +89,17 @@ class EngineHelper
 
     static void sortUnitsCollectionById(openfluid::core::UnitsCollection& Coll);
 
-    static void sortEventsListByDateTime(
-        openfluid::core::EventsList_t& Events);
+    static void sortEventsListByDateTime(openfluid::core::EventsList_t& Events);
 
     static bool isEmptyString(std::string Str);
+
+    static std::string getBlankSubstitute();
+
+    static std::string getTabSubstitute();
+
+    static std::string fromRealCharToSubstitute(std::string RealChar);
+
+    static std::string fromSubstituteToRealChar(std::string Substitute);
 
 };
 
