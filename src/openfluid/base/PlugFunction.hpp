@@ -78,6 +78,7 @@
 
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/config.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
@@ -133,7 +134,7 @@
 #define DEFINE_FUNCTION_HOOK(pluginclassname) \
   std::string GetPlugSDKVersion() \
   { \
-    return std::string(STRINGIFY(OPENFLUID_VERSION)); \
+    return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
   openfluid::base::PluggableFunction* GetPlugFunction() \
