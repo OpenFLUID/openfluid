@@ -101,6 +101,12 @@ class EngineHelper
 
     static std::string fromSubstituteToRealChar(std::string Substitute);
 
+    static Glib::ustring fromHeaderTypeToHeaderString(
+        openfluid::base::OutputFilesDescriptor::HeaderType Header);
+
+    static openfluid::base::OutputFilesDescriptor::HeaderType
+        fromHeaderStringToHeaderType(Glib::ustring Header);
+
 };
 
 #endif /* __ENGINEHELPER_HPP__ */

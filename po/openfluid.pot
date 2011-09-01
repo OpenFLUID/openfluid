@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openfluid 1.6.2\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2011-08-25 18:25+0200\n"
+"POT-Creation-Date: 2011-09-01 12:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -599,12 +599,36 @@ msgstr ""
 msgid "Unit classes"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:67
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:253
 msgid "[blank]"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:68
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:262
 msgid "[tab]"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:301
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:317
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:112
+msgid "None"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:303
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:319
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:115
+msgid "Full"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:305
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:321
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:113
+msgid "Column names as data"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:307
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:114
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:228
+msgid "Info"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/ProjectExplorerAdapterModel.cpp:96
@@ -1263,7 +1287,7 @@ msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsView.cpp:92
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:88
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:112
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:118
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:131
 msgid "Format name"
 msgstr ""
@@ -1274,37 +1298,42 @@ msgid "Precision"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:89
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:114
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:120
 msgid "Column separator"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:90
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:116
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:122
 msgid "Date format"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:91
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:119
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:125
 msgid "Comment character"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:161
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:92
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:127
+msgid "Header type"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:170
 msgid "Column separator cannot be empty"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:163
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:172
 msgid "Date format cannot be empty"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:165
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:174
 msgid "Comment character cannot be empty"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:183
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:192
 msgid "Files format edition"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:197
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:209
 msgid "Files format creation"
 msgstr ""
 

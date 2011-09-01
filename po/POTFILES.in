@@ -94,7 +94,6 @@ src/openfluid/base/EnvProperties.hpp
 src/openfluid/base/SIFactors.hpp
 src/openfluid/base/OutputDescriptor.hpp
 src/openfluid/base/ProjectManager.cpp
-src/openfluid/base/OutputFilesDescriptor.cpp
 src/openfluid/base/RunDescriptor.cpp
 src/openfluid/base/EventDescriptor.cpp
 src/openfluid/base/PlugFunction.cpp

@@ -66,12 +66,14 @@ class SimulOutFilesColumns: public Gtk::TreeModel::ColumnRecord
       add(m_ColSeparator);
       add(m_DateFormat);
       add(m_CommentChar);
+      add(m_HeaderType);
     }
 
     Gtk::TreeModelColumn<std::string> m_Name;
     Gtk::TreeModelColumn<std::string> m_ColSeparator;
     Gtk::TreeModelColumn<std::string> m_DateFormat;
     Gtk::TreeModelColumn<std::string> m_CommentChar;
+    Gtk::TreeModelColumn<std::string> m_HeaderType;
 };
 
 #endif /* __SIMULOUTFILESCOLUMNS_HPP__ */

@@ -60,6 +60,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <gtkmm/comboboxentrytext.h>
+#include <gtkmm/comboboxtext.h>
 #include <gtkmm/infobar.h>
 
 #include <set>
@@ -82,6 +83,8 @@ class SimulOutFilesAddEditDialog
     Gtk::ComboBoxEntryText* mp_DateFormatComboEntry;
 
     Gtk::ComboBoxEntryText* mp_CommentCharComboEntry;
+
+    Gtk::ComboBoxText* mp_HeaderTypeCombo;
 
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;

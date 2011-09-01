@@ -116,6 +116,20 @@ openfluid::base::OutputFilesDescriptor FluidXReader::extractFilesDecriptorFromNo
   if (OFD.getDateFormat() == "6cols") OFD.setDateFormat("%Y\t%m\t%d\t%H\t%M\t%S");
   if (OFD.getDateFormat() == "iso") OFD.setDateFormat("%Y%m%dT%H%M%S");
 
+  xmlChar* xmlHeaderType = xmlGetProp(NodePtr,(const xmlChar*)"header");
+  if (xmlHeaderType != NULL)
+  {
+    std::string HeaderType = std::string((const char*)xmlHeaderType);
+
+    if(HeaderType == "none")
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::None);
+    else if(HeaderType == "colnames-as-data")
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::ColnamesAsData);
+    else if(HeaderType == "full")
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::Full);
+    else
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::Info);
+  }
 
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
 

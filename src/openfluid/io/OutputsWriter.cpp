@@ -159,6 +159,7 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
               OutDesc.getFileSets()[i].getCommentChar(),
               OutDesc.getFileSets()[i].getDateFormat(),
               OutDesc.getFileSets()[i].getColSeparator(),
+              OutDesc.getFileSets()[i].getHeaderType(),
               OutDesc.getFileSets()[i].getSets()[j].getPrecision());
 
           for (unsigned int n = 0; n < VariablesNames.size(); n++)
@@ -186,6 +187,7 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
                 OutDesc.getFileSets()[i].getCommentChar(),
                 OutDesc.getFileSets()[i].getDateFormat(),
                 OutDesc.getFileSets()[i].getColSeparator(),
+                OutDesc.getFileSets()[i].getHeaderType(),
                 OutDesc.getFileSets()[i].getSets()[j].getPrecision());
 
             m_Files.push_back(VWriter);
