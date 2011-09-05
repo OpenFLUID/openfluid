@@ -126,7 +126,7 @@ void VectorOutputsFileWriter::initializeFile()
   if(m_HeaderType == openfluid::base::OutputFilesDescriptor::ColnamesAsData
       || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
   {
-    m_OutFile << "DateTime" << m_ColSeparator << m_Variable << "\n";
+    m_OutFile << "datetime" << m_ColSeparator << m_Variable << "\n";
   }
 
 }

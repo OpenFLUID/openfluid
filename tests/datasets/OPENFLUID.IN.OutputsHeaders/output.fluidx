@@ -9,7 +9,7 @@
       <set name="partial-default" unitsclass="TestUnits" unitsIDs="1;5" vars="*" />
     </files>  
 
-    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%" header="none">     
+    <files colsep=" " dtformat="%Y%m%dT%H%M%S" commentchar="%" header="none">     
       <set name="full-none" unitsclass="TestUnits" unitsIDs="*" vars="*" />      
       <set name="partial-none" unitsclass="TestUnits" unitsIDs="1;5" vars="*" />
     </files>  
@@ -19,12 +19,12 @@
       <set name="partial-info" unitsclass="TestUnits" unitsIDs="1;5" vars="*" />
     </files>  
 
-    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%" header="colnames-as-data">     
+    <files colsep=";" dtformat="%Y-%m-%d %H:%M:%S" commentchar="%" header="colnames-as-data">     
       <set name="full-colnames-as-data" unitsclass="TestUnits" unitsIDs="*" vars="*" />      
       <set name="partial-colnames-as-data" unitsclass="TestUnits" unitsIDs="1;5" vars="*" />
     </files>  
 
-    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%" header="full">     
+    <files colsep=";" dtformat="%Y %m %d %H %M %S" commentchar="%" header="full">     
       <set name="full-full" unitsclass="TestUnits" unitsIDs="*" vars="*" />      
       <set name="partial-full" unitsclass="TestUnits" unitsIDs="1;5" vars="*" />
     </files>  

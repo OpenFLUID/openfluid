@@ -131,7 +131,7 @@ void ScalarOutputsFileWriter::initializeFile()
   if(m_HeaderType == openfluid::base::OutputFilesDescriptor::ColnamesAsData
       || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
   {
-    m_OutFile << "DateTime";
+    m_OutFile << "datetime";
 
     std::list<openfluid::core::VariableName_t>::iterator itNames;
 
