@@ -111,13 +111,11 @@ void ResUnitChooserModelImpl::extractVarsInfo()
   if (!mp_SetDesc)
     return;
 
-  m_Scalars.clear();
-  m_Vectors.clear();
+  m_Variables.clear();
 
-  if (!mp_SetDesc->isAllScalars() && !mp_SetDesc->isAllVectors())
+  if(!mp_SetDesc->isAllVariables())
   {
-    m_Scalars = mp_SetDesc->getScalars();
-    m_Vectors = mp_SetDesc->getVectors();
+    m_Variables = mp_SetDesc->getVariables();
   } else
   {
     BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,mp_ModelInstance->getItems())
@@ -125,20 +123,14 @@ void ResUnitChooserModelImpl::extractVarsInfo()
     {
       if(Var.UnitClass == m_ClassName)
       {
-        if (openfluid::tools::IsVectorNamedVariable(Var.DataName))
-        m_Vectors.push_back(Var.DataName);
-        else
-        m_Scalars.push_back(Var.DataName);
+        m_Variables.push_back(Var.DataName);
       }
     }
     BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
     {
       if(Var.UnitClass == m_ClassName)
       {
-        if (openfluid::tools::IsVectorNamedVariable(Var.DataName))
-        m_Vectors.push_back(Var.DataName);
-        else
-        m_Scalars.push_back(Var.DataName);
+        m_Variables.push_back(Var.DataName);
       }
     }
   }
@@ -217,19 +209,9 @@ std::vector<unsigned int> ResUnitChooserModelImpl::getIDs()
 // =====================================================================
 // =====================================================================
 
-
-std::vector<std::string> ResUnitChooserModelImpl::getScalars()
+std::vector<std::string> ResUnitChooserModelImpl::getVariables()
 {
-  return m_Scalars;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<std::string> ResUnitChooserModelImpl::getVectors()
-{
-  return m_Vectors;
+  return m_Variables;
 }
 
 // =====================================================================

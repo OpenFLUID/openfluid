@@ -108,12 +108,12 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_FUNCTION_PARAM("testparam","a param just for test","kg/m3")
   DECLARE_FUNCTION_PARAM("dummy_param","a dummy param just for test","snail/m2")
 
-  DECLARE_PRODUCED_VAR("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
+  DECLARE_PRODUCED_VAR("tests.prodvector","TestUnits","produced vector on TestUnits","");
   DECLARE_PRODUCED_VAR("tests.prodscalar","TestUnits","produced scalar on TestUnits","joker/batman");
 
   DECLARE_UPDATED_VAR("tests.updscalar","TestUnits","updated scalar on TestUnits","");
 
-  DECLARE_REQUIRED_VAR("tests.reqvector[]","TestUnits","required vector on TestUnits","m2");
+  DECLARE_REQUIRED_VAR("tests.reqvector","TestUnits","required vector on TestUnits","m2");
   DECLARE_REQUIRED_VAR("tests.reqscalar","TestUnits","required scalar on TestUnits","");
 
   DECLARE_USED_VAR("tests.usedscalar","TestUnits","used scalar on TestUnits","");

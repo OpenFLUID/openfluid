@@ -60,6 +60,7 @@
 #include <map>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 
 
 namespace openfluid { namespace core {
@@ -105,7 +106,7 @@ typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 /**
  Type definition for scalar values
  */
-typedef double ScalarValue;
+typedef DoubleValue ScalarValue;
 
 /**
  Type definition for vector values. This type is based on the openfluid::core::Vector template.

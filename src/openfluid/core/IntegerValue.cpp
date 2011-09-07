@@ -59,6 +59,22 @@
 namespace openfluid { namespace core {
 
 
+Value& IntegerValue::operator =(const Value& Other)
+{
+  const IntegerValue* CastedValue = dynamic_cast<const IntegerValue*> (&Other);
+
+  if (CastedValue)
+  {
+    m_Value = CastedValue->m_Value;
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 void IntegerValue::writeToStream(std::ostream& OutStm) const
 {
   OutStm << m_Value;

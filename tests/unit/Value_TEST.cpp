@@ -693,6 +693,51 @@ BOOST_AUTO_TEST_CASE(check_sequence)
   }
 }
 
+// =====================================================================
+// =====================================================================
+
+
+class ValueCapsule
+{
+  public:
+
+    boost::shared_ptr<openfluid::core::Value> m_Val;
+
+    ValueCapsule()
+    : m_Val(new openfluid::core::NullValue())
+    {
+
+    }
+
+    void set(const openfluid::core::Value& Val)
+    {
+      m_Val.reset(Val.clone());
+    };
+
+    void get(openfluid::core::Value* Val)
+    {
+      *Val = *m_Val;
+    }
+
+};
+
+
+BOOST_AUTO_TEST_CASE(check_capsule)
+{
+  std::cout << "======== check_capsule ========" << std::endl;
+
+  ValueCapsule Capsule;
+
+  openfluid::core::DoubleValue DblVal(0.1);
+
+  Capsule.set(openfluid::core::DoubleValue(3.14));
+
+  Capsule.get(&DblVal);
+
+  BOOST_REQUIRE_CLOSE(DblVal.get(),3.14,0.0001);
+
+}
+
 
 
 // =====================================================================
@@ -701,6 +746,9 @@ BOOST_AUTO_TEST_CASE(check_sequence)
 
 BOOST_AUTO_TEST_CASE(check_performance)
 {
+
+  std::cout << "======== check_performance ========" << std::endl;
+
 
   DECLARE_TEST_TICKER();
 

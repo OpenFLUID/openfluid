@@ -444,21 +444,13 @@ void FluidXWriter::setOutputConfigurationToWrite(openfluid::base::OutputDescript
             IDsStr = IDsStrStr.str();
           }
 
-          if (SetsDesc[j].isAllScalars()) VarsStr = "*";
+          if (SetsDesc[j].isAllVariables()) VarsStr = "*";
           else
           {
-
-            for (unsigned int k = 0; k< SetsDesc[j].getScalars().size();k++)
+            for (unsigned int k = 0; k< SetsDesc[j].getVariables().size();k++)
             {
-              VarsStr += SetsDesc[j].getScalars()[k];
-              if ((k != (SetsDesc[j].getScalars().size()-1)) || (!SetsDesc[j].getVectors().empty()))
-                VarsStr += ";";
-            }
-
-            for (unsigned int k = 0; k< SetsDesc[j].getVectors().size();k++)
-            {
-              VarsStr += SetsDesc[j].getVectors()[k] + "[]";
-              if ((k != SetsDesc[j].getVectors().size()-1))
+              VarsStr += SetsDesc[j].getVariables()[k];
+              if ((k != (SetsDesc[j].getVariables().size()-1)) /*|| (!SetsDesc[j].getVariables().empty())*/)
                 VarsStr += ";";
             }
           }

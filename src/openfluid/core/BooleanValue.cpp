@@ -60,6 +60,21 @@
 namespace openfluid { namespace core {
 
 
+Value& BooleanValue::operator =(const Value& Other)
+{
+  const BooleanValue* CastedValue = dynamic_cast<const BooleanValue*> (&Other);
+
+  if (CastedValue)
+  {
+    m_Value = CastedValue->m_Value;
+  }
+
+  return *this;
+}
+
+// =====================================================================
+// =====================================================================
+
 void BooleanValue::writeToStream(std::ostream& OutStm) const
 {
   OutStm << m_Value;

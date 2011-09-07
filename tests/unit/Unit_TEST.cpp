@@ -78,8 +78,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(TU.getChildrenUnits("TestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(TU.getEvents()->getCount(),0);
   BOOST_REQUIRE_EQUAL(TU.getInputData()->isDataExist("testidata"),false);
-  BOOST_REQUIRE_EQUAL(TU.getScalarVariables()->isVariableExist("testsvar"),false);
-  BOOST_REQUIRE_EQUAL(TU.getVectorVariables()->isVariableExist("testvvar"),false);
+  BOOST_REQUIRE_EQUAL(TU.getVariables()->isVariableExist("testvar"),false);
 
 
   openfluid::core::Unit* pTU = NULL;
@@ -95,8 +94,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(pTU->getChildrenUnits("pTestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(pTU->getEvents()->getCount(),0);
   BOOST_REQUIRE_EQUAL(pTU->getInputData()->isDataExist("testidata"),false);
-  BOOST_REQUIRE_EQUAL(pTU->getScalarVariables()->isVariableExist("testsvar"),false);
-  BOOST_REQUIRE_EQUAL(pTU->getVectorVariables()->isVariableExist("testvvar"),false);
+  BOOST_REQUIRE_EQUAL(pTU->getVariables()->isVariableExist("testvar"),false);
 
   delete pTU;
 

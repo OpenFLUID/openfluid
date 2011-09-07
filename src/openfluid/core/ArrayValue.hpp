@@ -88,6 +88,8 @@ class DLLEXPORT ArrayValue : public CompoundValue
 
     ArrayValue(const Array_t& /*Val*/) : CompoundValue() {};
 
+    Value& operator =(const Value& Other);
+
     virtual ~ArrayValue() {};
 
     inline Type getType() const { return Value::MAP; };

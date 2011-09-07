@@ -88,6 +88,8 @@ class DLLEXPORT StringValue : public SimpleValue
 
     StringValue(const std::string& POD) : SimpleValue(), m_Value(POD) {};
 
+    Value& operator =(const Value& Other);
+
     virtual ~StringValue() {};
 
     inline Type getType() const { return Value::STRING; };

@@ -83,6 +83,13 @@ class DLLEXPORT DoubleValue : public SimpleValue
 
     DoubleValue(const double& POD) : SimpleValue(), m_Value(POD) {};
 
+    Value& operator =(const Value& Other);
+
+    /**
+     * Cast operator
+     */
+    operator double() const { return m_Value; };
+
     virtual ~DoubleValue() {};
 
     inline Type getType() const { return Value::DOUBLE; };

@@ -6,8 +6,8 @@
     <!-- colsep default is \t -->
     <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">     
       <set name="full" unitsclass="TestUnits" unitsIDs="*" vars="*" />      
-      <set name="partial" unitsclass="TestUnits" unitsIDs="1;5" vars="tests.vector[];tests.scalar" />
-      <set name="custom" unitsclass="TestUnits" unitsIDs="1" vars="tests.vector[]" precision="9" />
+      <set name="partial" unitsclass="TestUnits" unitsIDs="1;5" vars="tests.vector;tests.scalar" />
+      <set name="custom" unitsclass="TestUnits" unitsIDs="1" vars="tests.vector" precision="9" />
     </files>  
     
   </output>

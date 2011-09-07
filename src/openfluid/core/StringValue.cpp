@@ -75,6 +75,22 @@
 namespace openfluid { namespace core {
 
 
+Value& StringValue::operator =(const Value& Other)
+{
+  const StringValue* CastedValue = dynamic_cast<const StringValue*> (&Other);
+
+  if (CastedValue)
+  {
+    m_Value = CastedValue->m_Value;
+  }
+
+  return *this;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void StringValue::writeToStream(std::ostream& OutStm) const
 {
   OutStm << m_Value;
@@ -343,7 +359,7 @@ bool StringValue::toMapValue(const std::string& Sep, MapValue& Val) const
 {
   std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
 
-  unsigned long TmpSize = Splitted.size();
+//  unsigned long TmpSize = Splitted.size();
 
 
   MapValue TmpMap;

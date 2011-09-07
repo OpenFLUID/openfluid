@@ -379,24 +379,12 @@ class DLLEXPORT PluggableFunction
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[in] Step the time step for the value of the requested variable
-      @param[out] Value the value of the requested variable (scalar)
+      @param[out] aValue the value of the requested variable
     */
-    void OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetVariable(openfluid::core::Unit* UnitPtr,
                                openfluid::core::VariableName_t VarName,
                                openfluid::core::TimeStep_t Step,
-                               openfluid::core::ScalarValue *Value);
-
-    /**
-      Gets the distributed variable value for a unit at a time step
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-      @param[in] Step the time step for the value of the requested variable
-      @param[out] Value the value of the requested variable (vector)
-    */
-    void OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               openfluid::core::VectorValue *Value);
+                               openfluid::core::Value* aValue);
 
     /**
       Gets input data for a unit, as a double
@@ -470,32 +458,16 @@ class DLLEXPORT PluggableFunction
 
 
     /**
-      Returns true if a distributed variable exists, false otherwise (searches both scalar and vector variables)
+      Returns true if a distributed variable exists, false otherwise
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
     */
     bool OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr,
                                     openfluid::core::VariableName_t VarName);
 
-    /**
-      Returns true if a distributed scalar variable exists, false otherwise
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-    */
-    bool OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName);
-
-    /**
-      Returns true if a distributed vector variable exists, false otherwise
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-    */
-    bool OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName);
-
 
    /**
-      Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise (searches both scalar and vector variables)
+      Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[in] Step the time step for the value of the variable
@@ -505,68 +477,89 @@ class DLLEXPORT PluggableFunction
                                     openfluid::core::TimeStep_t Step);
 
     /**
-       Returns true if a distributed scalar variable exists and if a value has been set for the given step, false otherwise
+       Returns true if a distributed variable exists and if a value has been set for the given step
+       and if this value is the given type, false otherwise
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the requested variable
        @param[in] Step the time step for the value of the variable
-    */
-    bool OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName,
-                                          openfluid::core::TimeStep_t Step);
+       @param[in] ValueType the type of the value
+     */
+     bool OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr,
+                                     openfluid::core::VariableName_t VarName,
+                                     openfluid::core::TimeStep_t Step,
+                                     openfluid::core::Value::Type ValueType);
 
     /**
-       Returns true if a distributed vector variable exists and if a value has been set for the given step, false otherwise
-       @param[in] UnitPtr a Unit
-       @param[in] VarName the name of the requested variable
-       @param[in] Step the time step for the value of the variable
-    */
-    bool OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName,
-                                          openfluid::core::TimeStep_t Step);
-
-    /**
-      Appends a distributed scalar variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed double variable value for a unit at the end of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Value the added value of the variable
+      @deprecated
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                   openfluid::core::VariableName_t VarName,
-                                  openfluid::core::ScalarValue Value);
+                                  double Value);
 
     /**
-      Appends a distributed vector variable value for a unit at the end of the previously added values for this variable
+      Appends a distributed variable value for a unit at the end of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Value the added value of the variable
+      @param[in] aValue the added value of the variable
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                   openfluid::core::VariableName_t VarName,
-                                  openfluid::core::VectorValue& Value);
+                                  openfluid::core::Value& aValue);
 
     /**
-      Sets a distributed scalar variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at a time step
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Step the time step for the value of the variable
-      @param[in] Value the added value of the variable
+      @param[in] Value the added value of the variable (double)
+      @deprecated
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
                                openfluid::core::TimeStep_t Step,
-                               openfluid::core::ScalarValue Value);
+                               double Value);
+
+    /**
+      Sets a distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] aValue the added value of the variable
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               openfluid::core::Value& aValue);
 
     /**
       Sets a distributed vector variable value for a unit at a time step
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Step the time step for the value of the variable
-      @param[in] Value the added value of the variable
+      @param[in] Value the added value of the variable (vector)
+      @deprecated
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
                                openfluid::core::TimeStep_t Step,
                                openfluid::core::VectorValue Value);
+
+    /**
+      Sets a distributed scalar variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Value the added value of the variable (scalar)
+      @deprecated
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               openfluid::core::ScalarValue Value);
 
     /**
       Gets a function parameter from the parameters set, as a double

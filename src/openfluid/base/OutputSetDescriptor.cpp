@@ -70,10 +70,8 @@ OutputSetDescriptor::OutputSetDescriptor()
   m_AllUnits = false;
   m_UnitsIDs.clear();
   m_UnitsPtr.clear();
-  m_AllScalars = false;
-  m_ScalarVariables.clear();
-  m_AllVectors = false;
-  m_VectorVariables.clear();
+  m_AllVariables = false;
+  m_Variables.clear();
   m_Precision = 5;
 }
 

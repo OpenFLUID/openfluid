@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openfluid 1.6.2\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2011-08-25 18:25+0200\n"
+"POT-Creation-Date: 2011-09-07 15:05+0200\n"
 "PO-Revision-Date: 2011-06-01 09:08+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -79,8 +79,7 @@ msgstr "Fermer"
 msgid ""
 "These options control the builds of source packages.\n"
 "Changing this is at your own risk."
-msgstr ""
-"Ces options contrôlent la construction de packages sources.\n"
+msgstr "Ces options contrôlent la construction de packages sources.\n"
 "Ne les modifier que si vous savez ce que vous faites."
 
 #: src/openfluid/guicommon/MarketBuildOptionsDialog.cpp:89
@@ -347,8 +346,7 @@ msgstr "Résultats"
 msgid ""
 "This change leads OpenFLUID to delete:\n"
 "%1"
-msgstr ""
-"Ce changement a nécessité de supprimer :\n"
+msgstr "Ce changement a nécessité de supprimer :\n"
 "%1"
 
 #: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:553
@@ -360,8 +358,7 @@ msgid ""
 "\n"
 "Do you want to reload it?\n"
 "(if not, it's at your own risk, you have to manually reload the simulation functions list)"
-msgstr ""
-"\n"
+msgstr "\n"
 "Voulez-vous les recharger ?\n"
 "(Sinon, vous devez manuellement recharger la liste des fonctions de simulation)"
 
@@ -374,8 +371,7 @@ msgid ""
 "\n"
 "Do you want to reload it?\n"
 "(if not, it's at your own risk, you have to manually reload the simulation functions)"
-msgstr ""
-"\n"
+msgstr "\n"
 "Voulez-vous les recharger ?\n"
 "(Sinon, vous devez manuellement recharger la liste des fonctions de simulation)"
 
@@ -526,8 +522,7 @@ msgid ""
 "(%2)\n"
 "\n"
 "Project not created."
-msgstr ""
-"Impossible de créer le répertoire %1\n"
+msgstr "Impossible de créer le répertoire %1\n"
 "(%2)\n"
 "\n"
 "Projet non créé."
@@ -538,8 +533,7 @@ msgstr ""
 msgid ""
 "File %1 already exists.\n"
 "Do you really want to overwrite it?"
-msgstr ""
-"Le fichier %1 existe déja.\n"
+msgstr "Le fichier %1 existe déja.\n"
 "Voulez-vous réellement l'écraser ?"
 
 #: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:78
@@ -551,8 +545,7 @@ msgid ""
 "%2\n"
 "\n"
 "Project can't be opened."
-msgstr ""
-"Erreur XML :\n"
+msgstr "Erreur XML :\n"
 "%1\n"
 "\n"
 "durant la lecture du fichier :\n"
@@ -567,8 +560,7 @@ msgid ""
 "\n"
 "Some files may be overwritten.\n"
 "Do you want to continue?"
-msgstr ""
-"Avertissement :\n"
+msgstr "Avertissement :\n"
 "%1.\n"
 "\n"
 "Certains fichiers pourraient être écrasés.\n"
@@ -579,8 +571,7 @@ msgid ""
 "Check outputs consistency leads OpenFLUID to delete:\n"
 "\n"
 "%1"
-msgstr ""
-"La vérification des sorties a mené à la supression de :\n"
+msgstr "La vérification des sorties a mené à la supression de :\n"
 "\n"
 "%1"
 
@@ -591,8 +582,7 @@ msgid ""
 "\n"
 "Corresponding simulation functions will be removed from the model.\n"
 "Do you want to continue?"
-msgstr ""
-"Impossible de trouver les fichiers de plugin(s) :\n"
+msgstr "Impossible de trouver les fichiers de plugin(s) :\n"
 "%1\n"
 "\n"
 "Les fonctions de simulation correspondantes seront supprimées du modèle.\n"
@@ -603,32 +593,31 @@ msgstr ""
 msgid "Simulation"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:656
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:658
 msgid "class %1 doesn't exist"
 msgstr "la classe %1 n'existe pas"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:662
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:664
 msgid "no variable produced for class %1"
 msgstr "aucune variable produite pour la classe %1"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:666
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:668
 msgid "no unit selected"
 msgstr "aucune unité sélectionnée"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:671
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:674
 msgid "no variable selected"
 msgstr "aucune variable sélectionnée"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:690
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:693
 msgid "- ID %1 of set %2\n"
 msgstr "- ID %1 du set %2\n"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:708
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:722
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:711
 msgid "- Var %1 of set %2\n"
 msgstr "- Var %1 du set %2\n"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:736
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:755
 msgid "=> Set %1\n"
 msgstr ""
 
@@ -636,11 +625,11 @@ msgstr ""
 msgid "Unit classes"
 msgstr "Classes d'unités"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:67
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:254
 msgid "[blank]"
 msgstr "[espace]"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:68
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:266
 msgid "[tab]"
 msgstr ""
 
@@ -658,8 +647,7 @@ msgid ""
 "From: %1\n"
 "To: %2\n"
 "Delta T: %3 s"
-msgstr ""
-"De : %1\n"
+msgstr "De : %1\n"
 "A : %2\n"
 "Delta T : %3 s"
 
@@ -833,8 +821,7 @@ msgstr ""
 msgid ""
 "This is a preview release of OpenFLUID-Builder software.\n"
 "Some features have been temporarily disabled."
-msgstr ""
-"Ceci est une première mise à disposition d'OpenFLUID-Builder.\n"
+msgstr "Ceci est une première mise à disposition d'OpenFLUID-Builder.\n"
 "Certaines fonctionnalités ont été temporairement désactivées."
 
 #: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:73
@@ -973,8 +960,7 @@ msgid ""
 "Error:\n"
 "%1\n"
 "is not an OpenFLUID Project directory"
-msgstr ""
-"Erreur :\n"
+msgstr "Erreur :\n"
 "%1\n"
 "n'est pas un répertoire de projet OpenFLUID"
 
@@ -988,8 +974,7 @@ msgid ""
 "%1\n"
 "\n"
 "Project not created."
-msgstr ""
-"Impossible de créer le répertoire\n"
+msgstr "Impossible de créer le répertoire\n"
 "%1\n"
 "\n"
 "Projet non créé."
@@ -999,8 +984,7 @@ msgid ""
 "%1\n"
 "\n"
 "Project not created."
-msgstr ""
-"%1\n"
+msgstr "%1\n"
 "\n"
 "Projet non créé."
 
@@ -1309,6 +1293,7 @@ msgstr "IDs des unités"
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsView.cpp:91
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:129
 #: src/apps/openfluid-builder/builder-main/results/ResultsSetModule.cpp:113
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:150
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:125
 msgid "Variables"
 msgstr ""
@@ -1395,32 +1380,28 @@ msgstr "Définition des sets"
 msgid ""
 "This will delete the sets associated to this format.\n"
 "Do you want to continue?"
-msgstr ""
-"Ceci supprimera les Sets associés à ce format.\n"
+msgstr "Ceci supprimera les Sets associés à ce format.\n"
 "Voulez-vous continuer ?"
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutCoordinator.cpp:209
 msgid ""
 "Impossible to create a Set:\n"
 "no File Format available."
-msgstr ""
-"Impossible de créer un Set :\n"
+msgstr "Impossible de créer un Set :\n"
 "aucun format de fichier disponible."
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutCoordinator.cpp:216
 msgid ""
 "Impossible to create a Set:\n"
 "no Unit available."
-msgstr ""
-"Impossible de créer un Set :\n"
+msgstr "Impossible de créer un Set :\n"
 "aucune unité disponible."
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutCoordinator.cpp:223
 msgid ""
 "Impossible to create a Set:\n"
 "no Variable available."
-msgstr ""
-"Impossible de créer un Set :\n"
+msgstr "Impossible de créer un Set :\n"
 "aucune variable disponible."
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:127
@@ -1435,11 +1416,11 @@ msgstr "Le nom du Set ne peut être vide"
 msgid "This Set name already exists"
 msgstr "Ce nom de Set existe déjà"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:488
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:503
 msgid "Output set edition"
 msgstr "Edition d'un set d'Output"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:518
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:533
 msgid "Output set creation"
 msgstr "Création d'un set d'Output"
 
@@ -1463,16 +1444,14 @@ msgstr "Date-Heure"
 msgid ""
 "Plot file with GNUplot\n"
 "(All-in-one window)"
-msgstr ""
-"Tracer le fichier avec GNUplot\n"
+msgstr "Tracer le fichier avec GNUplot\n"
 "(Fenêtre tout-en-un)"
 
 #: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:204
 msgid ""
 "Plot file with GNUplot\n"
 "(Multiple windows)"
-msgstr ""
-"Tracer le fichier avec GNUplot\n"
+msgstr "Tracer le fichier avec GNUplot\n"
 "(Plusieurs fenêtres)"
 
 #: src/apps/openfluid-builder/builder-main/results/ResultsSetModule.cpp:108
@@ -1484,35 +1463,25 @@ msgid "Class: "
 msgstr "Classe : "
 
 #: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:90
-msgid "Show file(s)"
-msgstr "Montrer le(s) fichier(s)"
+msgid "Show file"
+msgstr "Montrer le fichier"
 
 #: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:106
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:140
-msgid "Scalars"
-msgstr "Scalaires"
-
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:144
-msgid "Vectors"
-msgstr "Vecteurs"
-
 #: src/apps/openfluid-builder/builder-main/results/ViewWithGNUplot.cpp:183
 msgid ""
 "Unable to plot file with GNUplot:\n"
 "Vector variables are not currently supported."
-msgstr ""
-"Impossible de tracer le fichier avec GNUplot :\n"
+msgstr "Impossible de tracer le fichier avec GNUplot :\n"
 "Les variables Vecteur ne sont pas supportées."
 
 #: src/apps/openfluid-builder/builder-main/results/ViewWithGNUplot.cpp:189
 msgid ""
 "Unable to plot file with GNUplot:\n"
 "Column separator is present in date format."
-msgstr ""
-"Impossible de tracer le fichier avec GNUplot :\n"
+msgstr "Impossible de tracer le fichier avec GNUplot :\n"
 "Le séparateur de colonnes est présent dans le format de date."
 
 #: src/apps/openfluid-builder/builder-main/results/ViewWithGNUplot.cpp:207
@@ -1626,6 +1595,13 @@ msgstr "Taille"
 msgid "Generator creation"
 msgstr "Création d'un générateur"
 
+#: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:154
+msgid ""
+"You can't create a generator now:\n"
+" Domain is empty"
+msgstr "Vous ne pouvez pas créer de générateur pour l'instant :\n"
+"le domaine est vide"
+
 #: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:222
 msgid "Variable name can not be empty"
 msgstr "Le nom de la variable ne peut être vide"
@@ -1702,3 +1678,4 @@ msgstr "Ajouter comme un paramètre global"
 #: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamRow.cpp:88
 msgid "Unset this parameter as global"
 msgstr "Supprimer ce paramètre global"
+

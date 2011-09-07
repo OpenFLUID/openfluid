@@ -91,6 +91,11 @@ class Value
     */
     Value(const Value& /*Val*/) {};
 
+    /**
+     * Assignment operator
+     */
+    virtual Value& operator =(const Value& /*Other*/) { return *this; }
+
     virtual ~Value() {};
 
     virtual Type getType() const = 0;

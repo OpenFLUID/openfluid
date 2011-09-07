@@ -175,22 +175,19 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsClass(),"XU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getPrecision(),5);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getName(),"2vars");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getUnitsClass(),"YU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getScalars().size(),1);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getScalars()[0],"var1");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllScalars(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVectors().size(),1);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVectors()[0],"var2");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllVectors(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables().size(),2);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllVariables(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables()[0],"var1");
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables()[1],"var2");
+
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getPrecision(),3);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getName(),"3units");
@@ -200,10 +197,8 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[1],197);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[2],73);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllUnits(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getPrecision(),5);
 
 
@@ -217,23 +212,19 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getUnitsClass(),"KU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getPrecision(),9);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getName(),"3vars");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getUnitsClass(),"LU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getScalars().size(),2);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getScalars()[0],"var1");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getScalars()[1],"var5");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllScalars(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVectors().size(),1);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVectors()[0],"var2");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllVectors(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables().size(),3);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllVariables(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[0],"var1");
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[1],"var2");
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[2],"var5");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getPrecision(),5);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getName(),"2units");
@@ -242,10 +233,8 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs()[0],2);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs()[1],1);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllUnits(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getPrecision(),5);
 
 

@@ -83,7 +83,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
 
-  DECLARE_PRODUCED_VAR("tests.vector[]","TestUnits","vector for tests","");
+  DECLARE_PRODUCED_VAR("tests.vector","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","TestUnits","scalar for tests","");
 
 END_SIGNATURE_HOOK

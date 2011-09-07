@@ -60,6 +60,23 @@
 namespace openfluid { namespace core {
 
 
+Value& ArrayValue::operator =(const Value& Other)
+{
+  const ArrayValue* CastedValue = dynamic_cast<const ArrayValue*> (&Other);
+
+  if (CastedValue)
+  {
+    m_Value = CastedValue->m_Value;
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ArrayValue::writeToStream(std::ostream& OutStm) const
 {
   OutStm << "empty";

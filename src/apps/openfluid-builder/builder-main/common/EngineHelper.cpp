@@ -124,45 +124,6 @@ std::set<std::string> EngineHelper::getProducedVarNames(std::string ClassName,
 return VarNames;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-std::set<std::string> EngineHelper::getProducedScalarVarNames(
-    std::string ClassName, openfluid::machine::ModelInstance* ModelInstance)
-{
-  std::set<std::string> VarNames;
-
-  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
-{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
-  {
-    if(Var.UnitClass == ClassName && !openfluid::tools::IsVectorNamedVariable(Var.DataName))
-    VarNames.insert(Var.DataName);
-  }
-}
-
-return VarNames;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::set<std::string> EngineHelper::getProducedVectorVarNames(
-    std::string ClassName, openfluid::machine::ModelInstance* ModelInstance)
-{
-  std::set<std::string> VarNames;
-
-  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
-{  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
-  {
-    if(Var.UnitClass == ClassName && openfluid::tools::IsVectorNamedVariable(Var.DataName))
-    VarNames.insert(Var.DataName);
-  }
-}
-
-return VarNames;
-}
 
 // =====================================================================
 // =====================================================================

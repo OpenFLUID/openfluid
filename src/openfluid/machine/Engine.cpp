@@ -133,8 +133,7 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
   UnitIter = UnitList->begin();
   while (UnitIter != UnitList->end())
   {
-    if (openfluid::tools::IsVectorNamedVariable(VarName)) Status = (*UnitIter).getVectorVariables()->isVariableExist(openfluid::tools::GetVectorNamedVariableName(VarName));
-    else Status = (*UnitIter).getScalarVariables()->isVariableExist(VarName);
+    Status = (*UnitIter).getVariables()->isVariableExist(VarName);
 
     if (!Status)
       throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionName + " is not previously created");
@@ -169,8 +168,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
     UnitIter = UnitList->begin();
     while (UnitIter != UnitList->end())
     {
-      if (openfluid::tools::IsVectorNamedVariable(VarName)) Status = !((*UnitIter).getVectorVariables()->isVariableExist(openfluid::tools::GetVectorNamedVariableName(VarName)));
-      else Status = !((*UnitIter).getScalarVariables()->isVariableExist(VarName));
+       Status = !((*UnitIter).getVariables()->isVariableExist(VarName));
 
       if (!Status)
         throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionName + " cannot be created because it is previously created");
@@ -181,8 +179,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
-    if (openfluid::tools::IsVectorNamedVariable(VarName)) (*UnitIter).getVectorVariables()->createVariable(openfluid::tools::GetVectorNamedVariableName(VarName));
-    else (*UnitIter).getScalarVariables()->createVariable(VarName);
+    (*UnitIter).getVariables()->createVariable(VarName);
   }
 
 }
@@ -240,14 +237,9 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
+      if (!((*UnitsIter).getVariables()->isAllVariablesCount(ExpectedVarsCount)))
+        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkSimulationVarsProduction","Variable production error");
 
-      //scalars
-      if (!((*UnitsIter).getScalarVariables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkSimulationVarsProduction","Scalar variable production error");
-
-      //vectors
-      if (!((*UnitsIter).getVectorVariables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkSimulationVarsProduction","Vector variable production error");
     }
 
   }

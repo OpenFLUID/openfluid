@@ -88,6 +88,8 @@ class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
     */
     MatrixValue(unsigned long ColsNbr, unsigned long RowsNbr, double InitValue) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr,InitValue) {};
 
+    Value& operator =(const Value& Other);
+
     virtual ~MatrixValue() {};
 
     inline Type getType() const { return Value::MATRIX; };

@@ -71,8 +71,8 @@
 BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::core::ValuesBufferProperties::setBufferSize(5);
-  openfluid::core::Variables<double> Vars;
-  double Value;
+  openfluid::core::Variables Vars;
+  openfluid::core::DoubleValue Value;
 
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),false);
   BOOST_REQUIRE_EQUAL(Vars.getVariableValuesCount("foo"),-1);
@@ -85,45 +85,45 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::core::ValuesBufferProperties::setBufferSize(5);
-  openfluid::core::Variables<double> Vars;
-  double Value;
+  openfluid::core::Variables Vars;
+  openfluid::core::DoubleValue Value;
 
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),false);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",0),false);
   BOOST_REQUIRE_EQUAL(Vars.getVariableValuesCount("foo"),-1);
   BOOST_REQUIRE_EQUAL(Vars.getValue("foo",0,&Value),false);
 
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",0.0),false);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",openfluid::core::DoubleValue(0.0)),false);
 
   BOOST_REQUIRE_EQUAL(Vars.createVariable("foo"),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",0),false);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",0.0),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",1.0),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",2.0),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",3.0),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",4.0),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",openfluid::core::DoubleValue(0.0)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",openfluid::core::DoubleValue(1.0)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",openfluid::core::DoubleValue(2.0)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",openfluid::core::DoubleValue(3.0)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",openfluid::core::DoubleValue(4.0)),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",0),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",4),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",5),false);
   BOOST_REQUIRE_EQUAL(Vars.getVariableValuesCount("foo"),5);
   BOOST_REQUIRE_EQUAL(Vars.getValue("foo",0,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,0.0,0.001);
+  BOOST_REQUIRE_CLOSE(Value.get(),0.0,0.001);
   BOOST_REQUIRE_EQUAL(Vars.getValue("foo",3,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,3.0,0.001);
-  BOOST_REQUIRE_EQUAL(Vars.modifyValue("foo",3,34.5),true);
+  BOOST_REQUIRE_CLOSE(Value.get(),3.0,0.001);
+  BOOST_REQUIRE_EQUAL(Vars.modifyValue("foo",3,openfluid::core::DoubleValue(34.5)),true);
   BOOST_REQUIRE_EQUAL(Vars.getValue("foo",3,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,34.5,0.001);
+  BOOST_REQUIRE_CLOSE(Value.get(),34.5,0.001);
 
   BOOST_REQUIRE_EQUAL(Vars.createVariable("bar"),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",1000.1),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",1001.1),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",1002.1),true);
-  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",1003.1),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::DoubleValue(1000.1)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::DoubleValue(1001.1)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::DoubleValue(1002.1)),true);
+  BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::DoubleValue(1003.1)),true);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",0,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,1000.1,0.001);
+  BOOST_REQUIRE_CLOSE(Value.get(),1000.1,0.001);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",2,&Value),true);
-  BOOST_REQUIRE_CLOSE(Value,1002.1,0.001);
+  BOOST_REQUIRE_CLOSE(Value.get(),1002.1,0.001);
 
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("bar"),true);

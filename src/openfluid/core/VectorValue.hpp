@@ -94,6 +94,8 @@ class DLLEXPORT VectorValue : public CompoundValue, public Vector<double>
     */
     VectorValue(double* Data, unsigned long Size) : CompoundValue(), Vector<double>(Data,Size) {};
 
+    Value& operator =(const Value& Other);
+
     virtual ~VectorValue() {};
 
     inline Type getType() const { return Value::VECTOR; };

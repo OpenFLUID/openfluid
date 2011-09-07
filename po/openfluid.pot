@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openfluid 1.6.2\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2011-08-25 18:25+0200\n"
+"POT-Creation-Date: 2011-09-07 15:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -566,32 +566,31 @@ msgstr ""
 msgid "Simulation"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:656
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:658
 msgid "class %1 doesn't exist"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:662
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:664
 msgid "no variable produced for class %1"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:666
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:668
 msgid "no unit selected"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:671
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:674
 msgid "no variable selected"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:690
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:693
 msgid "- ID %1 of set %2\n"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:708
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:722
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:711
 msgid "- Var %1 of set %2\n"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:736
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:755
 msgid "=> Set %1\n"
 msgstr ""
 
@@ -599,11 +598,11 @@ msgstr ""
 msgid "Unit classes"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:67
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:254
 msgid "[blank]"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:68
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:266
 msgid "[tab]"
 msgstr ""
 
@@ -1257,6 +1256,7 @@ msgstr ""
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsView.cpp:91
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:129
 #: src/apps/openfluid-builder/builder-main/results/ResultsSetModule.cpp:113
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:150
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:125
 msgid "Variables"
 msgstr ""
@@ -1375,11 +1375,11 @@ msgstr ""
 msgid "This Set name already exists"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:488
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:503
 msgid "Output set edition"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:518
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:533
 msgid "Output set creation"
 msgstr ""
 
@@ -1420,19 +1420,11 @@ msgid "Class: "
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:90
-msgid "Show file(s)"
+msgid "Show file"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:106
 msgid "Update"
-msgstr ""
-
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:140
-msgid "Scalars"
-msgstr ""
-
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:144
-msgid "Vectors"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/results/ViewWithGNUplot.cpp:183
@@ -1556,6 +1548,12 @@ msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:112
 msgid "Generator creation"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:154
+msgid ""
+"You can't create a generator now:\n"
+" Domain is empty"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:222

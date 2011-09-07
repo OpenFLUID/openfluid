@@ -99,8 +99,6 @@ class EngineProject
 
     void addSignatureToGenerators();
 
-    void dispatchOutputVariables();
-
     void deleteEngineObjects();
 
   protected:

@@ -100,8 +100,7 @@ class ResViewerAdapterModelImpl: public ResViewerAdapterModel
 
     void createColumns(std::vector<std::string> VarNames);
 
-    void createFileBuffers(std::vector<std::string> VarNames,
-        openfluid::core::Unit* Unit, std::string SetName);
+    void createFileBuffers(openfluid::core::Unit* Unit, std::string SetName);
 
     void setNoVarTitle();
 

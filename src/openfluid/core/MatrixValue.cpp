@@ -59,6 +59,23 @@
 namespace openfluid { namespace core {
 
 
+Value& MatrixValue::operator =(const Value& Other)
+{
+  const MatrixValue* CastedValue = dynamic_cast<const MatrixValue*> (&Other);
+
+  if (CastedValue)
+  {
+    Matrix<double>::operator=(static_cast<const Matrix<double>& >(Other.asMatrixValue()));
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MatrixValue::writeToStream(std::ostream& OutStm) const
 {
   const unsigned long s = getSize();

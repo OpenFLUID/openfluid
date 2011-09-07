@@ -124,10 +124,6 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
   unsigned int VarSizeInt;
   openfluid::tools::ConvertString(VarSize, &VarSizeInt);
 
-  std::string VarSizedName = VarName;
-  if (VarSizeInt > 1)
-    VarSizedName.append("[]");
-
   openfluid::base::GeneratorDescriptor::GeneratorMethod
       Method =
           (static_cast<GeneratorSignature*> (Signature.Signature))->m_GeneratorMethod;
@@ -135,10 +131,10 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
   GeneratorSignature* GeneratorSign = new GeneratorSignature(Method);
 
   GeneratorSign->ID = openfluid::machine::Factory::buildGeneratorID(
-      VarSizedName, (VarSizeInt > 1), ClassName);
+      VarName, (VarSizeInt > 1), ClassName);
 
   GeneratorSign->HandledData.ProducedVars.push_back(
-      openfluid::base::SignatureHandledDataItem(VarSizedName, ClassName, "", ""));
+       openfluid::base::SignatureHandledDataItem(VarName, ClassName, "", ""));
 
   openfluid::machine::Generator* GeneratorFunction = 0;
 

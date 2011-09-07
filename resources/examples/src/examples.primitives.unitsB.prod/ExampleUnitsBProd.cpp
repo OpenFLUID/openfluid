@@ -131,7 +131,7 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
 
       openfluid::core::Unit *FromA, *FromB, *B;
       openfluid::core::UnitsPtrList_t *FromAList, *FromBList;
-      openfluid::core::ScalarValue Value5, AuxValue;
+      openfluid::core::DoubleValue Value5, AuxValue;
 
       DECLARE_UNITS_ORDERED_LOOP(1);
       DECLARE_UNITS_LIST_LOOP(5);
@@ -149,14 +149,14 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
         {
           BEGIN_UNITS_LIST_LOOP(5,FromAList,FromA)
 
-            if (OPENFLUID_IsScalarVariableExist(FromA,"var2",SimStatus->getCurrentStep()))
+            if (OPENFLUID_IsVariableExist(FromA,"var2",SimStatus->getCurrentStep(),openfluid::core::Value::DOUBLE))
             {
               OPENFLUID_GetVariable(FromA,"var2",SimStatus->getCurrentStep(),&AuxValue);
               Value5 = Value5 + AuxValue;
             }
             else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod",SimStatus->getCurrentStep(),"var2 is not present, ignored");
 
-            if (OPENFLUID_IsScalarVariableExist(FromA,"var3",SimStatus->getCurrentStep()))
+            if (OPENFLUID_IsVariableExist(FromA,"var3",SimStatus->getCurrentStep(),openfluid::core::Value::DOUBLE))
             {
               OPENFLUID_GetVariable(FromA,"var3",SimStatus->getCurrentStep(),&AuxValue);
               Value5 = Value5 + AuxValue;

@@ -172,19 +172,16 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
 
     if (VarsStr == "*")
     {
-      OSD.setAllScalars(true);
-      OSD.setAllVectors(true);
+      OSD.setAllVariables(true);
     }
     else
     {
-      OSD.setAllScalars(false);
-      OSD.setAllVectors(false);
+      OSD.setAllVariables(false);
 
       std::vector<std::string> StrArray = openfluid::tools::SplitString(VarsStr,";");
       for (unsigned int i=0;i<StrArray.size();i++)
       {
-        if (openfluid::tools::IsVectorNamedVariable(StrArray[i])) OSD.getVectors().push_back(openfluid::tools::GetVectorNamedVariableName(StrArray[i]));
-        else OSD.getScalars().push_back(StrArray[i]);
+        OSD.getVariables().push_back(StrArray[i]);
       }
 
     }

@@ -73,14 +73,6 @@ class EngineHelper
     static std::set<std::string> getProducedVarNames(std::string ClassName,
         openfluid::machine::ModelInstance* ModelInstance);
 
-    static std::set<std::string>
-    getProducedScalarVarNames(std::string ClassName,
-        openfluid::machine::ModelInstance* ModelInstance);
-
-    static std::set<std::string>
-    getProducedVectorVarNames(std::string ClassName,
-        openfluid::machine::ModelInstance* ModelInstance);
-
     static bool hasAtLeastAProducedVariable(
         openfluid::machine::ModelInstance* ModelInstance,
         openfluid::core::CoreRepository* CoreRepos);

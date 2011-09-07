@@ -59,6 +59,23 @@
 namespace openfluid { namespace core {
 
 
+Value& VectorValue::operator =(const Value& Other)
+{
+  const VectorValue* CastedValue = dynamic_cast<const VectorValue*> (&Other);
+
+  if (CastedValue)
+  {
+    Vector<double>::operator=(static_cast<const Vector<double>& >(Other.asVectorValue()));
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void VectorValue::writeToStream(std::ostream& OutStm) const
 {
   const unsigned int s = getSize();

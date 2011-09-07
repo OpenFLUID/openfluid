@@ -87,7 +87,7 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl() :
   Gtk::Label* IDsLabel =
       Gtk::manage(new Gtk::Label(_("ID:") + std::string("")));
 
-  mp_ShowFilesCB = Gtk::manage(new Gtk::CheckButton(_("Show file(s)")));
+  mp_ShowFilesCB = Gtk::manage(new Gtk::CheckButton(_("Show file")));
   mp_ShowFilesCB->set_active(true);
   mp_ShowFilesCB->signal_toggled().connect(sigc::mem_fun(*this,
       &ResUnitChooserViewImpl::onOkButtonClicked));
@@ -107,24 +107,14 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl() :
   mp_OkButton->signal_clicked().connect(sigc::mem_fun(*this,
       &ResUnitChooserViewImpl::onOkButtonClicked));
 
-  mref_ScalarsListStore = Gtk::ListStore::create(m_VarsColumns);
-  mref_VectorsListStore = Gtk::ListStore::create(m_VarsColumns);
+  mref_VariablesListStore = Gtk::ListStore::create(m_VarsColumns);
 
-  mp_ScalarsTreeView = Gtk::manage(new Gtk::TreeView(mref_ScalarsListStore));
-  mp_ScalarsTreeView->set_headers_visible(false);
-  mp_ScalarsTreeView->set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_NONE);
-  mp_ScalarsTreeView->append_column_editable("", m_VarsColumns.m_isChecked);
-  mp_ScalarsTreeView->append_column("", m_VarsColumns.m_VarName);
-  (static_cast<Gtk::CellRendererToggle*> (mp_ScalarsTreeView->get_column_cell_renderer(
-      0)))->signal_toggled().connect(sigc::mem_fun(*this,
-      &ResUnitChooserViewImpl::onTreeViewCBToggled));
-
-  mp_VectorsTreeView = Gtk::manage(new Gtk::TreeView(mref_VectorsListStore));
-  mp_VectorsTreeView->set_headers_visible(false);
-  mp_VectorsTreeView->set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_NONE);
-  mp_VectorsTreeView->append_column_editable("", m_VarsColumns.m_isChecked);
-  mp_VectorsTreeView->append_column("", m_VarsColumns.m_VarName);
-  (static_cast<Gtk::CellRendererToggle*> (mp_VectorsTreeView->get_column_cell_renderer(
+  mp_VariablesTreeView = Gtk::manage(new Gtk::TreeView(mref_VariablesListStore));
+  mp_VariablesTreeView->set_headers_visible(false);
+  mp_VariablesTreeView->set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_NONE);
+  mp_VariablesTreeView->append_column_editable("", m_VarsColumns.m_isChecked);
+  mp_VariablesTreeView->append_column("", m_VarsColumns.m_VarName);
+  (static_cast<Gtk::CellRendererToggle*> (mp_VariablesTreeView->get_column_cell_renderer(
       0)))->signal_toggled().connect(sigc::mem_fun(*this,
       &ResUnitChooserViewImpl::onTreeViewCBToggled));
 
@@ -137,16 +127,10 @@ ResUnitChooserViewImpl::ResUnitChooserViewImpl() :
 
   Gtk::Table* VarsTable = Gtk::manage(new Gtk::Table());
   VarsTable->set_spacings(15);
-  VarsTable->attach(*Gtk::manage(new Gtk::Label(_("Scalars"))), 0, 1, 0, 1,
-      Gtk::SHRINK, Gtk::SHRINK, 0, 0);
-  VarsTable->attach(*Gtk::manage(new Gtk::VSeparator()), 1, 2, 0, 2,
-      Gtk::SHRINK, Gtk::FILL | Gtk::EXPAND, 0, 0);
-  VarsTable->attach(*Gtk::manage(new Gtk::Label(_("Vectors"))), 2, 3, 0, 1,
-      Gtk::SHRINK, Gtk::SHRINK, 0, 0);
-  VarsTable->attach(*mp_ScalarsTreeView, 0, 1, 1, 2, Gtk::SHRINK, Gtk::SHRINK,
-      0, 0);
-  VarsTable->attach(*mp_VectorsTreeView, 2, 3, 1, 2, Gtk::SHRINK, Gtk::SHRINK,
-      0, 0);
+  VarsTable->attach(*Gtk::manage(new Gtk::Label(_("Variables"))), 0, 1, 0, 1,
+        Gtk::SHRINK, Gtk::SHRINK, 0, 0);
+  VarsTable->attach(*mp_VariablesTreeView, 0, 1, 1, 2, Gtk::SHRINK, Gtk::SHRINK,
+        0, 0);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
   mp_MainBox->set_spacing(15);
@@ -201,67 +185,33 @@ void ResUnitChooserViewImpl::setIDs(std::vector<unsigned int> IDs)
 // =====================================================================
 // =====================================================================
 
-
-void ResUnitChooserViewImpl::setScalars(std::vector<std::string> Values)
+void ResUnitChooserViewImpl::setVariables(std::vector<std::string> Values)
 {
-  bool IsFirstTurn = mref_ScalarsListStore->children().empty();
+  bool IsFirstTurn = mref_VariablesListStore->children().empty();
 
-  std::set<std::string> ExistingSelectedVars;
+    std::set<std::string> ExistingSelectedVars;
 
-  if (!IsFirstTurn)
-  {
-    for (unsigned int i = 0; i < mref_ScalarsListStore->children().size(); i++)
+    if (!IsFirstTurn)
     {
-      Gtk::TreeRow Row = mref_ScalarsListStore->children()[i];
-      if (Row[m_VarsColumns.m_isChecked])
-        ExistingSelectedVars.insert(Row[m_VarsColumns.m_VarName]);
+      for (unsigned int i = 0; i < mref_VariablesListStore->children().size(); i++)
+      {
+        Gtk::TreeRow Row = mref_VariablesListStore->children()[i];
+        if (Row[m_VarsColumns.m_isChecked])
+          ExistingSelectedVars.insert(Row[m_VarsColumns.m_VarName]);
+      }
     }
-  }
 
-  mref_ScalarsListStore->clear();
+    mref_VariablesListStore->clear();
 
-  for (unsigned int i = 0; i < Values.size(); i++)
-  {
-    Gtk::TreeRow Row = *(mref_ScalarsListStore->append());
-    Row[m_VarsColumns.m_VarName] = Values[i];
-    Row[m_VarsColumns.m_isChecked] = IsFirstTurn ? true
-        : ExistingSelectedVars.find(Values[i]) != ExistingSelectedVars.end();
-  }
-
-  mp_ScalarsTreeView->set_model(mref_ScalarsListStore);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ResUnitChooserViewImpl::setVectors(std::vector<std::string> Values)
-{
-  bool IsFirstTurn = mref_VectorsListStore->children().empty();
-
-  std::set<std::string> ExistingSelectedVars;
-
-  if (!IsFirstTurn)
-  {
-    for (unsigned int i = 0; i < mref_VectorsListStore->children().size(); i++)
+    for (unsigned int i = 0; i < Values.size(); i++)
     {
-      Gtk::TreeRow Row = mref_VectorsListStore->children()[i];
-      if (Row[m_VarsColumns.m_isChecked])
-        ExistingSelectedVars.insert(Row[m_VarsColumns.m_VarName]);
+      Gtk::TreeRow Row = *(mref_VariablesListStore->append());
+      Row[m_VarsColumns.m_VarName] = Values[i];
+      Row[m_VarsColumns.m_isChecked] = IsFirstTurn ? true
+          : ExistingSelectedVars.find(Values[i]) != ExistingSelectedVars.end();
     }
-  }
 
-  mref_VectorsListStore->clear();
-
-  for (unsigned int i = 0; i < Values.size(); i++)
-  {
-    Gtk::TreeRow Row = *(mref_VectorsListStore->append());
-    Row[m_VarsColumns.m_VarName] = Values[i];
-    Row[m_VarsColumns.m_isChecked] = IsFirstTurn ? true
-        : ExistingSelectedVars.find(Values[i]) != ExistingSelectedVars.end();
-  }
-
-  mp_VectorsTreeView->set_model(mref_VectorsListStore);
+    mp_VariablesTreeView->set_model(mref_VariablesListStore);
 }
 
 // =====================================================================
@@ -293,16 +243,9 @@ std::vector<std::string> ResUnitChooserViewImpl::getSelectedVars()
 {
   std::vector<std::string> Vars;
 
-  for (unsigned int i = 0; i < mref_ScalarsListStore->children().size(); i++)
+  for (unsigned int i = 0; i < mref_VariablesListStore->children().size(); i++)
   {
-    Gtk::TreeRow Row = mref_ScalarsListStore->children()[i];
-    if (Row[m_VarsColumns.m_isChecked])
-      Vars.push_back(Row[m_VarsColumns.m_VarName]);
-  }
-
-  for (unsigned int i = 0; i < mref_VectorsListStore->children().size(); i++)
-  {
-    Gtk::TreeRow Row = mref_VectorsListStore->children()[i];
+    Gtk::TreeRow Row = mref_VariablesListStore->children()[i];
     if (Row[m_VarsColumns.m_isChecked])
       Vars.push_back(Row[m_VarsColumns.m_VarName]);
   }

@@ -96,6 +96,8 @@ class DLLEXPORT MapValue : public CompoundValue
 
     MapValue(const Map_t& Val) : CompoundValue(), m_Value(Val) {};
 
+    Value& operator =(const Value& Other);
+
     ~MapValue();
 
     inline Type getType() const { return Value::MAP; };

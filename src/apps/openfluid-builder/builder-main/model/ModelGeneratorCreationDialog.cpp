@@ -151,7 +151,7 @@ std::map<std::string, std::string> ModelGeneratorCreationDialog::show()
   if (mp_CoreRepos->getUnitsGlobally()->empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        "You can't create a generator now :\n Domain is empty");
+        _("You can't create a generator now:\n Domain is empty"));
     return GenInfo;
   }
 

@@ -79,6 +79,23 @@ MapValue::MapValue(const MapValue& Val)
 // =====================================================================
 
 
+Value& MapValue::operator =(const Value& Other)
+{
+  const MapValue* CastedValue = dynamic_cast<const MapValue*> (&Other);
+
+  if (CastedValue)
+  {
+    m_Value = CastedValue->m_Value;
+  }
+
+  return *this;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 MapValue::~MapValue()
 {
   clear();
