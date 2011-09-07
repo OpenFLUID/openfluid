@@ -284,6 +284,76 @@ A distribution file is a two column file associating a unit ID
 5 1
 \end{lstlisting}
 
+
+
+
+\section{Header types examples}
+
+The following examples show output files for 2 variables (var1 and var2) extracted from a 6
+hours simulation ran at a time step of an hour.
+
+
+\subsection{\texttt{none}}
+
+\begin{lstlisting}[language=,title=\footnotesize\textit{example of an output data file}]
+2000-01-01 00:00:00;0.00000;1.00000 
+2000-01-01 01:00:00;2.00000;3.00000
+2000-01-01 02:00:00;4.00000;5.00000
+2000-01-01 03:00:00;6.00000;7.00000
+2000-01-01 04:00:00;8.00000;9.00000
+2000-01-01 05:00:00;10.00000;11.00000
+\end{lstlisting}
+
+
+\subsection{\texttt{info}}
+
+\begin{lstlisting}[language=,title=\footnotesize\textit{example of an output data file}]
+% simulation ID: 20110905-VZIRXC
+% file: TestUnits2_full-info.scalars.out
+% date: 2011-Sep-05 10:23:17.394061
+% unit: TestUnits #2
+% scalar variables order (after date and time columns): var1 var2
+
+2000-01-01 00:00:00;0.00000;1.00000 
+2000-01-01 01:00:00;2.00000;3.00000
+2000-01-01 02:00:00;4.00000;5.00000
+2000-01-01 03:00:00;6.00000;7.00000
+2000-01-01 04:00:00;8.00000;9.00000
+2000-01-01 05:00:00;10.00000;11.00000
+\end{lstlisting}
+
+
+\subsection{\texttt{colnames-as-data}}
+
+\begin{lstlisting}[language=,title=\footnotesize\textit{example of an output data file}]
+datetime;var1;var2
+2000-01-01 00:00:00;0.00000;1.00000 
+2000-01-01 01:00:00;2.00000;3.00000
+2000-01-01 02:00:00;4.00000;5.00000
+2000-01-01 03:00:00;6.00000;7.00000
+2000-01-01 04:00:00;8.00000;9.00000
+2000-01-01 05:00:00;10.00000;11.00000
+\end{lstlisting}
+
+\subsection{\texttt{full}}
+
+\begin{lstlisting}[language=,title=\footnotesize\textit{example of an output data file}]
+% simulation ID: 20110905-VZIRXC
+% file: TestUnits2_full-info.scalars.out
+% date: 2011-Sep-05 10:23:17.394061
+% unit: TestUnits #2
+% scalar variables order (after date and time columns): var1 var2
+
+datetime;var1;var2
+2000-01-01 00:00:00;0.00000;1.00000 
+2000-01-01 01:00:00;2.00000;3.00000
+2000-01-01 02:00:00;4.00000;5.00000
+2000-01-01 03:00:00;6.00000;7.00000
+2000-01-01 04:00:00;8.00000;9.00000
+2000-01-01 05:00:00;10.00000;11.00000
+\end{lstlisting}
+
+
 \medskip
 
 \section{Useful links}
