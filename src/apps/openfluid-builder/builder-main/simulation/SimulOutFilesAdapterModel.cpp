@@ -88,6 +88,8 @@ void SimulOutFilesAdapterModelImpl::setFilesFormats(
     Row[m_Columns.m_DateFormat] = OutDesc->getFileSets()[i].getDateFormat();
     Row[m_Columns.m_CommentChar] = EngineHelper::fromRealCharToSubstitute(
         OutDesc->getFileSets()[i].getCommentChar());
+    Row[m_Columns.m_HeaderType] = EngineHelper::fromHeaderTypeToHeaderString(
+        OutDesc->getFileSets()[i].getHeaderType());
   }
 
 }

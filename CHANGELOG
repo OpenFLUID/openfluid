@@ -8,6 +8,7 @@
     (using multi-threading) 
   * Added simulation profiling capabilities
   * Added new generator for injection of already time-interpolated data  
+  * Added header types for output files
   * Updated .fluidX files I/O
   * Removed .xml file extensions as standard file extension for input dataset
   * Updated OpenFLUID API

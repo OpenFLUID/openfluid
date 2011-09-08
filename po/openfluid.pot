@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: openfluid 1.6.2\n"
+"Project-Id-Version: openfluid 1.7.0\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2011-09-07 15:05+0200\n"
+"POT-Creation-Date: 2011-09-07 18:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -545,14 +545,14 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:194
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:192
 msgid ""
 "Check outputs consistency leads OpenFLUID to delete:\n"
 "\n"
 "%1"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:350
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:348
 msgid ""
 "Unable to find plugin file(s):\n"
 "%1\n"
@@ -561,36 +561,36 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:423
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:421
 #: src/apps/openfluid-builder/builder-main/common/ProjectExplorerAdapterModel.cpp:88
 msgid "Simulation"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:658
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:613
 msgid "class %1 doesn't exist"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:664
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:619
 msgid "no variable produced for class %1"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:668
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:623
 msgid "no unit selected"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:674
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:627
 msgid "no variable selected"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:693
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:646
 msgid "- ID %1 of set %2\n"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:711
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:664
 msgid "- Var %1 of set %2\n"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:755
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:677
 msgid "=> Set %1\n"
 msgstr ""
 
@@ -598,12 +598,36 @@ msgstr ""
 msgid "Unit classes"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:254
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:214
 msgid "[blank]"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:266
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:223
 msgid "[tab]"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:262
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:278
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:112
+msgid "None"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:264
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:280
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:115
+msgid "Full"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:266
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:282
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:113
+msgid "Column names as data"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:268
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:114
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:228
+msgid "Info"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/ProjectExplorerAdapterModel.cpp:96
@@ -1256,14 +1280,14 @@ msgstr ""
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsView.cpp:91
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:129
 #: src/apps/openfluid-builder/builder-main/results/ResultsSetModule.cpp:113
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:150
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:130
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:125
 msgid "Variables"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsView.cpp:92
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:88
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:112
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:118
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:131
 msgid "Format name"
 msgstr ""
@@ -1274,37 +1298,42 @@ msgid "Precision"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:89
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:114
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:120
 msgid "Column separator"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:90
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:116
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:122
 msgid "Date format"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:91
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:119
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:125
 msgid "Comment character"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:161
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesView.cpp:92
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:127
+msgid "Header type"
+msgstr ""
+
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:170
 msgid "Column separator cannot be empty"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:163
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:172
 msgid "Date format cannot be empty"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:165
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:174
 msgid "Comment character cannot be empty"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:183
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:192
 msgid "Files format edition"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:197
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:209
 msgid "Files format creation"
 msgstr ""
 
@@ -1375,15 +1404,15 @@ msgstr ""
 msgid "This Set name already exists"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:503
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:461
 msgid "Output set edition"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:533
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:491
 msgid "Output set creation"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerAdapterModel.cpp:162
+#: src/apps/openfluid-builder/builder-main/results/ResViewerAdapterModel.cpp:148
 msgid "Variables for Unit ID %1 Class %2"
 msgstr ""
 

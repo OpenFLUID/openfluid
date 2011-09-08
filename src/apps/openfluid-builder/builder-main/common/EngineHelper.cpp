@@ -61,7 +61,6 @@
 
 #include <openfluid/core/DateTime.hpp>
 
-
 // =====================================================================
 // =====================================================================
 
@@ -215,11 +214,8 @@ std::string EngineHelper::getBlankSubstitute()
   return _("[blank]");
 }
 
-
-
 // =====================================================================
 // =====================================================================
-
 
 
 std::string EngineHelper::getTabSubstitute()
@@ -227,16 +223,16 @@ std::string EngineHelper::getTabSubstitute()
   return _("[tab]");
 }
 
-
-
 // =====================================================================
 // =====================================================================
 
 
 std::string EngineHelper::fromRealCharToSubstitute(std::string RealChar)
 {
-  boost::algorithm::replace_all(RealChar, " ", EngineHelper::getBlankSubstitute());
-  boost::algorithm::replace_all(RealChar, "\t", EngineHelper::getTabSubstitute());
+  boost::algorithm::replace_all(RealChar, " ",
+      EngineHelper::getBlankSubstitute());
+  boost::algorithm::replace_all(RealChar, "\t",
+      EngineHelper::getTabSubstitute());
 
   return RealChar;
 }
@@ -247,8 +243,44 @@ std::string EngineHelper::fromRealCharToSubstitute(std::string RealChar)
 
 std::string EngineHelper::fromSubstituteToRealChar(std::string Substitute)
 {
-  boost::algorithm::replace_all(Substitute, EngineHelper::getBlankSubstitute(), " ");
-  boost::algorithm::replace_all(Substitute, EngineHelper::getTabSubstitute(), "\t");
+  boost::algorithm::replace_all(Substitute, EngineHelper::getBlankSubstitute(),
+      " ");
+  boost::algorithm::replace_all(Substitute, EngineHelper::getTabSubstitute(),
+      "\t");
 
   return Substitute;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::ustring EngineHelper::fromHeaderTypeToHeaderString(
+    openfluid::base::OutputFilesDescriptor::HeaderType Header)
+{
+  if (Header == openfluid::base::OutputFilesDescriptor::None)
+    return _("None");
+  else if (Header == openfluid::base::OutputFilesDescriptor::Full)
+    return _("Full");
+  else if (Header == openfluid::base::OutputFilesDescriptor::ColnamesAsData)
+    return _("Column names as data");
+  else
+    return _("Info");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::OutputFilesDescriptor::HeaderType EngineHelper::fromHeaderStringToHeaderType(
+    Glib::ustring Header)
+{
+  if (Header == _("None"))
+    return openfluid::base::OutputFilesDescriptor::None;
+  else if (Header == _("Full"))
+    return openfluid::base::OutputFilesDescriptor::Full;
+  else if (Header == _("Column names as data"))
+    return openfluid::base::OutputFilesDescriptor::ColnamesAsData;
+  else
+    return openfluid::base::OutputFilesDescriptor::Info;
 }

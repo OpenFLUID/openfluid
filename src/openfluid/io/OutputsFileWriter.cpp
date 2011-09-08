@@ -81,12 +81,14 @@ OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
                                      const std::string CommentChar,
                                      const std::string DateFormat,
                                      const std::string ColSeparator,
+                                     const openfluid::base::OutputFilesDescriptor::HeaderType Header,
                                      const unsigned int Precision)
 {
   m_DirPath = DirPath;
   m_CommentChar = CommentChar;
   m_DateFormat = DateFormat;
   m_ColSeparator = ColSeparator;
+  m_HeaderType = Header;
   m_Precision = Precision;
 
   m_OutFilename.clear();

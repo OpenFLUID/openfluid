@@ -108,6 +108,12 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_CommentCharComboEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesAddEditDialog::onValueChange));
 
+  mp_HeaderTypeCombo = Gtk::manage(new Gtk::ComboBoxText());
+  mp_HeaderTypeCombo->append_text(_("None"));
+  mp_HeaderTypeCombo->append_text(_("Column names as data"));
+  mp_HeaderTypeCombo->append_text(_("Info"));
+  mp_HeaderTypeCombo->append_text(_("Full"));
+
   mp_Table = Gtk::manage(new Gtk::Table());
   mp_Table->attach(*Gtk::manage(new Gtk::Label(_("Format name"), 1, 0.5)), 0,
       1, 0, 1, Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
@@ -118,12 +124,15 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_Table->attach(
       *Gtk::manage(new Gtk::Label(_("Comment character"), 1, 0.5)), 0, 1, 3, 4,
       Gtk::FILL, Gtk::SHRINK);
+  mp_Table->attach(*Gtk::manage(new Gtk::Label(_("Header type"), 1, 0.5)), 0,
+      1, 4, 5, Gtk::FILL, Gtk::SHRINK);
   mp_Table->attach(*mp_FormatNameLabel, 1, 2, 0, 1, Gtk::EXPAND, Gtk::SHRINK);
   mp_Table->attach(*mp_ColSepComboEntry, 1, 2, 1, 2, Gtk::EXPAND, Gtk::SHRINK);
   mp_Table->attach(*mp_DateFormatComboEntry, 1, 2, 2, 3, Gtk::EXPAND,
       Gtk::SHRINK);
   mp_Table->attach(*mp_CommentCharComboEntry, 1, 2, 3, 4, Gtk::EXPAND,
       Gtk::SHRINK);
+  mp_Table->attach(*mp_HeaderTypeCombo, 1, 2, 4, 5, Gtk::EXPAND, Gtk::SHRINK);
   mp_Table->set_col_spacings(3);
   mp_Table->set_row_spacings(5);
   mp_Table->set_border_width(5);
@@ -190,6 +199,9 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
         EngineHelper::fromRealCharToSubstitute(OutFilesDesc->getCommentChar()));
     mp_DateFormatComboEntry->get_entry()->set_text(
         OutFilesDesc->getDateFormat());
+    mp_HeaderTypeCombo->set_active_text(
+        EngineHelper::fromHeaderTypeToHeaderString(
+            OutFilesDesc->getHeaderType()));
   }
   //add mode
   else
@@ -213,6 +225,7 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
     mp_ColSepComboEntry->set_active(0);
     mp_CommentCharComboEntry->set_active(0);
     mp_DateFormatComboEntry->set_active(0);
+    mp_HeaderTypeCombo->set_active_text(_("Info"));
   }
 
   onValueChange();
@@ -227,6 +240,8 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
           mp_CommentCharComboEntry->get_entry()->get_text()));
       OutFilesDesc->setDateFormat(
           mp_DateFormatComboEntry->get_entry()->get_text());
+      OutFilesDesc->setHeaderType(EngineHelper::fromHeaderStringToHeaderType(
+          mp_HeaderTypeCombo->get_active_text()));
 
       mp_Dialog->hide();
 
@@ -244,6 +259,9 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
           mp_CommentCharComboEntry->get_entry()->get_text()));
       NewOutFilesDesc->setDateFormat(
           mp_DateFormatComboEntry->get_entry()->get_text());
+      NewOutFilesDesc->setHeaderType(
+          EngineHelper::fromHeaderStringToHeaderType(
+              mp_HeaderTypeCombo->get_active_text()));
 
       mp_Dialog->hide();
 

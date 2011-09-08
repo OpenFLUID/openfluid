@@ -62,6 +62,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools.hpp>
+#include <openfluid/config.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 
 
@@ -108,7 +109,7 @@
 #define DEFINE_EXTENSION_HOOKS(pluginclassname) \
   std::string GetExtensionSDKVersion() \
   { \
-    return std::string(STRINGIFY(OPENFLUID_VERSION)); \
+    return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
   openfluid::builderext::PluggableBuilderExtension* GetExtension() \
