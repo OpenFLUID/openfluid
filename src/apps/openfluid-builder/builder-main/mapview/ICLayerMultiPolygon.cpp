@@ -47,88 +47,90 @@
 
 
 /**
-  \file MarketBuildOptionsDialog.cpp
+  \file ICLayerMultiPolygon.cpp
   \brief Implements ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Damien CHABBERT <dams.vivien@gmail.com>
+ */
 
-#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
-#include <openfluid/market/MarketPackage.hpp>
+#include "ICLayerMultiPolygon.hpp"
 
-#include <glibmm/i18n.h>
-
-#include <gtkmm/stock.h>
-#include <gtkmm/box.h>
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
-
-
-namespace openfluid { namespace guicommon {
-
-// =====================================================================
-// =====================================================================
-
-
-MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions, const std::string FuncID)
-: Gtk::Dialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_FuncID(FuncID)
+ICLayerMultiPolygon::ICLayerMultiPolygon()
 {
 
-  set_size_request(450,-1);
-  set_border_width(6);
-
-  Gtk::Label* InfoLabel = Gtk::manage(new Gtk::Label());
-  InfoLabel->set_markup(std::string("<i>")+_("These options control the builds of source packages.\nChanging this is at your own risk.")+std::string("</i>"));
-  InfoLabel->set_justify(Gtk::JUSTIFY_CENTER);
-
-  get_vbox()->pack_start(*InfoLabel);
-
-  Gtk::Label* CommonOptsLabel = Gtk::manage(new Gtk::Label());
-
-  if (!FuncID.empty())
-    CommonOptsLabel->set_markup(_("<u>Common source build options:</u>\n")
-                                +openfluid::tools::ReplaceEmptyString(CommonBuildOptions,_("<i>none</i>")));
-  else
-    CommonOptsLabel->set_label("");
-
-  CommonOptsLabel->set_alignment(0,0.5);
-  get_vbox()->pack_start(*CommonOptsLabel,Gtk::PACK_SHRINK,12);
-
-
-  Gtk::Label* EditLabel = Gtk::manage(new Gtk::Label());
-  if (!FuncID.empty())
-  {
-    EditLabel->set_label(_("Specific build options for ")+FuncID+_(":"));
-  }
-  else
-  {
-    EditLabel->set_label(_("Common source build options:"));
-  }
-  EditLabel->set_alignment(0,0.5);
-  get_vbox()->pack_start(*EditLabel);
-
-  if (FuncID.empty()) m_OptionsEntry.set_text(CommonBuildOptions);
-  else m_OptionsEntry.set_text(BuildOptions);
-  get_vbox()->pack_start(m_OptionsEntry);
-
-  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-
-  if(m_FuncID.empty())
-    set_title(_("Common build options for all source packages"));
-  else
-    set_title(_("Build options for ") + m_FuncID);
-
-
-  show_all_children();
 }
 
+// =====================================================================
+// =====================================================================
+
+void ICLayerMultiPolygon::drawPoly(Cairo::RefPtr<Cairo::Context> cr,
+    OGRGeometry* ObjectGeo, double /*scale*/, bool notselect)
+{
+
+  OGRPolygon* Poly = static_cast<OGRPolygon*> (ObjectGeo);
+  OGRLinearRing* poLinearRing = Poly->getExteriorRing();
+
+  cr->move_to(poLinearRing->getX(0), poLinearRing->getY(0));
+  for (int i = 1; i < poLinearRing->getNumPoints(); i++)
+  {
+    cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));
+
+  }
+  cr->close_path();
+
+  if (notselect)
+    cr->stroke();
+  else
+    cr->fill();
+}
 
 // =====================================================================
 // =====================================================================
 
-} } //namespaces
+void ICLayerMultiPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
+{
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    if ((*it).second->selfIdExisting())
+      drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, true);
+  }
+}
 
+// =====================================================================
+// =====================================================================
 
+std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerMultiPolygon::getMinMax()
+{
+  std::pair<std::pair<double, double>, std::pair<double, double> > MinMaxTemp;
 
+  OGREnvelope Env;
+  bool first = true;
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    if ((*it).second->selfIdExisting())
+    {
+      (*it).second->getOGRGeometryObject()->getEnvelope(&Env);
 
+      if (first)
+      {
+        (MinMaxTemp.second).first = Env.MaxX;
+        (MinMaxTemp.second).second = Env.MaxY;
+        (MinMaxTemp.first).first = Env.MinX;
+        (MinMaxTemp.first).second = Env.MinY;
+        first = false;
+      } else
+      {
+        (MinMaxTemp.second).first = std::max((MinMaxTemp.second).first,
+            Env.MaxX);
+        (MinMaxTemp.second).second = std::max((MinMaxTemp.second).second,
+            Env.MaxY);
+        (MinMaxTemp.first).first = std::min((MinMaxTemp.first).first, Env.MinX);
+        (MinMaxTemp.first).second = std::min((MinMaxTemp.first).second,
+            Env.MinY);
+      }
+    }
+  }
+  return MinMaxTemp;
+}

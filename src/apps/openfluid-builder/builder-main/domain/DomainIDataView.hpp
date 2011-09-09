@@ -72,8 +72,8 @@ class DomainIDataView
 
     virtual void requestUnitSelection(Gtk::TreeIter Iter) = 0;
 
-    virtual sigc::signal<void, const Glib::ustring, const std::string,
-        std::string, int> signal_DataEdited() = 0;
+    virtual sigc::signal<void, const Glib::ustring&, std::string>
+    signal_DataEdited() = 0;
 
     virtual sigc::signal<void> signal_UnitSelectionChanged() = 0;
 
@@ -92,13 +92,12 @@ class DomainIDataView
 class DomainIDataViewImpl: public DomainIDataView
 {
   private:
-    sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
-        m_signal_DataEdited;
+    sigc::signal<void, const Glib::ustring&, std::string> m_signal_DataEdited;
 
     sigc::signal<void> m_signal_UnitSelectionChanged;
 
-    void onDataEditingStarted(Gtk::CellEditable* CellEditable,
-        const Glib::ustring& /* Path */, std::string DataName, int ColIndex);
+    void onDataEdited(const Glib::ustring& Path, const Glib::ustring& NewText,
+        std::string DataName);
 
     void onUnitSelectionChanged();
 
@@ -114,8 +113,7 @@ class DomainIDataViewImpl: public DomainIDataView
 
     void requestUnitSelection(Gtk::TreeIter Iter);
 
-    sigc::signal<void, const Glib::ustring, const std::string, std::string, int>
-    signal_DataEdited();
+    sigc::signal<void, const Glib::ustring&, std::string> signal_DataEdited();
 
     sigc::signal<void> signal_UnitSelectionChanged();
 

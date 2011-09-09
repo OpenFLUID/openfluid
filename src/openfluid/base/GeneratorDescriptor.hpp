@@ -66,7 +66,7 @@ namespace openfluid { namespace base {
 class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 {
   public:
-    enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp };
+    enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp, Inject };
 
   private:
 

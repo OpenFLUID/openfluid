@@ -148,7 +148,7 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainEventsToolBox()
   ToolBox->setAddCommandTooltipText(_(
       "Add an event for the current unit class"));
   ToolBox->setRemoveCommandTooltipText(_(
-      "Remove an event from current unit class"));
+      "Remove an event from the current unit class"));
   return ToolBox;
 }
 

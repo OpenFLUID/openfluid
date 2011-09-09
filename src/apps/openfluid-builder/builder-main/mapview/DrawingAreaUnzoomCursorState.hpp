@@ -67,7 +67,7 @@ class DrawingAreaUnzoomCursorState: public DrawingAreaState
     DrawingAreaUnzoomCursorState(DrawingArea&);
 
     void onMouseButtonPressed(GdkEvent*);
-    void onMouseButtonReleased(GdkEvent*);
+    bool onMouseButtonReleased(GdkEvent*);
 
 };
 

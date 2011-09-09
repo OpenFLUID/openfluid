@@ -67,7 +67,7 @@ class DrawingAreaState
   public:
 
     virtual void onMouseButtonPressed(GdkEvent*) = 0;
-    virtual void onMouseButtonReleased(GdkEvent*) = 0;
+    virtual bool onMouseButtonReleased(GdkEvent*) = 0;
 
     DrawingAreaState(DrawingArea&);
     Gdk::Cursor getCursor();

@@ -67,7 +67,7 @@ class DrawingAreaSelectState: public DrawingAreaState
     DrawingAreaSelectState(DrawingArea&);
 
     void onMouseButtonPressed(GdkEvent*);
-    void onMouseButtonReleased(GdkEvent*);
+    bool onMouseButtonReleased(GdkEvent*);
 
 };
 

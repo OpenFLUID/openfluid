@@ -67,7 +67,7 @@ DrawingAreaSelectState::DrawingAreaSelectState(DrawingArea& DrawingArea) :
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaSelectState::onMouseButtonPressed(GdkEvent* event)
+void DrawingAreaSelectState::onMouseButtonPressed(GdkEvent* /*event*/)
 {
 
 }
@@ -75,7 +75,7 @@ void DrawingAreaSelectState::onMouseButtonPressed(GdkEvent* event)
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaSelectState::onMouseButtonReleased(GdkEvent* event)
+bool DrawingAreaSelectState::onMouseButtonReleased(GdkEvent* /*event*/)
 {
-
+  return true;
 }

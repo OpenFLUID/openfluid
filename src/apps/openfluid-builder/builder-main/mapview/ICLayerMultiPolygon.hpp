@@ -43,35 +43,34 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- */
+*/
 
 /**
- \file DrawingAreaMoveState.hpp
+ \file ICLayerMultiPolygon.hpp
  \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#ifndef __DRAWINGAREAMOVESTATE_HPP__
-#define __DRAWINGAREAMOVESTATE_HPP__
 
-#include "DrawingAreaState.hpp"
+#ifndef __ICLAYERMULTIPOLYGON_HPP__
+#define __ICLAYERMULTIPOLYGON_HPP__
 
-class DrawingAreaMoveState: public DrawingAreaState
+#include "ICLayer.hpp"
+
+class ICLayerMultiPolygon : public ICLayer
 {
 
-  private:
+  private :
 
-    double m_XPress;
-    double m_YPress;
+  public :
 
-  public:
+    ICLayerMultiPolygon();
 
-    DrawingAreaMoveState(DrawingArea&);
+    void drawPoly(Cairo::RefPtr<Cairo::Context> , OGRGeometry*, double, bool);
+    void draw(Cairo::RefPtr<Cairo::Context> , double);
 
-    void onMouseButtonPressed(GdkEvent*);
-    bool onMouseButtonReleased(GdkEvent*);
-
+    std::pair< std::pair<double, double>, std::pair<double, double> > getMinMax();
 };
 
-#endif /* __DRAWINGAREAMOVESTATE_HPP__ */
+#endif /* __ICLAYERMULTIPOLYGON_HPP__ */

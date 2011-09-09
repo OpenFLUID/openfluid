@@ -160,7 +160,7 @@ void DomainUnitAddEditDialog::onClassChanged()
 
   if (EngineHelper::isEmptyString(ClassName))
   {
-    mp_InfoBarLabel->set_text(_("ClassName cannot be empty"));
+    mp_InfoBarLabel->set_text(_("Class name cannot be empty"));
     IsValid = false;
   }
 

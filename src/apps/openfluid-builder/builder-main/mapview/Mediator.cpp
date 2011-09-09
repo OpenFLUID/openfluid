@@ -415,6 +415,14 @@ void Mediator::redraw()
     if (!m_Layer.empty())
     {
       Cairo::RefPtr<Cairo::Context> Context = Window->create_cairo_context();
+      Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
+      const int width = allocation.get_width();
+      const int height = allocation.get_height();
+
+      // clip to the area indicated by the expose event so that we only redraw
+      // the portion of the window that needs to be redrawn
+      Context->rectangle(0, 0, width, height);
+      Context->clip();
       Context->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
       Context->scale(mref_DrawingArea.getScale(), -mref_DrawingArea.getScale());
       Context->translate(-mref_DrawingArea.getXTranslate(),

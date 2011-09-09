@@ -90,7 +90,7 @@ void DrawingAreaUnzoomCursorState::onMouseButtonPressed(GdkEvent* event)
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaUnzoomCursorState::onMouseButtonReleased(GdkEvent* /*event*/)
+bool DrawingAreaUnzoomCursorState::onMouseButtonReleased(GdkEvent* /*event*/)
 {
-
+  return true;
 }

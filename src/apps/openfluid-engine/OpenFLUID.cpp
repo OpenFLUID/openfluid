@@ -573,7 +573,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   ;
 
   boost::program_options::variables_map OptionsVars;
-  boost::program_options::store(boost::program_options::parse_command_line(ArgC, ArgV, OptionsDesc), OptionsVars);
+  boost::program_options::store(boost::program_options::parse_command_line(ArgC, ArgV, OptionsDesc,
+		                                                                   boost::program_options::command_line_style::default_style ^ boost::program_options::command_line_style::allow_guessing),
+		                                                                   OptionsVars);
   boost::program_options::notify(OptionsVars);
 
 

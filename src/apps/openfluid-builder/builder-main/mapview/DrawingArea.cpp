@@ -262,8 +262,8 @@ void DrawingArea::onMouseButtonReleased(GdkEvent* event)
 {
   if (event->type == GDK_BUTTON_RELEASE)
   {
-    mp_CurrentState->onMouseButtonReleased(event);
-    m_signal_ExposeEventChanged.emit();
+    if (mp_CurrentState->onMouseButtonReleased(event))
+      m_signal_ExposeEventChanged.emit();
   }
 }
 

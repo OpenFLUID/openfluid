@@ -206,21 +206,21 @@ void SimulOutCoordinator::whenAddSetAsked()
   if (m_OutFilesModel.isOutputEmpty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _("Impossible to create a Set :\nno File Format available."));
+        _("Impossible to create a Set:\nno File Format available."));
     return;
   }
 
   if (mp_CoreRepos->getUnitsGlobally()->empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _("Impossible to create a Set :\nno Unit available."));
+        _("Impossible to create a Set:\nno Unit available."));
     return;
   }
 
   if (!EngineHelper::hasAtLeastAProducedVariable(mp_ModelInstance, mp_CoreRepos))
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _("Impossible to create a Set :\nno Variable available."));
+        _("Impossible to create a Set:\nno Variable available."));
     return;
   }
 

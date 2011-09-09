@@ -53,6 +53,7 @@
  */
 
 #include <iostream>
+#include <limits>
 
 #include "DrawingAreaZoomFrameState.hpp"
 
@@ -75,34 +76,42 @@ void DrawingAreaZoomFrameState::onMouseButtonPressed(GdkEvent* event)
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEvent* event)
+bool DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEvent* event)
 {
   double XRelease = event->button.x / mref_DrawingArea.getScale();
   double YRelease = event->button.y / mref_DrawingArea.getScale();
+  std::cout << m_XPress << " " << m_YPress << std::endl;
+  std::cout << XRelease << " " << YRelease << std::endl;
+  if (m_XPress != XRelease && m_YPress != YRelease)
+  {
+    double XPoint, YPoint;
 
-  double XPoint, YPoint;
+    if (m_XPress < XRelease)
+      XPoint = mref_DrawingArea.getXTranslate() + m_XPress;
+    else
+      XPoint = mref_DrawingArea.getXTranslate() + XRelease;
 
-  if (m_XPress < XRelease)
-    XPoint = mref_DrawingArea.getXTranslate() + m_XPress;
-  else
-    XPoint = mref_DrawingArea.getXTranslate() + XRelease;
+    if (m_YPress > YRelease)
+      YPoint = mref_DrawingArea.getYTranslate() - YRelease;
+    else
+      YPoint = mref_DrawingArea.getYTranslate() - m_YPress;
 
-  if (m_YPress > YRelease)
-    YPoint = mref_DrawingArea.getYTranslate() - YRelease;
-  else
-    YPoint = mref_DrawingArea.getYTranslate() - m_YPress;
-
-  Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
-  double Width = allocation.get_width();
-  double Height = allocation.get_height();
-
-  double MinRatio = std::min(
-      (Width / mref_DrawingArea.getScale()) / abs(m_XPress - XRelease),
-      (Height / mref_DrawingArea.getScale()) / abs(m_YPress - YRelease));
-  double Scale = mref_DrawingArea.getScale() * MinRatio;
-
-  mref_DrawingArea.setScale(Scale);
-  mref_DrawingArea.setXTranslate(XPoint);
-  mref_DrawingArea.setYTranslate(YPoint);
-//TODO Excepsion when fame zone are so little
+    Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
+    double Width = allocation.get_width();
+    double Height = allocation.get_height();
+    std::cout << mref_DrawingArea.getScale() << std::endl;
+    double MinRatio = std::min(
+        (Width / mref_DrawingArea.getScale()) / abs(m_XPress - XRelease),
+        (Height / mref_DrawingArea.getScale()) / abs(m_YPress - YRelease));
+    if (MinRatio != std::numeric_limits<double>::infinity())
+    {
+      double Scale = mref_DrawingArea.getScale() * MinRatio;
+      std::cout << MinRatio << std::endl;
+      mref_DrawingArea.setScale(Scale);
+      mref_DrawingArea.setXTranslate(XPoint);
+      mref_DrawingArea.setYTranslate(YPoint);
+      return true;
+    }
+  }
+  return false;
 }

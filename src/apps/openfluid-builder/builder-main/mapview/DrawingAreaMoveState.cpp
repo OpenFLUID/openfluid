@@ -76,7 +76,7 @@ void DrawingAreaMoveState::onMouseButtonPressed(GdkEvent* event)
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaMoveState::onMouseButtonReleased(GdkEvent* event)
+bool DrawingAreaMoveState::onMouseButtonReleased(GdkEvent* event)
 {
   double XRelease = event->button.x / mref_DrawingArea.getScale();
   double YRelease = event->button.y / mref_DrawingArea.getScale();
@@ -86,4 +86,5 @@ void DrawingAreaMoveState::onMouseButtonReleased(GdkEvent* event)
 
   mref_DrawingArea.setXTranslate(XPoint);
   mref_DrawingArea.setYTranslate(YPoint);
+  return true;
 }

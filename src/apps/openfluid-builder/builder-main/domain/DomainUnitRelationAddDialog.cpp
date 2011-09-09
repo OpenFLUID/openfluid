@@ -54,6 +54,7 @@
 
 #include "DomainUnitRelationAddDialog.hpp"
 
+#include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 
 #include "EngineHelper.hpp"
@@ -65,7 +66,7 @@
 DomainUnitRelationAddDialog::DomainUnitRelationAddDialog() :
   mp_CoreRepos(0)
 {
-  mp_Dialog = new Gtk::Dialog("Choose Units to link to");
+  mp_Dialog = new Gtk::Dialog(_("Choose Units to link to"));
 
   mref_TreeModel = Gtk::TreeStore::create(m_Columns);
 

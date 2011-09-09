@@ -76,7 +76,7 @@ ModelGlobalParamsViewImpl::ModelGlobalParamsViewImpl() :
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
   mp_AddButton = Gtk::manage(new Gtk::Button(_("Set global")));
-  mp_AddButton->set_tooltip_text(_("Unset this parameter as global"));
+  mp_AddButton->set_tooltip_text(_("Set this parameter as global"));
   mp_AddButton->signal_clicked().connect(sigc::mem_fun(*this,
       &ModelGlobalParamsViewImpl::onAddButtonClicked));
 

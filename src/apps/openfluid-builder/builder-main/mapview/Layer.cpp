@@ -62,6 +62,7 @@
 #include "ICLayerPoint.hpp"
 #include "ICLayerLineString.hpp"
 #include "ICLayerPolygon.hpp"
+#include "ICLayerMultiPolygon.hpp"
 #include "WidgetLayerObject.hpp"
 #include "Mediator.hpp"
 
@@ -280,14 +281,19 @@ void Layer::loadShapefile(std::string FolderURI, std::string FileName)
           mp_ICLayer = new ICLayerPoint();
           break;
         }
+        case wkbLineString:
+        {
+          mp_ICLayer = new ICLayerLineString();
+          break;
+        }
         case wkbPolygon:
         {
           mp_ICLayer = new ICLayerPolygon();
           break;
         }
-        case wkbLineString:
+        case wkbMultiPolygon:
         {
-          mp_ICLayer = new ICLayerLineString();
+          mp_ICLayer = new ICLayerMultiPolygon();
           break;
         }
         default:
@@ -331,7 +337,7 @@ void Layer::loadShapefile(std::string FolderURI, std::string FileName)
       //     ICLayer->setIsDisplay(true);
       //     ICLayer->settype(type);
       //     ICLayer->setIsSelected(false);
-//      m_MinMaxLayer = mp_ICLayer->getMinMax();
+      //      m_MinMaxLayer = mp_ICLayer->getMinMax();
     }
   } else
     std::cerr << "layer of file " << FileName << "not found" << std::endl;

@@ -549,9 +549,9 @@ void ProjectCoordinator::onDirMonitorChanged(
     m_FileMonitorHasChanged = true;
   else if (!mp_FileMonitorDialog->is_popup())
   {
-    std::string Msg = _(
-        "Changes occur in your plugin list.\nDo you want to reload it ?\n"
-          "(if not, it's at your own risks, think of reload manually)");
+    std::string Msg =
+        _( "Changes occur in the functions list.") +
+        std::string(_("\nDo you want to reload it ?\n(if not, it's at your own risk, you have to manually reload the simulation functions list)"));
     mp_FileMonitorDialog->set_message(Msg);
     mp_FileMonitorDialog->show_all();
   }
@@ -607,9 +607,8 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
     {
       std::string
           Msg =
-              _(
-                  "Changes occur in your plugin list while simulation ran.\nDo you want to reload it ?\n"
-                    "(if not, it's at your own risks, think of reload manually)");
+              _( "Changes occur in the functions list while simulation was running.") +
+              std::string(_("\nDo you want to reload it ?\n(if not, it's at your own risk, you have to manually reload the simulation functions)"));
       mp_FileMonitorDialog->set_message(Msg);
       mp_FileMonitorDialog->show_all();
     }

@@ -198,6 +198,10 @@ void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
     RightButtonsBox->show_all_children(true);
     RightButtonsBox->set_visible(true);
 
+#if WIN32
+    SingleGNUplotButton->set_sensitive(false);
+    MultiGNUplotButton->set_sensitive(false);
+#else
     if (ViewWithGNUplot::IsGNUplotAvailable())
     {
       SingleGNUplotButton->signal_clicked().connect(sigc::bind<Glib::RefPtr<
@@ -219,6 +223,7 @@ void ResViewerViewImpl::setFileContentsByName(std::map<std::string,
       SingleGNUplotButton->set_sensitive(false);
       MultiGNUplotButton->set_sensitive(false);
     }
+#endif
 
     Gtk::HBox* MainHBox = Gtk::manage(new Gtk::HBox());
     MainHBox->pack_start(*Win, Gtk::PACK_EXPAND_WIDGET, 5);

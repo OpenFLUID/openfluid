@@ -355,6 +355,8 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
           GenMethod = openfluid::base::GeneratorDescriptor::Random;
         if (xmlStrcmp(xmlMethod,(const xmlChar*)"interp") == 0)
           GenMethod = openfluid::base::GeneratorDescriptor::Interp;
+        if (xmlStrcmp(xmlMethod,(const xmlChar*)"inject") == 0)
+          GenMethod = openfluid::base::GeneratorDescriptor::Inject;
 
         if (GenMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)
           throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractModelFromNode","unknown or missing generator method (" + m_CurrentFile + ")");

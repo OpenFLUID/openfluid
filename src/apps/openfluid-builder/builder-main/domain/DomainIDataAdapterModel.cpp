@@ -201,31 +201,14 @@ Gtk::TreeIter DomainIDataAdapterModelImpl::getRequestedUnitSelection()
 // =====================================================================
 
 
-void DomainIDataAdapterModelImpl::updateData(const Glib::ustring PathString,
-    const std::string NewText, std::string DataName, int ColIndex)
+void DomainIDataAdapterModelImpl::updateData(const std::string NewText,
+    std::string DataName)
 {
-  Gtk::TreeIter Iter = mref_ListStore->get_iter(PathString);
+  openfluid::core::Unit* Unit = mp_UnitsColl->getUnit(m_SelectedUnit);
 
-  Gtk::TreeModelColumn<int>* ColId = mp_Columns->getIdColumn();
-
-  if (Iter && ColId && mp_UnitsColl)
+  if (Unit != NULL)
   {
-
-    Iter->set_value(ColIndex, NewText);
-
-    int Id = Iter->get_value(*ColId);
-    mp_UnitsColl->getUnit(Id)->getInputData()->replaceValue(DataName, NewText);
-
-    m_signal_DataChanged.emit();
+    Unit->getInputData()->replaceValue(DataName, NewText);
   }
-}
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> DomainIDataAdapterModelImpl::signal_DataChanged()
-{
-  return m_signal_DataChanged;
 }
 

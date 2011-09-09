@@ -119,10 +119,10 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
   NameLabel->set_alignment(1.0, 0.5);
 
   Gtk::Label* DescriptionLabel = Gtk::manage(new Gtk::Label(
-      _("Project Description:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
+      _("Project description:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP));
   DescriptionLabel->set_alignment(1.0, 0.0);
 
-  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Project Authors:"),
+  Gtk::Label* AuthorsLabel = Gtk::manage(new Gtk::Label(_("Project authors:"),
       Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
   AuthorsLabel->set_alignment(1.0, 0.5);
 
@@ -176,7 +176,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
       &EngineProjectNewDialog::onImportTypeChanged));
 
   mp_ImportSystemFileChooserButton = Gtk::manage(new Gtk::FileChooserButton(
-      _("Choose the folder which contains files to import"),
+      _("Choose the directory containing the files to import"),
       Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER));
   mp_ImportSystemFileChooserButton->set_create_folders(false);
   mp_ImportSystemFileChooserButton->signal_selection_changed().connect(
@@ -192,7 +192,7 @@ EngineProjectNewDialog::EngineProjectNewDialog() :
       &EngineProjectNewDialog::onCheckToggled));
 
   Gtk::TreeView::Column* MyColumn = Gtk::manage(new Gtk::TreeView::Column(
-      "Files to import"));
+      _("Files to import")));
   MyColumn->pack_start(*MyCellRend, false);
   MyColumn->pack_start(m_Columns.m_FileName);
   MyColumn->add_attribute(*MyCellRend, "active", m_Columns.m_IsSelected);
@@ -409,7 +409,7 @@ void EngineProjectNewDialog::checkProject()
     mp_InfoBarLabel->set_text(_("Project name cannot be empty"));
   } else if (boost::filesystem::exists(boost::filesystem::path(ProjectFolder)))
   {
-    mp_InfoBarLabel->set_text(_("This project folder already exists"));
+    mp_InfoBarLabel->set_text(_("This project directory already exists"));
   } else
   {
     m_IsValid = true;
@@ -736,7 +736,7 @@ void EngineProjectNewDialog::copyOnDisk(std::string SrcPath)
       {
         if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
             Glib::ustring::compose(
-                _("File %1 still exists,\ndo you want to overwrite it ?"),
+                _("File %1 already exists,\nDo you really want to overwrite it ?"),
                 DestPath)))
         {
           boost::filesystem::remove(DestPath);

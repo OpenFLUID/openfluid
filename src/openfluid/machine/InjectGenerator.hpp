@@ -53,24 +53,67 @@
  */
 
 
-#ifndef __MACHINE_HPP___
-#define __MACHINE_HPP___
+#ifndef __INJECTGENERATOR_HPP__
+#define __INJECTGENERATOR_HPP__
 
-
-
-#include <openfluid/machine/Factory.hpp>
-#include <openfluid/machine/DynamicLib.hpp>
-#include <openfluid/machine/Engine.hpp>
-#include <openfluid/machine/FixedGenerator.hpp>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <openfluid/machine/InterpGenerator.hpp>
-#include <openfluid/machine/InjectGenerator.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
-#include <openfluid/machine/RandomGenerator.hpp>
-#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/tools.hpp>
+
+#include <queue>
+#include <map>
+
+namespace openfluid { namespace machine {
+
+
+class DLLEXPORT InjectGenerator : public Generator
+{
+  private:
+
+    typedef std::pair<openfluid::core::DateTime,double> DatedValue_t;
+    typedef std::queue<DatedValue_t> DatedValueSerie_t;
+
+    bool m_IsMin;
+    bool m_IsMax;
+
+    double m_Min;
+    double m_Max;
+
+    std::string m_SourcesFile;
+    std::string m_DistriFile;
 
 
 
-#endif /* __MACHINE_HPP___ */
+    std::map<int,DatedValueSerie_t> m_Series;
+
+    openfluid::core::IDIntMap m_SerieIDByUnit;
+
+
+    void LoadDistribution(const std::string& FilePath);
+
+    void LoadDataAsSerie(const std::string& FilePath,const int& ID);
+
+
+  public:
+
+    InjectGenerator();
+
+    ~InjectGenerator();
+
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
+
+    bool checkConsistency();
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+};
+
+} } //namespaces
+
+
+
+#endif /* __INJECTGENERATOR_H___ */

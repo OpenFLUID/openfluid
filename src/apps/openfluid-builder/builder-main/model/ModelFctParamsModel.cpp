@@ -161,35 +161,41 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
 
 void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 {
-  if (mp_Item->ItemType == openfluid::base::ModelItemDescriptor::Generator
-      && (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod
-          == openfluid::base::GeneratorDescriptor::Interp)
+  if (mp_Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
   {
-    openfluid::core::FuncParamsMap_t GlobalParams =
-        mp_ModelInstance->getGlobalParameters();
+    openfluid::base::GeneratorDescriptor::GeneratorMethod
+        Method =
+            (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod;
 
-    std::string Sources = "";
-    if (mp_Item->Params.find("sources") != mp_Item->Params.end()
-        && mp_Item->Params["sources"] != "")
-      Sources = mp_Item->Params["sources"];
-    else if (GlobalParams.find("sources") != GlobalParams.end()
-        && GlobalParams["sources"] != "")
-      Sources = GlobalParams["sources"];
+    if (Method == openfluid::base::GeneratorDescriptor::Interp || Method
+        == openfluid::base::GeneratorDescriptor::Inject)
+    {
+      openfluid::core::FuncParamsMap_t GlobalParams =
+          mp_ModelInstance->getGlobalParameters();
 
-    std::string Distrib = "";
-    if (mp_Item->Params.find("distribution") != mp_Item->Params.end()
-        && mp_Item->Params["distribution"] != "")
-      Distrib = mp_Item->Params["distribution"];
-    else if (GlobalParams.find("distribution") != GlobalParams.end()
-        && GlobalParams["distribution"] != "")
-      Distrib = GlobalParams["distribution"];
+      std::string Sources = "";
+      if (mp_Item->Params.find("sources") != mp_Item->Params.end()
+          && mp_Item->Params["sources"] != "")
+        Sources = mp_Item->Params["sources"];
+      else if (GlobalParams.find("sources") != GlobalParams.end()
+          && GlobalParams["sources"] != "")
+        Sources = GlobalParams["sources"];
 
-    mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
+      std::string Distrib = "";
+      if (mp_Item->Params.find("distribution") != mp_Item->Params.end()
+          && mp_Item->Params["distribution"] != "")
+        Distrib = mp_Item->Params["distribution"];
+      else if (GlobalParams.find("distribution") != GlobalParams.end()
+          && GlobalParams["distribution"] != "")
+        Distrib = GlobalParams["distribution"];
 
-    mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Sources);
-    mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Distrib);
+      mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
 
-    m_signal_RequiredFilesChangedFromApp.emit();
+      mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Sources);
+      mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Distrib);
+
+      m_signal_RequiredFilesChangedFromApp.emit();
+    }
   }
 }
 

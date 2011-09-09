@@ -223,7 +223,7 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(Gtk::Action::create("DataDomainMenu",
       _("Import spatial domain from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataInputdataMenu",
-      _("Import inputdata from")));
+      _("Import Inputdata from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataEventsMenu",
       _("Import events from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu",

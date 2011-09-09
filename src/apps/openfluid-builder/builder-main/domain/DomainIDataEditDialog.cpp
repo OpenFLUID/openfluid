@@ -68,7 +68,7 @@
 DomainIDataEditDialog::DomainIDataEditDialog() :
   mp_CoreRepos(0), m_ClassName(""), m_IsValid(false)
 {
-  mp_Dialog = new Gtk::Dialog("Changing Inputdata name");
+  mp_Dialog = new Gtk::Dialog(_("Changing Inputdata name"));
   mp_Dialog->set_default_size(10, 10);
 
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
@@ -90,9 +90,10 @@ DomainIDataEditDialog::DomainIDataEditDialog() :
   mp_NewNameEntry->set_activates_default(true);
 
   Gtk::Table* Table = Gtk::manage(new Gtk::Table());
-  Table->attach(*OldNameLabel, 0, 1, 0, 1);
+  Table->set_col_spacings(3);
+  Table->attach(*OldNameLabel, 0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
   Table->attach(*mp_Combo, 1, 2, 0, 1);
-  Table->attach(*NewNameLabel, 0, 1, 1, 2);
+  Table->attach(*NewNameLabel, 0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
   Table->attach(*mp_NewNameEntry, 1, 2, 1, 2);
 
   mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);

@@ -69,7 +69,7 @@ class DrawingAreaInitialState: public DrawingAreaState
     DrawingAreaInitialState(DrawingArea&);
 
     void onMouseButtonPressed(GdkEvent*);
-    void onMouseButtonReleased(GdkEvent*);
+    bool onMouseButtonReleased(GdkEvent*);
 
 };
 
