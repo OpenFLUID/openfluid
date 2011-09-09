@@ -267,6 +267,9 @@ void DrawingArea::onMouseButtonReleased(GdkEvent* event)
   }
 }
 
+// =====================================================================
+// =====================================================================
+
 bool DrawingArea::onAllEvents(GdkEvent* event)
 {
   if (m_LayerExist != false)
