@@ -55,6 +55,7 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 
 #include <openfluid/io/FluidXReader.hpp>
@@ -94,17 +95,41 @@ openfluid::base::OutputFilesDescriptor FluidXReader::extractFilesDecriptorFromNo
   openfluid::base::OutputFilesDescriptor OFD;
 
   xmlChar* xmlColSep = xmlGetProp(NodePtr,(const xmlChar*)"colsep");
-  if (xmlColSep != NULL) OFD.setColSeparator(std::string((const char*)xmlColSep));
+  if (xmlColSep != NULL)
+  {
+    std::string ColSep = std::string((const char*)xmlColSep);
+    boost::algorithm::replace_all(ColSep,"\\t","\t");
+    OFD.setColSeparator(ColSep);
+  }
 
   xmlChar* xmlDTFormat = xmlGetProp(NodePtr,(const xmlChar*)"dtformat");
   if (xmlDTFormat != NULL) OFD.setDateFormat(std::string((const char*)xmlDTFormat));
 
   xmlChar* xmlCommentChar = xmlGetProp(NodePtr,(const xmlChar*)"commentchar");
-  if (xmlCommentChar != NULL) OFD.setCommentChar(std::string((const char*)xmlCommentChar));
+  if (xmlCommentChar != NULL)
+  {
+    std::string CommentChar = std::string((const char*)xmlCommentChar);
+    boost::algorithm::replace_all(CommentChar,"\\t","\t");
+    OFD.setCommentChar(CommentChar);
+  }
 
   if (OFD.getDateFormat() == "6cols") OFD.setDateFormat("%Y\t%m\t%d\t%H\t%M\t%S");
   if (OFD.getDateFormat() == "iso") OFD.setDateFormat("%Y%m%dT%H%M%S");
 
+  xmlChar* xmlHeaderType = xmlGetProp(NodePtr,(const xmlChar*)"header");
+  if (xmlHeaderType != NULL)
+  {
+    std::string HeaderType = std::string((const char*)xmlHeaderType);
+
+    if(HeaderType == "none")
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::None);
+    else if(HeaderType == "colnames-as-data")
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::ColnamesAsData);
+    else if(HeaderType == "full")
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::Full);
+    else
+      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::Info);
+  }
 
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
 

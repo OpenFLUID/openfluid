@@ -57,14 +57,14 @@
 #include <glibmm/i18n.h>
 
 #include "BuilderListStore.hpp"
+#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
 SimulOutFilesAdapterModelImpl::SimulOutFilesAdapterModelImpl() :
-  m_SelectedRowRef(0), m_BlankSubstitute(_("[blank]")), m_TabSubstitute(
-      _("[tab]"))
+  m_SelectedRowRef(0)
 {
   mref_ListStore = BuilderListStore::create(m_Columns);
 }
@@ -83,11 +83,13 @@ void SimulOutFilesAdapterModelImpl::setFilesFormats(
     Gtk::TreeRow Row = *(mref_ListStore->append());
 
     Row[m_Columns.m_Name] = OutDesc->getFileSets()[i].getName();
-    Row[m_Columns.m_ColSeparator] = fromRealCharToSubstitute(
+    Row[m_Columns.m_ColSeparator] = EngineHelper::fromRealCharToSubstitute(
         OutDesc->getFileSets()[i].getColSeparator());
     Row[m_Columns.m_DateFormat] = OutDesc->getFileSets()[i].getDateFormat();
-    Row[m_Columns.m_CommentChar] = fromRealCharToSubstitute(
+    Row[m_Columns.m_CommentChar] = EngineHelper::fromRealCharToSubstitute(
         OutDesc->getFileSets()[i].getCommentChar());
+    Row[m_Columns.m_HeaderType] = EngineHelper::fromHeaderTypeToHeaderString(
+        OutDesc->getFileSets()[i].getHeaderType());
   }
 
 }
@@ -156,16 +158,4 @@ Gtk::TreeRow SimulOutFilesAdapterModelImpl::getSelectedRow()
 // =====================================================================
 // =====================================================================
 
-
-std::string SimulOutFilesAdapterModelImpl::fromRealCharToSubstitute(
-    std::string RealChar)
-{
-  if (RealChar == " ")
-    return m_BlankSubstitute;
-
-  else if (RealChar == "\t")
-    return m_TabSubstitute;
-
-  return RealChar;
-}
 

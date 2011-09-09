@@ -118,11 +118,19 @@ void ResViewerViewImpl::setColumns(ResViewerColumns* Columns)
 
   if (Columns)
   {
+    Gtk::TreeViewColumn* CurrentCol;
+
     mp_TreeView->append_column(_("Time step"), *Columns->getStepColumn());
-    mp_TreeView->get_column(0)->set_sort_column(*Columns->getStepColumn());
+    CurrentCol = mp_TreeView->get_column(0);
+    CurrentCol->set_sort_column(*Columns->getStepColumn());
+    CurrentCol->set_resizable(true);
+    CurrentCol->set_reorderable(true);
 
     mp_TreeView->append_column(_("Date-Time"), *Columns->getDateColumn());
-    mp_TreeView->get_column(1)->set_sort_column(*Columns->getDateColumn());
+    CurrentCol = mp_TreeView->get_column(1);
+    CurrentCol->set_sort_column(*Columns->getDateColumn());
+    CurrentCol->set_resizable(true);
+    CurrentCol->set_reorderable(true);
 
     std::map<std::string, Gtk::TreeModelColumn<std::string>*> ColumnsByTitle =
         Columns->getByTitleColumns();
@@ -131,7 +139,10 @@ void ResViewerViewImpl::setColumns(ResViewerColumns* Columns)
         it = ColumnsByTitle.begin(); it != ColumnsByTitle.end(); ++it)
     {
       int ColNb = mp_TreeView->append_column(it->first, *it->second);
-      mp_TreeView->get_column(ColNb - 1)->set_sort_column(*it->second);
+      CurrentCol = mp_TreeView->get_column(ColNb - 1);
+      CurrentCol->set_sort_column(*it->second);
+      CurrentCol->set_resizable(true);
+      CurrentCol->set_reorderable(true);
     }
   }
 }

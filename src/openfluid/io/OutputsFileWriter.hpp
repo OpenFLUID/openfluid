@@ -57,6 +57,7 @@
 
 #include <fstream>
 #include <openfluid/core.hpp>
+#include <openfluid/base/OutputFilesDescriptor.hpp>
 
 
 namespace openfluid { namespace io {
@@ -75,6 +76,7 @@ class OutputsFileWriter
     std::string m_CommentChar;
     std::string m_DateFormat;
     std::string m_ColSeparator;
+    openfluid::base::OutputFilesDescriptor::HeaderType m_HeaderType;
     unsigned int m_Precision;
     openfluid::core::Unit* mp_Unit;
 
@@ -88,6 +90,7 @@ class OutputsFileWriter
                       const std::string CommentChar,
                       const std::string DateFormat,
                       const std::string ColSeparator,
+                      const openfluid::base::OutputFilesDescriptor::HeaderType Header,
                       const unsigned int Precision);
 
     virtual ~OutputsFileWriter();

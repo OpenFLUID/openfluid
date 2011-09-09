@@ -71,9 +71,11 @@ VectorOutputsFileWriter::VectorOutputsFileWriter(const std::string DirPath,
                                                  const std::string CommentChar,
                                                  const std::string DateFormat,
                                                  const std::string ColSeparator,
+                                                 const openfluid::base::OutputFilesDescriptor::HeaderType Header,
                                                  const unsigned int Precision)
                          : OutputsFileWriter(DirPath, CoreRepos, UnitClass, UnitID,
-                                             CommentChar, DateFormat, ColSeparator, Precision)
+                                             CommentChar, DateFormat, ColSeparator,
+                                             Header, Precision)
 {
   std::string UnitIDStr;
   openfluid::tools::ConvertValue(mp_Unit->getID(),&UnitIDStr);
@@ -110,12 +112,22 @@ void VectorOutputsFileWriter::initializeFile()
 
   m_OutFile << std::fixed << std::setprecision(m_Precision);
 
-  m_OutFile << m_CommentChar << " simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << "\n";
-  m_OutFile << m_CommentChar << " file: " << boost::filesystem::path(m_OutFilename).leaf() << "\n";
-  m_OutFile << m_CommentChar << " date: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getIgnitionDateTime()) << "\n";
-  m_OutFile << m_CommentChar << " unit: " << mp_Unit->getClass() << " #" << UnitIDStr << "\n";
-  m_OutFile << m_CommentChar << " vector variable: " << m_Variable << "\n";
-  m_OutFile << m_CommentChar << " the vector values are ordered left to right, from index 0 to size-1 (after date and time columns)" << "\n" << "\n";
+  if(m_HeaderType == openfluid::base::OutputFilesDescriptor::Info
+      || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
+  {
+    m_OutFile << m_CommentChar << " simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << "\n";
+    m_OutFile << m_CommentChar << " file: " << boost::filesystem::path(m_OutFilename).leaf() << "\n";
+    m_OutFile << m_CommentChar << " date: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getIgnitionDateTime()) << "\n";
+    m_OutFile << m_CommentChar << " unit: " << mp_Unit->getClass() << " #" << UnitIDStr << "\n";
+    m_OutFile << m_CommentChar << " vector variable: " << m_Variable << "\n";
+    m_OutFile << m_CommentChar << " the vector values are ordered left to right, from index 0 to size-1 (after date and time columns)" << "\n" << "\n";
+  }
+
+  if(m_HeaderType == openfluid::base::OutputFilesDescriptor::ColnamesAsData
+      || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
+  {
+    m_OutFile << "datetime" << m_ColSeparator << m_Variable << "\n";
+  }
 
 }
 

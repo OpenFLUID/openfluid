@@ -157,6 +157,11 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.OutputsModifiedBuffers"
                                "-p" "${TEST_OUTPUT_PATH}")
 
+  ADD_TEST(integration-OutputsHeaders "${BIN_OUTPUT_PATH}/openfluid-engine"
+                               "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.OutputsHeaders"
+                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.OutputsHeaders"
+                               "-p" "${TEST_OUTPUT_PATH}")
+
 
   ADD_TEST(integration-FluidXWriterSingle "${BIN_OUTPUT_PATH}/openfluid-engine"
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterSingle"

@@ -58,12 +58,14 @@
 
 #include <gtkmm/stock.h>
 
+#include "EngineHelper.hpp"
+
 // =====================================================================
 // =====================================================================
 
 
 SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
-  m_BlankSubstitute(_("[blank]")), m_TabSubstitute(_("[tab]")), mp_OutDesc(0)
+  mp_OutDesc(0)
 {
   mp_InfoBar = Gtk::manage(new Gtk::InfoBar());
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
@@ -79,8 +81,8 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_ColSepComboEntry->append_text(",");
   mp_ColSepComboEntry->append_text("#");
   mp_ColSepComboEntry->append_text("*");
-  mp_ColSepComboEntry->append_text(m_BlankSubstitute);
-  mp_ColSepComboEntry->append_text(m_TabSubstitute);
+  mp_ColSepComboEntry->append_text(EngineHelper::getBlankSubstitute());
+  mp_ColSepComboEntry->append_text(EngineHelper::getTabSubstitute());
   mp_ColSepComboEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesAddEditDialog::onValueChange));
 
@@ -101,10 +103,16 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_CommentCharComboEntry->append_text(",");
   mp_CommentCharComboEntry->append_text("#");
   mp_CommentCharComboEntry->append_text("*");
-  mp_CommentCharComboEntry->append_text(m_BlankSubstitute);
-  mp_CommentCharComboEntry->append_text(m_TabSubstitute);
+  mp_CommentCharComboEntry->append_text(EngineHelper::getBlankSubstitute());
+  mp_CommentCharComboEntry->append_text(EngineHelper::getTabSubstitute());
   mp_CommentCharComboEntry->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesAddEditDialog::onValueChange));
+
+  mp_HeaderTypeCombo = Gtk::manage(new Gtk::ComboBoxText());
+  mp_HeaderTypeCombo->append_text(_("None"));
+  mp_HeaderTypeCombo->append_text(_("Column names as data"));
+  mp_HeaderTypeCombo->append_text(_("Info"));
+  mp_HeaderTypeCombo->append_text(_("Full"));
 
   mp_Table = Gtk::manage(new Gtk::Table());
   mp_Table->attach(*Gtk::manage(new Gtk::Label(_("Format name"), 1, 0.5)), 0,
@@ -116,12 +124,15 @@ SimulOutFilesAddEditDialog::SimulOutFilesAddEditDialog() :
   mp_Table->attach(
       *Gtk::manage(new Gtk::Label(_("Comment character"), 1, 0.5)), 0, 1, 3, 4,
       Gtk::FILL, Gtk::SHRINK);
+  mp_Table->attach(*Gtk::manage(new Gtk::Label(_("Header type"), 1, 0.5)), 0,
+      1, 4, 5, Gtk::FILL, Gtk::SHRINK);
   mp_Table->attach(*mp_FormatNameLabel, 1, 2, 0, 1, Gtk::EXPAND, Gtk::SHRINK);
   mp_Table->attach(*mp_ColSepComboEntry, 1, 2, 1, 2, Gtk::EXPAND, Gtk::SHRINK);
   mp_Table->attach(*mp_DateFormatComboEntry, 1, 2, 2, 3, Gtk::EXPAND,
       Gtk::SHRINK);
   mp_Table->attach(*mp_CommentCharComboEntry, 1, 2, 3, 4, Gtk::EXPAND,
       Gtk::SHRINK);
+  mp_Table->attach(*mp_HeaderTypeCombo, 1, 2, 4, 5, Gtk::EXPAND, Gtk::SHRINK);
   mp_Table->set_col_spacings(3);
   mp_Table->set_row_spacings(5);
   mp_Table->set_border_width(5);
@@ -182,12 +193,15 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
 
     mp_FormatNameLabel->set_text(OutFilesDesc->getName());
 
-    mp_ColSepComboEntry->get_entry()->set_text(fromRealCharToSubstitute(
-        OutFilesDesc->getColSeparator()));
-    mp_CommentCharComboEntry->get_entry()->set_text(fromRealCharToSubstitute(
-        OutFilesDesc->getCommentChar()));
+    mp_ColSepComboEntry->get_entry()->set_text(
+        EngineHelper::fromRealCharToSubstitute(OutFilesDesc->getColSeparator()));
+    mp_CommentCharComboEntry->get_entry()->set_text(
+        EngineHelper::fromRealCharToSubstitute(OutFilesDesc->getCommentChar()));
     mp_DateFormatComboEntry->get_entry()->set_text(
         OutFilesDesc->getDateFormat());
+    mp_HeaderTypeCombo->set_active_text(
+        EngineHelper::fromHeaderTypeToHeaderString(
+            OutFilesDesc->getHeaderType()));
   }
   //add mode
   else
@@ -211,6 +225,7 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
     mp_ColSepComboEntry->set_active(0);
     mp_CommentCharComboEntry->set_active(0);
     mp_DateFormatComboEntry->set_active(0);
+    mp_HeaderTypeCombo->set_active_text(_("Info"));
   }
 
   onValueChange();
@@ -219,28 +234,34 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
   {
     if (OutFilesDesc)
     {
-      OutFilesDesc->setColSeparator(fromSubstituteToRealChar(
+      OutFilesDesc->setColSeparator(EngineHelper::fromSubstituteToRealChar(
           mp_ColSepComboEntry->get_entry()->get_text()));
-      OutFilesDesc->setCommentChar(fromSubstituteToRealChar(
+      OutFilesDesc->setCommentChar(EngineHelper::fromSubstituteToRealChar(
           mp_CommentCharComboEntry->get_entry()->get_text()));
       OutFilesDesc->setDateFormat(
           mp_DateFormatComboEntry->get_entry()->get_text());
+      OutFilesDesc->setHeaderType(EngineHelper::fromHeaderStringToHeaderType(
+          mp_HeaderTypeCombo->get_active_text()));
 
       mp_Dialog->hide();
 
       return OutFilesDesc;
-    } else
+    }
+    else
     {
       openfluid::base::OutputFilesDescriptor* NewOutFilesDesc =
           new openfluid::base::OutputFilesDescriptor();
 
       NewOutFilesDesc->setName(mp_FormatNameLabel->get_text());
-      NewOutFilesDesc->setColSeparator(fromSubstituteToRealChar(
+      NewOutFilesDesc->setColSeparator(EngineHelper::fromSubstituteToRealChar(
           mp_ColSepComboEntry->get_entry()->get_text()));
-      NewOutFilesDesc->setCommentChar(fromSubstituteToRealChar(
+      NewOutFilesDesc->setCommentChar(EngineHelper::fromSubstituteToRealChar(
           mp_CommentCharComboEntry->get_entry()->get_text()));
       NewOutFilesDesc->setDateFormat(
           mp_DateFormatComboEntry->get_entry()->get_text());
+      NewOutFilesDesc->setHeaderType(
+          EngineHelper::fromHeaderStringToHeaderType(
+              mp_HeaderTypeCombo->get_active_text()));
 
       mp_Dialog->hide();
 
@@ -256,31 +277,3 @@ openfluid::base::OutputFilesDescriptor* SimulOutFilesAddEditDialog::show(
 // =====================================================================
 // =====================================================================
 
-
-std::string SimulOutFilesAddEditDialog::fromRealCharToSubstitute(
-    std::string RealChar)
-{
-  if (RealChar == " ")
-    return m_BlankSubstitute;
-
-  else if (RealChar == "\t")
-    return m_TabSubstitute;
-
-  return RealChar;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string SimulOutFilesAddEditDialog::fromSubstituteToRealChar(
-    std::string Substitute)
-{
-  if (Substitute == m_BlankSubstitute)
-    return " ";
-
-  else if (Substitute == m_TabSubstitute)
-    return "\t";
-
-  return Substitute;
-}

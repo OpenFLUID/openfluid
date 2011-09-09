@@ -96,8 +96,17 @@ DynamicLib::~DynamicLib()
 
 bool DynamicLib::load()
 {
-
-  if (isLoaded()) unload();
+  /*
+   * Don't unload, because if the same plug function (.sompi) is called more
+   * than one time, if we unload, a new handle is returned from dlopen.
+   * Even if this handle has the same address than the first one, the address of
+   * symbols asked afterwards with this handle MAY differ.
+   * In this case, as dlclose was called, the first returned pointer to symbol
+   * is no longer valid, and a segfault occurs when we try to use it.
+   * And there's no problem with calling many times dlopen, it will always
+   * return the 'really' same handler.
+   */
+//  if (isLoaded()) unload();
 
 #if defined __unix__ || defined __APPLE__
   m_LibHandle = dlopen(m_LibPath.string().c_str(), RTLD_LAZY);

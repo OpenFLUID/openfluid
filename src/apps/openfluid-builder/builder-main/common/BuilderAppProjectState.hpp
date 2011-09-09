@@ -59,6 +59,7 @@
 
 class BuilderAppCoordinator;
 class ProjectPropertiesDialog;
+class EngineProjectSaveAsDialog;
 
 class BuilderAppProjectState: public BuilderAppState
 {
@@ -67,6 +68,8 @@ class BuilderAppProjectState: public BuilderAppState
     BuilderAppCoordinator& m_App;
 
     ProjectPropertiesDialog* mp_ProjectPropertiesDialog;
+
+    EngineProjectSaveAsDialog* mp_SaveAsDialog;
 
 
   public:

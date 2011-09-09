@@ -60,6 +60,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <gtkmm/comboboxentrytext.h>
+#include <gtkmm/comboboxtext.h>
 #include <gtkmm/infobar.h>
 
 #include <set>
@@ -83,21 +84,16 @@ class SimulOutFilesAddEditDialog
 
     Gtk::ComboBoxEntryText* mp_CommentCharComboEntry;
 
+    Gtk::ComboBoxText* mp_HeaderTypeCombo;
+
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;
-
-    std::string m_BlankSubstitute;
-    std::string m_TabSubstitute;
 
     openfluid::base::OutputDescriptor* mp_OutDesc;
 
     std::set<std::string> m_FileFormatNames;
 
     void onValueChange();
-
-    std::string fromRealCharToSubstitute(std::string RealChar);
-
-    std::string fromSubstituteToRealChar(std::string Substitute);
 
   public:
 

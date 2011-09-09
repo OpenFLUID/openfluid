@@ -342,7 +342,14 @@ the \texttt{<output>} tag, and must be structured following these rules:
   defining the date time format used (it could be \texttt{6cols}, \texttt{iso}
   or user defined using strftime() format whis is described in the appendix
   part of this document), a \texttt{commentchar} attribute defining the string
-  prefixing lines of comments in output files.
+  prefixing lines of comments in output files. A \texttt{header} attribute may
+  be added giving the type of header in files. The values for this attribute can
+  be \texttt{none} for no header, \texttt{info} for a header giving commented information
+  about the data contained in the produced file(s), \texttt{colnames-as-data} 
+  for a first line in file giving names of each column, \texttt{full} for 
+  a complete header including both \texttt{info} and \texttt{colnames-as-data} headers 
+  (see appendix for examples). If no \texttt{header} attribute is present,
+  \texttt{info} header is used.
   \item Inside the \texttt{<files>} tags, there must be one to many
   \texttt{<set>} tags. Each \texttt{<set>} tag will lead to a set of files.
   \item Each \texttt{<set>} tag must bring a \texttt{name} attribute defining
@@ -369,6 +376,11 @@ the \texttt{<output>} tag, and must be structured following these rules:
       <set name="testRS" unitsclass="RS" unitsIDs="51;232" vars="*" />
       <set name="full" unitsclass="SU" unitsIDs="*" vars="*" precision="7"/>
     </files>  
+
+    <files colsep=" " dtformat="%Y-%m-%dT%H:%M:%S" commentchar="#" header="colnames-as-data">     
+      <set name="full" unitsclass="SU" unitsIDs="*" vars="*" precision="7"/>
+    </files>  
+
 
   </output>
 </openfluid>

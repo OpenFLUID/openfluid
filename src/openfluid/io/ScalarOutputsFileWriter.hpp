@@ -76,6 +76,7 @@ class ScalarOutputsFileWriter : public OutputsFileWriter
                             const std::string CommentChar,
                             const std::string DateFormat,
                             const std::string ColSeparator,
+                            const openfluid::base::OutputFilesDescriptor::HeaderType Header,
                             const unsigned int Precision);
 
     ~ScalarOutputsFileWriter();

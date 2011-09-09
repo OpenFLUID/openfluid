@@ -413,9 +413,26 @@ void FluidXWriter::setOutputConfigurationToWrite(openfluid::base::OutputDescript
 
       for (unsigned int i = 0; i< FileSetDesc.size();i++)
       {
-        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << FileSetDesc[i].getColSeparator() << "\" " <<
+        std::string ColSep = FileSetDesc[i].getColSeparator();
+        boost::algorithm::replace_all(ColSep,"\t","\\t");
+
+        std::string CommentChar = FileSetDesc[i].getCommentChar();
+        boost::algorithm::replace_all(CommentChar,"\t","\\t");
+
+        std::string HeaderType;
+        openfluid::base::OutputFilesDescriptor::HeaderType Header = FileSetDesc[i].getHeaderType();
+        if(Header == openfluid::base::OutputFilesDescriptor::None)
+          HeaderType = "none";
+        else if(Header == openfluid::base::OutputFilesDescriptor::Full)
+          HeaderType = "full";
+        else if(Header == openfluid::base::OutputFilesDescriptor::ColnamesAsData)
+          HeaderType = "colnames-as-data";
+        else
+          HeaderType = "info";
+
+        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << ColSep << "\" " <<
             "dtformat=\"" << FileSetDesc[i].getDateFormat() << "\" " <<
-            "commentchar=\"" << FileSetDesc[i].getCommentChar() << "\">\n";
+            "commentchar=\"" << CommentChar << "\" " << "header=\"" << HeaderType << "\">\n";
 
         std::vector<openfluid::base::OutputSetDescriptor> SetsDesc = FileSetDesc[i].getSets();
 

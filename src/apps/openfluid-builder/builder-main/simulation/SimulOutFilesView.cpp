@@ -89,6 +89,7 @@ SimulOutFilesViewImpl::SimulOutFilesViewImpl()
   mp_TreeView->append_column(_("Column separator"), m_Columns.m_ColSeparator);
   mp_TreeView->append_column(_("Date format"), m_Columns.m_DateFormat);
   mp_TreeView->append_column(_("Comment character"), m_Columns.m_CommentChar);
+  mp_TreeView->append_column(_("Header type"), m_Columns.m_HeaderType);
 
   mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
       &SimulOutFilesViewImpl::onSelectionChanged));

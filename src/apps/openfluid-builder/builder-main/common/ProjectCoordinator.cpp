@@ -140,7 +140,7 @@ ProjectCoordinator::~ProjectCoordinator()
 // =====================================================================
 // =====================================================================
 
-
+//TODO: Refactor this !
 void ProjectCoordinator::whenActivationChanged()
 {
   std::string PageName = "";
@@ -302,7 +302,7 @@ void ProjectCoordinator::whenModelChanged()
   if (!OutputConsistencyMessage.empty())
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete :\n%1"), OutputConsistencyMessage));
+            "This change leads OpenFLUID to delete:\n%1"), OutputConsistencyMessage));
 
   updateResults();
 
@@ -380,7 +380,7 @@ void ProjectCoordinator::whenDomainChanged()
   if (!OutputConsistencyMessage.empty())
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete :\n%1"), OutputConsistencyMessage));
+            "This change leads OpenFLUID to delete:\n%1"), OutputConsistencyMessage));
 
   updateResults();
   m_ExplorerModel.updateDomainAsked();
@@ -551,7 +551,7 @@ void ProjectCoordinator::onDirMonitorChanged(
   {
     std::string Msg =
         _( "Changes occur in the functions list.") +
-        std::string(_("\nDo you want to reload it ?\n(if not, it's at your own risk, you have to manually reload the simulation functions list)"));
+        std::string(_("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions list)"));
     mp_FileMonitorDialog->set_message(Msg);
     mp_FileMonitorDialog->show_all();
   }
@@ -608,7 +608,7 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
       std::string
           Msg =
               _( "Changes occur in the functions list while simulation was running.") +
-              std::string(_("\nDo you want to reload it ?\n(if not, it's at your own risk, you have to manually reload the simulation functions)"));
+              std::string(_("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions)"));
       mp_FileMonitorDialog->set_message(Msg);
       mp_FileMonitorDialog->show_all();
     }

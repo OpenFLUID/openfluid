@@ -66,9 +66,15 @@ namespace openfluid { namespace base {
 
 class DLLEXPORT OutputFilesDescriptor
 {
+
+  public:
+    enum HeaderType { None, Info, ColnamesAsData, Full };
+
+
   private:
 
     std::vector<OutputSetDescriptor> m_Sets;
+    HeaderType m_HeaderType;
     std::string m_ColSeparator;
     std::string m_DateFormat;
     std::string m_CommentChar;
@@ -77,9 +83,10 @@ class DLLEXPORT OutputFilesDescriptor
 
   public:
 
-    OutputFilesDescriptor();
+    OutputFilesDescriptor()
+    : m_HeaderType(Info), m_ColSeparator("\t"), m_DateFormat("%Y%m%dT%H%M%S"), m_CommentChar("%"), m_Name("") { };
 
-    ~OutputFilesDescriptor();
+    ~OutputFilesDescriptor() { };
 
     inline std::vector<OutputSetDescriptor>& getSets() { return m_Sets; };
 
@@ -97,9 +104,13 @@ class DLLEXPORT OutputFilesDescriptor
 
     inline void setCommentChar(const std::string& CommentChar) { m_CommentChar = CommentChar; };
 
-    inline void setName(const std::string Name) { m_Name = Name; };
+    inline void setName(const std::string& Name) { m_Name = Name; };
 
     inline std::string getName() const { return m_Name; };
+
+    inline void setHeaderType(const HeaderType& HType) { m_HeaderType = HType; };
+
+    inline HeaderType getHeaderType() const { return m_HeaderType; };
 
 };
 

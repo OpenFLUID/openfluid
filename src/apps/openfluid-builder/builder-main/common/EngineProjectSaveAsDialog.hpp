@@ -46,34 +46,49 @@
  */
 
 /**
- \file SimulOutFilesColumns.hpp
+ \file EngineProjectSaveAsDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __SIMULOUTFILESCOLUMNS_HPP__
-#define __SIMULOUTFILESCOLUMNS_HPP__
+#ifndef __ENGINEPROJECTSAVEASDIALOG_HPP__
+#define __ENGINEPROJECTSAVEASDIALOG_HPP__
 
-#include <gtkmm/treemodel.h>
+#include <gtkmm/filechooserbutton.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <gtkmm/infobar.h>
 
-class SimulOutFilesColumns: public Gtk::TreeModel::ColumnRecord
+class EngineProjectSaveAsDialog
 {
-  public:
-    SimulOutFilesColumns()
-    {
-      add(m_Name);
-      add(m_ColSeparator);
-      add(m_DateFormat);
-      add(m_CommentChar);
-      add(m_HeaderType);
-    }
+  private:
 
-    Gtk::TreeModelColumn<std::string> m_Name;
-    Gtk::TreeModelColumn<std::string> m_ColSeparator;
-    Gtk::TreeModelColumn<std::string> m_DateFormat;
-    Gtk::TreeModelColumn<std::string> m_CommentChar;
-    Gtk::TreeModelColumn<std::string> m_HeaderType;
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::InfoBar* mp_InfoBar;
+
+    Gtk::Label* mp_InfoBarLabel;
+
+    Gtk::FileChooserButton* mp_WorkdirFileChooserButton;
+
+    Gtk::Entry* mp_NameEntry;
+
+    Gtk::Label* mp_ProjectFolderName;
+
+    void onProjectFolderSelectionChanged();
+
+    void checkProject();
+
+    void fillFolderName();
+
+  public:
+
+    EngineProjectSaveAsDialog();
+
+    ~EngineProjectSaveAsDialog();
+
+    Glib::ustring show();
 };
 
-#endif /* __SIMULOUTFILESCOLUMNS_HPP__ */
+#endif /* __ENGINEPROJECTSAVEASDIALOG_HPP__ */

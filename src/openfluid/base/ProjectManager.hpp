@@ -124,6 +124,8 @@ class DLLEXPORT ProjectManager
 
     void setCreationDate(const Glib::ustring& CreationDate) { m_CreationDate = CreationDate; };
 
+    void setCreationDateAsNow() { m_CreationDate = getNow(); };
+
     Glib::ustring getLastModDate() const { return m_LastModDate; };
 
     void setLastModDate(const Glib::ustring& LastModDate) { m_LastModDate = LastModDate; };
