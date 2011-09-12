@@ -59,9 +59,67 @@ StatusBar::StatusBar()
 {
 mp_MainStatusBar = Gtk::manage(new Gtk::Statusbar());
 mp_MainStatusBar->set_visible(true);
+
+mp_HBox = Gtk::manage(new Gtk::HBox());
+
+ mp_XLabel = Gtk::manage(new Gtk::Label());
+ mp_YLabel = Gtk::manage(new Gtk::Label());
+
+//  mp_XEntry->set_size_request(5,10);
+
+ mp_MainStatusBar->set_border_width(3);
+
+ mp_XLabel->set_sensitive(false);
+ mp_YLabel->set_sensitive(false);
+
+ m_XLabel.set_label("X : ");
+ m_YLabel.set_label("Y : ");
+
+ mp_MainStatusBar->pack_start(m_XLabel, Gtk::PACK_SHRINK);
+ mp_MainStatusBar->pack_start(*mp_XLabel, Gtk::PACK_SHRINK);
+ mp_MainStatusBar->pack_start(m_YLabel, Gtk::PACK_SHRINK);
+ mp_MainStatusBar->pack_start(*mp_YLabel, Gtk::PACK_SHRINK);
 }
+
+// =====================================================================
+// =====================================================================
 
 Gtk::Widget* StatusBar::asWidget()
 {
   return mp_MainStatusBar;
 }
+
+// =====================================================================
+// =====================================================================
+
+Gtk::Label* StatusBar::getXLabelCoordinate()
+{
+  return mp_XLabel;
+}
+
+// =====================================================================
+// =====================================================================
+
+Gtk::Label* StatusBar::getYLabelCoordinate()
+{
+  return mp_YLabel;
+}
+
+// =====================================================================
+// =====================================================================
+
+void StatusBar::setXLabelCoordinate(Glib::ustring XLabel)
+{
+  mp_XLabel->set_text(XLabel);
+}
+
+// =====================================================================
+// =====================================================================
+
+void StatusBar::setYLabelCoordinate(Glib::ustring YLabel)
+{
+  mp_YLabel->set_text(YLabel);
+}
+
+// =====================================================================
+// =====================================================================

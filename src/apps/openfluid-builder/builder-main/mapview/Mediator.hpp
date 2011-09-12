@@ -118,6 +118,9 @@ class Mediator
     void whenOnIsSelectedLayerClicked(std::string);
     void whenOnIsDisplayButtonChecked();
     void whenOnWidgetExpanderBaseChanged();
+    //***************Signal DrawingArea*****************
+    void whenOnMotionNotifyChanged(double, double);
+    void whenOnSelectObjectChanged(double, double);
 
     void upLayer(std::string);
     void downLayer(std::string);

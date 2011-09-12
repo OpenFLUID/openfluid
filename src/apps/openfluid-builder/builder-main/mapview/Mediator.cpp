@@ -96,6 +96,11 @@ Mediator::Mediator(DrawingArea& DrawingArea, Info& Info, StatusBar& StatusBar,
       sigc::mem_fun(*this, &Mediator::whenOnZoomLayerFocusButtonClicked));
   mref_ToolBar.signalZoomSelectionFocusButtonClicked().connect(
       sigc::mem_fun(*this, &Mediator::whenOnZoomSelectionFocusButtonClicked));
+  //***************Signal DrawingArea*****************
+  mref_DrawingArea.signal_CoordinateChanged().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnMotionNotifyChanged));
+  mref_DrawingArea.signal_CoordinateSelected().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnSelectObjectChanged));
 
   mp_MainVBoxMediator->set_visible(true);
 }
@@ -384,6 +389,40 @@ void Mediator::whenOnIsDisplayButtonChecked()
 // =====================================================================
 
 void Mediator::whenOnWidgetExpanderBaseChanged()
+{
+  redraw();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::whenOnMotionNotifyChanged(double X, double Y)
+{
+  std::stringstream str1;
+  std::stringstream str2;
+  std::string Xstr;
+  std::string Ystr;
+  if (!m_Layer.empty())
+  {
+    str1 << X;
+    str2 << Y;
+    Xstr = str1.str();
+    Ystr = str2.str();
+  } else
+  {
+    str1 << 0;
+    str2 << 0;
+    Xstr = str1.str();
+    Ystr = str2.str();
+  }
+  mref_StatusBar.setXLabelCoordinate(Xstr);
+  mref_StatusBar.setYLabelCoordinate(Ystr);
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::whenOnSelectObjectChanged(double X, double Y)
 {
   redraw();
 }

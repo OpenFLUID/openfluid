@@ -123,6 +123,22 @@ sigc::signal<void> DrawingArea::signal_ExposeEventChanged()
 // =====================================================================
 // =====================================================================
 
+sigc::signal<void, double, double> DrawingArea::signal_CoordinateChanged()
+{
+  return m_signal_CoordinateChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void, double, double> DrawingArea::signal_CoordinateSelected()
+{
+  return m_signal_CoordinateSelected;
+}
+
+// =====================================================================
+// =====================================================================
+
 void DrawingArea::changeToInitialState()
 {
   mp_CurrentState = dynamic_cast<DrawingAreaState*> (mp_InitialState);
@@ -239,7 +255,12 @@ void DrawingArea::onMouseMotionNotify(GdkEvent* event)
 {
   if (event->type == GDK_MOTION_NOTIFY)
   {
+      double XPress = event->button.x / getScale();
+      double YPress = event->button.y / getScale();
 
+      XPress = getXTranslate() + XPress;
+      YPress = getYTranslate() - YPress;
+      m_signal_CoordinateChanged.emit(XPress, YPress);
   }
 }
 

@@ -85,6 +85,8 @@ class DrawingArea: public Gtk::DrawingArea
     bool m_LayerExist;
 
     sigc::signal<void> m_signal_ExposeEventChanged;
+    sigc::signal<void, double, double> m_signal_CoordinateChanged;
+    sigc::signal<void, double, double> m_signal_CoordinateSelected;
 
   public:
 
@@ -92,6 +94,8 @@ class DrawingArea: public Gtk::DrawingArea
     //    virtual ~DrawingArea();
 
     sigc::signal<void> signal_ExposeEventChanged();
+    sigc::signal<void, double, double> signal_CoordinateChanged();
+    sigc::signal<void, double, double> signal_CoordinateSelected();
 
     void changeToInitialState();
     void changeToMoveState();

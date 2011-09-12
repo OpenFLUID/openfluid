@@ -67,9 +67,10 @@ DrawingAreaSelectState::DrawingAreaSelectState(DrawingArea& DrawingArea) :
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaSelectState::onMouseButtonPressed(GdkEvent* /*event*/)
+void DrawingAreaSelectState::onMouseButtonPressed(GdkEvent* event)
 {
-
+  m_XPress = event->button.x / mref_DrawingArea.getScale();
+  m_YPress = event->button.y / mref_DrawingArea.getScale();
 }
 
 // =====================================================================

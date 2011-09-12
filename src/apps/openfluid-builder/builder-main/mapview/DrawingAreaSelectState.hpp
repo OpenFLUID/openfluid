@@ -62,6 +62,9 @@ class DrawingAreaSelectState: public DrawingAreaState
 
   private:
 
+    double m_XPress;
+    double m_YPress;
+
   public:
 
     DrawingAreaSelectState(DrawingArea&);

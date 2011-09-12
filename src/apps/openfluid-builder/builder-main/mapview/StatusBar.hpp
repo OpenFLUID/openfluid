@@ -57,13 +57,23 @@
 #define __STATUSBAR_HPP__
 
 #include <gtkmm/statusbar.h>
+#include <gtkmm/box.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
 
 class StatusBar
 {
-
   private :
 
     Gtk::Statusbar* mp_MainStatusBar;
+
+    Gtk::HBox* mp_HBox;
+
+    Gtk::Label* mp_XLabel;
+    Gtk::Label* mp_YLabel;
+
+    Gtk::Label m_XLabel;
+    Gtk::Label m_YLabel;
 
   public :
 
@@ -71,6 +81,10 @@ class StatusBar
 
     Gtk::Widget* asWidget();
 
+    Gtk::Label* getXLabelCoordinate();
+    Gtk::Label* getYLabelCoordinate();
+    void setXLabelCoordinate(Glib::ustring);
+    void setYLabelCoordinate(Glib::ustring);
 };
 
 #endif /* __STATUSBAR_HPP__ */
