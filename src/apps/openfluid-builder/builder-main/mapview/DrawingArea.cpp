@@ -250,7 +250,6 @@ bool DrawingArea::on_button_press_event(GdkEventButton* event)
 
 bool DrawingArea::whenOnKeyPressed(GdkEventKey* event)
 {
-  std::cout << "key pressed ok" << std::endl;
   if (event->keyval == 0xFFE3)
     m_pressMultiSelect = true;
   return false;
@@ -261,7 +260,6 @@ bool DrawingArea::whenOnKeyPressed(GdkEventKey* event)
 
 bool DrawingArea::whenOnKeyReleased(GdkEventKey* event)
 {
-  std::cout << "key released ok" << std::endl;
   if (event->keyval == 0xFFE3)
     m_pressMultiSelect = false;
   return false;

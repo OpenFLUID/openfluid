@@ -132,8 +132,6 @@ void AddDialogFileChooser::onComboChanged(Gtk::ComboBoxText* Combo)
 {
   Glib::ustring text = Combo->get_active_text();
   m_ClassName = static_cast<std::string> (text);
-  if (!(text.empty()))
-    std::cout << "Combo changed: " << text << std::endl;
   onChanged();
 }
 
@@ -144,11 +142,9 @@ void AddDialogFileChooser::onChanged()
 {
   std::string FileURI = mp_FileChooserDialog->get_filename();
   std::string ExtentionFile = "";
-  //  std::cout << "1" << std::endl;
+
   if (!FileURI.empty())
     ExtentionFile = FileURI.substr(FileURI.size() - 4, 4);
-
-  //  std::cout << ExtentionFile << std::endl;
 
   bool IsValid = false;
 
@@ -193,37 +189,34 @@ bool AddDialogFileChooser::isEmptyString(std::string Str)
 std::pair<std::pair<std::string, std::string>, std::string> AddDialogFileChooser::show(
     std::vector<std::string> ClassNames)
 {
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+
   mp_FilterUnitClass->clear_items();
   std::vector<std::string>::iterator it;
   if (!ClassNames.empty())
   {
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
     for (it = ClassNames.begin(); it != ClassNames.end(); it++)
     {
-      std::cout << __FILE__ << " " << __LINE__ << std::endl;
       mp_FilterUnitClass->append(static_cast<Glib::ustring> (*it));
     }
   }
   std::pair<std::string, std::string> File = std::make_pair("", "");
   std::pair<std::pair<std::string, std::string>, std::string> Data =
       std::make_pair(File, "");
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+
   if (mp_FileChooserDialog->run() == Gtk::RESPONSE_OK)
   {
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
     std::string FileURI = mp_FileChooserDialog->get_filename();
     std::string FolderURI = mp_FileChooserDialog->get_current_folder() + "/";
     std::string FileName;
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+
     FileName = FileURI.substr(FolderURI.size(),
         FileURI.size() - FolderURI.size() - 4);
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+
     File = std::make_pair(FolderURI, FileName);
     Data = std::make_pair(File, m_ClassName);
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
   }
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+
   mp_FileChooserDialog->hide();
+
   return Data;
 }

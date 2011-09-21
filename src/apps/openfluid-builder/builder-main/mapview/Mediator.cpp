@@ -238,26 +238,20 @@ void Mediator::whenOnAddLayerToolButtonClicked()
 
   if (!m_addDialogCreate)
   {
-    Gtk::Window& w = dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel());
-    std::cout << w.get_title() << std::endl;
     mp_AddDialogFileChooser = new AddDialogFileChooser(
         dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
         _("Please choose a new layer"));
     m_addDialogCreate = true;
   }
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
-  //    mref_DrawingArea.grab_focus();
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+
   Layer* pLayer;
   pLayer = new Layer(LayerType::LAYER_BASE);
   m_Layer.push_back(pLayer);
 
   mref_DrawingArea.setLayerExist(true);
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   std::vector<std::string> ClassNames;
 
   std::set<std::string>::iterator it;
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   for (it = EngineHelper::getClassNames(mp_CoreRepos).begin(); it
       != EngineHelper::getClassNames(mp_CoreRepos).end(); it++)
   {
@@ -272,15 +266,18 @@ void Mediator::whenOnAddLayerToolButtonClicked()
     if (ClassNameExist == false)
       ClassNames.push_back(Temp);
   }
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   if (!ClassNames.empty())
   {
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
     std::pair<std::pair<std::string, std::string>, std::string> AddFile =
         mp_AddDialogFileChooser->show(ClassNames);
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+    while (AddFile.second == "" &&  AddFile.first.first != "" &&  AddFile.first.second != "")
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+          _(
+              "You can't added a new layer because you aren't select an unit class.\n\nPlease select an unit class."));
+      AddFile = mp_AddDialogFileChooser->show(ClassNames);
+    }
     pLayer->addNewLayer(AddFile);
-    std::cout << __FILE__ << " " << __LINE__ << std::endl;
 
   } else
   {
@@ -289,7 +286,6 @@ void Mediator::whenOnAddLayerToolButtonClicked()
             "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
 
   }
-  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   if (pLayer->getLoadShapeFile())
   {
     pLayer->update(*mp_CoreRepos);
