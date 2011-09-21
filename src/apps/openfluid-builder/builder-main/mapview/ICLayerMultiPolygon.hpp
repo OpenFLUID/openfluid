@@ -68,7 +68,9 @@ class ICLayerMultiPolygon : public ICLayer
     ICLayerMultiPolygon();
 
     void drawPoly(Cairo::RefPtr<Cairo::Context> , OGRGeometry*, double, bool);
-    void draw(Cairo::RefPtr<Cairo::Context> , double);
+    void draw(Cairo::RefPtr<Cairo::Context> , double, std::set<int>);
+
+    int isSelected(double, double, double);
 
     std::pair< std::pair<double, double>, std::pair<double, double> > getMinMax();
 };

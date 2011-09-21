@@ -59,13 +59,16 @@
 
 #include "EngineHelper.hpp"
 
+#include <glibmm/i18n.h>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
 Mediator::Mediator(DrawingArea& DrawingArea, Info& Info, StatusBar& StatusBar,
     ToolBar& ToolBar) :
   mref_DrawingArea(DrawingArea), mref_Info(Info), mref_StatusBar(StatusBar),
       mref_ToolBar(ToolBar), mp_CoreRepos(0)
 {
   m_SelectedClassName = "";
-
+  m_addDialogCreate = false;
   mp_MainVBoxMediator = Gtk::manage(new Gtk::VBox());
 
   mref_DrawingArea.signal_ExposeEventChanged().connect(
@@ -145,25 +148,28 @@ void Mediator::whenDrawingAreaChanged()
 
 void Mediator::whenOnShow100FocusButtonClicked()
 {
-  std::vector<Layer*>::iterator it;
-  std::pair<std::pair<double, double>, std::pair<double, double> > MinMax;
-  MinMax.first.first = (*m_Layer.begin())->getMinMaxLayer().first.first;
-  MinMax.first.second = (*m_Layer.begin())->getMinMaxLayer().first.second;
-  MinMax.second.first = (*m_Layer.begin())->getMinMaxLayer().second.first;
-  MinMax.second.second = (*m_Layer.begin())->getMinMaxLayer().second.second;
-  for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+  if (!m_Layer.empty())
   {
-    if (MinMax.first.first > (*it)->getMinMaxLayer().first.first)
-      MinMax.first.first = (*it)->getMinMaxLayer().first.first;
-    if (MinMax.first.second > (*it)->getMinMaxLayer().first.second)
-      MinMax.first.second = (*it)->getMinMaxLayer().first.second;
-    if (MinMax.second.first < (*it)->getMinMaxLayer().second.first)
-      MinMax.second.first = (*it)->getMinMaxLayer().second.first;
-    if (MinMax.second.second < (*it)->getMinMaxLayer().second.second)
-      MinMax.second.second = (*it)->getMinMaxLayer().second.second;
+    std::vector<Layer*>::iterator it;
+    std::pair<std::pair<double, double>, std::pair<double, double> > MinMax;
+    MinMax.first.first = (*m_Layer.begin())->getMinMaxLayer().first.first;
+    MinMax.first.second = (*m_Layer.begin())->getMinMaxLayer().first.second;
+    MinMax.second.first = (*m_Layer.begin())->getMinMaxLayer().second.first;
+    MinMax.second.second = (*m_Layer.begin())->getMinMaxLayer().second.second;
+    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    {
+      if (MinMax.first.first > (*it)->getMinMaxLayer().first.first)
+        MinMax.first.first = (*it)->getMinMaxLayer().first.first;
+      if (MinMax.first.second > (*it)->getMinMaxLayer().first.second)
+        MinMax.first.second = (*it)->getMinMaxLayer().first.second;
+      if (MinMax.second.first < (*it)->getMinMaxLayer().second.first)
+        MinMax.second.first = (*it)->getMinMaxLayer().second.first;
+      if (MinMax.second.second < (*it)->getMinMaxLayer().second.second)
+        MinMax.second.second = (*it)->getMinMaxLayer().second.second;
+    }
+    mref_DrawingArea.modifyScaleTranslate(MinMax);
+    redraw();
   }
-  mref_DrawingArea.modifyScaleTranslate(MinMax);
-  redraw();
 }
 
 // =====================================================================
@@ -229,19 +235,33 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 
 void Mediator::whenOnAddLayerToolButtonClicked()
 {
+
+  if (!m_addDialogCreate)
+  {
+    Gtk::Window& w = dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel());
+    std::cout << w.get_title() << std::endl;
+    mp_AddDialogFileChooser = new AddDialogFileChooser(
+        dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
+        _("Please choose a new layer"));
+    m_addDialogCreate = true;
+  }
+  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+  //    mref_DrawingArea.grab_focus();
+  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   Layer* pLayer;
   pLayer = new Layer(LayerType::LAYER_BASE);
   m_Layer.push_back(pLayer);
 
   mref_DrawingArea.setLayerExist(true);
-
+  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   std::vector<std::string> ClassNames;
 
   std::set<std::string>::iterator it;
+  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   for (it = EngineHelper::getClassNames(mp_CoreRepos).begin(); it
       != EngineHelper::getClassNames(mp_CoreRepos).end(); it++)
   {
-    std::string Temp = *it;
+    const std::string Temp = *it;
     bool ClassNameExist = false;
     std::vector<Layer*>::iterator ite;
     for (ite = m_Layer.begin(); ite < m_Layer.end(); ite++)
@@ -252,12 +272,26 @@ void Mediator::whenOnAddLayerToolButtonClicked()
     if (ClassNameExist == false)
       ClassNames.push_back(Temp);
   }
+  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+  if (!ClassNames.empty())
+  {
+    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+    std::pair<std::pair<std::string, std::string>, std::string> AddFile =
+        mp_AddDialogFileChooser->show(ClassNames);
+    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+    pLayer->addNewLayer(AddFile);
+    std::cout << __FILE__ << " " << __LINE__ << std::endl;
 
-  pLayer->addNewLayer(ClassNames);
+  } else
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
 
+  }
+  std::cout << __FILE__ << " " << __LINE__ << std::endl;
   if (pLayer->getLoadShapeFile())
   {
-    //    pLayer->getICLayer()->setEngineRequirements(*mp_CoreRepos);
     pLayer->update(*mp_CoreRepos);
     if (m_Layer.size() == 1)
     {
@@ -283,7 +317,6 @@ void Mediator::whenOnAddLayerToolButtonClicked()
     redraw();
   } else
     m_Layer.pop_back();
-
 }
 
 // =====================================================================
@@ -368,13 +401,14 @@ void Mediator::whenOnRemoveLayerButtonClicked(std::string ClassName)
 void Mediator::whenOnIsSelectedLayerClicked(std::string ClassName)
 {
   m_SelectedClassName = ClassName;
+  m_SelectedUnitId.clear();
   std::vector<Layer*>::iterator it;
   for (it = m_Layer.begin(); it < m_Layer.end(); it++)
   {
     if (ClassName != (*it)->getClassName())
       (*it)->setIsSelected(false);
   }
-
+  redraw();
 }
 
 // =====================================================================
@@ -424,19 +458,70 @@ void Mediator::whenOnMotionNotifyChanged(double X, double Y)
 
 void Mediator::whenOnSelectObjectChanged(double X, double Y)
 {
-  redraw();
-}
+  //TODO faire fonctionner la selection refaire l'algo +modifier grab_focus
+  bool isRedraw = false;
+  if (m_SelectedClassName == "")
+  {
+    m_SelectedUnitId.clear();
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
+  } else
+  {
+    std::vector<Layer*>::iterator it;
+    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    {
+      if (m_SelectedClassName == (*it)->getClassName()
+          && !m_SelectedUnitId.empty())
+      {
+        int temp = (*it)->isObjectSelected(X, Y, mref_DrawingArea.getScale());
+        if (temp != -1)
+        {
+          std::set<int>::iterator it2;
+          it2 = m_SelectedUnitId.find(temp);
+          if (it2 == m_SelectedUnitId.end()
+              && mref_DrawingArea.getPressMultiSelect())
+          {
+            m_SelectedUnitId.insert(temp);
+          } else if (it2 == m_SelectedUnitId.end()
+              && !mref_DrawingArea.getPressMultiSelect())
+          {
+            m_SelectedUnitId.clear();
+            m_SelectedUnitId.insert(temp);
+          } else if (it2 != m_SelectedUnitId.end()
+              && mref_DrawingArea.getPressMultiSelect())
+          {
+            m_SelectedUnitId.erase(it2);
+          } else if (it2 != m_SelectedUnitId.end()
+              && !mref_DrawingArea.getPressMultiSelect())
+          {
+            m_SelectedUnitId.clear();
+          }
+          isRedraw = true;
+        } else
+        {
+          if (!m_SelectedUnitId.empty()
+              && !mref_DrawingArea.getPressMultiSelect())
+          {
+            m_SelectedUnitId.clear();
+            isRedraw = true;
+          }
+        }
+      } else if (m_SelectedClassName == (*it)->getClassName()
+          && m_SelectedUnitId.empty())
+      {
+        int temp = (*it)->isObjectSelected(X, Y, mref_DrawingArea.getScale());
+        if (temp != -1)
+        {
+          m_SelectedUnitId.insert(temp);
+          isRedraw = true;
+        }
+      }
+    }
+  }
 
-// =====================================================================
-// =====================================================================
-// =====================================================================
-// =====================================================================
-
-Gtk::HSeparator* Mediator::setHSeparator()
-{
-  Gtk::HSeparator * p_Separator = Gtk::manage(new Gtk::HSeparator());
-  p_Separator->set_visible(true);
-  return p_Separator;
+  if (isRedraw)
+    redraw();
 }
 
 // =====================================================================
@@ -472,7 +557,14 @@ void Mediator::redraw()
         if ((*rit)->getIsDisplay())
         {
           (*rit)->initialiseLayerContext(Context, mref_DrawingArea.getScale());
-          (*rit)->draw(Context, mref_DrawingArea.getScale());
+          if ((*rit)->getClassName() == m_SelectedClassName)
+          {
+            (*rit)->draw(Context, mref_DrawingArea.getScale(), m_SelectedUnitId);
+          } else
+          {
+            std::set<int> tempVoidVector;
+            (*rit)->draw(Context, mref_DrawingArea.getScale(), tempVoidVector);
+          }
         }
       }
     }
@@ -566,7 +658,6 @@ void Mediator::addAllObjectMainVBoxMediator()
     m_Layer.front()->setWidgetUpSensitive(false);
     m_Layer.back()->setWidgetDownSensitive(false);
   }
-
 }
 
 // =====================================================================

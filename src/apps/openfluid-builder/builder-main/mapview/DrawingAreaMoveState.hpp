@@ -69,8 +69,8 @@ class DrawingAreaMoveState: public DrawingAreaState
 
     DrawingAreaMoveState(DrawingArea&);
 
-    void onMouseButtonPressed(GdkEvent*);
-    bool onMouseButtonReleased(GdkEvent*);
+    void onMouseButtonPressed(GdkEventButton*);
+    bool onMouseButtonReleased(GdkEventButton*);
 
 };
 

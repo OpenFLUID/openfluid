@@ -43,53 +43,27 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- */
+*/
 
 /**
- \file DrawingAreaZoomCursorState.cpp
- \brief Implements ...
+ \file ToolBox.hpp
+ \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include <iostream>
 
-#include "DrawingAreaZoomCursorState.hpp"
-#include "DrawingAreaState.hpp"
+#ifndef __TOOLBOX_HPP__
+#define __TOOLBOX_HPP__
 
-DrawingAreaZoomCursorState::DrawingAreaZoomCursorState(DrawingArea& DrawingArea) :
-  DrawingAreaState(DrawingArea)
+#include <gtkmm/separator.h>
+
+class ToolBox
 {
-  Gdk::Cursor Cursor(Gdk::BOGOSITY);
-  m_Cursor = Cursor;
-}
+  public:
 
-// =====================================================================
-// =====================================================================
+    static Gtk::HSeparator* setHSeparator();
+};
 
-void DrawingAreaZoomCursorState::onMouseButtonPressed(GdkEventButton* event)
-{
-  Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
-  double Width = allocation.get_width();
-  double Height = allocation.get_height();
 
-  double XPress = event->x / mref_DrawingArea.getScale();
-  double YPress = event->y / mref_DrawingArea.getScale();
-
-  XPress = mref_DrawingArea.getXTranslate() + XPress;
-  YPress = mref_DrawingArea.getYTranslate() - YPress;
-
-  double Scale = mref_DrawingArea.getScale()
-      + (mref_DrawingArea.getScale() / 4);
-  mref_DrawingArea.setScale(Scale);
-  mref_DrawingArea.setXTranslate(XPress - ((Width / Scale) / 2));
-  mref_DrawingArea.setYTranslate(YPress + ((Height / Scale) / 2));
-}
-
-// =====================================================================
-// =====================================================================
-
-bool DrawingAreaZoomCursorState::onMouseButtonReleased(GdkEventButton* /*event*/)
-{
-  return true;
-}
+#endif /* __TOOLBOX_HPP__ */

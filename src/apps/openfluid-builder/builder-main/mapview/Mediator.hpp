@@ -57,6 +57,7 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include <string>
 
 #include <gtkmm/box.h>
@@ -69,11 +70,14 @@
 #include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "Layer.hpp"
+#include "AddDialogFileChooser.hpp"
 
 class Mediator
 {
 
   private:
+
+    bool m_addDialogCreate;
 
     DrawingArea& mref_DrawingArea;
     Info& mref_Info;
@@ -85,9 +89,11 @@ class Mediator
     std::vector<Layer*> m_Layer;
 
     std::string m_SelectedClassName;
-    std::vector<int> m_SelectedUnitId;
+    std::set<int> m_SelectedUnitId;
 
     //GTKmm
+
+    AddDialogFileChooser* mp_AddDialogFileChooser;
 
     Gtk::VBox* mp_MainVBoxMediator;
 
@@ -139,7 +145,7 @@ class Mediator
     sigc::signal<void> signal_DrawingAreaExposeEventChanged();
     void redraw();
 
-    static Gtk::HSeparator* setHSeparator();
+
 };
 
 #endif /* __MEDIATOR_HPP__ */

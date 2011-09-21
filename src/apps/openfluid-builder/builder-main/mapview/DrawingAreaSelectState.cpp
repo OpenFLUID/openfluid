@@ -67,16 +67,36 @@ DrawingAreaSelectState::DrawingAreaSelectState(DrawingArea& DrawingArea) :
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaSelectState::onMouseButtonPressed(GdkEvent* event)
+void DrawingAreaSelectState::onMouseButtonPressed(GdkEventButton* event)
 {
-  m_XPress = event->button.x / mref_DrawingArea.getScale();
-  m_YPress = event->button.y / mref_DrawingArea.getScale();
+  m_XPress = event->x / mref_DrawingArea.getScale();
+  m_YPress = event->y / mref_DrawingArea.getScale();
+
+  m_XPress = mref_DrawingArea.getXTranslate() + m_XPress;
+  m_YPress = mref_DrawingArea.getYTranslate() - m_YPress;
 }
 
 // =====================================================================
 // =====================================================================
 
-bool DrawingAreaSelectState::onMouseButtonReleased(GdkEvent* /*event*/)
+bool DrawingAreaSelectState::onMouseButtonReleased(GdkEventButton* /*event*/)
 {
   return true;
 }
+
+// =====================================================================
+// =====================================================================
+
+double DrawingAreaSelectState::getXPress()
+{
+  return m_XPress;
+}
+
+// =====================================================================
+// =====================================================================
+
+double DrawingAreaSelectState::getYPress()
+{
+  return m_YPress;
+}
+

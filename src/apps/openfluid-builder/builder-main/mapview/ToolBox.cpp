@@ -47,98 +47,23 @@
 
 
 /**
-  \file ICLayerMultiPolygon.cpp
+  \file ToolBox.cpp
   \brief Implements ...
 
   \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include "ICLayerMultiPolygon.hpp"
+#include "ToolBox.hpp"
 
-ICLayerMultiPolygon::ICLayerMultiPolygon()
+// =====================================================================
+// =====================================================================
+
+Gtk::HSeparator* ToolBox::setHSeparator()
 {
-
+  Gtk::HSeparator * p_Separator = Gtk::manage(new Gtk::HSeparator());
+  p_Separator->set_visible(true);
+  return p_Separator;
 }
 
 // =====================================================================
 // =====================================================================
-
-void ICLayerMultiPolygon::drawPoly(Cairo::RefPtr<Cairo::Context> cr,
-    OGRGeometry* ObjectGeo, double /*scale*/, bool notselect)
-{
-
-  OGRPolygon* Poly = static_cast<OGRPolygon*> (ObjectGeo);
-  OGRLinearRing* poLinearRing = Poly->getExteriorRing();
-
-  cr->move_to(poLinearRing->getX(0), poLinearRing->getY(0));
-  for (int i = 1; i < poLinearRing->getNumPoints(); i++)
-  {
-    cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));
-
-  }
-  cr->close_path();
-
-  if (notselect)
-    cr->stroke();
-  else
-    cr->fill();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ICLayerMultiPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale, std::set<int> /*select*/)
-{
-  std::map<int, ICLayerObject*>::iterator it;
-  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
-  {
-    if ((*it).second->selfIdExisting())
-      drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, true);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerMultiPolygon::getMinMax()
-{
-  std::pair<std::pair<double, double>, std::pair<double, double> > MinMaxTemp;
-
-  OGREnvelope Env;
-  bool first = true;
-  std::map<int, ICLayerObject*>::iterator it;
-  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
-  {
-    if ((*it).second->selfIdExisting())
-    {
-      (*it).second->getOGRGeometryObject()->getEnvelope(&Env);
-
-      if (first)
-      {
-        (MinMaxTemp.second).first = Env.MaxX;
-        (MinMaxTemp.second).second = Env.MaxY;
-        (MinMaxTemp.first).first = Env.MinX;
-        (MinMaxTemp.first).second = Env.MinY;
-        first = false;
-      } else
-      {
-        (MinMaxTemp.second).first = std::max((MinMaxTemp.second).first,
-            Env.MaxX);
-        (MinMaxTemp.second).second = std::max((MinMaxTemp.second).second,
-            Env.MaxY);
-        (MinMaxTemp.first).first = std::min((MinMaxTemp.first).first, Env.MinX);
-        (MinMaxTemp.first).second = std::min((MinMaxTemp.first).second,
-            Env.MinY);
-      }
-    }
-  }
-  return MinMaxTemp;
-}
-
-// =====================================================================
-// =====================================================================
-
-int ICLayerMultiPolygon::isSelected(double /*x*/, double /*y*/, double /*scale*/)
-{
-  return -1;
-}

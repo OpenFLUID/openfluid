@@ -56,6 +56,7 @@
 #define __DRAWINGAREA_HPP__
 
 #include <gtkmm/drawingarea.h>
+//#include <sigc++-2.0/sigc++/connection.h>
 
 class DrawingAreaInitialState;
 class DrawingAreaMoveState;
@@ -82,11 +83,18 @@ class DrawingArea: public Gtk::DrawingArea
     double m_XTranslate;
     double m_YTranslate;
 
+    bool m_pressMultiSelect;
     bool m_LayerExist;
 
     sigc::signal<void> m_signal_ExposeEventChanged;
     sigc::signal<void, double, double> m_signal_CoordinateChanged;
     sigc::signal<void, double, double> m_signal_CoordinateSelected;
+
+    bool whenOnKeyPressed(GdkEventKey*);
+    bool whenOnKeyReleased(GdkEventKey*);
+
+    sigc::connection m_KeyPress;
+    sigc::connection m_KeyRelease;
 
   public:
 
@@ -112,6 +120,7 @@ class DrawingArea: public Gtk::DrawingArea
     double getScale();
     double getXTranslate();
     double getYTranslate();
+    bool getPressMultiSelect();
     //set
     void setScale(double);
     void setXTranslate(double);
@@ -121,13 +130,13 @@ class DrawingArea: public Gtk::DrawingArea
   protected:
 
     virtual bool on_expose_event(GdkEventExpose*);
-    void onMouseEnterNotify(GdkEvent*);
-    void onMouseLeaveNotify(GdkEvent*);
-    void onMouseMotionNotify(GdkEvent*);
-    void onMouseButtonPressed(GdkEvent*);
-    void onMouseButtonReleased(GdkEvent*);
-    bool onAllEvents(GdkEvent*);
 
+    virtual bool on_button_press_event(GdkEventButton* event);
+    virtual bool on_button_release_event(GdkEventButton* event);
+    virtual bool on_leave_notify_event(GdkEventCrossing* event);
+    virtual bool on_enter_notify_event(GdkEventCrossing* event);
+    virtual bool on_motion_notify_event(GdkEventMotion* event);
+//    virtual void on_realize();
 };
 
 #endif /* __DRAWINGAREA_HPP__ */

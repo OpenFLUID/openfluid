@@ -63,7 +63,7 @@ ICLayerPoint::ICLayerPoint()
 // =====================================================================
 
 void ICLayerPoint::drawPoint(Cairo::RefPtr<Cairo::Context> cr,
-    OGRGeometry* ObjectGeo, double scale, bool notselect)
+    OGRGeometry* ObjectGeo, double scale, bool select)
 {
 
   OGRPoint* Point = static_cast<OGRPoint*> (ObjectGeo);
@@ -73,23 +73,35 @@ void ICLayerPoint::drawPoint(Cairo::RefPtr<Cairo::Context> cr,
   cr->line_to(Point->getX() - (2 / scale), Point->getY() - (2 / scale));
   cr->line_to(Point->getX() + (2 / scale), Point->getY() - (2 / scale));
   cr->close_path();
-  if (notselect)
-    cr->stroke();
-  else
+  if (select)
     cr->fill();
+  else
+    cr->stroke();
 }
 
 // =====================================================================
 // =====================================================================
 
-void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
+void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
+    std::set<int> select)
 {
   std::map<int, ICLayerObject*>::iterator it;
 
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
     if ((*it).second->selfIdExisting())
-      drawPoint(cr, ((*it).second)->getOGRGeometryObject(), scale, true);
+    {
+      if (!select.empty())
+      {
+        std::set<int>::iterator it2;
+        it2 = select.find((*it).first);
+        if (it2 != select.end() && (*it2) == (*it).first)
+          drawPoint(cr, (*it).second->getOGRGeometryObject(), scale, true);
+        else
+          drawPoint(cr, (*it).second->getOGRGeometryObject(), scale, false);
+      } else
+        drawPoint(cr, (*it).second->getOGRGeometryObject(), scale, false);
+    }
   }
 }
 
@@ -132,3 +144,27 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPoint::g
   }
   return MinMaxTemp;
 }
+
+// =====================================================================
+// =====================================================================
+
+int ICLayerPoint::isSelected(double x, double y, double scale)
+{
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    double X =
+        static_cast<OGRPoint*> ((*it).second->getOGRGeometryObject())->getX();
+    double Y =
+        static_cast<OGRPoint*> ((*it).second->getOGRGeometryObject())->getY();
+    if ((X - (2 / scale)) <= x && (X + (2 / scale)) >= x && (Y - (2 / scale))
+        <= y && (Y + (2 / scale)) >= y)
+    {
+      //std::cout << " -> " <<  (*it).first << std::endl;
+      return (*it).first;
+    }
+  }
+  return -1;
+
+}
+

@@ -55,7 +55,7 @@
 #include "WidgetLayerObject.hpp"
 #include "WidgetObject.hpp"
 #include "WidgetExpander.hpp"
-#include "Mediator.hpp"
+#include "ToolBox.hpp"
 
 WidgetLayerObject::WidgetLayerObject(const LayerType::LayerTypes& LayerType,
     std::string ClassName, std::string FileName) :
@@ -80,7 +80,7 @@ WidgetLayerObject::WidgetLayerObject(const LayerType::LayerTypes& LayerType,
 
   mp_MainVBoxLayer->pack_start(*mp_WidgetObject->asWidget());
   mp_MainVBoxLayer->pack_start(*mp_WidgetExpander->asWidget());
-  mp_MainVBoxLayer->pack_start(*Mediator::setHSeparator());
+  mp_MainVBoxLayer->pack_start(*ToolBox::setHSeparator());
   mp_MainVBoxLayer->set_visible(true);
 
 }

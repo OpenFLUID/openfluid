@@ -67,7 +67,7 @@ DrawingAreaInitialState::DrawingAreaInitialState(DrawingArea& DrawingArea) :
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaInitialState::onMouseButtonPressed(GdkEvent* /*event*/)
+void DrawingAreaInitialState::onMouseButtonPressed(GdkEventButton* /*event*/)
 {
 
 }
@@ -75,7 +75,7 @@ void DrawingAreaInitialState::onMouseButtonPressed(GdkEvent* /*event*/)
 // =====================================================================
 // =====================================================================
 
-bool DrawingAreaInitialState::onMouseButtonReleased(GdkEvent* /*event*/)
+bool DrawingAreaInitialState::onMouseButtonReleased(GdkEventButton* /*event*/)
 {
   return true;
 }

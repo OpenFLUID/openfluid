@@ -106,7 +106,7 @@ MapViewModule::MapViewModule()
 
   mp_MenuControlScrolledWindow->add(*mp_Mediator->asWidget());
   mp_ControlMenuFrame->add(*mp_MenuControlScrolledWindow);
-  ;
+
   mp_DrawScrolledWindow->add(*mp_DrawingArea);
 //  mp_DrawFrame->add(*mp_DrawScrolledWindow);
   mp_VMenuPaned->pack1(*mp_ControlMenuFrame);
@@ -133,6 +133,8 @@ MapViewModule::MapViewModule()
 
   mp_MainScrolledWindow->show_all_children();
   mp_MainScrolledWindow->set_visible(true);
+
+  mp_MainScrolledWindow->set_can_focus(true);
 
   mp_Mediator->signal_DrawingAreaExposeEventChanged().connect( sigc::mem_fun(*this, &MapViewModule::whenChanged));
 }
@@ -164,3 +166,4 @@ void MapViewModule::whenChanged()
 {
   m_signal_MapViewChanged.emit();
 }
+

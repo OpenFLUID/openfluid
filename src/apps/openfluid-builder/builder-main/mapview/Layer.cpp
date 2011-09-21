@@ -64,7 +64,7 @@
 #include "ICLayerPolygon.hpp"
 #include "ICLayerMultiPolygon.hpp"
 #include "WidgetLayerObject.hpp"
-#include "Mediator.hpp"
+#include "ToolBox.hpp"
 
 #include "Layer.hpp"
 
@@ -99,139 +99,191 @@ Gtk::Widget* Layer::asWidget()
 // =====================================================================
 // =====================================================================
 
-void Layer::addNewLayer(std::vector<std::string> ClassNames)
+void Layer::addNewLayer(
+    std::pair<std::pair<std::string, std::string>, std::string> Data)
 {
-  if (!ClassNames.empty())
+
+  std::cout << "Open clicked." << std::endl;
+
+  //Notice that this is a std::string, not a Glib::ustring.
+  //  std::string FileURI = get_filename();
+  //  std::string FolderURI = dialog.get_current_folder() + "/";
+  //  std::string FileName;
+  //
+  //  FileName = FileURI.substr(FolderURI.size(),
+  //      FileURI.size() - FolderURI.size() - 4);
+
+
+  m_FileName = Data.first.second;
+  m_FolderUri = Data.first.first;
+  m_ClassName = Data.second;
+
+  mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType, m_ClassName,
+      m_FileName);
+
+  //***************Signal WidgetObjectBase*********************
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
+  mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
+      sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
+
+  mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
+  if (m_FileName != "" && m_FolderUri != "" && m_ClassName != "")
   {
-    Gtk::FileChooserDialog dialog(_("Please choose a new layer"),
-        Gtk::FILE_CHOOSER_ACTION_OPEN);
-    //      dialog.set_transient_for(*this);
-
-    Gtk::HBox* Hbox = Gtk::manage(new Gtk::HBox());
-    Hbox->set_border_width(5);//spacing(10);
-    Gtk::Label lab;
-    //    lab.set_padding(10,2);
-    lab.set_label(_("Choose An Unit Class :"));
-    lab.set_visible(true);
-
-    Gtk::ComboBoxText* FilterUnitClass = Gtk::manage(new Gtk::ComboBoxText());
-
-    std::vector<std::string>::iterator it;
-
-    for (it = ClassNames.begin(); it != ClassNames.end(); it++)
-    {
-      FilterUnitClass->append(static_cast<Glib::ustring> (*it));
-    }
-
-    FilterUnitClass->signal_changed().connect(
-        sigc::bind<Gtk::ComboBoxText*>(
-            sigc::mem_fun(*this, &Layer::onComboChanged), FilterUnitClass));
-
-    FilterUnitClass->set_sensitive(true);
-    FilterUnitClass->set_visible(true);
-    FilterUnitClass->show_all_children(true);
-
-    Hbox->pack_start(lab, Gtk::PACK_SHRINK);
-    Hbox->pack_end(*FilterUnitClass, Gtk::PACK_SHRINK);
-    Hbox->set_visible(true);
-
-    Gtk::VBox* VBox = static_cast<Gtk::VBox*> (dialog.get_child());
-
-    VBox->pack_start(*Mediator::setHSeparator(), Gtk::PACK_SHRINK);
-    VBox->pack_start(*Hbox, Gtk::PACK_SHRINK);
-    VBox->pack_start(*Mediator::setHSeparator(), Gtk::PACK_SHRINK);
-
-    //Add response buttons the the dialog:
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-
-    //Add filters, so that only certain file types can be selected:
-
-    Gtk::FileFilter filter_shapefile;
-    filter_shapefile.set_name("Shapefiles");
-    filter_shapefile.add_pattern("*.shp");
-    dialog.add_filter(filter_shapefile);
-
-    Gtk::FileFilter filter_any;
-    filter_any.set_name("Any files");
-    filter_any.add_pattern("*");
-    dialog.add_filter(filter_any);
-
-    //Show the dialog and wait for a user response:
-    int result = dialog.run();
-
-    //Handle the response:
-    switch (result)
-    {
-      case (Gtk::RESPONSE_OK):
-      {
-        if (FilterUnitClass->get_active_text().empty())
-        {
-          openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-              _(
-                  "You can't added layer without selected a unit class before.\n\nPlease select a unit class."));
-          addNewLayer(ClassNames);
-        } else
-        {
-          std::cout << "Open clicked." << std::endl;
-
-          //Notice that this is a std::string, not a Glib::ustring.
-          std::string FileURI = dialog.get_filename();
-          std::string FolderURI = dialog.get_current_folder() + "/";
-          std::string FileName;
-
-          FileName = FileURI.substr(FolderURI.size(),
-              FileURI.size() - FolderURI.size() - 4);
-
-          m_FileName = FileName;
-          m_FolderUri = FolderURI;
-
-          mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType,
-              m_ClassName, m_FileName);
-
-          //***************Signal WidgetObjectBase*********************
-          mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
-              sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
-          mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
-              sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
-          mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
-              sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
-          mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
-              sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
-          mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
-              sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
-          mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
-              sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
-
-          mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
-
-          loadShapefile(FolderURI, FileName);
-          m_LoadShapeFile = true;
-        }
-        break;
-      }
-      case (Gtk::RESPONSE_CANCEL):
-      {
-        std::cout << "Cancel clicked." << std::endl;
-        break;
-      }
-      default:
-      {
-        std::cout << "Unexpected button clicked." << std::endl;
-        break;
-      }
-    }
-  } else
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _(
-            "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
-
+    loadShapefile(m_FolderUri, m_FileName);
+    m_LoadShapeFile = true;
   }
 }
 
 // =====================================================================
 // =====================================================================
+//// =====================================================================
+//// =====================================================================
+//
+//void Layer::addNewLayer(std::vector<std::string> ClassNames)
+//{
+//  std::cout << __FILE__ << " " << __LINE__ << std::endl;
+//  if (!ClassNames.empty())
+//  {
+//    Gtk::FileChooserDialog dialog(_("Please choose a new layer"),
+//        Gtk::FILE_CHOOSER_ACTION_OPEN);
+////    dialog.set_transient_for(dynamic_cast<Gtk::Window*>(&asWidget()->get_parent_window()));
+//
+//    Gtk::HBox* Hbox = Gtk::manage(new Gtk::HBox());
+//    Hbox->set_border_width(5);//spacing(10);
+//    Gtk::Label lab;
+//    //    lab.set_padding(10,2);
+//    lab.set_label(_("Choose An Unit Class :"));
+//    lab.set_visible(true);
+//
+//    Gtk::ComboBoxText* FilterUnitClass = Gtk::manage(new Gtk::ComboBoxText());
+//
+//    std::vector<std::string>::iterator it;
+//
+//    for (it = ClassNames.begin(); it != ClassNames.end(); it++)
+//    {
+//      FilterUnitClass->append(static_cast<Glib::ustring> (*it));
+//    }
+//    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+//    FilterUnitClass->signal_changed().connect(
+//        sigc::bind<Gtk::ComboBoxText*>(
+//            sigc::mem_fun(*this, &Layer::onComboChanged), FilterUnitClass));
+//
+//    FilterUnitClass->set_sensitive(true);
+//    FilterUnitClass->set_visible(true);
+//    FilterUnitClass->show_all_children(true);
+//
+//    Hbox->pack_start(lab, Gtk::PACK_SHRINK);
+//    Hbox->pack_end(*FilterUnitClass, Gtk::PACK_SHRINK);
+//    Hbox->set_visible(true);
+//
+//    Gtk::VBox* VBox = static_cast<Gtk::VBox*> (dialog.get_child());
+//
+//    VBox->pack_start(*ToolBox::setHSeparator(), Gtk::PACK_SHRINK);
+//    VBox->pack_start(*Hbox, Gtk::PACK_SHRINK);
+//    VBox->pack_start(*ToolBox::setHSeparator(), Gtk::PACK_SHRINK);
+//
+//    //Add response buttons the the dialog:
+//    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+//    dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+//
+//    //Add filters, so that only certain file types can be selected:
+//    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+//    Gtk::FileFilter filter_shapefile;
+//    filter_shapefile.set_name("Shapefiles");
+//    filter_shapefile.add_pattern("*.shp");
+//    dialog.add_filter(filter_shapefile);
+//
+//    Gtk::FileFilter filter_any;
+//    filter_any.set_name("Any files");
+//    filter_any.add_pattern("*");
+//    dialog.add_filter(filter_any);
+//    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+//    //Show the dialog and wait for a user response:
+//    //    dialog.set_receives_default(true);
+//    int result = dialog.run();
+//
+//    std::cout << __FILE__ << " " << __LINE__ << std::endl;
+//    //Handle the response:
+//    switch (result)
+//    {
+//      case (Gtk::RESPONSE_OK):
+//      {
+//        if (FilterUnitClass->get_active_text().empty())
+//        {
+//          openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//              _(
+//                  "You can't added layer without selected a unit class before.\n\nPlease select a unit class."));
+//          addNewLayer(ClassNames);
+//        } else
+//        {
+//          std::cout << "Open clicked." << std::endl;
+//
+//          //Notice that this is a std::string, not a Glib::ustring.
+//          std::string FileURI = dialog.get_filename();
+//          std::string FolderURI = dialog.get_current_folder() + "/";
+//          std::string FileName;
+//
+//          FileName = FileURI.substr(FolderURI.size(),
+//              FileURI.size() - FolderURI.size() - 4);
+//
+//          m_FileName = FileName;
+//          m_FolderUri = FolderURI;
+//
+//          mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType,
+//              m_ClassName, m_FileName);
+//
+//          //***************Signal WidgetObjectBase*********************
+//          mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
+//              sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
+//          mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
+//              sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
+//          mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
+//              sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
+//          mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
+//              sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
+//          mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
+//              sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
+//          mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
+//              sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
+//
+//          mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
+//
+//          loadShapefile(FolderURI, FileName);
+//          m_LoadShapeFile = true;
+//        }
+//        break;
+//      }
+//      case (Gtk::RESPONSE_CANCEL):
+//      {
+//        std::cout << "Cancel clicked." << std::endl;
+//        break;
+//      }
+//      default:
+//      {
+//        std::cout << "Unexpected button clicked." << std::endl;
+//        break;
+//      }
+//    }
+//  } else
+//  {
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        _(
+//            "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
+//
+//  }
+//}
+//
+//// =====================================================================
+//// =====================================================================
 
 void Layer::loadShapefile(std::string FolderURI, std::string FileName)
 {
@@ -360,9 +412,18 @@ void Layer::initialiseLayerContext(Cairo::RefPtr<Cairo::Context> Context,
 // =====================================================================
 // =====================================================================
 
-void Layer::draw(Cairo::RefPtr<Cairo::Context> Context, double Scale)
+void Layer::draw(Cairo::RefPtr<Cairo::Context> Context, double Scale,
+    std::set<int> Select)
 {
-  mp_ICLayer->draw(Context, Scale);
+  mp_ICLayer->draw(Context, Scale, Select);
+}
+
+// =====================================================================
+// =====================================================================
+
+int Layer::isObjectSelected(double X, double Y, double Scale)
+{
+  return mp_ICLayer->isSelected(X, Y, Scale);
 }
 
 // =====================================================================
@@ -504,6 +565,7 @@ void Layer::whenOnIsSelectedLayerClicked()
   if (m_IsSelected)
     m_signal_IsSelectedLayerClicked.emit(m_ClassName);
   else
+    //
     m_signal_IsSelectedLayerClicked.emit("");
 }
 

@@ -52,6 +52,7 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 #include <iostream>
+#include <gtkmm/window.h>
 
 #include "DrawingAreaInitialState.hpp"
 #include "DrawingAreaMoveState.hpp"
@@ -63,12 +64,18 @@
 
 #include "DrawingArea.hpp"
 
+//#include "BuilderAppWindow.hpp"
+
 DrawingArea::DrawingArea()
 {
+  //    set_flags(get_flags() | Gtk::CAN_FOCUS);
+  //  set_can_focus(true);
+
   m_XTranslate = 0;
   m_YTranslate = 0;
-  m_Scale = 0;
+  m_Scale = 1;
 
+  m_pressMultiSelect = false;
   m_LayerExist = false;
 
   modify_bg(Gtk::StateType(NULL), Gdk::Color("#FFFFFF"));
@@ -88,9 +95,6 @@ DrawingArea::DrawingArea()
   this->add_events(Gdk::ENTER_NOTIFY_MASK);
   this->add_events(Gdk::BUTTON_PRESS_MASK);
   this->add_events(Gdk::BUTTON_RELEASE_MASK);
-
-  this->signal_event().connect(sigc::mem_fun(*this, &DrawingArea::onAllEvents));
-
   //cairomm
 }
 
@@ -112,6 +116,14 @@ bool DrawingArea::on_expose_event(GdkEventExpose* /*e*/)
   return true;
 }
 
+//void DrawingArea::on_realize()
+//{
+////  Gtk::Window& window = dynamic_cast<Gtk::Window&>(*get_toplevel());
+////  window.signal_key_press_event().connect(
+////      sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
+////  window.signal_key_release_event().connect(
+////        sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
+//}
 // =====================================================================
 // =====================================================================
 
@@ -141,6 +153,9 @@ sigc::signal<void, double, double> DrawingArea::signal_CoordinateSelected()
 
 void DrawingArea::changeToInitialState()
 {
+  m_KeyPress.disconnect();
+  m_KeyRelease.disconnect();
+  m_pressMultiSelect = false;
   mp_CurrentState = dynamic_cast<DrawingAreaState*> (mp_InitialState);
 }
 
@@ -157,6 +172,10 @@ void DrawingArea::changeToMoveState()
 
 void DrawingArea::changeToSelectState()
 {
+  m_KeyPress =dynamic_cast<Gtk::Window&> (*get_toplevel()).signal_key_press_event().connect(
+      sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
+  m_KeyRelease = dynamic_cast<Gtk::Window&> (*get_toplevel()).signal_key_release_event().connect(
+      sigc::mem_fun(*this, &DrawingArea::whenOnKeyReleased));
   mp_CurrentState = dynamic_cast<DrawingAreaState*> (mp_SelectState);
 }
 
@@ -204,103 +223,93 @@ void DrawingArea::modifyScaleTranslate(
   setYTranslate(MinMax.second.second);
 }
 
-//void DrawingArea::modifyScaleTranslate(double x, double y)
-//{
-////  Gtk::Allocation allocation = get_allocation();
-////
-////  double Width = allocation.get_width();
-////  double Height = allocation.get_height();
-//
-////TODO a verifier la suite
-//
-//  double Scale = Scale * 2;
-//
-//  x = x * Scale;
-//  y = y * Scale;
-//
-//  setScale(Scale);
-//  setXTranslate(-m_XTranslate + x);
-//  setYTranslate(-m_YTranslate + y);
-//
-//}
-
-// =====================================================================
-// =====================================================================
 // =====================================================================
 // =====================================================================
 
-void DrawingArea::onMouseEnterNotify(GdkEvent* event)
+// =====================================================================
+// =====================================================================
+
+bool DrawingArea::on_button_press_event(GdkEventButton* event)
 {
-  if (event->type == GDK_ENTER_NOTIFY)
+  mp_CurrentState->onMouseButtonPressed(event);
+  if (mp_CurrentState == mp_SelectState)
   {
-    get_window()->set_cursor(mp_CurrentState->getCursor());
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void DrawingArea::onMouseLeaveNotify(GdkEvent* event)
-{
-  if (event->type == GDK_LEAVE_NOTIFY)
+    m_signal_CoordinateSelected.emit(
+        (static_cast<DrawingAreaSelectState*> (mp_CurrentState))->getXPress(),
+        (static_cast<DrawingAreaSelectState*> (mp_CurrentState))->getYPress());
+  } else if (mp_CurrentState == mp_ZoomCursorState || mp_CurrentState
+      == mp_UnzoomCursorState)
   {
-    get_window()->set_cursor(mp_InitialState->getCursor());
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void DrawingArea::onMouseMotionNotify(GdkEvent* event)
-{
-  if (event->type == GDK_MOTION_NOTIFY)
-  {
-      double XPress = event->button.x / getScale();
-      double YPress = event->button.y / getScale();
-
-      XPress = getXTranslate() + XPress;
-      YPress = getYTranslate() - YPress;
-      m_signal_CoordinateChanged.emit(XPress, YPress);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void DrawingArea::onMouseButtonPressed(GdkEvent* event)
-{
-  if (event->type == GDK_BUTTON_PRESS)
-  {
-    mp_CurrentState->onMouseButtonPressed(event);
     m_signal_ExposeEventChanged.emit();
   }
+  return false;
 }
 
 // =====================================================================
 // =====================================================================
 
-void DrawingArea::onMouseButtonReleased(GdkEvent* event)
+bool DrawingArea::whenOnKeyPressed(GdkEventKey* event)
 {
-  if (event->type == GDK_BUTTON_RELEASE)
-  {
-    if (mp_CurrentState->onMouseButtonReleased(event))
-      m_signal_ExposeEventChanged.emit();
-  }
+  std::cout << "key pressed ok" << std::endl;
+  if (event->keyval == 0xFFE3)
+    m_pressMultiSelect = true;
+  return false;
 }
 
 // =====================================================================
 // =====================================================================
 
-bool DrawingArea::onAllEvents(GdkEvent* event)
+bool DrawingArea::whenOnKeyReleased(GdkEventKey* event)
 {
-  if (m_LayerExist != false)
+  std::cout << "key released ok" << std::endl;
+  if (event->keyval == 0xFFE3)
+    m_pressMultiSelect = false;
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool DrawingArea::on_button_release_event(GdkEventButton* event)
+{
+  mp_CurrentState->onMouseButtonReleased(event);
+  if (mp_CurrentState == mp_ZoomFrameState || mp_CurrentState == mp_MoveState)
   {
-    onMouseButtonPressed(event);
-    onMouseButtonReleased(event);
-    onMouseEnterNotify(event);
-    onMouseLeaveNotify(event);
-    onMouseMotionNotify(event);
+    m_signal_ExposeEventChanged.emit();
   }
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool DrawingArea::on_enter_notify_event(GdkEventCrossing* /*event*/)
+{
+  get_window()->set_cursor(mp_CurrentState->getCursor());
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool DrawingArea::on_leave_notify_event(GdkEventCrossing* /*event*/)
+{
+  get_window()->set_cursor(mp_InitialState->getCursor());
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool DrawingArea::on_motion_notify_event(GdkEventMotion* event)
+{
+  double XPress = event->x / getScale();
+  double YPress = event->y / getScale();
+
+  XPress = getXTranslate() + XPress;
+  YPress = getYTranslate() - YPress;
+  m_signal_CoordinateChanged.emit(XPress, YPress);
   return false;
 }
 
@@ -328,6 +337,14 @@ double DrawingArea::getXTranslate()
 double DrawingArea::getYTranslate()
 {
   return m_YTranslate;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool DrawingArea::getPressMultiSelect()
+{
+  return m_pressMultiSelect;
 }
 
 // =====================================================================

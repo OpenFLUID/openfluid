@@ -68,14 +68,14 @@ DrawingAreaUnzoomCursorState::DrawingAreaUnzoomCursorState(
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaUnzoomCursorState::onMouseButtonPressed(GdkEvent* event)
+void DrawingAreaUnzoomCursorState::onMouseButtonPressed(GdkEventButton* event)
 {
   Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
   double Width = allocation.get_width();
   double Height = allocation.get_height();
 
-  double XPress = event->button.x / mref_DrawingArea.getScale();
-  double YPress = event->button.y / mref_DrawingArea.getScale();
+  double XPress = event->x / mref_DrawingArea.getScale();
+  double YPress = event->y / mref_DrawingArea.getScale();
 
   XPress = mref_DrawingArea.getXTranslate() + XPress;
   YPress = mref_DrawingArea.getYTranslate() - YPress;
@@ -90,7 +90,7 @@ void DrawingAreaUnzoomCursorState::onMouseButtonPressed(GdkEvent* event)
 // =====================================================================
 // =====================================================================
 
-bool DrawingAreaUnzoomCursorState::onMouseButtonReleased(GdkEvent* /*event*/)
+bool DrawingAreaUnzoomCursorState::onMouseButtonReleased(GdkEventButton* /*event*/)
 {
   return true;
 }

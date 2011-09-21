@@ -59,6 +59,7 @@
 #include <gdal/ogrsf_frmts.h>
 #include <map>
 #include <cairomm/context.h>
+#include <set>
 
 #include <openfluid/core/CoreRepository.hpp>
 
@@ -78,13 +79,15 @@ class ICLayer
     void addObjectGeo(int, OGRGeometry*);
 
     std::map<int, ICLayerObject*> getICLayerObject();
-    virtual void draw(Cairo::RefPtr<Cairo::Context>, double) = 0;
+    virtual void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>) = 0;
     virtual std::pair<std::pair<double, double>, std::pair<double, double> >
         getMinMax() = 0;
 
     void update(std::string);
 
     void setEngineRequirements(openfluid::core::CoreRepository&);
+
+    virtual int isSelected(double, double, double) = 0;
 
   protected:
     std::map<int, ICLayerObject*> m_ICLayerObject;

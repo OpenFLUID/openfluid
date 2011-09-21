@@ -124,6 +124,7 @@ class MapViewModule: public ProjectWorkspaceModule
     ;
 
     sigc::signal<void> signal_ModuleChanged();
+
 };
 
 #endif /* __MAPVIEWMODULE_HPP__ */

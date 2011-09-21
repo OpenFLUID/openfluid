@@ -63,29 +63,49 @@ ICLayerLineString::ICLayerLineString()
 // =====================================================================
 
 void ICLayerLineString::drawLine(Cairo::RefPtr<Cairo::Context> cr,
-    OGRGeometry* ObjectGeo, double /*scale*/, bool /*notselect*/)
+    OGRGeometry* ObjectGeo, double scale, bool select)
 {
 
   OGRLineString* Line = static_cast<OGRLineString*> (ObjectGeo);
   cr->move_to(Line->getX(0), Line->getY(0));
+  double lw = cr->get_line_width();
+  cr->save();
   for (int i = 1; i < Line->getNumPoints(); i++)
   {
+
+    if (select)
+    {
+      cr->set_line_width(lw + (4 / scale));
+    }
     cr->line_to(Line->getX(i), Line->getY(i));
   }
   cr->stroke();
+  cr->restore();
 
 }
 
 // =====================================================================
 // =====================================================================
 
-void ICLayerLineString::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
+void ICLayerLineString::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
+    std::set<int> select)
 {
   std::map<int, ICLayerObject*>::iterator it;
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
     if ((*it).second->selfIdExisting())
-      drawLine(cr, (*it).second->getOGRGeometryObject(), scale, true);
+    {
+      if (!select.empty())
+      {
+        std::set<int>::iterator it2;
+        it2 = select.find((*it).first);
+        if (it2 != select.end() && (*it2) == (*it).first)
+          drawLine(cr, (*it).second->getOGRGeometryObject(), scale, true);
+        else
+          drawLine(cr, (*it).second->getOGRGeometryObject(), scale, false);
+      } else
+        drawLine(cr, (*it).second->getOGRGeometryObject(), scale, false);
+    }
   }
 }
 
@@ -127,3 +147,38 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerLineStri
   }
   return MinMaxTemp;
 }
+
+// =====================================================================
+// =====================================================================
+
+int ICLayerLineString::isSelected(double x, double y, double scale)
+{
+  OGRPolygon* Poly =
+      static_cast<OGRPolygon*> (OGRGeometryFactory::createGeometry(wkbPolygon));
+
+  OGRLinearRing* Ring =
+      static_cast<OGRLinearRing*> (OGRGeometryFactory::createGeometry(
+          wkbLinearRing));
+
+  Ring->setPoint(0, new OGRPoint(x - 3 / scale, y - 3 / scale));
+  Ring->setPoint(1, new OGRPoint(x + 3 / scale, y - 3 / scale));
+  Ring->setPoint(2, new OGRPoint(x + 3 / scale, y + 3 / scale));
+  Ring->setPoint(3, new OGRPoint(x - 3 / scale, y + 3 / scale));
+
+  Ring->closeRings();
+
+  Poly->addRingDirectly(Ring);
+
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    if (Poly->Intersects(
+        static_cast<OGRGeometry*> ((*it).second->getOGRGeometryObject())))
+    {
+      return (*it).first;
+    }
+  }
+  return -1;
+
+}
+

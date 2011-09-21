@@ -67,19 +67,19 @@ DrawingAreaZoomFrameState::DrawingAreaZoomFrameState(DrawingArea& DrawingArea) :
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaZoomFrameState::onMouseButtonPressed(GdkEvent* event)
+void DrawingAreaZoomFrameState::onMouseButtonPressed(GdkEventButton* event)
 {
-  m_XPress = event->button.x / mref_DrawingArea.getScale();
-  m_YPress = event->button.y / mref_DrawingArea.getScale();
+  m_XPress = event->x / mref_DrawingArea.getScale();
+  m_YPress = event->y / mref_DrawingArea.getScale();
 }
 
 // =====================================================================
 // =====================================================================
 
-bool DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEvent* event)
+bool DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEventButton* event)
 {
-  double XRelease = event->button.x / mref_DrawingArea.getScale();
-  double YRelease = event->button.y / mref_DrawingArea.getScale();
+  double XRelease = event->x / mref_DrawingArea.getScale();
+  double YRelease = event->y / mref_DrawingArea.getScale();
   std::cout << m_XPress << " " << m_YPress << std::endl;
   std::cout << XRelease << " " << YRelease << std::endl;
   if (m_XPress != XRelease && m_YPress != YRelease)

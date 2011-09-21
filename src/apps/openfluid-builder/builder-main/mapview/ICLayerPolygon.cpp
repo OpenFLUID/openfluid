@@ -63,36 +63,57 @@ ICLayerPolygon::ICLayerPolygon()
 // =====================================================================
 
 void ICLayerPolygon::drawPoly(Cairo::RefPtr<Cairo::Context> cr,
-    OGRGeometry* ObjectGeo, double /*scale*/, bool notselect)
+    OGRGeometry* ObjectGeo, double scale, bool select)
 {
 
   OGRPolygon* Poly = static_cast<OGRPolygon*> (ObjectGeo);
   OGRLinearRing* poLinearRing = Poly->getExteriorRing();
-
+  cr->save();
   cr->move_to(poLinearRing->getX(0), poLinearRing->getY(0));
+  double lw = cr->get_line_width();
   for (int i = 1; i < poLinearRing->getNumPoints(); i++)
   {
+    if (select)
+    {
+      cr->set_line_width(lw + (4 / scale));
+    }
     cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));
-
   }
   cr->close_path();
+  //  std::cout << cr->get_line_width() << std::endl;
 
-  if (notselect)
-    cr->stroke();
-  else
+  if (select)
+  {
+    cr->set_line_width(lw);
     cr->fill();
+  } else
+    cr->stroke();
+  cr->restore();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-void ICLayerPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale)
+void ICLayerPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
+    std::set<int> select)
 {
   std::map<int, ICLayerObject*>::iterator it;
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
     if ((*it).second->selfIdExisting())
-      drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, true);
+    {
+      if (!select.empty())
+      {
+        std::set<int>::iterator it2;
+        it2 = select.find((*it).first);
+        if (it2 != select.end() && (*it2) == (*it).first)
+          drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, true);
+        else
+          drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, false);
+      } else
+        drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, false);
+    }
   }
 }
 
@@ -132,4 +153,24 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon:
     }
   }
   return MinMaxTemp;
+}
+
+// =====================================================================
+// =====================================================================
+
+int ICLayerPolygon::isSelected(double x, double y, double /*scale*/)
+{
+  OGRPoint* p = new OGRPoint(x, y);
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    if ((*it).second->getOGRGeometryObject()->Contains(
+        static_cast<OGRGeometry*> (p)) && (*it).second->selfIdExisting())
+    {
+      //std::cout << " -> " <<  (*it).first << std::endl;
+      return (*it).first;
+    }
+  }
+  //std::cout << -1 << std::endl;
+  return -1;
 }

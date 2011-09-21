@@ -52,7 +52,7 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include "Mediator.hpp"
+#include "ToolBox.hpp"
 #include <glibmm/i18n.h>
 #include "WidgetExpanderBase.hpp"
 
@@ -109,11 +109,11 @@ WidgetExpanderBase::WidgetExpanderBase() :
   mp_MainTableExpander->attach(*mp_CheckButton, 1, 2, 6, 7, Gtk::SHRINK,
       Gtk::SHRINK);
 
-  mp_MainTableExpander->attach(*Mediator::setHSeparator(), 0, 2, 1, 2,
+  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 1, 2,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(*Mediator::setHSeparator(), 0, 2, 3, 4,
+  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 3, 4,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(*Mediator::setHSeparator(), 0, 2, 5, 6,
+  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 5, 6,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_MainTableExpander->set_visible(true);
   mp_MainTableExpander->show_all_children(true);

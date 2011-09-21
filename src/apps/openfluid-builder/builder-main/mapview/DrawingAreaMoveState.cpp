@@ -67,19 +67,19 @@ DrawingAreaMoveState::DrawingAreaMoveState(DrawingArea& DrawingArea) :
 // =====================================================================
 // =====================================================================
 
-void DrawingAreaMoveState::onMouseButtonPressed(GdkEvent* event)
+void DrawingAreaMoveState::onMouseButtonPressed(GdkEventButton* event)
 {
-  m_XPress = event->button.x / mref_DrawingArea.getScale();
-  m_YPress = event->button.y / mref_DrawingArea.getScale();
+  m_XPress = event->x / mref_DrawingArea.getScale();
+  m_YPress = event->y / mref_DrawingArea.getScale();
 }
 
 // =====================================================================
 // =====================================================================
 
-bool DrawingAreaMoveState::onMouseButtonReleased(GdkEvent* event)
+bool DrawingAreaMoveState::onMouseButtonReleased(GdkEventButton* event)
 {
-  double XRelease = event->button.x / mref_DrawingArea.getScale();
-  double YRelease = event->button.y / mref_DrawingArea.getScale();
+  double XRelease = event->x / mref_DrawingArea.getScale();
+  double YRelease = event->y / mref_DrawingArea.getScale();
 
   double XPoint = mref_DrawingArea.getXTranslate() + (m_XPress - XRelease);
   double YPoint = mref_DrawingArea.getYTranslate() + (YRelease - m_YPress);

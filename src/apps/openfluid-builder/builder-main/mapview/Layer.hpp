@@ -57,6 +57,7 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include <gtkmm/comboboxtext.h>
 #include <openfluid/core/CoreRepository.hpp>
 
@@ -119,10 +120,12 @@ class Layer
     Layer(const LayerType::LayerTypes);
     ~Layer();
 
-    void addNewLayer(std::vector<std::string>);
+    void addNewLayer(std::pair<std::pair<std::string, std::string>, std::string>);
     void loadShapefile(std::string, std::string);
     void initialiseLayerContext(Cairo::RefPtr<Cairo::Context>, double);
-    void draw(Cairo::RefPtr<Cairo::Context>, double);
+    void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>);
+
+    int isObjectSelected(double, double, double);
 
     Gtk::Widget* asWidget();
 

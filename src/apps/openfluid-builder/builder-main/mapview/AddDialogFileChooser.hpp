@@ -46,50 +46,47 @@
  */
 
 /**
- \file DrawingAreaZoomCursorState.cpp
- \brief Implements ...
+ \file AddDialogFileChooser.hpp
+ \brief Header of ...
 
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
+#ifndef __ADDDIALOGFILECHOOSER_HPP__
+#define __ADDDIALOGFILECHOOSER_HPP__
+
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/box.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/infobar.h>
 #include <iostream>
 
-#include "DrawingAreaZoomCursorState.hpp"
-#include "DrawingAreaState.hpp"
-
-DrawingAreaZoomCursorState::DrawingAreaZoomCursorState(DrawingArea& DrawingArea) :
-  DrawingAreaState(DrawingArea)
+class AddDialogFileChooser
 {
-  Gdk::Cursor Cursor(Gdk::BOGOSITY);
-  m_Cursor = Cursor;
-}
 
-// =====================================================================
-// =====================================================================
+  private:
 
-void DrawingAreaZoomCursorState::onMouseButtonPressed(GdkEventButton* event)
-{
-  Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
-  double Width = allocation.get_width();
-  double Height = allocation.get_height();
+    Gtk::FileChooserDialog* mp_FileChooserDialog;
 
-  double XPress = event->x / mref_DrawingArea.getScale();
-  double YPress = event->y / mref_DrawingArea.getScale();
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
+    Gtk::Label* mp_LabelChoose;
 
-  XPress = mref_DrawingArea.getXTranslate() + XPress;
-  YPress = mref_DrawingArea.getYTranslate() - YPress;
+    Gtk::ComboBoxText* mp_FilterUnitClass;
 
-  double Scale = mref_DrawingArea.getScale()
-      + (mref_DrawingArea.getScale() / 4);
-  mref_DrawingArea.setScale(Scale);
-  mref_DrawingArea.setXTranslate(XPress - ((Width / Scale) / 2));
-  mref_DrawingArea.setYTranslate(YPress + ((Height / Scale) / 2));
-}
+    std::string m_ClassName;
 
-// =====================================================================
-// =====================================================================
 
-bool DrawingAreaZoomCursorState::onMouseButtonReleased(GdkEventButton* /*event*/)
-{
-  return true;
-}
+    void onComboChanged(Gtk::ComboBoxText*);
+    void onChanged();
+    bool isEmptyString(std::string Str);
+
+  public:
+
+    AddDialogFileChooser(Gtk::Window&, const Glib::ustring&);
+
+    std::pair<std::pair<std::string, std::string>, std::string> show(std::vector<std::string>);
+
+};
+
+#endif /* __ADDDIALOGFILECHOOSER_HPP__ */
