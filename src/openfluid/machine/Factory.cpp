@@ -159,7 +159,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
       int i,j;
       bool IsOK = true;
       long ID;
-      openfluid::core::InputDataValue Value;
+      std::string Value;
 
       // parses data in file and loads it in the input data table for each unit, ordered by columns
       i = 0;

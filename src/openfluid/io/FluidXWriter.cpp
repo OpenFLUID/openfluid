@@ -332,9 +332,7 @@ void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository& CoreD
 
               for (unsigned int j=0;j<IDataNames.size();j++)
               {
-                std::string ValueStr;
-                TheUnit->getInputData()->getValue(IDataNames[j],&ValueStr);
-                Contents << ValueStr;
+                Contents << TheUnit->getInputData()->getValue(IDataNames[j])->toString();
                 if (j!=(IDataNames.size()-1)) Contents << "\t";
               }
               Contents << "\n";

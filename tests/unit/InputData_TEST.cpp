@@ -70,9 +70,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::InputData<openfluid::core::ScalarValue> IDataDouble;
-
-  openfluid::core::InputData<openfluid::core::InputDataValue> IDataStr;
+  openfluid::core::InputData IData;
 }
 
 // =====================================================================
@@ -80,32 +78,33 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::InputData<openfluid::core::ScalarValue> IData;
-  openfluid::core::ScalarValue Value;
+  openfluid::core::InputData IData;
+  double Value;
   std::vector<openfluid::core::InputDataName_t> Names;
 
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_1",2.0),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_2",3.2),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_3",4.3),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_3",2.0),false);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_1",openfluid::core::DoubleValue(2.0)),true);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_2",openfluid::core::DoubleValue(3.2)),true);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_3",openfluid::core::DoubleValue(4.3)),true);
+  BOOST_REQUIRE_EQUAL(IData.setValue("idata_3",openfluid::core::DoubleValue(2.0)),false);
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_1",&Value),true);
-  BOOST_REQUIRE_CLOSE(Value.get(),2.0,0.001);
+  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_1",&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,2.0,0.001);
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_2",&Value),true);
-  BOOST_REQUIRE_CLOSE(Value.get(),3.2,0.001);
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_3",&Value),true);
-  BOOST_REQUIRE_CLOSE(Value.get(),4.3,0.001);
+  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_2",&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,3.2,0.001);
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_4",&Value),false);
+  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_3",&Value),true);
+  BOOST_REQUIRE_CLOSE(Value,4.3,0.001);
+
+  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_4",&Value),false);
 
   Names = IData.getInputDataNames();
   BOOST_REQUIRE_EQUAL(Names.size(),3);
 
 
 
-  openfluid::core::InputData<openfluid::core::InputDataValue> IDataStr;
-  openfluid::core::InputDataValue IDValue;
+  openfluid::core::InputData IDataStr;
+  std::string IDValue;
   double DoubleValue;
 
   BOOST_REQUIRE_EQUAL(IDataStr.setValue("idata_1","CODEA"),true);
@@ -126,7 +125,5 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   Names = IDataStr.getInputDataNames();
   BOOST_REQUIRE_EQUAL(Names.size(),2);
-
-
 
 }

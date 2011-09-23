@@ -135,7 +135,7 @@ typedef DoubleValue ScalarValue;
  */
 //typedef Vector<ScalarValue> VectorValue;
 
-typedef std::string InputDataValue;
+//typedef std::string InputDataValue;
 
 
 /**

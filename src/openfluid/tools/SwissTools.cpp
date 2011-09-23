@@ -224,20 +224,20 @@ std::string ReplaceEmptyString(std::string SourceStr, const std::string& Replace
 // =====================================================================
 
 
-bool IsVectorNamedVariable(std::string Name)
-{
-  return boost::ends_with(Name,"[]");
-}
+//bool IsVectorNamedVariable(std::string Name)
+//{
+//  return boost::ends_with(Name,"[]");
+//}
 
 
 // =====================================================================
 // =====================================================================
 
-std::string GetVectorNamedVariableName(std::string Name)
-{
-  boost::erase_last(Name,"[]");
-  return Name;
-}
+//std::string GetVectorNamedVariableName(std::string Name)
+//{
+//  boost::erase_last(Name,"[]");
+//  return Name;
+//}
 
 // =====================================================================
 // =====================================================================

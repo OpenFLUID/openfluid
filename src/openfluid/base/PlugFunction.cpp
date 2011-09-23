@@ -266,11 +266,9 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
 bool PluggableFunction::OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName)
 {
   if (UnitPtr != NULL)
-  {
     return UnitPtr->getInputData()->isDataExist(InputName);
-  }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");;
 
+  throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");
   return false;
 }
 

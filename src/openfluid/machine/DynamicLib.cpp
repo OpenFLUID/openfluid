@@ -97,7 +97,7 @@ DynamicLib::~DynamicLib()
 bool DynamicLib::load()
 {
 
-  if (isLoaded()) unload();
+//  if (isLoaded()) unload();
 
 #if defined __unix__ || defined __APPLE__
   m_LibHandle = dlopen(m_LibPath.string().c_str(), RTLD_LAZY);

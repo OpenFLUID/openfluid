@@ -134,7 +134,7 @@ class DLLEXPORT Unit : public InstantiationInfo
     LinkedUnitsListByClassMap_t m_ParentUnits;
     LinkedUnitsListByClassMap_t m_ChildrenUnits;
 
-    InputData<InputDataValue> m_InputData;
+    InputData m_InputData;
 
     Variables m_Variables;
 
@@ -219,9 +219,9 @@ class DLLEXPORT Unit : public InstantiationInfo
 
 
 
-    inline InputData<InputDataValue>* getInputData()  { return &m_InputData; };
+    inline InputData* getInputData()  { return &m_InputData; };
 
-    inline const InputData<InputDataValue>* getInputData() const { return &m_InputData; };
+    inline const InputData* getInputData() const { return &m_InputData; };
 
     Variables* getVariables() { return &m_Variables; };
 
