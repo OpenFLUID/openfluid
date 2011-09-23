@@ -107,6 +107,8 @@ void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
 
 // =====================================================================
 // =====================================================================
+// =====================================================================
+// =====================================================================
 
 std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPoint::getMinMax()
 {
@@ -147,6 +149,52 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPoint::g
 
 // =====================================================================
 // =====================================================================
+
+std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPoint::getMinMax(
+    std::set<int> TempSet)
+{
+  std::pair<std::pair<double, double>, std::pair<double, double> > MinMaxTemp;
+
+  double x;
+  double y;
+
+  bool first = true;
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    std::set<int>::iterator ite;
+    ite = TempSet.find((*it).first);
+    if ((*it).second->selfIdExisting() && ite != TempSet.end())
+    {
+      x
+          = (static_cast<OGRPoint*> ((*it).second->getOGRGeometryObject()))->getX();
+      y
+          = (static_cast<OGRPoint*> ((*it).second->getOGRGeometryObject()))->getY();
+
+      if (first)
+      {
+        (MinMaxTemp.second).first = x;
+        (MinMaxTemp.second).second = y;
+        (MinMaxTemp.first).first = x;
+        (MinMaxTemp.first).second = y;
+        first = false;
+      } else
+      {
+        (MinMaxTemp.second).first = std::max((MinMaxTemp.second).first, x);
+        (MinMaxTemp.second).second = std::max((MinMaxTemp.second).second, y);
+        (MinMaxTemp.first).first = std::min((MinMaxTemp.first).first, x);
+        (MinMaxTemp.first).second = std::min((MinMaxTemp.first).second, y);
+      }
+    }
+  }
+  return MinMaxTemp;
+}
+
+// =====================================================================
+// =====================================================================
+// =====================================================================
+// =====================================================================
+
 
 int ICLayerPoint::isSelected(double x, double y, double scale)
 {

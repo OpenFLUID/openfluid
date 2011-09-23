@@ -111,6 +111,8 @@ void ICLayerPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
 
 // =====================================================================
 // =====================================================================
+// =====================================================================
+// =====================================================================
 
 std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon::getMinMax()
 {
@@ -147,6 +149,49 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon:
   return MinMaxTemp;
 }
 
+// =====================================================================
+// =====================================================================
+
+std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon::getMinMax(
+    std::set<int> TempSet)
+{
+  std::pair<std::pair<double, double>, std::pair<double, double> > MinMaxTemp;
+  OGREnvelope Env;
+  bool first = true;
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    std::set<int>::iterator ite;
+    ite = TempSet.find((*it).first);
+
+    if ((*it).second->selfIdExisting() && ite != TempSet.end())
+    {
+      (*it).second->getOGRGeometryObject()->getEnvelope(&Env);
+
+      if (first)
+      {
+        (MinMaxTemp.second).first = Env.MaxX;
+        (MinMaxTemp.second).second = Env.MaxY;
+        (MinMaxTemp.first).first = Env.MinX;
+        (MinMaxTemp.first).second = Env.MinY;
+        first = false;
+      } else
+      {
+        (MinMaxTemp.second).first = std::max((MinMaxTemp.second).first,
+            Env.MaxX);
+        (MinMaxTemp.second).second = std::max((MinMaxTemp.second).second,
+            Env.MaxY);
+        (MinMaxTemp.first).first = std::min((MinMaxTemp.first).first, Env.MinX);
+        (MinMaxTemp.first).second = std::min((MinMaxTemp.first).second,
+            Env.MinY);
+      }
+    }
+  }
+  return MinMaxTemp;
+}
+
+// =====================================================================
+// =====================================================================
 // =====================================================================
 // =====================================================================
 

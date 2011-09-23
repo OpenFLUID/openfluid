@@ -82,6 +82,8 @@ class ICLayer
     virtual void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>) = 0;
     virtual std::pair<std::pair<double, double>, std::pair<double, double> >
         getMinMax() = 0;
+    virtual std::pair<std::pair<double, double>, std::pair<double, double> >
+            getMinMax(std::set<int>) = 0;
 
     void update(std::string);
 

@@ -43,7 +43,7 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-*/
+ */
 
 /**
  \file ICLayerPoint.hpp
@@ -52,18 +52,17 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-
 #ifndef __ICLAYERPOINT_HPP__
 #define __ICLAYERPOINT_HPP__
 
 #include "ICLayer.hpp"
 
-class ICLayerPoint : public ICLayer
+class ICLayerPoint: public ICLayer
 {
 
-  private :
+  private:
 
-  public :
+  public:
 
     ICLayerPoint();
 
@@ -72,7 +71,10 @@ class ICLayerPoint : public ICLayer
 
     int isSelected(double, double, double);
 
-    std::pair< std::pair<double, double>, std::pair<double, double> > getMinMax();
+    std::pair<std::pair<double, double>, std::pair<double, double> >
+        getMinMax();
+    std::pair<std::pair<double, double>, std::pair<double, double> >
+    getMinMax(std::set<int>);
 
 };
 

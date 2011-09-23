@@ -280,7 +280,7 @@ void ToolBar::ToolBar::onChangeShow100Focus()
 void ToolBar::onChangeZoomSelectionFocus()
 {
   mref_ZoomSelectionFocusMenuAction->connect_proxy(*mp_FocusToolButton);
-  onZoomTypeToggleToolButtonClicked();
+  onZoomSelectionFocusButtonClicked();
 }
 
 // =====================================================================
@@ -289,7 +289,7 @@ void ToolBar::onChangeZoomSelectionFocus()
 void ToolBar::onChangeZoomLayerFocus()
 {
   mref_ZoomLayerFocusMenuAction->connect_proxy(*mp_FocusToolButton);
-  onZoomTypeToggleToolButtonClicked();
+  onZoomLayerFocusButtonClicked();
 }
 
 // =====================================================================
@@ -394,7 +394,7 @@ void ToolBar::onZoomTypeToggleToolButtonClicked()
   //  if (TempAction == mref_ZoomCursorZoomTypeMenuAction)
   if (m_BoolCursorState)
   {
-    std::cout << "ZoomCursor : " << std::endl;
+//    std::cout << "ZoomCursor : " << std::endl;
     onZoomCursorZoomTypeButtonClicked();
     //  } else if (TempAction == mref_ZoomFrameZoomTypeMenuAction)
   } else if (m_BoolFrameState)

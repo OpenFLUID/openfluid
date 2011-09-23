@@ -177,7 +177,24 @@ void Mediator::whenOnShow100FocusButtonClicked()
 
 void Mediator::whenOnZoomSelectionFocusButtonClicked()
 {
-
+  if (m_SelectedClassName == "")
+  {
+    m_SelectedUnitId.clear();
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't zoom in a selection without selection.\n\nPlease select a layer."));
+  } else
+  {
+    std::vector<Layer*>::iterator it;
+    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    {
+      if (m_SelectedClassName == (*it)->getClassName())
+      {
+        mref_DrawingArea.modifyScaleTranslate((*it)->getMinMaxSelection(m_SelectedUnitId));
+      }
+    }
+    redraw();
+  }
 }
 
 // =====================================================================
@@ -185,7 +202,24 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
 
 void Mediator::whenOnZoomLayerFocusButtonClicked()
 {
-
+  if (m_SelectedClassName == "")
+  {
+    m_SelectedUnitId.clear();
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't zoom in a layer without select the corresponding layer before.\n\nPlease select a layer."));
+  } else
+  {
+    std::vector<Layer*>::iterator it;
+    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    {
+      if (m_SelectedClassName == (*it)->getClassName())
+      {
+        mref_DrawingArea.modifyScaleTranslate((*it)->getMinMaxLayer());
+      }
+    }
+    redraw();
+  }
 }
 
 // =====================================================================

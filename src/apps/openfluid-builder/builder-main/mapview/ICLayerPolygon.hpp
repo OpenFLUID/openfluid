@@ -43,7 +43,7 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-*/
+ */
 
 /**
  \file ICLayerPolygon.hpp
@@ -52,28 +52,29 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-
 #ifndef __ICLAYERPOLYGON_HPP__
 #define __ICLAYERPOLYGON_HPP__
 
 #include "ICLayer.hpp"
 
-class ICLayerPolygon : public ICLayer
+class ICLayerPolygon: public ICLayer
 {
 
-  private :
+  private:
 
-  public :
+  public:
 
     ICLayerPolygon();
 
-    void drawPoly(Cairo::RefPtr<Cairo::Context> , OGRGeometry*, double, bool);
-    void draw(Cairo::RefPtr<Cairo::Context> , double, std::set<int>);
+    void drawPoly(Cairo::RefPtr<Cairo::Context>, OGRGeometry*, double, bool);
+    void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>);
 
     int isSelected(double, double, double);
 
-    std::pair< std::pair<double, double>, std::pair<double, double> > getMinMax();
+    std::pair<std::pair<double, double>, std::pair<double, double> >
+        getMinMax();
+    std::pair<std::pair<double, double>, std::pair<double, double> >
+    getMinMax(std::set<int>);
 };
-
 
 #endif /* __ICLAYERPOLYGON_HPP__ */

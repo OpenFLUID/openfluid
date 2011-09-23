@@ -143,6 +143,8 @@ class Layer
     //get
     std::pair<std::pair<double, double>, std::pair<double, double> >
     getMinMaxLayer();
+    std::pair<std::pair<double, double>, std::pair<double, double> >
+        getMinMaxSelection(std::set<int>);
     bool getIsDisplay();
     bool getIsSelected();
     bool getLoadShapeFile();
