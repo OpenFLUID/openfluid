@@ -71,6 +71,9 @@ void DrawingAreaZoomFrameState::onMouseButtonPressed(GdkEventButton* event)
 {
   m_XPress = event->x / mref_DrawingArea.getScale();
   m_YPress = event->y / mref_DrawingArea.getScale();
+
+  mref_DrawingArea.setZoomFrame(true);
+  mref_DrawingArea.setSavePixBuf(false);
 }
 
 // =====================================================================
@@ -80,8 +83,7 @@ bool DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEventButton* event)
 {
   double XRelease = event->x / mref_DrawingArea.getScale();
   double YRelease = event->y / mref_DrawingArea.getScale();
-  std::cout << m_XPress << " " << m_YPress << std::endl;
-  std::cout << XRelease << " " << YRelease << std::endl;
+
   if (m_XPress != XRelease && m_YPress != YRelease)
   {
     double XPoint, YPoint;
@@ -99,19 +101,37 @@ bool DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEventButton* event)
     Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
     double Width = allocation.get_width();
     double Height = allocation.get_height();
-    std::cout << mref_DrawingArea.getScale() << std::endl;
+
     double MinRatio = std::min(
         (Width / mref_DrawingArea.getScale()) / abs(m_XPress - XRelease),
         (Height / mref_DrawingArea.getScale()) / abs(m_YPress - YRelease));
     if (MinRatio != std::numeric_limits<double>::infinity())
     {
       double Scale = mref_DrawingArea.getScale() * MinRatio;
-      std::cout << MinRatio << std::endl;
+
       mref_DrawingArea.setScale(Scale);
       mref_DrawingArea.setXTranslate(XPoint);
       mref_DrawingArea.setYTranslate(YPoint);
+      mref_DrawingArea.setZoomFrame(false);
       return true;
     }
   }
+  mref_DrawingArea.setZoomFrame(false);
   return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+double DrawingAreaZoomFrameState::getXPress()
+{
+  return m_XPress;
+}
+
+// =====================================================================
+// =====================================================================
+
+double DrawingAreaZoomFrameState::getYPress()
+{
+  return m_YPress;
 }

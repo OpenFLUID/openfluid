@@ -85,6 +85,10 @@ class DrawingArea: public Gtk::DrawingArea
 
     bool m_pressMultiSelect;
     bool m_LayerExist;
+    bool m_ZoomFrame;
+    bool m_SavePixBuf;
+
+    Glib::RefPtr<Gdk::Pixbuf> mp_PixBufGDKWindow;
 
     sigc::signal<void> m_signal_ExposeEventChanged;
     sigc::signal<void, double, double> m_signal_CoordinateChanged;
@@ -99,7 +103,7 @@ class DrawingArea: public Gtk::DrawingArea
   public:
 
     DrawingArea();
-    //    virtual ~DrawingArea();
+//        virtual ~DrawingArea();
 
     sigc::signal<void> signal_ExposeEventChanged();
     sigc::signal<void, double, double> signal_CoordinateChanged();
@@ -126,6 +130,8 @@ class DrawingArea: public Gtk::DrawingArea
     void setXTranslate(double);
     void setYTranslate(double);
     void setLayerExist(bool);
+    void setZoomFrame(bool);
+    void setSavePixBuf(bool);
 
   protected:
 
@@ -136,7 +142,6 @@ class DrawingArea: public Gtk::DrawingArea
     virtual bool on_leave_notify_event(GdkEventCrossing* event);
     virtual bool on_enter_notify_event(GdkEventCrossing* event);
     virtual bool on_motion_notify_event(GdkEventMotion* event);
-//    virtual void on_realize();
 };
 
 #endif /* __DRAWINGAREA_HPP__ */

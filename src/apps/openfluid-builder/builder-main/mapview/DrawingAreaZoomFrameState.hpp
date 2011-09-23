@@ -64,6 +64,8 @@ class DrawingAreaZoomFrameState: public DrawingAreaState
 
     double m_XPress;
     double m_YPress;
+    double m_XPressWindow;
+    double m_YPressWindow;
 
   public:
 
@@ -71,6 +73,9 @@ class DrawingAreaZoomFrameState: public DrawingAreaState
 
     void onMouseButtonPressed(GdkEventButton*);
     bool onMouseButtonReleased(GdkEventButton*);
+
+    double getXPress();
+    double getYPress();
 
 };
 

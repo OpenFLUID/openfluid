@@ -69,10 +69,8 @@ void ICLayerLineString::drawLine(Cairo::RefPtr<Cairo::Context> cr,
   OGRLineString* Line = static_cast<OGRLineString*> (ObjectGeo);
   cr->move_to(Line->getX(0), Line->getY(0));
   double lw = cr->get_line_width();
-  cr->save();
   for (int i = 1; i < Line->getNumPoints(); i++)
   {
-
     if (select)
     {
       cr->set_line_width(lw + (4 / scale));
@@ -80,8 +78,6 @@ void ICLayerLineString::drawLine(Cairo::RefPtr<Cairo::Context> cr,
     cr->line_to(Line->getX(i), Line->getY(i));
   }
   cr->stroke();
-  cr->restore();
-
 }
 
 // =====================================================================

@@ -77,6 +77,8 @@ DrawingArea::DrawingArea()
 
   m_pressMultiSelect = false;
   m_LayerExist = false;
+  m_ZoomFrame = false;
+  m_SavePixBuf = false;
 
   modify_bg(Gtk::StateType(NULL), Gdk::Color("#FFFFFF"));
 
@@ -116,14 +118,6 @@ bool DrawingArea::on_expose_event(GdkEventExpose* /*e*/)
   return true;
 }
 
-//void DrawingArea::on_realize()
-//{
-////  Gtk::Window& window = dynamic_cast<Gtk::Window&>(*get_toplevel());
-////  window.signal_key_press_event().connect(
-////      sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
-////  window.signal_key_release_event().connect(
-////        sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
-//}
 // =====================================================================
 // =====================================================================
 
@@ -156,6 +150,7 @@ void DrawingArea::changeToInitialState()
   m_KeyPress.disconnect();
   m_KeyRelease.disconnect();
   m_pressMultiSelect = false;
+  m_ZoomFrame = false;
   mp_CurrentState = dynamic_cast<DrawingAreaState*> (mp_InitialState);
 }
 
@@ -172,10 +167,12 @@ void DrawingArea::changeToMoveState()
 
 void DrawingArea::changeToSelectState()
 {
-  m_KeyPress =dynamic_cast<Gtk::Window&> (*get_toplevel()).signal_key_press_event().connect(
-      sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
-  m_KeyRelease = dynamic_cast<Gtk::Window&> (*get_toplevel()).signal_key_release_event().connect(
-      sigc::mem_fun(*this, &DrawingArea::whenOnKeyReleased));
+  m_KeyPress
+      = dynamic_cast<Gtk::Window&> (*get_toplevel()).signal_key_press_event().connect(
+          sigc::mem_fun(*this, &DrawingArea::whenOnKeyPressed));
+  m_KeyRelease
+      = dynamic_cast<Gtk::Window&> (*get_toplevel()).signal_key_release_event().connect(
+          sigc::mem_fun(*this, &DrawingArea::whenOnKeyReleased));
   mp_CurrentState = dynamic_cast<DrawingAreaState*> (mp_SelectState);
 }
 
@@ -308,6 +305,62 @@ bool DrawingArea::on_motion_notify_event(GdkEventMotion* event)
   XPress = getXTranslate() + XPress;
   YPress = getYTranslate() - YPress;
   m_signal_CoordinateChanged.emit(XPress, YPress);
+
+  if (mp_CurrentState == dynamic_cast<DrawingAreaState*> (mp_ZoomFrameState))
+  {
+    if (m_ZoomFrame)
+    {
+      Glib::RefPtr<Gdk::Window> Window = get_window();
+
+      if (Window)
+      {
+        Cairo::RefPtr<Cairo::Context> Context = Window->create_cairo_context();
+
+        double
+            Xp =
+                getXTranslate()
+                    + dynamic_cast<DrawingAreaZoomFrameState*> (mp_CurrentState)->getXPress();
+        double
+            Yp =
+                getYTranslate()
+                    - dynamic_cast<DrawingAreaZoomFrameState*> (mp_CurrentState)->getYPress();
+
+        Gtk::Allocation allocation = get_allocation();
+        const int width = allocation.get_width();
+        const int height = allocation.get_height();
+
+        if (!m_SavePixBuf)
+          mp_PixBufGDKWindow = Gdk::Pixbuf::create(
+              Glib::RefPtr<Gdk::Drawable>::cast_dynamic(Window), 0, 0, width,
+              height);
+        Window->clear();
+        Window->draw_pixbuf(mp_PixBufGDKWindow, 0, 0, 0, 0, width, height,
+            Gdk::RGB_DITHER_NONE, 0, 0);
+
+        Context->rectangle(0, 0, width, height);
+        Context->clip();
+        Context->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
+        Context->set_line_width(1 / m_Scale);
+        Context->set_source_rgba(0, 0, 1, 1);
+
+        Context->scale(getScale(), -getScale());
+        Context->translate(-getXTranslate(), -getYTranslate());
+
+
+        Context->move_to(Xp, Yp);
+        Context->line_to(Xp, YPress);
+        Context->line_to(XPress, YPress);
+        Context->line_to(XPress, Yp);
+        Context->line_to(Xp, Yp);
+        Context->close_path();
+
+        Context->stroke();
+
+        m_SavePixBuf = true;
+      }
+    }
+  }
+
   return false;
 }
 
@@ -375,4 +428,20 @@ void DrawingArea::setYTranslate(double YTranslate)
 void DrawingArea::setLayerExist(bool LayerExist)
 {
   m_LayerExist = LayerExist;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DrawingArea::setZoomFrame(bool ZoomFrame)
+{
+  m_ZoomFrame = ZoomFrame;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DrawingArea::setSavePixBuf(bool SavePixBuf)
+{
+  m_SavePixBuf = SavePixBuf;
 }
