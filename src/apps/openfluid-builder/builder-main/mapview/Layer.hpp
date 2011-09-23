@@ -126,6 +126,7 @@ class Layer
     void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>);
 
     int isObjectSelected(double, double, double);
+    std::set<int> ObjectSelected();
 
     Gtk::Widget* asWidget();
 

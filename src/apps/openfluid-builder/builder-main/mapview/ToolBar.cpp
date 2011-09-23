@@ -241,7 +241,7 @@ ToolBar::ToolBar()
       sigc::mem_fun(*this, &ToolBar::onUnzoomCursorToggleToolButtonClicked));
   mp_ZoomTypeToggleToolButton->signal_toggled().connect(
       sigc::mem_fun(*this, &ToolBar::onZoomTypeToggleToolButtonClicked));
-
+  resetSensitiveToolBar(false);
 }
 
 // =====================================================================
@@ -301,7 +301,7 @@ void ToolBar::onChangeZoomCursorZoomType()
   mp_ZoomTypeToggleToolButton->set_active(true);
   m_BoolCursorState = true;
   m_BoolFrameState = false;
-//  mref_ZoomCursorZoomTypeMenuAction->connect_proxy(*mp_ZoomTypeToggleToolButton);
+  //  mref_ZoomCursorZoomTypeMenuAction->connect_proxy(*mp_ZoomTypeToggleToolButton);
   onZoomTypeToggleToolButtonClicked();
 }
 
@@ -314,7 +314,7 @@ void ToolBar::onChangeZoomFrameZoomType()
   mp_ZoomTypeToggleToolButton->set_active(true);
   m_BoolCursorState = false;
   m_BoolFrameState = true;
-//  mref_ZoomFrameZoomTypeMenuAction->connect_proxy(*mp_ZoomTypeToggleToolButton);
+  //  mref_ZoomFrameZoomTypeMenuAction->connect_proxy(*mp_ZoomTypeToggleToolButton);
   onZoomTypeToggleToolButtonClicked();
 }
 
@@ -389,14 +389,14 @@ void ToolBar::onUnzoomCursorToggleToolButtonClicked()
 
 void ToolBar::onZoomTypeToggleToolButtonClicked()
 {
-//  Glib::RefPtr<Gtk::Action> TempAction =
-//      mp_ZoomTypeToggleToolButton->get_action();
-//  if (TempAction == mref_ZoomCursorZoomTypeMenuAction)
+  //  Glib::RefPtr<Gtk::Action> TempAction =
+  //      mp_ZoomTypeToggleToolButton->get_action();
+  //  if (TempAction == mref_ZoomCursorZoomTypeMenuAction)
   if (m_BoolCursorState)
   {
     std::cout << "ZoomCursor : " << std::endl;
     onZoomCursorZoomTypeButtonClicked();
-//  } else if (TempAction == mref_ZoomFrameZoomTypeMenuAction)
+    //  } else if (TempAction == mref_ZoomFrameZoomTypeMenuAction)
   } else if (m_BoolFrameState)
   {
     std::cout << "ZoomFrame : " << std::endl;
@@ -555,7 +555,58 @@ void ToolBar::resetToolBar(int i)
   {
     mp_ZoomTypeToggleToolButton->set_active(false);
   }
+}
 
+// =====================================================================
+// =====================================================================
+
+void ToolBar::resetSensitiveToolBar(bool Sensitive)
+{
+  if (mp_MoveLayerToggleToolButton->get_active())
+    mp_MoveLayerToggleToolButton->set_active(false);
+  if (mp_SelectObjectLayerToggleToolButton->get_active())
+    mp_SelectObjectLayerToggleToolButton->set_active(false);
+  if (mp_UnzoomCursorToggleToolButton->get_active())
+    mp_UnzoomCursorToggleToolButton->set_active(false);
+  if (mp_ZoomTypeToggleToolButton->get_active())
+    mp_ZoomTypeToggleToolButton->set_active(false);
+
+  if (!Sensitive)
+  {
+    mp_PreferenceMenubar->set_sensitive(false);
+
+    mp_InfoToolButton->set_sensitive(false);
+    mp_FocusToolButton->set_sensitive(false);
+
+    mp_SelectObjectLayerToggleToolButton->set_sensitive(false);
+    mp_MoveLayerToggleToolButton->set_sensitive(false);
+    mp_UnzoomCursorToggleToolButton->set_sensitive(false);
+    mp_ZoomTypeToggleToolButton->set_sensitive(false);
+
+    mp_FocusMenuToolButton->set_sensitive(false);
+    mp_ZoomTypeMenuToolButton->set_sensitive(false);
+  } else
+  {
+    mp_InfoToolButton->set_sensitive(true);
+    mp_FocusToolButton->set_sensitive(true);
+
+    mp_SelectObjectLayerToggleToolButton->set_sensitive(true);
+    mp_MoveLayerToggleToolButton->set_sensitive(true);
+    mp_UnzoomCursorToggleToolButton->set_sensitive(true);
+    mp_ZoomTypeToggleToolButton->set_sensitive(true);
+
+    mp_FocusMenuToolButton->set_sensitive(true);
+    mp_ZoomTypeMenuToolButton->set_sensitive(true);
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::setSensitivePreferenceMenubar(bool Sensitive)
+{
+  mp_PreferenceMenubar->set_sensitive(Sensitive);
 }
 
 // =====================================================================
@@ -591,3 +642,4 @@ Gtk::ToggleToolButton* ToolBar::getZoomTypeToggleToolButton()
 {
   return mp_ZoomTypeToggleToolButton;
 }
+

@@ -169,6 +169,8 @@ class ToolBar
     mtype_SignalToolBar signalUnzoomCursorToggleToolButtonClicked();
 
     void resetToolBar(int);
+    void resetSensitiveToolBar(bool);
+    void setSensitivePreferenceMenubar(bool);
 
     //accessor*************************************
     //get

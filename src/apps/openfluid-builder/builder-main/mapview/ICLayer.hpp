@@ -88,6 +88,7 @@ class ICLayer
     void setEngineRequirements(openfluid::core::CoreRepository&);
 
     virtual int isSelected(double, double, double) = 0;
+    std::set<int> selectObject(std::string);
 
   protected:
     std::map<int, ICLayerObject*> m_ICLayerObject;

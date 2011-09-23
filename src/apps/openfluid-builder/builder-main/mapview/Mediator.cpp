@@ -198,7 +198,11 @@ void Mediator::whenOnZoomCursorZoomTypeButtonClicked()
     mref_ToolBar.resetToolBar(4);
     mref_DrawingArea.changeToZoomCursorState();
   } else
+  {
     mref_DrawingArea.changeToInitialState();
+    mref_ToolBar.setSensitivePreferenceMenubar(false);
+  }
+
 }
 
 // =====================================================================
@@ -211,7 +215,10 @@ void Mediator::whenOnZoomFrameZoomTypeButtonClicked()
     mref_ToolBar.resetToolBar(4);
     mref_DrawingArea.changeToZoomFrameState();
   } else
+  {
     mref_DrawingArea.changeToInitialState();
+    mref_ToolBar.setSensitivePreferenceMenubar(false);
+  }
 }
 
 // =====================================================================
@@ -219,7 +226,25 @@ void Mediator::whenOnZoomFrameZoomTypeButtonClicked()
 
 void Mediator::whenOnSelectAllPreferenceMenuClicked()
 {
-
+  if (m_SelectedClassName == "")
+  {
+    m_SelectedUnitId.clear();
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
+  } else
+  {
+    std::vector<Layer*>::iterator it;
+    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    {
+      if (m_SelectedClassName == (*it)->getClassName())
+      {
+        std::set<int> temp = (*it)->ObjectSelected();
+        temp.swap(m_SelectedUnitId);
+      }
+    }
+    redraw();
+  }
 }
 
 // =====================================================================
@@ -227,7 +252,32 @@ void Mediator::whenOnSelectAllPreferenceMenuClicked()
 
 void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 {
-
+  if (m_SelectedClassName == "")
+  {
+    m_SelectedUnitId.clear();
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
+  } else
+  {
+    std::vector<Layer*>::iterator it;
+    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    {
+      if (m_SelectedClassName == (*it)->getClassName())
+      {
+        std::set<int> temp = (*it)->ObjectSelected();
+        std::set<int>::iterator itset;
+        for (itset = m_SelectedUnitId.begin(); itset != m_SelectedUnitId.end(); itset++)
+        {
+          std::set<int>::iterator it2;
+          it2 = temp.find((*itset));
+          temp.erase(it2);
+        }
+        temp.swap(m_SelectedUnitId);
+      }
+    }
+    redraw();
+  }
 }
 
 // =====================================================================
@@ -270,7 +320,8 @@ void Mediator::whenOnAddLayerToolButtonClicked()
   {
     std::pair<std::pair<std::string, std::string>, std::string> AddFile =
         mp_AddDialogFileChooser->show(ClassNames);
-    while (AddFile.second == "" &&  AddFile.first.first != "" &&  AddFile.first.second != "")
+    while (AddFile.second == "" && AddFile.first.first != ""
+        && AddFile.first.second != "")
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
           _(
@@ -309,7 +360,7 @@ void Mediator::whenOnAddLayerToolButtonClicked()
         sigc::mem_fun(*this, &Mediator::whenOnIsSelectedLayerClicked));
     pLayer->signalWidgetExpanderBaseChanged().connect(
         sigc::mem_fun(*this, &Mediator::whenOnWidgetExpanderBaseChanged));
-
+    mref_ToolBar.resetSensitiveToolBar(true);
     redraw();
   } else
     m_Layer.pop_back();
@@ -332,8 +383,12 @@ void Mediator::whenOnSelectObjectLayerToggleToolButtonClicked()
   {
     mref_ToolBar.resetToolBar(2);
     mref_DrawingArea.changeToSelectState();
+    mref_ToolBar.setSensitivePreferenceMenubar(true);
   } else
+  {
     mref_DrawingArea.changeToInitialState();
+    mref_ToolBar.setSensitivePreferenceMenubar(false);
+  }
 }
 
 // =====================================================================
@@ -346,7 +401,10 @@ void Mediator::whenOnMoveLayerToggleToolButtonClicked()
     mref_ToolBar.resetToolBar(1);
     mref_DrawingArea.changeToMoveState();
   } else
+  {
     mref_DrawingArea.changeToInitialState();
+    mref_ToolBar.setSensitivePreferenceMenubar(false);
+  }
 }
 
 // =====================================================================
@@ -359,7 +417,10 @@ void Mediator::whenOnUnzoomCursorToggleToolButtonClicked()
     mref_ToolBar.resetToolBar(3);
     mref_DrawingArea.changeToUnzoomCursorState();
   } else
+  {
     mref_DrawingArea.changeToInitialState();
+    mref_ToolBar.setSensitivePreferenceMenubar(false);
+  }
 }
 
 // =====================================================================
@@ -388,6 +449,10 @@ void Mediator::whenOnDownLayerButtonClicked(std::string ClassName)
 void Mediator::whenOnRemoveLayerButtonClicked(std::string ClassName)
 {
   removeLayer(ClassName);
+  if (m_Layer.empty())
+    mref_ToolBar.resetSensitiveToolBar(false);
+  if (m_SelectedClassName == ClassName)
+    m_SelectedUnitId.clear();
   redraw();
 }
 

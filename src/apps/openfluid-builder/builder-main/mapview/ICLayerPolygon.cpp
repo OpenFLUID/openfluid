@@ -63,13 +63,12 @@ ICLayerPolygon::ICLayerPolygon()
 // =====================================================================
 
 void ICLayerPolygon::drawPoly(Cairo::RefPtr<Cairo::Context> cr,
-    OGRGeometry* ObjectGeo, double scale, bool select)
+    OGRGeometry* ObjectGeo, double /*scale*/, bool select)
 {
 
   OGRPolygon* Poly = static_cast<OGRPolygon*> (ObjectGeo);
   OGRLinearRing* poLinearRing = Poly->getExteriorRing();
   cr->move_to(poLinearRing->getX(0), poLinearRing->getY(0));
-  double lw = cr->get_line_width();
   for (int i = 1; i < poLinearRing->getNumPoints(); i++)
   {
     cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));

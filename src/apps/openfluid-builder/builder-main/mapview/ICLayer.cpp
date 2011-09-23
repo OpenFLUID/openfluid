@@ -95,9 +95,24 @@ void ICLayer::update(std::string ClassName)
   std::map<int, ICLayerObject*>::iterator it;
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
-        if (mp_CoreRepos->getUnit(ClassName,(*it).first) != NULL)
-          (*it).second->update(mp_CoreRepos->getUnit(ClassName,(*it).first));
+    if (mp_CoreRepos->getUnit(ClassName, (*it).first) != NULL)
+      (*it).second->update(mp_CoreRepos->getUnit(ClassName, (*it).first));
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+std::set<int> ICLayer::selectObject(std::string ClassName)
+{
+  std::set<int> temp;
+  std::map<int, ICLayerObject*>::iterator it;
+  for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
+  {
+    if (mp_CoreRepos->getUnit(ClassName, (*it).first) != NULL)
+      temp.insert((*it).first);
+  }
+  return temp;
 }
 
 // =====================================================================
