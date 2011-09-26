@@ -90,6 +90,11 @@ class DLLEXPORT StringValue : public SimpleValue
 
     Value& operator =(const Value& Other);
 
+    /**
+     * Cast operator
+     */
+    operator std::string() const { return m_Value; };
+
     virtual ~StringValue() {};
 
     inline Type getType() const { return Value::STRING; };

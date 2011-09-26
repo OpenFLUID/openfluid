@@ -402,16 +402,10 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, double *Value)
 {
-  openfluid::core::FuncParamKey_t TmpStr;
-
   if (Params.find(ParamName) != Params.end())
-  {
-    TmpStr = Params[ParamName];
+    return Params[ParamName].toDouble(*Value);
 
-    return openfluid::tools::ConvertString<double>(TmpStr,Value);
-
-  }
-  else return false;
+  return false;
 }
 
 // =====================================================================
@@ -421,16 +415,10 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, long *Value)
 {
-  std::string TmpStr;
-
   if (Params.find(ParamName) != Params.end())
-  {
-    TmpStr = Params[ParamName];
+    return Params[ParamName].toInteger(*Value);
 
-    return openfluid::tools::ConvertString<long>(TmpStr,Value);
-  }
-  else return false;
-
+  return false;
 }
 
 
@@ -440,15 +428,19 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, float *Value)
 {
-  std::string TmpStr;
+  bool IsOk = false;
 
   if (Params.find(ParamName) != Params.end())
   {
-    TmpStr = Params[ParamName];
-    return openfluid::tools::ConvertString<float>(TmpStr,Value);
+    double TmpDbl;
 
+    IsOk = Params[ParamName].toDouble(TmpDbl);
+
+    if(IsOk)
+      *Value = static_cast<float>(TmpDbl);
   }
-  else return false;
+
+  return IsOk;
 }
 
 // =====================================================================
@@ -458,15 +450,19 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, int *Value)
 {
-  std::string TmpStr;
+  bool IsOk = false;
 
   if (Params.find(ParamName) != Params.end())
   {
-    TmpStr = Params[ParamName];
-    return openfluid::tools::ConvertString<int>(TmpStr,Value);
+    long TmpLong;
 
+    IsOk = Params[ParamName].toInteger(TmpLong);
+
+    if(IsOk)
+      *Value = static_cast<int>(TmpLong);
   }
-  else return false;
+
+  return IsOk;
 }
 
 
@@ -476,16 +472,14 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::string *Value)
 {
-  std::string TmpStr;
-
   if (Params.find(ParamName) != Params.end())
   {
-    TmpStr = Params[ParamName];
-    *Value = TmpStr;
+    *Value = Params[ParamName];
+
     return true;
   }
-  else return false;
 
+  return false;
 }
 
 
@@ -495,23 +489,21 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<std::string> *Values)
 {
-  std::string TmpStr;
-
-  std::vector<std::string> Tokens;
-
   if (Params.find(ParamName) != Params.end())
   {
-    TmpStr = Params[ParamName];
+    std::vector<std::string> Tokens;
 
-    openfluid::tools::TokenizeString(TmpStr,Tokens,";");
+    openfluid::tools::TokenizeString(Params[ParamName],Tokens,";");
 
-    (*Values).clear();
-    for (unsigned int i=0;i<Tokens.size();i++) (*Values).push_back(Tokens[i]);
+    Values->clear();
+
+    for (unsigned int i=0;i<Tokens.size();i++)
+      Values->push_back(Tokens[i]);
 
     return true;
   }
-  else return false;
 
+ return false;
 }
 
 // =====================================================================
@@ -520,30 +512,24 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<double> *Values)
 {
-  std::vector<std::string> StrVect;
-  double TmpValue;
+  bool IsOK = false;
 
-  // gets the param as a vector of string
-  bool IsOK = OPENFLUID_GetFunctionParameter(Params,ParamName,&StrVect);
-
-  // clears the double values vector
-  (*Values).clear();
-
-  unsigned int i=0;
-
-  while (IsOK && i < StrVect.size())
+  if (Params.find(ParamName) != Params.end())
   {
-    IsOK = IsOK && openfluid::tools::ConvertString<double>(StrVect[i],&TmpValue);
+    openfluid::core::VectorValue Vect;
 
-    // if conversion is OK, add the value and continue
-    if (IsOK) Values->push_back(TmpValue);
-    else (*Values).clear();
+    IsOK = Params[ParamName].toVectorValue(";",Vect);
 
-    i++;
+    if(IsOK)
+    {
+      Values->clear();
+
+      for (unsigned long i=0;i<Vect.size();i++)
+        Values->push_back(Vect[i]);
+    }
   }
 
   return IsOK;
-
 }
 
 // =====================================================================
@@ -552,30 +538,24 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<long> *Values)
 {
-  std::vector<std::string> StrVect;
-  long TmpValue;
+  bool IsOK = false;
 
-  // gets the param as a vector of string
-  bool IsOK = OPENFLUID_GetFunctionParameter(Params,ParamName,&StrVect);
-
-  // clears the double values vector
-  (*Values).clear();
-
-  unsigned int i=0;
-
-  while (IsOK && i < StrVect.size())
+  if (Params.find(ParamName) != Params.end())
   {
-    IsOK = IsOK && openfluid::tools::ConvertString<long>(StrVect[i],&TmpValue);
+    openfluid::core::VectorValue Vect;
 
-    // if conversion is OK, add the value and continue
-    if (IsOK) Values->push_back(TmpValue);
-    else (*Values).clear();
+    IsOK = Params[ParamName].toVectorValue(";",Vect);
 
-    i++;
+    if(IsOK)
+    {
+      Values->clear();
+
+      for (unsigned long i=0;i<Vect.size();i++)
+        Values->push_back(static_cast<long>(Vect[i]));
+    }
   }
 
   return IsOK;
-
 }
 
 // =====================================================================

@@ -265,7 +265,7 @@ openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr 
 
         if (xmlKey != NULL && xmlValue != NULL)
         {
-          Params[(const char*)xmlKey] = (const char*)xmlValue;
+          Params[(const char*)xmlKey] = openfluid::core::StringValue((const char*)xmlValue);
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }

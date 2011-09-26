@@ -61,6 +61,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/StringValue.hpp>
 
 
 namespace openfluid { namespace core {
@@ -154,7 +155,8 @@ typedef std::vector<VectorValue> SerieOfVectorValue;
 
 
 typedef std::string FuncParamKey_t;
-typedef std::string FuncParamValue_t;
+//typedef std::string FuncParamValue_t;
+typedef openfluid::core::StringValue FuncParamValue_t;
 
 /**
   Hash table for parameters (distributed properties, distributed initial conditions, ...)
