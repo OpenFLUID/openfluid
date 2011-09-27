@@ -67,7 +67,7 @@ class ICLayerPoint: public ICLayer
     ICLayerPoint();
 
     void drawPoint(Cairo::RefPtr<Cairo::Context>, OGRGeometry*, double, bool);
-    void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>);
+    void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>, bool, double);
 
     int isSelected(double, double, double);
 

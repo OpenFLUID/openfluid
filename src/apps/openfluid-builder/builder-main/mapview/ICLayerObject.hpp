@@ -67,6 +67,7 @@ class ICLayerObject
 
     OGRGeometry* mp_OGRGeometryObject;
     openfluid::core::Unit* mp_SelfIdExist;
+    std::pair<double, double> m_Centroid;
 
   public :
 
@@ -79,9 +80,10 @@ class ICLayerObject
     //get
     OGRGeometry* getOGRGeometryObject();
     openfluid::core::Unit* getSelfIdExist();
+    std::pair<double, double> getCentroid();
     //set
     void setSelfIdExist(openfluid::core::Unit*);
-
+    void setCentroid(std::pair<double, double>);
 };
 
 

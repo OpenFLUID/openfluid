@@ -75,6 +75,8 @@ Layer::Layer(const LayerType::LayerTypes LayerType) :
   m_LoadShapeFile = false;
   m_IsDisplay = true;
   m_IsSelected = false;
+  m_DisplayID = false;
+  m_DisplayGraph = false;
   m_ClassName = "";
   m_FileName = "";
   m_FolderUri = "";
@@ -252,9 +254,9 @@ void Layer::initialiseLayerContext(Cairo::RefPtr<Cairo::Context> Context,
 // =====================================================================
 
 void Layer::draw(Cairo::RefPtr<Cairo::Context> Context, double Scale,
-    std::set<int> Select)
+    std::set<int> Select, bool DisplayID)
 {
-  mp_ICLayer->draw(Context, Scale, Select);
+  mp_ICLayer->draw(Context, Scale, Select, DisplayID, m_Alpha);
 }
 
 // =====================================================================
@@ -264,7 +266,6 @@ int Layer::isObjectSelected(double X, double Y, double Scale)
 {
   return mp_ICLayer->isSelected(X, Y, Scale);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -287,7 +288,8 @@ std::pair<std::pair<double, double>, std::pair<double, double> > Layer::getMinMa
 // =====================================================================
 // =====================================================================
 
-std::pair<std::pair<double, double>, std::pair<double, double> > Layer::getMinMaxSelection(std::set<int> Selection)
+std::pair<std::pair<double, double>, std::pair<double, double> > Layer::getMinMaxSelection(
+    std::set<int> Selection)
 {
   return mp_ICLayer->getMinMax(Selection);
 }
@@ -338,6 +340,22 @@ bool Layer::getLoadShapeFile()
 bool Layer::getIsSelected()
 {
   return m_IsSelected;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool Layer::getDisplayID()
+{
+  return m_DisplayID;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool Layer::getDisplayGraph()
+{
+  return m_DisplayGraph;
 }
 
 // =====================================================================
@@ -421,7 +439,6 @@ void Layer::whenOnIsSelectedLayerClicked()
   if (m_IsSelected)
     m_signal_IsSelectedLayerClicked.emit(m_ClassName);
   else
-    //
     m_signal_IsSelectedLayerClicked.emit("");
 }
 
@@ -429,13 +446,16 @@ void Layer::whenOnIsSelectedLayerClicked()
 // =====================================================================
 
 void Layer::whenOnWidgetExpanderBaseChanged(int SizeLine, double Red,
-    double Green, double Blue, double Alpha)
+    double Green, double Blue, double Alpha, bool DisplayID, bool DisplayGraph)
 {
   m_SizeLine = SizeLine;
   m_Red = Red;
   m_Green = Green;
   m_Blue = Blue;
   m_Alpha = Alpha;
+  m_DisplayID = DisplayID;
+  m_DisplayGraph = DisplayGraph;
+
   m_signal_WidgetExpanderBaseChanged.emit();
 }
 

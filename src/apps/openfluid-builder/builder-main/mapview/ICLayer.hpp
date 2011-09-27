@@ -79,7 +79,7 @@ class ICLayer
     void addObjectGeo(int, OGRGeometry*);
 
     std::map<int, ICLayerObject*> getICLayerObject();
-    virtual void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>) = 0;
+    virtual void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>, bool, double) = 0;
     virtual std::pair<std::pair<double, double>, std::pair<double, double> >
         getMinMax() = 0;
     virtual std::pair<std::pair<double, double>, std::pair<double, double> >

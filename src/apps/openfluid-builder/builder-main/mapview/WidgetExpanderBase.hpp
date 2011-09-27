@@ -75,12 +75,15 @@ class WidgetExpanderBase: public WidgetExpander
     Gtk::Table* mp_MainTableExpander;
 
     Gtk::Label m_LabelColor;
-    Gtk::Label m_LabelCheckButton;
+    Gtk::Label m_LabelCheckButtonGraph;
+    Gtk::Label m_LabelCheckButtonLayerName;
+    Gtk::Label m_LabelCheckButtonID;
     Gtk::Label m_LabelHScale;
     Gtk::Label m_LabelSpinButton;
 
     Gtk::ColorButton* mp_ColorButton;
-    Gtk::CheckButton* mp_CheckButton;
+    Gtk::CheckButton* mp_CheckButtonGraph;
+    Gtk::CheckButton* mp_CheckButtonID;
     Gtk::HScale* mp_HScale;
     Gtk::Adjustment* mp_AdjustmentHScale;
     Gtk::Adjustment* mp_AdjustmentSpinButton;
@@ -88,7 +91,7 @@ class WidgetExpanderBase: public WidgetExpander
 
     Gdk::Color m_Color;
 
-    typedef sigc::signal<void, int, double, double, double, double>
+    typedef sigc::signal<void, int, double, double, double, double, bool, bool>
         mtype_SignalWidgetExpanderBase;
 
     mtype_SignalWidgetExpanderBase m_signal_WidgetExpanderBaseChanged;

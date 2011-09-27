@@ -83,7 +83,7 @@ void ICLayerPoint::drawPoint(Cairo::RefPtr<Cairo::Context> cr,
 // =====================================================================
 
 void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
-    std::set<int> select)
+    std::set<int> select, bool DisplayID, double Alpha)
 {
   std::map<int, ICLayerObject*>::iterator it;
 
@@ -91,16 +91,51 @@ void ICLayerPoint::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
   {
     if ((*it).second->selfIdExisting())
     {
+      bool isSelect = false;
       if (!select.empty())
       {
         std::set<int>::iterator it2;
         it2 = select.find((*it).first);
         if (it2 != select.end() && (*it2) == (*it).first)
+        {
           drawPoint(cr, (*it).second->getOGRGeometryObject(), scale, true);
-        else
+          isSelect = true;
+        } else
           drawPoint(cr, (*it).second->getOGRGeometryObject(), scale, false);
       } else
         drawPoint(cr, (*it).second->getOGRGeometryObject(), scale, false);
+      if (DisplayID)
+      {
+        Cairo::TextExtents extents;
+
+        std::stringstream str;
+        str << (*it).first;
+        std::string text = str.str();
+
+        cr->select_font_face("Bitstream Vera Sans, Arial",
+            Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+        cr->set_font_size(12 / scale);
+
+        Cairo::FontOptions font_options;
+
+        font_options.set_hint_style(Cairo::HINT_STYLE_NONE);
+        font_options.set_hint_metrics(Cairo::HINT_METRICS_OFF);
+        font_options.set_antialias(Cairo::ANTIALIAS_GRAY);
+
+        cr->set_font_options(font_options);
+        cr->save();
+
+        cr->get_text_extents(text, extents);
+        cr->move_to(static_cast<OGRPoint*>((*it).second->getOGRGeometryObject())->getX(),
+            static_cast<OGRPoint*>((*it).second->getOGRGeometryObject())->getY());
+        cr->scale(1, -1);
+        if (isSelect)
+          cr->set_source_rgba(0, 0, 0, Alpha);
+
+        cr->show_text(text);
+        cr->stroke();
+        cr->restore();
+      }
     }
   }
 }

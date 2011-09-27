@@ -93,6 +93,8 @@ class Layer
     bool m_IsSelected;
     bool m_IsDisplay;
     bool m_LoadShapeFile;
+    bool m_DisplayID;
+    bool m_DisplayGraph;
 
     //***************Signal WidgetObjectBase*********************
     void whenOnUpLayerButtonClicked();
@@ -101,10 +103,11 @@ class Layer
     void whenOnIsDisplayButtonChecked();
     void whenOnIsSelectedLayerClicked();
     //***************Signal WidgetExpanderBase*******************
-    void whenOnWidgetExpanderBaseChanged(int, double, double, double, double);
+    void whenOnWidgetExpanderBaseChanged(int, double, double, double, double,
+        bool, bool);
 
     typedef sigc::signal<void> mtype_SignalLayer;
-    typedef sigc::signal<void,std::string> mtype_SignalLayerString;
+    typedef sigc::signal<void, std::string> mtype_SignalLayerString;
 
     mtype_SignalLayerString m_signal_UpLayerButtonClicked;
     mtype_SignalLayerString m_signal_DownLayerButtonClicked;
@@ -120,10 +123,11 @@ class Layer
     Layer(const LayerType::LayerTypes);
     ~Layer();
 
-    void addNewLayer(std::pair<std::pair<std::string, std::string>, std::string>);
+    void addNewLayer(
+        std::pair<std::pair<std::string, std::string>, std::string>);
     void loadShapefile(std::string, std::string);
     void initialiseLayerContext(Cairo::RefPtr<Cairo::Context>, double);
-    void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>);
+    void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>, bool);
 
     int isObjectSelected(double, double, double);
     std::set<int> ObjectSelected();
@@ -144,10 +148,13 @@ class Layer
     std::pair<std::pair<double, double>, std::pair<double, double> >
     getMinMaxLayer();
     std::pair<std::pair<double, double>, std::pair<double, double> >
-        getMinMaxSelection(std::set<int>);
+    getMinMaxSelection(std::set<int>);
     bool getIsDisplay();
     bool getIsSelected();
     bool getLoadShapeFile();
+    bool getDisplayLayerName();
+    bool getDisplayID();
+    bool getDisplayGraph();
     std::string getClassName();
     std::string getFileName();
     std::string getFolderUri();

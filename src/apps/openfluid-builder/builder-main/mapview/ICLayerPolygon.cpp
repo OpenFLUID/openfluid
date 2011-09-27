@@ -74,37 +74,70 @@ void ICLayerPolygon::drawPoly(Cairo::RefPtr<Cairo::Context> cr,
     cr->line_to(poLinearRing->getX(i), poLinearRing->getY(i));
   }
   cr->close_path();
-  //  std::cout << cr->get_line_width() << std::endl;
 
   if (select)
   {
     cr->fill();
   } else
     cr->stroke();
-
 }
 
 // =====================================================================
 // =====================================================================
 
 void ICLayerPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
-    std::set<int> select)
+    std::set<int> select, bool DisplayID, double Alpha)
 {
   std::map<int, ICLayerObject*>::iterator it;
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
     if ((*it).second->selfIdExisting())
     {
+      bool isSelect = false;
       if (!select.empty())
       {
         std::set<int>::iterator it2;
         it2 = select.find((*it).first);
         if (it2 != select.end() && (*it2) == (*it).first)
+        {
           drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, true);
-        else
+          isSelect = true;
+        } else
           drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, false);
       } else
         drawPoly(cr, (*it).second->getOGRGeometryObject(), scale, false);
+      if (DisplayID)
+      {
+        Cairo::TextExtents extents;
+
+        std::stringstream str;
+        str << (*it).first;
+        std::string text = str.str();
+
+        cr->select_font_face("Bitstream Vera Sans", Cairo::FONT_SLANT_NORMAL,
+            Cairo::FONT_WEIGHT_NORMAL);
+        cr->set_font_size(12 / scale);
+
+        Cairo::FontOptions font_options;
+
+        font_options.set_hint_style(Cairo::HINT_STYLE_NONE);
+        font_options.set_hint_metrics(Cairo::HINT_METRICS_OFF);
+        font_options.set_antialias(Cairo::ANTIALIAS_GRAY);
+
+        cr->set_font_options(font_options);
+        cr->save();
+
+        cr->get_text_extents(text, extents);
+        cr->move_to((*it).second->getCentroid().first,
+            (*it).second->getCentroid().second);
+        cr->scale(1, -1);
+        if (isSelect)
+          cr->set_source_rgba(0, 0, 0, Alpha);
+
+        cr->show_text(text);
+        cr->stroke();
+        cr->restore();
+      }
     }
   }
 }
@@ -126,7 +159,17 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon:
     if ((*it).second->selfIdExisting())
     {
       (*it).second->getOGRGeometryObject()->getEnvelope(&Env);
+      std::pair<double, double> TempPair;
+      if (Env.MaxX > Env.MinX)
+        TempPair.first = Env.MinX + abs(Env.MaxX - Env.MinX) / 2;
+      else
+        TempPair.first = Env.MinX - abs(Env.MaxX - Env.MinX) / 2;
+      if (Env.MaxY > Env.MinY)
+        TempPair.second = Env.MaxY - abs(Env.MaxY - Env.MinY) / 2;
+      else
+        TempPair.second = Env.MaxY + abs(Env.MaxY - Env.MinY) / 2;
 
+      (*it).second->setCentroid(TempPair);
       if (first)
       {
         (MinMaxTemp.second).first = Env.MaxX;
@@ -155,6 +198,7 @@ std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon:
 std::pair<std::pair<double, double>, std::pair<double, double> > ICLayerPolygon::getMinMax(
     std::set<int> TempSet)
 {
+
   std::pair<std::pair<double, double>, std::pair<double, double> > MinMaxTemp;
   OGREnvelope Env;
   bool first = true;
@@ -204,10 +248,8 @@ int ICLayerPolygon::isSelected(double x, double y, double /*scale*/)
     if ((*it).second->getOGRGeometryObject()->Contains(
         static_cast<OGRGeometry*> (p)) && (*it).second->selfIdExisting())
     {
-      //std::cout << " -> " <<  (*it).first << std::endl;
       return (*it).first;
     }
   }
-  //std::cout << -1 << std::endl;
   return -1;
 }

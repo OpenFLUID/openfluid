@@ -81,9 +81,25 @@ openfluid::core::Unit* ICLayerObject::getSelfIdExist()
 // =====================================================================
 // =====================================================================
 
+std::pair<double, double> ICLayerObject::getCentroid()
+{
+  return m_Centroid;
+}
+
+// =====================================================================
+// =====================================================================
+
 void ICLayerObject::setSelfIdExist(openfluid::core::Unit* SelfIdExist)
 {
   mp_SelfIdExist = SelfIdExist;
+}
+
+// =====================================================================
+// =====================================================================
+
+void ICLayerObject::setCentroid(std::pair<double, double> Centroid)
+{
+  m_Centroid = Centroid;
 }
 
 // =====================================================================

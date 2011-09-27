@@ -59,14 +59,18 @@
 WidgetExpanderBase::WidgetExpanderBase() :
   WidgetExpander()
 {
-  mp_MainTableExpander = Gtk::manage(new Gtk::Table(7, 2, false));
-  m_LabelColor.set_label("Color");
-  m_LabelCheckButton.set_label("Graph");
-  m_LabelHScale.set_label("Opacity");
-  m_LabelSpinButton.set_label("Width");
+  mp_MainTableExpander = Gtk::manage(new Gtk::Table(9, 2, false));
+  m_LabelColor.set_label(_("Color"));
+  m_LabelCheckButtonGraph.set_label(_("Graph"));
+  m_LabelCheckButtonLayerName.set_label(_("Layer Name"));
+  m_LabelCheckButtonID.set_label(_("ID"));
+  m_LabelHScale.set_label(_("Opacity"));
+  m_LabelSpinButton.set_label(_("Width"));
 
   m_LabelColor.set_alignment(.02, 0);
-  m_LabelCheckButton.set_alignment(.02, 0);
+  m_LabelCheckButtonGraph.set_alignment(.02, 0);
+  m_LabelCheckButtonLayerName.set_alignment(.02, 0);
+  m_LabelCheckButtonID.set_alignment(.02, 0);
   m_LabelHScale.set_alignment(.02, 0);
   m_LabelSpinButton.set_alignment(.02, 0);
 
@@ -76,7 +80,8 @@ WidgetExpanderBase::WidgetExpanderBase() :
       new Gtk::Adjustment(1.0, 1.0, 100.0, 1.0, 1.0, 0.0));
 
   mp_ColorButton = Gtk::manage(new Gtk::ColorButton());
-  mp_CheckButton = Gtk::manage(new Gtk::CheckButton());
+  mp_CheckButtonGraph = Gtk::manage(new Gtk::CheckButton());
+  mp_CheckButtonID = Gtk::manage(new Gtk::CheckButton());
   mp_HScale = Gtk::manage(new Gtk::HScale(*mp_AdjustmentHScale));
   mp_SpinButton = Gtk::manage(new Gtk::SpinButton(*mp_AdjustmentSpinButton));
 
@@ -97,7 +102,9 @@ WidgetExpanderBase::WidgetExpanderBase() :
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_MainTableExpander->attach(m_LabelHScale, 0, 1, 4, 5,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(m_LabelCheckButton, 0, 1, 6, 7,
+  mp_MainTableExpander->attach(m_LabelCheckButtonID, 0, 1, 6, 7,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  mp_MainTableExpander->attach(m_LabelCheckButtonGraph, 0, 1, 8, 9,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
   mp_MainTableExpander->attach(*mp_ColorButton, 1, 2, 0, 1, Gtk::SHRINK,
@@ -106,7 +113,9 @@ WidgetExpanderBase::WidgetExpanderBase() :
       Gtk::SHRINK);
   mp_MainTableExpander->attach(*mp_HScale, 1, 2, 4, 5, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
-  mp_MainTableExpander->attach(*mp_CheckButton, 1, 2, 6, 7, Gtk::SHRINK,
+  mp_MainTableExpander->attach(*mp_CheckButtonID, 1, 2, 6, 7, Gtk::SHRINK,
+      Gtk::SHRINK);
+  mp_MainTableExpander->attach(*mp_CheckButtonGraph, 1, 2, 8, 9, Gtk::SHRINK,
       Gtk::SHRINK);
 
   mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 1, 2,
@@ -114,6 +123,8 @@ WidgetExpanderBase::WidgetExpanderBase() :
   mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 3, 4,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 5, 6,
+      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 7, 8,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_MainTableExpander->set_visible(true);
   mp_MainTableExpander->show_all_children(true);
@@ -127,6 +138,10 @@ WidgetExpanderBase::WidgetExpanderBase() :
   mp_AdjustmentHScale->signal_value_changed().connect(
       sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
   mp_AdjustmentSpinButton->signal_value_changed().connect(
+      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  mp_CheckButtonID->signal_toggled().connect(
+      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  mp_CheckButtonGraph->signal_toggled().connect(
       sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
 }
 
@@ -173,5 +188,6 @@ void WidgetExpanderBase::onWidgetExpanderBaseChanged()
   m_SizeLine = mp_SpinButton->get_value();
   mp_SpinButton->update();
   m_signal_WidgetExpanderBaseChanged.emit(m_SizeLine, m_Color.get_red_p(),
-      m_Color.get_green_p(), m_Color.get_blue_p(), m_Alpha);
+      m_Color.get_green_p(), m_Color.get_blue_p(), m_Alpha,
+      mp_CheckButtonID->get_active(), mp_CheckButtonGraph->get_active());
 }

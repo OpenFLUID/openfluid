@@ -183,6 +183,11 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a selection without selection.\n\nPlease select a layer."));
+  } else if(m_SelectedUnitId.empty())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+            _(
+                "You can't zoom in a selection without selection.\n\nPlease select objects on a current layer."));
   } else
   {
     std::vector<Layer*>::iterator it;
@@ -553,7 +558,6 @@ void Mediator::whenOnMotionNotifyChanged(double X, double Y)
 
 void Mediator::whenOnSelectObjectChanged(double X, double Y)
 {
-  //TODO faire fonctionner la selection refaire l'algo +modifier grab_focus
   bool isRedraw = false;
   if (m_SelectedClassName == "")
   {
@@ -638,8 +642,6 @@ void Mediator::redraw()
       const int width = allocation.get_width();
       const int height = allocation.get_height();
 
-      // clip to the area indicated by the expose event so that we only redraw
-      // the portion of the window that needs to be redrawn
       Context->rectangle(0, 0, width, height);
       Context->clip();
       Context->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
@@ -654,11 +656,11 @@ void Mediator::redraw()
           (*rit)->initialiseLayerContext(Context, mref_DrawingArea.getScale());
           if ((*rit)->getClassName() == m_SelectedClassName)
           {
-            (*rit)->draw(Context, mref_DrawingArea.getScale(), m_SelectedUnitId);
+            (*rit)->draw(Context, mref_DrawingArea.getScale(), m_SelectedUnitId,(*rit)->getDisplayID());
           } else
           {
             std::set<int> tempVoidVector;
-            (*rit)->draw(Context, mref_DrawingArea.getScale(), tempVoidVector);
+            (*rit)->draw(Context, mref_DrawingArea.getScale(), tempVoidVector, (*rit)->getDisplayID());
           }
         }
       }
