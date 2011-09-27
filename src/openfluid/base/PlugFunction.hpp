@@ -549,18 +549,6 @@ class DLLEXPORT PluggableFunction
                                openfluid::core::TimeStep_t Step,
                                openfluid::core::VectorValue Value);
 
-    /**
-      Sets a distributed scalar variable value for a unit at a time step
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
-      @param[in] Value the added value of the variable (scalar)
-      @deprecated
-    */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               openfluid::core::ScalarValue Value);
 
     /**
       Gets a function parameter from the parameters set, as a double

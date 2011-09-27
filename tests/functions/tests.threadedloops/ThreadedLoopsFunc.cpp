@@ -187,7 +187,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  void produceDataOnTUThreaded(openfluid::core::Unit* aUnit, const openfluid::core::ScalarValue& Value)
+  void produceDataOnTUThreaded(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     Glib::usleep(100*aUnit->getID());
 
@@ -201,7 +201,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  void produceDataOnTUSequenced(openfluid::core::Unit* aUnit, const openfluid::core::ScalarValue& Value)
+  void produceDataOnTUSequenced(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     Glib::usleep(100*aUnit->getID());
     OPENFLUID_AppendVariable(aUnit,"tests.data.sequence",double(aUnit->getID())+Value/1000.0);

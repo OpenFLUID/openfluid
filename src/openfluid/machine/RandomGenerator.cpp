@@ -129,7 +129,7 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
 {
 
   openfluid::core::Unit* LU;
-  openfluid::core::ScalarValue Value;
+  openfluid::core::DoubleValue Value;
 
   boost::uniform_real<> Distribution(m_Min, m_Max);
   boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);

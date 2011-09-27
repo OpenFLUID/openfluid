@@ -380,20 +380,6 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, op
 
 }
 
-// =====================================================================
-// =====================================================================
-
-void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr, openfluid::core::VariableName_t VarName, openfluid::core::TimeStep_t Step, openfluid::core::ScalarValue Value)
-{
-  if (UnitPtr != NULL)
-  {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,Value))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting value for variable "+ VarName);
-  }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");;
-
-}
-
 
 // =====================================================================
 // =====================================================================
