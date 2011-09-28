@@ -114,9 +114,9 @@ class DLLEXPORT DistributeInterpolate
 
     bool loadAndPrepareData();
 
-    bool getValue(int ID, openfluid::core::DateTime DT, openfluid::core::ScalarValue *Value);
+    bool getValue(int ID, openfluid::core::DateTime DT, openfluid::core::DoubleValue *Value);
 
-    bool getValue(int ID, int Index, openfluid::core::ScalarValue *Value);
+    bool getValue(int ID, int Index, openfluid::core::DoubleValue *Value);
 
     virtual ~DistributeInterpolate();
 };

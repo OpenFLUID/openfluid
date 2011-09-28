@@ -94,7 +94,7 @@ Event::~Event()
 
 bool Event::isInfoExist(std::string Key)
 {
-  return !(m_Infos.find(Key) == m_Infos.end());
+  return m_Infos.find(Key) != m_Infos.end();
 }
 
 // =====================================================================
@@ -103,10 +103,7 @@ bool Event::isInfoExist(std::string Key)
 
 bool Event::isInfoEqual(std::string Key, std::string Value)
 {
-  std::string TmpValue;
-
-  return (getInfoAsString(Key,&TmpValue) && (TmpValue == Value));
-
+  return (isInfoExist(Key) && m_Infos[Key].get() == Value);
 }
 
 // =====================================================================
@@ -115,10 +112,9 @@ bool Event::isInfoEqual(std::string Key, std::string Value)
 
 bool Event::isInfoEqual(std::string Key, long Value)
 {
- long TmpValue;
+  long TmpValue;
 
   return (getInfoAsLong(Key,&TmpValue) && (TmpValue == Value));
-
 }
 
 // =====================================================================
@@ -130,19 +126,17 @@ bool Event::isInfoEqual(std::string Key, double Value)
   double TmpValue;
 
   return (getInfoAsDouble(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,Value,0.00001)));
-
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool Event::isInfoEqual(std::string Key, ScalarValue *Value)
+bool Event::isInfoEqual(std::string Key, DoubleValue *Value)
 {
-  ScalarValue TmpValue;
+  DoubleValue TmpValue;
 
-  return (getInfoAsScalarValue(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,*Value,0.00001)));
-
+  return (getInfoAsDoubleValue(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,*Value,0.00001)));
 }
 
 
@@ -152,14 +146,14 @@ bool Event::isInfoEqual(std::string Key, ScalarValue *Value)
 
 bool Event::getInfoAsString(std::string Key, std::string *Info)
 {
-
-  if (m_Infos.find(Key) == m_Infos.end())
+  if(isInfoExist(Key))
   {
-    return false;
-  }
-  else *Info = m_Infos[Key];
+    *Info = m_Infos[Key];
 
-  return true;
+    return true;
+  }
+
+  return false;
 }
 
 // =====================================================================
@@ -168,10 +162,7 @@ bool Event::getInfoAsString(std::string Key, std::string *Info)
 
 bool Event::getInfoAsLong(std::string Key, long *Info)
 {
-
-  std::string InfoStr;
-
-  return ((getInfoAsString(Key,&InfoStr)) && (openfluid::tools::ConvertString(InfoStr,Info)));
+  return (isInfoExist(Key) && m_Infos[Key].toInteger(*Info));
 }
 
 // =====================================================================
@@ -180,21 +171,16 @@ bool Event::getInfoAsLong(std::string Key, long *Info)
 
 bool Event::getInfoAsDouble(std::string Key, double *Info)
 {
-  std::string InfoStr;
-
-  return ((getInfoAsString(Key,&InfoStr)) && (openfluid::tools::ConvertString(InfoStr,Info)));
+  return (isInfoExist(Key) && m_Infos[Key].toDouble(*Info));
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool Event::getInfoAsScalarValue(std::string Key, ScalarValue *Info)
+bool Event::getInfoAsDoubleValue(std::string Key, DoubleValue *Info)
 {
-  double Dbl;
-  bool Res = getInfoAsDouble(Key,&Dbl);
-  Info->set(Dbl);
-  return Res;
+  return (isInfoExist(Key) && m_Infos[Key].toDoubleValue(*Info));
 }
 
 
@@ -203,13 +189,14 @@ bool Event::getInfoAsScalarValue(std::string Key, ScalarValue *Info)
 
 bool Event::addInfo(std::string Key, std::string Info)
 {
-  if (m_Infos.find(Key) != m_Infos.end())
+  if (!isInfoExist(Key))
   {
-    return false;
-  }
-  else m_Infos[Key] = Info;
+    m_Infos[Key] = openfluid::core::StringValue(Info);
 
-  return true;
+    return true;
+  }
+
+  return false;
 }
 
 // =====================================================================
@@ -224,7 +211,7 @@ void Event::println()
   EventInfosMap_t::iterator it;
   for (it = m_Infos.begin();it != m_Infos.end();++it)
   {
-    std::cout << " - " << it->first << " = " << it->second << std::endl;
+    std::cout << " - " << it->first << " = " << it->second.get() << std::endl;
   }
 }
 

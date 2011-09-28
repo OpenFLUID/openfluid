@@ -76,7 +76,7 @@ namespace openfluid { namespace core {
 class DLLEXPORT Event : public InstantiationInfo
 {
   public:
-    typedef std::map<std::string, std::string> EventInfosMap_t;
+    typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;
 
   private:
 	  DateTime m_Date;
@@ -133,7 +133,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[in] Key the requested information key
       @param[in] Info the requested value
     */
-    bool isInfoEqual(std::string Key, ScalarValue *Info);
+    bool isInfoEqual(std::string Key, DoubleValue *Info);
 
     /**
       Returns the number of information
@@ -180,7 +180,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsScalarValue(std::string Key, ScalarValue *Info);
+    bool getInfoAsDoubleValue(std::string Key, DoubleValue *Info);
 
     /**
       Adds an information to the event

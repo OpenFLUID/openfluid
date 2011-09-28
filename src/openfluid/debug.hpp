@@ -181,7 +181,7 @@
     openfluid::core::Event::EventInfosMap_t::iterator _M_DBG_EvInfoiter; \
     for (_M_DBG_EvInfoiter = (eventptr)->getInfos().begin();_M_DBG_EvInfoiter != (eventptr)->getInfos().end();++_M_DBG_EvInfoiter) \
     { \
-      OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - " << (*_M_DBG_EvInfoiter).first << " = " << (*_M_DBG_EvInfoiter).second << std::endl; \
+      OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - " << (*_M_DBG_EvInfoiter).first << " = " << (*_M_DBG_EvInfoiter).second.get() << std::endl; \
     } \
   }
 
