@@ -55,7 +55,6 @@
 #include <glibmm/i18n.h>
 
 #include "DrawingArea.hpp"
-#include "Info.hpp"
 #include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "Mediator.hpp"
@@ -67,8 +66,7 @@ MapViewModule::MapViewModule()
   mp_Statusbar = new StatusBar();
   mp_DrawingArea = Gtk::manage(new DrawingArea());
   mp_ToolBar = new ToolBar();
-  mp_Info = new Info();
-  mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Info, *mp_Statusbar,
+  mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Statusbar,
       *mp_ToolBar);
 
   //ScrolledWindow

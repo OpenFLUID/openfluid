@@ -60,6 +60,7 @@
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/infobar.h>
 #include <iostream>
+#include <set>
 
 class AddDialogFileChooser
 {
@@ -85,7 +86,7 @@ class AddDialogFileChooser
 
     AddDialogFileChooser(Gtk::Window&, const Glib::ustring&);
 
-    std::pair<std::pair<std::string, std::string>, std::string> show(std::vector<std::string>);
+    std::pair<std::pair<std::string, std::string>, std::string> show(std::set<std::string>);
 
 };
 

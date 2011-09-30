@@ -79,7 +79,6 @@ class MapViewModule: public ProjectWorkspaceModule
     DrawingArea* mp_DrawingArea;
     ToolBar* mp_ToolBar;
     StatusBar* mp_Statusbar;
-    Info* mp_Info;
     Mediator* mp_Mediator;
 
     //GTKmm

@@ -43,7 +43,7 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-*/
+ */
 
 /**
  \file Info.hpp
@@ -52,19 +52,131 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-
 #ifndef __INFO_HPP__
 #define __INFO_HPP__
+
+#include <gtkmm/dialog.h>
+#include <gtkmm/table.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/label.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
+#include <set>
+
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/Unit.hpp>
 
 class Info
 {
 
-  private :
+  private:
 
-  public :
+    Gtk::Dialog* mp_Dialog;
 
-    Info();
+    Gtk::Label* mp_NameClassLabel;
+    Gtk::Label* mp_IDLabel;
+    Gtk::Label* mp_ProcessOrderLabel;
+    Gtk::Label m_IDLabel;
+    Gtk::Label m_ProcessOrderLabel;
 
+    Gtk::ScrolledWindow* mp_InfoIntputEventsScrolledWindow;
+    Gtk::ScrolledWindow* mp_IDScrolledWindow;
+
+    Gtk::ScrolledWindow* mp_FromScrolledWindow;
+    Gtk::ScrolledWindow* mp_ToScrolledWindow;
+    Gtk::ScrolledWindow* mp_ParentScrolledWindow;
+    Gtk::ScrolledWindow* mp_ChildrenScrolledWindow;
+
+    Gtk::HBox* mp_MainHBox;
+
+    Gtk::VBox* mp_InfoIntputEventsVBox;
+    Gtk::VBox* mp_ButtonInfoIntputEventsVBox;
+
+    Gtk::Table* mp_InfoTable;
+    Gtk::Table* mp_InputDataTable;
+    Gtk::Table* mp_EventTable;
+
+    Gtk::Expander* mp_InfoExpander;
+    Gtk::Expander* mp_InputDataExpander;
+    Gtk::Expander* mp_EventExpander;
+
+    Gtk::Expander* mp_FromExpander;
+    Gtk::Expander* mp_ToExpander;
+    Gtk::Expander* mp_ParentExpander;
+    Gtk::Expander* mp_ChildrenExpander;
+
+    Gtk::Button* mp_RestoreDefaultButton;
+    Gtk::Button* mp_OkButton;
+
+    std::map<int, std::map<std::string, std::string> > m_ChangeValue;
+    std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >
+        m_InputDataLineTable;
+    std::vector<std::string> m_InputDataNames;
+    std::set<int> m_SelectedUnitId;
+
+    openfluid::core::CoreRepository* mp_CoreRepos;
+
+    class ModelColumnsIDs: public Gtk::TreeModelColumnRecord
+    {
+      public:
+
+        ModelColumnsIDs()
+        {
+          add(m_ID);
+        }
+
+        Gtk::TreeModelColumn<int> m_ID;
+    };
+
+    ModelColumnsIDs m_ModelColumnIDs;
+
+    class ModelColumnsNameClassIDs: public Gtk::TreeModelColumnRecord
+    {
+      public:
+
+        ModelColumnsNameClassIDs()
+        {
+          add(m_ID);
+          add(m_NameClass);
+        }
+
+        Gtk::TreeModelColumn<int> m_ID;
+        Gtk::TreeModelColumn<std::string> m_NameClass;
+    };
+
+    ModelColumnsNameClassIDs m_ModelColumnsNameClassIDsFrom;
+    ModelColumnsNameClassIDs m_ModelColumnsNameClassIDsTo;
+    ModelColumnsNameClassIDs m_ModelColumnsNameClassIDsParent;
+    ModelColumnsNameClassIDs m_ModelColumnsNameClassIDsChildren;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ListStoreIDs;
+    Glib::RefPtr<Gtk::ListStore> mref_ListStoreFrom;
+    Glib::RefPtr<Gtk::ListStore> mref_ListStoreTo;
+    Glib::RefPtr<Gtk::ListStore> mref_ListStoreParent;
+    Glib::RefPtr<Gtk::ListStore> mref_ListStoreChildren;
+
+    Gtk::TreeView* mp_TreeViewIDs;
+    Gtk::TreeView* mp_TreeViewFrom;
+    Gtk::TreeView* mp_TreeViewTo;
+    Gtk::TreeView* mp_TreeViewParent;
+    Gtk::TreeView* mp_TreeViewChildren;
+
+    void onIDViewSelectionChanged();
+    void loadSelectedID(const Gtk::TreeModel::iterator&);
+    void loadInfo(int, int);
+    void loadInputData(int, int);
+    void loadEvent(int, int);
+    void fillNameClassIDListStore(Glib::RefPtr<Gtk::ListStore>&,
+        ModelColumnsNameClassIDs&, const openfluid::core::UnitsPtrList_t*,
+        std::string);
+    void onEntryInputDataChanged(std::string);
+    bool on_focus_out_event(GdkEventFocus*, std::string);
+  public:
+
+    Info(Gtk::Window&, const Glib::ustring&,
+        openfluid::core::CoreRepository& CoreRepos);
+    void show(std::string, std::set<int>);
 };
 
 #endif /* __INFO_HPP__ */

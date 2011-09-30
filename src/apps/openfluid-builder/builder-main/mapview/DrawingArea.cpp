@@ -68,8 +68,6 @@
 
 DrawingArea::DrawingArea()
 {
-  //    set_flags(get_flags() | Gtk::CAN_FOCUS);
-  //  set_can_focus(true);
 
   m_XTranslate = 0;
   m_YTranslate = 0;
@@ -247,7 +245,7 @@ bool DrawingArea::on_button_press_event(GdkEventButton* event)
 
 bool DrawingArea::whenOnKeyPressed(GdkEventKey* event)
 {
-  if (event->keyval == 0xFFE3)
+  if (event->keyval == 0xFFE3 || event->keyval == 0xFFE4)
     m_pressMultiSelect = true;
   return false;
 }
@@ -257,7 +255,7 @@ bool DrawingArea::whenOnKeyPressed(GdkEventKey* event)
 
 bool DrawingArea::whenOnKeyReleased(GdkEventKey* event)
 {
-  if (event->keyval == 0xFFE3)
+  if (event->keyval == 0xFFE3 || event->keyval == 0xFFE4)
     m_pressMultiSelect = false;
   return false;
 }

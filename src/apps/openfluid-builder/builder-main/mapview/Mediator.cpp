@@ -62,13 +62,14 @@
 #include <glibmm/i18n.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
-Mediator::Mediator(DrawingArea& DrawingArea, Info& Info, StatusBar& StatusBar,
+Mediator::Mediator(DrawingArea& DrawingArea, StatusBar& StatusBar,
     ToolBar& ToolBar) :
-  mref_DrawingArea(DrawingArea), mref_Info(Info), mref_StatusBar(StatusBar),
+  mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar),
       mref_ToolBar(ToolBar), mp_CoreRepos(0)
 {
   m_SelectedClassName = "";
   m_addDialogCreate = false;
+  m_infoDialogCreate = false;
   mp_MainVBoxMediator = Gtk::manage(new Gtk::VBox());
 
   mref_DrawingArea.signal_ExposeEventChanged().connect(
@@ -183,11 +184,11 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a selection without selection.\n\nPlease select a layer."));
-  } else if(m_SelectedUnitId.empty())
+  } else if (m_SelectedUnitId.empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-            _(
-                "You can't zoom in a selection without selection.\n\nPlease select objects on a current layer."));
+        _(
+            "You can't zoom in a selection without selection.\n\nPlease select objects on a current layer."));
   } else
   {
     std::vector<Layer*>::iterator it;
@@ -195,7 +196,8 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
-        mref_DrawingArea.modifyScaleTranslate((*it)->getMinMaxSelection(m_SelectedUnitId));
+        mref_DrawingArea.modifyScaleTranslate(
+            (*it)->getMinMaxSelection(m_SelectedUnitId));
       }
     }
     redraw();
@@ -338,23 +340,17 @@ void Mediator::whenOnAddLayerToolButtonClicked()
   m_Layer.push_back(pLayer);
 
   mref_DrawingArea.setLayerExist(true);
-  std::vector<std::string> ClassNames;
 
-  std::set<std::string>::iterator it;
-  for (it = EngineHelper::getClassNames(mp_CoreRepos).begin(); it
-      != EngineHelper::getClassNames(mp_CoreRepos).end(); it++)
+  std::set<std::string> ClassNames = EngineHelper::getClassNames(mp_CoreRepos);
+  std::vector<Layer*>::iterator it;
+  for (it = m_Layer.begin(); it != m_Layer.end(); it++)
   {
-    const std::string Temp = *it;
-    bool ClassNameExist = false;
-    std::vector<Layer*>::iterator ite;
-    for (ite = m_Layer.begin(); ite < m_Layer.end(); ite++)
-    {
-      if (Temp == (*ite)->getClassName())
-        ClassNameExist = true;
-    }
-    if (ClassNameExist == false)
-      ClassNames.push_back(Temp);
+    std::set<std::string>::iterator ite;
+    ite = ClassNames.find((*it)->getClassName());
+    if (ite != ClassNames.end())
+      ClassNames.erase(ite);
   }
+
   if (!ClassNames.empty())
   {
     std::pair<std::pair<std::string, std::string>, std::string> AddFile =
@@ -410,7 +406,22 @@ void Mediator::whenOnAddLayerToolButtonClicked()
 
 void Mediator::whenOnInfoToolButtonClicked()
 {
-
+  if (m_SelectedClassName == "" ||  m_SelectedUnitId.empty())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _(
+            "You can't have informations without select the corresponding layer before and the corresponding units.\n\nPlease select a layer and units."));
+  } else
+  {
+    if (!m_infoDialogCreate)
+    {
+      mp_InfoDialog = new Info(
+          dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
+          _("Management"), *mp_CoreRepos);
+      m_infoDialogCreate = true;
+    }
+    mp_InfoDialog->show(m_SelectedClassName, m_SelectedUnitId);
+  }
 }
 
 // =====================================================================
@@ -656,11 +667,13 @@ void Mediator::redraw()
           (*rit)->initialiseLayerContext(Context, mref_DrawingArea.getScale());
           if ((*rit)->getClassName() == m_SelectedClassName)
           {
-            (*rit)->draw(Context, mref_DrawingArea.getScale(), m_SelectedUnitId,(*rit)->getDisplayID());
+            (*rit)->draw(Context, mref_DrawingArea.getScale(),
+                m_SelectedUnitId, (*rit)->getDisplayID());
           } else
           {
             std::set<int> tempVoidVector;
-            (*rit)->draw(Context, mref_DrawingArea.getScale(), tempVoidVector, (*rit)->getDisplayID());
+            (*rit)->draw(Context, mref_DrawingArea.getScale(), tempVoidVector,
+                (*rit)->getDisplayID());
           }
         }
       }

@@ -78,9 +78,9 @@ class Mediator
   private:
 
     bool m_addDialogCreate;
+    bool m_infoDialogCreate;
 
     DrawingArea& mref_DrawingArea;
-    Info& mref_Info;
     StatusBar& mref_StatusBar;
     ToolBar& mref_ToolBar;
 
@@ -94,6 +94,7 @@ class Mediator
     //GTKmm
 
     AddDialogFileChooser* mp_AddDialogFileChooser;
+    Info* mp_InfoDialog;
 
     Gtk::VBox* mp_MainVBoxMediator;
 
@@ -136,7 +137,7 @@ class Mediator
 
   public:
 
-    Mediator(DrawingArea&, Info&, StatusBar&, ToolBar&);
+    Mediator(DrawingArea&, StatusBar&, ToolBar&);
 
     Gtk::Widget* asWidget();
 

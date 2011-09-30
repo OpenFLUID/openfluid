@@ -73,7 +73,7 @@ AddDialogFileChooser::AddDialogFileChooser(Gtk::Window& ParentWindow,
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  mp_InfoBarLabel->set_label("lalalalal");
+  mp_InfoBarLabel->set_label("");
 
   mp_FilterUnitClass = Gtk::manage(new Gtk::ComboBoxText());
 
@@ -187,16 +187,16 @@ bool AddDialogFileChooser::isEmptyString(std::string Str)
 // =====================================================================
 
 std::pair<std::pair<std::string, std::string>, std::string> AddDialogFileChooser::show(
-    std::vector<std::string> ClassNames)
+    std::set<std::string> ClassNames)
 {
 
   mp_FilterUnitClass->clear_items();
-  std::vector<std::string>::iterator it;
+  std::set<std::string>::iterator it;
   if (!ClassNames.empty())
   {
     for (it = ClassNames.begin(); it != ClassNames.end(); it++)
     {
-      mp_FilterUnitClass->append(static_cast<Glib::ustring> (*it));
+      mp_FilterUnitClass->append_text(static_cast<Glib::ustring> (*it));
     }
   }
   std::pair<std::string, std::string> File = std::make_pair("", "");
