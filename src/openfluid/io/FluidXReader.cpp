@@ -668,7 +668,7 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
       xmlChar *xmlDataBlob = xmlNodeGetContent(NodePtr);
 
       if (xmlDataBlob != NULL)
-        IDataDesc.getDataBlob().assign((char*)xmlDataBlob);
+        IDataDesc.parseDataBlob(std::string((char*)xmlDataBlob));
       else
         throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDomainInputdataFromNode","wrong or empty data content in domain input data (" + m_CurrentFile + ")");
 
@@ -720,7 +720,7 @@ void FluidXReader::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
           xmlChar *xmlDataBlob = xmlNodeGetContent(CurrNode);
 
           if (xmlDataBlob != NULL)
-            IDataDesc.getDataBlob().assign((char*)xmlDataBlob);
+            IDataDesc.parseDataBlob(std::string((char*)xmlDataBlob));
         }
 
         CurrNode = CurrNode->next;
