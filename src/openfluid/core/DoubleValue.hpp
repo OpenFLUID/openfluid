@@ -86,7 +86,7 @@ class DLLEXPORT DoubleValue : public SimpleValue
     Value& operator =(const Value& Other);
 
     /**
-     * Cast operator
+      Cast operator
      */
     operator double() const { return m_Value; };
 

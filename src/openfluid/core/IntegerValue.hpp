@@ -87,6 +87,11 @@ class DLLEXPORT IntegerValue : public SimpleValue
 
     Value& operator =(const Value& Other);
 
+    /**
+    * Cast operator
+    */
+    operator long() const { return m_Value; };
+
     virtual ~IntegerValue() {};
 
     inline Type getType() const { return Value::INTEGER; };

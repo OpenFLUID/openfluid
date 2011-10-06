@@ -82,10 +82,11 @@ class DLLEXPORT Variables
 
     Value* getCurrentValue(const VariableName_t aName) const;
 
+    bool getCurrentValue(const VariableName_t aName, Value* aValue) const;
+
     bool isVariableExist(const VariableName_t aName) const;
 
-    bool
-    isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
+    bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
 
     bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep,
         Value::Type ValueType) const;

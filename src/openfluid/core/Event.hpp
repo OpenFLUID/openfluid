@@ -179,6 +179,15 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[in] Key the requested information key
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
+      @deprecated
+    */
+    bool getInfoAsScalarValue(std::string Key, double* Info);
+
+    /**
+      Gets an information as a DoubleValue
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
     */
     bool getInfoAsDoubleValue(std::string Key, DoubleValue *Info);
 

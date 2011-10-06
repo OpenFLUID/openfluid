@@ -177,6 +177,14 @@ bool Event::getInfoAsDouble(std::string Key, double *Info)
 // =====================================================================
 // =====================================================================
 
+bool Event::getInfoAsScalarValue(std::string Key, double* Info)
+{
+  return getInfoAsDouble(Key,Info);
+}
+
+// =====================================================================
+// =====================================================================
+
 
 bool Event::getInfoAsDoubleValue(std::string Key, DoubleValue *Info)
 {

@@ -86,6 +86,7 @@ bool Variables::createVariable(const VariableName_t aName)
     m_Data[aName];
     return true;
   }
+
   return false;
 }
 
@@ -97,9 +98,8 @@ bool Variables::modifyValue(const VariableName_t aName, const TimeStep_t aStep,
     const Value& aValue)
 {
   if (isVariableExist(aName, aStep))
-  {
     return m_Data[aName].modifyValue(aStep, aValue);
-  }
+
   return false;
 }
 
@@ -110,9 +110,8 @@ bool Variables::modifyValue(const VariableName_t aName, const TimeStep_t aStep,
 bool Variables::appendValue(const VariableName_t aName, const Value& aValue)
 {
   if (isVariableExist(aName))
-  {
     return m_Data[aName].appendValue(aValue);
-  }
+
   return false;
 }
 
@@ -127,9 +126,7 @@ bool Variables::getValue(const VariableName_t aName, const TimeStep_t aStep,
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-  {
     return it->second.getValue(aStep, aValue);
-  }
 
   return false;
 }
@@ -142,9 +139,7 @@ Value* Variables::getValue(const VariableName_t aName, const TimeStep_t aStep) c
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-  {
     return it->second.getValue(aStep);
-  }
 
   return (Value*) 0;
 }
@@ -155,15 +150,26 @@ Value* Variables::getValue(const VariableName_t aName, const TimeStep_t aStep) c
 
 Value* Variables::getCurrentValue(const VariableName_t aName) const
 {
-
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-  {
     return it->second.getCurrentValue();
-  }
 
   return (Value*) 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getCurrentValue(const VariableName_t aName, Value* aValue) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+    return it->second.getCurrentValue(aValue);
+
+  return false;
 }
 
 // =====================================================================
@@ -187,10 +193,9 @@ bool Variables::isVariableExist(const VariableName_t aName,
   it = m_Data.find(aName);
 
   if (it != m_Data.end())
-  {
     // the variable exist if the required step is strictly lesser than the variable storage next step
     return (aStep < it->second.getNextStep());
-  }
+
   return false;
 }
 
@@ -200,15 +205,7 @@ bool Variables::isVariableExist(const VariableName_t aName,
 bool Variables::isVariableExist(const VariableName_t aName,
     const TimeStep_t aStep, Value::Type ValueType) const
 {
-  if(isVariableExist(aName,aStep))
-  {
-    Value* aValue = m_Data.find(aName)->second.getValue(aStep);
-
-    if(aValue)
-      return (aValue->getType() == ValueType);
-  }
-
-  return false;
+  return isVariableExist(aName,aStep) && getValue(aName,aStep)->getType() == ValueType;
 }
 
 // =====================================================================
@@ -227,7 +224,6 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
   }
 
   return TheNames;
-
 }
 
 // =====================================================================
@@ -244,8 +240,7 @@ unsigned int Variables::getVariableValuesCount(const VariableName_t aName) const
   if (it == m_Data.end())
     return (-1);
 
-  else
-    return it->second.getNextStep();
+  return it->second.getNextStep();
 }
 
 // =====================================================================
@@ -261,6 +256,7 @@ bool Variables::isAllVariablesCount(unsigned int Count) const
     if (it->second.getNextStep() != Count)
       return false;
   }
+
   return true;
 }
 

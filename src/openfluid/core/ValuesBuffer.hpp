@@ -90,6 +90,8 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 
     Value* getCurrentValue() const;
 
+    bool getCurrentValue(Value* aValue) const;
+
     bool modifyValue(const unsigned int StepNbr, const Value& aValue);
 
     bool appendValue(const Value& aValue);

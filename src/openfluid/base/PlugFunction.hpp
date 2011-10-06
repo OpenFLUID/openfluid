@@ -388,6 +388,65 @@ class DLLEXPORT PluggableFunction
                                openfluid::core::Value* aValue);
 
     /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] aValue the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(openfluid::core::Unit* UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               double* aValue);
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] aValue the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(openfluid::core::Unit* UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               long* Value);
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] aValue the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(openfluid::core::Unit* UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               bool* Value);
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] aValue the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(openfluid::core::Unit* UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               std::string* Value);
+
+//    /**
+//      Gets input data for a unit, as a DoubleValue
+//      @param[in] UnitPtr a Unit
+//      @param[in] InputName the name of the requested property
+//      @param[out] Val the value of the requested property
+//      @deprecated
+//    */
+//    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+//                                openfluid::core::InputDataName_t InputName,
+//                                openfluid::core::DoubleValue* Val);
+
+    /**
       Gets input data for a unit, as a double
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
@@ -491,17 +550,6 @@ class DLLEXPORT PluggableFunction
                                      openfluid::core::Value::Type ValueType);
 
     /**
-      Appends a distributed double variable value for a unit at the end of the previously added values for this variable
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the variable
-      @param[in] Value the added value of the variable
-      @deprecated
-    */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  openfluid::core::VariableName_t VarName,
-                                  double Value);
-
-    /**
       Appends a distributed variable value for a unit at the end of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
@@ -512,17 +560,44 @@ class DLLEXPORT PluggableFunction
                                   openfluid::core::Value& aValue);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Appends a distributed double variable value for a unit at the end of the previously added values for this variable
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
       @param[in] Value the added value of the variable (double)
-      @deprecated
     */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               double Value);
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  openfluid::core::VariableName_t VarName,
+                                  double Value);
+
+    /**
+      Appends a distributed long variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Value the added value of the variable (long)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  openfluid::core::VariableName_t VarName,
+                                  long Value);
+
+    /**
+      Appends a distributed boolean variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Value the added value of the variable (bool)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  openfluid::core::VariableName_t VarName,
+                                  bool Value);
+
+    /**
+      Appends a distributed string variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Value the added value of the variable (string)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  openfluid::core::VariableName_t VarName,
+                                  std::string Value);
 
     /**
       Sets a distributed variable value for a unit at a time step
@@ -537,18 +612,63 @@ class DLLEXPORT PluggableFunction
                                openfluid::core::Value& aValue);
 
     /**
-      Sets a distributed vector variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at a time step
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Step the time step for the value of the variable
-      @param[in] Value the added value of the variable (vector)
-      @deprecated
+      @param[in] Value the added value of the variable (double)
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                openfluid::core::VariableName_t VarName,
                                openfluid::core::TimeStep_t Step,
-                               openfluid::core::VectorValue Value);
+                               double Value);
 
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Value the added value of the variable (long)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               long Value);
+
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Value the added value of the variable (bool)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               bool Value);
+
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Value the added value of the variable (string)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               openfluid::core::VariableName_t VarName,
+                               openfluid::core::TimeStep_t Step,
+                               std::string Value);
+
+//    /**
+//      Gets a function parameter from the parameters set, as a DoubleValue
+//      @param[in] Params the parameters set for the simulation function
+//      @param[in] ParamName the name of the requested parameter
+//      @param[out] Value the value of the requested parameter
+//      @deprecated
+//    */
+//    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+//                                        openfluid::core::FuncParamKey_t ParamName,
+//                                        openfluid::core::DoubleValue* Val);
 
     /**
       Gets a function parameter from the parameters set, as a double

@@ -85,6 +85,11 @@ class DLLEXPORT BooleanValue : public SimpleValue
 
     Value& operator =(const Value& Other);
 
+    /**
+    * Cast operator
+    */
+    operator bool() const { return m_Value; };
+
     virtual ~BooleanValue() {};
 
     inline Type getType() const { return Value::BOOLEAN; };

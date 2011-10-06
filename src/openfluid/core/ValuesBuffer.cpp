@@ -121,7 +121,7 @@ bool ValuesBuffer::getValue(const unsigned int StepNbr, Value* aValue) const
 {
   unsigned int Index;
 
-  if (TranslateStepNbrToIndex(StepNbr, Index))
+  if (TranslateStepNbrToIndex(StepNbr, Index) && aValue->getType() == m_Data[Index]->getType())
   {
     *aValue = *m_Data[Index];
 
@@ -155,6 +155,22 @@ Value* ValuesBuffer::getValue(const unsigned int StepNbr) const
 Value* ValuesBuffer::getCurrentValue() const
 {
   return m_Data.back().get();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::getCurrentValue(Value* aValue) const
+{
+  if(aValue->getType() == m_Data.back()->getType())
+  {
+    *aValue = *m_Data.back();
+
+    return true;
+  }
+  return false;
 }
 
 // =====================================================================
