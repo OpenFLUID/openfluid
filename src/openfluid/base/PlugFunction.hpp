@@ -659,16 +659,35 @@ class DLLEXPORT PluggableFunction
                                openfluid::core::TimeStep_t Step,
                                std::string Value);
 
-//    /**
-//      Gets a function parameter from the parameters set, as a DoubleValue
-//      @param[in] Params the parameters set for the simulation function
-//      @param[in] ParamName the name of the requested parameter
-//      @param[out] Value the value of the requested parameter
-//      @deprecated
-//    */
-//    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-//                                        openfluid::core::FuncParamKey_t ParamName,
-//                                        openfluid::core::DoubleValue* Val);
+    /**
+      Gets a function parameter from the parameters set, as a StringValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                        openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::StringValue* Val);
+
+    /**
+      Gets a function parameter from the parameters set, as a DoubleValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                        openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::DoubleValue* Val);
+
+    /**
+      Gets a function parameter from the parameters set, as a DoubleValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                          openfluid::core::FuncParamKey_t ParamName,
+                                          openfluid::core::VectorValue* Val);
 
     /**
       Gets a function parameter from the parameters set, as a double

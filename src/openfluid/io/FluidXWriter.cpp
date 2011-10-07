@@ -121,7 +121,7 @@ std::string FluidXWriter::getParamsAsStr(const openfluid::core::FuncParamsMap_t&
   openfluid::core::FuncParamsMap_t::const_iterator itParams;
 
   for (itParams = Params.begin();itParams != Params.end() ; ++itParams)
-    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second.toString() +"\"/>\n";
+    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second.get() +"\"/>\n";
 
   return ParamsStr;
 }

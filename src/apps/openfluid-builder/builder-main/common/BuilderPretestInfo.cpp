@@ -301,7 +301,7 @@ bool BuilderPretestInfo::localParamIsSet(
     openfluid::machine::ModelItemInstance* Item, std::string ParamName)
 {
   return (Item->Params.find(ParamName) != Item->Params.end()
-      && Item->Params[ParamName].toString() != "");
+      && Item->Params[ParamName].get() != "");
 }
 
 // =====================================================================
@@ -311,7 +311,7 @@ bool BuilderPretestInfo::localParamIsSet(
 bool BuilderPretestInfo::globalParamIsSet(std::string ParamName)
 {
   return (m_GlobalParams.find(ParamName) != m_GlobalParams.end()
-      && m_GlobalParams[ParamName].toString() != "");
+      && m_GlobalParams[ParamName].get() != "");
 }
 
 // =====================================================================

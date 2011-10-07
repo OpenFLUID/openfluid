@@ -189,18 +189,18 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 
       std::string Sources = "";
       if (mp_Item->Params.find("sources") != mp_Item->Params.end()
-          && mp_Item->Params["sources"].toString() != "")
+          && mp_Item->Params["sources"].get() != "")
         Sources = mp_Item->Params["sources"];
       else if (GlobalParams.find("sources") != GlobalParams.end()
-          && GlobalParams["sources"].toString() != "")
+          && GlobalParams["sources"].get() != "")
         Sources = GlobalParams["sources"];
 
       std::string Distrib = "";
       if (mp_Item->Params.find("distribution") != mp_Item->Params.end()
-          && mp_Item->Params["distribution"].toString() != "")
+          && mp_Item->Params["distribution"].get() != "")
         Distrib = mp_Item->Params["distribution"];
       else if (GlobalParams.find("distribution") != GlobalParams.end()
-          && GlobalParams["distribution"].toString() != "")
+          && GlobalParams["distribution"].get() != "")
         Distrib = GlobalParams["distribution"];
 
       mp_Item->Signature->HandledData.RequiredExtraFiles.clear();

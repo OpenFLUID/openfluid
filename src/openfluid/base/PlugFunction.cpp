@@ -571,20 +571,58 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
 // =====================================================================
 // =====================================================================
 
-//
-//bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, openfluid::core::DoubleValue* Val)
-//{
-//  if (Params.find(ParamName) != Params.end())
-//    return Params[ParamName].toDoubleValue(*Val);
-//
-//  return false;
-//}
+
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      openfluid::core::StringValue* Val)
+{
+  if (Params.find(ParamName) != Params.end())
+  {
+    *Val = Params[ParamName];
+
+    return true;
+  }
+
+  return false;
+}
 
 // =====================================================================
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, double *Value)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      openfluid::core::DoubleValue* Val)
+{
+  if (Params.find(ParamName) != Params.end())
+    return Params[ParamName].toDoubleValue(*Val);
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      openfluid::core::VectorValue* Val)
+{
+  if (Params.find(ParamName) != Params.end())
+    return Params[ParamName].toVectorValue(";",*Val);
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      double *Value)
 {
   if (Params.find(ParamName) != Params.end())
     return Params[ParamName].toDouble(*Value);
@@ -596,7 +634,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, long *Value)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      long *Value)
 {
   if (Params.find(ParamName) != Params.end())
     return Params[ParamName].toInteger(*Value);
@@ -609,7 +649,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, float *Value)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      float *Value)
 {
   bool IsOk = false;
 
@@ -630,7 +672,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, int *Value)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      int *Value)
 {
   bool IsOk = false;
 
@@ -652,7 +696,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::string *Value)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      std::string *Value)
 {
   if (Params.find(ParamName) != Params.end())
   {
@@ -669,7 +715,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<std::string> *Values)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      std::vector<std::string> *Values)
 {
   if (Params.find(ParamName) != Params.end())
   {
@@ -692,7 +740,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<double> *Values)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      std::vector<double> *Values)
 {
   bool IsOK = false;
 
@@ -718,7 +768,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncPara
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params, openfluid::core::FuncParamKey_t ParamName, std::vector<long> *Values)
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
+                                      openfluid::core::FuncParamKey_t ParamName,
+                                      std::vector<long> *Values)
 {
   bool IsOK = false;
 
