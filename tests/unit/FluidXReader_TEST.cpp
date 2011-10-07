@@ -337,25 +337,33 @@ void TestDataset(std::string DatasetPath)
 
   BOOST_REQUIRE_EQUAL(FXR.getDomainDescriptor().getInputData().size(),3);
 
-  IDataIt = FXR.getDomainDescriptor().getInputData() .begin();
+  IDataIt = FXR.getDomainDescriptor().getInputData().begin();
   BOOST_REQUIRE_EQUAL((*IDataIt).getUnitsClass(),"unitsA");
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder().size(),1);
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder()[0],"indataA");
-  BOOST_REQUIRE ((*IDataIt).getDataBlob().size() > 0);
+  BOOST_REQUIRE((*IDataIt).getData().size() > 0);
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(8).at("indataA"),"1.1");
 
   IDataIt++;
   BOOST_REQUIRE_EQUAL((*IDataIt).getUnitsClass(),"unitsB");
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder().size(),2);
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder()[0],"indataB1");
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder()[1],"indataB3");
-  BOOST_REQUIRE ((*IDataIt).getDataBlob().size() > 0);
+  BOOST_REQUIRE ((*IDataIt).getData().size() > 0);
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(7).at("indataB1"),"7.1");
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(7).at("indataB3"),"7.3");
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(11).at("indataB1"),"11.1");
 
 
   IDataIt++;
   BOOST_REQUIRE_EQUAL((*IDataIt).getUnitsClass(),"unitsB");
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder().size(),1);
   BOOST_REQUIRE_EQUAL((*IDataIt).getColumnsOrder()[0],"indataB2");
-  BOOST_REQUIRE ((*IDataIt).getDataBlob().size() > 0);
+  BOOST_REQUIRE ((*IDataIt).getData().size() > 0);
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(11).at("indataB2"),"codeA");
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(7).at("indataB2"),"codeE");
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(2).at("indataB2"),"codeC");
+  BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(1).at("indataB2"),"codeD");
 
 
   // Domain calendar

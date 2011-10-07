@@ -54,6 +54,7 @@
  */
 
 #include <openfluid/base/IDataDescriptor.hpp>
+#include <openfluid/tools/ColTextParser.hpp>
 
 namespace openfluid { namespace base {
 
@@ -67,12 +68,59 @@ InputDataDescriptor::InputDataDescriptor()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
 InputDataDescriptor::~InputDataDescriptor()
 {
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void InputDataDescriptor::parseDataBlob(const std::string& Data)
+{
+  m_Data.clear();
+
+  openfluid::tools::ColumnTextParser DataParser("%");
+
+  if (DataParser.setFromString(Data,m_ColumnsOrder.size()+1))
+  {
+    int i,j;
+    bool IsOK = true;
+    long ID;
+    std::string Value;
+
+    // parses data in file and loads it in the input data table for each unit, ordered by columns
+    i = 0;
+    while (i<DataParser.getLinesCount() && IsOK)
+    {
+      IsOK = DataParser.getLongValue(i,0,&ID);
+
+      if (IsOK)
+      {
+        for (j=1;j<DataParser.getColsCount();j++)
+        {
+          if (DataParser.getStringValue(i,j,&Value))
+          {
+            m_Data[ID][m_ColumnsOrder[j-1]] = Value;
+          }
+          else
+            throw openfluid::base::OFException("OpenFLUID framework","InputDataDescriptor::parseDataBlob","Input data format error");
+        }
+        i++;
+      }
+      else
+        throw openfluid::base::OFException("OpenFLUID framework","InputDataDescriptor::parseDataBlob","Input data format error");
+    }
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in input data, cannot be parsed");
 
 }
 

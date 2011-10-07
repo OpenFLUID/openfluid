@@ -57,20 +57,26 @@
 #define __IDATADESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 namespace openfluid { namespace base {
 
 
 class DLLEXPORT InputDataDescriptor
 {
+  public:
+    typedef std::map<openfluid::core::InputDataName_t,std::string> InputDataNameValue_t;
+
+    typedef std::map<openfluid::core::UnitID_t,InputDataNameValue_t> UnitIDInputData_t;
+
+
   private:
 
     openfluid::core::UnitClass_t m_UnitsClass;
 
     std::vector<std::string> m_ColumnsOrder;
 
-    std::string m_DataBlob;
+    UnitIDInputData_t m_Data;
 
 
   public:
@@ -79,11 +85,13 @@ class DLLEXPORT InputDataDescriptor
 
     ~InputDataDescriptor();
 
+    void parseDataBlob(const std::string& Data);
+
     inline openfluid::core::UnitClass_t& getUnitsClass() { return m_UnitsClass; };
 
     inline std::vector<std::string>& getColumnsOrder() { return m_ColumnsOrder; };
 
-    inline std::string& getDataBlob() { return m_DataBlob; };
+    inline const UnitIDInputData_t& getData() const { return m_Data; };
 
 };
 
