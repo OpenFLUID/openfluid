@@ -194,7 +194,7 @@ void DomainIDataModelImpl::changeDataName(std::string OldDataName,
 
     std::string Value;
 
-    TheUnit->getInputData()->getValue(OldDataName, &Value);
+    TheUnit->getInputData()->getValue(OldDataName, Value);
 
     TheUnit->getInputData()->setValue(NewDataName, Value);
   }

@@ -69,22 +69,9 @@ InputData::InputData()
 // =====================================================================
 
 
-InputData::InputData(const InputData& IData)
-{
-  std::vector<InputDataName_t> Names = IData.getInputDataNames();
-
-  for(std::vector<InputDataName_t>::iterator it = Names.begin();it!=Names.end();++it)
-    setValue(*it,*IData.getValue(*it));
-}
-
-// =====================================================================
-// =====================================================================
-
-
 
 InputData::~InputData()
 {
-  clear();
 }
 
 // =====================================================================
@@ -95,7 +82,7 @@ bool InputData::setValue(const InputDataName_t aName, const Value& aValue)
   if (isDataExist(aName))
     return false;
 
-  m_Data[aName] = new StringValue(aValue.toString());
+  m_Data[aName] = StringValue(aValue.toString());
 
   return true;
 }
@@ -105,12 +92,12 @@ bool InputData::setValue(const InputDataName_t aName, const Value& aValue)
 // =====================================================================
 
 
-bool InputData::setValue(const InputDataName_t aName, const std::string aValue)
+bool InputData::setValue(const InputDataName_t aName, const std::string& aValue)
 {
   if (isDataExist(aName))
     return false;
 
-  m_Data[aName] = new StringValue(aValue);
+  m_Data[aName] = StringValue(aValue);
 
   return true;
 }
@@ -120,25 +107,33 @@ bool InputData::setValue(const InputDataName_t aName, const std::string aValue)
 // =====================================================================
 
 
-StringValue* InputData::getValue(const InputDataName_t aName) const
+bool InputData::getValue(const InputDataName_t aName, openfluid::core::StringValue& aValue) const
+{
+  // Don't use m_data[aName] because [] operator is not const
+
+  InputDataMap_t::const_iterator it = m_Data.find(aName);
+
+  if(it != m_Data.end())
+  {
+    aValue.set(it->second.get());
+
+    return true;
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool InputData::getValue(const InputDataName_t aName, std::string& aValue) const
 {
   InputDataMap_t::const_iterator it = m_Data.find(aName);
 
-  if (it != m_Data.end())
-    return it->second;
-
-  return (StringValue*)0;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-bool InputData::getValue(const InputDataName_t aName, std::string* aValue)
-{
-  if(isDataExist(aName))
+  if(it != m_Data.end())
   {
-    *aValue = m_Data[aName]->get();
+    aValue = it->second.get();
+
     return true;
   }
 
@@ -149,10 +144,12 @@ bool InputData::getValue(const InputDataName_t aName, std::string* aValue)
 // =====================================================================
 
 
-bool InputData::getValueAsDouble(const InputDataName_t aName, double *aValue)
+bool InputData::getValueAsDouble(const InputDataName_t aName, double& aValue) const
 {
-  if(isDataExist(aName))
-      return m_Data[aName]->toDouble(*aValue);
+  InputDataMap_t::const_iterator it = m_Data.find(aName);
+
+  if(it != m_Data.end())
+    return it->second.toDouble(aValue);
 
   return false;
 }
@@ -161,10 +158,12 @@ bool InputData::getValueAsDouble(const InputDataName_t aName, double *aValue)
 // =====================================================================
 
 
-bool InputData::getValueAsLong(const InputDataName_t aName, long *aValue)
+bool InputData::getValueAsLong(const InputDataName_t aName, long& aValue) const
 {
-  if(isDataExist(aName))
-    return m_Data[aName]->toInteger(*aValue);
+  InputDataMap_t::const_iterator it = m_Data.find(aName);
+
+  if(it != m_Data.end())
+    return it->second.toInteger(aValue);
 
   return false;
 }
@@ -189,9 +188,7 @@ std::vector<InputDataName_t> InputData::getInputDataNames() const
   InputDataMap_t::const_iterator it;
 
   for (it = m_Data.begin(); it != m_Data.end(); ++it)
-  {
     TheNames.push_back(it->first);
-  }
 
   return TheNames;
 }
@@ -200,38 +197,50 @@ std::vector<InputDataName_t> InputData::getInputDataNames() const
 // =====================================================================
 
 
-void InputData::replaceValue(const InputDataName_t aName, const StringValue& aValue)
-{
-  if(isDataExist(aName))
-    delete m_Data[aName];
-
-  m_Data[aName] = new StringValue(aValue);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void InputData::replaceValue(const InputDataName_t aName, std::string aValue)
-{
-  if(isDataExist(aName))
-    delete m_Data[aName];
-
-  m_Data[aName] = new StringValue(aValue);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void InputData::removeData(const InputDataName_t aName)
+bool InputData::replaceValue(const InputDataName_t aName, const StringValue& aValue)
 {
   if(isDataExist(aName))
   {
-    delete  m_Data[aName];
-    m_Data.erase(aName);
+    m_Data[aName].set(aValue.get());
+
+    return true;
   }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool InputData::replaceValue(const InputDataName_t aName, const std::string& aValue)
+{
+  if(isDataExist(aName))
+  {
+    m_Data[aName].set(aValue);
+
+    return true;
+  }
+
+  return false;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool InputData::removeData(const InputDataName_t aName)
+{
+  if(isDataExist(aName))
+  {
+    m_Data.erase(aName);
+
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -241,9 +250,6 @@ void InputData::removeData(const InputDataName_t aName)
 
 void InputData::clear()
 {
-  for(InputDataMap_t::iterator it = m_Data.begin();it!=m_Data.end();++it)
-    delete it->second;
-
   m_Data.clear();
 }
 

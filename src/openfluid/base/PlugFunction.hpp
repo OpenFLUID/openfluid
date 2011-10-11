@@ -435,16 +435,15 @@ class DLLEXPORT PluggableFunction
                                openfluid::core::TimeStep_t Step,
                                std::string* Value);
 
-//    /**
-//      Gets input data for a unit, as a DoubleValue
-//      @param[in] UnitPtr a Unit
-//      @param[in] InputName the name of the requested property
-//      @param[out] Val the value of the requested property
-//      @deprecated
-//    */
-//    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
-//                                openfluid::core::InputDataName_t InputName,
-//                                openfluid::core::DoubleValue* Val);
+    /**
+      Gets input data for a unit, as a StringValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                                openfluid::core::InputDataName_t InputName,
+                                openfluid::core::StringValue& Val);
 
     /**
       Gets input data for a unit, as a double
@@ -475,6 +474,16 @@ class DLLEXPORT PluggableFunction
     void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
                                 openfluid::core::InputDataName_t InputName,
                                 std::string *Value);
+
+    /**
+      Sets input data for a unit
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the set property
+      @param[in] Val the value of the set property
+    */
+    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t& InputName,
+                                const openfluid::core::Value& Val);
 
     /**
       Sets input data for a unit, as a double

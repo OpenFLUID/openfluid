@@ -118,13 +118,13 @@ BOOST_AUTO_TEST_CASE(test_constructors)
 
   mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
   mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",&DataValFromCoreRepos);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",DataValFromCoreRepos);
 
   BOOST_CHECK_EQUAL(DataValFromView,DataValFromCoreRepos);
 
   mp_View->getTreeView()->get_model()->children()[5]->get_value(0,Id);
   mp_View->getTreeView()->get_model()->children()[5]->get_value(3,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataC",&DataValFromCoreRepos);
+  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataC",DataValFromCoreRepos);
 
   BOOST_CHECK_EQUAL(DataValFromView,DataValFromCoreRepos);
 

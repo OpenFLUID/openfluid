@@ -134,15 +134,18 @@ typedef DoubleValue ScalarValue;
  @endcode
 
  */
-//typedef Vector<ScalarValue> VectorValue;
-
-//typedef std::string InputDataValue;
 
 
 /**
  Type definition for a time serie of scalar values
+ @deprecated
  */
 typedef std::vector<ScalarValue> SerieOfScalarValue;
+
+/**
+ Type definition for a time serie of double values
+ */
+typedef std::vector<DoubleValue> SerieOfDoubleValue;
 
 
 /**
@@ -155,7 +158,6 @@ typedef std::vector<VectorValue> SerieOfVectorValue;
 
 
 typedef std::string FuncParamKey_t;
-//typedef std::string FuncParamValue_t;
 typedef openfluid::core::StringValue FuncParamValue_t;
 
 /**
@@ -178,8 +180,14 @@ typedef std::map<UnitID_t,double> IDDoubleMap;
 
 /**
   Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
+  @deprecated
 */
 typedef std::map<UnitID_t,ScalarValue> IDScalarValueMap;
+
+/**
+  Map associating an openfluid::core::DoubleValue value to a unit, indexed by its ID
+*/
+typedef std::map<UnitID_t,DoubleValue> IDDoubleValueMap;
 
 /**
   Map associating an integer value to a unit, indexed by its ID
@@ -201,9 +209,19 @@ typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
 */
 typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
 
+/**
+ * @deprecated
+ */
 typedef std::map<UnitID_t,SerieOfScalarValue> IDSerieOfScalarValueMap;
 
+typedef std::map<UnitID_t,SerieOfDoubleValue> IDSerieOfDoubleValueMap;
+
+/**
+ * @deprecated
+ */
 typedef std::map<UnitID_t,SerieOfScalarValue*> IDSerieOfScalarValuePtrMap;
+
+typedef std::map<UnitID_t,SerieOfDoubleValue*> IDSerieOfDoubleValuePtrMap;
 
 
 

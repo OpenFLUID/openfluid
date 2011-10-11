@@ -62,38 +62,36 @@ class DLLEXPORT InputData
 {
   private:
 
-    typedef std::map<InputDataName_t, StringValue*> InputDataMap_t;
+    typedef std::map<InputDataName_t, StringValue> InputDataMap_t;
     InputDataMap_t m_Data;
 
   public:
 
     InputData();
 
-    InputData(const InputData& IData);
-
     ~InputData();
 
     bool setValue(const InputDataName_t aName, const Value& aValue);
 
-    bool setValue(const InputDataName_t aName, const std::string aValue);
+    bool setValue(const InputDataName_t aName, const std::string& aValue);
 
-    StringValue* getValue(const InputDataName_t aName) const;
+    bool getValue(const InputDataName_t aName, openfluid::core::StringValue& aValue) const;
 
-    bool getValue(const InputDataName_t aName, std::string* aValue);
+    bool getValue(const InputDataName_t aName, std::string& aValue) const;
 
-    bool getValueAsDouble(const InputDataName_t aName, double *aValue);
+    bool getValueAsDouble(const InputDataName_t aName, double& aValue) const;
 
-    bool getValueAsLong(const InputDataName_t aName, long *aValue);
+    bool getValueAsLong(const InputDataName_t aName, long& aValue) const;
 
     bool isDataExist(const InputDataName_t aName) const;
 
     std::vector<InputDataName_t> getInputDataNames() const;
 
-    void replaceValue(const InputDataName_t aName, const StringValue& aValue);
+    bool replaceValue(const InputDataName_t aName, const StringValue& aValue);
 
-    void replaceValue(const InputDataName_t aName, std::string aValue);
+    bool replaceValue(const InputDataName_t aName, const std::string& aValue);
 
-    void removeData(const InputDataName_t aName);
+    bool removeData(const InputDataName_t aName);
 
     void clear();
 

@@ -230,29 +230,28 @@ void PluggableFunction::OPENFLUID_GetVariable(openfluid::core::Unit* UnitPtr,
 // =====================================================================
 // =====================================================================
 
-//void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
-//                            openfluid::core::InputDataName_t InputName,
-//                            openfluid::core::DoubleValue* Val)
-//{
-//  if (UnitPtr != NULL)
-//  {
-//    double Dbl;
-//    if (!UnitPtr->getInputData()->getValueAsDouble(InputName,&Dbl))
-//      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","DoubleValue for input data "+ InputName +" does not exist");
-//    else
-//      Val->set(Dbl);
-//  }
-//  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
-//}
-
-// =====================================================================
-// =====================================================================
-
-void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, double *Value)
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                            openfluid::core::InputDataName_t InputName,
+                            openfluid::core::StringValue& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValueAsDouble(InputName,Value))
+    if (!UnitPtr->getInputData()->getValue(InputName,Val))
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","StringValue for input data "+ InputName +" does not exist");
+  }
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+}
+
+// =====================================================================
+// =====================================================================
+
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                                    openfluid::core::InputDataName_t InputName,
+                                    double *Value)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->getValueAsDouble(InputName,*Value))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
@@ -262,11 +261,13 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
 // =====================================================================
 // =====================================================================
 
-void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, long *Value)
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                                    openfluid::core::InputDataName_t InputName,
+                                    long *Value)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValueAsLong(InputName,Value))
+    if (!UnitPtr->getInputData()->getValueAsLong(InputName,*Value))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
@@ -276,11 +277,13 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
 // =====================================================================
 // =====================================================================
 
-void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, openfluid::core::InputDataName_t InputName, std::string *Value)
+void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
+                                    openfluid::core::InputDataName_t InputName,
+                                    std::string *Value)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValue(InputName,Value))
+    if (!UnitPtr->getInputData()->getValue(InputName,*Value))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
@@ -290,17 +293,32 @@ void PluggableFunction::OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr, o
 // =====================================================================
 // =====================================================================
 
+void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t& InputName,
+                                const openfluid::core::Value& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,Val))
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set value for input data "+ InputName);
+  }
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
 
 void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
                                                const openfluid::core::InputDataName_t& InputName,
                                                const double& Value)
 {
-  std::string StrValue;
-
-  if (openfluid::tools::ConvertValue(Value,&StrValue))
-    OPENFLUID_SetInputData(UnitPtr, InputName,StrValue);
-  else
-    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to format double value for input data "+ InputName);
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Value)))
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set double value for input data "+ InputName);
+  }
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
 }
 
 
@@ -312,12 +330,12 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
                                                const openfluid::core::InputDataName_t& InputName,
                                                const long& Value)
 {
-  std::string StrValue;
-
-  if (openfluid::tools::ConvertValue(Value,&StrValue))
-    OPENFLUID_SetInputData(UnitPtr, InputName,StrValue);
-  else
-    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to format long value for input data "+ InputName);
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Value)))
+      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set long value for input data "+ InputName);
+  }
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
 }
 
 
