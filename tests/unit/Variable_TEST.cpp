@@ -145,9 +145,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",2,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1002.1,0.001);
   DblValue.set(0.0);
-  DblValue = *Vars.getValue("bar",2);
+//  DblValue = *Vars.getValue("bar",2);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",2,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1002.1,0.001);
-  BOOST_REQUIRE(!Vars.getValue("bar",4));
+//  BOOST_REQUIRE(!Vars.getValue("bar",4));
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",4,&DblValue),false);
 
   BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::IntegerValue(1004)),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("bar",4,openfluid::core::Value::INTEGER),true);
@@ -158,7 +160,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL((long)IntValue,1004);
   BOOST_REQUIRE_EQUAL((int)IntValue,1004);
   IntValue.set(0);
-  IntValue = *Vars.getValue("bar",4);
+//  IntValue = *Vars.getValue("bar",4);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",4,&IntValue),true);
   BOOST_REQUIRE_EQUAL(IntValue.get(),1004);
 
   BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::StringValue("1005")),true);
@@ -169,7 +172,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(StrValue.get(),"1005");
   BOOST_REQUIRE_EQUAL((std::string)StrValue,"1005");
   StrValue.set("");
-  StrValue = *Vars.getValue("bar",5);
+//  StrValue = *Vars.getValue("bar",5);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",5,&StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue.get(),"1005");
 
   BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::BooleanValue(true)),true);
@@ -180,7 +184,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
   BOOST_REQUIRE_EQUAL((bool)BoolValue,true);
   BoolValue.set(false);
-  BoolValue = *Vars.getValue("bar",6);
+//  BoolValue = *Vars.getValue("bar",6);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",6,&BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
 
   BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",openfluid::core::NullValue()),true);
@@ -198,7 +203,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(VectValue[0],1.1);
   BOOST_REQUIRE_EQUAL(VectValue[2],1.1);
   VectValue.clear();
-  VectValue = *Vars.getValue("bar",8);
+//  VectValue = *Vars.getValue("bar",8);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",8,&VectValue),true);
   BOOST_REQUIRE_EQUAL(VectValue.size(),3);
   BOOST_REQUIRE_EQUAL(VectValue[0],1.1);
   BOOST_REQUIRE_EQUAL(VectValue[2],1.1);
@@ -216,7 +222,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",3,&IntValue),true);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",4,&IntValue),false);
   IntValue.set(0);
-  IntValue = *Vars.getValue("bar",3);
+//  IntValue = *Vars.getValue("bar",3);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",3,&IntValue),true);
   BOOST_REQUIRE_EQUAL(IntValue.get(),1004);
 
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("bar",4,openfluid::core::Value::STRING),true);
@@ -224,7 +231,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",4,&StrValue),true);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",2,&StrValue),false);
   StrValue.set("");
-  StrValue = *Vars.getValue("bar",4);
+//  StrValue = *Vars.getValue("bar",4);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",4,&StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue.get(),"1005");
 
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("bar",5,openfluid::core::Value::BOOLEAN),true);
@@ -234,7 +242,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
   BOOST_REQUIRE_EQUAL((bool)BoolValue,true);
   BoolValue.set(false);
-  BoolValue = *Vars.getValue("bar",5);
+//  BoolValue = *Vars.getValue("bar",5);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",5,&BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
 
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("bar",6,openfluid::core::Value::NULLL),true);
@@ -247,7 +256,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",7,&VectValue),true);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",8,&VectValue),false);
   VectValue.clear();
-  VectValue = *Vars.getValue("bar",7);
+//  VectValue = *Vars.getValue("bar",7);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",7,&VectValue),true);
   BOOST_REQUIRE_EQUAL(VectValue.size(),3);
   BOOST_REQUIRE_EQUAL(VectValue[0],1.1);
   BOOST_REQUIRE_EQUAL(VectValue[2],1.1);
@@ -257,7 +267,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",8,&DblValue),true);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",3,&DblValue),false);
   DblValue.set(0.0);
-  DblValue = *Vars.getValue("bar",8);
+//  DblValue = *Vars.getValue("bar",8);
+  BOOST_REQUIRE_EQUAL(Vars.getValue("bar",8,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1002.1,0.001);
 
 
