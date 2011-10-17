@@ -57,6 +57,7 @@
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
 
 
 // =====================================================================
@@ -622,6 +623,72 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
+                                    openfluid::core::DoubleValue* Value) const
+{
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::InputDataName_t InputName,
+                                    openfluid::core::DoubleValue& Value) const
+{
+  double Val;
+  OPENFLUID_GetInputData(UnitPtr,InputName,Val);
+  Value.set(Val);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::InputDataName_t InputName,
+                                    openfluid::core::VectorValue* Value) const
+{
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::InputDataName_t InputName,
+                                    openfluid::core::VectorValue& Value) const
+{
+  openfluid::core::StringValue Val;
+  OPENFLUID_GetInputData(UnitPtr,InputName,Val);
+  Val.toVectorValue(Value.getStreamSeparator(1),Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                            const openfluid::core::InputDataName_t InputName,
+                            openfluid::core::MatrixValue& Value) const
+{
+  openfluid::core::StringValue Val;
+  OPENFLUID_GetInputData(UnitPtr,InputName,Val);
+  Val.toMatrixValue(Value.getStreamSeparator(1),Value.getStreamSeparator(2),Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::InputDataName_t InputName,
                                     double *Value) const
 {
   OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
@@ -768,7 +835,25 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
   openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
-    return it->second.toVectorValue(";",Val);
+    return it->second.toVectorValue(Val.getStreamSeparator(1),Val);
+
+  return false;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                    const openfluid::core::FuncParamKey_t ParamName,
+                                    openfluid::core::MatrixValue& Val) const
+{
+  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
+
+  if (it != Params.end())
+    return it->second.toMatrixValue(Val.getStreamSeparator(1),Val.getStreamSeparator(2),Val);
 
   return false;
 }

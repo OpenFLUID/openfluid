@@ -305,6 +305,22 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   BOOST_REQUIRE_EQUAL(Val2.getRowsNbr(),0);
   BOOST_REQUIRE_EQUAL(Val1.getSize(),600);
 
+
+  openfluid::core::MatrixValue Val3 = openfluid::core::MatrixValue(2,3,0.0);
+  BOOST_REQUIRE_EQUAL(Val3.getColsNbr(),2);
+  BOOST_REQUIRE_EQUAL(Val3.getRowsNbr(),3);
+  std::cout << Val3.toString() << std::endl;
+  BOOST_REQUIRE_EQUAL(Val3.toString(),"0;0|0;0|0;0");
+
+  openfluid::core::StringValue StrTest("1.1;1.2|2.1;2.2|3.1;3.2");
+  Val3.clear();
+  StrTest.toMatrixValue(";","|",Val3);
+  std::cout << Val3.toString() << std::endl;
+  BOOST_REQUIRE_EQUAL(Val3.toString(),"1.1;1.2|2.1;2.2|3.1;3.2");
+
+  Val3.set(1,2,9.99);
+  BOOST_REQUIRE_CLOSE( Val3.get(1,2), 9.99,0.000001 );
+
 }
 
 

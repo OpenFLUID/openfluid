@@ -706,6 +706,58 @@ class DLLEXPORT PluggableFunction
                                 openfluid::core::StringValue& Val) const;
 
     /**
+      Gets input data for a unit, as a DoubleValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::DoubleValue* Value) const;
+
+    /**
+      Gets input data for a unit, as a DoubleValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::DoubleValue& Value) const;
+
+    /**
+      Gets input data for a unit, as a VectorValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::VectorValue* Value) const;
+
+    /**
+      Gets input data for a unit, as a VectorValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::VectorValue& Value) const;
+
+    /**
+      Gets input data for a unit, as a MatrixValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Value the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::MatrixValue& Value) const;
+
+    /**
       Gets input data for a unit, as a double
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
@@ -806,6 +858,16 @@ class DLLEXPORT PluggableFunction
     bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                         const openfluid::core::FuncParamKey_t ParamName,
                                         openfluid::core::VectorValue& Val) const;
+
+    /**
+      Gets a function parameter from the parameters set, as a MatrixValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Value the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::MatrixValue& Val) const;
 
     /**
       Gets a function parameter from the parameters set, as a double

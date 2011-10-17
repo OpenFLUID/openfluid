@@ -92,7 +92,7 @@ class DLLEXPORT ArrayValue : public CompoundValue
 
     virtual ~ArrayValue() {};
 
-    inline Type getType() const { return Value::MAP; };
+    inline Type getType() const { return Value::ARRAY; };
 
     void writeToStream(std::ostream& OutStm) const;
 

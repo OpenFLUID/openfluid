@@ -140,7 +140,7 @@ typedef DoubleValue ScalarValue;
  Type definition for a time serie of scalar values
  @deprecated
  */
-typedef std::vector<ScalarValue> SerieOfScalarValue;
+typedef std::vector<double> SerieOfScalarValue;
 
 /**
  Type definition for a time serie of double values
@@ -182,7 +182,7 @@ typedef std::map<UnitID_t,double> IDDoubleMap;
   Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
   @deprecated
 */
-typedef std::map<UnitID_t,ScalarValue> IDScalarValueMap;
+typedef std::map<UnitID_t,double> IDScalarValueMap;
 
 /**
   Map associating an openfluid::core::DoubleValue value to a unit, indexed by its ID

@@ -76,11 +76,11 @@ class PrimitivesValuesUseFunction : public openfluid::base::PluggableFunction
 {
   private:
 
-    long m_LongParam;
+    long m_ParamLong;
 
-    double m_DoubleParam;
+    double m_ParamDouble;
 
-    std::string m_StrParam;
+    std::string m_ParamString;
 
   public:
     /**
