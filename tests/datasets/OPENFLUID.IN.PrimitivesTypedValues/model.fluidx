@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+   
+      <function fileID="tests.primitivestypedvalues.prod" />       
+      
+      <function fileID="tests.primitivestypedvalues.use" />     
+    
+  </model>
+</openfluid>

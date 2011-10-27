@@ -192,10 +192,18 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
     {
       OSD.setAllVariables(false);
 
+      std::string OnlyVarName;
+      openfluid::core::Value::Type VarType;
+
       std::vector<std::string> StrArray = openfluid::tools::SplitString(VarsStr,";");
       for (unsigned int i=0;i<StrArray.size();i++)
       {
-        OSD.getVariables().push_back(StrArray[i]);
+        OnlyVarName = "";
+
+        if(!openfluid::tools::GetVariableNameAndType(StrArray[i],OnlyVarName,VarType))
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractSetDecriptorFromNode","Variable " + StrArray[i] + " is not well formated.");
+
+        OSD.getVariables().push_back(OnlyVarName);
       }
 
     }

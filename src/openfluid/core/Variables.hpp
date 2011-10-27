@@ -59,7 +59,7 @@ class DLLEXPORT Variables
 {
   private:
 
-    typedef std::map<VariableName_t, ValuesBuffer> VariablesMap_t;
+    typedef std::map<VariableName_t, std::pair<ValuesBuffer,Value::Type> > VariablesMap_t;
     VariablesMap_t m_Data;
 
   public:
@@ -69,6 +69,8 @@ class DLLEXPORT Variables
     ~Variables();
 
     bool createVariable(const VariableName_t aName);
+
+    bool createVariable(const VariableName_t aName, const Value::Type aType);
 
     bool modifyValue(const VariableName_t aName, const TimeStep_t aStep,
         const Value& aValue);
@@ -90,6 +92,11 @@ class DLLEXPORT Variables
 
     bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep,
         Value::Type ValueType) const;
+
+    bool isTypedVariableExist(const VariableName_t aName, const Value::Type VarType) const;
+
+    bool isTypedVariableExist(const VariableName_t aName, const TimeStep_t aStep,
+        Value::Type VarType) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
 

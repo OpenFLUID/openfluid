@@ -47,27 +47,59 @@
 
 
 /**
-  @file
+  \file PrimitivesTypedValuesProdFunc.h
+  \brief Header of ...
+*/
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+#ifndef __PRIMITIVESTYPEDVALUESPRODFUNC_H__
+#define __PRIMITIVESTYPEDVALUESPRODFUNC_H__
+
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+// =====================================================================
+// =====================================================================
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+DECLARE_PLUGIN_HOOKS
 
-#endif /* __CORE_HPP___ */
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+
+*/
+class PrimitivesTypedValuesProdFunction : public openfluid::base::PluggableFunction
+{
+  private:
+
+  public:
+    /**
+      Constructor
+    */
+    PrimitivesTypedValuesProdFunction();
+
+    /**
+      Destructor
+    */
+    ~PrimitivesTypedValuesProdFunction();
+
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
+
+    bool prepareData();
+
+    bool checkConsistency();
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+};
+
+
+#endif  // __PRIMITIVESTYPEDVALUESPRODFUNC_H__

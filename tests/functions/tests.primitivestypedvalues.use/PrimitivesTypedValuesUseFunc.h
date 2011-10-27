@@ -47,27 +47,65 @@
 
 
 /**
-  @file
+  \file PrimitivesTypedValuesUseFunc.h
+  \brief Header of ...
+*/
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+#ifndef __PRIMITIVESTYPEDVALUESUSEFUNC_H__
+#define __PRIMITIVESTYPEDVALUESUSEFUNC_H__
+
+#include <openfluid/base.hpp>
+#include <openfluid/core.hpp>
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+// =====================================================================
+// =====================================================================
 
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/Value.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
-#include <openfluid/core/Variables.hpp>
-#include <openfluid/core/Vector.hpp>
+DECLARE_PLUGIN_HOOKS
 
-#endif /* __CORE_HPP___ */
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+
+*/
+class PrimitivesTypedValuesUseFunction : public openfluid::base::PluggableFunction
+{
+  private:
+
+    long m_ParamLong;
+
+    double m_ParamDouble;
+
+    std::string m_ParamString;
+
+  public:
+    /**
+      Constructor
+    */
+    PrimitivesTypedValuesUseFunction();
+
+    /**
+      Destructor
+    */
+    ~PrimitivesTypedValuesUseFunction();
+
+    bool initParams(openfluid::core::FuncParamsMap_t Params);
+
+    bool prepareData();
+
+    bool checkConsistency();
+
+    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+
+    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+
+};
+
+
+#endif  // __PRIMITIVESTYPEDVALUESUSEFUNC_H__

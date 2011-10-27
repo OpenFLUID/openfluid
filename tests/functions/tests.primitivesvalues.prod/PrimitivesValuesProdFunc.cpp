@@ -56,6 +56,8 @@
 
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/NullValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/MapValue.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -93,6 +95,8 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_PRODUCED_VAR("tests.stringval","TestUnits","string value for tests","");
   DECLARE_PRODUCED_VAR("tests.null","TestUnits","null for tests","");
   DECLARE_PRODUCED_VAR("tests.vector","TestUnits","vector for tests","");
+  DECLARE_PRODUCED_VAR("tests.matrix","TestUnits","matrix for tests","");
+  DECLARE_PRODUCED_VAR("tests.map","TestUnits","map for tests","");
 
 END_SIGNATURE_HOOK
 
@@ -182,6 +186,10 @@ bool PrimitivesValuesProdFunction::runStep(const openfluid::base::SimulationStat
   openfluid::core::NullValue TheNull;
   long VectorSize = 40;
   openfluid::core::VectorValue TheVector;
+  long MatrixColsNb = 4;
+  long MatrixRowsNb = 3;
+  openfluid::core::MatrixValue TheMatrix;
+  openfluid::core::MapValue TheMap;
 
   DECLARE_UNITS_ORDERED_LOOP(1);
 
@@ -446,6 +454,60 @@ bool PrimitivesValuesProdFunction::runStep(const openfluid::base::SimulationStat
 
   if (OPENFLUID_IsVariableExist(TU,"tests.vector",SimStatus->getCurrentStep()+1, openfluid::core::Value::VECTOR))
     OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.vector, timestep+1, VECTOR) after append");
+
+  // matrix value
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.matrix"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix)");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.matrix",SimStatus->getCurrentStep()))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep) before append");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.matrix",SimStatus->getCurrentStep(), openfluid::core::Value::MATRIX))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep, MATRIX) before append");
+
+  TheMatrix = openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,TheDouble);
+  OPENFLUID_AppendVariable(TU,"tests.matrix",TheMatrix);
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.matrix",SimStatus->getCurrentStep()))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep) after append");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.matrix",SimStatus->getCurrentStep()+1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep+1) after append");
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.matrix",SimStatus->getCurrentStep(), openfluid::core::Value::MATRIX))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep, MATRIX) after append");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.matrix",SimStatus->getCurrentStep()+1, openfluid::core::Value::MATRIX))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.matrix, timestep+1, MATRIX) after append");
+
+  // map value
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.map"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map)");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.map",SimStatus->getCurrentStep()))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map, timestep) before append");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.map",SimStatus->getCurrentStep(), openfluid::core::Value::MAP))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map, timestep, MAP) before append");
+
+  TheMap = openfluid::core::MapValue();
+  TheMap.setString("key1",TheString);
+  TheMap.setDouble("key2",TheDouble);
+  OPENFLUID_AppendVariable(TU,"tests.map",TheMap);
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.map",SimStatus->getCurrentStep()))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map, timestep) after append");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.map",SimStatus->getCurrentStep()+1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map, timestep+1) after append");
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.map",SimStatus->getCurrentStep(), openfluid::core::Value::MAP))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map, timestep, MAP) after append");
+
+  if (OPENFLUID_IsVariableExist(TU,"tests.map",SimStatus->getCurrentStep()+1, openfluid::core::Value::MAP))
+    OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsVariableExist (tests.map, timestep+1, MAP) after append");
 
 
   END_LOOP

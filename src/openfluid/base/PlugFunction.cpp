@@ -509,10 +509,7 @@ bool PluggableFunction::OPENFLUID_IsVariableExist(const openfluid::core::Unit *U
                                         const openfluid::core::VariableName_t VarName,
                                         const openfluid::core::TimeStep_t Step) const
 {
-  if (UnitPtr != NULL)
-    return UnitPtr->getVariables()->isVariableExist(VarName,Step);
-
-  return false;
+   return (UnitPtr != NULL && UnitPtr->getVariables()->isVariableExist(VarName,Step));
 }
 
 
@@ -521,14 +518,36 @@ bool PluggableFunction::OPENFLUID_IsVariableExist(const openfluid::core::Unit *U
 
 
 bool PluggableFunction::OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               const openfluid::core::Value::Type ValueType) const
+{
+  return (UnitPtr != NULL && UnitPtr->getVariables()->isVariableExist(VarName,Step,ValueType));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::Value::Type VarType) const
+{
+  return (UnitPtr != NULL && UnitPtr->getVariables()->isTypedVariableExist(VarName,VarType));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableFunction::OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
                                         const openfluid::core::TimeStep_t Step,
-                                        const openfluid::core::Value::Type ValueType) const
+                                        const openfluid::core::Value::Type VarType) const
 {
-  if (UnitPtr != NULL)
-    return UnitPtr->getVariables()->isVariableExist(VarName,Step,ValueType);
-
-  return false;
+  return (UnitPtr != NULL && UnitPtr->getVariables()->isTypedVariableExist(VarName,Step,VarType));
 }
 
 

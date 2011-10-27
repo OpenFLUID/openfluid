@@ -79,7 +79,7 @@ class Value
 {
   public:
 
-    enum Type { BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, ARRAY, MAP, NULLL };
+    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, ARRAY, MAP, NULLL };
 
     /**
       Default constructor
@@ -176,6 +176,8 @@ class Value
 
 
     std::string toString() const;
+
+    static bool getValueTypeFromString(const std::string ValueTypeString, Value::Type& ValueType);
 
 };
 

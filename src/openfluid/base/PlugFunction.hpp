@@ -641,7 +641,7 @@ class DLLEXPORT PluggableFunction
                                    const openfluid::core::TimeStep_t Step) const;
 
     /**
-       Returns true if a distributed variable exists and if a value has been set for the given step
+       Returns true if a distributed variable exists and if a value has been set for the given step,
        and if this value is the given type, false otherwise
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the requested variable
@@ -652,6 +652,30 @@ class DLLEXPORT PluggableFunction
                                     const openfluid::core::VariableName_t VarName,
                                     const openfluid::core::TimeStep_t Step,
                                     const openfluid::core::Value::Type ValueType) const;
+
+    /**
+       Returns true if a distributed variable exists
+       and if the type set for this variable is the given type, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] VarType the type of the variable
+     */
+    bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const openfluid::core::Value::Type VarType) const;
+
+    /**
+       Returns true if a distributed variable exists and if a value has been set for the given step
+       and if the type set for this variable is the given type, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] Step the time step for the value of the variable
+       @param[in] VarType the type of the variable
+     */
+     bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::VariableName_t VarName,
+                                    const openfluid::core::TimeStep_t Step,
+                                    const openfluid::core::Value::Type VarType) const;
 
 
     /**

@@ -48,13 +48,13 @@
 
     <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">     
       <set name="full" unitsclass="XU" unitsIDs="*" vars="*" />      
-      <set name="2vars" unitsclass="YU" unitsIDs="*" vars="var1;var2" precision="3" />      
+      <set name="2vars" unitsclass="YU" unitsIDs="*" vars="var1;var2[]" precision="3" />      
       <set name="3units" unitsclass="ZU" unitsIDs="5;197;73" vars="*" precision="5" />      
     </files>  
 
     <files colsep=";" dtformat="%Y%m%dT%H%M%S" commentchar="#">     
       <set name="full" unitsclass="KU" unitsIDs="*" vars="*" precision="9"/>      
-      <set name="3vars" unitsclass="LU" unitsIDs="*" vars="var1;var2;var5" />      
+      <set name="3vars" unitsclass="LU" unitsIDs="*" vars="var1;var2[];var5" />      
       <set name="2units" unitsclass="MU" unitsIDs="2;1" vars="*" />      
     </files>
 

@@ -83,22 +83,45 @@ bool Variables::createVariable(const VariableName_t aName)
 {
   if (!isVariableExist(aName))
   {
-    m_Data[aName];
+    m_Data[aName].second = Value::NONE;
     return true;
   }
 
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
+bool Variables::createVariable(const VariableName_t aName, const Value::Type aType)
+{
+  if (!isVariableExist(aName))
+  {
+    m_Data[aName].second = aType;
+    return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+/**
+ * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
+ * either a NullValue or the same type than the existing Variable.
+ */
 bool Variables::modifyValue(const VariableName_t aName, const TimeStep_t aStep,
     const Value& aValue)
 {
-  if (isVariableExist(aName, aStep))
-    return m_Data[aName].modifyValue(aStep, aValue);
+  if (isVariableExist(aName, aStep)
+      && (m_Data[aName].second == openfluid::core::Value::NONE
+          || aValue.getType() == openfluid::core::Value::NULLL
+          || m_Data[aName].second == aValue.getType()))
+    return m_Data[aName].first.modifyValue(aStep, aValue);
 
   return false;
 }
@@ -106,11 +129,17 @@ bool Variables::modifyValue(const VariableName_t aName, const TimeStep_t aStep,
 // =====================================================================
 // =====================================================================
 
-
+/**
+ * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
+ * either a NullValue or the same type than the existing Variable.
+ */
 bool Variables::appendValue(const VariableName_t aName, const Value& aValue)
 {
-  if (isVariableExist(aName))
-    return m_Data[aName].appendValue(aValue);
+  if (isVariableExist(aName)
+      && (m_Data[aName].second == openfluid::core::Value::NONE
+          || aValue.getType() == openfluid::core::Value::NULLL
+          || m_Data[aName].second == aValue.getType()))
+    return m_Data[aName].first.appendValue(aValue);
 
   return false;
 }
@@ -122,13 +151,9 @@ bool Variables::appendValue(const VariableName_t aName, const Value& aValue)
 bool Variables::getValue(const VariableName_t aName, const TimeStep_t aStep,
     Value* aValue) const
 {
-
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  if (it != m_Data.end())
-    return it->second.getValue(aStep, aValue);
-
-  return false;
+  return (it != m_Data.end() && it->second.first.getValue(aStep, aValue));
 }
 
 // =====================================================================
@@ -139,7 +164,7 @@ Value* Variables::getValue(const VariableName_t aName, const TimeStep_t aStep) c
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-    return it->second.getValue(aStep);
+    return it->second.first.getValue(aStep);
 
   return (Value*) 0;
 }
@@ -153,7 +178,7 @@ Value* Variables::getCurrentValue(const VariableName_t aName) const
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-    return it->second.getCurrentValue();
+    return it->second.first.getCurrentValue();
 
   return (Value*) 0;
 }
@@ -166,10 +191,7 @@ bool Variables::getCurrentValue(const VariableName_t aName, Value* aValue) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  if (it != m_Data.end())
-    return it->second.getCurrentValue(aValue);
-
-  return false;
+  return (it != m_Data.end() && it->second.first.getCurrentValue(aValue));
 }
 
 // =====================================================================
@@ -188,24 +210,47 @@ bool Variables::isVariableExist(const VariableName_t aName) const
 bool Variables::isVariableExist(const VariableName_t aName,
     const TimeStep_t aStep) const
 {
-  VariablesMap_t::const_iterator it;
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  it = m_Data.find(aName);
-
-  if (it != m_Data.end())
-    // the variable exist if the required step is strictly lesser than the variable storage next step
-    return (aStep < it->second.getNextStep());
-
-  return false;
+  // the variable exist if the required step is strictly lesser than the variable storage next step
+  return (it != m_Data.end() && aStep < it->second.first.getNextStep());
 }
 
 // =====================================================================
 // =====================================================================
 
-bool Variables::isVariableExist(const VariableName_t aName,
-    const TimeStep_t aStep, Value::Type ValueType) const
+
+bool Variables::isVariableExist(const VariableName_t aName, const TimeStep_t aStep,
+    Value::Type ValueType) const
 {
-  return isVariableExist(aName,aStep) && getValue(aName,aStep)->getType() == ValueType;
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  // the variable exist if the required step is strictly lesser than the variable storage next step
+  return (it != m_Data.end() && aStep < it->second.first.getNextStep() && it->second.first.getValue(aStep)->getType() == ValueType);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::isTypedVariableExist(const VariableName_t aName, const Value::Type VarType) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.second == VarType);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::isTypedVariableExist(const VariableName_t aName,
+    const TimeStep_t aStep, Value::Type VarType) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  // the variable exist if the required step is strictly lesser than the variable storage next step
+  return (it != m_Data.end() && aStep < it->second.first.getNextStep() && it->second.second == VarType);
 }
 
 // =====================================================================
@@ -216,12 +261,8 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
 {
   std::vector<VariableName_t> TheNames;
 
-  VariablesMap_t::const_iterator it;
-
-  for (it = m_Data.begin(); it != m_Data.end(); ++it)
-  {
+  for (VariablesMap_t::const_iterator it = m_Data.begin(); it != m_Data.end(); ++it)
     TheNames.push_back(it->first);
-  }
 
   return TheNames;
 }
@@ -233,14 +274,12 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
 unsigned int Variables::getVariableValuesCount(const VariableName_t aName) const
 {
 
-  VariablesMap_t::const_iterator it;
-
-  it = m_Data.find(aName);
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it == m_Data.end())
-    return (-1);
+    return -1;
 
-  return it->second.getNextStep();
+  return it->second.first.getNextStep();
 }
 
 // =====================================================================
@@ -249,11 +288,9 @@ unsigned int Variables::getVariableValuesCount(const VariableName_t aName) const
 
 bool Variables::isAllVariablesCount(unsigned int Count) const
 {
-  VariablesMap_t::const_iterator it;
-
-  for (it = m_Data.begin(); it != m_Data.end(); ++it)
+  for (VariablesMap_t::const_iterator it = m_Data.begin(); it != m_Data.end(); ++it)
   {
-    if (it->second.getNextStep() != Count)
+    if (it->second.first.getNextStep() != Count)
       return false;
   }
 

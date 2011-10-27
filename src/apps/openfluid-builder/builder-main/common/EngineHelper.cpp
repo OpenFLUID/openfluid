@@ -112,11 +112,21 @@ std::set<std::string> EngineHelper::getProducedVarNames(std::string ClassName,
 {
   std::set<std::string> VarNames;
 
+  std::string OnlyVarName;
+  openfluid::core::Value::Type VarType;
+
   BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
 {  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
   {
     if(Var.UnitClass == ClassName)
-    VarNames.insert(Var.DataName);
+    {
+      OnlyVarName = "";
+
+      if(!openfluid::tools::GetVariableNameAndType(Var.DataName,OnlyVarName,VarType))
+        throw openfluid::base::OFException("OpenFLUID builder","EngineHelper::getProducedVarNames","Variable " + Var.DataName + " for " + Item->Signature->ID + " is not well formated.");
+
+      VarNames.insert(OnlyVarName);
+    }
   }
 }
 

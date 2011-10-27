@@ -155,16 +155,16 @@ ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   SET_TESTS_PROPERTIES(functions-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
 ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
 
-#ADD_FUNCTION(tests.manyvalues.prod tests.manyvalues.prod ${TEST_OUTPUT_PATH})
-#ADD_FUNCTION(tests.manyvalues.use tests.manyvalues.use ${TEST_OUTPUT_PATH})
-#ADD_TEST(functions-ManyValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
-#                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyValues"
-#                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyValues" 
-#                           "-p${TEST_OUTPUT_PATH}")  
-
 ADD_FUNCTION(tests.primitivesvalues.prod tests.primitivesvalues.prod ${TEST_OUTPUT_PATH})
 ADD_FUNCTION(tests.primitivesvalues.use tests.primitivesvalues.use ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-PrimitivesValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesValues"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesValues" 
-                           "-p${TEST_OUTPUT_PATH}") 
+                           "-p${TEST_OUTPUT_PATH}")
+
+ADD_FUNCTION(tests.primitivestypedvalues.prod tests.primitivestypedvalues.prod ${TEST_OUTPUT_PATH})
+ADD_FUNCTION(tests.primitivestypedvalues.use tests.primitivestypedvalues.use ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-PrimitivesTypedValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesTypedValues"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTypedValues" 
+                           "-p${TEST_OUTPUT_PATH}")                            

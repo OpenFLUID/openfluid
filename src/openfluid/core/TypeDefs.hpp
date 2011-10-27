@@ -106,6 +106,7 @@ typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 
 /**
  Type definition for scalar values
+ @deprecated
  */
 typedef DoubleValue ScalarValue;
 

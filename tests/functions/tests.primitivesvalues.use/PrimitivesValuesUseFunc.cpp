@@ -57,6 +57,7 @@
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/MapValue.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -98,17 +99,26 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_REQUIRED_VAR("tests.boolval","TestUnits","boolean value for tests","");
   DECLARE_REQUIRED_VAR("tests.stringval","TestUnits","string value for tests","");
   DECLARE_REQUIRED_VAR("tests.vector","TestUnits","vector for tests","");
+  DECLARE_REQUIRED_VAR("tests.matrix","TestUnits","matrix for tests","");
+  DECLARE_REQUIRED_VAR("tests.map","TestUnits","map for tests","");
 
-  DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","input data for tests","")
-  DECLARE_REQUIRED_INPUTDATA("indataB","TestUnits","input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataDouble","TestUnits","double input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataLong","TestUnits","long input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataBool","TestUnits","boolean input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataString","TestUnits","string input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataVector","TestUnits","vector input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataMatrix","TestUnits","matrix input data for tests","")
+  DECLARE_REQUIRED_INPUTDATA("indataMap","TestUnits","map input data for tests","")
 
   DECLARE_FUNCTION_PARAM ("strparam","=strvalue","-");
   DECLARE_FUNCTION_PARAM ("doubleparam","=0.1","-");
   DECLARE_FUNCTION_PARAM ("longparam","=10","-");
+  DECLARE_FUNCTION_PARAM ("boolparam","=true","-");
   DECLARE_FUNCTION_PARAM ("strarrayparam","=strvalue1;strvalue2;strvalue3","-");
   DECLARE_FUNCTION_PARAM ("doublearrayparam","=1.1;1.3;1.3;1.4","-");
   DECLARE_FUNCTION_PARAM ("longarrayparam","=11;12;13;14;15","-");
   DECLARE_FUNCTION_PARAM ("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
+  DECLARE_FUNCTION_PARAM ("mapparam","=key1=1.1;key2=a string;key3=true","-");
 
 END_SIGNATURE_HOOK
 
@@ -141,11 +151,11 @@ PrimitivesValuesUseFunction::~PrimitivesValuesUseFunction()
 
 bool PrimitivesValuesUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
-
-  openfluid::core::DoubleValue ParamDoubleVal;
   openfluid::core::StringValue ParamStrVal;
+  openfluid::core::DoubleValue ParamDoubleVal;
   openfluid::core::VectorValue ParamVectorVal;
   openfluid::core::MatrixValue ParamMatrixVal;
+  openfluid::core::MapValue ParamMapVal;
 
   std::vector<std::string> ParamStrArray;
   std::vector<long> ParamLongArray;
@@ -253,6 +263,17 @@ bool PrimitivesValuesUseFunction::initParams(openfluid::core::FuncParamsMap_t Pa
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longparam, size) into VectorValue");
   if(!openfluid::tools::IsCloseEnough(ParamVectorVal[0],10,0.00001))
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longparam, value) into VectorValue");
+
+
+  // ====== Bool param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"boolparam",ParamStrVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (boolparam) into StringValue");
+  bool aBool = false;
+  if(!ParamStrVal.toBoolean(aBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (boolparam, type)");
+  if(aBool != true)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (boolparam, value)");
 
 
   // ====== String array param ======
@@ -396,6 +417,28 @@ bool PrimitivesValuesUseFunction::initParams(openfluid::core::FuncParamsMap_t Pa
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (matrixparam, value) into StringValue");
 
 
+  // ====== Map param ======
+
+  if (!OPENFLUID_GetFunctionParameter(Params,"mapparam",ParamStrVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam) into StringValue");
+  if(!ParamStrVal.toMapValue(";",ParamMapVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, type)");
+  if(ParamMapVal.size() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, size)");
+  double aDouble = 0.0;
+  if(!ParamMapVal["key1"].asStringValue().toDouble(aDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, type for key key1)");
+  if(!openfluid::tools::IsCloseEnough(aDouble,1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, value for key key1)");
+  if(ParamMapVal.getString("key2") != "a string")
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, value for key key2)");
+  aBool = false;
+  if(!ParamMapVal["key3"].asStringValue().toBoolean(aBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, type for key key3)");
+  if(aBool != true)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, value for key key3)");
+
+
   return true;
 }
 
@@ -417,35 +460,43 @@ bool PrimitivesValuesUseFunction::prepareData()
   aMatrix.set(1,0,1.0);
   aMatrix.set(1,1,1.1);
   aMatrix.set(1,2,1.2);
+  openfluid::core::MapValue aMap;
+  aMap.setDouble("key1",2.1);
+  aMap.setString("key2","a string");
+  aMap.setBoolean("key3",true);
 
   DECLARE_UNITS_ORDERED_LOOP(1);
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU);
 
     double Dbl = TU->getID() / 10;
-    OPENFLUID_SetInputData(TU,"indataA2",Dbl);
-    OPENFLUID_SetInputData(TU,"indataA3",openfluid::core::DoubleValue(Dbl));
-
-    std::string Str = Glib::ustring::compose("ID %1",TU->getID());
-    OPENFLUID_SetInputData(TU,"indataB2",Str);
-    OPENFLUID_SetInputData(TU,"indataB3",openfluid::core::StringValue(Str));
-
     long Lg = TU->getID();
-    OPENFLUID_SetInputData(TU,"indataC2",Lg);
-    OPENFLUID_SetInputData(TU,"indataC3",openfluid::core::IntegerValue(Lg));
-
     bool Bl = (TU->getID()%2 == 0);
-    OPENFLUID_SetInputData(TU,"indataD2",Bl ? "true" : "false");
-    OPENFLUID_SetInputData(TU,"indataD3",openfluid::core::BooleanValue(Bl));
+    std::string Str = Glib::ustring::compose("ID %1",TU->getID());
 
-    OPENFLUID_SetInputData(TU,"indataE2","null");
-    OPENFLUID_SetInputData(TU,"indataE3",openfluid::core::NullValue());
+    OPENFLUID_SetInputData(TU,"indataDouble2",Dbl);
+    OPENFLUID_SetInputData(TU,"indataDouble3",openfluid::core::DoubleValue(Dbl));
 
-    OPENFLUID_SetInputData(TU,"indataF2","1.1;1.2;1.3");
-    OPENFLUID_SetInputData(TU,"indataF3",aVector);
+    OPENFLUID_SetInputData(TU,"indataLong2",Lg);
+    OPENFLUID_SetInputData(TU,"indataLong3",openfluid::core::IntegerValue(Lg));
 
-    OPENFLUID_SetInputData(TU,"indataG2","0.0;1.0|0.1;1.1|0.2;1.2");
-    OPENFLUID_SetInputData(TU,"indataG3",aMatrix);
+    OPENFLUID_SetInputData(TU,"indataString2",Str);
+    OPENFLUID_SetInputData(TU,"indataString3",openfluid::core::StringValue(Str));
+
+    OPENFLUID_SetInputData(TU,"indataBool2",Bl ? "true" : "false");
+    OPENFLUID_SetInputData(TU,"indataBool3",openfluid::core::BooleanValue(Bl));
+
+    OPENFLUID_SetInputData(TU,"indataVector2","1.1;1.2;1.3");
+    OPENFLUID_SetInputData(TU,"indataVector3",aVector);
+
+    OPENFLUID_SetInputData(TU,"indataMatrix2","0.0;1.0|0.1;1.1|0.2;1.2");
+    OPENFLUID_SetInputData(TU,"indataMatrix3",aMatrix);
+
+    OPENFLUID_SetInputData(TU,"indataMap2","key1=2.1;key2=a string;key3=true");
+    OPENFLUID_SetInputData(TU,"indataMap3",aMap);
+
+    OPENFLUID_SetInputData(TU,"indataNull2","null");
+    OPENFLUID_SetInputData(TU,"indataNull3",openfluid::core::NullValue());
 
   END_LOOP;
 
@@ -459,8 +510,6 @@ bool PrimitivesValuesUseFunction::prepareData()
 
 bool PrimitivesValuesUseFunction::checkConsistency()
 {
-
-
   return true;
 }
 
@@ -471,8 +520,6 @@ bool PrimitivesValuesUseFunction::checkConsistency()
 
 bool PrimitivesValuesUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
-
-
   return true;
 }
 
@@ -491,6 +538,8 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
   bool RefBool;
   std::string RefString;
   unsigned long RefVectorSize = 40;
+  unsigned long RefMatrixColsNb = 4;
+  unsigned long RefMatrixRowsNb = 3;
 
   double VarDouble;
   long VarLong;
@@ -501,6 +550,9 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
   openfluid::core::BooleanValue VarBoolVal;
   openfluid::core::StringValue VarStringVal;
   openfluid::core::VectorValue VarVectorVal;
+  openfluid::core::MatrixValue VarMatrixVal;
+  openfluid::core::MapValue VarMapVal;
+  openfluid::core::NullValue VarNullVal;
 
   double PreDouble;
   long PreLong;
@@ -511,18 +563,9 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
   long NewLong;
   bool NewBool;
   std::string NewString;
-  openfluid::core::NullValue NewNullVal;
   unsigned long NewVectorSize = 5;
-
-  double InputDouble;
-  long InputLong;
-  std::string InputString;
-  bool InputBool;
-  openfluid::core::StringValue InputStringVal;
-  openfluid::core::DoubleValue InputDoubleVal;
-  openfluid::core::NullValue InputNullVal;
-  openfluid::core::VectorValue InputVectorVal;
-  openfluid::core::MatrixValue InputMatrixVal;
+  unsigned long NewMatrixColsNb = RefMatrixColsNb + 1;
+  unsigned long NewMatrixRowsNb = RefMatrixRowsNb + 1;
 
   openfluid::core::EventsCollection TheEvents;
   openfluid::core::Event Ev;
@@ -532,8 +575,6 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
 
-
-  // ====== Variables ======
 
   TUID = TU->getID();
   CurStep = SimStatus->getCurrentStep();
@@ -553,6 +594,8 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
   NewBool = ((TUID*CurStep)%2 == 0);
   NewString = Glib::ustring::compose("%1 %2x%3",m_ParamString,TUID,CurStep);
 
+
+  // ====== Variables ======
 
 
   // double
@@ -770,12 +813,12 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
 
   // null value
 
-  OPENFLUID_GetVariable(TU,"tests.null",CurStep,&NewNullVal);
-  if (NewNullVal.getType() != openfluid::core::Value::NULLL)
+  OPENFLUID_GetVariable(TU,"tests.null",CurStep,&VarNullVal);
+  if (VarNullVal.getType() != openfluid::core::Value::NULLL)
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect null value (tests.null)");
 
-  OPENFLUID_GetVariable(TU,"tests.null",CurStep,NewNullVal);
-    if (NewNullVal.getType() != openfluid::core::Value::NULLL)
+  OPENFLUID_GetVariable(TU,"tests.null",CurStep,VarNullVal);
+    if (VarNullVal.getType() != openfluid::core::Value::NULLL)
       OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect null value (tests.null) get by reference");
 
 
@@ -823,65 +866,180 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsVariableExist (tests.vector)");
 
 
+  // matrix value
+
+  OPENFLUID_GetVariable(TU,"tests.matrix",CurStep,&VarMatrixVal);
+  if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix cols nb");
+  if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix rows nb");
+
+  VarMatrixVal.clear();
+  OPENFLUID_GetVariable(TU,"tests.matrix",CurStep,VarMatrixVal);
+  if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix cols nb get by reference");
+  if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix rows nb get by reference");
+
+  openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
+  OPENFLUID_SetVariable(TU,"tests.matrix",CurStep,NewMatrix);
+
+  OPENFLUID_GetVariable(TU,"tests.matrix",CurStep,&VarMatrixVal);
+  if (VarMatrixVal.getColsNbr() != NewMatrixColsNb)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix cols nb after update");
+  if (VarMatrixVal.getRowsNbr() != NewMatrixRowsNb)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix rows nb after update");
+
+  if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(0,0),NewDouble,0.00001))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix value at index 0,0 after update");
+
+  if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix value at index 4,3 after update");
+
+
+  if (CurStep > 0)
+  {
+    OPENFLUID_GetVariable(TU,"tests.matrix",CurStep-1,&VarMatrixVal);
+
+    if (VarMatrixVal.getSize() != NewMatrixRowsNb*NewMatrixColsNb)
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix size at t-1");
+
+    if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(0,0),PreDouble,0.00001))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix value at index 0,0 at t-1");
+
+    if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),PreDouble,0.00001))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix value at index 4,3 at t-1");
+
+  }
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.matrix"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsVariableExist (tests.matrix)");
+
+
+  // map value
+
+  OPENFLUID_GetVariable(TU,"tests.map",CurStep,&VarMapVal);
+  if (VarMapVal.getSize() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map size");
+
+  VarMapVal.clear();
+  OPENFLUID_GetVariable(TU,"tests.map",CurStep,VarMapVal);
+  if (VarMapVal.getSize() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map size get by reference");
+
+  openfluid::core::MapValue NewMap;
+  NewMap.setString("key1",NewString);
+  NewMap.setDouble("key2",NewDouble);
+  NewMap.setBoolean("key3",NewBool);
+  OPENFLUID_SetVariable(TU,"tests.map",CurStep,NewMap);
+
+  OPENFLUID_GetVariable(TU,"tests.map",CurStep,&VarMapVal);
+  if (VarMapVal.getSize() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map size after update");
+
+  if (VarMapVal.getString("key1") != NewString)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key1 after update");
+
+  if (!openfluid::tools::IsCloseEnough(VarMapVal.getDouble("key2"),NewDouble,0.00001))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key2 after update");
+
+  if (VarMapVal.getBoolean("key3") != NewBool)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key3 after update");
+
+
+  if (CurStep > 0)
+  {
+    OPENFLUID_GetVariable(TU,"tests.map",CurStep-1,&VarMapVal);
+
+    if (VarMapVal.getSize() != 3)
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map size at t-1");
+
+    if (VarMapVal.getString("key1") != PreString)
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key1 at t-1");
+
+    if (!openfluid::tools::IsCloseEnough(VarMapVal.getDouble("key2"),PreDouble,0.00001))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key2 at t-1");
+
+    if (VarMapVal.getBoolean("key3") != PreBool)
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key3 at t-1");
+
+  }
+
+  if (!OPENFLUID_IsVariableExist(TU,"tests.map"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsVariableExist (tests.map)");
+
+
 
   // ====== Input data ======
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataA"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataA)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataDouble"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataDouble)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataA2"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataA2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataDouble2"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataDouble2)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataA3"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataA3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataDouble3"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataDouble3)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataB"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataB)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataLong"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataLong)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataB2"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataB2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataLong2"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataLong2)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataB3"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataB3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataLong3"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataLong3)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataC"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataC)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataBool"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataBool)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataC2"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataC2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataBool2"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataBool2)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataC3"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataC3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataBool3"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataBool3)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataD2"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataD2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataString"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataString)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataD3"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataD3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataString2"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataString2)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataE2"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataE2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataString3"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataString3)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataE3"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataE3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataVector"))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataVector)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataF"))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataF)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataVector2"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataVector2)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataF2"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataF2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataVector3"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataVector3)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataF3"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataF3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataMatrix"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataMatrix)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataG"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataG)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataMatrix2"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataMatrix2)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataG2"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataG2)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataMatrix3"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataMatrix3)");
 
-  if (!OPENFLUID_IsInputDataExist(TU,"indataG3"))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataG3)");
+  if (!OPENFLUID_IsInputDataExist(TU,"indataMap"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataMap)");
+
+  if (!OPENFLUID_IsInputDataExist(TU,"indataMap2"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataMap2)");
+
+  if (!OPENFLUID_IsInputDataExist(TU,"indataMap3"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataMap3)");
+
+  if (!OPENFLUID_IsInputDataExist(TU,"indataNull2"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataNull2)");
+
+  if (!OPENFLUID_IsInputDataExist(TU,"indataNull3"))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataNull3)");
 
   if (OPENFLUID_IsInputDataExist(TU,"wrongdata"))
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (wrongdata)");
@@ -889,352 +1047,416 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
 
   // double
 
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA",&InputDouble);
-  if (!openfluid::tools::IsVeryClose(InputDouble,1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue)");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble",&VarDouble);
+  if (!openfluid::tools::IsVeryClose(VarDouble,1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue)");
 
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA",InputDouble);
-  if (!openfluid::tools::IsVeryClose(InputDouble,1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue) get by reference");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble",VarDouble);
+  if (!openfluid::tools::IsVeryClose(VarDouble,1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get by reference");
 
-  InputDoubleVal.set(0.0);
-  OPENFLUID_GetInputData(TU,"indataA",&InputDoubleVal);
-  if (!openfluid::tools::IsVeryClose(InputDoubleVal.get(),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue) get with DoubleValue");
+  VarDoubleVal.set(0.0);
+  OPENFLUID_GetInputData(TU,"indataDouble",&VarDoubleVal);
+  if (!openfluid::tools::IsVeryClose(VarDoubleVal.get(),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with DoubleValue");
 
-  InputDoubleVal.set(0.0);
-  OPENFLUID_GetInputData(TU,"indataA",InputDoubleVal);
-  if (!openfluid::tools::IsVeryClose(InputDoubleVal.get(),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue) get with DoubleValue by reference");
+  VarDoubleVal.set(0.0);
+  OPENFLUID_GetInputData(TU,"indataDouble",VarDoubleVal);
+  if (!openfluid::tools::IsVeryClose(VarDoubleVal.get(),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with DoubleValue by reference");
 
-  InputVectorVal.clear();
-  OPENFLUID_GetInputData(TU,"indataA",&InputVectorVal);
-  if (InputVectorVal.size() != 1)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrong size) get with VectorValue");
-  if (!openfluid::tools::IsVeryClose(InputVectorVal[0],1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue) get with VectorValue");
+  VarVectorVal.clear();
+  OPENFLUID_GetInputData(TU,"indataDouble",&VarVectorVal);
+  if (VarVectorVal.size() != 1)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrong size) get with VectorValue");
+  if (!openfluid::tools::IsVeryClose(VarVectorVal[0],1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with VectorValue");
 
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataA",InputMatrixVal);
-  if (InputMatrixVal.size() != 1)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrong size) get with MatrixValue by reference");
-  if (!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue) get with MatrixValue by reference");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataDouble",VarMatrixVal);
+  if (VarMatrixVal.size() != 1)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrong size) get with MatrixValue by reference");
+  if (!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with MatrixValue by reference");
 
-  InputStringVal.set("");
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA",InputStringVal);
-  if(!InputStringVal.toDouble(InputDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrong type)");
-  if (!openfluid::tools::IsVeryClose(InputDouble,1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue)");
+  VarStringVal.set("");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble",VarStringVal);
+  if(!VarStringVal.toDouble(VarDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrong type) get with StringValue by reference");
+  if (!openfluid::tools::IsVeryClose(VarDouble,1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with StringValue by reference");
 
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA2",&InputDouble);
-  if (!openfluid::tools::IsVeryClose(InputDouble,RefDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA2 wrongvalue)");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble2",VarDouble);
+  if (!openfluid::tools::IsVeryClose(VarDouble,RefDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble2 wrongvalue)");
 
-  InputStringVal.set("");
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA2",InputStringVal);
-  if(!InputStringVal.toDouble(InputDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA2 wrong type)");
-  if (!openfluid::tools::IsVeryClose(InputDouble,RefDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA2 wrongvalue)");
+  VarStringVal.set("");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble2",VarStringVal);
+  if(!VarStringVal.toDouble(VarDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble2 wrong type) get with StringValue by reference");
+  if (!openfluid::tools::IsVeryClose(VarDouble,RefDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble2 wrongvalue) get with StringValue by reference");
 
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA3",&InputDouble);
-  if (!openfluid::tools::IsVeryClose(InputDouble,RefDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA3 wrongvalue)");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble3",&VarDouble);
+  if (!openfluid::tools::IsVeryClose(VarDouble,RefDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble3 wrongvalue)");
 
-  InputStringVal.set("");
-  InputDouble = 0.0;
-  OPENFLUID_GetInputData(TU,"indataA3",InputStringVal);
-  if(!InputStringVal.toDouble(InputDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA3 wrong type)");
-  if (!openfluid::tools::IsVeryClose(InputDouble,RefDouble))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataA wrongvalue)");
-
-
-  //string
-
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB",&InputString);
-  std::string RefStr;
-  openfluid::tools::ConvertValue(TU->getID(),&RefStr);
-  RefStr = "CODE"+RefStr;
-  if (InputString != RefStr)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB wrongvalue)");
-
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB",InputString);
-  if (InputString != RefStr)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB wrongvalue) get by reference");
-
-  InputStringVal.set("");
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB",InputStringVal);
-  if (InputStringVal.get() != RefStr)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB wrongvalue)");
-
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB2",&InputString);
-  if (InputString != RefString)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB2 wrongvalue)");
-
-  InputStringVal.set("");
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB2",InputStringVal);
-  if (InputStringVal.get() != RefString)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB2 wrongvalue)");
-
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB3",&InputString);
-  if (InputString != RefString)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB3 wrongvalue)");
-
-  InputStringVal.set("");
-  InputString = "";
-  OPENFLUID_GetInputData(TU,"indataB3",InputStringVal);
-  if (InputStringVal.get() != RefString)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataB3 wrongvalue)");
+  VarStringVal.set("");
+  VarDouble = 0.0;
+  OPENFLUID_GetInputData(TU,"indataDouble3",VarStringVal);
+  if(!VarStringVal.toDouble(VarDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble3 wrong type) get with StringValue by reference");
+  if (!openfluid::tools::IsVeryClose(VarDouble,RefDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble3 wrongvalue) get with StringValue by reference");
 
 
   // long
 
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC",&InputLong);
-  if (InputLong != 1)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC wrongvalue)");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong",&VarLong);
+  if (VarLong != 1)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrongvalue)");
 
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC",InputLong);
-  if (InputLong != 1)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC wrongvalue) get by reference");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong",VarLong);
+  if (VarLong != 1)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrongvalue) get by reference");
 
-  InputStringVal.set("");
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC",InputStringVal);
-  if(!InputStringVal.toInteger(InputLong))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC wrong type)");
-  if (InputLong != 1)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC wrongvalue)");
+  VarStringVal.set("");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong",VarStringVal);
+  if(!VarStringVal.toInteger(VarLong))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrong type) get with StringValue by reference");
+  if (VarLong != 1)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrongvalue) get with StringValue by reference");
 
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC2",&InputLong);
-  if (InputLong != RefLong)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC2 wrongvalue)");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong2",&VarLong);
+  if (VarLong != RefLong)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong2 wrongvalue)");
 
-  InputStringVal.set("");
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC2",InputStringVal);
-  if(!InputStringVal.toInteger(InputLong))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC2 wrong type)");
-  if (InputLong != RefLong)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC2 wrongvalue)");
+  VarStringVal.set("");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong2",VarStringVal);
+  if(!VarStringVal.toInteger(VarLong))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong2 wrong type) get with StringValue by reference");
+  if (VarLong != RefLong)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong2 wrongvalue) get with StringValue by reference");
 
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC3",&InputLong);
-  if (InputLong != RefLong)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC3 wrongvalue)");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong3",&VarLong);
+  if (VarLong != RefLong)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong3 wrongvalue)");
 
-  InputStringVal.set("");
-  InputLong = 0;
-  OPENFLUID_GetInputData(TU,"indataC3",InputStringVal);
-  if(!InputStringVal.toInteger(InputLong))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC3 wrong type)");
-  if (InputLong != RefLong)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataC3 wrongvalue)");
+  VarStringVal.set("");
+  VarLong = 0;
+  OPENFLUID_GetInputData(TU,"indataLong3",VarStringVal);
+  if(!VarStringVal.toInteger(VarLong))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong3 wrong type) get with StringValue by reference");
+  if (VarLong != RefLong)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong3 wrongvalue) get with StringValue by reference");
 
-  
+
   // bool
+
+  VarStringVal.set("");
+  VarBool = false;
+  OPENFLUID_GetInputData(TU,"indataBool",VarStringVal);
+  if(!VarStringVal.toBoolean(VarBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataBool2 wrong type) get with StringValue by reference");
+  if (VarBool != RefBool)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataBool2 wrongvalue) get with StringValue by reference");
+
+  VarStringVal.set("");
+  VarBool = false;
+  OPENFLUID_GetInputData(TU,"indataBool2",VarStringVal);
+  if(!VarStringVal.toBoolean(VarBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataBool2 wrong type) get with StringValue by reference");
+  if (VarBool != RefBool)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataBool2 wrongvalue) get with StringValue by reference");
+
+  VarStringVal.set("");
+  VarBool = false;
+  OPENFLUID_GetInputData(TU,"indataBool3",VarStringVal);
+  if(!VarStringVal.toBoolean(VarBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataBool3 wrong type) get with StringValue by reference");
+  if (VarBool != RefBool)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataBool3 wrongvalue) get with StringValue by reference");
+
   
-  InputStringVal.set("");
-  InputBool = false;
-  OPENFLUID_GetInputData(TU,"indataD2",InputStringVal);
-  if(!InputStringVal.toBoolean(InputBool))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataD2 wrong type)");
-  if (InputBool != RefBool)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataD2 wrongvalue)");
+  //string
 
-  InputStringVal.set("");
-  InputBool = false;
-  OPENFLUID_GetInputData(TU,"indataD3",InputStringVal);
-  if(!InputStringVal.toBoolean(InputBool))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataD3 wrong type)");
-  if (InputBool != RefBool)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataD3 wrongvalue)");
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString",&VarString);
+  std::string RefStr;
+  openfluid::tools::ConvertValue(TU->getID(),&RefStr);
+  RefStr = "CODE"+RefStr;
+  if (VarString != RefStr)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString wrongvalue)");
 
-  
-  // null
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString",VarString);
+  if (VarString != RefStr)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString wrongvalue) get by reference");
 
-  InputStringVal.set("");
-  OPENFLUID_GetInputData(TU,"indataE2",InputStringVal);
-  if(!InputStringVal.toNullValue(InputNullVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataE2 wrong type)");
+  VarStringVal.set("");
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString",VarStringVal);
+  if (VarStringVal.get() != RefStr)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString wrongvalue) get with StringValue by reference");
 
-  InputStringVal.set("");
-  OPENFLUID_GetInputData(TU,"indataE3",InputStringVal);
-  if(!InputStringVal.toNullValue(InputNullVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataE3 wrong type)");
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString2",&VarString);
+  if (VarString != RefString)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString2 wrongvalue)");
+
+  VarStringVal.set("");
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString2",VarStringVal);
+  if (VarStringVal.get() != RefString)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString2 wrongvalue) get with StringValue by reference");
+
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString3",&VarString);
+  if (VarString != RefString)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString3 wrongvalue)");
+
+  VarStringVal.set("");
+  VarString = "";
+  OPENFLUID_GetInputData(TU,"indataString3",VarStringVal);
+  if (VarStringVal.get() != RefString)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString3 wrongvalue) get with StringValue by reference");
 
 
   // vector
 
-  InputStringVal.set("");
-  InputVectorVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF",InputStringVal);
-  if(!InputStringVal.toVectorValue(";",InputVectorVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong type)");
-  if(InputVectorVal.size() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong size)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[0], TUID + 0.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[2], TUID + 0.3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong value)");
+  VarStringVal.set("");
+  VarVectorVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector",VarStringVal);
+  if(!VarStringVal.toVectorValue(";",VarVectorVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong type)");
+  if(VarVectorVal.size() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong size)");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[0], TUID + 0.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong value)");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[2], TUID + 0.3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong value)");
 
-  InputStringVal.set("");
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF",InputStringVal);
-  if(!InputStringVal.toMatrixValue(";","|",InputMatrixVal))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong type) get with MatrixValue");
-  if(InputMatrixVal.getColsNbr() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong cols nb) get with MatrixValue");
-  if(InputMatrixVal.getRowsNbr() != 1)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong rows nb) get with MatrixValue");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),TUID + 0.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong value) get with MatrixValue");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(2,0),TUID + 0.3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF wrong value) get with MatrixValue");
+  VarStringVal.set("");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector",VarStringVal);
+  if(!VarStringVal.toMatrixValue(";","|",VarMatrixVal))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong type) get with StringValue by reference");
+  if(VarMatrixVal.getColsNbr() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong cols nb) get with StringValue by reference");
+  if(VarMatrixVal.getRowsNbr() != 1)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong rows nb) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),TUID + 0.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(2,0),TUID + 0.3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector wrong value) get with StringValue by reference");
 
-  InputStringVal.set("");
-  InputVectorVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF2",InputStringVal);
-  if(!InputStringVal.toVectorValue(";",InputVectorVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong type)");
-  if(InputVectorVal.size() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong size)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[0], 1.1))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[2], 1.3))
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong value)");
+  VarStringVal.set("");
+  VarVectorVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector2",VarStringVal);
+  if(!VarStringVal.toVectorValue(";",VarVectorVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong type)");
+  if(VarVectorVal.size() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong size)");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[0], 1.1))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value)");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[2], 1.3))
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value)");
 
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF2",InputMatrixVal);
-  if (InputMatrixVal.size() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong size) get with MatrixValue by reference");
-  if (!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrongvalue) get with MatrixValue by reference");
-  if (!openfluid::tools::IsVeryClose(InputMatrixVal.at(2,0),1.3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrongvalue) get with MatrixValue by reference");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector2",VarMatrixVal);
+  if (VarMatrixVal.size() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong size) get with MatrixValue by reference");
+  if (!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrongvalue) get with MatrixValue by reference");
+  if (!openfluid::tools::IsVeryClose(VarMatrixVal.at(2,0),1.3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrongvalue) get with MatrixValue by reference");
 
-  InputVectorVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF2",&InputVectorVal);
-  if(InputVectorVal.size() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong size) get with VectorValue");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[0], 1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong value) get with VectorValue");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[2], 1.3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong value) get with VectorValue");
+  VarVectorVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector2",&VarVectorVal);
+  if(VarVectorVal.size() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong size) get with VectorValue");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[0], 1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value) get with VectorValue");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[2], 1.3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value) get with VectorValue");
 
-  InputVectorVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF2",InputVectorVal);
-  if(InputVectorVal.size() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong size) get with VectorValue by reference");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[0], 1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong value) get with VectorValue by reference");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[2], 1.3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF2 wrong value) get with VectorValue by reference");
+  VarVectorVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector2",VarVectorVal);
+  if(VarVectorVal.size() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong size) get with VectorValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[0], 1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value) get with VectorValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[2], 1.3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value) get with VectorValue by reference");
 
-  InputStringVal.set("");
-  InputVectorVal.clear();
-  OPENFLUID_GetInputData(TU,"indataF3",InputStringVal);
-  if(!InputStringVal.toVectorValue(";",InputVectorVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF3 wrong type)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal.size(), 3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF3 wrong size)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[0], 1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF3 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputVectorVal[2], 1.3))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataF3 wrong value)");
+  VarStringVal.set("");
+  VarVectorVal.clear();
+  OPENFLUID_GetInputData(TU,"indataVector3",VarStringVal);
+  if(!VarStringVal.toVectorValue(";",VarVectorVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector3 wrong type) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal.size(), 3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector3 wrong size) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[0], 1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector3 wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarVectorVal[2], 1.3))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector3 wrong value) get with StringValue by reference");
 
   // matrix
 
-  InputStringVal.set("");
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataG",InputStringVal);
-  if(!InputStringVal.toMatrixValue(";","|",InputMatrixVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG wrong type)");
-  if(InputMatrixVal.getColsNbr() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG wrong cols nb)");
-  if(InputMatrixVal.getRowsNbr() != 2)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG wrong rows nb)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),TUID * 10))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,1),(TUID * 10)+1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(2,1),(TUID * 10)+1.2))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG wrong value)");
+  VarStringVal.set("");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMatrix",VarStringVal);
+  if(!VarStringVal.toMatrixValue(";","|",VarMatrixVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix wrong type) get with StringValue by reference");
+  if(VarMatrixVal.getColsNbr() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix wrong cols nb) get with StringValue by reference");
+  if(VarMatrixVal.getRowsNbr() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix wrong rows nb) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),TUID * 10))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,1),(TUID * 10)+1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(2,1),(TUID * 10)+1.2))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix wrong value) get with StringValue by reference");
 
-  InputStringVal.set("");
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataG2",InputStringVal);
-  if(!InputStringVal.toMatrixValue(";","|",InputMatrixVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong type)");
-  if(InputMatrixVal.getColsNbr() != 2)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong cols nb)");
-  if(InputMatrixVal.getRowsNbr() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong rows nb)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),0.0))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,2),0.2))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(1,1),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong value)");
+  VarStringVal.set("");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMatrix2",VarStringVal);
+  if(!VarStringVal.toMatrixValue(";","|",VarMatrixVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong type) get with StringValue by reference");
+  if(VarMatrixVal.getColsNbr() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong cols nb) get with StringValue by reference");
+  if(VarMatrixVal.getRowsNbr() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong rows nb) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),0.0))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,2),0.2))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(1,1),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong value) get with StringValue by reference");
 
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataG2",InputMatrixVal);
-  if(InputMatrixVal.getColsNbr() != 2)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong cols nb) get with MatrixValue by reference");
-  if(InputMatrixVal.getRowsNbr() != 3)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrong rows nb) get with MatrixValue by reference");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),0.0))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrongvalue) get with MatrixValue by reference");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,2),0.2))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrongvalue) get with MatrixValue by reference");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(1,1),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG2 wrongvalue) get with MatrixValue by reference");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMatrix2",VarMatrixVal);
+  if(VarMatrixVal.getColsNbr() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong cols nb) get with MatrixValue by reference");
+  if(VarMatrixVal.getRowsNbr() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrong rows nb) get with MatrixValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),0.0))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrongvalue) get with MatrixValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,2),0.2))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrongvalue) get with MatrixValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(1,1),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix2 wrongvalue) get with MatrixValue by reference");
 
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataG3",InputMatrixVal);
-  if(InputMatrixVal.getColsNbr() != 2)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong cols nb)");
-  if(InputMatrixVal.getRowsNbr() != 3)
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong rows nb)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),0.0))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,2),0.2))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(1,1),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong value)");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMatrix3",VarMatrixVal);
+  if(VarMatrixVal.getColsNbr() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong cols nb) get with MatrixValue by reference");
+  if(VarMatrixVal.getRowsNbr() != 3)
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong rows nb) get with MatrixValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),0.0))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong value) get with MatrixValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,2),0.2))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong value) get with MatrixValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(1,1),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong value) get with MatrixValue by reference");
 
-  InputStringVal.set("");
-  InputMatrixVal.clear();
-  OPENFLUID_GetInputData(TU,"indataG3",InputStringVal);
-  if(!InputStringVal.toMatrixValue(";","|",InputMatrixVal))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong type)");
-  if(InputMatrixVal.getColsNbr() != 2)
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong cols nb)");
-  if(InputMatrixVal.getRowsNbr() != 3)
-      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong rows nb)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,0),0.0))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(0,2),0.2))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong value)");
-  if(!openfluid::tools::IsVeryClose(InputMatrixVal.at(1,1),1.1))
-    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataG3 wrong value)");
+  VarStringVal.set("");
+  VarMatrixVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMatrix3",VarStringVal);
+  if(!VarStringVal.toMatrixValue(";","|",VarMatrixVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong type) get with StringValue by reference");
+  if(VarMatrixVal.getColsNbr() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong cols nb) get with StringValue by reference");
+  if(VarMatrixVal.getRowsNbr() != 3)
+      OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong rows nb) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,0),0.0))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(0,2),0.2))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong value) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarMatrixVal.at(1,1),1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMatrix3 wrong value) get with StringValue by reference");
+
+  // map
+
+  VarStringVal.set("");
+  VarMapVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMap",VarStringVal);
+  if(!VarStringVal.toMapValue(";",VarMapVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap wrong type) get with StringValue by reference");
+  if(VarMapVal.getSize() != 2)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap wrong size) get with StringValue by reference");
+  VarDouble = 0.0;
+  if(!VarMapVal["key1"].asStringValue().toDouble(VarDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap key1 wrong type) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarDouble,1.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap key1 wrong value) get with StringValue by reference");
+  if(VarMapVal.getString("key2") != "aString")
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap key2 wrong value) get with StringValue by reference");
+
+  VarStringVal.set("");
+  VarMapVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMap2",VarStringVal);
+  if(!VarStringVal.toMapValue(";",VarMapVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 wrong type) get with StringValue by reference");
+  if(VarMapVal.getSize() != 3)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 wrong size) get with StringValue by reference");
+  VarDouble = 0.0;
+  if(!VarMapVal["key1"].asStringValue().toDouble(VarDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 key1 wrong type) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarDouble,2.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 key1 wrong value) get with StringValue by reference");
+  if(VarMapVal.getString("key2") != "a string")
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 key2 wrong value) get with StringValue by reference");
+  VarBool = false;
+  if(!VarMapVal["key3"].asStringValue().toBoolean(VarBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 key3 wrong type) get with StringValue by reference");
+  if(VarBool != true)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap2 key3 wrong value) get with StringValue by reference");
+
+  VarStringVal.set("");
+  VarMapVal.clear();
+  OPENFLUID_GetInputData(TU,"indataMap3",VarStringVal);
+  if(!VarStringVal.toMapValue(";",VarMapVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap3 wrong type) get with StringValue by reference");
+  if(VarMapVal.getSize() != 3)
+    VarDouble = 0.0;
+  if(!VarMapVal["key1"].asStringValue().toDouble(VarDouble))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap3 key1 wrong type) get with StringValue by reference");
+  if(!openfluid::tools::IsVeryClose(VarDouble,2.1))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap3 key1 wrong value) get with StringValue by reference");
+  if(VarMapVal.getString("key2") != "a string")
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap3 key2 wrong value) get with StringValue by reference");
+  VarBool = false;
+  if(!VarMapVal["key3"].asStringValue().toBoolean(VarBool))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap3 key3 wrong type) get with StringValue by reference");
+  if(VarBool != true)
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataMap3 key3 wrong value) get with StringValue by reference");
+
+
+  // null
+
+  VarStringVal.set("");
+  OPENFLUID_GetInputData(TU,"indataNull2",VarStringVal);
+  if(!VarStringVal.toNullValue(VarNullVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataNull2 wrong type)");
+
+  VarStringVal.set("");
+  OPENFLUID_GetInputData(TU,"indataNull3",VarStringVal);
+  if(!VarStringVal.toNullValue(VarNullVal))
+    OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataNull3 wrong type)");
 
 
 

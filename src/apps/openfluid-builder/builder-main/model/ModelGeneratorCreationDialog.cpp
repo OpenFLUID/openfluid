@@ -82,7 +82,7 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
   Gtk::RadioButton::Group RadioGrp;
 
   mp_ScalarRadio = Gtk::manage(
-      new Gtk::RadioButton(RadioGrp, _("Scalar Value")));
+      new Gtk::RadioButton(RadioGrp, _("Double Value")));
   mp_VectorRadio = Gtk::manage(new Gtk::RadioButton(RadioGrp,
       _("Vector Value:") + std::string(" ")));
 

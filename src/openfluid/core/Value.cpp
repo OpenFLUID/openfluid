@@ -297,7 +297,6 @@ MapValue& Value::asMapValue()
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -307,6 +306,24 @@ std::string Value::toString() const
   std::ostringstream OSS;
   writeToStream(OSS);
   return OSS.str();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool Value::getValueTypeFromString(const std::string TypeName, Value::Type& ValueType)
+{
+  if(TypeName == "double") { ValueType = openfluid::core::Value::DOUBLE; return true; }
+  if(TypeName == "integer") { ValueType = openfluid::core::Value::INTEGER; return true; }
+  if(TypeName == "boolean") { ValueType = openfluid::core::Value::BOOLEAN; return true; }
+  if(TypeName == "vector") { ValueType = openfluid::core::Value::VECTOR; return true; }
+  if(TypeName == "matrix") { ValueType = openfluid::core::Value::MATRIX; return true; }
+  if(TypeName == "array") { ValueType = openfluid::core::Value::ARRAY; return true; }
+  if(TypeName == "map") { ValueType = openfluid::core::Value::MAP; return true; }
+  if(TypeName == "string") { ValueType = openfluid::core::Value::STRING; return true; }
+
+  return false;
 }
 
 
