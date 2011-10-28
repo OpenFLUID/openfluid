@@ -210,13 +210,13 @@ class DLLEXPORT Event : public InstantiationInfo
     bool getInfoAsDouble(const std::string Key, double& Info) const;
 
     /**
-      Gets an information as a ScalarValue
+      Gets an information as a ScalarValue (double)
       @param[in] Key the requested information key
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsScalarValue(const std::string Key, ScalarValue* Info) const;
+    bool getInfoAsScalarValue(const std::string Key, double* Info) const;
 
     /**
       Gets an information as a DoubleValue

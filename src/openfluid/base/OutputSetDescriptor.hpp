@@ -114,6 +114,8 @@ class DLLEXPORT OutputSetDescriptor
     std::vector<std::string>& getVariables() { return m_Variables; };
 
     const std::vector<std::string>& getVariables() const { return m_Variables; };
+
+    std::vector<std::string> getVariablesNameOnly() const;
 };
 
 

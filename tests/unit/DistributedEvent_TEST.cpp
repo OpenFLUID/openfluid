@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(check_infosoperations)
   std::string StrInfo;
   long LongInfo;
   double DoubleInfo;
-  openfluid::core::ScalarValue ScalarValueInfo;
+  double ScalarValueInfo;
   openfluid::core::DoubleValue DoubleValueInfo;
 
 
@@ -127,9 +127,9 @@ BOOST_AUTO_TEST_CASE(check_infosoperations)
   // test for compatibility
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test1",&ScalarValueInfo),false);
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test2",&ScalarValueInfo),true);
-  BOOST_REQUIRE_CLOSE(ScalarValueInfo.get(),18.0,0.1);
+  BOOST_REQUIRE_CLOSE(ScalarValueInfo,18.0,0.1);
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test3",&ScalarValueInfo),true);
-  BOOST_REQUIRE_CLOSE(ScalarValueInfo.get(),25.2,0.1);
+  BOOST_REQUIRE_CLOSE(ScalarValueInfo,25.2,0.1);
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test",&ScalarValueInfo),false);
 
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsDoubleValue("test1",DoubleValueInfo),false);

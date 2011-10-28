@@ -115,22 +115,36 @@ void ResUnitChooserModelImpl::extractVarsInfo()
 
   if(!mp_SetDesc->isAllVariables())
   {
-    m_Variables = mp_SetDesc->getVariables();
-  } else
+    m_Variables = mp_SetDesc->getVariablesNameOnly();
+  }
+  else
   {
+    std::string OnlyVarName;
+    openfluid::core::Value::Type VarType;
+
     BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,mp_ModelInstance->getItems())
 {    BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
     {
       if(Var.UnitClass == m_ClassName)
       {
-        m_Variables.push_back(Var.DataName);
+        OnlyVarName = "";
+
+        if(!openfluid::tools::GetVariableNameAndType(Var.DataName,OnlyVarName,VarType))
+          throw openfluid::base::OFException("OpenFLUID builder","ResUnitChooserModelImpl::extractVarsInfo","Variable " + Var.DataName + " for " + Item->Signature->ID + " is not well formated.");
+
+        m_Variables.push_back(OnlyVarName);
       }
     }
     BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
     {
       if(Var.UnitClass == m_ClassName)
       {
-        m_Variables.push_back(Var.DataName);
+        OnlyVarName = "";
+
+        if(!openfluid::tools::GetVariableNameAndType(Var.DataName,OnlyVarName,VarType))
+          throw openfluid::base::OFException("OpenFLUID builder","ResUnitChooserModelImpl::extractVarsInfo","Variable " + Var.DataName + " for " + Item->Signature->ID + " is not well formated.");
+
+        m_Variables.push_back(OnlyVarName);
       }
     }
   }

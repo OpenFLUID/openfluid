@@ -210,7 +210,7 @@ bool PrimitivesTypedValuesUseFunction::runStep(const openfluid::base::Simulation
   TUID = TU->getID();
   CurStep = SimStatus->getCurrentStep();
 
-  RefDouble = TUID/10;
+  RefDouble = (double)TUID/10;
   RefLong = TUID;
   RefBool = (TUID%2 == 0);
   RefString = Glib::ustring::compose("ID %1",TUID);

@@ -469,7 +469,7 @@ bool PrimitivesValuesUseFunction::prepareData()
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU);
 
-    double Dbl = TU->getID() / 10;
+    double Dbl = (double)TU->getID() / 10;
     long Lg = TU->getID();
     bool Bl = (TU->getID()%2 == 0);
     std::string Str = Glib::ustring::compose("ID %1",TU->getID());
@@ -579,7 +579,7 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
   TUID = TU->getID();
   CurStep = SimStatus->getCurrentStep();
 
-  RefDouble = TUID/10;
+  RefDouble = (double)TUID/10;
   RefLong = TUID;
   RefBool = (TUID%2 == 0);
   RefString = Glib::ustring::compose("ID %1",TUID);

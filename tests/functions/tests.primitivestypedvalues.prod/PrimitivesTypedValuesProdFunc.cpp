@@ -195,7 +195,7 @@ bool PrimitivesTypedValuesProdFunction::runStep(const openfluid::base::Simulatio
 
   TUID = TU->getID();
 
-  TheDouble = TUID/10;
+  TheDouble = (double)TUID/10;
   TheLong = TUID;
   TheBool = (TUID%2 == 0);
   TheString = Glib::ustring::compose("ID %1",TUID);

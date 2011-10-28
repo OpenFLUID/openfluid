@@ -86,6 +86,29 @@ OutputSetDescriptor::~OutputSetDescriptor()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> OutputSetDescriptor::getVariablesNameOnly() const
+{
+  std::vector<std::string> OnlyVarNames;
+
+  std::string OnlyVarName = "";
+  openfluid::core::Value::Type VarType;
+
+  for(unsigned int i=0 ; i<m_Variables.size() ; i++)
+  {
+    if(!openfluid::tools::GetVariableNameAndType(m_Variables[i],OnlyVarName,VarType))
+      throw openfluid::base::OFException("OpenFLUID framework","OutputSetDescriptor::getVariablesNameOnly","Variable " + m_Variables[i] + " is not well formated.");
+
+    OnlyVarNames.push_back(OnlyVarName);
+  }
+
+  return OnlyVarNames;
+}
+
+
 
 } } // namespaces
 
