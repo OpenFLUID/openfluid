@@ -1176,10 +1176,15 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,openfluid::core::Event& Ev)
+void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
+                                              openfluid::core::Event& Ev)
 {
-  Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
-  UnitPtr->getEvents()->addEvent(&Ev);
+  if (UnitPtr != NULL)
+  {
+    Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
+    UnitPtr->getEvents()->addEvent(Ev);
+  }
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendEvent","Unit is NULL");
 }
 
 
@@ -1187,9 +1192,28 @@ void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,ope
 // =====================================================================
 
 
-void PluggableFunction::OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr, openfluid::core::DateTime BeginDate, openfluid::core::DateTime EndDate, openfluid::core::EventsCollection* Events)
+void PluggableFunction::OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                                            const openfluid::core::DateTime BeginDate,
+                                            const openfluid::core::DateTime EndDate,
+                                            openfluid::core::EventsCollection* Events) const
 {
-  UnitPtr->getEvents()->getEventsBetween(BeginDate,EndDate,Events);
+  OPENFLUID_GetEvents(UnitPtr,BeginDate,EndDate,*Events);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                                            const openfluid::core::DateTime BeginDate,
+                                            const openfluid::core::DateTime EndDate,
+                                            openfluid::core::EventsCollection& Events) const
+{
+  if (UnitPtr != NULL)
+    UnitPtr->getEvents()->getEventsBetween(BeginDate,EndDate,Events);
+
+  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetEvents","Unit is NULL");
 }
 
 

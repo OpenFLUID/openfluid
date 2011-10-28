@@ -1077,12 +1077,24 @@ class DLLEXPORT PluggableFunction
       @param[in] BeginDate the beginning of the time period
       @param[in] EndDate the ending of the time period
       @param[out] Events the collection of event corresponding to the request
+      @deprecated
     */
-    void OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr,
-                             openfluid::core::DateTime BeginDate,
-                             openfluid::core::DateTime EndDate,
-                             openfluid::core::EventsCollection* Events);
+    void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                             const openfluid::core::DateTime BeginDate,
+                             const openfluid::core::DateTime EndDate,
+                             openfluid::core::EventsCollection* Events) const;
 
+    /**
+      Gets discrete events happening on a unit during a time period
+      @param[in] UnitPtr a Unit
+      @param[in] BeginDate the beginning of the time period
+      @param[in] EndDate the ending of the time period
+      @param[out] Events the collection of event corresponding to the request
+    */
+    void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                             const openfluid::core::DateTime BeginDate,
+                             const openfluid::core::DateTime EndDate,
+                             openfluid::core::EventsCollection& Events) const;
 
     /**
       Returns true if the queried unit class exists

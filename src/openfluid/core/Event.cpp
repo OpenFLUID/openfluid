@@ -67,6 +67,7 @@ Event::Event()
   m_Date = DateTime();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -77,6 +78,7 @@ Event::Event(DateTime Date)
   m_Infos.clear();
   m_Date = Date;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -92,51 +94,65 @@ Event::~Event()
 // =====================================================================
 
 
-bool Event::isInfoExist(std::string Key)
+bool Event::isInfoExist(const std::string Key) const
 {
-  return m_Infos.find(Key) != m_Infos.end();
+  return m_Infos.count(Key);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Event::isInfoEqual(std::string Key, std::string Value)
+bool Event::isInfoEqual(const std::string Key, const std::string Value) const
 {
-  return (isInfoExist(Key) && m_Infos[Key].get() == Value);
+  return (isInfoExist(Key) && m_Infos.at(Key).get() == Value);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Event::isInfoEqual(std::string Key, long Value)
+bool Event::isInfoEqual(const std::string Key, const long Value) const
 {
   long TmpValue;
 
-  return (getInfoAsLong(Key,&TmpValue) && (TmpValue == Value));
+  return (getInfoAsLong(Key,TmpValue) && TmpValue == Value);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Event::isInfoEqual(std::string Key, double Value)
+bool Event::isInfoEqual(const std::string Key, const double Value) const
 {
   double TmpValue;
 
-  return (getInfoAsDouble(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,Value,0.00001)));
+  return (getInfoAsDouble(Key,TmpValue) && openfluid::tools::IsCloseEnough(TmpValue,Value,0.00001));
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Event::isInfoEqual(std::string Key, DoubleValue *Value)
+bool Event::isInfoEqual(const std::string Key, const double* Value) const
+{
+  return isInfoEqual(Key,*Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Event::isInfoEqual(const std::string Key, const DoubleValue& Value) const
 {
   DoubleValue TmpValue;
 
-  return (getInfoAsDoubleValue(Key,&TmpValue) && (openfluid::tools::IsCloseEnough(TmpValue,*Value,0.00001)));
+  return (getInfoAsDoubleValue(Key,TmpValue) && openfluid::tools::IsCloseEnough(TmpValue.get(),Value.get(),0.00001));
 }
 
 
@@ -144,11 +160,21 @@ bool Event::isInfoEqual(std::string Key, DoubleValue *Value)
 // =====================================================================
 
 
-bool Event::getInfoAsString(std::string Key, std::string *Info)
+bool Event::getInfoAsString(const std::string Key, std::string *Info) const
+{
+  return getInfoAsString(Key,*Info);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Event::getInfoAsString(const std::string Key, std::string& Info) const
 {
   if(isInfoExist(Key))
   {
-    *Info = m_Infos[Key];
+    Info = m_Infos.at(Key).get();
 
     return true;
   }
@@ -156,46 +182,70 @@ bool Event::getInfoAsString(std::string Key, std::string *Info)
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Event::getInfoAsLong(std::string Key, long *Info)
+bool Event::getInfoAsLong(const std::string Key, long *Info) const
 {
-  return (isInfoExist(Key) && m_Infos[Key].toInteger(*Info));
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool Event::getInfoAsDouble(std::string Key, double *Info)
-{
-  return (isInfoExist(Key) && m_Infos[Key].toDouble(*Info));
-}
-
-// =====================================================================
-// =====================================================================
-
-bool Event::getInfoAsScalarValue(std::string Key, double* Info)
-{
-  return getInfoAsDouble(Key,Info);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool Event::getInfoAsDoubleValue(std::string Key, DoubleValue *Info)
-{
-  return (isInfoExist(Key) && m_Infos[Key].toDoubleValue(*Info));
+  return getInfoAsLong(Key,*Info);
 }
 
 
 // =====================================================================
 // =====================================================================
 
-bool Event::addInfo(std::string Key, std::string Info)
+
+bool Event::getInfoAsLong(const std::string Key, long& Info) const
+{
+  return (isInfoExist(Key) && m_Infos.at(Key).toInteger(Info));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Event::getInfoAsDouble(const std::string Key, double *Info) const
+{
+  return getInfoAsDouble(Key,*Info);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Event::getInfoAsDouble(const std::string Key, double& Info) const
+{
+  return (isInfoExist(Key) && m_Infos.at(Key).toDouble(Info));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool Event::getInfoAsScalarValue(const std::string Key, ScalarValue* Info) const
+{
+  return getInfoAsDoubleValue(Key,*Info);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool Event::getInfoAsDoubleValue(const std::string Key, DoubleValue& Info) const
+{
+  return (isInfoExist(Key) && m_Infos.at(Key).toDoubleValue(Info));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Event::addInfo(const std::string Key, const std::string Info)
 {
   if (!isInfoExist(Key))
   {
@@ -207,16 +257,17 @@ bool Event::addInfo(std::string Key, std::string Info)
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void Event::println()
+void Event::println() const
 {
   std::cout << "Date : " << m_Date.getAsISOString() << std::endl;
   std::cout << "Infos : " << std::endl;
 
-  EventInfosMap_t::iterator it;
+  EventInfosMap_t::const_iterator it;
   for (it = m_Infos.begin();it != m_Infos.end();++it)
   {
     std::cout << " - " << it->first << " = " << it->second.get() << std::endl;

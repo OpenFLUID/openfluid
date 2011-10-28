@@ -105,50 +105,67 @@ class DLLEXPORT Event : public InstantiationInfo
       Returns true if the information exists
       @param[in] Key the requested information key
     */
-    bool isInfoExist(std::string Key);
+    bool isInfoExist(const std::string Key) const;
 
     /**
       Returns true if the information exists and equals the given string value
       @param[in] Key the requested information key
       @param[in] Value the requested value
     */
-    bool isInfoEqual(std::string Key, std::string Value);
+    bool isInfoEqual(const std::string Key, const std::string Value) const;
 
     /**
       Returns true if the information exists and equals the given long value
       @param[in] Key the requested information key
       @param[in] Value the requested value
     */
-    bool isInfoEqual(std::string Key, long Value);
+    bool isInfoEqual(const std::string Key, long Value) const;
 
     /**
       Returns true if the information exists and equals the given double value
       @param[in] Key the requested information key
       @param[in] Value the requested value
     */
-    bool isInfoEqual(std::string Key, double Value);
+    bool isInfoEqual(const std::string Key, const double Value) const;
 
     /**
-      Returns true if the information exists and equals the given ScalarValue value
+      Returns true if the information exists and equals the given double value
+      @param[in] Key the requested information key
+      @param[in] Info the requested value
+      @deprecated
+    */
+    bool isInfoEqual(const std::string Key, const double* Info) const;
+
+    /**
+      Returns true if the information exists and equals the given DoubleValue value
       @param[in] Key the requested information key
       @param[in] Info the requested value
     */
-    bool isInfoEqual(std::string Key, DoubleValue *Info);
+    bool isInfoEqual(const std::string Key, const DoubleValue& Info) const;
 
     /**
       Returns the number of information
     */
-    inline int getInfosCount() { return m_Infos.size(); }
+    inline int getInfosCount() const { return m_Infos.size(); }
 
     /**
       Returns all the informations as an EventInfosMap
     */
-    inline EventInfosMap_t getInfos() { return m_Infos; }
+    inline EventInfosMap_t getInfos() const { return m_Infos; }
 
     /**
       Returns the date and time of the event
     */
-    inline DateTime getDateTime() { return m_Date; }
+    inline DateTime getDateTime() const { return m_Date; }
+
+    /**
+      Gets an information as a string
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
+      @deprecated
+    */
+    bool getInfoAsString(const std::string Key, std::string *Info) const;
 
     /**
       Gets an information as a string
@@ -156,7 +173,16 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsString(std::string Key, std::string *Info);
+    bool getInfoAsString(const std::string Key, std::string& Info) const;
+
+    /**
+      Gets an information as a long integer
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
+      @deprecated
+    */
+    bool getInfoAsLong(const std::string Key, long *Info) const;
 
     /**
       Gets an information as a long integer
@@ -164,7 +190,16 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsLong(std::string Key, long *Info);
+    bool getInfoAsLong(const std::string Key, long& Info) const;
+
+    /**
+      Gets an information as a double
+      @param[in] Key the requested information key
+      @param[out] Info the value corresponding to the requested key
+      @return true if the key exists and the conversion to the requested type is correct
+      @deprecated
+    */
+    bool getInfoAsDouble(const std::string Key, double *Info) const;
 
     /**
       Gets an information as a double
@@ -172,7 +207,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsDouble(std::string Key, double *Info);
+    bool getInfoAsDouble(const std::string Key, double& Info) const;
 
     /**
       Gets an information as a ScalarValue
@@ -181,7 +216,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsScalarValue(std::string Key, double* Info);
+    bool getInfoAsScalarValue(const std::string Key, ScalarValue* Info) const;
 
     /**
       Gets an information as a DoubleValue
@@ -189,7 +224,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[out] Info the value corresponding to the requested key
       @return true if the key exists and the conversion to the requested type is correct
     */
-    bool getInfoAsDoubleValue(std::string Key, DoubleValue *Info);
+    bool getInfoAsDoubleValue(const std::string Key, DoubleValue& Info) const;
 
     /**
       Adds an information to the event
@@ -197,12 +232,12 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[in] Info the value of the added information
       @return true if the adding is correct (key does not already exists)
     */
-    bool addInfo(std::string Key, std::string Info);
+    bool addInfo(const std::string Key, const std::string Info);
 
     /**
       Prints the content of the event to stdout
     */
-    void println();
+    void println() const;
 
 };
 

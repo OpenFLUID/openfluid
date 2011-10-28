@@ -84,15 +84,30 @@ class DLLEXPORT EventsCollection
 
     /**
       Inserts an event in the event collection, ordered by date
+      @deprecated
     */
-    bool addEvent(Event* Ev);
+    bool addEvent(const Event* Ev);
+
+    /**
+      Inserts an event in the event collection, ordered by date
+      @deprecated
+    */
+    bool addEvent(const Event& Ev);
+
+    /**
+      Returns an event collection extracted from the current event collection, taking into account a time period
+      If some events are already in the given collection, they are not deleted. Events matching the period are appended
+      at the end of the given collection
+      @deprecated
+    */
+    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection *Events) const;
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period
       If some events are already in the given collection, they are not deleted. Events matching the period are appended
       at the end of the given collection
     */
-    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection *Events);
+    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection& Events) const;
 
     /**
       Returns the event collection as a list
@@ -115,7 +130,7 @@ class DLLEXPORT EventsCollection
     void clear(const InstantiationInfo::Type& InstType);
 
 
-    void println();
+    void println() const;
 
 };
 
