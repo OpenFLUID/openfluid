@@ -415,6 +415,8 @@ void EngineProject::run()
   openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
       getRunDescriptor());
 
+  getCoreRepository().sortUnitsByProcessOrder();
+
   openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
 
   RunDialog.set_modal(true);
