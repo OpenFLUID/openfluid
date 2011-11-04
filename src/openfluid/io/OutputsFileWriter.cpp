@@ -139,18 +139,35 @@ void OutputsFileWriter::initializeFile()
 
   m_OutFile << std::fixed << std::setprecision(m_Precision);
 
-  m_OutFile << m_CommentChar << " simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << "\n";
-  m_OutFile << m_CommentChar << " file: " << boost::filesystem::path(m_OutFilename).leaf() << "\n";
-  m_OutFile << m_CommentChar << " date: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getIgnitionDateTime()) << "\n";
-  m_OutFile << m_CommentChar << " unit: " << mp_Unit->getClass() << " #" << UnitIDStr << "\n";
-  m_OutFile << m_CommentChar << " variables order (after date and time columns):";
+  if(m_HeaderType == openfluid::base::OutputFilesDescriptor::Info
+      || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
+  {
+    m_OutFile << m_CommentChar << " simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << "\n";
+    m_OutFile << m_CommentChar << " file: " << boost::filesystem::path(m_OutFilename).leaf() << "\n";
+    m_OutFile << m_CommentChar << " date: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getIgnitionDateTime()) << "\n";
+    m_OutFile << m_CommentChar << " unit: " << mp_Unit->getClass() << " #" << UnitIDStr << "\n";
+    m_OutFile << m_CommentChar << " variables order (after date and time columns):";
 
-  std::list<openfluid::core::VariableName_t>::iterator itNames;
+    std::list<openfluid::core::VariableName_t>::iterator itNames;
 
-  for (itNames = m_Variables.begin(); itNames != m_Variables.end() ; ++itNames)
-   m_OutFile << " " << *itNames;
+    for (itNames = m_Variables.begin(); itNames != m_Variables.end() ; ++itNames)
+      m_OutFile << " " << *itNames;
 
-  m_OutFile << "\n" << "\n";
+    m_OutFile << "\n" << "\n";
+  }
+
+  if(m_HeaderType == openfluid::base::OutputFilesDescriptor::ColnamesAsData
+      || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
+  {
+    m_OutFile << "datetime";
+
+    std::list<openfluid::core::VariableName_t>::iterator itNames;
+
+    for (itNames = m_Variables.begin(); itNames != m_Variables.end() ; ++itNames)
+      m_OutFile << m_ColSeparator << *itNames;
+
+    m_OutFile << "\n";
+  }
 
 }
 
