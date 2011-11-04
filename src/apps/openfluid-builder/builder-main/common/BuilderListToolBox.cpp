@@ -54,6 +54,8 @@
 
 #include "BuilderListToolBox.hpp"
 
+#include <gtkmm/stock.h>
+
 
 void BuilderListToolBoxImpl::onAddButtonClicked()
 {

@@ -60,6 +60,8 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 
+#include <glibmm/miscutils.h>
+
 #if defined __unix__ || defined __APPLE__
 #include <unistd.h>
 #endif

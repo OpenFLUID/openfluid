@@ -56,6 +56,9 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/table.h>
+#include <gtkmm/stock.h>
+
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/regex.h>

@@ -55,6 +55,8 @@
 #include "ModelAvailFctAdapterModel.hpp"
 #include "BuilderGraphicsHelper.hpp"
 
+#include <gtkmm/treerowreference.h>
+
 
 
 sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_SelectionChanged()

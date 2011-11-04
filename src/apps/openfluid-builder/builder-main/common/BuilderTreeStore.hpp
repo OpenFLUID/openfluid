@@ -55,7 +55,7 @@
 #ifndef __BUILDERTREESTORE_HPP__
 #define __BUILDERTREESTORE_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/treestore.h>
 
 class BuilderTreeStore: public Gtk::TreeStore
 {

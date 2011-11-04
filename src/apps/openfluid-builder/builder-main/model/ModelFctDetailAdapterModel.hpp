@@ -55,7 +55,6 @@
 #ifndef MODELFCTDETAILADAPTERMODEL_HPP_
 #define MODELFCTDETAILADAPTERMODEL_HPP_
 
-#include <gtkmm.h>
 
 #include <openfluid/machine.hpp>
 

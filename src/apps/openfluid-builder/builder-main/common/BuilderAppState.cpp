@@ -54,11 +54,12 @@
 */
 
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
 
 #include "BuilderAppState.hpp"
 #include "BuilderGraphicsHelper.hpp"
+
+#include <gtkmm/aboutdialog.h>
 
 #include <openfluid/tools.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>

@@ -57,7 +57,15 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/box.h>
+#include <gtkmm/label.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/button.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+
 
 class ResUnitChooserView
 {

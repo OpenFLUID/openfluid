@@ -56,6 +56,9 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/table.h>
+#include <gtkmm/separator.h>
+
 #include <set>
 
 // =====================================================================

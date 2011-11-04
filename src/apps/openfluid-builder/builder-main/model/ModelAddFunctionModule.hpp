@@ -55,7 +55,9 @@
 #ifndef __MODELADDFUNCTIONMODULE_HPP__
 #define __MODELADDFUNCTIONMODULE_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/paned.h>
+#include <gtkmm/dialog.h>
+
 #include <sigc++/sigc++.h>
 
 #include <openfluid/machine.hpp>

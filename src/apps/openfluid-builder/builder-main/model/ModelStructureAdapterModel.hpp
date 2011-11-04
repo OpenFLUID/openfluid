@@ -48,11 +48,12 @@
 #ifndef MODELSTRUCTUREADAPTERMODEL_HPP_
 #define MODELSTRUCTUREADAPTERMODEL_HPP_
 
-#include <gtkmm.h>
 
 #include <openfluid/machine/ModelInstance.hpp>
 
 #include "ModelStructureColumns.hpp"
+
+#include <gtkmm/liststore.h>
 
 class ModelStructureAdapterModel
 {

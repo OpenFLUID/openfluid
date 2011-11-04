@@ -54,8 +54,10 @@
  */
 
 
-#include <glibmm.h>
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
+
+#include <gtkmm/separator.h>
 
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>

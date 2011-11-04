@@ -56,6 +56,12 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/table.h>
+#include <gtkmm/separator.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/stock.h>
+
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 

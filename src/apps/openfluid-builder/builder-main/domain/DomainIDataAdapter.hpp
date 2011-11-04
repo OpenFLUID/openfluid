@@ -57,7 +57,8 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <glibmm/ustring.h>
+
 #include <openfluid/core.hpp>
 
 class DomainIDataAdapterModel;

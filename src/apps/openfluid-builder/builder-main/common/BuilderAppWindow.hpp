@@ -55,7 +55,13 @@
 #ifndef __BUILDERAPPWINDOW_HPP__
 #define __BUILDERAPPWINDOW_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/box.h>
+#include <gtkmm/toolbar.h>
+#include <gtkmm/separator.h>
+#include <gtkmm/statusbar.h>
+#include <gtkmm/label.h>
+
 
 class BuilderAppWindow: public Gtk::Window
 {

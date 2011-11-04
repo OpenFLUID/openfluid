@@ -55,7 +55,6 @@
 #ifndef __DIALOGBOXFACTORY_HPP__
 #define __DIALOGBOXFACTORY_HPP__
 
-#include <gtkmm.h>
 #include <openfluid/base.hpp>
 #include <openfluid/dllexport.hpp>
 

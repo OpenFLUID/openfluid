@@ -55,7 +55,9 @@
 #ifndef __BUILDERAPPACTIONS_HPP__
 #define __BUILDERAPPACTIONS_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/uimanager.h>
+#include <gtkmm/actiongroup.h>
+
 
 class BuilderAppActions
 {

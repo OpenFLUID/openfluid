@@ -55,7 +55,6 @@
 #ifndef __DOMAINIDATAADAPTERMODEL_HPP__
 #define __DOMAINIDATAADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
 
 #include <openfluid/core.hpp>
 #include <sigc++/sigc++.h>

@@ -57,7 +57,9 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/table.h>
 
 class ModelFctParamRow;
 class ModelFctFileRow;

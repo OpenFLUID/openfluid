@@ -55,8 +55,9 @@
 #ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
 #define __BUILDERPROJECTWITHEXPLORER_HPP__
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
+
+#include <gtkmm/paned.h>
 
 #include <sigc++/sigc++.h>
 

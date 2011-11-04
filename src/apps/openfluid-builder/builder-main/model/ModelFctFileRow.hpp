@@ -57,6 +57,9 @@
 
 #include "BuilderTableRowWidget.hpp"
 
+#include <gtkmm/label.h>
+#include <gtkmm/button.h>
+
 #include <sigc++/sigc++.h>
 
 class ModelFctFileRow: public BuilderTableRowWidget

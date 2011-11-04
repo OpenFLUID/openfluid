@@ -57,6 +57,7 @@
 #include <glibmm/i18n.h>
 
 #include <gtkmm/label.h>
+#include <gtkmm/stock.h>
 
 #include "BuilderListToolBox.hpp"
 #include <openfluid/guicommon/PreferencesManager.hpp>

@@ -54,7 +54,12 @@
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
-#include <glibmm.h>
+#include <gtkmm/messagedialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/image.h>
+
 #include <glibmm/i18n.h>
 
 namespace openfluid {

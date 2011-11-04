@@ -53,7 +53,6 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <gtkmm.h>
 
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
 

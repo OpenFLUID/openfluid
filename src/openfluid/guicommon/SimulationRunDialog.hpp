@@ -57,7 +57,11 @@
 #ifndef __SIMULATIONRUNDIALOG_HPP___
 #define __SIMULATIONRUNDIALOG_HPP___
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/scrolledwindow.h>
 
 #include <openfluid/base.hpp>
 #include <openfluid/machine.hpp>

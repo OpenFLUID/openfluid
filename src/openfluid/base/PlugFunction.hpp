@@ -74,7 +74,7 @@
 #include <string>
 
 #include <boost/filesystem/path.hpp>
-#include <glibmm.h>
+#include <glibmm/threadpool.h>
 
 
 #include <openfluid/dllexport.hpp>

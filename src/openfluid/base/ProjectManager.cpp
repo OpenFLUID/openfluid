@@ -54,7 +54,8 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/config.hpp>
-#include <glibmm.h>
+#include <glibmm/keyfile.h>
+#include <glibmm/fileutils.h>
 #include <fstream>
 
 #include <boost/filesystem/path.hpp>

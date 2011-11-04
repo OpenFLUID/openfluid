@@ -56,6 +56,13 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/image.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/main.h>
+#include <gtkmm/separator.h>
+
+#include <gdkmm/cursor.h>
+
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>

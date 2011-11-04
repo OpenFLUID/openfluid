@@ -68,6 +68,8 @@
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
+#include <giomm/file.h>
+
 #include <boost/foreach.hpp>
 
 

@@ -56,6 +56,10 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/separator.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/stock.h>
+
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>

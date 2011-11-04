@@ -61,6 +61,8 @@
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
+#include <gtkmm/main.h>
+
 #include <algorithm>
 
 // =====================================================================

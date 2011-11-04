@@ -55,7 +55,9 @@
 #ifndef __BUILDERHOMEBUTTON_HPP__
 #define __BUILDERHOMEBUTTON_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/button.h>
+#include <gtkmm/box.h>
+#include <gtkmm/image.h>
 
 class BuilderHomeButton: public Gtk::Button
 {

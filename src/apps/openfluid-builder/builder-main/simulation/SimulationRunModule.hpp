@@ -59,6 +59,8 @@
 
 #include "ProjectWorkspaceModule.hpp"
 
+#include <gtkmm/box.h>
+
 class SimulRunComponent;
 
 class SimulationRunModule: public ProjectWorkspaceModule

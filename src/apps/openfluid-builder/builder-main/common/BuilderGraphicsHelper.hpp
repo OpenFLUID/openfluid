@@ -55,7 +55,8 @@
 #ifndef __BUILDERGRAPHICSHELPER_HPP__
 #define __BUILDERGRAPHICSHELPER_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/stockid.h>
+#include <gtkmm/image.h>
 
 
 // =====================================================================

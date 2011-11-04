@@ -58,13 +58,13 @@
 #ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
 #define __PLUGGABLEBUILDEREXTENSION_HPP__
 
-#include <gtkmm.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 
+#include <gtkmm/widget.h>
 
 
 // =====================================================================

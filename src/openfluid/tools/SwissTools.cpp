@@ -50,7 +50,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
-#include <glibmm.h>
+#include <glibmm/spawn.h>
 
 #ifdef G_OS_WIN32
 #include <windows.h>

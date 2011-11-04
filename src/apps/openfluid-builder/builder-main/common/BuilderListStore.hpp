@@ -55,7 +55,7 @@
 #ifndef __BUILDERLISTSTORE_HPP__
 #define __BUILDERLISTSTORE_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/liststore.h>
 
 class BuilderListStore: public Gtk::ListStore
 {

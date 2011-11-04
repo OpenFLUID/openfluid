@@ -58,6 +58,7 @@
 
 #include <gtkmm/label.h>
 #include <gtkmm/filechooserdialog.h>
+#include <gtkmm/stock.h>
 
 #include "BuilderListToolBox.hpp"
 

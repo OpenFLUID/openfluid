@@ -55,10 +55,10 @@
 #ifndef __RESVIEWERADAPTERMODEL_HPP__
 #define __RESVIEWERADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
 
 #include <openfluid/base.hpp>
 #include <openfluid/core.hpp>
+#include <gtkmm/textbuffer.h>
 
 #include "ResViewerColumns.hpp"
 

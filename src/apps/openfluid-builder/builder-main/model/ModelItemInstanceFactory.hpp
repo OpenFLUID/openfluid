@@ -48,7 +48,6 @@
 #ifndef MODELITEMINSTANCEFACTORY_HPP_
 #define MODELITEMINSTANCEFACTORY_HPP_
 
-#include <gtkmm.h>
 
 #include <openfluid/machine.hpp>
 
