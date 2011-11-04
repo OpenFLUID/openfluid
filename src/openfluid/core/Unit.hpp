@@ -3,7 +3,7 @@
   Copyright (c) 2007-2010 INRA-Montpellier SupAgro
 
 
- == GNU General Public License Usage ==
+  == GNU General Public License Usage ==
 
   OpenFLUID is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -134,10 +134,9 @@ class DLLEXPORT Unit : public InstantiationInfo
     LinkedUnitsListByClassMap_t m_ParentUnits;
     LinkedUnitsListByClassMap_t m_ChildrenUnits;
 
-    InputData<InputDataValue> m_InputData;
+    InputData m_InputData;
 
-    Variables<ScalarValue> m_ScalarVariables;
-    Variables<VectorValue> m_VectorVariables;
+    Variables m_Variables;
 
     EventsCollection m_Events;
 
@@ -220,17 +219,13 @@ class DLLEXPORT Unit : public InstantiationInfo
 
 
 
-    inline InputData<InputDataValue>* getInputData()  { return &m_InputData; };
+    inline InputData* getInputData()  { return &m_InputData; };
 
-    inline const InputData<InputDataValue>* getInputData() const { return &m_InputData; };
+    inline const InputData* getInputData() const { return &m_InputData; };
 
-    inline Variables<ScalarValue>* getScalarVariables() { return &m_ScalarVariables; };
+    Variables* getVariables() { return &m_Variables; };
 
-    inline const Variables<ScalarValue>* getScalarVariables() const { return &m_ScalarVariables; };
-
-    inline Variables<VectorValue>* getVectorVariables() { return &m_VectorVariables; };
-
-    inline const Variables<VectorValue>* getVectorVariables() const { return &m_VectorVariables; };
+    const Variables* getVariables() const { return &m_Variables; };
 
     inline EventsCollection* getEvents() { return &m_Events; };
 

@@ -79,28 +79,38 @@ EventsCollection::~EventsCollection()
 // =====================================================================
 
 
-bool EventsCollection::addEvent(Event* Ev)
+bool EventsCollection::addEvent(const Event* Ev)
+{
+  return addEvent(*Ev);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool EventsCollection::addEvent(const Event& Ev)
 {
 
 
   // empty list
   if (m_Events.size() == 0)
   {
-    m_Events.push_back(*Ev);
+    m_Events.push_back(Ev);
   }
   else
   {
     // event date is before first collection item
-    if (m_Events.front().getDateTime() >= Ev->getDateTime())
+    if (m_Events.front().getDateTime() >= Ev.getDateTime())
     {
-      m_Events.push_front(*Ev);
+      m_Events.push_front(Ev);
     }
     else
     {
       // event date is after last collection item
-      if (m_Events.back().getDateTime() <= Ev->getDateTime())
+      if (m_Events.back().getDateTime() <= Ev.getDateTime())
       {
-        m_Events.push_back(*Ev);
+        m_Events.push_back(Ev);
       }
       else
       {
@@ -109,9 +119,9 @@ bool EventsCollection::addEvent(Event* Ev)
 
         for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
         {
-          if ((*DEiter).getDateTime() >= Ev->getDateTime())
+          if ((*DEiter).getDateTime() >= Ev.getDateTime())
           {
-            m_Events.insert(--DEiter,*Ev);
+            m_Events.insert(--DEiter,Ev);
             return true;
           }
         }
@@ -129,16 +139,27 @@ bool EventsCollection::addEvent(Event* Ev)
 
 
 bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
-    EventsCollection *Events)
+    EventsCollection *Events) const
+{
+  return getEventsBetween(BeginDate,EndDate,*Events);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime EndDate,
+    EventsCollection& Events) const
 {
 
-  EventsList_t::iterator DEiter;
+  EventsList_t::const_iterator DEiter;
 
   for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
   {
     if ((*DEiter).getDateTime().isBetween(BeginDate,EndDate))
     {
-      Events->addEvent(&(*DEiter));
+      Events.addEvent(&(*DEiter));
     }
   }
 
@@ -150,9 +171,9 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
 // =====================================================================
 
 
-void EventsCollection::println()
+void EventsCollection::println() const
 {
-  EventsList_t::iterator DEiter;
+  EventsList_t::const_iterator DEiter;
 
     for(DEiter=m_Events.begin(); DEiter != m_Events.end(); ++DEiter)
     {

@@ -65,7 +65,7 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/ValueFactory.hpp>
+#include <openfluid/core/Value.hpp>
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/Vector.hpp>

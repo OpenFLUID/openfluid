@@ -70,10 +70,8 @@ OutputSetDescriptor::OutputSetDescriptor()
   m_AllUnits = false;
   m_UnitsIDs.clear();
   m_UnitsPtr.clear();
-  m_AllScalars = false;
-  m_ScalarVariables.clear();
-  m_AllVectors = false;
-  m_VectorVariables.clear();
+  m_AllVariables = false;
+  m_Variables.clear();
   m_Precision = 5;
 }
 
@@ -85,6 +83,29 @@ OutputSetDescriptor::OutputSetDescriptor()
 OutputSetDescriptor::~OutputSetDescriptor()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> OutputSetDescriptor::getVariablesNameOnly() const
+{
+  std::vector<std::string> OnlyVarNames;
+
+  std::string OnlyVarName = "";
+  openfluid::core::Value::Type VarType;
+
+  for(unsigned int i=0 ; i<m_Variables.size() ; i++)
+  {
+    if(!openfluid::tools::GetVariableNameAndType(m_Variables[i],OnlyVarName,VarType))
+      throw openfluid::base::OFException("OpenFLUID framework","OutputSetDescriptor::getVariablesNameOnly","Variable " + m_Variables[i] + " is not well formated.");
+
+    OnlyVarNames.push_back(OnlyVarName);
+  }
+
+  return OnlyVarNames;
 }
 
 

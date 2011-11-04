@@ -243,7 +243,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
 
       std::string VarName = GenDesc->getVariableName();
-      if (GenDesc->isVectorVariable()) VarName = VarName + "[]";
+      GenDesc->isVectorVariable() ? VarName += "[vector]" : VarName += "[double]";
 
       Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
 

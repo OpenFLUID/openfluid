@@ -186,19 +186,24 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
 
     if (VarsStr == "*")
     {
-      OSD.setAllScalars(true);
-      OSD.setAllVectors(true);
+      OSD.setAllVariables(true);
     }
     else
     {
-      OSD.setAllScalars(false);
-      OSD.setAllVectors(false);
+      OSD.setAllVariables(false);
+
+      std::string OnlyVarName;
+      openfluid::core::Value::Type VarType;
 
       std::vector<std::string> StrArray = openfluid::tools::SplitString(VarsStr,";");
       for (unsigned int i=0;i<StrArray.size();i++)
       {
-        if (openfluid::tools::IsVectorNamedVariable(StrArray[i])) OSD.getVectors().push_back(openfluid::tools::GetVectorNamedVariableName(StrArray[i]));
-        else OSD.getScalars().push_back(StrArray[i]);
+        OnlyVarName = "";
+
+        if(!openfluid::tools::GetVariableNameAndType(StrArray[i],OnlyVarName,VarType))
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractSetDecriptorFromNode","Variable " + StrArray[i] + " is not well formated.");
+
+        OSD.getVariables().push_back(OnlyVarName);
       }
 
     }
@@ -268,7 +273,7 @@ openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr 
 
         if (xmlKey != NULL && xmlValue != NULL)
         {
-          Params[(const char*)xmlKey] = (const char*)xmlValue;
+          Params[(const char*)xmlKey] = openfluid::core::StringValue((const char*)xmlValue);
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }

@@ -129,14 +129,14 @@ class ExampleUnitsAProduction : public openfluid::base::PluggableFunction
     bool runStep(const openfluid::base::SimulationStatus* SimStatus)
     {
       openfluid::core::Unit* A;
-      openfluid::core::ScalarValue Value1;
+      openfluid::core::DoubleValue Value1;
       DECLARE_UNITS_ORDERED_LOOP(25);
 
 
       BEGIN_UNITS_ORDERED_LOOP(25,"unitsA",A)
         if (SimStatus->isFirstStep())
         {
-           OPENFLUID_GetInputData(A,"inivar1",&Value1);
+           OPENFLUID_GetInputData(A,"inivar1",&Value1.get());
         }
         else
         {

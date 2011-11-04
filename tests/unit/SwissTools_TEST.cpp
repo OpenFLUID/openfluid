@@ -146,8 +146,100 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1~RC1"),0);
   BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1+18"),-2);
 
+}
 
+BOOST_AUTO_TEST_CASE(check_GetVariableNameAndType)
+{
+  std::string ParamName;
+  openfluid::core::Value::Type ParamType;
 
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("noneparam",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"noneparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("none.param",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"none.param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("none_param",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"none_param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("none-param",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"none-param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("oldvectparam[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvectparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("oldvect.param[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvect.param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("oldvect_param[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvect_param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("oldvect-param[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvect-param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("vectparam[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vectparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("vect.param[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vect.param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("vect_param[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vect_param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("vect-param[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vect-param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("doubleparam[double]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"doubleparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::DOUBLE);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("intparam[integer]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"intparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::INTEGER);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("boolparam[boolean]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"boolparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::BOOLEAN);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("matrixparam[matrix]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"matrixparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::MATRIX);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("arrayparam[array]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"arrayparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::ARRAY);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("mapparam[map]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"mapparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::MAP);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("stringparam[string]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"stringparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::STRING);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("badparam[STRING]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("badparam[badtype]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("badparam[",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("badparam]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("badparam[[]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::tools::GetVariableNameAndType("badparam[string",ParamName,ParamType),false);
 }
 
 // =====================================================================

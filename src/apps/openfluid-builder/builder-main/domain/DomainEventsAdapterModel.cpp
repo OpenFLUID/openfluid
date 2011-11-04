@@ -108,7 +108,7 @@ void DomainEventsAdapterModelImpl::setUnitsColl(
         {
           Gtk::TreeRow InfoRow = *mref_TreeModel->append(EventRow->children());
           InfoRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1 : %2",
-              itInfos->first, itInfos->second);
+              itInfos->first, itInfos->second.get());
         }
       }
     }

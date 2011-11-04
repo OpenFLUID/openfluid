@@ -141,7 +141,7 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
 {
 
   openfluid::core::Unit* LU;
-  openfluid::core::ScalarValue CurrentValue;
+  openfluid::core::DoubleValue CurrentValue;
   int ID;
 
   DECLARE_UNITS_ORDERED_LOOP(1);

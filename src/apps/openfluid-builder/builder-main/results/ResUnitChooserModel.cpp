@@ -111,34 +111,40 @@ void ResUnitChooserModelImpl::extractVarsInfo()
   if (!mp_SetDesc)
     return;
 
-  m_Scalars.clear();
-  m_Vectors.clear();
+  m_Variables.clear();
 
-  if (!mp_SetDesc->isAllScalars() && !mp_SetDesc->isAllVectors())
+  if(!mp_SetDesc->isAllVariables())
   {
-    m_Scalars = mp_SetDesc->getScalars();
-    m_Vectors = mp_SetDesc->getVectors();
-  } else
+    m_Variables = mp_SetDesc->getVariablesNameOnly();
+  }
+  else
   {
+    std::string OnlyVarName;
+    openfluid::core::Value::Type VarType;
+
     BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,mp_ModelInstance->getItems())
 {    BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
     {
       if(Var.UnitClass == m_ClassName)
       {
-        if (openfluid::tools::IsVectorNamedVariable(Var.DataName))
-        m_Vectors.push_back(Var.DataName);
-        else
-        m_Scalars.push_back(Var.DataName);
+        OnlyVarName = "";
+
+        if(!openfluid::tools::GetVariableNameAndType(Var.DataName,OnlyVarName,VarType))
+          throw openfluid::base::OFException("OpenFLUID builder","ResUnitChooserModelImpl::extractVarsInfo","Variable " + Var.DataName + " for " + Item->Signature->ID + " is not well formated.");
+
+        m_Variables.push_back(OnlyVarName);
       }
     }
     BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
     {
       if(Var.UnitClass == m_ClassName)
       {
-        if (openfluid::tools::IsVectorNamedVariable(Var.DataName))
-        m_Vectors.push_back(Var.DataName);
-        else
-        m_Scalars.push_back(Var.DataName);
+        OnlyVarName = "";
+
+        if(!openfluid::tools::GetVariableNameAndType(Var.DataName,OnlyVarName,VarType))
+          throw openfluid::base::OFException("OpenFLUID builder","ResUnitChooserModelImpl::extractVarsInfo","Variable " + Var.DataName + " for " + Item->Signature->ID + " is not well formated.");
+
+        m_Variables.push_back(OnlyVarName);
       }
     }
   }
@@ -217,19 +223,9 @@ std::vector<unsigned int> ResUnitChooserModelImpl::getIDs()
 // =====================================================================
 // =====================================================================
 
-
-std::vector<std::string> ResUnitChooserModelImpl::getScalars()
+std::vector<std::string> ResUnitChooserModelImpl::getVariables()
 {
-  return m_Scalars;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<std::string> ResUnitChooserModelImpl::getVectors()
-{
-  return m_Vectors;
+  return m_Variables;
 }
 
 // =====================================================================

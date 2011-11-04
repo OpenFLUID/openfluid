@@ -79,7 +79,7 @@ DateTimeSerie::~DateTimeSerie()
 // =====================================================================
 
 
-bool DateTimeSerie::addValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue Value)
+bool DateTimeSerie::addValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue Value)
 {
   std::list<TimePair>::iterator it;
 
@@ -122,7 +122,7 @@ bool DateTimeSerie::addValue(openfluid::core::DateTime DT, openfluid::core::Scal
 // =====================================================================
 
 
-bool DateTimeSerie::getValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue* Value)
+bool DateTimeSerie::getValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue* Value)
 {
   std::list<TimePair>::iterator it;
 
@@ -280,7 +280,7 @@ bool DateTimeSerie::createInterpolatedSerie(openfluid::core::DateTime Begin,open
   Serie->clear();
 
   openfluid::core::DateTime CurrentTime;
-  openfluid::core::ScalarValue InterpValue;
+  openfluid::core::DoubleValue InterpValue;
 
   CurrentTime = Begin;
 
@@ -307,7 +307,7 @@ bool DateTimeSerie::createInterpolatedSerie(openfluid::core::DateTime Begin,open
 // =====================================================================
 
 
-bool DateTimeSerie::getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::ScalarValue* Value)
+bool DateTimeSerie::getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::DoubleValue* Value)
 {
   TimePair LowerPair;
   TimePair UpperPair;
@@ -319,7 +319,7 @@ bool DateTimeSerie::getInterpolatedValue(openfluid::core::DateTime SearchedDT, o
 
   if ( ReturnVal == 1)
   {
-    openfluid::core::ScalarValue y,y0,y1;
+    openfluid::core::DoubleValue y,y0,y1;
     long x,x1;
 
     if (LowerPair.DT == UpperPair.DT)
@@ -356,7 +356,7 @@ bool DateTimeSerie::createIndexedSerie(IndexedSerie *ISerie)
   if (m_Data.size() == 0) return false;
 
   ISerie->Count = m_Data.size();
-  ISerie->Values = new openfluid::core::ScalarValue[ISerie->Count];
+  ISerie->Values = new openfluid::core::DoubleValue[ISerie->Count];
 
   std::list<TimePair>::iterator it;
 

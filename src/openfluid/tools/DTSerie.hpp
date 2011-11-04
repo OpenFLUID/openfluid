@@ -68,7 +68,7 @@ namespace openfluid { namespace tools {
 struct TimePair
 {
   openfluid::core::DateTime DT;
-  openfluid::core::ScalarValue Value;
+  openfluid::core::DoubleValue Value;
 };
 
 
@@ -76,7 +76,7 @@ struct TimePair
 struct IndexedSerie
 {
   int Count;
-  openfluid::core::ScalarValue* Values;
+  openfluid::core::DoubleValue* Values;
 
   IndexedSerie()
   {
@@ -102,13 +102,13 @@ class DLLEXPORT DateTimeSerie
 
     virtual ~DateTimeSerie();
 
-    bool addValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue Value);
+    bool addValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue Value);
 
-    bool getValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue* Value);
+    bool getValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue* Value);
 
     short getNearestValues(openfluid::core::DateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);
 
-    bool getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::ScalarValue* Value);
+    bool getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::DoubleValue* Value);
 
     void clear();
 

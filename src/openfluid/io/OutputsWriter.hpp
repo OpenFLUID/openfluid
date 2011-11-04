@@ -60,8 +60,8 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core.hpp>
 #include <openfluid/base.hpp>
-#include <openfluid/io/ScalarOutputsFileWriter.hpp>
-#include <openfluid/io/VectorOutputsFileWriter.hpp>
+#include <openfluid/io/OutputsFileWriter.hpp>
+#include <list>
 
 namespace openfluid { namespace io {
 

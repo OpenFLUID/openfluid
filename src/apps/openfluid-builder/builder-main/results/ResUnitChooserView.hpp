@@ -69,9 +69,7 @@ class ResUnitChooserView
 
     virtual void setIDs(std::vector<unsigned int> IDs) = 0;
 
-    virtual void setScalars(std::vector<std::string> Values) = 0;
-
-    virtual void setVectors(std::vector<std::string> Values) = 0;
+    virtual void setVariables(std::vector<std::string> Values) = 0;
 
     virtual void initSelection() = 0;
 
@@ -130,13 +128,9 @@ class ResUnitChooserViewImpl: public ResUnitChooserView
 
     Gtk::CheckButton* mp_ShowFilesCB;
 
-    Glib::RefPtr<Gtk::ListStore> mref_ScalarsListStore;
+    Glib::RefPtr<Gtk::ListStore> mref_VariablesListStore;
 
-    Glib::RefPtr<Gtk::ListStore> mref_VectorsListStore;
-
-    Gtk::TreeView* mp_ScalarsTreeView;
-
-    Gtk::TreeView* mp_VectorsTreeView;
+    Gtk::TreeView* mp_VariablesTreeView;
 
   public:
 
@@ -148,9 +142,7 @@ class ResUnitChooserViewImpl: public ResUnitChooserView
 
     void setIDs(std::vector<unsigned int> IDs);
 
-    void setScalars(std::vector<std::string> Values);
-
-    void setVectors(std::vector<std::string> Values);
+    void setVariables(std::vector<std::string> Values);
 
     void initSelection();
 

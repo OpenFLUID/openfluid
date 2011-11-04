@@ -80,9 +80,7 @@ class ResUnitChooserModel
 
     virtual std::vector<unsigned int> getIDs() = 0;
 
-    virtual std::vector<std::string> getScalars() = 0;
-
-    virtual std::vector<std::string> getVectors() = 0;
+    virtual std::vector<std::string> getVariables() = 0;
 
     virtual void setSelectedUnit(int UnitId) = 0;
 
@@ -134,9 +132,7 @@ class ResUnitChooserModelImpl: public ResUnitChooserModel
 
     std::vector<unsigned int> m_IDs;
 
-    std::vector<std::string> m_Scalars;
-
-    std::vector<std::string> m_Vectors;
+    std::vector<std::string> m_Variables;
 
     unsigned int m_SelectedUnitId;
 
@@ -168,9 +164,7 @@ class ResUnitChooserModelImpl: public ResUnitChooserModel
 
     std::vector<unsigned int> getIDs();
 
-    std::vector<std::string> getScalars();
-
-    std::vector<std::string> getVectors();
+    std::vector<std::string> getVariables();
 
     void setSelectedUnit(int UnitId);
 

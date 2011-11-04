@@ -123,13 +123,13 @@ BOOST_AUTO_TEST_CASE(test_updateData)
   openfluid::core::Unit* Unit0 = mp_EngProject->getCoreRepository().getUnit("TestUnits",IterUnitIndex0->get_value(*mp_AdapterModel->getColumns()->getIdColumn()));
 
   std::string Val;
-  Unit0->getInputData()->getValue("indataA",&Val);
+  Unit0->getInputData()->getValue("indataA",Val);
 
   BOOST_CHECK_EQUAL(Val,"NewData");
 
   mp_AdapterModel->updateData("NewDataAgain","indataA");
 
-  Unit0->getInputData()->getValue("indataA",&Val);
+  Unit0->getInputData()->getValue("indataA",Val);
 
   BOOST_CHECK_EQUAL(Val,"NewDataAgain");
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(test_updateData)
 
   openfluid::core::Unit* Unit5 = mp_EngProject->getCoreRepository().getUnit("TestUnits",IterUnitIndex5->get_value(*mp_AdapterModel->getColumns()->getIdColumn()));
 
-  Unit5->getInputData()->getValue("indataC",&Val);
+  Unit5->getInputData()->getValue("indataC",Val);
 
   BOOST_CHECK_EQUAL(Val,"NewData");
 }

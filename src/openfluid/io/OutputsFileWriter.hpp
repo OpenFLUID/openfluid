@@ -66,7 +66,7 @@ namespace openfluid { namespace io {
 class OutputsFileWriter
 {
 
-  protected:
+  private:
 
     static unsigned int BufferSize;
     char* mp_Buffer;
@@ -80,6 +80,8 @@ class OutputsFileWriter
     unsigned int m_Precision;
     openfluid::core::Unit* mp_Unit;
 
+    std::list<openfluid::core::VariableName_t> m_Variables;
+
 
   public:
 
@@ -87,21 +89,24 @@ class OutputsFileWriter
                       openfluid::core::CoreRepository& CoreRepos,
                       const openfluid::core::UnitClass_t UnitClass,
                       const openfluid::core::UnitID_t UnitID,
+                      const std::string FileSuffix,
                       const std::string CommentChar,
                       const std::string DateFormat,
                       const std::string ColSeparator,
                       const openfluid::base::OutputFilesDescriptor::HeaderType Header,
                       const unsigned int Precision);
 
-    virtual ~OutputsFileWriter();
+    ~OutputsFileWriter();
 
     static unsigned int getBufferSize() { return BufferSize; };
 
     static void setBufferSize(const unsigned int aBufferSize) { BufferSize = aBufferSize; };
 
-    virtual void initializeFile() = 0;
+    void initializeFile();
 
-    virtual void saveCurrentDataToFile(const openfluid::core::DateTime& CurrentTime) = 0;
+    void saveCurrentDataToFile(const openfluid::core::DateTime& CurrentTime);
+
+    void addVariable(const std::string& Name) { m_Variables.push_back(Name); };
 
     void closeFile();
 

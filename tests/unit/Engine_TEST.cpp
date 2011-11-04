@@ -300,3 +300,169 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_typed_pretests)
+{
+  openfluid::machine::ModelItemInstance* MIInstance;
+
+  openfluid::machine::SimulationBlob SBlob;
+  openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
+  openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
+  openfluid::machine::ModelInstance Model(SBlob,MachineListen);
+
+  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
+  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
+
+  openfluid::machine::Engine Eng(SBlob,Model,MachineListen,IOListen);
+
+  openfluid::machine::Engine::PretestInfos_t PInfos;
+
+  PInfos.ExtraFiles = true;
+  PInfos.Inputdata = true;
+  PInfos.Model = true;
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
+
+  // =====================================================================
+
+  MIInstance = new openfluid::machine::ModelItemInstance();
+  MIInstance->Function = new EmptyFunction();
+  MIInstance->SDKCompatible = true;
+  MIInstance->Signature = new openfluid::base::FunctionSignature();
+  MIInstance->Signature->ID = "MyFunc1";
+  MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem("var1[double]","UA","",""));
+  MIInstance->Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem("var5[vector]","UB","",""));
+
+
+
+  Model.resetInitialized();
+  Model.appendItem(MIInstance);
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
+  PInfos = openfluid::machine::Engine::PretestInfos_t();
+
+  // =====================================================================
+
+
+  MIInstance = new openfluid::machine::ModelItemInstance();
+  MIInstance->Function = new EmptyFunction();
+  MIInstance->SDKCompatible = true;
+  MIInstance->Signature = new openfluid::base::FunctionSignature();
+  MIInstance->Signature->ID = "MyFunc0";
+  MIInstance->Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem("var1[double]","UA","",""));
+
+  Model.resetInitialized();
+  Model.insertItem(MIInstance,0);
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
+  PInfos = openfluid::machine::Engine::PretestInfos_t();
+
+  // =====================================================================
+
+  MIInstance = new openfluid::machine::ModelItemInstance();
+  MIInstance->Function = new EmptyFunction();
+  MIInstance->SDKCompatible = true;
+  MIInstance->Signature = new openfluid::base::FunctionSignature();
+  MIInstance->Signature->ID = "MyFunc2";
+  MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem("var5[vector]","UB","",""));
+
+  Model.resetInitialized();
+  Model.appendItem(MIInstance);
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
+  PInfos = openfluid::machine::Engine::PretestInfos_t();
+
+
+  // =====================================================================
+
+  MIInstance = new openfluid::machine::ModelItemInstance();
+  MIInstance->Function = new EmptyFunction();
+  MIInstance->SDKCompatible = true;
+  MIInstance->Signature = new openfluid::base::FunctionSignature();
+  MIInstance->Signature->ID = "MyFunc0.5";
+  MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem("var1","UA","",""));
+  MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem("var5[]","UB","",""));
+
+  Model.resetInitialized();
+  Model.insertItem(MIInstance,1);
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
+  PInfos = openfluid::machine::Engine::PretestInfos_t();
+
+
+  // =====================================================================
+
+  MIInstance = new openfluid::machine::ModelItemInstance();
+  MIInstance->Function = new EmptyFunction();
+  MIInstance->SDKCompatible = true;
+  MIInstance->Signature = new openfluid::base::FunctionSignature();
+  MIInstance->Signature->ID = "MyFunc3";
+  MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem("var7[double]","UC","",""));
+
+  Model.resetInitialized();
+  Model.appendItem(MIInstance);
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
+  PInfos = openfluid::machine::Engine::PretestInfos_t();
+
+  // =====================================================================
+
+  MIInstance = new openfluid::machine::ModelItemInstance();
+  MIInstance->Function = new EmptyFunction();
+  MIInstance->SDKCompatible = true;
+  MIInstance->Signature = new openfluid::base::FunctionSignature();
+  MIInstance->Signature->ID = "MyFunc4";
+  MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem("var1","UA","",""));
+  MIInstance->Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem("var7","UC","",""));
+
+
+  Model.resetInitialized();
+  Model.appendItem(MIInstance);
+
+  displayModel(Model);
+  Eng.pretestConsistency(PInfos);
+  displayPretestsMsgs(PInfos);
+  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
+  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
+  PInfos = openfluid::machine::Engine::PretestInfos_t();
+
+
+
+  delete MachineListen;
+  delete IOListen;
+
+}
+
+// =====================================================================
+// =====================================================================

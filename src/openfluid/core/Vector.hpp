@@ -46,8 +46,8 @@
 */
 
 
-#ifndef __ARRAYVALUE_HPP__
-#define __ARRAYVALUE_HPP__
+#ifndef __VECTOR_HPP__
+#define __VECTOR_HPP__
 
 
 #include <iostream>
@@ -64,7 +64,7 @@ namespace openfluid { namespace core {
 template <class T>
 class DLLEXPORT Vector
 {
-  private :
+  protected :
     T* m_Data;
     unsigned long m_Size;
 
@@ -134,12 +134,24 @@ class DLLEXPORT Vector
     /**
       Returns the element of the vector for index Index
     */
-    T at(unsigned long Index) const { return getElement(Index); };
+    inline T at(unsigned long Index) const { return getElement(Index); };
+
+    /**
+      Returns the element of the vector for index Index
+    */
+    inline T get(unsigned long Index) const { return getElement(Index); };
+
 
     /**
       Sets a new value for element at the given index
     */
     void setElement(unsigned long Index, T Element);
+
+    /**
+      Sets a new value for element at the given index
+    */
+    inline void set(unsigned long Index, T Element) { setElement(Index,Element); };
+
 
     /**
       Operator to set a new value for element given between []
@@ -150,6 +162,12 @@ class DLLEXPORT Vector
       Allocation operator
     */
     Vector<T>& operator = (const Vector &A);
+
+    /**
+      Fills the vector with given value
+    */
+    void fill(const T& Val);
+
 
     /**
       Clears the vector (empty and size is 0)
@@ -340,13 +358,25 @@ void Vector<T>::init()
   m_Size = 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+template <class T>
+void Vector<T>::fill(const T& Val)
+{
+  std::fill(m_Data, m_Data + m_Size,Val);
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 template <class T>
 void Vector<T>::clear()
 {
-//  if (m_Data != NULL) free(m_Data);
   delete [] m_Data;
   init();
 }

@@ -259,23 +259,12 @@ void SimulOutSetsAddEditDialog::createVarRows(std::string ClassName)
 {
   mref_VarsModel->clear();
 
-  std::set<std::string> ScalarNames = EngineHelper::getProducedScalarVarNames(
-      ClassName, mp_ModelInstance);
-  std::set<std::string> VectorNames = EngineHelper::getProducedVectorVarNames(
-      ClassName, mp_ModelInstance);
-
-  BOOST_FOREACH(std::string VarName, ScalarNames)
-{  Gtk::TreeRow Row = *mref_VarsModel->append();
-  Row[m_VarsColumns.m_Value] = VarName;
-  Row[m_VarsColumns.m_IsVector] = false;
-}
-
-BOOST_FOREACH(std::string VarName, VectorNames)
-{
-  Gtk::TreeRow Row = *mref_VarsModel->append();
-  Row[m_VarsColumns.m_Value] = VarName;
-  Row[m_VarsColumns.m_IsVector] = true;
-}
+  BOOST_FOREACH(std::string VarName, EngineHelper::getProducedVarNames(
+      ClassName, mp_ModelInstance))
+  {
+    Gtk::TreeRow Row = *mref_VarsModel->append();
+    Row[m_VarsColumns.m_Value] = VarName;
+  }
 
 mref_VarsModel->sort_column_changed();
 }
@@ -290,7 +279,7 @@ void SimulOutSetsAddEditDialog::selectVarRows()
     mp_VarsTreeView->get_selection()->select_all();
   else
   {
-    if (mp_OutSetDesc->isAllVectors() && mp_OutSetDesc->isAllScalars())
+    if (mp_OutSetDesc->isAllVariables())
     {
       mp_VarsTreeView->get_selection()->select_all();
     }
@@ -302,20 +291,9 @@ void SimulOutSetsAddEditDialog::selectVarRows()
       {
         std::string VarName = it->get_value(m_VarsColumns.m_Value);
 
-        if (!it->get_value(m_VarsColumns.m_IsVector)
-            && (mp_OutSetDesc->isAllScalars() || std::find(
-                mp_OutSetDesc->getScalars().begin(),
-                mp_OutSetDesc->getScalars().end(), VarName)
-                != mp_OutSetDesc->getScalars().end()))
-        {
-          mp_VarsTreeView->get_selection()->select(it);
-        }
-
-        if (it->get_value(m_VarsColumns.m_IsVector)
-            && (mp_OutSetDesc->isAllVectors() || std::find(
-                mp_OutSetDesc->getVectors().begin(),
-                mp_OutSetDesc->getVectors().end(), VarName)
-                != mp_OutSetDesc->getVectors().end()))
+        if (std::find(mp_OutSetDesc->getVariables().begin(),
+                      mp_OutSetDesc->getVariables().end(), VarName)
+                      != mp_OutSetDesc->getVariables().end())
         {
           mp_VarsTreeView->get_selection()->select(it);
         }
@@ -457,13 +435,11 @@ void SimulOutSetsAddEditDialog::setNewSetVars(
 
   if (SelectedVars.size() == VarsCount)
   {
-    NewOutSetDesc->setAllScalars(true);
-    NewOutSetDesc->setAllVectors(true);
+    NewOutSetDesc->setAllVariables(true);
   }
   else
   {
-    NewOutSetDesc->setAllScalars(false);
-    NewOutSetDesc->setAllVectors(false);
+    NewOutSetDesc->setAllVariables(false);
 
     for (Gtk::TreeSelection::ListHandle_Path::iterator it =
         SelectedVars.begin(); it != SelectedVars.end(); ++it)
@@ -471,10 +447,7 @@ void SimulOutSetsAddEditDialog::setNewSetVars(
       std::string VarName = mref_VarsModel->get_iter(*it)->get_value(
           m_VarsColumns.m_Value);
 
-      if (mref_VarsModel->get_iter(*it)->get_value(m_VarsColumns.m_IsVector))
-        NewOutSetDesc->getVectors().push_back(VarName);
-      else
-        NewOutSetDesc->getScalars().push_back(VarName);
+      NewOutSetDesc->getVariables().push_back(VarName);
     }
   }
 }

@@ -74,10 +74,8 @@ class DLLEXPORT OutputSetDescriptor
     bool m_AllUnits;
     std::vector<openfluid::core::UnitID_t> m_UnitsIDs;
     std::vector<openfluid::core::Unit*> m_UnitsPtr;
-    bool m_AllScalars;
-    std::vector<std::string> m_ScalarVariables;
-    bool m_AllVectors;
-    std::vector<std::string> m_VectorVariables;
+    bool m_AllVariables;
+    std::vector<std::string> m_Variables;
     unsigned int m_Precision;
 
   public:
@@ -109,21 +107,15 @@ class DLLEXPORT OutputSetDescriptor
     inline std::vector<openfluid::core::Unit*>& getUnitsPtr() { return m_UnitsPtr; };
 
 
-    inline void setAllScalars(bool AllScalars) { m_AllScalars = AllScalars; };
+    void setAllVariables(bool AllVariables) { m_AllVariables = AllVariables; };
 
-    inline bool isAllScalars() const {return m_AllScalars; };
+    bool isAllVariables() const {return m_AllVariables; };
 
-    inline std::vector<std::string>& getScalars() { return m_ScalarVariables; };
+    std::vector<std::string>& getVariables() { return m_Variables; };
 
-    inline const std::vector<std::string>& getScalars() const { return m_ScalarVariables; };
+    const std::vector<std::string>& getVariables() const { return m_Variables; };
 
-    inline void setAllVectors(bool AllVectors) { m_AllVectors = AllVectors; };
-
-    inline bool isAllVectors() const {return m_AllVectors; };
-
-    inline std::vector<std::string>& getVectors() { return m_VectorVariables; };
-
-    inline const std::vector<std::string>& getVectors() const { return m_VectorVariables; };
+    std::vector<std::string> getVariablesNameOnly() const;
 };
 
 

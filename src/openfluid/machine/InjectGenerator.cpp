@@ -266,7 +266,7 @@ bool InjectGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
 {
 
   openfluid::core::Unit* LU;
-  openfluid::core::ScalarValue CurrentValue;
+  openfluid::core::DoubleValue CurrentValue;
 
   for (std::map<int,DatedValueSerie_t>::iterator it=m_Series.begin(); it!=m_Series.end();++it)
   {

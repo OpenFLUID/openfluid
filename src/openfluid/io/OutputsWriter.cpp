@@ -97,8 +97,7 @@ OutputsWriter::~OutputsWriter()
 
 void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::base::OutputDescriptor& OutDesc)
 {
-  openfluid::io::ScalarOutputsFileWriter* SWriter;
-  openfluid::io::VectorOutputsFileWriter* VWriter;
+  openfluid::io::OutputsFileWriter* Writer;
   std::vector<std::string> VariablesNames;
   std::vector<openfluid::core::UnitClassID_t> UnitsClassIDs;
 
@@ -141,19 +140,20 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
       }
 
 
+      // ------- Variables
+
       for (unsigned int jUnits = 0; jUnits < UnitsClassIDs.size(); jUnits++)
       {
-        // ------- Scalars
         VariablesNames.clear();
 
-        if (OutDesc.getFileSets()[i].getSets()[j].isAllScalars())
-          VariablesNames = m_CoreRepos.getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getScalarVariables()->getVariablesNames();
+        if (OutDesc.getFileSets()[i].getSets()[j].isAllVariables())
+          VariablesNames = m_CoreRepos.getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getVariables()->getVariablesNames();
         else
-          VariablesNames = OutDesc.getFileSets()[i].getSets()[j].getScalars();
+          VariablesNames = OutDesc.getFileSets()[i].getSets()[j].getVariables();
 
         if (!VariablesNames.empty())
         {
-          SWriter = new openfluid::io::ScalarOutputsFileWriter(DirPath, m_CoreRepos,
+          Writer = new openfluid::io::OutputsFileWriter(DirPath, m_CoreRepos,
               UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second,
               OutDesc.getFileSets()[i].getSets()[j].getName(),
               OutDesc.getFileSets()[i].getCommentChar(),
@@ -163,35 +163,9 @@ void OutputsWriter::buildFilesList(const std::string& DirPath, const openfluid::
               OutDesc.getFileSets()[i].getSets()[j].getPrecision());
 
           for (unsigned int n = 0; n < VariablesNames.size(); n++)
-            SWriter->addVariable(VariablesNames[n]);
+            Writer->addVariable(VariablesNames[n]);
 
-          m_Files.push_back(SWriter);
-        }
-
-        // ------- Vectors
-        VariablesNames.clear();
-
-        if (OutDesc.getFileSets()[i].getSets()[j].isAllVectors())
-          VariablesNames = m_CoreRepos.getUnit(UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second)->getVectorVariables()->getVariablesNames();
-        else
-          VariablesNames = OutDesc.getFileSets()[i].getSets()[j].getVectors();
-
-        if (!VariablesNames.empty())
-        {
-          for (unsigned int n = 0; n < VariablesNames.size(); n++)
-          {
-            VWriter = new openfluid::io::VectorOutputsFileWriter(DirPath,m_CoreRepos,
-                UnitsClassIDs[jUnits].first,UnitsClassIDs[jUnits].second,
-                VariablesNames[n],
-                OutDesc.getFileSets()[i].getSets()[j].getName(),
-                OutDesc.getFileSets()[i].getCommentChar(),
-                OutDesc.getFileSets()[i].getDateFormat(),
-                OutDesc.getFileSets()[i].getColSeparator(),
-                OutDesc.getFileSets()[i].getHeaderType(),
-                OutDesc.getFileSets()[i].getSets()[j].getPrecision());
-
-            m_Files.push_back(VWriter);
-          }
+          m_Files.push_back(Writer);
         }
       }
     }

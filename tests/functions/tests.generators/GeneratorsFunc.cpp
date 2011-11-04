@@ -175,7 +175,7 @@ class GeneratorsFunction : public openfluid::base::PluggableFunction
     openfluid::core::Unit* TU;
     DECLARE_UNITS_ORDERED_LOOP(1);
 
-    openfluid::core::ScalarValue SValue;
+    openfluid::core::DoubleValue SValue;
     openfluid::core::VectorValue VValue;
 
 
