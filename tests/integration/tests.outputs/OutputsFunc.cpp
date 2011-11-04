@@ -76,9 +76,9 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
 
-  DECLARE_PRODUCED_VAR("tests.vector","UnitsA","vector for tests","");
+  DECLARE_PRODUCED_VAR("tests.vector[]","UnitsA","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","UnitsA","scalar for tests","");
-  DECLARE_PRODUCED_VAR("tests.vector","UnitsB","vector for tests","");
+  DECLARE_PRODUCED_VAR("tests.vector[]","UnitsB","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","UnitsB","scalar for tests","");
 
 END_SIGNATURE_HOOK

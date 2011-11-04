@@ -149,16 +149,16 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
         {
           BEGIN_UNITS_LIST_LOOP(5,FromAList,FromA)
 
-            if (OPENFLUID_IsVariableExist(FromA,"var2",SimStatus->getCurrentStep(),openfluid::core::Value::DOUBLE))
+            if (OPENFLUID_IsVariableExist(FromA,"var2",SimStatus->getCurrentStep()))
             {
-              OPENFLUID_GetVariable(FromA,"var2",SimStatus->getCurrentStep(),&AuxValue);
+              OPENFLUID_GetVariable(FromA,"var2",SimStatus->getCurrentStep(),AuxValue);
               Value5 = Value5 + AuxValue;
             }
             else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod",SimStatus->getCurrentStep(),"var2 is not present, ignored");
 
-            if (OPENFLUID_IsVariableExist(FromA,"var3",SimStatus->getCurrentStep(),openfluid::core::Value::DOUBLE))
+            if (OPENFLUID_IsVariableExist(FromA,"var3",SimStatus->getCurrentStep()))
             {
-              OPENFLUID_GetVariable(FromA,"var3",SimStatus->getCurrentStep(),&AuxValue);
+              OPENFLUID_GetVariable(FromA,"var3",SimStatus->getCurrentStep(),AuxValue);
               Value5 = Value5 + AuxValue;
             }
             else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod",SimStatus->getCurrentStep(),"var3 is not present, ignored");
@@ -174,7 +174,7 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
           {
             BEGIN_UNITS_LIST_LOOP(18,FromBList,FromB)
 
-              OPENFLUID_GetVariable(FromB,"var5",SimStatus->getCurrentStep()-1,&AuxValue);
+              OPENFLUID_GetVariable(FromB,"var5",SimStatus->getCurrentStep()-1,AuxValue);
               Value5 = Value5 + AuxValue;
 
             END_LOOP

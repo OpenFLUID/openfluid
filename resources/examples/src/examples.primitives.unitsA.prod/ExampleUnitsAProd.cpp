@@ -136,11 +136,11 @@ class ExampleUnitsAProduction : public openfluid::base::PluggableFunction
       BEGIN_UNITS_ORDERED_LOOP(25,"unitsA",A)
         if (SimStatus->isFirstStep())
         {
-           OPENFLUID_GetInputData(A,"inivar1",&Value1.get());
+           OPENFLUID_GetInputData(A,"inivar1",Value1);
         }
         else
         {
-          OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep()-1,&Value1);
+          OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep()-1,Value1);
           Value1 = Value1 + 2.0;
         }
 
