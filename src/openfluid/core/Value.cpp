@@ -327,5 +327,37 @@ bool Value::getValueTypeFromString(const std::string TypeName, Value::Type& Valu
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+std::string Value::getStringFromValueType(const Value::Type ValueType)
+{
+  switch (ValueType)
+  {
+    case openfluid::core::Value::NONE:
+      return "(none)";
+    case openfluid::core::Value::DOUBLE:
+      return "double";
+    case openfluid::core::Value::INTEGER:
+      return "integer";
+    case openfluid::core::Value::BOOLEAN:
+      return "boolean";
+    case openfluid::core::Value::VECTOR:
+      return "vector";
+    case openfluid::core::Value::MATRIX:
+      return "matrix";
+    case openfluid::core::Value::ARRAY:
+      return "array";
+    case openfluid::core::Value::MAP:
+      return "map";
+    case openfluid::core::Value::STRING:
+      return "string";
+    default:
+      return "";
+  }
+}
+
+
 } }  // namespaces
 

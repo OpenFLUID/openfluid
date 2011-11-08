@@ -79,6 +79,7 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
       {
         Gtk::TreeRow Row = appendToRowRef(*RowRef);
         Row[m_Columns.m_Name] = Items[i].DataName;
+        Row[m_Columns.m_Type] = openfluid::core::Value::getStringFromValueType(Items[i].DataType);
         Row[m_Columns.m_Unit] = Items[i].DataUnit;
         Row[m_Columns.m_Class] = Items[i].UnitClass;
         Row[m_Columns.m_Description] = Items[i].Description;
@@ -104,6 +105,7 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
       {
         Gtk::TreeRow Row = *(this->append());
         Row[m_Columns.m_Name] = Items[i].DataName;
+        Row[m_Columns.m_Type] = openfluid::core::Value::getStringFromValueType(Items[i].DataType);
         Row[m_Columns.m_Unit] = Items[i].DataUnit;
         Row[m_Columns.m_Class] = Items[i].UnitClass;
         Row[m_Columns.m_Description] = Items[i].Description;

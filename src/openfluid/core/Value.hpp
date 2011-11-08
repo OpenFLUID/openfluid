@@ -179,6 +179,8 @@ class Value
 
     static bool getValueTypeFromString(const std::string ValueTypeString, Value::Type& ValueType);
 
+    static std::string getStringFromValueType(const Value::Type ValueType);
+
 };
 
 

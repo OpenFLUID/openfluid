@@ -77,6 +77,7 @@ ModelFctDetailViewImpl::ModelFctDetailViewImpl(ModelFctDetailColumns& Columns) :
 
   mp_VarsTreeView = Gtk::manage(new Gtk::TreeView());
   mp_VarsTreeView->append_column(_("Name"), m_Columns.m_Name);
+  mp_VarsTreeView->append_column(_("Type"), m_Columns.m_Type);
   mp_VarsTreeView->append_column(_("Unit"), m_Columns.m_Unit);
   mp_VarsTreeView->append_column(_("Unit class"), m_Columns.m_Class);
   mp_VarsTreeView->append_column(_("Description"), m_Columns.m_Description);
