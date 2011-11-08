@@ -172,3 +172,98 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_GetVariableNameAndType)
+{
+  std::string ParamName;
+  openfluid::core::Value::Type ParamType;
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("noneparam",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"noneparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("none.param",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"none.param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("none_param",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"none_param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("none-param",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"none-param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::NONE);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("oldvectparam[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvectparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("oldvect.param[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvect.param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("oldvect_param[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvect_param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("oldvect-param[]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"oldvect-param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("vectparam[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vectparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("vect.param[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vect.param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("vect_param[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vect_param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("vect-param[vector]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"vect-param");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::VECTOR);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("doubleparam[double]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"doubleparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::DOUBLE);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("intparam[integer]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"intparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::INTEGER);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("boolparam[boolean]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"boolparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::BOOLEAN);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("matrixparam[matrix]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"matrixparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::MATRIX);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("arrayparam[array]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"arrayparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::ARRAY);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("mapparam[map]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"mapparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::MAP);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("stringparam[string]",ParamName,ParamType),true);
+  BOOST_CHECK_EQUAL(ParamName,"stringparam");
+  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::STRING);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("badparam[STRING]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("badparam[badtype]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("badparam[",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("badparam]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("badparam[[]",ParamName,ParamType),false);
+
+  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("badparam[string",ParamName,ParamType),false);
+}

@@ -134,7 +134,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
       VarName, (VarSizeInt > 1), ClassName);
 
   GeneratorSign->HandledData.ProducedVars.push_back(
-       openfluid::base::SignatureHandledDataItem(VarName, ClassName, "", ""));
+       openfluid::base::SignatureHandledTypedDataItem(VarName, ClassName, "", ""));
 
   openfluid::machine::Generator* GeneratorFunction = 0;
 

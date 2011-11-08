@@ -201,7 +201,7 @@ void ModelGeneratorCreationDialog::init()
       mp_ModelInstance->getItems().begin(); it
       != mp_ModelInstance->getItems().end(); ++it)
   {
-    std::vector<openfluid::base::SignatureHandledDataItem> Vars =
+    std::vector<openfluid::base::SignatureHandledTypedDataItem> Vars =
         (*it)->Signature->HandledData.ProducedVars;
 
     for (unsigned int i = 0; i < Vars.size(); i++)

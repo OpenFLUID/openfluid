@@ -201,8 +201,6 @@ bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
 std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr);
 
-bool DLLEXPORT GetVariableNameAndType(const std::string SourceStr, std::string& VarName, openfluid::core::Value::Type& VarType);
-
 std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
 
 void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);

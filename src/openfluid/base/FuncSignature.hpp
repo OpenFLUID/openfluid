@@ -56,6 +56,8 @@
 #define __FUNCSIGNATURE_H__
 
 #include <openfluid/config.hpp>
+#include <boost/regex.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -164,7 +166,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_PRODUCED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an updated variable
@@ -174,7 +176,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_UPDATED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required variable
@@ -184,7 +186,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
 
@@ -196,7 +198,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_PREVVAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an used variable
@@ -206,7 +208,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
 /**
@@ -217,7 +219,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_PREVVAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required input data
@@ -320,31 +322,79 @@ enum FuncStatus_t
 // =====================================================================
 // =====================================================================
 /**
-  Structure for storage of the definition of data handled by the function.
+Class for storage of the definition of data handled by the function.
 */
-struct SignatureHandledDataItem
+class SignatureHandledDataItem
 {
-  std::string DataName;
-  openfluid::core::UnitClass_t UnitClass;
-  std::string Description;
-  std::string DataUnit;
+  public:
 
-  SignatureHandledDataItem()
-  {
-    DataName = "";
-    UnitClass = "";
-    Description = "";
-    DataUnit = "";
-  }
+    std::string DataName;
+    openfluid::core::UnitClass_t UnitClass;
+    std::string Description;
+    std::string DataUnit;
 
-  SignatureHandledDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
-                           std::string DDescription, std::string DUnit)
-  {
-    DataName = DName;
-    UnitClass = UClass;
-    Description = DDescription;
-    DataUnit = DUnit;
-  }
+    SignatureHandledDataItem() :
+      DataName(""),UnitClass(""),Description(""),DataUnit("") {}
+
+    SignatureHandledDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+        std::string DDescription, std::string DUnit) :
+          DataName(DName),UnitClass(UClass),Description(DDescription),DataUnit(DUnit) {}
+
+};
+
+/**
+Class for storage of the definition of typed data handled by the function.
+*/
+class SignatureHandledTypedDataItem : public SignatureHandledDataItem
+{
+
+  public:
+
+    static bool getVariableNameAndType(const std::string SourceStr, std::string& VarName, openfluid::core::Value::Type& VarType)
+    {
+      const boost::basic_regex<char> eVect("^([-.\\w]+)\\[\\]$"); //match "abc[]"
+      const boost::basic_regex<char> eNone("[^[\\]][-.\\w]+"); //match "abc"
+      const boost::basic_regex<char> eType("^([-.\\w]+)\\[(\\w+)\\]$");  //match "abc[type]"
+      boost::smatch Type;
+
+      if(boost::regex_match(SourceStr,Type,eVect) && Type.size() == 2)
+      {
+        VarName = Type[1];
+        VarType = openfluid::core::Value::VECTOR;
+        return true;
+      }
+
+      if(boost::regex_match(SourceStr,eNone))
+      {
+        VarName = SourceStr;
+        VarType = openfluid::core::Value::NONE;
+        return true;
+      }
+
+      if(boost::regex_match(SourceStr,Type,eType) && Type.size() == 3)
+      {
+        VarName = Type[1];
+        return openfluid::core::Value::getValueTypeFromString(Type[2],VarType);
+      }
+
+      return false;
+    }
+
+    openfluid::core::Value::Type DataType;
+
+    SignatureHandledTypedDataItem() :
+      DataType(openfluid::core::Value::NONE) {}
+
+    SignatureHandledTypedDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+        std::string DDescription, std::string DUnit)
+    {
+      UnitClass = UClass;
+      Description = DDescription;
+      DataUnit = DUnit;
+
+      if(!getVariableNameAndType(DName,DataName,DataType))
+        throw openfluid::base::OFException("OpenFLUID framework","SignatureHandledTypedDataItem::SignatureHandledTypedDataItem","Variable " + DName + " is not well formated.");
+    }
 
 };
 
@@ -378,17 +428,17 @@ struct SignatureHandledUnitsClassItem
 */
 struct SignatureHandledData
 {
-  std::vector<SignatureHandledDataItem> ProducedVars;
+  std::vector<SignatureHandledTypedDataItem> ProducedVars;
 
-  std::vector<SignatureHandledDataItem> UpdatedVars;
+  std::vector<SignatureHandledTypedDataItem> UpdatedVars;
 
-  std::vector<SignatureHandledDataItem> RequiredVars;
+  std::vector<SignatureHandledTypedDataItem> RequiredVars;
 
-  std::vector<SignatureHandledDataItem> UsedVars;
+  std::vector<SignatureHandledTypedDataItem> UsedVars;
 
-  std::vector<SignatureHandledDataItem> RequiredPrevVars;
+  std::vector<SignatureHandledTypedDataItem> RequiredPrevVars;
 
-  std::vector<SignatureHandledDataItem> UsedPrevVars;
+  std::vector<SignatureHandledTypedDataItem> UsedPrevVars;
 
   std::vector<SignatureHandledDataItem> FunctionParams;
 

@@ -118,6 +118,12 @@ class DLLEXPORT FluidXReader
 
     void parseFile(std::string Filename);
 
+    /**
+     * Used for compatibility only
+     * @deprecated
+     */
+    void clearOldVectorNamedVar(std::string& VarName);
+
   public:
 
     FluidXReader(openfluid::io::IOListener* Listener);

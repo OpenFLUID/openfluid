@@ -31,6 +31,7 @@ src/openfluid/core/ValuesBuffer.cpp
 src/openfluid/core/ArrayValue.hpp
 src/openfluid/core/CoreRepository.cpp
 src/openfluid/core/VectorValue.cpp
+src/openfluid/core/InputData.cpp
 src/openfluid/core/DateTime.hpp
 src/openfluid/core/UnitsColl.hpp
 src/openfluid/core/Event.cpp

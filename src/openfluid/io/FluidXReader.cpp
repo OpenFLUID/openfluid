@@ -53,13 +53,13 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <openfluid/io/FluidXReader.hpp>
+
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/algorithm/string/replace.hpp>
-
-
-#include <openfluid/io/FluidXReader.hpp>
-#include <openfluid/tools.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/erase.hpp>
 
 
 namespace openfluid { namespace io {
@@ -192,18 +192,13 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
     {
       OSD.setAllVariables(false);
 
-      std::string OnlyVarName;
-      openfluid::core::Value::Type VarType;
-
       std::vector<std::string> StrArray = openfluid::tools::SplitString(VarsStr,";");
+
       for (unsigned int i=0;i<StrArray.size();i++)
       {
-        OnlyVarName = "";
+        clearOldVectorNamedVar(StrArray[i]);
 
-        if(!openfluid::tools::GetVariableNameAndType(StrArray[i],OnlyVarName,VarType))
-          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractSetDecriptorFromNode","Variable " + StrArray[i] + " is not well formated.");
-
-        OSD.getVariables().push_back(OnlyVarName);
+        OSD.getVariables().push_back(StrArray[i]);
       }
 
     }
@@ -965,6 +960,17 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
 
   //propagateGlobalParamsInModel();
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FluidXReader::clearOldVectorNamedVar(std::string& VarName)
+{
+  if(boost::ends_with(VarName,"[]"))
+    boost::erase_last(VarName,"[]");
 }
 
 

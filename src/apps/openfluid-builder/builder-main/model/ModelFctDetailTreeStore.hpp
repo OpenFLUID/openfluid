@@ -72,12 +72,37 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
   protected:
     ModelFctDetailColumns& m_Columns;
     void extractInnerItems(std::vector<
+        openfluid::base::SignatureHandledTypedDataItem> Items,
+        Gtk::TreeRowReference* RowRef)
+    {
+      for (unsigned int i = 0; i < Items.size(); i++)
+      {
+        Gtk::TreeRow Row = appendToRowRef(*RowRef);
+        Row[m_Columns.m_Name] = Items[i].DataName;
+        Row[m_Columns.m_Unit] = Items[i].DataUnit;
+        Row[m_Columns.m_Class] = Items[i].UnitClass;
+        Row[m_Columns.m_Description] = Items[i].Description;
+      }
+    }
+    void extractInnerItems(std::vector<
         openfluid::base::SignatureHandledDataItem> Items,
         Gtk::TreeRowReference* RowRef)
     {
       for (unsigned int i = 0; i < Items.size(); i++)
       {
         Gtk::TreeRow Row = appendToRowRef(*RowRef);
+        Row[m_Columns.m_Name] = Items[i].DataName;
+        Row[m_Columns.m_Unit] = Items[i].DataUnit;
+        Row[m_Columns.m_Class] = Items[i].UnitClass;
+        Row[m_Columns.m_Description] = Items[i].Description;
+      }
+    }
+    void extractInnerItems(std::vector<
+        openfluid::base::SignatureHandledTypedDataItem> Items)
+    {
+      for (unsigned int i = 0; i < Items.size(); i++)
+      {
+        Gtk::TreeRow Row = *(this->append());
         Row[m_Columns.m_Name] = Items[i].DataName;
         Row[m_Columns.m_Unit] = Items[i].DataUnit;
         Row[m_Columns.m_Class] = Items[i].UnitClass;

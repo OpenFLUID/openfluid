@@ -129,10 +129,12 @@ class DLLEXPORT Engine
      void checkExtraFilesConsistency();
 
      void checkExistingVariable(openfluid::core::VariableName_t VarName,
+                                openfluid::core::Value::Type VarType,
                                 openfluid::core::UnitClass_t ClassName,
                                 std::string FunctionName);
 
      void createVariable(openfluid::core::VariableName_t VarName,
+                         openfluid::core::Value::Type VarType,
                          openfluid::core::UnitClass_t ClassName,
                          bool UpdateMode,
                          std::string FunctionName);

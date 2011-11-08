@@ -247,7 +247,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
 
       Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
 
-      Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem(VarName,GenDesc->getUnitClass(),"",""));
+      Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem(VarName,GenDesc->getUnitClass(),"",""));
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Fixed)
         GenInstance = new FixedGenerator();

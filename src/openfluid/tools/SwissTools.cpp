@@ -49,7 +49,6 @@
 #include <openfluid/tools/SwissTools.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/regex.hpp>
 #include <glibmm/spawn.h>
 
 #ifdef G_OS_WIN32
@@ -219,40 +218,6 @@ std::string ReplaceEmptyString(std::string SourceStr, const std::string& Replace
 {
   if (SourceStr.empty()) SourceStr = ReplaceStr;
   return SourceStr;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool GetVariableNameAndType(const std::string SourceStr, std::string& VarName, openfluid::core::Value::Type& VarType)
-{
-  const boost::basic_regex<char> eVect("^([-.\\w]+)\\[\\]$"); //match "abc[]"
-  const boost::basic_regex<char> eNone("[^[\\]][-.\\w]+"); //match "abc"
-  const boost::basic_regex<char> eType("^([-.\\w]+)\\[(\\w+)\\]$");  //match "abc[type]"
-  boost::smatch Type;
-
-  if(boost::regex_match(SourceStr,Type,eVect) && Type.size() == 2)
-  {
-    VarName = Type[1];
-    VarType = openfluid::core::Value::VECTOR;
-    return true;
-  }
-
-  if(boost::regex_match(SourceStr,eNone))
-  {
-    VarName = SourceStr;
-    VarType = openfluid::core::Value::NONE;
-    return true;
-  }
-
-  if(boost::regex_match(SourceStr,Type,eType) && Type.size() == 3)
-  {
-    VarName = Type[1];
-    return openfluid::core::Value::getValueTypeFromString(Type[2],VarType);
-  }
-
-  return false;
 }
 
 

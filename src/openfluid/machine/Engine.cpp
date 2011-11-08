@@ -118,15 +118,10 @@ Engine::~Engine()
 
 
 void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
+                                   openfluid::core::Value::Type VarType,
                                    openfluid::core::UnitClass_t ClassName,
                                    std::string FunctionName)
 {
-  std::string OnlyVarName;
-  openfluid::core::Value::Type VarType;
-
-  if(!openfluid::tools::GetVariableNameAndType(VarName,OnlyVarName,VarType))
-    throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Variable " + VarName + " for " + FunctionName + " is not well formated.");
-
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
@@ -140,9 +135,9 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
   while (UnitIter != UnitList->end())
   {
     if(VarType == openfluid::core::Value::NONE)
-      Status = (*UnitIter).getVariables()->isVariableExist(OnlyVarName);
+      Status = (*UnitIter).getVariables()->isVariableExist(VarName);
     else
-      Status = (*UnitIter).getVariables()->isTypedVariableExist(OnlyVarName,VarType);
+      Status = (*UnitIter).getVariables()->isTypedVariableExist(VarName,VarType);
 
     if (!Status)
       throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionName + " is not previously created");
@@ -158,16 +153,11 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
 
 
 void Engine::createVariable(openfluid::core::VariableName_t VarName,
+                            openfluid::core::Value::Type VarType,
                             openfluid::core::UnitClass_t ClassName,
                             bool UpdateMode,
                             std::string FunctionName)
 {
-  std::string OnlyVarName;
-  openfluid::core::Value::Type VarType;
-
-  if(!openfluid::tools::GetVariableNameAndType(VarName,OnlyVarName,VarType))
-    throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Variable " + VarName + " for " + FunctionName + " is not well formated.");
-
   openfluid::core::UnitsList_t::iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
@@ -183,7 +173,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
     UnitIter = UnitList->begin();
     while (UnitIter != UnitList->end())
     {
-       Status = !((*UnitIter).getVariables()->isVariableExist(OnlyVarName));
+       Status = !((*UnitIter).getVariables()->isVariableExist(VarName));
 
       if (!Status)
         throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionName + " cannot be created because it is previously created");
@@ -194,7 +184,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
-    (*UnitIter).getVariables()->createVariable(OnlyVarName,VarType);
+    (*UnitIter).getVariables()->createVariable(VarName,VarType);
   }
 
 }
@@ -210,7 +200,6 @@ void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
-
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
@@ -291,6 +280,7 @@ void Engine::checkModelConsistency()
     // checking required variables
     for (i=0;i< HData.RequiredVars.size();i++)
       checkExistingVariable(HData.RequiredVars[i].DataName,
+                            HData.RequiredVars[i].DataType,
                             HData.RequiredVars[i].UnitClass,
                             CurrentFunction->Signature->ID);
 
@@ -298,6 +288,7 @@ void Engine::checkModelConsistency()
 
     for (i=0;i< HData.ProducedVars.size();i++)
       createVariable(HData.ProducedVars[i].DataName,
+                     HData.ProducedVars[i].DataType,
                      HData.ProducedVars[i].UnitClass,
                      false,
                      CurrentFunction->Signature->ID);
@@ -306,6 +297,7 @@ void Engine::checkModelConsistency()
     // checking variables to update
     for (i=0;i<HData.UpdatedVars.size();i++)
       createVariable(HData.UpdatedVars[i].DataName,
+                     HData.UpdatedVars[i].DataType,
                      HData.UpdatedVars[i].UnitClass,
                      true,
                      CurrentFunction->Signature->ID);
@@ -325,6 +317,7 @@ void Engine::checkModelConsistency()
     // checking required variables at t-1+
     for (i=0;i< HData.RequiredPrevVars.size();i++)
       checkExistingVariable(HData.RequiredPrevVars[i].DataName,
+                            HData.RequiredPrevVars[i].DataType,
                             HData.RequiredPrevVars[i].UnitClass,
                             CurrentFunction->Signature->ID);
 
@@ -540,8 +533,6 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
       VarsUnits.clear();
       TypedVarsUnits.clear();
 
-      std::string OnlyVarName;
-      openfluid::core::Value::Type VarType;
       bool Status;
 
       FuncIter = m_ModelInstance.getItems().begin();
@@ -555,17 +546,12 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
         // checking required variables
         for (i=0;i< HData.RequiredVars.size();i++)
         {
-          OnlyVarName = "";
-          VarType = openfluid::core::Value::NONE;
           Status = true;
 
-          if(!openfluid::tools::GetVariableNameAndType(HData.RequiredVars[i].DataName,OnlyVarName,VarType))
-            throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency","Variable " + HData.RequiredVars[i].DataName + " required by " + CurrentFunction->Signature->ID + " is not well formated.");
-
-          if(VarType == openfluid::core::Value::NONE)
-            Status = VarsUnits.count(std::make_pair(HData.RequiredVars[i].UnitClass,OnlyVarName));
+          if(HData.RequiredVars[i].DataType == openfluid::core::Value::NONE)
+            Status = VarsUnits.count(std::make_pair(HData.RequiredVars[i].UnitClass,HData.RequiredVars[i].DataName));
           else
-            Status = TypedVarsUnits.count(std::make_pair(HData.RequiredVars[i].UnitClass,std::make_pair(OnlyVarName,VarType)));
+            Status = TypedVarsUnits.count(std::make_pair(HData.RequiredVars[i].UnitClass,std::make_pair(HData.RequiredVars[i].DataName,HData.RequiredVars[i].DataType)));
 
           if (!Status)
             throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency",
@@ -576,16 +562,10 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
         // checking variables to create (produced)
         for (i=0;i< HData.ProducedVars.size();i++)
         {
-          OnlyVarName = "";
-          VarType = openfluid::core::Value::NONE;
-
-          if(!openfluid::tools::GetVariableNameAndType(HData.ProducedVars[i].DataName,OnlyVarName,VarType))
-            throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency","Variable " + HData.ProducedVars[i].DataName + " produced by " + CurrentFunction->Signature->ID + " is not well formated.");
-
-          if (!VarsUnits.count(std::make_pair(HData.ProducedVars[i].UnitClass,OnlyVarName)))
+          if (!VarsUnits.count(std::make_pair(HData.ProducedVars[i].UnitClass,HData.ProducedVars[i].DataName)))
           {
-            VarsUnits.insert(std::make_pair(HData.ProducedVars[i].UnitClass,OnlyVarName));
-            TypedVarsUnits.insert(std::make_pair(HData.ProducedVars[i].UnitClass,std::make_pair(OnlyVarName,VarType)));
+            VarsUnits.insert(std::make_pair(HData.ProducedVars[i].UnitClass,HData.ProducedVars[i].DataName));
+            TypedVarsUnits.insert(std::make_pair(HData.ProducedVars[i].UnitClass,std::make_pair(HData.ProducedVars[i].DataName,HData.ProducedVars[i].DataType)));
           }
           else
             throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency",
@@ -596,16 +576,10 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
         // checking variables to update
         for (i=0;i<HData.UpdatedVars.size();i++)
         {
-          OnlyVarName = "";
-          VarType = openfluid::core::Value::NONE;
-
-          if(!openfluid::tools::GetVariableNameAndType(HData.UpdatedVars[i].DataName,OnlyVarName,VarType))
-            throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency","Variable " + HData.UpdatedVars[i].DataName + " updated by " + CurrentFunction->Signature->ID + " is not well formated.");
-
-          if (!VarsUnits.count(std::make_pair(HData.UpdatedVars[i].UnitClass,OnlyVarName)))
+          if (!VarsUnits.count(std::make_pair(HData.UpdatedVars[i].UnitClass,HData.UpdatedVars[i].DataName)))
           {
-            VarsUnits.insert(std::make_pair(HData.UpdatedVars[i].UnitClass,OnlyVarName));
-            TypedVarsUnits.insert(std::make_pair(HData.UpdatedVars[i].UnitClass,std::make_pair(OnlyVarName,VarType)));
+            VarsUnits.insert(std::make_pair(HData.UpdatedVars[i].UnitClass,HData.UpdatedVars[i].DataName));
+            TypedVarsUnits.insert(std::make_pair(HData.UpdatedVars[i].UnitClass,std::make_pair(HData.UpdatedVars[i].DataName,HData.UpdatedVars[i].DataType)));
           }
         }
 
@@ -625,17 +599,12 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
         // checking required variables at t-1+
         for (i=0;i< HData.RequiredPrevVars.size();i++)
         {
-          OnlyVarName = "";
-          VarType = openfluid::core::Value::NONE;
           Status = true;
 
-          if(!openfluid::tools::GetVariableNameAndType(HData.RequiredPrevVars[i].DataName,OnlyVarName,VarType))
-            throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency","Variable " + HData.ProducedVars[i].DataName + " previously required by " + CurrentFunction->Signature->ID + " is not well formated.");
-
-          if(VarType == openfluid::core::Value::NONE)
-            Status = VarsUnits.count(std::make_pair(HData.RequiredPrevVars[i].UnitClass,OnlyVarName));
+          if(HData.RequiredPrevVars[i].DataType == openfluid::core::Value::NONE)
+            Status = VarsUnits.count(std::make_pair(HData.RequiredPrevVars[i].UnitClass,HData.RequiredPrevVars[i].DataName));
           else
-            Status = TypedVarsUnits.count(std::make_pair(HData.RequiredPrevVars[i].UnitClass,std::make_pair(OnlyVarName,VarType)));
+            Status = TypedVarsUnits.count(std::make_pair(HData.RequiredPrevVars[i].UnitClass,std::make_pair(HData.RequiredPrevVars[i].DataName,HData.RequiredPrevVars[i].DataType)));
 
           if (!Status)
             throw openfluid::base::OFException("OpenFLUID framework","Engine::pretestConsistency",
