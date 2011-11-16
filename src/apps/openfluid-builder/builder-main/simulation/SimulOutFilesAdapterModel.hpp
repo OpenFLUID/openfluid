@@ -56,9 +56,13 @@
 #define __SIMULOUTFILESADAPTERMODEL_HPP__
 
 
-#include <openfluid/base.hpp>
-
 #include "SimulOutFilesColumns.hpp"
+
+namespace openfluid {
+namespace base {
+class OutputDescriptor;
+}
+}
 
 class BuilderListStore;
 

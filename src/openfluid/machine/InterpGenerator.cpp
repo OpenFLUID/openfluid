@@ -56,7 +56,9 @@
 
 
 #include <openfluid/machine/InterpGenerator.hpp>
+
 #include <boost/math/special_functions/fpclassify.hpp>
+
 
 namespace openfluid { namespace machine {
 

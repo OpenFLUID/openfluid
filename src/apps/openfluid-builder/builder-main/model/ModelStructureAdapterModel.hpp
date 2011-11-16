@@ -49,28 +49,50 @@
 #define MODELSTRUCTUREADAPTERMODEL_HPP_
 
 
-#include <openfluid/machine/ModelInstance.hpp>
-
-#include "ModelStructureColumns.hpp"
-
 #include <gtkmm/liststore.h>
+
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+}
+}
+
+class ModelStructureColumns;
+
+
+// =====================================================================
+// =====================================================================
+
 
 class ModelStructureAdapterModel
 {
   public:
+
     virtual void setModelStructure(
         openfluid::machine::ModelInstance* ModelInstance) = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 class ModelStructureAdapterModelImpl: public ModelStructureAdapterModel
 {
   private:
+
     ModelStructureColumns& m_Columns;
+
     Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+
   public:
+
     ModelStructureAdapterModelImpl(ModelStructureColumns& Columns);
+
     void setModelStructure(openfluid::machine::ModelInstance* ModelInstance);
+
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 };
 

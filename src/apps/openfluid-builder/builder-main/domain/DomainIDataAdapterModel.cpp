@@ -56,6 +56,13 @@
 
 #include <boost/foreach.hpp>
 
+#include <openfluid/core/UnitsColl.hpp>
+#include <openfluid/core/Unit.hpp>
+
+#include "DomainIDataColumns.hpp"
+#include "BuilderListStore.hpp"
+
+
 // =====================================================================
 // =====================================================================
 

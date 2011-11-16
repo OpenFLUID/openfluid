@@ -56,12 +56,23 @@
 #define __RESVIEWERADAPTER_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
+#include <vector>
 
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
+namespace openfluid {
+namespace base {
+class SimulationStatus;
+}
+namespace core {
+class Unit;
+}
+}
 
 class ResViewerAdapterModel;
 class ResViewerView;
+
+// =====================================================================
+// =====================================================================
 
 class ResViewerAdapter: public sigc::trackable
 {

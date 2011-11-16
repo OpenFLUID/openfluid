@@ -61,6 +61,10 @@
 
 #include <glibmm/i18n.h>
 
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================

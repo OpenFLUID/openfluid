@@ -54,10 +54,12 @@
  */
 
 #include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/base/OFException.hpp>
+
 #include <openfluid/config.hpp>
+#include <openfluid/base/OFException.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 // =====================================================================

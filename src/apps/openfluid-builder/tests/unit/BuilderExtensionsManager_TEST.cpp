@@ -67,8 +67,7 @@
 
 #include "BuilderExtensionsManager.hpp"
 
-#include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 
 // =====================================================================

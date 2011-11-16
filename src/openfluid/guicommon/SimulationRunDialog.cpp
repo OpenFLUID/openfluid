@@ -54,13 +54,18 @@
  */
 
 
+#include <openfluid/guicommon/SimulationRunDialog.hpp>
+
 #include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 #include <gtkmm/separator.h>
 
-#include <openfluid/guicommon/SimulationRunDialog.hpp>
+#include <openfluid/machine/Engine.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/guicommon/RunDialogMachineListener.hpp>
 
 namespace openfluid { namespace guicommon {
 

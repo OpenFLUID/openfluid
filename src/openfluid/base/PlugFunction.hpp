@@ -72,21 +72,21 @@
 #define __PLUGFUNCTION_HPP__
 
 #include <string>
-
 #include <boost/filesystem/path.hpp>
 #include <glibmm/threadpool.h>
 
-
 #include <openfluid/dllexport.hpp>
-#include <openfluid/config.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base/SimStatus.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/FuncSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-
-
+#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/EnvProperties.hpp>
+#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/Event.hpp>
+#include <openfluid/core/EventsColl.hpp>
 
 
 // =====================================================================

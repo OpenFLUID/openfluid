@@ -54,16 +54,20 @@
 
 #include "ModelFctDetailAdapterModel.hpp"
 
-
 #include <glibmm/i18n.h>
-
 #include <boost/filesystem.hpp>
+
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 #include "ModelFctDetailParamsTreeStore.hpp"
 #include "ModelFctDetailVarsTreeStore.hpp"
 #include "ModelFctDetailIDataTreeStore.hpp"
 #include "ModelFctDetailEventsTreeStore.hpp"
 #include "ModelFctDetailExtraFilesTreeStore.hpp"
+
+// =====================================================================
+// =====================================================================
+
 
 Glib::ustring ModelFctDetailAdapterModelImpl::replaceEmpty(
     Glib::ustring TextToCheck)
@@ -72,6 +76,11 @@ Glib::ustring ModelFctDetailAdapterModelImpl::replaceEmpty(
     TextToCheck = _("(unknown)");
   return TextToCheck;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailAdapterModelImpl::extractInfos()
 {
   std::string val;
@@ -103,6 +112,11 @@ void ModelFctDetailAdapterModelImpl::extractInfos()
       m_Infos["status"] = replaceEmpty("");
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailAdapterModelImpl::updateTreeModel(Glib::RefPtr<
     ModelFctDetailTreeStore> TreeModel)
 {
@@ -110,6 +124,10 @@ void ModelFctDetailAdapterModelImpl::updateTreeModel(Glib::RefPtr<
   TreeModel->createTitleRows();
   TreeModel->extractItems(mp_Signature->Signature);
 }
+
+// =====================================================================
+// =====================================================================
+
 
 ModelFctDetailAdapterModelImpl::ModelFctDetailAdapterModelImpl(
     ModelFctDetailColumns& Columns) :
@@ -123,9 +141,18 @@ ModelFctDetailAdapterModelImpl::ModelFctDetailAdapterModelImpl(
 
   mref_ParamsModel->setTitleColumn(m_Columns.m_Name);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 ModelFctDetailAdapterModelImpl::~ModelFctDetailAdapterModelImpl()
 {
 }
+
+// =====================================================================
+// =====================================================================
+
 void ModelFctDetailAdapterModelImpl::setFctToDisplay(
     openfluid::machine::SignatureItemInstance* Signature)
 {
@@ -140,31 +167,66 @@ void ModelFctDetailAdapterModelImpl::setFctToDisplay(
   updateTreeModel(mref_EventsModel);
   updateTreeModel(mref_XFilesModel);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 bool ModelFctDetailAdapterModelImpl::isAPluggableFct()
 {
   return !(mp_Signature && mp_Signature->ItemType
       == openfluid::base::ModelItemDescriptor::Generator);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 std::map<std::string, std::string> ModelFctDetailAdapterModelImpl::getInfos()
 {
   return m_Infos;
 }
+
+// =====================================================================
+// =====================================================================
+
 Glib::RefPtr<Gtk::TreeModel> ModelFctDetailAdapterModelImpl::getParamsModel()
 {
   return mref_ParamsModel;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> ModelFctDetailAdapterModelImpl::getVarsModel()
 {
   return mref_VarsModel;
 }
+
+
+// =====================================================================
+// =====================================================================
+
 Glib::RefPtr<Gtk::TreeModel> ModelFctDetailAdapterModelImpl::getIDataModel()
 {
   return mref_IDataModel;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> ModelFctDetailAdapterModelImpl::getExtraFilesModel()
 {
   return mref_XFilesModel;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> ModelFctDetailAdapterModelImpl::getEventsModel()
 {
   return mref_EventsModel;

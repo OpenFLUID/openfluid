@@ -46,9 +46,10 @@
 */
 
 
-#include <boost/foreach.hpp>
 
 #include <openfluid/core/CoreRepository.hpp>
+
+#include <boost/foreach.hpp>
 
 
 namespace openfluid { namespace core {

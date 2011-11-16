@@ -54,6 +54,12 @@
  */
 
 
+#include <openfluid/guicommon/MarketClientAssistant.hpp>
+
+#include <iostream>
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
+
 #include <glibmm/i18n.h>
 
 #include <gtkmm/image.h>
@@ -63,16 +69,10 @@
 
 #include <gdkmm/cursor.h>
 
-#include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
-
-#include <iostream>
-#include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
-
-#include <openfluid/base.hpp>
+#include <openfluid/guicommon/MarketPackWidget.hpp>
 
 
 namespace openfluid { namespace guicommon {

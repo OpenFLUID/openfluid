@@ -68,13 +68,13 @@
 #include <gtkmm/progressbar.h>
 #include <gtkmm/textview.h>
 
-#include <openfluid/market.hpp>
-
 #include <openfluid/dllexport.hpp>
-#include <openfluid/guicommon/MarketPackWidget.hpp>
-#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
+#include <openfluid/market/MarketClient.hpp>
+
 
 namespace openfluid { namespace guicommon {
+
+class MarketPackWidget;
 
 
 class DLLEXPORT MarketClientAssistant : public Gtk::Assistant

@@ -56,8 +56,14 @@
 #define __DOMAINCLASSCOORDINATOR_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class SimulationBlob;
+}
+}
 
 class DomainIDataModel;
 class DomainIDataAddDialog;

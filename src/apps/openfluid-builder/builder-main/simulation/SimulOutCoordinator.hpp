@@ -57,11 +57,19 @@
 
 #include <sigc++/sigc++.h>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace core {
+class CoreRepository;
+}
+namespace machine {
+class ModelInstance;
+class SimulationBlob;
+}
+}
 
-#include "SimulOutFilesModel.hpp"
-#include "SimulOutSetsModel.hpp"
-#include "BuilderListToolBox.hpp"
+class SimulOutFilesModel;
+class SimulOutSetsModel;
+class BuilderListToolBox;
 
 class SimulOutFilesAddEditDialog;
 class SimulOutSetsAddEditDialog;

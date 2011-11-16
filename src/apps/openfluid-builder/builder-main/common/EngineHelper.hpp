@@ -55,10 +55,23 @@
 #ifndef __ENGINEHELPER_HPP__
 #define __ENGINEHELPER_HPP__
 
-#include <openfluid/core.hpp>
-#include <openfluid/machine.hpp>
 
 #include <set>
+#include <glibmm/ustring.h>
+
+#include <openfluid/core/EventsColl.hpp>
+#include <openfluid/base/OutputFilesDescriptor.hpp>
+
+namespace openfluid {
+namespace core {
+class CoreRepository;
+class UnitsCollection;
+class EventsCollection;
+}
+namespace machine {
+class ModelInstance;
+}
+}
 
 class EngineHelper
 {

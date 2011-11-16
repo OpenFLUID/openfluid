@@ -54,7 +54,7 @@
  */
 
 #include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/tools.hpp>
+
 
 namespace openfluid { namespace base {
 

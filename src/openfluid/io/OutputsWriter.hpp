@@ -57,13 +57,20 @@
 #define __OUTPUTSWRITER_HPP__
 
 #include <string>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/io/OutputsFileWriter.hpp>
-#include <list>
+#include <openfluid/base/OutputDescriptor.hpp>
+
+namespace openfluid { namespace core {
+class CoreRepository;
+class DateTime;
+}
+}
+
 
 namespace openfluid { namespace io {
+
+class OutputsFileWriter;
 
 
 class DLLEXPORT OutputsWriter

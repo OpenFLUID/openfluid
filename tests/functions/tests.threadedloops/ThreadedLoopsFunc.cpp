@@ -54,9 +54,9 @@
  */
 
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 #include <cmath>
+#include <boost/date_time.hpp>
 
 #include <glibmm/thread.h>
 #include <glibmm/timer.h>

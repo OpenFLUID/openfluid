@@ -55,12 +55,16 @@
 #ifndef __MODELFCTDETAILTREESTORE_HPP__
 #define __MODELFCTDETAILTREESTORE_HPP__
 
+#include <openfluid/base/FuncSignature.hpp>
+
 #include "BuilderTreeStore.hpp"
 #include "ModelFctDetailColumns.hpp"
+
 
 class ModelFctDetailTreeStore: public BuilderTreeStore
 {
   public:
+
     virtual void createTitleRows()
     {
     }
@@ -70,7 +74,9 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
     }
 
   protected:
+
     ModelFctDetailColumns& m_Columns;
+
     void extractInnerItems(std::vector<
         openfluid::base::SignatureHandledTypedDataItem> Items,
         Gtk::TreeRowReference* RowRef)
@@ -85,6 +91,7 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
         Row[m_Columns.m_Description] = Items[i].Description;
       }
     }
+
     void extractInnerItems(std::vector<
         openfluid::base::SignatureHandledDataItem> Items,
         Gtk::TreeRowReference* RowRef)
@@ -98,6 +105,7 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
         Row[m_Columns.m_Description] = Items[i].Description;
       }
     }
+
     void extractInnerItems(std::vector<
         openfluid::base::SignatureHandledTypedDataItem> Items)
     {
@@ -111,6 +119,7 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
         Row[m_Columns.m_Description] = Items[i].Description;
       }
     }
+
     void extractInnerItems(std::vector<
         openfluid::base::SignatureHandledDataItem> Items)
     {
@@ -123,6 +132,7 @@ class ModelFctDetailTreeStore: public BuilderTreeStore
         Row[m_Columns.m_Description] = Items[i].Description;
       }
     }
+
     ModelFctDetailTreeStore(ModelFctDetailColumns& Columns) :
       BuilderTreeStore(Columns), m_Columns(Columns)
     {

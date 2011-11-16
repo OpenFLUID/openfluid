@@ -55,10 +55,15 @@
 #include "BuilderPretestInfo.hpp"
 
 #include <glibmm/i18n.h>
+#include <glibmm/ustring.h>
 #include <boost/foreach.hpp>
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+
 #include "GeneratorSignature.hpp"
-#include <openfluid/tools/SwissTools.hpp>
 
 // =====================================================================
 // =====================================================================

@@ -56,6 +56,8 @@
 
 #include <glibmm/i18n.h>
 
+#include <openfluid/machine/SimulationBlob.hpp>
+
 #include "DomainStructureModel.hpp"
 #include "DomainUnitAddEditDialog.hpp"
 

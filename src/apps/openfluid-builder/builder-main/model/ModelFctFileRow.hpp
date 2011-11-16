@@ -55,12 +55,12 @@
 #ifndef __MODELFCTFILEROW_HPP__
 #define __MODELFCTFILEROW_HPP__
 
-#include "BuilderTableRowWidget.hpp"
-
 #include <gtkmm/label.h>
 #include <gtkmm/button.h>
 
 #include <sigc++/sigc++.h>
+
+#include "BuilderTableRowWidget.hpp"
 
 class ModelFctFileRow: public BuilderTableRowWidget
 {

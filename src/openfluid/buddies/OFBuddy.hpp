@@ -57,10 +57,8 @@
 #ifndef __OFBUDDY_H__
 #define __OFBUDDY_H__
 
-#include <vector>
 #include <string>
 #include <map>
-#include <iostream>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>

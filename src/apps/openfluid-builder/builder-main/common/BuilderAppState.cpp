@@ -54,18 +54,17 @@
 */
 
 
-#include <glibmm/i18n.h>
-
 #include "BuilderAppState.hpp"
-#include "BuilderGraphicsHelper.hpp"
 
+#include <glibmm/i18n.h>
 #include <gtkmm/aboutdialog.h>
 
-#include <openfluid/tools.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/config.hpp>
-#include "builderconfig.hpp"
 
+#include "builderconfig.hpp"
+#include "BuilderGraphicsHelper.hpp"
 
 
 // =====================================================================

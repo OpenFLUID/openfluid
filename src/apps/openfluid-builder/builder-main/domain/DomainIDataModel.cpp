@@ -54,6 +54,9 @@
 
 #include "DomainIDataModel.hpp"
 
+#include <openfluid/core/UnitsColl.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+
 // =====================================================================
 // =====================================================================
 

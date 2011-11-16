@@ -58,6 +58,8 @@
 #define __VALUE_HPP___
 
 #include <iostream>
+
+#include <openfluid/dllexport.hpp>
 #include <openfluid/base/OFException.hpp>
 
 
@@ -75,7 +77,7 @@ class ArrayValue;
 class MapValue;
 
 
-class Value
+class DLLEXPORT Value
 {
   public:
 

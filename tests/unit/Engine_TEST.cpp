@@ -62,10 +62,14 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/foreach.hpp>
 #include <tests-config.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/io.hpp>
-#include <openfluid/machine.hpp>
+
+#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/Engine.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 
 class EmptyFunction : public openfluid::base::PluggableFunction

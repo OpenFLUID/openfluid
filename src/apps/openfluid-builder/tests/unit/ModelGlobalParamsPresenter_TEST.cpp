@@ -65,7 +65,7 @@
 #include "ModelGlobalParamRow.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/machine.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 
 // =====================================================================
 // =====================================================================

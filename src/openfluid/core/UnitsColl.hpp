@@ -52,15 +52,15 @@
 
 
 
-#include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+//#include <openfluid/core/Unit.hpp>
 
 
 namespace openfluid { namespace core {
 
 
-class DLLEXPORT Unit;
+class /*DLLEXPORT*/ Unit;
 
 /**
   Type definition for a list of units

@@ -56,8 +56,15 @@
 #define __SIMULOUTFILESMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
+#include <map>
 
-#include <openfluid/base.hpp>
+namespace openfluid {
+namespace base {
+class OutputDescriptor;
+class OutputFilesDescriptor;
+}
+}
 
 // =====================================================================
 // =====================================================================

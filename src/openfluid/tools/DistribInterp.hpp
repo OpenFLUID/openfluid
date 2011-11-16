@@ -56,14 +56,20 @@
 #ifndef __DISTRIBINTERP_HPP__
 #define __DISTRIBINTERP_HPP__
 
+#include <map>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/tools/DTSerie.hpp>
-#include <openfluid/tools/DataSrcFile.hpp>
+#include <openfluid/core/DateTime.hpp>
 
-
+namespace openfluid {
+namespace core {
+class DoubleValue;
+}
+}
 
 namespace openfluid { namespace tools {
+
+class DateTimeSerie;
+class IndexedSerie;
 
 typedef std::map<int,DateTimeSerie*> DTSeriesMap;
 typedef std::map<int,DateTimeSerie*> UnitsDTSeriesMap;

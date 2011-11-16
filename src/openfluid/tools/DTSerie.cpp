@@ -56,7 +56,7 @@
 
 
 #include <openfluid/tools/DTSerie.hpp>
-#include <math.h>
+
 
 namespace openfluid { namespace tools {
 

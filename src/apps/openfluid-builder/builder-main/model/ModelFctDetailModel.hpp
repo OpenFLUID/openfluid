@@ -58,26 +58,46 @@
 
 #include <sigc++/sigc++.h>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SignatureItemInstance;
+}
+}
+
+// =====================================================================
+// =====================================================================
 
 class ModelFctDetailModel
 {
   public:
+
     virtual sigc::signal<void> signal_FctToDisplayChanged() = 0;
+
     virtual void setFctToDisplay(
         openfluid::machine::SignatureItemInstance* Signature) = 0;
+
     virtual openfluid::machine::SignatureItemInstance* getFctDisplayed() = 0;
 };
+
+// =====================================================================
+// =====================================================================
 
 class ModelFctDetailModelImpl: public ModelFctDetailModel
 {
   private:
+
     sigc::signal<void> m_signal_FctToDisplayChanged;
+
     openfluid::machine::SignatureItemInstance* mp_FctToDisplay;
+
   public:
+
     ModelFctDetailModelImpl();
+
     sigc::signal<void> signal_FctToDisplayChanged();
+
     void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
+
     openfluid::machine::SignatureItemInstance* getFctDisplayed();
 };
 

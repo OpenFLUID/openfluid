@@ -54,18 +54,25 @@
 */
 
 
+#include <openfluid/machine/Engine.hpp>
+
 #include <iostream>
 #include <iomanip>
 #include <set>
-
 #include <math.h>
 #include <boost/filesystem.hpp>
 
-#include <openfluid/machine/Engine.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/machine/Factory.hpp>
-#include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/io/OutputsWriter.hpp>
+#include <openfluid/io/MessagesWriter.hpp>
+#include <openfluid/io/SimReportWriter.hpp>
+#include <openfluid/io/SimProfileWriter.hpp>
 
 
 namespace openfluid { namespace machine {

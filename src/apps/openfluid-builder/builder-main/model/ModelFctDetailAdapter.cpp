@@ -57,6 +57,10 @@
 #include "ModelFctDetailAdapterModel.hpp"
 #include "ModelFctDetailView.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 ModelFctDetailAdapter::ModelFctDetailAdapter(ModelFctDetailAdapterModel& Model,
     ModelFctDetailView& View) :
   m_Model(Model), m_View(View)

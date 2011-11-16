@@ -61,7 +61,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include <openfluid/base.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================

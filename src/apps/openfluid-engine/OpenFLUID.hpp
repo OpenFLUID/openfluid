@@ -56,14 +56,17 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include <openfluid/base.hpp>
-#include <openfluid/buddies.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/machine.hpp>
-#include <openfluid/io.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/config.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/base/FuncSignature.hpp>
 
+namespace openfluid {
+namespace base {
+class RuntimeEnvironment;
+}
+namespace machine {
+class Engine;
+}
+}
 
 
 // =====================================================================

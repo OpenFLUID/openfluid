@@ -52,6 +52,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+#include <openfluid/machine/SimulationBlob.hpp>
+
 #include "ResultsSetModule.hpp"
 
 #include "ResUnitChooserComponent.hpp"

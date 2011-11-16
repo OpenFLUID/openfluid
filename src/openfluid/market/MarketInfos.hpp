@@ -56,9 +56,8 @@
 #ifndef __MARKETINFOS_HPP__
 #define __MARKETINFOS_HPP__
 
-#include <openfluid/base.hpp>
-#include <map>
-#include <boost/scoped_ptr.hpp>
+#include <openfluid/dllexport.hpp>
+#include <openfluid/base/FuncSignature.hpp>
 
 
 namespace openfluid { namespace market {

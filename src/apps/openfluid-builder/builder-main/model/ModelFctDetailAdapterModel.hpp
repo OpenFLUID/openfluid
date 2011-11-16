@@ -56,51 +56,91 @@
 #define MODELFCTDETAILADAPTERMODEL_HPP_
 
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SignatureItemInstance;
+}
+}
 
 #include "ModelFctDetailColumns.hpp"
 #include "ModelFctDetailTreeStore.hpp"
 
+// =====================================================================
+// =====================================================================
+
+
 class ModelFctDetailAdapterModel
 {
   public:
+
     virtual void setFctToDisplay(
         openfluid::machine::SignatureItemInstance* Signature) = 0;
+
     virtual bool isAPluggableFct() = 0;
+
     virtual std::map<std::string, std::string> getInfos() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getParamsModel() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getVarsModel() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getIDataModel() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getExtraFilesModel() = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getEventsModel() = 0;
 };
+
+// =====================================================================
+// =====================================================================
+
 
 class ModelFctDetailAdapterModelImpl: public ModelFctDetailAdapterModel
 {
   private:
+
     ModelFctDetailColumns& m_Columns;
+
     std::map<std::string, std::string> m_Infos;
+
     Glib::RefPtr<ModelFctDetailTreeStore> mref_ParamsModel;
+
     Glib::RefPtr<ModelFctDetailTreeStore> mref_VarsModel;
+
     Glib::RefPtr<ModelFctDetailTreeStore> mref_IDataModel;
+
     Glib::RefPtr<ModelFctDetailTreeStore> mref_EventsModel;
+
     Glib::RefPtr<ModelFctDetailTreeStore> mref_XFilesModel;
 
     openfluid::machine::SignatureItemInstance* mp_Signature;
 
     Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
+
     void extractInfos();
+
     void updateTreeModel(Glib::RefPtr<ModelFctDetailTreeStore> TreeModel);
+
   public:
+
     ModelFctDetailAdapterModelImpl(ModelFctDetailColumns& Columns);
+
     ~ModelFctDetailAdapterModelImpl();
+
     void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
+
     bool isAPluggableFct();
+
     std::map<std::string, std::string> getInfos();
+
     Glib::RefPtr<Gtk::TreeModel> getParamsModel();
+
     Glib::RefPtr<Gtk::TreeModel> getVarsModel();
+
     Glib::RefPtr<Gtk::TreeModel> getIDataModel();
+
     Glib::RefPtr<Gtk::TreeModel> getExtraFilesModel();
+
     Glib::RefPtr<Gtk::TreeModel> getEventsModel();
 };
 

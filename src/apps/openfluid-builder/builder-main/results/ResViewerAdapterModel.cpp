@@ -54,14 +54,15 @@
 
 #include "ResViewerAdapterModel.hpp"
 
+#include <fstream>
 #include <glibmm/i18n.h>
+#include <boost/filesystem/path.hpp>
 
-#include <openfluid/tools.hpp>
-#include <openfluid/config.hpp>
-
-#include <boost/filesystem.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/core/Unit.hpp>
 
 #include "BuilderListStore.hpp"
+#include "ResViewerColumns.hpp"
 
 // =====================================================================
 // =====================================================================

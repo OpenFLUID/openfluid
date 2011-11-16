@@ -54,8 +54,7 @@
 #ifndef __OFEFUNC2DOCFUNC_H__
 #define __OFEFUNC2DOCFUNC_H__
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================

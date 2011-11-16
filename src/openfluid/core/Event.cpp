@@ -55,8 +55,8 @@
 
 
 #include <openfluid/core/Event.hpp>
-#include <openfluid/tools.hpp>
-#include <iostream>
+
+#include <openfluid/tools/SwissTools.hpp>
 
 namespace openfluid { namespace core {
 

@@ -64,7 +64,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <openfluid/tools.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 // =====================================================================

@@ -54,7 +54,6 @@
  */
 
 #include <openfluid/machine/DynamicLib.hpp>
-#include <openfluid/base.hpp>
 
 #if defined __unix__ || defined __APPLE__
 #include <dlfcn.h>

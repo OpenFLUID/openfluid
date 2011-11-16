@@ -54,16 +54,17 @@
 
 #include "BuilderAppHomeState.hpp"
 
-#include "BuilderAppCoordinator.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <algorithm>
+
+#include <gtkmm/main.h>
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
-#include <gtkmm/main.h>
+#include "BuilderAppCoordinator.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
-#include <algorithm>
 
 // =====================================================================
 // =====================================================================

@@ -54,11 +54,19 @@
  */
 
 
-
-#include <fstream>
 #include <openfluid/io/FluidXWriter.hpp>
+
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <boost/filesystem.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 namespace openfluid { namespace io {
 

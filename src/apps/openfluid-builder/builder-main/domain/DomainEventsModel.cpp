@@ -53,8 +53,11 @@
  */
 
 #include "DomainEventsModel.hpp"
+
 #include <glibmm/ustring.h>
+
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/CoreRepository.hpp>
 
 // =====================================================================
 // =====================================================================

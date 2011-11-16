@@ -58,9 +58,17 @@
 
 #include <string>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/base/ModelItemDescriptor.hpp>
+
+namespace openfluid {
+namespace base {
+class FunctionSignature;
+class PluggableFunction;
+}
+}
+
 
 namespace openfluid { namespace machine {
 

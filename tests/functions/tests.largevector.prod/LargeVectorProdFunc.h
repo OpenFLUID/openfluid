@@ -54,8 +54,7 @@
 #ifndef __LARGEVECTORPRODFUNC_H__
 #define __LARGEVECTORPRODFUNC_H__
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================

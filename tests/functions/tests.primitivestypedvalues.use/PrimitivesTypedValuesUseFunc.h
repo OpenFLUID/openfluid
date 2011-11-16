@@ -54,8 +54,7 @@
 #ifndef __PRIMITIVESTYPEDVALUESUSEFUNC_H__
 #define __PRIMITIVESTYPEDVALUESUSEFUNC_H__
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================

@@ -51,11 +51,10 @@
   \brief Implements ...
 */
 
+#include <boost/filesystem/operations.hpp>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/tools.hpp>
-#include <boost/filesystem.hpp>
+#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/tools/ColTextParser.hpp>
 
 // =====================================================================
 // =====================================================================

@@ -55,14 +55,20 @@
 #ifndef __DOMAINUNITRELATIONADDDIALOG_HPP__
 #define __DOMAINUNITRELATIONADDDIALOG_HPP__
 
+#include <set>
+
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 
-#include <openfluid/core.hpp>
+namespace openfluid {
+namespace core {
+class CoreRepository;
+class Unit;
+}
+}
 
-#include <set>
 
 class DomainUnitRelationAddDialog
 {

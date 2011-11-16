@@ -54,11 +54,13 @@
  */
 
 
-#include <openfluid/tools/DataSrcFile.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
 
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <boost/filesystem/convenience.hpp>
+
+#include <openfluid/tools/DataSrcFile.hpp>
+#include <openfluid/tools/ColTextParser.hpp>
 
 
 namespace openfluid { namespace machine {

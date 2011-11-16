@@ -55,8 +55,7 @@
 #include "BuilderHomeModule.hpp"
 
 #include "HomeComponent.hpp"
-#include "HomeModel.hpp"
-#include "BuilderAppActions.hpp"
+
 
 // =====================================================================
 // =====================================================================

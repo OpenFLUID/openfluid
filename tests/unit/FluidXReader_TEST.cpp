@@ -74,7 +74,10 @@ typedef boost::onullstream onullstream_type;
 
 
 #include <tests-config.hpp>
-#include <openfluid/io.hpp>
+#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================

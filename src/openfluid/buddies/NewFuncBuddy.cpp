@@ -54,11 +54,14 @@
  */
 
 #include <openfluid/buddies/NewFuncBuddy.hpp>
-#include <openfluid/core.hpp>
+
 #include <sstream>
 #include <fstream>
-#include <boost/filesystem.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <openfluid/base/OFException.hpp>
 
 
 namespace openfluid { namespace buddies {

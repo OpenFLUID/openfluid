@@ -56,10 +56,16 @@
 #define __MODELSTRUCTURECOORDINATOR_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
+#include <map>
 
-#include <giomm/file.h>
-
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SimulationBlob;
+class ModelInstance;
+class ModelItemInstance;
+}
+}
 
 class ModelFctDetailModel;
 class ModelStructureModel;

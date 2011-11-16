@@ -60,7 +60,7 @@
 #define BOOST_TEST_MODULE unittest_runtimeenv
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/base.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 // =====================================================================
 // =====================================================================

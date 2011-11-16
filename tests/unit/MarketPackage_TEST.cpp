@@ -63,7 +63,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <openfluid/market.hpp>
+#include <openfluid/market/MarketSrcPackage.hpp>
+#include <openfluid/market/MarketBinPackage.hpp>
 
 #include <tests-config.hpp>
 

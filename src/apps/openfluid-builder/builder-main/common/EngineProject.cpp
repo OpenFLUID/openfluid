@@ -54,18 +54,31 @@
 
 #include "EngineProject.hpp"
 
-#include <openfluid/guicommon/SimulationRunDialog.hpp>
+#include <libxml2/libxml/xmlerror.h>
+#include <boost/date_time.hpp>
+#include <boost/filesystem/convenience.hpp>
+
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/io/FluidXWriter.hpp>
+#include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
-
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/core/DateTime.hpp>
+#include <openfluid/guicommon/SimulationRunDialog.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/Factory.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/Generator.hpp>
 
 #include "GeneratorSignature.hpp"
 #include "EngineHelper.hpp"
 
-#include <boost/foreach.hpp>
-#include <boost/filesystem.hpp>
 
 // =====================================================================
 // =====================================================================

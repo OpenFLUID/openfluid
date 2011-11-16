@@ -58,6 +58,16 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
+#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/machine/Engine.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/Factory.hpp>
+#include <openfluid/buddies.hpp>
+
 #include "OpenFLUID.hpp"
 #include "DefaultIOListener.hpp"
 #include "DefaultMachineListener.hpp"

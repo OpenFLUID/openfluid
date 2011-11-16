@@ -60,8 +60,9 @@
 #define BOOST_TEST_MODULE unittest_simstatus
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 
 // =====================================================================

@@ -63,7 +63,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <openfluid/tools.hpp>
+#include <openfluid/tools/CURLDownloader.hpp>
+#include <iostream>
 
 #include <tests-config.hpp>
 

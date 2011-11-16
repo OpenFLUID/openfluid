@@ -56,10 +56,10 @@
 #define __EVENT_HPP__
 
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/InstantiationInfo.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {

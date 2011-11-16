@@ -54,13 +54,15 @@
  */
 
 
-
 #include <openfluid/io/OutputsFileWriter.hpp>
-#include <openfluid/config.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 
+#include <iomanip>
 #include <boost/filesystem/path.hpp>
+
+#include <openfluid/config.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 
 namespace openfluid { namespace io {

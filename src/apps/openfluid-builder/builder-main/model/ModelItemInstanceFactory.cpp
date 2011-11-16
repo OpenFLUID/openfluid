@@ -54,6 +54,16 @@
 
 #include "ModelItemInstanceFactory.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/Factory.hpp>
+#include <openfluid/machine/FixedGenerator.hpp>
+#include <openfluid/machine/RandomGenerator.hpp>
+#include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/machine/InjectGenerator.hpp>
+#include <openfluid/base/ModelItemDescriptor.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+
 #include "GeneratorSignature.hpp"
 #include "ModelGeneratorCreationDialog.hpp"
 

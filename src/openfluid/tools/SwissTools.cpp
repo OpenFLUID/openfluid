@@ -47,9 +47,12 @@
 
 
 #include <openfluid/tools/SwissTools.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/algorithm/string.hpp>
+
+#include <boost/filesystem/operations.hpp>
+//#include <boost/algorithm/string.hpp>
 #include <glibmm/spawn.h>
+
+#include <openfluid/core/DateTime.hpp>
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -178,23 +181,6 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
   return FileList;
 
 }
-
-
-// =====================================================================
-// =====================================================================
-
-std::vector<std::string> SplitString(const std::string StrToSplit, const std::string Separators, bool ReturnsEmpty)
-{
-  std::vector<std::string> SplitParts;
-
-  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
-  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
-
-  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators));
-
-  return SplitParts;
-}
-
 
 
 // =====================================================================

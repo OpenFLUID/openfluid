@@ -54,11 +54,15 @@
 
 #include "ModelStructureModel.hpp"
 
+#include <glibmm/i18n.h>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+
 #include "ModelItemInstanceFactory.hpp"
 
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
-
-#include <glibmm/i18n.h>
 
 // =====================================================================
 // =====================================================================

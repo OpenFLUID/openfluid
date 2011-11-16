@@ -55,12 +55,17 @@
 #ifndef __MODELADDFUNCTIONMODULE_HPP__
 #define __MODELADDFUNCTIONMODULE_HPP__
 
+#include <sigc++/sigc++.h>
+
 #include <gtkmm/paned.h>
 #include <gtkmm/dialog.h>
 
-#include <sigc++/sigc++.h>
-
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SimulationBlob;
+class ModelInstance;
+}
+}
 
 #include "FunctionSignatureRegistry.hpp"
 

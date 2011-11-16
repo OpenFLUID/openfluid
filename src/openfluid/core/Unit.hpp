@@ -60,20 +60,20 @@
 
 #include <map>
 #include <string>
+#include <boost/noncopyable.hpp>
 
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/UnitsColl.hpp>
 #include <openfluid/core/InputData.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/EventsColl.hpp>
 #include <openfluid/core/InstantiationInfo.hpp>
-#include <openfluid/dllexport.hpp>
 
-#include <boost/noncopyable.hpp>
 
 
 namespace openfluid { namespace core {
 
-class DLLEXPORT UnitsCollection;
+//class DLLEXPORT UnitsCollection;
 
 
 
@@ -82,7 +82,7 @@ class DLLEXPORT UnitsCollection;
 */
 typedef std::map<UnitClass_t,UnitsCollection> UnitsListByClassMap_t;
 
-class DLLEXPORT Unit;
+//class DLLEXPORT Unit;
 
 /**
   Type for a list of pointers on Unit

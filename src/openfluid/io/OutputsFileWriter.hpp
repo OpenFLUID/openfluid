@@ -56,8 +56,16 @@
 #define __OUTPUTSFILEWRITER_HPP__
 
 #include <fstream>
-#include <openfluid/core.hpp>
+
+#include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/OutputFilesDescriptor.hpp>
+
+namespace openfluid {
+namespace core {
+class CoreRepository;
+class DateTime;
+}
+}
 
 
 namespace openfluid { namespace io {

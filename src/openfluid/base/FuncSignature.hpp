@@ -55,8 +55,10 @@
 #ifndef __FUNCSIGNATURE_H__
 #define __FUNCSIGNATURE_H__
 
-#include <openfluid/config.hpp>
 #include <boost/regex.hpp>
+
+#include <openfluid/config.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 
 // =====================================================================
@@ -400,69 +402,68 @@ class SignatureHandledTypedDataItem : public SignatureHandledDataItem
 
 
 /**
-  Structure for storage of the definition of spatial units handled by the function.
+  Class for storage of the definition of spatial units handled by the function.
 */
-struct SignatureHandledUnitsClassItem
+class SignatureHandledUnitsClassItem
 {
-  openfluid::core::UnitClass_t UnitsClass;
-  std::string Description;
+  public:
 
-  SignatureHandledUnitsClassItem()
-  {
-    UnitsClass = "";
-    Description = "";
-  }
+    openfluid::core::UnitClass_t UnitsClass;
+    std::string Description;
 
-  SignatureHandledUnitsClassItem(openfluid::core::UnitClass_t UClass,
-                           std::string DDescription)
-  {
-    UnitsClass = UClass;
-    Description = DDescription;
-  }
+    SignatureHandledUnitsClassItem() :
+      UnitsClass(""),Description("") {}
 
+    SignatureHandledUnitsClassItem(openfluid::core::UnitClass_t UClass,
+        std::string DDescription) :
+          UnitsClass(UClass),Description(DDescription) {}
 };
 
 
 /**
-  Structure for storage of the definition of the data handled by the function. This is part of the signature.
+  Class for storage of the definition of the data handled by the function. This is part of the signature.
 */
-struct SignatureHandledData
+class SignatureHandledData
 {
-  std::vector<SignatureHandledTypedDataItem> ProducedVars;
+  public:
 
-  std::vector<SignatureHandledTypedDataItem> UpdatedVars;
+    std::vector<SignatureHandledTypedDataItem> ProducedVars;
 
-  std::vector<SignatureHandledTypedDataItem> RequiredVars;
+    std::vector<SignatureHandledTypedDataItem> UpdatedVars;
 
-  std::vector<SignatureHandledTypedDataItem> UsedVars;
+    std::vector<SignatureHandledTypedDataItem> RequiredVars;
 
-  std::vector<SignatureHandledTypedDataItem> RequiredPrevVars;
+    std::vector<SignatureHandledTypedDataItem> UsedVars;
 
-  std::vector<SignatureHandledTypedDataItem> UsedPrevVars;
+    std::vector<SignatureHandledTypedDataItem> RequiredPrevVars;
 
-  std::vector<SignatureHandledDataItem> FunctionParams;
+    std::vector<SignatureHandledTypedDataItem> UsedPrevVars;
 
-  std::vector<SignatureHandledDataItem> RequiredInput;
+    std::vector<SignatureHandledDataItem> FunctionParams;
 
-  std::vector<SignatureHandledDataItem> UsedInput;
+    std::vector<SignatureHandledDataItem> RequiredInput;
 
-  std::vector<std::string> RequiredExtraFiles;
+    std::vector<SignatureHandledDataItem> UsedInput;
 
-  std::vector<std::string> UsedExtraFiles;
+    std::vector<std::string> RequiredExtraFiles;
 
-  std::vector<openfluid::core::UnitClass_t> UsedEventsOnUnits;
+    std::vector<std::string> UsedExtraFiles;
+
+    std::vector<openfluid::core::UnitClass_t> UsedEventsOnUnits;
 
 
-  SignatureHandledData()
-  {
+    SignatureHandledData()
+    {
 
-  }
+    }
 
 };
 
 
-struct SignatureHandledUnitsGraph
+class SignatureHandledUnitsGraph
 {
+  public:
+
     std::string UpdatedUnitsGraph;
 
     std::vector<SignatureHandledUnitsClassItem> UpdatedUnitsClass;
@@ -476,97 +477,88 @@ struct SignatureHandledUnitsGraph
 
 
 /**
-  Structure encapsulating the plugin signature,
+  Class encapsulating the plugin signature,
   returned from the plugin to the host app for registering
 */
-struct FunctionSignature
+class FunctionSignature
 {
 
-  /**
+  public:
+
+    /**
     Function ID
-  */
-  FuncID_t ID;
+    */
+    FuncID_t ID;
 
-  /**
+    /**
     Plugin name
-  */
-  FuncName_t Name;
+    */
+    FuncName_t Name;
 
-  /**
+    /**
     Plugin Description
-  */
-  std::string Description;
+    */
+    std::string Description;
 
-  /**
+    /**
     Plugin domain (i.e. hydrology, pop, erosion, ...)
-  */
-  FuncDomain_t Domain;
+    */
+    FuncDomain_t Domain;
 
-  /**
+    /**
     Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
-  */
-  FuncProcess_t Process;
+    */
+    FuncProcess_t Process;
 
-  /**
+    /**
     Plugin involved method (i.e. morel-seytoux, hayami, ...)
-  */
-  FuncMethod_t Method;
+    */
+    FuncMethod_t Method;
 
-  /**
+    /**
     Plug-in version number
-  */
-  FuncVersion_t Version;
+    */
+    FuncVersion_t Version;
 
-  /**
+    /**
     Development status
-  */
-  FuncStatus_t Status;
+    */
+    FuncStatus_t Status;
 
-  /**
+    /**
     SDK version number used to build the function
-  */
-  std::string SDKVersion;
+    */
+    std::string SDKVersion;
 
-  /**
+    /**
     Author's name
-  */
-  std::string Author;
+    */
+    std::string Author;
 
-  /**
+    /**
     Author's email
-  */
-  std::string AuthorEmail;
+    */
+    std::string AuthorEmail;
 
-  /**
+    /**
     Handled data
-  */
-  SignatureHandledData HandledData;
+    */
+    SignatureHandledData HandledData;
 
-  /**
+    /**
     Handled units graph
-   */
-  SignatureHandledUnitsGraph HandledUnitsGraph;
+    */
+    SignatureHandledUnitsGraph HandledUnitsGraph;
 
 
-  FunctionSignature()
-  {
-    ID = "";
-    Name = "";
-    Description = "";
-    Domain = "";
-    Process = "";
-    Method = "";
-    Author = "";
-    AuthorEmail = "";
-    Version = "";
-    Status = EXPERIMENTAL;
-    SDKVersion = "";
-  }
+    FunctionSignature() :
+      ID(""),Name(""),Description(""),Domain(""),Process(""),Method(""),Version(""),
+      Status(EXPERIMENTAL),SDKVersion(""),Author(""),AuthorEmail("") {}
 
-  void setSDKVersion(FuncVersion_t Version)
-  {
-    SDKVersion = Version;
-  }
+    void setSDKVersion(FuncVersion_t Version)
+    {
+      SDKVersion = Version;
+    }
 
 };
 

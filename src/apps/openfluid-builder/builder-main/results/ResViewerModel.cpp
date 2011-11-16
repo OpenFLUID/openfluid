@@ -54,7 +54,11 @@
 
 #include "ResViewerModel.hpp"
 
-#include <boost/foreach.hpp>
+#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/core/Unit.hpp>
+
 
 // =====================================================================
 // =====================================================================

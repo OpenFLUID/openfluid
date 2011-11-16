@@ -62,6 +62,7 @@
 #include <gtkmm/main.h>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/Init.hpp>
 
 int main(int argc, char *argv[])
 {

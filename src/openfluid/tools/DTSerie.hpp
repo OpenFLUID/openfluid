@@ -57,9 +57,11 @@
 #define __DTSERIE_HPP__
 
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
 #include <list>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -73,15 +75,14 @@ struct TimePair
 
 
 
-struct IndexedSerie
+class IndexedSerie
 {
-  int Count;
-  openfluid::core::DoubleValue* Values;
+  public:
 
-  IndexedSerie()
-  {
-    Count = 0;
-  }
+    int Count;
+    openfluid::core::DoubleValue* Values;
+
+    IndexedSerie() : Count(0) {}
 };
 
 

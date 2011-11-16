@@ -54,12 +54,23 @@
  */
 
 #include <openfluid/machine/Factory.hpp>
+
+#include <openfluid/base/DomainDescriptor.hpp>
+#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/ModelDescriptor.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
 
 
 namespace openfluid { namespace machine {

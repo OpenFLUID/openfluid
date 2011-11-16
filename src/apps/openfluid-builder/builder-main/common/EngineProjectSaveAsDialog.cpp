@@ -54,6 +54,8 @@
 
 #include "EngineProjectSaveAsDialog.hpp"
 
+#include <iostream>
+
 #include <glibmm/i18n.h>
 
 #include <gtkmm/table.h>

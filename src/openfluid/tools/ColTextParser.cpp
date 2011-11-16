@@ -54,14 +54,14 @@
 */
 
 
-#include <openfluid/tools.hpp>
-
+#include <openfluid/tools/ColTextParser.hpp>
 
 #include <iostream>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 
+#include <openfluid/tools/SwissTools.hpp>
 
 
 // =====================================================================

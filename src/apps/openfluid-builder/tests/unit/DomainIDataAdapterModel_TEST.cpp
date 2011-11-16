@@ -62,6 +62,8 @@
 #include "DomainIDataAdapterModel.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
+#include "DomainIDataColumns.hpp"
+#include "BuilderListStore.hpp"
 
 // =====================================================================
 // =====================================================================

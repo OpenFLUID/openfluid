@@ -60,8 +60,8 @@
 #define BOOST_TEST_MODULE unittest_unitscoll
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/core.hpp>
-
+#include <openfluid/core/UnitsColl.hpp>
+#include <openfluid/core/Unit.hpp>
 
 
 BOOST_AUTO_TEST_CASE(check_construction)

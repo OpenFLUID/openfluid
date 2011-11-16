@@ -56,17 +56,29 @@
 #ifndef __FLUIDXWRITER_HPP__
 #define __FLUIDXWRITER_HPP__
 
-
-#include <list>
 #include <string>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/core/InstantiationInfo.hpp>
+
+namespace openfluid {
+namespace base {
+class RunDescriptor;
+class OutputDescriptor;
+}
+namespace core {
+class CoreRepository;
+}
+namespace machine {
+class ModelInstance;
+}
+}
 
 
 namespace openfluid { namespace io {
+
+class IOListener;
 
 
 class DLLEXPORT FluidXWriter

@@ -55,8 +55,10 @@
 #ifndef __DIALOGBOXFACTORY_HPP__
 #define __DIALOGBOXFACTORY_HPP__
 
-#include <openfluid/base.hpp>
+#include <glibmm/ustring.h>
+
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid {
 namespace guicommon {

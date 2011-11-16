@@ -54,6 +54,14 @@
 
 #include "ModelStructureCoordinator.hpp"
 
+#include <glibmm/i18n.h>
+
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+
 #include "ModelAvailFctModel.hpp"
 #include "ModelFctDetailModel.hpp"
 #include "ModelStructureModel.hpp"
@@ -66,8 +74,6 @@
 #include "ModelItemInstanceFactory.hpp"
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/config.hpp>
-
-#include <glibmm/i18n.h>
 
 // =====================================================================
 // =====================================================================

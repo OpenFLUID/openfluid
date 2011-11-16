@@ -59,8 +59,11 @@
 
 #include <vector>
 #include <string>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/core/Unit.hpp>
+
 
 namespace openfluid { namespace base {
 

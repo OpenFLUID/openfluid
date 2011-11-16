@@ -59,6 +59,8 @@
 //#include "ModelFctDetailAdapter.hpp"
 //#include "ModelFctDetailAdapterModel.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+
 
 // =====================================================================
 // =====================================================================

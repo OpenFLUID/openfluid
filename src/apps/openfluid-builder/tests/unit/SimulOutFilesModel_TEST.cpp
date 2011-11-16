@@ -63,6 +63,9 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/OutputFilesDescriptor.hpp>
+
 // =====================================================================
 // =====================================================================
 

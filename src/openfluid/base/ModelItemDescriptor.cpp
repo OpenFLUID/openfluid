@@ -54,7 +54,6 @@
  */
 
 
-#include <openfluid/core.hpp>
 #include <openfluid/base/ModelItemDescriptor.hpp>
 
 

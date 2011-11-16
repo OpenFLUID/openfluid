@@ -56,10 +56,22 @@
 #define __RESUNITCHOOSERMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <vector>
+#include <string>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace base {
+class OutputDescriptor;
+class OutputSetDescriptor;
+}
+namespace core {
+class CoreRepository;
+class Unit;
+}
+namespace machine {
+class ModelInstance;
+}
+}
 
 class ResUnitChooserModel
 {

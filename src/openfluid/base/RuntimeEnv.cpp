@@ -53,14 +53,16 @@
  */
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/config.hpp>
-
-#include <iostream>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
 
 #include <glibmm/miscutils.h>
+#include <boost/filesystem/operations.hpp>
+
+#include <openfluid/base/ProjectManager.hpp>
+//#include <openfluid/config.hpp>
+//
+//#include <iostream>
+//#include <boost/filesystem/path.hpp>
+//
 
 #if defined __unix__ || defined __APPLE__
 #include <unistd.h>

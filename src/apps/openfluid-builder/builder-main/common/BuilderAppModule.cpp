@@ -46,89 +46,91 @@
  */
 
 /**
- \file ResultsSetCoordinator.cpp
+ \file BuilderAppModule.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+#include "BuilderAppModule.hpp"
 
-#include "ResultsSetCoordinator.hpp"
+#include <boost/filesystem/operations.hpp>
 
-#include "ResUnitChooserModel.hpp"
-#include "ResViewerModel.hpp"
+#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
+#include "BuilderAppCoordinator.hpp"
+#include "BuilderAppWindow.hpp"
+#include "BuilderAppActions.hpp"
+#include "BuilderWorkdirCreationDialog.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
-void ResultsSetCoordinator::whenFromUserViewResultAsked()
+BuilderAppModule::BuilderAppModule() :
+  m_MainWindow(*new BuilderAppWindow()), m_Actions(*new BuilderAppActions())
 {
-  m_ViewerModel.initialize(m_ChooserModel.getSelectedSetDescriptor(),
-      m_ChooserModel.getSelectedUnit(), m_ChooserModel.getSelectedVars(),
-      m_ChooserModel.getShowFiles());
+  mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions);
 }
 
 // =====================================================================
 // =====================================================================
 
 
-ResultsSetCoordinator::ResultsSetCoordinator(ResUnitChooserModel& ChooserModel,
-    ResViewerModel& ViewerModel) :
-  m_ChooserModel(ChooserModel), m_ViewerModel(ViewerModel)
+bool BuilderAppModule::initialize()
 {
-  m_ChooserModel.signal_ViewResultAsked().connect(sigc::mem_fun(*this,
-      &ResultsSetCoordinator::whenFromUserViewResultAsked));
+  std::string WorkDirFromPref =
+      openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+  if (!boost::filesystem::exists(WorkDirFromPref))
+  {
+    BuilderWorkdirCreationDialog Dialog;
+    if (!Dialog.show())
+      return false;
+  }
+
+  mp_Coordinator->setHomeModule();
+
+  std::vector<Glib::ustring>
+      PrefXPaths =
+          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
+  for (int i = PrefXPaths.size() - 1; i > -1; i--)
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
+        PrefXPaths[i]);
+
+  FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+  return true;
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ResultsSetCoordinator::setEngineRequirements(
-    openfluid::base::RunDescriptor& RunDesc,
-    openfluid::base::OutputDescriptor& OutDesc,
-    openfluid::core::CoreRepository& CoreRepos,
-    openfluid::machine::ModelInstance& ModelInstance)
+Gtk::Window& BuilderAppModule::composeAndGetAsWindow()
 {
-  m_ChooserModel.setEngineRequirements(OutDesc, CoreRepos, ModelInstance);
-  m_ViewerModel.setEngineRequirements(RunDesc, OutDesc);
+  compose();
+  return m_MainWindow;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ResultsSetCoordinator::initialize()
+void BuilderAppModule::compose()
 {
-  m_ViewerModel.clear();
+  m_MainWindow.setMenuBarWidget(*m_Actions.getMenuBarWidget());
+  m_MainWindow.setToolBarWidget(*m_Actions.getToolBarWidget());
+  m_MainWindow.addAccelGroup(m_Actions.getAccelGroup());
 }
 
 // =====================================================================
 // =====================================================================
 
 
-void ResultsSetCoordinator::setSelectedSetFromApp(std::string SetName)
+Gtk::Widget* BuilderAppModule::asWidget()
 {
-  m_ChooserModel.setSelectedSetFromApp(SetName);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ResultsSetCoordinator::setWarningMessage()
-{
-  m_ChooserModel.setMessage("warning, smth has changed...");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ResultsSetCoordinator::update()
-{
-  m_ChooserModel.update();
+  return (Gtk::Widget*) 0;
 }

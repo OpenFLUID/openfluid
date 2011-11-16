@@ -49,11 +49,18 @@
 #define MODELSTRUCTUREMODEL_HPP_
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <giomm/file.h>
-#include <giomm/filemonitor.h>
-
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class ModelItemInstance;
+class SignatureItemInstance;
+}
+namespace core {
+class CoreRepository;
+}
+}
 
 class ModelStructureModel
 {

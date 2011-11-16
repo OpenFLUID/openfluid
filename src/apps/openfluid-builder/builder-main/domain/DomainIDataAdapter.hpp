@@ -56,10 +56,14 @@
 #define __DOMAINIDATAADAPTER_HPP__
 
 #include <sigc++/sigc++.h>
-
 #include <glibmm/ustring.h>
 
-#include <openfluid/core.hpp>
+namespace openfluid {
+namespace core {
+class CoreRepository;
+class UnitsCollection;
+}
+}
 
 class DomainIDataAdapterModel;
 class DomainIDataView;

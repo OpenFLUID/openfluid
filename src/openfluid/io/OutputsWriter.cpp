@@ -54,9 +54,10 @@
  */
 
 #include <openfluid/io/OutputsWriter.hpp>
-#include <openfluid/base.hpp>
-#include <fstream>
-#include <openfluid/config.hpp>
+
+#include <openfluid/io/OutputsFileWriter.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+
 
 // =====================================================================
 // =====================================================================

@@ -61,9 +61,11 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/core/ValuesBufferProperties.hpp>
+#include <openfluid/core/Variables.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
 
 
 // =====================================================================

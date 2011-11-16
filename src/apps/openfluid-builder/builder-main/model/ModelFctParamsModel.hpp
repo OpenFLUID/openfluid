@@ -56,8 +56,16 @@
 #define __MODELFCTPARAMSMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <map>
+#include <vector>
+#include <string>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class ModelItemInstance;
+}
+}
 
 class ModelFctParamsModel
 {

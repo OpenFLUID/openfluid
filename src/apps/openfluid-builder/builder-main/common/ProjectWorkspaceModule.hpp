@@ -57,7 +57,12 @@
 
 #include "BuilderModule.hpp"
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class SimulationBlob;
+}
+}
 
 
 class ProjectWorkspaceModule: public BuilderModule

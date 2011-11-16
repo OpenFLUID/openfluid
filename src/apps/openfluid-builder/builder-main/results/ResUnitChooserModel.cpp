@@ -54,9 +54,16 @@
 
 #include "ResUnitChooserModel.hpp"
 
-#include <openfluid/tools.hpp>
-
 #include <boost/foreach.hpp>
+
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/OutputSetDescriptor.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
 
 // =====================================================================
 // =====================================================================

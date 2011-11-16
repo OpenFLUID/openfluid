@@ -57,7 +57,12 @@
 
 #include <sigc++/sigc++.h>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class SimulationBlob;
+}
+}
 
 class DomainStructureModel;
 class DomainUnitAddEditDialog;

@@ -54,9 +54,7 @@
  */
 
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================

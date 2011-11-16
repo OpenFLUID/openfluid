@@ -62,13 +62,12 @@
 #include <sigc++/sigc++.h>
 
 #include "BuilderModule.hpp"
-#include "EngineProject.hpp"
 
+class EngineProject;
 class ProjectExplorerComponent;
 class ProjectWorkspace;
 class ProjectCoordinator;
 class ProjectDashboard;
-
 class BuilderListToolBoxFactory;
 
 class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable

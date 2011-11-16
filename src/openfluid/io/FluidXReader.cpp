@@ -56,10 +56,15 @@
 #include <openfluid/io/FluidXReader.hpp>
 
 #include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/erase.hpp>
+
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace io {

@@ -29,7 +29,8 @@ MACRO(ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
     SET_TARGET_PROPERTIES(${FUNC_NAME} PROPERTIES LINK_FLAGS "-shared")                                                
   ENDIF(WIN32)
                                                 
-  TARGET_LINK_LIBRARIES(${FUNC_NAME} 
+  TARGET_LINK_LIBRARIES(${FUNC_NAME}
+  						${Boost_REGEX_LIBRARY}
                         openfluid-core
                         openfluid-base
                         openfluid-tools)

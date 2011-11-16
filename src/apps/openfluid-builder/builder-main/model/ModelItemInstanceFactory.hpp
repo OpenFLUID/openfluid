@@ -48,8 +48,19 @@
 #ifndef MODELITEMINSTANCEFACTORY_HPP_
 #define MODELITEMINSTANCEFACTORY_HPP_
 
+#include <string>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SignatureItemInstance;
+class ModelInstance;
+class ModelItemInstance;
+}
+namespace core {
+class CoreRepository;
+}
+}
+
 
 class ModelItemInstanceFactory
 {

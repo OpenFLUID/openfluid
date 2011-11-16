@@ -54,12 +54,17 @@
 
 #include "ModelAddFunctionModule.hpp"
 
+#include <gtkmm/stock.h>
+
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+
 #include "ModelAvailFctComponent.hpp"
 #include "ModelFctDetailComponent.hpp"
 
 #include "ModelAddFunctionCoordinator.hpp"
 
-#include <gtkmm/stock.h>
 
 // =====================================================================
 // =====================================================================

@@ -57,6 +57,9 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
 #include "GeneratorSignature.hpp"
 
 // =====================================================================

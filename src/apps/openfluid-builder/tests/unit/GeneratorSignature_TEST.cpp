@@ -59,7 +59,6 @@
 #define BOOST_TEST_MODULE builder_unittest_GeneratorSignature
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/base.hpp>
 
 #include "GeneratorSignature.hpp"
 

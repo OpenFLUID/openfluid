@@ -55,6 +55,8 @@
 #ifndef __MODELGENERATORCREATIONDIALOG_HPP__
 #define __MODELGENERATORCREATIONDIALOG_HPP__
 
+#include <set>
+
 #include <gtkmm/dialog.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/entry.h>
@@ -62,10 +64,15 @@
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/infobar.h>
 
-#include <set>
+namespace openfluid {
+namespace core {
+class CoreRepository;
+}
+namespace machine {
+class ModelInstance;
+}
+}
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
 
 class ModelGeneratorCreationDialog
 {

@@ -66,6 +66,7 @@ class SimulRunComponent;
 class SimulationRunModule: public ProjectWorkspaceModule
 {
   private:
+
     Gtk::Box* mp_MainPanel;
 
   protected:

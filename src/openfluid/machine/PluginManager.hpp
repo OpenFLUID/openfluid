@@ -56,15 +56,17 @@
 #ifndef __PLUGINMANAGER_HPP__
 #define __PLUGINMANAGER_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <vector>
+#include <map>
+#include <string>
 
-#include <openfluid/machine/DynamicLib.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace machine {
+
+class SignatureItemInstance;
+class DynamicLib;
+class ModelItemInstance;
 
 
 typedef std::vector<SignatureItemInstance*> ArrayOfSignatureItemInstance;

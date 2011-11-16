@@ -52,6 +52,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+#include <gtkmm/notebook.h>
+
 #include "DomainClassModule.hpp"
 
 #include "DomainIDataComponent.hpp"
@@ -66,7 +68,6 @@
 
 #include "BuilderFrame.hpp"
 
-#include <gtkmm/notebook.h>
 
 // =====================================================================
 // =====================================================================
