@@ -110,6 +110,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenRefreshAsked();
 
+    void whenExtensionAsked(const std::string& ExtensionID);
+
     void onCheckHappened(bool IsCheckOk);
 
     void onChangeHappened();
