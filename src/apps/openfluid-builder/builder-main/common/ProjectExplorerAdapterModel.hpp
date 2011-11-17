@@ -56,11 +56,14 @@
 #define __PROJECTEXPLORERADAPTERMODEL_HPP__
 
 #include <sigc++/sigc++.h>
-
 #include <gtkmm/treemodel.h>
-#include <glibmm/i18n.h>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class SimulationBlob;
+}
+}
 
 #include "BuilderTreeStore.hpp"
 #include "ProjectExplorerColumns.hpp"

@@ -57,6 +57,8 @@
 
 #include "ProjectWorkspaceModule.hpp"
 
+#include <gtkmm/box.h>
+
 class DomainIDataComponent;
 class DomainIDataAddDialog;
 class DomainIDataRemoveDialog;

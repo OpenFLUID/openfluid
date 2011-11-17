@@ -54,16 +54,17 @@
  */
 
 #include <openfluid/buddies/ConvertBuddy.hpp>
-#include <openfluid/tools.hpp>
 
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/convenience.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/regex.hpp>
 #include <fstream>
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/convenience.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
+#include <openfluid/tools/ColTextParser.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace buddies {

@@ -61,6 +61,10 @@
 
 #include <glibmm/i18n.h>
 
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
@@ -82,7 +86,7 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
   Gtk::RadioButton::Group RadioGrp;
 
   mp_ScalarRadio = Gtk::manage(
-      new Gtk::RadioButton(RadioGrp, _("Scalar Value")));
+      new Gtk::RadioButton(RadioGrp, _("Double Value")));
   mp_VectorRadio = Gtk::manage(new Gtk::RadioButton(RadioGrp,
       _("Vector Value:") + std::string(" ")));
 
@@ -151,7 +155,7 @@ std::map<std::string, std::string> ModelGeneratorCreationDialog::show()
   if (mp_CoreRepos->getUnitsGlobally()->empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        "You can't create a generator now :\n Domain is empty");
+        _("You can't create a generator now:\n Domain is empty"));
     return GenInfo;
   }
 
@@ -201,7 +205,7 @@ void ModelGeneratorCreationDialog::init()
       mp_ModelInstance->getItems().begin(); it
       != mp_ModelInstance->getItems().end(); ++it)
   {
-    std::vector<openfluid::base::SignatureHandledDataItem> Vars =
+    std::vector<openfluid::base::SignatureHandledTypedDataItem> Vars =
         (*it)->Signature->HandledData.ProducedVars;
 
     for (unsigned int i = 0; i < Vars.size(); i++)

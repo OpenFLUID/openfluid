@@ -54,9 +54,16 @@
 
 #include "ResUnitChooserModel.hpp"
 
-#include <openfluid/tools.hpp>
-
 #include <boost/foreach.hpp>
+
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/OutputSetDescriptor.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -111,38 +118,25 @@ void ResUnitChooserModelImpl::extractVarsInfo()
   if (!mp_SetDesc)
     return;
 
-  m_Scalars.clear();
-  m_Vectors.clear();
+  m_Variables.clear();
 
-  if (!mp_SetDesc->isAllScalars() && !mp_SetDesc->isAllVectors())
-  {
-    m_Scalars = mp_SetDesc->getScalars();
-    m_Vectors = mp_SetDesc->getVectors();
-  } else
+  if(!mp_SetDesc->isAllVariables())
+    m_Variables = mp_SetDesc->getVariables();
+  else
   {
     BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,mp_ModelInstance->getItems())
-{    BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+    {    BOOST_FOREACH(openfluid::base::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.ProducedVars)
+      {
+        if(Var.UnitClass == m_ClassName)
+          m_Variables.push_back(Var.DataName);
+      }
+    BOOST_FOREACH(openfluid::base::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.UpdatedVars)
     {
       if(Var.UnitClass == m_ClassName)
-      {
-        if (openfluid::tools::IsVectorNamedVariable(Var.DataName))
-        m_Vectors.push_back(Var.DataName);
-        else
-        m_Scalars.push_back(Var.DataName);
-      }
+        m_Variables.push_back(Var.DataName);
     }
-    BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
-    {
-      if(Var.UnitClass == m_ClassName)
-      {
-        if (openfluid::tools::IsVectorNamedVariable(Var.DataName))
-        m_Vectors.push_back(Var.DataName);
-        else
-        m_Scalars.push_back(Var.DataName);
-      }
     }
   }
-}
 }
 
 // =====================================================================
@@ -217,19 +211,9 @@ std::vector<unsigned int> ResUnitChooserModelImpl::getIDs()
 // =====================================================================
 // =====================================================================
 
-
-std::vector<std::string> ResUnitChooserModelImpl::getScalars()
+std::vector<std::string> ResUnitChooserModelImpl::getVariables()
 {
-  return m_Scalars;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<std::string> ResUnitChooserModelImpl::getVectors()
-{
-  return m_Vectors;
+  return m_Variables;
 }
 
 // =====================================================================

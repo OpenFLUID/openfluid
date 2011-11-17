@@ -56,12 +56,28 @@
 
 #include <boost/foreach.hpp>
 
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+
+#include "ModelStructureColumns.hpp"
+
+
+// =====================================================================
+// =====================================================================
+
+
 ModelStructureAdapterModelImpl::ModelStructureAdapterModelImpl(
     ModelStructureColumns& Columns) :
   m_Columns(Columns)
 {
   mref_ListStore = Gtk::ListStore::create(m_Columns);
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelStructureAdapterModelImpl::setModelStructure(
     openfluid::machine::ModelInstance* ModelInstance)
 {
@@ -73,6 +89,11 @@ void ModelStructureAdapterModelImpl::setModelStructure(
   i++;
 }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 Glib::RefPtr<Gtk::TreeModel> ModelStructureAdapterModelImpl::getTreeModel()
 {
   return mref_ListStore;

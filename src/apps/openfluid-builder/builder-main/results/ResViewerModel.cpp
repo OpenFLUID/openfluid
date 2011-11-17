@@ -54,7 +54,11 @@
 
 #include "ResViewerModel.hpp"
 
-#include <boost/foreach.hpp>
+#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/core/Unit.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -64,19 +68,10 @@ void ResViewerModelImpl::extractVariablesNames()
 {
   m_VarNames.clear();
 
-  if (mp_SetDesc->isAllScalars())
-    m_VarNames = mp_Unit->getScalarVariables()->getVariablesNames();
-  else
-    m_VarNames = mp_SetDesc->getScalars();
-
-  std::vector<std::string> VectorVars;
-  if (mp_SetDesc->isAllVectors())
-
-    VectorVars = mp_Unit->getVectorVariables()->getVariablesNames();
-  else
-    VectorVars = mp_SetDesc->getVectors();
-
-  m_VarNames.insert(m_VarNames.end(), VectorVars.begin(), VectorVars.end());
+  if (mp_SetDesc->isAllVariables())
+      m_VarNames = mp_Unit->getVariables()->getVariablesNames();
+    else
+      m_VarNames = mp_SetDesc->getVariables();
 }
 
 // =====================================================================

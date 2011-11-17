@@ -57,7 +57,11 @@
 
 #include <sigc++/sigc++.h>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SignatureItemInstance;
+}
+}
 
 class ModelAvailFctModel;
 class ModelFctDetailModel;

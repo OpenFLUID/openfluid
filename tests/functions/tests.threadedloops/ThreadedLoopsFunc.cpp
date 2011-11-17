@@ -54,10 +54,12 @@
  */
 
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 #include <cmath>
+#include <boost/date_time.hpp>
 
+#include <glibmm/thread.h>
+#include <glibmm/timer.h>
 
 // =====================================================================
 // =====================================================================
@@ -187,7 +189,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  void produceDataOnTUThreaded(openfluid::core::Unit* aUnit, const openfluid::core::ScalarValue& Value)
+  void produceDataOnTUThreaded(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     Glib::usleep(100*aUnit->getID());
 
@@ -201,7 +203,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  void produceDataOnTUSequenced(openfluid::core::Unit* aUnit, const openfluid::core::ScalarValue& Value)
+  void produceDataOnTUSequenced(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
   {
     Glib::usleep(100*aUnit->getID());
     OPENFLUID_AppendVariable(aUnit,"tests.data.sequence",double(aUnit->getID())+Value/1000.0);

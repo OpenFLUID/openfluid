@@ -55,10 +55,15 @@
 #include "BuilderPretestInfo.hpp"
 
 #include <glibmm/i18n.h>
+#include <glibmm/ustring.h>
 #include <boost/foreach.hpp>
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+
 #include "GeneratorSignature.hpp"
-#include <openfluid/tools/SwissTools.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -301,7 +306,7 @@ bool BuilderPretestInfo::localParamIsSet(
     openfluid::machine::ModelItemInstance* Item, std::string ParamName)
 {
   return (Item->Params.find(ParamName) != Item->Params.end()
-      && Item->Params[ParamName] != "");
+      && Item->Params[ParamName].get() != "");
 }
 
 // =====================================================================
@@ -311,7 +316,7 @@ bool BuilderPretestInfo::localParamIsSet(
 bool BuilderPretestInfo::globalParamIsSet(std::string ParamName)
 {
   return (m_GlobalParams.find(ParamName) != m_GlobalParams.end()
-      && m_GlobalParams[ParamName] != "");
+      && m_GlobalParams[ParamName].get() != "");
 }
 
 // =====================================================================

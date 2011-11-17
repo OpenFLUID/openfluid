@@ -56,8 +56,14 @@
 #define __PROJECTEXPLORERADAPTER_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class SimulationBlob;
+}
+}
 
 #include "ProjectExplorerCategories.hpp"
 

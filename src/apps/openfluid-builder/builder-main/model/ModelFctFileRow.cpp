@@ -55,9 +55,13 @@
 #include "ModelFctFileRow.hpp"
 
 #include <glibmm/i18n.h>
+
+#include <gtkmm/stock.h>
+#include <gtkmm/filechooserdialog.h>
+
 #include <boost/filesystem.hpp>
 
-#include <openfluid/base.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================

@@ -55,8 +55,11 @@
 #ifndef __PROJECTDASHBOARD_HPP__
 #define __PROJECTDASHBOARD_HPP__
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
+
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
 
 #include "BuilderPretestInfo.hpp"
 

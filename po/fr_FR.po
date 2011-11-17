@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openfluid 1.6.2\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2011-09-01 12:28+0200\n"
+"POT-Creation-Date: 2011-11-07 15:44+0100\n"
 "PO-Revision-Date: 2011-06-01 09:08+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,35 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:109
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:114
 msgid "This feature is currently disabled"
 msgstr "Cette fonctionnalité est actuellement désactivée"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:149
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:154
 msgid "Close project?"
 msgstr "Fermer le projet ?"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:164
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:169
 msgid "Do you want to save this project before closing?"
 msgstr "Voulez-vous enregistrer le projet avant de fermer ?"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:165
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:170
 msgid "Close project without saving"
 msgstr "Fermer le projet sans enregistrer"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:166
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:171
 msgid "Save and close project"
 msgstr "Enregistrer et fermer le projet"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:170
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:175
 msgid "Are you sure you want to close this project?"
 msgstr "Etes-vous sûr de vouloir fermer ce projet ?"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:191
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:196
 msgid "Edit Inputdata"
 msgstr "Editer l'Inputdata"
 
-#: src/openfluid/guicommon/DialogBoxFactory.cpp:196
+#: src/openfluid/guicommon/DialogBoxFactory.cpp:201
 msgid "%1 for ID %2"
 msgstr "%1 pour ID %2"
 
@@ -71,7 +71,7 @@ msgid "Install log"
 msgstr "Rapport d'installation"
 
 #: src/openfluid/guicommon/ViewLogFileWindow.cpp:74
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:112
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:114
 msgid "Close"
 msgstr "Fermer"
 
@@ -87,7 +87,7 @@ msgid "<u>Common source build options:</u>\n"
 msgstr "<u>Options communes de construction :</u>\n"
 
 #: src/openfluid/guicommon/MarketBuildOptionsDialog.cpp:90
-#: src/openfluid/guicommon/MarketPackWidget.cpp:329
+#: src/openfluid/guicommon/MarketPackWidget.cpp:331
 msgid "<i>none</i>"
 msgstr "<i>aucun</i>"
 
@@ -111,249 +111,249 @@ msgstr "Options de construction communes pour tous les packages"
 msgid "Build options for "
 msgstr "Options de construction pour "
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:95
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:97
 msgid "Details"
 msgstr "Détails"
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:205
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:207
 msgid "Simulation from "
 msgstr "Simulation depuis"
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:206
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:208
 msgid " to "
 msgstr " jusqu'à "
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:208
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:210
 msgid "Time step: "
 msgstr "Pas de temps : "
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:208
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:210
 msgid " second(s)"
 msgstr " seconde(s)"
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:246
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:248
 msgid "OpenFLUID error: "
 msgstr "Erreur OpenFLUID : "
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:252
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:254
 msgid "Memory allocation error: "
 msgstr "Erreur d'allocation mémoire : "
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:258
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:260
 msgid "System error: "
 msgstr "Erreur système : "
 
-#: src/openfluid/guicommon/SimulationRunDialog.cpp:264
+#: src/openfluid/guicommon/SimulationRunDialog.cpp:266
 msgid "Undetermined error."
 msgstr "Error indéterminée."
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:103
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:110
 msgid "Packages selection"
 msgstr "Sélection des packages"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:104
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:111
 msgid "Licenses"
 msgstr "Licences"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:105
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:112
 msgid "Download and install"
 msgstr "Télécharger et installer"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:151
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:158
 msgid "Marketplace:"
 msgstr "Marketplace :"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:158
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:165
 msgid "--- No marketplace selected ---"
 msgstr "--- Aucune marketplace sélectionnée ---"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:186
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:193
 msgid "Select all"
 msgstr "Sélectionner tout"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:188
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:195
 msgid "Select none"
 msgstr "Sélectionner aucun"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:193
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:200
 msgid "Edit build options"
 msgstr "Editer les options de construction"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:238
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:245
 msgid "Licenses:"
 msgstr "Licences :"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:265
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:272
 msgid "I accept the terms of the license(s) agreement(s)"
 msgstr "J'accepte les termes du(des) contrat(s) de licence(s)"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:266
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:273
 msgid "I do not accept the terms of the license(s) agreement(s)"
 msgstr "Je n'accepte pas les termes du(des) contrat(s) de licence(s)"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:299
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:306
 msgid "Package ID"
 msgstr "ID du package"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:300
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:307
 msgid "Format"
 msgstr ""
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:301
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:308
 msgid "Status"
 msgstr "Statut"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:309
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:316
 msgid "View installation log"
 msgstr "Voir le rapport d'installation"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:363
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:370
 msgid "OpenFLUID Market client (Step %1 of %2)"
 msgstr "Client OpenFLUID Market (Etape %1 sur %2)"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:408
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:415
 msgid "(License content not available)"
 msgstr "(Le contenu de la licence n'est pas disponible)"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:566
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:573
 #, c-format
 msgid "0% complete"
 msgstr "0% complété"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:577
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:584
 msgid "Installation in progress..."
 msgstr "Installation en cours..."
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:583
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:590
 msgid "Success"
 msgstr "Réussi"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:589
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:596
 msgid "Failed"
 msgstr "Echec"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:596
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:603
 #, c-format
 msgid "% complete"
 msgstr "% complété"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:602
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:609
 #, c-format
 msgid "100% complete"
 msgstr "100% complété"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:716
-#: src/openfluid/guicommon/MarketPackWidget.cpp:122
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:723
+#: src/openfluid/guicommon/MarketPackWidget.cpp:124
 msgid "binary"
 msgstr "binaire"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:717
-#: src/openfluid/guicommon/MarketPackWidget.cpp:114
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:724
+#: src/openfluid/guicommon/MarketPackWidget.cpp:116
 msgid "source"
 msgstr "source"
 
-#: src/openfluid/guicommon/MarketClientAssistant.cpp:718
+#: src/openfluid/guicommon/MarketClientAssistant.cpp:725
 msgid "Pending"
 msgstr "En attente"
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:80
+#: src/openfluid/guicommon/MarketPackWidget.cpp:82
 msgid "Package Format:"
 msgstr "Format de package :"
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:131
+#: src/openfluid/guicommon/MarketPackWidget.cpp:133
 msgid "Edit build options for "
 msgstr "Editer les options de construction pour "
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:267
-#: src/openfluid/guicommon/MarketPackWidget.cpp:271
+#: src/openfluid/guicommon/MarketPackWidget.cpp:269
+#: src/openfluid/guicommon/MarketPackWidget.cpp:273
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailInfoPage.cpp:113
 msgid "Version:"
 msgstr "Version :"
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:272
+#: src/openfluid/guicommon/MarketPackWidget.cpp:274
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailInfoPage.cpp:133
 msgid "Author(s):"
 msgstr "Auteur(s) :"
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:283
-#: src/openfluid/guicommon/MarketPackWidget.cpp:284
+#: src/openfluid/guicommon/MarketPackWidget.cpp:285
+#: src/openfluid/guicommon/MarketPackWidget.cpp:286
 msgid "License:"
 msgstr "Licence :"
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:288
+#: src/openfluid/guicommon/MarketPackWidget.cpp:290
 msgid "Build options:"
 msgstr "Options de construction :"
 
-#: src/openfluid/guicommon/MarketPackWidget.cpp:317
+#: src/openfluid/guicommon/MarketPackWidget.cpp:319
 msgid "<i>unknown</i>"
 msgstr "<i>inconnu</i>"
 
-#: src/openfluid/guicommon/RunDialogMachineListener.hpp:100
+#: src/openfluid/guicommon/RunDialogMachineListener.hpp:103
 msgid "[OK]"
 msgstr ""
 
-#: src/openfluid/guicommon/RunDialogMachineListener.hpp:102
+#: src/openfluid/guicommon/RunDialogMachineListener.hpp:105
 msgid "[Warning]"
 msgstr "[Avertissement]"
 
-#: src/openfluid/guicommon/RunDialogMachineListener.hpp:103
+#: src/openfluid/guicommon/RunDialogMachineListener.hpp:106
 msgid "[Error]"
 msgstr "[Erreur]"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppState.cpp:90
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppState.cpp:91
 msgid "About OpenFLUID..."
 msgstr "A propos d'OpenFLUID..."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppState.cpp:103
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppState.cpp:104
 msgid "Unable to open URL:"
 msgstr "Impossible d'ouvrir l'URL :"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:83
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:85
 #: src/apps/openfluid-builder/builder-main/common/ProjectExplorerAdapterModel.cpp:72
 msgid "Model"
 msgstr "Modèle"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:173
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:175
 #: src/apps/openfluid-builder/builder-main/common/ProjectExplorerAdapterModel.cpp:80
 msgid "Spatial domain"
 msgstr "Domaine spatial"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:214
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:216
 #: src/apps/openfluid-builder/builder-main/common/ProjectDashboard.cpp:147
 msgid "Run configuration"
 msgstr "Config. de l'exécution"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:232
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:234
 msgid "Outputs configuration"
 msgstr "Config. des sorties"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:283
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:291
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:285
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:293
 msgid "%1 [%2]"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:283
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:285
 msgid "Spatial data"
 msgstr "Données spatiales"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:291
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:293
 #: src/apps/openfluid-builder/builder-main/common/ProjectExplorerAdapterModel.cpp:117
 msgid "Results"
 msgstr "Résultats"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:305
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:383
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:307
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:385
 msgid ""
 "This change leads OpenFLUID to delete:\n"
 "%1"
 msgstr "Ce changement a nécessité de supprimer :\n"
 "%1"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:553
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:555
 msgid "Changes occur in the functions list."
 msgstr "Des modifications sont intervenues dans la liste des fonctions."
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:554
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:556
 msgid ""
 "\n"
 "Do you want to reload it?\n"
@@ -362,11 +362,11 @@ msgstr "\n"
 "Voulez-vous les recharger ?\n"
 "(Sinon, vous devez manuellement recharger la liste des fonctions de simulation)"
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:610
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:612
 msgid "Changes occur in the functions list while simulation was running."
 msgstr "Des modifications sont intervenues dans la liste des fonctions pendant la simulation."
 
-#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:611
+#: src/apps/openfluid-builder/builder-main/common/ProjectCoordinator.cpp:613
 msgid ""
 "\n"
 "Do you want to reload it?\n"
@@ -375,31 +375,31 @@ msgstr "\n"
 "Voulez-vous les recharger ?\n"
 "(Sinon, vous devez manuellement recharger la liste des fonctions de simulation)"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:73
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:74
 msgid "User defined paths:"
 msgstr "Chemins définis par l'utilisateur :"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:79
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:80
 msgid "Predefined paths:"
 msgstr "Chemins prédéfinis :"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:102
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:103
 msgid "Append a directory"
 msgstr "Ajouter un répertoire"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:104
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:105
 msgid "Remove the selected directory"
 msgstr "Supprimer le répertoire sélectionné"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:106
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:107
 msgid "Move up the selected directory"
 msgstr "Déplacer le répertoire sélectionné vers le haut"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:108
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:109
 msgid "Move down the selected directory"
 msgstr "Déplacer le répertoire sélectionné vers le bas"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:201
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPathListWidget.cpp:202
 msgid "Choose a directory"
 msgstr "Choisissez un répertoire"
 
@@ -483,40 +483,40 @@ msgstr "Ajouter un set"
 msgid "Remove the selected set"
 msgstr "Supprimer le set sélectionné"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:84
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:87
 msgid "Choose the directory to use"
 msgstr "Choisissez le répertoire à utiliser"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:102
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:105
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:358
 msgid "Working directory"
 msgstr "Répertoire de travail"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:106
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:117
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:109
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:123
 msgid "Project name"
 msgstr "Nom du projet"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:110
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:113
 msgid "Project directory"
 msgstr "Répertoire du projet"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:129
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:132
 msgid "Save the current project as..."
 msgstr "Sauvegarder le projet courant sous..."
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:176
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:409
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:179
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:415
 msgid "Project name cannot be empty"
 msgstr "Le nom du projet ne peut être vide"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:180
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:412
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:183
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:418
 msgid "This project directory already exists"
 msgstr "Ce répertoire de projet existe déjà"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:246
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:620
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:249
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:626
 msgid ""
 "Impossible to create directory %1\n"
 "(%2)\n"
@@ -527,9 +527,9 @@ msgstr "Impossible de créer le répertoire %1\n"
 "\n"
 "Projet non créé."
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:277
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:740
-#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:119
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectSaveAsDialog.cpp:280
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:746
+#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:123
 msgid ""
 "File %1 already exists.\n"
 "Do you really want to overwrite it?"
@@ -566,7 +566,7 @@ msgstr "Avertissement :\n"
 "Certains fichiers pourraient être écrasés.\n"
 "Voulez-vous continuer ?"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:194
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:192
 msgid ""
 "Check outputs consistency leads OpenFLUID to delete:\n"
 "\n"
@@ -575,7 +575,7 @@ msgstr "La vérification des sorties a mené à la supression de :\n"
 "\n"
 "%1"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:350
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:348
 msgid ""
 "Unable to find plugin file(s):\n"
 "%1\n"
@@ -593,32 +593,31 @@ msgstr "Impossible de trouver les fichiers de plugin(s) :\n"
 msgid "Simulation"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:656
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:615
 msgid "class %1 doesn't exist"
 msgstr "la classe %1 n'existe pas"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:662
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:621
 msgid "no variable produced for class %1"
 msgstr "aucune variable produite pour la classe %1"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:666
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:625
 msgid "no unit selected"
 msgstr "aucune unité sélectionnée"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:671
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:629
 msgid "no variable selected"
 msgstr "aucune variable sélectionnée"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:690
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:648
 msgid "- ID %1 of set %2\n"
 msgstr "- ID %1 du set %2\n"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:708
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:722
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:666
 msgid "- Var %1 of set %2\n"
 msgstr "- Var %1 du set %2\n"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:736
+#: src/apps/openfluid-builder/builder-main/common/EngineProject.cpp:679
 msgid "=> Set %1\n"
 msgstr ""
 
@@ -626,33 +625,33 @@ msgstr ""
 msgid "Unit classes"
 msgstr "Classes d'unités"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:253
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:214
 msgid "[blank]"
 msgstr "[espace]"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:262
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:223
 msgid "[tab]"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:301
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:317
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:262
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:278
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:112
 msgid "None"
 msgstr "Aucun"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:303
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:319
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:264
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:280
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:115
 msgid "Full"
 msgstr "Complet"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:305
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:321
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:266
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:282
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:113
 msgid "Column names as data"
 msgstr "Nom de colonnes"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:307
+#: src/apps/openfluid-builder/builder-main/common/EngineHelper.cpp:268
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:114
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutFilesAddEditDialog.cpp:228
 msgid "Info"
@@ -703,7 +702,7 @@ msgid "Spatial representation"
 msgstr "Représentation spatiale"
 
 #: src/apps/openfluid-builder/builder-main/common/ProjectDashboard.cpp:136
-#: src/apps/openfluid-builder/builder-main/domain/DomainClassModule.cpp:144
+#: src/apps/openfluid-builder/builder-main/domain/DomainClassModule.cpp:146
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:126
 msgid "Inputdata"
 msgstr ""
@@ -755,8 +754,8 @@ msgid "Default working directory:"
 msgstr "Répertoire de travail par défaut :"
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:331
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:162
-#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:79
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:168
+#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:81
 msgid "Browse..."
 msgstr "Parcourir..."
 
@@ -765,7 +764,7 @@ msgid "Search paths for simulation functions"
 msgstr "Chemins de recherche de fonctions de simulation"
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:398
-#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:153
+#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:155
 msgid "Choose OpenFLUID working directory"
 msgstr "Choisissez le répertoire de travail OpenFLUID"
 
@@ -776,52 +775,52 @@ msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:510
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:525
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:148
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:163
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:150
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:165
 msgid "h"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:513
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:527
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:151
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:165
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:153
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:167
 msgid "m"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:516
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:529
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:154
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:167
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:156
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:169
 msgid "s"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:533
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:139
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:141
 msgid "seconds"
 msgstr "secondes"
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:546
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:172
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:174
 msgid "Delta T"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:550
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:177
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:179
 msgid "Period begin"
 msgstr "Début de période"
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:554
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:189
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:191
 msgid "Period end"
 msgstr "Fin de période"
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:566
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:236
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:238
 msgid "Output files buffer"
 msgstr "Buffer des fichiers de sortie"
 
 #: src/apps/openfluid-builder/builder-main/common/PreferencesPanel.cpp:575
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:225
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:227
 msgid "KB"
 msgstr "Ko"
 
@@ -849,39 +848,39 @@ msgid ""
 msgstr "Ceci est une première mise à disposition d'OpenFLUID-Builder.\n"
 "Certaines fonctionnalités ont été temporairement désactivées."
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:73
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:77
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailInfoPage.cpp:103
 msgid "Name:"
 msgstr "Nom :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:77
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:81
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailInfoPage.cpp:110
 msgid "Description:"
 msgstr "Description :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:82
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:86
 msgid "Authors:"
 msgstr "Auteurs :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:87
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:91
 #: src/apps/openfluid-builder/builder-main/common/ProjectPropertiesDialog.cpp:115
 msgid "Creation date:"
 msgstr "Date de création :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:92
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:96
 msgid "Modification date:"
 msgstr "Date de modification :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:150
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:154
 msgid "<b>Project details</b>"
 msgstr "<b>Détails du projet</b>"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:168
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:172
 msgid "Select project folder"
 msgstr "Sélectionnez le dossier du projet"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:229
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:158
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectOpenDialog.cpp:233
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:164
 msgid "(none)"
 msgstr "(aucun)"
 
@@ -933,54 +932,54 @@ msgstr "La classe d'unité %1 n'existe pas pour la variable %2 précédemment re
 msgid "Unit class %1 doesn't exist for %2 variable updated by %3\n"
 msgstr "La classe d'unité %1 n'existe pas pour la variable %2 mise à jour par %3\n"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:88
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:94
 msgid "Choose the working directory to use"
 msgstr "Choisissez le répertoire de travail à utiliser"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:114
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:120
 msgid "Working directory:"
 msgstr "Répertoire de travail :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:122
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:128
 #: src/apps/openfluid-builder/builder-main/common/ProjectPropertiesDialog.cpp:108
 msgid "Project description:"
 msgstr "Description du projet :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:125
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:131
 #: src/apps/openfluid-builder/builder-main/common/ProjectPropertiesDialog.cpp:112
 msgid "Project authors:"
 msgstr "Auteurs du projet :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:152
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:158
 msgid "Import dataset of an existing project:"
 msgstr "Importer le jeu de données d'un projet existant :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:174
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:180
 msgid "Import data files from file system:"
 msgstr "Importer des fichiers de données :"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:179
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:185
 msgid "Choose the directory containing the files to import"
 msgstr "Choisissez le répertoire contenant les fichiers à importer"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:195
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:201
 msgid "Files to import"
 msgstr "Fichiers à importer"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:229
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:232
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:235
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:238
 msgid "Data import"
 msgstr "Import de données"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:251
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:257
 msgid "Create a new project"
 msgstr "Création d'un nouveau projet"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:503
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:509
 msgid "(Empty)"
 msgstr "(Vide)"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:570
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:576
 msgid ""
 "Error:\n"
 "%1\n"
@@ -989,11 +988,11 @@ msgstr "Erreur :\n"
 "%1\n"
 "n'est pas un répertoire de projet OpenFLUID"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:583
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:589
 msgid "(unnamed)"
 msgstr "(sans nom)"
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:638
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:644
 msgid ""
 "Impossible to create directory\n"
 "%1\n"
@@ -1004,7 +1003,7 @@ msgstr "Impossible de créer le répertoire\n"
 "\n"
 "Projet non créé."
 
-#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:677
+#: src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp:683
 msgid ""
 "%1\n"
 "\n"
@@ -1013,11 +1012,11 @@ msgstr "%1\n"
 "\n"
 "Projet non créé."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:71
+#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:73
 msgid "OpenFLUID working directory"
 msgstr "Répertoire de travail OpenFLUID"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:74
+#: src/apps/openfluid-builder/builder-main/common/BuilderWorkdirCreationDialog.cpp:76
 msgid "Choose the working directory to use for OpenFLUID Projects:"
 msgstr "Choisissez le répertoire de travail pour les projets OpenFLUID :"
 
@@ -1038,123 +1037,123 @@ msgid "Enable incremental outputs:"
 msgstr "Activer les sorties incrémentales :"
 
 #: src/apps/openfluid-builder/builder-main/common/ProjectPropertiesDialog.cpp:126
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:217
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:218
 msgid "Project properties"
 msgstr "Propriétés du projet"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:168
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:169
 msgid "_Project"
 msgstr "_Projet"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:170
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:171
 msgid "_New"
 msgstr "_Nouveau"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:170
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:171
 msgid "Create a project"
 msgstr "Créer un projet"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:172
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:173
 msgid "_Open..."
 msgstr "_Ouvrir..."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:172
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:173
 msgid "Open a project"
 msgstr "Ouvrir un projet"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:176
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:177
 msgid "E_dit"
 msgstr "E_dition"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:186
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:187
 msgid "OpenFLUID online"
 msgstr "OpenFLUID en ligne"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:188
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:189
 msgid "Official website"
 msgstr "Site web officiel"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:190
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:191
 msgid "Community website"
 msgstr "Site web Community"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:192
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:193
 msgid "Development website"
 msgstr "Site web pour les développeurs"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:194
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:195
 msgid "Bug tracking"
 msgstr "Traque de bugs"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:199
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:200
 msgid "OpenFLUID Market..."
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:200
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:201
 msgid "Access to OpenFLUID Market"
 msgstr "Accéder à OpenFLUID-Market"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:213
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:214
 msgid "_Save"
 msgstr "_Enregistrer"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:213
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:214
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:215
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:216
 msgid "Save _as..."
 msgstr "Enregistrer _sous..."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:215
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:216
 msgid "Save as..."
 msgstr "Enregistrer sous..."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:217
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:218
 msgid "Properties"
 msgstr "Propriétés"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:222
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:223
 msgid "Data"
 msgstr "Données"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:224
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:225
 msgid "Import spatial domain from"
 msgstr "Importer un domaine spatial depuis"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:226
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:227
 msgid "Import Inputdata from"
 msgstr "Import des Inputdata depuis"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:228
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:229
 msgid "Import events from"
 msgstr "Importer des évènements depuis"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:230
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:231
 msgid "Import extra file from"
 msgstr "Importer un fichier extra depuis"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:234
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:235
 msgid "_Simulation"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:236
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:237
 msgid "Reload sim. funcs."
 msgstr "Recharger funcs. sim."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:237
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:238
 msgid "Reload simulation functions"
 msgstr "Recharger les fonctions de simulation"
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:239
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:240
 msgid "Run..."
 msgstr "Exécution..."
 
-#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:244
+#: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:245
 msgid "Map View"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:73
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:74
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:73
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:79
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:86
@@ -1162,43 +1161,43 @@ msgstr ""
 msgid "Name"
 msgstr "Nom"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:81
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:82
 msgid "Add a marketplace"
 msgstr "Ajouter une marketplace"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:83
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:84
 msgid "Remove the selected marketplace"
 msgstr "Supprimer la marketplace sélectionnée"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:113
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:114
 msgid "Marketplace Name:"
 msgstr "Nom de la marketplace :"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:119
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:120
 msgid "Marketplace URL:"
 msgstr "URL de la marketplace :"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:205
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:206
 msgid "The marketplace name cannot be empty"
 msgstr "Le nom de la marketplace ne peut être vide"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:207
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:208
 msgid "This marketplace name already exists"
 msgstr "Le nom de la marketplace existe déjà"
 
-#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:209
+#: src/apps/openfluid-builder/builder-main/common/PreferencesPlacesListWidget.cpp:210
 msgid "The marketplace URL cannot be empty"
 msgstr "L'URL de la marketplace ne peut être vide"
 
-#: src/apps/openfluid-builder/builder-main/common/HomeView.cpp:141
+#: src/apps/openfluid-builder/builder-main/common/HomeView.cpp:145
 msgid "<b>Recent projects</b>"
 msgstr "<b>Projets récents</b>"
 
-#: src/apps/openfluid-builder/builder-main/common/HomeView.cpp:227
+#: src/apps/openfluid-builder/builder-main/common/HomeView.cpp:231
 msgid "no recent project"
 msgstr "aucun projet récent"
 
-#: src/apps/openfluid-builder/builder-main/common/HomeView.cpp:250
+#: src/apps/openfluid-builder/builder-main/common/HomeView.cpp:254
 msgid "unnamed"
 msgstr "aucun nom"
 
@@ -1210,7 +1209,7 @@ msgstr "Préférences"
 msgid "ID - Date - Information"
 msgstr "ID - Date - Informations"
 
-#: src/apps/openfluid-builder/builder-main/domain/DomainStructureView.cpp:68
+#: src/apps/openfluid-builder/builder-main/domain/DomainStructureView.cpp:67
 msgid "Process order"
 msgstr ""
 
@@ -1259,7 +1258,7 @@ msgid "Unit class:"
 msgstr "Classe d'unité :"
 
 #: src/apps/openfluid-builder/builder-main/domain/DomainUnitAddEditDialog.cpp:110
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:88
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:91
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailInfoPage.cpp:99
 msgid "ID:"
 msgstr "ID :"
@@ -1284,7 +1283,7 @@ msgstr "Edition d'une unité"
 msgid "Unit creation"
 msgstr "Création d'une unité"
 
-#: src/apps/openfluid-builder/builder-main/domain/DomainClassModule.cpp:145
+#: src/apps/openfluid-builder/builder-main/domain/DomainClassModule.cpp:147
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:127
 msgid "Events"
 msgstr "Evènements"
@@ -1318,6 +1317,7 @@ msgstr "IDs des unités"
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsView.cpp:91
 #: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:129
 #: src/apps/openfluid-builder/builder-main/results/ResultsSetModule.cpp:113
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:133
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailView.cpp:125
 msgid "Variables"
 msgstr ""
@@ -1374,26 +1374,26 @@ msgstr "Edition d'un format de fichiers"
 msgid "Files format creation"
 msgstr "Création d'un format de fichiers"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:179
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:191
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:181
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:193
 msgid "Date"
 msgstr ""
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:183
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:195
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:247
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:185
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:197
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:249
 msgid "Time"
 msgstr "Heure"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:211
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:213
 msgid "Values buffer"
 msgstr "Buffer de valeurs"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:230
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:232
 msgid "steps"
 msgstr "pas"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:251
+#: src/apps/openfluid-builder/builder-main/simulation/SimulRunView.cpp:253
 msgid "Memory management"
 msgstr "Gestion de la mémoire"
 
@@ -1445,38 +1445,38 @@ msgstr "Le nom du Set ne peut être vide"
 msgid "This Set name already exists"
 msgstr "Ce nom de Set existe déjà"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:488
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:461
 msgid "Output set edition"
 msgstr "Edition d'un set d'Output"
 
-#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:518
+#: src/apps/openfluid-builder/builder-main/simulation/SimulOutSetsAddEditDialog.cpp:491
 msgid "Output set creation"
 msgstr "Création d'un set d'Output"
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerAdapterModel.cpp:162
+#: src/apps/openfluid-builder/builder-main/results/ResViewerAdapterModel.cpp:148
 msgid "Variables for Unit ID %1 Class %2"
 msgstr "Variables pour l'unité %1 de la classe %2"
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:99
+#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:103
 msgid "Tabular view"
 msgstr "Vue en colonnes"
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:123
+#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:127
 msgid "Time step"
 msgstr "Pas de temps"
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:129
+#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:133
 msgid "Date-Time"
 msgstr "Date-Heure"
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:202
+#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:206
 msgid ""
 "Plot file with GNUplot\n"
 "(All-in-one window)"
 msgstr "Tracer le fichier avec GNUplot\n"
 "(Fenêtre tout-en-un)"
 
-#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:204
+#: src/apps/openfluid-builder/builder-main/results/ResViewerView.cpp:208
 msgid ""
 "Plot file with GNUplot\n"
 "(Multiple windows)"
@@ -1487,25 +1487,17 @@ msgstr "Tracer le fichier avec GNUplot\n"
 msgid "Unit selection"
 msgstr "Selection d'Unité"
 
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:86
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:89
 msgid "Class: "
 msgstr "Classe : "
 
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:90
-msgid "Show file(s)"
-msgstr "Montrer le(s) fichier(s)"
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:93
+msgid "Show file"
+msgstr "Montrer le fichier"
 
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:106
+#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:109
 msgid "Update"
 msgstr "Mettre à jour"
-
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:140
-msgid "Scalars"
-msgstr "Scalaires"
-
-#: src/apps/openfluid-builder/builder-main/results/ResUnitChooserView.cpp:144
-msgid "Vectors"
-msgstr "Vecteurs"
 
 #: src/apps/openfluid-builder/builder-main/results/ViewWithGNUplot.cpp:183
 msgid ""
@@ -1613,8 +1605,8 @@ msgid "global value:"
 msgstr "valeur globale :"
 
 #: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:85
-msgid "Scalar Value"
-msgstr "Valeur Scalar"
+msgid "Double Value"
+msgstr "Valeur Double"
 
 #: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:87
 msgid "Vector Value:"
@@ -1632,6 +1624,13 @@ msgstr "Taille"
 msgid "Generator creation"
 msgstr "Création d'un générateur"
 
+#: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:154
+msgid ""
+"You can't create a generator now:\n"
+" Domain is empty"
+msgstr "Vous ne pouvez pas créer de générateur pour l'instant :\n"
+"le domaine est vide"
+
 #: src/apps/openfluid-builder/builder-main/model/ModelGeneratorCreationDialog.cpp:222
 msgid "Variable name can not be empty"
 msgstr "Le nom de la variable ne peut être vide"
@@ -1641,47 +1640,47 @@ msgid "Variable %1 already exists"
 msgstr "La variable %1 existe déjà"
 
 #: src/apps/openfluid-builder/builder-main/model/ModelFctDetailAdapterModel.cpp:72
-#: src/apps/openfluid-builder/builder-main/model/ModelAvailFctAdapterModel.cpp:96
+#: src/apps/openfluid-builder/builder-main/model/ModelAvailFctAdapterModel.cpp:98
 msgid "(unknown)"
 msgstr "(inconnu)"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctParamsView.cpp:102
+#: src/apps/openfluid-builder/builder-main/model/ModelFctParamsView.cpp:104
 msgid "Parameters:"
 msgstr "Paramètres :"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctParamsView.cpp:223
+#: src/apps/openfluid-builder/builder-main/model/ModelFctParamsView.cpp:225
 msgid "Required files:"
 msgstr "Fichiers requis :"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctParamsView.cpp:251
+#: src/apps/openfluid-builder/builder-main/model/ModelFctParamsView.cpp:253
 msgid "Used files:"
 msgstr "Fichiers utilisés :"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelAvailFctAdapterModel.cpp:83
+#: src/apps/openfluid-builder/builder-main/model/ModelAvailFctAdapterModel.cpp:85
 msgid "Simulation functions"
 msgstr "Fonctions de simulation"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelAvailFctAdapterModel.cpp:84
+#: src/apps/openfluid-builder/builder-main/model/ModelAvailFctAdapterModel.cpp:86
 msgid "Generators"
 msgstr "Générateurs"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:98
+#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:102
 msgid "Select a file to copy in the project directory"
 msgstr "Sélectionnez un fichier à copier dans le répertoire du projet"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:144
+#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:148
 msgid "found"
 msgstr "trouvé"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:145
+#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:149
 msgid "Change the file to use"
 msgstr "Modifier le fichier à utiliser"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:149
+#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:153
 msgid "not found"
 msgstr "non trouvé"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:150
+#: src/apps/openfluid-builder/builder-main/model/ModelFctFileRow.cpp:154
 msgid "Choose the file to use"
 msgstr "Choisissez le fichier à utiliser"
 
@@ -1693,19 +1692,19 @@ msgstr "Fonctions disponibles"
 msgid "Domain"
 msgstr "Domaine"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamsView.cpp:74
+#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamsView.cpp:77
 msgid "Available parameters:"
 msgstr "Paramètres disponibles :"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamsView.cpp:78
+#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamsView.cpp:81
 msgid "Set global"
 msgstr "Ajouter comme global"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamsView.cpp:79
+#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamsView.cpp:82
 msgid "Set this parameter as global"
 msgstr "Ajouter comme un paramètre global"
 
-#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamRow.cpp:88
+#: src/apps/openfluid-builder/builder-main/model/ModelGlobalParamRow.cpp:90
 msgid "Unset this parameter as global"
 msgstr "Supprimer ce paramètre global"
 

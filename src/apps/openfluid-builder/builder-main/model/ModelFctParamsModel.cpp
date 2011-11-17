@@ -57,6 +57,9 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
 #include "GeneratorSignature.hpp"
 
 // =====================================================================
@@ -111,7 +114,14 @@ return ParamsMap;
 
 std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 {
-  return mp_Item->Params;
+  std::map<std::string, std::string> StrMap;
+
+  for(openfluid::core::FuncParamsMap_t::iterator it=mp_Item->Params.begin() ; it !=mp_Item->Params.end() ; ++it)
+  {
+    StrMap[it->first] = it->second;
+  }
+
+  return StrMap;
 }
 
 // =====================================================================
@@ -120,7 +130,14 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 
 std::map<std::string, std::string> ModelFctParamsModelImpl::getGlobalValues()
 {
-  return mp_ModelInstance->getGlobalParameters();
+  std::map<std::string, std::string> StrMap;
+
+  for(openfluid::core::FuncParamsMap_t::iterator it=mp_ModelInstance->getGlobalParameters().begin() ; it !=mp_ModelInstance->getGlobalParameters().end() ; ++it)
+  {
+    StrMap[it->first] = it->second;
+  }
+
+  return StrMap;
 }
 
 // =====================================================================
@@ -175,18 +192,18 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 
       std::string Sources = "";
       if (mp_Item->Params.find("sources") != mp_Item->Params.end()
-          && mp_Item->Params["sources"] != "")
+          && mp_Item->Params["sources"].get() != "")
         Sources = mp_Item->Params["sources"];
       else if (GlobalParams.find("sources") != GlobalParams.end()
-          && GlobalParams["sources"] != "")
+          && GlobalParams["sources"].get() != "")
         Sources = GlobalParams["sources"];
 
       std::string Distrib = "";
       if (mp_Item->Params.find("distribution") != mp_Item->Params.end()
-          && mp_Item->Params["distribution"] != "")
+          && mp_Item->Params["distribution"].get() != "")
         Distrib = mp_Item->Params["distribution"];
       else if (GlobalParams.find("distribution") != GlobalParams.end()
-          && GlobalParams["distribution"] != "")
+          && GlobalParams["distribution"].get() != "")
         Distrib = GlobalParams["distribution"];
 
       mp_Item->Signature->HandledData.RequiredExtraFiles.clear();

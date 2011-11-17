@@ -56,6 +56,13 @@
 
 #include <boost/foreach.hpp>
 
+#include <openfluid/core/UnitsColl.hpp>
+#include <openfluid/core/Unit.hpp>
+
+#include "DomainIDataColumns.hpp"
+#include "BuilderListStore.hpp"
+
+
 // =====================================================================
 // =====================================================================
 
@@ -110,7 +117,7 @@ BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
   BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
   {
     std::string Val;
-    Unit.getInputData()->getValue(DataName, &Val);
+    Unit.getInputData()->getValue(DataName, Val);
 
     Row.set_value( *mp_Columns->getColumnWithTitle(DataName), Val);
   }

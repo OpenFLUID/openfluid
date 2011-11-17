@@ -56,13 +56,28 @@
 #define __RESULTSSETCOORDINATOR_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace base {
+class RunDescriptor;
+class OutputDescriptor;
+}
+namespace core {
+class CoreRepository;
+}
+namespace machine {
+class ModelInstance;
+}
+}
 
 class ResUnitChooserModel;
 class ResViewerModel;
+
+
+// =====================================================================
+// =====================================================================
+
 
 class ResultsSetCoordinator: public sigc::trackable
 {

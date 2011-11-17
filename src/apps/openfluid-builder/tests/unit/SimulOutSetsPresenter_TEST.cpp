@@ -170,14 +170,13 @@ BOOST_AUTO_TEST_CASE(test_extractVariablesString)
 
   BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0], p_EngProject->getModelInstance()),"*");
 
-  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllScalars(false);
-  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllVectors(false);
-  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().push_back("var A");
-  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().push_back("var X[]");
-  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().push_back("var B");
-  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().push_back("var Y[]");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].setAllVariables(false);
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().push_back("var A");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().push_back("var X");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().push_back("var B");
+  p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().push_back("var Y");
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0], p_EngProject->getModelInstance()),"var A;var B;var X[];var Y[]");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->extractVariablesString(p_EngProject->getOutputDescriptor().getFileSets()[0].getSets()[0], p_EngProject->getModelInstance()),"var A;var X;var B;var Y");
 
   delete p_EngProject;
 }
@@ -275,8 +274,8 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   SetDesc.getUnitsIDs().push_back(2);
   SetDesc.getUnitsIDs().push_back(4);
   SetDesc.getUnitsIDs().push_back(6);
-  SetDesc.getScalars().push_back("var A");
-  SetDesc.getScalars().push_back("var B");
+  SetDesc.getVariables().push_back("var A");
+  SetDesc.getVariables().push_back("var B");
   SetDesc.setPrecision(3);
 
   mp_Model->addSet(&SetDesc,"Format #1");

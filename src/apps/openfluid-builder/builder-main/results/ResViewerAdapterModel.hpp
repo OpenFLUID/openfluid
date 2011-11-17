@@ -55,14 +55,24 @@
 #ifndef __RESVIEWERADAPTERMODEL_HPP__
 #define __RESVIEWERADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <gtkmm/textbuffer.h>
+#include <gtkmm/treemodel.h>
 
-#include "ResViewerColumns.hpp"
+namespace openfluid {
+namespace base {
+class SimulationStatus;
+}
+namespace core {
+class Unit;
+}
+}
 
+class ResViewerColumns;
 class BuilderListStore;
+
+// =====================================================================
+// =====================================================================
 
 class ResViewerAdapterModel
 {
@@ -86,6 +96,9 @@ class ResViewerAdapterModel
 
 };
 
+// =====================================================================
+// =====================================================================
+
 class ResViewerAdapterModelImpl: public ResViewerAdapterModel
 {
   private:
@@ -100,8 +113,7 @@ class ResViewerAdapterModelImpl: public ResViewerAdapterModel
 
     void createColumns(std::vector<std::string> VarNames);
 
-    void createFileBuffers(std::vector<std::string> VarNames,
-        openfluid::core::Unit* Unit, std::string SetName);
+    void createFileBuffers(openfluid::core::Unit* Unit, std::string SetName);
 
     void setNoVarTitle();
 
@@ -125,6 +137,9 @@ class ResViewerAdapterModelImpl: public ResViewerAdapterModel
     void clear();
 
 };
+
+// =====================================================================
+// =====================================================================
 
 class ResViewerAdapterModelSub: public ResViewerAdapterModelImpl
 {

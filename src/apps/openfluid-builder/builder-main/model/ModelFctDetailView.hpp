@@ -55,7 +55,8 @@
 #ifndef MODELFCTDETAILVIEW_HPP_
 #define MODELFCTDETAILVIEW_HPP_
 
-#include <gtkmm.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/treeview.h>
 
 #include "ModelFctDetailColumns.hpp"
 

@@ -54,6 +54,8 @@
 
 #include "BuilderGraphicsHelper.hpp"
 
+#include <gtkmm/iconfactory.h>
+
 #include <boost/filesystem.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>

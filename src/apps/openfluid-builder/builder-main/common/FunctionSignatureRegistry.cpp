@@ -54,6 +54,9 @@
 
 #include "FunctionSignatureRegistry.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+
 #include "GeneratorSignature.hpp"
 
 FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;

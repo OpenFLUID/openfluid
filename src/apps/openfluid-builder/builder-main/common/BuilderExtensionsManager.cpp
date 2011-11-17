@@ -54,11 +54,12 @@
  */
 
 #include "BuilderExtensionsManager.hpp"
-#include "builderconfig.hpp"
 
-#include <openfluid/debug.hpp>
-#include <openfluid/machine.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/machine/DynamicLib.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+
+#include "builderconfig.hpp"
 
 
 BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;

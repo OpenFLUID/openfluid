@@ -57,7 +57,14 @@
 #define __MARKETPACKWIDGET_HPP__
 
 
-#include <gtkmm.h>
+#include <gtkmm/eventbox.h>
+#include <gtkmm/image.h>
+#include <gtkmm/label.h>
+#include <gtkmm/box.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/button.h>
+#include <gtkmm/togglebutton.h>
+#include <gtkmm/liststore.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketInfos.hpp>

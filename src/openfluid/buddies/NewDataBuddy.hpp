@@ -56,9 +56,10 @@
 #ifndef __NEWDATABUDDY_H___
 #define __NEWDATABUDDY_H___
 
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
-#include <boost/filesystem/path.hpp>
 
 
 namespace openfluid { namespace buddies {

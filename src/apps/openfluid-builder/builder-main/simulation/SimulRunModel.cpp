@@ -54,7 +54,9 @@
 
 #include "SimulRunModel.hpp"
 
-#include <glibmm/i18n.h>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/core/DateTime.hpp>
+
 
 // =====================================================================
 // =====================================================================

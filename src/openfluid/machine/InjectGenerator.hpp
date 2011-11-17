@@ -56,12 +56,12 @@
 #ifndef __INJECTGENERATOR_HPP__
 #define __INJECTGENERATOR_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/machine/Generator.hpp>
-#include <openfluid/tools.hpp>
-
 #include <queue>
 #include <map>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/machine/Generator.hpp>
+
 
 namespace openfluid { namespace machine {
 

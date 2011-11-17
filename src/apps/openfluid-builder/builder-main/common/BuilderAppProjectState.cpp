@@ -59,6 +59,7 @@
 #include "ProjectPropertiesDialog.hpp"
 #include "EngineProjectSaveAsDialog.hpp"
 
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 

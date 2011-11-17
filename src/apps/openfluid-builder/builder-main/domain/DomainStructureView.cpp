@@ -54,7 +54,6 @@
 
 #include "DomainStructureView.hpp"
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
 
 #include "DomainStructureColumns.hpp"

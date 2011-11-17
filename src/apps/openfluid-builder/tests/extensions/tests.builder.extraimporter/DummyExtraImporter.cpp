@@ -56,6 +56,8 @@
 
 #include <openfluid/builderext/ExtraImporter.hpp>
 
+#include <gtkmm/frame.h>
+
 DECLARE_EXTENSION_HOOKS;
 
 DEFINE_EXTENSION_INFOS("tests.builder.extraimporter",

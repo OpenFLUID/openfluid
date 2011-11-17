@@ -54,8 +54,7 @@
 #ifndef __VECTORPRODFUNC_H__
 #define __VECTORPRODFUNC_H__
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================

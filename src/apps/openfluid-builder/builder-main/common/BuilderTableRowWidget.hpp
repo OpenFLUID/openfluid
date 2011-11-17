@@ -55,7 +55,7 @@
 #ifndef __BUILDERTABLEROWWIDGET_HPP__
 #define __BUILDERTABLEROWWIDGET_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/widget.h>
 
 class BuilderTableRowWidget
 {

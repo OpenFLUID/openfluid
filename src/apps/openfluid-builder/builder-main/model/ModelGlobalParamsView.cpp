@@ -56,6 +56,9 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/separator.h>
+#include <gtkmm/scrolledwindow.h>
+
 #include "ModelGlobalParamRow.hpp"
 
 #include <iostream>

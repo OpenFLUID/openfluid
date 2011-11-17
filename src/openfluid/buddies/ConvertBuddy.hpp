@@ -56,11 +56,14 @@
 #ifndef __CONVERTBUDDY_HPP__
 #define __CONVERTBUDDY_HPP__
 
+#include <map>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
-#include <openfluid/core.hpp>
-
-#include <map>
+#include <openfluid/core/TypeDefs.hpp>
+//
+//#include <openfluid/core.hpp>
+//
 
 
 namespace openfluid { namespace buddies {

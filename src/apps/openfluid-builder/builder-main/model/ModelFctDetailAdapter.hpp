@@ -55,18 +55,31 @@
 #ifndef MODELFCTDETAILADAPTER_HPP_
 #define MODELFCTDETAILADAPTER_HPP_
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class SignatureItemInstance;
+}
+}
 
 class ModelFctDetailAdapterModel;
 class ModelFctDetailView;
 
+// =====================================================================
+// =====================================================================
+
+
 class ModelFctDetailAdapter
 {
   private:
+
     ModelFctDetailAdapterModel& m_Model;
+
     ModelFctDetailView& m_View;
+
   public:
+
     ModelFctDetailAdapter(ModelFctDetailAdapterModel& Model, ModelFctDetailView& View);
+
     void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
 };
 

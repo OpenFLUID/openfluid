@@ -63,7 +63,7 @@
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
 #include <openfluid/machine/DynamicLib.hpp>
-#include <openfluid/base.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 // =====================================================================
 // =====================================================================

@@ -58,11 +58,13 @@ class ModelFctDetailColumns: public Gtk::TreeModel::ColumnRecord
     ModelFctDetailColumns()
     {
       add(m_Name);
+      add(m_Type);
       add(m_Unit);
       add(m_Class);
       add(m_Description);
     }
     Gtk::TreeModelColumn<Glib::ustring> m_Name;
+    Gtk::TreeModelColumn<Glib::ustring> m_Type;
     Gtk::TreeModelColumn<Glib::ustring> m_Unit;
     Gtk::TreeModelColumn<Glib::ustring> m_Class;
     Gtk::TreeModelColumn<Glib::ustring> m_Description;

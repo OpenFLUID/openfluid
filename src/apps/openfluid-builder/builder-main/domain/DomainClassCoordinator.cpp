@@ -56,13 +56,15 @@
 
 #include <glibmm/i18n.h>
 
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+
 #include "DomainIDataModel.hpp"
 #include "DomainIDataAddDialog.hpp"
 #include "DomainIDataRemoveDialog.hpp"
 #include "DomainIDataEditDialog.hpp"
 #include "DomainEventsModel.hpp"
 #include "BuilderListToolBox.hpp"
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================

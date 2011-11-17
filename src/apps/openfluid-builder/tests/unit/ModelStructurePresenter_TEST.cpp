@@ -59,6 +59,10 @@
 #include "tests-config.hpp"
 #include "ModelItemInstanceFactory.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+
 // =====================================================================
 // =====================================================================
 

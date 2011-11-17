@@ -59,7 +59,8 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/button.h>
 
 
 class ModelGlobalParamRow: public BuilderTableRowWidget

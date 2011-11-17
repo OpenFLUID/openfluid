@@ -54,24 +54,21 @@
 
 #include "BuilderAppCoordinator.hpp"
 
+#include "openfluid/base/ProjectManager.hpp"
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
+#include "builderconfig.hpp"
 #include "BuilderAppWindow.hpp"
 #include "BuilderModuleFactory.hpp"
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
-#include "PreferencesDialog.hpp"
-
+#include "BuilderHomeModule.hpp"
 #include "BuilderProjectWithExplorer.hpp"
-
-#include "openfluid/base/ProjectManager.hpp"
 #include "EngineProjectNewDialog.hpp"
 #include "EngineProjectOpenDialog.hpp"
+#include "PreferencesDialog.hpp"
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include "BuilderHomeModule.hpp"
-
-#include "builderconfig.hpp"
 
 // =====================================================================
 // =====================================================================

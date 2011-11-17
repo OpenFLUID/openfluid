@@ -58,9 +58,15 @@
 
 
 #include <string>
-#include <openfluid/dllexport.hpp>
-#include <openfluid/base.hpp>
 #include <fstream>
+
+#include <openfluid/dllexport.hpp>
+
+namespace openfluid { namespace base {
+class ExecutionMessages;
+}
+}
+
 
 namespace openfluid { namespace io {
 

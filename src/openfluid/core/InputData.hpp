@@ -50,16 +50,19 @@
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/Value.hpp>
+#include <openfluid/core/StringValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+
 
 namespace openfluid {
 namespace core {
 
-template<class T>
 class DLLEXPORT InputData
 {
   private:
 
-    typedef std::map<InputDataName_t, T> InputDataMap_t;
+    typedef std::map<InputDataName_t, StringValue> InputDataMap_t;
     InputDataMap_t m_Data;
 
   public:
@@ -68,178 +71,31 @@ class DLLEXPORT InputData
 
     ~InputData();
 
-    bool setValue(const InputDataName_t aName, const T aValue);
+    bool setValue(const InputDataName_t aName, const Value& aValue);
 
-    bool getValue(const InputDataName_t aName, T *aValue);
+    bool setValue(const InputDataName_t aName, const std::string& aValue);
 
-    bool getValueAsDouble(const InputDataName_t aName, double *aValue);
+    bool getValue(const InputDataName_t aName, openfluid::core::StringValue& aValue) const;
 
-    bool getValueAsLong(const InputDataName_t aName, long *aValue);
+    bool getValue(const InputDataName_t aName, std::string& aValue) const;
+
+    bool getValueAsDouble(const InputDataName_t aName, double& aValue) const;
+
+    bool getValueAsLong(const InputDataName_t aName, long& aValue) const;
 
     bool isDataExist(const InputDataName_t aName) const;
 
     std::vector<InputDataName_t> getInputDataNames() const;
 
-    void replaceValue(const InputDataName_t aName, const T aValue);
+    bool replaceValue(const InputDataName_t aName, const StringValue& aValue);
 
-    void removeData(const InputDataName_t aName);
+    bool replaceValue(const InputDataName_t aName, const std::string& aValue);
+
+    bool removeData(const InputDataName_t aName);
 
     void clear();
 
 };
-
-// =====================================================================
-// =====================================================================
-
-
-template<class T>
-InputData<T>::InputData()
-{
-
-}
-
-// =====================================================================
-// =====================================================================
-
-
-template<class T>
-InputData<T>::~InputData()
-{
-
-}
-
-// =====================================================================
-// =====================================================================
-
-template<class T>
-bool InputData<T>::setValue(const InputDataName_t aName, const T aValue)
-{
-
-  if (isDataExist(aName))
-    return false;
-  else
-  {
-    m_Data[aName] = aValue;
-  }
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-template<class T>
-bool InputData<T>::getValue(const InputDataName_t aName, T *aValue)
-{
-  typename InputDataMap_t::iterator it = m_Data.find(aName);
-
-  if (it != m_Data.end())
-  {
-    *aValue = it->second;
-    return true;
-  } else
-    return false;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-template<class T>
-bool InputData<T>::getValueAsDouble(const InputDataName_t aName, double *aValue)
-{
-  T TValue;
-  typename InputDataMap_t::iterator it = m_Data.find(aName);
-
-  if (it != m_Data.end())
-  {
-    TValue = it->second;
-
-    std::istringstream iss(TValue);
-    return !(iss >> (*aValue)).fail();
-  } else
-    return false;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-template<class T>
-bool InputData<T>::getValueAsLong(const InputDataName_t aName, long *aValue)
-{
-  T TValue;
-  typename InputDataMap_t::iterator it = m_Data.find(aName);
-
-  if (it != m_Data.end())
-  {
-    TValue = it->second;
-
-    std::istringstream iss(TValue);
-    return !(iss >> (*aValue)).fail();
-  } else
-    return false;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-template<class T>
-bool InputData<T>::isDataExist(const InputDataName_t aName) const
-{
-  return m_Data.find(aName) != m_Data.end();
-}
-
-// =====================================================================
-// =====================================================================
-
-template<class T>
-std::vector<InputDataName_t> InputData<T>::getInputDataNames() const
-{
-  std::vector<InputDataName_t> TheNames;
-
-  typename InputDataMap_t::const_iterator it;
-
-  for (it = m_Data.begin(); it != m_Data.end(); ++it)
-  {
-    TheNames.push_back(it->first);
-  }
-
-  return TheNames;
-
-}
-
-// =====================================================================
-// =====================================================================
-
-template<class T>
-void InputData<T>::replaceValue(const InputDataName_t aName, const T aValue)
-{
-  m_Data[aName] = aValue;
-}
-
-// =====================================================================
-// =====================================================================
-
-template<class T>
-void InputData<T>::removeData(const InputDataName_t aName)
-{
-  typename InputDataMap_t::iterator it = m_Data.find(aName);
-  if (it != m_Data.end())
-    m_Data.erase(it);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-template <class T>
-void InputData<T>::clear()
-{
-    m_Data.clear();
-}
 
 
 } } // namespaces

@@ -74,7 +74,10 @@ typedef boost::onullstream onullstream_type;
 
 
 #include <tests-config.hpp>
-#include <openfluid/io.hpp>
+#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -99,8 +102,8 @@ void TestDataset(std::string DatasetPath)
   // ====================================================================
 
   BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters().size(),2);
-  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters()["gparam1"],"100");
-  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters()["gparam2"],"0.1");
+  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters()["gparam1"].get(),"100");
+  BOOST_REQUIRE_EQUAL(FXR.getModelDescriptor().getGlobalParameters()["gparam2"].get(),"0.1");
 
 
 
@@ -119,8 +122,8 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Interp);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),2);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["sources"],"sources.xml");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["distribution"],"distri.dat");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["sources"].get(),"sources.xml");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["distribution"].get(),"distri.dat");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction),true);
@@ -134,7 +137,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Fixed);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),1);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"],"20");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"].get(),"20");
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);
@@ -143,18 +146,18 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getUnitClass(),"TU");
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getGeneratorMethod(),openfluid::base::GeneratorDescriptor::Random);
   BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters().size(),2);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["min"],"20.53");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["max"],"50");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["min"].get(),"20.53");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["max"].get(),"50");
 
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction),true);
   BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getFileID(),"tests.functionB");
   BOOST_REQUIRE_EQUAL(((openfluid::base::FunctionDescriptor*)(*it))->getParameters().size(),4);
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"],"50");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["strparam"],"strvalue");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["doubleparam"],"1.1");
-  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["longparam"],"11");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["gparam1"].get(),"50");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["strparam"].get(),"strvalue");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["doubleparam"].get(),"1.1");
+  BOOST_REQUIRE_EQUAL(((openfluid::base::GeneratorDescriptor*)(*it))->getParameters()["longparam"].get(),"11");
 
 
 
@@ -175,22 +178,19 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsClass(),"XU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[0].getPrecision(),5);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getName(),"2vars");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getUnitsClass(),"YU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getScalars().size(),1);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getScalars()[0],"var1");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllScalars(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVectors().size(),1);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVectors()[0],"var2");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllVectors(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables().size(),2);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllVariables(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables()[0],"var1");
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables()[1],"var2");
+
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[1].getPrecision(),3);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getName(),"3units");
@@ -200,10 +200,8 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[1],197);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[2],73);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllUnits(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[0].getSets()[2].getPrecision(),5);
 
 
@@ -217,23 +215,19 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getUnitsClass(),"KU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[0].getPrecision(),9);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getName(),"3vars");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getUnitsClass(),"LU");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getUnitsIDs().size(),0);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllUnits(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getScalars().size(),2);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getScalars()[0],"var1");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getScalars()[1],"var5");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllScalars(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVectors().size(),1);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVectors()[0],"var2");
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllVectors(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables().size(),3);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllVariables(),false);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[0],"var1");
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[1],"var2");
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[2],"var5");
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[1].getPrecision(),5);
 
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getName(),"2units");
@@ -242,10 +236,8 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs()[0],2);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs()[1],1);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllUnits(),false);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getScalars().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllScalars(),true);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getVectors().size(),0);
-  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllVectors(),true);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getVariables().size(),0);
+  BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllVariables(),true);
   BOOST_REQUIRE_EQUAL(FXR.getOutputDescriptor().getFileSets()[1].getSets()[2].getPrecision(),5);
 
 

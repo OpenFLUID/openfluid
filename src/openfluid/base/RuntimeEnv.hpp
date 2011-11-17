@@ -55,13 +55,15 @@
 #ifndef __RUNTIMEENV_HPP__
 #define __RUNTIMEENV_HPP__
 
+#include <string>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools.hpp>
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/SimulationProfiler.hpp>
+#include <openfluid/core/DateTime.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 namespace openfluid { namespace base {

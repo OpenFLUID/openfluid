@@ -56,7 +56,10 @@
 #ifndef __RUNSTATUSWIDGET_HPP__
 #define __RUNSTATUSWIDGET_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/eventbox.h>
+#include <gtkmm/box.h>
+#include <gtkmm/progressbar.h>
+#include <gtkmm/label.h>
 
 #include <openfluid/dllexport.hpp>
 

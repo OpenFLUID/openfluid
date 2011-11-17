@@ -54,6 +54,8 @@
 
 #include "BuilderListStore.hpp"
 
+#include <gtkmm/treerowreference.h>
+
 BuilderListStore::BuilderListStore()
 {
 }

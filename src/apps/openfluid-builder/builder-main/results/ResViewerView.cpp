@@ -59,6 +59,10 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/textbuffer.h>
+
 #include <iostream>
 
 // =====================================================================

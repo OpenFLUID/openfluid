@@ -87,10 +87,10 @@ RandomGenerator::~RandomGenerator()
 
 bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
 {
-  if (!OPENFLUID_GetFunctionParameter(Params,"min",&m_Min))
+  if (!OPENFLUID_GetFunctionParameter(Params,"min",m_Min))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing min value for generator");
 
-  if (!OPENFLUID_GetFunctionParameter(Params,"max",&m_Max))
+  if (!OPENFLUID_GetFunctionParameter(Params,"max",m_Max))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
 
 
@@ -129,7 +129,7 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
 {
 
   openfluid::core::Unit* LU;
-  openfluid::core::ScalarValue Value;
+  openfluid::core::DoubleValue Value;
 
   boost::uniform_real<> Distribution(m_Min, m_Max);
   boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);

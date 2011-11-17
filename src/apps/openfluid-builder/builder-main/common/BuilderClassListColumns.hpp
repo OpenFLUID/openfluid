@@ -48,7 +48,7 @@
 #ifndef BUILDERCLASSLISTCOLUMNS_HPP_
 #define BUILDERCLASSLISTCOLUMNS_HPP_
 
-#include <gtkmm.h>
+#include <gtkmm/treemodel.h>
 
 class BuilderClassListColumns: public Gtk::TreeModel::ColumnRecord
 {

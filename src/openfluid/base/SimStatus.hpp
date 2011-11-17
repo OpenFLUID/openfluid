@@ -58,7 +58,7 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 
 namespace openfluid { namespace base {

@@ -52,10 +52,14 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+#include <gtkmm/treerowreference.h>
+
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+
 #include "ModelAvailFctAdapterModel.hpp"
+#include "ModelAvailFctColumns.hpp"
 #include "BuilderGraphicsHelper.hpp"
-
-
 
 sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_SelectionChanged()
 {

@@ -59,6 +59,8 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/stock.h>
+
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 

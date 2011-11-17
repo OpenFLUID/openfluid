@@ -57,7 +57,13 @@
 
 #include <sigc++/sigc++.h>
 
-#include <openfluid/core.hpp>
+#include <openfluid/core/Unit.hpp>
+
+namespace openfluid {
+namespace core {
+class CoreRepository;
+}
+}
 
 // =====================================================================
 // =====================================================================

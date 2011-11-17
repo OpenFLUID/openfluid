@@ -56,14 +56,25 @@
 #ifndef __MARKETCLIENTASSISTANT_HPP__
 #define __MARKETCLIENTASSISTANT_HPP__
 
-#include <gtkmm.h>
-#include <openfluid/market.hpp>
+#include <gtkmm/assistant.h>
+#include <gtkmm/box.h>
+#include <gtkmm/label.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/button.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/alignment.h>
+#include <gtkmm/progressbar.h>
+#include <gtkmm/textview.h>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/guicommon/MarketPackWidget.hpp>
-#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
+#include <openfluid/market/MarketClient.hpp>
+
 
 namespace openfluid { namespace guicommon {
+
+class MarketPackWidget;
 
 
 class DLLEXPORT MarketClientAssistant : public Gtk::Assistant

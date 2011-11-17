@@ -64,7 +64,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <openfluid/tools.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 // =====================================================================
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(check_comparetextfiles)
                                  boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string()));
 
   BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
-                                   boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Variables.hp").string()) == false);
+                                 boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Variables.hp").string()) == false);
 
 
   BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(CONFIGTESTS_SRC_DIR+"/src/openfluid/core/Unit.hpp").string(),
@@ -197,26 +197,16 @@ BOOST_AUTO_TEST_CASE(check_outputsdefaultbuf)
   {
     openfluid::tools::ConvertValue(i,&IDStr);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),4));
-
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),4));
-
-
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.out").string(),4));
   }
 
   for (unsigned int i=1; i<6;i++)
   {
     openfluid::tools::ConvertValue((i*2),&IDStr);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),4));
-
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),4));
-
-
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.out").string(),4));
   }
 
 }
@@ -247,13 +237,8 @@ BOOST_AUTO_TEST_CASE(check_outputsmodifiedbuf)
   {
     openfluid::tools::ConvertValue(i,&IDStr);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.scalars.out").string(),4));
-
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.vector.tests.vector.out").string(),4));
-
-
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsA"+IDStr+"_fullA.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsA"+IDStr+"_fullA.out").string(),4));
   }
 
 
@@ -261,12 +246,8 @@ BOOST_AUTO_TEST_CASE(check_outputsmodifiedbuf)
   {
     openfluid::tools::ConvertValue((i*2),&IDStr);
 
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.scalars.out").string(),4));
-
-    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),
-                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.vector.tests.vector.out").string(),4));
-
+    BOOST_REQUIRE(CompareTextFiles(boost::filesystem::path(OutputDir+"/UnitsB"+IDStr+"_fullB.out").string(),
+                                   boost::filesystem::path(RefDir+"/UnitsB"+IDStr+"_fullB.out").string(),4));
   }
 
 

@@ -61,8 +61,16 @@
 #include <sstream>
 #include <cmath>
 
+#include <boost/algorithm/string.hpp>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+
+namespace openfluid {
+namespace core {
+class DateTime;
+}
+}
 
 
 #define STRINGIFY(x) XSTRINGIFY(x)
@@ -193,17 +201,23 @@ std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
 */
-std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit,
+inline std::vector<std::string> /*DLLEXPORT*/ SplitString(const std::string StrToSplit,
                                                const std::string Separators,
-                                               bool ReturnsEmpty = false);
+                                               bool ReturnsEmpty = false)
+{
+	std::vector<std::string> SplitParts;
+
+	boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
+	if (ReturnsEmpty) TokCompress = boost::token_compress_off;
+
+	boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators));
+
+	return SplitParts;
+}
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
 std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr);
-
-bool DLLEXPORT IsVectorNamedVariable(std::string Name);
-
-std::string DLLEXPORT GetVectorNamedVariableName(std::string Name);
 
 std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
 

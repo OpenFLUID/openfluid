@@ -55,7 +55,6 @@
 #ifndef __MODELAVAILFCTCOMPONENT_HPP__
 #define __MODELAVAILFCTCOMPONENT_HPP__
 
-#include <gtkmm.h>
 
 #include "BuilderMVPComponent.hpp"
 

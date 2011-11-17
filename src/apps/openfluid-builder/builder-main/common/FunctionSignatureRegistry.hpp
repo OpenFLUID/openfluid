@@ -55,8 +55,17 @@
 #ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
 #define __FUNCTIONSIGNATUREREGISTRY_HPP__
 
-#include <openfluid/machine.hpp>
-#include <openfluid/base.hpp>
+#include <openfluid/base/ModelItemDescriptor.hpp>
+
+namespace openfluid {
+namespace machine {
+class SignatureItemInstance;
+}
+}
+
+// =====================================================================
+// =====================================================================
+
 
 class FunctionSignatureRegistry
 {

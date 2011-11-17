@@ -58,7 +58,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/tools/DistribInterp.hpp>
 
 namespace openfluid { namespace machine {
 

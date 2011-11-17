@@ -48,16 +48,12 @@
 #ifndef BUILDERAPPMODULE_HPP_
 #define BUILDERAPPMODULE_HPP_
 
+
 #include "BuilderModule.hpp"
-#include "BuilderAppCoordinator.hpp"
-#include "BuilderAppWindow.hpp"
-#include "BuilderAppActions.hpp"
 
-#include "FunctionSignatureRegistry.hpp"
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include "BuilderWorkdirCreationDialog.hpp"
-
-#include <boost/filesystem/operations.hpp>
+class BuilderAppWindow;
+class BuilderAppCoordinator;
+class BuilderAppActions;
 
 // =====================================================================
 // =====================================================================
@@ -75,58 +71,17 @@ class BuilderAppModule: BuilderModule
 
   protected:
 
-    void compose()
-    {
-      m_MainWindow.setMenuBarWidget(*m_Actions.getMenuBarWidget());
-      m_MainWindow.setToolBarWidget(*m_Actions.getToolBarWidget());
-      m_MainWindow.addAccelGroup(m_Actions.getAccelGroup());
-    }
+    void compose();
 
-    Gtk::Widget* asWidget()
-    {
-      return (Gtk::Widget*) 0;
-    }
+    Gtk::Widget* asWidget();
 
   public:
 
-    BuilderAppModule() :
-      m_MainWindow(*new BuilderAppWindow()),
-          m_Actions(*new BuilderAppActions())
-    {
-      mp_Coordinator = new BuilderAppCoordinator(m_MainWindow, m_Actions);
-    }
+    BuilderAppModule();
 
-    bool initialize()
-    {
-      std::string WorkDirFromPref =
-          openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
-      if (!boost::filesystem::exists(WorkDirFromPref))
-      {
-        BuilderWorkdirCreationDialog Dialog;
-        if (!Dialog.show())
-          return false;
-      }
+    bool initialize();
 
-      mp_Coordinator->setHomeModule();
-
-      std::vector<Glib::ustring>
-          PrefXPaths =
-              openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
-      for (int i = PrefXPaths.size() - 1; i > -1; i--)
-        openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
-            PrefXPaths[i]);
-
-      FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
-
-      return true;
-
-    }
-
-    Gtk::Window& composeAndGetAsWindow()
-    {
-      compose();
-      return m_MainWindow;
-    }
+    Gtk::Window& composeAndGetAsWindow();
 
 };
 

@@ -55,9 +55,10 @@
 
 
 #include <openfluid/base/Init.hpp>
-#include <openfluid/debug.hpp>
 
 #include <glibmm/thread.h>
+
+#include <openfluid/debug.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
 

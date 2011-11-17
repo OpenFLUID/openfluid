@@ -56,8 +56,14 @@
 #define __DOMAINIDATAMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <openfluid/core.hpp>
+namespace openfluid {
+namespace core {
+class UnitsCollection;
+class CoreRepository;
+}
+}
 
 class DomainIDataModel
 {

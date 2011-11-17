@@ -57,7 +57,7 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+
 #include <glibmm/i18n.h>
 
 #include "DomainStructureColumns.hpp"

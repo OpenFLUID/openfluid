@@ -55,7 +55,8 @@
 
 
 #include <openfluid/io/MessagesWriter.hpp>
-#include <fstream>
+
+#include <openfluid/base/ExecMsgs.hpp>
 
 
 namespace openfluid { namespace io {

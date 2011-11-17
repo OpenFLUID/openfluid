@@ -58,7 +58,10 @@
 #include <sigc++/sigc++.h>
 #include <set>
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
+#include <gtkmm/table.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/button.h>
 
 class ModelGlobalParamRow;
 

@@ -54,19 +54,20 @@
  */
 
 
-#include <boost/algorithm/string.hpp>
-#include <boost/regex.hpp>
+#include <openfluid/buddies/Func2DocBuddy.hpp>
+
+#include <iosfwd>
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
-#include <fstream>
-#include <cstdlib>
 
-#include <openfluid/buddies/Func2DocBuddy.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/config.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/buddies/BuddiesListener.hpp>
 
 
 namespace openfluid { namespace buddies {

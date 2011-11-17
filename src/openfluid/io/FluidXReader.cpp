@@ -53,13 +53,18 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
-#include <boost/algorithm/string/replace.hpp>
-
-
 #include <openfluid/io/FluidXReader.hpp>
-#include <openfluid/tools.hpp>
+
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/erase.hpp>
+
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace io {
@@ -186,19 +191,19 @@ openfluid::base::OutputSetDescriptor FluidXReader::extractSetDecriptorFromNode(x
 
     if (VarsStr == "*")
     {
-      OSD.setAllScalars(true);
-      OSD.setAllVectors(true);
+      OSD.setAllVariables(true);
     }
     else
     {
-      OSD.setAllScalars(false);
-      OSD.setAllVectors(false);
+      OSD.setAllVariables(false);
 
       std::vector<std::string> StrArray = openfluid::tools::SplitString(VarsStr,";");
+
       for (unsigned int i=0;i<StrArray.size();i++)
       {
-        if (openfluid::tools::IsVectorNamedVariable(StrArray[i])) OSD.getVectors().push_back(openfluid::tools::GetVectorNamedVariableName(StrArray[i]));
-        else OSD.getScalars().push_back(StrArray[i]);
+        clearOldVectorNamedVar(StrArray[i]);
+
+        OSD.getVariables().push_back(StrArray[i]);
       }
 
     }
@@ -268,7 +273,7 @@ openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr 
 
         if (xmlKey != NULL && xmlValue != NULL)
         {
-          Params[(const char*)xmlKey] = (const char*)xmlValue;
+          Params[(const char*)xmlKey] = openfluid::core::StringValue((const char*)xmlValue);
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }
@@ -960,6 +965,17 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
 
   //propagateGlobalParamsInModel();
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FluidXReader::clearOldVectorNamedVar(std::string& VarName)
+{
+  if(boost::ends_with(VarName,"[]"))
+    boost::erase_last(VarName,"[]");
 }
 
 

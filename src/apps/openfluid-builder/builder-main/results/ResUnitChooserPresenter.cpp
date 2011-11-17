@@ -65,8 +65,7 @@ void ResUnitChooserPresenter::whenFromAppInit()
 {
   m_View.setClassName(m_Model.getClassName());
   m_View.setIDs(m_Model.getIDs());
-  m_View.setScalars(m_Model.getScalars());
-  m_View.setVectors(m_Model.getVectors());
+  m_View.setVariables(m_Model.getVariables());
   m_View.initSelection();
   m_View.clearMessage();
 }

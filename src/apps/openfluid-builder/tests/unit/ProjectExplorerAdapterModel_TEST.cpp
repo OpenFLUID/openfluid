@@ -64,6 +64,8 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
+#include <openfluid/base/RunDescriptor.hpp>
+
 // =====================================================================
 // =====================================================================
 

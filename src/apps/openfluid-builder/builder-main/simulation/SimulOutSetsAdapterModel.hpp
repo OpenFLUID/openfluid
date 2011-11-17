@@ -48,7 +48,6 @@
 #ifndef SIMULOUTSETSADAPTERMODEL_HPP_
 #define SIMULOUTSETSADAPTERMODEL_HPP_
 
-#include <gtkmm.h>
 
 #include <openfluid/base/OutputSetDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>

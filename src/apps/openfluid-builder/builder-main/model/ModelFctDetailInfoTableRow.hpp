@@ -57,6 +57,8 @@
 
 #include "BuilderTableRowWidget.hpp"
 
+#include <gtkmm/label.h>
+
 class ModelFctDetailInfoTableRow: public BuilderTableRowWidget
 {
   private:

@@ -55,7 +55,9 @@
 #ifndef __BUILDERBYCLASSTREEVIEW_HPP__
 #define __BUILDERBYCLASSTREEVIEW_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/box.h>
 
 #include "BuilderClassListColumns.hpp"
 

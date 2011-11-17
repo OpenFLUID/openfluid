@@ -57,7 +57,6 @@
 #include <glibmm/i18n.h>
 
 #include "BuilderGraphicsHelper.hpp"
-#include <openfluid/debug.hpp>
 
 
 // =====================================================================

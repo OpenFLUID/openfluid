@@ -55,7 +55,8 @@
 #ifndef __MODELAVAILFCTCOLUMNS_HPP__
 #define __MODELAVAILFCTCOLUMNS_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gdkmm/pixbuf.h>
 
 class ModelAvailFctColumns: public Gtk::TreeModel::ColumnRecord
 {

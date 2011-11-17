@@ -49,9 +49,21 @@
 #define SIMULOUTSETSMODEL_HPP_
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <openfluid/base.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
+namespace openfluid {
+namespace base {
+class OutputDescriptor;
+class OutputSetDescriptor;
+}
+namespace core {
+class CoreRepository;
+}
+namespace machine {
+class ModelInstance;
+}
+}
+
 
 // =====================================================================
 // =====================================================================

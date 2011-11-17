@@ -55,9 +55,15 @@
 #ifndef __DOMAINEVENTSMODEL_HPP__
 #define __DOMAINEVENTSMODEL_HPP__
 
-#include <openfluid/core.hpp>
-#include <string.h>
+#include <string>
 #include <sigc++/sigc++.h>
+
+namespace openfluid {
+namespace core {
+class CoreRepository;
+class UnitsCollection;
+}
+}
 
 class DomainEventsModel
 {
