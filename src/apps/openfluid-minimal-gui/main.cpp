@@ -54,7 +54,20 @@
  */
 
 
+#include <openfluid/io/IOListener.hpp>
+#include <openfluid/io/FluidXReader.hpp>
+
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/Init.hpp>
+
+#include <openfluid/machine/Engine.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/Factory.hpp>
+
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
+#include <openfluid/guicommon/RunDialogMachineListener.hpp>
 
 
 int main(int argc, char *argv[])
