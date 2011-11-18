@@ -91,16 +91,29 @@ BuilderExtensionsManager* BuilderExtensionsManager::getInstance()
 // =====================================================================
 
 
+void BuilderExtensionsManager::prependExtensionSearchPath(const std::string& Path)
+{
+  if (m_IsRegistrationDone)
+    return;
+
+  m_SearchPaths.insert(m_SearchPaths.begin(),1,openfluid::tools::RemoveTrailingSlashes(Path));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderExtensionsManager::prependExtensionsSearchPaths(const std::string& SemicolonSeparatedPaths)
 {
-  if (m_IsRegistrationDone) return;
+  if (m_IsRegistrationDone)
+    return;
 
   std::vector<std::string> ExtraPaths;
   ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths,";");
 
-
-  for (int i = ExtraPaths.size()-1 ; i>=0 ; i--) m_SearchPaths.insert(m_SearchPaths.begin(),1,openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
-
+  for (int i = ExtraPaths.size()-1 ; i>=0 ; i--)
+    prependExtensionSearchPath(ExtraPaths[i]);
 }
 
 
@@ -207,6 +220,24 @@ ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(openfluid::b
   return NULL;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::string& ExtID) const
+{
+  for (CollectionOfExtensions_t::const_iterator COEit = m_RegisteredExtensions.begin(); COEit
+  != m_RegisteredExtensions.end(); ++COEit)
+  {
+    ExtensionContainerMap_t ExtContainerMap = COEit->second;
+
+    if(ExtContainerMap.count(ExtID))
+        return &ExtContainerMap.at(ExtID);
+  }
+
+  return (ExtensionContainer*)0;
+}
 
 // =====================================================================
 // =====================================================================

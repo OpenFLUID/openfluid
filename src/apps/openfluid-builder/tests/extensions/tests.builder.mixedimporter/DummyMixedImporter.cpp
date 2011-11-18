@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/MixedImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,13 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyMixedImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyMixedImporter");
     };
 
 
@@ -91,7 +92,7 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
 
     ~DummyMixedImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +102,17 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };

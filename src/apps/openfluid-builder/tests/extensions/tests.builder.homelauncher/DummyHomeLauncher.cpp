@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/HomeLauncher.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,13 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyHomeLauncher()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyHomeLauncher");
     };
 
 
@@ -91,7 +92,7 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 
     ~DummyHomeLauncher()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +102,17 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };

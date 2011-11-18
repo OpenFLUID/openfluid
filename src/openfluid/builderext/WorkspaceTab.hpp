@@ -58,6 +58,7 @@
 
 
 #include <openfluid/builderext/ModelessExtension.hpp>
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 
 namespace openfluid { namespace builderext {
@@ -67,14 +68,27 @@ namespace openfluid { namespace builderext {
 // =====================================================================
 
 
-class DLLEXPORT WorkspaceTab : public ModelessExtension
+class DLLEXPORT WorkspaceTab : public ModelessExtension, public openfluid::guicommon::ProjectWorkspaceModule
 {
   protected:
 
+    void compose(){}
+
+    Gtk::Widget* asWidget(){ return getExtensionAsWidget(); }
 
   public:
 
     ExtensionType getType() const { return PluggableBuilderExtension::WorkspaceTab; };
+
+    // unused here
+    void setEngineRequirements(
+        openfluid::machine::ModelInstance& /*ModelInstance*/,
+        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+
+    // unused here
+    void show() {};
+
+    void update() { onRefresh(); }
 
 };
 

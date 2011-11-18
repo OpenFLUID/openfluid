@@ -246,6 +246,8 @@ class DLLEXPORT PluggableBuilderExtension
     */
     virtual Gtk::Widget* getExtensionAsWidget() = 0;
 
+    virtual void show() = 0;
+
 
     /**
       Returns true if the extension is currently ready to use (showtime!).

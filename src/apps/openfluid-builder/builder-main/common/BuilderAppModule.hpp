@@ -49,7 +49,7 @@
 #define BUILDERAPPMODULE_HPP_
 
 
-#include "BuilderModule.hpp"
+#include <openfluid/guicommon/BuilderModule.hpp>
 
 class BuilderAppWindow;
 class BuilderAppCoordinator;
@@ -59,7 +59,7 @@ class BuilderAppActions;
 // =====================================================================
 
 
-class BuilderAppModule: BuilderModule
+class BuilderAppModule: public openfluid::guicommon::BuilderModule
 {
   private:
 

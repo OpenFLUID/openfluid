@@ -251,6 +251,16 @@ void BuilderProjectWithExplorer::updatePluginPathsMonitors()
 // =====================================================================
 
 
+void BuilderProjectWithExplorer::extensionAsked(const std::string& ExtensionID)
+{
+  mp_Coordinator->launchExtension(ExtensionID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 Gtk::Widget* BuilderProjectWithExplorer::asWidget()
 {
   return mp_MainPaned;

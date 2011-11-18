@@ -59,13 +59,19 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <set>
 
 #include <giomm/filemonitor.h>
 #include <gtkmm/messagedialog.h>
 
+namespace openfluid {
+namespace guicommon {
+class ProjectWorkspaceModule;
+}
+}
+
 class ProjectExplorerModel;
 class ProjectWorkspace;
-class ProjectWorkspaceModule;
 class EngineProject;
 class BuilderModuleFactory;
 class ProjectDashboard;
@@ -88,11 +94,14 @@ class ProjectCoordinator
 
     BuilderModuleFactory* mp_ModuleFactory;
 
-    std::map<std::string, ProjectWorkspaceModule*> m_ModulesByPageNameMap;
+    std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*> m_ModulesByPageNameMap;
 
+    //TODO change for std::set
     std::vector<std::string> m_ClassPageNames;
 
     std::vector<std::string> m_SetPageNames;
+
+    std::set<std::string> m_TabExtensionNames;
 
     bool m_HasRun;
 
@@ -162,6 +171,8 @@ class ProjectCoordinator
     void setFileMonitorDisplayState(bool HasToDisplay);
 
     void updatePluginPathsMonitors();
+
+    void launchExtension(std::string ExtensionID);
 
 };
 

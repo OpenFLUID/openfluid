@@ -52,8 +52,13 @@
 
 #include "BuilderAppActions.hpp"
 
-class BuilderAppWindow;
+namespace openfluid {
+namespace guicommon {
 class BuilderModule;
+}
+}
+
+class BuilderAppWindow;
 class BuilderAppState;
 class EngineProjectNewDialog;
 class EngineProjectOpenDialog;
@@ -64,7 +69,7 @@ class BuilderAppCoordinator: public sigc::trackable
   private:
     BuilderAppWindow& m_MainWindow;
     BuilderAppActions m_Actions;
-    BuilderModule* mp_CurrentModule;
+    openfluid::guicommon::BuilderModule* mp_CurrentModule;
     BuilderAppState* mp_CurrentState;
     BuilderAppState* mp_HomeState;
     BuilderAppState* mp_ProjectState;
@@ -78,7 +83,7 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void unsetCurrentModule();
 
-    void setCurrentModule(BuilderModule* Module);
+    void setCurrentModule(openfluid::guicommon::BuilderModule* Module);
 
     void whenNewProjectAsked();
 
@@ -135,7 +140,7 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void setProjectModule(std::string ProjectFolder);
 
-    BuilderModule* getCurrentModule();
+    openfluid::guicommon::BuilderModule* getCurrentModule();
 
     void quitApp();
 
@@ -154,6 +159,8 @@ class BuilderAppCoordinator: public sigc::trackable
     void updateMainWindowInformation();
 
     void updateRecentsList();
+
+    void configExtensionsMenus();
 
 };
 

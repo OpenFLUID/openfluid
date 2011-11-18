@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/ModalWindow.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,13 @@ class DummyModalWindow : public openfluid::builderext::ModalWindow
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyModalWindow()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyModalWindow");
     };
 
 
@@ -90,6 +91,16 @@ class DummyModalWindow : public openfluid::builderext::ModalWindow
 
 
     ~DummyModalWindow()
+    {
+      delete mp_Dialog;
+    };
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    sigc::signal<void> signal_ModuleChanged()
     {
 
     };
@@ -101,7 +112,17 @@ class DummyModalWindow : public openfluid::builderext::ModalWindow
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };

@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/ExtraImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,13 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyExtraImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyExtraImporter");
     };
 
 
@@ -91,7 +92,7 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 
     ~DummyExtraImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +102,17 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };

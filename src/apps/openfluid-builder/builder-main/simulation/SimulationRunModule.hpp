@@ -57,13 +57,13 @@
 #define __SIMULATIONRUNMODULE_HPP__
 
 
-#include "ProjectWorkspaceModule.hpp"
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
 
 class SimulRunComponent;
 
-class SimulationRunModule: public ProjectWorkspaceModule
+class SimulationRunModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 

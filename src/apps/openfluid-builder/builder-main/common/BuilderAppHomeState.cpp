@@ -211,3 +211,12 @@ void BuilderAppHomeState::whenPropertiesAsked()
   //nothing to do, should not happen
 }
 
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppHomeState::whenExtensionAsked(const std::string& /*ExtensionID*/)
+{
+  //for Home launchers only
+}
+

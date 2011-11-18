@@ -64,6 +64,7 @@
 
 #include "tests-builderconfig.hpp"
 #include "builderconfig.hpp"
+#include "BuilderTestHelper.hpp"
 
 #include "BuilderExtensionsManager.hpp"
 
@@ -120,6 +121,8 @@ void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+  BuilderTestHelper::getInstance()->initGtk();
+
   openfluid::machine::SimulationBlob TheBlob;
 
 

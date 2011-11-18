@@ -55,7 +55,7 @@
 #ifndef __MODELSTRUCTUREMODULE_HPP__
 #define __MODELSTRUCTUREMODULE_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/paned.h>
 
@@ -70,7 +70,7 @@ class ModelStructureModel;
 class ModelStructureCoordinator;
 class BuilderListToolBox;
 
-class ModelStructureModule : public ProjectWorkspaceModule
+class ModelStructureModule : public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 

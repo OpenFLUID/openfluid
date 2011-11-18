@@ -59,11 +59,13 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
+#include "builderconfig.hpp"
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
 #include "BuilderWorkdirCreationDialog.hpp"
 #include "FunctionSignatureRegistry.hpp"
+#include "BuilderExtensionsManager.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -81,8 +83,18 @@ BuilderAppModule::BuilderAppModule() :
 
 bool BuilderAppModule::initialize()
 {
-  std::string WorkDirFromPref =
-      openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  openfluid::base::RuntimeEnvironment* RunEnv =
+      openfluid::base::RuntimeEnvironment::getInstance();
+
+  BuilderExtensionsManager* ExtMgr = BuilderExtensionsManager::getInstance();
+
+
+  // Checking working directory
+
+  std::string WorkDirFromPref = PrefMgr->getWorkdir();
   if (!boost::filesystem::exists(WorkDirFromPref))
   {
     BuilderWorkdirCreationDialog Dialog;
@@ -90,16 +102,36 @@ bool BuilderAppModule::initialize()
       return false;
   }
 
-  mp_Coordinator->setHomeModule();
 
-  std::vector<Glib::ustring>
-      PrefXPaths =
-          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
+  // Checking extra plugin paths (for pluggable functions and extensions)
+
+  std::vector<Glib::ustring> PrefXPaths = PrefMgr->getExtraPlugPaths();
+
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
-        PrefXPaths[i]);
+  {
+    RunEnv->addExtraPluginsPaths(PrefXPaths[i]);
+    ExtMgr->prependExtensionSearchPath(PrefXPaths[i]);
+  }
+
+  // Setting pluggable functions
 
   FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+
+  // Setting extensions
+
+  //TODO add HomeLaucher
+  ExtMgr->prependExtensionSearchPath(Glib::ustring::compose("%1/%2",
+      RunEnv->getInstallPrefix(), BUILDEREXT_INSTALL_PATH));
+  ExtMgr->prependExtensionSearchPath(RunEnv->getUserDataPath(
+      BUILDER_EXTSDIR));
+  ExtMgr->registerExtensions();
+
+  mp_Coordinator->configExtensionsMenus();
+
+
+
+  mp_Coordinator->setHomeModule();
 
   return true;
 

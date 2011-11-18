@@ -46,24 +46,25 @@
  */
 
 /**
- \file DummyWorkspaceTab.cpp
+ \file DummyAssistant.cpp
  \brief Implements ...
 
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include <openfluid/builderext/WorkspaceTab.hpp>
+#include <openfluid/builderext/ModalWindow.hpp>
 
+#include <gtkmm/assistant.h>
+#include <gtkmm/main.h>
 #include <gtkmm/label.h>
-#include <gtkmm/box.h>
 
 DECLARE_EXTENSION_HOOKS
 ;
 
-DEFINE_EXTENSION_INFOS("tests.builder.workspacetab",
-    "Dummy workspace tab",
-    "Dummy workspace tab for tests",
-    "This is a dummy workspace tab for tests",
+DEFINE_EXTENSION_INFOS("tests.builder.assistant",
+    "Dummy assistant",
+    "Dummy assistant for tests",
+    "This is an assistant for tests",
     "JC.Fabre;A.Libres",
     "fabrejc@supagro.inra.fr;libres@supagro.inra.fr")
 ;
@@ -72,65 +73,57 @@ DEFINE_EXTENSION_INFOS("tests.builder.workspacetab",
 // =====================================================================
 
 
-class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
+class DummyAssistant: public openfluid::builderext::ModalWindow
 {
   private:
 
-    Gtk::VBox* mp_MainBox;
-    Gtk::Label* mp_Label;
-    Gtk::Label* mp_LabelTestRefresh;
+    Gtk::Assistant* mp_Assistant;
+    Gtk::Label* mp_Label2;
 
   public:
 
-    DummyWorkspaceTab()
+    DummyAssistant()
     {
-      mp_Label = Gtk::manage(new Gtk::Label("I am DummyWorkspaceTab"));
+      mp_Assistant = new Gtk::Assistant();
 
-      mp_LabelTestRefresh = Gtk::manage(new Gtk::Label("Nb of UnitClasses: no Core Repository available"));
+      mp_Assistant->set_title("Dummy assistant");
+      mp_Assistant->set_default_size(400, 300);
+      mp_Assistant->set_modal(true);
 
-      mp_MainBox = Gtk::manage(new Gtk::VBox());
-      mp_MainBox->pack_start(*mp_Label);
-      mp_MainBox->pack_start(*mp_LabelTestRefresh);
+      Gtk::Label* Label1 = Gtk::manage(new Gtk::Label(
+          "I'm a Dummy assistant for tests"));
+      mp_Assistant->append_page(*Label1);
+      mp_Assistant->set_page_title(*Label1, "Page 1/2");
+      mp_Assistant->set_page_type(*Label1, Gtk::ASSISTANT_PAGE_INTRO);
+      mp_Assistant->set_page_complete(*Label1, true);
 
-      mp_MainBox->show_all_children();
-      mp_MainBox->set_visible(true);
+      mp_Label2 = Gtk::manage(new Gtk::Label(
+          "Nb of UnitClasses: no Core Repository available"));
+      mp_Assistant->append_page(*mp_Label2);
+      mp_Assistant->set_page_title(*mp_Label2, "Page 2/2");
+      mp_Assistant->set_page_type(*mp_Label2, Gtk::ASSISTANT_PAGE_CONFIRM);
+      mp_Assistant->set_page_complete(*mp_Label2, true);
+
+      mp_Assistant->signal_apply().connect(sigc::mem_fun(*this,
+          &DummyAssistant::hide));
+      mp_Assistant->signal_cancel().connect(sigc::mem_fun(*this,
+          &DummyAssistant::hide));
+      mp_Assistant->signal_close().connect(sigc::mem_fun(*this,
+          &DummyAssistant::hide));
+
+      mp_Assistant->show_all_children();
+    }
+    ;
+
+    // =====================================================================
+    // =====================================================================
+
+
+    ~DummyAssistant()
+    {
+      delete mp_Assistant;
     }
 
-
-    // =====================================================================
-    // =====================================================================
-
-
-    ~DummyWorkspaceTab()
-    {
-
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void onRefresh()
-    {
-      if (mp_SimulationBlob)
-      {
-        unsigned int Size =
-            mp_SimulationBlob->getCoreRepository().getUnitsByClass()->size();
-        mp_LabelTestRefresh ->set_text(Glib::ustring::compose(
-            "Nb of UnitClasses: %1", Size));
-      }
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    sigc::signal<void> signal_ModuleChanged()
-    {
-
-    }
 
     // =====================================================================
     // =====================================================================
@@ -138,7 +131,31 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return mp_MainBox;
+      return mp_Assistant;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      if (mp_SimulationBlob)
+      {
+        unsigned int Size =
+            mp_SimulationBlob->getCoreRepository().getUnitsByClass()->size();
+        mp_Label2 ->set_text(Glib::ustring::compose("Nb of UnitClasses: %1",
+            Size));
+      }
+
+      Gtk::Main::run(*mp_Assistant);
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void hide()
+    {
+      mp_Assistant->hide();
     }
 
 };
@@ -146,6 +163,7 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
 // =====================================================================
 // =====================================================================
 
-DEFINE_EXTENSION_HOOKS(DummyWorkspaceTab)
+
+DEFINE_EXTENSION_HOOKS(DummyAssistant)
 ;
 

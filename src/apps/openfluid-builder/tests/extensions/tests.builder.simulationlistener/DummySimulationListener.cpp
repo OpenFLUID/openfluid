@@ -55,7 +55,7 @@
 
 #include <openfluid/builderext/SimulationListener.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -75,12 +75,18 @@ class DummySimulationListener : public openfluid::builderext::SimulationListener
 {
   private:
 
+    Gtk::MessageDialog* mp_Dialog;
 
   public:
 
    DummySimulationListener()
     {
+     mp_Dialog = new Gtk::MessageDialog("I am DummySimulationListener\n I'm modeless");
 
+     mp_Dialog->set_modal(false);
+
+     mp_Dialog->signal_response().connect(sigc::mem_fun(*this,
+                   &DummySimulationListener::hide));
     };
 
 
@@ -90,7 +96,7 @@ class DummySimulationListener : public openfluid::builderext::SimulationListener
 
     ~DummySimulationListener()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -110,9 +116,25 @@ class DummySimulationListener : public openfluid::builderext::SimulationListener
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
     }
 
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->show();
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void hide(int Response)
+    {
+      mp_Dialog->hide();
+    }
 };
 
 

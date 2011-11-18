@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/InputdataImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,13 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyInputdataImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyInputdataImporter");
     };
 
 
@@ -91,7 +92,7 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 
     ~DummyInputdataImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,8 +102,18 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
     }
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
+    }
+
 
 };
 

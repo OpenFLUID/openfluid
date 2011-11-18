@@ -230,3 +230,14 @@ void BuilderAppProjectState::whenPropertiesAsked()
 {
   mp_ProjectPropertiesDialog->show();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenExtensionAsked(const std::string& ExtensionID)
+{
+  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->extensionAsked(ExtensionID);
+}
+

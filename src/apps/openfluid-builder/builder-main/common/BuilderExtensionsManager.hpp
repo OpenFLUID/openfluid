@@ -108,6 +108,8 @@ class BuilderExtensionsManager
 
     ~BuilderExtensionsManager() { };
 
+    void prependExtensionSearchPath(const std::string& Path);
+
     void prependExtensionsSearchPaths(const std::string& SemicolonSeparatedPaths);
 
     const std::list<std::string>& getExtensionsSearchPaths() const { return m_SearchPaths; };
@@ -123,6 +125,8 @@ class BuilderExtensionsManager
     ExtensionContainerMap_t* getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type);
 
     ExtensionContainer* getExtensionContainer(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type, std::string ExtID);
+
+    ExtensionContainer* getExtensionContainer(const std::string& ExtID) const;
 
     static std::string getExtensionTypeAsString(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type);
 

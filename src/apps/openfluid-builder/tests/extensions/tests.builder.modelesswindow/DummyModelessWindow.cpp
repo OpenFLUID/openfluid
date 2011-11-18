@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/ModelessWindow.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,18 @@ class DummyModelessWindow : public openfluid::builderext::ModelessWindow
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyModelessWindow()
     {
+      mp_Dialog = new Gtk::MessageDialog("I am DummyModelessWindow");
 
+      mp_Dialog->set_modal(false);
+
+      mp_Dialog->signal_response().connect(sigc::mem_fun(*this,
+                    &DummyModelessWindow::hide));
     };
 
 
@@ -91,7 +97,7 @@ class DummyModelessWindow : public openfluid::builderext::ModelessWindow
 
     ~DummyModelessWindow()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -111,9 +117,27 @@ class DummyModelessWindow : public openfluid::builderext::ModelessWindow
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
     }
 
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void show()
+    {
+      mp_Dialog->show();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void hide(int Response)
+    {
+      mp_Dialog->hide();
+    }
 };
 
 

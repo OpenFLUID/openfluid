@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/SpatialgraphImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -76,12 +76,13 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummySpatialgraphImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummySpatialgraphImporter");
     };
 
 
@@ -91,7 +92,7 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 
     ~DummySpatialgraphImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +102,17 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };
