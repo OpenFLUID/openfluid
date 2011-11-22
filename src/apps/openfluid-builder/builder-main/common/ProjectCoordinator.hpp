@@ -57,7 +57,6 @@
 
 #include <sigc++/sigc++.h>
 #include <map>
-#include <vector>
 #include <string>
 #include <set>
 
@@ -78,7 +77,7 @@ class ProjectDashboard;
 
 class ProjectCoordinator
 {
-  private:
+  protected:
 
     sigc::signal<void, bool> m_signal_CheckHappened;
 
@@ -94,21 +93,27 @@ class ProjectCoordinator
 
     BuilderModuleFactory* mp_ModuleFactory;
 
-    std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*> m_ModulesByPageNameMap;
+    std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>
+        m_ModulesByPageNameMap;
 
-    //TODO change for std::set
-    std::vector<std::string> m_ClassPageNames;
+    std::set<std::string> m_ClassPageNames;
 
-    std::vector<std::string> m_SetPageNames;
+    std::set<std::string> m_SetPageNames;
 
     std::set<std::string> m_TabExtensionNames;
 
     bool m_HasRun;
 
-    // only to keep ref to FileMonitors (otherwise they're lost)
-    std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
-
     std::string m_ModelPageName;
+
+    std::string m_DomainPageName;
+
+    std::string m_RunPageName;
+
+    std::string m_OutputsPageName;
+
+    // only to keep ref to FileMonitors (otherwise they're lost)
+    std::set<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
 
     Gtk::MessageDialog* mp_FileMonitorDialog;
 
@@ -117,6 +122,8 @@ class ProjectCoordinator
     bool m_FileMonitorHasToDisplay;
 
     void whenActivationChanged();
+
+    void whenModelChanged();
 
     void whenDomainChanged();
 
@@ -130,25 +137,28 @@ class ProjectCoordinator
 
     void whenPageRemoved(std::string RemovedPageName);
 
+    void computeModelChanges();
+
+    void computeDomainChanges();
+
     void updateResults();
 
     void updateWorkspaceModules();
-
-    std::string constructClassPageName(std::string ClassName);
-
-    std::string constructSetPageName(std::string SetName);
 
     void onDirMonitorChanged(const Glib::RefPtr<Gio::File>& File,
         const Glib::RefPtr<Gio::File>& OtherFile,
         Gio::FileMonitorEvent EventType);
 
-  protected:
+    std::string constructClassPageName(std::string ClassName);
 
-    void whenModelChanged();
+    std::string constructSetPageName(std::string SetName);
 
-    std::vector<std::string> getClassPagesToDelete();
+    void addModuleToWorkspace(std::string PageName,
+        openfluid::guicommon::ProjectWorkspaceModule& Module);
 
-    std::vector<std::string> getSetPagesToDelete();
+    void removeDeletedClassPages();
+
+    void removeDeletedSetPages();
 
   public:
 
@@ -184,9 +194,54 @@ class ProjectCoordinatorSub: public ProjectCoordinator
         ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
         ProjectDashboard& TheProjectDashboard);
 
+    std::string constructClassPageName(std::string ClassName)
+    {
+      return ProjectCoordinator::constructClassPageName(ClassName);
+    }
+
+    std::string constructSetPageName(std::string SetName)
+    {
+      return ProjectCoordinator::constructSetPageName(SetName);
+    }
+
+    std::string getModelPageName()
+    {
+      return m_ModelPageName;
+    }
+
+    std::string getDomainPageName()
+    {
+      return m_DomainPageName;
+    }
+
+    std::string getRunPageName()
+    {
+      return m_RunPageName;
+    }
+
+    std::string getOutputsPageName()
+    {
+      return m_OutputsPageName;
+    }
+
     void whenModelChanged();
 
-    std::vector<std::string> getWorkspacePagesToDelete();
+    void whenDomainChanged();
+
+    void whenOutChanged()
+    {
+      ProjectCoordinator::whenOutChanged();
+    }
+
+    void removeDeletedClassPages()
+    {
+      ProjectCoordinator::removeDeletedClassPages();
+    }
+
+    void removeDeletedSetPages()
+    {
+      ProjectCoordinator::removeDeletedSetPages();
+    }
 
 };
 

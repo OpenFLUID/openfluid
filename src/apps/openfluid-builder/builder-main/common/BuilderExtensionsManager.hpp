@@ -130,9 +130,9 @@ class BuilderExtensionsManager
 
     static std::string getExtensionTypeAsString(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type);
 
-    void linkRegisteredExtensionsAndSimulationBlob(openfluid::machine::SimulationBlob* Blob);
+    void linkRegisteredExtensionsWithSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model);
 
-    void unlinkRegisteredExtensionsAndSimulationBlob() { linkRegisteredExtensionsAndSimulationBlob(NULL); };
+    void unlinkRegisteredExtensionsWithSimulationBlobAndModel() { linkRegisteredExtensionsWithSimulationBlobAndModel(NULL, NULL); };
 
 };
 

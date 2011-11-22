@@ -62,7 +62,7 @@
 
 class ProjectWorkspace
 {
-  private:
+  protected:
 
     sigc::signal<void, std::string> m_signal_PageRemoved;
 
@@ -88,9 +88,20 @@ class ProjectWorkspace
 
     void removePage(std::string PageName);
 
-    std::vector<std::string> getPageNames();
-
     Gtk::Widget* asWidget();
 };
+
+// =====================================================================
+// =====================================================================
+
+class ProjectWorkspaceSub : public ProjectWorkspace
+{
+  public:
+
+    std::string getCurrentPageName();
+
+    unsigned int getPagesCount();
+};
+
 
 #endif /* __PROJECTWORKSPACE_HPP__ */

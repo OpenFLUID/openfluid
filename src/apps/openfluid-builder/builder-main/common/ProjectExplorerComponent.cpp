@@ -60,7 +60,6 @@
 #include "ProjectExplorerAdapter.hpp"
 #include "ProjectExplorerAdapterModel.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -73,7 +72,6 @@ ProjectExplorerComponent::ProjectExplorerComponent()
   mp_Adapter = new ProjectExplorerAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new ProjectExplorerPresenter(*mp_Model, *mp_Adapter);
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -88,7 +86,6 @@ ProjectExplorerComponent::~ProjectExplorerComponent()
   delete mp_View;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -97,7 +94,6 @@ Gtk::Widget* ProjectExplorerComponent::asWidget()
 {
   return mp_View->asWidget();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -108,7 +104,6 @@ ProjectExplorerModel* ProjectExplorerComponent::getModel()
   return mp_Model;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -116,4 +111,15 @@ ProjectExplorerModel* ProjectExplorerComponent::getModel()
 ProjectExplorerView* ProjectExplorerComponent::getView()
 {
   return mp_View;
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+ProjectExplorerViewSub* ProjectExplorerComponentSub::getViewSub()
+{
+  return (ProjectExplorerViewSub*)mp_View;
 }

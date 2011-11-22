@@ -69,12 +69,18 @@ namespace openfluid { namespace builderext {
 
 class DLLEXPORT ModelessWindow : public ModelessExtension
 {
-  protected:
+  private:
 
+//    sigc::signal<void> m_signal_DomainClassChanged;
 
   public:
 
     ExtensionType getType() const { return PluggableBuilderExtension::ModelessWindow; };
+
+//    virtual sigc::signal<void> signal_DomainClassChanged()
+//    {
+//      return m_signal_DomainClassChanged;
+//    }
 
 };
 

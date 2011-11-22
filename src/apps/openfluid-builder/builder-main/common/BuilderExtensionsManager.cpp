@@ -243,7 +243,7 @@ ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::s
 // =====================================================================
 
 
-void BuilderExtensionsManager::linkRegisteredExtensionsAndSimulationBlob(openfluid::machine::SimulationBlob* Blob)
+void BuilderExtensionsManager::linkRegisteredExtensionsWithSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model)
 {
   CollectionOfExtensions_t::iterator COEit;
   ExtensionContainerMap_t::iterator ECMit;
@@ -252,7 +252,7 @@ void BuilderExtensionsManager::linkRegisteredExtensionsAndSimulationBlob(openflu
   {
     for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
     {
-      (*ECMit).second.Extension->setSimulationBlob(Blob);
+      (*ECMit).second.Extension->setSimulationBlobAndModel(Blob, Model);
     }
   }
 

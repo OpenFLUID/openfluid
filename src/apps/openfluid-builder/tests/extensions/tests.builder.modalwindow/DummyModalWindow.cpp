@@ -100,16 +100,6 @@ class DummyModalWindow : public openfluid::builderext::ModalWindow
     // =====================================================================
 
 
-    sigc::signal<void> signal_ModuleChanged()
-    {
-
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
     Gtk::Widget* getExtensionAsWidget()
     {
       return mp_Dialog;

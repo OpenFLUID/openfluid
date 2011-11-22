@@ -139,11 +139,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::SimulationListener)->size(),1);
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::ModelessWindow)->size(),1);
 
-  BEM->linkRegisteredExtensionsAndSimulationBlob(&TheBlob);
+  BEM->linkRegisteredExtensionsWithSimulationBlobAndModel(&TheBlob, NULL);
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 
-  BEM->unlinkRegisteredExtensionsAndSimulationBlob();
+  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 

@@ -64,6 +64,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 
 
 // =====================================================================
@@ -186,6 +187,8 @@ class DLLEXPORT PluggableBuilderExtension
 
     openfluid::machine::SimulationBlob* mp_SimulationBlob;
 
+    openfluid::machine::ModelInstance* mp_ModelInstance;
+
 
   public:
 
@@ -199,7 +202,8 @@ class DLLEXPORT PluggableBuilderExtension
     virtual ~PluggableBuilderExtension() { };
 
 
-    void setSimulationBlob(openfluid::machine::SimulationBlob* Blob) { mp_SimulationBlob = Blob; };
+    void setSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model)
+      { mp_SimulationBlob = Blob; mp_ModelInstance = Model; };
 
     /**
       Returns the type of the extension. This must be overridden.
