@@ -68,7 +68,7 @@ namespace openfluid { namespace core {
 
 
 /**
-  Template class for vector data
+  Template class for matrix data
 */
 template <class T>
 class DLLEXPORT Matrix
@@ -112,22 +112,22 @@ class DLLEXPORT Matrix
     /**
       Returns the size of the 1st dimension of the Matrix
     */
-    unsigned long getColsNbr() const { return m_ColsNbr; };
+    inline unsigned long getColsNbr() const { return m_ColsNbr; };
 
     /**
       Returns the size of the 2nd dimension of the Matrix
     */
-    unsigned long getRowsNbr() const { return m_RowsNbr; };
+    inline unsigned long getRowsNbr() const { return m_RowsNbr; };
 
     /**
       Returns the full size of the Matrix
     */
-    unsigned long getSize() const { return (m_ColsNbr * m_RowsNbr); };
+    inline unsigned long getSize() const { return (m_ColsNbr * m_RowsNbr); };
 
     /**
       Returns the full size of the Matrix
     */
-    unsigned long size() const { return (m_ColsNbr * m_RowsNbr); };
+    inline unsigned long size() const { return (m_ColsNbr * m_RowsNbr); };
 
 
     /**

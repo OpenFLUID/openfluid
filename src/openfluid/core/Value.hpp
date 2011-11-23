@@ -73,7 +73,6 @@ class StringValue;
 
 class VectorValue;
 class MatrixValue;
-class ArrayValue;
 class MapValue;
 
 
@@ -81,7 +80,7 @@ class DLLEXPORT Value
 {
   public:
 
-    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, ARRAY, MAP, NULLL };
+    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, NULLL };
 
     /**
       Default constructor
@@ -161,13 +160,6 @@ class DLLEXPORT Value
     const MatrixValue& asMatrixValue() const;
 
     MatrixValue& asMatrixValue();
-
-
-    inline bool isArrayValue() const { return getType() == Value::ARRAY; };
-
-    const ArrayValue& asArrayValue() const;
-
-    ArrayValue& asArrayValue();
 
 
     inline bool isMapValue() const { return getType() == Value::MAP; };

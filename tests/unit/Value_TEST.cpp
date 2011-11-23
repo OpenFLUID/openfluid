@@ -72,7 +72,6 @@
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/ArrayValue.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 
@@ -282,8 +281,9 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   std::cout << Val1 << std::endl;
 
 
+  openfluid::core::MatrixValue Val2;
 
-  openfluid::core::MatrixValue Val2 = Val1;
+  Val2 = Val1;
 
   BOOST_REQUIRE_EQUAL( Val1.getSize(), Val2.getSize());
   BOOST_REQUIRE_CLOSE( Val2.at(9,9), 1.35,0.000001 );
@@ -320,19 +320,6 @@ BOOST_AUTO_TEST_CASE(check_matrix)
 
   Val3.set(1,2,9.99);
   BOOST_REQUIRE_CLOSE( Val3.get(1,2), 9.99,0.000001 );
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_array)
-{
-  std::cout << "======== check_array ========" << std::endl;
-
-  openfluid::core::ArrayValue Val1;
 
 }
 
@@ -589,8 +576,6 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE_EQUAL(MapV.getString("bool"),"false");
   std::cout << MapV << std::endl;
 
-  // to array
-  // TODO
 
 }
 

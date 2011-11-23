@@ -79,12 +79,12 @@ class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
     MatrixValue(const MatrixValue& Val) : CompoundValue(static_cast<const CompoundValue&>(Val)), Matrix<double>(static_cast<const Matrix<double>& >(Val)) {};
 
     /**
-      Constructor, creates a Matrix containing Size elements
+      Constructor, creates a Matrix containing ColsNbr x RowsNbr elements
     */
     MatrixValue(unsigned long ColsNbr,unsigned long RowsNbr) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr) {};
 
     /**
-      Constructor, creates a Matrix containing Size elements, initialized with value InitValue
+      Constructor, creates a Matrix containing ColsNbr x RowsNbr elements, initialized with value InitValue
     */
     MatrixValue(unsigned long ColsNbr, unsigned long RowsNbr, double InitValue) : CompoundValue(), Matrix<double>(ColsNbr,RowsNbr,InitValue) {};
 

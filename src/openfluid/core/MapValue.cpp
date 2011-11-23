@@ -68,6 +68,8 @@ namespace openfluid { namespace core {
 MapValue::MapValue(const MapValue& Val)
 : CompoundValue()
 {
+  m_Value.clear();
+
   for (Map_t::const_iterator it=Val.m_Value.begin();it!=Val.m_Value.end();++it)
   {
     m_Value[(*it).first].reset((*(*it).second).clone());
@@ -81,6 +83,8 @@ MapValue::MapValue(const MapValue& Val)
 
 Value& MapValue::operator =(const Value& Other)
 {
+  if (this == &Other) return *this;
+
   const MapValue* CastedValue = dynamic_cast<const MapValue*> (&Other);
 
   if (CastedValue)

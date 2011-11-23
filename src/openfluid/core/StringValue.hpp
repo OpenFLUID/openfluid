@@ -129,10 +129,6 @@ class DLLEXPORT StringValue : public SimpleValue
 
     bool toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val) const;
 
-    bool toArrayValue(const std::string& ColSep, const std::string& RowSep, ArrayValue& Val) const;
-
-    bool toArrayValue(const std::string& Sep, const unsigned int& RowLength, ArrayValue& Val) const;
-
     bool toMapValue(const std::string& Sep, MapValue& Val) const;
 
     static bool convertStringToDouble(const std::string& Str, double& Dbl);
