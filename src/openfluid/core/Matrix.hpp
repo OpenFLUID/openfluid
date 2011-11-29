@@ -84,24 +84,24 @@ class DLLEXPORT Matrix
 
   public :
 
-  /**
-    Default constructor, creates an empty Matrix
-  */
+    /**
+      Default constructor, creates an empty Matrix
+    */
     Matrix();
 
-  /**
-    Copy constructor
-  */
+    /**
+      Copy constructor
+     */
     Matrix(const Matrix &Matrix);
 
-  /**
-    Constructor, creates a Matrix containing Size elements
-  */
+    /**
+      Constructor, creates a Matrix containing Size elements
+    */
     Matrix(unsigned long ColsNbr,unsigned long RowsNbr);
 
-  /**
-    Constructor, creates a Matrix containing Size elements, initialized with value InitValue
-  */
+    /**
+      Constructor, creates a Matrix containing Size elements, initialized with value InitValue
+    */
     Matrix(unsigned long ColsNbr,unsigned long RowsNbr, T InitValue);
 
     /**
@@ -133,7 +133,12 @@ class DLLEXPORT Matrix
     /**
       Returns a pointer to the content of the Matrix (like C arrays)
     */
-    T* getData() const { return m_Data.data(); };
+    T* getData() const { return (T*)(m_Data.data()); };
+
+    /**
+      Sets data from a pointer to a content (like C arrays)
+    */
+    void setData(T* Data);
 
     /**
       Returns the element of the Matrix for index Index
@@ -223,6 +228,23 @@ Matrix<T>::Matrix(unsigned long ColsNbr, unsigned long RowsNbr, T InitValue) :
   m_ColsNbr(ColsNbr),m_RowsNbr(RowsNbr)
 {
   fill(InitValue);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template <class T>
+void Matrix<T>::setData(T* Data)
+{
+  for (unsigned long j=0; j < m_RowsNbr;j++)
+  {
+    for (unsigned long i=0; i < m_ColsNbr;i++)
+    {
+      m_Data[i][j] = Data[i+(j*m_ColsNbr)];
+    }
+  }
 }
 
 
