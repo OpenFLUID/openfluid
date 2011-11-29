@@ -59,6 +59,7 @@
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/builderext/WorkspaceTab.hpp>
+#include <openfluid/builderext/ModelessWindow.hpp>
 
 #include "ProjectExplorerModel.hpp"
 #include "ProjectWorkspace.hpp"
@@ -98,6 +99,11 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
   m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenPageRemoved));
 
+  m_EngineProject.signal_RunStarted().connect(sigc::mem_fun(*this,
+      &ProjectCoordinator::whenRunStarted));
+  m_EngineProject.signal_RunStopped().connect(sigc::mem_fun(*this,
+      &ProjectCoordinator::whenRunStopped));
+
   mp_FileMonitorDialog = new Gtk::MessageDialog("", false,
       Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL, false);
   mp_FileMonitorDialog->signal_response().connect(sigc::mem_fun(*this,
@@ -105,15 +111,6 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
 
   updatePluginPathsMonitors();
 
-  ExtensionContainerMap_t* ExtTabs =
-      BuilderExtensionsManager::getInstance()->getRegisteredExtensions(
-          openfluid::builderext::PluggableBuilderExtension::WorkspaceTab);
-  if (ExtTabs)
-  {
-    for (ExtensionContainerMap_t::iterator it = ExtTabs->begin(); it
-        != ExtTabs->end(); ++it)
-      m_TabExtensionNames.insert(it->second.Infos.ShortName);
-  }
 }
 
 // =====================================================================
@@ -140,22 +137,33 @@ sigc::signal<void> ProjectCoordinator::signal_ChangeHappened()
 
 ProjectCoordinator::~ProjectCoordinator()
 {
+  // clearing tabs
+
   for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator
       it = m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
   {
-    // we don't delete Extensions...
-    if (!m_TabExtensionNames.count(it->first))
+    if (m_TabExtensionIdByNameMap.count(it->first))
+    {
+      BuilderExtensionsManager::getInstance()->deletePluggableExtension(
+          m_TabExtensionIdByNameMap[it->first]);
+    }
+    else
     {
       delete it->second;
       it->second = 0;
     }
-    // ...so we have to unparent them
-    else
-      m_Workspace.removePage(it->first);
   }
   m_ModulesByPageNameMap.clear();
 
-  BuilderExtensionsManager::getInstance()->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
+  // clearing modeless extensions
+
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
+      it = m_ModelessWindowsExtensionsMap.begin(); it
+      != m_ModelessWindowsExtensionsMap.end(); ++it)
+  {
+    it->second->onProjectClosed();
+    BuilderExtensionsManager::getInstance()->deletePluggableExtension(it->first);
+  }
 
   delete mp_FileMonitorDialog;
 }
@@ -367,19 +375,6 @@ void ProjectCoordinator::updateResults()
 // =====================================================================
 // =====================================================================
 
-
-void ProjectCoordinator::whenRunHappened()
-{
-  m_HasRun = true;
-
-  whenDomainChanged(); // for functions that create units
-
-  m_ExplorerModel.updateResultsAsked(false);
-}
-
-// =====================================================================
-// =====================================================================
-
 //TODO allow the user to cancel deletion
 void ProjectCoordinator::whenDomainChanged()
 {
@@ -424,6 +419,8 @@ void ProjectCoordinator::removeDeletedClassPages()
 
 void ProjectCoordinator::whenClassChanged()
 {
+  updateModelessWindowsExtensions();
+
   checkProject();
 
   m_signal_ChangeHappened.emit();
@@ -435,6 +432,8 @@ void ProjectCoordinator::whenClassChanged()
 
 void ProjectCoordinator::whenRunChanged()
 {
+  updateModelessWindowsExtensions();
+
   updateResults();
 
   m_ExplorerModel.updateSimulationAsked();
@@ -452,6 +451,8 @@ void ProjectCoordinator::whenRunChanged()
 
 void ProjectCoordinator::whenOutChanged()
 {
+  updateModelessWindowsExtensions();
+
   updateResults();
 
   removeDeletedSetPages();
@@ -468,6 +469,8 @@ void ProjectCoordinator::whenOutChanged()
 
 void ProjectCoordinator::computeModelChanges()
 {
+  updateModelessWindowsExtensions();
+
   updateResults();
 
   m_ExplorerModel.updateModelAsked();
@@ -486,6 +489,8 @@ void ProjectCoordinator::computeModelChanges()
 
 void ProjectCoordinator::computeDomainChanges()
 {
+  updateModelessWindowsExtensions();
+
   updateResults();
   m_ExplorerModel.updateDomainAsked();
 
@@ -543,11 +548,14 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 {
   openfluid::guicommon::ProjectWorkspaceModule* ModuleToDelete =
       m_ModulesByPageNameMap[RemovedPageName];
-  m_ModulesByPageNameMap.erase(RemovedPageName);
 
-  // we don't delete Extensions
-  if (!m_TabExtensionNames.count(RemovedPageName))
+  if (m_TabExtensionIdByNameMap.count(RemovedPageName))
+    BuilderExtensionsManager::getInstance()->deletePluggableExtension(
+        m_TabExtensionIdByNameMap[RemovedPageName]);
+  else
     delete ModuleToDelete;
+
+  m_ModulesByPageNameMap.erase(RemovedPageName);
 
   // update Class Pages
   if (m_ClassPageNames.count(RemovedPageName))
@@ -679,32 +687,176 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
   if (!ExtCont)
     return;
 
-  openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
+  std::string ExtID = ExtCont->Infos.ID;
+  openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtType =
+      ExtCont->Infos.Type;
 
-  if (!Ext)
+  // Extension is already instantiated
+  if (ExtCont->Extension)
+  {
+    if (ExtType
+        == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+      m_Workspace.setCurrentPage(ExtCont->Infos.ShortName);
+    else if (ExtType
+        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
+        || ExtType
+            == openfluid::builderext::PluggableBuilderExtension::SimulationListener)
+    {
+      Gtk::Window
+          * ExtWindow =
+              dynamic_cast<Gtk::Window*> (ExtCont->Extension->getExtensionAsWidget());
+      if (ExtWindow)
+        ExtWindow->present();
+    }
     return;
+  }
+
+  try
+  {
+    if (!ExtCont->instantiateExt())
+      return;
+  }
+  catch (openfluid::base::OFException e)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
+    return;
+  }
+
+  openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
 
   Ext->setSimulationBlobAndModel(m_EngineProject.getSimBlob(),
       m_EngineProject.getModelInstance());
 
-  if (Ext->getType()
-      != openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
-    ExtCont->Extension->show();
-  else
+  Ext->signal_ChangedOccurs().connect(sigc::mem_fun(*this,
+      &ProjectCoordinator::whenExtensionChanged));
+
+  if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
   {
     std::string PageName = ExtCont->Infos.ShortName;
 
-    if (!m_Workspace.existsPageName(PageName))
-    {
-      ((openfluid::builderext::WorkspaceTab*) Ext)->update();
-      m_ModulesByPageNameMap[PageName]
-          = (openfluid::builderext::WorkspaceTab*) Ext;
-      m_Workspace.appendPage(PageName, Ext->getExtensionAsWidget());
-    }
+    openfluid::builderext::WorkspaceTab* Tab =
+        static_cast<openfluid::builderext::WorkspaceTab*> (Ext);
+
+    Tab->update();
+
+    addModuleToWorkspace(PageName, *Tab);
+
+    m_TabExtensionIdByNameMap[PageName] = ExtID;
 
     m_Workspace.setCurrentPage(PageName);
   }
+  else
+  {
+    if ((ExtCont->Infos.Type
+        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
+        || ExtCont->Infos.Type
+            == openfluid::builderext::PluggableBuilderExtension::SimulationListener))
+    {
+      openfluid::builderext::ModelessWindow* ModelessWin =
+          static_cast<openfluid::builderext::ModelessWindow*> (Ext);
 
+      ModelessWin->signal_Hidden().connect(sigc::bind<std::string>(
+          sigc::mem_fun(*this,
+              &ProjectCoordinator::whenModelessWindowExtensionHidden), ExtID));
+
+      m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
+
+      Ext->show();
+
+    }
+    else
+    {
+      Ext->show();
+      ExtCont->deleteExt();
+    }
+
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenExtensionChanged()
+{
+  Glib::ustring OutputConsistencyMessage =
+      m_EngineProject.checkOutputsConsistency();
+
+  if (!OutputConsistencyMessage.empty())
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        Glib::ustring::compose(_(
+            "This change leads OpenFLUID to delete:\n%1"),
+            OutputConsistencyMessage));
+
+  updateModelessWindowsExtensions();
+
+  updateResults();
+
+  m_ExplorerModel.updateDomainAsked();
+
+  m_ExplorerModel.updateModelAsked();
+
+  m_ExplorerModel.updateSimulationAsked();
+
+  removeDeletedClassPages();
+
+  removeDeletedSetPages();
+
+  updateWorkspaceModules();
+
+  checkProject();
+
+  m_signal_ChangeHappened.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenModelessWindowExtensionHidden(std::string ExtID)
+{
+  BuilderExtensionsManager::getInstance()->deletePluggableExtension(ExtID);
+  m_ModelessWindowsExtensionsMap.erase(ExtID);
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectCoordinator::updateModelessWindowsExtensions()
+{
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
+      it = m_ModelessWindowsExtensionsMap.begin(); it
+      != m_ModelessWindowsExtensionsMap.end(); ++it)
+    it->second->onRefresh();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectCoordinator::whenRunStarted()
+{
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
+      it = m_ModelessWindowsExtensionsMap.begin(); it
+      != m_ModelessWindowsExtensionsMap.end(); ++it)
+    it->second->onRunStarted();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectCoordinator::whenRunStopped()
+{
+  m_HasRun = true;
+
+  whenDomainChanged(); // for functions that create units
+
+  m_ExplorerModel.updateResultsAsked(false);
+
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
+      it = m_ModelessWindowsExtensionsMap.begin(); it
+      != m_ModelessWindowsExtensionsMap.end(); ++it)
+    it->second->onRunStopped();
 }
 
 // =====================================================================

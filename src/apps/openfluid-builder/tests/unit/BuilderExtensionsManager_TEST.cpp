@@ -101,10 +101,16 @@ void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
   {
     for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
     {
+      bool Instanciated = (*ECMit).second.Extension;
       std::cerr << "File : " << (*ECMit).second.Filename << std::endl;
       std::cerr << " * ID " << (*ECMit).second.Infos.ID << std::endl;
-      std::cerr << " * Type " << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Extension->getType()) << std::endl;
-      std::cerr << " * Ready? " << (*ECMit).second.Extension->isReadyForShowtime() << std::endl;
+      std::cerr << " * Type from Infos " << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Infos.Type) << std::endl;
+      std::cerr << " * Instantiated? " << Instanciated << std::endl;
+      if(Instanciated)
+      {
+        std::cerr << " ** Type of Extension" << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Extension->getType()) << std::endl;
+        std::cerr << " ** Ready? " << (*ECMit).second.Extension->isReadyForShowtime() << std::endl;
+      }
       std::cerr << " * Shortname " << (*ECMit).second.Infos.ShortName << std::endl;
       std::cerr << " * Name " << (*ECMit).second.Infos.Name << std::endl;
       std::cerr << " * Description " << (*ECMit).second.Infos.Description << std::endl;
@@ -139,12 +145,46 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::SimulationListener)->size(),1);
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::ModelessWindow)->size(),1);
 
-  BEM->linkRegisteredExtensionsWithSimulationBlobAndModel(&TheBlob, NULL);
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 
-  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
+
+  BOOST_CHECK(!BEM->getExtensionContainer("wrong.extension"));
+  BOOST_CHECK(!BEM->instantiatePluggableExtension("wrong.extension"));
+
+  ExtensionContainer* WrongtypeContainer = BEM->getExtensionContainer("tests.builder.wrongtypeextension");
+  BOOST_CHECK(WrongtypeContainer);
+  BOOST_CHECK(!WrongtypeContainer->Extension);
+  BOOST_CHECK_THROW(WrongtypeContainer->instantiateExt(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(BEM->instantiatePluggableExtension("tests.builder.wrongtypeextension"),openfluid::base::OFException);
+  BOOST_CHECK(!WrongtypeContainer->Extension);
+
+  ExtensionContainer* AssistantContainer = BEM->getExtensionContainer("tests.builder.assistant");
+  BOOST_CHECK(AssistantContainer);
+  BOOST_CHECK(!AssistantContainer->Extension);
+  BOOST_CHECK(BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(!AssistantContainer->instantiateExt());
+  BOOST_CHECK(!BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(AssistantContainer->Extension);
+  BOOST_CHECK_EQUAL(AssistantContainer->Extension->getType(),AssistantContainer->Infos.Type);
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
+
+  BEM->deletePluggableExtension("tests.builder.assistant");
+  BOOST_CHECK(!AssistantContainer->Extension);
+
+  DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
+
+  BOOST_CHECK(BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(!AssistantContainer->instantiateExt());
+  BOOST_CHECK(!BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(AssistantContainer->Extension);
+  BOOST_CHECK_EQUAL(AssistantContainer->Extension->getType(),AssistantContainer->Infos.Type);
+
+  DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
+
+//  BEM->linkRegisteredExtensionsWithSimulationBlobAndModel(&TheBlob, NULL);
+//  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
+
 
 }

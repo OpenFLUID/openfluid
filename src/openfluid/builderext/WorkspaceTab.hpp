@@ -88,8 +88,8 @@ class DLLEXPORT WorkspaceTab : public ModelessExtension, public openfluid::guico
     // unused here
     void show() {};
 
-    void update() { onRefresh(); }
-
+    sigc::signal<void> signal_ModuleChanged()
+    { return signal_ChangedOccurs(); }
 };
 
 

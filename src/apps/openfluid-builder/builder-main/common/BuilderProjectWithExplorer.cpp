@@ -89,9 +89,6 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
   mp_Coordinator->signal_ChangeHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenChangeHappened));
 
-  mp_EngineProject->signal_RunHappened().connect(sigc::mem_fun(*this,
-      &BuilderProjectWithExplorer::whenRunHappened));
-
   mp_EngineProject->signal_SaveHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenSaveHappened));
 }
@@ -123,14 +120,6 @@ void BuilderProjectWithExplorer::whenSaveHappened()
   m_signal_SaveHappened.emit();
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void BuilderProjectWithExplorer::whenRunHappened()
-{
-  mp_Coordinator->whenRunHappened();
-}
 
 // =====================================================================
 // =====================================================================

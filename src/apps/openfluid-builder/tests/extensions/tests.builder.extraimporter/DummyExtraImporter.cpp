@@ -65,7 +65,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.extraimporter",
                        "Dummy extra importer for tests",
                        "This is a extra importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::ExtraImporter);
 
 
 // =====================================================================
@@ -121,6 +122,21 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 // =====================================================================
 // =====================================================================
 
+class DummyExtraImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
 
-DEFINE_EXTENSION_HOOKS(DummyExtraImporter);
+  public:
+
+    DummyExtraImporterPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummyExtraImporter, DummyExtraImporterPrefs);
 

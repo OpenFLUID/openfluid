@@ -65,7 +65,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.spatialgraphimporter",
                        "Dummy spatialgraph importer for tests",
                        "This is a spatialgraph importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter);
 
 
 // =====================================================================
@@ -121,6 +122,21 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 // =====================================================================
 // =====================================================================
 
+class DummySpatialgraphImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
 
-DEFINE_EXTENSION_HOOKS(DummySpatialgraphImporter);
+  public:
+
+    DummySpatialgraphImporterPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummySpatialgraphImporter, DummySpatialgraphImporterPrefs);
 

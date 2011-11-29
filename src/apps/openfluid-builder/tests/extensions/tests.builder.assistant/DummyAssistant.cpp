@@ -58,104 +58,99 @@
 #include <gtkmm/main.h>
 #include <gtkmm/label.h>
 
-DECLARE_EXTENSION_HOOKS
-;
-
-DEFINE_EXTENSION_INFOS("tests.builder.assistant",
-    "Dummy assistant",
-    "Dummy assistant for tests",
-    "This is an assistant for tests",
-    "JC.Fabre;A.Libres",
-    "fabrejc@supagro.inra.fr;libres@supagro.inra.fr")
-;
-
 // =====================================================================
 // =====================================================================
 
-
-class DummyAssistant: public openfluid::builderext::ModalWindow
+class TheDummyAssistant: public Gtk::Assistant
 {
   private:
 
-    Gtk::Assistant* mp_Assistant;
-    Gtk::Label* mp_Label2;
+    openfluid::machine::SimulationBlob* mp_SimBlob;
+    openfluid::core::UnitsCollection* mp_TestUnitsColl;
+    bool m_Applied;
 
   public:
 
-    DummyAssistant()
+    TheDummyAssistant(openfluid::machine::SimulationBlob* SimBlob) :
+      Gtk::Assistant(), mp_SimBlob(SimBlob), mp_TestUnitsColl(0), m_Applied(false)
     {
-      mp_Assistant = new Gtk::Assistant();
-
-      mp_Assistant->set_title("Dummy assistant");
-      mp_Assistant->set_default_size(400, 300);
-      mp_Assistant->set_modal(true);
+      set_title("Dummy assistant");
+      set_default_size(400, 300);
+      set_modal(true);
 
       Gtk::Label* Label1 = Gtk::manage(new Gtk::Label(
           "I'm a Dummy assistant for tests"));
-      mp_Assistant->append_page(*Label1);
-      mp_Assistant->set_page_title(*Label1, "Page 1/2");
-      mp_Assistant->set_page_type(*Label1, Gtk::ASSISTANT_PAGE_INTRO);
-      mp_Assistant->set_page_complete(*Label1, true);
+      append_page(*Label1);
+      set_page_title(*Label1, "Page 1/2");
+      set_page_type(*Label1, Gtk::ASSISTANT_PAGE_INTRO);
+      set_page_complete(*Label1, true);
 
-      mp_Label2 = Gtk::manage(new Gtk::Label(
-          "Nb of UnitClasses: no Core Repository available"));
-      mp_Assistant->append_page(*mp_Label2);
-      mp_Assistant->set_page_title(*mp_Label2, "Page 2/2");
-      mp_Assistant->set_page_type(*mp_Label2, Gtk::ASSISTANT_PAGE_CONFIRM);
-      mp_Assistant->set_page_complete(*mp_Label2, true);
+      Gtk::Label* Label2 = Gtk::manage(new Gtk::Label());
 
-      mp_Assistant->signal_apply().connect(sigc::mem_fun(*this,
-          &DummyAssistant::hide));
-      mp_Assistant->signal_cancel().connect(sigc::mem_fun(*this,
-          &DummyAssistant::hide));
-      mp_Assistant->signal_close().connect(sigc::mem_fun(*this,
-          &DummyAssistant::hide));
-
-      mp_Assistant->show_all_children();
-    }
-    ;
-
-    // =====================================================================
-    // =====================================================================
-
-
-    ~DummyAssistant()
-    {
-      delete mp_Assistant;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    Gtk::Widget* getExtensionAsWidget()
-    {
-      return mp_Assistant;
-    }
-
-    // =====================================================================
-    // =====================================================================
-
-    void show()
-    {
-      if (mp_SimulationBlob)
+      if (!mp_SimBlob)
       {
-        unsigned int Size =
-            mp_SimulationBlob->getCoreRepository().getUnitsByClass()->size();
-        mp_Label2 ->set_text(Glib::ustring::compose("Nb of UnitClasses: %1",
-            Size));
+        Label2->set_text("Nb of units in TestUnits class: no CoreRepository\n"
+          "Nothing to do");
+
+        signal_apply().connect(sigc::mem_fun(*this, &Gtk::Assistant::hide));
+      }
+      else
+      {
+        unsigned int Size = 0;
+
+        mp_TestUnitsColl = mp_SimBlob->getCoreRepository().getUnits("TestUnits");
+
+        if (mp_TestUnitsColl)
+          Size = mp_TestUnitsColl->getList()->size();
+
+        Label2->set_text(Glib::ustring::compose(
+            "Nb of units in TestUnits class: %1\n"
+              "Clicking ok will add a Unit of class \"TestUnits\"", Size));
+
+        signal_apply().connect(
+            sigc::mem_fun(*this, &TheDummyAssistant::m_apply));
       }
 
-      Gtk::Main::run(*mp_Assistant);
+      append_page(*Label2);
+      set_page_title(*Label2, "Page 2/2");
+      set_page_type(*Label2, Gtk::ASSISTANT_PAGE_CONFIRM);
+      set_page_complete(*Label2, true);
+
+      signal_cancel().connect(sigc::mem_fun(*this, &Gtk::Assistant::hide));
+      signal_close().connect(sigc::mem_fun(*this, &Gtk::Assistant::hide));
+
+      show_all_children();
     }
 
-    // =====================================================================
-    // =====================================================================
-
-    void hide()
+    void m_apply()
     {
-      mp_Assistant->hide();
+      unsigned int NextId = 1;
+
+      if (mp_TestUnitsColl)
+      {
+        openfluid::core::UnitsList_t* TestUnits = mp_TestUnitsColl->getList();
+        if (!TestUnits->empty())
+        {
+          NextId = TestUnits->end().operator --()->getID() + 1;
+
+          while (mp_TestUnitsColl->getUnit(NextId))
+            NextId++;
+        }
+      }
+
+      openfluid::core::Unit U("TestUnits", NextId, 1,
+          openfluid::core::InstantiationInfo::DESCRIPTOR);
+
+      mp_SimBlob->getCoreRepository().addUnit(U);
+
+      m_Applied = true;
+
+      hide();
+    }
+
+    bool getApplied()
+    {
+      return m_Applied;
     }
 
 };
@@ -164,6 +159,77 @@ class DummyAssistant: public openfluid::builderext::ModalWindow
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyAssistant)
-;
+DECLARE_EXTENSION_HOOKS
+
+DEFINE_EXTENSION_INFOS("tests.builder.assistant",
+    "Dummy assistant",
+    "Dummy assistant for tests",
+    "This is an assistant for tests",
+    "JC.Fabre;A.Libres",
+    "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+    openfluid::builderext::PluggableBuilderExtension::ModalWindow)
+
+// =====================================================================
+// =====================================================================
+
+
+class DummyAssistant: public openfluid::builderext::ModalWindow
+{
+  public:
+
+    DummyAssistant()
+    {
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    ~DummyAssistant()
+    {
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    Gtk::Widget* getExtensionAsWidget()
+    {
+      return (Gtk::Widget*) 0;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      TheDummyAssistant Assist(mp_SimulationBlob);
+
+      Gtk::Main::run(Assist);
+
+      if (Assist.getApplied())
+        signal_ChangedOccurs().emit();
+    }
+
+};
+
+// =====================================================================
+// =====================================================================
+
+class DummyAssistantPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
+
+  public:
+
+    DummyAssistantPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+DEFINE_EXTENSION_HOOKS(DummyAssistant, DummyAssistantPrefs)
 

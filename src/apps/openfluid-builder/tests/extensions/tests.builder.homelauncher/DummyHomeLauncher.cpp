@@ -65,7 +65,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.homelauncher",
                        "Dummy home launcher for tests",
                        "This is a home launcher for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::HomeLauncher);
 
 
 // =====================================================================
@@ -121,8 +122,23 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 // =====================================================================
 // =====================================================================
 
+class DummyHomeLauncherPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
 
-DEFINE_EXTENSION_HOOKS(DummyHomeLauncher);
+  public:
+
+    DummyHomeLauncherPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummyHomeLauncher, DummyHomeLauncherPrefs);
 
 
 

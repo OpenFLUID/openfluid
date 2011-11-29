@@ -67,6 +67,9 @@ namespace openfluid {
 namespace guicommon {
 class ProjectWorkspaceModule;
 }
+namespace builderext {
+class ModelessWindow;
+}
 }
 
 class ProjectExplorerModel;
@@ -100,7 +103,10 @@ class ProjectCoordinator
 
     std::set<std::string> m_SetPageNames;
 
-    std::set<std::string> m_TabExtensionNames;
+    std::map<std::string,std::string> m_TabExtensionIdByNameMap;
+
+    std::map<std::string, openfluid::builderext::ModelessWindow*>
+        m_ModelessWindowsExtensionsMap;
 
     bool m_HasRun;
 
@@ -160,6 +166,12 @@ class ProjectCoordinator
 
     void removeDeletedSetPages();
 
+    void whenExtensionChanged();
+
+    void whenModelessWindowExtensionHidden(std::string ExtID);
+
+    void updateModelessWindowsExtensions();
+
   public:
 
     sigc::signal<void, bool> signal_CheckHappened();
@@ -174,8 +186,6 @@ class ProjectCoordinator
 
     void checkProject();
 
-    void whenRunHappened();
-
     void whenUpdatePluginsAsked(int ResponseId = Gtk::RESPONSE_OK);
 
     void setFileMonitorDisplayState(bool HasToDisplay);
@@ -183,6 +193,10 @@ class ProjectCoordinator
     void updatePluginPathsMonitors();
 
     void launchExtension(std::string ExtensionID);
+
+    void whenRunStarted();
+
+    void whenRunStopped();
 
 };
 

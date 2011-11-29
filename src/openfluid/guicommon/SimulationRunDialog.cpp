@@ -85,7 +85,8 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::Engine* Engine)
 
   openfluid::tools::ConvertValue((m_StepsCount-1),&m_LastStepStr);
 
-
+  set_modal(true);
+  set_title(_("Simulation"));
   set_border_width(10);
   set_default_size(600, -1);
   set_position(Gtk::WIN_POS_CENTER);
@@ -241,7 +242,11 @@ void SimulationRunDialog::runSimulation()
     mp_Engine->prepareData();
     mp_Engine->checkConsistency();
 
+    signal_SimulationStarted().emit();
+
     mp_Engine->run();
+
+    signal_SimulationStopped().emit();
 
     mp_Engine->saveReports();
 
@@ -250,30 +255,32 @@ void SimulationRunDialog::runSimulation()
   }
   catch (openfluid::base::OFException& E)
   {
+    signal_SimulationStopped().emit();
     DialogBoxFactory::showSimpleErrorMessage(_("OpenFLUID error: ") + std::string(E.what()));
     m_SimulationCompleted = false;
     hide();
   }
   catch (std::bad_alloc& E)
   {
+    signal_SimulationStopped().emit();
     DialogBoxFactory::showSimpleErrorMessage(_("Memory allocation error: ") + std::string(E.what()));
     m_SimulationCompleted = false;
     hide();
   }
   catch (std::exception& E)
   {
+    signal_SimulationStopped().emit();
     DialogBoxFactory::showSimpleErrorMessage(_("System error: ") + std::string(E.what()));
     m_SimulationCompleted = false;
     hide();
   }
   catch (...)
   {
+    signal_SimulationStopped().emit();
     DialogBoxFactory::showSimpleErrorMessage(_("Undetermined error."));
     m_SimulationCompleted = false;
     hide();
   }
-
-//  m_SimulationCompleted = true;
 
 }
 

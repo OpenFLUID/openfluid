@@ -65,7 +65,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.eventsimporter",
                        "Dummy events importer for tests",
                        "This is a events importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::EventsImporter);
 
 
 // =====================================================================
@@ -120,6 +121,21 @@ class DummyEventsImporter : public openfluid::builderext::EventsImporter
 // =====================================================================
 // =====================================================================
 
+class DummyEventsImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
 
-DEFINE_EXTENSION_HOOKS(DummyEventsImporter);
+  public:
+
+    DummyEventsImporterPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummyEventsImporter, DummyEventsImporterPrefs);
 

@@ -108,7 +108,9 @@ class EngineProject
 
     openfluid::machine::Engine* mp_Engine;
 
-    sigc::signal<void> m_signal_RunHappened;
+    sigc::signal<void> m_signal_RunStarted;
+
+    sigc::signal<void> m_signal_RunStopped;
 
     sigc::signal<void> m_signal_SaveHappened;
 
@@ -127,6 +129,10 @@ class EngineProject
 
     void deleteEngineObjects();
 
+    void whenSimulationStarted();
+
+    void whenSimulationStopped();
+
   protected:
 
     openfluid::core::DateTime m_DefaultBeginDT;
@@ -137,7 +143,8 @@ class EngineProject
 
     EngineProject(Glib::ustring FolderIn = "", bool WithProjectManager = false);
 
-    sigc::signal<void> signal_RunHappened();
+    sigc::signal<void> signal_RunStarted();
+    sigc::signal<void> signal_RunStopped();
 
     sigc::signal<void> signal_SaveHappened();
 

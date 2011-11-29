@@ -62,6 +62,68 @@
 #include "builderconfig.hpp"
 
 
+// =====================================================================
+// =====================================================================
+
+
+ExtensionContainer::ExtensionContainer() : ExtProc(0), Extension(0)
+{}
+
+// =====================================================================
+// =====================================================================
+
+void ExtensionContainer::setExtProcFunction(openfluid::builderext::GetExtensionProc TheExtProc)
+{
+  ExtProc = TheExtProc;
+};
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExtensionContainer::instantiateExt()
+{
+  if(!Extension && ExtProc)
+  {
+    Extension = ExtProc();
+
+    openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtensionType = Extension->getType();
+
+    if(ExtensionType == Infos.Type)
+      return true;
+
+
+    Extension = 0;
+
+    throw openfluid::base::OFException("OpenFLUID Builder","ExtensionContainer::instantiate ",
+        Infos.ID + ": Wrong declared extension type ("
+        + BuilderExtensionsManager::getExtensionTypeAsString(Infos.Type)
+    + " doesn't match Pluggable extension class type "
+    + BuilderExtensionsManager::getExtensionTypeAsString(ExtensionType) + ")");
+  }
+
+  return false;
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ExtensionContainer::deleteExt()
+{
+  delete Extension;
+  Extension = 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;
 
 
@@ -171,8 +233,8 @@ void BuilderExtensionsManager::registerExtensions()
 
                 if (ExtProc != NULL)
                 {
-                  ExtContainer.Extension = ExtProc();
-                  m_RegisteredExtensions[ExtContainer.Extension->getType()][TmpID] = ExtContainer;
+                  ExtContainer.setExtProcFunction(ExtProc);
+                  m_RegisteredExtensions[ExtContainer.Infos.Type][TmpID] = ExtContainer;
                   m_RegisteredExtensionsCount++;
                 }
               }
@@ -225,15 +287,15 @@ ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(openfluid::b
 // =====================================================================
 
 
-ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::string& ExtID) const
+ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::string& ExtID)
 {
   for (CollectionOfExtensions_t::const_iterator COEit = m_RegisteredExtensions.begin(); COEit
   != m_RegisteredExtensions.end(); ++COEit)
   {
-    ExtensionContainerMap_t ExtContainerMap = COEit->second;
+    ExtensionContainer* ExtCont = getExtensionContainer(COEit->first,ExtID);
 
-    if(ExtContainerMap.count(ExtID))
-        return &ExtContainerMap.at(ExtID);
+    if(ExtCont != NULL)
+      return ExtCont;
   }
 
   return (ExtensionContainer*)0;
@@ -243,7 +305,7 @@ ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::s
 // =====================================================================
 
 
-void BuilderExtensionsManager::linkRegisteredExtensionsWithSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model)
+void BuilderExtensionsManager::unlinkRegisteredExtensionsWithSimulationBlobAndModel()
 {
   CollectionOfExtensions_t::iterator COEit;
   ExtensionContainerMap_t::iterator ECMit;
@@ -252,7 +314,8 @@ void BuilderExtensionsManager::linkRegisteredExtensionsWithSimulationBlobAndMode
   {
     for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
     {
-      (*ECMit).second.Extension->setSimulationBlobAndModel(Blob, Model);
+      if((*ECMit).second.Extension)
+        (*ECMit).second.Extension->setSimulationBlobAndModel(NULL, NULL);
     }
   }
 
@@ -285,4 +348,30 @@ std::string BuilderExtensionsManager::getExtensionTypeAsString(openfluid::builde
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+bool BuilderExtensionsManager::instantiatePluggableExtension(std::string ExtID)
+{
+  ExtensionContainer* ExtCont = getExtensionContainer(ExtID);
+
+  if(ExtCont)
+    return ExtCont->instantiateExt();
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderExtensionsManager::deletePluggableExtension(std::string ExtID)
+{
+  ExtensionContainer* ExtCont = getExtensionContainer(ExtID);
+
+  if(ExtCont)
+    ExtCont->deleteExt();
+}
 

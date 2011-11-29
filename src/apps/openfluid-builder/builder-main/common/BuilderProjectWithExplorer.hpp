@@ -100,8 +100,6 @@ class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, pu
 
     void whenSaveHappened();
 
-    void whenRunHappened();
-
   protected:
 
     void compose();

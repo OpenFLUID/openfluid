@@ -67,12 +67,33 @@
 // =====================================================================
 
 
-struct ExtensionContainer
+class ExtensionContainer
 {
-  std::string Filename;
-  openfluid::builderext::BuilderExtensionInfos Infos;
-  openfluid::builderext::PluggableBuilderExtension* Extension;
+  private:
+
+    openfluid::builderext::GetExtensionProc ExtProc;
+
+  public:
+
+    std::string Filename;
+
+    openfluid::builderext::BuilderExtensionInfos Infos;
+
+    openfluid::builderext::PluggableBuilderExtension* Extension;
+
+    ExtensionContainer();
+
+    void setExtProcFunction(openfluid::builderext::GetExtensionProc TheExtProc);
+
+    bool instantiateExt();
+
+    void deleteExt();
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 typedef std::map<std::string, ExtensionContainer> ExtensionContainerMap_t;
 
@@ -126,14 +147,15 @@ class BuilderExtensionsManager
 
     ExtensionContainer* getExtensionContainer(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type, std::string ExtID);
 
-    ExtensionContainer* getExtensionContainer(const std::string& ExtID) const;
+    ExtensionContainer* getExtensionContainer(const std::string& ExtID);
 
     static std::string getExtensionTypeAsString(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type);
 
-    void linkRegisteredExtensionsWithSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model);
+    void unlinkRegisteredExtensionsWithSimulationBlobAndModel();
 
-    void unlinkRegisteredExtensionsWithSimulationBlobAndModel() { linkRegisteredExtensionsWithSimulationBlobAndModel(NULL, NULL); };
+    bool instantiatePluggableExtension(std::string ExtID);
 
+    void deletePluggableExtension(std::string ExtID);
 };
 
 

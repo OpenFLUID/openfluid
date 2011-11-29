@@ -46,101 +46,56 @@
  */
 
 /**
- \file DummyWorkspaceTab.cpp
+ \file WrongTypeExt.cpp
  \brief Implements ...
 
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include <openfluid/builderext/WorkspaceTab.hpp>
 
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/button.h>
+#include <openfluid/builderext/InputdataImporter.hpp>
 
-DECLARE_EXTENSION_HOOKS
+#include <gtkmm/messagedialog.h>
 
-DEFINE_EXTENSION_INFOS("tests.builder.workspacetab",
-    "Dummy workspace tab",
-    "Dummy workspace tab for tests",
-    "This is a dummy workspace tab for tests",
-    "JC.Fabre;A.Libres",
-    "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
-    openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+
+DECLARE_EXTENSION_HOOKS;
+
+DEFINE_EXTENSION_INFOS("tests.builder.wrongtypeextension",
+                       "Wrong type importer",
+                       "Wrong type importer for tests",
+                       "This is a wrong type importer for tests",
+                       "JC.Fabre;A.Libres",
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter);
+
 
 // =====================================================================
 // =====================================================================
 
 
-class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
+class WrongTypeImporter : public openfluid::builderext::InputdataImporter
 {
   private:
 
-    Gtk::VBox* mp_MainBox;
-    Gtk::Label* mp_LabelTestRefresh;
-
-    openfluid::core::UnitsCollection* mp_TestUnitsColl;
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
-    DummyWorkspaceTab() :
-      mp_TestUnitsColl(0)
+    WrongTypeImporter()
     {
-      Gtk::Label* Label = Gtk::manage(new Gtk::Label("I am DummyWorkspaceTab"));
+      mp_Dialog = new Gtk::MessageDialog("I am wrong type Importer.\nI should not appear...");
+    };
 
-      mp_LabelTestRefresh = Gtk::manage(new Gtk::Label());
-
-      Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
-      Gtk::Label* AddLabel = Gtk::manage(new Gtk::Label(
-          "Clicking the button will add a Unit of class \"TestUnits\""));
-      Gtk::Button* AddButton = Gtk::manage(new Gtk::Button("Add"));
-      AddButton->signal_clicked().connect(sigc::mem_fun(*this,
-          &DummyWorkspaceTab::whenAddButtonClicked));
-
-      Box->pack_start(*AddLabel);
-      Box->pack_start(*AddButton, Gtk::PACK_SHRINK, 20);
-
-      mp_MainBox = Gtk::manage(new Gtk::VBox());
-      mp_MainBox->pack_start(*Label);
-      mp_MainBox->pack_start(*Box, Gtk::PACK_SHRINK);
-      mp_MainBox->pack_start(*mp_LabelTestRefresh);
-
-      mp_MainBox->show_all_children();
-      mp_MainBox->set_visible(true);
-    }
 
     // =====================================================================
     // =====================================================================
 
 
-    ~DummyWorkspaceTab()
+    ~WrongTypeImporter()
     {
+      delete mp_Dialog;
+    };
 
-    }
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void update()
-    {
-      unsigned int Size = 0;
-
-      if (mp_SimulationBlob)
-      {
-        mp_TestUnitsColl = mp_SimulationBlob->getCoreRepository().getUnits(
-            "TestUnits");
-
-        if (mp_TestUnitsColl)
-          Size = mp_TestUnitsColl->getList()->size();
-
-        mp_LabelTestRefresh->set_text(Glib::ustring::compose(
-            "Nb of units in TestUnits class: %1", Size));
-      }
-      else
-        mp_LabelTestRefresh->set_text(
-            "Nb of units in TestUnits class: no Core Repository available");
-    }
 
     // =====================================================================
     // =====================================================================
@@ -148,50 +103,32 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return mp_MainBox;
+      return mp_Dialog;
     }
 
     // =====================================================================
     // =====================================================================
 
-
-    void whenAddButtonClicked()
+    void show()
     {
-      unsigned int NextId = 1;
-
-      if (mp_TestUnitsColl)
-      {
-        openfluid::core::UnitsList_t* TestUnits = mp_TestUnitsColl->getList();
-
-        if (!TestUnits->empty())
-        {
-          NextId = TestUnits->end().operator --()->getID() + 1;
-
-          while (mp_TestUnitsColl->getUnit(NextId))
-            NextId++;
-        }
-      }
-
-      openfluid::core::Unit U("TestUnits", NextId, 1,
-          openfluid::core::InstantiationInfo::DESCRIPTOR);
-
-      mp_SimulationBlob->getCoreRepository().addUnit(U);
-
-      signal_ChangedOccurs().emit();
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
+
 
 };
 
+
 // =====================================================================
 // =====================================================================
 
-class DummyWorkspaceTabPrefs : public openfluid::builderext::BuilderExtensionPrefs
+class WrongTypeImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
 {
   private:
 
   public:
 
-    DummyWorkspaceTabPrefs();
+  WrongTypeImporterPrefs();
 
 
 
@@ -200,6 +137,6 @@ class DummyWorkspaceTabPrefs : public openfluid::builderext::BuilderExtensionPre
 // =====================================================================
 // =====================================================================
 
-DEFINE_EXTENSION_HOOKS(DummyWorkspaceTab, DummyWorkspaceTabPrefs)
-;
+
+DEFINE_EXTENSION_HOOKS(WrongTypeImporter, WrongTypeImporterPrefs);
 

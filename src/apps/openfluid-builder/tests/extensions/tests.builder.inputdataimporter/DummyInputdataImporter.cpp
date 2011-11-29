@@ -65,7 +65,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.inputdataimporter",
                        "Dummy inputdata importer for tests",
                        "This is a inputdata importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::InputdataImporter);
 
 
 // =====================================================================
@@ -121,8 +122,23 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 // =====================================================================
 // =====================================================================
 
+class DummyInputdataImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
 
-DEFINE_EXTENSION_HOOKS(DummyInputdataImporter);
+  public:
+
+    DummyInputdataImporterPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummyInputdataImporter, DummyInputdataImporterPrefs);
 
 
 

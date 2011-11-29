@@ -81,6 +81,11 @@
 #define EXTINFOS_PROC_NAME "GetExtensionInfos"
 
 /**
+  Prefs hook name
+*/
+#define EXTPREFS_PROC_NAME "GetExtensionPrefs"
+
+/**
   SDK version hook name
 */
 #define EXTSDKVERSION_PROC_NAME "GetExtensionSDKVersion"
@@ -99,14 +104,16 @@
     DLLEXPORT std::string GetExtensionSDKVersion(); \
     DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetExtension(); \
     DLLEXPORT openfluid::builderext::BuilderExtensionInfos GetExtensionInfos(); \
+    DLLEXPORT openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs(); \
   }
 
 
 /**
   Macro for definition of extension hook
   @param[in] pluginclassname The name of the class to instanciate
+  @param[in] pluginprefsclassname The name of the Preferences class to instanciate
 */
-#define DEFINE_EXTENSION_HOOKS(pluginclassname) \
+#define DEFINE_EXTENSION_HOOKS(pluginclassname,pluginprefsclassname) \
   std::string GetExtensionSDKVersion() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
@@ -115,10 +122,15 @@
   openfluid::builderext::PluggableBuilderExtension* GetExtension() \
   { \
     return new pluginclassname(); \
+  } \
+  \
+  openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs() \
+  { \
+    return new pluginprefsclassname(); \
   }
 
 
-#define DEFINE_EXTENSION_INFOS(id,shortname,name,desc,authors,authorsctct) \
+#define DEFINE_EXTENSION_INFOS(id,shortname,name,desc,authors,authorsctct,type) \
   openfluid::builderext::BuilderExtensionInfos GetExtensionInfos() \
   { \
     openfluid::builderext::BuilderExtensionInfos BEI; \
@@ -129,6 +141,7 @@
     BEI.Description = (desc); \
     BEI.Authors = (authors); \
     BEI.AuthorsContact = (authorsctct); \
+    BEI.Type = (type); \
     \
     return BEI; \
   }
@@ -141,33 +154,6 @@
 
 namespace openfluid { namespace builderext {
 
-
-class DLLEXPORT BuilderExtensionInfos
-{
-  public:
-
-    std::string ID;
-
-    std::string Name;
-
-    std::string ShortName;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string AuthorsContact;
-
-    BuilderExtensionInfos()
-    : ID(""), Name(""), ShortName(""), Description(""), Authors(""), AuthorsContact("")
-    {
-
-    }
-};
-
-
-// =====================================================================
-// =====================================================================
 
 
 typedef std::map<std::string,std::string> ExtensionConfig_t;
@@ -183,7 +169,7 @@ class DLLEXPORT PluggableBuilderExtension
 
     ExtensionConfig_t m_Config;
 
-    Gtk::Widget* m_PrefsPanelWidget;
+    sigc::signal<void> m_signal_ChangedOccurs;
 
     openfluid::machine::SimulationBlob* mp_SimulationBlob;
 
@@ -197,7 +183,8 @@ class DLLEXPORT PluggableBuilderExtension
                          SimulationListener, HomeLauncher };
 
 
-    PluggableBuilderExtension() : m_PrefsPanelWidget(NULL), mp_SimulationBlob(NULL) { };
+    PluggableBuilderExtension() : mp_SimulationBlob(NULL) { };
+
 
     virtual ~PluggableBuilderExtension() { };
 
@@ -205,16 +192,23 @@ class DLLEXPORT PluggableBuilderExtension
     void setSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model)
       { mp_SimulationBlob = Blob; mp_ModelInstance = Model; };
 
+
+    sigc::signal<void> signal_ChangedOccurs()
+    {
+      return m_signal_ChangedOccurs;
+    }
+
+
     /**
       Returns the type of the extension. This must be overridden.
-      @returns the type of the extension
+      @return the type of the extension
     */
     virtual ExtensionType getType() const = 0;
 
 
     /**
       Returns true if the extension is configurable, false otherwise.
-      @returns true if the extension is configurable
+      @return true if the extension is configurable
     */
     virtual bool isConfigurable() { return false; };
 
@@ -234,21 +228,13 @@ class DLLEXPORT PluggableBuilderExtension
 
 
     /**
-      Returns the main widget for the preferences panel of the extension.
-      Default is NULL, so no preference panel will be shown for this extension.
-      This should be overridden in derived extensions.
-      @returns a pointer to widget for the preferences panel
-    */
-    Gtk::Widget* getPrefsPanelAsWidget() { return m_PrefsPanelWidget; };
-
-
-    /**
       Returns the main widget of the extension. The kind of widget depends on the
       extension type.
       This must be overridden in derived extensions
-      @returns a pointer to the main widget
+      @return a pointer to the main widget
     */
     virtual Gtk::Widget* getExtensionAsWidget() = 0;
+
 
     virtual void show() = 0;
 
@@ -256,9 +242,64 @@ class DLLEXPORT PluggableBuilderExtension
     /**
       Returns true if the extension is currently ready to use (showtime!).
       Default is false, but this should be overridden in derived extensions
-      @returns  a boolean giving the state of the extension
+      @return  a boolean giving the state of the extension
     */
     virtual bool isReadyForShowtime() const { return false; };
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+class DLLEXPORT BuilderExtensionInfos
+{
+  public:
+
+    std::string ID;
+
+    std::string Name;
+
+    std::string ShortName;
+
+    std::string Description;
+
+    std::string Authors;
+
+    std::string AuthorsContact;
+
+    PluggableBuilderExtension::ExtensionType Type;
+
+    BuilderExtensionInfos()
+    : ID(""), Name(""), ShortName(""), Description(""), Authors(""), AuthorsContact(""),
+      Type(PluggableBuilderExtension::ModalWindow)
+    {
+
+    }
+};
+
+// =====================================================================
+// =====================================================================
+
+
+class DLLEXPORT BuilderExtensionPrefs
+{
+  public:
+
+
+    BuilderExtensionPrefs() { };
+
+
+    virtual ~BuilderExtensionPrefs() { };
+
+
+    /**
+      Returns the main widget for the preferences panel of the extension.
+      Default is NULL, so no preference panel will be shown for this extension.
+      This should be overridden in derived extensions.
+      @return a pointer to widget for the preferences panel
+    */
+    Gtk::Widget* getPrefsPanelAsWidget() { return NULL; };
 
 };
 
@@ -271,6 +312,8 @@ class DLLEXPORT PluggableBuilderExtension
 typedef PluggableBuilderExtension* (*GetExtensionProc)();
 
 typedef BuilderExtensionInfos (*GetExtensionInfosProc)();
+
+typedef BuilderExtensionPrefs* (*GetExtensionPrefsProc)();
 
 typedef std::string (*GetExtensionSDKVersionProc)();
 

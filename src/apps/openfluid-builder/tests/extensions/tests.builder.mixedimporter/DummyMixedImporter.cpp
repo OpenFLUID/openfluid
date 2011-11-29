@@ -65,7 +65,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.mixedimporter",
                        "Dummy mixed importer for tests",
                        "This is a mixed importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::MixedImporter);
 
 
 // =====================================================================
@@ -121,6 +122,21 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
 // =====================================================================
 // =====================================================================
 
+class DummyMixedImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
+{
+  private:
 
-DEFINE_EXTENSION_HOOKS(DummyMixedImporter);
+  public:
+
+    DummyMixedImporterPrefs();
+
+
+
+};
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_EXTENSION_HOOKS(DummyMixedImporter,DummyMixedImporterPrefs);
 
