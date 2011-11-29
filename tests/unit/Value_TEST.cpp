@@ -199,6 +199,11 @@ BOOST_AUTO_TEST_CASE(check_boolean)
 
   Val2.set(true && (false || true));
   std::cout << Val2 << " " << Val2.get() << " " << Val2.toString() << std::endl;
+
+  openfluid::core::BooleanValue Val3;
+  Val3 = Val1;
+  BOOST_REQUIRE_EQUAL( Val3.get(), Val2.get());
+
 }
 
 
@@ -247,6 +252,9 @@ BOOST_AUTO_TEST_CASE(check_vector)
   Val2.clear();
   BOOST_REQUIRE_EQUAL(Val2.getSize(),0);
   BOOST_REQUIRE_EQUAL(Val1.getSize(),30);
+
+  openfluid::core::VectorValue Val3;
+  Val3 = Val2;
 
 }
 
@@ -320,6 +328,10 @@ BOOST_AUTO_TEST_CASE(check_matrix)
 
   Val3.set(1,2,9.99);
   BOOST_REQUIRE_CLOSE( Val3.get(1,2), 9.99,0.000001 );
+
+  openfluid::core::MatrixValue Val4;
+
+  Val4 = Val3;
 
 }
 
