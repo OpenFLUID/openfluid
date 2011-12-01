@@ -68,6 +68,7 @@ DEFINE_EXTENSION_INFOS("tests.builder.homelauncher",
                        "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
                        openfluid::builderext::PluggableBuilderExtension::HomeLauncher);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================

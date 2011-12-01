@@ -66,6 +66,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.modelesswindow",
     "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
     openfluid::builderext::PluggableBuilderExtension::ModelessWindow)
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
+
 // =====================================================================
 // =====================================================================
 

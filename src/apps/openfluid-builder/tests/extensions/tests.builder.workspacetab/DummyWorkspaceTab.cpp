@@ -68,6 +68,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.workspacetab",
     "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
     openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
+
 // =====================================================================
 // =====================================================================
 

@@ -68,6 +68,7 @@ DEFINE_EXTENSION_INFOS("tests.builder.eventsimporter",
                        "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
                        openfluid::builderext::PluggableBuilderExtension::EventsImporter);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================

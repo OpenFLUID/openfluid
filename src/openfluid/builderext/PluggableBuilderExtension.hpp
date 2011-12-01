@@ -54,12 +54,15 @@
 
 
 #include <string>
+#include <set>
 
 #ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
 #define __PLUGGABLEBUILDEREXTENSION_HPP__
 
 
 #include <gtkmm/widget.h>
+
+#include <boost/preprocessor/seq/for_each.hpp>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
@@ -105,13 +108,14 @@
     DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetExtension(); \
     DLLEXPORT openfluid::builderext::BuilderExtensionInfos GetExtensionInfos(); \
     DLLEXPORT openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs(); \
+    DLLEXPORT std::set<std::string> GetDefaultConfig(); \
   }
 
 
 /**
   Macro for definition of extension hook
-  @param[in] pluginclassname The name of the class to instanciate
-  @param[in] pluginprefsclassname The name of the Preferences class to instanciate
+  @param[in] pluginclassname The name of the class to instantiate
+  @param[in] pluginprefsclassname The name of the Preferences class to instantiate
 */
 #define DEFINE_EXTENSION_HOOKS(pluginclassname,pluginprefsclassname) \
   std::string GetExtensionSDKVersion() \
@@ -121,7 +125,9 @@
   \
   openfluid::builderext::PluggableBuilderExtension* GetExtension() \
   { \
-    return new pluginclassname(); \
+    openfluid::builderext::PluggableBuilderExtension* Ext = new pluginclassname(); \
+      Ext->setDefaultConfiguration(GetDefaultConfig()); \
+    return Ext; \
   } \
   \
   openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs() \
@@ -146,6 +152,17 @@
     return BEI; \
   }
 
+
+#define ADD_TO_SET(r,data,elem) \
+  data.insert(elem);
+
+#define DEFINE_EXTENSION_DEFAULT_CONFIG(seq)       \
+    std::set<std::string> GetDefaultConfig()       \
+    {                                              \
+      std::set<std::string> config;                \
+      BOOST_PP_SEQ_FOR_EACH(ADD_TO_SET,config,seq) \
+      return config;                               \
+    }
 
 
 // =====================================================================
@@ -198,6 +215,19 @@ class DLLEXPORT PluggableBuilderExtension
       return m_signal_ChangedOccurs;
     }
 
+    void setDefaultConfiguration(std::set<std::string> DefaultConfig)
+    {
+      for(std::set<std::string>::iterator it = DefaultConfig.begin() ; it != DefaultConfig.end() ; ++it)
+      {
+        std::vector<std::string> Splitted = openfluid::tools::SplitString(*it,"=");
+
+        if(Splitted.size() != 2)
+          throw openfluid::base::OFException("OpenFLUID framework","PluggableBuilderExtension::setDefaultConfig",
+              "Configuration element \"" + Splitted[0] + "\" is not well formatted.");
+
+        m_Config[Splitted[0]] = Splitted[1];
+      }
+    }
 
     /**
       Returns the type of the extension. This must be overridden.

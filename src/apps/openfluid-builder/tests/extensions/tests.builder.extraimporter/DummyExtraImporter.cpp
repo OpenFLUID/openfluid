@@ -68,6 +68,7 @@ DEFINE_EXTENSION_INFOS("tests.builder.extraimporter",
                        "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
                        openfluid::builderext::PluggableBuilderExtension::ExtraImporter);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================

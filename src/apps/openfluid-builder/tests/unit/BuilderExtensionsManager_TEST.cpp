@@ -69,6 +69,7 @@
 #include "BuilderExtensionsManager.hpp"
 
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/builderext/ModelessWindow.hpp>
 
 
 // =====================================================================
@@ -101,12 +102,12 @@ void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
   {
     for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
     {
-      bool Instanciated = (*ECMit).second.Extension;
+      bool Instantiated = (*ECMit).second.Extension;
       std::cerr << "File : " << (*ECMit).second.Filename << std::endl;
       std::cerr << " * ID " << (*ECMit).second.Infos.ID << std::endl;
       std::cerr << " * Type from Infos " << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Infos.Type) << std::endl;
-      std::cerr << " * Instantiated? " << Instanciated << std::endl;
-      if(Instanciated)
+      std::cerr << " * Instantiated? " << Instantiated << std::endl;
+      if(Instantiated)
       {
         std::cerr << " ** Type of Extension" << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Extension->getType()) << std::endl;
         std::cerr << " ** Ready? " << (*ECMit).second.Extension->isReadyForShowtime() << std::endl;
@@ -180,11 +181,26 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK(!BEM->instantiatePluggableExtension("tests.builder.assistant"));
   BOOST_CHECK(AssistantContainer->Extension);
   BOOST_CHECK_EQUAL(AssistantContainer->Extension->getType(),AssistantContainer->Infos.Type);
+  BOOST_CHECK_EQUAL(AssistantContainer->Extension->getConfiguration().size(),0);
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 
-//  BEM->linkRegisteredExtensionsWithSimulationBlobAndModel(&TheBlob, NULL);
-//  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
 
+  ExtensionContainer* SimListenerContainer = BEM->getExtensionContainer("tests.builder.simulationlistener");
+  SimListenerContainer->instantiateExt();
+  openfluid::builderext::ExtensionConfig_t Config = SimListenerContainer->Extension->getConfiguration();
+  BOOST_CHECK_EQUAL(Config.size(),3);
+  BOOST_CHECK_EQUAL(Config["unit_class"],"TestUnits");
+  BOOST_CHECK_EQUAL(Config["unit_id"],"5");
+  BOOST_CHECK_EQUAL(Config["variable"],"tests.scalar");
+
+  openfluid::builderext::ModelessWindow* ModelessWindowExt = static_cast<openfluid::builderext::ModelessWindow*>(SimListenerContainer->Extension);
+  ModelessWindowExt->setSimulationBlobAndModel(&TheBlob, NULL);
+  ModelessWindowExt->onRunStarted();
+  ModelessWindowExt->onRunStopped();
+  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
+
+  BEM->deletePluggableExtension("tests.builder.assistant");
+  BEM->deletePluggableExtension("tests.builder.simulationlistener");
 
 }

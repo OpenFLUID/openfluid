@@ -68,6 +68,8 @@ DEFINE_EXTENSION_INFOS("tests.builder.simulationlistener",
     "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
     openfluid::builderext::PluggableBuilderExtension::SimulationListener)
 
+DEFINE_EXTENSION_DEFAULT_CONFIG(("unit_class=TestUnits")("unit_id=5")("variable=tests.scalar"))
+
 // =====================================================================
 // =====================================================================
 
@@ -82,12 +84,44 @@ class DummySimulationListener: public openfluid::builderext::SimulationListener
 
     openfluid::core::Unit* mp_U;
 
+    std::string m_VarName;
+
     sigc::connection m_connect;
+
+    // =====================================================================
+    // =====================================================================
+
+    bool writeValue()
+    {
+      if (mp_U && !m_VarName.empty() && mp_U->getVariables()->getCurrentValue(m_VarName))
+      {
+        mref_TextBuffer->insert_at_cursor("\n");
+        mref_TextBuffer->insert_at_cursor(
+            mp_U->getVariables()->getCurrentValue(m_VarName)->toString());
+      }
+
+      return true;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void response(int Response)
+    {
+      if (Response == Gtk::RESPONSE_APPLY)
+        mref_TextBuffer->set_text("");
+      else
+      {
+        mp_Dialog->hide();
+        signal_Hidden().emit();
+      }
+    }
+
 
   public:
 
     DummySimulationListener() :
-      mp_U(0)
+      mp_U(0),m_VarName("")
     {
       mp_Dialog = new Gtk::Dialog(
           "I am DummySimulationListener and I'm modeless", false, true);
@@ -150,21 +184,61 @@ class DummySimulationListener: public openfluid::builderext::SimulationListener
 
     void onRunStarted()
     {
+      mp_U = 0;
+      m_VarName = "";
+
       mref_TextBuffer->insert_at_cursor(
-          "\n\n------------------\nSimulation starts");
+          "\n------------------\nSimulation starts");
 
-      mp_U = mp_SimulationBlob->getCoreRepository().getUnit("TestUnits", 5);
+      if (!(m_Config.count("unit_class") && m_Config.count("unit_id")))
+      {
+        mref_TextBuffer->insert_at_cursor("\nUnit to display is not defined");
+        return;
+      }
 
-      if (mp_U)
+      std::string UnitClass = m_Config["unit_class"];
+      std::string UnitIdStr = m_Config["unit_id"];
+      int UnitId;
+
+      if (!openfluid::tools::ConvertString(UnitIdStr, &UnitId))
       {
         mref_TextBuffer->insert_at_cursor(
-            "\nValues of tests.scalar on TestUnit 5:");
-
-        m_connect = Glib::signal_timeout().connect(sigc::mem_fun(*this,
-            &DummySimulationListener::writeValue), 250);
+            "\nUnit to display is not well formatted");
+        return;
       }
-      else
-        mref_TextBuffer->insert_at_cursor("\nTestUnit 5 doesn't exist");
+
+      mp_U = mp_SimulationBlob->getCoreRepository().getUnit(UnitClass, UnitId);
+
+      if (!mp_U)
+      {
+        mref_TextBuffer->insert_at_cursor(Glib::ustring::compose(
+            "\nUnit %1 %2 doesn't exist", UnitClass, UnitIdStr));
+        return;
+      }
+
+      if (!m_Config.count("variable"))
+      {
+        mref_TextBuffer->insert_at_cursor(
+            "\nVariable to display is not defined");
+        return;
+      }
+
+      m_VarName = m_Config["variable"];
+
+      if (!mp_U->getVariables()->isVariableExist(m_VarName))
+      {
+        mref_TextBuffer->insert_at_cursor(Glib::ustring::compose(
+            "\nVariable %1 doesn't exist for Unit %2 %3", m_VarName, UnitClass,
+            UnitIdStr));
+        return;
+      }
+
+      mref_TextBuffer->insert_at_cursor(Glib::ustring::compose(
+          "\nValues of %1 on %2 %3:", m_VarName, UnitClass, UnitIdStr));
+
+      m_connect = Glib::signal_timeout().connect(sigc::mem_fun(*this,
+          &DummySimulationListener::writeValue), 250);
+
     }
 
     // =====================================================================
@@ -187,48 +261,18 @@ class DummySimulationListener: public openfluid::builderext::SimulationListener
       signal_Hidden().emit();
     }
 
-    // =====================================================================
-    // =====================================================================
-
-    void response(int Response)
-    {
-      if (Response == Gtk::RESPONSE_APPLY)
-        mref_TextBuffer->set_text("");
-      else
-      {
-        mp_Dialog->hide();
-        signal_Hidden().emit();
-      }
-    }
-
-    // =====================================================================
-    // =====================================================================
-
-    bool writeValue()
-    {
-      if (mp_U->getVariables()->getCurrentValue("tests.scalar"))
-      {
-        mref_TextBuffer->insert_at_cursor("\n");
-        mref_TextBuffer->insert_at_cursor(
-            mp_U->getVariables()->getCurrentValue("tests.scalar")->toString());
-      }
-
-      return true;
-    }
 };
 
 // =====================================================================
 // =====================================================================
 
-class DummySimulationListenerPrefs : public openfluid::builderext::BuilderExtensionPrefs
+class DummySimulationListenerPrefs: public openfluid::builderext::BuilderExtensionPrefs
 {
   private:
 
   public:
 
     DummySimulationListenerPrefs();
-
-
 
 };
 
