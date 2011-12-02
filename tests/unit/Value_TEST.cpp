@@ -429,9 +429,9 @@ BOOST_AUTO_TEST_CASE(check_string)
   Val2.set("EGDC");
   std::cout << Val2 << std::endl;
   BOOST_REQUIRE_EQUAL(Val2.get(),"EGDC");
-  BOOST_REQUIRE_EQUAL(Val2.get().size(),4);
+  BOOST_REQUIRE_EQUAL(Val2.size(),4);
   BOOST_REQUIRE_EQUAL(Val1.get(),"ABCDE");
-  BOOST_REQUIRE_EQUAL(Val1.get().size(),5);
+  BOOST_REQUIRE_EQUAL(Val1.getSize(),5);
 
 
   BOOST_REQUIRE_EQUAL(Val2.toString(),"EGDC");
