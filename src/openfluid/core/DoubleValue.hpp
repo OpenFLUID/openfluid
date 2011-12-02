@@ -62,7 +62,59 @@
 
 
 namespace openfluid { namespace core {
+/**
+DoubleValue is a container for a signed double precision floating point value.\n
 
+\see Value
+
+\n
+
+<I>Example : declaration</I>
+@code
+  // declaration of a DoubleValue, initialized to 0.0 by default
+  openfluid::core::DoubleValue Val1();
+
+  // declaration of a DoubleValue, initialized to 1.357
+  openfluid::core::DoubleValue Val2(1.357);
+@endcode
+
+
+<I>Example : getting the contained value</I>
+@code
+  double Tmp1;
+
+  // using the get method
+  Tmp1 = Val1.get();
+
+  // or using the cast operator
+  Tmp1 = Val1();
+@endcode
+
+
+<I>Example : setting the contained value</I>
+@code
+  // using the set method
+  Val1.set(101.99);
+@endcode
+
+
+<I>Example : conversion from string</I>
+@code
+  openfluid::core::StringValue StringVal("57.33");
+
+  // to DoubleValue
+  Val1 = StringVal.toDoubleValue();
+
+  // to double
+  double DblVal = StringVal.toDouble();
+@endcode
+
+
+<I>Example : conversion to string</I>
+@code
+  std::string StdStrVal = Val1.toString();
+@endcode
+*/
 class DLLEXPORT DoubleValue : public SimpleValue
 {
   private:
@@ -81,6 +133,10 @@ class DLLEXPORT DoubleValue : public SimpleValue
     */
     DoubleValue(const DoubleValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
 
+
+    /**
+      Constructor from plain old type
+    */
     DoubleValue(const double& POD) : SimpleValue(), m_Value(POD) {};
 
     Value& operator =(const Value& Other);
@@ -96,10 +152,22 @@ class DLLEXPORT DoubleValue : public SimpleValue
 
     Value* clone() const { return new DoubleValue(*this); };
 
+    /**
+      Returns the double value as plain old type
+      @return the double value
+    */
     inline double& get() { return m_Value; };
 
+    /**
+      Returns the double value as a const plain old type
+      @return the double value
+    */
     inline const double& get() const { return m_Value; };
 
+    /**
+      Sets the plain old type double value
+      @param[in] Val the double value
+    */
     inline void set(const double& Val) { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;

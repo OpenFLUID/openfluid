@@ -72,6 +72,80 @@
 
 namespace openfluid { namespace core {
 
+/**
+  MapValue is a container for a key => value map, where keys are strings and values can be any type derived from openfluid::core::Value.\n
+
+\see Value
+
+\n
+
+<I>Example : declaration</I>
+@code
+  // declaration of a MapValue, empty by default
+  openfluid::core::MapValue Val1();
+@endcode
+
+
+<I>Example : setting the contained values</I>
+@code
+  // using the generic set method (notice the new operator)
+  Val1.set("myvalue1",new openfluid::core::DoubleValue(18.05));
+
+  // using a specific set method
+  Val1.setDoubleValue("myvalue2",openfluid::core::DoubleValue(0.005));
+
+  // using a specific set method
+  Val1.setMatrixValue("myvalue3",openfluid::core::MatrixValue(3,3,1.99));
+@endcode
+
+
+<I>Example : getting the contained values</I>
+@code
+  openfluid::core::DoubleValue Tmp1;
+  double DblTmp1;
+
+  // using the generic get method
+  Tmp1 = Val1.get("myvalue1").asDoubleValue();
+
+  // using specific get methods
+  Tmp1 = Val1.getDoubleValue("myvalue1");
+  DblTmp1 = Val1.getDouble("myvalue1");
+
+  // or using the [] operator
+  Tmp1 = Val1["myvalue1"].asDoubleValue();
+@endcode
+
+
+<I>Example : testing the contained elements</I>
+@code
+  // testing if a key exist
+  Val1.isKeyExist("myvalue1"); // true in this case;
+
+  // testing if a key exist and the contained value type
+  Val1.isKeyExist("myvalue2") && Val1["myvalue2"].getType() == openfluid::core::Value::BOOLEAN; // false in this case
+@endcode
+
+
+<I>Example : conversion from string</I>
+@code
+  openfluid::core::StringValue StringVal;
+  openfluid::core::MapValue Val2;
+
+  // to MapValue, using a string values separator
+  StringVal.set("myvalue1=toto;myvalue2=12.56;myvalue3=17;myvalue3=false");
+  StringVal.toMapValue(";",Val2);
+
+  // all values are stored as strings, that can be converted to other types
+  openfluid::core::IntegerValue TmpInt;
+  Val2.get("myvalue3").asStringValue().toIntegerValue(TmpInt);
+@endcode
+
+
+<I>Example : conversion to string</I>
+@code
+  std::string StdStrVal = Val1.toString();
+@endcode
+*/
 class DLLEXPORT MapValue : public CompoundValue
 {
   public:
@@ -107,102 +181,144 @@ class DLLEXPORT MapValue : public CompoundValue
     void writeToStream(std::ostream& OutStm) const;
 
     /**
-      Sets a new value for element at the given key
+      Sets a new value at the given key
+      @param[in] Key the key to add
+      @param[in] Value* the element to add, must be derived from openfluid::core::Value
     */
     void set(const std::string& Key, Value* Element);
 
     /**
-      Sets a new double value for element at the given key
+      Sets a new double value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
     */
     inline void setDouble(const std::string& Key, const double& Val)
       { set(Key,new DoubleValue(Val)); };
 
     /**
-      Sets a new double value for element at the given key
+      Sets a new long value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
+
     */
     inline void setInteger(const std::string& Key, const long& Val)
       { set(Key,new IntegerValue(Val)); };
 
     /**
-      Sets a new boolean value for element at the given key
+      Sets a new boolean value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
     */
     inline void setBoolean(const std::string& Key, const bool& Val)
       { set(Key,new BooleanValue(Val)); };
 
     /**
-      Sets a new string value for element at the given key
+      Sets a new string value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
     */
     inline void setString(const std::string& Key, const std::string& Val)
       { set(Key,new StringValue(Val)); };
 
     /**
-      Sets a new VectorValue value for element at the given key
+      Sets a new VectorValue value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
     */
     inline void setVectorValue(const std::string& Key, const VectorValue& Val)
       { set(Key,new VectorValue(Val)); };
 
     /**
-      Sets a new MatrixValue value for element at the given key
+      Sets a new MatrixValue value at the given key
+      @param[in] Key the key to add
+      @param[in] Val the value to add
     */
     inline void setMatrixValue(const std::string& Key, const MatrixValue& Val)
       { set(Key,new MatrixValue(Val)); };
 
     /**
-      Operator to get/set a new value for element given between []
+      Operator to get/set a value at a key given between []
+      @return the value at the given key
     */
     Value& operator[](const std::string& Key);
 
     /**
-      Returns the element of the map for key Key
+      Returns the value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     Value& get(const std::string& Key);
 
     /**
-      Returns a double element of the map for key Key
+      Returns the double value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     inline double getDouble(const std::string& Key) { return get(Key).asDoubleValue().get(); };
 
     /**
-      Returns a long element of the map for key Key
+      Returns the long value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     inline long getInteger(const std::string& Key) { return get(Key).asIntegerValue().get(); };
 
     /**
-      Returns a bool element of the map for key Key
+      Returns the boolean value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     inline bool getBoolean(const std::string& Key) { return get(Key).asBooleanValue().get(); };
 
     /**
-      Returns a string element of the map for key Key
+      Returns the string value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     inline std::string getString(const std::string& Key) { return get(Key).asStringValue().get(); };
 
     /**
-      Returns a VectorValue element of the map for key Key
+      Returns the VectorValue value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     inline VectorValue getVectorValue(const std::string& Key) { return get(Key).asVectorValue(); };
 
     /**
-      Returns a MatrixValue element of the map for key Key
+      Returns the MatrixValue value of the map at the given key
+      @param[in] the key of the requested value
+      @return the value at the given key
     */
     inline MatrixValue getMatrixValue(const std::string& Key) { return get(Key).asMatrixValue(); };
 
-
-
+    /**
+      Removes the value corresponding to the given key
+      @param[in] Key the key to remove
+    */
     bool remove(const std::string& Key);
 
     /**
       Returns the size of the map
+      @return size of the map
     */
     inline unsigned long getSize() const { return m_Value.size(); };
 
     /**
       Returns the size of the map
+      @return size of the map
     */
     unsigned long size() const { return m_Value.size(); };
 
+    /**
+      Checks if the given key exists
+      @param[in] Key the key to check
+      @return true if the given key is present
+    */
     inline bool isKeyExist(const std::string& Key) const { return (m_Value.find(Key) != m_Value.end()); };
 
+    /**
+      Clears the map by removing all values
+    */
     void clear();
 
 };

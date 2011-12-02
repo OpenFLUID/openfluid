@@ -110,17 +110,20 @@ class DLLEXPORT Matrix
     virtual ~Matrix() {};
 
     /**
-      Returns the size of the 1st dimension of the Matrix
+      Returns the number of columns of the Matrix
+      @return number of columns
     */
     inline unsigned long getColsNbr() const { return m_ColsNbr; };
 
     /**
-      Returns the size of the 2nd dimension of the Matrix
+      Returns the number of rows of the Matrix
+      @return number of rows
     */
     inline unsigned long getRowsNbr() const { return m_RowsNbr; };
 
     /**
-      Returns the full size of the Matrix
+      Returns the full size of the Matrix (number of columns x number of rows)
+      @return size of the Matrix
     */
     inline unsigned long getSize() const { return (m_ColsNbr * m_RowsNbr); };
 
