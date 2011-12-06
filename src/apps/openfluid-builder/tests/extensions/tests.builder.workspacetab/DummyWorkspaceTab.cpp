@@ -184,24 +184,35 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
 
 };
 
+
 // =====================================================================
 // =====================================================================
 
-class DummyWorkspaceTabPrefs : public openfluid::builderext::BuilderExtensionPrefs
+class DummyWorkspaceTabPrefs: public openfluid::builderext::BuilderExtensionPrefs
 {
   private:
 
   public:
 
-    DummyWorkspaceTabPrefs();
+  DummyWorkspaceTabPrefs() : BuilderExtensionPrefs("Dummy Workspace Tab Preferences")
+    {
+      Gtk::Box* TheBox = Gtk::manage(new Gtk::HBox());
 
+      Gtk::Label* Lab = Gtk::manage(new Gtk::Label("I'm the DummyWorkspaceTab Preferences"));
 
+      TheBox->pack_start(*Lab);
+
+      mp_ContentWindow->add(*TheBox);
+
+      mp_ContentWindow->show_all_children();
+    }
+
+    void init() {};
 
 };
 
 // =====================================================================
 // =====================================================================
 
-DEFINE_EXTENSION_HOOKS(DummyWorkspaceTab, DummyWorkspaceTabPrefs)
-;
+DEFINE_EXTENSION_HOOKS((DummyWorkspaceTab) (DummyWorkspaceTabPrefs))
 

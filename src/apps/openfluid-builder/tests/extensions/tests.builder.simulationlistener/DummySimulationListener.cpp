@@ -57,6 +57,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/textview.h>
+#include <gtkmm/entry.h>
+
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 DECLARE_EXTENSION_HOOKS
 
@@ -93,7 +96,8 @@ class DummySimulationListener: public openfluid::builderext::SimulationListener
 
     bool writeValue()
     {
-      if (mp_U && !m_VarName.empty() && mp_U->getVariables()->getCurrentValue(m_VarName))
+      if (mp_U && !m_VarName.empty() && mp_U->getVariables()->getCurrentValue(
+          m_VarName))
       {
         mref_TextBuffer->insert_at_cursor("\n");
         mref_TextBuffer->insert_at_cursor(
@@ -117,11 +121,10 @@ class DummySimulationListener: public openfluid::builderext::SimulationListener
       }
     }
 
-
   public:
 
     DummySimulationListener() :
-      mp_U(0),m_VarName("")
+      mp_U(0), m_VarName("")
     {
       mp_Dialog = new Gtk::Dialog(
           "I am DummySimulationListener and I'm modeless", false, true);
@@ -200,6 +203,13 @@ class DummySimulationListener: public openfluid::builderext::SimulationListener
       std::string UnitIdStr = m_Config["unit_id"];
       int UnitId;
 
+      std::string
+          UnitIdStrFromPrefs =
+              openfluid::guicommon::PreferencesManager::getInstance()->getPluginValue(
+                  "tests.builder.simulationlistener", "UnitId");
+      if(!UnitIdStrFromPrefs.empty())
+        UnitIdStr = UnitIdStrFromPrefs;
+
       if (!openfluid::tools::ConvertString(UnitIdStr, &UnitId))
       {
         mref_TextBuffer->insert_at_cursor(
@@ -270,9 +280,43 @@ class DummySimulationListenerPrefs: public openfluid::builderext::BuilderExtensi
 {
   private:
 
+    Gtk::Entry* mp_UnitIdEntry;
+
+    std::string m_ExtID;
+
   public:
 
-    DummySimulationListenerPrefs();
+    DummySimulationListenerPrefs() :
+      BuilderExtensionPrefs("Dummy Simulation Listener Preferences"), m_ExtID(
+          "tests.builder.simulationlistener")
+    {
+      Gtk::Box* TheBox = Gtk::manage(new Gtk::HBox());
+
+      Gtk::Label* UnitIdLabel = Gtk::manage(new Gtk::Label("Unit ID:"));
+      mp_UnitIdEntry = Gtk::manage(new Gtk::Entry());
+      mp_UnitIdEntry->signal_changed().connect(sigc::mem_fun(*this,
+          &DummySimulationListenerPrefs::onUnitIdEntryChanged));
+
+      TheBox->pack_start(*UnitIdLabel, Gtk::PACK_SHRINK);
+      TheBox->pack_start(*mp_UnitIdEntry, Gtk::PACK_SHRINK);
+
+      mp_ContentWindow->add(*TheBox);
+
+      mp_ContentWindow->show_all_children();
+    }
+
+    void init()
+    {
+      mp_UnitIdEntry->set_text(
+          openfluid::guicommon::PreferencesManager::getInstance()->getPluginValue(
+              m_ExtID, "UnitId"));
+    }
+
+    void onUnitIdEntryChanged()
+    {
+      openfluid::guicommon::PreferencesManager::getInstance()->setPluginValue(
+          m_ExtID, "UnitId", mp_UnitIdEntry->get_text());
+    }
 
 };
 
@@ -280,6 +324,5 @@ class DummySimulationListenerPrefs: public openfluid::builderext::BuilderExtensi
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummySimulationListener, DummySimulationListenerPrefs)
-;
+DEFINE_EXTENSION_HOOKS((DummySimulationListener) (DummySimulationListenerPrefs))
 

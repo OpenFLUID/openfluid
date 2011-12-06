@@ -123,21 +123,6 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
 // =====================================================================
 // =====================================================================
 
-class DummyMixedImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
 
-  public:
-
-    DummyMixedImporterPrefs();
-
-
-
-};
-
-// =====================================================================
-// =====================================================================
-
-
-DEFINE_EXTENSION_HOOKS(DummyMixedImporter,DummyMixedImporterPrefs);
+DEFINE_EXTENSION_HOOKS((DummyMixedImporter));
 

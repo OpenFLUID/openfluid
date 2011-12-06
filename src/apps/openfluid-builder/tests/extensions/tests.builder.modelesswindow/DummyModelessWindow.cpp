@@ -207,25 +207,10 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
     }
 };
 
-// =====================================================================
-// =====================================================================
-
-class DummyModelessWindowPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
-
-  public:
-
-    DummyModelessWindowPrefs();
-
-
-
-};
 
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyModelessWindow, DummyModelessWindowPrefs)
-;
+DEFINE_EXTENSION_HOOKS((DummyModelessWindow))
 

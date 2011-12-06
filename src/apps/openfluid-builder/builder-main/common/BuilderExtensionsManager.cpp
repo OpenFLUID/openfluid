@@ -66,7 +66,7 @@
 // =====================================================================
 
 
-ExtensionContainer::ExtensionContainer() : ExtProc(0), Extension(0)
+ExtensionContainer::ExtensionContainer() : ExtProc(0), PrefsProc(0), Extension(0), Preferences(0)
 {}
 
 // =====================================================================
@@ -76,6 +76,14 @@ void ExtensionContainer::setExtProcFunction(openfluid::builderext::GetExtensionP
 {
   ExtProc = TheExtProc;
 };
+
+// =====================================================================
+// =====================================================================
+
+void ExtensionContainer::setPrefsProcFunction(openfluid::builderext::GetExtensionPrefsProc ThePrefsProc)
+{
+  PrefsProc = ThePrefsProc;
+}
 
 // =====================================================================
 // =====================================================================
@@ -116,6 +124,25 @@ void ExtensionContainer::deleteExt()
   Extension = 0;
 }
 
+// =====================================================================
+// =====================================================================
+
+bool ExtensionContainer::instantiatePrefs()
+{
+  if(!Preferences && PrefsProc)
+    Preferences = PrefsProc();
+
+  return Preferences;
+}
+
+// =====================================================================
+// =====================================================================
+
+void ExtensionContainer::deletePrefs()
+{
+  delete Preferences;
+  Preferences = 0;
+}
 
 // =====================================================================
 // =====================================================================
@@ -132,7 +159,7 @@ BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;
 
 
 BuilderExtensionsManager::BuilderExtensionsManager()
-  : m_IsRegistrationDone(false), m_RegisteredExtensionsCount(0)
+  : m_IsRegistrationDone(false), m_RegisteredExtensionsCount(0), m_IsPreferencesInstantiationDone(false)
 {
 
 }
@@ -234,6 +261,12 @@ void BuilderExtensionsManager::registerExtensions()
                 if (ExtProc != NULL)
                 {
                   ExtContainer.setExtProcFunction(ExtProc);
+
+                  openfluid::builderext::GetExtensionPrefsProc PrefsProc = (openfluid::builderext::GetExtensionPrefsProc)ExtLib->getSymbol(EXTPREFS_PROC_NAME);
+
+                  if (PrefsProc != NULL)
+                    ExtContainer.setPrefsProcFunction(PrefsProc);
+
                   m_RegisteredExtensions[ExtContainer.Infos.Type][TmpID] = ExtContainer;
                   m_RegisteredExtensionsCount++;
                 }
@@ -375,3 +408,43 @@ void BuilderExtensionsManager::deletePluggableExtension(std::string ExtID)
     ExtCont->deleteExt();
 }
 
+// =====================================================================
+// =====================================================================
+
+void BuilderExtensionsManager::instantiateRegisteredExtensionPreferences()
+{
+  if(m_IsPreferencesInstantiationDone)
+    return;
+
+  CollectionOfExtensions_t::iterator COEit;
+  ExtensionContainerMap_t::iterator ECMit;
+
+  for (COEit = m_RegisteredExtensions.begin(); COEit!= m_RegisteredExtensions.end(); ++COEit)
+  {
+    for (ECMit = COEit->second.begin(); ECMit!= COEit->second.end(); ++ECMit)
+    {
+      if(ECMit->second.instantiatePrefs())
+        m_RegisteredExtensionPreferences[ECMit->second.Infos.ID] = ECMit->second;
+    }
+  }
+
+  m_IsPreferencesInstantiationDone = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderExtensionsManager::deleteRegisteredExtensionPreferences()
+{
+  if(!m_IsPreferencesInstantiationDone)
+    return;
+
+  for (ExtensionContainerMap_t::iterator it = m_RegisteredExtensionPreferences.begin(); it!= m_RegisteredExtensionPreferences.end(); ++it)
+    it->second.deletePrefs();
+
+  m_RegisteredExtensionPreferences.clear();
+
+  m_IsPreferencesInstantiationDone = false;
+}

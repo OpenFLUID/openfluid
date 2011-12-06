@@ -123,21 +123,6 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 // =====================================================================
 // =====================================================================
 
-class DummySpatialgraphImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
 
-  public:
-
-    DummySpatialgraphImporterPrefs();
-
-
-
-};
-
-// =====================================================================
-// =====================================================================
-
-
-DEFINE_EXTENSION_HOOKS(DummySpatialgraphImporter, DummySpatialgraphImporterPrefs);
+DEFINE_EXTENSION_HOOKS((DummySpatialgraphImporter));
 

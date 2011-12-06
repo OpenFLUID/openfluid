@@ -123,23 +123,8 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 // =====================================================================
 // =====================================================================
 
-class DummyInputdataImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
 
-  public:
-
-    DummyInputdataImporterPrefs();
-
-
-
-};
-
-// =====================================================================
-// =====================================================================
-
-
-DEFINE_EXTENSION_HOOKS(DummyInputdataImporter, DummyInputdataImporterPrefs);
+DEFINE_EXTENSION_HOOKS((DummyInputdataImporter));
 
 
 

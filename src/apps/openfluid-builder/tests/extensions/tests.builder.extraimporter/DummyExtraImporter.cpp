@@ -123,21 +123,6 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 // =====================================================================
 // =====================================================================
 
-class DummyExtraImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
 
-  public:
-
-    DummyExtraImporterPrefs();
-
-
-
-};
-
-// =====================================================================
-// =====================================================================
-
-
-DEFINE_EXTENSION_HOOKS(DummyExtraImporter, DummyExtraImporterPrefs);
+DEFINE_EXTENSION_HOOKS((DummyExtraImporter));
 

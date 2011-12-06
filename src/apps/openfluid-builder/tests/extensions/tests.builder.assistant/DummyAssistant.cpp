@@ -215,23 +215,9 @@ class DummyAssistant: public openfluid::builderext::ModalWindow
 
 };
 
-// =====================================================================
-// =====================================================================
-
-class DummyAssistantPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
-
-  public:
-
-    DummyAssistantPrefs();
-
-
-
-};
 
 // =====================================================================
 // =====================================================================
 
-DEFINE_EXTENSION_HOOKS(DummyAssistant, DummyAssistantPrefs)
+DEFINE_EXTENSION_HOOKS((DummyAssistant))
 

@@ -46,83 +46,102 @@
  */
 
 /**
- \file WrongTypeExt.cpp
+ \file PreferencesPanel.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+#include "PreferencesPanel.hpp"
 
-#include <openfluid/builderext/InputdataImporter.hpp>
+#include <gtkmm/alignment.h>
+#include <gtkmm/label.h>
 
-#include <gtkmm/messagedialog.h>
 
-
-DECLARE_EXTENSION_HOOKS
-
-DEFINE_EXTENSION_INFOS("tests.builder.wrongtypeextension",
-                       "Wrong type importer",
-                       "Wrong type importer for tests",
-                       "This is a wrong type importer for tests",
-                       "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
-                       openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter)
-
-DEFINE_EXTENSION_DEFAULT_CONFIG()
+namespace openfluid { namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
 
-class WrongTypeImporter : public openfluid::builderext::InputdataImporter
+PreferencesPanel::PreferencesPanel(Glib::ustring PanelTitle)
 {
-  private:
+  Gtk::Label* TitleLabel = Gtk::manage(new Gtk::Label());
+  TitleLabel->set_markup(Glib::ustring::compose("<b><big>%1</big></b>",
+      PanelTitle));
 
-  Gtk::MessageDialog* mp_Dialog;
+  mp_ContentWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ContentWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ContentWindow->set_shadow_type(Gtk::SHADOW_NONE);
 
-  public:
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*TitleLabel, Gtk::PACK_SHRINK,3);
+//  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*mp_ContentWindow, Gtk::PACK_EXPAND_WIDGET);
 
-    WrongTypeImporter()
-    {
-      mp_Dialog = new Gtk::MessageDialog("I am wrong type Importer.\nI should not appear...");
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    ~WrongTypeImporter()
-    {
-      delete mp_Dialog;
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    Gtk::Widget* getExtensionAsWidget()
-    {
-      return mp_Dialog;
-    }
-
-    // =====================================================================
-    // =====================================================================
-
-    void show()
-    {
-      mp_Dialog->run();
-      mp_Dialog->hide();
-    }
-
-
-};
-
+  mp_MainBox->set_visible(true);
+  mp_MainBox->show_all_children();
+}
 
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS((WrongTypeImporter))
+Gtk::Widget* PreferencesPanel::asWidget()
+{
+  return mp_MainBox;
+}
 
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Widget* PreferencesPanel::createSubTitle(Glib::ustring SubTitle)
+{
+  Gtk::Label* SubLabel = Gtk::manage(new Gtk::Label());
+
+  SubLabel->set_markup(Glib::ustring::compose("<b>%1</b>", SubTitle));
+
+  SubLabel->set_alignment(0, 0.5);
+
+  SubLabel->set_visible(true);
+
+  return SubLabel;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Widget* PreferencesPanel::createSubBoxAlignement(Gtk::Widget* InnerWidget)
+{
+  Gtk::Alignment* Align = Gtk::manage(new Gtk::Alignment());
+
+  Align->set_padding(10, 20, 20, 0);
+
+  Align->add(*InnerWidget);
+
+  Align->set_visible(true);
+
+  return Align;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Gtk::Box* PreferencesPanel::createPanelBox()
+{
+  Gtk::VBox* PanelBox = Gtk::manage(new Gtk::VBox(false, 5));
+
+  PanelBox->set_border_width(10);
+
+  PanelBox->set_visible(true);
+
+  return PanelBox;
+}
+
+// =====================================================================
+// =====================================================================
+
+} } //namespaces

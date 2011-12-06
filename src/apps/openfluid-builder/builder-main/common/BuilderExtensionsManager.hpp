@@ -73,6 +73,9 @@ class ExtensionContainer
 
     openfluid::builderext::GetExtensionProc ExtProc;
 
+    openfluid::builderext::GetExtensionPrefsProc PrefsProc;
+
+
   public:
 
     std::string Filename;
@@ -81,13 +84,21 @@ class ExtensionContainer
 
     openfluid::builderext::PluggableBuilderExtension* Extension;
 
+    openfluid::builderext::BuilderExtensionPrefs* Preferences;
+
     ExtensionContainer();
 
     void setExtProcFunction(openfluid::builderext::GetExtensionProc TheExtProc);
 
+    void setPrefsProcFunction(openfluid::builderext::GetExtensionPrefsProc ThePrefsProc);
+
     bool instantiateExt();
 
     void deleteExt();
+
+    bool instantiatePrefs();
+
+    void deletePrefs();
 };
 
 
@@ -117,10 +128,14 @@ class BuilderExtensionsManager
 
     unsigned int m_RegisteredExtensionsCount;
 
+    ExtensionContainerMap_t m_RegisteredExtensionPreferences;
+
 
     BuilderExtensionsManager();
 
     std::list<std::string> m_SearchPaths;
+
+    bool m_IsPreferencesInstantiationDone;
 
 
   public:
@@ -156,6 +171,15 @@ class BuilderExtensionsManager
     bool instantiatePluggableExtension(std::string ExtID);
 
     void deletePluggableExtension(std::string ExtID);
+
+    void instantiateRegisteredExtensionPreferences();
+
+    ExtensionContainerMap_t* getRegisteredExtensionPreferences() { return &m_RegisteredExtensionPreferences; };
+
+    bool isPreferencesInstantiationDone() { return m_IsPreferencesInstantiationDone; };
+
+    void deleteRegisteredExtensionPreferences();
+
 };
 
 

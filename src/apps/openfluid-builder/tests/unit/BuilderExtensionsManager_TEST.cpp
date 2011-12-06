@@ -204,3 +204,26 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BEM->deletePluggableExtension("tests.builder.simulationlistener");
 
 }
+
+BOOST_AUTO_TEST_CASE(check_prefsOperations)
+{
+  BuilderTestHelper::getInstance()->initGtk();
+
+  BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
+
+  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR+";"+openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR));
+  BEM->registerExtensions();
+
+  BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), false);
+  BOOST_CHECK_EQUAL(BEM->getRegisteredExtensionPreferences()->size(),0);
+
+  BEM->instantiateRegisteredExtensionPreferences();
+
+  BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), true);
+  BOOST_CHECK_GE(BEM->getRegisteredExtensionPreferences()->size(),1);
+
+  BEM->deleteRegisteredExtensionPreferences();
+
+  BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), false);
+  BOOST_CHECK_GE(BEM->getRegisteredExtensionPreferences()->size(),0);
+}

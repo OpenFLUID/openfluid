@@ -122,21 +122,6 @@ class DummyEventsImporter : public openfluid::builderext::EventsImporter
 // =====================================================================
 // =====================================================================
 
-class DummyEventsImporterPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
 
-  public:
-
-    DummyEventsImporterPrefs();
-
-
-
-};
-
-// =====================================================================
-// =====================================================================
-
-
-DEFINE_EXTENSION_HOOKS(DummyEventsImporter, DummyEventsImporterPrefs);
+DEFINE_EXTENSION_HOOKS((DummyEventsImporter));
 

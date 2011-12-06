@@ -57,9 +57,11 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/treeselection.h>
 
-#include "PreferencesPanel.hpp"
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/guicommon/PreferencesPanel.hpp>
 
+#include "PreferencesPanelImpl.hpp"
+#include "BuilderExtensionsManager.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -72,19 +74,19 @@ PreferencesDialog::PreferencesDialog() :
   Gtk::TreeRow Row;
 
   Row = *mref_GroupsTreeModel->append();
-  Row[m_GroupsColumns.m_Id] = Interface;
+  Row[m_GroupsColumns.m_Id] = "interface";
   Row[m_GroupsColumns.m_Name] = _("Interface");
 
   Row = *mref_GroupsTreeModel->append();
-  Row[m_GroupsColumns.m_Id] = Paths;
+  Row[m_GroupsColumns.m_Id] = "paths";
   Row[m_GroupsColumns.m_Name] = _("Paths");
 
   Row = *mref_GroupsTreeModel->append();
-  Row[m_GroupsColumns.m_Id] = Simulation;
+  Row[m_GroupsColumns.m_Id] = "simulation";
   Row[m_GroupsColumns.m_Name] = _("Simulations");
 
   Row = *mref_GroupsTreeModel->append();
-  Row[m_GroupsColumns.m_Id] = Market;
+  Row[m_GroupsColumns.m_Id] = "market";
   Row[m_GroupsColumns.m_Name] = _("Market");
 
   mp_GroupsTreeView = Gtk::manage(new Gtk::TreeView(mref_GroupsTreeModel));
@@ -97,20 +99,20 @@ PreferencesDialog::PreferencesDialog() :
   mp_GroupsSWindow = Gtk::manage(new Gtk::ScrolledWindow());
   mp_GroupsSWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_GroupsSWindow->set_visible(true);
-  mp_GroupsSWindow->set_size_request(170,-1);
+  mp_GroupsSWindow->set_size_request(170, -1);
   mp_GroupsSWindow->add(*mp_GroupsTreeView);
   mp_GroupsSWindow->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
-  m_GroupPanels[Interface] = new PreferencesInterfacePanel();
-  m_GroupPanels[Paths] = new PreferencesPathsPanel();
-  m_GroupPanels[Simulation] = new PreferencesSimPanel();
-  m_GroupPanels[Market] = new PreferencesMarketPanel();
+  m_GroupPanels["interface"] = new PreferencesInterfacePanel();
+  m_GroupPanels["paths"] = new PreferencesPathsPanel();
+  m_GroupPanels["simulation"] = new PreferencesSimPanel();
+  m_GroupPanels["market"] = new PreferencesMarketPanel();
 
   mp_MainBox = Gtk::manage(new Gtk::HBox());
   mp_MainBox->pack_start(*mp_GroupsSWindow, Gtk::PACK_SHRINK, 6);
 
   mp_Dialog = new Gtk::Dialog();
-  mp_Dialog->get_vbox()->pack_start(*mp_MainBox,Gtk::PACK_EXPAND_WIDGET, 6);
+  mp_Dialog->get_vbox()->pack_start(*mp_MainBox, Gtk::PACK_EXPAND_WIDGET, 6);
   mp_Dialog->set_default_size(950, 500);
   mp_Dialog->set_border_width(6);
   mp_Dialog->set_title(_("Preferences"));
@@ -123,13 +125,48 @@ PreferencesDialog::PreferencesDialog() :
       mref_GroupsTreeModel->children().begin());
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+PreferencesDialog::~PreferencesDialog()
+{
+  BuilderExtensionsManager::getInstance()->deleteRegisteredExtensionPreferences();
+}
+
+
 // =====================================================================
 // =====================================================================
 
 
 void PreferencesDialog::show()
 {
-  for(std::map<PrefGroup, PreferencesPanel*>::iterator it = m_GroupPanels.begin() ; it != m_GroupPanels.end() ; ++it)
+  BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
+
+  if(! BEM->isPreferencesInstantiationDone())
+  {
+    Gtk::TreeRow Row = *mref_GroupsTreeModel->append();
+    Row[m_GroupsColumns.m_Id] = "extensions";
+    Row[m_GroupsColumns.m_Name] = _("Extensions");
+
+    BEM->instantiateRegisteredExtensionPreferences();
+
+    ExtensionContainerMap_t* Exts = BEM->getRegisteredExtensionPreferences();
+
+    for (ExtensionContainerMap_t::iterator it = Exts->begin(); it != Exts->end(); ++it)
+    {
+      Gtk::TreeRow ExtRow = *mref_GroupsTreeModel->append(Row.children());
+      ExtRow[m_GroupsColumns.m_Id] = it->second.Infos.ID;
+      ExtRow[m_GroupsColumns.m_Name] = it->second.Infos.Name;
+      m_GroupPanels[it->second.Infos.ID] = it->second.Preferences;
+    }
+
+  }
+
+
+  for (std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*>::iterator it =
+      m_GroupPanels.begin(); it != m_GroupPanels.end(); ++it)
     it->second->init();
 
   //select first group
@@ -155,7 +192,7 @@ void PreferencesDialog::onGroupSelectionChanged()
   if (!SelectedIter)
     return;
 
-  PrefGroup SelectedGroup = SelectedIter->get_value(m_GroupsColumns.m_Id);
+  std::string SelectedGroup = SelectedIter->get_value(m_GroupsColumns.m_Id);
 
   if (m_GroupPanels.find(SelectedGroup) == m_GroupPanels.end())
     return;

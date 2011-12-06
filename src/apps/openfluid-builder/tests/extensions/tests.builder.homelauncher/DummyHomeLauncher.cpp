@@ -119,27 +119,11 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 
 };
 
-
-// =====================================================================
-// =====================================================================
-
-class DummyHomeLauncherPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
-
-  public:
-
-    DummyHomeLauncherPrefs();
-
-
-
-};
-
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyHomeLauncher, DummyHomeLauncherPrefs);
+DEFINE_EXTENSION_HOOKS((DummyHomeLauncher));
 
 
 

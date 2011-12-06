@@ -46,81 +46,57 @@
  */
 
 /**
- \file PreferencesDialog.hpp
+ \file PreferencesPanel.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __PREFERENCESDIALOG_HPP__
-#define __PREFERENCESDIALOG_HPP__
+#ifndef __PREFERENCESPANEL_HPP__
+#define __PREFERENCESPANEL_HPP__
 
+#include <openfluid/dllexport.hpp>
 
-#include <gtkmm/treeview.h>
-#include <gtkmm/treestore.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/box.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/liststore.h>
 #include <gtkmm/scrolledwindow.h>
+#include <gtkmm/box.h>
 
-#include <glibmm/i18n.h>
-#include <sigc++/sigc++.h>
 
-namespace openfluid {
-namespace guicommon {
-class PreferencesPanel;
-}
-}
+namespace openfluid { namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
 
-class PreferencesDialog
+class DLLEXPORT PreferencesPanel
 {
   private:
 
-    Gtk::Dialog* mp_Dialog;
+    Gtk::VBox* mp_MainBox;
 
-    Gtk::Box* mp_MainBox;
+  protected:
 
-    Glib::RefPtr<Gtk::TreeStore> mref_GroupsTreeModel;
+    Gtk::ScrolledWindow* mp_ContentWindow;
 
-    Gtk::TreeView* mp_GroupsTreeView;
+    Gtk::Widget* createSubTitle(Glib::ustring SubTitle);
 
-    Gtk::ScrolledWindow* mp_GroupsSWindow;
+    Gtk::Widget* createSubBoxAlignement(Gtk::Widget* InnerWidget);
 
-    class PrefGroupsColumns: public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-        PrefGroupsColumns()
-        {
-          add(m_Id);
-          add(m_Name);
-        }
-        Gtk::TreeModelColumn<Glib::ustring> m_Id;
-        Gtk::TreeModelColumn<Glib::ustring> m_Name;
-    };
-
-    PrefGroupsColumns m_GroupsColumns;
-
-    std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*> m_GroupPanels;
-
-    Gtk::Widget* mp_CurrentPanel;
-
-    void onGroupSelectionChanged();
-
+    Gtk::Box* createPanelBox();
 
   public:
 
-    PreferencesDialog();
+    PreferencesPanel(Glib::ustring PanelTitle);
 
-    ~PreferencesDialog();
+    Gtk::Widget* asWidget();
 
-    void show();
+    virtual void init() = 0;
 
 };
 
-#endif /* __PREFERENCESDIALOG_HPP__ */
+} } //namespaces
+
+// =====================================================================
+// =====================================================================
+
+
+#endif /* __PREFERENCESPANEL_HPP__ */

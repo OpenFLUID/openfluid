@@ -63,11 +63,15 @@
 #include <gtkmm/widget.h>
 
 #include <boost/preprocessor/seq/for_each.hpp>
+#include <boost/preprocessor/seq/elem.hpp>
+#include <boost/preprocessor/seq/push_back.hpp>
+#include <boost/preprocessor/comparison/equal.hpp>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/guicommon/PreferencesPanel.hpp>
 
 
 // =====================================================================
@@ -112,12 +116,21 @@
   }
 
 
+#define EXT_PREFS_CLASS_DEFINED(seq) \
+  BOOST_PP_EQUAL(BOOST_PP_SEQ_SIZE(seq),2)
+
+#define EXT_RETURN_NEW(list) \
+  return new BOOST_PP_SEQ_ELEM(1,BOOST_PP_SEQ_PUSH_BACK(list,dummy))();
+
+#define EXT_RETURN_NULL return (openfluid::builderext::BuilderExtensionPrefs*)0;
+
 /**
   Macro for definition of extension hook
-  @param[in] pluginclassname The name of the class to instantiate
-  @param[in] pluginprefsclassname The name of the Preferences class to instantiate
+  @param[in] pluginclassnames The names of the classes to instantiate
+  in the form of a group of adjacent parenthesized elements:
+  DEFINE_EXTENSION_HOOKS((pluginclassname)) or DEFINE_EXTENSION_HOOKS((pluginclassname) (pluginprefsclassname))
 */
-#define DEFINE_EXTENSION_HOOKS(pluginclassname,pluginprefsclassname) \
+#define DEFINE_EXTENSION_HOOKS(pluginclassnames) \
   std::string GetExtensionSDKVersion() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
@@ -125,16 +138,15 @@
   \
   openfluid::builderext::PluggableBuilderExtension* GetExtension() \
   { \
-    openfluid::builderext::PluggableBuilderExtension* Ext = new pluginclassname(); \
+    openfluid::builderext::PluggableBuilderExtension* Ext = new BOOST_PP_SEQ_ELEM(0,pluginclassnames)(); \
       Ext->setDefaultConfiguration(GetDefaultConfig()); \
     return Ext; \
   } \
   \
   openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs() \
   { \
-    return new pluginprefsclassname(); \
+    BOOST_PP_IF(EXT_PREFS_CLASS_DEFINED(pluginclassnames),EXT_RETURN_NEW(pluginclassnames),EXT_RETURN_NULL) \
   }
-
 
 #define DEFINE_EXTENSION_INFOS(id,shortname,name,desc,authors,authorsctct,type) \
   openfluid::builderext::BuilderExtensionInfos GetExtensionInfos() \
@@ -282,6 +294,7 @@ class DLLEXPORT PluggableBuilderExtension
 // =====================================================================
 // =====================================================================
 
+
 class DLLEXPORT BuilderExtensionInfos
 {
   public:
@@ -308,31 +321,21 @@ class DLLEXPORT BuilderExtensionInfos
     }
 };
 
+
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT BuilderExtensionPrefs
+class DLLEXPORT BuilderExtensionPrefs : public openfluid::guicommon::PreferencesPanel
 {
   public:
 
-
-    BuilderExtensionPrefs() { };
-
+    BuilderExtensionPrefs(Glib::ustring PanelTitle) :
+      openfluid::guicommon::PreferencesPanel(PanelTitle) { };
 
     virtual ~BuilderExtensionPrefs() { };
 
-
-    /**
-      Returns the main widget for the preferences panel of the extension.
-      Default is NULL, so no preference panel will be shown for this extension.
-      This should be overridden in derived extensions.
-      @return a pointer to widget for the preferences panel
-    */
-    Gtk::Widget* getPrefsPanelAsWidget() { return NULL; };
-
 };
-
 
 
 // =====================================================================

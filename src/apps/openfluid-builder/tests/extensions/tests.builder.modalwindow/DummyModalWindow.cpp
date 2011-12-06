@@ -161,25 +161,10 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
     }
 };
 
-// =====================================================================
-// =====================================================================
-
-class DummyModalWindowPrefs : public openfluid::builderext::BuilderExtensionPrefs
-{
-  private:
-
-  public:
-
-    DummyModalWindowPrefs();
-
-
-
-};
 
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyModalWindow, DummyModalWindowPrefs)
-;
+DEFINE_EXTENSION_HOOKS((DummyModalWindow))
 
