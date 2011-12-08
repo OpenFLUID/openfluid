@@ -183,7 +183,7 @@ class DLLEXPORT MapValue : public CompoundValue
     /**
       Sets a new value at the given key
       @param[in] Key the key to add
-      @param[in] Value* the element to add, must be derived from openfluid::core::Value
+      @param[in] Element the element to add, must be derived from openfluid::core::Value
     */
     void set(const std::string& Key, Value* Element);
 
@@ -244,49 +244,49 @@ class DLLEXPORT MapValue : public CompoundValue
 
     /**
       Returns the value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     Value& get(const std::string& Key);
 
     /**
       Returns the double value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     inline double getDouble(const std::string& Key) { return get(Key).asDoubleValue().get(); };
 
     /**
       Returns the long value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     inline long getInteger(const std::string& Key) { return get(Key).asIntegerValue().get(); };
 
     /**
       Returns the boolean value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     inline bool getBoolean(const std::string& Key) { return get(Key).asBooleanValue().get(); };
 
     /**
       Returns the string value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     inline std::string getString(const std::string& Key) { return get(Key).asStringValue().get(); };
 
     /**
       Returns the VectorValue value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     inline VectorValue getVectorValue(const std::string& Key) { return get(Key).asVectorValue(); };
 
     /**
       Returns the MatrixValue value of the map at the given key
-      @param[in] the key of the requested value
+      @param[in] Key the key of the requested value
       @return the value at the given key
     */
     inline MatrixValue getMatrixValue(const std::string& Key) { return get(Key).asMatrixValue(); };

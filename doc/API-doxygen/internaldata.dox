@@ -14,7 +14,7 @@ To store distributed values, data structures are available to associate a unit I
 <li>\ref openfluid::core::IDDoubleMap
 <li>\ref openfluid::core::IDIntMap
 <li>\ref openfluid::core::IDBoolMap
-<li>\ref openfluid::core::IDScalarValueMap
+<li>\ref openfluid::core::IDDoubleValueMap
 <li>\ref openfluid::core::IDVectorValueMap
 <li>\ref openfluid::core::IDVectorValuePtrMap
 </ul>
@@ -26,7 +26,7 @@ class MyFunction : public openfluid::base::PluggableFunction
 {
   private:
 
-    openfluid::core::IDScalarValueMap m_LastValue;
+    openfluid::core::IDDoubleMap m_LastValue;
 
   public:
   
@@ -41,7 +41,7 @@ class MyFunction : public openfluid::base::PluggableFunction
 bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int ID;
-  openfluid::core::ScalarValue TmpValue;
+  double TmpValue;
   openfluid::core::Unit* SU;
 
 

@@ -47,7 +47,7 @@
 
 
 /**
-  \file instantiationInfo.hpp
+  \file InstantiationInfo.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>

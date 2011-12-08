@@ -16,6 +16,7 @@ Along with the technical information, this API documentation contains specific p
   <li> the \subpage emptyfunc part explaining how to create and build a simulation function
   <li> the parts for integration of your own code and how to access to simulation data and information
   <ul>
+  <li>\subpage values
   <li>\subpage signature
   <li>\subpage classoview
   <li>\subpage space

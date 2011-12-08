@@ -10,14 +10,19 @@ body, table, div, p, dl {
 h1 {
 	text-align: center;
 	font-size: 150%;
+	margin-bottom : 2em;
 }
 
 h2 {
 	font-size: 120%;
+	text-decoration: underline;
+	margin-top : 2em;
 }
 
 h3 {
 	font-size: 100%;
+	margin-top : 1.5em;
+	margin-left : 1em;
 }
 
 dt {

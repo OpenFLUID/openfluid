@@ -18,7 +18,8 @@ This involves the following classes and functions (non-exhaustive list):
   <li>openfluid::tools::IsVeryClose    
 </ul>
 
-
 In order to use these tools, the header file <openfluid/tools.hpp> must be included in your source code.
+
+\see openfluid::tools
 
 */
