@@ -80,6 +80,8 @@ class ModelFctParamsPresenter: public sigc::trackable
 
     void whenRequiredFileChanged();
 
+    void whenParamsChangedFromApp();
+
   public:
 
     ModelFctParamsPresenter(ModelFctParamsModel& Model,
