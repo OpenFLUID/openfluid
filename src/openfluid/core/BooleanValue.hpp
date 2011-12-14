@@ -63,6 +63,59 @@
 
 namespace openfluid { namespace core {
 
+/**
+BooleanValue is a container for a true/false value.\n
+
+\see Value
+
+\n
+
+<I>Example : declaration</I>
+@code
+  // declaration of a BooleanValue, initialized to false by default
+  openfluid::core::BooleanValue Val1();
+
+  // declaration of a BooleanValue, initialized to true
+  openfluid::core::BooleanValue Val2(true);
+@endcode
+
+
+<I>Example : getting the contained value</I>
+@code
+  bool Tmp1;
+
+  // using the get method
+  Tmp1 = Val1.get();
+
+  // or using the cast operator
+  Tmp1 = Val1();
+@endcode
+
+
+<I>Example : setting the contained value</I>
+@code
+  // using the set method
+  Val1.set(true);
+@endcode
+
+
+<I>Example : conversion from string</I>
+@code
+  openfluid::core::StringValue StringVal("true");
+
+  // to BooleanValue
+  Val1 = StringVal.toBooleanValue();
+
+  // to bool
+  bool BoolVal = StringVal.toBoolean();
+@endcode
+
+
+<I>Example : conversion to string</I>
+@code
+  std::string StdStrVal = Val1.toString();
+@endcode
+*/
 class DLLEXPORT BooleanValue : public SimpleValue
 {
   private:
@@ -81,6 +134,9 @@ class DLLEXPORT BooleanValue : public SimpleValue
     */
     BooleanValue(const BooleanValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
 
+    /**
+      Constructor from plain old type
+    */
     BooleanValue(const bool& POD) : SimpleValue(), m_Value(POD) {};
 
     Value& operator =(const Value& Other);
@@ -96,10 +152,22 @@ class DLLEXPORT BooleanValue : public SimpleValue
 
     Value* clone() const { return new BooleanValue(*this); };
 
+    /**
+      Returns the boolean value as plain old type
+      @return the boolean value
+    */
     inline bool& get() { return m_Value; };
 
+    /**
+      Returns the boolean value as a const plain old type
+      @return the boolean value
+    */
     inline const bool& get() const { return m_Value; };
 
+    /**
+      Sets the plain old type boolean value
+      @param[in] Val the boolean value
+    */
     inline void set(const bool& Val) { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;

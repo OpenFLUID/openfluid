@@ -72,7 +72,6 @@
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/ArrayValue.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 
@@ -200,6 +199,11 @@ BOOST_AUTO_TEST_CASE(check_boolean)
 
   Val2.set(true && (false || true));
   std::cout << Val2 << " " << Val2.get() << " " << Val2.toString() << std::endl;
+
+  openfluid::core::BooleanValue Val3;
+  Val3 = Val1;
+  BOOST_REQUIRE_EQUAL( Val3.get(), Val2.get());
+
 }
 
 
@@ -249,6 +253,9 @@ BOOST_AUTO_TEST_CASE(check_vector)
   BOOST_REQUIRE_EQUAL(Val2.getSize(),0);
   BOOST_REQUIRE_EQUAL(Val1.getSize(),30);
 
+  openfluid::core::VectorValue Val3;
+  Val3 = Val2;
+
 }
 
 // =====================================================================
@@ -282,8 +289,9 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   std::cout << Val1 << std::endl;
 
 
+  openfluid::core::MatrixValue Val2;
 
-  openfluid::core::MatrixValue Val2 = Val1;
+  Val2 = Val1;
 
   BOOST_REQUIRE_EQUAL( Val1.getSize(), Val2.getSize());
   BOOST_REQUIRE_CLOSE( Val2.at(9,9), 1.35,0.000001 );
@@ -321,18 +329,9 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   Val3.set(1,2,9.99);
   BOOST_REQUIRE_CLOSE( Val3.get(1,2), 9.99,0.000001 );
 
-}
+  openfluid::core::MatrixValue Val4;
 
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_array)
-{
-  std::cout << "======== check_array ========" << std::endl;
-
-  openfluid::core::ArrayValue Val1;
+  Val4 = Val3;
 
 }
 
@@ -430,9 +429,9 @@ BOOST_AUTO_TEST_CASE(check_string)
   Val2.set("EGDC");
   std::cout << Val2 << std::endl;
   BOOST_REQUIRE_EQUAL(Val2.get(),"EGDC");
-  BOOST_REQUIRE_EQUAL(Val2.get().size(),4);
+  BOOST_REQUIRE_EQUAL(Val2.size(),4);
   BOOST_REQUIRE_EQUAL(Val1.get(),"ABCDE");
-  BOOST_REQUIRE_EQUAL(Val1.get().size(),5);
+  BOOST_REQUIRE_EQUAL(Val1.getSize(),5);
 
 
   BOOST_REQUIRE_EQUAL(Val2.toString(),"EGDC");
@@ -589,8 +588,6 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE_EQUAL(MapV.getString("bool"),"false");
   std::cout << MapV << std::endl;
 
-  // to array
-  // TODO
 
 }
 

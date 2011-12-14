@@ -111,33 +111,6 @@ typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 typedef DoubleValue ScalarValue;
 
 /**
- Type definition for vector values. This type is based on the openfluid::core::Vector template.
- @sa openfluid::core::Vector
-
- <i>usage examples:</i>
- @code
-  // create an empty vector
-  openfluid::core::VectorValue TmpValue;
-
-  // give a size of 10 to this vector
-  TmpValue = openfluid::core::VectorValue(10);
-
-  // give a size of 10 to this vector and fill it with a value of2
-  TmpValue = openfluid::core::VectorValue(10,2);
-
-  // read the value at index 6 in put it in a variable MyVar
-  MyVar = TmpValue[6];
-  // or
-  MyVar = TmpValue.at(6);
-
-  // set or modify the value 15 at index 3
-  TmpValue.setElement(3,15);
- @endcode
-
- */
-
-
-/**
  Type definition for a time serie of scalar values
  @deprecated
  */
@@ -186,7 +159,7 @@ typedef std::map<UnitID_t,double> IDDoubleMap;
 typedef std::map<UnitID_t,double> IDScalarValueMap;
 
 /**
-  Map associating an openfluid::core::DoubleValue value to a unit, indexed by its ID
+  Map associating a DoubleValue value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,DoubleValue> IDDoubleValueMap;
 
@@ -211,14 +184,14 @@ typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
 typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
 
 /**
- * @deprecated
- */
+  @deprecated
+*/
 typedef std::map<UnitID_t,SerieOfScalarValue> IDSerieOfScalarValueMap;
 
 typedef std::map<UnitID_t,SerieOfDoubleValue> IDSerieOfDoubleValueMap;
 
 /**
- * @deprecated
+  @deprecated
  */
 typedef std::map<UnitID_t,SerieOfScalarValue*> IDSerieOfScalarValuePtrMap;
 
@@ -230,4 +203,4 @@ typedef std::map<UnitID_t,SerieOfDoubleValue*> IDSerieOfDoubleValuePtrMap;
 } } // namespaces
 
 
-#endif /*TYPEDEFS_H_*/
+#endif /*__TYPEDEFS_H__*/

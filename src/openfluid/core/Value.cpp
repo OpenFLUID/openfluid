@@ -64,7 +64,6 @@
 
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/ArrayValue.hpp>
 #include <openfluid/core/MapValue.hpp>
 
 
@@ -244,31 +243,6 @@ MatrixValue& Value::asMatrixValue()
   return static_cast<MatrixValue&>(*this);
 }
 
-// =====================================================================
-// =====================================================================
-
-
-const ArrayValue& Value::asArrayValue() const
-{
-  if (!isArrayValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asArrayValue","Value is not an ArrayValue");
-
-  return static_cast<const ArrayValue&>(*this);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ArrayValue& Value::asArrayValue()
-{
-  if (!isArrayValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asArrayValue","Value is not an ArrayValue");
-
-  return static_cast<ArrayValue&>(*this);
-}
-
 
 // =====================================================================
 // =====================================================================
@@ -319,7 +293,6 @@ bool Value::getValueTypeFromString(const std::string TypeName, Value::Type& Valu
   if(TypeName == "boolean") { ValueType = openfluid::core::Value::BOOLEAN; return true; }
   if(TypeName == "vector") { ValueType = openfluid::core::Value::VECTOR; return true; }
   if(TypeName == "matrix") { ValueType = openfluid::core::Value::MATRIX; return true; }
-  if(TypeName == "array") { ValueType = openfluid::core::Value::ARRAY; return true; }
   if(TypeName == "map") { ValueType = openfluid::core::Value::MAP; return true; }
   if(TypeName == "string") { ValueType = openfluid::core::Value::STRING; return true; }
 
@@ -347,8 +320,6 @@ std::string Value::getStringFromValueType(const Value::Type ValueType)
       return "vector";
     case openfluid::core::Value::MATRIX:
       return "matrix";
-    case openfluid::core::Value::ARRAY:
-      return "array";
     case openfluid::core::Value::MAP:
       return "map";
     case openfluid::core::Value::STRING:

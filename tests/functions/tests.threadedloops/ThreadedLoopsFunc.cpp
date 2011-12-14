@@ -86,8 +86,8 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
 
-  DECLARE_PRODUCED_VAR("tests.data.sequence","TU","sequenced test data","");
-  DECLARE_PRODUCED_VAR("tests.data.threaded","TU","threaded test data","");
+  DECLARE_PRODUCED_VAR("tests.data.sequence[double]","TU","sequenced test data","");
+  DECLARE_PRODUCED_VAR("tests.data.threaded[double]","TU","threaded test data","");
 
 
 

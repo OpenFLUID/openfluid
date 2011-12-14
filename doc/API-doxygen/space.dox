@@ -4,14 +4,12 @@
 
 \section spaceparsing_sec Parsing the spatial domain
 
-The spatial domain is represented by units different classes defined by the users.
-Each unit carries self information that can be exploited through accessor methods (see classes docs),
+The spatial domain is represented by units from different classes defined by the users.
+Each unit carries its own information that can be exploited through accessor methods (see classes docs),
 and also input data and simulation variables that can be exploited through special
 methods (see \ref funcparams_sec and \ref propini_sec).\n  
 
 The spatial domain can be parsed using the macros intended for handling spatial entities.\n
-
-\n
 
 \subsection spaceparsingseq_ssec Sequential parsing
 
@@ -21,13 +19,11 @@ To parse units of a specific class, you can use:
 <li>#BEGIN_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
 </ul>
 
-
 To parse all units of the spatial domain, you can use:
 <ul>
 <li>#DECLARE_GLOBAL_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of the graph, 
 <li>#BEGIN_GLOBAL_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
 </ul>
-
 
 To parse a specific list of units, you can use:
 <ul>
@@ -41,6 +37,7 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
   openfluid::core::Unit* UU;
   openfluid::core::Unit* UpSU;
   openfluid::core::UnitsPtrList_t* UpSUsList;
+  double TmpValue;
 
   DECLARE_UNITS_ORDERED_LOOP(1);
   DECLARE_UNITS_LIST_LOOP(25);
@@ -52,7 +49,7 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
     UpSUsList = SU->getFromUnits("SU");
 
     BEGIN_UNITS_LIST_LOOP(25,UpSUsList,UpSU)
-      OPENFLUID_GetVariable(UpSU,"water.surf.Q.downstream-su",CurrentStep-1,&TmpValue);
+      OPENFLUID_GetVariable(UpSU,"water.surf.Q.downstream-su",CurrentStep-1,TmpValue);
     END_LOOP
     
   END_LOOP;
@@ -63,22 +60,16 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
     // do something here with UU pointer
     
   END_LOOP
-  
-  
 }
 \endcode
 
-\n
-
-\subsection spaceparsingthreaded_ssec Concurrent parsing using multi-threading
-
+\subsection spaceparsingthreaded_ssec Parallel parsing using multi-threading
 
 To parse units of a specific class, you can use:
 <ul>
 <li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
 <li>#APPLY_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the given class. Extra arguments can be passed (see example below)  
 </ul>
-
 
 To parse all units of the spatial domain, you can use:
 <ul>
@@ -128,8 +119,6 @@ But in case of very short computing durations, the cost of multi-threading manag
 
 </ul>
 
-\n
-
 \section spacemod_sec Modifying the spatial domain graph
 
 The spatial domain graph can be defined statically through the input dataset.
@@ -138,8 +127,6 @@ create and delete spatial units, and also to add and remove connections between 
 spatial units.\n
 For better use of simulation functions which modify the spatial domain graph, 
 please fill the signature with the correct directives. See \ref signdatalandgraph_ssec signature.
-
-\n
 
 \subsection spacemodunits_ssec Creating and deleting spatial units
 
@@ -151,8 +138,6 @@ In order to create and delete units, you can use the following methods:
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_AddUnit OPENFLUID_AddUnit \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_DeleteUnit OPENFLUID_DeleteUnit \endlink
 </ul>
-
-\n
 
 \subsection spacemodconns_ssec Adding and removing spatial connections
 
@@ -226,8 +211,6 @@ bool prepareData()
 }
 \endcode
 
-\n
-
 \subsection spacemodquery_ssec Querying the spatial domain graph
 
 The spatial domain graph can be queried, whenever during simulations, in order to get
@@ -243,8 +226,6 @@ You can use the following methods:
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitChildOf OPENFLUID_IsUnitChildOf \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_IsUnitParentOf OPENFLUID_IsUnitParentOf \endlink
 </ul>
-
-\n
 
 \subsection spacemodgen_ssec Generating spatial domain graphs automatically
 

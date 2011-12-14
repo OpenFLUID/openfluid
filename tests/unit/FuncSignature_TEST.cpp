@@ -243,10 +243,6 @@ BOOST_AUTO_TEST_CASE(check_GetVariableNameAndType)
   BOOST_CHECK_EQUAL(ParamName,"matrixparam");
   BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::MATRIX);
 
-  BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("arrayparam[array]",ParamName,ParamType),true);
-  BOOST_CHECK_EQUAL(ParamName,"arrayparam");
-  BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::ARRAY);
-
   BOOST_CHECK_EQUAL(openfluid::base::SignatureHandledTypedDataItem::getVariableNameAndType("mapparam[map]",ParamName,ParamType),true);
   BOOST_CHECK_EQUAL(ParamName,"mapparam");
   BOOST_CHECK_EQUAL(ParamType,openfluid::core::Value::MAP);

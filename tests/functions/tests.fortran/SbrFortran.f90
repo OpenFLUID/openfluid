@@ -65,15 +65,16 @@ subroutine multrealmatrix(matrix,dim1,dim2,mult,result)
 implicit none
 integer dim1
 integer dim2
-real*8 matrix(dim2,dim1)
-integer mult
-real*8 result(dim2,dim1)
+real*8 matrix(dim1,dim2)
+real*8 mult
+real*8 result(dim1,dim2)
 integer i, j, k
 
-do j=1,dim1
-  do i=1,dim2
+do j=1,dim2
+  do i=1,dim1
     result(i,j) = matrix(i,j) * mult
   end do
+  print*,result(:,j)
 end do
 
 

@@ -3,14 +3,14 @@
 \page classoview Simulation function C++ class 
 
 A simulation function is defined by a class, inherited from the openfluid::base::PluggableFunction class.
-The code have to be written into the different methods provided by the \link openfluid::base::PluggableFunction PluggableFunction\endlink class.
-You can also develop other methods in order to structure your source code.
-To see how the source code is globally structured, see part \ref emptyfunc.
+The simulation code have to be written into the different methods provided by the \link openfluid::base::PluggableFunction PluggableFunction\endlink class.
+You can also develop other methods in order to organize your source code.
+To see how the C++ class structure of a simulation function, see part \ref emptyfunc.
 
 \section splitconstruct_ssec Constructor and destructor
 
-The constructor of the simulation function is called when the function is loaded. You may put here the initialization of you class attributes.\n
-The destructor of the simulation function is called when the function is freed, at the end of the execution of the OpenFLUID application. You may put here instruction to free the memory you allocate for the needs of the simulation function (objects, pointed vars, ...).
+The constructor of the simulation function is called when the function is loaded. You may put here the initialization of your object attributes.\n
+The destructor of the simulation function is called when the function is freed, at the end of the execution of the OpenFLUID application. You may put here instruction to free the memory you allocate for the needs of the simulation function (other objects, pointed vars, ...).
 
 \section splitmethods_ssec Required methods to define
 

@@ -65,6 +65,59 @@
 
 namespace openfluid { namespace core {
 
+/**
+IntegerValue is a container for a signed long integer value.\n
+
+\see Value
+
+\n
+
+<I>Example : declaration</I>
+@code
+  // declaration of an IntegerValue, initialized to 0 by default
+  openfluid::core::IntegerValue Val1();
+
+  // declaration of an IntegerValue, initialized to 35
+  openfluid::core::IntegerValue Val2(35);
+@endcode
+
+
+<I>Example : getting the contained value</I>
+@code
+  long Tmp1;
+
+  // using the get method
+  Tmp1 = Val1.get();
+
+  // or using the cast operator
+  Tmp1 = Val1();
+@endcode
+
+
+<I>Example : setting the contained value</I>
+@code
+  // using the set method
+  Val1.set(-10199);
+@endcode
+
+
+<I>Example : conversion from string</I>
+@code
+  openfluid::core::StringValue StringVal("57");
+
+  // to IntegerValue
+  Val1 = StringVal.toIntegerValue();
+
+  // to long
+  long DblVal = StringVal.toInteger();
+@endcode
+
+
+<I>Example : conversion to string</I>
+@code
+  std::string StdStrVal = Val1.toString();
+@endcode
+*/
 class DLLEXPORT IntegerValue : public SimpleValue
 {
   private:
@@ -83,6 +136,9 @@ class DLLEXPORT IntegerValue : public SimpleValue
     */
     IntegerValue(const IntegerValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
 
+    /**
+      Constructor from plain old type
+    */
     IntegerValue(const long& POD) : SimpleValue(), m_Value(POD) {};
 
     Value& operator =(const Value& Other);
@@ -98,10 +154,22 @@ class DLLEXPORT IntegerValue : public SimpleValue
 
     Value* clone() const { return new IntegerValue(*this); };
 
+    /**
+      Returns the integer value as plain old type
+      @return the integer value
+    */
     inline long& get() { return m_Value; };
 
+    /**
+      Returns the integer value as a const plain old type
+      @return the integer value
+    */
     inline const long& get() const { return m_Value; };
 
+    /**
+      Sets the plain old type long integer value
+      @param[in] Val the long integer value
+    */
     inline void set(const long& Val) { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;

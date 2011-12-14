@@ -66,6 +66,11 @@
 
 namespace openfluid { namespace core {
 
+/**
+NullValue is a container for null value, containing no data.\n
+
+\see Value
+*/
 class DLLEXPORT NullValue : public Value
 {
   public:

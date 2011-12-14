@@ -159,9 +159,9 @@ std::string PluggableFunction::generateDotEdge(std::string SrcClass, std::string
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
-                                        const openfluid::core::Value& aValue)
+                                        const openfluid::core::Value& Val)
 {
-  OPENFLUID_AppendVariable(*UnitPtr,VarName,aValue);
+  OPENFLUID_AppendVariable(*UnitPtr,VarName,Val);
 }
 
 
@@ -171,11 +171,11 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
                                         const openfluid::core::VariableName_t VarName,
-                                        const openfluid::core::Value& aValue)
+                                        const openfluid::core::Value& Val)
 {
   if (&aUnit != NULL)
   {
-    if (!aUnit.getVariables()->appendValue(VarName,aValue))
+    if (!aUnit.getVariables()->appendValue(VarName,Val))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -187,14 +187,14 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
-                                        const double Value)
+                                        const double Val)
 {
   /* Do not call OPENFLUID_AppendVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
-   * because of cast operator, THIS function is called (recursively)
+   * because of cast operator, this function is called (recursively)
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::DoubleValue(Value)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::DoubleValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending double value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -207,11 +207,11 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
-                                        const long Value)
+                                        const long Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::IntegerValue(Value)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::IntegerValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending long value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -224,11 +224,11 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
-                                        const bool Value)
+                                        const bool Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::BooleanValue(Value)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::BooleanValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending boolean value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -241,11 +241,11 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
-                                        const std::string Value)
+                                        const std::string& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::StringValue(Value)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::StringValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending string value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -259,11 +259,11 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
                                         const openfluid::core::TimeStep_t Step,
-                                        const openfluid::core::Value& aValue)
+                                        const openfluid::core::Value& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,aValue))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,Val))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
@@ -277,14 +277,14 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
                                         const openfluid::core::TimeStep_t Step,
-                                        const double Value)
+                                        const double Val)
 {
   /* Do not call OPENFLUID_SetVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
    * because of cast operator, THIS function is called (recursively)
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::DoubleValue(Value)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::DoubleValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting double value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
@@ -298,11 +298,11 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       const long Value)
+                                       const long Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::IntegerValue(Value)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::IntegerValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting long value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
@@ -316,11 +316,11 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       const bool Value)
+                                       const bool Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::BooleanValue(Value)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::BooleanValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting boolean value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
@@ -334,11 +334,11 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       const std::string Value)
+                                       const std::string Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::StringValue(Value)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::StringValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting string value for variable "+ VarName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
@@ -352,9 +352,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
                                         const openfluid::core::TimeStep_t Step,
-                                        openfluid::core::Value* aValue) const
+                                        openfluid::core::Value* Val) const
 {
-  OPENFLUID_GetVariable(UnitPtr, VarName,Step,*aValue);
+  OPENFLUID_GetVariable(UnitPtr, VarName,Step,*Val);
 }
 
 
@@ -365,11 +365,11 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t VarName,
                                         const openfluid::core::TimeStep_t Step,
-                                        openfluid::core::Value& aValue) const
+                                        openfluid::core::Value& Val) const
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->getValue(VarName,Step,&aValue))
+    if (!UnitPtr->getVariables()->getValue(VarName,Step,&Val))
     {
       std::string TimeStr;
       openfluid::tools::ConvertValue(Step,&TimeStr);
@@ -387,9 +387,9 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       double* aValue) const
+                                       double* Val) const
 {
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*aValue);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Val);
 }
 
 
@@ -400,11 +400,11 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       double& aValue) const
+                                       double& Val) const
 {
-  openfluid::core::DoubleValue Val(aValue);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&Val);
-  aValue = Val.get();
+  openfluid::core::DoubleValue TmpVal(Val);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&TmpVal);
+  Val = TmpVal.get();
 }
 
 
@@ -415,9 +415,9 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       long* Value) const
+                                       long* Val) const
 {
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Value);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Val);
 }
 
 
@@ -428,11 +428,11 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       long& Value) const
+                                       long& Val) const
 {
-  openfluid::core::IntegerValue Val(Value);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&Val);
-  Value = Val.get();
+  openfluid::core::IntegerValue TmpVal(Val);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&TmpVal);
+  Val = TmpVal.get();
 }
 
 
@@ -443,9 +443,9 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       bool* Value) const
+                                       bool* Val) const
 {
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Value);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Val);
 }
 
 
@@ -456,11 +456,11 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       bool& Value) const
+                                       bool& Val) const
 {
-  openfluid::core::BooleanValue Val(Value);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&Val);
-  Value = Val.get();
+  openfluid::core::BooleanValue TmpVal(Val);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&TmpVal);
+  Val = TmpVal.get();
 }
 
 
@@ -471,9 +471,9 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       std::string* Value) const
+                                       std::string* Val) const
 {
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Value);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,*Val);
 }
 
 
@@ -484,11 +484,11 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitP
 void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t VarName,
                                        const openfluid::core::TimeStep_t Step,
-                                       std::string& Value) const
+                                       std::string& Val) const
 {
-  openfluid::core::StringValue Val(Value);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&Val);
-  Value = Val.get();
+  openfluid::core::StringValue TmpVal(Val);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Step,&TmpVal);
+  Val = TmpVal.get();
 }
 
 
@@ -576,11 +576,11 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
                                                const openfluid::core::InputDataName_t& InputName,
-                                               const double& Value)
+                                               const double& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Value)))
+    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set double value for input data "+ InputName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
@@ -593,11 +593,11 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
                                                const openfluid::core::InputDataName_t& InputName,
-                                               const long& Value)
+                                               const long& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Value)))
+    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Val)))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set long value for input data "+ InputName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
@@ -610,11 +610,11 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
 
 void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
                                                const openfluid::core::InputDataName_t& InputName,
-                                               const std::string& Value)
+                                               const std::string& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,Value))
+    if (!UnitPtr->getInputData()->setValue(InputName,Val))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set string value for input data "+ InputName);
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
@@ -644,9 +644,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    openfluid::core::DoubleValue* Value) const
+                                    openfluid::core::DoubleValue* Val) const
 {
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -656,11 +656,11 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    openfluid::core::DoubleValue& Value) const
+                                    openfluid::core::DoubleValue& Val) const
 {
-  double Val;
-  OPENFLUID_GetInputData(UnitPtr,InputName,Val);
-  Value.set(Val);
+  double TmpVal;
+  OPENFLUID_GetInputData(UnitPtr,InputName,TmpVal);
+  Val.set(TmpVal);
 }
 
 
@@ -670,9 +670,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    openfluid::core::VectorValue* Value) const
+                                    openfluid::core::VectorValue* Val) const
 {
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -682,11 +682,11 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    openfluid::core::VectorValue& Value) const
+                                    openfluid::core::VectorValue& Val) const
 {
-  openfluid::core::StringValue Val;
-  OPENFLUID_GetInputData(UnitPtr,InputName,Val);
-  Val.toVectorValue(Value.getStreamSeparator(1),Value);
+  openfluid::core::StringValue TmpVal;
+  OPENFLUID_GetInputData(UnitPtr,InputName,TmpVal);
+  TmpVal.toVectorValue(Val.getStreamSeparator(1),Val);
 }
 
 
@@ -696,11 +696,11 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                             const openfluid::core::InputDataName_t InputName,
-                            openfluid::core::MatrixValue& Value) const
+                            openfluid::core::MatrixValue& Val) const
 {
-  openfluid::core::StringValue Val;
-  OPENFLUID_GetInputData(UnitPtr,InputName,Val);
-  Val.toMatrixValue(Value.getStreamSeparator(1),Value.getStreamSeparator(2),Value);
+  openfluid::core::StringValue TmpVal;
+  OPENFLUID_GetInputData(UnitPtr,InputName,TmpVal);
+  TmpVal.toMatrixValue(Val.getStreamSeparator(1),Val.getStreamSeparator(2),Val);
 }
 
 
@@ -710,9 +710,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    double *Value) const
+                                    double *Val) const
 {
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -722,11 +722,11 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    double& Value) const
+                                    double& Val) const
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValueAsDouble(InputName,Value))
+    if (!UnitPtr->getInputData()->getValueAsDouble(InputName,Val))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
@@ -739,9 +739,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    long *Value) const
+                                    long *Val) const
 {
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -752,11 +752,11 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    long& Value) const
+                                    long& Val) const
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValueAsLong(InputName,Value))
+    if (!UnitPtr->getInputData()->getValueAsLong(InputName,Val))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
@@ -769,9 +769,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    std::string *Value) const
+                                    std::string *Val) const
 {
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Value);
+  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -781,11 +781,11 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
 
 void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t InputName,
-                                    std::string& Value) const
+                                    std::string& Val) const
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValue(InputName,Value))
+    if (!UnitPtr->getInputData()->getValue(InputName,Val))
       throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
   }
   else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
@@ -886,9 +886,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      double *Value) const
+                                      double *Val) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Value);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
 }
 
 
@@ -898,12 +898,12 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      double& Value) const
+                                      double& Val) const
 {
   openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
-    return it->second.toDouble(Value);
+    return it->second.toDouble(Val);
 
   return false;
 }
@@ -915,9 +915,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      long *Value) const
+                                      long *Val) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Value);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
 }
 
 
@@ -927,12 +927,12 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      long& Value) const
+                                      long& Val) const
 {
   openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
 
   if (it != Params.end())
-    return it->second.toInteger(Value);
+    return it->second.toInteger(Val);
 
   return false;
 }
@@ -944,9 +944,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      float *Value) const
+                                      float *Val) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Value);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
 }
 
 
@@ -956,7 +956,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      float& Value) const
+                                      float& Val) const
 {
   bool IsOk = false;
 
@@ -969,7 +969,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
     IsOk = it->second.toDouble(TmpDbl);
 
     if(IsOk)
-      Value = static_cast<float>(TmpDbl);
+      Val = static_cast<float>(TmpDbl);
   }
 
   return IsOk;
@@ -982,9 +982,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      int *Value) const
+                                      int *Val) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Value);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
 }
 
 
@@ -995,7 +995,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      int& Value) const
+                                      int& Val) const
 {
   bool IsOk = false;
 
@@ -1008,7 +1008,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
     IsOk = it->second.toInteger(TmpLong);
 
     if(IsOk)
-      Value = static_cast<int>(TmpLong);
+      Val = static_cast<int>(TmpLong);
   }
 
   return IsOk;
@@ -1021,9 +1021,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::string *Value) const
+                                      std::string *Val) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Value);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
 }
 
 
@@ -1054,9 +1054,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::vector<std::string> *Values) const
+                                      std::vector<std::string> *Vals) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Values);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
 }
 
 
@@ -1066,7 +1066,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::vector<std::string>& Values) const
+                                      std::vector<std::string>& Vals) const
 {
   openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
 
@@ -1076,10 +1076,10 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
     openfluid::tools::TokenizeString(it->second.get(),Tokens,";");
 
-    Values.clear();
+    Vals.clear();
 
     for (unsigned int i=0;i<Tokens.size();i++)
-      Values.push_back(Tokens[i]);
+      Vals.push_back(Tokens[i]);
 
     return true;
   }
@@ -1094,9 +1094,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::vector<double> *Values) const
+                                      std::vector<double> *Vals) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Values);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
 }
 
 
@@ -1106,7 +1106,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::vector<double>& Values) const
+                                      std::vector<double>& Vals) const
 {
   bool IsOK = false;
 
@@ -1120,10 +1120,10 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
     if(IsOK)
     {
-      Values.clear();
+      Vals.clear();
 
       for (unsigned long i=0;i<Vect.size();i++)
-        Values.push_back(Vect[i]);
+        Vals.push_back(Vect[i]);
     }
   }
 
@@ -1137,9 +1137,9 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::vector<long> *Values) const
+                                      std::vector<long> *Vals) const
 {
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Values);
+  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
 }
 
 
@@ -1149,7 +1149,7 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
                                       const openfluid::core::FuncParamKey_t ParamName,
-                                      std::vector<long>& Values) const
+                                      std::vector<long>& Vals) const
 {
   bool IsOK = false;
 
@@ -1163,10 +1163,10 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 
     if(IsOK)
     {
-      Values.clear();
+      Vals.clear();
 
       for (unsigned long i=0;i<Vect.size();i++)
-        Values.push_back(static_cast<long>(Vect[i]));
+        Vals.push_back(static_cast<long>(Vect[i]));
     }
   }
 
@@ -1893,7 +1893,7 @@ bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value
 void PluggableFunction::OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads)
 {
   if (MaxNumThreads > 0) m_MaxThreads = MaxNumThreads;
-};
+}
 
 
 } } // namespace openfluid::base

@@ -46,7 +46,7 @@
 */
 
 /**
-  \file ViewLog.hpp
+  \file ViewLogFileWindow.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>

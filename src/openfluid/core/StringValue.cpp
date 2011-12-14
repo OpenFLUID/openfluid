@@ -65,7 +65,6 @@
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
-#include <openfluid/core/ArrayValue.hpp>
 
 #include <openfluid/base/OFException.hpp>
 
@@ -326,28 +325,6 @@ bool StringValue::toMatrixValue(const std::string& Sep, const unsigned int& RowL
   Val = TmpMatrix;
 
   return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool StringValue::toArrayValue(const std::string& /*ColSep*/, const std::string& /*RowSep*/, ArrayValue& /*Val*/) const
-{
-  throw openfluid::base::OFException("under construction");
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool StringValue::toArrayValue(const std::string& /*Sep*/, const unsigned int& /*RowLength*/, ArrayValue& /*Val*/) const
-{
-  throw openfluid::base::OFException("under construction");
-  return false;
 }
 
 

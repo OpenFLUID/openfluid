@@ -73,7 +73,6 @@ class StringValue;
 
 class VectorValue;
 class MatrixValue;
-class ArrayValue;
 class MapValue;
 
 
@@ -81,7 +80,7 @@ class DLLEXPORT Value
 {
   public:
 
-    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, ARRAY, MAP, NULLL };
+    enum Type { NONE, BOOLEAN, INTEGER, DOUBLE, STRING, VECTOR, MATRIX, MAP, NULLL };
 
     /**
       Default constructor
@@ -113,70 +112,81 @@ class DLLEXPORT Value
     friend std::ostream& operator<<(std::ostream& OutStm, const Value& Val)
       { Val.writeToStream(OutStm); return OutStm; };
 
-
+    /**
+      Returns true if the Value is a DoubleValue
+    */
     inline bool isDoubleValue() const { return getType() == Value::DOUBLE; };
 
     const DoubleValue& asDoubleValue() const;
 
     DoubleValue& asDoubleValue();
 
-
+    /**
+      Returns true if the Value is an IntegerValue
+    */
     inline bool isIntegerValue() const { return getType() == Value::INTEGER; };
 
     const IntegerValue& asIntegerValue() const;
 
     IntegerValue& asIntegerValue();
 
-
+    /**
+      Returns true if the Value is a BooleanValue
+    */
     inline bool isBooleanValue() const { return getType() == Value::BOOLEAN; };
 
     const BooleanValue& asBooleanValue() const;
 
     BooleanValue& asBooleanValue();
 
-
+    /**
+      Returns true if the Value is a StringValue
+    */
     inline bool isStringValue() const { return getType() == Value::STRING; };
 
     const StringValue& asStringValue() const;
 
     StringValue& asStringValue();
 
-
+    /**
+      Returns true if the Value is a NullValue
+    */
     inline bool isNullValue() const { return getType() == Value::NULLL; };
 
     const NullValue& asNullValue() const;
 
     NullValue& asNullValue();
 
-
+    /**
+      Returns true if the Value is a VectorValue
+    */
     inline bool isVectorValue() const { return getType() == Value::VECTOR; };
 
     const VectorValue& asVectorValue() const;
 
     VectorValue& asVectorValue();
 
-
+    /**
+      Returns true if the Value is a MatrixValue
+    */
     inline bool isMatrixValue() const { return getType() == Value::MATRIX; };
 
     const MatrixValue& asMatrixValue() const;
 
     MatrixValue& asMatrixValue();
 
-
-    inline bool isArrayValue() const { return getType() == Value::ARRAY; };
-
-    const ArrayValue& asArrayValue() const;
-
-    ArrayValue& asArrayValue();
-
-
+    /**
+      Returns true if the Value is a MapValue
+    */
     inline bool isMapValue() const { return getType() == Value::MAP; };
 
     const MapValue& asMapValue() const;
 
     MapValue& asMapValue();
 
-
+    /**
+      Returns the contained value as a string
+    */
     std::string toString() const;
 
     static bool getValueTypeFromString(const std::string ValueTypeString, Value::Type& ValueType);

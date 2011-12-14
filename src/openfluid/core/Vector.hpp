@@ -108,11 +108,13 @@ class DLLEXPORT Vector
 
     /**
       Returns the size of the vector
+      @return size of the vector
     */
     unsigned long getSize() const { return m_Size; };
 
     /**
       Returns the size of the vector
+      @return size of the vector
     */
     unsigned long size() const { return getSize(); };
 

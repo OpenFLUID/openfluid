@@ -67,12 +67,49 @@
 
 
 namespace openfluid { namespace core {
+/**
+StringValue is a container for a std::string value, with methods for conversion to other containers derived from Value.\n
 
+\see Value
+
+\n
+
+<I>Example : declaration</I>
+@code
+  // declaration of a StringValue, initialized to an empty string by default
+  openfluid::core::StringValue Val1();
+
+  // declaration of a DoubleValue, initialized to "hello world"
+  openfluid::core::StringValue Val2("hello world");
+@endcode
+
+
+<I>Example : getting the contained value</I>
+@code
+  std::string Tmp1;
+
+  // using the get method
+  Tmp1 = Val1.get();
+
+  // or using the cast operator
+  Tmp1 = Val1();
+@endcode
+
+
+<I>Example : setting the contained value</I>
+@code
+  // using the set method
+  Val1.set("Have a nice day");
+@endcode
+*/
 class DLLEXPORT StringValue : public SimpleValue
 {
   private:
 
     std::string m_Value;
+
+    static bool convertStringToDouble(const std::string& Str, double& Dbl);
+
 
   public:
 
@@ -86,6 +123,9 @@ class DLLEXPORT StringValue : public SimpleValue
     */
     StringValue(const StringValue& Val) : SimpleValue(Val), m_Value(Val.m_Value) {};
 
+    /**
+      Constructor from plain old type
+    */
     StringValue(const std::string& POD) : SimpleValue(), m_Value(POD) {};
 
     Value& operator =(const Value& Other);
@@ -101,41 +141,119 @@ class DLLEXPORT StringValue : public SimpleValue
 
     Value* clone() const { return new StringValue(*this); };
 
+    /**
+      Returns the string value as plain old type
+      @return the string value
+    */
     inline std::string& get() { return m_Value; };
 
+    /**
+      Returns the string value as a const plain old type
+      @return the string value
+    */
     inline const std::string& get() const { return m_Value; };
 
+    /**
+      Sets the string value
+      @param[in] Val the string value
+    */
     inline void set(const std::string& Val) { m_Value = Val; };
 
     void writeToStream(std::ostream& OutStm) const;
 
+    /**
+      Returns the size of the string
+      @return size of the string
+    */
+    inline unsigned long getSize() const { return m_Value.size(); };
+
+    /**
+      Returns the size of the string
+      @return size of the string
+    */
+    unsigned long size() const { return m_Value.size(); };
+
+    /**
+      Converts the contained string to a double value (if possible)
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toDouble(double& Val) const;
 
+    /**
+      Converts the contained string to a DoubleValue (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toDoubleValue(DoubleValue& Val) const;
 
+    /**
+      Converts the contained string to a boolean value (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toBoolean(bool& Val) const;
 
+    /**
+      Converts the contained string to a BooleanValue (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toBooleanValue(BooleanValue& Val) const;
 
+    /**
+      Converts the contained string to a long value (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toInteger(long& Val) const;
 
+    /**
+      Converts the contained string to an IntegerValue (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toIntegerValue(IntegerValue& Val) const;
 
+    /**
+      Converts the contained string to a NullValue (if possible)
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toNullValue(NullValue& Val) const;
 
+    /**
+      Converts the contained string to a VectorValue value (if possible)
+      @param[in] Sep the separator used to split the string into vector items
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toVectorValue(const std::string& Sep, VectorValue& Val) const;
 
+    /**
+      Converts the contained string to a MatrixValue value (if possible)
+      @param[in] ColSep the column separator used to split the string columns
+      @param[in] RowSep the row separator used to split the string rows
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val) const;
 
+    /**
+      Converts the contained string to a MatrixValue value (if possible)
+      @param[in] Sep the separator used to split the string
+      @param[in] RowLength the size of a row
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val) const;
 
-    bool toArrayValue(const std::string& ColSep, const std::string& RowSep, ArrayValue& Val) const;
-
-    bool toArrayValue(const std::string& Sep, const unsigned int& RowLength, ArrayValue& Val) const;
-
+    /**
+      Converts the contained string to a MapValue value (if possible)
+      @param[in] Sep the separator used to split the string into map items
+      @param[out] Val the converted value
+      @return bool true if the conversion is correct, false otherwise
+    */
     bool toMapValue(const std::string& Sep, MapValue& Val) const;
-
-    static bool convertStringToDouble(const std::string& Str, double& Dbl);
 
 };
 
