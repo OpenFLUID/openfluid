@@ -62,7 +62,6 @@
 #include "DomainIDataColumns.hpp"
 #include "BuilderListStore.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -212,10 +211,24 @@ void DomainIDataAdapterModelImpl::updateData(const std::string NewText,
     std::string DataName)
 {
   openfluid::core::Unit* Unit = mp_UnitsColl->getUnit(m_SelectedUnit);
+  Gtk::TreeIter Iter = getRequestedUnitSelection();
 
-  if (Unit != NULL)
+  if (Unit != NULL && Iter)
   {
-    Unit->getInputData()->replaceValue(DataName, NewText);
+    if (NewText.empty())
+    {
+      std::string OldValue;
+      Unit->getInputData()->getValue(DataName, OldValue);
+
+      Iter->set_value(*mp_Columns->getColumnWithTitle(DataName), OldValue);
+    }
+    else
+    {
+      if (NewText == "-")
+        Iter->set_value(*mp_Columns->getColumnWithTitle(DataName), NewText);
+
+      Unit->getInputData()->replaceValue(DataName, NewText);
+    }
   }
 }
 
