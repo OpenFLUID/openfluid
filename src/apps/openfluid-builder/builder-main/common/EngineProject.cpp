@@ -79,7 +79,6 @@
 #include "GeneratorSignature.hpp"
 #include "EngineHelper.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
@@ -194,6 +193,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
         throw;
       }
     }
+
+    checkInputData();
 
     addSignatureToGenerators();
 
@@ -371,6 +372,42 @@ void EngineProject::checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc)
     }
   }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+void EngineProject::checkInputData()
+{
+  std::list<openfluid::base::InputDataDescriptor> IDataList =
+      FXReader->getDomainDescriptor().getInputData();
+
+  for (std::list<openfluid::base::InputDataDescriptor>::iterator itIDataDesc =
+      IDataList.begin(); itIDataDesc != IDataList.end(); ++itIDataDesc)
+  {
+    std::string ClassName = itIDataDesc->getUnitsClass();
+
+    std::vector<std::string> IDataNames = itIDataDesc->getColumnsOrder();
+
+    if (mp_SimBlob->getCoreRepository().isUnitsClassExist(ClassName))
+    {
+      openfluid::core::UnitsList_t* UnitsList =
+          mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList();
+
+      for (openfluid::core::UnitsList_t::iterator itUnit = UnitsList->begin(); itUnit
+          != UnitsList->end(); ++itUnit)
+      {
+        // this unit isn't present in the input data list of its class
+        if (!itIDataDesc->getData().count(itUnit->getID()))
+        {
+          // so we set it default input data values
+          for (unsigned int i = 0; i < IDataNames.size(); i++)
+            itUnit->getInputData()->setValue(IDataNames[i], "-");
+        }
+      }
+    }
+  }
+  
 }
 
 // =====================================================================
