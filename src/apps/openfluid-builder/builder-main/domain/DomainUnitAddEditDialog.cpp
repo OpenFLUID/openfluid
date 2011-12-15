@@ -361,6 +361,21 @@ void DomainUnitAddEditDialog::createUnit()
   openfluid::core::Unit NewUnit(ClassName, ID, PcsOrder,
       openfluid::core::Unit::DESCRIPTOR);
 
+  // add Input data (depending on Idata of the first Unit of the class)
+  openfluid::core::UnitsCollection* UnitsColl = mp_CoreRepos->getUnits(
+      ClassName);
+  if (UnitsColl)
+  {
+    const openfluid::core::UnitsList_t* Units = UnitsColl->getList();
+    if (!Units->empty())
+    {
+      std::vector<std::string> IDataNames =
+          Units->begin()->getInputData()->getInputDataNames();
+      for (unsigned int i = 0; i < IDataNames.size(); i++)
+        NewUnit.getInputData()->setValue(IDataNames[i], "-");
+    }
+  }
+
   mp_CoreRepos->addUnit(NewUnit);
 
   mp_Unit = mp_CoreRepos->getUnit(ClassName, ID);
