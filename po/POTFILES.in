@@ -327,6 +327,7 @@ src/apps/openfluid-builder/builder-main/common/BuilderByClassTreeView.hpp
 src/apps/openfluid-builder/builder-main/common/GeneratorSignature.hpp
 src/apps/openfluid-builder/builder-main/common/BuilderClassListColumns.hpp
 src/apps/openfluid-builder/builder-main/common/BuilderPretestInfo.cpp
+src/apps/openfluid-builder/builder-main/common/BuilderAppModule.cpp
 src/apps/openfluid-builder/builder-main/common/BuilderListStore.hpp
 src/apps/openfluid-builder/builder-main/common/EngineProjectNewDialog.cpp
 src/apps/openfluid-builder/builder-main/common/ProjectWorkspace.hpp

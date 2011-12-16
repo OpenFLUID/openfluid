@@ -71,7 +71,7 @@ void DomainIDataViewImpl::onDataEdited(const Glib::ustring& /*Path*/,
   if (EngineHelper::isEmptyString(NewText)
       && openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
           _("You can't set an empty input data value.\n\n"
-              "Do you want to set this input data value as the default one (\"-\") instead ?")))
+              "Do you want to set this input data value as the default one (\"-\") instead?")))
     m_signal_DataEdited.emit("-", DataName);
   else
     m_signal_DataEdited.emit(NewText, DataName);
