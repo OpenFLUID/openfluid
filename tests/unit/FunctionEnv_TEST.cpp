@@ -59,8 +59,8 @@
 #define BOOST_TEST_MODULE unittest_functionenv
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
+
+#include <openfluid/base/EnvProperties.hpp>
 
 
 // =====================================================================

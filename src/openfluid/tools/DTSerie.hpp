@@ -57,9 +57,11 @@
 #define __DTSERIE_HPP__
 
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
 #include <list>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -68,20 +70,19 @@ namespace openfluid { namespace tools {
 struct TimePair
 {
   openfluid::core::DateTime DT;
-  openfluid::core::ScalarValue Value;
+  openfluid::core::DoubleValue Value;
 };
 
 
 
-struct IndexedSerie
+class IndexedSerie
 {
-  int Count;
-  openfluid::core::ScalarValue* Values;
+  public:
 
-  IndexedSerie()
-  {
-    Count = 0;
-  }
+    int Count;
+    openfluid::core::DoubleValue* Values;
+
+    IndexedSerie() : Count(0) {}
 };
 
 
@@ -102,13 +103,13 @@ class DLLEXPORT DateTimeSerie
 
     virtual ~DateTimeSerie();
 
-    bool addValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue Value);
+    bool addValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue Value);
 
-    bool getValue(openfluid::core::DateTime DT, openfluid::core::ScalarValue* Value);
+    bool getValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue* Value);
 
     short getNearestValues(openfluid::core::DateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);
 
-    bool getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::ScalarValue* Value);
+    bool getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::DoubleValue* Value);
 
     void clear();
 

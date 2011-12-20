@@ -56,9 +56,13 @@
 #define __SIMULRUNMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <string>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+namespace openfluid {
+namespace base {
+class RunDescriptor;
+}
+}
 
 class SimulRunModel
 {

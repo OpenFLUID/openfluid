@@ -72,21 +72,21 @@
 #define __PLUGFUNCTION_HPP__
 
 #include <string>
-
 #include <boost/filesystem/path.hpp>
-#include <glibmm.h>
-
+#include <glibmm/threadpool.h>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/config.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base/SimStatus.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/FuncSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-
-
+#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/EnvProperties.hpp>
+#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/Event.hpp>
+#include <openfluid/core/EventsColl.hpp>
 
 
 // =====================================================================
@@ -197,7 +197,7 @@
   Macro for applying a threaded function to each units of a class, following their process order
   @param[in] loopid ID of the loop, must match declaration
   @param[in] unitclass name of the unit class
-  @param[in] functptr member function name
+  @param[in] funcptr member function name
   @param[in] ... extra parameters to pass to the member function
 */
 #define APPLY_UNITS_ORDERED_LOOP_THREADED(loopid,unitclass,funcptr,...) \
@@ -227,7 +227,7 @@
 /**
   Macro for applying a threaded function to each units of the domain, following their process order
   @param[in] loopid ID of the loop, must match declaration
-  @param[in] functptr member function name
+  @param[in] funcptr member function name
   @param[in] ... extra parameters to pass to the member function
 */
 #define APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED(loopid,funcptr,...) \
@@ -374,295 +374,692 @@ class DLLEXPORT PluggableFunction
     */
     openfluid::core::CoreRepository* mp_CoreData;
 
+    /**
+      Appends a distributed variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Val the added value of the variable
+      @deprecated
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  const openfluid::core::VariableName_t VarName,
+                                  const openfluid::core::Value& Val);
+
+    /**
+      Appends a distributed variable value for a unit at the end of the previously added values for this variable
+      @param[in] aUnit a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Val the added value of the variable
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
+                                  const openfluid::core::VariableName_t VarName,
+                                  const openfluid::core::Value& Val);
+
+    /**
+      Appends a distributed double variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Val the added value of the variable (double)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  const openfluid::core::VariableName_t VarName,
+                                  const double Val);
+
+    /**
+      Appends a distributed long variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Val the added value of the variable (long)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  const openfluid::core::VariableName_t VarName,
+                                  const long Val);
+
+    /**
+      Appends a distributed boolean variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Val the added value of the variable (bool)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  const openfluid::core::VariableName_t VarName,
+                                  const bool Val);
+
+    /**
+      Appends a distributed string variable value for a unit at the end of the previously added values for this variable
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Val the added value of the variable (string)
+    */
+    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                  const openfluid::core::VariableName_t VarName,
+                                  const std::string& Val);
+
+
+    /**
+      Sets a distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Val the added value of the variable
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               const openfluid::core::Value& Val);
+
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Val the added value of the variable (double)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               const double Val);
+
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Val the added value of the variable (long)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               const long Val);
+
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Val the added value of the variable (bool)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               const bool Val);
+
+    /**
+      Sets a distributed double variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the variable
+      @param[in] Step the time step for the value of the variable
+      @param[in] Val the added value of the variable (string)
+    */
+    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               const std::string Val);
+
 
     /**
       Gets the distributed variable value for a unit at a time step
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[in] Step the time step for the value of the requested variable
-      @param[out] Value the value of the requested variable (scalar)
+      @param[out] Val the value of the requested variable
+      @deprecated
     */
-    void OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               openfluid::core::ScalarValue *Value);
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               openfluid::core::Value* Val) const;
 
     /**
       Gets the distributed variable value for a unit at a time step
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[in] Step the time step for the value of the requested variable
-      @param[out] Value the value of the requested variable (vector)
+      @param[out] Val the value of the requested variable
     */
-    void OPENFLUID_GetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               openfluid::core::VectorValue *Value);
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               openfluid::core::Value& Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+      @deprecated
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               double* Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               double& Val) const;
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+      @deprecated
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               long* Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               long& Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+      @deprecated
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               bool* Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               bool& Val) const;
+
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+      @deprecated
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               std::string* Val) const;
+
+    /**
+      Gets the distributed variable value for a unit at a time step
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the requested variable
+      @param[out] Val the value of the requested variable
+    */
+    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                               const openfluid::core::VariableName_t VarName,
+                               const openfluid::core::TimeStep_t Step,
+                               std::string& Val) const;
+
+    /**
+      Returns true if a distributed variable exists, false otherwise
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+    */
+    bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName) const;
+
+   /**
+      Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise
+      @param[in] UnitPtr a Unit
+      @param[in] VarName the name of the requested variable
+      @param[in] Step the time step for the value of the variable
+    */
+    bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const openfluid::core::TimeStep_t Step) const;
+
+    /**
+       Returns true if a distributed variable exists and if a value has been set for the given step
+       and if the value type is the given type, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] Step the time step for the value of the variable
+       @param[in] ValueType the type of the value
+     */
+     bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::VariableName_t VarName,
+                                    const openfluid::core::TimeStep_t Step,
+                                    const openfluid::core::Value::Type ValueType) const;
+
+    /**
+       Returns true if a distributed variable exists
+       and if the type set for this variable is the given type, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] VarType the type of the variable
+     */
+    bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const openfluid::core::Value::Type VarType) const;
+
+    /**
+       Returns true if a distributed variable exists and if a value has been set for the given step
+       and if the type set for this variable is the given type, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] Step the time step for the value of the variable
+       @param[in] VarType the type of the variable
+     */
+     bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::VariableName_t VarName,
+                                    const openfluid::core::TimeStep_t Step,
+                                    const openfluid::core::Value::Type VarType) const;
+
+
+    /**
+       Sets input data for a unit
+       @param[in] UnitPtr a Unit
+       @param[in] InputName the name of the set property
+       @param[in] Val the value of the set property
+     */
+     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::InputDataName_t& InputName,
+                                 const openfluid::core::Value& Val);
+
+     /**
+       Sets input data for a unit, as a double
+       @param[in] UnitPtr a Unit
+       @param[in] InputName the name of the set property
+       @param[in] Val the value of the set property
+     */
+     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::InputDataName_t& InputName,
+                                 const double& Val);
+
+     /**
+       Sets input data for a unit, as a long integer
+       @param[in] UnitPtr a Unit
+       @param[in] InputName the name of the set property
+       @param[in] Val the value of the set property
+     */
+     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::InputDataName_t& InputName,
+                                 const long& Val);
+
+     /**
+       Sets input data for a unit, as a string
+       @param[in] UnitPtr a Unit
+       @param[in] InputName the name of the set property
+       @param[out] Val the value of the set property
+     */
+     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::InputDataName_t& InputName,
+                                 const std::string& Val);
+
+
+    /**
+      Gets input data for a unit, as a StringValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::StringValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a DoubleValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::DoubleValue* Val) const;
+
+    /**
+      Gets input data for a unit, as a DoubleValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::DoubleValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a VectorValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::VectorValue* Val) const;
+
+    /**
+      Gets input data for a unit, as a VectorValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::VectorValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a MatrixValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::MatrixValue& Val) const;
 
     /**
       Gets input data for a unit, as a double
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
-      @param[out] Value the value of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
     */
-    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
-                                openfluid::core::InputDataName_t InputName,
-                                double *Value);
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                double *Val) const;
+
+    /**
+      Gets input data for a unit, as a double
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                double& Val) const;
 
     /**
       Gets input data for a unit, as a long integer
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
-      @param[out] Value the value of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
     */
-    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
-                                openfluid::core::InputDataName_t InputName,
-                                long *Value);
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                long *Val) const;
+
+    /**
+      Gets input data for a unit, as a long integer
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                long& Val) const;
 
     /**
       Gets input data for a unit, as a string
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
-      @param[out] Value the value of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
     */
-    void OPENFLUID_GetInputData(openfluid::core::Unit *UnitPtr,
-                                openfluid::core::InputDataName_t InputName,
-                                std::string *Value);
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                std::string *Val) const;
 
     /**
-      Sets input data for a unit, as a double
+      Gets input data for a unit, as a string
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the set property
-      @param[in] Value the value of the set property
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
     */
-    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                const double& Value);
-
-    /**
-      Sets input data for a unit, as a long integer
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the set property
-      @param[in] Value the value of the set property
-    */
-    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                const long& Value);
-
-    /**
-      Sets input data for a unit, as a string
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the set property
-      @param[out] Value the value of the set property
-    */
-    void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                const std::string& Value);
-
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                std::string& Val) const;
 
     /**
       Returns true if a distributed input data exists, false otherwise
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the queried variable
     */
-    bool OPENFLUID_IsInputDataExist(openfluid::core::Unit *UnitPtr,
-                                    openfluid::core::InputDataName_t InputName);
-
+    bool OPENFLUID_IsInputDataExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::InputDataName_t InputName) const;
 
 
     /**
-      Returns true if a distributed variable exists, false otherwise (searches both scalar and vector variables)
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
+      Gets a function parameter from the parameters set, as a StringValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr,
-                                    openfluid::core::VariableName_t VarName);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::StringValue& Val) const;
 
     /**
-      Returns true if a distributed scalar variable exists, false otherwise
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
+      Gets a function parameter from the parameters set, as a DoubleValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::DoubleValue& Val) const;
 
     /**
-      Returns true if a distributed vector variable exists, false otherwise
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
+      Gets a function parameter from the parameters set, as a DoubleValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName);
-
-
-   /**
-      Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise (searches both scalar and vector variables)
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-      @param[in] Step the time step for the value of the variable
-    */
-    bool OPENFLUID_IsVariableExist(openfluid::core::Unit *UnitPtr,
-                                    openfluid::core::VariableName_t VarName,
-                                    openfluid::core::TimeStep_t Step);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::VectorValue& Val) const;
 
     /**
-       Returns true if a distributed scalar variable exists and if a value has been set for the given step, false otherwise
-       @param[in] UnitPtr a Unit
-       @param[in] VarName the name of the requested variable
-       @param[in] Step the time step for the value of the variable
+      Gets a function parameter from the parameters set, as a MatrixValue
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_IsScalarVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName,
-                                          openfluid::core::TimeStep_t Step);
-
-    /**
-       Returns true if a distributed vector variable exists and if a value has been set for the given step, false otherwise
-       @param[in] UnitPtr a Unit
-       @param[in] VarName the name of the requested variable
-       @param[in] Step the time step for the value of the variable
-    */
-    bool OPENFLUID_IsVectorVariableExist(openfluid::core::Unit *UnitPtr,
-                                          openfluid::core::VariableName_t VarName,
-                                          openfluid::core::TimeStep_t Step);
-
-    /**
-      Appends a distributed scalar variable value for a unit at the end of the previously added values for this variable
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the variable
-      @param[in] Value the added value of the variable
-    */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  openfluid::core::VariableName_t VarName,
-                                  openfluid::core::ScalarValue Value);
-
-    /**
-      Appends a distributed vector variable value for a unit at the end of the previously added values for this variable
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the variable
-      @param[in] Value the added value of the variable
-    */
-    void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  openfluid::core::VariableName_t VarName,
-                                  openfluid::core::VectorValue& Value);
-
-    /**
-      Sets a distributed scalar variable value for a unit at a time step
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
-      @param[in] Value the added value of the variable
-    */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               openfluid::core::ScalarValue Value);
-
-    /**
-      Sets a distributed vector variable value for a unit at a time step
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
-      @param[in] Value the added value of the variable
-    */
-    void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               openfluid::core::VariableName_t VarName,
-                               openfluid::core::TimeStep_t Step,
-                               openfluid::core::VectorValue Value);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        openfluid::core::MatrixValue& Val) const;
 
     /**
       Gets a function parameter from the parameters set, as a double
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Value the value of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        double *Value);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        double *Val) const;
+
+    /**
+      Gets a function parameter from the parameters set, as a double
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        double& Val) const;
 
     /**
       Gets a function parameter value from the parameters set, as a long int
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Value the value of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        long *Value);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        long *Val) const;
+
+    /**
+      Gets a function parameter value from the parameters set, as a long int
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        long& Val) const;
 
     /**
       Gets a function parameter from the parameters set, as a float
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Value the value of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        float *Value);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        float *Val) const;
+
+    /**
+      Gets a function parameter from the parameters set, as a float
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        float& Val) const;
 
     /**
       Gets a function parameter value from the parameters set, as an int
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Value the value of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        int *Value);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        int *Val) const;
+
+    /**
+      Gets a function parameter value from the parameters set, as an int
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        int& Val) const;
 
     /**
       Gets a function parameter value from the parameters set, as a string
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Value the value of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        std::string *Value);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::string *Val) const;
+
+    /**
+      Gets a function parameter value from the parameters set, as a string
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::string& Val) const;
 
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of strings
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Values the vector of values of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        std::vector<std::string> *Values);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::vector<std::string> *Vals) const;
 
+    /**
+      Gets a function parameter vector of values from the parameters set, as a vector of strings
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::vector<std::string>& Vals) const;
 
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of doubles
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Values the vector of values of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        std::vector<double> *Values);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::vector<double> *Vals) const;
 
+    /**
+      Gets a function parameter vector of values from the parameters set, as a vector of doubles
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+    */
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::vector<double>& Vals) const;
 
     /**
       Gets a function parameter vector of values from the parameters set, as a vector of long ints
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
-      @param[out] Values the vector of values of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(openfluid::core::FuncParamsMap_t Params,
-                                        openfluid::core::FuncParamKey_t ParamName,
-                                        std::vector<long> *Values);
-
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::vector<long> *Vals) const;
 
     /**
-      Gets discrete events happening on a unit during a time period
-      @param[in] UnitPtr a Unit
-      @param[in] BeginDate the beginning of the time period
-      @param[in] EndDate the ending of the time period
-      @param[out] Events the collection of event corresponding to the request
+      Gets a function parameter vector of values from the parameters set, as a vector of long ints
+      @param[in] Params the parameters set for the simulation function
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
     */
-    void OPENFLUID_GetEvents(openfluid::core::Unit *UnitPtr,
-                             openfluid::core::DateTime BeginDate,
-                             openfluid::core::DateTime EndDate,
-                             openfluid::core::EventsCollection* Events);
+    bool OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
+                                        const openfluid::core::FuncParamKey_t ParamName,
+                                        std::vector<long>& Vals) const;
 
 
     /**
@@ -674,6 +1071,30 @@ class DLLEXPORT PluggableFunction
                                openfluid::core::Event& Ev);
 
 
+    /**
+      Gets discrete events happening on a unit during a time period
+      @param[in] UnitPtr a Unit
+      @param[in] BeginDate the beginning of the time period
+      @param[in] EndDate the ending of the time period
+      @param[out] Events the collection of event corresponding to the request
+      @deprecated
+    */
+    void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                             const openfluid::core::DateTime BeginDate,
+                             const openfluid::core::DateTime EndDate,
+                             openfluid::core::EventsCollection* Events) const;
+
+    /**
+      Gets discrete events happening on a unit during a time period
+      @param[in] UnitPtr a Unit
+      @param[in] BeginDate the beginning of the time period
+      @param[in] EndDate the ending of the time period
+      @param[out] Events the collection of event corresponding to the request
+    */
+    void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                             const openfluid::core::DateTime BeginDate,
+                             const openfluid::core::DateTime EndDate,
+                             openfluid::core::EventsCollection& Events) const;
 
     /**
       Returns true if the queried unit class exists
@@ -710,7 +1131,7 @@ class DLLEXPORT PluggableFunction
       Returns a pointer to the queried unit if exists
       @param[in] ClassName the queried class name
       @param[in] ID the queried unit ID
-      @param[out] UnitPtr a pointer to the requested Unit, NULL if the unit does not exist
+      @param[out] aUnit a pointer to the requested Unit, NULL if the unit does not exist
       @return false if the unit does not exist
     */
     bool OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
@@ -724,6 +1145,7 @@ class DLLEXPORT PluggableFunction
       Adds a unit to the set of units if not already exists
       @param[in] ClassName class name of the added unit
       @param[in] ID ID of the added unit
+      @param[in] PcsOrder Process order of the added unit
     */
     void OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName,
                            openfluid::core::UnitID_t ID,
@@ -743,8 +1165,8 @@ class DLLEXPORT PluggableFunction
       Adds a from-to connection between two units
       @param[in] ClassNameFrom class name of the "from" unit
       @param[in] IDFrom ID of the "from" unit
-      @param[in] ClassNameFrom class name of the "to" unit
-      @param[in] IDFrom ID of the "to" unit
+      @param[in] ClassNameTo class name of the "to" unit
+      @param[in] IDTo ID of the "to" unit
       @return false if the unit connection already exists
     */
     bool OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
@@ -765,8 +1187,8 @@ class DLLEXPORT PluggableFunction
       Removes a from-to connection between two units
       @param[in] ClassNameFrom class name of the "from" unit
       @param[in] IDFrom ID of the "from" unit
-      @param[in] ClassNameFrom class name of the "to" unit
-      @param[in] IDFrom ID of the "to" unit
+      @param[in] ClassNameTo class name of the "to" unit
+      @param[in] IDTo ID of the "to" unit
       @return false if the unit connection does not exist
     */
     bool OPENFLUID_RemoveFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
@@ -786,10 +1208,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Adds a child-parent connection between two units
-      @param[in] ClassNameFrom class name of the "child" unit
-      @param[in] IDFrom ID of the "child" unit
-      @param[in] ClassNameFrom class name of the "parent" unit
-      @param[in] IDFrom ID of the "parent" unit
+      @param[in] ClassNameChild class name of the "child" unit
+      @param[in] IDChild ID of the "child" unit
+      @param[in] ClassNameParent class name of the "parent" unit
+      @param[in] IDParent ID of the "parent" unit
       @return false if the connection already exists
     */
     bool OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
@@ -800,7 +1222,7 @@ class DLLEXPORT PluggableFunction
     /**
       Adds a child-parent connection between two units
       @param[in] ChildUnit pointer to the "child" unit
-      @param[in] ToUnit pointer to the "parent" unit
+      @param[in] ParentUnit pointer to the "parent" unit
       @return false if the connection already exists
     */
     bool OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
@@ -809,10 +1231,10 @@ class DLLEXPORT PluggableFunction
 
     /**
       Removes a child-parent connection between two units
-      @param[in] ClassNameFrom class name of the "child" unit
-      @param[in] IDFrom ID of the "child" unit
-      @param[in] ClassNameFrom class name of the "parent" unit
-      @param[in] IDFrom ID of the "parent" unit
+      @param[in] ClassNameChild class name of the "child" unit
+      @param[in] IDChild ID of the "child" unit
+      @param[in] ClassNameParent class name of the "parent" unit
+      @param[in] IDParent ID of the "parent" unit
       @return false if the connection does not exist
     */
     bool OPENFLUID_RemoveChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
@@ -823,7 +1245,7 @@ class DLLEXPORT PluggableFunction
     /**
       Removes a child-parent connection between two units
       @param[in] ChildUnit pointer to the "child" unit
-      @param[in] ToUnit pointer to the "parent" unit
+      @param[in] ParentUnit pointer to the "parent" unit
       @return false if the connection does not exist
     */
     bool OPENFLUID_RemoveChildParentConnection(openfluid::core::Unit* ChildUnit,
@@ -964,16 +1386,16 @@ class DLLEXPORT PluggableFunction
     /**
       Gets an environment string value associated to a Key
       @param[in] Key the sender of the message
-      @param[out] Value the value associated with the environment key
+      @param[out] Val the value associated with the environment key
     */
-    bool OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value);
+    bool OPENFLUID_GetRunEnvironment(std::string Key, std::string *Val);
 
     /**
       Gets an environment boolean value associated to a Key
       @param[in] Key the sender of the message
-      @param[out] Value the value associated with the environment key
+      @param[out] Val the value associated with the environment key
     */
-    bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Value);
+    bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Val);
 
     /**
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
@@ -1002,7 +1424,9 @@ class DLLEXPORT PluggableFunction
     */
     virtual ~PluggableFunction();
 
-
+    /**
+      Internally called by the framework.
+    */
     void initializeFunction(openfluid::core::CoreRepository* CoreData,
                             openfluid::base::ExecutionMessages* ExecMsgs,
                             openfluid::base::EnvironmentProperties* FuncEnv,
@@ -1013,33 +1437,32 @@ class DLLEXPORT PluggableFunction
 
 
     /**
-      Initializes function parameters of the function, given as a hash map. Called by the kernel.
+      Initializes function parameters of the function, given as a hash map. Internally called by the framework.
     */
     virtual bool initParams(openfluid::core::FuncParamsMap_t Params)=0;
 
     /**
-      Prepares data. Called by the kernel.
+      Prepares data. Internally called by the framework.
     */
     virtual bool prepareData()=0;
 
     /**
-      Checks the function consistency. Called by the kernel.
+      Checks the function consistency. Internally called by the framework.
     */
     virtual bool checkConsistency()=0;
 
-
     /**
-      Called by the kernel.
+      Internally called by the framework.
     */
     virtual bool initializeRun(const SimulationInfo* SimInfo)=0;
 
     /**
-      Called by the kernel.
+      Internally called by the framework.
     */
     virtual bool runStep(const SimulationStatus* SimStatus)=0;
 
     /**
-      Called by the kernel.
+      Internally called by the framework.
     */
     virtual bool finalizeRun(const SimulationInfo* SimInfo)=0;
 

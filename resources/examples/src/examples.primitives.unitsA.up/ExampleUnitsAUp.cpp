@@ -3,8 +3,7 @@
 */
 
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 
@@ -130,19 +129,19 @@ class ExampleUnitsAUpdate : public openfluid::base::PluggableFunction
     bool runStep(const openfluid::base::SimulationStatus* SimStatus)
     {
       openfluid::core::Unit* A;
-      openfluid::core::ScalarValue Value1, Value2;
+      openfluid::core::DoubleValue Value1, Value2;
 
       DECLARE_UNITS_ORDERED_LOOP(17);
 
 
       BEGIN_UNITS_ORDERED_LOOP(17,"unitsA",A)
 
-        OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep(),&Value1);
+        OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep(),Value1);
 
 
-        if (OPENFLUID_IsScalarVariableExist(A,"var2",SimStatus->getCurrentStep()))
+        if (OPENFLUID_IsVariableExist(A,"var2",SimStatus->getCurrentStep(),openfluid::core::Value::DOUBLE))
         {
-          OPENFLUID_GetVariable(A,"var2",SimStatus->getCurrentStep(),&Value2);
+          OPENFLUID_GetVariable(A,"var2",SimStatus->getCurrentStep(),Value2);
           Value2 = Value2 * m_Mult;
           OPENFLUID_SetVariable(A,"var2",SimStatus->getCurrentStep(),Value2);
         }

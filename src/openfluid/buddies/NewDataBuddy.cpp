@@ -54,10 +54,11 @@
  */
 
 #include <openfluid/buddies/NewDataBuddy.hpp>
-#include <openfluid/core.hpp>
+
+#include <fstream>
+#include <sstream>
 
 #include <boost/filesystem/convenience.hpp>
-#include <fstream>
 
 
 namespace openfluid { namespace buddies {

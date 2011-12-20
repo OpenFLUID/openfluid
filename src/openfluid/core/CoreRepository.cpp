@@ -46,9 +46,10 @@
 */
 
 
-#include <boost/foreach.hpp>
 
 #include <openfluid/core/CoreRepository.hpp>
+
+#include <boost/foreach.hpp>
 
 
 namespace openfluid { namespace core {
@@ -363,8 +364,7 @@ void CoreRepository::clearAllVariables()
 {
   BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getScalarVariables()->clear();
-    CurrentUnit->getVectorVariables()->clear();
+    CurrentUnit->getVariables()->clear();
   }
 }
 
@@ -403,8 +403,7 @@ void CoreRepository::clearAllData()
 {
   BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getScalarVariables()->clear();
-    CurrentUnit->getVectorVariables()->clear();
+    CurrentUnit->getVariables()->clear();
     CurrentUnit->getInputData()->clear();
     CurrentUnit->getEvents()->clear();
   }

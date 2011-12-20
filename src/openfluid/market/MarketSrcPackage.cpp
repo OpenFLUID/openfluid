@@ -59,6 +59,9 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
+#include <glibmm/error.h>
+#include <glibmm/spawn.h>
+
 
 
 namespace openfluid { namespace market {

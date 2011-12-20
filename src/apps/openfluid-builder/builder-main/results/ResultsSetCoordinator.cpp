@@ -52,6 +52,7 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
+
 #include "ResultsSetCoordinator.hpp"
 
 #include "ResUnitChooserModel.hpp"

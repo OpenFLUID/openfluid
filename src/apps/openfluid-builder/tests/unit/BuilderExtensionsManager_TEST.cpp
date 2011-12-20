@@ -67,8 +67,7 @@
 
 #include "BuilderExtensionsManager.hpp"
 
-#include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 
 // =====================================================================
@@ -126,7 +125,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
-  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR+";"+openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR));
+  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR/*+";"+openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR)*/);
 
   BEM->registerExtensions();
 

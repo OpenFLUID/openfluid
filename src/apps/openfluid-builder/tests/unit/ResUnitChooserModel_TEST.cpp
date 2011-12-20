@@ -63,6 +63,10 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/OutputSetDescriptor.hpp>
+
+
 // =====================================================================
 // =====================================================================
 
@@ -103,8 +107,7 @@ BOOST_AUTO_TEST_CASE(test_setEngineRequirements)
   BOOST_CHECK(mp_Model->getSelectedSetDescriptor() == 0);
   BOOST_CHECK_EQUAL(mp_Model->getClassName(),"");
   BOOST_CHECK_EQUAL(mp_Model->getIDs().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getScalars().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getVectors().size(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getVariables().size(),0);
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
 }
 
@@ -145,15 +148,13 @@ BOOST_AUTO_TEST_CASE(test_setExtractVarsInfo)
   mp_Model->extractSet();
   mp_Model->extractVarsInfo();
 
-  BOOST_CHECK_EQUAL(mp_Model->getScalars().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getVectors().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getVariables().size(),2);
 
   mp_Model->setSetAndClassName("partial","TestUnits");
   mp_Model->extractSet();
   mp_Model->extractVarsInfo();
 
-  BOOST_CHECK_EQUAL(mp_Model->getScalars().size(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getVectors().size(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getVariables().size(),2);
 
 }
 

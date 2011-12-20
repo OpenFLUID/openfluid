@@ -54,12 +54,13 @@
 
 #include "PreferencesManager.hpp"
 
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <boost/filesystem.hpp>
-#include <glibmm/fileutils.h>
 #include <fstream>
-#include <openfluid/base/OFException.hpp>
+#include <glibmm/fileutils.h>
+#include <boost/filesystem.hpp>
+
 #include <openfluid/config.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/OFException.hpp>
 
 namespace openfluid {
 namespace guicommon {

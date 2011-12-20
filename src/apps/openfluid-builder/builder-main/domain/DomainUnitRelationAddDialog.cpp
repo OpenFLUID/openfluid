@@ -57,6 +57,8 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 
+#include <openfluid/core/CoreRepository.hpp>
+
 #include "EngineHelper.hpp"
 
 // =====================================================================

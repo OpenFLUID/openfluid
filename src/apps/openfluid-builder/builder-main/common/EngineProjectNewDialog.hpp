@@ -55,7 +55,19 @@
 #ifndef __ENGINEPROJECTNEWDIALOG_HPP__
 #define __ENGINEPROJECTNEWDIALOG_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/filechooserbutton.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/label.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/button.h>
+#include <gtkmm/box.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/treeview.h>
+
 #include <boost/filesystem.hpp>
 
 class EngineProjectOpenDialog;

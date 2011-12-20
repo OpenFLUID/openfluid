@@ -63,6 +63,8 @@
 #include "ModelAvailFctModel.hpp"
 #include "ModelAvailFctView.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+
 // =====================================================================
 // =====================================================================
 

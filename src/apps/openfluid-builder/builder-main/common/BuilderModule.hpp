@@ -55,8 +55,9 @@
 #ifndef __BUILDERMODULE_HPP__
 #define __BUILDERMODULE_HPP__
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
+
+#include <gtkmm/widget.h>
 
 class BuilderModule
 {

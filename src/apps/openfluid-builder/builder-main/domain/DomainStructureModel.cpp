@@ -54,7 +54,8 @@
 
 #include "DomainStructureModel.hpp"
 
-#include "EngineHelper.hpp"
+#include <openfluid/core/CoreRepository.hpp>
+
 
 // =====================================================================
 // =====================================================================

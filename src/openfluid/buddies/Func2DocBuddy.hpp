@@ -57,12 +57,16 @@
 #define __FUNC2DOCBUDDY_H___
 
 #include <boost/filesystem/path.hpp>
+#include <map>
+#include <vector>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OFBuddy.hpp>
 
 
 namespace openfluid { namespace buddies {
+
+class BuddiesListener;
 
 
 class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy

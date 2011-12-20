@@ -66,7 +66,7 @@ class DLLEXPORT FixedGenerator : public Generator
 {
   private:
 
-    openfluid::core::ScalarValue m_VarValue;
+    openfluid::core::DoubleValue m_VarValue;
 
   public:
 

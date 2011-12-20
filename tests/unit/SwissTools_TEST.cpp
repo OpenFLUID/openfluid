@@ -60,8 +60,7 @@
 #define BOOST_TEST_MODULE unittest_swisstools
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/debug.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 // =====================================================================
@@ -146,9 +145,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1~RC1"),0);
   BOOST_REQUIRE_EQUAL(openfluid::tools::CompareVersions("1.6.1~rc1","1.6.1+18"),-2);
 
-
-
 }
+
 
 // =====================================================================
 // =====================================================================

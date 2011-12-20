@@ -56,6 +56,12 @@
 
 #include <boost/foreach.hpp>
 
+#include <openfluid/core/UnitsColl.hpp>
+#include <openfluid/core/Unit.hpp>
+
+#include "DomainIDataColumns.hpp"
+#include "BuilderListStore.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -110,7 +116,7 @@ BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
   BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
   {
     std::string Val;
-    Unit.getInputData()->getValue(DataName, &Val);
+    Unit.getInputData()->getValue(DataName, Val);
 
     Row.set_value( *mp_Columns->getColumnWithTitle(DataName), Val);
   }
@@ -205,10 +211,24 @@ void DomainIDataAdapterModelImpl::updateData(const std::string NewText,
     std::string DataName)
 {
   openfluid::core::Unit* Unit = mp_UnitsColl->getUnit(m_SelectedUnit);
+  Gtk::TreeIter Iter = getRequestedUnitSelection();
 
-  if (Unit != NULL)
+  if (Unit != NULL && Iter)
   {
-    Unit->getInputData()->replaceValue(DataName, NewText);
+    if (NewText.empty())
+    {
+      std::string OldValue;
+      Unit->getInputData()->getValue(DataName, OldValue);
+
+      Iter->set_value(*mp_Columns->getColumnWithTitle(DataName), OldValue);
+    }
+    else
+    {
+      if (NewText == "-")
+        Iter->set_value(*mp_Columns->getColumnWithTitle(DataName), NewText);
+
+      Unit->getInputData()->replaceValue(DataName, NewText);
+    }
   }
 }
 

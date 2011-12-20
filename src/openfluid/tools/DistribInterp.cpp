@@ -54,11 +54,16 @@
 */
 
 
-#include <openfluid/tools.hpp>
+#include <openfluid/tools/DistribInterp.hpp>
 
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/filesystem.hpp>
-//using boost::filesystem;
+
+#include <openfluid/tools/DataSrcFile.hpp>
+#include <openfluid/tools/DTSerie.hpp>
+#include <openfluid/tools/ColTextParser.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -334,7 +339,7 @@ bool DistributeInterpolate::loadDistributionAndDistribute(std::string FilePath)
 // =====================================================================
 
 
-bool DistributeInterpolate::getValue(int ID, openfluid::core::DateTime DT, openfluid::core::ScalarValue *Value)
+bool DistributeInterpolate::getValue(int ID, openfluid::core::DateTime DT, openfluid::core::DoubleValue *Value)
 {
 
   return (m_UnitsData[ID]->getValue(DT,Value));
@@ -345,7 +350,7 @@ bool DistributeInterpolate::getValue(int ID, openfluid::core::DateTime DT, openf
 // =====================================================================
 
 
-bool DistributeInterpolate::getValue(int ID, int Index, openfluid::core::ScalarValue *Value)
+bool DistributeInterpolate::getValue(int ID, int Index, openfluid::core::DoubleValue *Value)
 {
 
   if (Index>m_UnitsIndexedData[ID]->Count) return false;

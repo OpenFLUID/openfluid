@@ -54,6 +54,9 @@
 
 #include "BuilderHomeButton.hpp"
 
+#include <gtkmm/label.h>
+#include <gtkmm/action.h>
+
 void BuilderHomeButton::initialize()
 {
   set_size_request(350, 65);

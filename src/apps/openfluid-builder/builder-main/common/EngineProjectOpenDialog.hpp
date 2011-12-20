@@ -55,7 +55,9 @@
 #ifndef __ENGINEPROJECTOPENDIALOG_HPP__
 #define __ENGINEPROJECTOPENDIALOG_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/box.h>
 
 class EngineProjectOpenDialog
 {

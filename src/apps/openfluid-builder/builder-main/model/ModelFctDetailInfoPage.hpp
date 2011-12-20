@@ -55,8 +55,11 @@
 #ifndef __MODELFCTDETAILINFOPAGE_HPP__
 #define __MODELFCTDETAILINFOPAGE_HPP__
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
+
+#include <gtkmm/table.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/separator.h>
 
 #include "ModelFctDetailInfoTableRow.hpp"
 

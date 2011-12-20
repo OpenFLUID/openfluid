@@ -57,8 +57,14 @@
 
 #include <sigc++/sigc++.h>
 #include <set>
+#include <map>
+#include <string>
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+}
+}
 
 // =====================================================================
 // =====================================================================

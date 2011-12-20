@@ -55,6 +55,11 @@
 #include "GeneratorSignature.hpp"
 #include "tests-builderconfig.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/Factory.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
 BOOST_AUTO_TEST_CASE(test_init)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);

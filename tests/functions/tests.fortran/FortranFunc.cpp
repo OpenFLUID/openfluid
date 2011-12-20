@@ -54,6 +54,8 @@
 
 #include "FortranFunc.h"
 #include <openfluid/tools/FortranCPP.hpp>
+#include <openfluid/core/Value.hpp>
+#include <openfluid/core/MatrixValue.hpp>
 #include <cmath>
 
 
@@ -92,7 +94,7 @@ BEGIN_EXTERN_FORTRAN
   EXTERN_FSUBROUTINE(multrealvalue)(FREAL8*,FREAL8*,FREAL8*);
   EXTERN_FSUBROUTINE(multintvalue)(FINT*,FINT*,FINT*);
   EXTERN_FSUBROUTINE(catstrings)(FCHARACTER*,FCHARACTER*,FCHARACTER*);
-  EXTERN_FSUBROUTINE(multrealmatrix)(FREAL8*,FINT*,FINT*,FINT*,FREAL8*);
+  EXTERN_FSUBROUTINE(multrealmatrix)(FREAL8*,FINT*,FINT*,FREAL8*,FREAL8*);
 END_EXTERN_FORTRAN
 
 
@@ -123,7 +125,7 @@ FortranFunction::~FortranFunction()
 // =====================================================================
 
 
-bool FortranFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool FortranFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
 {
 
 
@@ -158,7 +160,7 @@ bool FortranFunction::checkConsistency()
 // =====================================================================
 
 
-bool FortranFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool FortranFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
   m_Precision = 0.000001;
@@ -170,10 +172,9 @@ bool FortranFunction::initializeRun(const openfluid::base::SimulationInfo* SimIn
 // =====================================================================
 
 
-bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+bool FortranFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
-  int i;
-
+  int i,j;
 
   // ====== double ======
 
@@ -220,26 +221,79 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
   // ====== matrix ======
 
-  int MMult, MDim1,MDim2;
-  double *MValue;
-  double *MResult;
-  MMult = 3;
-  MDim1 = 2;
-  MDim2 = 3;
+  int MDim1,MDim2;
+  double MMult;
+  openfluid::core::MatrixValue MValue;
+  openfluid::core::MatrixValue MResult;
+  double* MTmpResult;
+
+  MDim1 = 3;
+  MDim2 = 5;
+
+  MMult = 2.18;
+
+  MValue = openfluid::core::MatrixValue(MDim1,MDim2);
+
+  MTmpResult = new double[MDim1*MDim2];
+
+  for (j=0; j < MDim2;j++)
+    for (i=0; i < MDim1;i++)
+      MValue.setElement(i,j,(j*MDim1)+i+1);
+
+  std::cout << std::endl;
 
 
-  MValue = new double[MDim1*MDim2];
-  MResult = new double[MDim1*MDim2];
 
-  for (i=0; i < MDim1*MDim2;i++) MValue[i] = 1.5;
-  for (i=0; i < MDim1*MDim2;i++) MResult[i] = 0.0;
-
-  CALL_FSUBROUTINE(multrealmatrix)(MValue,&MDim1,&MDim2,&MMult,MResult);
-
-  for (i=0; i < MDim1*MDim2;i++)
+  std::cout << "MValue:"<< std::endl;
+  for (j=0; j < MDim2;j++)
   {
-    if (std::abs(MResult[i] - (MValue[i] * MMult)) > m_Precision)
-      OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
+    for (i=0; i < MDim1;i++)
+    {
+        std::cout << MValue.getElement(i,j) << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  MResult.fill(0.0);
+
+  CALL_FSUBROUTINE(multrealmatrix)(MValue.getData(),&MDim1,&MDim2,&MMult,MTmpResult);
+
+  MResult = openfluid::core::MatrixValue(MDim1,MDim2);
+  MResult.setData(MTmpResult);
+
+  std::cout << "MTmpResult:"<< std::endl;
+  for (j=0; j < MDim2;j++)
+  {
+    for (i=0; i < MDim1;i++)
+    {
+        std::cout << MTmpResult[i+(j*MDim1)] << " ";
+    }
+    std::cout << std::endl;
+  }
+
+
+  std::cout << "MResult:"<< std::endl;
+  for (j=0; j < MDim2;j++)
+  {
+    for (i=0; i < MDim1;i++)
+    {
+        std::cout << MResult.getElement(i,j) << " ";
+    }
+    std::cout << std::endl;
+  }
+
+
+  std::cout << std::endl;
+
+
+  for (j=0; j < MDim2;j++)
+  {
+    for (i=0; i < MDim1;i++)
+    {
+//      std::cout << MResult.get(i,j) << "  " << (MValue.get(i,j) * MMult) << std::endl;
+      if (std::abs(MResult.get(i,j) - (MValue.get(i,j) * MMult)) > m_Precision)
+        OPENFLUID_RaiseError("tests.fortran","incorrect fortran call (multrealmatrix)");
+    }
   }
 
   return true;
@@ -249,7 +303,7 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 // =====================================================================
 
 
-bool FortranFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+bool FortranFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
 {
 
 

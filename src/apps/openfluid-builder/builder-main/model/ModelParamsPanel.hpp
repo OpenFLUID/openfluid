@@ -55,7 +55,7 @@
 #ifndef __MODELPARAMSPANEL_HPP__
 #define __MODELPARAMSPANEL_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/notebook.h>
 
 
 class ModelParamsPanel

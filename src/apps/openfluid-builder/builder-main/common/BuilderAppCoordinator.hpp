@@ -51,14 +51,12 @@
 #include <sigc++/sigc++.h>
 
 #include "BuilderAppActions.hpp"
-#include "BuilderModule.hpp"
-#include "BuilderAppState.hpp"
 
 class BuilderAppWindow;
-
+class BuilderModule;
+class BuilderAppState;
 class EngineProjectNewDialog;
 class EngineProjectOpenDialog;
-
 class PreferencesDialog;
 
 class BuilderAppCoordinator: public sigc::trackable

@@ -55,13 +55,18 @@
 #ifndef __DOMAINIDATAADAPTERMODEL_HPP__
 #define __DOMAINIDATAADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
 
-#include <openfluid/core.hpp>
 #include <sigc++/sigc++.h>
+#include <gtkmm/treemodel.h>
 
-#include "DomainIDataColumns.hpp"
-#include "BuilderListStore.hpp"
+namespace openfluid {
+namespace core {
+class UnitsCollection;
+}
+}
+
+class DomainIDataColumns;
+class BuilderListStore;
 
 class DomainIDataAdapterModel
 {

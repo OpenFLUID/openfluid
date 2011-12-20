@@ -58,10 +58,10 @@
 #include "ProjectWorkspace.hpp"
 #include "ProjectCoordinator.hpp"
 #include "ProjectDashboard.hpp"
+#include "EngineProject.hpp"
 
-#include "FunctionSignatureRegistry.hpp"
 #include "BuilderListToolBoxFactory.hpp"
-#include "BuilderFrame.hpp"
+
 
 // =====================================================================
 // =====================================================================

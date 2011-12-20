@@ -55,7 +55,6 @@
 #ifndef __DOMAINSTRUCTUREADAPTERMODEL_HPP__
 #define __DOMAINSTRUCTUREADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
 
 #include <openfluid/core/Unit.hpp>
 

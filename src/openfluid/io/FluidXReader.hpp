@@ -56,16 +56,19 @@
 #ifndef __FLUIDXREADER_HPP__
 #define __FLUIDXREADER_HPP__
 
-#include <libxml/parser.h>
+#include <libxml/tree.h>
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/DomainDescriptor.hpp>
+#include <openfluid/base/ModelDescriptor.hpp>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+
 
 namespace openfluid { namespace io {
+
+class IOListener;
 
 
 class DLLEXPORT FluidXReader
@@ -117,6 +120,12 @@ class DLLEXPORT FluidXReader
     void extractDomainCalendarFromNode(xmlNodePtr NodePtr);
 
     void parseFile(std::string Filename);
+
+    /**
+     * Used for compatibility only
+     * @deprecated
+     */
+    void clearOldVectorNamedVar(std::string& VarName);
 
   public:
 

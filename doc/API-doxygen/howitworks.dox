@@ -6,7 +6,7 @@
 
 \section genorg_ssec General organization
  
-The OpenFLUID libraries features are gathered into the openfluid namespace, which is made of several parts. The three main parts are: 
+The OpenFLUID libraries features are gathered together into the \ref openfluid "openfluid namespace", which is made of several parts. The three main parts are: 
 <ul>
   <li>openfluid::core, defined in openfluid/core.hpp, gathers all the classes for the shared data between the OpenFLUID framework and the functions, and between the functions themselves
   <li>openfluid::base, defined in openfluid/base.hpp, gathers all the classes for the dynamic linking between the OpenFLUID framework  and the functions, and in particular the openfluid::base::PluggableFunction class
@@ -49,29 +49,37 @@ This involves the following classes (non-exhaustive list):
   <li>openfluid::core::Unit
 </ul>   
 
+\subsection featparams_ssec Simulation parameters and input data 
 
-\subsection feattypes_ssec Simulation data types and structure
-
-The simulation variables can be scalar data (a double precision floating value) or vector data (vector of double precision floating values). A date is associated to each value of simulation variables.  
+Models can be parameterized using functions parameters at simulation function level,
+or using input data associated to spatial units. 
 This involves the following classes and structures (non-exhaustive list):
 <ul>
-  <li>openfluid::core::DateTime
-  <li>openfluid::core::ScalarValue
-  <li>openfluid::core::VectorValue          
+  <li>openfluid::core::ParamsMap_t
+  <li>openfluid::core::Value and its derived types  
 </ul>
 
+\see \ref values
+\see \ref simvardata
 
-\subsection feattypes_ssec Discrete events
+\subsection featvars_ssec Simulation variables and events
 
-Simulation functions can handle discrete events, associated to homogeneous units. 
+The simulation variables can be of any defined type. A date is associated to each value of simulation variables.
+Simulation functions can also handle discrete events, associated to spatial units.  
 This involves the following classes and structures (non-exhaustive list):
 <ul>
+  <li>openfluid::core::Value and its derived types
   <li>openfluid::core::Event          
   <li>openfluid::core::EventsCollection  
+  <li>openfluid::core::DateTime
 </ul>
 
+\see \ref values
+\see \ref simvardata
+
+
   
-\subsection feattools_ssec Tools  
+\subsection feattools_ssec Tools
 
 This involves the following classes and functions (non-exhaustive list): 
 <ul>

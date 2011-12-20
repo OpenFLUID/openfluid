@@ -57,7 +57,12 @@
 
 #include "BuilderMVPComponent.hpp"
 
-#include <openfluid/machine.hpp>
+namespace openfluid {
+namespace machine {
+class ModelInstance;
+class ModelItemInstance;
+}
+}
 
 class ModelFctParamsModel;
 class ModelFctParamsView;

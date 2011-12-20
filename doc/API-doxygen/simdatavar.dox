@@ -1,6 +1,6 @@
 /**
 
-\page simvardata Access to simulation parameters, data and variables
+\page simvardata Access to simulation parameters, input data, variables and events
 
 
 \section funcparams_sec Access to function parameters
@@ -34,23 +34,15 @@ bool MyFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 
 To be reused in other part of the simulation function, the variable to store the value of function parameters should be declared as class variables. The parameters type can be string, double, integer, boolean, vector of string, vector of double, ... (see definitions of \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink to get more information about available types). 
 
-
 \section vars_sec Access to simulation variables
 
 The values for the simulation variables are attached to the homogeneous units.
 
 \subsection varstype_ssec Types
 
-Currently, the variables can be typed with one of the two defined types: 
-<ul>
-<li>openfluid::core::ScalarValue for scalar values
-<li>openfluid::core::VectorValue for vector values, which are vector of scalars values
-</ul>
-
-The scalar type is a double precision floating point type. The corresponding plain old type in C++ is double.
+The variables can be typed many defined types. See \link values Preliminary information about data types \endlink for more information 
 
 \subsection varsaccess_ssec Access
-
 
 The methods to access simulation variables exist in two flavours, for scalar and vector, depending on the type you pass for the value:
 <ul>
@@ -58,8 +50,7 @@ The methods to access simulation variables exist in two flavours, for scalar and
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_AppendVariable OPENFLUID_AppendVariable \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_SetVariable OPENFLUID_SetVariable \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVariableExist OPENFLUID_IsVariableExist \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsScalarVariableExist OPENFLUID_IsScalarVariableExist \endlink
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVectorVariableExist OPENFLUID_IsVectorVariableExist \endlink
+<li>\link openfluid::base::PluggableFunction::OPENFLUID_IsVariableExist OPENFLUID_IsTypedVariableExist \endlink
 </ul>
 
 They can be accessed only from the \link openfluid::base::PluggableFunction::runStep runStep \endlink method.
@@ -68,7 +59,7 @@ They can be accessed only from the \link openfluid::base::PluggableFunction::run
 bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
   int CurrentStep;
-  openfluid::core::ScalarValue TmpValue;
+  double TmpValue;
   openfluid::core::Unit* SU;
   DECLARE_UNITS_ORDERED_LOOP(12);
 
@@ -76,7 +67,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
   BEGIN_UNITS_ORDERED_LOOP(12,"SU",SU)
 
-    OPENFLUID_GetVariable(SU,"MyVar",CurrentStep,&TmpValue);
+    OPENFLUID_GetVariable(SU,"MyVar",CurrentStep,TmpValue);
     TmpValue = TmpValue * 2;
     OPENFLUID_AppendVariable(SU,"MyVarX2",QOutput);
 
@@ -97,7 +88,6 @@ They are usable from \link openfluid::base::PluggableFunction::initializeRun ini
 </ul>
 
 The name of the accessed input data must match the name given in the standard input files.
-
 
 \section events_sec Access to discrete events
 

@@ -57,8 +57,17 @@
 #define __SIMREPORTWRITER_HPP__
 
 #include <string>
+
 #include <openfluid/dllexport.hpp>
 
+namespace openfluid {
+namespace base {
+class SimulationInfo;
+}
+namespace core {
+class CoreRepository;
+}
+}
 
 namespace openfluid { namespace io {
 

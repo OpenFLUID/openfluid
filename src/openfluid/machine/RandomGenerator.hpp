@@ -69,8 +69,8 @@ namespace openfluid { namespace machine {
 class DLLEXPORT RandomGenerator : public Generator
 {
   private:
-    openfluid::core::ScalarValue m_Min;
-    openfluid::core::ScalarValue m_Max;
+    openfluid::core::DoubleValue m_Min;
+    openfluid::core::DoubleValue m_Max;
 
     boost::mt19937 m_RandomEngine;
 

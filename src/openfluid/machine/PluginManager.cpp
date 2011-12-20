@@ -53,14 +53,12 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-
-#include <openfluid/config.hpp>
-
 #include <openfluid/machine/PluginManager.hpp>
-#include <openfluid/tools.hpp>
-#include <openfluid/base/OFException.hpp>
 
-#include <iostream>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/machine/DynamicLib.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 namespace openfluid { namespace machine {
 

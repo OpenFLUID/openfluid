@@ -54,7 +54,7 @@
 
 #include "SimulOutFilesAdapterModel.hpp"
 
-#include <glibmm/i18n.h>
+#include <openfluid/base/OutputDescriptor.hpp>
 
 #include "BuilderListStore.hpp"
 #include "EngineHelper.hpp"

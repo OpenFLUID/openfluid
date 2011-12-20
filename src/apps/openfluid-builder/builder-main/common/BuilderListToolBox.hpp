@@ -57,7 +57,10 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/buttonbox.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/alignment.h>
+#include <gtkmm/button.h>
 
 class BuilderListToolBox
 {

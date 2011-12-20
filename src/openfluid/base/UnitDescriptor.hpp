@@ -57,7 +57,7 @@
 #define __UNITDESCRIPTOR_H___
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 
 namespace openfluid { namespace base {

@@ -59,6 +59,8 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/stock.h>
+
 namespace openfluid { namespace guicommon {
 
 const static Gdk::Color GREEN("#97DE62");

@@ -54,11 +54,12 @@
  */
 
 
-
-#include <openfluid/base.hpp>
 #include <openfluid/io/SimReportWriter.hpp>
-#include <fstream>
-#include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/CoreRepository.hpp>
 
 
 namespace openfluid { namespace io {

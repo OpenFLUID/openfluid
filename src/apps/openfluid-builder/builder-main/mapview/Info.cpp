@@ -338,7 +338,7 @@ void Info::loadInputData(int ID, int SelectionSize)
       openfluid::core::Unit* TempUnit = mp_CoreRepos->getUnit(
           mp_NameClassLabel->get_label(), ID);
       std::string Val;
-      TempUnit->getInputData()->getValue(((*it).first)->get_label(), &Val);
+      TempUnit->getInputData()->getValue(((*it).first)->get_label(), Val);
       (*it).second.first->set_text(Val);
     }
   }

@@ -66,7 +66,7 @@ As already mentioned, an error stops the simulation the next time the framework 
 \code
 bool Myfunction::checkConsistency()
 {
-  openfluid::core::ScalarValue TmpValue;
+  double TmpValue;
   openfluid::core::Unit* SU;
   DECLARE_SU_ORDERED_LOOP(1);
   

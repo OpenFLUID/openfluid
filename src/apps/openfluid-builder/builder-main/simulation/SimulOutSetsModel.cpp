@@ -54,6 +54,10 @@
 
 #include "SimulOutSetsModel.hpp"
 
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+
+
 // =====================================================================
 // =====================================================================
 

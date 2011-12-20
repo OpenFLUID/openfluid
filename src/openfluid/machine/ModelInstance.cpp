@@ -54,7 +54,12 @@
  */
 
 #include <openfluid/machine/ModelInstance.hpp>
+
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+
 
 namespace openfluid { namespace machine {
 

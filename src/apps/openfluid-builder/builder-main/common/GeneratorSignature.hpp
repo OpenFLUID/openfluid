@@ -55,7 +55,8 @@
 #ifndef __GENERATORSIGNATURE_HPP__
 #define __GENERATORSIGNATURE_HPP__
 
-#include <openfluid/base.hpp>
+#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
 
 class GeneratorSignature: public openfluid::base::FunctionSignature
 {

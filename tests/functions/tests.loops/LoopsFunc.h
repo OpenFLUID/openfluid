@@ -54,8 +54,7 @@
 #ifndef __LOOPSFUNC_H__
 #define __LOOPSFUNC_H__
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================

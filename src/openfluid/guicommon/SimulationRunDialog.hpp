@@ -57,18 +57,25 @@
 #ifndef __SIMULATIONRUNDIALOG_HPP___
 #define __SIMULATIONRUNDIALOG_HPP___
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/scrolledwindow.h>
 
-#include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
 #include <openfluid/dllexport.hpp>
-
-#include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/RunStatusWidget.hpp>
 
+namespace openfluid { namespace machine {
+class Engine;
+class SimulationBlob;
+class ModelInstance;
+}
+}
 
 namespace openfluid { namespace guicommon {
 
+class RunDialogMachineListener;
 
 class DLLEXPORT SimulationRunDialog : public Gtk::Dialog
 {

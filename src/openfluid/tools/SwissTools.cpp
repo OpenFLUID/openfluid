@@ -47,9 +47,12 @@
 
 
 #include <openfluid/tools/SwissTools.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/algorithm/string.hpp>
-#include <glibmm.h>
+
+#include <boost/filesystem/operations.hpp>
+//#include <boost/algorithm/string.hpp>
+#include <glibmm/spawn.h>
+
+#include <openfluid/core/DateTime.hpp>
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -183,23 +186,6 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> SplitString(const std::string StrToSplit, const std::string Separators, bool ReturnsEmpty)
-{
-  std::vector<std::string> SplitParts;
-
-  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
-  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
-
-  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators));
-
-  return SplitParts;
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
 bool EmptyDirectoryRecursively(const std::string DirPath)
 {
 
@@ -220,24 +206,6 @@ std::string ReplaceEmptyString(std::string SourceStr, const std::string& Replace
   return SourceStr;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-bool IsVectorNamedVariable(std::string Name)
-{
-  return boost::ends_with(Name,"[]");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-std::string GetVectorNamedVariableName(std::string Name)
-{
-  boost::erase_last(Name,"[]");
-  return Name;
-}
 
 // =====================================================================
 // =====================================================================

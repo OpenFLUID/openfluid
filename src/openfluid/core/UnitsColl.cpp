@@ -46,8 +46,10 @@
 */
 
 
-#include <openfluid/core/Unit.hpp>
 #include <openfluid/core/UnitsColl.hpp>
+
+#include <openfluid/core/Unit.hpp>
+
 
 namespace openfluid { namespace core {
 

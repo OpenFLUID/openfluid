@@ -57,7 +57,7 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/treeiter.h>
 
 #include <openfluid/core/Unit.hpp>
 

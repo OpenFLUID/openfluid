@@ -57,7 +57,10 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/box.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/label.h>
 
 #include "ResViewerColumns.hpp"
 

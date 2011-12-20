@@ -54,13 +54,23 @@
  */
 
 #include <openfluid/machine/Factory.hpp>
+
+#include <openfluid/base/DomainDescriptor.hpp>
+#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/ModelDescriptor.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -151,53 +161,31 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 
   for (itIData = Descriptor.getInputData().begin();itIData != Descriptor.getInputData().end();++itIData)
   {
-    openfluid::tools::ColumnTextParser DataParser("%");
 
-    if (DataParser.setFromString((*itIData).getDataBlob(),(*itIData).getColumnsOrder().size()+1))
+    openfluid::base::InputDataDescriptor::UnitIDInputData_t Data = (*itIData).getData();
+    openfluid::core::Unit* TheUnit;
+
+    for (openfluid::base::InputDataDescriptor::UnitIDInputData_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
     {
-      openfluid::core::Unit* TheUnit;
-      int i,j;
-      bool IsOK = true;
-      long ID;
-      openfluid::core::InputDataValue Value;
+      TheUnit = CoreRepos.getUnit((*itIData).getUnitsClass(),itUnit->first);
 
-      // parses data in file and loads it in the input data table for each unit, ordered by columns
-      i = 0;
-      while (i<DataParser.getLinesCount() && IsOK)
+      if (TheUnit != NULL)
       {
-        IsOK = DataParser.getLongValue(i,0,&ID);
-
-        if (IsOK)
+        for (openfluid::base::InputDataDescriptor::InputDataNameValue_t::const_iterator itUnitData = itUnit->second.begin();itUnitData!=itUnit->second.end();++itUnitData)
         {
-
-          TheUnit = CoreRepos.getUnit((*itIData).getUnitsClass(),(openfluid::core::UnitID_t)ID);
-
-          if (TheUnit != NULL)
-          {
-            for (j=1;j<DataParser.getColsCount();j++)
-            {
-              if (DataParser.getStringValue(i,j,&Value))
-              {
-                TheUnit->getInputData()->setValue((*itIData).getColumnsOrder()[j-1],Value);
-              }
-            }
-          }
-          else
-          {
-            std::string TmpStr;
-            openfluid::tools::ConvertValue(ID,&TmpStr);
-            ExecMsgs.addWarning("DomainFactory::buildDomainFromDescriptor",(*itIData).getUnitsClass() + " " + TmpStr + " does not exist in input data");
-          }
-          i++;
+          TheUnit->getInputData()->setValue(itUnitData->first,itUnitData->second);
         }
-        else
-          throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Input data format error");
       }
-    }
-    else
-      throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in input data, cannot be parsed");
+      else
+      {
+        std::string TmpStr;
+        openfluid::tools::ConvertValue(itUnit->first,&TmpStr);
+        ExecMsgs.addWarning("DomainFactory::buildDomainFromDescriptor",(*itIData).getUnitsClass() + " " + TmpStr + " does not exist in input data");
+      }
 
+    }
   }
+
 
   // ============== Events ==============
 
@@ -266,11 +254,11 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
 
       std::string VarName = GenDesc->getVariableName();
-      if (GenDesc->isVectorVariable()) VarName = VarName + "[]";
+      GenDesc->isVectorVariable() ? VarName += "[vector]" : VarName += "[double]";
 
       Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
 
-      Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem(VarName,GenDesc->getUnitClass(),"",""));
+      Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem(VarName,GenDesc->getUnitClass(),"",""));
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Fixed)
         GenInstance = new FixedGenerator();

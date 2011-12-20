@@ -56,6 +56,9 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/OutputSetDescriptor.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -154,8 +157,8 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   SetDesc.getUnitsIDs().push_back(2);
   SetDesc.getUnitsIDs().push_back(4);
   SetDesc.getUnitsIDs().push_back(6);
-  SetDesc.getScalars().push_back("var A");
-  SetDesc.getScalars().push_back("var B");
+  SetDesc.getVariables().push_back("var A");
+  SetDesc.getVariables().push_back("var B");
   SetDesc.setPrecision(3);
 
   mp_Model->addSet(&SetDesc,"Format #1");
@@ -167,7 +170,7 @@ BOOST_AUTO_TEST_CASE(test_addSet)
   BOOST_CHECK_EQUAL(EngineSetDesc.getName(),"New Set");
   BOOST_CHECK_EQUAL(EngineSetDesc.getUnitsClass(),"TestUnits");
   BOOST_CHECK_EQUAL(EngineSetDesc.getUnitsIDs().size(),3);
-  BOOST_CHECK_EQUAL(EngineSetDesc.getScalars().size(),2);
+  BOOST_CHECK_EQUAL(EngineSetDesc.getVariables().size(),2);
   BOOST_CHECK_EQUAL(EngineSetDesc.getPrecision(),3);
 
   delete p_EngProject;
@@ -190,8 +193,7 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedSet)
   PartialSetDesc.setPrecision(7);
   PartialSetDesc.setUnitsClass("ParentTestUnits");
   PartialSetDesc.setAllUnits(true);
-  PartialSetDesc.getScalars().clear();
-  PartialSetDesc.getVectors().clear();
+  PartialSetDesc.getVariables().clear();
 
   mp_Model->updateSelectedSet(&PartialSetDesc,"Format #1");
 
@@ -199,8 +201,7 @@ BOOST_AUTO_TEST_CASE(test_updateSelectedSet)
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getPrecision(),7);
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getUnitsClass(),"ParentTestUnits");
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->isAllUnits(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getScalars().size(),0);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getVectors().size(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedSet()->getVariables().size(),0);
   BOOST_CHECK_EQUAL(mp_Model->getSelectedSetName(),"new set name");
 
   delete p_EngProject;

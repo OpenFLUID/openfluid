@@ -55,7 +55,11 @@
 #ifndef __HOMEVIEW_HPP__
 #define __HOMEVIEW_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
+#include <gtkmm/eventbox.h>
+#include <gtkmm/image.h>
+#include <gtkmm/label.h>
+
 #include <glibmm/i18n.h>
 #include <sigc++/sigc++.h>
 

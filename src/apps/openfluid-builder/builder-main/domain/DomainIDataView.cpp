@@ -54,7 +54,12 @@
 
 #include "DomainIDataView.hpp"
 
+#include <glibmm/i18n.h>
+
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
 #include "DomainIDataColumns.hpp"
+#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -63,7 +68,13 @@
 void DomainIDataViewImpl::onDataEdited(const Glib::ustring& /*Path*/,
     const Glib::ustring& NewText, std::string DataName)
 {
-  m_signal_DataEdited.emit(NewText, DataName);
+  if (EngineHelper::isEmptyString(NewText)
+      && openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+          _("You can't set an empty input data value.\n\n"
+              "Do you want to set this input data value as the default one (\"-\") instead?")))
+    m_signal_DataEdited.emit("-", DataName);
+  else
+    m_signal_DataEdited.emit(NewText, DataName);
 }
 
 // =====================================================================

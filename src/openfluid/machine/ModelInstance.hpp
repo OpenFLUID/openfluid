@@ -56,15 +56,24 @@
 #ifndef __MODELINSTANCE_HPP__
 #define __MODELINSTANCE_HPP__
 
+#include <list>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+
+namespace openfluid {
+namespace base {
+class SimulationInfo;
+class SimulationStatus;
+}
+}
 
 
 namespace openfluid { namespace machine {
+
+class MachineListener;
+class SimulationBlob;
+class ModelItemInstance;
 
 
 class DLLEXPORT ModelInstance

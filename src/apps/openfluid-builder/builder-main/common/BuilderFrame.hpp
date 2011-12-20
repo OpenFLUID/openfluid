@@ -48,7 +48,8 @@
 #ifndef BUILDERWIDGETS_HPP_
 #define BUILDERWIDGETS_HPP_
 
-#include <gtkmm.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/label.h>
 
 class BuilderFrame: public Gtk::Frame
 {

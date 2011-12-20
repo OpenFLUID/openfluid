@@ -78,29 +78,10 @@ std::string SimulOutSetsAdapterModelImpl::extractVariablesString(
     openfluid::base::OutputSetDescriptor OutSetDesc,
     openfluid::machine::ModelInstance* ModelInstance)
 {
-  if (OutSetDesc.isAllScalars() && OutSetDesc.isAllVectors())
+  if(OutSetDesc.isAllVariables())
     return "*";
 
-  Glib::ustring StrScalar = "";
-  Glib::ustring StrVector = "";
-
-  if (OutSetDesc.isAllScalars())
-    StrScalar = getStringListFromStringSet(
-        EngineHelper::getProducedScalarVarNames(OutSetDesc.getUnitsClass(),
-            ModelInstance));
-  else
-    StrScalar = getStringListFromVect(OutSetDesc.getScalars());
-
-  if (OutSetDesc.isAllVectors())
-    StrVector = getStringListFromStringSet(
-        EngineHelper::getProducedVectorVarNames(OutSetDesc.getUnitsClass(),
-            ModelInstance));
-  else
-    StrVector = getStringListFromVect(OutSetDesc.getVectors());
-
-  Glib::ustring Sep = (StrScalar != "" && StrVector != "") ? ";" : "";
-
-  return Glib::ustring::compose("%1%2%3", StrScalar, Sep, StrVector);
+  return getStringListFromVect(OutSetDesc.getVariables());
 
 }
 

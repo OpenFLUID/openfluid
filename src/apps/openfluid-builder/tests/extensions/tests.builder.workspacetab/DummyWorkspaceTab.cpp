@@ -55,6 +55,8 @@
 
 #include <openfluid/builderext/WorkspaceTab.hpp>
 
+#include <gtkmm/frame.h>
+
 DECLARE_EXTENSION_HOOKS;
 
 DEFINE_EXTENSION_INFOS("tests.builder.workspacetab",

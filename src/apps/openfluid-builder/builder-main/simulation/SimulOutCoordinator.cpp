@@ -56,12 +56,16 @@
 
 #include <glibmm/i18n.h>
 
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+
+#include "SimulOutFilesModel.hpp"
+#include "SimulOutSetsModel.hpp"
+#include "BuilderListToolBox.hpp"
 #include "SimulOutFilesAddEditDialog.hpp"
 #include "SimulOutSetsAddEditDialog.hpp"
-#include "BuilderListToolBox.hpp"
 #include "EngineHelper.hpp"
 
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================

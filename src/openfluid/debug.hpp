@@ -156,13 +156,9 @@
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Input data: "; \
     for (unsigned int i=0; i<_M_DBG_IDataNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_IDataNames[i] << " , "; \
     OFDBG_OUTSTREAM << std::endl; \
-    std::vector<openfluid::core::VariableName_t> _M_DBG_SVarNames = (unitptr)->getScalarVariables()->getVariablesNames(); \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Scalar variables: "; \
-    for (unsigned int i=0; i<_M_DBG_SVarNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_SVarNames[i] << " , "; \
-    OFDBG_OUTSTREAM << std::endl; \
-    std::vector<openfluid::core::VariableName_t> _M_DBG_VVarNames = (unitptr)->getVectorVariables()->getVariablesNames(); \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Vector variables: "; \
-    for (unsigned int i=0; i<_M_DBG_VVarNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_VVarNames[i] << " , "; \
+    std::vector<openfluid::core::VariableName_t> _M_DBG_VarNames = (unitptr)->getVariables()->getVariablesNames(); \
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Variables: "; \
+    for (unsigned int i=0; i<_M_DBG_VarNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_VarNames[i] << " , "; \
     OFDBG_OUTSTREAM << std::endl; \
   }
 
@@ -185,7 +181,7 @@
     openfluid::core::Event::EventInfosMap_t::iterator _M_DBG_EvInfoiter; \
     for (_M_DBG_EvInfoiter = (eventptr)->getInfos().begin();_M_DBG_EvInfoiter != (eventptr)->getInfos().end();++_M_DBG_EvInfoiter) \
     { \
-      OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - " << (*_M_DBG_EvInfoiter).first << " = " << (*_M_DBG_EvInfoiter).second << std::endl; \
+      OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - " << (*_M_DBG_EvInfoiter).first << " = " << (*_M_DBG_EvInfoiter).second.get() << std::endl; \
     } \
   }
 

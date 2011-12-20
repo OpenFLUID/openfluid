@@ -60,6 +60,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <string>
+
 #include <openfluid/dllexport.hpp>
 
 
@@ -412,7 +413,7 @@ class DLLEXPORT DateTime
 
 
 
-} } // namespace mhydasdk::core
+} } // namespaces
 
 #endif
 

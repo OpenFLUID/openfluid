@@ -54,7 +54,11 @@
 
 #include "SimulOutFilesModel.hpp"
 
-#include <boost/foreach.hpp>
+#include <glibmm/ustring.h>
+
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/OutputFilesDescriptor.hpp>
+
 
 // =====================================================================
 // =====================================================================

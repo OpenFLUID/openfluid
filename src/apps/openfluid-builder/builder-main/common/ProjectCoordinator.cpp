@@ -54,6 +54,12 @@
 
 #include "ProjectCoordinator.hpp"
 
+#include <boost/foreach.hpp>
+#include <giomm/file.h>
+
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
 #include "ProjectExplorerModel.hpp"
 #include "ProjectWorkspace.hpp"
 #include "EngineProject.hpp"
@@ -65,10 +71,6 @@
 #include "ModelStructureModule.hpp"
 #include "DomainClassModule.hpp"
 #include "ResultsSetModule.hpp"
-
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
-
-#include <boost/foreach.hpp>
 
 
 // =====================================================================

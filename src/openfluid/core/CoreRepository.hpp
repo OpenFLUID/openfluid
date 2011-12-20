@@ -50,14 +50,14 @@
 #define __COREREPOSITORY_HPP__
 
 
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/Unit.hpp>
 
 
 namespace openfluid { namespace core {
 
-
+class Unit;
+class UnitsCollection;
 
 
 class DLLEXPORT CoreRepository

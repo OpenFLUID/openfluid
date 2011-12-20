@@ -57,6 +57,9 @@
 
 #include "BuilderTableRowWidget.hpp"
 
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
+
 #include <sigc++/sigc++.h>
 
 class ModelFctParamRow: public BuilderTableRowWidget

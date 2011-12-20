@@ -57,6 +57,8 @@
 
 #include "ProjectWorkspaceModule.hpp"
 
+#include <gtkmm/paned.h>
+
 class ModelFctDetailComponent;
 class ModelStructureComponent;
 class ModelGlobalParamsComponent;

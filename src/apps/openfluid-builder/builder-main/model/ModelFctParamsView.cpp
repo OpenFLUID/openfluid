@@ -56,6 +56,8 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/separator.h>
+
 #include "ModelFctParamRow.hpp"
 #include "ModelFctFileRow.hpp"
 

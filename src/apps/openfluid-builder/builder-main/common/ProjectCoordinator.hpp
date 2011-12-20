@@ -55,10 +55,12 @@
 #ifndef __PROJECTCOORDINATOR_HPP__
 #define __PROJECTCOORDINATOR_HPP__
 
-#include <openfluid/machine.hpp>
+#include <sigc++/sigc++.h>
+#include <map>
+#include <vector>
+#include <string>
 
 #include <giomm/filemonitor.h>
-
 #include <gtkmm/messagedialog.h>
 
 class ProjectExplorerModel;

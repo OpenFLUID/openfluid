@@ -54,14 +54,15 @@
 
 #include "ResViewerAdapterModel.hpp"
 
+#include <fstream>
 #include <glibmm/i18n.h>
+#include <boost/filesystem/path.hpp>
 
-#include <openfluid/tools.hpp>
-#include <openfluid/config.hpp>
-
-#include <boost/filesystem.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/core/Unit.hpp>
 
 #include "BuilderListStore.hpp"
+#include "ResViewerColumns.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -84,12 +85,9 @@ void ResViewerAdapterModelImpl::createColumns(std::vector<std::string> VarNames)
 // =====================================================================
 
 
-void ResViewerAdapterModelImpl::createFileBuffers(
-    std::vector<std::string> VarNames, openfluid::core::Unit* Unit,
+void ResViewerAdapterModelImpl::createFileBuffers(openfluid::core::Unit* Unit,
     std::string SetName)
 {
-  for (unsigned int i = 0; i < VarNames.size(); i++)
-  {
     std::string DirPath =
         openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir();
 
@@ -97,18 +95,8 @@ void ResViewerAdapterModelImpl::createFileBuffers(
     std::string AbsoluteFileName;
     std::string FilePath;
 
-    if (openfluid::tools::IsVectorNamedVariable(VarNames[i]))
-    {
-      //erase "[]"
-      Glib::ustring VarName = VarNames[i].erase(VarNames[i].size() - 2, 2);
-      FileName = Glib::ustring::compose("%1%2_%3.vector.%4.%5",
-          Unit->getClass(), Unit->getID(), SetName, VarName,
-          openfluid::config::OUTFILES_EXT);
-    } else
-    {
-      FileName = Glib::ustring::compose("%1%2_%3.scalars.%4", Unit->getClass(),
+      FileName = Glib::ustring::compose("%1%2_%3.%4", Unit->getClass(),
           Unit->getID(), SetName, openfluid::config::OUTFILES_EXT);
-    }
 
     AbsoluteFileName = Glib::ustring::compose("%1/%2", DirPath, FileName);
     FilePath = boost::filesystem::path(AbsoluteFileName).string();
@@ -129,7 +117,6 @@ void ResViewerAdapterModelImpl::createFileBuffers(
         m_FileContentsByName[FileName] = TextBuf;
       }
     }
-  }
 }
 
 // =====================================================================
@@ -166,7 +153,7 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
 
   m_FileContentsByName.clear();
   if (ShowFiles)
-    createFileBuffers(VarNames, Unit, SetName);
+    createFileBuffers(Unit, SetName);
 
   m_refListStore = BuilderListStore::create(*mp_Columns);
 
@@ -185,39 +172,11 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
     {
       std::string VarName = VarNames[i];
 
-      openfluid::core::ScalarValue ScalarValue = 0.0;
-      openfluid::core::VectorValue VectorValue;
+      openfluid::core::Value* Val = Unit->getVariables()->getValue(VarName, Step);
 
-      Glib::ustring ValueStr;
+      if(Val)
+        Row[*mp_Columns->getColumnWithTitle(VarName)] = Val->toString();
 
-      if (Unit->getScalarVariables()->getValue(VarName, Step, &ScalarValue))
-      {
-        ValueStr = Glib::ustring::format(std::fixed, std::setprecision(
-            Precision), ScalarValue);
-
-        Row[*mp_Columns->getColumnWithTitle(VarName)] = ValueStr;
-      } else
-      {
-        std::string VectVarName = openfluid::tools::GetVectorNamedVariableName(VarName);
-
-        if (Unit->getVectorVariables()->getValue(VectVarName, Step, &VectorValue))
-        {
-          if (VectorValue.getSize() != 0)
-            ValueStr = Glib::ustring::format(std::fixed, std::setprecision(
-                Precision), VectorValue[0]);
-
-          for (unsigned int i = 1; i < VectorValue.getSize(); i++)
-          {
-            Glib::ustring ValueStrNew = Glib::ustring::format(std::fixed,
-                std::setprecision(Precision), VectorValue[i]);
-
-            ValueStr = Glib::ustring::compose("%1%2%3", ValueStr, " ; ",
-                ValueStrNew);
-          }
-
-          Row[*mp_Columns->getColumnWithTitle(VarName)] = ValueStr;
-        }
-      }
     }
 
   } while (SimStatus->switchToNextStep());

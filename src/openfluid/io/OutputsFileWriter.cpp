@@ -54,10 +54,15 @@
  */
 
 
-
 #include <openfluid/io/OutputsFileWriter.hpp>
+
+#include <iomanip>
+#include <boost/filesystem/path.hpp>
+
 #include <openfluid/config.hpp>
-#include <openfluid/tools.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 
 namespace openfluid { namespace io {
@@ -74,6 +79,7 @@ OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
                                      openfluid::core::CoreRepository& CoreRepos,
                                      const openfluid::core::UnitClass_t UnitClass,
                                      const openfluid::core::UnitID_t UnitID,
+                                     const std::string FileSuffix,
                                      const std::string CommentChar,
                                      const std::string DateFormat,
                                      const std::string ColSeparator,
@@ -101,6 +107,13 @@ OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
                                        "Unit " + UnitClass + "#" + UnitIDStr + " does not exist");
   }
 
+  std::string UnitIDStr;
+    openfluid::tools::ConvertValue(mp_Unit->getID(),&UnitIDStr);
+
+    m_OutFilename = boost::filesystem::path(m_DirPath + "/" +
+                                            mp_Unit->getClass() + UnitIDStr + "_" +
+                                            FileSuffix + "." +
+                                            openfluid::config::OUTFILES_EXT).string();
 }
 
 
@@ -112,6 +125,83 @@ OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
 OutputsFileWriter::~OutputsFileWriter()
 {
   delete [] mp_Buffer;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsFileWriter::initializeFile()
+{
+  std::string UnitIDStr;
+  openfluid::tools::ConvertValue(mp_Unit->getID(),&UnitIDStr);
+
+  m_OutFile.open(m_OutFilename.c_str(),std::ios::out);
+
+  m_OutFile << std::fixed << std::setprecision(m_Precision);
+
+  if(m_HeaderType == openfluid::base::OutputFilesDescriptor::Info
+      || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
+  {
+    m_OutFile << m_CommentChar << " simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << "\n";
+    m_OutFile << m_CommentChar << " file: " << boost::filesystem::path(m_OutFilename).leaf() << "\n";
+    m_OutFile << m_CommentChar << " date: " << boost::posix_time::to_simple_string(openfluid::base::RuntimeEnvironment::getInstance()->getIgnitionDateTime()) << "\n";
+    m_OutFile << m_CommentChar << " unit: " << mp_Unit->getClass() << " #" << UnitIDStr << "\n";
+    m_OutFile << m_CommentChar << " variables order (after date and time columns):";
+
+    std::list<openfluid::core::VariableName_t>::iterator itNames;
+
+    for (itNames = m_Variables.begin(); itNames != m_Variables.end() ; ++itNames)
+      m_OutFile << " " << *itNames;
+
+    m_OutFile << "\n" << "\n";
+  }
+
+  if(m_HeaderType == openfluid::base::OutputFilesDescriptor::ColnamesAsData
+      || m_HeaderType == openfluid::base::OutputFilesDescriptor::Full)
+  {
+    m_OutFile << "datetime";
+
+    std::list<openfluid::core::VariableName_t>::iterator itNames;
+
+    for (itNames = m_Variables.begin(); itNames != m_Variables.end() ; ++itNames)
+      m_OutFile << m_ColSeparator << *itNames;
+
+    m_OutFile << "\n";
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsFileWriter::saveCurrentDataToFile(const openfluid::core::DateTime& CurrentTime)
+{
+  openfluid::core::Value* aValue;
+
+  m_OutFile << CurrentTime.getAsString(m_DateFormat);
+
+  std::list<openfluid::core::VariableName_t>::iterator itNames;
+  for (itNames = m_Variables.begin(); itNames != m_Variables.end() ; ++itNames)
+  {
+    aValue = mp_Unit->getVariables()->getCurrentValue(*itNames);
+
+    if (!aValue)
+    {
+      std::string UnitIDStr;
+      openfluid::tools::ConvertValue(mp_Unit->getID(),&UnitIDStr);
+      throw openfluid::base::OFException("OpenFLUID framework","OutputsFileWriter::saveCurrentDataToFile",
+          "Value not found for variable " + *itNames +" on unit " + mp_Unit->getClass() + "#" + UnitIDStr);
+    }
+
+    m_OutFile << m_ColSeparator;
+
+    aValue->writeToStream(m_OutFile);
+  }
+
+  m_OutFile << "\n";
 }
 
 

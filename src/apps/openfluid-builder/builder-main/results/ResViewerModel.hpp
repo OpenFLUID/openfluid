@@ -56,9 +56,23 @@
 #define __RESVIEWERMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <vector>
+#include <string>
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+namespace openfluid {
+namespace base {
+class SimulationStatus;
+class RunDescriptor;
+class OutputDescriptor;
+class OutputSetDescriptor;
+}
+namespace core {
+class Unit;
+}
+}
+
+// =====================================================================
+// =====================================================================
 
 class ResViewerModel
 {
@@ -100,6 +114,9 @@ class ResViewerModel
     virtual bool getShowFiles() = 0;
 
 };
+
+// =====================================================================
+// =====================================================================
 
 class ResViewerModelImpl: public ResViewerModel
 {
@@ -174,6 +191,9 @@ class ResViewerModelImpl: public ResViewerModel
     bool getShowFiles();
 
 };
+
+// =====================================================================
+// =====================================================================
 
 class ResViewerModelSub: public ResViewerModelImpl
 {

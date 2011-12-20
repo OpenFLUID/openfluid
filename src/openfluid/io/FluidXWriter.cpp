@@ -54,11 +54,19 @@
  */
 
 
-
-#include <fstream>
 #include <openfluid/io/FluidXWriter.hpp>
+
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <boost/filesystem.hpp>
+#include <openfluid/io/IOListener.hpp>
 
 namespace openfluid { namespace io {
 
@@ -121,7 +129,7 @@ std::string FluidXWriter::getParamsAsStr(const openfluid::core::FuncParamsMap_t&
   openfluid::core::FuncParamsMap_t::const_iterator itParams;
 
   for (itParams = Params.begin();itParams != Params.end() ; ++itParams)
-    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second +"\"/>\n";
+    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second.get() +"\"/>\n";
 
   return ParamsStr;
 }
@@ -333,7 +341,7 @@ void FluidXWriter::setDomainToWrite(const openfluid::core::CoreRepository& CoreD
               for (unsigned int j=0;j<IDataNames.size();j++)
               {
                 std::string ValueStr;
-                TheUnit->getInputData()->getValue(IDataNames[j],&ValueStr);
+                TheUnit->getInputData()->getValue(IDataNames[j],ValueStr);
                 Contents << ValueStr;
                 if (j!=(IDataNames.size()-1)) Contents << "\t";
               }
@@ -455,21 +463,13 @@ void FluidXWriter::setOutputConfigurationToWrite(openfluid::base::OutputDescript
             IDsStr = IDsStrStr.str();
           }
 
-          if (SetsDesc[j].isAllScalars()) VarsStr = "*";
+          if (SetsDesc[j].isAllVariables()) VarsStr = "*";
           else
           {
-
-            for (unsigned int k = 0; k< SetsDesc[j].getScalars().size();k++)
+            for (unsigned int k = 0; k< SetsDesc[j].getVariables().size();k++)
             {
-              VarsStr += SetsDesc[j].getScalars()[k];
-              if ((k != (SetsDesc[j].getScalars().size()-1)) || (!SetsDesc[j].getVectors().empty()))
-                VarsStr += ";";
-            }
-
-            for (unsigned int k = 0; k< SetsDesc[j].getVectors().size();k++)
-            {
-              VarsStr += SetsDesc[j].getVectors()[k] + "[]";
-              if ((k != SetsDesc[j].getVectors().size()-1))
+              VarsStr += SetsDesc[j].getVariables()[k];
+              if ((k != (SetsDesc[j].getVariables().size()-1)) /*|| (!SetsDesc[j].getVariables().empty())*/)
                 VarsStr += ";";
             }
           }

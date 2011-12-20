@@ -57,12 +57,19 @@
 
 #include <sigc++/sigc++.h>
 
-#include <iostream>
+#include <string>
 
-#include <openfluid/base.hpp>
+namespace openfluid {
+namespace base {
+class OutputDescriptor;
+}
+}
 
 class SimulOutFilesAdapterModel;
 class SimulOutFilesView;
+
+// =====================================================================
+// =====================================================================
 
 class SimulOutFilesAdapter: public sigc::trackable
 {

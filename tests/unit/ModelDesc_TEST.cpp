@@ -60,7 +60,9 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
-#include <openfluid/base.hpp>
+#include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/base/ModelDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================

@@ -55,7 +55,10 @@
 
 
 #include <openfluid/buddies/OFBuddy.hpp>
-#include <openfluid/tools.hpp>
+
+#include <vector>
+
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace buddies {

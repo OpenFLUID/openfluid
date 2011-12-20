@@ -58,16 +58,32 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/io.hpp>
-#include <openfluid/machine/PluginManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+
+namespace openfluid {
+namespace base {
+class RuntimeEnvironment;
+class SimulationStatus;
+class SimulationInfo;
+}
+namespace core {
+class Value;
+class DateTime;
+}
+namespace io {
+class IOListener;
+class OutputsWriter;
+class MessagesWriter;
+}
+}
+
 
 namespace openfluid { namespace machine {
+
+class PluginManager;
+class ModelInstance;
+class MachineListener;
+class SimulationBlob;
 
 
 // =====================================================================
@@ -129,10 +145,12 @@ class DLLEXPORT Engine
      void checkExtraFilesConsistency();
 
      void checkExistingVariable(openfluid::core::VariableName_t VarName,
+                                openfluid::core::Value::Type VarType,
                                 openfluid::core::UnitClass_t ClassName,
                                 std::string FunctionName);
 
      void createVariable(openfluid::core::VariableName_t VarName,
+                         openfluid::core::Value::Type VarType,
                          openfluid::core::UnitClass_t ClassName,
                          bool UpdateMode,
                          std::string FunctionName);

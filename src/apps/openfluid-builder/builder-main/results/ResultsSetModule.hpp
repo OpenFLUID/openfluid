@@ -57,6 +57,8 @@
 
 #include "ProjectWorkspaceModule.hpp"
 
+#include <gtkmm/box.h>
+
 class ResUnitChooserComponent;
 class ResViewerComponent;
 class ResultsSetCoordinator;

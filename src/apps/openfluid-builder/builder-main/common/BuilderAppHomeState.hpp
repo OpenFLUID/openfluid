@@ -59,9 +59,11 @@
 
 class BuilderAppCoordinator;
 
+
 class BuilderAppHomeState: public BuilderAppState
 {
   private:
+
     BuilderAppCoordinator& m_App;
 
 

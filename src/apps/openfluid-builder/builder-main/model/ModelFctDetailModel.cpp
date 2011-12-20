@@ -54,14 +54,30 @@
 
 #include "ModelFctDetailModel.hpp"
 
+#include <stdexcept>
+
+// =====================================================================
+// =====================================================================
+
+
 ModelFctDetailModelImpl::ModelFctDetailModelImpl()
 {
   mp_FctToDisplay = 0;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 sigc::signal<void> ModelFctDetailModelImpl::signal_FctToDisplayChanged()
 {
   return m_signal_FctToDisplayChanged;
 }
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelFctDetailModelImpl::setFctToDisplay(
     openfluid::machine::SignatureItemInstance* Signature)
 {
@@ -75,6 +91,11 @@ void ModelFctDetailModelImpl::setFctToDisplay(
     signal_FctToDisplayChanged().emit();
   }
 }
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::machine::SignatureItemInstance* ModelFctDetailModelImpl::getFctDisplayed()
 {
   return mp_FctToDisplay;

@@ -54,8 +54,7 @@
  */
 
 
-#include <openfluid/base.hpp>
-#include <openfluid/core.hpp>
+#include <openfluid/base/PlugFunction.hpp>
 
 
 // =====================================================================
@@ -83,9 +82,9 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
 
-  DECLARE_PRODUCED_VAR("tests.wrongvector[]","TestUnits","wrong vector for tests","");
-  DECLARE_PRODUCED_VAR("tests.wrongscalar","TestUnits","wrong scalar for tests","");
-  DECLARE_PRODUCED_VAR("tests.scalarok","TestUnits","scalar OK for tests","");
+  DECLARE_PRODUCED_VAR("tests.wrongvector[vector]","TestUnits","wrong vector for tests","");
+  DECLARE_PRODUCED_VAR("tests.wrongscalar[double]","TestUnits","wrong scalar for tests","");
+  DECLARE_PRODUCED_VAR("tests.scalarok[double]","TestUnits","scalar OK for tests","");
 
 END_SIGNATURE_HOOK
 

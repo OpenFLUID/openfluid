@@ -53,6 +53,8 @@
  */
 
 #include <glibmm/i18n.h>
+#include <gtkmm/toolbar.h>
+#include <gtkmm/stock.h>
 #include "BuilderGraphicsHelper.hpp"
 
 #include "WidgetObjectBase.hpp"

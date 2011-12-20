@@ -33,9 +33,8 @@ The signature is declared and implemented in the .h file, and begin with the #BE
 \section emptyclass_sec Writing the derivative class from openfluid::base::PluggableFunction 
 
 See \ref devfuncemptyexample_ssec below
-\n
-\n
 
+\n
 
 \section emptycompile_ssec Compiling the function
 
@@ -53,15 +52,15 @@ The best way to compile and build your simulation function is to use the CMake b
 <li> run the <tt>cmake ..</tt> command, with the optional <tt>-DCMAKE_BUILD_TYPE=Debug</tt> option for debug mode
 <li> run the build command (e.g. <tt>make</tt>) 
 </ol>
-\n
 
+\n
   
 \section devfuncemptyexample_ssec Complete example 
 
 
-Example of an empty function (.cpp file and makefile)
+Example of an empty function (CPP file and CMake files)
 
-.cpp file
+CPP file
 \code
 
 #include <openfluid/base.hpp>

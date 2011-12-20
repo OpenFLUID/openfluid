@@ -56,6 +56,10 @@
 
 #include <glibmm/i18n.h>
 
+#include <gtkmm/buttonbox.h>
+#include <gtkmm/separator.h>
+#include <gtkmm/arrow.h>
+
 #include "BuilderHomeButton.hpp"
 #include "BuilderAppActions.hpp"
 #include "BuilderGraphicsHelper.hpp"

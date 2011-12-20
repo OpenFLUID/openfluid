@@ -55,12 +55,38 @@
 #ifndef __ENGINEPROJECT_HPP__
 #define __ENGINEPROJECT_HPP__
 
-#include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/io.hpp>
 
-#include <openfluid/guicommon/RunDialogMachineListener.hpp>
+#include <sigc++/sigc++.h>
+
+#include <glibmm/ustring.h>
+
+#include <openfluid/core/DateTime.hpp>
+#include <openfluid/machine/Engine.hpp>
+
+namespace openfluid {
+namespace base {
+class RuntimeEnvironment;
+class RunDescriptor;
+class ModelDescriptor;
+class ExecutionMessages;
+class OutputDescriptor;
+}
+namespace core {
+class CoreRepository;
+}
+namespace io {
+class FluidXReader;
+class IOListener;
+}
+namespace machine {
+class MachineListener;
+class ModelInstance;
+class SimulationBlob;
+}
+namespace guicommon {
+class RunDialogMachineListener;
+}
+}
 
 class EngineProject
 {
@@ -97,9 +123,9 @@ class EngineProject
 
     void checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
 
-    void addSignatureToGenerators();
+    void checkInputData();
 
-    void dispatchOutputVariables();
+    void addSignatureToGenerators();
 
     void deleteEngineObjects();
 

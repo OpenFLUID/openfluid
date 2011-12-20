@@ -66,6 +66,8 @@
 
 #include "FunctionSignatureRegistry.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+
 // =====================================================================
 // =====================================================================
 

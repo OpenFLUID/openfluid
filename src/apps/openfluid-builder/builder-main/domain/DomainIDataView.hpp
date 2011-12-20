@@ -57,7 +57,9 @@
 
 #include <sigc++/sigc++.h>
 
-#include <gtkmm.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
+
 #include <glibmm/i18n.h>
 
 class DomainIDataColumns;

@@ -65,7 +65,7 @@
 #include "ModelGlobalParamRow.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/machine.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -133,14 +133,14 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),4);
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"");
   BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters().size(),2);
-  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"],"");
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"].get(),"");
 
   // changing a global parameter value
 
   mp_View->getByParamNameParamRow()["strparam"]->setValue("abc");
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"abc");
-  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"],"abc");
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"].get(),"abc");
 
   // removing a global parameter (from Model)
 

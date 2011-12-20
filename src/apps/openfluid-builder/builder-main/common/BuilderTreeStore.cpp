@@ -54,6 +54,8 @@
 
 #include "BuilderTreeStore.hpp"
 
+#include <gtkmm/treerowreference.h>
+
 #include <openfluid/base/OFException.hpp>
 
 // =====================================================================

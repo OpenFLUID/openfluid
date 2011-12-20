@@ -54,16 +54,17 @@
 */
 
 
-#include <openfluid/tools.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include <boost/filesystem/path.hpp>
+#include "ViewWithGNUplot.hpp"
+
+#include <fstream>
+#include <cmath>
 #include <boost/filesystem/convenience.hpp>
 #include <glibmm/i18n.h>
 
-#include <fstream>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
-#include "ViewWithGNUplot.hpp"
 
 std::string ViewWithGNUplot::m_GNUplotProgram = "";
 

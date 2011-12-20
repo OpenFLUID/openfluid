@@ -55,11 +55,14 @@
 #ifndef __SIMULOUTFILESADAPTERMODEL_HPP__
 #define __SIMULOUTFILESADAPTERMODEL_HPP__
 
-#include <gtkmm.h>
-
-#include <openfluid/base.hpp>
 
 #include "SimulOutFilesColumns.hpp"
+
+namespace openfluid {
+namespace base {
+class OutputDescriptor;
+}
+}
 
 class BuilderListStore;
 

@@ -57,7 +57,6 @@
 #define __FUNCTIONDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
 #include <openfluid/base/ModelItemDescriptor.hpp>
 
 namespace openfluid { namespace base {

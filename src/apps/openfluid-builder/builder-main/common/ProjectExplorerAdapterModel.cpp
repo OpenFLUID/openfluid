@@ -55,6 +55,12 @@
 #include "ProjectExplorerAdapterModel.hpp"
 
 #include <boost/foreach.hpp>
+#include <glibmm/i18n.h>
+
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/base/FuncSignature.hpp>
 
 // =====================================================================
 // =====================================================================

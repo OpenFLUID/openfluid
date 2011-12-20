@@ -55,8 +55,18 @@
 #ifndef __BUILDERPRESTESTINFO_HPP__
 #define __BUILDERPRESTESTINFO_HPP__
 
-#include <openfluid/machine.hpp>
+#include <openfluid/machine/Engine.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+
+namespace openfluid {
+namespace base {
+class RunDescriptor;
+class SignatureHandledDataItem;
+}
+namespace machine {
+class ModelItemInstance;
+}
+}
 
 class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 {

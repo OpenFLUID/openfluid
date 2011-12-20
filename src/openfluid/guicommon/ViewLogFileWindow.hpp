@@ -46,7 +46,7 @@
 */
 
 /**
-  \file ViewLog.hpp
+  \file ViewLogFileWindow.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -56,7 +56,13 @@
 #ifndef __VIEWLOGFILEWINDOW_HPP__
 #define __VIEWLOGFILEWINDOW_HPP__
 
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/box.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/textbuffer.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/button.h>
+
 #include <openfluid/dllexport.hpp>
 
 

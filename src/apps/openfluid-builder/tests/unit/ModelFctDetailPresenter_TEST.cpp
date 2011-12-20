@@ -59,6 +59,8 @@
 //#include "ModelFctDetailAdapter.hpp"
 //#include "ModelFctDetailAdapterModel.hpp"
 
+#include <openfluid/machine/ModelItemInstance.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -99,8 +101,8 @@ BOOST_AUTO_TEST_CASE(test_SetFctToDisplay)
   openfluid::base::FunctionSignature* PlugSignature = new openfluid::base::FunctionSignature();
   PlugSignature->ID = "plug";
   PlugSignature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem("Param1","SU","My Description","m"));
-  PlugSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledDataItem("Prod1","SU","My Description","m"));
-  PlugSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledDataItem("Up1","SU","My Description","m"));
+  PlugSignature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem("Prod1","SU","My Description","m"));
+  PlugSignature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledTypedDataItem("Up1","SU","My Description","m"));
   Plug->Signature = PlugSignature;
 
   mp_Model->setFctToDisplay(Plug);

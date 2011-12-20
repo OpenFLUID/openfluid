@@ -57,6 +57,9 @@
 
 #include <cstdlib>
 
+#include <glibmm/error.h>
+#include <glibmm/spawn.h>
+
 namespace openfluid { namespace market {
 
 

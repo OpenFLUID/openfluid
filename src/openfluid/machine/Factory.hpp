@@ -59,13 +59,26 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core.hpp>
-#include <openfluid/base.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+
+namespace openfluid {
+namespace base {
+class DomainDescriptor;
+class ExecutionMessages;
+class ModelDescriptor;
+class RunDescriptor;
+class OutputDescriptor;
+}
+namespace core {
+class CoreRepository;
+}
+}
 
 
 namespace openfluid { namespace machine {
+
+class SimulationBlob;
+class ModelInstance;
 
 
 class DLLEXPORT Factory

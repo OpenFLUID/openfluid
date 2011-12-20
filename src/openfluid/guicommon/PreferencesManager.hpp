@@ -57,9 +57,9 @@
 
 #include <openfluid/dllexport.hpp>
 
-#include <glibmm/keyfile.h>
 #include <map>
 #include <iostream>
+#include <glibmm/keyfile.h>
 
 namespace openfluid { namespace guicommon {
 

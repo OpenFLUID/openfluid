@@ -58,6 +58,7 @@
 
 #include <vector>
 #include <string>
+
 #include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace tools {

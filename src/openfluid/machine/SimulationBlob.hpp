@@ -57,7 +57,9 @@
 #define __SIMULATIONBLOB_HPP__
 
 #include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/base.hpp>
+#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/ExecMsgs.hpp>
 
 namespace openfluid { namespace machine {
 

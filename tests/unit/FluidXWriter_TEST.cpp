@@ -53,9 +53,12 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <openfluid/base.hpp>
-#include <openfluid/machine.hpp>
-#include <openfluid/io.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/Factory.hpp>
+#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/io/FluidXWriter.hpp>
 
 #include <tests-config.hpp>
 

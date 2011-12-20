@@ -55,10 +55,10 @@
 #ifndef __PROJECTWORKSPACE_HPP__
 #define __PROJECTWORKSPACE_HPP__
 
-#include <gtkmm.h>
 #include <glibmm/i18n.h>
 #include <sigc++/sigc++.h>
 
+#include <gtkmm/notebook.h>
 
 class ProjectWorkspace
 {

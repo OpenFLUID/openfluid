@@ -103,10 +103,8 @@ class SimulOutSetsAddEditDialog
         VarsColumns()
         {
           add(m_Value);
-          add(m_IsVector);
         }
         Gtk::TreeModelColumn<std::string> m_Value;
-        Gtk::TreeModelColumn<bool> m_IsVector;
     };
 
     IdsColumns m_IdsColumns;

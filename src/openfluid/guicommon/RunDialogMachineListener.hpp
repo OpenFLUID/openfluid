@@ -58,8 +58,11 @@
 
 
 #include <openfluid/machine/MachineListener.hpp>
-#include <gtkmm.h>
+
 #include <glibmm/i18n.h>
+
+#include <gtkmm/textview.h>
+#include <gtkmm/main.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/guicommon/RunStatusWidget.hpp>

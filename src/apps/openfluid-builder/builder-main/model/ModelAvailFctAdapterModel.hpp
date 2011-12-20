@@ -61,8 +61,9 @@
 #include <glibmm/i18n.h>
 
 #include "FunctionSignatureRegistry.hpp"
-#include "ModelAvailFctColumns.hpp"
 #include "BuilderTreeStore.hpp"
+
+class ModelAvailFctColumns;
 
 class ModelAvailFctAdapterModel
 {

@@ -82,7 +82,7 @@ FixedGenerator::~FixedGenerator()
 
 bool FixedGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
 {
-  if (!OPENFLUID_GetFunctionParameter(Params,"fixedvalue",&m_VarValue))
+  if (!OPENFLUID_GetFunctionParameter(Params,"fixedvalue",m_VarValue))
     throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::initParams","missing fixed value for generator");
 
   return true;
