@@ -67,6 +67,7 @@
 #include "FunctionSignatureRegistry.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/base/FuncSignature.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -82,11 +83,14 @@ BOOST_AUTO_TEST_CASE(test_add)
 {
   FunctionSignatureRegistrySub Signatures;
   for (int i = 0; i < 3; i++)
-    Signatures.addAPluggableSignature(new openfluid::machine::SignatureItemInstance());
+  {
+    openfluid::machine::SignatureItemInstance* Sign = FunctionSignatureRegistry::getEmptyPluggableSignature();
+    Sign->Signature->ID = i;
+    Signatures.addAPluggableSignature(Sign);
+  }
 
   BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::PluggedFunction].size(),3);
   BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::Generator].size(),4);
 
-  for (int i = 2; i > -1; i--)
-    delete Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::PluggedFunction][i];
+  Signatures.clearPluggableSignatures();
 }

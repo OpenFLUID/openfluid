@@ -312,6 +312,11 @@ void ModelStructureCoordinator::createParamsComponents()
 
 void ModelStructureCoordinator::updateWithFctParamsComponents()
 {
+  FunctionSignatureRegistry* SignaturesReg =
+      FunctionSignatureRegistry::getInstance();
+
+  SignaturesReg->updatePluggableSignatures();
+
   std::string SelectedPageName = m_ParamsPanel.getCurrentPageName();
   std::string SelectedStructureFunctionName =
       m_StructureModel.getCurrentSelectionName();
@@ -368,16 +373,11 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
       {
         try
         {
-          openfluid::machine::SignatureItemInstance
-              * Signature =
-                  openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
-                      TempItems[i].first + openfluid::config::PLUGINS_EXT);
+          openfluid::machine::SignatureItemInstance * Signature =
+              SignaturesReg->getSignatureItemInstance(TempItems[i].first);
 
           if (Signature)
           {
-            Signature->ItemType
-                = openfluid::base::ModelItemDescriptor::PluggedFunction;
-
             openfluid::machine::ModelItemInstance* Item =
                 ModelItemInstanceFactory::createPluggableItemFromSignature(
                     *Signature);

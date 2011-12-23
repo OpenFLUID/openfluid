@@ -60,6 +60,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 
 #include "tests-config.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 class BuilderTestHelper
 {
@@ -72,6 +73,7 @@ class BuilderTestHelper
     BuilderTestHelper()
     {
       openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+      FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }
 
   public:

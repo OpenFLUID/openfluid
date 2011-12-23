@@ -78,6 +78,7 @@
 
 #include "GeneratorSignature.hpp"
 #include "EngineHelper.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -338,14 +339,14 @@ void EngineProject::checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc)
   openfluid::base::ModelDescriptor::ModelDescription_t::iterator it =
       ModelDesc.getItems().begin();
 
-  openfluid::machine::ArrayOfSignatureItemInstance Signatures =
-      openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+  FunctionSignatureRegistry* SignaturesReg =
+      FunctionSignatureRegistry::getInstance();
 
   while (it != ModelDesc.getItems().end())
   {
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction)
-        && openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(
-            ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()).empty())
+        && !SignaturesReg->isPluggableFunctionAvailable(
+            ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()))
     {
       MissingFunctions.append("- "
           + ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
@@ -407,7 +408,7 @@ void EngineProject::checkInputData()
       }
     }
   }
-  
+
 }
 
 // =====================================================================
