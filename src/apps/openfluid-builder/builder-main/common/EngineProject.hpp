@@ -125,6 +125,8 @@ class EngineProject
 
     void checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
 
+    void checkInputData();
+
     void addSignatureToGenerators();
 
     void deleteEngineObjects();

@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(test_SetSignatures)
   {
     openfluid::machine::SignatureItemInstance* Plug = new openfluid::machine::SignatureItemInstance();
     openfluid::base::FunctionSignature* PlugSignature = new openfluid::base::FunctionSignature();
-    PlugSignature->ID = "plug";
+    PlugSignature->ID = i;
     Plug->Signature = PlugSignature;
     Signatures.addAPluggableSignature(Plug);
   }
@@ -123,11 +123,7 @@ BOOST_AUTO_TEST_CASE(test_SetSignatures)
   BOOST_CHECK_EQUAL(mp_View->getPluggableBranchRowsNumber(),3);
   BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(),GeneratorCount);
 
-  for (int i = 2; i > -1; i--)
-  {
-    delete Signatures.getPluggableSignatures()[i]->Signature;
-    delete Signatures.getPluggableSignatures()[i];
-  }
+  Signatures.clearPluggableSignatures();
 }
 
 // =====================================================================

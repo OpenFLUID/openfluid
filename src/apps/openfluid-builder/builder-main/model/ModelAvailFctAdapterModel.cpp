@@ -66,7 +66,6 @@ sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_SelectionChanged()
   return m_signal_SelectionChanged;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -75,7 +74,6 @@ sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_FunctionsChanged()
 {
   return m_signal_FunctionsChanged;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -88,7 +86,6 @@ void ModelAvailFctAdapterModelImpl::createTitleRows()
   mp_GeneratorTitleRowRef = mref_TreeModel->appendATitleRow(_("Generators"));
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -100,7 +97,6 @@ Glib::ustring ModelAvailFctAdapterModelImpl::replaceEmpty(
     TextToCheck = _("(unknown)");
   return TextToCheck;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -119,22 +115,22 @@ void ModelAvailFctAdapterModelImpl::setAPluggableFunction(
   switch (Function->Signature->Status)
   {
     case openfluid::base::EXPERIMENTAL:
-      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
-          "fct_status_experimental.png");
+      TitleRow[m_Columns.m_Status]
+          = BuilderGraphicsHelper::createPixbufFromFile(
+              "fct_status_experimental.png");
       break;
     case openfluid::base::BETA:
-      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
-          "fct_status_beta.png");
+      TitleRow[m_Columns.m_Status]
+          = BuilderGraphicsHelper::createPixbufFromFile("fct_status_beta.png");
       break;
     case openfluid::base::STABLE:
-      TitleRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
-          "fct_status_stable.png");
+      TitleRow[m_Columns.m_Status]
+          = BuilderGraphicsHelper::createPixbufFromFile("fct_status_stable.png");
       break;
   }
 
   m_SignaturesById[Function->Signature->ID] = Function;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -148,7 +144,6 @@ void ModelAvailFctAdapterModelImpl::setAGeneratorFunction(
   TitleRow[m_Columns.m_Id] = Function->Signature->ID;
   m_SignaturesById[Function->Signature->ID] = Function;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -164,7 +159,6 @@ void ModelAvailFctAdapterModelImpl::defineFirstAvailableRow()
     mp_FirstAvailableRowRef = new Gtk::TreeRowReference();
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -179,7 +173,6 @@ ModelAvailFctAdapterModelImpl::ModelAvailFctAdapterModelImpl(
   mp_SelectedSignature = 0;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -191,33 +184,32 @@ ModelAvailFctAdapterModelImpl::~ModelAvailFctAdapterModelImpl()
   delete mp_FirstAvailableRowRef;
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 void ModelAvailFctAdapterModelImpl::setSignatures(
-    FunctionSignatureRegistry::FctSignaturesByType_t Signatures)
+    FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
 {
   mref_TreeModel->clear();
   m_SignaturesById.clear();
   createTitleRows();
-  for (unsigned int i = 0; i
-      < Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].size(); i++)
+
+  FunctionSignatureRegistry::FctSignaturesByName_t::iterator it;
+  for (it
+      = Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].begin(); it
+      != Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].end(); ++it)
   {
-    setAPluggableFunction(
-        Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction][i]);
+    setAPluggableFunction(it->second);
   }
-  for (unsigned int i = 0; i
-      < Signatures[openfluid::base::ModelItemDescriptor::Generator].size(); i++)
+  for (it = Signatures[openfluid::base::ModelItemDescriptor::Generator].begin(); it
+      != Signatures[openfluid::base::ModelItemDescriptor::Generator].end(); ++it)
   {
-    setAGeneratorFunction(
-        Signatures[openfluid::base::ModelItemDescriptor::Generator][i]);
+    setAGeneratorFunction(it->second);
   }
   defineFirstAvailableRow();
   m_signal_FunctionsChanged.emit();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -227,7 +219,6 @@ Glib::RefPtr<Gtk::TreeModel> ModelAvailFctAdapterModelImpl::getTreeModel()
 {
   return mref_TreeModel;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -245,7 +236,6 @@ void ModelAvailFctAdapterModelImpl::setSelectedRow(Gtk::TreeRow Row)
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -254,7 +244,6 @@ openfluid::machine::SignatureItemInstance* ModelAvailFctAdapterModelImpl::getSel
 {
   return mp_SelectedSignature;
 }
-
 
 // =====================================================================
 // =====================================================================

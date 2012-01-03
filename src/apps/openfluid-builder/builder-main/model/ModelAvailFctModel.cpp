@@ -96,7 +96,7 @@ void ModelAvailFctModelImpl::setSignatures(
 // =====================================================================
 
 
-FunctionSignatureRegistry::FctSignaturesByType_t ModelAvailFctModelImpl::getSignatures()
+FunctionSignatureRegistry::FctSignaturesByTypeByName_t ModelAvailFctModelImpl::getSignatures()
 {
   return m_Signatures;
 }

@@ -205,7 +205,6 @@ void BuilderAppProjectState::whenPreferencesAsked()
       PrefXPaths =
           openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
 
-  std::reverse(PrefXPaths.begin(), PrefXPaths.end());
 
   if (!(RunEnvXPaths.size() == PrefXPaths.size() && std::equal(
       RunEnvXPaths.begin(), RunEnvXPaths.end(), PrefXPaths.begin())))
