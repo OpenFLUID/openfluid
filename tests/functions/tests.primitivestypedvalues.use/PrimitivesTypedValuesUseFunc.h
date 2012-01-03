@@ -73,14 +73,6 @@ DECLARE_PLUGIN_HOOKS
 */
 class PrimitivesTypedValuesUseFunction : public openfluid::base::PluggableFunction
 {
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
-
   public:
     /**
       Constructor

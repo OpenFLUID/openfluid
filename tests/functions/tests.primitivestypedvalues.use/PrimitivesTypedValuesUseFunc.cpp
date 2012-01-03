@@ -215,10 +215,10 @@ bool PrimitivesTypedValuesUseFunction::runStep(const openfluid::base::Simulation
   RefBool = (TUID%2 == 0);
   RefString = Glib::ustring::compose("ID %1",TUID);
 
-  NewDouble = TUID*CurStep*m_ParamDouble;
-  NewLong = TUID*CurStep*m_ParamLong;
+  NewDouble = TUID*CurStep*0.1;
+  NewLong = TUID*CurStep*10;
   NewBool = ((TUID*CurStep)%2 == 0);
-  NewString = Glib::ustring::compose("%1 %2x%3",m_ParamString,TUID,CurStep);
+  NewString = Glib::ustring::compose("%1 %2x%3","strvalue",TUID,CurStep);
 
 
 
