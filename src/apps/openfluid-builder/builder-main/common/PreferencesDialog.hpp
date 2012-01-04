@@ -110,6 +110,10 @@ class PreferencesDialog
 
     Gtk::Widget* mp_CurrentPanel;
 
+    bool m_PlugPathsHaveChanged;
+
+    bool m_RecentsHaveChanged;
+
     void onGroupSelectionChanged();
 
 
@@ -120,6 +124,12 @@ class PreferencesDialog
     ~PreferencesDialog();
 
     void show();
+
+    bool plugPathsHaveChanged()
+    { return m_PlugPathsHaveChanged; }
+
+    bool recentsHaveChanged()
+    { return m_RecentsHaveChanged; }
 
 };
 

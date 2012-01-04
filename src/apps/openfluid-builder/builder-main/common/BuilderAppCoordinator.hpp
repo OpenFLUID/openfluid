@@ -154,7 +154,7 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void closeProject();
 
-    void showPreferencesDialog();
+    PreferencesDialog* getPreferencesDialog();
 
     void updateMainWindowInformation();
 

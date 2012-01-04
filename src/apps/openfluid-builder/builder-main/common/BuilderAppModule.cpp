@@ -112,7 +112,7 @@ bool BuilderAppModule::initialize()
   BuilderExtensionsManager* ExtMgr = BuilderExtensionsManager::getInstance();
 
   //TODO add HomeLaucher
-  std::vector<Glib::ustring> PrefXExtPaths = PrefMgr->getExtraExtensionPaths();
+  std::vector<std::string> PrefXExtPaths = PrefMgr->getExtraExtensionPaths();
 
   for (int i = PrefXExtPaths.size() - 1; i > -1; i--)
     ExtMgr->prependExtensionSearchPath(PrefXExtPaths[i]);

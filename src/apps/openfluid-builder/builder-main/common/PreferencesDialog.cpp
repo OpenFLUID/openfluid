@@ -59,9 +59,11 @@
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/guicommon/PreferencesPanel.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -125,7 +127,6 @@ PreferencesDialog::PreferencesDialog() :
       mref_GroupsTreeModel->children().begin());
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -135,16 +136,24 @@ PreferencesDialog::~PreferencesDialog()
   BuilderExtensionsManager::getInstance()->deleteRegisteredExtensionPreferences();
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
 void PreferencesDialog::show()
 {
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  m_PlugPathsHaveChanged = false;
+  m_RecentsHaveChanged = false;
+
+  int OldRecentMax = PrefMgr->getRecentMax();
+  int OldRecentCount = PrefMgr->getRecentProjects().size();
+
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
-  if(! BEM->isPreferencesInstantiationDone())
+  if (!BEM->isPreferencesInstantiationDone())
   {
     Gtk::TreeRow Row = *mref_GroupsTreeModel->append();
     Row[m_GroupsColumns.m_Id] = "extensions";
@@ -154,7 +163,8 @@ void PreferencesDialog::show()
 
     ExtensionContainerMap_t* Exts = BEM->getRegisteredExtensionPreferences();
 
-    for (ExtensionContainerMap_t::iterator it = Exts->begin(); it != Exts->end(); ++it)
+    for (ExtensionContainerMap_t::iterator it = Exts->begin(); it
+        != Exts->end(); ++it)
     {
       Gtk::TreeRow ExtRow = *mref_GroupsTreeModel->append(Row.children());
       ExtRow[m_GroupsColumns.m_Id] = it->second.Infos.ID;
@@ -164,9 +174,8 @@ void PreferencesDialog::show()
 
   }
 
-
-  for (std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*>::iterator it =
-      m_GroupPanels.begin(); it != m_GroupPanels.end(); ++it)
+  for (std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*>::iterator
+      it = m_GroupPanels.begin(); it != m_GroupPanels.end(); ++it)
     it->second->init();
 
   //select first group
@@ -175,7 +184,34 @@ void PreferencesDialog::show()
 
   if (mp_Dialog->run())
   {
-    openfluid::guicommon::PreferencesManager::getInstance()->save();
+    openfluid::base::RuntimeEnvironment* RunEnv =
+        openfluid::base::RuntimeEnvironment::getInstance();
+
+    PrefMgr->save();
+
+    if (PrefMgr->getRecentMax() != OldRecentMax
+        || PrefMgr->getRecentProjects().size() != OldRecentCount)
+      m_RecentsHaveChanged = true;
+
+    // update plugs paths
+
+    std::vector<std::string> ExistingPlugPaths = RunEnv->getExtraPluginsPaths();
+    std::vector<std::string> PrefPlugPaths = PrefMgr->getExtraPlugPaths();
+
+    if (!(ExistingPlugPaths.size() == PrefPlugPaths.size() && std::equal(
+        ExistingPlugPaths.begin(), ExistingPlugPaths.end(),
+        PrefPlugPaths.begin())))
+    {
+      m_PlugPathsHaveChanged = true;
+
+      RunEnv->resetExtraPluginsPaths();
+
+      for (int i = PrefPlugPaths.size() - 1; i >= 0; i--)
+        RunEnv->addExtraPluginsPaths(PrefPlugPaths[i]);
+
+      FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+    }
+
     mp_Dialog->hide();
   }
 }

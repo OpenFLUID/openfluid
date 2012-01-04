@@ -60,11 +60,9 @@
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include "BuilderAppCoordinator.hpp"
-#include "FunctionSignatureRegistry.hpp"
-
+#include "PreferencesDialog.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -174,33 +172,16 @@ void BuilderAppHomeState::whenRefreshAsked()
 
 void BuilderAppHomeState::whenPreferencesAsked()
 {
-  m_App.showPreferencesDialog();
+  PreferencesDialog* PrefDialog = m_App.getPreferencesDialog();
 
-  std::vector<std::string>
-      RunEnvXPaths =
-          openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths();
-
-  std::vector<std::string>
-      PrefXPaths =
-          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
-
-  if (!(RunEnvXPaths.size() == PrefXPaths.size() && std::equal(
-      RunEnvXPaths.begin(), RunEnvXPaths.end(), PrefXPaths.begin())))
-  {
-    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraPluginsPaths();
-
-    for (int i = PrefXPaths.size() - 1; i > -1; i--)
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
-          PrefXPaths[i]);
-
-    FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
-  }
+  PrefDialog->show();
 
   // to refresh Recents
-  m_App.setHomeModule();
+  // TODO create a refreshRecents function instead
+  if (PrefDialog->recentsHaveChanged())
+    m_App.setHomeModule();
 
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -210,7 +191,6 @@ void BuilderAppHomeState::whenPropertiesAsked()
 {
   //nothing to do, should not happen
 }
-
 
 // =====================================================================
 // =====================================================================

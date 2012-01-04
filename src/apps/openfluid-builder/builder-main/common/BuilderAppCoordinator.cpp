@@ -562,9 +562,9 @@ void BuilderAppCoordinator::closeProject()
 // =====================================================================
 
 
-void BuilderAppCoordinator::showPreferencesDialog()
+PreferencesDialog* BuilderAppCoordinator::getPreferencesDialog()
 {
-  mp_PreferencesDialog->show();
+  return mp_PreferencesDialog;
 }
 
 // =====================================================================

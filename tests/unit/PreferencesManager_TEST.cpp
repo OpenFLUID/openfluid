@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
-  std::vector<Glib::ustring> ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+  std::vector<std::string> ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
 
   BOOST_CHECK_EQUAL(ExtraExtPaths.size(),0);
 

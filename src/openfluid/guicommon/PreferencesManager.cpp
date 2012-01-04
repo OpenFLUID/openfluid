@@ -458,9 +458,9 @@ void PreferencesManager::removeExtraExtensionPath(Glib::ustring Path)
 // =====================================================================
 
 
-std::vector<Glib::ustring> PreferencesManager::getExtraExtensionPaths()
+std::vector<std::string> PreferencesManager::getExtraExtensionPaths()
 {
-  std::vector<Glib::ustring> ExtraExtPaths;
+  std::vector<std::string> ExtraExtPaths;
 
   if (isValidKey("openfluid.builder.paths", "extraextpaths"))
     ExtraExtPaths = mp_KFile->get_string_list("openfluid.builder.paths",
@@ -602,7 +602,7 @@ std::string PreferencesManager::getPluginValue(std::string PluginName,
     std::string Key)
 {
   std::string GroupName = Glib::ustring::compose(
-      "openfluid.builder.plugins.%1", PluginName);
+      "openfluid.builder.extensions:%1", PluginName);
 
   if (isValidKey(GroupName, Key))
     return mp_KFile->get_string(GroupName, Key);
@@ -618,7 +618,7 @@ void PreferencesManager::setPluginValue(std::string PluginName,
     std::string Key, std::string Value)
 {
   std::string GroupName = Glib::ustring::compose(
-      "openfluid.builder.plugins.%1", PluginName);
+      "openfluid.builder.extensions:%1", PluginName);
 
   mp_KFile->set_string(GroupName, Key, Value);
 }
