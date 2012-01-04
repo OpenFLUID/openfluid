@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
   BOOST_REQUIRE_EQUAL(BEM->getRegisteredExtensions()->size(),0);
-  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),0);
+  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),2);
 
   BOOST_REQUIRE_EQUAL(BEM->isRegistrationDone(),false);
 
@@ -135,7 +135,27 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
-  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR/*+";"+openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR)*/);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsDefaultSearchPaths().size(),2);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsExtraSearchPaths().size(),0);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsSearchPaths().size(),2);
+
+  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+
+  BOOST_CHECK_EQUAL(BEM->getExtensionsDefaultSearchPaths().size(),2);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsExtraSearchPaths().size(),1);
+  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),3);
+
+  std::list<std::string> ExtPaths = BEM->getExtensionsSearchPaths();
+  BOOST_CHECK_EQUAL(*ExtPaths.begin(),TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+
+  BEM->prependExtensionsSearchPaths("aa/bb/cc");
+
+  BOOST_CHECK_EQUAL(BEM->getExtensionsDefaultSearchPaths().size(),2);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsExtraSearchPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),4);
+
+  ExtPaths = BEM->getExtensionsSearchPaths();
+  BOOST_CHECK_EQUAL(*ExtPaths.begin(),"aa/bb/cc");
 
   BEM->registerExtensions();
 
@@ -211,7 +231,7 @@ BOOST_AUTO_TEST_CASE(check_prefsOperations)
 
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
-  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR+";"+openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR));
+  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
   BEM->registerExtensions();
 
   BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), false);

@@ -180,7 +180,7 @@ void BuilderAppHomeState::whenPreferencesAsked()
       RunEnvXPaths =
           openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths();
 
-  std::vector<Glib::ustring>
+  std::vector<std::string>
       PrefXPaths =
           openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
 

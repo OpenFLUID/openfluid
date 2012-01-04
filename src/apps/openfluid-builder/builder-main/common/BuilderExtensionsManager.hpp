@@ -133,7 +133,9 @@ class BuilderExtensionsManager
 
     BuilderExtensionsManager();
 
-    std::list<std::string> m_SearchPaths;
+    std::vector<std::string> m_DefaultSearchPaths;
+
+    std::vector<std::string> m_ExtraSearchPaths;
 
     bool m_IsPreferencesInstantiationDone;
 
@@ -148,7 +150,11 @@ class BuilderExtensionsManager
 
     void prependExtensionsSearchPaths(const std::string& SemicolonSeparatedPaths);
 
-    const std::list<std::string>& getExtensionsSearchPaths() const { return m_SearchPaths; };
+    const std::vector<std::string>& getExtensionsDefaultSearchPaths() const { return m_DefaultSearchPaths; };
+
+    const std::vector<std::string>& getExtensionsExtraSearchPaths() const { return m_ExtraSearchPaths; };
+
+    std::list<std::string> getExtensionsSearchPaths() const;
 
     void registerExtensions();
 

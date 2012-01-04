@@ -59,7 +59,6 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
-#include "builderconfig.hpp"
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
@@ -86,11 +85,6 @@ bool BuilderAppModule::initialize()
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
-  openfluid::base::RuntimeEnvironment* RunEnv =
-      openfluid::base::RuntimeEnvironment::getInstance();
-
-  BuilderExtensionsManager* ExtMgr = BuilderExtensionsManager::getInstance();
-
 
   // Checking working directory
 
@@ -103,28 +97,26 @@ bool BuilderAppModule::initialize()
   }
 
 
-  // Checking extra plugin paths (for pluggable functions and extensions)
+  // Setting pluggable functions
 
-  std::vector<Glib::ustring> PrefXPaths = PrefMgr->getExtraPlugPaths();
+  std::vector<std::string> PrefXPaths = PrefMgr->getExtraPlugPaths();
 
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
-  {
-    RunEnv->addExtraPluginsPaths(PrefXPaths[i]);
-    ExtMgr->prependExtensionSearchPath(PrefXPaths[i]);
-  }
-
-  // Setting pluggable functions
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(PrefXPaths[i]);
 
   FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
 
   // Setting extensions
 
+  BuilderExtensionsManager* ExtMgr = BuilderExtensionsManager::getInstance();
+
   //TODO add HomeLaucher
-  ExtMgr->prependExtensionSearchPath(Glib::ustring::compose("%1/%2",
-      RunEnv->getInstallPrefix(), BUILDEREXT_INSTALL_PATH));
-  ExtMgr->prependExtensionSearchPath(RunEnv->getUserDataPath(
-      BUILDER_EXTSDIR));
+  std::vector<Glib::ustring> PrefXExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  for (int i = PrefXExtPaths.size() - 1; i > -1; i--)
+    ExtMgr->prependExtensionSearchPath(PrefXExtPaths[i]);
+
   ExtMgr->registerExtensions();
 
   mp_Coordinator->configExtensionsMenus();

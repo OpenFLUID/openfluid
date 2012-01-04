@@ -164,7 +164,7 @@ void PreferencesPathListWidget::setPreDefinedPaths(
 
 
 void PreferencesPathListWidget::setUserDefinedPaths(
-    std::vector<Glib::ustring> Paths)
+    std::vector<std::string> Paths)
 {
   mref_UserDefinedModel->clear();
 

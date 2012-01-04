@@ -125,11 +125,15 @@ class PreferencesPathsPanel : public openfluid::guicommon::PreferencesPanel
 
     PreferencesPathListWidget* mp_FunctionsPathListWidget;
 
+    PreferencesPathListWidget* mp_ExtensionsPathListWidget;
+
     void onWorkdirEntryChanged();
 
     void onWorkdirFileButtonClicked();
 
     void onFunctionsPathListChanged();
+
+    void onExtensionsPathListChanged();
 
   public:
 

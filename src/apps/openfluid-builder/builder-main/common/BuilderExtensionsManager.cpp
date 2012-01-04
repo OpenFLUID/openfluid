@@ -58,6 +58,7 @@
 #include <openfluid/config.hpp>
 #include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 #include "builderconfig.hpp"
 
@@ -161,7 +162,13 @@ BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;
 BuilderExtensionsManager::BuilderExtensionsManager()
   : m_IsRegistrationDone(false), m_RegisteredExtensionsCount(0), m_IsPreferencesInstantiationDone(false)
 {
+  openfluid::base::RuntimeEnvironment* RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
 
+  m_DefaultSearchPaths.push_back(RunEnv->getUserDataPath(
+          BUILDER_EXTSDIR));
+
+  m_DefaultSearchPaths.push_back(Glib::ustring::compose("%1/%2",
+          RunEnv->getInstallPrefix(), BUILDEREXT_INSTALL_PATH));
 }
 
 
@@ -185,7 +192,7 @@ void BuilderExtensionsManager::prependExtensionSearchPath(const std::string& Pat
   if (m_IsRegistrationDone)
     return;
 
-  m_SearchPaths.insert(m_SearchPaths.begin(),1,openfluid::tools::RemoveTrailingSlashes(Path));
+  m_ExtraSearchPaths.insert(m_ExtraSearchPaths.begin(),1,openfluid::tools::RemoveTrailingSlashes(Path));
 }
 
 
@@ -210,10 +217,24 @@ void BuilderExtensionsManager::prependExtensionsSearchPaths(const std::string& S
 // =====================================================================
 
 
+std::list<std::string> BuilderExtensionsManager::getExtensionsSearchPaths() const
+{
+  std::list<std::string> ComposedPaths(m_ExtraSearchPaths.begin(),m_ExtraSearchPaths.end());
+  ComposedPaths.insert(ComposedPaths.end(), m_DefaultSearchPaths.begin(), m_DefaultSearchPaths.end());
+  return ComposedPaths;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderExtensionsManager::registerExtensions()
 {
 
-  if (m_IsRegistrationDone || m_SearchPaths.empty()) return;
+  std::list<std::string> SearchPaths = getExtensionsSearchPaths();
+
+  if (m_IsRegistrationDone || SearchPaths.empty()) return;
 
   std::list<std::string>::iterator PathsIt;
 
@@ -221,7 +242,7 @@ void BuilderExtensionsManager::registerExtensions()
   std::vector<std::string> TmpFoundFiles;
 
 
-  for (PathsIt = m_SearchPaths.begin(); PathsIt != m_SearchPaths.end(); ++PathsIt)
+  for (PathsIt = SearchPaths.begin(); PathsIt != SearchPaths.end(); ++PathsIt)
   {
     TmpFoundFiles = openfluid::tools::GetFilesByExt(*PathsIt,BUILDEREXTENSION_BINARY_EXTENSION,true,true);
 
