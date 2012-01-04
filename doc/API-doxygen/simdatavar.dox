@@ -5,9 +5,9 @@
 
 \section funcparams_sec Access to function parameters
 
-Functions parameters are passed through the model.xml file. They can be accessed in the source code from the \link openfluid::base::PluggableFunction::initParams initParams \endlink method of the simulation function, unsing \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink. The requested parameter name must be the same as the one used in the model.xml file.\n
+Functions parameters are passed through the model.fluidx file. They can be accessed in the source code from the \link openfluid::base::PluggableFunction::initParams initParams \endlink method of the simulation function, using \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter\endlink. The requested parameter name must be the same as the one used in the model.fluidx file.\n
 \n
-<i>model.xml file:</i>
+<i>model.fluidx file:</i>
 \code
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
@@ -26,13 +26,13 @@ Functions parameters are passed through the model.xml file. They can be accessed
 bool MyFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 {
   m_MyParam = 0; //default value
-  OPENFLUID_GetFunctionParameter(Params,"myparam",&m_MyParam);
+  OPENFLUID_GetFunctionParameter(Params,"myparam",m_MyParam);
 
   return true;
 }
 \endcode
 
-To be reused in other part of the simulation function, the variable to store the value of function parameters should be declared as class variables. The parameters type can be string, double, integer, boolean, vector of string, vector of double, ... (see definitions of \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink to get more information about available types). 
+To be reused in other part of the simulation function, the variable to store the value of function parameters should be declared as class variable. The parameters type can be string, double, integer, boolean, vector of string, vector of double, ... (see definitions of \link openfluid::base::PluggableFunction::OPENFLUID_GetFunctionParameter OPENFLUID_GetFunctionParameter \endlink to get more information about available types). 
 
 \section vars_sec Access to simulation variables
 
@@ -40,11 +40,11 @@ The values for the simulation variables are attached to the homogeneous units.
 
 \subsection varstype_ssec Types
 
-The variables can be typed many defined types. See \link values Preliminary information about data types \endlink for more information 
+The variables can be typed many defined types. See \link values Preliminary information about data types \endlink for more information. 
 
 \subsection varsaccess_ssec Access
 
-The methods to access simulation variables exist in two flavours, for scalar and vector, depending on the type you pass for the value:
+Many methods to access simulation variables exist, depending on the type you pass for the value:
 <ul>
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_AppendVariable OPENFLUID_AppendVariable \endlink
@@ -54,7 +54,10 @@ The methods to access simulation variables exist in two flavours, for scalar and
 </ul>
 
 They can be accessed only from the \link openfluid::base::PluggableFunction::runStep runStep \endlink method.
-
+\n
+\n
+<i>Example:</i>
+\n
 \code
 bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 {
@@ -69,7 +72,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
     OPENFLUID_GetVariable(SU,"MyVar",CurrentStep,TmpValue);
     TmpValue = TmpValue * 2;
-    OPENFLUID_AppendVariable(SU,"MyVarX2",QOutput);
+    OPENFLUID_AppendVariable(SU,"MyVarX2",TmpValue);
 
   END_LOOP
 
@@ -81,7 +84,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 \section propini_sec Access to input data
 
 In order to access to input data provided through standard input files, you can use the following methods.
-They are usable from \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink, \link openfluid::base::PluggableFunction::runStep runStep \endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink :  
+They are usable from \link openfluid::base::PluggableFunction::initializeRun initializeRun\endlink, \link openfluid::base::PluggableFunction::runStep runStep\endlink, and \link openfluid::base::PluggableFunction::finalizeRun finalizeRun\endlink:  
 <ul>
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_GetInputData OPENFLUID_GetInputData \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_SetInputData OPENFLUID_SetInputData \endlink
@@ -96,11 +99,11 @@ A collection of discrete events can be contained by an openfluid::core::EventsCo
 \n
 To get a collection of events occuring during a period on a given unit, you should use the \link openfluid::base::PluggableFunction::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink method.
 It returns an openfluid::core::EventsCollection that can be processed.\n
-in order to process an event collection, you can parse it using specific macros:
+In order to process an event collection, you can parse it using specific macros:
 <ul>
 <li>#DECLARE_EVENT_COLLECTION_LOOP to declare a loop on an event collection,
-<li>#BEGIN_EVENT_COLLECTION_LOOP to begin the loop
-<li>#END_LOOP to finish the loop
+<li>#BEGIN_EVENT_COLLECTION_LOOP to begin the loop,
+<li>#END_LOOP to finish the loop.
 </ul>
 At each iteration, the current event can be processed.\n
 \n
@@ -127,7 +130,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
     EvColl.clear();
 
-    OPENFLUID_GetEvents(SU,BTime,ETime,&EvColl);
+    OPENFLUID_GetEvents(SU,BTime,ETime,EvColl);
     EvList = EvColl.getEventsList();
 
     BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)

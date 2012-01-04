@@ -75,7 +75,7 @@ namespace openfluid { namespace core {
 <I>Example : declaration</I>
 @code
   // declaration of a VectorValue, empty by default
-  openfluid::core::VectorValue Val1();
+  openfluid::core::VectorValue Val1;
 
   // declaration of a VectorValue of 7 elements, with values initialized to 0.0
   openfluid::core::VectorValue Val2(7);
@@ -88,6 +88,7 @@ namespace openfluid { namespace core {
 <I>Example : getting the contained values</I>
 @code
   double Tmp1;
+
   // using the get method
   Tmp1 = Val1.get(2);
 

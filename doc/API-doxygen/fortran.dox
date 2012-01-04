@@ -6,7 +6,7 @@
 
 \section fortran_sec Calling Fortran source code
 
-The C++ - Fortran interface is defined in the <openfluid/tools/FortranCPP.hpp> file.
+The C++ - Fortran interface is defined in the openfluid/tools/FortranCPP.hpp file.
 In order to execute Fortran code from a simulation function, this Fortran source code have to be wrapped into a subroutine that will be called from the C++ code of the simulation function. To help programmers to achieve this wrapping operation, the FortranCPP.h file defines macros. These macros allows calls of Fortran77 and Fortran90 source code. You are invited to browse the FortranCPP.h file to get more information about these macros.\n
 
 

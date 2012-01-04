@@ -82,7 +82,7 @@ namespace openfluid { namespace core {
 <I>Example : declaration</I>
 @code
   // declaration of a MapValue, empty by default
-  openfluid::core::MapValue Val1();
+  openfluid::core::MapValue Val1;
 @endcode
 
 

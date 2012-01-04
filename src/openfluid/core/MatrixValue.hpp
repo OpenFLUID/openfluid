@@ -74,7 +74,7 @@ namespace openfluid { namespace core {
 <I>Example : declaration</I>
 @code
   // declaration of a MatrixValue, empty by default
-  openfluid::core::MatrixValue Val1();
+  openfluid::core::MatrixValue Val1;
 
   // declaration of a MatrixValue, of 3 columns by 7 rows, with values initialized to 0.0
   openfluid::core::MatrixValue Val2(3,7);

@@ -16,19 +16,22 @@ The spatial domain can be parsed using the macros intended for handling spatial 
 To parse units of a specific class, you can use:
 <ul>
 <li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
-<li>#BEGIN_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
+<li>#BEGIN_UNITS_ORDERED_LOOP to begin, #END_LOOP to end. 
 </ul>
 
 To parse all units of the spatial domain, you can use:
 <ul>
 <li>#DECLARE_GLOBAL_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of the graph, 
-<li>#BEGIN_GLOBAL_UNITS_ORDERED_LOOP to begin, #END_LOOP to end 
+<li>#BEGIN_GLOBAL_UNITS_ORDERED_LOOP to begin, #END_LOOP to end. 
 </ul>
 
 To parse a specific list of units, you can use:
 <ul>
-<li>#DECLARE_UNITS_LIST_LOOP to declare a loop on a list of \link openfluid::core::Unit Unit \endlink, 
-<li>#BEGIN_UNITS_LIST_LOOP to begin, #END_LOOP to end </ul>
+<li>#DECLARE_UNITS_LIST_LOOP to declare a loop on a list of \link openfluid::core::Unit Unit\endlink, 
+<li>#BEGIN_UNITS_LIST_LOOP to begin, #END_LOOP to end.
+</ul>
+\n
+<i>Example:</i>
 \n
 \code
 bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
@@ -68,14 +71,16 @@ bool MyFunc::runStep(const openfluid::base::SimulationStatus* SimStatus)
 To parse units of a specific class, you can use:
 <ul>
 <li>#DECLARE_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of a given class, 
-<li>#APPLY_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the given class. Extra arguments can be passed (see example below)  
+<li>#APPLY_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the given class. Extra arguments can be passed (see example below).  
 </ul>
 
 To parse all units of the spatial domain, you can use:
 <ul>
 <li>#DECLARE_GLOBAL_UNITS_ORDERED_LOOP to declare a loop on all \link openfluid::core::Unit Unit \endlink of the graph, 
-<li>#APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the graph. Extra arguments can be passed (see example below)
+<li>#APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED which applies a given method of the simulation function to every unit of the graph. Extra arguments can be passed (see example below).
 </ul>
+\n
+<i>Example:</i>
 \n
 \code
 void MyFunc::computeA(openfluid::core::Unit* aUnit)
@@ -154,7 +159,9 @@ In order to add and remove connections, you can use the following methods, whene
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_RemoveFromToConnection OPENFLUID_RemoveFromToConnection \endlink
 <li>\link openfluid::base::PluggableFunction::OPENFLUID_RemoveChildParentConnection OPENFLUID_RemoveChildParentConnection \endlink
 </ul>
-
+\n
+<i>Example:</i>
+\n
 \code
 bool prepareData()
 {
