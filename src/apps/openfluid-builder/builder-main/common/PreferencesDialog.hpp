@@ -68,8 +68,11 @@
 #include <glibmm/i18n.h>
 #include <sigc++/sigc++.h>
 
-
+namespace openfluid {
+namespace guicommon {
 class PreferencesPanel;
+}
+}
 
 // =====================================================================
 // =====================================================================
@@ -78,11 +81,6 @@ class PreferencesPanel;
 class PreferencesDialog
 {
   private:
-
-    enum PrefGroup
-    {
-      Interface, Paths, Simulation, Market, Plugins
-    };
 
     Gtk::Dialog* mp_Dialog;
 
@@ -102,15 +100,19 @@ class PreferencesDialog
           add(m_Id);
           add(m_Name);
         }
-        Gtk::TreeModelColumn<PrefGroup> m_Id;
+        Gtk::TreeModelColumn<Glib::ustring> m_Id;
         Gtk::TreeModelColumn<Glib::ustring> m_Name;
     };
 
     PrefGroupsColumns m_GroupsColumns;
 
-    std::map<PrefGroup, PreferencesPanel*> m_GroupPanels;
+    std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*> m_GroupPanels;
 
     Gtk::Widget* mp_CurrentPanel;
+
+    bool m_PlugPathsHaveChanged;
+
+    bool m_RecentsHaveChanged;
 
     void onGroupSelectionChanged();
 
@@ -119,7 +121,15 @@ class PreferencesDialog
 
     PreferencesDialog();
 
+    ~PreferencesDialog();
+
     void show();
+
+    bool plugPathsHaveChanged()
+    { return m_PlugPathsHaveChanged; }
+
+    bool recentsHaveChanged()
+    { return m_RecentsHaveChanged; }
 
 };
 

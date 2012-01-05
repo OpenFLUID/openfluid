@@ -82,9 +82,9 @@ ADD_BUILDER_UNITTEST(builder-unittest-ProjectExplorerPresenter
                      builder_unittest_ProjectExplorerPresenter_TEST
                      ProjectExplorerPresenter_TEST.cpp)
                      
-#ADD_BUILDER_UNITTEST(builder-unittest-ProjectCoordinator
-#                     builder_unittest_ProjectCoordinator_TEST
-#                     ProjectCoordinator_TEST.cpp)
+ADD_BUILDER_UNITTEST(builder-unittest-ProjectCoordinator
+                     builder_unittest_ProjectCoordinator_TEST
+                     ProjectCoordinator_TEST.cpp)
 
 ### MODEL ###
 

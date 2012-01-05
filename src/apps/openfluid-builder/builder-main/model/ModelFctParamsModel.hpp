@@ -79,6 +79,8 @@ class ModelFctParamsModel
 
     virtual sigc::signal<void> signal_ParamsChanged() = 0;
 
+    virtual sigc::signal<void> signal_ParamsChangedFromApp() = 0;
+
     virtual sigc::signal<void> signal_RequiredFilesChangedFromApp() = 0;
 
     virtual void setModelItemInstance(
@@ -99,6 +101,8 @@ class ModelFctParamsModel
 
     virtual void updateGlobalValues() = 0;
 
+    virtual void updateParamsValues() = 0;
+
     virtual void whenRequiredFileChanged() = 0;
 
 };
@@ -112,6 +116,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
     sigc::signal<void> m_signal_RequiredFileChanged;
 
     sigc::signal<void> m_signal_ParamsChanged;
+
+    sigc::signal<void> m_signal_ParamsChangedFromApp;
 
     sigc::signal<void> m_signal_GlobalValueChanged;
 
@@ -139,6 +145,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void> signal_ParamsChanged();
 
+    sigc::signal<void> signal_ParamsChangedFromApp();
+
     sigc::signal<void> signal_RequiredFilesChangedFromApp();
 
     std::map<std::string, std::string> getParams();
@@ -154,6 +162,8 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
     void setParamValue(std::string ParamName, std::string ParamValue);
 
     void updateGlobalValues();
+
+    void updateParamsValues();
 
     void whenRequiredFileChanged();
 

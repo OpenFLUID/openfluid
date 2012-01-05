@@ -227,6 +227,16 @@ void ModelFctParamsModelImpl::updateGlobalValues()
   m_signal_GlobalValueChanged.emit();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelFctParamsModelImpl::updateParamsValues()
+{
+  m_signal_ParamsChangedFromApp.emit();
+}
+
 // =====================================================================
 // =====================================================================
 
@@ -270,6 +280,16 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFileChanged()
 sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChanged()
 {
   return m_signal_ParamsChanged;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChangedFromApp()
+{
+  return m_signal_ParamsChangedFromApp;
 }
 
 // =====================================================================

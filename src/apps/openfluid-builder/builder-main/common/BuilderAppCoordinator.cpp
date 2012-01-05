@@ -54,7 +54,8 @@
 
 #include "BuilderAppCoordinator.hpp"
 
-#include "openfluid/base/ProjectManager.hpp"
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
@@ -65,10 +66,10 @@
 #include "BuilderAppProjectState.hpp"
 #include "BuilderHomeModule.hpp"
 #include "BuilderProjectWithExplorer.hpp"
+#include "BuilderExtensionsManager.hpp"
 #include "EngineProjectNewDialog.hpp"
 #include "EngineProjectOpenDialog.hpp"
 #include "PreferencesDialog.hpp"
-
 
 // =====================================================================
 // =====================================================================
@@ -84,7 +85,8 @@ void BuilderAppCoordinator::unsetCurrentModule()
 // =====================================================================
 
 
-void BuilderAppCoordinator::setCurrentModule(BuilderModule* Module)
+void BuilderAppCoordinator::setCurrentModule(
+    openfluid::guicommon::BuilderModule* Module)
 {
   unsetCurrentModule();
   mp_CurrentModule = Module;
@@ -232,6 +234,15 @@ void BuilderAppCoordinator::whenPropertiesAsked()
 // =====================================================================
 
 
+void BuilderAppCoordinator::whenExtensionAsked(const std::string& ExtensionID)
+{
+  mp_CurrentState->whenExtensionAsked(ExtensionID);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
     BuilderAppActions& Actions) :
   m_MainWindow(MainWindow), m_Actions(Actions), m_HasToBeSaved(true)
@@ -335,7 +346,8 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 
 void BuilderAppCoordinator::setHomeModule()
 {
-  BuilderModule* HomeModule = BuilderModuleFactory::createHomeModule(m_Actions);
+  openfluid::guicommon::BuilderModule* HomeModule =
+      BuilderModuleFactory::createHomeModule(m_Actions);
   setCurrentModule(HomeModule);
   ((BuilderHomeModule*) HomeModule)->signal_OpenProjectAsked().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::openProject));
@@ -422,7 +434,7 @@ void BuilderAppCoordinator::onSaveHappened()
 // =====================================================================
 
 
-BuilderModule* BuilderAppCoordinator::getCurrentModule()
+openfluid::guicommon::BuilderModule* BuilderAppCoordinator::getCurrentModule()
 {
   return mp_CurrentModule;
 }
@@ -550,9 +562,9 @@ void BuilderAppCoordinator::closeProject()
 // =====================================================================
 
 
-void BuilderAppCoordinator::showPreferencesDialog()
+PreferencesDialog* BuilderAppCoordinator::getPreferencesDialog()
 {
-  mp_PreferencesDialog->show();
+  return mp_PreferencesDialog;
 }
 
 // =====================================================================
@@ -589,4 +601,99 @@ void BuilderAppCoordinator::updateRecentsList()
       openfluid::base::ProjectManager::getInstance()->getName());
 
   openfluid::guicommon::PreferencesManager::getInstance()->save();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppCoordinator::configExtensionsMenus()
+{
+  CollectionOfExtensions_t* ExtColl =
+      BuilderExtensionsManager::getInstance()->getRegisteredExtensions();
+
+  ExtensionContainerMap_t::iterator ECMit;
+
+  for (CollectionOfExtensions_t::iterator COEit = ExtColl->begin(); COEit
+      != ExtColl->end(); ++COEit)
+  {
+    ExtensionContainerMap_t ExtContainerMap = COEit->second;
+
+    switch (COEit->first)
+    {
+      case openfluid::builderext::PluggableBuilderExtension::WorkspaceTab:
+      case openfluid::builderext::PluggableBuilderExtension::ModelessWindow:
+      case openfluid::builderext::PluggableBuilderExtension::ModalWindow:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectExtensionAction(ECMit->second.Infos.ID,
+              ECMit->second.Infos.Name, ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectDataAction(m_Actions.getDataDomainMenuAction(),
+              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::InputdataImporter:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectDataAction(
+              m_Actions.getDataInputdataMenuAction(), ECMit->second.Infos.ID,
+              ECMit->second.Infos.Name, ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::EventsImporter:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectDataAction(m_Actions.getDataEventsMenuAction(),
+              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::ExtraImporter:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectDataAction(m_Actions.getDataExtraMenuAction(),
+              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::MixedImporter:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectDataAction(m_Actions.getDataMixedMenuAction(),
+              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::SimulationListener:
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+          m_Actions.addProjectSimulationAction(ECMit->second.Infos.ID,
+              ECMit->second.Infos.Name, ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(sigc::mem_fun(*this,
+                  &BuilderAppCoordinator::whenExtensionAsked),
+                  ECMit->second.Infos.ID));
+        break;
+
+      case openfluid::builderext::PluggableBuilderExtension::HomeLauncher:
+        break;
+    }
+  }
+
 }

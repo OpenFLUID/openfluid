@@ -63,7 +63,7 @@ Input data are invariant information attached to units. Simulation functions dec
 \subsection signdatavars_ssec Simulation variables
 
 Simulation variables are produced, read and modified by functions, and attached to distributed units.
-The declaration macros take 4 arguments: the name of the data, the concerned unit class, the description of the variable, and the SI unit of the variable.
+The declaration macros take 4 arguments: the name of the variable, the concerned unit class, the description of the variable, and the SI unit of the variable.
 
 To declare read variables:
 <ul>

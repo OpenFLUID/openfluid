@@ -61,7 +61,7 @@
 
 #include <sigc++/sigc++.h>
 
-#include "BuilderModule.hpp"
+#include <openfluid/guicommon/BuilderModule.hpp>
 
 class EngineProject;
 class ProjectExplorerComponent;
@@ -70,7 +70,7 @@ class ProjectCoordinator;
 class ProjectDashboard;
 class BuilderListToolBoxFactory;
 
-class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
+class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
 {
   private:
 
@@ -100,8 +100,6 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
 
     void whenSaveHappened();
 
-    void whenRunHappened();
-
   protected:
 
     void compose();
@@ -129,6 +127,8 @@ class BuilderProjectWithExplorer: public BuilderModule, public sigc::trackable
     void refreshAsked();
 
     void updatePluginPathsMonitors();
+
+    void extensionAsked(const std::string& ExtensionID);
 
 };
 

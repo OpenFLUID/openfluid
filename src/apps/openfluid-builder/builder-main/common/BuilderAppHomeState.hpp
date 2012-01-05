@@ -95,6 +95,8 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenPropertiesAsked();
 
+    void whenExtensionAsked(const std::string& ExtensionID);
+
 };
 
 #endif /* __BUILDERAPPHOMESTATE_HPP__ */

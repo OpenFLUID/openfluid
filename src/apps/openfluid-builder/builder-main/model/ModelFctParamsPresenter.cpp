@@ -110,6 +110,15 @@ void ModelFctParamsPresenter::whenRequiredFileChanged()
 // =====================================================================
 
 
+void ModelFctParamsPresenter::whenParamsChangedFromApp()
+{
+  m_View.setParamValues(m_Model.getParamValues());
+}
+
+// =====================================================================
+// =====================================================================
+
+
 ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
     ModelFctParamsView& View) :
   m_Model(Model), m_View(View)
@@ -120,6 +129,8 @@ ModelFctParamsPresenter::ModelFctParamsPresenter(ModelFctParamsModel& Model,
       &ModelFctParamsPresenter::whenGlobalValueChanged));
   m_Model.signal_RequiredFilesChangedFromApp().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenRequiredFilesChangedFromApp));
+  m_Model.signal_ParamsChangedFromApp().connect(sigc::mem_fun(*this,
+        &ModelFctParamsPresenter::whenParamsChangedFromApp));
 
   m_View.signal_ParamValueChanged().connect(sigc::mem_fun(*this,
       &ModelFctParamsPresenter::whenParamValueChanged));

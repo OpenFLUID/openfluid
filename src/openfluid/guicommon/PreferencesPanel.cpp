@@ -46,80 +46,102 @@
  */
 
 /**
- \file ProjectExplorerComponent.cpp
+ \file PreferencesPanel.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "ProjectExplorerComponent.hpp"
+#include "PreferencesPanel.hpp"
 
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerView.hpp"
-#include "ProjectExplorerPresenter.hpp"
-#include "ProjectExplorerAdapter.hpp"
-#include "ProjectExplorerAdapterModel.hpp"
+#include <gtkmm/alignment.h>
+#include <gtkmm/label.h>
+
+
+namespace openfluid { namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerComponent::ProjectExplorerComponent()
+PreferencesPanel::PreferencesPanel(Glib::ustring PanelTitle)
 {
-  mp_Model = new ProjectExplorerModelImpl();
-  mp_View = new ProjectExplorerViewImpl();
-  mp_AdapterModel = new ProjectExplorerAdapterModelImpl();
-  mp_Adapter = new ProjectExplorerAdapter(*mp_AdapterModel, *mp_View);
-  mp_Presenter = new ProjectExplorerPresenter(*mp_Model, *mp_Adapter);
+  Gtk::Label* TitleLabel = Gtk::manage(new Gtk::Label());
+  TitleLabel->set_markup(Glib::ustring::compose("<b><big>%1</big></b>",
+      PanelTitle));
+
+  mp_ContentWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ContentWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ContentWindow->set_shadow_type(Gtk::SHADOW_NONE);
+
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*TitleLabel, Gtk::PACK_SHRINK,3);
+//  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*mp_ContentWindow, Gtk::PACK_EXPAND_WIDGET);
+
+  mp_MainBox->set_visible(true);
+  mp_MainBox->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerComponent::~ProjectExplorerComponent()
+Gtk::Widget* PreferencesPanel::asWidget()
 {
-  delete mp_Presenter;
-  delete mp_Adapter;
-  delete mp_AdapterModel;
-  delete mp_Model;
-  delete mp_View;
+  return mp_MainBox;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-Gtk::Widget* ProjectExplorerComponent::asWidget()
+Gtk::Widget* PreferencesPanel::createSubTitle(Glib::ustring SubTitle)
 {
-  return mp_View->asWidget();
+  Gtk::Label* SubLabel = Gtk::manage(new Gtk::Label());
+
+  SubLabel->set_markup(Glib::ustring::compose("<b>%1</b>", SubTitle));
+
+  SubLabel->set_alignment(0, 0.5);
+
+  SubLabel->set_visible(true);
+
+  return SubLabel;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerModel* ProjectExplorerComponent::getModel()
+Gtk::Widget* PreferencesPanel::createSubBoxAlignement(Gtk::Widget* InnerWidget)
 {
-  return mp_Model;
+  Gtk::Alignment* Align = Gtk::manage(new Gtk::Alignment());
+
+  Align->set_padding(10, 20, 20, 0);
+
+  Align->add(*InnerWidget);
+
+  Align->set_visible(true);
+
+  return Align;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerView* ProjectExplorerComponent::getView()
+Gtk::Box* PreferencesPanel::createPanelBox()
 {
-  return mp_View;
+  Gtk::VBox* PanelBox = Gtk::manage(new Gtk::VBox(false, 5));
+
+  PanelBox->set_border_width(10);
+
+  PanelBox->set_visible(true);
+
+  return PanelBox;
 }
 
 // =====================================================================
 // =====================================================================
 
-// =====================================================================
-// =====================================================================
-
-ProjectExplorerViewSub* ProjectExplorerComponentSub::getViewSub()
-{
-  return (ProjectExplorerViewSub*)mp_View;
-}
+} } //namespaces

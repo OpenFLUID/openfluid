@@ -71,10 +71,24 @@ class DLLEXPORT ModelessWindow : public ModelessExtension
 {
   protected:
 
+    sigc::signal<void> m_signal_Hidden;
 
   public:
 
+    sigc::signal<void> signal_Hidden()
+    {
+      return m_signal_Hidden;
+    }
+
     ExtensionType getType() const { return PluggableBuilderExtension::ModelessWindow; };
+
+    virtual void onRefresh() = 0;
+
+    virtual void onRunStarted() = 0;
+
+    virtual void onRunStopped() = 0;
+
+    virtual void onProjectClosed() = 0;
 
 };
 

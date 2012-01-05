@@ -100,6 +100,8 @@ class BuilderAppProjectState: public BuilderAppState
 
     void whenPropertiesAsked();
 
+    void whenExtensionAsked(const std::string& ExtensionID);
+
 };
 
 #endif /* __BUILDERAPPPROJECTSTATE_HPP__ */

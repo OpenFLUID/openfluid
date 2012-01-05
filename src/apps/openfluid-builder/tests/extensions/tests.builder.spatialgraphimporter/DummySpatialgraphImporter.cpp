@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/SpatialgraphImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -65,8 +65,10 @@ DEFINE_EXTENSION_INFOS("tests.builder.spatialgraphimporter",
                        "Dummy spatialgraph importer for tests",
                        "This is a spatialgraph importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================
@@ -76,12 +78,13 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummySpatialgraphImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummySpatialgraphImporter");
     };
 
 
@@ -91,7 +94,7 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 
     ~DummySpatialgraphImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +104,17 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };
@@ -111,5 +124,5 @@ class DummySpatialgraphImporter : public openfluid::builderext::SpatialgraphImpo
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummySpatialgraphImporter);
+DEFINE_EXTENSION_HOOKS((DummySpatialgraphImporter));
 

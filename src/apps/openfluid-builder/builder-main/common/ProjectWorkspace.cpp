@@ -60,7 +60,6 @@
 #include <gtkmm/button.h>
 #include <gtkmm/box.h>
 
-
 // =====================================================================
 // =====================================================================
 
@@ -110,7 +109,8 @@ void ProjectWorkspace::appendPage(std::string PageName,
     Gtk::Widget* PageContent)
 {
   Gtk::Widget* TabLabel = createClosableTabLabel(PageName);
-  Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(PageName,Gtk::ALIGN_LEFT,Gtk::ALIGN_CENTER));
+  Gtk::Label* MenuLabel = Gtk::manage(new Gtk::Label(PageName, Gtk::ALIGN_LEFT,
+      Gtk::ALIGN_CENTER));
 
   mp_Notebook->append_page(*PageContent, *TabLabel, *MenuLabel);
 
@@ -135,22 +135,6 @@ void ProjectWorkspace::removePage(std::string PageName)
   }
 }
 
-// =====================================================================
-// =====================================================================
-
-
-std::vector<std::string> ProjectWorkspace::getPageNames()
-{
-  std::vector<std::string> PageNames;
-
-  for (std::map<std::string, Gtk::Widget*>::iterator it =
-      m_ByNamePagesMap.begin(); it != m_ByNamePagesMap.end(); ++it)
-  {
-    PageNames.push_back(it->first);
-  }
-
-  return PageNames;
-}
 
 // =====================================================================
 // =====================================================================
@@ -201,4 +185,37 @@ void ProjectWorkspace::onTabCloseButtonClicked(std::string LabelText)
 Gtk::Widget* ProjectWorkspace::asWidget()
 {
   return mp_Notebook;
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
+std::string ProjectWorkspaceSub::getCurrentPageName()
+{
+  Gtk::Widget* CurrentWidget = mp_Notebook->get_nth_page(
+      mp_Notebook->get_current_page());
+
+  if(!CurrentWidget)
+    return "";
+
+  for(std::map<std::string,Gtk::Widget*>::iterator it = m_ByNamePagesMap.begin() ; it != m_ByNamePagesMap.end() ; ++it)
+  {
+    if(CurrentWidget == it->second)
+      return it->first;
+  }
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+unsigned int ProjectWorkspaceSub::getPagesCount()
+{
+  return mp_Notebook->get_n_pages();
 }

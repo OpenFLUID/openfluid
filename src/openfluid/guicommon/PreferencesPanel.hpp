@@ -46,80 +46,57 @@
  */
 
 /**
- \file ProjectExplorerComponent.cpp
- \brief Implements ...
+ \file PreferencesPanel.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "ProjectExplorerComponent.hpp"
+#ifndef __PREFERENCESPANEL_HPP__
+#define __PREFERENCESPANEL_HPP__
 
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerView.hpp"
-#include "ProjectExplorerPresenter.hpp"
-#include "ProjectExplorerAdapter.hpp"
-#include "ProjectExplorerAdapterModel.hpp"
+#include <openfluid/dllexport.hpp>
+
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/box.h>
+
+
+namespace openfluid { namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerComponent::ProjectExplorerComponent()
+class DLLEXPORT PreferencesPanel
 {
-  mp_Model = new ProjectExplorerModelImpl();
-  mp_View = new ProjectExplorerViewImpl();
-  mp_AdapterModel = new ProjectExplorerAdapterModelImpl();
-  mp_Adapter = new ProjectExplorerAdapter(*mp_AdapterModel, *mp_View);
-  mp_Presenter = new ProjectExplorerPresenter(*mp_Model, *mp_Adapter);
-}
+  private:
+
+    Gtk::VBox* mp_MainBox;
+
+  protected:
+
+    Gtk::ScrolledWindow* mp_ContentWindow;
+
+    Gtk::Widget* createSubTitle(Glib::ustring SubTitle);
+
+    Gtk::Widget* createSubBoxAlignement(Gtk::Widget* InnerWidget);
+
+    Gtk::Box* createPanelBox();
+
+  public:
+
+    PreferencesPanel(Glib::ustring PanelTitle);
+
+    Gtk::Widget* asWidget();
+
+    virtual void init() = 0;
+
+};
+
+} } //namespaces
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerComponent::~ProjectExplorerComponent()
-{
-  delete mp_Presenter;
-  delete mp_Adapter;
-  delete mp_AdapterModel;
-  delete mp_Model;
-  delete mp_View;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* ProjectExplorerComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-ProjectExplorerModel* ProjectExplorerComponent::getModel()
-{
-  return mp_Model;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-ProjectExplorerView* ProjectExplorerComponent::getView()
-{
-  return mp_View;
-}
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-ProjectExplorerViewSub* ProjectExplorerComponentSub::getViewSub()
-{
-  return (ProjectExplorerViewSub*)mp_View;
-}
+#endif /* __PREFERENCESPANEL_HPP__ */

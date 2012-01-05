@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/InputdataImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -65,8 +65,10 @@ DEFINE_EXTENSION_INFOS("tests.builder.inputdataimporter",
                        "Dummy inputdata importer for tests",
                        "This is a inputdata importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::InputdataImporter);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================
@@ -76,12 +78,13 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyInputdataImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyInputdataImporter");
     };
 
 
@@ -91,7 +94,7 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 
     ~DummyInputdataImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,8 +104,18 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
     }
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
+    }
+
 
 };
 
@@ -111,7 +124,7 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyInputdataImporter);
+DEFINE_EXTENSION_HOOKS((DummyInputdataImporter));
 
 
 

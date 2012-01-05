@@ -61,6 +61,7 @@
 #include "SimulationRunModule.hpp"
 #include "SimulationOutModule.hpp"
 #include "ResultsSetModule.hpp"
+#include "EngineProject.hpp"
 
 
 // =====================================================================
@@ -77,7 +78,7 @@ BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createHomeModule(
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createHomeModule(
     BuilderAppActions& Actions)
 {
   return new BuilderHomeModule(Actions);
@@ -87,7 +88,7 @@ BuilderModule* BuilderModuleFactory::createHomeModule(
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createModelStructureModule()
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureModule()
 {
   ModelStructureModule* Module = new ModelStructureModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
@@ -100,7 +101,7 @@ BuilderModule* BuilderModuleFactory::createModelStructureModule()
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createDomainStructureModule()
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 {
   DomainStructureModule* Module = new DomainStructureModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
@@ -113,7 +114,7 @@ BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createDomainClassModule()
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModule()
 {
   DomainClassModule* Module = new DomainClassModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
@@ -126,7 +127,7 @@ BuilderModule* BuilderModuleFactory::createDomainClassModule()
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createSimulationRunModule()
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunModule()
 {
   SimulationRunModule* Module = new SimulationRunModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
@@ -139,7 +140,7 @@ BuilderModule* BuilderModuleFactory::createSimulationRunModule()
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createSimulationOutModule()
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutModule()
 {
   SimulationOutModule* Module = new SimulationOutModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
@@ -152,7 +153,7 @@ BuilderModule* BuilderModuleFactory::createSimulationOutModule()
 // =====================================================================
 
 
-BuilderModule* BuilderModuleFactory::createResultsSetModule()
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
 {
   ResultsSetModule* Module = new ResultsSetModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),

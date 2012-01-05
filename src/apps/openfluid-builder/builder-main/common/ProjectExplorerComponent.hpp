@@ -59,13 +59,14 @@
 
 class ProjectExplorerModel;
 class ProjectExplorerView;
+class ProjectExplorerViewSub;
 class ProjectExplorerPresenter;
 class ProjectExplorerAdapter;
 class ProjectExplorerAdapterModel;
 
 class ProjectExplorerComponent: public BuilderMVPComponent
 {
-  private:
+  protected:
 
     ProjectExplorerModel* mp_Model;
 
@@ -89,6 +90,13 @@ class ProjectExplorerComponent: public BuilderMVPComponent
 
     ProjectExplorerView* getView();
 
+};
+
+class ProjectExplorerComponentSub : public ProjectExplorerComponent
+{
+  public:
+
+    ProjectExplorerViewSub* getViewSub();
 };
 
 #endif /* __PROJECTEXPLORERCOMPONENT_HPP__ */

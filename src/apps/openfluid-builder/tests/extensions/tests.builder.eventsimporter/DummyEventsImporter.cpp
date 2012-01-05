@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/EventsImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -65,8 +65,10 @@ DEFINE_EXTENSION_INFOS("tests.builder.eventsimporter",
                        "Dummy events importer for tests",
                        "This is a events importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::EventsImporter);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================
@@ -76,12 +78,13 @@ class DummyEventsImporter : public openfluid::builderext::EventsImporter
 {
   private:
 
+    Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyEventsImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyEventsImporter");
     };
 
 
@@ -91,7 +94,7 @@ class DummyEventsImporter : public openfluid::builderext::EventsImporter
 
     ~DummyEventsImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +104,16 @@ class DummyEventsImporter : public openfluid::builderext::EventsImporter
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };
@@ -111,5 +123,5 @@ class DummyEventsImporter : public openfluid::builderext::EventsImporter
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyEventsImporter);
+DEFINE_EXTENSION_HOOKS((DummyEventsImporter));
 

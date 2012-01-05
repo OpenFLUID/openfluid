@@ -46,22 +46,125 @@
  */
 
 /**
- \file DummyModalWindow.cpp
+ \file DummyAssistant.cpp
  \brief Implements ...
 
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
 #include <openfluid/builderext/ModalWindow.hpp>
 
-#include <gtkmm/messagedialog.h>
+#include <gtkmm/assistant.h>
+#include <gtkmm/main.h>
+#include <gtkmm/label.h>
+
+// =====================================================================
+// =====================================================================
+
+class TheDummyAssistant: public Gtk::Assistant
+{
+  private:
+
+    openfluid::machine::SimulationBlob* mp_SimBlob;
+    openfluid::core::UnitsCollection* mp_TestUnitsColl;
+    bool m_Applied;
+
+  public:
+
+    TheDummyAssistant(openfluid::machine::SimulationBlob* SimBlob) :
+      Gtk::Assistant(), mp_SimBlob(SimBlob), mp_TestUnitsColl(0), m_Applied(false)
+    {
+      set_title("Dummy assistant");
+      set_default_size(400, 300);
+      set_modal(true);
+
+      Gtk::Label* Label1 = Gtk::manage(new Gtk::Label(
+          "I'm a Dummy assistant for tests"));
+      append_page(*Label1);
+      set_page_title(*Label1, "Page 1/2");
+      set_page_type(*Label1, Gtk::ASSISTANT_PAGE_INTRO);
+      set_page_complete(*Label1, true);
+
+      Gtk::Label* Label2 = Gtk::manage(new Gtk::Label());
+
+      if (!mp_SimBlob)
+      {
+        Label2->set_text("Nb of units in TestUnits class: no CoreRepository\n"
+          "Nothing to do");
+
+        signal_apply().connect(sigc::mem_fun(*this, &Gtk::Assistant::hide));
+      }
+      else
+      {
+        unsigned int Size = 0;
+
+        mp_TestUnitsColl = mp_SimBlob->getCoreRepository().getUnits("TestUnits");
+
+        if (mp_TestUnitsColl)
+          Size = mp_TestUnitsColl->getList()->size();
+
+        Label2->set_text(Glib::ustring::compose(
+            "Nb of units in TestUnits class: %1\n"
+              "Clicking ok will add a Unit of class \"TestUnits\"", Size));
+
+        signal_apply().connect(
+            sigc::mem_fun(*this, &TheDummyAssistant::m_apply));
+      }
+
+      append_page(*Label2);
+      set_page_title(*Label2, "Page 2/2");
+      set_page_type(*Label2, Gtk::ASSISTANT_PAGE_CONFIRM);
+      set_page_complete(*Label2, true);
+
+      signal_cancel().connect(sigc::mem_fun(*this, &Gtk::Assistant::hide));
+      signal_close().connect(sigc::mem_fun(*this, &Gtk::Assistant::hide));
+
+      show_all_children();
+    }
+
+    void m_apply()
+    {
+      unsigned int NextId = 1;
+
+      if (mp_TestUnitsColl)
+      {
+        openfluid::core::UnitsList_t* TestUnits = mp_TestUnitsColl->getList();
+        if (!TestUnits->empty())
+        {
+          NextId = TestUnits->end().operator --()->getID() + 1;
+
+          while (mp_TestUnitsColl->getUnit(NextId))
+            NextId++;
+        }
+      }
+
+      openfluid::core::Unit U("TestUnits", NextId, 1,
+          openfluid::core::InstantiationInfo::DESCRIPTOR);
+
+      mp_SimBlob->getCoreRepository().addUnit(U);
+
+      m_Applied = true;
+
+      hide();
+    }
+
+    bool getApplied()
+    {
+      return m_Applied;
+    }
+
+};
+
+// =====================================================================
+// =====================================================================
+
 
 DECLARE_EXTENSION_HOOKS
 
-DEFINE_EXTENSION_INFOS("tests.builder.modalwindow",
-    "Dummy modal window",
-    "Dummy modal window for tests",
-    "This is a modal window for tests",
+DEFINE_EXTENSION_INFOS("tests.builder.assistant",
+    "Dummy assistant",
+    "Dummy assistant for tests",
+    "This is an assistant for tests",
     "JC.Fabre;A.Libres",
     "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
     openfluid::builderext::PluggableBuilderExtension::ModalWindow)
@@ -72,27 +175,20 @@ DEFINE_EXTENSION_DEFAULT_CONFIG()
 // =====================================================================
 
 
-class DummyModalWindow: public openfluid::builderext::ModalWindow
+class DummyAssistant: public openfluid::builderext::ModalWindow
 {
-  private:
-
-    Gtk::MessageDialog* mp_Dialog;
-
   public:
 
-    DummyModalWindow()
+    DummyAssistant()
     {
-      mp_Dialog = new Gtk::MessageDialog("", false, Gtk::MESSAGE_QUESTION,
-          Gtk::BUTTONS_OK_CANCEL);
     }
 
     // =====================================================================
     // =====================================================================
 
 
-    ~DummyModalWindow()
+    ~DummyAssistant()
     {
-      delete mp_Dialog;
     }
 
     // =====================================================================
@@ -101,7 +197,7 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return mp_Dialog;
+      return (Gtk::Widget*) 0;
     }
 
     // =====================================================================
@@ -109,62 +205,19 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
 
     void show()
     {
-      openfluid::core::UnitsCollection* TestUnitsColl = 0;
+      TheDummyAssistant Assist(mp_SimulationBlob);
 
-      if (!mp_SimulationBlob)
-      {
-        mp_Dialog->set_message("I am DummyModalWindow\n"
-          "Nb of units in TestUnits class: no CoreRepository\n"
-          "Nothing to do");
-      }
-      else
-      {
-        unsigned int Size = 0;
+      Gtk::Main::run(Assist);
 
-        TestUnitsColl = mp_SimulationBlob->getCoreRepository().getUnits(
-            "TestUnits");
-
-        if (TestUnitsColl)
-          Size = TestUnitsColl->getList()->size();
-
-        mp_Dialog->set_message(Glib::ustring::compose("I am DummyModalWindow\n"
-          "Nb of units in TestUnits class: %1\n"
-          "Clicking ok will add a Unit of class \"TestUnits\"", Size));
-      }
-
-      if (mp_Dialog->run() == Gtk::RESPONSE_OK && mp_SimulationBlob)
-      {
-        unsigned int NextId = 1;
-
-        if (TestUnitsColl)
-        {
-          openfluid::core::UnitsList_t* TestUnits = TestUnitsColl->getList();
-          if (!TestUnits->empty())
-          {
-            NextId = TestUnits->end().operator --()->getID() + 1;
-
-            while (TestUnitsColl->getUnit(NextId))
-              NextId++;
-          }
-
-        }
-
-        openfluid::core::Unit U("TestUnits", NextId, 1,
-            openfluid::core::InstantiationInfo::DESCRIPTOR);
-
-        mp_SimulationBlob->getCoreRepository().addUnit(U);
-
+      if (Assist.getApplied())
         signal_ChangedOccurs().emit();
-      }
-
-      mp_Dialog->hide();
     }
+
 };
 
 
 // =====================================================================
 // =====================================================================
 
-
-DEFINE_EXTENSION_HOOKS((DummyModalWindow))
+DEFINE_EXTENSION_HOOKS((DummyAssistant))
 

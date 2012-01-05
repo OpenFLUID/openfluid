@@ -55,7 +55,7 @@
 #ifndef __DOMAINSTRUCTUREMODULE_HPP__
 #define __DOMAINSTRUCTUREMODULE_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
 
@@ -67,7 +67,7 @@ class DomainUnitAddEditDialog;
 class DomainStructureCoordinator;
 class BuilderListToolBox;
 
-class DomainStructureModule: public ProjectWorkspaceModule
+class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
     Gtk::Box* mp_MainPanel;

@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/ExtraImporter.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -65,8 +65,10 @@ DEFINE_EXTENSION_INFOS("tests.builder.extraimporter",
                        "Dummy extra importer for tests",
                        "This is a extra importer for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::ExtraImporter);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================
@@ -76,12 +78,13 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyExtraImporter()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyExtraImporter");
     };
 
 
@@ -91,7 +94,7 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 
     ~DummyExtraImporter()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,7 +104,17 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };
@@ -111,5 +124,5 @@ class DummyExtraImporter : public openfluid::builderext::ExtraImporter
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyExtraImporter);
+DEFINE_EXTENSION_HOOKS((DummyExtraImporter));
 

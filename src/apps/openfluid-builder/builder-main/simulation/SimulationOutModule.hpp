@@ -55,7 +55,7 @@
 #ifndef __SIMULATIONOUTMODULE_HPP__
 #define __SIMULATIONOUTMODULE_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
 
@@ -66,7 +66,7 @@ class SimulOutSetsAddEditDialog;
 class SimulOutCoordinator;
 class BuilderListToolBox;
 
-class SimulationOutModule: public ProjectWorkspaceModule
+class SimulationOutModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
     Gtk::Box* mp_MainPanel;

@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
-  std::vector<Glib::ustring> ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
+  std::vector<std::string> ExtraPlugPaths = PrefMgr->getExtraPlugPaths();
 
   BOOST_CHECK_EQUAL(ExtraPlugPaths.size(),0);
 
@@ -254,6 +254,91 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
   BOOST_CHECK_EQUAL(ExtraPlugPaths.size(),2);
   BOOST_CHECK_EQUAL(ExtraPlugPaths[0],"cc/dd/dir1");
   BOOST_CHECK_EQUAL(ExtraPlugPaths[1],"cc/dd/dir2");
+
+  delete PrefMgr;
+}
+
+BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
+{
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
+
+  if (boost::filesystem::exists(ConfigPath))
+    boost::filesystem::remove(ConfigPath);
+
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  std::vector<std::string> ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),0);
+
+  PrefMgr->addExtraExtensionPath("aa/bb/dir1");
+  PrefMgr->addExtraExtensionPath("aa/bb/dir2");
+  PrefMgr->addExtraExtensionPath("aa/bb/dir3");
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),3);
+  BOOST_CHECK_EQUAL(ExtraExtPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[1],"aa/bb/dir2");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[2],"aa/bb/dir3");
+
+  PrefMgr->removeExtraExtensionPath("aa/bb/dir2");
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraExtPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[1],"aa/bb/dir3");
+
+  PrefMgr->removeExtraExtensionPath("aa/bb/wrongdir");
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraExtPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[1],"aa/bb/dir3");
+
+  PrefMgr->removeExtraExtensionPath("aa/bb/dir1");
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),1);
+  BOOST_CHECK_EQUAL(ExtraExtPaths[0],"aa/bb/dir3");
+
+  PrefMgr->removeExtraExtensionPath("aa/bb/dir3");
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),0);
+
+  std::vector<Glib::ustring> Paths;
+  Paths.push_back("aa/bb/dir1");
+  Paths.push_back("aa/bb/dir2");
+  Paths.push_back("aa/bb/dir3");
+
+  PrefMgr->setExtraExtensionPaths(Paths);
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),3);
+  BOOST_CHECK_EQUAL(ExtraExtPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[1],"aa/bb/dir2");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[2],"aa/bb/dir3");
+
+  Paths.clear();
+  Paths.push_back("cc/dd/dir1");
+  Paths.push_back("cc/dd/dir2");
+
+  PrefMgr->setExtraExtensionPaths(Paths);
+
+  ExtraExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  BOOST_CHECK_EQUAL(ExtraExtPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraExtPaths[0],"cc/dd/dir1");
+  BOOST_CHECK_EQUAL(ExtraExtPaths[1],"cc/dd/dir2");
 
   delete PrefMgr;
 }

@@ -58,8 +58,98 @@
 #include <openfluid/config.hpp>
 #include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 #include "builderconfig.hpp"
+
+
+// =====================================================================
+// =====================================================================
+
+
+ExtensionContainer::ExtensionContainer() : ExtProc(0), PrefsProc(0), Extension(0), Preferences(0)
+{}
+
+// =====================================================================
+// =====================================================================
+
+void ExtensionContainer::setExtProcFunction(openfluid::builderext::GetExtensionProc TheExtProc)
+{
+  ExtProc = TheExtProc;
+};
+
+// =====================================================================
+// =====================================================================
+
+void ExtensionContainer::setPrefsProcFunction(openfluid::builderext::GetExtensionPrefsProc ThePrefsProc)
+{
+  PrefsProc = ThePrefsProc;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExtensionContainer::instantiateExt()
+{
+  if(!Extension && ExtProc)
+  {
+    Extension = ExtProc();
+
+    openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtensionType = Extension->getType();
+
+    if(ExtensionType == Infos.Type)
+      return true;
+
+
+    Extension = 0;
+
+    throw openfluid::base::OFException("OpenFLUID Builder","ExtensionContainer::instantiate ",
+        Infos.ID + ": Wrong declared extension type ("
+        + BuilderExtensionsManager::getExtensionTypeAsString(Infos.Type)
+    + " doesn't match Pluggable extension class type "
+    + BuilderExtensionsManager::getExtensionTypeAsString(ExtensionType) + ")");
+  }
+
+  return false;
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ExtensionContainer::deleteExt()
+{
+  delete Extension;
+  Extension = 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool ExtensionContainer::instantiatePrefs()
+{
+  if(!Preferences && PrefsProc)
+    Preferences = PrefsProc();
+
+  return Preferences;
+}
+
+// =====================================================================
+// =====================================================================
+
+void ExtensionContainer::deletePrefs()
+{
+  delete Preferences;
+  Preferences = 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
 
 
 BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;
@@ -70,9 +160,15 @@ BuilderExtensionsManager* BuilderExtensionsManager::mp_Singleton = NULL;
 
 
 BuilderExtensionsManager::BuilderExtensionsManager()
-  : m_IsRegistrationDone(false), m_RegisteredExtensionsCount(0)
+  : m_IsRegistrationDone(false), m_RegisteredExtensionsCount(0), m_IsPreferencesInstantiationDone(false)
 {
+  openfluid::base::RuntimeEnvironment* RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
 
+  m_DefaultSearchPaths.push_back(RunEnv->getUserDataPath(
+          BUILDER_EXTSDIR));
+
+  m_DefaultSearchPaths.push_back(Glib::ustring::compose("%1/%2",
+          RunEnv->getInstallPrefix(), BUILDEREXT_INSTALL_PATH));
 }
 
 
@@ -91,16 +187,41 @@ BuilderExtensionsManager* BuilderExtensionsManager::getInstance()
 // =====================================================================
 
 
+void BuilderExtensionsManager::prependExtensionSearchPath(const std::string& Path)
+{
+  if (m_IsRegistrationDone)
+    return;
+
+  m_ExtraSearchPaths.insert(m_ExtraSearchPaths.begin(),1,openfluid::tools::RemoveTrailingSlashes(Path));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void BuilderExtensionsManager::prependExtensionsSearchPaths(const std::string& SemicolonSeparatedPaths)
 {
-  if (m_IsRegistrationDone) return;
+  if (m_IsRegistrationDone)
+    return;
 
   std::vector<std::string> ExtraPaths;
   ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths,";");
 
+  for (int i = ExtraPaths.size()-1 ; i>=0 ; i--)
+    prependExtensionSearchPath(ExtraPaths[i]);
+}
 
-  for (int i = ExtraPaths.size()-1 ; i>=0 ; i--) m_SearchPaths.insert(m_SearchPaths.begin(),1,openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
 
+// =====================================================================
+// =====================================================================
+
+
+std::list<std::string> BuilderExtensionsManager::getExtensionsSearchPaths() const
+{
+  std::list<std::string> ComposedPaths(m_ExtraSearchPaths.begin(),m_ExtraSearchPaths.end());
+  ComposedPaths.insert(ComposedPaths.end(), m_DefaultSearchPaths.begin(), m_DefaultSearchPaths.end());
+  return ComposedPaths;
 }
 
 
@@ -111,7 +232,9 @@ void BuilderExtensionsManager::prependExtensionsSearchPaths(const std::string& S
 void BuilderExtensionsManager::registerExtensions()
 {
 
-  if (m_IsRegistrationDone || m_SearchPaths.empty()) return;
+  std::list<std::string> SearchPaths = getExtensionsSearchPaths();
+
+  if (m_IsRegistrationDone || SearchPaths.empty()) return;
 
   std::list<std::string>::iterator PathsIt;
 
@@ -119,7 +242,7 @@ void BuilderExtensionsManager::registerExtensions()
   std::vector<std::string> TmpFoundFiles;
 
 
-  for (PathsIt = m_SearchPaths.begin(); PathsIt != m_SearchPaths.end(); ++PathsIt)
+  for (PathsIt = SearchPaths.begin(); PathsIt != SearchPaths.end(); ++PathsIt)
   {
     TmpFoundFiles = openfluid::tools::GetFilesByExt(*PathsIt,BUILDEREXTENSION_BINARY_EXTENSION,true,true);
 
@@ -158,8 +281,14 @@ void BuilderExtensionsManager::registerExtensions()
 
                 if (ExtProc != NULL)
                 {
-                  ExtContainer.Extension = ExtProc();
-                  m_RegisteredExtensions[ExtContainer.Extension->getType()][TmpID] = ExtContainer;
+                  ExtContainer.setExtProcFunction(ExtProc);
+
+                  openfluid::builderext::GetExtensionPrefsProc PrefsProc = (openfluid::builderext::GetExtensionPrefsProc)ExtLib->getSymbol(EXTPREFS_PROC_NAME);
+
+                  if (PrefsProc != NULL)
+                    ExtContainer.setPrefsProcFunction(PrefsProc);
+
+                  m_RegisteredExtensions[ExtContainer.Infos.Type][TmpID] = ExtContainer;
                   m_RegisteredExtensionsCount++;
                 }
               }
@@ -212,7 +341,25 @@ ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(openfluid::b
 // =====================================================================
 
 
-void BuilderExtensionsManager::linkRegisteredExtensionsAndSimulationBlob(openfluid::machine::SimulationBlob* Blob)
+ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::string& ExtID)
+{
+  for (CollectionOfExtensions_t::const_iterator COEit = m_RegisteredExtensions.begin(); COEit
+  != m_RegisteredExtensions.end(); ++COEit)
+  {
+    ExtensionContainer* ExtCont = getExtensionContainer(COEit->first,ExtID);
+
+    if(ExtCont != NULL)
+      return ExtCont;
+  }
+
+  return (ExtensionContainer*)0;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderExtensionsManager::unlinkRegisteredExtensionsWithSimulationBlobAndModel()
 {
   CollectionOfExtensions_t::iterator COEit;
   ExtensionContainerMap_t::iterator ECMit;
@@ -221,7 +368,8 @@ void BuilderExtensionsManager::linkRegisteredExtensionsAndSimulationBlob(openflu
   {
     for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
     {
-      (*ECMit).second.Extension->setSimulationBlob(Blob);
+      if((*ECMit).second.Extension)
+        (*ECMit).second.Extension->setSimulationBlobAndModel(NULL, NULL);
     }
   }
 
@@ -254,4 +402,70 @@ std::string BuilderExtensionsManager::getExtensionTypeAsString(openfluid::builde
 }
 
 
+// =====================================================================
+// =====================================================================
 
+
+bool BuilderExtensionsManager::instantiatePluggableExtension(std::string ExtID)
+{
+  ExtensionContainer* ExtCont = getExtensionContainer(ExtID);
+
+  if(ExtCont)
+    return ExtCont->instantiateExt();
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderExtensionsManager::deletePluggableExtension(std::string ExtID)
+{
+  ExtensionContainer* ExtCont = getExtensionContainer(ExtID);
+
+  if(ExtCont)
+    ExtCont->deleteExt();
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderExtensionsManager::instantiateRegisteredExtensionPreferences()
+{
+  if(m_IsPreferencesInstantiationDone)
+    return;
+
+  CollectionOfExtensions_t::iterator COEit;
+  ExtensionContainerMap_t::iterator ECMit;
+
+  for (COEit = m_RegisteredExtensions.begin(); COEit!= m_RegisteredExtensions.end(); ++COEit)
+  {
+    for (ECMit = COEit->second.begin(); ECMit!= COEit->second.end(); ++ECMit)
+    {
+      if(ECMit->second.instantiatePrefs())
+        m_RegisteredExtensionPreferences[ECMit->second.Infos.ID] = ECMit->second;
+    }
+  }
+
+  m_IsPreferencesInstantiationDone = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderExtensionsManager::deleteRegisteredExtensionPreferences()
+{
+  if(!m_IsPreferencesInstantiationDone)
+    return;
+
+  for (ExtensionContainerMap_t::iterator it = m_RegisteredExtensionPreferences.begin(); it!= m_RegisteredExtensionPreferences.end(); ++it)
+    it->second.deletePrefs();
+
+  m_RegisteredExtensionPreferences.clear();
+
+  m_IsPreferencesInstantiationDone = false;
+}
