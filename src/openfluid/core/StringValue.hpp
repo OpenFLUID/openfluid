@@ -77,9 +77,9 @@ StringValue is a container for a std::string value, with methods for conversion 
 <I>Example : declaration</I>
 @code
   // declaration of a StringValue, initialized to an empty string by default
-  openfluid::core::StringValue Val1();
+  openfluid::core::StringValue Val1;
 
-  // declaration of a DoubleValue, initialized to "hello world"
+  // declaration of a StringValue, initialized to "hello world"
   openfluid::core::StringValue Val2("hello world");
 @endcode
 
@@ -92,7 +92,7 @@ StringValue is a container for a std::string value, with methods for conversion 
   Tmp1 = Val1.get();
 
   // or using the cast operator
-  Tmp1 = Val1();
+  Tmp1 = Val1;
 @endcode
 
 

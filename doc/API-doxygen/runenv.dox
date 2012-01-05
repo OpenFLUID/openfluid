@@ -5,7 +5,7 @@
 
 
 The runtime environment are informations about the context during execution of
-the simulation : input and output directories, options passed to
+the simulation: input and output directories, options passed to
 the OpenFLUID application at runtime (verbose/quiet mode, ...)...
 
 They are accessible from simulation functions using the \link openfluid::base::PluggableFunction::OPENFLUID_GetRunEnvironment OPENFLUID_GetRunEnvironment \endlink method.
