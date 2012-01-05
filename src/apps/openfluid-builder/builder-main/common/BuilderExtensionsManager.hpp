@@ -67,12 +67,44 @@
 // =====================================================================
 
 
-struct ExtensionContainer
+class ExtensionContainer
 {
-  std::string Filename;
-  openfluid::builderext::BuilderExtensionInfos Infos;
-  openfluid::builderext::PluggableBuilderExtension* Extension;
+  private:
+
+    openfluid::builderext::GetExtensionProc ExtProc;
+
+    openfluid::builderext::GetExtensionPrefsProc PrefsProc;
+
+
+  public:
+
+    std::string Filename;
+
+    openfluid::builderext::BuilderExtensionInfos Infos;
+
+    openfluid::builderext::PluggableBuilderExtension* Extension;
+
+    openfluid::builderext::BuilderExtensionPrefs* Preferences;
+
+    ExtensionContainer();
+
+    void setExtProcFunction(openfluid::builderext::GetExtensionProc TheExtProc);
+
+    void setPrefsProcFunction(openfluid::builderext::GetExtensionPrefsProc ThePrefsProc);
+
+    bool instantiateExt();
+
+    void deleteExt();
+
+    bool instantiatePrefs();
+
+    void deletePrefs();
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 typedef std::map<std::string, ExtensionContainer> ExtensionContainerMap_t;
 
@@ -96,10 +128,16 @@ class BuilderExtensionsManager
 
     unsigned int m_RegisteredExtensionsCount;
 
+    ExtensionContainerMap_t m_RegisteredExtensionPreferences;
+
 
     BuilderExtensionsManager();
 
-    std::list<std::string> m_SearchPaths;
+    std::vector<std::string> m_DefaultSearchPaths;
+
+    std::vector<std::string> m_ExtraSearchPaths;
+
+    bool m_IsPreferencesInstantiationDone;
 
 
   public:
@@ -108,9 +146,15 @@ class BuilderExtensionsManager
 
     ~BuilderExtensionsManager() { };
 
+    void prependExtensionSearchPath(const std::string& Path);
+
     void prependExtensionsSearchPaths(const std::string& SemicolonSeparatedPaths);
 
-    const std::list<std::string>& getExtensionsSearchPaths() const { return m_SearchPaths; };
+    const std::vector<std::string>& getExtensionsDefaultSearchPaths() const { return m_DefaultSearchPaths; };
+
+    const std::vector<std::string>& getExtensionsExtraSearchPaths() const { return m_ExtraSearchPaths; };
+
+    std::list<std::string> getExtensionsSearchPaths() const;
 
     void registerExtensions();
 
@@ -124,11 +168,23 @@ class BuilderExtensionsManager
 
     ExtensionContainer* getExtensionContainer(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type, std::string ExtID);
 
+    ExtensionContainer* getExtensionContainer(const std::string& ExtID);
+
     static std::string getExtensionTypeAsString(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type);
 
-    void linkRegisteredExtensionsAndSimulationBlob(openfluid::machine::SimulationBlob* Blob);
+    void unlinkRegisteredExtensionsWithSimulationBlobAndModel();
 
-    void unlinkRegisteredExtensionsAndSimulationBlob() { linkRegisteredExtensionsAndSimulationBlob(NULL); };
+    bool instantiatePluggableExtension(std::string ExtID);
+
+    void deletePluggableExtension(std::string ExtID);
+
+    void instantiateRegisteredExtensionPreferences();
+
+    ExtensionContainerMap_t* getRegisteredExtensionPreferences() { return &m_RegisteredExtensionPreferences; };
+
+    bool isPreferencesInstantiationDone() { return m_IsPreferencesInstantiationDone; };
+
+    void deleteRegisteredExtensionPreferences();
 
 };
 

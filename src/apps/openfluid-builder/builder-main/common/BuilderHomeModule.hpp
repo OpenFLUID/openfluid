@@ -55,13 +55,13 @@
 #ifndef __BUILDERHOMEMODULE_HPP__
 #define __BUILDERHOMEMODULE_HPP__
 
-#include "BuilderModule.hpp"
+#include <openfluid/guicommon/BuilderModule.hpp>
 
 class HomeComponent;
 class HomeModel;
 class BuilderAppActions;
 
-class BuilderHomeModule: public BuilderModule
+class BuilderHomeModule: public openfluid::guicommon::BuilderModule
 {
   private:
 

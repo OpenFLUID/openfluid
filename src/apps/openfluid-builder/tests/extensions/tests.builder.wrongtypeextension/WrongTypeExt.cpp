@@ -46,80 +46,83 @@
  */
 
 /**
- \file ProjectExplorerComponent.cpp
+ \file WrongTypeExt.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "ProjectExplorerComponent.hpp"
 
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerView.hpp"
-#include "ProjectExplorerPresenter.hpp"
-#include "ProjectExplorerAdapter.hpp"
-#include "ProjectExplorerAdapterModel.hpp"
+#include <openfluid/builderext/InputdataImporter.hpp>
+
+#include <gtkmm/messagedialog.h>
+
+
+DECLARE_EXTENSION_HOOKS
+
+DEFINE_EXTENSION_INFOS("tests.builder.wrongtypeextension",
+                       "Wrong type importer",
+                       "Wrong type importer for tests",
+                       "This is a wrong type importer for tests",
+                       "JC.Fabre;A.Libres",
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter)
+
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerComponent::ProjectExplorerComponent()
+class WrongTypeImporter : public openfluid::builderext::InputdataImporter
 {
-  mp_Model = new ProjectExplorerModelImpl();
-  mp_View = new ProjectExplorerViewImpl();
-  mp_AdapterModel = new ProjectExplorerAdapterModelImpl();
-  mp_Adapter = new ProjectExplorerAdapter(*mp_AdapterModel, *mp_View);
-  mp_Presenter = new ProjectExplorerPresenter(*mp_Model, *mp_Adapter);
-}
+  private:
+
+  Gtk::MessageDialog* mp_Dialog;
+
+  public:
+
+    WrongTypeImporter()
+    {
+      mp_Dialog = new Gtk::MessageDialog("I am wrong type Importer.\nI should not appear...");
+    };
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    ~WrongTypeImporter()
+    {
+      delete mp_Dialog;
+    };
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    Gtk::Widget* getExtensionAsWidget()
+    {
+      return mp_Dialog;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
+    }
+
+
+};
+
 
 // =====================================================================
 // =====================================================================
 
 
-ProjectExplorerComponent::~ProjectExplorerComponent()
-{
-  delete mp_Presenter;
-  delete mp_Adapter;
-  delete mp_AdapterModel;
-  delete mp_Model;
-  delete mp_View;
-}
+DEFINE_EXTENSION_HOOKS((WrongTypeImporter))
 
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* ProjectExplorerComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-ProjectExplorerModel* ProjectExplorerComponent::getModel()
-{
-  return mp_Model;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-ProjectExplorerView* ProjectExplorerComponent::getView()
-{
-  return mp_View;
-}
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-ProjectExplorerViewSub* ProjectExplorerComponentSub::getViewSub()
-{
-  return (ProjectExplorerViewSub*)mp_View;
-}

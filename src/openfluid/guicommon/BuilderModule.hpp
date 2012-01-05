@@ -46,38 +46,49 @@
  */
 
 /**
- \file ProjectWorkspaceModule.hpp
+ \file BuilderModule.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __PROJECTWORKSPACEMODULE_HPP__
-#define __PROJECTWORKSPACEMODULE_HPP__
+#ifndef __BUILDERMODULE_HPP__
+#define __BUILDERMODULE_HPP__
 
-#include "BuilderModule.hpp"
+#include <glibmm/i18n.h>
+
+#include <gtkmm/widget.h>
+
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class SimulationBlob;
-}
-}
+namespace guicommon {
+
+// =====================================================================
+// =====================================================================
 
 
-class ProjectWorkspaceModule: public BuilderModule
+class DLLEXPORT BuilderModule
 {
+  protected:
+
+    virtual void compose() = 0;
+
+    virtual Gtk::Widget* asWidget() = 0;
+
+
   public:
 
-    virtual sigc::signal<void> signal_ModuleChanged() = 0;
+    Gtk::Widget* composeAndGetAsWidget()
+    {
+      compose();
+      return asWidget();
+    }
 
-    virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob) = 0;
-
-    virtual void update() = 0;
-
-    virtual ~ProjectWorkspaceModule(){};
+    virtual ~BuilderModule(){};
 };
 
-#endif /* __PROJECTWORKSPACEMODULE_HPP__ */
+}
+} //namespaces
+
+#endif /* __BUILDERMODULE_HPP__ */

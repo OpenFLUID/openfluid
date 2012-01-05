@@ -105,6 +105,9 @@ class DLLEXPORT SimulationRunDialog : public Gtk::Dialog
     std::string m_LastStepStr;
     int m_StepsCount;
 
+    sigc::signal<void> m_signal_SimulationStopped;
+    sigc::signal<void> m_signal_SimulationStarted;
+
     void onIgnition();
 
     void onControlButtonClicked();
@@ -122,6 +125,12 @@ class DLLEXPORT SimulationRunDialog : public Gtk::Dialog
     ~SimulationRunDialog();
 
     bool isSimulationCompleted() { return m_SimulationCompleted; };
+
+    sigc::signal<void> signal_SimulationStopped()
+    { return m_signal_SimulationStopped; }
+
+    sigc::signal<void> signal_SimulationStarted()
+    { return m_signal_SimulationStarted; }
 
 };
 

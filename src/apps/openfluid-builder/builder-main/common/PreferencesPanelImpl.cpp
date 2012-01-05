@@ -46,27 +46,28 @@
  */
 
 /**
- \file PreferencesPanel.cpp
+ \file PreferencesPanelImpl.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "PreferencesPanel.hpp"
+#include "PreferencesPanelImpl.hpp"
 
 #include <glibmm/i18n.h>
 
 #include <gtkmm/separator.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
-#include <gtkmm/alignment.h>
 #include <gtkmm/table.h>
+#include <gtkmm/expander.h>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include "i18nManager.hpp"
 #include "PreferencesPathListWidget.hpp"
 #include "PreferencesPlacesListWidget.hpp"
+#include "BuilderExtensionsManager.hpp"
 
 #include <iostream>
 
@@ -74,92 +75,8 @@
 // =====================================================================
 
 
-PreferencesPanel::PreferencesPanel(Glib::ustring PanelTitle)
-{
-  Gtk::Label* TitleLabel = Gtk::manage(new Gtk::Label());
-  TitleLabel->set_markup(Glib::ustring::compose("<b><big>%1</big></b>",
-      PanelTitle));
-
-  mp_ContentWindow = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_ContentWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  mp_ContentWindow->set_shadow_type(Gtk::SHADOW_NONE);
-
-  mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*TitleLabel, Gtk::PACK_SHRINK,3);
-//  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK);
-  mp_MainBox->pack_start(*mp_ContentWindow, Gtk::PACK_EXPAND_WIDGET);
-
-  mp_MainBox->set_visible(true);
-  mp_MainBox->show_all_children();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* PreferencesPanel::asWidget()
-{
-  return mp_MainBox;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* PreferencesPanel::createSubTitle(Glib::ustring SubTitle)
-{
-  Gtk::Label* SubLabel = Gtk::manage(new Gtk::Label());
-
-  SubLabel->set_markup(Glib::ustring::compose("<b>%1</b>", SubTitle));
-
-  SubLabel->set_alignment(0, 0.5);
-
-  SubLabel->set_visible(true);
-
-  return SubLabel;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Widget* PreferencesPanel::createSubBoxAlignement(Gtk::Widget* InnerWidget)
-{
-  Gtk::Alignment* Align = Gtk::manage(new Gtk::Alignment());
-
-  Align->set_padding(10, 20, 20, 0);
-
-  Align->add(*InnerWidget);
-
-  Align->set_visible(true);
-
-  return Align;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Gtk::Box* PreferencesPanel::createPanelBox()
-{
-  Gtk::VBox* PanelBox = Gtk::manage(new Gtk::VBox(false, 5));
-
-  PanelBox->set_border_width(10);
-
-  PanelBox->set_visible(true);
-
-  return PanelBox;
-}
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-
 PreferencesInterfacePanel::PreferencesInterfacePanel() :
-  PreferencesPanel(_("Interface"))
+openfluid::guicommon::PreferencesPanel(_("Interface"))
 {
   /*
    * Languages
@@ -315,7 +232,7 @@ void PreferencesInterfacePanel::init()
 
 
 PreferencesPathsPanel::PreferencesPathsPanel() :
-  PreferencesPanel(_("Paths"))
+    openfluid::guicommon::PreferencesPanel(_("Paths"))
 {
   /*
    * Workdir
@@ -351,6 +268,17 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   FunctionPaths->set_visible(true);
 
   /*
+   * Extensions
+   */
+
+  mp_ExtensionsPathListWidget = new PreferencesPathListWidget();
+  mp_ExtensionsPathListWidget->signal_PathListChanged().connect(sigc::mem_fun(
+      *this, &PreferencesPathsPanel::onExtensionsPathListChanged));
+
+  Gtk::Widget* ExtensionsPaths = mp_ExtensionsPathListWidget->asWidget();
+  ExtensionsPaths->set_visible(true);
+
+  /*
    * Main panel
    */
 
@@ -358,9 +286,18 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   PanelBox->pack_start(*createSubTitle(_("Working directory")),
       Gtk::PACK_SHRINK);
   PanelBox->pack_start(*createSubBoxAlignement(WorkdirBox), Gtk::PACK_SHRINK);
-  PanelBox->pack_start(*createSubTitle(_("Search paths for simulation functions")),
-      Gtk::PACK_SHRINK);
-  PanelBox->pack_start(*createSubBoxAlignement(FunctionPaths), Gtk::PACK_SHRINK);
+
+  Gtk::Expander* PlugExpander = Gtk::manage(new Gtk::Expander());
+  PlugExpander->set_label_widget(*createSubTitle(_("Search paths for simulation functions")));
+  PlugExpander->add(*createSubBoxAlignement(FunctionPaths));
+  PlugExpander->set_visible(true);
+  PanelBox->pack_start(*PlugExpander, Gtk::PACK_SHRINK);
+
+  Gtk::Expander* ExtExpander = Gtk::manage(new Gtk::Expander());
+  ExtExpander->set_label_widget(*createSubTitle(_("Search paths for extensions (restart needed)")));
+  ExtExpander->add(*createSubBoxAlignement(ExtensionsPaths));
+  ExtExpander->set_visible(true);
+  PanelBox->pack_start(*ExtExpander, Gtk::PACK_SHRINK);
 
   mp_ContentWindow->add(*PanelBox);
 }
@@ -378,6 +315,12 @@ void PreferencesPathsPanel::init()
 
   mp_FunctionsPathListWidget->setUserDefinedPaths(
       openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths());
+
+  mp_ExtensionsPathListWidget->setPreDefinedPaths(
+      BuilderExtensionsManager::getInstance()->getExtensionsDefaultSearchPaths());
+
+  mp_ExtensionsPathListWidget->setUserDefinedPaths(
+      BuilderExtensionsManager::getInstance()->getExtensionsExtraSearchPaths());
 }
 
 // =====================================================================
@@ -425,12 +368,21 @@ void PreferencesPathsPanel::onFunctionsPathListChanged()
 // =====================================================================
 // =====================================================================
 
+void PreferencesPathsPanel::onExtensionsPathListChanged()
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setExtraExtensionPaths(
+      mp_ExtensionsPathListWidget->getUserDefinedPaths());
+}
+
+// =====================================================================
+// =====================================================================
+
 // =====================================================================
 // =====================================================================
 
 
 PreferencesSimPanel::PreferencesSimPanel() :
-  PreferencesPanel(_("Simulations")), m_IsMonthChanged(false)
+    openfluid::guicommon::PreferencesPanel(_("Simulations")), m_IsMonthChanged(false)
 {
   /*
    * Time
@@ -852,7 +804,7 @@ void PreferencesSimPanel::onFilesBuffChanged()
 
 
 PreferencesMarketPanel::PreferencesMarketPanel() :
-  PreferencesPanel(_("Market"))
+    openfluid::guicommon::PreferencesPanel(_("Market"))
 {
   mp_PlacesListWidget = new PreferencesPlacesListWidget();
 

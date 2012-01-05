@@ -63,8 +63,7 @@
 
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-
-#include "ProjectWorkspaceModule.hpp"
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 class DrawingArea;
 class StatusBar;
@@ -72,7 +71,7 @@ class Info;
 class ToolBar;
 class Mediator;
 
-class MapViewModule: public ProjectWorkspaceModule
+class MapViewModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
 
   private:

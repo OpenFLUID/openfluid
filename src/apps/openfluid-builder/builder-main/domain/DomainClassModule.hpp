@@ -55,7 +55,7 @@
 #ifndef __DOMAINCLASSMODULE_HPP__
 #define __DOMAINCLASSMODULE_HPP__
 
-#include "ProjectWorkspaceModule.hpp"
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
 
@@ -67,7 +67,7 @@ class DomainEventsComponent;
 class BuilderListToolBox;
 class DomainClassCoordinator;
 
-class DomainClassModule: public ProjectWorkspaceModule
+class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 

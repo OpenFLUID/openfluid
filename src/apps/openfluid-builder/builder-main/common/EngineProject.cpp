@@ -78,6 +78,7 @@
 
 #include "GeneratorSignature.hpp"
 #include "EngineHelper.hpp"
+#include "FunctionSignatureRegistry.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -212,10 +213,18 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 // =====================================================================
 // =====================================================================
 
-
-sigc::signal<void> EngineProject::signal_RunHappened()
+sigc::signal<void> EngineProject::signal_RunStarted()
 {
-  return m_signal_RunHappened;
+  return m_signal_RunStarted;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> EngineProject::signal_RunStopped()
+{
+  return m_signal_RunStopped;
 }
 
 // =====================================================================
@@ -338,14 +347,14 @@ void EngineProject::checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc)
   openfluid::base::ModelDescriptor::ModelDescription_t::iterator it =
       ModelDesc.getItems().begin();
 
-  openfluid::machine::ArrayOfSignatureItemInstance Signatures =
-      openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+  FunctionSignatureRegistry* SignaturesReg =
+      FunctionSignatureRegistry::getInstance();
 
   while (it != ModelDesc.getItems().end())
   {
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction)
-        && openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(
-            ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()).empty())
+        && !SignaturesReg->isPluggableFunctionAvailable(
+            ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()))
     {
       MissingFunctions.append("- "
           + ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
@@ -407,7 +416,7 @@ void EngineProject::checkInputData()
       }
     }
   }
-  
+
 }
 
 // =====================================================================
@@ -469,20 +478,34 @@ void EngineProject::run()
 
   openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
 
-  RunDialog.set_modal(true);
-  RunDialog.set_title(_("Simulation"));
+  RunDialog.signal_SimulationStarted().connect(sigc::mem_fun(*this,
+      &EngineProject::whenSimulationStarted));
+  RunDialog.signal_SimulationStopped().connect(sigc::mem_fun(*this,
+        &EngineProject::whenSimulationStopped));
+
   Gtk::Main::run(RunDialog);
 
   mp_ModelInstance->resetInitialized();
-
-  if (RunDialog.isSimulationCompleted())
-    m_signal_RunHappened.emit();
-
 }
 
 // =====================================================================
 // =====================================================================
 
+void EngineProject::whenSimulationStarted()
+{
+  m_signal_RunStarted.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void EngineProject::whenSimulationStopped()
+{
+  m_signal_RunStopped.emit();
+}
+
+// =====================================================================
+// =====================================================================
 
 void EngineProject::save()
 {
@@ -732,7 +755,6 @@ Glib::ustring EngineProject::checkOutputsConsistency()
         else
           ++itSet;
       }
-
     }
   }
 

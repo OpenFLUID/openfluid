@@ -64,6 +64,7 @@
 #include "BuilderAppActions.hpp"
 #include "BuilderWorkdirCreationDialog.hpp"
 #include "FunctionSignatureRegistry.hpp"
+#include "BuilderExtensionsManager.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -81,8 +82,13 @@ BuilderAppModule::BuilderAppModule() :
 
 bool BuilderAppModule::initialize()
 {
-  std::string WorkDirFromPref =
-      openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+
+  // Checking working directory
+
+  std::string WorkDirFromPref = PrefMgr->getWorkdir();
   if (!boost::filesystem::exists(WorkDirFromPref))
   {
     BuilderWorkdirCreationDialog Dialog;
@@ -90,16 +96,34 @@ bool BuilderAppModule::initialize()
       return false;
   }
 
-  mp_Coordinator->setHomeModule();
 
-  std::vector<Glib::ustring>
-      PrefXPaths =
-          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
+  // Setting pluggable functions
+
+  std::vector<std::string> PrefXPaths = PrefMgr->getExtraPlugPaths();
+
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
-        PrefXPaths[i]);
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(PrefXPaths[i]);
 
   FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+
+  // Setting extensions
+
+  BuilderExtensionsManager* ExtMgr = BuilderExtensionsManager::getInstance();
+
+  //TODO add HomeLaucher
+  std::vector<std::string> PrefXExtPaths = PrefMgr->getExtraExtensionPaths();
+
+  for (int i = PrefXExtPaths.size() - 1; i > -1; i--)
+    ExtMgr->prependExtensionSearchPath(PrefXExtPaths[i]);
+
+  ExtMgr->registerExtensions();
+
+  mp_Coordinator->configExtensionsMenus();
+
+
+
+  mp_Coordinator->setHomeModule();
 
   return true;
 

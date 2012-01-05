@@ -64,10 +64,12 @@
 
 #include "tests-builderconfig.hpp"
 #include "builderconfig.hpp"
+#include "BuilderTestHelper.hpp"
 
 #include "BuilderExtensionsManager.hpp"
 
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/builderext/ModelessWindow.hpp>
 
 
 // =====================================================================
@@ -79,7 +81,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
   BOOST_REQUIRE_EQUAL(BEM->getRegisteredExtensions()->size(),0);
-  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),0);
+  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),2);
 
   BOOST_REQUIRE_EQUAL(BEM->isRegistrationDone(),false);
 
@@ -100,10 +102,16 @@ void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
   {
     for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
     {
+      bool Instantiated = (*ECMit).second.Extension;
       std::cerr << "File : " << (*ECMit).second.Filename << std::endl;
       std::cerr << " * ID " << (*ECMit).second.Infos.ID << std::endl;
-      std::cerr << " * Type " << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Extension->getType()) << std::endl;
-      std::cerr << " * Ready? " << (*ECMit).second.Extension->isReadyForShowtime() << std::endl;
+      std::cerr << " * Type from Infos " << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Infos.Type) << std::endl;
+      std::cerr << " * Instantiated? " << Instantiated << std::endl;
+      if(Instantiated)
+      {
+        std::cerr << " ** Type of Extension" << BuilderExtensionsManager::getExtensionTypeAsString((*ECMit).second.Extension->getType()) << std::endl;
+        std::cerr << " ** Ready? " << (*ECMit).second.Extension->isReadyForShowtime() << std::endl;
+      }
       std::cerr << " * Shortname " << (*ECMit).second.Infos.ShortName << std::endl;
       std::cerr << " * Name " << (*ECMit).second.Infos.Name << std::endl;
       std::cerr << " * Description " << (*ECMit).second.Infos.Description << std::endl;
@@ -120,12 +128,34 @@ void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+  BuilderTestHelper::getInstance()->initGtk();
+
   openfluid::machine::SimulationBlob TheBlob;
 
 
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
-  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR/*+";"+openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR)*/);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsDefaultSearchPaths().size(),2);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsExtraSearchPaths().size(),0);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsSearchPaths().size(),2);
+
+  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+
+  BOOST_CHECK_EQUAL(BEM->getExtensionsDefaultSearchPaths().size(),2);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsExtraSearchPaths().size(),1);
+  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),3);
+
+  std::list<std::string> ExtPaths = BEM->getExtensionsSearchPaths();
+  BOOST_CHECK_EQUAL(*ExtPaths.begin(),TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+
+  BEM->prependExtensionsSearchPaths("aa/bb/cc");
+
+  BOOST_CHECK_EQUAL(BEM->getExtensionsDefaultSearchPaths().size(),2);
+  BOOST_CHECK_EQUAL(BEM->getExtensionsExtraSearchPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),4);
+
+  ExtPaths = BEM->getExtensionsSearchPaths();
+  BOOST_CHECK_EQUAL(*ExtPaths.begin(),"aa/bb/cc");
 
   BEM->registerExtensions();
 
@@ -136,12 +166,84 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::SimulationListener)->size(),1);
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::ModelessWindow)->size(),1);
 
-  BEM->linkRegisteredExtensionsAndSimulationBlob(&TheBlob);
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 
-  BEM->unlinkRegisteredExtensionsAndSimulationBlob();
+
+  BOOST_CHECK(!BEM->getExtensionContainer("wrong.extension"));
+  BOOST_CHECK(!BEM->instantiatePluggableExtension("wrong.extension"));
+
+  ExtensionContainer* WrongtypeContainer = BEM->getExtensionContainer("tests.builder.wrongtypeextension");
+  BOOST_CHECK(WrongtypeContainer);
+  BOOST_CHECK(!WrongtypeContainer->Extension);
+  BOOST_CHECK_THROW(WrongtypeContainer->instantiateExt(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(BEM->instantiatePluggableExtension("tests.builder.wrongtypeextension"),openfluid::base::OFException);
+  BOOST_CHECK(!WrongtypeContainer->Extension);
+
+  ExtensionContainer* AssistantContainer = BEM->getExtensionContainer("tests.builder.assistant");
+  BOOST_CHECK(AssistantContainer);
+  BOOST_CHECK(!AssistantContainer->Extension);
+  BOOST_CHECK(BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(!AssistantContainer->instantiateExt());
+  BOOST_CHECK(!BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(AssistantContainer->Extension);
+  BOOST_CHECK_EQUAL(AssistantContainer->Extension->getType(),AssistantContainer->Infos.Type);
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 
+  BEM->deletePluggableExtension("tests.builder.assistant");
+  BOOST_CHECK(!AssistantContainer->Extension);
+
+  DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
+
+  BOOST_CHECK(BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(!AssistantContainer->instantiateExt());
+  BOOST_CHECK(!BEM->instantiatePluggableExtension("tests.builder.assistant"));
+  BOOST_CHECK(AssistantContainer->Extension);
+  BOOST_CHECK_EQUAL(AssistantContainer->Extension->getType(),AssistantContainer->Infos.Type);
+  BOOST_CHECK_EQUAL(AssistantContainer->Extension->getConfiguration().size(),0);
+
+  DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
+
+
+  ExtensionContainer* SimListenerContainer = BEM->getExtensionContainer("tests.builder.simulationlistener");
+  SimListenerContainer->instantiateExt();
+  openfluid::builderext::ExtensionConfig_t Config = SimListenerContainer->Extension->getConfiguration();
+  BOOST_CHECK_EQUAL(Config.size(),3);
+  BOOST_CHECK_EQUAL(Config["unit_class"],"TestUnits");
+  BOOST_CHECK_EQUAL(Config["unit_id"],"5");
+  BOOST_CHECK_EQUAL(Config["variable"],"tests.scalar");
+
+  openfluid::builderext::ModelessWindow* ModelessWindowExt = static_cast<openfluid::builderext::ModelessWindow*>(SimListenerContainer->Extension);
+  ModelessWindowExt->setSimulationBlobAndModel(&TheBlob, NULL);
+  ModelessWindowExt->onRunStarted();
+  ModelessWindowExt->onRunStopped();
+  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
+
+  BEM->deletePluggableExtension("tests.builder.assistant");
+  BEM->deletePluggableExtension("tests.builder.simulationlistener");
+
+}
+
+BOOST_AUTO_TEST_CASE(check_prefsOperations)
+{
+  BuilderTestHelper::getInstance()->initGtk();
+
+  BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
+
+  BEM->prependExtensionsSearchPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+  BEM->registerExtensions();
+
+  BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), false);
+  BOOST_CHECK_EQUAL(BEM->getRegisteredExtensionPreferences()->size(),0);
+
+  BEM->instantiateRegisteredExtensionPreferences();
+
+  BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), true);
+  BOOST_CHECK_GE(BEM->getRegisteredExtensionPreferences()->size(),1);
+
+  BEM->deleteRegisteredExtensionPreferences();
+
+  BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), false);
+  BOOST_CHECK_GE(BEM->getRegisteredExtensionPreferences()->size(),0);
 }

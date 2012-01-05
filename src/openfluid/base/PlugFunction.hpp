@@ -316,7 +316,7 @@ namespace openfluid { namespace base {
   @brief Abstract class for plugin interface
 
   Abstract class for plugin interface, defining the minimal structure for a
-  simulation function \n
+  simulation function. \n
   All simulation functions must inherit from this class.
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -874,7 +874,7 @@ class DLLEXPORT PluggableFunction
                                         openfluid::core::DoubleValue& Val) const;
 
     /**
-      Gets a function parameter from the parameters set, as a DoubleValue
+      Gets a function parameter from the parameters set, as a VectorValue
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter

@@ -71,7 +71,7 @@ class ModelAvailFctAdapterModel
     virtual sigc::signal<void> signal_SelectionChanged() = 0;
     virtual sigc::signal<void> signal_FunctionsChanged() = 0;
     virtual void setSignatures(
-        FunctionSignatureRegistry::FctSignaturesByType_t Signatures) = 0;
+        FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures) = 0;
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
     virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
     virtual openfluid::machine::SignatureItemInstance
@@ -105,7 +105,7 @@ class ModelAvailFctAdapterModelImpl: public ModelAvailFctAdapterModel
     ModelAvailFctAdapterModelImpl(ModelAvailFctColumns& Columns);
     ~ModelAvailFctAdapterModelImpl();
     void setSignatures(
-        FunctionSignatureRegistry::FctSignaturesByType_t Signatures);
+        FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
     void setSelectedRow(Gtk::TreeRow Row);
     openfluid::machine::SignatureItemInstance* getSelectedSignature();

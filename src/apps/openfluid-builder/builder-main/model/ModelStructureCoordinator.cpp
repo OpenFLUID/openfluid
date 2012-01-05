@@ -289,6 +289,11 @@ void ModelStructureCoordinator::update()
     m_StructureModel.update();
 
     m_GlobalParamsModel.update();
+
+    for (std::map<std::string, ModelFctParamsComponent*>::iterator it =
+        m_ByNameFctParamsComponents.begin(); it
+        != m_ByNameFctParamsComponents.end(); ++it)
+      it->second->getModel()->updateParamsValues();
   }
 }
 
@@ -312,6 +317,11 @@ void ModelStructureCoordinator::createParamsComponents()
 
 void ModelStructureCoordinator::updateWithFctParamsComponents()
 {
+  FunctionSignatureRegistry* SignaturesReg =
+      FunctionSignatureRegistry::getInstance();
+
+  SignaturesReg->updatePluggableSignatures();
+
   std::string SelectedPageName = m_ParamsPanel.getCurrentPageName();
   std::string SelectedStructureFunctionName =
       m_StructureModel.getCurrentSelectionName();
@@ -368,16 +378,11 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
       {
         try
         {
-          openfluid::machine::SignatureItemInstance
-              * Signature =
-                  openfluid::machine::PluginManager::getInstance()->getSignatureFromPlugin(
-                      TempItems[i].first + openfluid::config::PLUGINS_EXT);
+          openfluid::machine::SignatureItemInstance * Signature =
+              SignaturesReg->getSignatureItemInstance(TempItems[i].first);
 
           if (Signature)
           {
-            Signature->ItemType
-                = openfluid::base::ModelItemDescriptor::PluggedFunction;
-
             openfluid::machine::ModelItemInstance* Item =
                 ModelItemInstanceFactory::createPluggableItemFromSignature(
                     *Signature);
@@ -417,7 +422,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
   }
   catch (openfluid::base::OFException e)
   {
-    std::cerr << "ModelStructureCoordinator::updateFctParamsComponents : "
+    std::cerr << "ModelStructureCoordinator::updateWithFctParamsComponents : "
         << e.what() << std::endl;
   }
 
@@ -474,7 +479,9 @@ void ModelStructureCoordinator::whenRequiredFileChanged()
 
 void ModelStructureCoordinator::whenParamsChanged()
 {
+  m_HasToUpdate = false;
   m_signal_ModelChanged.emit();
+  m_HasToUpdate = true;
 }
 
 // =====================================================================

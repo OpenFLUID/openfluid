@@ -24,7 +24,7 @@ The class defining a simulation function must compound the following methods:
 <li>\link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink
 </ul> 
 
-The \link openfluid::base::PluggableFunction::initParams initParams \endlink method should be used to retreive function parameters, read from the model.xml file (See \ref funcparams_sec). Once read, the values should be stored into class attributes to be accessed by other methods.  
+The \link openfluid::base::PluggableFunction::initParams initParams \endlink method should be used to retreive function parameters, read from the model.fluidx file (See \ref funcparams_sec). Once read, the values should be stored into class attributes to be accessed by other methods.  
 
 The \link openfluid::base::PluggableFunction::prepareData prepareData \endlink method should be used to do data pre-processing before the consistency checking.
 
@@ -32,9 +32,9 @@ The \link openfluid::base::PluggableFunction::checkConsistency checkConsistency 
 
 The \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink method should be used to do data initialization, or to compute values that do not change during simulation.  
 
-The \link openfluid::base::PluggableFunction::runStep runStep \endlink method is called at each exchange time step. it should contain the computation code.
+The \link openfluid::base::PluggableFunction::runStep runStep \endlink method is called at each exchange time step. It should contain the computation code.
 
-The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to do post-processing after simulation. it is the last method ran.
+The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to do post-processing after simulation. It is the last method ran.
 
 
 */

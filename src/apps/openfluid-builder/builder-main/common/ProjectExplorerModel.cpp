@@ -54,8 +54,6 @@
 
 #include "ProjectExplorerModel.hpp"
 
-//#include <boost/foreach.hpp>
-
 // =====================================================================
 // =====================================================================
 
@@ -66,7 +64,6 @@ ProjectExplorerModelImpl::ProjectExplorerModelImpl() :
 {
 
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -117,7 +114,7 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
 // =====================================================================
 
 
-sigc::signal<void,bool> ProjectExplorerModelImpl::signal_UpdateResultsAsked()
+sigc::signal<void, bool> ProjectExplorerModelImpl::signal_UpdateResultsAsked()
 {
   return m_signal_UpdateResultsAsked;
 }
@@ -213,39 +210,3 @@ std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> Proje
 // =====================================================================
 // =====================================================================
 
-//
-//void ProjectExplorerModelImpl::extractFunctionNames()
-//{
-//  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Fct,mp_ModelInstance->getItems())
-// {
-//    Gtk::TreeRow Row = *(m_refTreeModel->append(ModelRow->children()));
-//    Row[m_Columns.m_Val] = Fct->Signature->ID;
-//  }
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//
-//void ProjectExplorerModelImpl::extratcClassNamesAndInfo()
-//{
-//
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//
-//void ProjectExplorerModelImpl::extractRunInfo()
-//{
-//
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//
-//void ProjectExplorerModelImpl::extractSetNamesAndInfo()
-//{
-//
-//}

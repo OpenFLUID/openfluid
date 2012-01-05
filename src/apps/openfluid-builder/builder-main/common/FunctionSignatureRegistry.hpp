@@ -71,19 +71,19 @@ class FunctionSignatureRegistry
 {
   public:
 
-    typedef std::vector<openfluid::machine::SignatureItemInstance*>
-        FctSignatures_t;
+    typedef std::map<std::string,openfluid::machine::SignatureItemInstance*>
+        FctSignaturesByName_t;
 
     typedef std::map<openfluid::base::ModelItemDescriptor::ModelItemType,
-        FctSignatures_t> FctSignaturesByType_t;
+        FctSignaturesByName_t> FctSignaturesByTypeByName_t;
 
   private:
 
     static FunctionSignatureRegistry* mp_Instance;
 
-    FctSignaturesByType_t m_Signatures;
-
   protected:
+
+    FctSignaturesByTypeByName_t m_Signatures;
 
     FunctionSignatureRegistry();
 
@@ -97,16 +97,21 @@ class FunctionSignatureRegistry
 
     static FunctionSignatureRegistry* getInstance();
 
-    FctSignaturesByType_t getFctSignatures();
+    FctSignaturesByTypeByName_t getFctSignatures();
 
-    FctSignatures_t getGeneratorSignatures();
+    FctSignaturesByName_t getGeneratorSignatures();
 
-    FctSignatures_t getPluggableSignatures();
+    FctSignaturesByName_t getPluggableSignatures();
 
     void updatePluggableSignatures();
 
     static openfluid::machine::SignatureItemInstance
     * getEmptyPluggableSignature();
+
+    bool isPluggableFunctionAvailable(std::string FunctionID);
+
+    openfluid::machine::SignatureItemInstance* getSignatureItemInstance(
+        std::string FunctionID);
 
 };
 
@@ -123,6 +128,8 @@ class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
 
     void addAGeneratorSignature(
         openfluid::machine::SignatureItemInstance* Signature);
+
+    void clearPluggableSignatures();
 
 };
 

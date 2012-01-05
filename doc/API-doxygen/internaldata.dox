@@ -8,7 +8,7 @@
 \section persist_sec Persistance of simulation function status (internal data)
 
 In order to keep the status of the simulation function between calls (from the a time step to the next one), internal variables can be stored as class attributes. The class attributes are persistant during the whole life of the simulation function.\n
-To store distributed values, data structures are available to associate a unit ID to a value. These data structures exists for different types of data:   
+To store distributed values, data structures are available to associate a unit ID to a value. These data structures exist for different types of data:   
 <ul>
 <li>\ref openfluid::core::IDFloatMap
 <li>\ref openfluid::core::IDDoubleMap

@@ -5,7 +5,7 @@
 
 \section valuesview_ssec Overview
 
-Many types of data are usable in OpenFLUID\n
+Many types of data are usable in OpenFLUID.\n
 Simple types:
 <ul>
 <li> openfluid::core::BooleanValue
@@ -44,10 +44,10 @@ OpenFLUID handles various kind of data :
 </ul>
 
 
-Each data type can be converted to and from openfluid::core::StringValue (as far as the string format is correct) 
+Each data type can be converted to and from openfluid::core::StringValue (as far as the string format is correct). 
 
 
-Simulation variables can be typed or untyped. This is set at the declaration of these variables in the \link signature signature of simulation functions \endlink .\n
+Simulation variables can be typed or untyped. This is set at the declaration of these variables in the \link signature signature of simulation functions\endlink.\n
 In case of typed variables, each value of the variable must be of the type of the variable. In case of untyped variables, i.e. values for the variable can be of any type. 
 
 */

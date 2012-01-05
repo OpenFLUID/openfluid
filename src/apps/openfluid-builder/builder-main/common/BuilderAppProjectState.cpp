@@ -54,14 +54,14 @@
 
 #include "BuilderAppProjectState.hpp"
 
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+
 #include "BuilderAppCoordinator.hpp"
 #include "BuilderProjectWithExplorer.hpp"
 #include "ProjectPropertiesDialog.hpp"
 #include "EngineProjectSaveAsDialog.hpp"
-
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include "PreferencesDialog.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -195,27 +195,12 @@ void BuilderAppProjectState::whenRefreshAsked()
 
 void BuilderAppProjectState::whenPreferencesAsked()
 {
-  m_App.showPreferencesDialog();
+  PreferencesDialog* PrefDialog = m_App.getPreferencesDialog();
 
-  std::vector<std::string>
-      RunEnvXPaths =
-          openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths();
+  PrefDialog->show();
 
-  std::vector<Glib::ustring>
-      PrefXPaths =
-          openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths();
-
-  std::reverse(PrefXPaths.begin(), PrefXPaths.end());
-
-  if (!(RunEnvXPaths.size() == PrefXPaths.size() && std::equal(
-      RunEnvXPaths.begin(), RunEnvXPaths.end(), PrefXPaths.begin())))
+  if (PrefDialog->plugPathsHaveChanged())
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraPluginsPaths();
-
-    for (int i = PrefXPaths.size() - 1; i > -1; i--)
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(
-          PrefXPaths[i]);
-
     ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->updatePluginPathsMonitors();
     ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->refreshAsked();
   }
@@ -230,3 +215,14 @@ void BuilderAppProjectState::whenPropertiesAsked()
 {
   mp_ProjectPropertiesDialog->show();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderAppProjectState::whenExtensionAsked(const std::string& ExtensionID)
+{
+  ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->extensionAsked(
+      ExtensionID);
+}
+

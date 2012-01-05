@@ -6,13 +6,13 @@
 \section logmsgs_sec Log messages from simulation functions
 
 Simulation functions can log messages to both console display and files using 
-the \link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger feature\endlink:
+the \link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger\endlink feature:
 <ul>
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger.getFile() \endlink
+<li>\link openfluid::base::StdoutAndFileOutputStream::getFile() OpenFLUID_Logger.getFile() \endlink
 to log messages to file only
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger.getStdout() \endlink
+<li>\link openfluid::base::StdoutAndFileOutputStream::getStdout() OpenFLUID_Logger.getStdout() \endlink
 to log messages to console only
-<li>\link openfluid::base::PluggableFunction::OPENFLUID_Logger OpenFLUID_Logger.get() \endlink
+<li>\link openfluid::base::StdoutAndFileOutputStream::get() OpenFLUID_Logger.get() \endlink
 to log messages to file and console.
 </ul>
 
@@ -24,7 +24,7 @@ simulation function suffixed by .log, placed in the simulation output directory.
 The OpenFLUID_Logger facility is the recommended way to log messages. Please avoid using std::cout
 or similar C++ facilities.   
 
- 
+<i>Example:</i>
 
 \code
  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
@@ -33,7 +33,7 @@ or similar C++ facilities.
   DECLARE_UNITS_ORDERED_LOOP(1);
 
 
-  OPENFLUID_Logger.get() << "This is a message to bost file and console" << std::endl;
+  OPENFLUID_Logger.get() << "This is a message to both file and console" << std::endl;
   OPENFLUID_Logger.getFile() << "This is a message to file only" << std::endl;
   OPENFLUID_Logger.getStdout() << "This is a message to console only" << std::endl;
 
@@ -58,10 +58,11 @@ next time the OpenFLUID framework take the control, a warning does
 not stop the simulation. Error and warnings are reported in the simulation report 
 (siminfo.out file). They both can be dated with the number of the time step when the warning or error occurs. \n  
 
-To raise a warning you can use \link openfluid::base::PluggableFunction::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning \endlink, to raise an error you can use \link openfluid::base::PluggableFunction::OPENFLUID_RaiseError OPENFLUID_RaiseError \endlink \n
+To raise a warning you can use \link openfluid::base::PluggableFunction::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning\endlink, to raise an error you can use \link openfluid::base::PluggableFunction::OPENFLUID_RaiseError OPENFLUID_RaiseError\endlink. \n
 
 As already mentioned, an error stops the simulation the next time the framework takes control of the simulation.
 
+<i>Example:</i>
 
 \code
 bool Myfunction::checkConsistency()
@@ -72,7 +73,7 @@ bool Myfunction::checkConsistency()
   
   BEGIN_SU_ORDERED_LOOP(1,"SU",SU)
 
-    OPENFLUID_GetInputData(SU,"MyVar",&TmpValue);
+    OPENFLUID_GetInputData(SU,"MyVar",TmpValue);
     
     if (TmpValue <= 0)
     {

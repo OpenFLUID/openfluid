@@ -131,6 +131,7 @@ void BuilderAppActions::createProjectUiXml()
     "      <menu action='DataInputdataMenu'/>"
     "      <menu action='DataEventsMenu'/>"
     "      <menu action='DataExtraMenu'/>"
+    "      <menu action='DataMixedMenu'/>"
     "    </menu>"
     "  </placeholder>"
     "  <placeholder name='ProjectSimulationPlaceholder'>"
@@ -138,6 +139,12 @@ void BuilderAppActions::createProjectUiXml()
     "      <menuitem action='Refresh'/>"
     "      <separator/>"
     "      <menuitem action='SimulationRun'/>"
+    "      <separator/>"
+    "      <menu action='ListenersMenu'/>"
+    "    </menu>"
+    "  </placeholder>"
+    "  <placeholder name='ProjectExtensionsPlaceholder'>"
+    "    <menu action='ExtensionsMenu'>"
     "    </menu>"
     "  </placeholder>"
     "  </menubar>"
@@ -229,6 +236,8 @@ void BuilderAppActions::createProjectActionGroup()
       _("Import events from")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu",
       _("Import extra file from")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("DataMixedMenu",
+      _("Other imports")));
 
   //Simulation menu
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationMenu",
@@ -238,11 +247,18 @@ void BuilderAppActions::createProjectActionGroup()
       _("Reload simulation functions")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun",
       Gtk::Stock::MEDIA_PLAY, _("Run...")));
+  mref_ProjectActionGroup->add(Gtk::Action::create("ListenersMenu",
+      _("Listeners")));
 
   mref_ProjectActionGroup->add(
       Gtk::Action::create("MapView",
           *BuilderGraphicsHelper::createBuilderIconStockId("mapview.png",
               "mapview"), _("Map View"), _("Map View")));
+
+  //Extensions menu
+  mref_ProjectActionGroup->add(Gtk::Action::create("ExtensionsMenu",
+      _("Extensions")));
+
 }
 
 // =====================================================================
@@ -467,3 +483,133 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
   return mref_ProjectActionGroup->get_action("MapView");
 }
 
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::addProjectExtensionAction(
+    std::string ActionName, std::string ActionLabel, std::string ActionTooltip)
+{
+  Glib::RefPtr<Gtk::Action> NewAction = Gtk::Action::create(ActionName,
+      ActionLabel, ActionTooltip);
+
+  mref_ProjectActionGroup->add(NewAction);
+
+  std::string MenuPath =
+      "/MenuBar/ProjectExtensionsPlaceholder/ExtensionsMenu/";
+  std::string MenuItemName = ActionName + "MenuItem";
+
+  mref_UIManager->add_ui(gtk_ui_manager_new_merge_id(mref_UIManager->gobj()),
+      MenuPath, MenuItemName, ActionName, Gtk::UI_MANAGER_MENUITEM, false);
+
+  mref_UIManager->get_widget(MenuPath + MenuItemName)->set_tooltip_markup(
+      ActionTooltip);
+
+  return NewAction;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::addProjectDataAction(Glib::RefPtr<
+    Gtk::Action> ParentMenuAction, std::string ActionName,
+    std::string ActionLabel, std::string ActionTooltip)
+{
+  Glib::RefPtr<Gtk::Action> NewAction = Gtk::Action::create(ActionName,
+      ActionLabel, ActionTooltip);
+
+  mref_ProjectActionGroup->add(NewAction);
+
+  std::string MenuPath = "/MenuBar/ProjectDataPlaceholder/DataMenu/"
+      + ParentMenuAction->get_name() + "/";
+  std::string MenuItemName = ActionName + "MenuItem";
+
+  mref_UIManager->add_ui(gtk_ui_manager_new_merge_id(mref_UIManager->gobj()),
+      MenuPath, MenuItemName, ActionName, Gtk::UI_MANAGER_MENUITEM, false);
+
+  mref_UIManager->get_widget(MenuPath + MenuItemName)->set_tooltip_markup(
+      ActionTooltip);
+
+  return NewAction;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::addProjectSimulationAction(
+    std::string ActionName, std::string ActionLabel, std::string ActionTooltip)
+{
+  Glib::RefPtr<Gtk::Action> NewAction = Gtk::Action::create(ActionName,
+      ActionLabel, ActionTooltip);
+
+  mref_ProjectActionGroup->add(NewAction);
+
+  std::string MenuPath =
+      "/MenuBar/ProjectSimulationPlaceholder/SimulationMenu/ListenersMenu/";
+  std::string MenuItemName = ActionName + "MenuItem";
+
+  mref_UIManager->add_ui(gtk_ui_manager_new_merge_id(mref_UIManager->gobj()),
+      MenuPath, MenuItemName, ActionName, Gtk::UI_MANAGER_MENUITEM, false);
+
+  mref_UIManager->get_widget(MenuPath + MenuItemName)->set_tooltip_markup(
+      ActionTooltip);
+
+  return NewAction;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataDomainMenuAction()
+{
+  return mref_ProjectActionGroup->get_action("DataDomainMenu");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataInputdataMenuAction()
+{
+  return mref_ProjectActionGroup->get_action("DataInputdataMenu");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataEventsMenuAction()
+{
+  return mref_ProjectActionGroup->get_action("DataEventsMenu");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataExtraMenuAction()
+{
+  return mref_ProjectActionGroup->get_action("DataExtraMenu");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataMixedMenuAction()
+{
+  return mref_ProjectActionGroup->get_action("DataMixedMenu");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getExtensionAction(
+    const std::string ExtensionID)
+{
+  return mref_ProjectActionGroup->get_action(ExtensionID);
+}

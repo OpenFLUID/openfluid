@@ -112,7 +112,7 @@ class PreferencesPathListWidget
 
     void setPreDefinedPaths(std::vector<std::string> Paths);
 
-    void setUserDefinedPaths(std::vector<Glib::ustring> Paths);
+    void setUserDefinedPaths(std::vector<std::string> Paths);
 
     std::vector<Glib::ustring> getUserDefinedPaths();
 

@@ -56,7 +56,7 @@
 
 #include <openfluid/builderext/HomeLauncher.hpp>
 
-#include <gtkmm/frame.h>
+#include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
@@ -65,8 +65,10 @@ DEFINE_EXTENSION_INFOS("tests.builder.homelauncher",
                        "Dummy home launcher for tests",
                        "This is a home launcher for tests",
                        "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr");
+                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
+                       openfluid::builderext::PluggableBuilderExtension::HomeLauncher);
 
+DEFINE_EXTENSION_DEFAULT_CONFIG()
 
 // =====================================================================
 // =====================================================================
@@ -76,12 +78,13 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 {
   private:
 
+  Gtk::MessageDialog* mp_Dialog;
 
   public:
 
     DummyHomeLauncher()
     {
-
+      mp_Dialog = new Gtk::MessageDialog("I am DummyHomeLauncher");
     };
 
 
@@ -91,7 +94,7 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 
     ~DummyHomeLauncher()
     {
-
+      delete mp_Dialog;
     };
 
 
@@ -101,17 +104,26 @@ class DummyHomeLauncher : public openfluid::builderext::HomeLauncher
 
     Gtk::Widget* getExtensionAsWidget()
     {
-      return new Gtk::Frame();
+      return mp_Dialog;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+    void show()
+    {
+      mp_Dialog->run();
+      mp_Dialog->hide();
     }
 
 };
 
-
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS(DummyHomeLauncher);
+DEFINE_EXTENSION_HOOKS((DummyHomeLauncher));
 
 
 

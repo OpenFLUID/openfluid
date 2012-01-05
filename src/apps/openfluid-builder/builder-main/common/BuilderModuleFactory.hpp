@@ -55,15 +55,16 @@
 #ifndef __BUILDERMODULEFACTORY_HPP__
 #define __BUILDERMODULEFACTORY_HPP__
 
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
 
-#include "BuilderModule.hpp"
-#include "EngineProject.hpp"
+
+namespace openfluid {
+namespace guicommon {
+class BuilderModule;
+}
+}
 
 class BuilderAppActions;
+class EngineProject;
 
 class BuilderModuleFactory
 {
@@ -73,23 +74,23 @@ class BuilderModuleFactory
 
   public:
 
-    static BuilderModule* createHomeModule(BuilderAppActions& Actions);
+    static openfluid::guicommon::BuilderModule* createHomeModule(BuilderAppActions& Actions);
 
     BuilderModuleFactory(EngineProject& EngProject);
 
-    BuilderModule* createModelStructureModule();
+    openfluid::guicommon::BuilderModule* createModelStructureModule();
 
-    BuilderModule* createDomainStructureModule();
+    openfluid::guicommon::BuilderModule* createDomainStructureModule();
 
-    BuilderModule* createDomainClassModule();
+    openfluid::guicommon::BuilderModule* createDomainClassModule();
 
-    BuilderModule* createSimulationRunModule();
+    openfluid::guicommon::BuilderModule* createSimulationRunModule();
 
-    BuilderModule* createSimulationOutModule();
+    openfluid::guicommon::BuilderModule* createSimulationOutModule();
 
-    BuilderModule* createResultsSetModule();
+    openfluid::guicommon::BuilderModule* createResultsSetModule();
 
-    BuilderModule* createMapViewModule();
+    openfluid::guicommon::BuilderModule* createMapViewModule();
 
 };
 

@@ -31,7 +31,7 @@ These libraries mainly rely on external libraries:
 
 \section feat_sec Features 
  
-\subsection featplug_ssec plug-in/framework software architecture
+\subsection featplug_ssec Plug-in/framework software architecture
 
 The OpenFLUID framework provides a plugin interface for creating functions that can be used by any OpenFLUID software application.\n
 This involves the following classes and structures (non-exhaustive list): 
@@ -44,7 +44,7 @@ This involves the following classes and structures (non-exhaustive list):
 \subsection featstruct_ssec Spatio-temporal data structure 
 
 In order to store and manage all the data handled to represent the spatial domain and the simulation information, the OpenFLUID framework defines a data structure for spatio-temporal data management.\n
-This involves the following classes (non-exhaustive list): 
+This involves the following class (non-exhaustive list): 
 <ul>
   <li>openfluid::core::Unit
 </ul>   
@@ -55,7 +55,7 @@ Models can be parameterized using functions parameters at simulation function le
 or using input data associated to spatial units. 
 This involves the following classes and structures (non-exhaustive list):
 <ul>
-  <li>openfluid::core::ParamsMap_t
+  <li>openfluid::core::FuncParamsMap_t
   <li>openfluid::core::Value and its derived types  
 </ul>
 

@@ -89,6 +89,8 @@ class BuilderAppState
 
     virtual void whenPropertiesAsked() = 0;
 
+    virtual void whenExtensionAsked(const std::string& ExtensionID) = 0;
+
 };
 
 #endif /* __BUILDERAPPSTATE_HPP__ */

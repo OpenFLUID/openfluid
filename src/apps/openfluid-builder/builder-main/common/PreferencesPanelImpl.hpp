@@ -46,17 +46,15 @@
  */
 
 /**
- \file PreferencesPanel.hpp
+ \file PreferencesPanelImpl.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __PREFERENCESPANEL_HPP__
-#define __PREFERENCESPANEL_HPP__
+#ifndef __PREFERENCESPANELIMPL_HPP__
+#define __PREFERENCESPANELIMPL_HPP__
 
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/box.h>
 #include <gtkmm/label.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
@@ -64,40 +62,16 @@
 #include <gtkmm/calendar.h>
 #include <gtkmm/dialog.h>
 
+#include <openfluid/guicommon/PreferencesPanel.hpp>
+
+
 class PreferencesPathListWidget;
 class PreferencesPlacesListWidget;
 
-class PreferencesPanel
-{
-  private:
-
-    Gtk::VBox* mp_MainBox;
-
-  protected:
-
-    Gtk::ScrolledWindow* mp_ContentWindow;
-
-    Gtk::Widget* createSubTitle(Glib::ustring SubTitle);
-
-    Gtk::Widget* createSubBoxAlignement(Gtk::Widget* InnerWidget);
-
-    Gtk::Box* createPanelBox();
-
-  public:
-
-    PreferencesPanel(Glib::ustring PanelTitle);
-
-    Gtk::Widget* asWidget();
-
-    virtual void init() = 0;
-
-};
-
 // =====================================================================
 // =====================================================================
 
-
-class PreferencesInterfacePanel: public PreferencesPanel
+class PreferencesInterfacePanel : public openfluid::guicommon::PreferencesPanel
 {
   private:
 
@@ -141,7 +115,7 @@ class PreferencesInterfacePanel: public PreferencesPanel
 // =====================================================================
 
 
-class PreferencesPathsPanel: public PreferencesPanel
+class PreferencesPathsPanel : public openfluid::guicommon::PreferencesPanel
 {
   private:
 
@@ -151,11 +125,15 @@ class PreferencesPathsPanel: public PreferencesPanel
 
     PreferencesPathListWidget* mp_FunctionsPathListWidget;
 
+    PreferencesPathListWidget* mp_ExtensionsPathListWidget;
+
     void onWorkdirEntryChanged();
 
     void onWorkdirFileButtonClicked();
 
     void onFunctionsPathListChanged();
+
+    void onExtensionsPathListChanged();
 
   public:
 
@@ -168,7 +146,7 @@ class PreferencesPathsPanel: public PreferencesPanel
 // =====================================================================
 // =====================================================================
 
-class PreferencesSimPanel: public PreferencesPanel
+class PreferencesSimPanel : public openfluid::guicommon::PreferencesPanel
 {
   private:
 
@@ -223,7 +201,7 @@ class PreferencesSimPanel: public PreferencesPanel
 // =====================================================================
 // =====================================================================
 
-class PreferencesMarketPanel: public PreferencesPanel
+class PreferencesMarketPanel : public openfluid::guicommon::PreferencesPanel
 {
   private:
 
@@ -237,7 +215,8 @@ class PreferencesMarketPanel: public PreferencesPanel
 
 };
 
+
 // =====================================================================
 // =====================================================================
 
-#endif /* __PREFERENCESPANEL_HPP__ */
+#endif /* __PREFERENCESPANELIMPL_HPP__ */

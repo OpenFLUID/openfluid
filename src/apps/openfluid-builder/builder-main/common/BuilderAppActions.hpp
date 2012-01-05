@@ -125,6 +125,24 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getRefreshAction();
 
+    Glib::RefPtr<Gtk::Action> addProjectExtensionAction(std::string ActionName,
+        std::string ActionLabel, std::string ActionTooltip = "");
+
+    Glib::RefPtr<Gtk::Action> addProjectDataAction(
+        Glib::RefPtr<Gtk::Action> ParentMenuAction, std::string ActionName,
+        std::string ActionLabel, std::string ActionTooltip = "");
+
+    Glib::RefPtr<Gtk::Action> addProjectSimulationAction(
+        std::string ActionName, std::string ActionLabel,
+        std::string ActionTooltip = "");
+
+    Glib::RefPtr<Gtk::Action> getDataDomainMenuAction();
+    Glib::RefPtr<Gtk::Action> getDataInputdataMenuAction();
+    Glib::RefPtr<Gtk::Action> getDataEventsMenuAction();
+    Glib::RefPtr<Gtk::Action> getDataExtraMenuAction();
+    Glib::RefPtr<Gtk::Action> getDataMixedMenuAction();
+
+    Glib::RefPtr<Gtk::Action> getExtensionAction(const std::string ExtensionID);
 };
 
 #endif /* __BUILDERAPPACTIONS_HPP__ */

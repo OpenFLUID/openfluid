@@ -72,7 +72,7 @@ DoubleValue is a container for a signed double precision floating point value.\n
 <I>Example : declaration</I>
 @code
   // declaration of a DoubleValue, initialized to 0.0 by default
-  openfluid::core::DoubleValue Val1();
+  openfluid::core::DoubleValue Val1;
 
   // declaration of a DoubleValue, initialized to 1.357
   openfluid::core::DoubleValue Val2(1.357);
@@ -87,7 +87,7 @@ DoubleValue is a container for a signed double precision floating point value.\n
   Tmp1 = Val1.get();
 
   // or using the cast operator
-  Tmp1 = Val1();
+  Tmp1 = Val1;
 @endcode
 
 

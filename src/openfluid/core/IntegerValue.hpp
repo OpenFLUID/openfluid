@@ -75,7 +75,7 @@ IntegerValue is a container for a signed long integer value.\n
 <I>Example : declaration</I>
 @code
   // declaration of an IntegerValue, initialized to 0 by default
-  openfluid::core::IntegerValue Val1();
+  openfluid::core::IntegerValue Val1;
 
   // declaration of an IntegerValue, initialized to 35
   openfluid::core::IntegerValue Val2(35);
@@ -90,7 +90,7 @@ IntegerValue is a container for a signed long integer value.\n
   Tmp1 = Val1.get();
 
   // or using the cast operator
-  Tmp1 = Val1();
+  Tmp1 = Val1;
 @endcode
 
 
@@ -109,7 +109,7 @@ IntegerValue is a container for a signed long integer value.\n
   Val1 = StringVal.toIntegerValue();
 
   // to long
-  long DblVal = StringVal.toInteger();
+  long LongVal = StringVal.toInteger();
 @endcode
 
 

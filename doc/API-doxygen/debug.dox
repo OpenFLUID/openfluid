@@ -22,6 +22,7 @@ The following macros are available for debugging:
 <li>#OFDBG_EVENTCOLLECTION for information about the event collection given as an argument
 </ul>
 \n
+<i>Example:</i>
 
 \code
  bool runStep(const openfluid::base::SimulationStatus* SimStatus)
@@ -41,7 +42,7 @@ The following macros are available for debugging:
      OFDBG_UNIT_EXTENDED(TU);    
 
      EvColl.clear();
-     OPENFLUID_GetEvents(TU,BeginDate,EndDate,&EvColl);
+     OPENFLUID_GetEvents(TU,BeginDate,EndDate,EvColl);
      OFDBG_EVENTCOLLECTION(EvColl);
   END_LOOP
 

@@ -73,7 +73,7 @@ BooleanValue is a container for a true/false value.\n
 <I>Example : declaration</I>
 @code
   // declaration of a BooleanValue, initialized to false by default
-  openfluid::core::BooleanValue Val1();
+  openfluid::core::BooleanValue Val1;
 
   // declaration of a BooleanValue, initialized to true
   openfluid::core::BooleanValue Val2(true);
@@ -88,7 +88,7 @@ BooleanValue is a container for a true/false value.\n
   Tmp1 = Val1.get();
 
   // or using the cast operator
-  Tmp1 = Val1();
+  Tmp1 = Val1;
 @endcode
 
 

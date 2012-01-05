@@ -75,7 +75,6 @@ class DLLEXPORT ModelessExtension : public PluggableBuilderExtension
 
   public:
 
-    virtual void onRefresh() = 0;
 
 };
 
