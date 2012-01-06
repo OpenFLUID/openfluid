@@ -670,7 +670,7 @@ void ProjectCoordinator::updatePluginPathsMonitors()
     DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
         &ProjectCoordinator::onDirMonitorChanged));
 
-    m_DirMonitors.insert(DirMonitor);
+    m_DirMonitors.push_back(DirMonitor);
   }
 }
 

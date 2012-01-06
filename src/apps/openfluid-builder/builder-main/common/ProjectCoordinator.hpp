@@ -119,7 +119,7 @@ class ProjectCoordinator
     std::string m_OutputsPageName;
 
     // only to keep ref to FileMonitors (otherwise they're lost)
-    std::set<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
+    std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
 
     Gtk::MessageDialog* mp_FileMonitorDialog;
 
