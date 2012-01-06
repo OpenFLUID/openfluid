@@ -55,8 +55,10 @@
 
 #include "BuilderExtensionsManager.hpp"
 
+#include <glibmm/module.h>
+
 #include <openfluid/config.hpp>
-#include <openfluid/machine/DynamicLib.hpp>
+//#include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
@@ -251,24 +253,37 @@ void BuilderExtensionsManager::registerExtensions()
 
   for (PathsIt = FoundFiles.begin(); PathsIt != FoundFiles.end(); ++PathsIt)
   {
-    openfluid::machine::DynamicLib* ExtLib = new openfluid::machine::DynamicLib(*PathsIt);
+//    openfluid::machine::DynamicLib* ExtLib = new openfluid::machine::DynamicLib(*PathsIt);
+    Glib::Module* ExtLib = new Glib::Module(*PathsIt,Glib::MODULE_BIND_LOCAL);
 
-    if (ExtLib->load())
+//    if (ExtLib->load())
+    if(*ExtLib)
     {
       ExtensionContainer ExtContainer;
       ExtContainer.Filename = *PathsIt;
 
-      if (ExtLib->hasSymbol(EXTSDKVERSION_PROC_NAME))
+      void* SDKVersionSymbol = 0;
+
+      if(ExtLib->get_symbol(EXTSDKVERSION_PROC_NAME,SDKVersionSymbol))
+//      if (ExtLib->hasSymbol(EXTSDKVERSION_PROC_NAME))
       {
         openfluid::builderext::GetExtensionSDKVersionProc SDKProc;
-        SDKProc = (openfluid::builderext::GetExtensionSDKVersionProc)ExtLib->getSymbol(EXTSDKVERSION_PROC_NAME);
+
+        SDKProc = (openfluid::builderext::GetExtensionSDKVersionProc)SDKVersionSymbol;
+//        SDKProc = (openfluid::builderext::GetExtensionSDKVersionProc)ExtLib->getSymbol(EXTSDKVERSION_PROC_NAME);
 
         if (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0)
         {
-          if (ExtLib->hasSymbol(EXTINFOS_PROC_NAME) && ExtLib->hasSymbol(EXTENSION_PROC_NAME))
+          void* InfosSymbol = 0;
+          void* ExtensionSymbol = 0;
+
+          if(ExtLib->get_symbol(EXTINFOS_PROC_NAME,InfosSymbol)
+              && ExtLib->get_symbol(EXTENSION_PROC_NAME,ExtensionSymbol))
+//          if (ExtLib->hasSymbol(EXTINFOS_PROC_NAME) && ExtLib->hasSymbol(EXTENSION_PROC_NAME))
           {
 
-            openfluid::builderext::GetExtensionInfosProc InfosProc = (openfluid::builderext::GetExtensionInfosProc)ExtLib->getSymbol(EXTINFOS_PROC_NAME);
+            openfluid::builderext::GetExtensionInfosProc InfosProc = (openfluid::builderext::GetExtensionInfosProc)InfosSymbol;
+//            openfluid::builderext::GetExtensionInfosProc InfosProc = (openfluid::builderext::GetExtensionInfosProc)ExtLib->getSymbol(EXTINFOS_PROC_NAME);
 
             if (InfosProc != NULL)
             {
@@ -277,16 +292,25 @@ void BuilderExtensionsManager::registerExtensions()
 
               if (!TmpID.empty())
               {
-                openfluid::builderext::GetExtensionProc ExtProc = (openfluid::builderext::GetExtensionProc)ExtLib->getSymbol(EXTENSION_PROC_NAME);
+//                openfluid::builderext::GetExtensionProc ExtProc = (openfluid::builderext::GetExtensionProc)ExtLib->getSymbol(EXTENSION_PROC_NAME);
+                openfluid::builderext::GetExtensionProc ExtProc = (openfluid::builderext::GetExtensionProc)ExtensionSymbol;
 
                 if (ExtProc != NULL)
                 {
                   ExtContainer.setExtProcFunction(ExtProc);
 
-                  openfluid::builderext::GetExtensionPrefsProc PrefsProc = (openfluid::builderext::GetExtensionPrefsProc)ExtLib->getSymbol(EXTPREFS_PROC_NAME);
+                  void* PrefsSymbol = 0;
 
-                  if (PrefsProc != NULL)
-                    ExtContainer.setPrefsProcFunction(PrefsProc);
+//                  openfluid::builderext::GetExtensionPrefsProc PrefsProc = (openfluid::builderext::GetExtensionPrefsProc)ExtLib->getSymbol(EXTPREFS_PROC_NAME);
+
+                  if(ExtLib->get_symbol(EXTPREFS_PROC_NAME,PrefsSymbol))
+//                  if (PrefsProc != NULL)
+                  {
+                    openfluid::builderext::GetExtensionPrefsProc PrefsProc = (openfluid::builderext::GetExtensionPrefsProc)PrefsSymbol;
+
+                    if(PrefsProc != NULL)
+                      ExtContainer.setPrefsProcFunction(PrefsProc);
+                  }
 
                   m_RegisteredExtensions[ExtContainer.Infos.Type][TmpID] = ExtContainer;
                   m_RegisteredExtensionsCount++;

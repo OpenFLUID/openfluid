@@ -60,12 +60,14 @@
 #include <map>
 #include <string>
 
+#include <glibmm/module.h>
+
 #include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace machine {
 
 class SignatureItemInstance;
-class DynamicLib;
+//class DynamicLib;
 class ModelItemInstance;
 
 
@@ -80,7 +82,8 @@ class DLLEXPORT PluginManager
 
     static PluginManager* mp_Singleton;
 
-    std::map<std::string,DynamicLib*> m_LoadedPlugins;
+//    std::map<std::string,DynamicLib*> m_LoadedPlugins;
+    std::map<std::string,Glib::Module*> m_LoadedPlugins;
 
     ModelItemInstance* buildPluginContainer(std::string PluginFilename);
 

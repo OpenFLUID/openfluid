@@ -57,7 +57,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/PlugFunction.hpp>
-#include <openfluid/machine/DynamicLib.hpp>
+//#include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 namespace openfluid { namespace machine {
@@ -106,23 +106,30 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
 
   if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
   {
-    m_LoadedPlugins[PluginFilename] = new DynamicLib(PluginFile);
+//    m_LoadedPlugins[PluginFilename] = new DynamicLib(PluginFile);
+    m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFile,Glib::MODULE_BIND_LOCAL);
   }
 
-  DynamicLib* PlugLib = m_LoadedPlugins[PluginFilename];
+//  DynamicLib* PlugLib = m_LoadedPlugins[PluginFilename];
+  Glib::Module* PlugLib = m_LoadedPlugins[PluginFilename];
 
 
   // library loading
-  if (PluginFile.length()>0 && PlugLib->load())
+//  if (PluginFile.length()>0 && PlugLib->load())
+  if(*PlugLib)
   {
     Plug = new ModelItemInstance();
     Plug->Filename = PluginFile;
 
-    if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
+    void* SDKVersionSymbol;
+
+    if(PlugLib->get_symbol(PLUGSDKVERSION_PROC_NAME,SDKVersionSymbol))
+//    if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
     {
       openfluid::base::GetSDKVersionProc SDKProc;
 
-      SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
+      SDKProc = (openfluid::base::GetSDKVersionProc)SDKVersionSymbol;
+//      SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
       Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0);
     }
     else Plug->SDKCompatible = false;
@@ -130,13 +137,18 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
 
     if (Plug->SDKCompatible)
     {
+      void* FunctionSymbol;
+      void* SignatureSymbol;
 
       // checks if the handle proc exists
-      if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
+      if(PlugLib->get_symbol(PLUGFUNCTION_PROC_NAME,FunctionSymbol)
+          && PlugLib->get_symbol(PLUGSIGNATURE_PROC_NAME,SignatureSymbol))
+//      if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
       {
 
         // hooks the handle proc
-        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->getSymbol(PLUGSIGNATURE_PROC_NAME);
+//        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->getSymbol(PLUGSIGNATURE_PROC_NAME);
+        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)SignatureSymbol;
 
 
         if (SignProc != NULL)
@@ -146,7 +158,9 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
           if (Plug->Signature == NULL)
             throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
-          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->getSymbol(PLUGFUNCTION_PROC_NAME);
+//          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)PlugLib->getSymbol(PLUGFUNCTION_PROC_NAME);
+          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)FunctionSymbol;
+
           if (PlugProc != NULL)
           {
             Plug->Function = PlugProc();
@@ -185,23 +199,31 @@ SignatureItemInstance* PluginManager::getSignatureFromPlugin(std::string PluginF
 
   if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
   {
-    m_LoadedPlugins[PluginFilename] = new DynamicLib(PluginFile);
+//    m_LoadedPlugins[PluginFilename] = new DynamicLib(PluginFile);
+    m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFile,Glib::MODULE_BIND_LOCAL);
   }
 
 
-  DynamicLib* PlugLib = m_LoadedPlugins[PluginFilename];
+//  DynamicLib* PlugLib = m_LoadedPlugins[PluginFilename];
+  Glib::Module* PlugLib = m_LoadedPlugins[PluginFilename];
 
   // library loading
-  if (PluginFile.length()>0 && PlugLib->load())
+  if(*PlugLib)
+//  if (PluginFile.length()>0 && PlugLib->load())
   {
     Plug = new ModelItemInstance();
     Plug->Filename = PluginFile;
 
-    if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
+    void* SDKVersionSymbol = 0;
+
+//    if (PlugLib->hasSymbol(PLUGSDKVERSION_PROC_NAME))
+      if(PlugLib->get_symbol(PLUGSDKVERSION_PROC_NAME,SDKVersionSymbol))
     {
       openfluid::base::GetSDKVersionProc SDKProc;
 
-      SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
+//      SDKProc = (openfluid::base::GetSDKVersionProc)PlugLib->getSymbol(PLUGSDKVERSION_PROC_NAME);
+      SDKProc = (openfluid::base::GetSDKVersionProc)SDKVersionSymbol;
+
       Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0);
     }
     else Plug->SDKCompatible = false;
@@ -209,13 +231,18 @@ SignatureItemInstance* PluginManager::getSignatureFromPlugin(std::string PluginF
 
     if (Plug->SDKCompatible)
     {
+      void* FunctionSymbol = 0;
+      void* SignatureSymbol = 0;
 
       // checks if the handle proc exists
-      if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
+      if(PlugLib->get_symbol(PLUGFUNCTION_PROC_NAME,FunctionSymbol)
+          && PlugLib->get_symbol(PLUGSIGNATURE_PROC_NAME,SignatureSymbol))
+//      if (PlugLib->hasSymbol((PLUGFUNCTION_PROC_NAME)) && PlugLib->hasSymbol(PLUGSIGNATURE_PROC_NAME))
       {
 
         // hooks the handle proc
-        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->getSymbol(PLUGSIGNATURE_PROC_NAME);
+//        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)PlugLib->getSymbol(PLUGSIGNATURE_PROC_NAME);
+        openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)SignatureSymbol;
 
 
         if (SignProc != NULL)
@@ -303,7 +330,8 @@ ModelItemInstance* PluginManager::getPlugin(std::string PluginName)
 
 void PluginManager::unloadAllPlugins()
 {
-  std::map<std::string,DynamicLib*>::iterator it;
+//  std::map<std::string,DynamicLib*>::iterator it;
+  std::map<std::string,Glib::Module*>::iterator it;
 
   for (it=m_LoadedPlugins.begin();it != m_LoadedPlugins.end(); ++it)
   {
