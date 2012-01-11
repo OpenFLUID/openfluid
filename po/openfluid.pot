@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openfluid 1.7.0\n"
 "Report-Msgid-Bugs-To: libres at supagro.inra.fr\n"
-"POT-Creation-Date: 2012-01-10 11:10+0100\n"
+"POT-Creation-Date: 2012-01-11 10:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -576,19 +576,19 @@ msgid "Data"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:232
-msgid "Import spatial domain from"
+msgid "Import spatial domain"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:234
-msgid "Import Inputdata from"
+msgid "Import inputdata"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:236
-msgid "Import events from"
+msgid "Import events"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:238
-msgid "Import extra file from"
+msgid "Import extra file"
 msgstr ""
 
 #: src/apps/openfluid-builder/builder-main/common/BuilderAppActions.cpp:240

@@ -229,13 +229,13 @@ void BuilderAppActions::createProjectActionGroup()
   //Data menu
   mref_ProjectActionGroup->add(Gtk::Action::create("DataMenu", _("Data")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataDomainMenu",
-      _("Import spatial domain from")));
+      _("Import spatial domain")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataInputdataMenu",
-      _("Import Inputdata from")));
+      _("Import inputdata")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataEventsMenu",
-      _("Import events from")));
+      _("Import events")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataExtraMenu",
-      _("Import extra file from")));
+      _("Import extra file")));
   mref_ProjectActionGroup->add(Gtk::Action::create("DataMixedMenu",
       _("Other imports")));
 
