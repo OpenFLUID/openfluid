@@ -67,7 +67,7 @@ namespace openfluid { namespace builderext {
 // =====================================================================
 
 
-class DLLEXPORT DataImporter : public ModalExtension
+class DataImporter : public ModalExtension
 {
   protected:
 

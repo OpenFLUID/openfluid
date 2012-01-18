@@ -59,7 +59,6 @@
 
 #include <gtkmm/widget.h>
 
-#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace guicommon {
@@ -68,7 +67,7 @@ namespace guicommon {
 // =====================================================================
 
 
-class DLLEXPORT BuilderModule
+class BuilderModule
 {
   protected:
 

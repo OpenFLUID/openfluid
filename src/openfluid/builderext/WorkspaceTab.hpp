@@ -68,7 +68,7 @@ namespace openfluid { namespace builderext {
 // =====================================================================
 
 
-class DLLEXPORT WorkspaceTab : public ModelessExtension, public openfluid::guicommon::ProjectWorkspaceModule
+class WorkspaceTab : public ModelessExtension, public openfluid::guicommon::ProjectWorkspaceModule
 {
   protected:
 
