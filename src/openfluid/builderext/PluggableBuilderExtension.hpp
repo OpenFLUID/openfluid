@@ -192,7 +192,7 @@ typedef std::map<std::string,std::string> ExtensionConfig_t;
 // =====================================================================
 
 
-class DLLEXPORT PluggableBuilderExtension
+class PluggableBuilderExtension
 {
   protected:
 
@@ -326,7 +326,7 @@ class DLLEXPORT BuilderExtensionInfos
 // =====================================================================
 
 
-class DLLEXPORT BuilderExtensionPrefs : public openfluid::guicommon::PreferencesPanel
+class BuilderExtensionPrefs : public openfluid::guicommon::PreferencesPanel
 {
   public:
 

@@ -68,7 +68,7 @@ namespace openfluid { namespace builderext {
 // =====================================================================
 
 
-class DLLEXPORT ModelessExtension : public PluggableBuilderExtension
+class ModelessExtension : public PluggableBuilderExtension
 {
   protected:
 

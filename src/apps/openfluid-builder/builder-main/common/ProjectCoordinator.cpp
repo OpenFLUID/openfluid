@@ -406,8 +406,9 @@ void ProjectCoordinator::removeDeletedClassPages()
       ClassNames.insert(constructClassPageName(it->first));
   }
 
-  for (std::set<std::string>::iterator it = m_ClassPageNames.begin(); it
-      != m_ClassPageNames.end(); ++it)
+  std::set<std::string> ClassPageNames = m_ClassPageNames;
+  for (std::set<std::string>::iterator it = ClassPageNames.begin(); it
+      != ClassPageNames.end(); ++it)
   {
     if (!ClassNames.count(*it))
       m_Workspace.removePage(*it);
@@ -523,8 +524,9 @@ void ProjectCoordinator::removeDeletedSetPages()
     }
   }
 
-  for (std::set<std::string>::iterator it = m_SetPageNames.begin(); it
-      != m_SetPageNames.end(); ++it)
+  std::set<std::string> SetPageNames = m_SetPageNames;
+  for (std::set<std::string>::iterator it = SetPageNames.begin(); it
+      != SetPageNames.end(); ++it)
   {
     if (!SetNames.count(*it))
       m_Workspace.removePage(*it);
@@ -707,7 +709,7 @@ void ProjectCoordinator::updatePluginPathsMonitors()
     DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
         &ProjectCoordinator::onDirMonitorChanged));
 
-    m_DirMonitors.insert(DirMonitor);
+    m_DirMonitors.push_back(DirMonitor);
   }
 }
 

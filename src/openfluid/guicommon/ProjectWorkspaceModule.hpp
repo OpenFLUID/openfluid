@@ -55,7 +55,6 @@
 #ifndef __PROJECTWORKSPACEMODULE_HPP__
 #define __PROJECTWORKSPACEMODULE_HPP__
 
-#include <openfluid/dllexport.hpp>
 
 #include "BuilderModule.hpp"
 
@@ -72,7 +71,7 @@ namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT ProjectWorkspaceModule: public BuilderModule
+class ProjectWorkspaceModule: public BuilderModule
 {
   public:
 

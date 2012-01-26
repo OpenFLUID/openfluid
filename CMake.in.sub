@@ -61,6 +61,7 @@ MACRO(ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
                         openfluid-core
                         openfluid-base 
                         openfluid-tools
+                        openfluid-guicommon
                         ${GTKMM_LIBRARIES})
     
 ENDMACRO(ADD_BUILDER_EXTENSION)

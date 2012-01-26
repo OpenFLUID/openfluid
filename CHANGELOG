@@ -1,9 +1,27 @@
+1.7.0
+
+  * Added definitions of value types for OpenFLUID data : 
+    DoubleValue, IntegerValue, BooleanValue, StringValue,
+    VectorValue, MatrixValue, MapValue, NullValue
+  * Modified data type for variables, now can be any of defined value types
+  * Modified data type for input data, functions parameters and events 
+    informations, now stored as StringValue that can be converted to any 
+    other value type.
+  * Modified plugins management, now using Glib::module (glibmm)
+  * Updated OpenFLUID-Builder GUI labels
+  * Checked and cleaned inclusion of header files in source code
+  * Updated OpenFLUID API
+  * Fixed small bugs
+
+
+
 1.6.2
 
   * Released OpenFLUID-Builder application (GUI), as a preview release
   * Released OpenFLUID::guicommon API, as a preview release
   * Added OpenFLUID Market system
-  * Added OpenFLUID projects management, embedding simulation input and output datasets
+  * Added OpenFLUID projects management, embedding simulation input and output
+    datasets
   * Added automatic parallelization capabilities based on spatial independancy 
     (using multi-threading) 
   * Added simulation profiling capabilities

@@ -67,7 +67,7 @@ namespace openfluid { namespace builderext {
 // =====================================================================
 
 
-class DLLEXPORT SpatialgraphImporter : public DataImporter
+class SpatialgraphImporter : public DataImporter
 {
   protected:
 

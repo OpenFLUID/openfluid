@@ -59,7 +59,6 @@
 
 
 #include <openfluid/machine/Factory.hpp>
-#include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/Generator.hpp>
