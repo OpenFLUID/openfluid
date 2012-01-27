@@ -409,6 +409,36 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("numeric","1.15"));
   BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("string","EADGBE"));
 
+
+  // Datastore
+  // ====================================================================
+
+  openfluid::base::DatastoreDescriptor::DatastoreDescription_t DataItems =
+      FXR.getDatstoreDescriptor().getItems();
+
+  BOOST_REQUIRE_EQUAL(DataItems.size(),3);
+
+  openfluid::base::DatastoreDescriptor::DatastoreDescription_t::iterator DataIt =
+      DataItems.begin();
+
+    BOOST_REQUIRE_EQUAL((*DataIt)->getId(),"mymap");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testvect");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+    BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"unitsA");
+
+    DataIt++;
+
+    BOOST_REQUIRE_EQUAL((*DataIt)->getId(),"mymap2");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testvect.shp");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+    BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
+
+    DataIt++;
+
+    BOOST_REQUIRE_EQUAL((*DataIt)->getId(),"myrast");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testrast.tif");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
+    BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
 }
 
 // =====================================================================
@@ -489,5 +519,12 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
     HasFailed = true;
   }
   BOOST_REQUIRE_EQUAL(HasFailed,true);
+
+
+  BOOST_REQUIRE_THROW(openfluid::io::FluidXReader(
+      new openfluid::io::IOListener()).loadFromDirectory(
+          boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
+              "/OPENFLUID.IN.FluidXReader/wrong-unknowndatatype").string()),
+              openfluid::base::OFException);
 
 }

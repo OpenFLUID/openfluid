@@ -443,6 +443,7 @@ void OpenFLUIDApp::runSimulation()
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
                                                                   FXReader.getRunDescriptor(),
                                                                   FXReader.getOutputDescriptor(),
+                                                                  FXReader.getDatstoreDescriptor(),
                                                                   m_SimBlob);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();

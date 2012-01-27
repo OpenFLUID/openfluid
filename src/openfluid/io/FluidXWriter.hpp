@@ -69,6 +69,7 @@ class OutputDescriptor;
 }
 namespace core {
 class CoreRepository;
+class Datastore;
 }
 namespace machine {
 class ModelInstance;
@@ -89,6 +90,7 @@ class DLLEXPORT FluidXWriter
     std::string m_RunStr;
     std::string m_DomainStr;
     std::string m_OutputStr;
+    std::string m_DataStr;
 
     std::string m_IndentStr;
 
@@ -116,6 +118,8 @@ class DLLEXPORT FluidXWriter
     void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
 
     void setOutputConfigurationToWrite(openfluid::base::OutputDescriptor& ODescriptor);
+
+    void setDatastoreToWrite(const openfluid::core::Datastore& Store);
 
     void setInstantiationType(const openfluid::core::InstantiationInfo::Type& InstType)
     { m_InstType = InstType; };

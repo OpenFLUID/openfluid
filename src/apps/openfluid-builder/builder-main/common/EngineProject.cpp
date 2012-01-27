@@ -62,6 +62,7 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/base/DatastoreDescriptor.hpp>
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/io/FluidXReader.hpp>
 #include <openfluid/io/FluidXWriter.hpp>
@@ -173,7 +174,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     try
     {
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-          FXReader->getDomainDescriptor(), RunDesc, OutDesc, *mp_SimBlob);
+          FXReader->getDomainDescriptor(), RunDesc, OutDesc,
+          FXReader->getDatstoreDescriptor(), *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
@@ -519,6 +521,7 @@ void EngineProject::save()
   Writer.setModelToWrite(*getModelInstance());
   Writer.setRunConfigurationToWrite(getRunDescriptor());
   Writer.setOutputConfigurationToWrite(getOutputDescriptor());
+  Writer.setDatastoreToWrite(getDatastore());
 
   boost::filesystem::path InputPath(InputDir);
 
@@ -623,6 +626,15 @@ openfluid::base::RunDescriptor& EngineProject::getRunDescriptor()
 openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
 {
   return mp_SimBlob->getOutputDescriptor();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Datastore& EngineProject::getDatastore()
+{
+  return mp_SimBlob->getDatastore();
 }
 
 // =====================================================================

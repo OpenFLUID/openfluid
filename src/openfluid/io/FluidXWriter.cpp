@@ -63,6 +63,8 @@
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/Datastore.hpp>
+#include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/Generator.hpp>
@@ -496,6 +498,44 @@ void FluidXWriter::setOutputConfigurationToWrite(openfluid::base::OutputDescript
 // =====================================================================
 
 
+void FluidXWriter::setDatastoreToWrite(const openfluid::core::Datastore& Store)
+{
+  if (!Store.getItems().empty())
+  {
+    std::ostringstream Contents;
+
+    Contents << m_IndentStr << "<datastore>\n";
+
+    openfluid::core::Datastore::DataItemsById_t Items = Store.getItems();
+    openfluid::core::DatastoreItem* Item;
+
+    for(openfluid::core::Datastore::DataItemsById_t::const_iterator it =
+        Items.begin() ; it != Items.end() ; ++it)
+    {
+      Item = it->second;
+
+      Contents << m_IndentStr << m_IndentStr ;
+      Contents << "<dataitem id=\"" << Item->getId() << "\" " <<
+                  "type=\"" << openfluid::core::UnstructuredValue::getStringFromValueType(Item->getValue()->getType()) << "\" " <<
+                  "source=\"" << Item->getRelativePath() << "\" ";
+      if(!Item->getUnitClass().empty())
+        Contents << "unitclass=\"" << Item->getUnitClass() << "\" ";
+
+      Contents << "/>\n";
+    }
+
+    Contents << m_IndentStr << "</datastore>\n";
+
+    m_DataStr = Contents.str();
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void FluidXWriter::prepareOutputDir(std::string DirPath)
 {
 
@@ -537,7 +577,7 @@ void FluidXWriter::WriteToManyFiles(std::string DirPath)
   OutFile.close();
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
-  // model
+  // domain
   OutFilename= boost::filesystem::path(DirPath+"/domain.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(),std::ios::out);
@@ -565,7 +605,7 @@ void FluidXWriter::WriteToManyFiles(std::string DirPath)
   OutFile.close();
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
-  // model
+  // output
   OutFilename= boost::filesystem::path(DirPath+"/output.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
   OutFile.open(OutFilename.c_str(),std::ios::out);
@@ -573,6 +613,20 @@ void FluidXWriter::WriteToManyFiles(std::string DirPath)
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
   OutFile << m_OutputStr << "\n\n";
+  OutFile << "</openfluid>\n";
+  OutFile << "\n";
+
+  OutFile.close();
+  mp_Listener->onFileWritten(openfluid::base::Listener::OK);
+
+  // datastore
+  OutFilename= boost::filesystem::path(DirPath+"/datastore.fluidx").string();
+  mp_Listener->onFileWrite(OutFilename);
+  OutFile.open(OutFilename.c_str(),std::ios::out);
+
+  OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
+  OutFile << "<openfluid>\n";
+  OutFile << m_DataStr << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -607,6 +661,7 @@ void FluidXWriter::WriteToSingleFile(std::string FilePath)
   OutFile << m_DomainStr << "\n\n";
   OutFile << m_RunStr << "\n\n";
   OutFile << m_OutputStr << "\n\n";
+  OutFile << m_DataStr << "\n\n";
 
   OutFile << "</openfluid>\n";
   OutFile << "\n";

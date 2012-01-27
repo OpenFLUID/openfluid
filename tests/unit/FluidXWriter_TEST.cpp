@@ -88,6 +88,7 @@ int main()
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(Reader.getDomainDescriptor(),
         Reader.getRunDescriptor(),
         Reader.getOutputDescriptor(),
+        Reader.getDatstoreDescriptor(),
         SBlob);
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(Reader.getModelDescriptor(),MInstance);
 
@@ -95,6 +96,7 @@ int main()
     Writer.setModelToWrite(const_cast<openfluid::machine::ModelInstance&>(MInstance));
     Writer.setRunConfigurationToWrite(Reader.getRunDescriptor());
     Writer.setOutputConfigurationToWrite(Reader.getOutputDescriptor());
+    Writer.setDatastoreToWrite(SBlob.getDatastore());
 
     Writer.WriteToManyFiles(OutputDirMany);
     Writer.WriteToSingleFile(OutputDirSingle+"/all.fluidx");
