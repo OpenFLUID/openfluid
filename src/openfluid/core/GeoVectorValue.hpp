@@ -55,21 +55,60 @@
 #ifndef __GEOVECTORVALUE_HPP__
 #define __GEOVECTORVALUE_HPP__
 
+#include <gdal/ogrsf_frmts.h>
+
 #include <openfluid/core/UnstructuredValue.hpp>
 
 namespace openfluid {
 namespace core {
 
-class GeoVectorValue : public openfluid::core::UnstructuredValue
+class GeoVectorValue: public openfluid::core::UnstructuredValue
 {
+  protected:
+
+    std::string m_RelativePath;
+
+    OGRDataSource* m_Data;
+
+    void tryOpeningSource();
+
   public:
 
-    GeoVectorValue();
+    GeoVectorValue(std::string RelativePath);
 
     ~GeoVectorValue();
 
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
+    OGRDataSource* get();
+
+    virtual std::string getAbsolutePath();
+
+};
+
+// =====================================================================
+// =====================================================================
+
+class GeoVectorValueSub: public GeoVectorValue
+{
+  public:
+
+    std::string m_InputPathRoot;
+
+    GeoVectorValueSub(std::string RelativePath) :
+      openfluid::core::GeoVectorValue(RelativePath)
+    {
+    }
+    ;
+
+    std::string getAbsolutePath();
+
+    OGRDataSource* getData();
+
+    void tryOpeningSource()
+    {
+      openfluid::core::GeoVectorValue::tryOpeningSource();
+    }
 };
 
 }

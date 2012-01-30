@@ -54,6 +54,11 @@
 
 #include "GeoVectorValue.hpp"
 
+#include <boost/filesystem/path.hpp>
+
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/OFException.hpp>
+
 namespace openfluid {
 namespace core {
 
@@ -61,7 +66,8 @@ namespace core {
 // =====================================================================
 
 
-GeoVectorValue::GeoVectorValue()
+GeoVectorValue::GeoVectorValue(std::string RelativePath) :
+  m_RelativePath(RelativePath), m_Data(0)
 {
 
 }
@@ -72,7 +78,7 @@ GeoVectorValue::GeoVectorValue()
 
 GeoVectorValue::~GeoVectorValue()
 {
-
+  delete m_Data;
 }
 
 // =====================================================================
@@ -86,6 +92,74 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() c
 
 // =====================================================================
 // =====================================================================
+
+
+OGRDataSource* GeoVectorValue::get()
+{
+  if (!m_Data)
+    tryOpeningSource();
+
+  return m_Data;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void GeoVectorValue::tryOpeningSource()
+{
+  OGRRegisterAll();
+
+  m_Data = OGRSFDriverRegistrar::Open((char*) getAbsolutePath().c_str(), false);
+
+  if (m_Data == NULL)
+  {
+    throw openfluid::base::OFException("OpenFLUID framework",
+        "GeoVectorValue::tryOpeningSource", "Error while trying open file "
+            + getAbsolutePath());
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string GeoVectorValue::getAbsolutePath()
+{
+  boost::filesystem::path AbsolutePath = boost::filesystem::path(
+      openfluid::base::ProjectManager::getInstance()->getInputDir())
+      / m_RelativePath;
+
+  return AbsolutePath.string();
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+
+std::string GeoVectorValueSub::getAbsolutePath()
+{
+  boost::filesystem::path AbsolutePath = boost::filesystem::path(
+      m_InputPathRoot) / m_RelativePath;
+
+  return AbsolutePath.string();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+OGRDataSource* GeoVectorValueSub::getData()
+{
+  return m_Data;
+}
+
+// =====================================================================
+// =====================================================================
+
 
 }
 } // namespaces
