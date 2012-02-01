@@ -63,14 +63,22 @@
 #include <gtkmm/box.h>
 #include <gtkmm/separator.h>
 
-#include <openfluid/core/CoreRepository.hpp>
-
 #include "DrawingArea.hpp"
 #include "Info.hpp"
 #include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "Layer.hpp"
 #include "AddDialogFileChooser.hpp"
+
+namespace openfluid {
+namespace core {
+class Datastore;
+class DatastoreItem;
+}
+namespace machine {
+class SimulationBlob;
+}
+}
 
 class Mediator
 {
@@ -85,8 +93,11 @@ class Mediator
     ToolBar& mref_ToolBar;
 
     openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::core::Datastore* mp_Datastore;
 
-    std::vector<Layer*> m_Layer;
+    bool m_IsFirstExposeEvent;
+
+    std::vector<Layer*> m_Layers;
 
     std::string m_SelectedClassName;
     std::set<int> m_SelectedUnitId;
@@ -100,7 +111,15 @@ class Mediator
 
     sigc::signal<void> m_signal_DrawingAreaExposeEventChanged;
 
+    void addAvailableLayersFromDatastore();
+    void addALayer(Layer& ALayer);
+    bool hasADisplayableVectorValue(openfluid::core::DatastoreItem* Item);
+    bool hasADisplayableRasterValue(openfluid::core::DatastoreItem* Item);
+
     void whenDrawingAreaChanged();
+    void whenDrawingAreaRealized();
+    void whenDrawingAreaMapped();
+    bool whenDrawingAreaMapEvent(GdkEventAny* Event);
 
     //***************Signal ToolBar*********************
     void whenOnShow100FocusButtonClicked();
@@ -141,7 +160,7 @@ class Mediator
 
     Gtk::Widget* asWidget();
 
-    void setEngineRequirements(openfluid::core::CoreRepository&);
+    void setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob);
 
     sigc::signal<void> signal_DrawingAreaExposeEventChanged();
     void redraw();

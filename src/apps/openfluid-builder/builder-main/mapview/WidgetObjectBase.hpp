@@ -81,7 +81,7 @@ class WidgetObjectBase: public WidgetObject
     Gtk::CheckButton* mp_CheckButton;
 
     Gtk::Label m_TitleLayerLabel;
-    Gtk::Label m_NameShapeFileLabel;
+    Gtk::Label m_LayerIdLabel;
 
     Glib::RefPtr<Gtk::Action> mref_UpLayer;
     Glib::RefPtr<Gtk::Action> mref_DownLayer;
@@ -109,7 +109,7 @@ class WidgetObjectBase: public WidgetObject
 
   public:
 
-    WidgetObjectBase(std::string, std::string);
+    WidgetObjectBase(std::string ClassName, std::string Id);
 
     mtype_SignalWidgetObjectBase signalUpLayerButtonClicked();
     mtype_SignalWidgetObjectBase signalDownLayerButtonClicked();

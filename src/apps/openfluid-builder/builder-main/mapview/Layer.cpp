@@ -57,6 +57,8 @@
 #include <gtkmm/liststore.h>
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/core/UnstructuredValue.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
 
 #include "ICLayer.hpp"
 #include "ICLayerPoint.hpp"
@@ -68,18 +70,48 @@
 
 #include "Layer.hpp"
 
-Layer::Layer(const LayerType::LayerTypes LayerType) :
-  mp_ICLayer(0), m_LayerType(LayerType)//, mp_WidgetLayerObject(0)
+Layer::Layer(const LayerType::LayerTypes LayerType,
+    openfluid::core::UnstructuredValue* Value,
+    std::string Id, std::string ClassName) :
+  mp_ICLayer(0), mp_WidgetLayerObject(0), m_LayerType(LayerType),
+  m_Value(Value), m_ClassName(ClassName)
 {
-
-  m_LoadShapeFile = false;
   m_IsDisplay = true;
   m_IsSelected = false;
   m_DisplayID = false;
   m_DisplayGraph = false;
-  m_ClassName = "";
-  m_FileName = "";
-  m_FolderUri = "";
+
+  mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType, m_ClassName, Id);
+
+  //***************Signal WidgetObjectBase*********************
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
+  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
+      sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
+  mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
+      sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
+
+  mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
+
+  if(LayerType == LayerType::LAYER_BASE)
+  {
+    try
+    {
+      loadShapefile();
+    }
+    catch (openfluid::base::OFException e)
+    {
+      delete mp_WidgetLayerObject;
+      delete mp_ICLayer;
+      throw;
+    }
+  }
 }
 
 // =====================================================================
@@ -98,146 +130,64 @@ Gtk::Widget* Layer::asWidget()
   return mp_WidgetLayerObject->asWidget();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void Layer::addNewLayer(
-    std::pair<std::pair<std::string, std::string>, std::string> Data)
+void Layer::loadShapefile()
 {
-  m_FileName = Data.first.second;
-  m_FolderUri = Data.first.first;
-  m_ClassName = Data.second;
+  OGRDataSource* DataSource = (static_cast<openfluid::core::GeoVectorValue*>(m_Value))->get();
 
-  mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType, m_ClassName,
-      m_FileName);
+  if(DataSource->GetLayerCount() < 1)
+    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","No layer");
 
-  //***************Signal WidgetObjectBase*********************
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
-  mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
-      sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
+  OGRLayer* Layer = DataSource->GetLayer(0);
+  if (!Layer)
+    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","Problem loading layer");
 
-  mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
-  if (m_FileName != "" && m_FolderUri != "" && m_ClassName != "")
+  if (Layer->GetFeatureCount() < 0)
+    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","No feature");
+
+  OGRFeatureDefn* FeatureDef = Layer->GetLayerDefn();
+
+  int SelfIDIndex = FeatureDef->GetFieldIndex("SELF_ID");
+  if(SelfIDIndex < 0)
+    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","No SELF_ID field");
+
+  OGRwkbGeometryType Type = FeatureDef->GetGeomType();
+  switch (Type)
   {
-    loadShapefile(m_FolderUri, m_FileName);
-    m_LoadShapeFile = true;
+    case wkbPoint:
+      mp_ICLayer = new ICLayerPoint();
+      break;
+    case wkbLineString:
+      mp_ICLayer = new ICLayerLineString();
+      break;
+    case wkbPolygon:
+      mp_ICLayer = new ICLayerPolygon();
+      break;
+    case wkbMultiPolygon:
+      mp_ICLayer = new ICLayerMultiPolygon();
+      break;
+    default:
+      throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","Unknown Geometry type");
+      break;
   }
-}
+  mp_WidgetLayerObject->getWidgetObjectBase()->setOGRGeometryType(Type);
 
-// =====================================================================
-// =====================================================================
-
-void Layer::loadShapefile(std::string FolderURI, std::string FileName)
-{
-  OGRRegisterAll();
-
-  OGRDataSource *File;
-
-  File = OGRSFDriverRegistrar::Open((char*) FolderURI.c_str(), FALSE);
-  if (File == NULL)
+  OGRFeature* Feature;
+  OGRGeometry* GeometryCopy;
+  int SelfID;
+  Layer->ResetReading();
+  while ((Feature = Layer->GetNextFeature()) != NULL)
   {
+    GeometryCopy = Feature->GetGeometryRef()->clone();
+    SelfID = Feature->GetFieldAsInteger(SelfIDIndex);
 
-    std::cout << "Open failed.\n" << std::endl;
-    exit(1);
+    mp_ICLayer->addObjectGeo(SelfID, GeometryCopy);
 
-  } else
-  {
-    std::cout << "Open OK !!!" << std::endl;
+    OGRFeature::DestroyFeature(Feature);
   }
-  OGRLayer *Layer = 0;
-  Layer = File->GetLayerByName((char*) FileName.c_str());
-
-  if (Layer)
-  {
-    Layer->ResetReading();
-
-    OGRFeature* Feature;
-    int type;
-    bool selfIDExist = false;
-    if (Layer->GetFeatureCount() > 0)
-    {
-      type = Layer->GetNextFeature()->GetGeometryRef()->getGeometryType();
-
-      OGRFeatureDefn *poFDefn = Layer->GetLayerDefn();
-      int iField;
-
-      for (iField = 0; iField < poFDefn->GetFieldCount(); iField++)
-      {
-        OGRFieldDefn *poFieldDefn = poFDefn->GetFieldDefn(iField);
-        if (static_cast<std::string> (poFieldDefn->GetNameRef()) == "SELF_ID")
-          selfIDExist = true;
-      }
-      switch (type)
-      {
-        case wkbPoint:
-        {
-          mp_ICLayer = new ICLayerPoint();
-          break;
-        }
-        case wkbLineString:
-        {
-          mp_ICLayer = new ICLayerLineString();
-          break;
-        }
-        case wkbPolygon:
-        {
-          mp_ICLayer = new ICLayerPolygon();
-          break;
-        }
-        case wkbMultiPolygon:
-        {
-          mp_ICLayer = new ICLayerMultiPolygon();
-          break;
-        }
-        default:
-        {
-          type = wkbUnknown;
-          std::cerr << "bad geometry ref type" << std::endl;
-        }
-          break;
-      }
-      mp_WidgetLayerObject->getWidgetObjectBase()->setOGRGeometryType(type);
-    } else
-      std::cerr << "no feature" << std::endl;
-    if (selfIDExist)
-    {
-      Layer->ResetReading();
-
-      while ((Feature = Layer->GetNextFeature()) != NULL)
-      {
-        OGRGeometry* poGeometry = Feature->GetGeometryRef();
-        OGRGeometry* poGeomCopy = poGeometry->clone();
-
-        OGRFeatureDefn *poFDefn = Layer->GetLayerDefn();
-        int iField;
-        int selfID;
-
-        for (iField = 0; iField < poFDefn->GetFieldCount(); iField++)
-        {
-          OGRFieldDefn *poFieldDefn = poFDefn->GetFieldDefn(iField);
-          if (static_cast<std::string> (poFieldDefn->GetNameRef()) == "SELF_ID")
-          {
-            selfID = Feature->GetFieldAsInteger(iField);
-          }
-        }
-        mp_ICLayer->addObjectGeo(selfID, poGeomCopy);
-
-        OGRFeature::DestroyFeature(Feature);
-      }
-    }
-  } else
-    std::cerr << "layer of file " << FileName << "not found" << std::endl;
-
-  OGRDataSource::DestroyDataSource(File);
 }
 
 // =====================================================================
@@ -305,10 +255,10 @@ bool Layer::getIsDisplay()
 // =====================================================================
 // =====================================================================
 
-std::string Layer::getFileName()
-{
-  return m_FileName;
-}
+//std::string Layer::getFileName()
+//{
+//  return m_FileName;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -321,18 +271,18 @@ std::string Layer::getClassName()
 // =====================================================================
 // =====================================================================
 
-std::string Layer::getFolderUri()
-{
-  return m_FolderUri;
-}
+//std::string Layer::getFolderUri()
+//{
+//  return m_FolderUri;
+//}
 
 // =====================================================================
 // =====================================================================
 
-bool Layer::getLoadShapeFile()
-{
-  return m_LoadShapeFile;
-}
+//bool Layer::getLoadShapeFile()
+//{
+//  return m_LoadShapeFile;
+//}
 
 // =====================================================================
 // =====================================================================

@@ -59,7 +59,7 @@
 
 #include "WidgetObjectBase.hpp"
 
-WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string FileName) :
+WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
   WidgetObject()
 {
   mp_CheckButton = Gtk::manage(new Gtk::CheckButton());
@@ -98,9 +98,9 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string FileName) 
   mp_ButtonDown = mref_DownLayer->create_tool_item();
   mp_ButtonRemove = mref_RemoveLayer->create_tool_item();
   m_TitleLayerLabel.set_label(ClassName);
-  m_NameShapeFileLabel.set_label(FileName);
+  m_LayerIdLabel.set_label(Id);
   m_TitleLayerLabel.set_alignment(0, 0);
-  m_NameShapeFileLabel.set_alignment(0, 0);
+  m_LayerIdLabel.set_alignment(0, 0);
 
   tup->append(*mp_ButtonUp);
   tdown->append(*mp_ButtonDown);
@@ -108,7 +108,7 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string FileName) 
   mp_MainTable->attach(*mp_CheckButton, 0, 1, 0, 2, Gtk::SHRINK, Gtk::SHRINK);
   mp_MainTable->attach(m_TitleLayerLabel, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
-  mp_MainTable->attach(m_NameShapeFileLabel, 1, 2, 1, 2,
+  mp_MainTable->attach(m_LayerIdLabel, 1, 2, 1, 2,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_MainTable->attach(*mp_ImageOGRGeometryType, 2, 3, 0, 2, Gtk::SHRINK,
       Gtk::SHRINK);

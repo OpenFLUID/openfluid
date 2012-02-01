@@ -46,70 +46,90 @@
  */
 
 /**
- \file WidgetLayerObject.cpp
+ \file Layer_TEST.cpp
  \brief Implements ...
 
- \author Damien CHABBERT <dams.vivien@gmail.com>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "WidgetLayerObject.hpp"
-#include "WidgetObject.hpp"
-#include "WidgetExpander.hpp"
-#include "ToolBox.hpp"
+#ifndef __LAYER_TEST_CPP__
+#define __LAYER_TEST_CPP__
 
-WidgetLayerObject::WidgetLayerObject(const LayerType::LayerTypes& LayerType,
-    std::string ClassName, std::string Id) :
-  mref_LayerType(LayerType)
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE builder_unittest_Layer
+#include <boost/test/unit_test.hpp>
+
+#include "BuilderTestHelper.hpp"
+#include "Layer.hpp"
+#include <openfluid/core/GeoVectorValue.hpp>
+//#include "tests-config.hpp"
+
+
+// =====================================================================
+// =====================================================================
+
+struct init_Layer
 {
-  mp_MainVBoxLayer = Gtk::manage(new Gtk::VBox());
+    init_Layer()
+    {
+      BuilderTestHelper::getInstance()->initGtk();
+    }
+};
 
-  switch (mref_LayerType)
-  {
-    case LayerType::LAYER_BASE:
-      mp_WidgetObject = new WidgetObjectBase(ClassName, Id);
-      mp_WidgetExpander = new WidgetExpanderBase();
-      break;
-    case LayerType::LAYER_BACKGROUND:
-      break;
-    case LayerType::LAYER_RESULT:
-      break;
-    default:
-      std::cerr << "error : layer type unexpected";
-      break;
-  }
-
-  mp_MainVBoxLayer->pack_start(*mp_WidgetObject->asWidget());
-  mp_MainVBoxLayer->pack_start(*mp_WidgetExpander->asWidget());
-  mp_MainVBoxLayer->pack_start(*ToolBox::setHSeparator());
-  mp_MainVBoxLayer->set_visible(true);
-
-}
+BOOST_FIXTURE_TEST_SUITE(LayerTest, init_Layer)
 
 // =====================================================================
 // =====================================================================
 
-Gtk::Widget* WidgetLayerObject::asWidget()
+
+BOOST_AUTO_TEST_CASE(test_constructor_GeoVectorValue_correct)
 {
-  return mp_MainVBoxLayer;
-}
+  openfluid::core::UnstructuredValue* Val =
+  new openfluid::core::GeoVectorValueSub("GeoVectorValue");
 
-// =====================================================================
-// =====================================================================
+  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
+  = CONFIGTESTS_INPUT_DATASETS_DIR;
 
-WidgetObjectBase* WidgetLayerObject::getWidgetObjectBase()
-{
-  return static_cast<WidgetObjectBase*> (mp_WidgetObject);
-}
+  Layer* TheLayer = new Layer(LayerType::LAYER_BASE,Val,"mymap","SU");
 
-// =====================================================================
-// =====================================================================
-
-WidgetExpanderBase* WidgetLayerObject::getWidgetExpanderBase()
-{
-  return static_cast<WidgetExpanderBase*> (mp_WidgetExpander);
+  delete TheLayer;
 }
 
 // =====================================================================
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(test_constructor_GeoVectorValue_wrong_file)
+{
+  openfluid::core::UnstructuredValue* Val =
+  new openfluid::core::GeoVectorValueSub("GeoVectorValue/wrong.shp");
+
+  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
+  = CONFIGTESTS_INPUT_DATASETS_DIR;
+
+  BOOST_CHECK_THROW(new Layer(LayerType::LAYER_BASE,Val,"mymap","SU"),openfluid::base::OFException);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_constructor_GeoVectorValue_wrong_noSelfID)
+{
+  openfluid::core::UnstructuredValue* Val =
+  new openfluid::core::GeoVectorValueSub("GeoVectorValue/SU_wrong_noSelfID.shp");
+
+  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
+  = CONFIGTESTS_INPUT_DATASETS_DIR;
+
+  BOOST_CHECK_THROW(new Layer(LayerType::LAYER_BASE,Val,"mymap","SU"),openfluid::base::OFException);
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_SUITE_END()
+
+#endif /* __LAYER_TEST_CPP__ */

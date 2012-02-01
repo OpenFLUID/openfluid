@@ -64,6 +64,12 @@
 #include "ICLayer.hpp"
 #include "LayerType.hpp"
 
+namespace openfluid {
+namespace core {
+class UnstructuredValue;
+}
+}
+
 //class ICLayer;
 class WidgetLayerObject;
 
@@ -76,9 +82,9 @@ class Layer
     WidgetLayerObject* mp_WidgetLayerObject;
     const LayerType::LayerTypes m_LayerType;
 
+    openfluid::core::UnstructuredValue* m_Value;
+
     std::string m_ClassName;
-    std::string m_FileName;
-    std::string m_FolderUri;
 
     int m_SizeLine;
 
@@ -92,9 +98,10 @@ class Layer
 
     bool m_IsSelected;
     bool m_IsDisplay;
-    bool m_LoadShapeFile;
     bool m_DisplayID;
     bool m_DisplayGraph;
+
+    void loadShapefile();
 
     //***************Signal WidgetObjectBase*********************
     void whenOnUpLayerButtonClicked();
@@ -120,12 +127,10 @@ class Layer
 
   public:
 
-    Layer(const LayerType::LayerTypes);
+    Layer(const LayerType::LayerTypes,openfluid::core::UnstructuredValue* Value,
+        std::string Id, std::string ClassName);
     ~Layer();
 
-    void addNewLayer(
-        std::pair<std::pair<std::string, std::string>, std::string>);
-    void loadShapefile(std::string, std::string);
     void initialiseLayerContext(Cairo::RefPtr<Cairo::Context>, double);
     void draw(Cairo::RefPtr<Cairo::Context>, double, std::set<int>, bool);
 
@@ -151,13 +156,10 @@ class Layer
     getMinMaxSelection(std::set<int>);
     bool getIsDisplay();
     bool getIsSelected();
-    bool getLoadShapeFile();
     bool getDisplayLayerName();
     bool getDisplayID();
     bool getDisplayGraph();
     std::string getClassName();
-    std::string getFileName();
-    std::string getFolderUri();
     ICLayer* getICLayer();
     //set
     void setIsSelected(bool);

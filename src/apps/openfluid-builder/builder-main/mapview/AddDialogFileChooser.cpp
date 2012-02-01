@@ -186,6 +186,7 @@ bool AddDialogFileChooser::isEmptyString(std::string Str)
 // =====================================================================
 // =====================================================================
 
+// return pair< pair<Folder,Filename> , ClassName>
 std::pair<std::pair<std::string, std::string>, std::string> AddDialogFileChooser::show(
     std::set<std::string> ClassNames)
 {

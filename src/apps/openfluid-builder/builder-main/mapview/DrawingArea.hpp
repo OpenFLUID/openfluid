@@ -84,7 +84,7 @@ class DrawingArea: public Gtk::DrawingArea
     double m_YTranslate;
 
     bool m_pressMultiSelect;
-    bool m_LayerExist;
+//    bool m_LayerExist;
     bool m_ZoomFrame;
     bool m_SavePixBuf;
 
@@ -129,7 +129,7 @@ class DrawingArea: public Gtk::DrawingArea
     void setScale(double);
     void setXTranslate(double);
     void setYTranslate(double);
-    void setLayerExist(bool);
+//    void setLayerExist(bool);
     void setZoomFrame(bool);
     void setSavePixBuf(bool);
 

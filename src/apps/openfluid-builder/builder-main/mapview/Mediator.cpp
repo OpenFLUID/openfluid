@@ -61,11 +61,15 @@
 
 #include <glibmm/i18n.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/Datastore.hpp>
+#include <openfluid/core/DatastoreItem.hpp>
 
 Mediator::Mediator(DrawingArea& DrawingArea, StatusBar& StatusBar,
     ToolBar& ToolBar) :
   mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar),
-      mref_ToolBar(ToolBar), mp_CoreRepos(0)
+      mref_ToolBar(ToolBar), mp_CoreRepos(0), mp_Datastore(0), m_IsFirstExposeEvent(true)
 {
   m_SelectedClassName = "";
   m_addDialogCreate = false;
@@ -112,6 +116,91 @@ Mediator::Mediator(DrawingArea& DrawingArea, StatusBar& StatusBar,
 // =====================================================================
 // =====================================================================
 
+void Mediator::addAvailableLayersFromDatastore()
+{
+  openfluid::core::Datastore::DataItemsById_t Items = mp_Datastore->getItems();
+
+  LayerType::LayerTypes Type;
+
+  for(openfluid::core::Datastore::DataItemsById_t::const_iterator it = Items.begin() ; it != Items.end() ; ++it)
+  {
+    if(hasADisplayableVectorValue(it->second))
+      Type = LayerType::LAYER_BASE;
+    else if(hasADisplayableRasterValue(it->second))
+      Type = LayerType::LAYER_BACKGROUND;
+    else
+      continue;
+
+    try
+    {
+      Layer* ALayer = new Layer(Type, it->second->getValue(), it->second->getId(), it->second->getUnitClass());
+
+      addALayer(*ALayer);
+    }
+    catch (openfluid::base::OFException e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+          Glib::ustring::compose("%1: %2",it->second->getId(),e.what()));
+    }
+  }
+
+  if(!m_Layers.empty())
+  {
+    removeAllObjectMainVBoxMediator();
+    addAllObjectMainVBoxMediator();
+
+    mref_ToolBar.resetSensitiveToolBar(true);
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::addALayer(Layer& ALayer)
+{
+  m_Layers.push_back(&ALayer);
+
+  ALayer.update(*mp_CoreRepos);
+
+  ALayer.signalUpLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnUpLayerButtonClicked));
+  ALayer.signalDownLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnDownLayerButtonClicked));
+  ALayer.signalRemoveLayerButtonClicked().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnRemoveLayerButtonClicked));
+  ALayer.signalIsDisplayButtonChecked().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnIsDisplayButtonChecked));
+  ALayer.signalIsSelectedLayerClicked().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnIsSelectedLayerClicked));
+  ALayer.signalWidgetExpanderBaseChanged().connect(
+      sigc::mem_fun(*this, &Mediator::whenOnWidgetExpanderBaseChanged));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem* Item)
+{
+  return Item->getValue() && Item->getValue()->getType() == openfluid::core::UnstructuredValue::GeoVectorValue
+      && EngineHelper::getClassNames(mp_CoreRepos).count(Item->getUnitClass());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem* Item)
+{
+  return Item->getValue() && Item->getValue()->getType() == openfluid::core::UnstructuredValue::GeoRasterValue;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 Gtk::Widget* Mediator::asWidget()
 {
   return mp_MainVBoxMediator;
@@ -120,9 +209,12 @@ Gtk::Widget* Mediator::asWidget()
 // =====================================================================
 // =====================================================================
 
-void Mediator::setEngineRequirements(openfluid::core::CoreRepository& CoreRepos)
+void Mediator::setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob)
 {
-  mp_CoreRepos = &CoreRepos;
+  mp_CoreRepos = &SimBlob.getCoreRepository();
+  mp_Datastore = &SimBlob.getDatastore();
+
+  addAvailableLayersFromDatastore();
 }
 
 // =====================================================================
@@ -138,7 +230,12 @@ sigc::signal<void> Mediator::signal_DrawingAreaExposeEventChanged()
 
 void Mediator::whenDrawingAreaChanged()
 {
-  //  m_signal_DrawingAreaExposeEventChanged.emit();
+  if(m_IsFirstExposeEvent)
+  {
+    whenOnShow100FocusButtonClicked();
+    m_IsFirstExposeEvent = false;
+  }
+
   redraw();
 }
 
@@ -149,15 +246,15 @@ void Mediator::whenDrawingAreaChanged()
 
 void Mediator::whenOnShow100FocusButtonClicked()
 {
-  if (!m_Layer.empty())
+  if (!m_Layers.empty())
   {
     std::vector<Layer*>::iterator it;
     std::pair<std::pair<double, double>, std::pair<double, double> > MinMax;
-    MinMax.first.first = (*m_Layer.begin())->getMinMaxLayer().first.first;
-    MinMax.first.second = (*m_Layer.begin())->getMinMaxLayer().first.second;
-    MinMax.second.first = (*m_Layer.begin())->getMinMaxLayer().second.first;
-    MinMax.second.second = (*m_Layer.begin())->getMinMaxLayer().second.second;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    MinMax.first.first = (*m_Layers.begin())->getMinMaxLayer().first.first;
+    MinMax.first.second = (*m_Layers.begin())->getMinMaxLayer().first.second;
+    MinMax.second.first = (*m_Layers.begin())->getMinMaxLayer().second.first;
+    MinMax.second.second = (*m_Layers.begin())->getMinMaxLayer().second.second;
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (MinMax.first.first > (*it)->getMinMaxLayer().first.first)
         MinMax.first.first = (*it)->getMinMaxLayer().first.first;
@@ -192,7 +289,7 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
   } else
   {
     std::vector<Layer*>::iterator it;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
@@ -218,7 +315,7 @@ void Mediator::whenOnZoomLayerFocusButtonClicked()
   } else
   {
     std::vector<Layer*>::iterator it;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
@@ -276,7 +373,7 @@ void Mediator::whenOnSelectAllPreferenceMenuClicked()
   } else
   {
     std::vector<Layer*>::iterator it;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
@@ -302,7 +399,7 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
   } else
   {
     std::vector<Layer*>::iterator it;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
@@ -326,79 +423,83 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 
 void Mediator::whenOnAddLayerToolButtonClicked()
 {
-
-  if (!m_addDialogCreate)
-  {
-    mp_AddDialogFileChooser = new AddDialogFileChooser(
-        dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
-        _("Please choose a new layer"));
-    m_addDialogCreate = true;
-  }
-
-  Layer* pLayer;
-  pLayer = new Layer(LayerType::LAYER_BASE);
-  m_Layer.push_back(pLayer);
-
-  mref_DrawingArea.setLayerExist(true);
-
-  std::set<std::string> ClassNames = EngineHelper::getClassNames(mp_CoreRepos);
-  std::vector<Layer*>::iterator it;
-  for (it = m_Layer.begin(); it != m_Layer.end(); it++)
-  {
-    std::set<std::string>::iterator ite;
-    ite = ClassNames.find((*it)->getClassName());
-    if (ite != ClassNames.end())
-      ClassNames.erase(ite);
-  }
-
-  if (!ClassNames.empty())
-  {
-    std::pair<std::pair<std::string, std::string>, std::string> AddFile =
-        mp_AddDialogFileChooser->show(ClassNames);
-    while (AddFile.second == "" && AddFile.first.first != ""
-        && AddFile.first.second != "")
-    {
-      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-          _(
-              "You can't added a new layer because you aren't select an unit class.\n\nPlease select an unit class."));
-      AddFile = mp_AddDialogFileChooser->show(ClassNames);
-    }
-    pLayer->addNewLayer(AddFile);
-
-  } else
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _(
-            "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
-
-  }
-  if (pLayer->getLoadShapeFile())
-  {
-    pLayer->update(*mp_CoreRepos);
-    if (m_Layer.size() == 1)
-    {
-      mref_DrawingArea.modifyScaleTranslate(pLayer->getMinMaxLayer());
-    }
-    removeAllObjectMainVBoxMediator();
-    addAllObjectMainVBoxMediator();
-
-    //***************Signal Layer*********************
-    pLayer->signalUpLayerButtonClicked().connect(
-        sigc::mem_fun(*this, &Mediator::whenOnUpLayerButtonClicked));
-    pLayer->signalDownLayerButtonClicked().connect(
-        sigc::mem_fun(*this, &Mediator::whenOnDownLayerButtonClicked));
-    pLayer->signalRemoveLayerButtonClicked().connect(
-        sigc::mem_fun(*this, &Mediator::whenOnRemoveLayerButtonClicked));
-    pLayer->signalIsDisplayButtonChecked().connect(
-        sigc::mem_fun(*this, &Mediator::whenOnIsDisplayButtonChecked));
-    pLayer->signalIsSelectedLayerClicked().connect(
-        sigc::mem_fun(*this, &Mediator::whenOnIsSelectedLayerClicked));
-    pLayer->signalWidgetExpanderBaseChanged().connect(
-        sigc::mem_fun(*this, &Mediator::whenOnWidgetExpanderBaseChanged));
-    mref_ToolBar.resetSensitiveToolBar(true);
-    redraw();
-  } else
-    m_Layer.pop_back();
+//
+//  if (!m_addDialogCreate)
+//  {
+//    mp_AddDialogFileChooser = new AddDialogFileChooser(
+//        dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
+//        _("Please choose a new layer"));
+//    m_addDialogCreate = true;
+//  }
+//
+//  Layer* pLayer;
+//  pLayer = new Layer(LayerType::LAYER_BASE);
+//  m_Layers.push_back(pLayer);
+//
+//  // utility ?
+//  mref_DrawingArea.setLayerExist(true);
+//
+//  // get not already displayed class names
+//  std::set<std::string> ClassNames = EngineHelper::getClassNames(mp_CoreRepos);
+//  std::vector<Layer*>::iterator it;
+//  for (it = m_Layers.begin(); it != m_Layers.end(); it++)
+//  {
+//    std::set<std::string>::iterator ite;
+//    ite = ClassNames.find((*it)->getClassName());
+//    if (ite != ClassNames.end())
+//      ClassNames.erase(ite);
+//  }
+//
+//  // if there is still a not already displayed class name
+//  if (!ClassNames.empty())
+//  {
+//    // AddFile : pair< pair<Folder,Filename> , ClassName>
+//    std::pair<std::pair<std::string, std::string>, std::string> AddFile =
+//        mp_AddDialogFileChooser->show(ClassNames);
+//    while (AddFile.second == "" && AddFile.first.first != ""
+//        && AddFile.first.second != "")
+//    {
+//      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//          _(
+//              "You can't added a new layer because you aren't select an unit class.\n\nPlease select an unit class."));
+//      AddFile = mp_AddDialogFileChooser->show(ClassNames);
+//    }
+//    pLayer->addNewLayer(AddFile);
+//
+//  } else
+//  {
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        _(
+//            "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
+//
+//  }
+//  if (pLayer->getLoadShapeFile())
+//  {
+//    pLayer->update(*mp_CoreRepos);
+//    if (m_Layers.size() == 1)
+//    {
+//      mref_DrawingArea.modifyScaleTranslate(pLayer->getMinMaxLayer());
+//    }
+//    removeAllObjectMainVBoxMediator();
+//    addAllObjectMainVBoxMediator();
+//
+//    //***************Signal Layer*********************
+//    pLayer->signalUpLayerButtonClicked().connect(
+//        sigc::mem_fun(*this, &Mediator::whenOnUpLayerButtonClicked));
+//    pLayer->signalDownLayerButtonClicked().connect(
+//        sigc::mem_fun(*this, &Mediator::whenOnDownLayerButtonClicked));
+//    pLayer->signalRemoveLayerButtonClicked().connect(
+//        sigc::mem_fun(*this, &Mediator::whenOnRemoveLayerButtonClicked));
+//    pLayer->signalIsDisplayButtonChecked().connect(
+//        sigc::mem_fun(*this, &Mediator::whenOnIsDisplayButtonChecked));
+//    pLayer->signalIsSelectedLayerClicked().connect(
+//        sigc::mem_fun(*this, &Mediator::whenOnIsSelectedLayerClicked));
+//    pLayer->signalWidgetExpanderBaseChanged().connect(
+//        sigc::mem_fun(*this, &Mediator::whenOnWidgetExpanderBaseChanged));
+//    mref_ToolBar.resetSensitiveToolBar(true);
+//    redraw();
+//  } else
+//    m_Layers.pop_back();
 }
 
 // =====================================================================
@@ -499,7 +600,7 @@ void Mediator::whenOnDownLayerButtonClicked(std::string ClassName)
 void Mediator::whenOnRemoveLayerButtonClicked(std::string ClassName)
 {
   removeLayer(ClassName);
-  if (m_Layer.empty())
+  if (m_Layers.empty())
     mref_ToolBar.resetSensitiveToolBar(false);
   if (m_SelectedClassName == ClassName)
     m_SelectedUnitId.clear();
@@ -514,7 +615,7 @@ void Mediator::whenOnIsSelectedLayerClicked(std::string ClassName)
   m_SelectedClassName = ClassName;
   m_SelectedUnitId.clear();
   std::vector<Layer*>::iterator it;
-  for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+  for (it = m_Layers.begin(); it < m_Layers.end(); it++)
   {
     if (ClassName != (*it)->getClassName())
       (*it)->setIsSelected(false);
@@ -547,7 +648,7 @@ void Mediator::whenOnMotionNotifyChanged(double X, double Y)
   std::stringstream str2;
   std::string Xstr;
   std::string Ystr;
-  if (!m_Layer.empty())
+  if (!m_Layers.empty())
   {
     str1 << X;
     str2 << Y;
@@ -579,7 +680,7 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
   } else
   {
     std::vector<Layer*>::iterator it;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName()
           && !m_SelectedUnitId.empty())
@@ -641,12 +742,13 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
 
 void Mediator::redraw()
 {
-  mref_DrawingArea.get_window()->clear();
   Glib::RefPtr<Gdk::Window> Window = mref_DrawingArea.get_window();
-  //
+
   if (Window)
   {
-    if (!m_Layer.empty())
+    Window->clear();
+
+    if (!m_Layers.empty())
     {
       Cairo::RefPtr<Cairo::Context> Context = Window->create_cairo_context();
       Gtk::Allocation allocation = mref_DrawingArea.get_allocation();
@@ -660,7 +762,7 @@ void Mediator::redraw()
       Context->translate(-mref_DrawingArea.getXTranslate(),
           -mref_DrawingArea.getYTranslate());
       std::vector<Layer*>::reverse_iterator rit;
-      for (rit = m_Layer.rbegin(); rit < m_Layer.rend(); ++rit)
+      for (rit = m_Layers.rbegin(); rit < m_Layers.rend(); ++rit)
       {
         if ((*rit)->getIsDisplay())
         {
@@ -689,14 +791,14 @@ void Mediator::upLayer(std::string ClassName)
   removeAllObjectMainVBoxMediator();
   Layer* pLayer;
   std::vector<Layer*>::reverse_iterator rit;
-  for (rit = m_Layer.rbegin(); rit < m_Layer.rend(); ++rit)
+  for (rit = m_Layers.rbegin(); rit < m_Layers.rend(); ++rit)
   {
     if ((*rit)->getClassName() == ClassName)
     {
       pLayer = (*rit);
-      m_Layer.erase(--rit.base());
+      m_Layers.erase(--rit.base());
       ++rit;
-      m_Layer.insert(--rit.base(), pLayer);
+      m_Layers.insert(--rit.base(), pLayer);
     }
   }
   addAllObjectMainVBoxMediator();
@@ -710,14 +812,14 @@ void Mediator::downLayer(std::string ClassName)
   removeAllObjectMainVBoxMediator();
   Layer* pLayer;
   std::vector<Layer*>::iterator it;
-  for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+  for (it = m_Layers.begin(); it < m_Layers.end(); it++)
   {
     if ((*it)->getClassName() == ClassName)
     {
       pLayer = (*it);
-      m_Layer.erase(it);
+      m_Layers.erase(it);
       it++;
-      m_Layer.insert(it, pLayer);
+      m_Layers.insert(it, pLayer);
     }
   }
   addAllObjectMainVBoxMediator();
@@ -730,16 +832,16 @@ void Mediator::removeLayer(std::string ClassName)
 {
   removeAllObjectMainVBoxMediator();
   std::vector<Layer*>::iterator it;
-  for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+  for (it = m_Layers.begin(); it < m_Layers.end(); it++)
   {
     if ((*it)->getClassName() == ClassName)
     {
-      m_Layer.erase(it);
+      m_Layers.erase(it);
     }
   }
   addAllObjectMainVBoxMediator();
-  if (m_Layer.empty())
-    mref_DrawingArea.setLayerExist(false);
+//  if (m_Layers.empty())
+//    mref_DrawingArea.setLayerExist(false);
 }
 
 // =====================================================================
@@ -756,17 +858,17 @@ void Mediator::removeAllObjectMainVBoxMediator()
 
 void Mediator::addAllObjectMainVBoxMediator()
 {
-  if (!m_Layer.empty())
+  if (!m_Layers.empty())
   {
     std::vector<Layer*>::iterator it;
-    for (it = m_Layer.begin(); it < m_Layer.end(); it++)
+    for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       mp_MainVBoxMediator->pack_start(*(*it)->asWidget(), Gtk::PACK_SHRINK);
       (*it)->setWidgetUpSensitive(true);
       (*it)->setWidgetDownSensitive(true);
     }
-    m_Layer.front()->setWidgetUpSensitive(false);
-    m_Layer.back()->setWidgetDownSensitive(false);
+    m_Layers.front()->setWidgetUpSensitive(false);
+    m_Layers.back()->setWidgetDownSensitive(false);
   }
 }
 

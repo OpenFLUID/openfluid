@@ -78,7 +78,7 @@ GeoVectorValue::GeoVectorValue(std::string RelativePath) :
 
 GeoVectorValue::~GeoVectorValue()
 {
-  delete m_Data;
+  OGRDataSource::DestroyDataSource(m_Data);
 }
 
 // =====================================================================

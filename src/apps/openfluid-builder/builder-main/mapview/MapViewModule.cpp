@@ -137,6 +137,7 @@ MapViewModule::MapViewModule()
   mp_Mediator->signal_DrawingAreaExposeEventChanged().connect( sigc::mem_fun(*this, &MapViewModule::whenChanged));
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -145,6 +146,7 @@ Gtk::Widget* MapViewModule::asWidget()
   return mp_MainScrolledWindow;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -152,13 +154,21 @@ void MapViewModule::setEngineRequirements(
     openfluid::machine::ModelInstance& /*ModelInstance*/,
     openfluid::machine::SimulationBlob& SimBlob)
 {
-  mp_Mediator->setEngineRequirements(SimBlob.getCoreRepository());
+  mp_Mediator->setEngineRequirements(SimBlob);
 }
+
+
+// =====================================================================
+// =====================================================================
 
 sigc::signal<void> MapViewModule::signal_ModuleChanged()
 {
   return m_signal_MapViewChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
 
 void MapViewModule::whenChanged()
 {

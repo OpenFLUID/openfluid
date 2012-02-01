@@ -74,7 +74,7 @@ DrawingArea::DrawingArea()
   m_Scale = 1;
 
   m_pressMultiSelect = false;
-  m_LayerExist = false;
+//  m_LayerExist = false;
   m_ZoomFrame = false;
   m_SavePixBuf = false;
 
@@ -423,10 +423,10 @@ void DrawingArea::setYTranslate(double YTranslate)
 // =====================================================================
 // =====================================================================
 
-void DrawingArea::setLayerExist(bool LayerExist)
-{
-  m_LayerExist = LayerExist;
-}
+//void DrawingArea::setLayerExist(bool LayerExist)
+//{
+//  m_LayerExist = LayerExist;
+//}
 
 // =====================================================================
 // =====================================================================
