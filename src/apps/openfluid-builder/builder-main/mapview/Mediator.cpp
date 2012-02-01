@@ -493,9 +493,46 @@ void Mediator::whenOnInfoToolButtonClicked()
   if (m_SelectedClassName == "" ||  m_SelectedUnitId.empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        _(
-            "You can't have informations without select the corresponding layer before and the corresponding units.\n\nPlease select a layer and units."));
-  } else
+        _("You can't have informations without select the corresponding layer"
+            "before and the corresponding units.\n\nPlease select a layer and units."));
+    return;
+  }
+
+
+  std::set<int> UnavailableIds;
+  std::set<int> AvailableIds = m_SelectedUnitId;
+  std::set<int>::iterator it;
+
+  for(it = m_SelectedUnitId.begin() ; it != m_SelectedUnitId.end() ; ++it)
+  {
+    if(!mp_CoreRepos->getUnit(m_SelectedClassName,*it))
+    {
+      UnavailableIds.insert(*it);
+      AvailableIds.erase(*it);
+    }
+  }
+
+  if(UnavailableIds.size() > 1)
+  {
+    Glib::ustring UnavailUnitsStr = Glib::ustring::compose("%1",*UnavailableIds.begin());
+
+    for(it = UnavailableIds.begin().operator ++() ; it != UnavailableIds.end() ; ++it)
+      UnavailUnitsStr += Glib::ustring::compose(" - %1",*it);
+
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        Glib::ustring::compose(_("Units %1 are no more available.\n"
+            "Information about them can not be displayed."),
+            UnavailUnitsStr));
+  }
+  else if(UnavailableIds.size() == 1)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        Glib::ustring::compose(_("Unit %1 is no more available.\n"
+            "Information about it can not be displayed."),
+            *UnavailableIds.begin()));
+  }
+
+  if(!AvailableIds.empty())
   {
     if (!m_infoDialogCreate)
     {
@@ -504,7 +541,7 @@ void Mediator::whenOnInfoToolButtonClicked()
           _("Management"), *mp_CoreRepos);
       m_infoDialogCreate = true;
     }
-    mp_InfoDialog->show(m_SelectedClassName, m_SelectedUnitId);
+    mp_InfoDialog->show(m_SelectedClassName, AvailableIds);
   }
 }
 
