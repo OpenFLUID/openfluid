@@ -468,7 +468,7 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
   {
     std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >::iterator iter;
     for (iter = m_InputDataLineTable.begin(); iter
-        != m_InputDataLineTable.end(); ++iter)
+    != m_InputDataLineTable.end(); ++iter)
     {
       delete((*iter).first);
       delete((*iter).second.second);
@@ -486,61 +486,66 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
   {
     Gtk::TreeRow Row = *mref_ListStoreIDs->append();
     Row[m_ModelColumnIDs.m_ID] = *it;
-    if (m_InputDataNames.empty())
+
+    m_InputDataNames
+    = mp_CoreRepos->getUnit(ClassName, *it)->getInputData()->getInputDataNames();
+
+    if(m_InputDataNames.empty())
+      mp_InputDataTable->set_visible(false);
+    else
     {
-      m_InputDataNames
-          = mp_CoreRepos->getUnit(ClassName, *it)->getInputData()->getInputDataNames();
-    }
-  }
-  mp_InputDataTable->resize((m_InputDataNames.size() * 2) - 1, 3);
-  mp_InputDataTable->set_homogeneous(false);
-  mp_InputDataTable->set_spacings(5);
+      mp_InputDataTable->resize((m_InputDataNames.size() * 2) - 1, 3);
+      mp_InputDataTable->set_homogeneous(false);
+      mp_InputDataTable->set_spacings(5);
 
-  int compt = 0;
-  for (unsigned int i = 0; i < (m_InputDataNames.size() * 2) - 1; i++)
-  {
-    if ((i % 2) == 0)
-    {
-      Gtk::Label* InputDataLabel = Gtk::manage(
-          new Gtk::Label(m_InputDataNames[compt]));
+      int compt = 0;
+      for (unsigned int i = 0; i < (m_InputDataNames.size() * 2) - 1; i++)
+      {
+        if ((i % 2) == 0)
+        {
+          Gtk::Label* InputDataLabel = Gtk::manage(
+              new Gtk::Label(m_InputDataNames[compt]));
 
-      mp_InputDataTable->attach(*InputDataLabel, 0, 1, i, i + 1,
-          Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+          mp_InputDataTable->attach(*InputDataLabel, 0, 1, i, i + 1,
+              Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
-      Gtk::Entry* InputDataValueEntry = Gtk::manage(new Gtk::Entry());
-      InputDataValueEntry->set_name(InputDataLabel->get_label());
-      mp_InputDataTable->attach(*InputDataValueEntry, 1, 2, i, i + 1,
-          Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-      InputDataValueEntry->signal_activate().connect(
-          sigc::bind<std::string>(
-              sigc::mem_fun(*this, &Info::onEntryInputDataChanged),
-              InputDataValueEntry->get_name()));
-      InputDataValueEntry->signal_focus_out_event().connect(
-          sigc::bind<std::string>(
-              sigc::mem_fun(*this, &Info::on_focus_out_event),
-              InputDataValueEntry->get_name()));
-      InputDataValueEntry->set_activates_default(true);
+          Gtk::Entry* InputDataValueEntry = Gtk::manage(new Gtk::Entry());
+          InputDataValueEntry->set_name(InputDataLabel->get_label());
+          mp_InputDataTable->attach(*InputDataValueEntry, 1, 2, i, i + 1,
+              Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+          InputDataValueEntry->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this, &Info::onEntryInputDataChanged),
+                  InputDataValueEntry->get_name()));
+          InputDataValueEntry->signal_focus_out_event().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this, &Info::on_focus_out_event),
+                  InputDataValueEntry->get_name()));
+          InputDataValueEntry->set_activates_default(true);
 
-      Gtk::Button* RestoreDefaultButton = Gtk::manage(
-          new Gtk::Button(_("Restore"), false));
-      mp_InputDataTable->attach(*RestoreDefaultButton, 2, 3, i, i + 1,
-          Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+          Gtk::Button* RestoreDefaultButton = Gtk::manage(
+              new Gtk::Button(_("Restore"), false));
+          mp_InputDataTable->attach(*RestoreDefaultButton, 2, 3, i, i + 1,
+              Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
-      std::pair<Gtk::Entry*, Gtk::Button*> TempPairEntryButton =
-          std::make_pair(InputDataValueEntry, RestoreDefaultButton);
-      m_InputDataLineTable.insert(
-          std::pair<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >(
-              InputDataLabel, TempPairEntryButton));
+          std::pair<Gtk::Entry*, Gtk::Button*> TempPairEntryButton =
+              std::make_pair(InputDataValueEntry, RestoreDefaultButton);
+          m_InputDataLineTable.insert(
+              std::pair<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >(
+                  InputDataLabel, TempPairEntryButton));
 
-      InputDataLabel->set_visible(true);
-      InputDataValueEntry->set_visible(true);
-      RestoreDefaultButton->set_visible(true);
-      RestoreDefaultButton->set_sensitive(false);
-      compt++;
-    } else
-    {
-      mp_InputDataTable->attach(*ToolBox::setHSeparator(), 0, 3, i, i + 1,
-          Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+          InputDataLabel->set_visible(true);
+          InputDataValueEntry->set_visible(true);
+          RestoreDefaultButton->set_visible(true);
+          RestoreDefaultButton->set_sensitive(false);
+          compt++;
+        } else
+        {
+          mp_InputDataTable->attach(*ToolBox::setHSeparator(), 0, 3, i, i + 1,
+              Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+        }
+      }
+      mp_InputDataTable->set_visible(true);
     }
   }
 
