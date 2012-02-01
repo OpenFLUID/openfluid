@@ -80,10 +80,10 @@ class Layer
 
     ICLayer* mp_ICLayer;
     WidgetLayerObject* mp_WidgetLayerObject;
-    const LayerType::LayerTypes m_LayerType;
+    LayerType::LayerTypes m_LayerType;
 
     openfluid::core::UnstructuredValue* m_Value;
-
+    std::string m_Id;
     std::string m_ClassName;
 
     int m_SizeLine;
@@ -127,7 +127,7 @@ class Layer
 
   public:
 
-    Layer(const LayerType::LayerTypes,openfluid::core::UnstructuredValue* Value,
+    Layer(LayerType::LayerTypes, openfluid::core::UnstructuredValue* Value,
         std::string Id, std::string ClassName);
     ~Layer();
 
@@ -154,12 +154,16 @@ class Layer
     getMinMaxLayer();
     std::pair<std::pair<double, double>, std::pair<double, double> >
     getMinMaxSelection(std::set<int>);
+
     bool getIsDisplay();
     bool getIsSelected();
     bool getDisplayLayerName();
     bool getDisplayID();
     bool getDisplayGraph();
+
     std::string getClassName();
+    std::string getId();
+
     ICLayer* getICLayer();
     //set
     void setIsSelected(bool);

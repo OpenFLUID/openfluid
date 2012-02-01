@@ -68,7 +68,6 @@
 #include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "Layer.hpp"
-#include "AddDialogFileChooser.hpp"
 
 namespace openfluid {
 namespace core {
@@ -80,13 +79,16 @@ class SimulationBlob;
 }
 }
 
+class MapViewAddLayersDialog;
+
 class Mediator
 {
 
   private:
 
-    bool m_addDialogCreate;
     bool m_infoDialogCreate;
+
+    MapViewAddLayersDialog* mp_AddLayersDialog;
 
     DrawingArea& mref_DrawingArea;
     StatusBar& mref_StatusBar;
@@ -98,13 +100,13 @@ class Mediator
     bool m_IsFirstExposeEvent;
 
     std::vector<Layer*> m_Layers;
+    std::set<std::string> m_LayersIds;
 
     std::string m_SelectedClassName;
     std::set<int> m_SelectedUnitId;
 
     //GTKmm
 
-    AddDialogFileChooser* mp_AddDialogFileChooser;
     Info* mp_InfoDialog;
 
     Gtk::VBox* mp_MainVBoxMediator;
@@ -113,8 +115,6 @@ class Mediator
 
     void addAvailableLayersFromDatastore();
     void addALayer(Layer& ALayer);
-    bool hasADisplayableVectorValue(openfluid::core::DatastoreItem* Item);
-    bool hasADisplayableRasterValue(openfluid::core::DatastoreItem* Item);
 
     void whenDrawingAreaChanged();
     void whenDrawingAreaRealized();
@@ -165,6 +165,15 @@ class Mediator
     sigc::signal<void> signal_DrawingAreaExposeEventChanged();
     void redraw();
 
+    static bool hasADisplayableVectorValue(
+        openfluid::core::DatastoreItem& Item,
+        openfluid::core::CoreRepository& CoreRepos);
+
+    static bool
+        hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item);
+
+    static Layer* tryToCreateALayerFromADatastoreItem(
+        openfluid::core::DatastoreItem& Item);
 
 };
 

@@ -137,7 +137,6 @@ MapViewModule::MapViewModule()
   mp_Mediator->signal_DrawingAreaExposeEventChanged().connect( sigc::mem_fun(*this, &MapViewModule::whenChanged));
 }
 
-
 // =====================================================================
 // =====================================================================
 

@@ -97,6 +97,19 @@ const Datastore::DataItemsById_t Datastore::getItems() const
 // =====================================================================
 // =====================================================================
 
+DatastoreItem* Datastore::getItem(std::string ItemId)
+{
+  DataItemsById_t::iterator it = m_ItemsById.find(ItemId);
+
+  if(it != m_ItemsById.end())
+    return it->second;
+
+  return (DatastoreItem*)0;
+}
+
+// =====================================================================
+// =====================================================================
+
 void Datastore::addItem(DatastoreItem* Item)
 {
   m_ItemsById[Item->getId()] = Item;

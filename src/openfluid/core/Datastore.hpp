@@ -83,6 +83,8 @@ class Datastore
 
     const DataItemsById_t getItems() const;
 
+    DatastoreItem* getItem(std::string ItemId);
+
     void addItem(DatastoreItem* Item);
 };
 

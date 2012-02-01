@@ -54,10 +54,8 @@
 
 //#include <set>
 
-#include "LayerType.hpp"
-#include "Mediator.hpp"
 
-#include "EngineHelper.hpp"
+#include "Mediator.hpp"
 
 #include <glibmm/i18n.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
@@ -66,14 +64,21 @@
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
 
+#include "LayerType.hpp"
+#include "EngineHelper.hpp"
+#include "MapViewAddLayersDialog.hpp"
+
+
 Mediator::Mediator(DrawingArea& DrawingArea, StatusBar& StatusBar,
     ToolBar& ToolBar) :
   mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar),
       mref_ToolBar(ToolBar), mp_CoreRepos(0), mp_Datastore(0), m_IsFirstExposeEvent(true)
 {
   m_SelectedClassName = "";
-  m_addDialogCreate = false;
   m_infoDialogCreate = false;
+
+  mp_AddLayersDialog = new MapViewAddLayersDialog();
+
   mp_MainVBoxMediator = Gtk::manage(new Gtk::VBox());
 
   mref_DrawingArea.signal_ExposeEventChanged().connect(
@@ -120,28 +125,21 @@ void Mediator::addAvailableLayersFromDatastore()
 {
   openfluid::core::Datastore::DataItemsById_t Items = mp_Datastore->getItems();
 
-  LayerType::LayerTypes Type;
-
-  for(openfluid::core::Datastore::DataItemsById_t::const_iterator it = Items.begin() ; it != Items.end() ; ++it)
+  for(openfluid::core::Datastore::DataItemsById_t::const_iterator it =
+      Items.begin() ; it != Items.end() ; ++it)
   {
-    if(hasADisplayableVectorValue(it->second))
-      Type = LayerType::LAYER_BASE;
-    else if(hasADisplayableRasterValue(it->second))
-      Type = LayerType::LAYER_BACKGROUND;
-    else
+    openfluid::core::DatastoreItem* Item = it->second;
+
+    if(!(hasADisplayableVectorValue(*Item, *mp_CoreRepos)
+    || hasADisplayableRasterValue(*Item)))
       continue;
 
-    try
-    {
-      Layer* ALayer = new Layer(Type, it->second->getValue(), it->second->getId(), it->second->getUnitClass());
+    Layer* ALayer = tryToCreateALayerFromADatastoreItem(*Item);
 
-      addALayer(*ALayer);
-    }
-    catch (openfluid::base::OFException e)
-    {
-      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-          Glib::ustring::compose("%1: %2",it->second->getId(),e.what()));
-    }
+    if(!ALayer)
+      continue;
+
+    addALayer(*ALayer);
   }
 
   if(!m_Layers.empty())
@@ -154,6 +152,39 @@ void Mediator::addAvailableLayersFromDatastore()
 
 }
 
+// =====================================================================
+// =====================================================================
+
+Layer* Mediator::tryToCreateALayerFromADatastoreItem(openfluid::core::DatastoreItem& Item)
+{
+  Layer* ALayer = 0;
+
+  LayerType::LayerTypes Type;
+
+  switch (Item.getValue()->getType())
+  {
+    case openfluid::core::UnstructuredValue::GeoVectorValue:
+      Type = LayerType::LAYER_BASE;
+      break;
+    case openfluid::core::UnstructuredValue::GeoRasterValue:
+      Type = LayerType::LAYER_BACKGROUND;
+    default:
+      return ALayer;
+      break;
+  }
+
+  try
+  {
+    ALayer = new Layer(Type, Item.getValue(), Item.getId(), Item.getUnitClass());
+  }
+  catch (openfluid::base::OFException e)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+        Glib::ustring::compose("%1: %2",Item.getId(),e.what()));
+  }
+
+  return ALayer;
+}
 
 // =====================================================================
 // =====================================================================
@@ -161,6 +192,7 @@ void Mediator::addAvailableLayersFromDatastore()
 void Mediator::addALayer(Layer& ALayer)
 {
   m_Layers.push_back(&ALayer);
+  m_LayersIds.insert(ALayer.getId());
 
   ALayer.update(*mp_CoreRepos);
 
@@ -182,19 +214,19 @@ void Mediator::addALayer(Layer& ALayer)
 // =====================================================================
 // =====================================================================
 
-bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem* Item)
+bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem& Item, openfluid::core::CoreRepository& CoreRepos)
 {
-  return Item->getValue() && Item->getValue()->getType() == openfluid::core::UnstructuredValue::GeoVectorValue
-      && EngineHelper::getClassNames(mp_CoreRepos).count(Item->getUnitClass());
+  return Item.getValue() && Item.getValue()->getType() == openfluid::core::UnstructuredValue::GeoVectorValue
+      && EngineHelper::getClassNames(&CoreRepos).count(Item.getUnitClass());
 }
 
 
 // =====================================================================
 // =====================================================================
 
-bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem* Item)
+bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item)
 {
-  return Item->getValue() && Item->getValue()->getType() == openfluid::core::UnstructuredValue::GeoRasterValue;
+  return Item.getValue() && Item.getValue()->getType() == openfluid::core::UnstructuredValue::GeoRasterValue;
 }
 
 
@@ -213,6 +245,8 @@ void Mediator::setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob
 {
   mp_CoreRepos = &SimBlob.getCoreRepository();
   mp_Datastore = &SimBlob.getDatastore();
+
+  mp_AddLayersDialog->setEngineRequirements(SimBlob);
 
   addAvailableLayersFromDatastore();
 }
@@ -423,83 +457,32 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 
 void Mediator::whenOnAddLayerToolButtonClicked()
 {
-//
-//  if (!m_addDialogCreate)
-//  {
-//    mp_AddDialogFileChooser = new AddDialogFileChooser(
-//        dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
-//        _("Please choose a new layer"));
-//    m_addDialogCreate = true;
-//  }
-//
-//  Layer* pLayer;
-//  pLayer = new Layer(LayerType::LAYER_BASE);
-//  m_Layers.push_back(pLayer);
-//
-//  // utility ?
-//  mref_DrawingArea.setLayerExist(true);
-//
-//  // get not already displayed class names
-//  std::set<std::string> ClassNames = EngineHelper::getClassNames(mp_CoreRepos);
-//  std::vector<Layer*>::iterator it;
-//  for (it = m_Layers.begin(); it != m_Layers.end(); it++)
-//  {
-//    std::set<std::string>::iterator ite;
-//    ite = ClassNames.find((*it)->getClassName());
-//    if (ite != ClassNames.end())
-//      ClassNames.erase(ite);
-//  }
-//
-//  // if there is still a not already displayed class name
-//  if (!ClassNames.empty())
-//  {
-//    // AddFile : pair< pair<Folder,Filename> , ClassName>
-//    std::pair<std::pair<std::string, std::string>, std::string> AddFile =
-//        mp_AddDialogFileChooser->show(ClassNames);
-//    while (AddFile.second == "" && AddFile.first.first != ""
-//        && AddFile.first.second != "")
-//    {
-//      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-//          _(
-//              "You can't added a new layer because you aren't select an unit class.\n\nPlease select an unit class."));
-//      AddFile = mp_AddDialogFileChooser->show(ClassNames);
-//    }
-//    pLayer->addNewLayer(AddFile);
-//
-//  } else
-//  {
-//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-//        _(
-//            "You can't added a new layer because there aren't unit class free.\n\nPlease build new unit class or destruct an existing unit class to add a new layer."));
-//
-//  }
-//  if (pLayer->getLoadShapeFile())
-//  {
-//    pLayer->update(*mp_CoreRepos);
-//    if (m_Layers.size() == 1)
-//    {
-//      mref_DrawingArea.modifyScaleTranslate(pLayer->getMinMaxLayer());
-//    }
-//    removeAllObjectMainVBoxMediator();
-//    addAllObjectMainVBoxMediator();
-//
-//    //***************Signal Layer*********************
-//    pLayer->signalUpLayerButtonClicked().connect(
-//        sigc::mem_fun(*this, &Mediator::whenOnUpLayerButtonClicked));
-//    pLayer->signalDownLayerButtonClicked().connect(
-//        sigc::mem_fun(*this, &Mediator::whenOnDownLayerButtonClicked));
-//    pLayer->signalRemoveLayerButtonClicked().connect(
-//        sigc::mem_fun(*this, &Mediator::whenOnRemoveLayerButtonClicked));
-//    pLayer->signalIsDisplayButtonChecked().connect(
-//        sigc::mem_fun(*this, &Mediator::whenOnIsDisplayButtonChecked));
-//    pLayer->signalIsSelectedLayerClicked().connect(
-//        sigc::mem_fun(*this, &Mediator::whenOnIsSelectedLayerClicked));
-//    pLayer->signalWidgetExpanderBaseChanged().connect(
-//        sigc::mem_fun(*this, &Mediator::whenOnWidgetExpanderBaseChanged));
-//    mref_ToolBar.resetSensitiveToolBar(true);
-//    redraw();
-//  } else
-//    m_Layers.pop_back();
+  std::set<std::string> SelectedLayersIds = mp_AddLayersDialog->show(m_LayersIds);
+
+  for(std::set<std::string>::const_iterator it = SelectedLayersIds.begin() ;
+      it != SelectedLayersIds.end() ; ++it)
+  {
+    openfluid::core::DatastoreItem* Item = mp_Datastore->getItem(*it);
+
+    if(!Item)
+      continue;
+
+    Layer* Layer = tryToCreateALayerFromADatastoreItem(*Item);
+
+    if(!Layer)
+      continue;
+
+    addALayer(*Layer);
+  }
+
+  if(!m_Layers.empty())
+  {
+    removeAllObjectMainVBoxMediator();
+    addAllObjectMainVBoxMediator();
+
+    mref_ToolBar.resetSensitiveToolBar(true);
+  }
+
 }
 
 // =====================================================================
@@ -836,9 +819,11 @@ void Mediator::removeLayer(std::string ClassName)
   {
     if ((*it)->getClassName() == ClassName)
     {
+      m_LayersIds.erase((*it)->getId());
       m_Layers.erase(it);
     }
   }
+
   addAllObjectMainVBoxMediator();
 //  if (m_Layers.empty())
 //    mref_DrawingArea.setLayerExist(false);
@@ -874,3 +859,5 @@ void Mediator::addAllObjectMainVBoxMediator()
 
 // =====================================================================
 // =====================================================================
+
+

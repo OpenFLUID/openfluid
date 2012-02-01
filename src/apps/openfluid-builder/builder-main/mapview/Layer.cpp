@@ -70,18 +70,18 @@
 
 #include "Layer.hpp"
 
-Layer::Layer(const LayerType::LayerTypes LayerType,
+Layer::Layer(LayerType::LayerTypes LayerType,
     openfluid::core::UnstructuredValue* Value,
     std::string Id, std::string ClassName) :
   mp_ICLayer(0), mp_WidgetLayerObject(0), m_LayerType(LayerType),
-  m_Value(Value), m_ClassName(ClassName)
+  m_Value(Value), m_Id(Id), m_ClassName(ClassName)
 {
   m_IsDisplay = true;
   m_IsSelected = false;
   m_DisplayID = false;
   m_DisplayGraph = false;
 
-  mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType, m_ClassName, Id);
+  mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType, m_ClassName, m_Id);
 
   //***************Signal WidgetObjectBase*********************
   mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
@@ -266,6 +266,14 @@ bool Layer::getIsDisplay()
 std::string Layer::getClassName()
 {
   return m_ClassName;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string Layer::getId()
+{
+  return m_Id;
 }
 
 // =====================================================================

@@ -99,7 +99,7 @@ DatastoreItem::~DatastoreItem()
 // =====================================================================
 
 
-std::string DatastoreItem::getId()
+std::string DatastoreItem::getId() const
 {
   return m_Id;
 }
@@ -108,7 +108,7 @@ std::string DatastoreItem::getId()
 // =====================================================================
 
 
-std::string DatastoreItem::getRelativePath()
+std::string DatastoreItem::getRelativePath() const
 {
   return m_RelativePath;
 }
@@ -117,7 +117,7 @@ std::string DatastoreItem::getRelativePath()
 // =====================================================================
 
 
-std::string DatastoreItem::getUnitClass()
+std::string DatastoreItem::getUnitClass() const
 {
   return m_UnitClass;
 }
@@ -127,6 +127,11 @@ std::string DatastoreItem::getUnitClass()
 
 
 UnstructuredValue* DatastoreItem::getValue()
+{
+  return m_Value;
+}
+
+const UnstructuredValue* DatastoreItem::getValue() const
 {
   return m_Value;
 }

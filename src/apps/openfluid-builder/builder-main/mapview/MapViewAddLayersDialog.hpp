@@ -46,48 +46,78 @@
  */
 
 /**
- \file AddDialogFileChooser.hpp
+ \file MapViewAddLayersDialog.hpp
  \brief Header of ...
 
- \author Damien CHABBERT <dams.vivien@gmail.com>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __ADDDIALOGFILECHOOSER_HPP__
-#define __ADDDIALOGFILECHOOSER_HPP__
+#ifndef __MAPVIEWADDLAYERSDIALOG_HPP__
+#define __MAPVIEWADDLAYERSDIALOG_HPP__
 
-#include <gtkmm/filechooserdialog.h>
-#include <gtkmm/box.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/infobar.h>
-#include <iostream>
 #include <set>
 
-class AddDialogFileChooser
-{
+#include <gtkmm/dialog.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treestore.h>
 
+namespace openfluid {
+namespace core {
+class CoreRepository;
+class Datastore;
+}
+namespace machine {
+class SimulationBlob;
+}
+}
+
+class MapViewAddLayersDialog
+{
   private:
 
-    Gtk::FileChooserDialog* mp_FileChooserDialog;
+    Gtk::Dialog* mp_Dialog;
 
-    Gtk::InfoBar* mp_InfoBar;
-    Gtk::Label* mp_InfoBarLabel;
-    Gtk::Label* mp_LabelChoose;
+    openfluid::core::CoreRepository* mp_CoreRepos;
 
-    Gtk::ComboBoxText* mp_FilterUnitClass;
+    openfluid::core::Datastore* mp_Datastore;
 
-    std::string m_ClassName;
+    Gtk::ScrolledWindow* mp_ScrolledWin;
 
+    Gtk::TreeView* mp_TreeView;
 
-    void onComboChanged(Gtk::ComboBoxText*);
-    void onChanged();
-    bool isEmptyString(std::string Str);
+    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+
+    class Columns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        Columns()
+        {
+          add(m_Type);
+          add(m_Id);
+          add(m_Class);
+          add(m_Path);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Type;
+        Gtk::TreeModelColumn<Glib::ustring> m_Id;
+        Gtk::TreeModelColumn<Glib::ustring> m_Class;
+        Gtk::TreeModelColumn<Glib::ustring> m_Path;
+    };
+
+    Columns m_Columns;
 
   public:
 
-    AddDialogFileChooser(Gtk::Window&, const Glib::ustring&);
+    MapViewAddLayersDialog();
 
-    std::pair<std::pair<std::string, std::string>, std::string> show(std::set<std::string>);
+    ~MapViewAddLayersDialog();
+
+    void setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob);
+
+    void update(const std::set<std::string>& AlreadyDisplayedLayersIds);
+
+    std::set<std::string> show(const std::set<std::string>& AlreadyDisplayedLayersIds);
 
 };
 
-#endif /* __ADDDIALOGFILECHOOSER_HPP__ */
+#endif /* __MAPVIEWADDLAYERSDIALOG_HPP__ */

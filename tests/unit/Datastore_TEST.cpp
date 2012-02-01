@@ -140,3 +140,28 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getItem)
+{
+  openfluid::core::DatastoreItem* VectSUItem =
+      new openfluid::core::DatastoreItem("mymap", "datastore/testvect",
+          openfluid::core::UnstructuredValue::GeoVectorValue, "SU");
+
+  openfluid::core::DatastoreItem* VectItem =
+      new openfluid::core::DatastoreItem("mymap2", "datastore/testvect.shp",
+          openfluid::core::UnstructuredValue::GeoVectorValue);
+
+  openfluid::core::Datastore* Store = new openfluid::core::Datastore();
+
+  Store->addItem(VectSUItem);
+  Store->addItem(VectItem);
+
+  BOOST_CHECK_EQUAL(Store->getItem("mymap")->getId(),"mymap");
+  BOOST_CHECK(!Store->getItem("wrongId"));
+  BOOST_CHECK_EQUAL(Store->getItem("mymap2")->getId(),"mymap2");
+
+  delete Store;
+}
+
+// =====================================================================
+// =====================================================================

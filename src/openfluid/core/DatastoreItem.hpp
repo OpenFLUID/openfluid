@@ -83,13 +83,15 @@ class DLLEXPORT DatastoreItem
 
     ~DatastoreItem();
 
-    std::string getId();
+    std::string getId() const;
 
-    std::string getRelativePath();
+    std::string getRelativePath() const;
 
-    std::string getUnitClass();
+    std::string getUnitClass() const;
 
     UnstructuredValue* getValue();
+
+    const UnstructuredValue* getValue() const;
 };
 
 }
