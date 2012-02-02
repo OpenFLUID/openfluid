@@ -69,7 +69,7 @@
 #include "MapViewAddLayersDialog.hpp"
 
 
-Mediator::Mediator(DrawingArea& DrawingArea, StatusBar& StatusBar,
+Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
     ToolBar& ToolBar) :
   mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar),
       mref_ToolBar(ToolBar), mp_CoreRepos(0), mp_Datastore(0), m_IsFirstExposeEvent(true)
@@ -481,6 +481,8 @@ void Mediator::whenOnAddLayerToolButtonClicked()
     addAllObjectMainVBoxMediator();
 
     mref_ToolBar.resetSensitiveToolBar(true);
+
+    redraw();
   }
 
 }
@@ -664,25 +666,14 @@ void Mediator::whenOnWidgetExpanderBaseChanged()
 
 void Mediator::whenOnMotionNotifyChanged(double X, double Y)
 {
-  std::stringstream str1;
-  std::stringstream str2;
-  std::string Xstr;
-  std::string Ystr;
-  if (!m_Layers.empty())
+  if(m_Layers.empty())
   {
-    str1 << X;
-    str2 << Y;
-    Xstr = str1.str();
-    Ystr = str2.str();
-  } else
-  {
-    str1 << 0;
-    str2 << 0;
-    Xstr = str1.str();
-    Ystr = str2.str();
+    mref_StatusBar.push("");
+    return;
   }
-  mref_StatusBar.setXLabelCoordinate(Xstr);
-  mref_StatusBar.setYLabelCoordinate(Ystr);
+
+  Glib::ustring Msg = Glib::ustring::compose("X : %1   Y : %2", X, Y);
+  mref_StatusBar.push(Msg);
 }
 
 // =====================================================================

@@ -62,10 +62,10 @@
 
 #include <gtkmm/box.h>
 #include <gtkmm/separator.h>
+#include <gtkmm/statusbar.h>
 
 #include "DrawingArea.hpp"
 #include "Info.hpp"
-#include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "Layer.hpp"
 
@@ -91,7 +91,7 @@ class Mediator
     MapViewAddLayersDialog* mp_AddLayersDialog;
 
     DrawingArea& mref_DrawingArea;
-    StatusBar& mref_StatusBar;
+    Gtk::Statusbar& mref_StatusBar;
     ToolBar& mref_ToolBar;
 
     openfluid::core::CoreRepository* mp_CoreRepos;
@@ -156,7 +156,7 @@ class Mediator
 
   public:
 
-    Mediator(DrawingArea&, StatusBar&, ToolBar&);
+    Mediator(DrawingArea&, Gtk::Statusbar&, ToolBar&);
 
     Gtk::Widget* asWidget();
 

@@ -55,15 +55,13 @@
 #include <glibmm/i18n.h>
 
 #include "DrawingArea.hpp"
-#include "StatusBar.hpp"
 #include "ToolBar.hpp"
 #include "Mediator.hpp"
 #include "MapViewModule.hpp"
 
 MapViewModule::MapViewModule()
 {
-
-  mp_Statusbar = new StatusBar();
+  mp_Statusbar = Gtk::manage(new Gtk::Statusbar());
   mp_DrawingArea = Gtk::manage(new DrawingArea());
   mp_ToolBar = new ToolBar();
   mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Statusbar,
@@ -112,8 +110,7 @@ MapViewModule::MapViewModule()
   mp_MenuScrolledWindow->add(*mp_VMenuPaned);
   mp_VBoxStatusbarDrawingArea->pack_start(*mp_DrawScrolledWindow,
       Gtk::PACK_EXPAND_WIDGET);
-  mp_VBoxStatusbarDrawingArea->pack_start(*mp_Statusbar->asWidget(),
-      Gtk::PACK_SHRINK);
+  mp_VBoxStatusbarDrawingArea->pack_start(*mp_Statusbar, Gtk::PACK_SHRINK);
   mp_HVisuPaned->pack1(*mp_VBoxStatusbarDrawingArea, Gtk::EXPAND);
   mp_HVisuPaned->pack2(*mp_MenuScrolledWindow, Gtk::FILL | Gtk::EXPAND);
   mp_VBoxToolFrame->pack_start(*mp_ToolBar->asWidget(), Gtk::PACK_SHRINK);

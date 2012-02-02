@@ -60,13 +60,13 @@
 #include <gtkmm/paned.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/viewport.h>
+#include <gtkmm/statusbar.h>
 
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 class DrawingArea;
-class StatusBar;
 class Info;
 class ToolBar;
 class Mediator;
@@ -78,7 +78,7 @@ class MapViewModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     DrawingArea* mp_DrawingArea;
     ToolBar* mp_ToolBar;
-    StatusBar* mp_Statusbar;
+    Gtk::Statusbar* mp_Statusbar;
     Mediator* mp_Mediator;
 
     //GTKmm
