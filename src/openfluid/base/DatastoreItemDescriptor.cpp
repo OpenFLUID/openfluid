@@ -62,7 +62,7 @@ namespace base {
 
 DatastoreItemDescriptor::DatastoreItemDescriptor(std::string Id,
     std::string RelativePath, openfluid::core::UnstructuredValue::UnstructuredType Type) :
-  m_Id(Id), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
+  m_ID(Id), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
 {
 
 }
@@ -79,9 +79,9 @@ void DatastoreItemDescriptor::setUnitClass(std::string UnitClass)
 // =====================================================================
 
 
-std::string DatastoreItemDescriptor::getId()
+std::string DatastoreItemDescriptor::getID()
 {
-  return m_Id;
+  return m_ID;
 }
 
 // =====================================================================

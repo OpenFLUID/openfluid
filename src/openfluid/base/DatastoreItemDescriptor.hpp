@@ -69,7 +69,7 @@ class DLLEXPORT DatastoreItemDescriptor
 {
   private:
 
-    std::string m_Id;
+    std::string m_ID;
 
     std::string m_RelativePath;
 
@@ -84,7 +84,7 @@ class DLLEXPORT DatastoreItemDescriptor
 
     void setUnitClass(std::string UnitClass);
 
-    std::string getId();
+    std::string getID();
 
     std::string getRelativePath();
 

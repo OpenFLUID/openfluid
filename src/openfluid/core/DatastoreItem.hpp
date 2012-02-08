@@ -64,11 +64,14 @@
 namespace openfluid {
 namespace core {
 
+/**
+ * @brief Item of a Datastore, giving information about an additional resource.
+ */
 class DLLEXPORT DatastoreItem
 {
   private:
 
-    std::string m_Id;
+    std::string m_ID;
 
     std::string m_RelativePath;
 
@@ -78,19 +81,43 @@ class DLLEXPORT DatastoreItem
 
   public:
 
-    DatastoreItem(std::string Id, std::string RelativePath,
+    /**
+     * @brief Creates a new resource item.
+     *
+     * Tries to create a new resource item and its associated UnstructuredValue,
+     * depending on the given type.
+     *
+     * @param Id The ID of the item.
+     * @param RelativePath The path of the item, relative to the IN directory of the project.
+     * @param Type The type of the item.
+     * @param UnitClass (optional) The associated unit class of the item.
+     * @throw openfluid::base::OFException if the given type is unknown.
+     */
+    DatastoreItem(std::string ID, std::string RelativePath,
         UnstructuredValue::UnstructuredType Type, std::string UnitClass = "");
 
+    /**
+     * @brief Destroys the resource and its associated value.
+     */
     ~DatastoreItem();
 
-    std::string getId() const;
+    std::string getID() const;
 
+    /**
+     * @brief Gets the path of the resource, relative to the IN directory of the project.
+     */
     std::string getRelativePath() const;
 
     std::string getUnitClass() const;
 
+    /**
+     * @brief Gets the associated value of the resource.
+     */
     UnstructuredValue* getValue();
 
+    /**
+     * @brief Gets the associated value of the resource.
+     */
     const UnstructuredValue* getValue() const;
 };
 

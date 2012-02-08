@@ -62,6 +62,10 @@
 namespace openfluid {
 namespace core {
 
+/**
+ * @brief Container class for geospatial vector data,
+ * represented by an OGR datasource.
+ */
 class GeoVectorValue: public openfluid::core::UnstructuredValue
 {
   protected:
@@ -74,12 +78,33 @@ class GeoVectorValue: public openfluid::core::UnstructuredValue
 
   public:
 
+    /**
+     * @brief Creates a new value.
+     *
+     * The <tt>RelativePath</tt> may be path to a .shp, .shx or .dbf file,
+     * or a path to a directory containing proper shape files.
+     *
+     * It doesn't open the associated OGR datasource.
+     *
+     * @param RelativePath The path of the data, relative to the IN directory of the project.
+     */
     GeoVectorValue(std::string RelativePath);
 
+    /**
+     * @brief Closes the opened OGR datasource.
+     */
     ~GeoVectorValue();
 
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
+    /**
+     * @brief Gets the associated opened OGR datasource.
+     *
+     * If the datasource is not already opened, tries to open it first.
+     *
+     * @return The opened OGR datasource.
+     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     */
     OGRDataSource* get();
 
     virtual std::string getAbsolutePath();

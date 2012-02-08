@@ -78,7 +78,8 @@ GeoVectorValue::GeoVectorValue(std::string RelativePath) :
 
 GeoVectorValue::~GeoVectorValue()
 {
-  OGRDataSource::DestroyDataSource(m_Data);
+  if (m_Data)
+    OGRDataSource::DestroyDataSource(m_Data);
 }
 
 // =====================================================================
@@ -115,7 +116,7 @@ void GeoVectorValue::tryOpeningSource()
   if (m_Data == NULL)
   {
     throw openfluid::base::OFException("OpenFLUID framework",
-        "GeoVectorValue::tryOpeningSource", "Error while trying open file "
+        "GeoVectorValue::tryOpeningSource", "Error while trying to open file "
             + getAbsolutePath());
   }
 }

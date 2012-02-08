@@ -102,8 +102,8 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
 
   BOOST_CHECK_EQUAL(Store->getItems().size(),3);
 
-  BOOST_CHECK_EQUAL(Store->getItems().at("mymap")->getId(),"mymap");
-  BOOST_CHECK_EQUAL(Store->getItems().find("mymap")->second->getId(),"mymap");
+  BOOST_CHECK_EQUAL(Store->getItems().at("mymap")->getID(),"mymap");
+  BOOST_CHECK_EQUAL(Store->getItems().find("mymap")->second->getID(),"mymap");
 
   openfluid::core::Datastore::DataItemsById_t::iterator i;
   openfluid::core::DatastoreItem* Item;
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   i = Store->getItems().find("mymap");
   Item = i->second;
   BOOST_REQUIRE(Item != 0);
-  BOOST_CHECK_EQUAL(Item->getId(),"mymap");
+  BOOST_CHECK_EQUAL(Item->getID(),"mymap");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"SU");
   BOOST_REQUIRE(Item->getValue() != 0);
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   i = Store->getItems().find("mymap2");
   Item = i->second;
   BOOST_REQUIRE(Item != 0);
-  BOOST_CHECK_EQUAL(Item->getId(),"mymap2");
+  BOOST_CHECK_EQUAL(Item->getID(),"mymap2");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect.shp");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
   BOOST_REQUIRE(Item->getValue() != 0);
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   i = Store->getItems().find("myrast");
   Item = i->second;
   BOOST_REQUIRE(Item != 0);
-  BOOST_CHECK_EQUAL(Item->getId(),"myrast");
+  BOOST_CHECK_EQUAL(Item->getID(),"myrast");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testrast.tif");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
   BOOST_REQUIRE(Item->getValue() != 0);
@@ -156,9 +156,9 @@ BOOST_AUTO_TEST_CASE(check_getItem)
   Store->addItem(VectSUItem);
   Store->addItem(VectItem);
 
-  BOOST_CHECK_EQUAL(Store->getItem("mymap")->getId(),"mymap");
+  BOOST_CHECK_EQUAL(Store->getItem("mymap")->getID(),"mymap");
   BOOST_CHECK(!Store->getItem("wrongId"));
-  BOOST_CHECK_EQUAL(Store->getItem("mymap2")->getId(),"mymap2");
+  BOOST_CHECK_EQUAL(Store->getItem("mymap2")->getID(),"mymap2");
 
   delete Store;
 }

@@ -60,6 +60,9 @@
 namespace openfluid {
 namespace core {
 
+/**
+ * @brief Container class for geospatial raster data.
+ */
 class GeoRasterValue: public openfluid::core::UnstructuredValue
 {
   public:

@@ -515,7 +515,7 @@ void FluidXWriter::setDatastoreToWrite(const openfluid::core::Datastore& Store)
       Item = it->second;
 
       Contents << m_IndentStr << m_IndentStr ;
-      Contents << "<dataitem id=\"" << Item->getId() << "\" " <<
+      Contents << "<dataitem id=\"" << Item->getID() << "\" " <<
                   "type=\"" << openfluid::core::UnstructuredValue::getStringFromValueType(Item->getValue()->getType()) << "\" " <<
                   "source=\"" << Item->getRelativePath() << "\" ";
       if(!Item->getUnitClass().empty())

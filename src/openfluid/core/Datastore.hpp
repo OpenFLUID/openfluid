@@ -63,11 +63,18 @@ namespace core {
 
 class DatastoreItem;
 
+/**
+ * @brief Container class for holding information about additional resources
+ * relating to a project.
+ */
 class Datastore
 {
   public:
 
-    typedef std::map<std::string,DatastoreItem*> DataItemsById_t;
+    /**
+     * @brief Map indexing DatastoreItems by ID.
+     */
+    typedef std::map<std::string, DatastoreItem*> DataItemsById_t;
 
   private:
 
@@ -75,16 +82,46 @@ class Datastore
 
   public:
 
+    /**
+     * @brief Creates an empty datastore.
+     */
     Datastore();
 
+    /**
+     * @brief Destroys all items of the datastore.
+     */
     ~Datastore();
 
+    /**
+     * @brief Gets all items of the datastore.
+     *
+     * @return A map of all items of the datastore.
+     */
     DataItemsById_t getItems();
 
+    /**
+     * @brief Gets all items of the datastore.
+     *
+     * @return A const map of all items of the datastore.
+     */
     const DataItemsById_t getItems() const;
 
-    DatastoreItem* getItem(std::string ItemId);
+    /**
+     * @brief Gets the item of the datastore matching the given ID.
+     *
+     * @param ItemID ID of the expected item.
+     * @return The item with the given ID, or 0 if not found.
+     */
+    DatastoreItem* getItem(std::string ItemID);
 
+    /**
+     * @brief Adds an item to the datastore.
+     *
+     * If an item already exists with the ID of the given <tt>Item</tt>,
+     * it is deleted before adding.
+     *
+     * @param Item The item to add.
+     */
     void addItem(DatastoreItem* Item);
 };
 

@@ -175,12 +175,12 @@ Layer* Mediator::tryToCreateALayerFromADatastoreItem(openfluid::core::DatastoreI
 
   try
   {
-    ALayer = new Layer(Type, Item.getValue(), Item.getId(), Item.getUnitClass());
+    ALayer = new Layer(Type, Item.getValue(), Item.getID(), Item.getUnitClass());
   }
   catch (openfluid::base::OFException e)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        Glib::ustring::compose("%1: %2",Item.getId(),e.what()));
+        Glib::ustring::compose("%1: %2",Item.getID(),e.what()));
   }
 
   return ALayer;

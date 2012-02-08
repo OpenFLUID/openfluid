@@ -65,9 +65,9 @@ namespace core {
 // =====================================================================
 
 
-DatastoreItem::DatastoreItem(std::string Id, std::string RelativePath,
+DatastoreItem::DatastoreItem(std::string ID, std::string RelativePath,
     UnstructuredValue::UnstructuredType Type, std::string UnitClass) :
-  m_Id(Id), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
+  m_ID(ID), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
 {
   switch (Type)
   {
@@ -80,7 +80,7 @@ DatastoreItem::DatastoreItem(std::string Id, std::string RelativePath,
     default:
       throw openfluid::base::OFException("OpenFLUID framework",
           "DatastoreItem::DatastoreItem", "No value to instanciate for item type "
-              + UnstructuredValue::getStringFromValueType(Type) + " in " + Id);
+              + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
       break;
   }
 
@@ -99,9 +99,9 @@ DatastoreItem::~DatastoreItem()
 // =====================================================================
 
 
-std::string DatastoreItem::getId() const
+std::string DatastoreItem::getID() const
 {
-  return m_Id;
+  return m_ID;
 }
 
 // =====================================================================

@@ -421,21 +421,21 @@ void TestDataset(std::string DatasetPath)
   openfluid::base::DatastoreDescriptor::DatastoreDescription_t::iterator DataIt =
       DataItems.begin();
 
-    BOOST_REQUIRE_EQUAL((*DataIt)->getId(),"mymap");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"mymap");
     BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testvect");
     BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
     BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"unitsA");
 
     DataIt++;
 
-    BOOST_REQUIRE_EQUAL((*DataIt)->getId(),"mymap2");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"mymap2");
     BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testvect.shp");
     BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
     BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
 
     DataIt++;
 
-    BOOST_REQUIRE_EQUAL((*DataIt)->getId(),"myrast");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"myrast");
     BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testrast.tif");
     BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
     BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
