@@ -60,6 +60,7 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 
@@ -67,19 +68,42 @@
 // =====================================================================
 
 
+class GeoVectorValueSub: public openfluid::core::GeoVectorValue
+{
+  public:
+
+    GeoVectorValueSub(std::string RelativePath) :
+      openfluid::core::GeoVectorValue(RelativePath)
+    {
+      openfluid::base::RuntimeEnvironment::getInstance()->setInputDir(
+          CONFIGTESTS_INPUT_DATASETS_DIR);
+    }
+
+    OGRDataSource* getData()
+    {
+      return m_Data;
+    }
+
+    std::string getAbsolutePath()
+    {
+      return openfluid::core::GeoVectorValue::getAbsolutePath();
+    }
+
+    void tryOpeningSource()
+    {
+      openfluid::core::GeoVectorValue::tryOpeningSource();
+    }
+};
+
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue");
-
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue");
 
   BOOST_CHECK_EQUAL(Val->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
 
   BOOST_CHECK_EQUAL(Val->getAbsolutePath(),(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR) / "GeoVectorValue").string());
 
-  BOOST_CHECK(!(static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(!Val->getData());
 
   delete Val;
 }
@@ -89,15 +113,11 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("WrongDir");
+  GeoVectorValueSub* Val = new GeoVectorValueSub("WrongDir");
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
 
-  BOOST_CHECK_THROW((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource(),openfluid::base::OFException);
-
-  BOOST_CHECK(!(static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(!Val->getData());
 
   delete Val;
 }
@@ -107,15 +127,11 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectDir)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue");
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue");
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  Val->tryOpeningSource();
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource();
-
-  BOOST_CHECK((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(Val->getData());
 
   delete Val;
 }
@@ -125,15 +141,11 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectDir)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue/wrongfile");
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue/wrongfile");
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
 
-  BOOST_CHECK_THROW((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource(),openfluid::base::OFException);
-
-  BOOST_CHECK(!(static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(!Val->getData());
 
   delete Val;
 }
@@ -143,16 +155,11 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 {
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue/SU");
 
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue/SU");
+  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
-
-  BOOST_CHECK_THROW((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource(),openfluid::base::OFException);
-
-  BOOST_CHECK(!(static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(!Val->getData());
 
   delete Val;
 }
@@ -162,16 +169,11 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 {
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue/SU.aaa");
 
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue/SU.aaa");
+  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
-
-  BOOST_CHECK_THROW((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource(),openfluid::base::OFException);
-
-  BOOST_CHECK(!(static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(!Val->getData());
 
   delete Val;
 }
@@ -181,15 +183,11 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue/SU.shp");
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue/SU.shp");
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  Val->tryOpeningSource();
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource();
-
-  BOOST_CHECK((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(Val->getData());
 
   delete Val;
 }
@@ -199,15 +197,11 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue/SU.dbf");
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue/SU.dbf");
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  Val->tryOpeningSource();
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource();
-
-  BOOST_CHECK((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(Val->getData());
 
   delete Val;
 }
@@ -217,30 +211,21 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shx)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue/SU.shx");
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue/SU.shx");
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  Val->tryOpeningSource();
 
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->tryOpeningSource();
-
-  BOOST_CHECK((static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(Val->getData());
 
   delete Val;
 }
-
 
 // =====================================================================
 // =====================================================================
 
 BOOST_AUTO_TEST_CASE(check_get_CorrectDir)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("GeoVectorValue");
-
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  GeoVectorValueSub* Val = new GeoVectorValueSub("GeoVectorValue");
 
   BOOST_CHECK(Val->get());
 
@@ -252,15 +237,11 @@ BOOST_AUTO_TEST_CASE(check_get_CorrectDir)
 
 BOOST_AUTO_TEST_CASE(check_get_WrongDir)
 {
-  openfluid::core::GeoVectorValue* Val =
-      new openfluid::core::GeoVectorValueSub("WrongDir");
-
-  (static_cast<openfluid::core::GeoVectorValueSub*> (Val))->m_InputPathRoot
-      = CONFIGTESTS_INPUT_DATASETS_DIR;
+  GeoVectorValueSub* Val = new GeoVectorValueSub("WrongDir");
 
   BOOST_CHECK_THROW(Val->get(),openfluid::base::OFException);
 
-  BOOST_CHECK(!(static_cast<openfluid::core::GeoVectorValueSub*> (Val))->getData());
+  BOOST_CHECK(!Val->getData());
 
   delete Val;
 }

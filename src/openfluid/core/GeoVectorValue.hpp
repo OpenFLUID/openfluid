@@ -68,13 +68,17 @@ namespace core {
  */
 class GeoVectorValue: public openfluid::core::UnstructuredValue
 {
-  protected:
+  private:
 
     std::string m_RelativePath;
+
+  protected:
 
     OGRDataSource* m_Data;
 
     void tryOpeningSource();
+
+    std::string getAbsolutePath();
 
   public:
 
@@ -107,34 +111,10 @@ class GeoVectorValue: public openfluid::core::UnstructuredValue
      */
     OGRDataSource* get();
 
-    virtual std::string getAbsolutePath();
-
 };
 
 // =====================================================================
 // =====================================================================
-
-class GeoVectorValueSub: public GeoVectorValue
-{
-  public:
-
-    std::string m_InputPathRoot;
-
-    GeoVectorValueSub(std::string RelativePath) :
-      openfluid::core::GeoVectorValue(RelativePath)
-    {
-    }
-    ;
-
-    std::string getAbsolutePath();
-
-    OGRDataSource* getData();
-
-    void tryOpeningSource()
-    {
-      openfluid::core::GeoVectorValue::tryOpeningSource();
-    }
-};
 
 }
 } // namespaces
