@@ -54,8 +54,11 @@
 class BuilderFrame: public Gtk::Frame
 {
   private:
+
     Gtk::Label* m_Label;
+
   public:
+
     BuilderFrame()
     {
       set_shadow_type(Gtk::SHADOW_ETCHED_IN);
@@ -67,6 +70,7 @@ class BuilderFrame: public Gtk::Frame
 
       set_label_widget(*m_Label);
     }
+
     void setLabelText(std::string TextLabel)
     {
       m_Label->set_markup(Glib::ustring::compose("<b>%1</b>", TextLabel));

@@ -58,6 +58,7 @@
 
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
+#include <gtkmm/frame.h>
 
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Datastore.hpp>
@@ -74,20 +75,20 @@ MapViewAddLayersDialog::MapViewAddLayersDialog()
 {
   mp_Dialog = new Gtk::Dialog(_("Displaying resources in MapView"));
 
-  mref_TreeModel = Gtk::TreeStore::create(m_Columns);
+  mref_TreeModel = Gtk::ListStore::create(m_Columns);
 
   mp_TreeView = Gtk::manage(new Gtk::TreeView(mref_TreeModel));
 
-  mp_TreeView->append_column(_("Type"), m_Columns.m_Type);
+  mp_TreeView->append_column(_("Data type"), m_Columns.m_Type);
   mp_TreeView->get_column(0)->set_sort_column(m_Columns.m_Type);
 
-  mp_TreeView->append_column(_("Id"), m_Columns.m_Id);
+  mp_TreeView->append_column(_("Data ID"), m_Columns.m_Id);
   mp_TreeView->get_column(1)->set_sort_column(m_Columns.m_Id);
 
   mp_TreeView->append_column(_("Unit Class"), m_Columns.m_Class);
   mp_TreeView->get_column(2)->set_sort_column(m_Columns.m_Class);
 
-  mp_TreeView->append_column(_("Path"), m_Columns.m_Path);
+  mp_TreeView->append_column(_("Data source path"), m_Columns.m_Path);
   mp_TreeView->get_column(3)->set_sort_column(m_Columns.m_Path);
 
   mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
@@ -98,17 +99,25 @@ MapViewAddLayersDialog::MapViewAddLayersDialog()
   mp_ScrolledWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_ScrolledWin->add(*mp_TreeView);
 
-  mp_Dialog->get_vbox()->set_spacing(5);
-  mp_Dialog->get_vbox()->pack_start(*Gtk::manage(new Gtk::Label(
-      _("Choose resources to display:"), 0, 0.5)), Gtk::PACK_SHRINK);
-  mp_Dialog->get_vbox()->pack_start(*mp_ScrolledWin);
+  Gtk::Frame* MainFrame = Gtk::manage(new Gtk::Frame());
+  MainFrame->set_shadow_type(Gtk::SHADOW_IN);
+  MainFrame->set_border_width(5);
+  MainFrame->set_visible(true);
+  MainFrame->add(*mp_ScrolledWin);
+
+  Gtk::Label* TheLabel = Gtk::manage(new Gtk::Label(
+      _("Choose resources to display:"), 0, 0.5));
+  TheLabel->set_padding(0,5);
+
+  mp_Dialog->get_vbox()->pack_start(*TheLabel, Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*MainFrame);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
   mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
-  mp_Dialog->set_default_size(400, 300);
+  mp_Dialog->set_default_size(500, 300);
 
   mp_Dialog->show_all_children();
 }

@@ -60,7 +60,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
-#include <gtkmm/treestore.h>
+#include <gtkmm/liststore.h>
 
 namespace openfluid {
 namespace core {
@@ -86,7 +86,7 @@ class MapViewAddLayersDialog
 
     Gtk::TreeView* mp_TreeView;
 
-    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
 
     class Columns: public Gtk::TreeModel::ColumnRecord
     {
