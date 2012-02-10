@@ -73,45 +73,33 @@ class Mediator;
 
 class MapViewModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
-
   private:
-
+  
+    Gtk::VBox* mp_MainBox;
     DrawingArea* mp_DrawingArea;
     ToolBar* mp_ToolBar;
     Gtk::Statusbar* mp_Statusbar;
+
+    Gtk::ScrolledWindow* mp_DrawingAreaScrolledWindow;
+    Gtk::HPaned* mp_ContentPaned;
+
     Mediator* mp_Mediator;
 
-    //GTKmm
-
-    Gtk::VBox* mp_VBoxToolFrame;
-    Gtk::VBox* mp_VBoxStatusbarDrawingArea;
-
-    Gtk::ScrolledWindow* mp_MainScrolledWindow;
-    Gtk::ScrolledWindow* mp_DrawScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuScrolledWindow;
-    Gtk::ScrolledWindow* mp_MenuControlScrolledWindow;
-
-    Gtk::HPaned* mp_HVisuPaned;
-    Gtk::VPaned* mp_VMenuPaned;
-
-//    Gtk::Frame* mp_DrawFrame;
-    Gtk::Frame* mp_ControlMenuFrame;
-    Gtk::Frame* mp_InfoMenuFrame;
+    int m_ScrollbarSpacing;
 
     sigc::signal<void> m_signal_MapViewChanged;
 
     void whenChanged();
 
+    void resizeDrawingAreaScrolledWindow();
+
   public:
 
     MapViewModule();
 
-    Gtk::Widget* asWidget();
+    void compose();
 
-    void compose()
-    {
-    }
-    ;
+    Gtk::Widget* asWidget();
 
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,

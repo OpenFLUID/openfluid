@@ -68,11 +68,10 @@
 #include "EngineHelper.hpp"
 #include "MapViewAddLayersDialog.hpp"
 
-
 Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
     ToolBar& ToolBar) :
-  mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar),
-      mref_ToolBar(ToolBar), mp_CoreRepos(0), mp_Datastore(0), m_IsFirstExposeEvent(true)
+  mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar), mref_ToolBar(
+      ToolBar), mp_CoreRepos(0), mp_Datastore(0), m_IsFirstExposeEvent(true)
 {
   m_SelectedClassName = "";
   m_infoDialogCreate = false;
@@ -81,39 +80,39 @@ Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
 
   mp_MainVBoxMediator = Gtk::manage(new Gtk::VBox());
 
-  mref_DrawingArea.signal_ExposeEventChanged().connect(
-      sigc::mem_fun(*this, &Mediator::whenDrawingAreaChanged));
+  mref_DrawingArea.signal_ExposeEventChanged().connect(sigc::mem_fun(*this,
+      &Mediator::whenDrawingAreaChanged));
   //***************Signal ToolBar*********************
-  mref_ToolBar.signalAddLayerToolButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnAddLayerToolButtonClicked));
-  mref_ToolBar.signalInfoToolButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnInfoToolButtonClicked));
-  mref_ToolBar.signalMoveLayerToggleToolButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnMoveLayerToggleToolButtonClicked));
-  mref_ToolBar.signalSelectAllPreferenceMenuClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnSelectAllPreferenceMenuClicked));
+  mref_ToolBar.signalAddLayerToolButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnAddLayerToolButtonClicked));
+  mref_ToolBar.signalInfoToolButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnInfoToolButtonClicked));
+  mref_ToolBar.signalMoveLayerToggleToolButtonClicked().connect(sigc::mem_fun(
+      *this, &Mediator::whenOnMoveLayerToggleToolButtonClicked));
+  mref_ToolBar.signalSelectAllPreferenceMenuClicked().connect(sigc::mem_fun(
+      *this, &Mediator::whenOnSelectAllPreferenceMenuClicked));
   mref_ToolBar.signalSelectObjectLayerToggleToolButtonClicked().connect(
       sigc::mem_fun(*this,
           &Mediator::whenOnSelectObjectLayerToggleToolButtonClicked));
-  mref_ToolBar.signalShow100FocusButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnShow100FocusButtonClicked));
+  mref_ToolBar.signalShow100FocusButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnShow100FocusButtonClicked));
   mref_ToolBar.signalToggleSelectedPreferenceMenuClicked().connect(
       sigc::mem_fun(*this, &Mediator::whenOnToggleSelectedPreferenceMenuClicked));
   mref_ToolBar.signalUnzoomCursorToggleToolButtonClicked().connect(
       sigc::mem_fun(*this, &Mediator::whenOnUnzoomCursorToggleToolButtonClicked));
-  mref_ToolBar.signalZoomCursorZoomTypeButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnZoomCursorZoomTypeButtonClicked));
-  mref_ToolBar.signalZoomFrameZoomTypeButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnZoomFrameZoomTypeButtonClicked));
-  mref_ToolBar.signalZoomLayerFocusButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnZoomLayerFocusButtonClicked));
-  mref_ToolBar.signalZoomSelectionFocusButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnZoomSelectionFocusButtonClicked));
+  mref_ToolBar.signalZoomCursorZoomTypeButtonClicked().connect(sigc::mem_fun(
+      *this, &Mediator::whenOnZoomCursorZoomTypeButtonClicked));
+  mref_ToolBar.signalZoomFrameZoomTypeButtonClicked().connect(sigc::mem_fun(
+      *this, &Mediator::whenOnZoomFrameZoomTypeButtonClicked));
+  mref_ToolBar.signalZoomLayerFocusButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnZoomLayerFocusButtonClicked));
+  mref_ToolBar.signalZoomSelectionFocusButtonClicked().connect(sigc::mem_fun(
+      *this, &Mediator::whenOnZoomSelectionFocusButtonClicked));
   //***************Signal DrawingArea*****************
-  mref_DrawingArea.signal_CoordinateChanged().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnMotionNotifyChanged));
-  mref_DrawingArea.signal_CoordinateSelected().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnSelectObjectChanged));
+  mref_DrawingArea.signal_CoordinateChanged().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnMotionNotifyChanged));
+  mref_DrawingArea.signal_CoordinateSelected().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnSelectObjectChanged));
 
   mp_MainVBoxMediator->set_visible(true);
 }
@@ -125,24 +124,24 @@ void Mediator::addAvailableLayersFromDatastore()
 {
   openfluid::core::Datastore::DataItemsById_t Items = mp_Datastore->getItems();
 
-  for(openfluid::core::Datastore::DataItemsById_t::const_iterator it =
-      Items.begin() ; it != Items.end() ; ++it)
+  for (openfluid::core::Datastore::DataItemsById_t::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
   {
     openfluid::core::DatastoreItem* Item = it->second;
 
-    if(!(hasADisplayableVectorValue(*Item, *mp_CoreRepos)
-    || hasADisplayableRasterValue(*Item)))
+    if (!(hasADisplayableVectorValue(*Item, *mp_CoreRepos)
+        || hasADisplayableRasterValue(*Item)))
       continue;
 
     Layer* ALayer = tryToCreateALayerFromADatastoreItem(*Item);
 
-    if(!ALayer)
+    if (!ALayer)
       continue;
 
     addALayer(*ALayer);
   }
 
-  if(!m_Layers.empty())
+  if (!m_Layers.empty())
   {
     removeAllObjectMainVBoxMediator();
     addAllObjectMainVBoxMediator();
@@ -155,7 +154,8 @@ void Mediator::addAvailableLayersFromDatastore()
 // =====================================================================
 // =====================================================================
 
-Layer* Mediator::tryToCreateALayerFromADatastoreItem(openfluid::core::DatastoreItem& Item)
+Layer* Mediator::tryToCreateALayerFromADatastoreItem(
+    openfluid::core::DatastoreItem& Item)
 {
   Layer* ALayer = 0;
 
@@ -175,12 +175,13 @@ Layer* Mediator::tryToCreateALayerFromADatastoreItem(openfluid::core::DatastoreI
 
   try
   {
-    ALayer = new Layer(Type, Item.getValue(), Item.getID(), Item.getUnitClass());
+    ALayer
+        = new Layer(Type, Item.getValue(), Item.getID(), Item.getUnitClass());
   }
   catch (openfluid::base::OFException e)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        Glib::ustring::compose("%1: %2",Item.getID(),e.what()));
+        Glib::ustring::compose("%1: %2", Item.getID(), e.what()));
   }
 
   return ALayer;
@@ -196,39 +197,39 @@ void Mediator::addALayer(Layer& ALayer)
 
   ALayer.update(*mp_CoreRepos);
 
-  ALayer.signalUpLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnUpLayerButtonClicked));
-  ALayer.signalDownLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnDownLayerButtonClicked));
-  ALayer.signalRemoveLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnRemoveLayerButtonClicked));
-  ALayer.signalIsDisplayButtonChecked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnIsDisplayButtonChecked));
-  ALayer.signalIsSelectedLayerClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnIsSelectedLayerClicked));
-  ALayer.signalWidgetExpanderBaseChanged().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnWidgetExpanderBaseChanged));
+  ALayer.signalUpLayerButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnUpLayerButtonClicked));
+  ALayer.signalDownLayerButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnDownLayerButtonClicked));
+  ALayer.signalRemoveLayerButtonClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnRemoveLayerButtonClicked));
+  ALayer.signalIsDisplayButtonChecked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnIsDisplayButtonChecked));
+  ALayer.signalIsSelectedLayerClicked().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnIsSelectedLayerClicked));
+  ALayer.signalWidgetExpanderBaseChanged().connect(sigc::mem_fun(*this,
+      &Mediator::whenOnWidgetExpanderBaseChanged));
 }
 
-
 // =====================================================================
 // =====================================================================
 
-bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem& Item, openfluid::core::CoreRepository& CoreRepos)
+bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem& Item,
+    openfluid::core::CoreRepository& CoreRepos)
 {
-  return Item.getValue() && Item.getValue()->getType() == openfluid::core::UnstructuredValue::GeoVectorValue
+  return Item.getValue() && Item.getValue()->getType()
+      == openfluid::core::UnstructuredValue::GeoVectorValue
       && EngineHelper::getClassNames(&CoreRepos).count(Item.getUnitClass());
 }
-
 
 // =====================================================================
 // =====================================================================
 
 bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item)
 {
-  return Item.getValue() && Item.getValue()->getType() == openfluid::core::UnstructuredValue::GeoRasterValue;
+  return Item.getValue() && Item.getValue()->getType()
+      == openfluid::core::UnstructuredValue::GeoRasterValue;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -241,7 +242,8 @@ Gtk::Widget* Mediator::asWidget()
 // =====================================================================
 // =====================================================================
 
-void Mediator::setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob)
+void Mediator::setEngineRequirements(
+    openfluid::machine::SimulationBlob& SimBlob)
 {
   mp_CoreRepos = &SimBlob.getCoreRepository();
   mp_Datastore = &SimBlob.getDatastore();
@@ -262,15 +264,22 @@ sigc::signal<void> Mediator::signal_DrawingAreaExposeEventChanged()
 // =====================================================================
 // =====================================================================
 
+sigc::signal<void> Mediator::signal_ZoomWithRescaleAsked()
+{
+  return m_signal_ZoomWithRescaleAsked;
+}
+// =====================================================================
+// =====================================================================
+
 void Mediator::whenDrawingAreaChanged()
 {
-  if(m_IsFirstExposeEvent)
+  if (m_IsFirstExposeEvent)
   {
     whenOnShow100FocusButtonClicked();
     m_IsFirstExposeEvent = false;
   }
-
   redraw();
+  signal_DrawingAreaExposeEventChanged().emit();
 }
 
 // =====================================================================
@@ -299,6 +308,7 @@ void Mediator::whenOnShow100FocusButtonClicked()
       if (MinMax.second.second < (*it)->getMinMaxLayer().second.second)
         MinMax.second.second = (*it)->getMinMaxLayer().second.second;
     }
+    signal_ZoomWithRescaleAsked().emit();
     mref_DrawingArea.modifyScaleTranslate(MinMax);
     redraw();
   }
@@ -315,20 +325,23 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a selection without selection.\n\nPlease select a layer."));
-  } else if (m_SelectedUnitId.empty())
+  }
+  else if (m_SelectedUnitId.empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a selection without selection.\n\nPlease select objects on a current layer."));
-  } else
+  }
+  else
   {
     std::vector<Layer*>::iterator it;
     for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
-        mref_DrawingArea.modifyScaleTranslate(
-            (*it)->getMinMaxSelection(m_SelectedUnitId));
+        signal_ZoomWithRescaleAsked().emit();
+        mref_DrawingArea.modifyScaleTranslate((*it)->getMinMaxSelection(
+            m_SelectedUnitId));
       }
     }
     redraw();
@@ -346,13 +359,15 @@ void Mediator::whenOnZoomLayerFocusButtonClicked()
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a layer without select the corresponding layer before.\n\nPlease select a layer."));
-  } else
+  }
+  else
   {
     std::vector<Layer*>::iterator it;
     for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName())
       {
+        signal_ZoomWithRescaleAsked().emit();
         mref_DrawingArea.modifyScaleTranslate((*it)->getMinMaxLayer());
       }
     }
@@ -369,7 +384,8 @@ void Mediator::whenOnZoomCursorZoomTypeButtonClicked()
   {
     mref_ToolBar.resetToolBar(4);
     mref_DrawingArea.changeToZoomCursorState();
-  } else
+  }
+  else
   {
     mref_DrawingArea.changeToInitialState();
     mref_ToolBar.setSensitivePreferenceMenubar(false);
@@ -386,7 +402,8 @@ void Mediator::whenOnZoomFrameZoomTypeButtonClicked()
   {
     mref_ToolBar.resetToolBar(4);
     mref_DrawingArea.changeToZoomFrameState();
-  } else
+  }
+  else
   {
     mref_DrawingArea.changeToInitialState();
     mref_ToolBar.setSensitivePreferenceMenubar(false);
@@ -404,7 +421,8 @@ void Mediator::whenOnSelectAllPreferenceMenuClicked()
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
-  } else
+  }
+  else
   {
     std::vector<Layer*>::iterator it;
     for (it = m_Layers.begin(); it < m_Layers.end(); it++)
@@ -430,7 +448,8 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
-  } else
+  }
+  else
   {
     std::vector<Layer*>::iterator it;
     for (it = m_Layers.begin(); it < m_Layers.end(); it++)
@@ -457,25 +476,26 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 
 void Mediator::whenOnAddLayerToolButtonClicked()
 {
-  std::set<std::string> SelectedLayersIds = mp_AddLayersDialog->show(m_LayersIds);
+  std::set<std::string> SelectedLayersIds = mp_AddLayersDialog->show(
+      m_LayersIds);
 
-  for(std::set<std::string>::const_iterator it = SelectedLayersIds.begin() ;
-      it != SelectedLayersIds.end() ; ++it)
+  for (std::set<std::string>::const_iterator it = SelectedLayersIds.begin(); it
+      != SelectedLayersIds.end(); ++it)
   {
     openfluid::core::DatastoreItem* Item = mp_Datastore->getItem(*it);
 
-    if(!Item)
+    if (!Item)
       continue;
 
     Layer* Layer = tryToCreateALayerFromADatastoreItem(*Item);
 
-    if(!Layer)
+    if (!Layer)
       continue;
 
     addALayer(*Layer);
   }
 
-  if(!m_Layers.empty())
+  if (!m_Layers.empty())
   {
     removeAllObjectMainVBoxMediator();
     addAllObjectMainVBoxMediator();
@@ -492,7 +512,7 @@ void Mediator::whenOnAddLayerToolButtonClicked()
 
 void Mediator::whenOnInfoToolButtonClicked()
 {
-  if (m_SelectedClassName == "" ||  m_SelectedUnitId.empty())
+  if (m_SelectedClassName == "" || m_SelectedUnitId.empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _("You can't have informations without select the corresponding layer"
@@ -500,33 +520,32 @@ void Mediator::whenOnInfoToolButtonClicked()
     return;
   }
 
-
   std::set<int> UnavailableIds;
   std::set<int> AvailableIds = m_SelectedUnitId;
   std::set<int>::iterator it;
 
-  for(it = m_SelectedUnitId.begin() ; it != m_SelectedUnitId.end() ; ++it)
+  for (it = m_SelectedUnitId.begin(); it != m_SelectedUnitId.end(); ++it)
   {
-    if(!mp_CoreRepos->getUnit(m_SelectedClassName,*it))
+    if (!mp_CoreRepos->getUnit(m_SelectedClassName, *it))
     {
       UnavailableIds.insert(*it);
       AvailableIds.erase(*it);
     }
   }
 
-  if(UnavailableIds.size() > 1)
+  if (UnavailableIds.size() > 1)
   {
-    Glib::ustring UnavailUnitsStr = Glib::ustring::compose("%1",*UnavailableIds.begin());
+    Glib::ustring UnavailUnitsStr = Glib::ustring::compose("%1",
+        *UnavailableIds.begin());
 
-    for(it = UnavailableIds.begin().operator ++() ; it != UnavailableIds.end() ; ++it)
-      UnavailUnitsStr += Glib::ustring::compose(" - %1",*it);
+    for (it = UnavailableIds.begin().operator ++(); it != UnavailableIds.end(); ++it)
+      UnavailUnitsStr += Glib::ustring::compose(" - %1", *it);
 
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         Glib::ustring::compose(_("Units %1 are no more available.\n"
-            "Information about them can not be displayed."),
-            UnavailUnitsStr));
+            "Information about them can not be displayed."), UnavailUnitsStr));
   }
-  else if(UnavailableIds.size() == 1)
+  else if (UnavailableIds.size() == 1)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         Glib::ustring::compose(_("Unit %1 is no more available.\n"
@@ -534,7 +553,7 @@ void Mediator::whenOnInfoToolButtonClicked()
             *UnavailableIds.begin()));
   }
 
-  if(!AvailableIds.empty())
+  if (!AvailableIds.empty())
   {
     if (!m_infoDialogCreate)
     {
@@ -557,7 +576,8 @@ void Mediator::whenOnSelectObjectLayerToggleToolButtonClicked()
     mref_ToolBar.resetToolBar(2);
     mref_DrawingArea.changeToSelectState();
     mref_ToolBar.setSensitivePreferenceMenubar(true);
-  } else
+  }
+  else
   {
     mref_DrawingArea.changeToInitialState();
     mref_ToolBar.setSensitivePreferenceMenubar(false);
@@ -573,7 +593,8 @@ void Mediator::whenOnMoveLayerToggleToolButtonClicked()
   {
     mref_ToolBar.resetToolBar(1);
     mref_DrawingArea.changeToMoveState();
-  } else
+  }
+  else
   {
     mref_DrawingArea.changeToInitialState();
     mref_ToolBar.setSensitivePreferenceMenubar(false);
@@ -589,7 +610,8 @@ void Mediator::whenOnUnzoomCursorToggleToolButtonClicked()
   {
     mref_ToolBar.resetToolBar(3);
     mref_DrawingArea.changeToUnzoomCursorState();
-  } else
+  }
+  else
   {
     mref_DrawingArea.changeToInitialState();
     mref_ToolBar.setSensitivePreferenceMenubar(false);
@@ -666,7 +688,7 @@ void Mediator::whenOnWidgetExpanderBaseChanged()
 
 void Mediator::whenOnMotionNotifyChanged(double X, double Y)
 {
-  if(m_Layers.empty())
+  if (m_Layers.empty())
   {
     mref_StatusBar.push("");
     return;
@@ -688,7 +710,8 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
-  } else
+  }
+  else
   {
     std::vector<Layer*>::iterator it;
     for (it = m_Layers.begin(); it < m_Layers.end(); it++)
@@ -705,22 +728,26 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
               && mref_DrawingArea.getPressMultiSelect())
           {
             m_SelectedUnitId.insert(temp);
-          } else if (it2 == m_SelectedUnitId.end()
+          }
+          else if (it2 == m_SelectedUnitId.end()
               && !mref_DrawingArea.getPressMultiSelect())
           {
             m_SelectedUnitId.clear();
             m_SelectedUnitId.insert(temp);
-          } else if (it2 != m_SelectedUnitId.end()
+          }
+          else if (it2 != m_SelectedUnitId.end()
               && mref_DrawingArea.getPressMultiSelect())
           {
             m_SelectedUnitId.erase(it2);
-          } else if (it2 != m_SelectedUnitId.end()
+          }
+          else if (it2 != m_SelectedUnitId.end()
               && !mref_DrawingArea.getPressMultiSelect())
           {
             m_SelectedUnitId.clear();
           }
           isRedraw = true;
-        } else
+        }
+        else
         {
           if (!m_SelectedUnitId.empty()
               && !mref_DrawingArea.getPressMultiSelect())
@@ -729,7 +756,8 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
             isRedraw = true;
           }
         }
-      } else if (m_SelectedClassName == (*it)->getClassName()
+      }
+      else if (m_SelectedClassName == (*it)->getClassName()
           && m_SelectedUnitId.empty())
       {
         int temp = (*it)->isObjectSelected(X, Y, mref_DrawingArea.getScale());
@@ -782,7 +810,8 @@ void Mediator::redraw()
           {
             (*rit)->draw(Context, mref_DrawingArea.getScale(),
                 m_SelectedUnitId, (*rit)->getDisplayID());
-          } else
+          }
+          else
           {
             std::set<int> tempVoidVector;
             (*rit)->draw(Context, mref_DrawingArea.getScale(), tempVoidVector,
@@ -853,8 +882,8 @@ void Mediator::removeLayer(std::string ClassName)
   }
 
   addAllObjectMainVBoxMediator();
-//  if (m_Layers.empty())
-//    mref_DrawingArea.setLayerExist(false);
+  //  if (m_Layers.empty())
+  //    mref_DrawingArea.setLayerExist(false);
 }
 
 // =====================================================================

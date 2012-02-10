@@ -79,28 +79,29 @@ Layer::Layer(LayerType::LayerTypes LayerType,
   m_IsDisplay = true;
   m_IsSelected = false;
   m_DisplayID = false;
-  m_DisplayGraph = false;
+//  m_DisplayGraph = false;
 
   mp_WidgetLayerObject = new WidgetLayerObject(m_LayerType, m_ClassName, m_Id);
 
-  //***************Signal WidgetObjectBase*********************
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
-  mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
-      sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
-  mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
-      sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
-
-  mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
 
   if(LayerType == LayerType::LAYER_BASE)
   {
+    //***************Signal WidgetObjectBase*********************
+    mp_WidgetLayerObject->getWidgetObjectBase()->signalUpLayerButtonClicked().connect(
+        sigc::mem_fun(*this, &Layer::whenOnUpLayerButtonClicked));
+    mp_WidgetLayerObject->getWidgetObjectBase()->signalDownLayerButtonClicked().connect(
+        sigc::mem_fun(*this, &Layer::whenOnDownLayerButtonClicked));
+    mp_WidgetLayerObject->getWidgetObjectBase()->signalRemoveLayerButtonClicked().connect(
+        sigc::mem_fun(*this, &Layer::whenOnRemoveLayerButtonClicked));
+    mp_WidgetLayerObject->getWidgetObjectBase()->signalIsDisplayButtonChecked().connect(
+        sigc::mem_fun(*this, &Layer::whenOnIsDisplayButtonChecked));
+    mp_WidgetLayerObject->getWidgetObjectBase()->signalIsSelectedLayerClicked().connect(
+        sigc::mem_fun(*this, &Layer::whenOnIsSelectedLayerClicked));
+    mp_WidgetLayerObject->getWidgetExpanderBase()->signalWidgetExpanderBaseChanged().connect(
+        sigc::mem_fun(*this, &Layer::whenOnWidgetExpanderBaseChanged));
+
+    mp_WidgetLayerObject->getWidgetExpanderBase()->onWidgetExpanderBaseChanged();
+
     try
     {
       loadShapefile();
@@ -311,10 +312,10 @@ bool Layer::getDisplayID()
 // =====================================================================
 // =====================================================================
 
-bool Layer::getDisplayGraph()
-{
-  return m_DisplayGraph;
-}
+//bool Layer::getDisplayGraph()
+//{
+//  return m_DisplayGraph;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -339,8 +340,7 @@ void Layer::setIsSelected(bool IsSelected)
 void Layer::setWidgetDownSensitive(bool Bool)
 {
   if (m_LayerType == LayerType::LAYER_BASE)
-    mp_WidgetLayerObject->getWidgetObjectBase()->getButtonDown()->set_sensitive(
-        Bool);
+    mp_WidgetLayerObject->getWidgetObjectBase()->setDownButtonSensitive(Bool);
 }
 
 // =====================================================================
@@ -349,12 +349,9 @@ void Layer::setWidgetDownSensitive(bool Bool)
 void Layer::setWidgetUpSensitive(bool Bool)
 {
   if (m_LayerType == LayerType::LAYER_BASE)
-    mp_WidgetLayerObject->getWidgetObjectBase()->getButtonUp()->set_sensitive(
-        Bool);
+    mp_WidgetLayerObject->getWidgetObjectBase()->setUpButtonSensitive(Bool);
 }
 
-// =====================================================================
-// =====================================================================
 // =====================================================================
 // =====================================================================
 
@@ -404,7 +401,7 @@ void Layer::whenOnIsSelectedLayerClicked()
 // =====================================================================
 
 void Layer::whenOnWidgetExpanderBaseChanged(int SizeLine, double Red,
-    double Green, double Blue, double Alpha, bool DisplayID, bool DisplayGraph)
+    double Green, double Blue, double Alpha, bool DisplayID/*, bool DisplayGraph*/)
 {
   m_SizeLine = SizeLine;
   m_Red = Red;
@@ -412,7 +409,7 @@ void Layer::whenOnWidgetExpanderBaseChanged(int SizeLine, double Red,
   m_Blue = Blue;
   m_Alpha = Alpha;
   m_DisplayID = DisplayID;
-  m_DisplayGraph = DisplayGraph;
+//  m_DisplayGraph = DisplayGraph;
 
   m_signal_WidgetExpanderBaseChanged.emit();
 }

@@ -55,26 +55,22 @@
 #ifndef __WIDGETOBJECT_HPP__
 #define __WIDGETOBJECT_HPP__
 
-#include <gtkmm/table.h>
+#include <gtkmm/box.h>
 #include <gtkmm/eventbox.h>
 
 class WidgetObject
 {
+  protected:
 
-  private:
+    Gtk::EventBox *mp_Eventbox;
+
+    Gtk::HBox* mp_MainBox;
 
   public:
 
     WidgetObject();
 
     Gtk::Widget* asWidget();
-
-  protected:
-
-    //gtkmm
-    Gtk::EventBox *mp_Eventbox;
-    Gtk::Table* mp_MainTable;
-
 };
 
 #endif /* __WIDGETOBJECT_HPP__ */

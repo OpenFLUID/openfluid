@@ -60,54 +60,35 @@
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/scale.h>
 #include <gtkmm/spinbutton.h>
+#include <gtkmm/box.h>
 
 #include "WidgetExpander.hpp"
 
 class WidgetExpanderBase: public WidgetExpander
 {
-
   private:
 
-    double m_Alpha;
-    int m_SizeLine;
-
-    //Gtkmm
-    Gtk::Table* mp_MainTableExpander;
-
-    Gtk::Label m_LabelColor;
-    Gtk::Label m_LabelCheckButtonGraph;
-    Gtk::Label m_LabelCheckButtonLayerName;
-    Gtk::Label m_LabelCheckButtonID;
-    Gtk::Label m_LabelHScale;
-    Gtk::Label m_LabelSpinButton;
+    Gtk::HBox* mp_MainBox;
 
     Gtk::ColorButton* mp_ColorButton;
-    Gtk::CheckButton* mp_CheckButtonGraph;
-    Gtk::CheckButton* mp_CheckButtonID;
-    Gtk::HScale* mp_HScale;
-    Gtk::Adjustment* mp_AdjustmentHScale;
-    Gtk::Adjustment* mp_AdjustmentSpinButton;
-    Gtk::SpinButton* mp_SpinButton;
+    Gtk::HScale* mp_OpacityHScale;
+    Gtk::SpinButton* mp_WidthSpinButton;
+    Gtk::CheckButton* mp_ShowIDCheckBox;
+//    Gtk::CheckButton* mp_CheckButtonGraph;
 
-    Gdk::Color m_Color;
-
-    typedef sigc::signal<void, int, double, double, double, double, bool, bool>
+    typedef sigc::signal<void, int, double, double, double, double, bool/*, bool*/>
         mtype_SignalWidgetExpanderBase;
 
     mtype_SignalWidgetExpanderBase m_signal_WidgetExpanderBaseChanged;
 
-    //    //*******************Signal emit*******************
-    //    void onWidgetExpanderBaseChanged();
-    //    //*************************************************
-
-    void randColor();
-    void setAlphaPercent();
+    Gdk::Color getARandColor();
 
   public:
 
     WidgetExpanderBase();
 
     mtype_SignalWidgetExpanderBase signalWidgetExpanderBaseChanged();
+
     //*******************Signal emit*******************
     void onWidgetExpanderBaseChanged();
     //*************************************************

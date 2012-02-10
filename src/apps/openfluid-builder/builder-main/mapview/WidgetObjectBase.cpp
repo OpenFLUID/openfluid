@@ -55,85 +55,72 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/table.h>
 #include "BuilderGraphicsHelper.hpp"
 
 #include "WidgetObjectBase.hpp"
 
 WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
-  WidgetObject()
+  WidgetObject(), mp_TypeImage(0)
 {
-  mp_CheckButton = Gtk::manage(new Gtk::CheckButton());
-  mp_CheckButton->set_active(true);
+  mp_DisplayLayerCheckBox = Gtk::manage(new Gtk::CheckButton(ClassName));
+  mp_DisplayLayerCheckBox->set_tooltip_text(_("Display the layer"));
+  mp_DisplayLayerCheckBox->set_active(true);
 
-  Glib::RefPtr<Gdk::Pixbuf> im;
+  mp_TypeImage = Gtk::manage(new Gtk::Image(getPixbufForType(1)));
 
-  m_OGRGeometryType = 1;
-  m_IsSelected = false;
-
-  im = Gdk::Pixbuf::create_from_file(
-      BuilderGraphicsHelper::getPathForFileName("points.png"), 22, 22, true);
-
-  mp_ImageOGRGeometryType = Gtk::manage(new Gtk::Image(im));
-
-  Gtk::Toolbar* tup = Gtk::manage(new Gtk::Toolbar());
-  Gtk::Toolbar* tdown = Gtk::manage(new Gtk::Toolbar());
-
-  tup->set_icon_size(Gtk::ICON_SIZE_MENU);
-  tdown->set_icon_size(Gtk::ICON_SIZE_MENU);
-  tup->set_show_arrow(false);
-  tdown->set_show_arrow(false);
-
-  mref_UpLayer = Gtk::Action::create("UpLayer", Gtk::Stock::GO_UP,
-      _("Up Layer"), _("Go up the layer"));
-  mref_DownLayer = Gtk::Action::create("DownLayer", Gtk::Stock::GO_DOWN,
-      _("Down Layer"), _("Go down the layer"));
-  mref_RemoveLayer = Gtk::Action::create("RemoveLayer", Gtk::Stock::REMOVE,
-      _("Remove Layer"), _("Remove the layer"));
-
-  mp_ButtonUp = Gtk::manage(new Gtk::ToolItem());
-  mp_ButtonDown = Gtk::manage(new Gtk::ToolItem());
-  mp_ButtonRemove = Gtk::manage(new Gtk::ToolItem());
-
-  mp_ButtonUp = mref_UpLayer->create_tool_item();
-  mp_ButtonDown = mref_DownLayer->create_tool_item();
-  mp_ButtonRemove = mref_RemoveLayer->create_tool_item();
-  m_TitleLayerLabel.set_label(ClassName);
-  m_LayerIdLabel.set_label(Id);
-  m_TitleLayerLabel.set_alignment(0, 0);
-  m_LayerIdLabel.set_alignment(0, 0);
-
-  tup->append(*mp_ButtonUp);
-  tdown->append(*mp_ButtonDown);
-
-  mp_MainTable->attach(*mp_CheckButton, 0, 1, 0, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_MainTable->attach(m_TitleLayerLabel, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
+  Gtk::Table* InfoTable = Gtk::manage(new Gtk::Table());
+  InfoTable->set_spacings(5);
+  InfoTable->attach(*mp_DisplayLayerCheckBox, 0, 3, 0, 1, Gtk::FILL
+      | Gtk::EXPAND, Gtk::SHRINK, 5, 0);
+  InfoTable->attach(*mp_TypeImage, 0, 1, 1, 2, Gtk::FILL | Gtk::EXPAND,
+      Gtk::SHRINK, 5, 0);
+  InfoTable->attach(*Gtk::manage(new Gtk::Label(_("Data source ID:"))), 1, 2,
+      1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  InfoTable->attach(*Gtk::manage(new Gtk::Label(Id)), 2, 3, 1, 2, Gtk::SHRINK,
       Gtk::SHRINK);
-  mp_MainTable->attach(m_LayerIdLabel, 1, 2, 1, 2,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTable->attach(*mp_ImageOGRGeometryType, 2, 3, 0, 2, Gtk::SHRINK,
-      Gtk::SHRINK);
-  mp_MainTable->attach(*mp_ButtonRemove, 3, 4, 0, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_MainTable->attach(*tup, 4, 5, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  mp_MainTable->attach(*tdown, 4, 5, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  mp_MainTable->show_all_children(true);
+
+  mp_UpButton = Gtk::manage(new Gtk::Button());
+  mp_UpButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::GO_UP,
+      Gtk::ICON_SIZE_MENU)));
+  mp_UpButton->set_relief(Gtk::RELIEF_NONE);
+  mp_UpButton->set_tooltip_text(_("Move up the layer"));
+
+  mp_DownButton = Gtk::manage(new Gtk::Button());
+  mp_DownButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::GO_DOWN,
+      Gtk::ICON_SIZE_MENU)));
+  mp_DownButton->set_relief(Gtk::RELIEF_NONE);
+  mp_DownButton->set_tooltip_text(_("Move down the layer"));
+
+  mp_RemoveButton = Gtk::manage(new Gtk::Button());
+  mp_RemoveButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::REMOVE,
+      Gtk::ICON_SIZE_MENU)));
+  mp_RemoveButton->set_relief(Gtk::RELIEF_NONE);
+  mp_RemoveButton->set_tooltip_text(_("Remove the layer"));
+
+  Gtk::Table* ActionTable = Gtk::manage(new Gtk::Table());
+  ActionTable->attach(*mp_RemoveButton, 0, 1, 0, 2, Gtk::SHRINK, Gtk::SHRINK);
+  ActionTable->attach(*mp_UpButton, 1, 2, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  ActionTable->attach(*mp_DownButton, 1, 2, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+
+  mp_MainBox->pack_start(*InfoTable, Gtk::PACK_SHRINK);
+  mp_MainBox->pack_end(*ActionTable, Gtk::PACK_SHRINK);
+  mp_MainBox->show_all_children();
 
   //******************Signal connexion*********************
 
-  mp_CheckButton->signal_toggled().connect(
-      sigc::mem_fun(*this, &WidgetObjectBase::onIsDisplayButtonChecked));
-  mref_UpLayer->signal_activate().connect(
-      sigc::mem_fun(*this, &WidgetObjectBase::onUpLayerButtonClicked));
-  mref_DownLayer->signal_activate().connect(
-      sigc::mem_fun(*this, &WidgetObjectBase::onDownLayerButtonClicked));
-  mref_RemoveLayer->signal_activate().connect(
-      sigc::mem_fun(*this, &WidgetObjectBase::onRemoveLayerButtonClicked));
-
-  mp_Eventbox->signal_event().connect(
-      sigc::mem_fun(*this, &WidgetObjectBase::onEventHappend));
+  mp_DisplayLayerCheckBox->signal_toggled().connect(sigc::mem_fun(*this,
+      &WidgetObjectBase::onIsDisplayButtonChecked));
+  mp_UpButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &WidgetObjectBase::onUpLayerButtonClicked));
+  mp_DownButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &WidgetObjectBase::onDownLayerButtonClicked));
+  mp_RemoveButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &WidgetObjectBase::onRemoveLayerButtonClicked));
+  mp_Eventbox->signal_event().connect(sigc::mem_fun(*this,
+      &WidgetObjectBase::onEventHappend));
 }
 
-// =====================================================================
-// =====================================================================
 // =====================================================================
 // =====================================================================
 
@@ -195,8 +182,6 @@ bool WidgetObjectBase::onEventHappend(GdkEvent* event)
 
 // =====================================================================
 // =====================================================================
-// =====================================================================
-// =====================================================================
 
 WidgetObjectBase::mtype_SignalWidgetObjectBase WidgetObjectBase::signalUpLayerButtonClicked()
 {
@@ -237,21 +222,18 @@ WidgetObjectBase::mtype_SignalWidgetObjectBase WidgetObjectBase::signalIsSelecte
 
 // =====================================================================
 // =====================================================================
-// =====================================================================
-// =====================================================================
 
-
-Gtk::ToolItem* WidgetObjectBase::getButtonUp()
+void WidgetObjectBase::setUpButtonSensitive(bool Sensitiveness)
 {
-  return mp_ButtonUp;
+  mp_UpButton->set_sensitive(Sensitiveness);
 }
 
 // =====================================================================
 // =====================================================================
 
-Gtk::ToolItem* WidgetObjectBase::getButtonDown()
+void WidgetObjectBase::setDownButtonSensitive(bool Sensitiveness)
 {
-  return mp_ButtonDown;
+  mp_DownButton->set_sensitive(Sensitiveness);
 }
 
 // =====================================================================
@@ -259,37 +241,34 @@ Gtk::ToolItem* WidgetObjectBase::getButtonDown()
 
 void WidgetObjectBase::setOGRGeometryType(int ORGeometryType)
 {
-  m_OGRGeometryType = ORGeometryType;
-  setImageOGRGeometryType(m_OGRGeometryType);
+  mp_TypeImage->set(getPixbufForType(ORGeometryType));
 }
 
 // =====================================================================
 // =====================================================================
 
-void WidgetObjectBase::setImageOGRGeometryType(int ORGeometryType)
+Glib::RefPtr<Gdk::Pixbuf> WidgetObjectBase::getPixbufForType(int ORGeometryType)
 {
-  Glib::RefPtr<Gdk::Pixbuf> im;
+  Glib::ustring ImageFileName;
+
   switch (ORGeometryType)
   {
     case 1:
-      im
-          = Gdk::Pixbuf::create_from_file(
-              BuilderGraphicsHelper::getPathForFileName("points.png"), 22, 22,
-              true);
+      ImageFileName = "points.png";
       break;
     case 2:
-      im = Gdk::Pixbuf::create_from_file(
-          BuilderGraphicsHelper::getPathForFileName("lines.png"), 22, 22, true);
+      ImageFileName = "lines.png";
       break;
     case 3:
-      im = Gdk::Pixbuf::create_from_file(
-          BuilderGraphicsHelper::getPathForFileName("polygons.png"), 22, 22,
-          true);
+      ImageFileName = "polygons.png";
       break;
     default:
+      ImageFileName = "points.png";
       break;
   }
-  mp_ImageOGRGeometryType->set(im);
+
+  return Gdk::Pixbuf::create_from_file(
+      BuilderGraphicsHelper::getPathForFileName(ImageFileName), 22, 22);
 }
 
 // =====================================================================

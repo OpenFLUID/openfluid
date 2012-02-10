@@ -548,7 +548,7 @@ void ProjectCoordinator::whenResultsChanged()
 
 void ProjectCoordinator::whenMapViewChanged()
 {
-  std::cout << "MapView has changed" << std::endl;
+//  std::cout << "MapView has changed" << std::endl;
   // check if update of Domain is sufficient
   //  updateWorkspaceModules();
   //  updateResults();

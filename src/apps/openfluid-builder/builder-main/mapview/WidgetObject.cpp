@@ -56,13 +56,13 @@
 
 WidgetObject::WidgetObject()
 {
+  mp_MainBox = Gtk::manage(new Gtk::HBox());
+  mp_MainBox->set_visible(true);
+
   mp_Eventbox = Gtk::manage(new Gtk::EventBox());
   mp_Eventbox->set_visible(true);
 
-  mp_MainTable = Gtk::manage(new Gtk::Table());
-  mp_MainTable->set_visible(true);
-
-  mp_Eventbox->add(*mp_MainTable);
+  mp_Eventbox->add(*mp_MainBox);
 
   mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#F1F2F3"));
 }

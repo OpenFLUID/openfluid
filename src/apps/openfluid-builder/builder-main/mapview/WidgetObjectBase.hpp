@@ -70,24 +70,15 @@ class WidgetObjectBase: public WidgetObject
 
   private:
 
-    int m_OGRGeometryType;
     bool m_IsSelected;
 
-    //Gtkmm
-    Gtk::ToolItem* mp_ButtonUp;
-    Gtk::ToolItem* mp_ButtonDown;
-    Gtk::ToolItem* mp_ButtonRemove;
+    Gtk::CheckButton* mp_DisplayLayerCheckBox;
 
-    Gtk::CheckButton* mp_CheckButton;
+    Gtk::Button* mp_UpButton;
+    Gtk::Button* mp_DownButton;
+    Gtk::Button* mp_RemoveButton;
 
-    Gtk::Label m_TitleLayerLabel;
-    Gtk::Label m_LayerIdLabel;
-
-    Glib::RefPtr<Gtk::Action> mref_UpLayer;
-    Glib::RefPtr<Gtk::Action> mref_DownLayer;
-    Glib::RefPtr<Gtk::Action> mref_RemoveLayer;
-
-    Gtk::Image* mp_ImageOGRGeometryType;
+    Gtk::Image* mp_TypeImage;
 
     typedef sigc::signal<void> mtype_SignalWidgetObjectBase;
 
@@ -104,7 +95,7 @@ class WidgetObjectBase: public WidgetObject
     void onIsDisplayButtonChecked();
     //*************************************************
 
-    void setImageOGRGeometryType(int);
+    Glib::RefPtr<Gdk::Pixbuf> getPixbufForType(int);
     bool onEventHappend(GdkEvent* event);
 
   public:
@@ -117,11 +108,9 @@ class WidgetObjectBase: public WidgetObject
     mtype_SignalWidgetObjectBase signalIsDisplayButtonChecked();
     mtype_SignalWidgetObjectBase signalIsSelectedLayerClicked();
 
-    //accessor
-    //get
-    Gtk::ToolItem* getButtonDown();
-    Gtk::ToolItem* getButtonUp();
-    //set
+    void setUpButtonSensitive(bool Sensitiveness);
+    void setDownButtonSensitive(bool Sensitiveness);
+
     void setOGRGeometryType(int);
     void setIsSelected(bool);
 

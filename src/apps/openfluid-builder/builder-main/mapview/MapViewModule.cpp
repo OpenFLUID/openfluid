@@ -58,80 +58,64 @@
 #include "ToolBar.hpp"
 #include "Mediator.hpp"
 #include "MapViewModule.hpp"
+#include "BuilderFrame.hpp"
 
-MapViewModule::MapViewModule()
+MapViewModule::MapViewModule() :
+  m_ScrollbarSpacing(3)
 {
-  mp_Statusbar = Gtk::manage(new Gtk::Statusbar());
   mp_DrawingArea = Gtk::manage(new DrawingArea());
   mp_ToolBar = new ToolBar();
-  mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Statusbar,
-      *mp_ToolBar);
+  mp_Statusbar = Gtk::manage(new Gtk::Statusbar());
 
-  //ScrolledWindow
-  mp_MainScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_DrawScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_MenuScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_MenuControlScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
-  //Paned
-  mp_HVisuPaned = Gtk::manage(new Gtk::HPaned());
-  mp_VMenuPaned = Gtk::manage(new Gtk::VPaned());
-  //Box
-  mp_VBoxToolFrame = Gtk::manage(new Gtk::VBox());
-  mp_VBoxStatusbarDrawingArea = Gtk::manage(new Gtk::VBox());
-  //Frame
-//  mp_DrawFrame = Gtk::manage(new Gtk::Frame());
-  mp_ControlMenuFrame = Gtk::manage(new Gtk::Frame());
-  mp_InfoMenuFrame = Gtk::manage(new Gtk::Frame());
+  mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Statusbar, *mp_ToolBar);
 
-  mp_VBoxStatusbarDrawingArea->set_spacing(2);
+  mp_Mediator->signal_DrawingAreaExposeEventChanged().connect(sigc::mem_fun(
+      *this, &MapViewModule::whenChanged));
 
-  mp_MainScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
+  mp_Mediator->signal_ZoomWithRescaleAsked().connect(sigc::mem_fun(*this,
+      &MapViewModule::resizeDrawingAreaScrolledWindow));
+}
+
+// =====================================================================
+// =====================================================================
+
+void MapViewModule::compose()
+{
+  mp_Statusbar->set_has_resize_grip(false);
+
+  BuilderFrame* MenuFrame = Gtk::manage(new BuilderFrame());
+  MenuFrame->setLabelText(_("Layers"));
+  MenuFrame->add(*mp_Mediator->asWidget());
+
+  Gtk::ScrolledWindow* MenuScrolledWindow = Gtk::manage(
+      new Gtk::ScrolledWindow());
+  MenuScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  MenuScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+  MenuScrolledWindow->add(*MenuFrame);
+
+  mp_DrawingAreaScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_DrawingAreaScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
       Gtk::POLICY_AUTOMATIC);
-  mp_DrawScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
-      Gtk::POLICY_AUTOMATIC);
-  mp_MenuScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
-      Gtk::POLICY_AUTOMATIC);
+  mp_DrawingAreaScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
+  mp_DrawingAreaScrolledWindow->add(*mp_DrawingArea);
 
-//  mp_DrawFrame->set_label(_("Map"));
-  mp_ControlMenuFrame->set_label(_("Layer"));
-  mp_InfoMenuFrame->set_label(_("Info"));
+  mp_DrawingAreaScrolledWindow->get_style_property("scrollbar-spacing",
+      m_ScrollbarSpacing);
 
-//  mp_DrawFrame->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
-  mp_ControlMenuFrame->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
-  mp_InfoMenuFrame->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+  Gtk::VBox* MapBox = Gtk::manage(new Gtk::VBox());
+  MapBox->pack_start(*mp_DrawingAreaScrolledWindow, Gtk::PACK_EXPAND_WIDGET);
+  MapBox->pack_start(*mp_Statusbar, Gtk::PACK_SHRINK);
 
-  mp_MenuControlScrolledWindow->add(*mp_Mediator->asWidget());
-  mp_ControlMenuFrame->add(*mp_MenuControlScrolledWindow);
+  mp_ContentPaned = Gtk::manage(new Gtk::HPaned());
+  mp_ContentPaned->pack1(*MapBox, Gtk::FILL | Gtk::EXPAND);
+  mp_ContentPaned->pack2(*MenuScrolledWindow, Gtk::FILL | Gtk::EXPAND);
 
-  mp_DrawScrolledWindow->add(*mp_DrawingArea);
-//  mp_DrawFrame->add(*mp_DrawScrolledWindow);
-  mp_VMenuPaned->pack1(*mp_ControlMenuFrame);
-  mp_VMenuPaned->pack2(*mp_InfoMenuFrame);
-  mp_MenuScrolledWindow->add(*mp_VMenuPaned);
-  mp_VBoxStatusbarDrawingArea->pack_start(*mp_DrawScrolledWindow,
-      Gtk::PACK_EXPAND_WIDGET);
-  mp_VBoxStatusbarDrawingArea->pack_start(*mp_Statusbar, Gtk::PACK_SHRINK);
-  mp_HVisuPaned->pack1(*mp_VBoxStatusbarDrawingArea, Gtk::EXPAND);
-  mp_HVisuPaned->pack2(*mp_MenuScrolledWindow, Gtk::FILL | Gtk::EXPAND);
-  mp_VBoxToolFrame->pack_start(*mp_ToolBar->asWidget(), Gtk::PACK_SHRINK);
-  mp_VBoxToolFrame->pack_end(*mp_HVisuPaned, Gtk::PACK_EXPAND_WIDGET);
-  mp_MainScrolledWindow->add(*mp_VBoxToolFrame);
-
-  static_cast<Gtk::Viewport*> (mp_Mediator->asWidget()->get_parent())->set_shadow_type(
-      Gtk::SHADOW_NONE);
-  static_cast<Gtk::Viewport*> (mp_DrawingArea->get_parent())->set_shadow_type(
-      Gtk::SHADOW_NONE);
-  static_cast<Gtk::Viewport*> (mp_VMenuPaned->get_parent())->set_shadow_type(
-      Gtk::SHADOW_NONE);
-  static_cast<Gtk::Viewport*> (mp_VBoxToolFrame->get_parent())->set_shadow_type(
-      Gtk::SHADOW_NONE);
-
-  mp_MainScrolledWindow->show_all_children();
-  mp_MainScrolledWindow->set_visible(true);
-
-  mp_MainScrolledWindow->set_can_focus(true);
-
-  mp_Mediator->signal_DrawingAreaExposeEventChanged().connect( sigc::mem_fun(*this, &MapViewModule::whenChanged));
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*mp_ToolBar->asWidget(), Gtk::PACK_SHRINK);
+  mp_MainBox->pack_end(*mp_ContentPaned, Gtk::PACK_EXPAND_WIDGET);
+  mp_MainBox->show_all_children();
+  mp_MainBox->set_visible(true);
+  mp_MainBox->set_can_focus(true);
 }
 
 // =====================================================================
@@ -139,9 +123,8 @@ MapViewModule::MapViewModule()
 
 Gtk::Widget* MapViewModule::asWidget()
 {
-  return mp_MainScrolledWindow;
+  return mp_MainBox;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -153,7 +136,6 @@ void MapViewModule::setEngineRequirements(
   mp_Mediator->setEngineRequirements(SimBlob);
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -161,7 +143,6 @@ sigc::signal<void> MapViewModule::signal_ModuleChanged()
 {
   return m_signal_MapViewChanged;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -171,3 +152,20 @@ void MapViewModule::whenChanged()
   m_signal_MapViewChanged.emit();
 }
 
+// =====================================================================
+// =====================================================================
+
+void MapViewModule::resizeDrawingAreaScrolledWindow()
+{
+  Gtk::Allocation DrawingAreaViewportAllocation =
+      mp_DrawingArea->get_parent()->get_allocation();
+
+  double RequiredWidth = DrawingAreaViewportAllocation.get_width()
+      - m_ScrollbarSpacing;
+  double RequiredHeight = DrawingAreaViewportAllocation.get_height()
+      - m_ScrollbarSpacing;
+
+  mp_DrawingArea->set_size_request(RequiredWidth, RequiredHeight);
+
+  mp_DrawingAreaScrolledWindow->resize_children();
+}

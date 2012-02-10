@@ -99,7 +99,7 @@ class Layer
     bool m_IsSelected;
     bool m_IsDisplay;
     bool m_DisplayID;
-    bool m_DisplayGraph;
+//    bool m_DisplayGraph;
 
     void loadShapefile();
 
@@ -111,7 +111,7 @@ class Layer
     void whenOnIsSelectedLayerClicked();
     //***************Signal WidgetExpanderBase*******************
     void whenOnWidgetExpanderBaseChanged(int, double, double, double, double,
-        bool, bool);
+        bool/*, bool*/);
 
     typedef sigc::signal<void> mtype_SignalLayer;
     typedef sigc::signal<void, std::string> mtype_SignalLayerString;
@@ -159,7 +159,7 @@ class Layer
     bool getIsSelected();
     bool getDisplayLayerName();
     bool getDisplayID();
-    bool getDisplayGraph();
+//    bool getDisplayGraph();
 
     std::string getClassName();
     std::string getId();

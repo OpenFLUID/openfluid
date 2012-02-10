@@ -113,11 +113,12 @@ class Mediator
 
     sigc::signal<void> m_signal_DrawingAreaExposeEventChanged;
 
+    sigc::signal<void> m_signal_ZoomWithRescaleAsked;
+
     void addAvailableLayersFromDatastore();
     void addALayer(Layer& ALayer);
 
     void whenDrawingAreaChanged();
-    void whenDrawingAreaRealized();
     void whenDrawingAreaMapped();
     bool whenDrawingAreaMapEvent(GdkEventAny* Event);
 
@@ -163,6 +164,9 @@ class Mediator
     void setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob);
 
     sigc::signal<void> signal_DrawingAreaExposeEventChanged();
+
+    sigc::signal<void> signal_ZoomWithRescaleAsked();
+
     void redraw();
 
     static bool hasADisplayableVectorValue(
@@ -170,7 +174,7 @@ class Mediator
         openfluid::core::CoreRepository& CoreRepos);
 
     static bool
-        hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item);
+    hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item);
 
     static Layer* tryToCreateALayerFromADatastoreItem(
         openfluid::core::DatastoreItem& Item);

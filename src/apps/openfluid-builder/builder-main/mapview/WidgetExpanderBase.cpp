@@ -54,120 +54,83 @@
 
 #include "ToolBox.hpp"
 #include <glibmm/i18n.h>
+#include <gtkmm/alignment.h>
 #include "WidgetExpanderBase.hpp"
 
 WidgetExpanderBase::WidgetExpanderBase() :
   WidgetExpander()
 {
-  mp_MainTableExpander = Gtk::manage(new Gtk::Table(9, 2, false));
-  m_LabelColor.set_label(_("Color"));
-  m_LabelCheckButtonGraph.set_label(_("Graph"));
-  m_LabelCheckButtonLayerName.set_label(_("Layer Name"));
-  m_LabelCheckButtonID.set_label(_("ID"));
-  m_LabelHScale.set_label(_("Opacity"));
-  m_LabelSpinButton.set_label(_("Width"));
+  mp_ColorButton = Gtk::manage(new Gtk::ColorButton(getARandColor()));
 
-  m_LabelColor.set_alignment(.02, 0);
-  m_LabelCheckButtonGraph.set_alignment(.02, 0);
-  m_LabelCheckButtonLayerName.set_alignment(.02, 0);
-  m_LabelCheckButtonID.set_alignment(.02, 0);
-  m_LabelHScale.set_alignment(.02, 0);
-  m_LabelSpinButton.set_alignment(.02, 0);
+  mp_WidthSpinButton = Gtk::manage(new Gtk::SpinButton());
+  mp_WidthSpinButton->set_range(1, 100);
+  mp_WidthSpinButton->set_increments(1, 10);
+  mp_WidthSpinButton->set_numeric(true);
+  mp_WidthSpinButton->set_value(1);
 
-  mp_AdjustmentHScale = Gtk::manage(
-      new Gtk::Adjustment(0.0, 0.0, 101.0, 1.0, 1.0, 1.0));
-  mp_AdjustmentSpinButton = Gtk::manage(
-      new Gtk::Adjustment(1.0, 1.0, 100.0, 1.0, 1.0, 0.0));
+  mp_OpacityHScale = Gtk::manage(new Gtk::HScale(0, 101, 1));
+  mp_OpacityHScale->set_value_pos(Gtk::POS_LEFT);
+  mp_OpacityHScale->set_value(100);
+  mp_OpacityHScale->set_update_policy(Gtk::UPDATE_DELAYED);
 
-  mp_ColorButton = Gtk::manage(new Gtk::ColorButton());
-  mp_CheckButtonGraph = Gtk::manage(new Gtk::CheckButton());
-  mp_CheckButtonID = Gtk::manage(new Gtk::CheckButton());
-  mp_HScale = Gtk::manage(new Gtk::HScale(*mp_AdjustmentHScale));
-  mp_SpinButton = Gtk::manage(new Gtk::SpinButton(*mp_AdjustmentSpinButton));
+  mp_ShowIDCheckBox = Gtk::manage(new Gtk::CheckButton(_("show ID")));
+  //  mp_CheckButtonGraph = Gtk::manage(new Gtk::CheckButton(_("show graph")));
 
-  mp_HScale->set_value_pos(Gtk::POS_LEFT);
-  mp_HScale->set_value(100);
-  mp_HScale->set_update_policy(Gtk::UPDATE_DELAYED);
+  Gtk::HBox* ColorButtonBox = Gtk::manage(new Gtk::HBox());
+  ColorButtonBox->pack_start(*mp_ColorButton, Gtk::PACK_SHRINK);
 
-  setAlphaPercent();
-  randColor();
-  m_SizeLine = 1;
+  Gtk::HBox* WidthSpinButtonBox = Gtk::manage(new Gtk::HBox());
+  WidthSpinButtonBox->pack_start(*mp_WidthSpinButton, Gtk::PACK_SHRINK);
 
-  mp_SpinButton->set_numeric(true);
-  mp_ColorButton->set_color(m_Color);
-
-  mp_MainTableExpander->attach(m_LabelColor, 0, 1, 0, 1,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(m_LabelSpinButton, 0, 1, 2, 3,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(m_LabelHScale, 0, 1, 4, 5,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(m_LabelCheckButtonID, 0, 1, 6, 7,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(m_LabelCheckButtonGraph, 0, 1, 8, 9,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-
-  mp_MainTableExpander->attach(*mp_ColorButton, 1, 2, 0, 1, Gtk::SHRINK,
+  Gtk::Table* mp_MainTable = Gtk::manage(new Gtk::Table());
+  mp_MainTable->set_col_spacings(5);
+  mp_MainTable->attach(*Gtk::manage(new Gtk::Label(_("Color:"), 0, 0.5)), 0, 1,
+      0, 1, Gtk::FILL, Gtk::SHRINK);
+  mp_MainTable->attach(*Gtk::manage(new Gtk::Label(_("Width:"), 0, 0.5)), 0, 1,
+      1, 2, Gtk::FILL, Gtk::SHRINK);
+  mp_MainTable->attach(*Gtk::manage(new Gtk::Label(_("Opacity:"), 0, 0.5)), 0,
+      1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  mp_MainTable->attach(*ColorButtonBox, 1, 2, 0, 1, Gtk::FILL, Gtk::SHRINK);
+  mp_MainTable->attach(*WidthSpinButtonBox, 1, 2, 1, 2, Gtk::FILL, Gtk::SHRINK);
+  mp_MainTable->attach(*mp_OpacityHScale, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
-  mp_MainTableExpander->attach(*mp_SpinButton, 1, 2, 2, 3, Gtk::SHRINK,
-      Gtk::SHRINK);
-  mp_MainTableExpander->attach(*mp_HScale, 1, 2, 4, 5, Gtk::FILL | Gtk::EXPAND,
-      Gtk::SHRINK);
-  mp_MainTableExpander->attach(*mp_CheckButtonID, 1, 2, 6, 7, Gtk::SHRINK,
-      Gtk::SHRINK);
-  mp_MainTableExpander->attach(*mp_CheckButtonGraph, 1, 2, 8, 9, Gtk::SHRINK,
-      Gtk::SHRINK);
+  mp_MainTable->attach(*mp_ShowIDCheckBox, 0, 2, 3, 4, Gtk::FILL, Gtk::SHRINK);
+  //  mp_MainTable->attach(*mp_CheckButtonGraph, 0, 2, 4, 5, Gtk::FILL, Gtk::SHRINK);
 
-  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 1, 2,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 3, 4,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 5, 6,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->attach(*ToolBox::setHSeparator(), 0, 2, 7, 8,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  mp_MainTableExpander->set_visible(true);
-  mp_MainTableExpander->show_all_children(true);
-  mp_MainExpander->set_label(_("Layer Option"));
-  mp_MainExpander->add(*mp_MainTableExpander);
+  Gtk::Alignment* MainTableAlign = Gtk::manage(new Gtk::Alignment());
+  MainTableAlign->set_padding(10, 20, 20, 0);
+  MainTableAlign->add(*mp_MainTable);
+
+  mp_MainExpander->set_label(_("Layer Options"));
+  mp_MainExpander->add(*MainTableAlign);
+  mp_MainExpander->show_all_children();
 
   //******************Signal connexion*********************
 
-  mp_ColorButton->signal_color_set().connect(
-      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
-  mp_AdjustmentHScale->signal_value_changed().connect(
-      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
-  mp_AdjustmentSpinButton->signal_value_changed().connect(
-      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
-  mp_CheckButtonID->signal_toggled().connect(
-      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
-  mp_CheckButtonGraph->signal_toggled().connect(
-      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  mp_ColorButton->signal_color_set().connect(sigc::mem_fun(*this,
+      &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  mp_WidthSpinButton->signal_value_changed().connect(sigc::mem_fun(*this,
+      &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  mp_OpacityHScale->signal_value_changed().connect(sigc::mem_fun(*this,
+      &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  mp_ShowIDCheckBox->signal_toggled().connect(sigc::mem_fun(*this,
+      &WidgetExpanderBase::onWidgetExpanderBaseChanged));
+  //  mp_CheckButtonGraph->signal_toggled().connect(
+  //      sigc::mem_fun(*this, &WidgetExpanderBase::onWidgetExpanderBaseChanged));
 }
 
 // =====================================================================
 // =====================================================================
 
-void WidgetExpanderBase::randColor()
+Gdk::Color WidgetExpanderBase::getARandColor()
 {
-  int r = static_cast<int> (static_cast<float> (65536)
-      * static_cast<float> (rand()) / static_cast<float> (RAND_MAX));
-  m_Color.set_red(r);
-  int g = static_cast<int> (static_cast<float> (65536)
-      * static_cast<float> (rand()) / static_cast<float> (RAND_MAX));
-  m_Color.set_green(g);
-  int b = static_cast<int> (static_cast<float> (65536)
-      * static_cast<float> (rand()) / static_cast<float> (RAND_MAX));
-  m_Color.set_blue(b);
-}
+  Gdk::Color RandColor;
 
-// =====================================================================
-// =====================================================================
+  RandColor.set_rgb(Glib::Rand().get_int_range(0, 65535),
+      Glib::Rand().get_int_range(0, 65535),
+      Glib::Rand().get_int_range(0, 65535));
 
-void WidgetExpanderBase::setAlphaPercent()
-{
-  m_Alpha = ((mp_HScale->get_value() * 65535) / 100) / 65535;
-  mp_ColorButton->set_alpha(m_Alpha * 65535);
+  return RandColor;
 }
 
 // =====================================================================
@@ -183,11 +146,13 @@ WidgetExpanderBase::mtype_SignalWidgetExpanderBase WidgetExpanderBase::signalWid
 
 void WidgetExpanderBase::onWidgetExpanderBaseChanged()
 {
-  m_Color = mp_ColorButton->get_color();
-  setAlphaPercent();
-  m_SizeLine = mp_SpinButton->get_value();
-  mp_SpinButton->update();
-  m_signal_WidgetExpanderBaseChanged.emit(m_SizeLine, m_Color.get_red_p(),
-      m_Color.get_green_p(), m_Color.get_blue_p(), m_Alpha,
-      mp_CheckButtonID->get_active(), mp_CheckButtonGraph->get_active());
+  Gdk::Color CurrentColor = mp_ColorButton->get_color();
+
+  double CurrentAlpha = mp_OpacityHScale->get_value() / 100;
+
+  int CurrentWidth = mp_WidthSpinButton->get_value();
+
+  m_signal_WidgetExpanderBaseChanged.emit(CurrentWidth,
+      CurrentColor.get_red_p(), CurrentColor.get_green_p(),
+      CurrentColor.get_blue_p(), CurrentAlpha, mp_ShowIDCheckBox->get_active()/*, mp_CheckButtonGraph->get_active()*/);
 }
