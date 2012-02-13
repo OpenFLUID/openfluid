@@ -57,6 +57,8 @@
 
 #include "Mediator.hpp"
 
+#include <iomanip>
+
 #include <glibmm/i18n.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -694,7 +696,10 @@ void Mediator::whenOnMotionNotifyChanged(double X, double Y)
     return;
   }
 
-  Glib::ustring Msg = Glib::ustring::compose("X : %1   Y : %2", X, Y);
+  Glib::ustring Msg = Glib::ustring::compose("X : %1   Y : %2   (unknown coordinate system)",
+      Glib::ustring::format(std::fixed, std::setprecision(6), X),
+      Glib::ustring::format(std::fixed, std::setprecision(6), Y));
+
   mref_StatusBar.push(Msg);
 }
 
