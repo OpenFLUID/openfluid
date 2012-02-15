@@ -323,12 +323,12 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
 {
   if (m_SelectedClassName == "")
   {
-    m_SelectedUnitId.clear();
+    m_SelectedUnitIds.clear();
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a selection without selection.\n\nPlease select a layer."));
   }
-  else if (m_SelectedUnitId.empty())
+  else if (m_SelectedUnitIds.empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
@@ -343,7 +343,7 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
       {
         signal_ZoomWithRescaleAsked().emit();
         mref_DrawingArea.modifyScaleTranslate((*it)->getMinMaxSelection(
-            m_SelectedUnitId));
+            m_SelectedUnitIds));
       }
     }
     redraw();
@@ -357,7 +357,7 @@ void Mediator::whenOnZoomLayerFocusButtonClicked()
 {
   if (m_SelectedClassName == "")
   {
-    m_SelectedUnitId.clear();
+    m_SelectedUnitIds.clear();
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't zoom in a layer without select the corresponding layer before.\n\nPlease select a layer."));
@@ -419,7 +419,7 @@ void Mediator::whenOnSelectAllPreferenceMenuClicked()
 {
   if (m_SelectedClassName == "")
   {
-    m_SelectedUnitId.clear();
+    m_SelectedUnitIds.clear();
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
@@ -432,7 +432,7 @@ void Mediator::whenOnSelectAllPreferenceMenuClicked()
       if (m_SelectedClassName == (*it)->getClassName())
       {
         std::set<int> temp = (*it)->ObjectSelected();
-        temp.swap(m_SelectedUnitId);
+        temp.swap(m_SelectedUnitIds);
       }
     }
     redraw();
@@ -446,7 +446,7 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 {
   if (m_SelectedClassName == "")
   {
-    m_SelectedUnitId.clear();
+    m_SelectedUnitIds.clear();
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
@@ -460,13 +460,13 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
       {
         std::set<int> temp = (*it)->ObjectSelected();
         std::set<int>::iterator itset;
-        for (itset = m_SelectedUnitId.begin(); itset != m_SelectedUnitId.end(); itset++)
+        for (itset = m_SelectedUnitIds.begin(); itset != m_SelectedUnitIds.end(); itset++)
         {
           std::set<int>::iterator it2;
           it2 = temp.find((*itset));
           temp.erase(it2);
         }
-        temp.swap(m_SelectedUnitId);
+        temp.swap(m_SelectedUnitIds);
       }
     }
     redraw();
@@ -514,7 +514,7 @@ void Mediator::whenOnAddLayerToolButtonClicked()
 
 void Mediator::whenOnInfoToolButtonClicked()
 {
-  if (m_SelectedClassName == "" || m_SelectedUnitId.empty())
+  if (m_SelectedClassName == "" || m_SelectedUnitIds.empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _("You can't have informations without select the corresponding layer"
@@ -523,10 +523,10 @@ void Mediator::whenOnInfoToolButtonClicked()
   }
 
   std::set<int> UnavailableIds;
-  std::set<int> AvailableIds = m_SelectedUnitId;
+  std::set<int> AvailableIds = m_SelectedUnitIds;
   std::set<int>::iterator it;
 
-  for (it = m_SelectedUnitId.begin(); it != m_SelectedUnitId.end(); ++it)
+  for (it = m_SelectedUnitIds.begin(); it != m_SelectedUnitIds.end(); ++it)
   {
     if (!mp_CoreRepos->getUnit(m_SelectedClassName, *it))
     {
@@ -649,7 +649,7 @@ void Mediator::whenOnRemoveLayerButtonClicked(std::string ClassName)
   if (m_Layers.empty())
     mref_ToolBar.resetSensitiveToolBar(false);
   if (m_SelectedClassName == ClassName)
-    m_SelectedUnitId.clear();
+    m_SelectedUnitIds.clear();
   redraw();
 }
 
@@ -659,12 +659,11 @@ void Mediator::whenOnRemoveLayerButtonClicked(std::string ClassName)
 void Mediator::whenOnIsSelectedLayerClicked(std::string ClassName)
 {
   m_SelectedClassName = ClassName;
-  m_SelectedUnitId.clear();
+  m_SelectedUnitIds.clear();
   std::vector<Layer*>::iterator it;
   for (it = m_Layers.begin(); it < m_Layers.end(); it++)
   {
-    if (ClassName != (*it)->getClassName())
-      (*it)->setIsSelected(false);
+    (*it)->setIsSelected(m_SelectedClassName == (*it)->getClassName());
   }
   redraw();
 }
@@ -711,7 +710,7 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
   bool isRedraw = false;
   if (m_SelectedClassName == "")
   {
-    m_SelectedUnitId.clear();
+    m_SelectedUnitIds.clear();
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _(
             "You can't select objects without select the corresponding layer before.\n\nPlease select a layer."));
@@ -722,53 +721,53 @@ void Mediator::whenOnSelectObjectChanged(double X, double Y)
     for (it = m_Layers.begin(); it < m_Layers.end(); it++)
     {
       if (m_SelectedClassName == (*it)->getClassName()
-          && !m_SelectedUnitId.empty())
+          && !m_SelectedUnitIds.empty())
       {
         int temp = (*it)->isObjectSelected(X, Y, mref_DrawingArea.getScale());
         if (temp != -1)
         {
           std::set<int>::iterator it2;
-          it2 = m_SelectedUnitId.find(temp);
-          if (it2 == m_SelectedUnitId.end()
+          it2 = m_SelectedUnitIds.find(temp);
+          if (it2 == m_SelectedUnitIds.end()
               && mref_DrawingArea.getPressMultiSelect())
           {
-            m_SelectedUnitId.insert(temp);
+            m_SelectedUnitIds.insert(temp);
           }
-          else if (it2 == m_SelectedUnitId.end()
+          else if (it2 == m_SelectedUnitIds.end()
               && !mref_DrawingArea.getPressMultiSelect())
           {
-            m_SelectedUnitId.clear();
-            m_SelectedUnitId.insert(temp);
+            m_SelectedUnitIds.clear();
+            m_SelectedUnitIds.insert(temp);
           }
-          else if (it2 != m_SelectedUnitId.end()
+          else if (it2 != m_SelectedUnitIds.end()
               && mref_DrawingArea.getPressMultiSelect())
           {
-            m_SelectedUnitId.erase(it2);
+            m_SelectedUnitIds.erase(it2);
           }
-          else if (it2 != m_SelectedUnitId.end()
+          else if (it2 != m_SelectedUnitIds.end()
               && !mref_DrawingArea.getPressMultiSelect())
           {
-            m_SelectedUnitId.clear();
+            m_SelectedUnitIds.clear();
           }
           isRedraw = true;
         }
         else
         {
-          if (!m_SelectedUnitId.empty()
+          if (!m_SelectedUnitIds.empty()
               && !mref_DrawingArea.getPressMultiSelect())
           {
-            m_SelectedUnitId.clear();
+            m_SelectedUnitIds.clear();
             isRedraw = true;
           }
         }
       }
       else if (m_SelectedClassName == (*it)->getClassName()
-          && m_SelectedUnitId.empty())
+          && m_SelectedUnitIds.empty())
       {
         int temp = (*it)->isObjectSelected(X, Y, mref_DrawingArea.getScale());
         if (temp != -1)
         {
-          m_SelectedUnitId.insert(temp);
+          m_SelectedUnitIds.insert(temp);
           isRedraw = true;
         }
       }
@@ -814,7 +813,7 @@ void Mediator::redraw()
           if ((*rit)->getClassName() == m_SelectedClassName)
           {
             (*rit)->draw(Context, mref_DrawingArea.getScale(),
-                m_SelectedUnitId, (*rit)->getDisplayID());
+                m_SelectedUnitIds, (*rit)->getDisplayID());
           }
           else
           {

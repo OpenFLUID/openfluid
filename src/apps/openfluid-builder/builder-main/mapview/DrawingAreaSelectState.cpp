@@ -52,15 +52,16 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include <iostream>
-
 #include "DrawingAreaSelectState.hpp"
-#include "DrawingAreaState.hpp"
+
+#include "BuilderGraphicsHelper.hpp"
 
 DrawingAreaSelectState::DrawingAreaSelectState(DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(Gdk::CROSSHAIR);
+  Gdk::Cursor Cursor(DrawingArea.get_display(),Gdk::Pixbuf::create_from_file(
+      BuilderGraphicsHelper::getPathForFileName("right_ptr.png"),24,24),23,0);
+
   m_Cursor = Cursor;
 }
 

@@ -52,15 +52,18 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include <iostream>
-
 #include "DrawingAreaZoomCursorState.hpp"
-#include "DrawingAreaState.hpp"
+
+#include <gtkmm/image.h>
+#include <gtkmm/stock.h>
 
 DrawingAreaZoomCursorState::DrawingAreaZoomCursorState(DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(Gdk::BOGOSITY);
+  Gtk::Image Img;
+  Gdk::Cursor Cursor(DrawingArea.get_display(), Img.render_icon(
+      Gtk::Stock::ZOOM_IN, Gtk::ICON_SIZE_LARGE_TOOLBAR), 0, 0);
+
   m_Cursor = Cursor;
 }
 

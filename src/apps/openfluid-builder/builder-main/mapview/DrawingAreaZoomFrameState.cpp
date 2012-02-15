@@ -60,7 +60,7 @@
 DrawingAreaZoomFrameState::DrawingAreaZoomFrameState(DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(Gdk::SIZING);
+  Gdk::Cursor Cursor(Gdk::TCROSS);
   m_Cursor = Cursor;
 }
 

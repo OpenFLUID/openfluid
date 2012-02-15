@@ -52,16 +52,19 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include <iostream>
-
 #include "DrawingAreaUnzoomCursorState.hpp"
-#include "DrawingAreaState.hpp"
+
+#include <gtkmm/image.h>
+#include <gtkmm/stock.h>
 
 DrawingAreaUnzoomCursorState::DrawingAreaUnzoomCursorState(
     DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(Gdk::BOX_SPIRAL);
+  Gtk::Image Img;
+  Gdk::Cursor Cursor(DrawingArea.get_display(), Img.render_icon(
+      Gtk::Stock::ZOOM_OUT, Gtk::ICON_SIZE_LARGE_TOOLBAR), 0, 0);
+
   m_Cursor = Cursor;
 }
 

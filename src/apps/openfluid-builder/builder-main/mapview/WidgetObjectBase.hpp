@@ -70,7 +70,7 @@ class WidgetObjectBase: public WidgetObject
 
   private:
 
-    bool m_IsSelected;
+    Gtk::StateType m_CurrentState;
 
     Gtk::CheckButton* mp_DisplayLayerCheckBox;
 

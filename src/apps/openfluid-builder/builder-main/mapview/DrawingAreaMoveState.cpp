@@ -52,16 +52,20 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
-#include <iostream>
-
 #include "DrawingAreaMoveState.hpp"
-#include "DrawingAreaState.hpp"
+
+#include "BuilderGraphicsHelper.hpp"
 
 DrawingAreaMoveState::DrawingAreaMoveState(DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(Gdk::HAND1);
-  m_Cursor = Cursor;
+  m_DefaultCursor = Gdk::Cursor(mref_DrawingArea.get_display(),Gdk::Pixbuf::create_from_file(
+      BuilderGraphicsHelper::getPathForFileName("hand1.png"),24,24),12,12);
+
+  m_MovingCursor = Gdk::Cursor(mref_DrawingArea.get_display(),Gdk::Pixbuf::create_from_file(
+      BuilderGraphicsHelper::getPathForFileName("grabbing.png"),24,24),12,12);
+
+  m_Cursor = m_DefaultCursor;
 }
 
 // =====================================================================
@@ -71,6 +75,9 @@ void DrawingAreaMoveState::onMouseButtonPressed(GdkEventButton* event)
 {
   m_XPress = event->x / mref_DrawingArea.getScale();
   m_YPress = event->y / mref_DrawingArea.getScale();
+
+  m_Cursor = m_MovingCursor;
+  mref_DrawingArea.get_window()->set_cursor(m_Cursor);
 }
 
 // =====================================================================
@@ -86,5 +93,9 @@ bool DrawingAreaMoveState::onMouseButtonReleased(GdkEventButton* event)
 
   mref_DrawingArea.setXTranslate(XPoint);
   mref_DrawingArea.setYTranslate(YPoint);
+
+  m_Cursor = m_DefaultCursor;
+  mref_DrawingArea.get_window()->set_cursor(m_Cursor);
+
   return true;
 }

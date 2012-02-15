@@ -52,11 +52,12 @@
  \author Damien CHABBERT <dams.vivien@gmail.com>
  */
 
+#include "ToolBar.hpp"
+
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
-#include <iostream>
 
-#include "ToolBar.hpp"
+#include "BuilderGraphicsHelper.hpp"
 
 ToolBar::ToolBar()
 {
@@ -108,14 +109,18 @@ ToolBar::ToolBar()
   //*******************************************************
 
   mp_SelectObjectLayerToggleToolButton = Gtk::manage(
-      new Gtk::ToggleToolButton(Gtk::Stock::SELECT_COLOR));
+      new Gtk::ToggleToolButton(*BuilderGraphicsHelper::createBuilderIconStockId(
+          "right_ptr.png","openfluid_mapview_select")));
   mp_SelectObjectLayerToggleToolButton->set_tooltip_markup(
       _("Select Object(s) Of Current Layer"));
   mp_SelectObjectLayerToggleToolButton->set_visible(true);
 
   mp_MoveLayerToggleToolButton = Gtk::manage(
-      new Gtk::ToggleToolButton(Gtk::Stock::FULLSCREEN));
-  mp_MoveLayerToggleToolButton->set_tooltip_markup(_("Move View Of Layers"));
+      new Gtk::ToggleToolButton(
+          *BuilderGraphicsHelper::createBuilderIconStockId(
+              "hand1.png","openfluid_mapview_move")));
+
+  mp_MoveLayerToggleToolButton->set_tooltip_markup(_("Move the selected layer"));
   mp_MoveLayerToggleToolButton->set_visible(true);
 
   //  //****************FocusMenuToolButton*************
@@ -399,11 +404,10 @@ void ToolBar::onZoomTypeToggleToolButtonClicked()
     //  } else if (TempAction == mref_ZoomFrameZoomTypeMenuAction)
   } else if (m_BoolFrameState)
   {
-    std::cout << "ZoomFrame : " << std::endl;
     onZoomFrameZoomTypeButtonClicked();
   } else
   {
-    std::cout << "error : " << std::endl;
+//    std::cout << "error : " << std::endl;
   }
 }
 

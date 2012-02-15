@@ -61,7 +61,7 @@
 #include "WidgetObjectBase.hpp"
 
 WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
-  WidgetObject(), mp_TypeImage(0)
+  WidgetObject(), m_CurrentState(Gtk::STATE_NORMAL), mp_TypeImage(0)
 {
   mp_DisplayLayerCheckBox = Gtk::manage(new Gtk::CheckButton(ClassName));
   mp_DisplayLayerCheckBox->set_tooltip_text(_("Display the layer"));
@@ -71,7 +71,7 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
 
   Gtk::Table* InfoTable = Gtk::manage(new Gtk::Table());
   InfoTable->set_spacings(5);
-  InfoTable->attach(*mp_DisplayLayerCheckBox, 0, 3, 0, 1, Gtk::FILL
+  InfoTable->attach(*mp_DisplayLayerCheckBox, 0, 1, 0, 1, Gtk::FILL
       | Gtk::EXPAND, Gtk::SHRINK, 5, 0);
   InfoTable->attach(*mp_TypeImage, 0, 1, 1, 2, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK, 5, 0);
@@ -160,23 +160,17 @@ bool WidgetObjectBase::onEventHappend(GdkEvent* event)
 {
   if (event->type == GDK_ENTER_NOTIFY)
   {
-    //    double XPress = ((GdkEventMotion *) event)->x;
-    //    double YPress = ((GdkEventMotion *) event)->y;
-
-    mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#66DDFF"));
+    mp_Eventbox->set_state(Gtk::STATE_ACTIVE);
   }
-  if (event->type == GDK_LEAVE_NOTIFY)
+  else if (event->type == GDK_LEAVE_NOTIFY)
   {
-    if (!m_IsSelected)
-      mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#F1F2F3"));
-    else
-      mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#00FF00"));
+    mp_Eventbox->set_state(m_CurrentState);
   }
-  if (event->type == GDK_BUTTON_PRESS)
+  else if (event->type == GDK_BUTTON_PRESS)
   {
-    m_IsSelected = !m_IsSelected;
     m_signal_IsSelectedLayerClicked.emit();
   }
+
   return false;
 }
 
@@ -276,11 +270,9 @@ Glib::RefPtr<Gdk::Pixbuf> WidgetObjectBase::getPixbufForType(int ORGeometryType)
 
 void WidgetObjectBase::setIsSelected(bool IsSelected)
 {
-  m_IsSelected = IsSelected;
-  if (!m_IsSelected)
-    mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#F1F2F3"));
-  else
-    mp_Eventbox->modify_bg(Gtk::StateType(NULL), Gdk::Color("#00FF00"));
+  m_CurrentState = IsSelected ? Gtk::STATE_SELECTED : Gtk::STATE_NORMAL;
+
+  mp_Eventbox->set_state(m_CurrentState);
 }
 
 // =====================================================================

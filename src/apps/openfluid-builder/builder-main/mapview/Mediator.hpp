@@ -103,7 +103,7 @@ class Mediator
     std::set<std::string> m_LayersIds;
 
     std::string m_SelectedClassName;
-    std::set<int> m_SelectedUnitId;
+    std::set<int> m_SelectedUnitIds;
 
     //GTKmm
 

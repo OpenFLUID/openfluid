@@ -62,6 +62,9 @@ class DrawingAreaMoveState: public DrawingAreaState
 
   private:
 
+    Gdk::Cursor m_DefaultCursor;
+    Gdk::Cursor m_MovingCursor;
+
     double m_XPress;
     double m_YPress;
 
