@@ -57,9 +57,6 @@
 #include <gtkmm/settings.h>
 
 
-const static Gdk::Color GREEN("#97DE62");
-const static Gdk::Color LIGHTGREEN("#C7F1B3");
-
 WidgetObject::WidgetObject()
 {
   mp_MainBox = Gtk::manage(new Gtk::HBox());
@@ -69,9 +66,6 @@ WidgetObject::WidgetObject()
   mp_Eventbox->set_visible(true);
 
   mp_Eventbox->add(*mp_MainBox);
-
-  mp_Eventbox->modify_bg(Gtk::STATE_ACTIVE,LIGHTGREEN);
-  mp_Eventbox->modify_bg(Gtk::STATE_SELECTED,GREEN);
 }
 
 // =====================================================================

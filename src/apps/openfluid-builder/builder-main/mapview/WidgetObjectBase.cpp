@@ -60,8 +60,11 @@
 
 #include "WidgetObjectBase.hpp"
 
+const static Gdk::Color GREEN("#97DE62");
+const static Gdk::Color LIGHTGREEN("#C7F1B3");
+
 WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
-  WidgetObject(), m_CurrentState(Gtk::STATE_NORMAL), mp_TypeImage(0)
+  WidgetObject(), mp_TypeImage(0)
 {
   mp_DisplayLayerCheckBox = Gtk::manage(new Gtk::CheckButton(ClassName));
   mp_DisplayLayerCheckBox->set_tooltip_text(_("Display the layer"));
@@ -117,6 +120,8 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
       &WidgetObjectBase::onDownLayerButtonClicked));
   mp_RemoveButton->signal_clicked().connect(sigc::mem_fun(*this,
       &WidgetObjectBase::onRemoveLayerButtonClicked));
+  mp_Eventbox->signal_realize().connect(sigc::mem_fun(*this,
+      &WidgetObjectBase::onEventBoxRealized));
   mp_Eventbox->signal_event().connect(sigc::mem_fun(*this,
       &WidgetObjectBase::onEventHappend));
 }
@@ -156,15 +161,24 @@ void WidgetObjectBase::onIsDisplayButtonChecked()
 // =====================================================================
 // =====================================================================
 
+void WidgetObjectBase::onEventBoxRealized()
+{
+  m_DefaultColor = mp_Eventbox->get_style()->get_bg(Gtk::STATE_NORMAL);
+  m_CurrentColor = m_DefaultColor;
+}
+
+// =====================================================================
+// =====================================================================
+
 bool WidgetObjectBase::onEventHappend(GdkEvent* event)
 {
   if (event->type == GDK_ENTER_NOTIFY)
   {
-    mp_Eventbox->set_state(Gtk::STATE_ACTIVE);
+    mp_Eventbox->modify_bg(Gtk::STATE_NORMAL, LIGHTGREEN);
   }
   else if (event->type == GDK_LEAVE_NOTIFY)
   {
-    mp_Eventbox->set_state(m_CurrentState);
+    mp_Eventbox->modify_bg(Gtk::STATE_NORMAL, m_CurrentColor);
   }
   else if (event->type == GDK_BUTTON_PRESS)
   {
@@ -270,9 +284,9 @@ Glib::RefPtr<Gdk::Pixbuf> WidgetObjectBase::getPixbufForType(int ORGeometryType)
 
 void WidgetObjectBase::setIsSelected(bool IsSelected)
 {
-  m_CurrentState = IsSelected ? Gtk::STATE_SELECTED : Gtk::STATE_NORMAL;
+  m_CurrentColor = IsSelected ? GREEN : m_DefaultColor;
 
-  mp_Eventbox->set_state(m_CurrentState);
+  mp_Eventbox->modify_bg(Gtk::STATE_NORMAL, m_CurrentColor);
 }
 
 // =====================================================================

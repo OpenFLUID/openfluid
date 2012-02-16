@@ -70,7 +70,8 @@ class WidgetObjectBase: public WidgetObject
 
   private:
 
-    Gtk::StateType m_CurrentState;
+    Gdk::Color m_CurrentColor;
+    Gdk::Color m_DefaultColor;
 
     Gtk::CheckButton* mp_DisplayLayerCheckBox;
 
@@ -96,6 +97,7 @@ class WidgetObjectBase: public WidgetObject
     //*************************************************
 
     Glib::RefPtr<Gdk::Pixbuf> getPixbufForType(int);
+    void onEventBoxRealized();
     bool onEventHappend(GdkEvent* event);
 
   public:
