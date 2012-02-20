@@ -85,31 +85,36 @@ Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
   mref_DrawingArea.signal_ExposeEventChanged().connect(sigc::mem_fun(*this,
       &Mediator::whenDrawingAreaChanged));
   //***************Signal ToolBar*********************
-  mref_ToolBar.signalAddLayerToolButtonClicked().connect(sigc::mem_fun(*this,
-      &Mediator::whenOnAddLayerToolButtonClicked));
-  mref_ToolBar.signalInfoToolButtonClicked().connect(sigc::mem_fun(*this,
-      &Mediator::whenOnInfoToolButtonClicked));
-  mref_ToolBar.signalMoveLayerToggleToolButtonClicked().connect(sigc::mem_fun(
-      *this, &Mediator::whenOnMoveLayerToggleToolButtonClicked));
-  mref_ToolBar.signalSelectAllPreferenceMenuClicked().connect(sigc::mem_fun(
-      *this, &Mediator::whenOnSelectAllPreferenceMenuClicked));
-  mref_ToolBar.signalSelectObjectLayerToggleToolButtonClicked().connect(
+  mref_ToolBar.signal_AddLayerAsked().connect(sigc::mem_fun(*this,
+      &Mediator::whenAddLayerAsked));
+
+  mref_ToolBar.signal_SelectModeAsked().connect(
       sigc::mem_fun(*this,
-          &Mediator::whenOnSelectObjectLayerToggleToolButtonClicked));
-  mref_ToolBar.signalShow100FocusButtonClicked().connect(sigc::mem_fun(*this,
-      &Mediator::whenOnShow100FocusButtonClicked));
-  mref_ToolBar.signalToggleSelectedPreferenceMenuClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnToggleSelectedPreferenceMenuClicked));
-  mref_ToolBar.signalUnzoomCursorToggleToolButtonClicked().connect(
-      sigc::mem_fun(*this, &Mediator::whenOnUnzoomCursorToggleToolButtonClicked));
-  mref_ToolBar.signalZoomCursorZoomTypeButtonClicked().connect(sigc::mem_fun(
-      *this, &Mediator::whenOnZoomCursorZoomTypeButtonClicked));
-  mref_ToolBar.signalZoomFrameZoomTypeButtonClicked().connect(sigc::mem_fun(
-      *this, &Mediator::whenOnZoomFrameZoomTypeButtonClicked));
-  mref_ToolBar.signalZoomLayerFocusButtonClicked().connect(sigc::mem_fun(*this,
-      &Mediator::whenOnZoomLayerFocusButtonClicked));
-  mref_ToolBar.signalZoomSelectionFocusButtonClicked().connect(sigc::mem_fun(
-      *this, &Mediator::whenOnZoomSelectionFocusButtonClicked));
+          &Mediator::whenSelectModeAsked));
+  mref_ToolBar.signal_MoveModeAsked().connect(sigc::mem_fun(
+      *this, &Mediator::whenMoveModeAsked));
+
+  mref_ToolBar.signal_ZoomInCursorAsked().connect(sigc::mem_fun(
+      *this, &Mediator::whenZoomInCursorAsked));
+  mref_ToolBar.signal_ZoomInFrameAsked().connect(sigc::mem_fun(
+      *this, &Mediator::whenZoomInFrameAsked));
+  mref_ToolBar.signal_ZoomOutAsked().connect(
+      sigc::mem_fun(*this, &Mediator::whenZoomOutAsked));
+
+  mref_ToolBar.signal_Zoom100AllAsked().connect(sigc::mem_fun(*this,
+      &Mediator::whenZoom100AllAsked));
+  mref_ToolBar.signal_Zoom100LayerAsked().connect(sigc::mem_fun(*this,
+      &Mediator::whenZoom100LayerAsked));
+  mref_ToolBar.signal_Zoom100SelectionAsked().connect(sigc::mem_fun(
+      *this, &Mediator::whenZoom100SelectionAsked));
+
+  mref_ToolBar.signal_InfoAsked().connect(sigc::mem_fun(*this,
+      &Mediator::whenInfoAsked));
+  mref_ToolBar.signal_SelectAllAsked().connect(sigc::mem_fun(
+      *this, &Mediator::whenSelectAllAsked));
+  mref_ToolBar.signal_ToggleSelectionAsked().connect(
+      sigc::mem_fun(*this, &Mediator::whenToggleSelectionAsked));
+
   //***************Signal DrawingArea*****************
   mref_DrawingArea.signal_CoordinateChanged().connect(sigc::mem_fun(*this,
       &Mediator::whenOnMotionNotifyChanged));
@@ -147,8 +152,6 @@ void Mediator::addAvailableLayersFromDatastore()
   {
     removeAllObjectMainVBoxMediator();
     addAllObjectMainVBoxMediator();
-
-    mref_ToolBar.resetSensitiveToolBar(true);
   }
 
 }
@@ -211,6 +214,10 @@ void Mediator::addALayer(Layer& ALayer)
       &Mediator::whenOnIsSelectedLayerClicked));
   ALayer.signalWidgetExpanderBaseChanged().connect(sigc::mem_fun(*this,
       &Mediator::whenOnWidgetExpanderBaseChanged));
+
+  if(m_Layers.size() == 1)
+    setToFirstLayerMode();
+
 }
 
 // =====================================================================
@@ -277,7 +284,11 @@ void Mediator::whenDrawingAreaChanged()
 {
   if (m_IsFirstExposeEvent)
   {
-    whenOnShow100FocusButtonClicked();
+    if(m_Layers.empty())
+      setToNoLayerMode();
+    else
+      setToFirstLayerMode();
+
     m_IsFirstExposeEvent = false;
   }
   redraw();
@@ -289,7 +300,7 @@ void Mediator::whenDrawingAreaChanged()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnShow100FocusButtonClicked()
+void Mediator::whenZoom100AllAsked()
 {
   if (!m_Layers.empty())
   {
@@ -319,7 +330,7 @@ void Mediator::whenOnShow100FocusButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnZoomSelectionFocusButtonClicked()
+void Mediator::whenZoom100SelectionAsked()
 {
   if (m_SelectedClassName == "")
   {
@@ -353,7 +364,7 @@ void Mediator::whenOnZoomSelectionFocusButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnZoomLayerFocusButtonClicked()
+void Mediator::whenZoom100LayerAsked()
 {
   if (m_SelectedClassName == "")
   {
@@ -377,45 +388,12 @@ void Mediator::whenOnZoomLayerFocusButtonClicked()
   }
 }
 
-// =====================================================================
-// =====================================================================
 
-void Mediator::whenOnZoomCursorZoomTypeButtonClicked()
-{
-  if (mref_ToolBar.getZoomTypeToggleToolButton()->get_active())
-  {
-    mref_ToolBar.resetToolBar(4);
-    mref_DrawingArea.changeToZoomCursorState();
-  }
-  else
-  {
-    mref_DrawingArea.changeToInitialState();
-    mref_ToolBar.setSensitivePreferenceMenubar(false);
-  }
-
-}
 
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnZoomFrameZoomTypeButtonClicked()
-{
-  if (mref_ToolBar.getZoomTypeToggleToolButton()->get_active())
-  {
-    mref_ToolBar.resetToolBar(4);
-    mref_DrawingArea.changeToZoomFrameState();
-  }
-  else
-  {
-    mref_DrawingArea.changeToInitialState();
-    mref_ToolBar.setSensitivePreferenceMenubar(false);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void Mediator::whenOnSelectAllPreferenceMenuClicked()
+void Mediator::whenSelectAllAsked()
 {
   if (m_SelectedClassName == "")
   {
@@ -442,7 +420,7 @@ void Mediator::whenOnSelectAllPreferenceMenuClicked()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
+void Mediator::whenToggleSelectionAsked()
 {
   if (m_SelectedClassName == "")
   {
@@ -476,7 +454,7 @@ void Mediator::whenOnToggleSelectedPreferenceMenuClicked()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnAddLayerToolButtonClicked()
+void Mediator::whenAddLayerAsked()
 {
   std::set<std::string> SelectedLayersIds = mp_AddLayersDialog->show(
       m_LayersIds);
@@ -502,8 +480,6 @@ void Mediator::whenOnAddLayerToolButtonClicked()
     removeAllObjectMainVBoxMediator();
     addAllObjectMainVBoxMediator();
 
-    mref_ToolBar.resetSensitiveToolBar(true);
-
     redraw();
   }
 
@@ -512,7 +488,7 @@ void Mediator::whenOnAddLayerToolButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnInfoToolButtonClicked()
+void Mediator::whenInfoAsked()
 {
   if (m_SelectedClassName == "" || m_SelectedUnitIds.empty())
   {
@@ -571,57 +547,56 @@ void Mediator::whenOnInfoToolButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void Mediator::whenOnSelectObjectLayerToggleToolButtonClicked()
+void Mediator::whenSelectModeAsked()
 {
-  if (mref_ToolBar.getSelectObjectLayerToggleToolButton()->get_active())
-  {
-    mref_ToolBar.resetToolBar(2);
+  setToSelectState();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::whenMoveModeAsked()
+{
+  mref_ToolBar.setMoveMode();
+  mref_DrawingArea.changeToMoveState();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::whenZoomInCursorAsked()
+{
+  mref_ToolBar.setZoomInMode();
+  mref_DrawingArea.changeToZoomCursorState();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::whenZoomInFrameAsked()
+{
+  mref_ToolBar.setZoomInMode();
+  mref_DrawingArea.changeToZoomFrameState();
+}
+// =====================================================================
+// =====================================================================
+
+void Mediator::whenZoomOutAsked()
+{
+  mref_ToolBar.setZoomOutMode();
+  mref_DrawingArea.changeToUnzoomCursorState();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::setToSelectState()
+{
+  mref_ToolBar.setSelectionMode();
+
+  if(mref_DrawingArea.is_realized())
     mref_DrawingArea.changeToSelectState();
-    mref_ToolBar.setSensitivePreferenceMenubar(true);
-  }
-  else
-  {
-    mref_DrawingArea.changeToInitialState();
-    mref_ToolBar.setSensitivePreferenceMenubar(false);
-  }
 }
-
-// =====================================================================
-// =====================================================================
-
-void Mediator::whenOnMoveLayerToggleToolButtonClicked()
-{
-  if (mref_ToolBar.getMoveLayerToggleToolButton()->get_active())
-  {
-    mref_ToolBar.resetToolBar(1);
-    mref_DrawingArea.changeToMoveState();
-  }
-  else
-  {
-    mref_DrawingArea.changeToInitialState();
-    mref_ToolBar.setSensitivePreferenceMenubar(false);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void Mediator::whenOnUnzoomCursorToggleToolButtonClicked()
-{
-  if (mref_ToolBar.getUnzoomCursorToggleToolButton()->get_active())
-  {
-    mref_ToolBar.resetToolBar(3);
-    mref_DrawingArea.changeToUnzoomCursorState();
-  }
-  else
-  {
-    mref_DrawingArea.changeToInitialState();
-    mref_ToolBar.setSensitivePreferenceMenubar(false);
-  }
-}
-
-// =====================================================================
-// =====================================================================
 // =====================================================================
 // =====================================================================
 
@@ -646,10 +621,12 @@ void Mediator::whenOnDownLayerButtonClicked(std::string ClassName)
 void Mediator::whenOnRemoveLayerButtonClicked(std::string ClassName)
 {
   removeLayer(ClassName);
-  if (m_Layers.empty())
-    mref_ToolBar.resetSensitiveToolBar(false);
+
   if (m_SelectedClassName == ClassName)
+  {
     m_SelectedUnitIds.clear();
+    m_SelectedClassName = "";
+  }
   redraw();
 }
 
@@ -661,7 +638,7 @@ void Mediator::whenOnIsSelectedLayerClicked(std::string ClassName)
   m_SelectedClassName = ClassName;
   m_SelectedUnitIds.clear();
   std::vector<Layer*>::iterator it;
-  for (it = m_Layers.begin(); it < m_Layers.end(); it++)
+  for (it = m_Layers.begin(); it < m_Layers.end(); ++it)
   {
     (*it)->setIsSelected(m_SelectedClassName == (*it)->getClassName());
   }
@@ -886,8 +863,35 @@ void Mediator::removeLayer(std::string ClassName)
   }
 
   addAllObjectMainVBoxMediator();
-  //  if (m_Layers.empty())
-  //    mref_DrawingArea.setLayerExist(false);
+
+  if (m_Layers.empty())
+    setToNoLayerMode();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::setToNoLayerMode()
+{
+  mref_ToolBar.setAtLeastALayerMode(false);
+
+  if(mref_DrawingArea.is_realized())
+    mref_DrawingArea.changeToInitialState();
+}
+
+// =====================================================================
+// =====================================================================
+
+void Mediator::setToFirstLayerMode()
+{
+  mref_ToolBar.setAtLeastALayerMode(true);
+
+  if(mref_DrawingArea.is_realized())
+    whenZoom100AllAsked();
+
+  whenOnIsSelectedLayerClicked(m_Layers[0]->getClassName());
+
+  setToSelectState();
 }
 
 // =====================================================================

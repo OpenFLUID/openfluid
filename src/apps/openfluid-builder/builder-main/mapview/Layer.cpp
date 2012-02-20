@@ -390,11 +390,9 @@ void Layer::whenOnIsDisplayButtonChecked()
 
 void Layer::whenOnIsSelectedLayerClicked()
 {
-  m_IsSelected = !m_IsSelected;
-  if (m_IsSelected)
-    m_signal_IsSelectedLayerClicked.emit(m_ClassName);
-  else
-    m_signal_IsSelectedLayerClicked.emit("");
+  bool TmpIsNowSelected = !m_IsSelected;
+
+  m_signal_IsSelectedLayerClicked.emit(TmpIsNowSelected ? m_ClassName : "");
 }
 
 // =====================================================================

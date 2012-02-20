@@ -59,9 +59,7 @@
 DrawingAreaSelectState::DrawingAreaSelectState(DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(DrawingArea.get_display(),Gdk::Pixbuf::create_from_file(
-      BuilderGraphicsHelper::getPathForFileName("right_ptr.png"),24,24),23,0);
-
+  Gdk::Cursor Cursor(Gdk::ARROW);
   m_Cursor = Cursor;
 }
 

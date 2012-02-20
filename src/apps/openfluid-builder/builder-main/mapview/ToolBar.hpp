@@ -64,87 +64,76 @@
 
 class ToolBar
 {
+  public:
+
+    enum ZoomInMode { ZOOM_IN_CURSOR, ZOOM_IN_FRAME };
 
   private:
 
-    bool m_BoolCursorState;
-    bool m_BoolFrameState;
-    //Gtkmm
+    ZoomInMode m_CurrentZoomInMode;
 
-    Gtk::HBox* mp_MainHbox;
-
-    Gtk::Toolbar* mp_MainToolBar;
-
-    Gtk::MenuBar* mp_PreferenceMenubar;
+    Gtk::Toolbar* mp_ToolBar;
 
     Gtk::ToolButton* mp_AddLayerToolButton;
+    Gtk::ToggleToolButton* mp_MoveModeToggleToolButton;
+
+    Gtk::MenuToolButton* mp_Zoom100MenuToolButton;
+    Glib::RefPtr<Gtk::Action> mref_Zoom100AllMenuAction;
+    Glib::RefPtr<Gtk::Action> mref_Zoom100LayerMenuAction;
+    Glib::RefPtr<Gtk::Action> mref_Zoom100SelectionMenuAction;
+
+    Gtk::ToggleToolButton* mp_ZoomInToggleToolButton;
+    Gtk::Menu* mp_ZoomInMenu;
+
+    Gtk::ToggleToolButton* mp_ZoomOutToggleToolButton;
+
     Gtk::ToolButton* mp_InfoToolButton;
-    Gtk::ToolButton* mp_FocusToolButton;
 
-    Gtk::ToggleToolButton* mp_SelectObjectLayerToggleToolButton;
-    Gtk::ToggleToolButton* mp_MoveLayerToggleToolButton;
-    Gtk::ToggleToolButton* mp_UnzoomCursorToggleToolButton;
-    Gtk::ToggleToolButton* mp_ZoomTypeToggleToolButton;
+    Gtk::Menu* mp_ToolsMenu;
+    Gtk::ToolButton* mp_ToolsToolButton;
 
-
-    Gtk::MenuToolButton* mp_FocusMenuToolButton;
-    Gtk::MenuToolButton* mp_ZoomTypeMenuToolButton;
-
-    Gtk::Menu* mp_FocusMenu;
-    Gtk::Menu* mp_ZoomTypeMenu;
-    Gtk::Menu* mp_PreferenceMenu;
-
-    Glib::RefPtr<Gtk::Action> mref_Show100FocusMenuAction;
-    Glib::RefPtr<Gtk::Action> mref_ZoomSelectionFocusMenuAction;
-    Glib::RefPtr<Gtk::Action> mref_ZoomLayerFocusMenuAction;
-    Glib::RefPtr<Gtk::Action> mref_ZoomCursorZoomTypeMenuAction;
-    Glib::RefPtr<Gtk::Action> mref_ZoomFrameZoomTypeMenuAction;
-    Glib::RefPtr<Gtk::Action> mref_SelectAllPreferenceAction;
-    Glib::RefPtr<Gtk::Action> mref_ToggleSelectedPreferenceAction;
-
-    Gtk::SeparatorToolItem * setSeparator();
-
-    void onChangeShow100Focus();
-    void onChangeZoomSelectionFocus();
-    void onChangeZoomLayerFocus();
-
-    void onChangeZoomCursorZoomType();
-    void onChangeZoomFrameZoomType();
-    //*******************Signal emit*******************
-    void onShow100FocusButtonClicked();
-    void onZoomSelectionFocusButtonClicked();
-    void onZoomLayerFocusButtonClicked();
-
-    void onZoomCursorZoomTypeButtonClicked();
-    void onZoomFrameZoomTypeButtonClicked();
-
-    void onSelectAllSelectOptionMenuClicked();
-    void onToggleSelectedSelectOptionMenuClicked();
+    Gtk::SeparatorToolItem * getSeparator();
 
     void onAddLayerToolButtonClicked();
+    void onSelectModeToolButtonClicked();
+    void onMoveModeToggleToolButtonClicked();
+
+    void onZoomInCursorMenuActionActivate();
+    void onZoomInFrameMenuActionActivate();
+    void onZoomInToggleToolButtonClicked();
+    void onZoomOutToggleToolButtonClicked();
+
+    void onZoom100AllMenuActionActivate();
+    void onZoom100SelectionMenuActionActivate();
+    void onZoom100LayerMenuActionActivate();
+
+    void onToolsSelectAllActivate();
+    void onToolsToggleSelectionActivate();
+
     void onInfoToolButtonClicked();
-    void onSelectObjectLayerToggleToolButtonClicked();
-    void onMoveLayerToggleToolButtonClicked();
-    void onUnzoomCursorToggleToolButtonClicked();
-    void onZoomTypeToggleToolButtonClicked();
+
+    void onToolsToolButtonClicked();
+    void onToolsMenuPopupPosition(int& x, int& y, bool& push_in);
+
     //*************************************************
     typedef sigc::signal<void> mtype_SignalToolBar;
 
-    mtype_SignalToolBar m_signal_Show100FocusButtonClicked;
-    mtype_SignalToolBar m_signal_ZoomSelectionFocusButtonClicked;
-    mtype_SignalToolBar m_signal_ZoomLayerFocusButtonClicked;
-
-    mtype_SignalToolBar m_signal_ZoomCursorZoomTypeButtonClicked;
-    mtype_SignalToolBar m_signal_ZoomFrameZoomTypeButtonClicked;
-
-    mtype_SignalToolBar m_signal_SelectAllPreferenceMenuClicked;
-    mtype_SignalToolBar m_signal_ToggleSelectedPreferenceMenuClicked;
-
     mtype_SignalToolBar m_signal_AddLayerToolButtonClicked;
-    mtype_SignalToolBar m_signal_InfoToolButtonClicked;
-    mtype_SignalToolBar m_signal_SelectObjectLayerToggleToolButtonClicked;
-    mtype_SignalToolBar m_signal_MoveLayerToggleToolButtonClicked;
-    mtype_SignalToolBar m_signal_UnzoomCursorToggleToolButtonClicked;
+    mtype_SignalToolBar m_signal_SelectModeAsked;
+    mtype_SignalToolBar m_signal_MoveModeAsked;
+
+    mtype_SignalToolBar m_signal_ZoomInCursorAsked;
+    mtype_SignalToolBar m_signal_ZoomInFrameAsked;
+    mtype_SignalToolBar m_signal_ZoomOutAsked;
+
+    mtype_SignalToolBar m_signal_Zoom100AllAsked;
+    mtype_SignalToolBar m_signal_Zoom100LayerAsked;
+    mtype_SignalToolBar m_signal_Zoom100SelectionAsked;
+
+    mtype_SignalToolBar m_signal_InfoAsked;
+
+    mtype_SignalToolBar m_signal_SelectAllAsked;
+    mtype_SignalToolBar m_signal_ToggleSelectionAsked;
 
   public:
 
@@ -152,32 +141,29 @@ class ToolBar
 
     Gtk::Widget* asWidget();
 
-    mtype_SignalToolBar signalShow100FocusButtonClicked();
-    mtype_SignalToolBar signalZoomSelectionFocusButtonClicked();
-    mtype_SignalToolBar signalZoomLayerFocusButtonClicked();
+    void setAtLeastALayerMode(bool AtLeastALayer);
 
-    mtype_SignalToolBar signalZoomCursorZoomTypeButtonClicked();
-    mtype_SignalToolBar signalZoomFrameZoomTypeButtonClicked();
+    void setSelectionMode();
+    void setMoveMode();
+    void setZoomInMode();
+    void setZoomOutMode();
 
-    mtype_SignalToolBar signalSelectAllPreferenceMenuClicked();
-    mtype_SignalToolBar signalToggleSelectedPreferenceMenuClicked();
+    mtype_SignalToolBar signal_AddLayerAsked();
+    mtype_SignalToolBar signal_SelectModeAsked();
+    mtype_SignalToolBar signal_MoveModeAsked();
 
-    mtype_SignalToolBar signalAddLayerToolButtonClicked();
-    mtype_SignalToolBar signalInfoToolButtonClicked();
-    mtype_SignalToolBar signalSelectObjectLayerToggleToolButtonClicked();
-    mtype_SignalToolBar signalMoveLayerToggleToolButtonClicked();
-    mtype_SignalToolBar signalUnzoomCursorToggleToolButtonClicked();
+    mtype_SignalToolBar signal_ZoomInCursorAsked();
+    mtype_SignalToolBar signal_ZoomInFrameAsked();
+    mtype_SignalToolBar signal_ZoomOutAsked();
 
-    void resetToolBar(int);
-    void resetSensitiveToolBar(bool);
-    void setSensitivePreferenceMenubar(bool);
+    mtype_SignalToolBar signal_Zoom100AllAsked();
+    mtype_SignalToolBar signal_Zoom100LayerAsked();
+    mtype_SignalToolBar signal_Zoom100SelectionAsked();
 
-    //accessor*************************************
-    //get
-    Gtk::ToggleToolButton* getSelectObjectLayerToggleToolButton();
-    Gtk::ToggleToolButton* getMoveLayerToggleToolButton();
-    Gtk::ToggleToolButton* getUnzoomCursorToggleToolButton();
-    Gtk::ToggleToolButton* getZoomTypeToggleToolButton();
+    mtype_SignalToolBar signal_InfoAsked();
+
+    mtype_SignalToolBar signal_SelectAllAsked();
+    mtype_SignalToolBar signal_ToggleSelectionAsked();
 };
 
 #endif /* __TOOLBAR_HPP__ */

@@ -60,8 +60,7 @@
 DrawingAreaInitialState::DrawingAreaInitialState(DrawingArea& DrawingArea) :
   DrawingAreaState(DrawingArea)
 {
-  Gdk::Cursor Cursor(Gdk::ARROW);
-  m_Cursor = Cursor;
+
 }
 
 // =====================================================================

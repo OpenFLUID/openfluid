@@ -62,10 +62,13 @@
 
 const static Gdk::Color GREEN("#97DE62");
 const static Gdk::Color LIGHTGREEN("#C7F1B3");
+const static Gdk::Color AMBIANCEDEFAULTBG("#F2F1F0");
 
 WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
-  WidgetObject(), mp_TypeImage(0)
+  WidgetObject(), mp_TypeImage(0), m_DefaultColor(AMBIANCEDEFAULTBG), m_CurrentColor(m_DefaultColor)
 {
+  mp_Eventbox->modify_bg(Gtk::STATE_NORMAL,m_CurrentColor);
+
   mp_DisplayLayerCheckBox = Gtk::manage(new Gtk::CheckButton(ClassName));
   mp_DisplayLayerCheckBox->set_tooltip_text(_("Display the layer"));
   mp_DisplayLayerCheckBox->set_active(true);
@@ -120,8 +123,6 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
       &WidgetObjectBase::onDownLayerButtonClicked));
   mp_RemoveButton->signal_clicked().connect(sigc::mem_fun(*this,
       &WidgetObjectBase::onRemoveLayerButtonClicked));
-  mp_Eventbox->signal_realize().connect(sigc::mem_fun(*this,
-      &WidgetObjectBase::onEventBoxRealized));
   mp_Eventbox->signal_event().connect(sigc::mem_fun(*this,
       &WidgetObjectBase::onEventHappend));
 }
@@ -156,15 +157,6 @@ void WidgetObjectBase::onRemoveLayerButtonClicked()
 void WidgetObjectBase::onIsDisplayButtonChecked()
 {
   m_signal_IsDisplayButtonChecked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void WidgetObjectBase::onEventBoxRealized()
-{
-  m_DefaultColor = mp_Eventbox->get_style()->get_bg(Gtk::STATE_NORMAL);
-  m_CurrentColor = m_DefaultColor;
 }
 
 // =====================================================================

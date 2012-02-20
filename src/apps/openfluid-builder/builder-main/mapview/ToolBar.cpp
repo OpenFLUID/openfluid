@@ -59,278 +59,370 @@
 
 #include "BuilderGraphicsHelper.hpp"
 
-ToolBar::ToolBar()
-{
 
-  mp_MainHbox = Gtk::manage(new Gtk::HBox());
-  mp_MainToolBar = Gtk::manage(new Gtk::Toolbar());
+ToolBar::ToolBar() :
+  m_CurrentZoomInMode(ZOOM_IN_CURSOR)
+{
+  // Add
 
   mp_AddLayerToolButton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::ADD));
-  mp_AddLayerToolButton->set_tooltip_markup(_("Add A New Layer To Map View"));
-  mp_AddLayerToolButton->set_visible(true);
+  mp_AddLayerToolButton->set_tooltip_markup(_("Add a new layer"));
+
+  // Select
+
+  Gtk::ToolButton* SelectModeToolButton = Gtk::manage(new Gtk::ToolButton(
+      *BuilderGraphicsHelper::createBuilderIconStockId("left_ptr.png",
+          "openfluid_mapview_select")));
+  SelectModeToolButton->set_tooltip_markup(_("Selection mode"));
+
+  // Move
+
+  mp_MoveModeToggleToolButton = Gtk::manage(new Gtk::ToggleToolButton(
+      *BuilderGraphicsHelper::createBuilderIconStockId("hand1.png",
+          "openfluid_mapview_move")));
+  mp_MoveModeToggleToolButton->set_tooltip_markup(_("Move mode"));
+
+  // Zoom 100
+
+  mref_Zoom100AllMenuAction = Gtk::Action::create("Zoom100All",
+      Gtk::Stock::ZOOM_100, _("All"), _("Zoom at 100% of all layers"));
+  mref_Zoom100AllMenuAction->set_is_important(true);
+  mref_Zoom100AllMenuAction->signal_activate().connect(sigc::mem_fun(*this,
+      &ToolBar::onZoom100AllMenuActionActivate));
+
+  mref_Zoom100LayerMenuAction
+      = Gtk::Action::create("Zoom100Layer", Gtk::Stock::ZOOM_100, _("Layer"),
+          _("Zoom at 100% of the selected layer"));
+  mref_Zoom100LayerMenuAction->set_is_important(true);
+  mref_Zoom100LayerMenuAction->signal_activate().connect(sigc::mem_fun(*this,
+      &ToolBar::onZoom100LayerMenuActionActivate));
+
+  mref_Zoom100SelectionMenuAction = Gtk::Action::create("Zoom100Selection",
+      Gtk::Stock::ZOOM_100, _("Selection"),
+      _("Zoom at 100% of the selected units"));
+  mref_Zoom100SelectionMenuAction->set_is_important(true);
+  mref_Zoom100SelectionMenuAction->signal_activate().connect(sigc::mem_fun(
+      *this, &ToolBar::onZoom100SelectionMenuActionActivate));
+
+  Gtk::MenuItem* Zoom100AllMenuItem =
+      mref_Zoom100AllMenuAction->create_menu_item();
+  Zoom100AllMenuItem->set_tooltip_text(mref_Zoom100AllMenuAction->get_tooltip());
+
+  Gtk::MenuItem* Zoom100LayerMenuItem =
+      mref_Zoom100LayerMenuAction->create_menu_item();
+  Zoom100LayerMenuItem->set_tooltip_text(
+      mref_Zoom100LayerMenuAction->get_tooltip());
+
+  Gtk::MenuItem* Zoom100SelectionMenuItem =
+      mref_Zoom100SelectionMenuAction->create_menu_item();
+  Zoom100SelectionMenuItem->set_tooltip_text(
+      mref_Zoom100SelectionMenuAction->get_tooltip());
+
+  Gtk::Menu* Zoom100Menu = Gtk::manage(new Gtk::Menu());
+  Zoom100Menu->append(*Zoom100AllMenuItem);
+  Zoom100Menu->append(*Zoom100LayerMenuItem);
+  Zoom100Menu->append(*Zoom100SelectionMenuItem);
+
+  mp_Zoom100MenuToolButton = Gtk::manage(new Gtk::MenuToolButton(
+      Gtk::Stock::ZOOM_100));
+  mp_Zoom100MenuToolButton->set_menu(*Zoom100Menu);
+  mp_Zoom100MenuToolButton->set_arrow_tooltip_text(_("Change the 100% zoom"));
+
+  // Zoom in
+
+  mp_ZoomInToggleToolButton = Gtk::manage(new Gtk::ToggleToolButton(
+      Gtk::Stock::ZOOM_IN));
+  mp_ZoomInToggleToolButton->set_tooltip_text(_("Zoom in mode"));
+
+  Glib::RefPtr<Gtk::Action> ZoomInCursorMenuAction = Gtk::Action::create(
+      "ZoomCursor", Gtk::Stock::ZOOM_IN, _("Zoom Cursor"),
+      _("Zoom in at the cursor position"));
+  ZoomInCursorMenuAction->signal_activate().connect(sigc::mem_fun(*this,
+      &ToolBar::onZoomInCursorMenuActionActivate));
+
+  Glib::RefPtr<Gtk::Action> ZoomInFrameMenuAction = Gtk::Action::create(
+      "ZoomFrame", Gtk::Stock::ZOOM_FIT, _("Zoom Frame"), _("Zoom in a frame"));
+  ZoomInFrameMenuAction->signal_activate().connect(sigc::mem_fun(*this,
+      &ToolBar::onZoomInFrameMenuActionActivate));
+
+  Gtk::MenuItem* ZoomInCursorMenuItem =
+      ZoomInCursorMenuAction->create_menu_item();
+  ZoomInCursorMenuItem->set_tooltip_text(ZoomInCursorMenuAction->get_tooltip());
+
+  Gtk::MenuItem* ZoomInFrameMenuItem =
+      ZoomInFrameMenuAction->create_menu_item();
+  ZoomInFrameMenuItem->set_tooltip_text(ZoomInFrameMenuAction->get_tooltip());
+
+  mp_ZoomInMenu = Gtk::manage(new Gtk::Menu());
+  mp_ZoomInMenu->append(*ZoomInCursorMenuItem);
+  mp_ZoomInMenu->append(*ZoomInFrameMenuItem);
+
+  Gtk::MenuToolButton* mp_ZoomInMenuToolButton = Gtk::manage(
+      new Gtk::MenuToolButton());
+  Gtk::HBox* TempHbox2 =
+      static_cast<Gtk::HBox*> (mp_ZoomInMenuToolButton->get_child());
+  TempHbox2->remove(**(TempHbox2->get_children().begin()));
+  mp_ZoomInMenuToolButton->set_menu(*mp_ZoomInMenu);
+  mp_ZoomInMenuToolButton->set_arrow_tooltip_text(_("Change the zoom in"));
+
+  // Zoom out
+
+  mp_ZoomOutToggleToolButton = Gtk::manage(new Gtk::ToggleToolButton(
+      Gtk::Stock::ZOOM_OUT));
+  mp_ZoomOutToggleToolButton->set_tooltip_markup(_("Zoom out mode"));
+
+  // Info
 
   mp_InfoToolButton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::INFO));
-  mp_InfoToolButton->set_tooltip_markup(_("Information Of Current Selection"));
-  mp_InfoToolButton->set_visible(true);
+  mp_InfoToolButton->set_tooltip_markup(
+      _("Get information on the selected units"));
 
-  //  //****************PreferenceMenubar*************
-  mp_PreferenceMenubar = Gtk::manage(new Gtk::MenuBar());
-  mp_PreferenceMenu = Gtk::manage(new Gtk::Menu());
+  // Tools
 
-  mref_SelectAllPreferenceAction = Gtk::Action::create("SelectAll",
-      Gtk::Stock::REFRESH, _("Select All"),
-      _("Select All Elements Of Current Layer"));
-  mref_SelectAllPreferenceAction->set_visible(true);
-  mref_SelectAllPreferenceAction->set_always_show_image(true);
+  Glib::RefPtr<Gtk::Action> ToolsSelectAllAction = Gtk::Action::create(
+      "SelectAll", Gtk::Stock::REFRESH, _("Select all units"),
+      _("Select all units of the selected layer"));
+  ToolsSelectAllAction->signal_activate().connect(sigc::mem_fun(*this,
+      &ToolBar::onToolsSelectAllActivate));
 
-  mref_ToggleSelectedPreferenceAction = Gtk::Action::create("ToggleSelected",
-      Gtk::Stock::SELECT_ALL, _("Toggle Selected"),
-      _("Toggle Elements Selected Of Current Layer"));
-  mref_ToggleSelectedPreferenceAction->set_always_show_image(true);
-  mref_ToggleSelectedPreferenceAction->set_visible(true);
+  Glib::RefPtr<Gtk::Action> ToolsToggleSelectionAction = Gtk::Action::create(
+      "ToggleSelected", Gtk::Stock::SELECT_ALL, _("Toggle selection"),
+      _("Toggle selection"));
+  ToolsToggleSelectionAction->signal_activate().connect(sigc::mem_fun(*this,
+      &ToolBar::onToolsToggleSelectionActivate));
 
-  mp_PreferenceMenu->append(*mref_SelectAllPreferenceAction->create_menu_item());
-  mp_PreferenceMenu->append(
-      *mref_ToggleSelectedPreferenceAction->create_menu_item());
-  Gtk::ImageMenuItem* MenuItem = Gtk::manage(
-      new Gtk::ImageMenuItem(Gtk::Stock::PROPERTIES));
-  MenuItem->set_label(_("Tools"));
-  MenuItem->set_submenu(*mp_PreferenceMenu);
-  mp_PreferenceMenubar->append(*MenuItem);
-  MenuItem->set_visible(true);
-  MenuItem->set_always_show_image(true);
+  Gtk::MenuItem* ToolsSelectAllMenuItem =
+      ToolsSelectAllAction->create_menu_item();
+  ToolsSelectAllMenuItem->set_tooltip_text(ToolsSelectAllAction->get_tooltip());
 
-  mp_PreferenceMenubar->modify_bg(Gtk::STATE_NORMAL,
-      mp_PreferenceMenubar->get_style()->get_background(Gtk::STATE_SELECTED));
+  Gtk::MenuItem* ToolsToggleSelectionMenuItem =
+      ToolsToggleSelectionAction->create_menu_item();
+  ToolsToggleSelectionMenuItem->set_tooltip_text(
+      ToolsToggleSelectionAction->get_tooltip());
 
-  mp_PreferenceMenu->set_visible(true);
-  mp_PreferenceMenubar->set_visible(true);
+  mp_ToolsMenu = Gtk::manage(new Gtk::Menu());
+  mp_ToolsMenu->append(*ToolsSelectAllMenuItem);
+  mp_ToolsMenu->append(*ToolsToggleSelectionMenuItem);
 
-  //*******************************************************
+  mp_ToolsToolButton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::PROPERTIES));
+  mp_ToolsToolButton->set_label(_("Tools"));
+  mp_ToolsToolButton->set_is_important(true);
+  mp_ToolsToolButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &ToolBar::onToolsToolButtonClicked));
 
-  mp_SelectObjectLayerToggleToolButton = Gtk::manage(
-      new Gtk::ToggleToolButton(*BuilderGraphicsHelper::createBuilderIconStockId(
-          "right_ptr.png","openfluid_mapview_select")));
-  mp_SelectObjectLayerToggleToolButton->set_tooltip_markup(
-      _("Select Object(s) Of Current Layer"));
-  mp_SelectObjectLayerToggleToolButton->set_visible(true);
+  // TOOLBAR
 
-  mp_MoveLayerToggleToolButton = Gtk::manage(
-      new Gtk::ToggleToolButton(
-          *BuilderGraphicsHelper::createBuilderIconStockId(
-              "hand1.png","openfluid_mapview_move")));
+  mp_ToolBar = Gtk::manage(new Gtk::Toolbar());
+  mp_ToolBar->set_toolbar_style(Gtk::TOOLBAR_BOTH_HORIZ);
+  mp_ToolBar->append(*mp_AddLayerToolButton, sigc::mem_fun(*this,
+      &ToolBar::onAddLayerToolButtonClicked));
+  mp_ToolBar->append(*getSeparator());
+  mp_ToolBar->append(*SelectModeToolButton, sigc::mem_fun(*this,
+      &ToolBar::onSelectModeToolButtonClicked));
+  mp_ToolBar->append(*mp_MoveModeToggleToolButton, sigc::mem_fun(*this,
+      &ToolBar::onMoveModeToggleToolButtonClicked));
+  mp_ToolBar->append(*getSeparator());
+  mp_ToolBar->append(*mp_Zoom100MenuToolButton);
+  mp_ToolBar->append(*mp_ZoomInToggleToolButton, sigc::mem_fun(*this,
+      &ToolBar::onZoomInToggleToolButtonClicked));
+  mp_ToolBar->append(*mp_ZoomInMenuToolButton);
+  mp_ToolBar->append(*mp_ZoomOutToggleToolButton, sigc::mem_fun(*this,
+      &ToolBar::onZoomOutToggleToolButtonClicked));
+  mp_ToolBar->append(*getSeparator());
+  mp_ToolBar->append(*mp_InfoToolButton, sigc::mem_fun(*this,
+      &ToolBar::onInfoToolButtonClicked));
+  mp_ToolBar->append(*getSeparator());
+  mp_ToolBar->append(*mp_ToolsToolButton);
+  mp_ToolBar->show_all_children(true);
 
-  mp_MoveLayerToggleToolButton->set_tooltip_markup(_("Move the selected layer"));
-  mp_MoveLayerToggleToolButton->set_visible(true);
-
-  //  //****************FocusMenuToolButton*************
-  mp_FocusMenuToolButton = Gtk::manage(new Gtk::MenuToolButton());
-  mp_FocusMenu = Gtk::manage(new Gtk::Menu());
-
-  Gtk::HBox* TempHbox1 =
-      static_cast<Gtk::HBox*> (mp_FocusMenuToolButton->get_child());
-  mp_FocusToolButton = Gtk::manage(new Gtk::ToolButton());
-  TempHbox1->remove(**(TempHbox1->get_children().begin()));
-  mp_FocusToolButton->set_visible(true);
-
-  mref_Show100FocusMenuAction = Gtk::Action::create("Display100",
-      Gtk::Stock::ZOOM_100, _("Display 100%"),
-      _("Scale 100% All Layer Display"));
-  mref_Show100FocusMenuAction->set_visible(true);
-  mref_Show100FocusMenuAction->set_always_show_image(true);
-
-  mref_ZoomLayerFocusMenuAction = Gtk::Action::create("Display100Layer",
-      Gtk::Stock::ZOOM_IN, _("Display 100% Layer"),
-      _("Scale 100% Current Layer Display"));
-  mref_ZoomLayerFocusMenuAction->set_always_show_image(true);
-  mref_ZoomLayerFocusMenuAction->set_visible(true);
-
-  mref_ZoomSelectionFocusMenuAction = Gtk::Action::create(
-      "Display100Selection", Gtk::Stock::ZOOM_IN, _("Display 100% Selection"),
-      _("Scale 100% Current Selection Display"));
-  mref_ZoomSelectionFocusMenuAction->set_always_show_image(true);
-  mref_ZoomSelectionFocusMenuAction->set_visible(true);
-
-  mp_FocusMenu->append(*mref_Show100FocusMenuAction->create_menu_item());
-  mp_FocusMenu->append(*mref_ZoomLayerFocusMenuAction->create_menu_item());
-  mp_FocusMenu->append(*mref_ZoomSelectionFocusMenuAction->create_menu_item());
-  mp_FocusMenuToolButton->set_menu(*mp_FocusMenu);
-
-  mref_Show100FocusMenuAction->connect_proxy(*mp_FocusToolButton);
-  //  //*******************************************************
-
-  //****************ZoomTypeMenuToolButton*************
-
-  mp_ZoomTypeMenuToolButton = Gtk::manage(new Gtk::MenuToolButton());
-  mp_ZoomTypeMenu = Gtk::manage(new Gtk::Menu());
-
-  Gtk::HBox* TempHbox2 =
-      static_cast<Gtk::HBox*> (mp_ZoomTypeMenuToolButton->get_child());
-  mp_ZoomTypeToggleToolButton = Gtk::manage(new Gtk::ToggleToolButton());
-  TempHbox2->remove(**(TempHbox2->get_children().begin()));
-  mp_ZoomTypeToggleToolButton->set_visible(true);
-
-  mref_ZoomCursorZoomTypeMenuAction = Gtk::Action::create("ZoomCursor",
-      Gtk::Stock::ZOOM_IN, _("Zoom Cursor"),
-      _("Zooms In On The Cursor Position"));
-  mref_ZoomCursorZoomTypeMenuAction->set_visible(true);
-  mref_ZoomCursorZoomTypeMenuAction->set_always_show_image(true);
-
-  mref_ZoomFrameZoomTypeMenuAction = Gtk::Action::create("ZoomFrame",
-      Gtk::Stock::ZOOM_FIT, _("Zoom Frame"), _("Zooms In On A Frame"));
-  mref_ZoomFrameZoomTypeMenuAction->set_always_show_image(true);
-  mref_ZoomFrameZoomTypeMenuAction->set_visible(true);
-
-  mp_ZoomTypeMenu->append(
-      *mref_ZoomCursorZoomTypeMenuAction->create_menu_item());
-  mp_ZoomTypeMenu->append(*mref_ZoomFrameZoomTypeMenuAction->create_menu_item());
-  mp_ZoomTypeMenuToolButton->set_menu(*mp_ZoomTypeMenu);
-
-  mp_ZoomTypeToggleToolButton->set_stock_id(Gtk::Stock::ZOOM_IN);
-
-  m_BoolCursorState = true;
-  m_BoolFrameState = false;
-
-  //*******************************************************
-
-  mp_UnzoomCursorToggleToolButton = Gtk::manage(
-      new Gtk::ToggleToolButton(Gtk::Stock::ZOOM_OUT));
-  mp_UnzoomCursorToggleToolButton->set_tooltip_markup(
-      _("Zooms Out On The Cursor Position"));
-  mp_UnzoomCursorToggleToolButton->set_visible(true);
-
-  mp_MainToolBar->append(*mp_AddLayerToolButton);
-  mp_MainToolBar->append(*setSeparator());
-  mp_MainToolBar->append(*mp_SelectObjectLayerToggleToolButton);
-  mp_MainToolBar->append(*mp_MoveLayerToggleToolButton);
-  mp_MainToolBar->append(*mp_FocusToolButton);
-  mp_MainToolBar->append(*mp_FocusMenuToolButton);
-  mp_MainToolBar->append(*mp_ZoomTypeToggleToolButton);
-  mp_MainToolBar->append(*mp_ZoomTypeMenuToolButton);
-  mp_MainToolBar->append(*mp_UnzoomCursorToggleToolButton);
-  mp_MainToolBar->append(*setSeparator());
-  mp_MainToolBar->append(*mp_InfoToolButton);
-  mp_MainToolBar->append(*setSeparator());
-  mp_MainToolBar->set_show_arrow(false);
-  mp_MainHbox->pack_start(*mp_MainToolBar, Gtk::PACK_SHRINK);
-  mp_MainHbox->pack_start(*mp_PreferenceMenubar, Gtk::PACK_SHRINK);
-  mp_MainHbox->set_visible(true);
-  mp_MainToolBar->set_visible(true);
-
-  //******************Signal connexion*********************
-
-  mref_ZoomCursorZoomTypeMenuAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onChangeZoomCursorZoomType));
-  mref_ZoomFrameZoomTypeMenuAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onChangeZoomFrameZoomType));
-  mref_ZoomLayerFocusMenuAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onChangeZoomLayerFocus));
-  mref_ZoomSelectionFocusMenuAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onChangeZoomSelectionFocus));
-  mref_SelectAllPreferenceAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onSelectAllSelectOptionMenuClicked));
-  mref_Show100FocusMenuAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onChangeShow100Focus));
-  mref_ToggleSelectedPreferenceAction->signal_activate().connect(
-      sigc::mem_fun(*this, &ToolBar::onToggleSelectedSelectOptionMenuClicked));
-
-  mp_AddLayerToolButton->signal_clicked().connect(
-      sigc::mem_fun(*this, &ToolBar::onAddLayerToolButtonClicked));
-  mp_InfoToolButton->signal_clicked().connect(
-      sigc::mem_fun(*this, &ToolBar::onInfoToolButtonClicked));
-  mp_MoveLayerToggleToolButton->signal_toggled().connect(
-      sigc::mem_fun(*this, &ToolBar::onMoveLayerToggleToolButtonClicked));
-  mp_SelectObjectLayerToggleToolButton->signal_toggled().connect(
-      sigc::mem_fun(*this, &ToolBar::onSelectObjectLayerToggleToolButtonClicked));
-  mp_UnzoomCursorToggleToolButton->signal_toggled().connect(
-      sigc::mem_fun(*this, &ToolBar::onUnzoomCursorToggleToolButtonClicked));
-  mp_ZoomTypeToggleToolButton->signal_toggled().connect(
-      sigc::mem_fun(*this, &ToolBar::onZoomTypeToggleToolButtonClicked));
-  resetSensitiveToolBar(false);
+  setAtLeastALayerMode(false);
+  mref_Zoom100AllMenuAction->connect_proxy(*mp_Zoom100MenuToolButton);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 Gtk::Widget* ToolBar::asWidget()
 {
-  return mp_MainHbox;
+  return mp_ToolBar;
 }
 
 // =====================================================================
 // =====================================================================
 
-Gtk::SeparatorToolItem * ToolBar::setSeparator()
+Gtk::SeparatorToolItem * ToolBar::getSeparator()
 {
   Gtk::SeparatorToolItem * p_Separator = Gtk::manage(
       new Gtk::SeparatorToolItem());
+
   return p_Separator;
 }
 
 // =====================================================================
 // =====================================================================
-// =====================================================================
-// =====================================================================
 
-void ToolBar::ToolBar::onChangeShow100Focus()
+void ToolBar::setAtLeastALayerMode(bool AtLeastALayer)
 {
-  mref_Show100FocusMenuAction->connect_proxy(*mp_FocusToolButton);
-  onShow100FocusButtonClicked();
+  for (int i = 0; i < mp_ToolBar->get_n_items(); i++)
+    mp_ToolBar->get_nth_item(i)->set_sensitive(AtLeastALayer);
+
+  mp_AddLayerToolButton->set_sensitive(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onChangeZoomSelectionFocus()
+void ToolBar::setSelectionMode()
 {
-  mref_ZoomSelectionFocusMenuAction->connect_proxy(*mp_FocusToolButton);
-  onZoomSelectionFocusButtonClicked();
+  mp_MoveModeToggleToolButton->set_active(false);
+  mp_ZoomInToggleToolButton->set_active(false);
+  mp_ZoomOutToggleToolButton->set_active(false);
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onChangeZoomLayerFocus()
+void ToolBar::setMoveMode()
 {
-  mref_ZoomLayerFocusMenuAction->connect_proxy(*mp_FocusToolButton);
-  onZoomLayerFocusButtonClicked();
+  mp_MoveModeToggleToolButton->set_active(true);
+  mp_ZoomInToggleToolButton->set_active(false);
+  mp_ZoomOutToggleToolButton->set_active(false);
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onChangeZoomCursorZoomType()
+void ToolBar::setZoomInMode()
 {
-  mp_ZoomTypeToggleToolButton->set_stock_id(Gtk::Stock::ZOOM_IN);
-  mp_ZoomTypeToggleToolButton->set_active(true);
-  m_BoolCursorState = true;
-  m_BoolFrameState = false;
-  //  mref_ZoomCursorZoomTypeMenuAction->connect_proxy(*mp_ZoomTypeToggleToolButton);
-  onZoomTypeToggleToolButtonClicked();
+  mp_MoveModeToggleToolButton->set_active(false);
+  mp_ZoomInToggleToolButton->set_active(true);
+  mp_ZoomOutToggleToolButton->set_active(false);
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onChangeZoomFrameZoomType()
+void ToolBar::setZoomOutMode()
 {
-  mp_ZoomTypeToggleToolButton->set_stock_id(Gtk::Stock::ZOOM_FIT);
-  mp_ZoomTypeToggleToolButton->set_active(true);
-  m_BoolCursorState = false;
-  m_BoolFrameState = true;
-  //  mref_ZoomFrameZoomTypeMenuAction->connect_proxy(*mp_ZoomTypeToggleToolButton);
-  onZoomTypeToggleToolButtonClicked();
+  mp_MoveModeToggleToolButton->set_active(false);
+  mp_ZoomInToggleToolButton->set_active(false);
+  mp_ZoomOutToggleToolButton->set_active(true);
 }
 
-// =====================================================================
-// =====================================================================
 // =====================================================================
 // =====================================================================
 
 void ToolBar::onAddLayerToolButtonClicked()
 {
-  m_signal_AddLayerToolButtonClicked.emit();
+  signal_AddLayerAsked().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onSelectModeToolButtonClicked()
+{
+  signal_SelectModeAsked().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onMoveModeToggleToolButtonClicked()
+{
+  if (mp_MoveModeToggleToolButton->get_active())
+    signal_MoveModeAsked().emit();
+  else
+    signal_SelectModeAsked().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onZoomInCursorMenuActionActivate()
+{
+  mp_ZoomInToggleToolButton->set_stock_id(Gtk::Stock::ZOOM_IN);
+
+  m_CurrentZoomInMode = ZOOM_IN_CURSOR;
+
+  mp_ZoomInToggleToolButton->set_active();
+
+  onZoomInToggleToolButtonClicked();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onZoomInFrameMenuActionActivate()
+{
+  mp_ZoomInToggleToolButton->set_stock_id(Gtk::Stock::ZOOM_FIT);
+
+  m_CurrentZoomInMode = ZOOM_IN_FRAME;
+
+  mp_ZoomInToggleToolButton->set_active();
+
+  onZoomInToggleToolButtonClicked();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onZoomInToggleToolButtonClicked()
+{
+  if (mp_ZoomInToggleToolButton->get_active())
+  {
+    switch (m_CurrentZoomInMode)
+    {
+      case ZOOM_IN_CURSOR:
+        signal_ZoomInCursorAsked().emit();
+        break;
+      case ZOOM_IN_FRAME:
+        signal_ZoomInFrameAsked().emit();
+      default:
+        break;
+    }
+  }
+  else
+    signal_SelectModeAsked().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onZoomOutToggleToolButtonClicked()
+{
+  if (mp_ZoomOutToggleToolButton->get_active())
+    m_signal_ZoomOutAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::ToolBar::onZoom100AllMenuActionActivate()
+{
+  mref_Zoom100AllMenuAction->connect_proxy(*mp_Zoom100MenuToolButton);
+
+  signal_Zoom100AllAsked().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onZoom100LayerMenuActionActivate()
+{
+  mref_Zoom100LayerMenuAction->connect_proxy(*mp_Zoom100MenuToolButton);
+
+  signal_Zoom100LayerAsked().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ToolBar::onZoom100SelectionMenuActionActivate()
+{
+  mref_Zoom100SelectionMenuAction->connect_proxy(*mp_Zoom100MenuToolButton);
+
+  signal_Zoom100SelectionAsked().emit();
 }
 
 // =====================================================================
@@ -338,312 +430,144 @@ void ToolBar::onAddLayerToolButtonClicked()
 
 void ToolBar::onInfoToolButtonClicked()
 {
-  m_signal_InfoToolButtonClicked.emit();
+  m_signal_InfoAsked.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onMoveLayerToggleToolButtonClicked()
+void ToolBar::onToolsSelectAllActivate()
 {
-  m_signal_MoveLayerToggleToolButtonClicked.emit();
+  m_signal_SelectAllAsked.emit();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onSelectAllSelectOptionMenuClicked()
+void ToolBar::onToolsToggleSelectionActivate()
 {
-  m_signal_SelectAllPreferenceMenuClicked.emit();
+  m_signal_ToggleSelectionAsked.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onSelectObjectLayerToggleToolButtonClicked()
+void ToolBar::onToolsToolButtonClicked()
 {
-  m_signal_SelectObjectLayerToggleToolButtonClicked.emit();
+  mp_ToolsMenu->popup(sigc::mem_fun(*this, &ToolBar::onToolsMenuPopupPosition),
+      0, 0);
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onShow100FocusButtonClicked()
+void ToolBar::onToolsMenuPopupPosition(int& x, int& y, bool& push_in)
 {
-  m_signal_Show100FocusButtonClicked.emit();
+  mp_ToolsToolButton->get_window()->get_origin(x, y);
+
+  x += mp_ToolsToolButton->get_allocation().get_x();
+  y += mp_ToolsToolButton->get_allocation().get_y()
+      + mp_ToolsToolButton->get_allocation().get_height();
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onToggleSelectedSelectOptionMenuClicked()
-{
-  m_signal_ToggleSelectedPreferenceMenuClicked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ToolBar::onUnzoomCursorToggleToolButtonClicked()
-{
-  m_signal_UnzoomCursorToggleToolButtonClicked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ToolBar::onZoomTypeToggleToolButtonClicked()
-{
-  //  Glib::RefPtr<Gtk::Action> TempAction =
-  //      mp_ZoomTypeToggleToolButton->get_action();
-  //  if (TempAction == mref_ZoomCursorZoomTypeMenuAction)
-  if (m_BoolCursorState)
-  {
-//    std::cout << "ZoomCursor : " << std::endl;
-    onZoomCursorZoomTypeButtonClicked();
-    //  } else if (TempAction == mref_ZoomFrameZoomTypeMenuAction)
-  } else if (m_BoolFrameState)
-  {
-    onZoomFrameZoomTypeButtonClicked();
-  } else
-  {
-//    std::cout << "error : " << std::endl;
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void ToolBar::onZoomCursorZoomTypeButtonClicked()
-{
-  m_signal_ZoomCursorZoomTypeButtonClicked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ToolBar::onZoomFrameZoomTypeButtonClicked()
-{
-  m_signal_ZoomFrameZoomTypeButtonClicked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ToolBar::onZoomLayerFocusButtonClicked()
-{
-  m_signal_ZoomLayerFocusButtonClicked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ToolBar::onZoomSelectionFocusButtonClicked()
-{
-  m_signal_ZoomSelectionFocusButtonClicked.emit();
-}
-
-// =====================================================================
-// =====================================================================
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalShow100FocusButtonClicked()
-{
-  return m_signal_Show100FocusButtonClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalZoomSelectionFocusButtonClicked()
-{
-  return m_signal_ZoomSelectionFocusButtonClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalZoomLayerFocusButtonClicked()
-{
-  return m_signal_ZoomLayerFocusButtonClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalZoomCursorZoomTypeButtonClicked()
-{
-  return m_signal_ZoomCursorZoomTypeButtonClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-ToolBar::mtype_SignalToolBar ToolBar::signalZoomFrameZoomTypeButtonClicked()
-{
-  return m_signal_ZoomFrameZoomTypeButtonClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalSelectAllPreferenceMenuClicked()
-{
-  return m_signal_SelectAllPreferenceMenuClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalToggleSelectedPreferenceMenuClicked()
-{
-  return m_signal_ToggleSelectedPreferenceMenuClicked;
-}
-
-// =====================================================================
-// =====================================================================
-
-ToolBar::mtype_SignalToolBar ToolBar::signalAddLayerToolButtonClicked()
+ToolBar::mtype_SignalToolBar ToolBar::signal_AddLayerAsked()
 {
   return m_signal_AddLayerToolButtonClicked;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-ToolBar::mtype_SignalToolBar ToolBar::signalInfoToolButtonClicked()
+ToolBar::mtype_SignalToolBar ToolBar::signal_SelectModeAsked()
 {
-  return m_signal_InfoToolButtonClicked;
+  return m_signal_SelectModeAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-ToolBar::mtype_SignalToolBar ToolBar::signalSelectObjectLayerToggleToolButtonClicked()
+ToolBar::mtype_SignalToolBar ToolBar::signal_MoveModeAsked()
 {
-  return m_signal_SelectObjectLayerToggleToolButtonClicked;
+  return m_signal_MoveModeAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-ToolBar::mtype_SignalToolBar ToolBar::signalMoveLayerToggleToolButtonClicked()
+ToolBar::mtype_SignalToolBar ToolBar::signal_ZoomInCursorAsked()
 {
-  return m_signal_MoveLayerToggleToolButtonClicked;
+  return m_signal_ZoomInCursorAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-ToolBar::mtype_SignalToolBar ToolBar::signalUnzoomCursorToggleToolButtonClicked()
-{
-  return m_signal_UnzoomCursorToggleToolButtonClicked;
-}
 
-// =====================================================================
-// =====================================================================
-// =====================================================================
-// =====================================================================
-
-void ToolBar::resetToolBar(int i)
+ToolBar::mtype_SignalToolBar ToolBar::signal_ZoomInFrameAsked()
 {
-  if (mp_MoveLayerToggleToolButton->get_active() && i != 1)
-    mp_MoveLayerToggleToolButton->set_active(false);
-  if (mp_SelectObjectLayerToggleToolButton->get_active() && i != 2)
-    mp_SelectObjectLayerToggleToolButton->set_active(false);
-  if (mp_UnzoomCursorToggleToolButton->get_active() && i != 3)
-    mp_UnzoomCursorToggleToolButton->set_active(false);
-  if (mp_ZoomTypeToggleToolButton->get_active() && i != 4)
-  {
-    mp_ZoomTypeToggleToolButton->set_active(false);
-  }
+  return m_signal_ZoomInFrameAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::resetSensitiveToolBar(bool Sensitive)
+ToolBar::mtype_SignalToolBar ToolBar::signal_ZoomOutAsked()
 {
-  if (mp_MoveLayerToggleToolButton->get_active())
-    mp_MoveLayerToggleToolButton->set_active(false);
-  if (mp_SelectObjectLayerToggleToolButton->get_active())
-    mp_SelectObjectLayerToggleToolButton->set_active(false);
-  if (mp_UnzoomCursorToggleToolButton->get_active())
-    mp_UnzoomCursorToggleToolButton->set_active(false);
-  if (mp_ZoomTypeToggleToolButton->get_active())
-    mp_ZoomTypeToggleToolButton->set_active(false);
-
-  if (!Sensitive)
-  {
-    mp_PreferenceMenubar->set_sensitive(false);
-
-    mp_InfoToolButton->set_sensitive(false);
-    mp_FocusToolButton->set_sensitive(false);
-
-    mp_SelectObjectLayerToggleToolButton->set_sensitive(false);
-    mp_MoveLayerToggleToolButton->set_sensitive(false);
-    mp_UnzoomCursorToggleToolButton->set_sensitive(false);
-    mp_ZoomTypeToggleToolButton->set_sensitive(false);
-
-    mp_FocusMenuToolButton->set_sensitive(false);
-    mp_ZoomTypeMenuToolButton->set_sensitive(false);
-  } else
-  {
-    mp_InfoToolButton->set_sensitive(true);
-    mp_FocusToolButton->set_sensitive(true);
-
-    mp_SelectObjectLayerToggleToolButton->set_sensitive(true);
-    mp_MoveLayerToggleToolButton->set_sensitive(true);
-    mp_UnzoomCursorToggleToolButton->set_sensitive(true);
-    mp_ZoomTypeToggleToolButton->set_sensitive(true);
-
-    mp_FocusMenuToolButton->set_sensitive(true);
-    mp_ZoomTypeMenuToolButton->set_sensitive(true);
-  }
-
+  return m_signal_ZoomOutAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-void ToolBar::setSensitivePreferenceMenubar(bool Sensitive)
+ToolBar::mtype_SignalToolBar ToolBar::signal_Zoom100AllAsked()
 {
-  mp_PreferenceMenubar->set_sensitive(Sensitive);
-}
-
-// =====================================================================
-// =====================================================================
-// =====================================================================
-// =====================================================================
-
-Gtk::ToggleToolButton* ToolBar::getSelectObjectLayerToggleToolButton()
-{
-  return mp_SelectObjectLayerToggleToolButton;
+  return m_signal_Zoom100AllAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-Gtk::ToggleToolButton* ToolBar::getMoveLayerToggleToolButton()
+ToolBar::mtype_SignalToolBar ToolBar::signal_Zoom100LayerAsked()
 {
-  return mp_MoveLayerToggleToolButton;
+  return m_signal_Zoom100LayerAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-Gtk::ToggleToolButton* ToolBar::getUnzoomCursorToggleToolButton()
+ToolBar::mtype_SignalToolBar ToolBar::signal_Zoom100SelectionAsked()
 {
-  return mp_UnzoomCursorToggleToolButton;
+  return m_signal_Zoom100SelectionAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-Gtk::ToggleToolButton* ToolBar::getZoomTypeToggleToolButton()
+ToolBar::mtype_SignalToolBar ToolBar::signal_InfoAsked()
 {
-  return mp_ZoomTypeToggleToolButton;
+  return m_signal_InfoAsked;
 }
 
+// =====================================================================
+// =====================================================================
+
+ToolBar::mtype_SignalToolBar ToolBar::signal_SelectAllAsked()
+{
+  return m_signal_SelectAllAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+ToolBar::mtype_SignalToolBar ToolBar::signal_ToggleSelectionAsked()
+{
+  return m_signal_ToggleSelectionAsked;
+}
+
+// =====================================================================
+// =====================================================================

@@ -70,16 +70,16 @@ class WidgetObjectBase: public WidgetObject
 
   private:
 
-    Gdk::Color m_CurrentColor;
+    Gtk::Image* mp_TypeImage;
+
     Gdk::Color m_DefaultColor;
+    Gdk::Color m_CurrentColor;
 
     Gtk::CheckButton* mp_DisplayLayerCheckBox;
 
     Gtk::Button* mp_UpButton;
     Gtk::Button* mp_DownButton;
     Gtk::Button* mp_RemoveButton;
-
-    Gtk::Image* mp_TypeImage;
 
     typedef sigc::signal<void> mtype_SignalWidgetObjectBase;
 
@@ -97,7 +97,6 @@ class WidgetObjectBase: public WidgetObject
     //*************************************************
 
     Glib::RefPtr<Gdk::Pixbuf> getPixbufForType(int);
-    void onEventBoxRealized();
     bool onEventHappend(GdkEvent* event);
 
   public:

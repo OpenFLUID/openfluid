@@ -122,22 +122,29 @@ class Mediator
     void whenDrawingAreaMapped();
     bool whenDrawingAreaMapEvent(GdkEventAny* Event);
 
+    void setToNoLayerMode();
+    void setToFirstLayerMode();
+    void setToSelectState();
+
     //***************Signal ToolBar*********************
-    void whenOnShow100FocusButtonClicked();
-    void whenOnZoomSelectionFocusButtonClicked();
-    void whenOnZoomLayerFocusButtonClicked();
+    void whenAddLayerAsked();
+    void whenSelectModeAsked();
+    void whenMoveModeAsked();
 
-    void whenOnZoomCursorZoomTypeButtonClicked();
-    void whenOnZoomFrameZoomTypeButtonClicked();
+    void whenZoomInCursorAsked();
+    void whenZoomInFrameAsked();
+    void whenZoomOutAsked();
 
-    void whenOnSelectAllPreferenceMenuClicked();
-    void whenOnToggleSelectedPreferenceMenuClicked();
 
-    void whenOnAddLayerToolButtonClicked();
-    void whenOnInfoToolButtonClicked();
-    void whenOnSelectObjectLayerToggleToolButtonClicked();
-    void whenOnMoveLayerToggleToolButtonClicked();
-    void whenOnUnzoomCursorToggleToolButtonClicked();
+    void whenZoom100AllAsked();
+    void whenZoom100SelectionAsked();
+    void whenZoom100LayerAsked();
+
+
+    void whenSelectAllAsked();
+    void whenToggleSelectionAsked();
+
+    void whenInfoAsked();
     //***************Signal Layer***********************
     void whenOnUpLayerButtonClicked(std::string);
     void whenOnDownLayerButtonClicked(std::string);
