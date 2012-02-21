@@ -11,9 +11,6 @@ PROJECT(OpenFLUID CXX)
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
-INCLUDE(CTest)
-ENABLE_TESTING()
-
 INCLUDE(CMake.in.cmake)
 
 IF (EXISTS ${CMAKE_SOURCE_DIR}/CMake.in.local.cmake)
@@ -52,83 +49,83 @@ FIND_PACKAGE(Doxygen)
 FIND_PACKAGE(LATEX)
 
 
-IF(Boost_FOUND AND LibXML2_FOUND)
+FILE(MAKE_DIRECTORY "${LIB_OUTPUT_PATH}")
+FILE(MAKE_DIRECTORY "${BIN_OUTPUT_PATH}")
+FILE(MAKE_DIRECTORY "${FUNCTIONS_DOC_OUTPUT_PATH}")
 
-  FILE(MAKE_DIRECTORY "${LIB_OUTPUT_PATH}")
-  FILE(MAKE_DIRECTORY "${BIN_OUTPUT_PATH}")
-  FILE(MAKE_DIRECTORY "${FUNCTIONS_DOC_OUTPUT_PATH}")
+ADD_SUBDIRECTORY(src)  
 
-  ADD_SUBDIRECTORY(src)
-
+IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+  INCLUDE(CTest)
+  ENABLE_TESTING()
+  
   CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_BINARY_DIR}/CTestCustom.cmake COPYONLY)
-  
   ADD_SUBDIRECTORY(tests)
+ENDIF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))  
 
-  ADD_SUBDIRECTORY(po)
+ADD_SUBDIRECTORY(po)
 
-  ADD_SUBDIRECTORY(doc)
+ADD_SUBDIRECTORY(doc)
 
-  ADD_SUBDIRECTORY(resources)
+ADD_SUBDIRECTORY(resources)
 
-  INCLUDE(CPack.in.cmake)
+INCLUDE(CPack.in.cmake)
 
 
-  INSTALL(FILES "COPYING"
-                "AUTHORS"
-                "README"   
-                "CHANGELOG"
-          DESTINATION "${DOC_INSTALL_PATH}")
+INSTALL(FILES "COPYING"
+        "AUTHORS"
+        "README"   
+        "CHANGELOG"
+        DESTINATION "${DOC_INSTALL_PATH}")
   
   
-  FILE(COPY "share/" 
-       DESTINATION "${BUILD_OUTPUT_PATH}/${SHARE_INSTALL_PATH}"
-       PATTERN ".svn" EXCLUDE)
+FILE(COPY "share/" 
+     DESTINATION "${BUILD_OUTPUT_PATH}/${SHARE_INSTALL_PATH}"
+     PATTERN ".svn" EXCLUDE)
             
-  INSTALL(DIRECTORY "share" 
-          DESTINATION "." PATTERN ".svn" EXCLUDE)
+INSTALL(DIRECTORY "share" 
+        DESTINATION "." PATTERN ".svn" EXCLUDE)
             
   
 
-  MESSAGE(STATUS "****************************************")
-  MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
-  MESSAGE(STATUS "Build name: ${BUILDNAME}")
-  MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
-  MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")  
-  MESSAGE(STATUS "Compiler flags for build:  ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
-  MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
-  MESSAGE(STATUS "****************************************")
-  MESSAGE(STATUS "Build openfluid-minimal application : yes")
+MESSAGE(STATUS "****************************************")
+MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
+MESSAGE(STATUS "Build name: ${BUILDNAME}")
+MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
+MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")  
+MESSAGE(STATUS "Compiler flags for build:  ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
+MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE(STATUS "****************************************")
+MESSAGE(STATUS "Build openfluid-minimal application : yes")
 
-  IF(BUILD_APP_MINIMALGUI)
-    MESSAGE(STATUS "Build openfluid-minimal-gui application : yes")  
-  ELSE(BUILD_APP_MINIMALGUI)
-    MESSAGE(STATUS "Build openfluid-minimal-gui application : no")  
-  ENDIF(BUILD_APP_MINIMALGUI)
+IF(BUILD_APP_MINIMALGUI)
+  MESSAGE(STATUS "Build openfluid-minimal-gui application : yes")  
+ELSE(BUILD_APP_MINIMALGUI)
+  MESSAGE(STATUS "Build openfluid-minimal-gui application : no")  
+ENDIF(BUILD_APP_MINIMALGUI)
 
 
-  IF(BUILD_APP_ENGINE)
-    MESSAGE(STATUS "Build openfluid-engine application : yes")  
-  ELSE(BUILD_APP_ENGINE)
-    MESSAGE(STATUS "Build openfluid-engine application : no")  
-  ENDIF(BUILD_APP_ENGINE)
+IF(BUILD_APP_ENGINE)
+  MESSAGE(STATUS "Build openfluid-engine application : yes")  
+ELSE(BUILD_APP_ENGINE)
+  MESSAGE(STATUS "Build openfluid-engine application : no")  
+ENDIF(BUILD_APP_ENGINE)
 
-  IF(BUILD_APP_BUILDER)
-    MESSAGE(STATUS "Build openfluid-builder application : yes")  
-  ELSE(BUILD_APP_BUILDER)
-    MESSAGE(STATUS "Build openfluid-builder application : no")  
-  ENDIF(BUILD_APP_BUILDER)
+IF(BUILD_APP_BUILDER)
+  MESSAGE(STATUS "Build openfluid-builder application : yes")  
+ELSE(BUILD_APP_BUILDER)
+  MESSAGE(STATUS "Build openfluid-builder application : no")  
+ENDIF(BUILD_APP_BUILDER)
   
-  IF(BUILD_APP_MARKETCLIENT)
-    MESSAGE(STATUS "Build openfluid-market-client application : yes")  
-  ELSE(BUILD_APP_MARKETCLIENT)
-    MESSAGE(STATUS "Build openfluid--market-client application : no")  
-  ENDIF(BUILD_APP_MARKETCLIENT)  
+IF(BUILD_APP_MARKETCLIENT)
+  MESSAGE(STATUS "Build openfluid-market-client application : yes")  
+ELSE(BUILD_APP_MARKETCLIENT)
+  MESSAGE(STATUS "Build openfluid--market-client application : no")  
+ENDIF(BUILD_APP_MARKETCLIENT)  
   
-  MESSAGE(STATUS "****************************************")
+MESSAGE(STATUS "****************************************")
   
   
-ENDIF(Boost_FOUND AND LibXML2_FOUND)
-
 
 
 
