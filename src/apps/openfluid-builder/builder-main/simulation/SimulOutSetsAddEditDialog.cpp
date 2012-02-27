@@ -138,7 +138,7 @@ SimulOutSetsAddEditDialog::SimulOutSetsAddEditDialog() :
       Gtk::SHRINK);
   mp_Table->attach(*WinIDs, 1, 2, 2, 3, Gtk::EXPAND | Gtk::FILL, Gtk::EXPAND
       | Gtk::FILL);
-  mp_Table->attach(*WinVars, 1, 2, 3, 4, Gtk::EXPAND | Gtk::FILL, Gtk::SHRINK);
+  mp_Table->attach(*WinVars, 1, 2, 3, 4, Gtk::EXPAND | Gtk::FILL);
   mp_Table->attach(*mp_FormatNameCombo, 1, 2, 4, 5, Gtk::EXPAND | Gtk::FILL,
       Gtk::SHRINK);
   mp_Table->attach(*mp_PrecisionSpin, 1, 2, 5, 6, Gtk::EXPAND | Gtk::FILL,
