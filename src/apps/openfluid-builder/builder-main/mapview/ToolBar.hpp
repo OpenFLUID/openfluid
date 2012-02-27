@@ -75,6 +75,8 @@ class ToolBar
     Gtk::Toolbar* mp_ToolBar;
 
     Gtk::ToolButton* mp_AddLayerToolButton;
+
+    Gtk::ToggleToolButton* mp_SelectModeToggleToolButton;
     Gtk::ToggleToolButton* mp_MoveModeToggleToolButton;
 
     Gtk::MenuToolButton* mp_Zoom100MenuToolButton;
@@ -91,6 +93,8 @@ class ToolBar
 
     Gtk::Menu* mp_ToolsMenu;
     Gtk::ToolButton* mp_ToolsToolButton;
+
+    bool m_ToggleToolButtonsHaveToReact;
 
     Gtk::SeparatorToolItem * getSeparator();
 

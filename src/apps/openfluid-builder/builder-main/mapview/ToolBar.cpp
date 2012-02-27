@@ -61,7 +61,7 @@
 
 
 ToolBar::ToolBar() :
-  m_CurrentZoomInMode(ZOOM_IN_CURSOR)
+  m_CurrentZoomInMode(ZOOM_IN_CURSOR), m_ToggleToolButtonsHaveToReact(true)
 {
   // Add
 
@@ -70,10 +70,10 @@ ToolBar::ToolBar() :
 
   // Select
 
-  Gtk::ToolButton* SelectModeToolButton = Gtk::manage(new Gtk::ToolButton(
+  mp_SelectModeToggleToolButton = Gtk::manage(new Gtk::ToggleToolButton(
       *BuilderGraphicsHelper::createBuilderIconStockId("left_ptr.png",
           "openfluid_mapview_select")));
-  SelectModeToolButton->set_tooltip_markup(_("Selection mode"));
+  mp_SelectModeToggleToolButton->set_tooltip_markup(_("Selection mode"));
 
   // Move
 
@@ -217,7 +217,7 @@ ToolBar::ToolBar() :
   mp_ToolBar->append(*mp_AddLayerToolButton, sigc::mem_fun(*this,
       &ToolBar::onAddLayerToolButtonClicked));
   mp_ToolBar->append(*getSeparator());
-  mp_ToolBar->append(*SelectModeToolButton, sigc::mem_fun(*this,
+  mp_ToolBar->append(*mp_SelectModeToggleToolButton, sigc::mem_fun(*this,
       &ToolBar::onSelectModeToolButtonClicked));
   mp_ToolBar->append(*mp_MoveModeToggleToolButton, sigc::mem_fun(*this,
       &ToolBar::onMoveModeToggleToolButtonClicked));
@@ -274,9 +274,14 @@ void ToolBar::setAtLeastALayerMode(bool AtLeastALayer)
 
 void ToolBar::setSelectionMode()
 {
+  m_ToggleToolButtonsHaveToReact = false;
+
+  mp_SelectModeToggleToolButton->set_active(true);
   mp_MoveModeToggleToolButton->set_active(false);
   mp_ZoomInToggleToolButton->set_active(false);
   mp_ZoomOutToggleToolButton->set_active(false);
+
+  m_ToggleToolButtonsHaveToReact = true;
 }
 
 // =====================================================================
@@ -284,9 +289,14 @@ void ToolBar::setSelectionMode()
 
 void ToolBar::setMoveMode()
 {
+  m_ToggleToolButtonsHaveToReact = false;
+
+  mp_SelectModeToggleToolButton->set_active(false);
   mp_MoveModeToggleToolButton->set_active(true);
   mp_ZoomInToggleToolButton->set_active(false);
   mp_ZoomOutToggleToolButton->set_active(false);
+
+  m_ToggleToolButtonsHaveToReact = true;
 }
 
 // =====================================================================
@@ -294,9 +304,14 @@ void ToolBar::setMoveMode()
 
 void ToolBar::setZoomInMode()
 {
+  m_ToggleToolButtonsHaveToReact = false;
+
+  mp_SelectModeToggleToolButton->set_active(false);
   mp_MoveModeToggleToolButton->set_active(false);
   mp_ZoomInToggleToolButton->set_active(true);
   mp_ZoomOutToggleToolButton->set_active(false);
+
+  m_ToggleToolButtonsHaveToReact = true;
 }
 
 // =====================================================================
@@ -304,9 +319,14 @@ void ToolBar::setZoomInMode()
 
 void ToolBar::setZoomOutMode()
 {
+  m_ToggleToolButtonsHaveToReact = false;
+
+  mp_SelectModeToggleToolButton->set_active(false);
   mp_MoveModeToggleToolButton->set_active(false);
   mp_ZoomInToggleToolButton->set_active(false);
   mp_ZoomOutToggleToolButton->set_active(true);
+
+  m_ToggleToolButtonsHaveToReact = true;
 }
 
 // =====================================================================
@@ -322,7 +342,13 @@ void ToolBar::onAddLayerToolButtonClicked()
 
 void ToolBar::onSelectModeToolButtonClicked()
 {
-  signal_SelectModeAsked().emit();
+  if(!m_ToggleToolButtonsHaveToReact)
+    return;
+
+  if(mp_SelectModeToggleToolButton->get_active())
+    signal_SelectModeAsked().emit();
+  else
+    mp_SelectModeToggleToolButton->set_active(true);
 }
 
 // =====================================================================
@@ -330,10 +356,13 @@ void ToolBar::onSelectModeToolButtonClicked()
 
 void ToolBar::onMoveModeToggleToolButtonClicked()
 {
+  if(!m_ToggleToolButtonsHaveToReact)
+      return;
+
   if (mp_MoveModeToggleToolButton->get_active())
     signal_MoveModeAsked().emit();
   else
-    signal_SelectModeAsked().emit();
+    mp_MoveModeToggleToolButton->set_active();
 }
 
 // =====================================================================
@@ -344,8 +373,6 @@ void ToolBar::onZoomInCursorMenuActionActivate()
   mp_ZoomInToggleToolButton->set_stock_id(Gtk::Stock::ZOOM_IN);
 
   m_CurrentZoomInMode = ZOOM_IN_CURSOR;
-
-  mp_ZoomInToggleToolButton->set_active();
 
   onZoomInToggleToolButtonClicked();
 }
@@ -359,8 +386,6 @@ void ToolBar::onZoomInFrameMenuActionActivate()
 
   m_CurrentZoomInMode = ZOOM_IN_FRAME;
 
-  mp_ZoomInToggleToolButton->set_active();
-
   onZoomInToggleToolButtonClicked();
 }
 
@@ -369,6 +394,9 @@ void ToolBar::onZoomInFrameMenuActionActivate()
 
 void ToolBar::onZoomInToggleToolButtonClicked()
 {
+  if(!m_ToggleToolButtonsHaveToReact)
+      return;
+
   if (mp_ZoomInToggleToolButton->get_active())
   {
     switch (m_CurrentZoomInMode)
@@ -383,7 +411,7 @@ void ToolBar::onZoomInToggleToolButtonClicked()
     }
   }
   else
-    signal_SelectModeAsked().emit();
+    mp_ZoomInToggleToolButton->set_active();
 }
 
 // =====================================================================
@@ -391,8 +419,13 @@ void ToolBar::onZoomInToggleToolButtonClicked()
 
 void ToolBar::onZoomOutToggleToolButtonClicked()
 {
+  if(!m_ToggleToolButtonsHaveToReact)
+      return;
+
   if (mp_ZoomOutToggleToolButton->get_active())
     m_signal_ZoomOutAsked.emit();
+  else
+    mp_ZoomOutToggleToolButton->set_active();
 }
 
 // =====================================================================
@@ -462,7 +495,7 @@ void ToolBar::onToolsToolButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void ToolBar::onToolsMenuPopupPosition(int& x, int& y, bool& push_in)
+void ToolBar::onToolsMenuPopupPosition(int& x, int& y, bool& /*push_in*/)
 {
   mp_ToolsToolButton->get_window()->get_origin(x, y);
 
