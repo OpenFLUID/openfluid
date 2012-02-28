@@ -107,6 +107,7 @@ int main(int argc, char **argv)
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
                                                                     FXReader.getRunDescriptor(),
                                                                     FXReader.getOutputDescriptor(),
+                                                                    FXReader.getDatstoreDescriptor(),
                                                                     SBlob);
 
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),

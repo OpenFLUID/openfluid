@@ -66,6 +66,8 @@
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
+#include <openfluid/core/UnstructuredValue.hpp>
+
 
 namespace openfluid { namespace io {
 
@@ -845,6 +847,54 @@ void FluidXReader::extractDomainFomNode(xmlNodePtr NodePtr)
   }
 }
 
+// =====================================================================
+// =====================================================================
+
+
+void FluidXReader::extractDatastoreFromNode(xmlNodePtr NodePtr)
+{
+  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
+
+  while (CurrNode != NULL)
+  {
+    if (xmlStrcmp(CurrNode->name,(const xmlChar*)"dataitem") == 0)
+    {
+      xmlChar* xmlDataID = xmlGetProp(CurrNode,(const xmlChar*)"id");
+      xmlChar* xmlDataType = xmlGetProp(CurrNode,(const xmlChar*)"type");
+      xmlChar* xmlDataSrc = xmlGetProp(CurrNode,(const xmlChar*)"source");
+      xmlChar* xmlDataClass = xmlGetProp(CurrNode,(const xmlChar*)"unitclass");
+
+      if (xmlDataID != NULL && xmlDataType != NULL && xmlDataSrc != NULL)
+      {
+        openfluid::core::UnstructuredValue::UnstructuredType DataType;
+
+        if(!openfluid::core::UnstructuredValue::getValueTypeFromString(
+            std::string((char*)xmlDataType),DataType))
+          throw openfluid::base::OFException("OpenFLUID framework",
+              "FluidXReader::extractDatastoreFromNode",
+              "unknown or missing datatype in dataitem definition (" + m_CurrentFile + ")");
+
+        openfluid::base::DatastoreItemDescriptor* Item =
+            new openfluid::base::DatastoreItemDescriptor(
+                std::string((char*)xmlDataID),
+                std::string((char*)xmlDataSrc),
+                DataType);
+
+        if(xmlDataClass != NULL)
+          Item->setUnitClass(std::string((char*)xmlDataClass));
+
+        m_DatastoreDescriptor.appendItem(Item);
+      }
+      else throw openfluid::base::OFException("OpenFLUID framework",
+          "FluidXReader::extractDatastoreFromNode",
+          "missing or wrong attribute(s) in dataitem definition (" + m_CurrentFile + ")");
+    }
+
+  CurrNode = CurrNode->next;
+
+  }
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -893,6 +943,11 @@ void FluidXReader::parseFile(std::string Filename)
             extractDomainFomNode(CurrNode);
           }
 
+          if (xmlStrcmp(CurrNode->name,(const xmlChar*)"datastore") == 0)
+          {
+            extractDatastoreFromNode(CurrNode);
+          }
+
           CurrNode = CurrNode->next;
         }
       }
@@ -934,6 +989,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
   m_RunDescriptor = openfluid::base::RunDescriptor();
   m_OutputDescriptor = openfluid::base::OutputDescriptor();
   m_DomainDescriptor = openfluid::base::DomainDescriptor();
+  m_DatastoreDescriptor = openfluid::base::DatastoreDescriptor();
 
   m_RunConfigDefined = false;
   m_ModelDefined = false;

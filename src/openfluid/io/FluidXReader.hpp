@@ -64,6 +64,7 @@
 #include <openfluid/base/ModelDescriptor.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/base/DatastoreDescriptor.hpp>
 
 
 namespace openfluid { namespace io {
@@ -90,6 +91,8 @@ class DLLEXPORT FluidXReader
     openfluid::base::OutputDescriptor m_OutputDescriptor;
 
     openfluid::base::DomainDescriptor m_DomainDescriptor;
+
+    openfluid::base::DatastoreDescriptor m_DatastoreDescriptor;
 
 
     openfluid::base::OutputFilesDescriptor extractFilesDecriptorFromNode(xmlNodePtr NodePtr);
@@ -119,6 +122,8 @@ class DLLEXPORT FluidXReader
 
     void extractDomainCalendarFromNode(xmlNodePtr NodePtr);
 
+    void extractDatastoreFromNode(xmlNodePtr NodePtr);
+
     void parseFile(std::string Filename);
 
     /**
@@ -142,6 +147,8 @@ class DLLEXPORT FluidXReader
     openfluid::base::OutputDescriptor& getOutputDescriptor() {return m_OutputDescriptor; };
 
     openfluid::base::DomainDescriptor& getDomainDescriptor() {return m_DomainDescriptor; };
+
+    openfluid::base::DatastoreDescriptor& getDatstoreDescriptor() {return m_DatastoreDescriptor; };
 
 };
 

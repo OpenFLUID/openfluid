@@ -141,6 +141,8 @@ class ProjectCoordinator
 
     void whenResultsChanged();
 
+    void whenMapViewChanged();
+
     void whenPageRemoved(std::string RemovedPageName);
 
     void computeModelChanges();
@@ -187,6 +189,8 @@ class ProjectCoordinator
     void checkProject();
 
     void whenUpdatePluginsAsked(int ResponseId = Gtk::RESPONSE_OK);
+
+    void whenMapViewAsked();
 
     void setFileMonitorDisplayState(bool HasToDisplay);
 

@@ -90,6 +90,8 @@ class BuilderModuleFactory
 
     openfluid::guicommon::BuilderModule* createResultsSetModule();
 
+    openfluid::guicommon::BuilderModule* createMapViewModule();
+
 };
 
 #endif /* __BUILDERMODULEFACTORY_HPP__ */

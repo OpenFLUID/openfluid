@@ -236,4 +236,10 @@
 
   </domain>
 
+  <datastore>
+   	<dataitem id="mymap" type="geovector" source="datastore/testvect" unitclass="unitsA" />
+  	<dataitem id="mymap2" type="geovector" source="datastore/testvect.shp" />
+  	<dataitem id="myrast" type="georaster" source="datastore/testrast.tif" />
+  </datastore>
+  
 </openfluid>

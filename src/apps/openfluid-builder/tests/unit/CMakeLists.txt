@@ -21,7 +21,7 @@ SET(RELDIR_BUILDERMAIN ../../builder-main)
 INCLUDE_DIRECTORIES(${RELDIR_BUILDERMAIN} 
                     ${RELDIR_BUILDERMAIN}/common ${RELDIR_BUILDERMAIN}/model 
                     ${RELDIR_BUILDERMAIN}/domain ${RELDIR_BUILDERMAIN}/simulation 
-                    ${RELDIR_BUILDERMAIN}/results 
+                    ${RELDIR_BUILDERMAIN}/results ${RELDIR_BUILDERMAIN}/mapview
                     "${PROJECT_BINARY_DIR}/src/tests")
 
 
@@ -179,4 +179,11 @@ ADD_BUILDER_UNITTEST(builder-unittest-SimulOutSetsPresenter
 ADD_BUILDER_UNITTEST(builder-unittest-ResUnitChooserModel
                      builder_unittest_ResUnitChooserModel_TEST
                      ResUnitChooserModel_TEST.cpp)
+
+### MAPVIEW ###
+
+ADD_BUILDER_UNITTEST(builder-unittest-Layer
+                     builder_unittest_Layer_TEST
+                     Layer_TEST.cpp)
+
                                           

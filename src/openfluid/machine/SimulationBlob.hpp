@@ -60,6 +60,7 @@
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/core/Datastore.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -75,6 +76,8 @@ class DLLEXPORT SimulationBlob
 
     openfluid::base::ExecutionMessages m_ExecMessages;
 
+    openfluid::core::Datastore m_Datastore;
+
   public:
 
     SimulationBlob();
@@ -89,6 +92,8 @@ class DLLEXPORT SimulationBlob
 
     inline openfluid::base::ExecutionMessages& getExecutionMessages() {return  m_ExecMessages; };
 
+    openfluid::core::Datastore& getDatastore() { return m_Datastore; };
+
     inline const openfluid::core::CoreRepository& getCoreRepository() const { return m_CoreRepos; };
 
     inline const openfluid::base::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
@@ -96,6 +101,8 @@ class DLLEXPORT SimulationBlob
     inline const openfluid::base::OutputDescriptor& getOutputDescriptor() const {return  m_OutputDescriptor; };
 
     inline const openfluid::base::ExecutionMessages& getExecutionMessages() const {return  m_ExecMessages; };
+
+    const openfluid::core::Datastore& getDatastore() const { return m_Datastore; };
 
     void clearSimulationGarbage();
 

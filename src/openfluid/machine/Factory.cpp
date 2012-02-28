@@ -61,7 +61,11 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
+#include <openfluid/base/DatastoreDescriptor.hpp>
+#include <openfluid/base/DatastoreItemDescriptor.hpp>
 #include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/Datastore.hpp>
+#include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/PluginManager.hpp>
@@ -209,6 +213,28 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 }
 
 
+
+// =====================================================================
+// =====================================================================
+
+
+void Factory::buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor& Descriptor,
+                                          openfluid::core::Datastore& Store)
+{
+  openfluid::base::DatastoreDescriptor::DatastoreDescription_t Items = Descriptor.getItems();
+
+  openfluid::base::DatastoreDescriptor::DatastoreDescription_t::iterator it;
+
+  for(it = Items.begin() ; it != Items.end() ; ++it)
+  {
+    openfluid::core::DatastoreItem* Item = new openfluid::core::DatastoreItem(
+        (*it)->getID(),(*it)->getRelativePath(), (*it)->getType(), (*it)->getUnitClass());
+
+    Store.addItem(Item);
+  }
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -336,9 +362,12 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& R
 void Factory::buildSimulationBlobFromDescriptors(openfluid::base::DomainDescriptor& DomainDesc,
     openfluid::base::RunDescriptor& RunDesc,
     openfluid::base::OutputDescriptor& OutDesc,
+    openfluid::base::DatastoreDescriptor& DataDesc,
     SimulationBlob& SimBlob)
 {
   buildDomainFromDescriptor(DomainDesc,SimBlob.getExecutionMessages(),SimBlob.getCoreRepository());
+
+  buildDatastoreFromDescriptor(DataDesc,SimBlob.getDatastore());
 
   SimBlob.getRunDescriptor() = RunDesc;
 

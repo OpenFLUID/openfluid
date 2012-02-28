@@ -63,6 +63,7 @@
 #include "ResultsSetModule.hpp"
 #include "EngineProject.hpp"
 
+#include "MapViewModule.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -72,7 +73,6 @@ BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
   mp_EngineProject(EngProject)
 {
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -96,7 +96,6 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureM
   return Module;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -108,7 +107,6 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructure
       *mp_EngineProject.getSimBlob());
   return Module;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -122,7 +120,6 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModu
   return Module;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -134,7 +131,6 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunMo
       *mp_EngineProject.getSimBlob());
   return Module;
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -148,7 +144,6 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutMo
   return Module;
 }
 
-
 // =====================================================================
 // =====================================================================
 
@@ -156,6 +151,18 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutMo
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
 {
   ResultsSetModule* Module = new ResultsSetModule();
+  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+      *mp_EngineProject.getSimBlob());
+  return Module;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMapViewModule()
+{
+  MapViewModule* Module = new MapViewModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
       *mp_EngineProject.getSimBlob());
   return Module;

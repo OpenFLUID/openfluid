@@ -68,9 +68,11 @@ class ExecutionMessages;
 class ModelDescriptor;
 class RunDescriptor;
 class OutputDescriptor;
+class DatastoreDescriptor;
 }
 namespace core {
 class CoreRepository;
+class Datastore;
 }
 }
 
@@ -89,6 +91,9 @@ class DLLEXPORT Factory
                                           openfluid::base::ExecutionMessages& ExecMsgs,
                                           openfluid::core::CoreRepository& CoreRepos);
 
+    static void buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor& Descriptor,
+                                             openfluid::core::Datastore& Store);
+
 
     static void buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
                                                  ModelInstance& MInstance);
@@ -98,6 +103,7 @@ class DLLEXPORT Factory
     static void buildSimulationBlobFromDescriptors(openfluid::base::DomainDescriptor& DomainDesc,
                                                    openfluid::base::RunDescriptor& RunDesc,
                                                    openfluid::base::OutputDescriptor& OutDesc,
+                                                   openfluid::base::DatastoreDescriptor& DataDesc,
                                                    SimulationBlob& SimBlob);
 
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,

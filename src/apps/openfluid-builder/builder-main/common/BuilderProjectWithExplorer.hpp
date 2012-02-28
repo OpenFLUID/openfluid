@@ -128,6 +128,8 @@ class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, pu
 
     void updatePluginPathsMonitors();
 
+    void mapViewAsked();
+
     void extensionAsked(const std::string& ExtensionID);
 
 };

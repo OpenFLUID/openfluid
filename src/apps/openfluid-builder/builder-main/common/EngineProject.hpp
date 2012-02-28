@@ -73,6 +73,7 @@ class OutputDescriptor;
 }
 namespace core {
 class CoreRepository;
+class Datastore;
 }
 namespace io {
 class FluidXReader;
@@ -173,6 +174,8 @@ class EngineProject
     openfluid::base::RunDescriptor& getRunDescriptor();
 
     openfluid::base::OutputDescriptor& getOutputDescriptor();
+
+    openfluid::core::Datastore& getDatastore();
 
     ~EngineProject();
 

@@ -546,6 +546,18 @@ void ProjectCoordinator::whenResultsChanged()
 // =====================================================================
 
 
+void ProjectCoordinator::whenMapViewChanged()
+{
+//  std::cout << "MapView has changed" << std::endl;
+  // check if update of Domain is sufficient
+  //  updateWorkspaceModules();
+  //  updateResults();
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 {
   openfluid::guicommon::ProjectWorkspaceModule* ModuleToDelete =
@@ -624,6 +636,31 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   checkProject();
 
   m_signal_ChangeHappened.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCoordinator::whenMapViewAsked()
+{
+  std::string PageName = "MapView";
+  openfluid::guicommon::ProjectWorkspaceModule* Module;
+
+  if (m_Workspace.existsPageName(PageName))
+    Module = m_ModulesByPageNameMap[PageName];
+  else
+  {
+    Module
+        = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createMapViewModule());
+
+    Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
+        &ProjectCoordinator::whenMapViewChanged));
+
+    addModuleToWorkspace(PageName, *Module);
+  }
+
+  m_Workspace.setCurrentPage(PageName);
 }
 
 // =====================================================================

@@ -13,14 +13,17 @@ INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS}
                     
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS}
                  ${GTKMM_LIBRARY_DIRS})
+                 
+INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS})
+LINK_DIRECTORIES(${GDAL_LIBRARY_DIRS})
 
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} . common model domain simulation results)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} . common model domain simulation results mapview)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 
-FILE(GLOB OPENFLUID_BUILDER_MAINLIB_CPP common/*.cpp model/*.cpp domain/*.cpp simulation/*.cpp results/*.cpp)
-FILE(GLOB OPENFLUID_BUILDER_MAINLIB_HPP common/*.hpp model/*.hpp domain/*.hpp simulation/*.hpp results/*.hpp)
+FILE(GLOB OPENFLUID_BUILDER_MAINLIB_CPP common/*.cpp model/*.cpp domain/*.cpp simulation/*.cpp results/*.cpp mapview/*.cpp)
+FILE(GLOB OPENFLUID_BUILDER_MAINLIB_HPP common/*.hpp model/*.hpp domain/*.hpp simulation/*.hpp results/*.hpp mapview/*.hpp)
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${OPENFLUID_BUILDER_MAINLIB_CPP} ${OPENFLUID_BUILDER_MAINLIB_HPP}
                                           ${OPENFLUID_BUILDER_MARKETCLIENT_CPP} ${OPENFLUID_BUILDER_MARKETCLIENT_HPP}
@@ -32,6 +35,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
                       ${GTKMM_LIBRARIES}
+                      ${GDAL_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
