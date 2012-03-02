@@ -57,7 +57,7 @@
 #define __ICLAYEROBJECT_HPP__
 
 #include <iostream>
-#include <gdal/ogrsf_frmts.h>
+#include <ogrsf_frmts.h>
 #include <openfluid/core/Unit.hpp>
 
 class ICLayerObject

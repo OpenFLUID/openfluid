@@ -55,7 +55,7 @@
 #ifndef __GEOVECTORVALUE_HPP__
 #define __GEOVECTORVALUE_HPP__
 
-#include <gdal/ogrsf_frmts.h>
+#include <ogrsf_frmts.h>
 
 #include <openfluid/core/UnstructuredValue.hpp>
 

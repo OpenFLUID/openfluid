@@ -56,7 +56,7 @@
 #define __ICLAYER_HPP__
 
 #include <iostream>
-#include <gdal/ogrsf_frmts.h>
+#include <ogrsf_frmts.h>
 #include <map>
 #include <cairomm/context.h>
 #include <set>
