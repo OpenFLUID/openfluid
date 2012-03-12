@@ -44,7 +44,7 @@ bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
   openfluid::core::VectorValue MyVect;
   
   MyVect = openfluid::core::VectorValue(15,9);
-  int Size = MyVect->getSize();
+  int Size = MyVect.getSize();
 
   CALL_FSUBROUTINE(toto)(&Size,(MyVect.getData()));
 
