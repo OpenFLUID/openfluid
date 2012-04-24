@@ -228,7 +228,7 @@ void Factory::buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor&
   for(it = Items.begin() ; it != Items.end() ; ++it)
   {
     openfluid::core::DatastoreItem* Item = new openfluid::core::DatastoreItem(
-        (*it)->getID(),(*it)->getRelativePath(), (*it)->getType(), (*it)->getUnitClass());
+        (*it)->getID(),(*it)->getPrefixPath(),(*it)->getRelativePath(), (*it)->getType(), (*it)->getUnitClass());
 
     Store.addItem(Item);
   }

@@ -73,6 +73,8 @@ class DLLEXPORT DatastoreItem
 
     std::string m_ID;
 
+    std::string m_PrefixPath;
+
     std::string m_RelativePath;
 
     std::string m_UnitClass;
@@ -88,12 +90,13 @@ class DLLEXPORT DatastoreItem
      * depending on the given type.
      *
      * @param Id The ID of the item.
-     * @param RelativePath The path of the item, relative to the IN directory of the project.
+     * @param PrefixPath The prefix path of the item, usually the IN directory of the project.
+     * @param RelativePath The relative path of the item from the PrefixPath
      * @param Type The type of the item.
      * @param UnitClass (optional) The associated unit class of the item.
      * @throw openfluid::base::OFException if the given type is unknown.
      */
-    DatastoreItem(std::string ID, std::string RelativePath,
+    DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
         UnstructuredValue::UnstructuredType Type, std::string UnitClass = "");
 
     /**
@@ -104,7 +107,12 @@ class DLLEXPORT DatastoreItem
     std::string getID() const;
 
     /**
-     * @brief Gets the path of the resource, relative to the IN directory of the project.
+     * @brief Returns the prefix path of the resource
+     */
+    std::string getPrefixPath() const;
+
+    /**
+     * @brief Returns the path of the resource, relative to prefix path.
      */
     std::string getRelativePath() const;
 

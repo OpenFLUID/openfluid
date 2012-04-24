@@ -71,6 +71,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::core::CoreRepository* Repos;
 
   Repos = new openfluid::core::CoreRepository();
+
+  delete Repos;
 }
 
 // =====================================================================

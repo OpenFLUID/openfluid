@@ -70,6 +70,8 @@ class GeoVectorValue: public openfluid::core::UnstructuredValue
 {
   private:
 
+    std::string m_PrefixPath;
+
     std::string m_RelativePath;
 
   protected:
@@ -90,9 +92,9 @@ class GeoVectorValue: public openfluid::core::UnstructuredValue
      *
      * It doesn't open the associated OGR datasource.
      *
-     * @param RelativePath The path of the data, relative to the IN directory of the project.
+     * @param RelativePath The path of the data, relative to the PrefixPath.
      */
-    GeoVectorValue(std::string RelativePath);
+    GeoVectorValue(std::string PrefixPath, std::string RelativePath);
 
     /**
      * @brief Closes the opened OGR datasource.

@@ -64,6 +64,8 @@
 #include <boost/filesystem/convenience.hpp>
 
 #include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
 #include <iostream>
 
 #include <tests-config.hpp>

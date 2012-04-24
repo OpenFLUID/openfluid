@@ -78,6 +78,8 @@ class DLLEXPORT FluidXReader
 
     std::string m_CurrentFile;
 
+    std::string m_CurrentDir;
+
     bool m_RunConfigDefined;
 
     bool m_ModelDefined;

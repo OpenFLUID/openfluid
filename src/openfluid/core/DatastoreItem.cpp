@@ -65,14 +65,14 @@ namespace core {
 // =====================================================================
 
 
-DatastoreItem::DatastoreItem(std::string ID, std::string RelativePath,
+DatastoreItem::DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
     UnstructuredValue::UnstructuredType Type, std::string UnitClass) :
-  m_ID(ID), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
+  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
 {
   switch (Type)
   {
     case UnstructuredValue::GeoVectorValue:
-      m_Value = new openfluid::core::GeoVectorValue(m_RelativePath);
+      m_Value = new openfluid::core::GeoVectorValue(m_PrefixPath,m_RelativePath);
       break;
     case UnstructuredValue::GeoRasterValue:
       m_Value = new openfluid::core::GeoRasterValue();
@@ -103,6 +103,16 @@ std::string DatastoreItem::getID() const
 {
   return m_ID;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+std::string DatastoreItem::getPrefixPath() const
+{
+  return m_PrefixPath;
+}
+
 
 // =====================================================================
 // =====================================================================

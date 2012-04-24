@@ -61,8 +61,8 @@ namespace base {
 // =====================================================================
 
 DatastoreItemDescriptor::DatastoreItemDescriptor(std::string Id,
-    std::string RelativePath, openfluid::core::UnstructuredValue::UnstructuredType Type) :
-  m_ID(Id), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
+  std::string PrefixPath, std::string RelativePath, openfluid::core::UnstructuredValue::UnstructuredType Type) :
+  m_ID(Id), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
 {
 
 }
@@ -91,6 +91,15 @@ std::string DatastoreItemDescriptor::getID()
 std::string DatastoreItemDescriptor::getRelativePath()
 {
   return m_RelativePath;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string DatastoreItemDescriptor::getPrefixPath()
+{
+  return m_PrefixPath;
 }
 
 // =====================================================================

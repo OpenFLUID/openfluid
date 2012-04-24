@@ -13,7 +13,8 @@ SET_TARGET_PROPERTIES(openfluid-core PROPERTIES VERSION "${VERSION_MAJOR}.${VERS
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
-TARGET_LINK_LIBRARIES(openfluid-core 
+TARGET_LINK_LIBRARIES(openfluid-core
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
                       ${GDAL_LIBRARIES})
 
 INSTALL(TARGETS openfluid-core

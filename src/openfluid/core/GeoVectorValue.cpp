@@ -56,9 +56,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-#include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 
 namespace openfluid {
 namespace core {
@@ -67,8 +65,8 @@ namespace core {
 // =====================================================================
 
 
-GeoVectorValue::GeoVectorValue(std::string RelativePath) :
-  m_RelativePath(RelativePath), m_Data(0)
+GeoVectorValue::GeoVectorValue(std::string PrefixPath, std::string RelativePath) :
+  m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Data(0)
 {
 
 }
@@ -129,8 +127,7 @@ void GeoVectorValue::tryOpeningSource()
 std::string GeoVectorValue::getAbsolutePath()
 {
   boost::filesystem::path AbsolutePath = boost::filesystem::path(
-      openfluid::base::RuntimeEnvironment::getInstance()->getInputDir())
-      / m_RelativePath;
+      m_PrefixPath + "/" + m_RelativePath);
 
   return AbsolutePath.string();
 }

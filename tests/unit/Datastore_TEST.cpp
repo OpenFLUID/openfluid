@@ -83,15 +83,15 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_addItem_regular)
 {
   openfluid::core::DatastoreItem* VectSUItem =
-      new openfluid::core::DatastoreItem("mymap", "datastore/testvect",
+      new openfluid::core::DatastoreItem("mymap","path1","datastore/testvect",
           openfluid::core::UnstructuredValue::GeoVectorValue, "SU");
 
   openfluid::core::DatastoreItem* VectItem =
-      new openfluid::core::DatastoreItem("mymap2", "datastore/testvect.shp",
+      new openfluid::core::DatastoreItem("mymap2","path2","datastore/testvect.shp",
           openfluid::core::UnstructuredValue::GeoVectorValue);
 
   openfluid::core::DatastoreItem* RastSUItem =
-      new openfluid::core::DatastoreItem("myrast", "datastore/testrast.tif",
+      new openfluid::core::DatastoreItem("myrast","path3","datastore/testrast.tif",
           openfluid::core::UnstructuredValue::GeoRasterValue);
 
   openfluid::core::Datastore* Store = new openfluid::core::Datastore();
@@ -112,6 +112,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   Item = i->second;
   BOOST_REQUIRE(Item != 0);
   BOOST_CHECK_EQUAL(Item->getID(),"mymap");
+  BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path1");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"SU");
   BOOST_REQUIRE(Item->getValue() != 0);
@@ -121,6 +122,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   Item = i->second;
   BOOST_REQUIRE(Item != 0);
   BOOST_CHECK_EQUAL(Item->getID(),"mymap2");
+  BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path2");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect.shp");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
   BOOST_REQUIRE(Item->getValue() != 0);
@@ -130,6 +132,7 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
   Item = i->second;
   BOOST_REQUIRE(Item != 0);
   BOOST_CHECK_EQUAL(Item->getID(),"myrast");
+  BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path3");
   BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testrast.tif");
   BOOST_CHECK_EQUAL(Item->getUnitClass(),"");
   BOOST_REQUIRE(Item->getValue() != 0);
@@ -144,11 +147,11 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
 BOOST_AUTO_TEST_CASE(check_getItem)
 {
   openfluid::core::DatastoreItem* VectSUItem =
-      new openfluid::core::DatastoreItem("mymap", "datastore/testvect",
+      new openfluid::core::DatastoreItem("mymap","","datastore/testvect",
           openfluid::core::UnstructuredValue::GeoVectorValue, "SU");
 
   openfluid::core::DatastoreItem* VectItem =
-      new openfluid::core::DatastoreItem("mymap2", "datastore/testvect.shp",
+      new openfluid::core::DatastoreItem("mymap2","","datastore/testvect.shp",
           openfluid::core::UnstructuredValue::GeoVectorValue);
 
   openfluid::core::Datastore* Store = new openfluid::core::Datastore();

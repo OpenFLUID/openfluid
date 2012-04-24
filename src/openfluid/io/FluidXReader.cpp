@@ -877,6 +877,7 @@ void FluidXReader::extractDatastoreFromNode(xmlNodePtr NodePtr)
         openfluid::base::DatastoreItemDescriptor* Item =
             new openfluid::base::DatastoreItemDescriptor(
                 std::string((char*)xmlDataID),
+                m_CurrentDir,
                 std::string((char*)xmlDataSrc),
                 DataType);
 
@@ -998,6 +999,8 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
 
   std::string CurrentFile;
   boost::filesystem::path CurrentFilePath;
+
+  m_CurrentDir = DirPath;
 
   for (i=0;i<FluidXFilesToLoad.size();i++)
   {
