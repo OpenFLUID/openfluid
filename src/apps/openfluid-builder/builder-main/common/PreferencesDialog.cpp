@@ -168,7 +168,7 @@ void PreferencesDialog::show()
     {
       Gtk::TreeRow ExtRow = *mref_GroupsTreeModel->append(Row.children());
       ExtRow[m_GroupsColumns.m_Id] = it->second.Infos.ID;
-      ExtRow[m_GroupsColumns.m_Name] = it->second.Infos.Name;
+      ExtRow[m_GroupsColumns.m_Name] = it->second.Infos.ShortName;
       m_GroupPanels[it->second.Infos.ID] = it->second.Preferences;
     }
 

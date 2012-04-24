@@ -769,6 +769,15 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
   Ext->signal_ChangedOccurs().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenExtensionChanged));
 
+
+  // checking if extension is ready to be executed
+  if (!Ext->isReadyForShowtime())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage("Extension is not ready!");
+    return;
+  }
+
+
   if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
   {
     std::string PageName = ExtCont->Infos.ShortName;

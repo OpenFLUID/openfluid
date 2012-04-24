@@ -213,6 +213,8 @@ class DummyAssistant: public openfluid::builderext::ModalWindow
         signal_ChangedOccurs().emit();
     }
 
+    bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+
 };
 
 

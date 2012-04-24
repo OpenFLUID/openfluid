@@ -626,7 +626,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::ModalWindow:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectExtensionAction(ECMit->second.Infos.ID,
-              ECMit->second.Infos.Name, ECMit->second.Infos.Description)->signal_activate().connect(
+              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
@@ -635,7 +635,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataDomainMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
               ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
@@ -646,7 +646,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectDataAction(
               m_Actions.getDataInputdataMenuAction(), ECMit->second.Infos.ID,
-              ECMit->second.Infos.Name, ECMit->second.Infos.Description)->signal_activate().connect(
+              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
@@ -655,7 +655,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::EventsImporter:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataEventsMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
               ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
@@ -665,7 +665,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::ExtraImporter:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataExtraMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
               ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
@@ -675,7 +675,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::MixedImporter:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataMixedMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.Name,
+              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
               ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
@@ -685,7 +685,7 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::SimulationListener:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
           m_Actions.addProjectSimulationAction(ECMit->second.Infos.ID,
-              ECMit->second.Infos.Name, ECMit->second.Infos.Description)->signal_activate().connect(
+              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
               sigc::bind<std::string>(sigc::mem_fun(*this,
                   &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));

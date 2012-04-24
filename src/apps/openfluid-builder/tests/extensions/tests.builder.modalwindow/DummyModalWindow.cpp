@@ -159,6 +159,10 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
 
       mp_Dialog->hide();
     }
+
+
+    bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+
 };
 
 

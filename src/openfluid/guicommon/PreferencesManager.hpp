@@ -143,6 +143,7 @@ class DLLEXPORT PreferencesManager
     void removeMarketplace(Glib::ustring PlaceName);
     MarketPlaces_t getMarketplaces();
 
+    bool isPluginValueExist(std::string PluginName, std::string Key);
     std::string getPluginValue(std::string PluginName, std::string Key);
     void setPluginValue(std::string PluginName, std::string Key,
         std::string Value);

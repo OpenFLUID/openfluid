@@ -205,6 +205,9 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
         signal_Hidden().emit();
       }
     }
+
+    bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+
 };
 
 

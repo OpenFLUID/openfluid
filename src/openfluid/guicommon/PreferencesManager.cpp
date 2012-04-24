@@ -598,11 +598,24 @@ PreferencesManager::MarketPlaces_t PreferencesManager::getMarketplaces()
 // =====================================================================
 
 
+bool PreferencesManager::isPluginValueExist(std::string PluginName, std::string Key)
+{
+  std::string GroupName = Glib::ustring::compose(
+      "openfluid.builder.extensions:%1", PluginName);
+
+  return isValidKey(GroupName,Key);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string PreferencesManager::getPluginValue(std::string PluginName,
     std::string Key)
 {
   std::string GroupName = Glib::ustring::compose(
-      "openfluid.builder.extensions:%1", PluginName);
+        "openfluid.builder.extensions:%1", PluginName);
 
   if (isValidKey(GroupName, Key))
     return mp_KFile->get_string(GroupName, Key);

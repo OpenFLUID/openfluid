@@ -182,6 +182,8 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
       signal_ChangedOccurs().emit();
     }
 
+    bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+
 };
 
 
