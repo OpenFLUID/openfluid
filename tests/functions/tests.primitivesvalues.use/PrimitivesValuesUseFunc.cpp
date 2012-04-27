@@ -54,6 +54,8 @@
 
 #include "PrimitivesValuesUseFunc.h"
 
+#include <glibmm/ustring.h>
+
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>

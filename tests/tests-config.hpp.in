@@ -61,7 +61,7 @@ const std::string CONFIGTESTS_DISTBIN_DIR = "@BIN_OUTPUT_PATH@";
 const std::string CONFIGTESTS_LIB_OUTPUT_PATH = "@LIB_OUTPUT_PATH@";
 const std::string CONFIGTESTS_INCLUDE_DIRS = "@CMAKE_SOURCE_DIR@/src";
 const std::string CONFIGTESTS_CMAKE_GENERATOR = "@CMAKE_GENERATOR@";
-const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" -Dopenfluid_FOUND=1 -Dopenfluid_LIBRARY_DIRS=\"@LIB_OUTPUT_PATH@\" -Dopenfluid_LIBRARIES=\"-L@LIB_OUTPUT_PATH@ -lopenfluid-base -lopenfluid-core -lopenfluid-tools -pthread -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lgthread-2.0 -lrt -lglib-2.0\" -Dopenfluid_INCLUDE_DIRS=\"@CMAKE_SOURCE_DIR@/src;${GLIBMM_INCLUDE_DIRS}\" -Dopenfluid_VERSION=@FULL_VERSION@ -DNOFUNC2DOC=1";
+const std::string CONFIGTESTS_OPTIONS_FOR_CMAKE = "-G \"@CMAKE_GENERATOR@\" -Dopenfluid_FOUND=1 -Dopenfluid_LIBRARY_DIRS=\"@LIB_OUTPUT_PATH@\" -Dopenfluid_LIBRARIES=\"-L@LIB_OUTPUT_PATH@ -lopenfluid-base -lopenfluid-core -lopenfluid-tools -pthread -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lgthread-2.0 -lrt -lglib-2.0\" -Dopenfluid_INCLUDE_DIRS=\"@CMAKE_SOURCE_DIR@/src;@CMAKE_BINARY_DIR@/src;${GLIBMM_INCLUDE_DIRS}\" -Dopenfluid_VERSION=@FULL_VERSION@ -DNOFUNC2DOC=1";
 
 // Plugins extension
 const std::string CONFIGTESTS_PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";

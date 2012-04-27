@@ -88,7 +88,7 @@ BOOST_FIXTURE_TEST_SUITE(LayerTest, init_Layer)
 BOOST_AUTO_TEST_CASE(test_constructor_GeoVectorValue_correct)
 {
   openfluid::core::UnstructuredValue* Val =
-  new openfluid::core::GeoVectorValue("GeoVectorValuePrefixPath","GeoVectorValueRelativePath");
+  new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU.shp");
 
   Layer* TheLayer = new Layer(LayerType::LAYER_BASE,Val,"mymap","SU");
 

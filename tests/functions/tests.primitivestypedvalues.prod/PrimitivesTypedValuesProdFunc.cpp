@@ -51,6 +51,7 @@
   \brief Implements ...
 */
 
+#include <glibmm/ustring.h>
 
 #include "PrimitivesTypedValuesProdFunc.h"
 
