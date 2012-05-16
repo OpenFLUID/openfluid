@@ -173,6 +173,7 @@ Layer* Mediator::tryToCreateALayerFromADatastoreItem(
       break;
     case openfluid::core::UnstructuredValue::GeoRasterValue:
       Type = LayerType::LAYER_BACKGROUND;
+      break;
     default:
       return ALayer;
       break;

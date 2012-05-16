@@ -416,7 +416,9 @@ void TestDataset(std::string DatasetPath)
   openfluid::base::DatastoreDescriptor::DatastoreDescription_t DataItems =
       FXR.getDatstoreDescriptor().getItems();
 
-  BOOST_REQUIRE_EQUAL(DataItems.size(),3);
+  // Temporarily disabled GeoRasterValue
+  //BOOST_REQUIRE_EQUAL(DataItems.size(),3);
+  BOOST_REQUIRE_EQUAL(DataItems.size(),2);
 
   openfluid::base::DatastoreDescriptor::DatastoreDescription_t::iterator DataIt =
       DataItems.begin();
@@ -433,12 +435,13 @@ void TestDataset(std::string DatasetPath)
     BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
     BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
 
-    DataIt++;
+    // Temporarily disabled GeoRasterValue
+/*    DataIt++;
 
     BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"myrast");
     BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testrast.tif");
     BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
-    BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");
+    BOOST_REQUIRE_EQUAL((*DataIt)->getUnitClass(),"");*/
 }
 
 // =====================================================================
