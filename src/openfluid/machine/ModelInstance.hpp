@@ -129,6 +129,8 @@ class DLLEXPORT ModelInstance
 
     void initialize();
 
+    void finalize();
+
     bool call_initParams() const;
 
     bool call_prepareData() const;

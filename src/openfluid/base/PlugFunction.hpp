@@ -1433,6 +1433,10 @@ class DLLEXPORT PluggableFunction
                             const unsigned int& MaxThreads,
                             const openfluid::base::FuncID_t& FuncID);
 
+    /**
+      Internally called by the framework.
+    */
+    void finalizeFunction();
 
 
 

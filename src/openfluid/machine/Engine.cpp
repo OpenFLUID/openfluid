@@ -845,6 +845,7 @@ void Engine::run()
   // final save
   closeOutputs();
 
+  m_ModelInstance.finalize();
 }
 
 

@@ -255,6 +255,25 @@ void ModelInstance::initialize()
 // =====================================================================
 // =====================================================================
 
+
+void ModelInstance::finalize()
+{
+  std::list<ModelItemInstance*>::const_iterator FuncIter;
+
+  FuncIter = m_ModelItems.begin();
+  while (FuncIter != m_ModelItems.end())
+  {
+    (*FuncIter)->Function->finalizeFunction();
+    FuncIter++;
+  }
+  m_Initialized = false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool ModelInstance::call_initParams() const
 {
   if (!m_Initialized)

@@ -85,8 +85,9 @@ PluggableFunction::PluggableFunction()
 
 PluggableFunction::~PluggableFunction()
 {
-  OPENFLUID_Logger.close();
+  finalizeFunction();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -116,6 +117,16 @@ void PluggableFunction::initializeFunction(openfluid::core::CoreRepository* Core
   LogFile = boost::filesystem::path(LogDir + "/" + m_FunctionID + ".log").string();
 
   OPENFLUID_Logger.open(LogFile.c_str());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableFunction::finalizeFunction()
+{
+  OPENFLUID_Logger.close();
 }
 
 

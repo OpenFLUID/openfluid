@@ -93,7 +93,6 @@ StdoutAndFileOutputStream::~StdoutAndFileOutputStream()
   {
     flush();
     close();
-    delete mp_LoggerDevice;
   }
 
 }
@@ -120,8 +119,12 @@ void StdoutAndFileOutputStream::tieStreams()
 
 bool StdoutAndFileOutputStream::open(std::string LogFilePath)
 {
-  m_FileLogger.open(LogFilePath.c_str());
+  close();
+
+  m_FileLogger.open(LogFilePath.c_str(), std::ios::out | std::ios::trunc);
+
   if (m_FileLogger.is_open()) tieStreams();
+
   return m_FileLogger.is_open();
 }
 
@@ -132,7 +135,15 @@ bool StdoutAndFileOutputStream::open(std::string LogFilePath)
 
 void StdoutAndFileOutputStream::close()
 {
-  m_Logger.close();
+  if (m_FileLogger.is_open()) m_FileLogger.close();
+
+  if (mp_LoggerDevice != NULL)
+  {
+    delete mp_LoggerDevice;
+    mp_LoggerDevice = NULL;
+  }
+
+  if (m_Logger.is_open()) m_Logger.close();
 }
 
 // =====================================================================
@@ -141,6 +152,7 @@ void StdoutAndFileOutputStream::close()
 
 void StdoutAndFileOutputStream::flush()
 {
+  m_FileLogger.flush();
   m_Logger.flush();
 }
 
