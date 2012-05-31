@@ -64,13 +64,14 @@ const static Gdk::Color GREEN("#97DE62");
 const static Gdk::Color LIGHTGREEN("#C7F1B3");
 const static Gdk::Color AMBIANCEDEFAULTBG("#F2F1F0");
 
-WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
+WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string DatastoreID) :
   WidgetObject(), mp_TypeImage(0), m_DefaultColor(AMBIANCEDEFAULTBG), m_CurrentColor(m_DefaultColor)
 {
   mp_Eventbox->modify_bg(Gtk::STATE_NORMAL,m_CurrentColor);
+  mp_Eventbox->set_tooltip_markup(_("<u>Units class:</u> ") + ClassName + "\n" + _("<u>Datastore ID:</u> ") + DatastoreID);
 
   mp_DisplayLayerCheckBox = Gtk::manage(new Gtk::CheckButton(ClassName));
-  mp_DisplayLayerCheckBox->set_tooltip_text(_("Display the layer"));
+  mp_DisplayLayerCheckBox->set_tooltip_text(_("Enable/disable layer"));
   mp_DisplayLayerCheckBox->set_active(true);
 
   mp_TypeImage = Gtk::manage(new Gtk::Image(getPixbufForType(1)));
@@ -81,28 +82,28 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string Id) :
       | Gtk::EXPAND, Gtk::SHRINK, 5, 0);
   InfoTable->attach(*mp_TypeImage, 0, 1, 1, 2, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK, 5, 0);
-  InfoTable->attach(*Gtk::manage(new Gtk::Label(_("Data source ID:"))), 1, 2,
+/*  InfoTable->attach(*Gtk::manage(new Gtk::Label(_("Datastore ID:"))), 1, 2,
       1, 2, Gtk::SHRINK, Gtk::SHRINK);
-  InfoTable->attach(*Gtk::manage(new Gtk::Label(Id)), 2, 3, 1, 2, Gtk::SHRINK,
-      Gtk::SHRINK);
+  InfoTable->attach(*Gtk::manage(new Gtk::Label(DatastoreID)), 2, 3, 1, 2, Gtk::SHRINK,
+      Gtk::SHRINK);*/
 
   mp_UpButton = Gtk::manage(new Gtk::Button());
   mp_UpButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::GO_UP,
       Gtk::ICON_SIZE_MENU)));
   mp_UpButton->set_relief(Gtk::RELIEF_NONE);
-  mp_UpButton->set_tooltip_text(_("Move up the layer"));
+  mp_UpButton->set_tooltip_text(_("Move up layer"));
 
   mp_DownButton = Gtk::manage(new Gtk::Button());
   mp_DownButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::GO_DOWN,
       Gtk::ICON_SIZE_MENU)));
   mp_DownButton->set_relief(Gtk::RELIEF_NONE);
-  mp_DownButton->set_tooltip_text(_("Move down the layer"));
+  mp_DownButton->set_tooltip_text(_("Move down layer"));
 
   mp_RemoveButton = Gtk::manage(new Gtk::Button());
   mp_RemoveButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::REMOVE,
       Gtk::ICON_SIZE_MENU)));
   mp_RemoveButton->set_relief(Gtk::RELIEF_NONE);
-  mp_RemoveButton->set_tooltip_text(_("Remove the layer"));
+  mp_RemoveButton->set_tooltip_text(_("Remove layer"));
 
   Gtk::Table* ActionTable = Gtk::manage(new Gtk::Table());
   ActionTable->attach(*mp_RemoveButton, 0, 1, 0, 2, Gtk::SHRINK, Gtk::SHRINK);

@@ -73,7 +73,7 @@ WidgetExpanderBase::WidgetExpanderBase() :
   mp_OpacityHScale->set_value(100);
   mp_OpacityHScale->set_update_policy(Gtk::UPDATE_DELAYED);
 
-  mp_ShowIDCheckBox = Gtk::manage(new Gtk::CheckButton(_("show ID")));
+  mp_ShowIDCheckBox = Gtk::manage(new Gtk::CheckButton(_("Show units IDs")));
   //  mp_CheckButtonGraph = Gtk::manage(new Gtk::CheckButton(_("show graph")));
 
   Gtk::HBox* ColorButtonBox = Gtk::manage(new Gtk::HBox());
@@ -101,7 +101,7 @@ WidgetExpanderBase::WidgetExpanderBase() :
   MainTableAlign->set_padding(10, 20, 20, 0);
   MainTableAlign->add(*mp_MainTable);
 
-  mp_MainExpander->set_label(_("Layer Options"));
+  mp_MainExpander->set_label(_("Style"));
   mp_MainExpander->add(*MainTableAlign);
   mp_MainExpander->show_all_children();
 

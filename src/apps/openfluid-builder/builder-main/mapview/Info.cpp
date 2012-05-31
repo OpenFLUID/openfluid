@@ -141,6 +141,7 @@ Info::Info(Gtk::Window& ParentWindow, const Glib::ustring& Title,
   mp_EventTable->set_spacings(5);
 
   mp_TreeViewIDs->append_column(_("ID"), m_ModelColumnIDs.m_ID);
+  mp_TreeViewIDs->set_size_request(40,-1);
   mp_TreeViewIDs->get_column(0)->set_sort_column(m_ModelColumnIDs.m_ID);
   mp_TreeViewIDs->get_selection()->signal_changed().connect(
       sigc::mem_fun(*this, &Info::onIDViewSelectionChanged));
@@ -196,8 +197,6 @@ Info::Info(Gtk::Window& ParentWindow, const Glib::ustring& Title,
   mp_InfoTable->attach(*mp_ProcessOrderLabel, 1, 2, 2, 3,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
-  mp_InfoTable->attach(*ToolBox::setHSeparator(), 0, 2, 1, 2,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_InfoTable->attach(*ToolBox::setHSeparator(), 0, 2, 3, 4,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
   mp_InfoTable->attach(*ToolBox::setHSeparator(), 0, 2, 5, 6,
@@ -210,9 +209,17 @@ Info::Info(Gtk::Window& ParentWindow, const Glib::ustring& Title,
   // =====================================================================
 
   mp_FromScrolledWindow->add(*mp_TreeViewFrom);
+  mp_FromScrolledWindow->set_size_request(-1,100);
+
   mp_ToScrolledWindow->add(*mp_TreeViewTo);
+  mp_ToScrolledWindow->set_size_request(-1,100);
+
   mp_ParentScrolledWindow->add(*mp_TreeViewParent);
+  mp_ParentScrolledWindow->set_size_request(-1,100);
+
   mp_ChildrenScrolledWindow->add(*mp_TreeViewChildren);
+  mp_ChildrenScrolledWindow->set_size_request(-1,100);
+
 
   mp_FromExpander->add(*mp_FromScrolledWindow);
   mp_ToExpander->add(*mp_ToScrolledWindow);

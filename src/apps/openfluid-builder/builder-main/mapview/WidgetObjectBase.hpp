@@ -101,7 +101,7 @@ class WidgetObjectBase: public WidgetObject
 
   public:
 
-    WidgetObjectBase(std::string ClassName, std::string Id);
+    WidgetObjectBase(std::string ClassName, std::string DatastoreID);
 
     mtype_SignalWidgetObjectBase signalUpLayerButtonClicked();
     mtype_SignalWidgetObjectBase signalDownLayerButtonClicked();

@@ -74,7 +74,7 @@ WidgetLayerObject::WidgetLayerObject(const LayerType::LayerTypes& LayerType,
     case LayerType::LAYER_RESULT:
       break;
     default:
-      std::cerr << "error : layer type unexpected";
+      std::cerr << "error : unexpected layer type";
       break;
   }
 

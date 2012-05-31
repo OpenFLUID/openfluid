@@ -92,6 +92,7 @@ void MapViewModule::compose()
   MenuScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   MenuScrolledWindow->set_shadow_type(Gtk::SHADOW_NONE);
   MenuScrolledWindow->add(*MenuFrame);
+  MenuScrolledWindow->set_size_request(200,-1);
 
   mp_DrawingAreaScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
   mp_DrawingAreaScrolledWindow->set_policy(Gtk::POLICY_AUTOMATIC,
@@ -108,7 +109,7 @@ void MapViewModule::compose()
 
   mp_ContentPaned = Gtk::manage(new Gtk::HPaned());
   mp_ContentPaned->pack1(*MapBox, Gtk::FILL | Gtk::EXPAND);
-  mp_ContentPaned->pack2(*MenuScrolledWindow, Gtk::FILL | Gtk::EXPAND);
+  mp_ContentPaned->pack2(*MenuScrolledWindow, Gtk::FILL);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
   mp_MainBox->pack_start(*mp_ToolBar->asWidget(), Gtk::PACK_SHRINK);
