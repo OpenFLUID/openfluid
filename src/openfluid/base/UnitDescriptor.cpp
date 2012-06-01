@@ -62,7 +62,8 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-UnitDescriptor::UnitDescriptor()
+UnitDescriptor::UnitDescriptor():
+  m_UnitID(0), m_UnitClass(""), m_PcsOrder(1)
 {
 
 }

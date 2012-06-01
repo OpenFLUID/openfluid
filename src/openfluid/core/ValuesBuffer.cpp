@@ -65,13 +65,11 @@ namespace core {
 // =====================================================================
 
 
-ValuesBuffer::ValuesBuffer()
+ValuesBuffer::ValuesBuffer():
+  m_NextStep(0)
 {
 
-  m_NextStep = 0;
-
   m_Data.set_capacity(BufferSize);
-  m_Data.clear();
 
 }
 

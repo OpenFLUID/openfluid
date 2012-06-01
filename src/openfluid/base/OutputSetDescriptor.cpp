@@ -63,16 +63,13 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-OutputSetDescriptor::OutputSetDescriptor()
+OutputSetDescriptor::OutputSetDescriptor():
+  m_Name(""), m_UnitsClass(""), m_AllUnits(false),
+  m_AllVariables(false), m_Precision(5)
 {
-  m_Name = "";
-  m_UnitsClass = "";
-  m_AllUnits = false;
   m_UnitsIDs.clear();
   m_UnitsPtr.clear();
-  m_AllVariables = false;
   m_Variables.clear();
-  m_Precision = 5;
 }
 
 

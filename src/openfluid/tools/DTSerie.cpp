@@ -61,9 +61,10 @@
 namespace openfluid { namespace tools {
 
 
-DateTimeSerie::DateTimeSerie()
+DateTimeSerie::DateTimeSerie() :
+  m_IsLastAccessedSet(false)
 {
-  m_IsLastAccessedSet = false;
+
 }
 
 // =====================================================================

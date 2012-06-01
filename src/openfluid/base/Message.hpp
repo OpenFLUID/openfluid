@@ -67,11 +67,18 @@ namespace openfluid { namespace base {
 class DLLEXPORT Message
 {
   private:
+
     std::string m_Sender;
+
     std::string m_Source;
-    openfluid::core::TimeStep_t m_TimeStep;
-    bool m_IsTimeStep;
+
     std::string m_Content;
+
+    bool m_IsTimeStep;
+
+    openfluid::core::TimeStep_t m_TimeStep;
+
+
 
 
   public:

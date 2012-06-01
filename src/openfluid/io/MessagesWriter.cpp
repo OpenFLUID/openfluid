@@ -67,10 +67,9 @@ namespace openfluid { namespace io {
 // =====================================================================
 
 
-MessagesWriter::MessagesWriter(std::string FilePath)
+MessagesWriter::MessagesWriter(std::string FilePath):
+  m_OutFilename(FilePath)
 {
-  m_OutFilename = FilePath;
-
   mp_Buffer = new char[m_BufferSize];
   m_OutFile.rdbuf()->pubsetbuf(mp_Buffer,m_BufferSize);
 }

@@ -92,17 +92,17 @@ class DLLEXPORT FluidXWriter
     std::string m_OutputStr;
     std::string m_DataStr;
 
-    std::string m_IndentStr;
+    openfluid::core::InstantiationInfo::Type m_InstType;
 
     openfluid::io::IOListener* mp_Listener;
+
+    std::string m_IndentStr;
 
     void prepareOutputDir(std::string DirPath);
 
     std::string getGeneratorMethodAsStr(openfluid::base::GeneratorDescriptor::GeneratorMethod Method) const;
 
     std::string getParamsAsStr(const openfluid::core::FuncParamsMap_t& Params) const;
-
-    openfluid::core::InstantiationInfo::Type m_InstType;
 
   public:
 

@@ -77,6 +77,9 @@ class DLLEXPORT ColumnTextParser
     std::string m_Delimiter;
     std::string m_CommentSymbol;
 
+    int m_LinesCount;
+    int m_ColsCount;
+
     std::vector<std::vector<std::string> > m_Contents;
 
     std::vector<std::string> tokenizeLine(std::string Line);
@@ -86,10 +89,6 @@ class DLLEXPORT ColumnTextParser
     bool isCommentLineStr(std::string LineStr);
 
     bool isEmptyLineStr(std::string LineStr);
-
-    int m_LinesCount;
-
-    int m_ColsCount;
 
 
   public:

@@ -64,14 +64,10 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-ExecutionMessages::ExecutionMessages()
+ExecutionMessages::ExecutionMessages():
+  m_WarningFlag(false), m_ErrorFlag(false), m_ErrorMsg(""),m_RealWarningsCount(0)
 {
-  m_WarningFlag = false;
-  m_ErrorFlag = false;
-  m_ErrorMsg = "";
   m_WarningMsgs.clear();
-  m_RealWarningsCount = 0;
-
 }
 
 // =====================================================================

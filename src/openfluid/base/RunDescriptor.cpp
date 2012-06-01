@@ -65,18 +65,13 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-RunDescriptor::RunDescriptor()
+RunDescriptor::RunDescriptor():
+  m_DeltaT(-1), m_BeginDate(openfluid::core::DateTime()),
+  m_EndDate(openfluid::core::DateTime()), m_SimID(""),
+  m_FilesBufferSizeInKB(openfluid::config::DEFAULT_OUTFILES_BUFFER_KB),
+  m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
 {
-  m_DeltaT = -1;
-  m_BeginDate = openfluid::core::DateTime();
-  m_EndDate = openfluid::core::DateTime();
 
-  m_SimID = "";
-  m_FilesBufferSizeInKB = openfluid::config::DEFAULT_OUTFILES_BUFFER_KB;
-  m_IsUserValuesBufferSize = false;
-  m_ValuesBufferSize = 0;
-
-  m_Filled = false;
 }
 
 
@@ -86,16 +81,13 @@ RunDescriptor::RunDescriptor()
 
 RunDescriptor::RunDescriptor(int DeltaT,
                              openfluid::core::DateTime BeginDate,
-                             openfluid::core::DateTime EndDate)
+                             openfluid::core::DateTime EndDate):
+  m_DeltaT(DeltaT), m_BeginDate(BeginDate),
+  m_EndDate(EndDate), m_SimID(""),
+  m_FilesBufferSizeInKB(openfluid::config::DEFAULT_OUTFILES_BUFFER_KB),
+  m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
 {
-  m_DeltaT = DeltaT;
-  m_BeginDate = BeginDate;
-  m_EndDate = EndDate;
 
-  m_SimID = "";
-  m_FilesBufferSizeInKB = openfluid::config::DEFAULT_OUTFILES_BUFFER_KB;
-  m_IsUserValuesBufferSize = false;
-  m_ValuesBufferSize = 0;
 }
 
 

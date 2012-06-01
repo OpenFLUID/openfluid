@@ -66,14 +66,15 @@ class DLLEXPORT RunDescriptor
   private:
     int m_DeltaT;
 
-    std::string m_SimID;
-
     openfluid::core::DateTime m_BeginDate;
     openfluid::core::DateTime m_EndDate;
 
-    unsigned int m_ValuesBufferSize;
-    bool m_IsUserValuesBufferSize;
+    std::string m_SimID;
+
     unsigned int m_FilesBufferSizeInKB;
+
+    bool m_IsUserValuesBufferSize;
+    unsigned int m_ValuesBufferSize;
 
    bool m_Filled;
 

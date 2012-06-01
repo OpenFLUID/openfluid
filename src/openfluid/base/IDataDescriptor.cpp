@@ -63,7 +63,8 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-InputDataDescriptor::InputDataDescriptor()
+InputDataDescriptor::InputDataDescriptor() :
+  m_UnitsClass("")
 {
 
 }

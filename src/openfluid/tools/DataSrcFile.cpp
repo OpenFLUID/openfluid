@@ -64,11 +64,9 @@
 namespace openfluid { namespace tools {
 
 
-DataSourcesFile::DataSourcesFile()
+DataSourcesFile::DataSourcesFile():
+  m_Loaded(false)
 {
-  m_Loaded = false;
-  m_IDs.clear();
-  m_Sources.clear();
 
 }
 

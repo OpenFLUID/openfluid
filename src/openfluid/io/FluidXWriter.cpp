@@ -73,18 +73,13 @@
 namespace openfluid { namespace io {
 
 
-FluidXWriter::FluidXWriter(openfluid::io::IOListener* Listener)
-: m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR)
+FluidXWriter::FluidXWriter(openfluid::io::IOListener* Listener):
+  m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR),
+  mp_Listener(Listener), m_IndentStr(" ")
 {
-  mp_Listener = Listener;
+
   if (mp_Listener == NULL) mp_Listener = new openfluid::io::IOListener();
 
-  m_DomainStr.clear();
-  m_ModelStr.clear();
-  m_RunStr.clear();
-  m_OutputStr.clear();
-
-  m_IndentStr = "  ";
 }
 
 

@@ -64,9 +64,10 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-StdoutAndFileOutputStream::StdoutAndFileOutputStream()
+StdoutAndFileOutputStream::StdoutAndFileOutputStream():
+  mp_LoggerDevice(NULL)
 {
-  mp_LoggerDevice = NULL;
+
 }
 
 
@@ -74,10 +75,9 @@ StdoutAndFileOutputStream::StdoutAndFileOutputStream()
 // =====================================================================
 
 
-StdoutAndFileOutputStream::StdoutAndFileOutputStream(std::string LogFilePath)
+StdoutAndFileOutputStream::StdoutAndFileOutputStream(std::string LogFilePath):
+  mp_LoggerDevice(NULL)
 {
-  mp_LoggerDevice = NULL;
-
   open(LogFilePath);
   tieStreams();
 }

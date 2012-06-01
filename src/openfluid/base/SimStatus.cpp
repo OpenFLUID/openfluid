@@ -63,16 +63,9 @@ namespace openfluid { namespace base {
 
 SimulationInfo::SimulationInfo(openfluid::core::DateTime StartTime,
                                openfluid::core::DateTime EndTime,
-                               int TimeStep)
-
+                               int TimeStep):
+  m_StartTime(StartTime), m_EndTime(EndTime), m_TimeStep(TimeStep)
 {
-
-
-
-  m_StartTime = StartTime;
-  m_EndTime = EndTime;
-
-  m_TimeStep = TimeStep;
 
   m_StepsCount = computeTimeStepsCount(StartTime,EndTime,TimeStep);
 
@@ -115,19 +108,14 @@ int SimulationInfo::computeTimeStepsCount(const openfluid::core::DateTime& Start
 
 SimulationStatus::SimulationStatus(openfluid::core::DateTime StartTime,
                                    openfluid::core::DateTime EndTime,
-                                   int TimeStep)
-                : SimulationInfo(StartTime,EndTime,TimeStep)
+                                   int TimeStep):
+  SimulationInfo(StartTime,EndTime,TimeStep),
+  m_CurrentStep(0), m_CurrentTime(StartTime),
+  m_IsFirstStep(true), m_IsLastStep(false)
 
 {
 
-  m_CurrentStep = 0;
-  m_CurrentTime = m_StartTime;
-
-  m_IsFirstStep = true;
-
-  m_IsLastStep = false;
   if (m_StepsCount == 1) m_IsLastStep = true;
-
 
 }
 

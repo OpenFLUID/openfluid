@@ -105,9 +105,8 @@ namespace openfluid { namespace machine {
 
 ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
                              openfluid::machine::MachineListener* Listener)
-             : m_SimulationBlob(SimulationBlob), m_Initialized(false)
+             : mp_Listener(Listener), m_SimulationBlob(SimulationBlob), m_Initialized(false)
 {
-  mp_Listener = Listener;
   if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
 }
 

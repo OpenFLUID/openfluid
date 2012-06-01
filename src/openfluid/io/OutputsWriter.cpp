@@ -68,13 +68,9 @@ namespace openfluid { namespace io {
 
 OutputsWriter::OutputsWriter(const std::string DirPath,
                              const openfluid::base::OutputDescriptor& OutDesc,
-                             openfluid::core::CoreRepository& CoreRepos)
-             : m_CoreRepos(CoreRepos)
+                             openfluid::core::CoreRepository& CoreRepos):
+  m_DirPath(DirPath), m_OutDesc(OutDesc), m_CoreRepos(CoreRepos)
 {
-  m_DirPath = DirPath;
-  m_OutDesc = OutDesc;
-
-
   buildFilesList(DirPath,OutDesc);
 }
 

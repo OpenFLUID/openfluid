@@ -73,8 +73,8 @@ ProjectManager* ProjectManager::mp_Singleton = NULL;
 
 ProjectManager::ProjectManager() :
   m_Path(""), m_Name(""), m_Description(""), m_Authors(""), m_CreationDate(""),
-      m_LastModDate(""), m_IsIncOutputDir(false), m_IsOpened(false),
-      m_KeyFileGroupName("OpenFLUID Project")
+  m_LastModDate(""), m_IsIncOutputDir(false), m_IsOpened(false),
+  m_KeyFileGroupName("OpenFLUID Project")
 {
 
 }

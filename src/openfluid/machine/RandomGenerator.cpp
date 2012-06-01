@@ -61,11 +61,9 @@
 namespace openfluid { namespace machine {
 
 
-RandomGenerator::RandomGenerator() : Generator()
+RandomGenerator::RandomGenerator() :
+  Generator(), m_Min(0.0), m_Max(0.0)
 {
-  m_Min = 0.0;
-  m_Max = 0.0;
-
   m_RandomEngine.seed(std::time(0));
 }
 

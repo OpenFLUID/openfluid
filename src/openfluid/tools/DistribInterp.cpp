@@ -68,9 +68,10 @@
 namespace openfluid { namespace tools {
 
 
-DistributeInterpolate::DistributeInterpolate()
+DistributeInterpolate::DistributeInterpolate():
+  m_Configured(false)
 {
-  m_Configured = false;
+
 }
 
 // =====================================================================

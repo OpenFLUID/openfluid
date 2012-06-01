@@ -84,16 +84,11 @@ OutputsFileWriter::OutputsFileWriter(const std::string DirPath,
                                      const std::string DateFormat,
                                      const std::string ColSeparator,
                                      const openfluid::base::OutputFilesDescriptor::HeaderType Header,
-                                     const unsigned int Precision)
+                                     const unsigned int Precision) :
+  m_DirPath(DirPath), m_CommentChar(CommentChar), m_DateFormat(DateFormat),
+  m_ColSeparator(ColSeparator), m_HeaderType(Header), m_Precision(Precision)
 {
-  m_DirPath = DirPath;
-  m_CommentChar = CommentChar;
-  m_DateFormat = DateFormat;
-  m_ColSeparator = ColSeparator;
-  m_HeaderType = Header;
-  m_Precision = Precision;
 
-  m_OutFilename.clear();
   mp_Buffer = new char[BufferSize];
   m_OutFile.rdbuf()->pubsetbuf(mp_Buffer,BufferSize);
 

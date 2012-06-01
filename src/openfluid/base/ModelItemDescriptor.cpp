@@ -64,9 +64,10 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-ModelItemDescriptor::ModelItemDescriptor()
+ModelItemDescriptor::ModelItemDescriptor():
+  m_ModelItemType(NoModelItemType)
 {
-  m_ModelItemType = NoModelItemType;
+
 }
 
 // =====================================================================

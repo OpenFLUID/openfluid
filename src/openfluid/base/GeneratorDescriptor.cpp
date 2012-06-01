@@ -60,13 +60,11 @@ namespace openfluid { namespace base {
 // =====================================================================
 // =====================================================================
 
-GeneratorDescriptor::GeneratorDescriptor() : ModelItemDescriptor()
+GeneratorDescriptor::GeneratorDescriptor() : ModelItemDescriptor(),
+  m_VarName(""), m_UnitClass(""),
+  m_GenMethod(NoGenMethod), m_VarSize(1)
 {
   m_ModelItemType = Generator;
-  m_VarName = "";
-  m_UnitClass = "";
-  m_GenMethod = NoGenMethod;
-  m_VarSize = 1;
 }
 
 

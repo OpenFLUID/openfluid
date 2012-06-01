@@ -64,18 +64,12 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-Message::Message(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Content)
+Message::Message(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Content):
+  m_Sender(Sender), m_Source(Source), m_Content(Content), m_TimeStep(TimeStep), m_IsTimeStep(true)
 {
-  m_Sender = Sender;
   if (m_Sender == "") m_Sender = "unknown sender";
 
-  m_Source = Source;
   if (m_Source == "") m_Source = "unknown source";
-
-  m_TimeStep = TimeStep;
-  m_IsTimeStep = true;
-
-  m_Content = Content;
 }
 
 
@@ -83,17 +77,13 @@ Message::Message(std::string Sender, std::string Source, openfluid::core::TimeSt
 // =====================================================================
 
 
-Message::Message(std::string Sender, std::string Source, std::string Content)
+Message::Message(std::string Sender, std::string Source, std::string Content):
+  m_Sender(Sender), m_Source(Source), m_Content(Content),
+  m_IsTimeStep(false), m_TimeStep(0)
 {
-  m_Sender = Sender;
   if (m_Sender == "") m_Sender = "unknown sender";
 
-  m_Source = Source;
   if (m_Source == "") m_Source = "unknown source";
-
-  m_TimeStep = 0;
-  m_IsTimeStep = false;
-  m_Content = Content;
 }
 
 

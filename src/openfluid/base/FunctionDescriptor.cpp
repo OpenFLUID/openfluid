@@ -63,10 +63,10 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-FunctionDescriptor::FunctionDescriptor(std::string FileID) : ModelItemDescriptor()
+FunctionDescriptor::FunctionDescriptor(std::string FileID) : ModelItemDescriptor(),
+  m_FileID(FileID)
 {
   m_ModelItemType = PluggedFunction;
-  m_FileID = FileID;
 }
 
 

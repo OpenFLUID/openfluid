@@ -70,14 +70,10 @@
 namespace openfluid { namespace tools {
 
 
-ColumnTextParser::ColumnTextParser(std::string CommentLineSymbol, std::string Delimiter)
+ColumnTextParser::ColumnTextParser(std::string CommentLineSymbol, std::string Delimiter):
+  m_Delimiter(Delimiter), m_CommentSymbol(CommentLineSymbol),
+  m_LinesCount(0), m_ColsCount(0)
 {
-
-  m_Delimiter = Delimiter;
-  m_CommentSymbol = CommentLineSymbol;
-
-  m_LinesCount = 0;
-  m_ColsCount = 0;
 
 }
 

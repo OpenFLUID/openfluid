@@ -76,9 +76,9 @@ namespace openfluid { namespace io {
 // =====================================================================
 
 
-FluidXReader::FluidXReader(openfluid::io::IOListener* Listener)
+FluidXReader::FluidXReader(openfluid::io::IOListener* Listener):
+  mp_Listener(Listener)
 {
-  mp_Listener = Listener;
   if (mp_Listener == NULL) mp_Listener = new openfluid::io::IOListener();
 }
 

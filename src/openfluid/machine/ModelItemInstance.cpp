@@ -60,12 +60,11 @@
 namespace openfluid { namespace machine {
 
 
-SignatureItemInstance::SignatureItemInstance()
+SignatureItemInstance::SignatureItemInstance():
+  Filename(""), SDKCompatible(false), Signature(NULL),
+  ItemType(openfluid::base::ModelItemDescriptor::NoModelItemType)
 {
-  Filename = "";
-  Signature = NULL;
-  SDKCompatible = false;
-  ItemType = openfluid::base::ModelItemDescriptor::NoModelItemType;
+
 }
 
 
@@ -73,10 +72,10 @@ SignatureItemInstance::SignatureItemInstance()
 // =====================================================================
 
 
-ModelItemInstance::ModelItemInstance()
-  : SignatureItemInstance()
+ModelItemInstance::ModelItemInstance():
+  SignatureItemInstance(), Function(NULL)
 {
-  Function = NULL;
+
 }
 
 } } //namespaces
