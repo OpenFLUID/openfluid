@@ -86,11 +86,10 @@ class DLLEXPORT EventsCollection
       Inserts an event in the event collection, ordered by date
       @deprecated
     */
-    bool addEvent(const Event* Ev);
+    bool addEvent(const Event* Ev) OPENFLUID_DEPRECATED;
 
     /**
       Inserts an event in the event collection, ordered by date
-      @deprecated
     */
     bool addEvent(const Event& Ev);
 
@@ -100,7 +99,7 @@ class DLLEXPORT EventsCollection
       at the end of the given collection
       @deprecated
     */
-    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection *Events) const;
+    bool getEventsBetween(const DateTime BeginDate, const DateTime EndDate, EventsCollection *Events) const OPENFLUID_DEPRECATED;
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period

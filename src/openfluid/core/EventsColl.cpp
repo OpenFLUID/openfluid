@@ -159,7 +159,7 @@ bool EventsCollection::getEventsBetween(const DateTime BeginDate, const DateTime
   {
     if ((*DEiter).getDateTime().isBetween(BeginDate,EndDate))
     {
-      Events.addEvent(&(*DEiter));
+      Events.addEvent(*DEiter);
     }
   }
 

@@ -79,7 +79,6 @@
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/SimulationProfiler.hpp>
-#include <openfluid/base/SIFactors.hpp>
 #include <openfluid/base/SimStatus.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
 #include <openfluid/base/UnitDescriptor.hpp>

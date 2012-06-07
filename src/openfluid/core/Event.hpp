@@ -134,7 +134,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @param[in] Info the requested value
       @deprecated
     */
-    bool isInfoEqual(const std::string Key, const double* Info) const;
+    bool isInfoEqual(const std::string Key, const double* Info) const OPENFLUID_DEPRECATED;
 
     /**
       Returns true if the information exists and equals the given DoubleValue value
@@ -165,7 +165,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsString(const std::string Key, std::string *Info) const;
+    bool getInfoAsString(const std::string Key, std::string *Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a string
@@ -182,7 +182,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsLong(const std::string Key, long *Info) const;
+    bool getInfoAsLong(const std::string Key, long *Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a long integer
@@ -199,7 +199,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsDouble(const std::string Key, double *Info) const;
+    bool getInfoAsDouble(const std::string Key, double *Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a double
@@ -216,7 +216,7 @@ class DLLEXPORT Event : public InstantiationInfo
       @return true if the key exists and the conversion to the requested type is correct
       @deprecated
     */
-    bool getInfoAsScalarValue(const std::string Key, double* Info) const;
+    bool getInfoAsScalarValue(const std::string Key, double* Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a DoubleValue

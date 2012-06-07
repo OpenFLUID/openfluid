@@ -45,18 +45,27 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file deprecation.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#ifndef __SIFACTORS_HPP__
-#define __SIFACTORS_HPP__
+#ifndef __DEPRECATION_HPP__
+#define __DEPRECATION_HPP__
 
-#define SIFACT_MMH_TO_MS  0.000000278
-#define SIFACT_MS_TO_MMH  3600000
 
-#endif // __SIFACTORS_H__
+// =====================================================================
+// =====================================================================
+
+#ifdef __GNUC__
+  #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+    #define OPENFLUID_DEPRECATED __attribute__ ((deprecated))
+  #endif
+#endif
+
+
+
+#endif /* __DEPRECATION_HPP__ */
