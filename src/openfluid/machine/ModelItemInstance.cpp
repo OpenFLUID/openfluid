@@ -60,9 +60,10 @@
 namespace openfluid { namespace machine {
 
 
-SignatureItemInstance::SignatureItemInstance():
-  Filename(""), SDKCompatible(false), Signature(NULL),
-  ItemType(openfluid::base::ModelItemDescriptor::NoModelItemType)
+
+GeneratorExtraInfo::GeneratorExtraInfo():
+  VariableName(""),UnitClass(""),VariableSize(1),
+  GeneratorMethod(openfluid::base::GeneratorDescriptor::NoGenMethod)
 {
 
 }
@@ -70,6 +71,30 @@ SignatureItemInstance::SignatureItemInstance():
 
 // =====================================================================
 // =====================================================================
+
+
+SignatureItemInstance::SignatureItemInstance():
+  Filename(""), SDKCompatible(false), Signature(NULL),
+  ItemType(openfluid::base::ModelItemDescriptor::NoModelItemType),
+  GeneratorInfo(NULL)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+SignatureItemInstance::~SignatureItemInstance()
+{
+  if (GeneratorInfo != NULL) delete GeneratorInfo;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 ModelItemInstance::ModelItemInstance():

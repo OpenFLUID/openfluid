@@ -116,11 +116,15 @@ int main(int argc, char **argv)
 
     Engine = new openfluid::machine::Engine(SBlob, Model, MachineListen, IOListen);
 
+    Engine->initialize();
+
     Engine->initParams();
     Engine->prepareData();
     Engine->checkConsistency();
     Engine->run();
     Engine->saveReports();
+
+    Engine->finalize();
 
     delete Engine;
 

@@ -436,18 +436,13 @@ void EngineProject::addSignatureToGenerators()
     if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
     {
       openfluid::base::GeneratorDescriptor::GeneratorMethod
-          GeneratorMethod =
-              (static_cast<openfluid::machine::Generator*> ((*it)->Function))->getGeneratorMethod();
+          GeneratorMethod = (*it)->GeneratorInfo->GeneratorMethod;
 
       GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
 
       GenSign->ID = (*it)->Signature->ID;
-
-      GenSign->HandledData.ProducedVars
-          = (*it)->Signature->HandledData.ProducedVars;
-
-      GenSign->HandledData.RequiredExtraFiles
-          = (*it)->Signature->HandledData.RequiredExtraFiles;
+      GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
+      GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
 
       (*it)->Signature = GenSign;
     }

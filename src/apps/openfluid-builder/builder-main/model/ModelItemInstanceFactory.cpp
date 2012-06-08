@@ -82,7 +82,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggable
         "Function Signature is not set. Creation is impossible.");
   else
   {
-    Item = openfluid::machine::PluginManager::getInstance()->getPlugin(
+    Item = openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
         Signature.Signature->ID);
 
     if (Item)
@@ -146,46 +146,17 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
   GeneratorSign->HandledData.ProducedVars.push_back(
        openfluid::base::SignatureHandledTypedDataItem(VarName, ClassName, "", ""));
 
-  openfluid::machine::Generator* GeneratorFunction = 0;
-
-  switch (Method)
-  {
-    case openfluid::base::GeneratorDescriptor::Fixed:
-      GeneratorFunction = new openfluid::machine::FixedGenerator();
-      break;
-
-    case openfluid::base::GeneratorDescriptor::Random:
-      GeneratorFunction = new openfluid::machine::RandomGenerator();
-      break;
-
-    case openfluid::base::GeneratorDescriptor::Interp:
-      GeneratorFunction = new openfluid::machine::InterpGenerator();
-      break;
-
-    case openfluid::base::GeneratorDescriptor::Inject:
-      GeneratorFunction = new openfluid::machine::InjectGenerator();
-      break;
-
-    default:
-      std::cerr
-          << "OpenFLUID Builder : ModelItemInstanceFactory::createGeneratorItemFromSignature : bad ModelItemDescriptor type"
-          << std::endl;
-
-      return Item;
-      break;
-  }
-
-  GeneratorFunction->setInfos(VarName, ClassName, Method, VarSizeInt);
-
   Item = new openfluid::machine::ModelItemInstance();
-
   Item->Signature = GeneratorSign;
-
-  Item->Function = GeneratorFunction;
-
+  Item->Function = NULL;
   Item->SDKCompatible = true;
-
   Item->ItemType = openfluid::base::ModelItemDescriptor::Generator;
+
+  Item->GeneratorInfo = new openfluid::machine::GeneratorExtraInfo();
+  Item->GeneratorInfo->VariableName = VarName;
+  Item->GeneratorInfo->UnitClass = ClassName;
+  Item->GeneratorInfo->VariableSize = VarSizeInt;
+  Item->GeneratorInfo->GeneratorMethod = Method;
 
   return Item;
 }

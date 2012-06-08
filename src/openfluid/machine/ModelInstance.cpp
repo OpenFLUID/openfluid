@@ -59,6 +59,12 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FixedGenerator.hpp>
+#include <openfluid/machine/RandomGenerator.hpp>
+#include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/machine/InjectGenerator.hpp>
+
 
 
 namespace openfluid { namespace machine {
@@ -117,7 +123,11 @@ ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
 
 ModelInstance::~ModelInstance()
 {
+  if (m_Initialized)
+    finalize();
 
+  if (m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::~ModelInstance()","Destroyed initialized ModelInstance");
 }
 
 
@@ -235,17 +245,47 @@ void ModelInstance::clear()
 
 void ModelInstance::initialize()
 {
+  openfluid::machine::PluginManager* PlugMgr = openfluid::machine::PluginManager::getInstance();
+
   std::list<ModelItemInstance*>::const_iterator FuncIter;
+  ModelItemInstance* CurrentFunction;
 
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
-    (*FuncIter)->Function->initializeFunction(&(m_SimulationBlob.getCoreRepository()),&(m_SimulationBlob.getExecutionMessages()),
-        openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment(),
-        openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads(),
-        (*FuncIter)->Signature->ID);
+    CurrentFunction = (*FuncIter);
+
+    if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
+      PlugMgr->completePluginWithFunction(CurrentFunction);
+
+    if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::Generator && CurrentFunction->GeneratorInfo != NULL)
+    {
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Fixed)
+        CurrentFunction->Function = new FixedGenerator();
+
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Random)
+        CurrentFunction->Function = new RandomGenerator();
+
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Inject)
+        CurrentFunction->Function = new InjectGenerator();
+
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Interp)
+        CurrentFunction->Function = new InterpGenerator();
+
+      ((openfluid::machine::Generator*)(CurrentFunction->Function))->setInfos(CurrentFunction->GeneratorInfo->VariableName,
+                                                                              CurrentFunction->GeneratorInfo->UnitClass,
+                                                                              CurrentFunction->GeneratorInfo->GeneratorMethod,
+                                                                              CurrentFunction->GeneratorInfo->VariableSize);
+    }
+
+
+    CurrentFunction->Function->initializeFunction(&(m_SimulationBlob.getCoreRepository()),&(m_SimulationBlob.getExecutionMessages()),
+                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment(),
+                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads(),
+                                    CurrentFunction->Signature->ID);
     FuncIter++;
   }
+
   m_Initialized = true;
 }
 
@@ -257,14 +297,29 @@ void ModelInstance::initialize()
 
 void ModelInstance::finalize()
 {
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::finalize()","Trying to finalize an uninitialized model");
+
   std::list<ModelItemInstance*>::const_iterator FuncIter;
 
+
+  // call of finalizeFunction method on each function
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
     (*FuncIter)->Function->finalizeFunction();
     FuncIter++;
   }
+
+
+  // destroy of each function
+  FuncIter = m_ModelItems.begin();
+  while (FuncIter != m_ModelItems.end())
+  {
+    delete (*FuncIter)->Function;
+    FuncIter++;
+  }
+
   m_Initialized = false;
 }
 

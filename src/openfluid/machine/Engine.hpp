@@ -188,6 +188,7 @@ class DLLEXPORT Engine
 
     void pretestConsistency(PretestInfos_t& PretestInfos);
 
+    void initialize();
 
     void initParams();
 
@@ -196,6 +197,8 @@ class DLLEXPORT Engine
     void checkConsistency();
 
     void run();
+
+    void finalize();
 
     void saveReports();
 

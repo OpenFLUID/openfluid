@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
 BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
 {
   openfluid::machine::SignatureItemInstance FctSignature =
-      *openfluid::machine::PluginManager::getInstance()->getPlugin(
+      *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
           "tests.primitives.use");
 
   openfluid::machine::ModelItemInstance* Item =

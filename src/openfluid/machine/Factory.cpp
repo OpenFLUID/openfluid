@@ -70,10 +70,6 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <openfluid/machine/FixedGenerator.hpp>
-#include <openfluid/machine/RandomGenerator.hpp>
-#include <openfluid/machine/InterpGenerator.hpp>
-#include <openfluid/machine/InjectGenerator.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 
 
@@ -205,7 +201,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
     if (EventUnit != NULL)
     {
       ((*itEvent).getEvent()).setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
-      EventUnit->getEvents()->addEvent(&((*itEvent).getEvent()));
+      EventUnit->getEvents()->addEvent((*itEvent).getEvent());
     }
 
   }
@@ -259,7 +255,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
     {
       // instanciation of a pluggeg simulation function using the plugin manager
-      IInstance = PluginManager::getInstance()->getPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
+      IInstance = PluginManager::getInstance()->getUncompletedPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
 
@@ -268,7 +264,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
 
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::Generator))
     {
-        // instanciation of a data generator
+      // instanciation of a data generator
       openfluid::base::GeneratorDescriptor* GenDesc = (openfluid::base::GeneratorDescriptor*)(*it);
       Generator* GenInstance = NULL;
 
@@ -286,31 +282,35 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
 
       Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem(VarName,GenDesc->getUnitClass(),"",""));
 
+      IInstance->GeneratorInfo = new GeneratorExtraInfo();
+      IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
+      IInstance->GeneratorInfo->UnitClass = GenDesc->getUnitClass();
+      IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
+
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Fixed)
-        GenInstance = new FixedGenerator();
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Fixed;
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Random)
-        GenInstance = new RandomGenerator();
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Random;
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Interp)
       {
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Interp;
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
-        GenInstance = new InterpGenerator();
       }
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Inject)
       {
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Inject;
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
-        GenInstance = new InjectGenerator();
       }
 
-      if (GenInstance == NULL)
+      if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)
         throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
-      GenInstance->setInfos(GenDesc->getVariableName(),GenDesc->getUnitClass(),GenDesc->getGeneratorMethod(),GenDesc->getVariableSize());
-      IInstance->Function = GenInstance;
+      IInstance->Function = NULL;
       IInstance->Signature = Signature;
 
       MInstance.appendItem(IInstance);

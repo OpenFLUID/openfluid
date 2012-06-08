@@ -94,8 +94,7 @@ END_SIGNATURE_HOOK
 PrimitivesProdFunction::PrimitivesProdFunction()
                 : PluggableFunction()
 {
-
-
+  std::cout << "PrimitivesProdFunction : constructor" << std::endl;
 }
 
 
@@ -105,8 +104,7 @@ PrimitivesProdFunction::PrimitivesProdFunction()
 
 PrimitivesProdFunction::~PrimitivesProdFunction()
 {
-
-
+  std::cout << "PrimitivesProdFunction : destructor" << std::endl;
 }
 
 

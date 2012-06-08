@@ -61,6 +61,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/ModelItemDescriptor.hpp>
+#include <openfluid/base/GeneratorDescriptor.hpp>
 
 namespace openfluid {
 namespace base {
@@ -72,6 +73,18 @@ class PluggableFunction;
 
 namespace openfluid { namespace machine {
 
+class DLLEXPORT GeneratorExtraInfo
+{
+  public:
+
+    openfluid::core::VariableName_t VariableName;
+    openfluid::core::UnitClass_t UnitClass;
+    unsigned int VariableSize;
+    openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod;
+
+    GeneratorExtraInfo();
+};
+
 
 class DLLEXPORT SignatureItemInstance
 {
@@ -80,8 +93,11 @@ class DLLEXPORT SignatureItemInstance
     bool SDKCompatible;
     openfluid::base::FunctionSignature* Signature;
     openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
+    GeneratorExtraInfo* GeneratorInfo;
 
     SignatureItemInstance();
+
+    ~SignatureItemInstance();
 };
 
 
@@ -103,3 +119,4 @@ class DLLEXPORT ModelItemInstance : public SignatureItemInstance
 
 
 #endif /* __MODELITEMINSTANCE_H___ */
+

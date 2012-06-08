@@ -458,6 +458,7 @@ void OpenFLUIDApp::runSimulation()
 
   mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, MListener,IOListener);
 
+  mp_Engine->initialize();
 
   std::cout << "* Initializing parameters... "; std::cout.flush();
   mp_Engine->initParams();
@@ -542,6 +543,7 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "     Total run time: " << boost::posix_time::to_simple_string(FullSimDuration) << std::endl;
   std::cout << std::endl;
 
+  mp_Engine->finalize();
 
   delete mp_Engine;
   mp_Engine = NULL;

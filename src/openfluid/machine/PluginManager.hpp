@@ -64,7 +64,13 @@
 
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid { namespace machine {
+namespace openfluid {
+
+namespace base {
+class PluggableFunction;
+}  // namespace base
+
+namespace machine {
 
 class SignatureItemInstance;
 class ModelItemInstance;
@@ -83,7 +89,7 @@ class DLLEXPORT PluginManager
 
     std::map<std::string,Glib::Module*> m_LoadedPlugins;
 
-    ModelItemInstance* buildPluginContainer(std::string PluginFilename);
+    ModelItemInstance* buildUncompletedPluginContainer(std::string PluginFilename);
 
 
     /**
@@ -110,7 +116,10 @@ class DLLEXPORT PluginManager
     /**
       Returns function and function types
     */
-    ModelItemInstance* getPlugin(std::string PluginName);
+
+    ModelItemInstance* getUncompletedPlugin(std::string PluginName);
+
+    openfluid::base::PluggableFunction* completePluginWithFunction(ModelItemInstance* Item);
 
     SignatureItemInstance* getSignatureFromPlugin(std::string PluginFilename);
 

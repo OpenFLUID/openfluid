@@ -97,8 +97,53 @@ PluginManager* PluginManager::getInstance()
 // =====================================================================
 // =====================================================================
 
+openfluid::base::PluggableFunction* PluginManager::completePluginWithFunction(ModelItemInstance* Item)
+{
+  std::string PluginFilename = Item->Filename;
 
-ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilename)
+  if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
+  {
+    m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFilename,Glib::MODULE_BIND_LOCAL);
+  }
+
+  Glib::Module* PlugLib = m_LoadedPlugins[PluginFilename];
+
+
+  // library loading
+  if(*PlugLib)
+  {
+    void* FunctionSymbol;
+
+    // checks if the handle proc exists
+    if(PlugLib->get_symbol(PLUGFUNCTION_PROC_NAME,FunctionSymbol))
+    {
+
+      // hooks the handle proc
+      openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)FunctionSymbol;
+
+      if (PlugProc != NULL)
+      {
+        Item->Function = PlugProc();
+
+        if (Item->Function == NULL)
+          throw openfluid::base::OFException("OpenFLUID framework","PluginManager::loadPluginFunction","Function from plugin file " + PluginFilename + " cannot be instanciated");
+
+      }
+      else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::loadPluginFunction","Unable to find function in plugin file " + PluginFilename);
+    }
+    else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::loadPluginFunction","Format error in plugin file " + PluginFilename);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::loadPluginFunction","Unable to find plugin file " + PluginFilename);
+
+  return Item->Function;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ModelItemInstance* PluginManager::buildUncompletedPluginContainer(std::string PluginFilename)
 {
   std::string PluginFile = openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
   ModelItemInstance* Plug = NULL;
@@ -148,28 +193,18 @@ ModelItemInstance* PluginManager::buildPluginContainer(std::string PluginFilenam
           Plug->Signature = SignProc();
 
           if (Plug->Signature == NULL)
-            throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Signature from plugin file " + PluginFilename + " cannot be instanciated");
+            throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildUnloadedPluginContainer","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
-          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)FunctionSymbol;
-
-          if (PlugProc != NULL)
-          {
-            Plug->Function = PlugProc();
-
-            if (Plug->Function == NULL)
-              throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Function from plugin file " + PluginFilename + " cannot be instanciated");
-
-          }
-          else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Unable to find function in plugin file " + PluginFilename);
+            Plug->Function = 0;
         }
-        else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Unable to find signature in plugin file " + PluginFilename);
+        else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildUnloadedPluginContainer","Unable to find signature in plugin file " + PluginFilename);
 
       }
-      else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Format error in plugin file " + PluginFilename);
+      else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildUnloadedPluginContainer","Format error in plugin file " + PluginFilename);
     }
-    else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Compatibility version mismatch for plugin file " + PluginFilename);
+    else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildUnloadedPluginContainer","Compatibility version mismatch for plugin file " + PluginFilename);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildPluginContainer","Unable to find plugin file " + PluginFilename);
+  else throw openfluid::base::OFException("OpenFLUID framework","PluginManager::buildUnloadedPluginContainer","Unable to find plugin file " + PluginFilename);
 
   return Plug;
 }
@@ -288,10 +323,9 @@ ArrayOfSignatureItemInstance PluginManager::getAvailableFunctions(const std::str
 // =====================================================================
 
 
-ModelItemInstance* PluginManager::getPlugin(std::string PluginName)
+ModelItemInstance* PluginManager::getUncompletedPlugin(std::string PluginName)
 {
-
-  ModelItemInstance* Plug = buildPluginContainer(PluginName+openfluid::config::PLUGINS_EXT);
+  ModelItemInstance* Plug = buildUncompletedPluginContainer(PluginName+openfluid::config::PLUGINS_EXT);
 
   if (Plug != NULL && Plug->SDKCompatible) return Plug;
 

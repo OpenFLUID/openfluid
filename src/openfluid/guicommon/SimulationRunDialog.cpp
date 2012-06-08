@@ -238,6 +238,7 @@ void SimulationRunDialog::runSimulation()
     mp_MachineListen->setInfos(mp_Model->getItemsCount(),
                                m_StepsCount);
 
+    mp_Engine->initialize();
     mp_Engine->initParams();
     mp_Engine->prepareData();
     mp_Engine->checkConsistency();
@@ -281,6 +282,8 @@ void SimulationRunDialog::runSimulation()
     m_SimulationCompleted = false;
     hide();
   }
+
+  mp_Engine->finalize();
 
 }
 

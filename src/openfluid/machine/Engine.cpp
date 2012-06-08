@@ -68,6 +68,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/io/OutputsWriter.hpp>
 #include <openfluid/io/MessagesWriter.hpp>
@@ -105,7 +106,6 @@ Engine::Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
 
 
   prepareOutputDir();
-  m_ModelInstance.initialize();
 }
 
 // =====================================================================
@@ -637,6 +637,16 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
 // =====================================================================
 
 
+void Engine::initialize()
+{
+  m_ModelInstance.initialize();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Engine::initParams()
 {
 
@@ -844,13 +854,22 @@ void Engine::run()
 
   // final save
   closeOutputs();
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void Engine::finalize()
+{
   m_ModelInstance.finalize();
 }
 
 
 // =====================================================================
 // =====================================================================
+
 
 void Engine::saveReports()
 {
