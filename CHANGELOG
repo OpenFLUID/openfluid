@@ -1,3 +1,21 @@
+1.7.1
+
+  * Added map view component in OpenFLUID-Builder, for spatial geometry
+    vizualization
+  * Added datastore system for unstructured or complex data
+    (e.g. cartographic layers). This system should be extended
+    in future releases 
+  * Refactored model instantiation in order to avoid initialization problems
+  * Added deprecation notification system at build time (gcc only)
+  * Deprecated ScalarValue type
+  * Deprecated specific events handling methods  
+  * Upated build and tests configuration
+  * Updated installation packages dependencies
+  * Cleaned code
+  * Fixed various bugs
+
+
+
 1.7.0
 
   * Added definitions of value types for OpenFLUID data : 
