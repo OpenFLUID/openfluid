@@ -103,8 +103,8 @@ bool DrawingAreaZoomFrameState::onMouseButtonReleased(GdkEventButton* event)
     double Height = allocation.get_height();
 
     double MinRatio = std::min(
-        (Width / mref_DrawingArea.getScale()) / abs(m_XPress - XRelease),
-        (Height / mref_DrawingArea.getScale()) / abs(m_YPress - YRelease));
+        (Width / mref_DrawingArea.getScale()) / fabs(m_XPress - XRelease),
+        (Height / mref_DrawingArea.getScale()) / fabs(m_YPress - YRelease));
     if (MinRatio != std::numeric_limits<double>::infinity())
     {
       double Scale = mref_DrawingArea.getScale() * MinRatio;
