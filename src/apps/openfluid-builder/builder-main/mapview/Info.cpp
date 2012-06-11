@@ -556,6 +556,10 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
     }
   }
 
+  if(! mref_ListStoreIDs->children().empty())
+      mp_TreeViewIDs->get_selection()->select(mref_ListStoreIDs->children()[0]);
+
+
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
 
