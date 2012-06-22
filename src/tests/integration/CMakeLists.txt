@@ -181,19 +181,19 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
   ADD_TEST(integration-BuddyFunc2Doc "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
                               )
 
 
   ADD_TEST(integration-BuddyFunc2DocPDF "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/func2doc_tpl.tex,pdf=1"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/func2doc_tpl.tex,pdf=1"
                               )
 
 
   ADD_TEST(integration-BuddyFunc2DocPDFHTML "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF-HTML,pdf=1,html=1"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF-HTML,pdf=1,html=1"
                               )
 
 

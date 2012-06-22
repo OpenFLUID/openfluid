@@ -95,7 +95,7 @@ SET(PO_BUILD_DIR "${BUILD_OUTPUT_PATH}/${SHARE_INSTALL_PATH}/locale")
 ################### test paths ###################
 
 SET(TEST_OUTPUT_PATH "${CMAKE_BINARY_DIR}/tests-bin")
-SET(TESTS_DATASETS_PATH "${CMAKE_SOURCE_DIR}/tests/datasets")
+SET(TESTS_DATASETS_PATH "${CMAKE_SOURCE_DIR}/resources/tests/datasets")
 SET(TESTS_OUTPUTDATA_PATH "${CMAKE_BINARY_DIR}/tests-output")
 
 

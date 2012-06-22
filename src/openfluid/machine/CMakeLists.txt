@@ -24,11 +24,6 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-base                     
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
 
-IF(UNIX)
-  TARGET_LINK_LIBRARIES(openfluid-machine dl)
-ENDIF(UNIX)
-
-
 
 INSTALL(TARGETS openfluid-machine
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}
@@ -37,5 +32,11 @@ INSTALL(TARGETS openfluid-machine
    
 
 INSTALL(FILES ${OPENFLUID_MACHINE_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/machine)
+
+
+IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+  ADD_SUBDIRECTORY(tests)
+ENDIF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))  
+
 
    
