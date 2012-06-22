@@ -58,6 +58,7 @@
 #include <ogrsf_frmts.h>
 
 #include <openfluid/core/UnstructuredValue.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace core {
@@ -66,7 +67,7 @@ namespace core {
  * @brief Container class for geospatial vector data,
  * represented by an OGR datasource.
  */
-class GeoVectorValue: public openfluid::core::UnstructuredValue
+class DLLEXPORT GeoVectorValue: public openfluid::core::UnstructuredValue
 {
   private:
 

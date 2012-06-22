@@ -57,6 +57,7 @@
 
 #include <map>
 #include <string>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace core {
@@ -67,7 +68,7 @@ class DatastoreItem;
  * @brief Container class for holding information about additional resources
  * relating to a project.
  */
-class Datastore
+class DLLEXPORT Datastore
 {
   public:
 
