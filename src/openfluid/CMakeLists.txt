@@ -11,6 +11,7 @@ ADD_SUBDIRECTORY(market)
 ADD_SUBDIRECTORY(buddies)
 ADD_SUBDIRECTORY(builderext)
 ADD_SUBDIRECTORY(guicommon)
+ADD_SUBDIRECTORY(landr)
 
 
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.hpp 
