@@ -46,17 +46,15 @@
  */
 
 /**
- \file DatastoreItem.cpp
+ \file GeoValue.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "DatastoreItem.hpp"
+#include "GeoValue.hpp"
 
-#include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/core/GeoRasterValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <boost/filesystem/path.hpp>
 
 namespace openfluid {
 namespace core {
@@ -64,90 +62,31 @@ namespace core {
 // =====================================================================
 // =====================================================================
 
-
-DatastoreItem::DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
-    UnstructuredValue::UnstructuredType Type, std::string UnitClass) :
-  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
+GeoValue::GeoValue(std::string FilePath, std::string FileName) :
+    m_FilePath(FilePath), m_FileName(FileName)
 {
-  switch (Type)
-  {
-    case UnstructuredValue::GeoVectorValue:
-      m_Value = new openfluid::core::GeoVectorValue(m_PrefixPath,m_RelativePath);
-      break;
-    case UnstructuredValue::GeoRasterValue:
-      m_Value = new openfluid::core::GeoRasterValue(m_PrefixPath,m_RelativePath);
-      break;
-    default:
-      throw openfluid::base::OFException("OpenFLUID framework",
-          "DatastoreItem::DatastoreItem", "No value to instanciate for item type "
-              + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
-      break;
-  }
-
+  computeAbsolutePath();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-DatastoreItem::~DatastoreItem()
+GeoValue::~GeoValue()
 {
-  delete m_Value;
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getID() const
+void GeoValue::computeAbsolutePath()
 {
-  return m_ID;
+  m_AbsolutePath =
+      boost::filesystem::path(m_FilePath + "/" + m_FileName).string();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getPrefixPath() const
-{
-  return m_PrefixPath;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string DatastoreItem::getRelativePath() const
-{
-  return m_RelativePath;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string DatastoreItem::getUnitClass() const
-{
-  return m_UnitClass;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-UnstructuredValue* DatastoreItem::getValue()
-{
-  return m_Value;
-}
-
-const UnstructuredValue* DatastoreItem::getValue() const
-{
-  return m_Value;
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces
+} /* namespace core */
+} /* namespace openfluid */

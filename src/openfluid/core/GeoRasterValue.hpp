@@ -55,23 +55,56 @@
 #ifndef __GEORASTERVALUE_HPP__
 #define __GEORASTERVALUE_HPP__
 
-#include <openfluid/core/UnstructuredValue.hpp>
+#include <openfluid/core/GeoValue.hpp>
 
+#include "gdal_priv.h"
+#include "cpl_conv.h" // for CPLMalloc()
 namespace openfluid {
 namespace core {
 
 /**
- * @brief Container class for geospatial raster data.
+ * @brief Container class for geospatial raster data,
+ * represented by a GDAL dataset.
  */
-class GeoRasterValue: public openfluid::core::UnstructuredValue
+class GeoRasterValue: public openfluid::core::GeoValue
 {
+
+  protected:
+
+    GDALDataset* mp_Data;
+
+    void tryToOpenSource(bool UpdateMode);
+
   public:
 
-    GeoRasterValue();
+    /**
+     * @brief Creates a new value.
+     *
+     * The <tt>RelativePath</tt> may be path to a .jpeg, .tiff, .img or .asc file...
+     *
+     * It doesn't open the associated GDAL dataset.
+     *
+     * @param RelativePath The path of the data, relative to the PrefixPath.
+     */
+    GeoRasterValue(std::string FilePath, std::string FileName);
 
+    /**
+     * @brief Closes the opened GDAL dataset.
+     */
     ~GeoRasterValue();
 
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
+
+    /**
+     * @brief Gets the associated opened GDAL dataset.
+     *
+     * If the dataset is not already opened, tries to open it first.
+     *
+     * @param UpdateMode False for read-only access (the default) or True for read-write access.
+     * @return The opened GDAL dataset.
+     * @throw openfluid::base::OFException if GDAL doesn't succeed to open the dataset.
+     */
+    GDALDataset* get(bool UpdateMode = false);
 
 };
 

@@ -46,76 +46,48 @@
  */
 
 /**
- \file GeoRasterValue.cpp
- \brief Implements ...
+ \file GeoValue.hpp
+ \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "GeoRasterValue.hpp"
+#ifndef GEOVALUE_HPP_
+#define GEOVALUE_HPP_
 
-#include <boost/filesystem/path.hpp>
-
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/core/UnstructuredValue.hpp>
 
 namespace openfluid {
 namespace core {
 
-// =====================================================================
-// =====================================================================
-
-GeoRasterValue::GeoRasterValue(std::string FilePath, std::string FileName) :
-    GeoValue(FilePath, FileName), mp_Data(0)
+/**
+ * @brief Abstract class for geospatial data.
+ */
+class GeoValue: public openfluid::core::UnstructuredValue
 {
-  GDALAllRegister();
-}
+  protected:
 
-// =====================================================================
-// =====================================================================
+    std::string m_FilePath;
 
-GeoRasterValue::~GeoRasterValue()
-{
-  if (mp_Data)
-    GDALClose(mp_Data);
-}
+    std::string m_FileName;
 
-// =====================================================================
-// =====================================================================
+    std::string m_AbsolutePath;
 
-openfluid::core::UnstructuredValue::UnstructuredType GeoRasterValue::getType() const
-{
-  return openfluid::core::UnstructuredValue::GeoRasterValue;
-}
+    /**
+     * @param UpdateMode False for read-only access (the default) or True for read-write access.
+     */
+    virtual void tryToOpenSource(bool UpdateMode) = 0;
 
-// =====================================================================
-// =====================================================================
+    void computeAbsolutePath();
 
-GDALDataset* GeoRasterValue::get(bool UpdateMode)
-{
-  if (!mp_Data)
-    tryToOpenSource(UpdateMode);
+  public:
 
-  return mp_Data;
-}
+    GeoValue(std::string FilePath, std::string FileName);
 
-// =====================================================================
-// =====================================================================
+    virtual ~GeoValue() = 0;
+};
 
-void GeoRasterValue::tryToOpenSource(bool /*UpdateMode*/)
-{
-  mp_Data = static_cast<GDALDataset*>(GDALOpen(m_AbsolutePath.c_str(),
-                                               GA_ReadOnly));
+} /* namespace core */
+} /* namespace openfluid */
 
-  if (!mp_Data)
-  {
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "GeoRasterValue::tryToOpenSource",
-        "Error while trying to open file " + m_AbsolutePath);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces
+#endif /* GEOVALUE_HPP_ */

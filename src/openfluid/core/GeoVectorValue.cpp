@@ -54,9 +54,10 @@
 
 #include "GeoVectorValue.hpp"
 
-#include <boost/filesystem/path.hpp>
-
 #include <openfluid/base/OFException.hpp>
+#include <iostream>
+#include <geos/geom/Geometry.h>
+#include <geos/geom/LineString.h>
 
 namespace openfluid {
 namespace core {
@@ -64,26 +65,26 @@ namespace core {
 // =====================================================================
 // =====================================================================
 
-
-GeoVectorValue::GeoVectorValue(std::string PrefixPath, std::string RelativePath) :
-  m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Data(0)
+GeoVectorValue::GeoVectorValue(std::string FilePath, std::string FileName) :
+    GeoValue(FilePath, FileName), mp_ShpDriverName("ESRI Shapefile"), mp_ShpDriver(
+        0), mp_Data(0), mp_Layer(0), mp_LayerDef(0), mp_Graph(0)
 {
-
+  OGRRegisterAll();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 GeoVectorValue::~GeoVectorValue()
 {
-  if (m_Data)
-    OGRDataSource::DestroyDataSource(m_Data);
+  if (mp_Data)
+    OGRDataSource::DestroyDataSource(mp_Data);
+
+  // TODO delete Graph
 }
 
 // =====================================================================
 // =====================================================================
-
 
 openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() const
 {
@@ -93,43 +94,333 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() c
 // =====================================================================
 // =====================================================================
 
-
-OGRDataSource* GeoVectorValue::get()
+OGRDataSource* GeoVectorValue::get(bool UpdateMode)
 {
-  if (!m_Data)
-    tryOpeningSource();
+  if (!mp_Data)
+    tryToOpenSource(UpdateMode);
 
-  return m_Data;
+  return mp_Data;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void GeoVectorValue::tryOpeningSource()
+void GeoVectorValue::tryToOpenSource(bool UpdateMode)
 {
-  OGRRegisterAll();
+  mp_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(), UpdateMode);
 
-  m_Data = OGRSFDriverRegistrar::Open((char*) getAbsolutePath().c_str(), false);
+  if (!mp_Data)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoVectorValue::tryToOpenSource",
+        "Error while trying to open file " + m_AbsolutePath);
 
-  if (m_Data == NULL)
+  mp_Layer = mp_Data->GetLayer(0);
+
+  if (!mp_Layer)
   {
-    throw openfluid::base::OFException("OpenFLUID framework",
-        "GeoVectorValue::tryOpeningSource", "Error while trying to open file "
-            + getAbsolutePath());
+    OGRDataSource::DestroyDataSource(mp_Data);
+
+    mp_Data = 0;
+
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoVectorValue::tryToOpenSource",
+        "Unable to get first layer for " + m_AbsolutePath);
+  }
+
+  mp_LayerDef = mp_Layer->GetLayerDefn();
+}
+
+// =====================================================================
+// =====================================================================
+
+void GeoVectorValue::createShp(OGRwkbGeometryType LayerType,
+                               OGRSpatialReference* SpatialRef,
+                               bool ReplaceIfExists)
+{
+  if (isAlreadyExisting())
+  {
+    if (ReplaceIfExists)
+      deleteShpOnDisk();
+    else
+      throw openfluid::base::OFException(
+          "OpenFLUID framework",
+          "GeoVectorValue::createShp",
+          "Error while trying to create file " + m_AbsolutePath
+          + " : file already exists.");
+  }
+
+  mp_Data = tryToGetShpDriver()->CreateDataSource(m_AbsolutePath.c_str(), NULL);
+
+  if (!mp_Data)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "GeoVectorValue::createShp",
+        "Error while creating " + m_AbsolutePath + " : "
+        + "Creation of output file failed.");
+
+  mp_Layer = mp_Data->CreateLayer("", SpatialRef, LayerType, NULL);
+
+  if (!mp_Layer)
+  {
+    OGRDataSource::DestroyDataSource(mp_Data);
+
+    mp_Data = 0;
+
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "GeoVectorValue::createShp",
+        "Error while creating " + m_AbsolutePath + " : "
+        + "Creation of first layer failed.");
+  }
+
+  // necessary to ensure headers are written out in an orderly way and all resources are recovered
+  OGRDataSource::DestroyDataSource(mp_Data);
+
+  tryToOpenSource(true);
+}
+
+// =====================================================================
+// =====================================================================
+
+void GeoVectorValue::copyShp(GeoVectorValue& Source, bool ReplaceIfExists)
+{
+  if (isAlreadyExisting())
+  {
+    if (ReplaceIfExists)
+      deleteShpOnDisk();
+    else
+      throw openfluid::base::OFException(
+          "OpenFLUID framework",
+          "GeoVectorValue::copyShp",
+          "Error while trying to create file " + m_AbsolutePath
+          + " : file already exists.");
+  }
+
+  mp_Data = tryToGetShpDriver()->CreateDataSource(m_AbsolutePath.c_str(), NULL);
+
+  if (!mp_Data)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "GeoVectorValue::copyShp",
+        "Error while creating " + m_AbsolutePath + " : "
+        + "Creation of output file failed.");
+
+  mp_Layer = mp_Data->CopyLayer(Source.getLayer0(), "", NULL);
+
+  if (!mp_Layer)
+  {
+    OGRDataSource::DestroyDataSource(mp_Data);
+
+    mp_Data = 0;
+
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "GeoVectorValue::copyShp",
+        "Error while creating " + m_AbsolutePath + " : "
+        + "Copy of first layer failed.");
+  }
+
+  // necessary to ensure headers are written out in an orderly way and all resources are recovered
+  OGRDataSource::DestroyDataSource(mp_Data);
+
+  tryToOpenSource(true);
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRSFDriver* GeoVectorValue::tryToGetShpDriver()
+{
+  if (!mp_ShpDriver)
+  {
+    mp_ShpDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
+        mp_ShpDriverName.c_str());
+
+    if (!mp_ShpDriver)
+      throw openfluid::base::OFException(
+          "OpenFLUID framework", "GeoVectorValue::tryToGetShpDriver",
+          "\"" + mp_ShpDriverName + "\" driver not available.");
+  }
+
+  return mp_ShpDriver;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isAlreadyExisting()
+{
+  if (mp_Data)
+    return true;
+
+  OGRDataSource* p_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(),
+                                                     false);
+
+  if (p_Data)
+  {
+    OGRDataSource::DestroyDataSource(p_Data);
+    return true;
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+void GeoVectorValue::deleteShpOnDisk()
+{
+  if (isAlreadyExisting())
+  {
+    if (mp_Data)
+      OGRDataSource::DestroyDataSource(mp_Data);
+
+    tryToGetShpDriver()->DeleteDataSource(m_AbsolutePath.c_str());
   }
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string GeoVectorValue::getAbsolutePath()
+OGRLayer* GeoVectorValue::getLayer0()
 {
-  boost::filesystem::path AbsolutePath = boost::filesystem::path(
-      m_PrefixPath + "/" + m_RelativePath);
+  if (!mp_Data)
+    get();
 
-  return AbsolutePath.string();
+  return mp_Layer;
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRFeatureDefn* GeoVectorValue::getLayerDef()
+{
+  return getLayer0()->GetLayerDefn();
+}
+
+// =====================================================================
+// =====================================================================
+
+void GeoVectorValue::addAField(std::string FieldName, OGRFieldType FieldType)
+{
+  OGRFieldDefn Field(FieldName.c_str(), FieldType);
+
+  if (getLayer0()->CreateField(&Field) != OGRERR_NONE)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoVectorValue::addAField",
+        "Creating field \"" + FieldName + "\" failed.");
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isLineType()
+{
+  return getLayerDef()->GetGeomType() == wkbLineString;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isPolygonType()
+{
+  return getLayerDef()->GetGeomType() == wkbPolygon;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::containsField(std::string FieldName)
+{
+  return getLayerDef()->GetFieldIndex(FieldName.c_str()) != -1;
+}
+
+// =====================================================================
+// =====================================================================
+
+int GeoVectorValue::getFieldIndex(std::string FieldName)
+{
+  return getLayerDef()->GetFieldIndex(FieldName.c_str());
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isFieldOfType(std::string FieldName,
+                                   OGRFieldType FieldType)
+{
+  if (!containsField(FieldName))
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoVectorValue::isFieldOfType",
+        "Field \"" + FieldName + "\" is not set.");
+
+  return getLayerDef()->GetFieldDefn(getFieldIndex(FieldName))->GetType()
+         == FieldType;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isIntValueSet(std::string FieldName, int Value)
+{
+  if (!isFieldOfType(FieldName, OFTInteger))
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoVectorValue::isIntValueSet",
+        "Field \"" + FieldName + "\" is not set or is not of type Int.");
+
+  int CatIndex = getLayerDef()->GetFieldIndex(FieldName.c_str());
+
+  mp_Layer->ResetReading();
+
+  OGRFeature* Feat;
+  while ((Feat = mp_Layer->GetNextFeature()) != NULL)
+  {
+    if (Feat->GetFieldAsInteger(CatIndex) == Value)
+    {
+      OGRFeature::DestroyFeature(Feat);
+      return true;
+    }
+    OGRFeature::DestroyFeature(Feat);
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::operation::linemerge::LineMergeGraph* GeoVectorValue::getGraph()
+{
+  if (!mp_Graph)
+  {
+    mp_Graph = new geos::operation::linemerge::LineMergeGraph();
+
+    // TODO keep it ? (not here, anyhow)
+    setlocale(LC_NUMERIC, "C");
+
+    getLayer0()->ResetReading();
+
+    OGRFeature* Feat;
+    while ((Feat = getLayer0()->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+      // ne pas utiliser !! inverse parfois l'ordre des points d'un linestring
+      //    GeosGeom->normalize();
+
+      mp_Graph->addEdge(dynamic_cast<const geos::geom::LineString*>(GeosGeom));
+
+      GeosGeom->setUserData(Feat);
+
+//    OGRFeature::DestroyFeature(Feat);
+    }
+  }
+
+  return mp_Graph;
 }
 
 // =====================================================================
