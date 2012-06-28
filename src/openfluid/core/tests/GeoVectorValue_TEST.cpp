@@ -60,7 +60,6 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 
@@ -75,8 +74,6 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
     GeoVectorValueSub(std::string PrefixPath,std::string RelativePath) :
       openfluid::core::GeoVectorValue(PrefixPath,RelativePath)
     {
-      openfluid::base::RuntimeEnvironment::getInstance()->setInputDir(
-          CONFIGTESTS_INPUT_DATASETS_DIR);
     }
 
     OGRDataSource* getData()
@@ -86,7 +83,7 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 
     std::string getAbsolutePath()
     {
-      openfluid::core::GeoVectorValue::computeAbsolutePath();
+      computeAbsolutePath();
       return m_AbsolutePath;
     }
 
