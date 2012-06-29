@@ -67,7 +67,7 @@ namespace core {
 
 GeoVectorValue::GeoVectorValue(std::string FilePath, std::string FileName) :
     GeoValue(FilePath, FileName), mp_ShpDriverName("ESRI Shapefile"), mp_ShpDriver(
-        0), mp_Data(0), mp_Layer(0), mp_LayerDef(0), mp_Graph(0)
+        0), mp_Data(0), mp_Layer(0), mp_LayerDef(0)
 {
   OGRRegisterAll();
 }
@@ -77,10 +77,19 @@ GeoVectorValue::GeoVectorValue(std::string FilePath, std::string FileName) :
 
 GeoVectorValue::~GeoVectorValue()
 {
-  if (mp_Data)
-    OGRDataSource::DestroyDataSource(mp_Data);
+  destroyDataSource();
+}
 
-  // TODO delete Graph
+// =====================================================================
+// =====================================================================
+
+void GeoVectorValue::destroyDataSource()
+{
+  if (mp_Data)
+  {
+    OGRDataSource::DestroyDataSource(mp_Data);
+    mp_Data = 0;
+  }
 }
 
 // =====================================================================
@@ -118,9 +127,7 @@ void GeoVectorValue::tryToOpenSource(bool UpdateMode)
 
   if (!mp_Layer)
   {
-    OGRDataSource::DestroyDataSource(mp_Data);
-
-    mp_Data = 0;
+    destroyDataSource();
 
     throw openfluid::base::OFException(
         "OpenFLUID framework", "GeoVectorValue::tryToOpenSource",
@@ -162,9 +169,7 @@ void GeoVectorValue::createShp(OGRwkbGeometryType LayerType,
 
   if (!mp_Layer)
   {
-    OGRDataSource::DestroyDataSource(mp_Data);
-
-    mp_Data = 0;
+    destroyDataSource();
 
     throw openfluid::base::OFException(
         "OpenFLUID framework",
@@ -174,7 +179,7 @@ void GeoVectorValue::createShp(OGRwkbGeometryType LayerType,
   }
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(mp_Data);
+  destroyDataSource();
 
   tryToOpenSource(true);
 }
@@ -209,9 +214,7 @@ void GeoVectorValue::copyShp(GeoVectorValue& Source, bool ReplaceIfExists)
 
   if (!mp_Layer)
   {
-    OGRDataSource::DestroyDataSource(mp_Data);
-
-    mp_Data = 0;
+    destroyDataSource();
 
     throw openfluid::base::OFException(
         "OpenFLUID framework",
@@ -221,7 +224,7 @@ void GeoVectorValue::copyShp(GeoVectorValue& Source, bool ReplaceIfExists)
   }
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(mp_Data);
+  destroyDataSource();
 
   tryToOpenSource(true);
 }
@@ -272,8 +275,7 @@ void GeoVectorValue::deleteShpOnDisk()
 {
   if (isAlreadyExisting())
   {
-    if (mp_Data)
-      OGRDataSource::DestroyDataSource(mp_Data);
+    destroyDataSource();
 
     tryToGetShpDriver()->DeleteDataSource(m_AbsolutePath.c_str());
   }
@@ -384,43 +386,6 @@ bool GeoVectorValue::isIntValueSet(std::string FieldName, int Value)
   }
 
   return false;
-}
-
-// =====================================================================
-// =====================================================================
-
-geos::operation::linemerge::LineMergeGraph* GeoVectorValue::getGraph()
-{
-  if (!mp_Graph)
-  {
-    mp_Graph = new geos::operation::linemerge::LineMergeGraph();
-
-    // TODO keep it ? (not here, anyhow)
-    setlocale(LC_NUMERIC, "C");
-
-    getLayer0()->ResetReading();
-
-    OGRFeature* Feat;
-    while ((Feat = getLayer0()->GetNextFeature()) != NULL)
-    {
-      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-      // c++ cast doesn't work (have to use the C API instead)
-      geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-      // ne pas utiliser !! inverse parfois l'ordre des points d'un linestring
-      //    GeosGeom->normalize();
-
-      mp_Graph->addEdge(dynamic_cast<const geos::geom::LineString*>(GeosGeom));
-
-      GeosGeom->setUserData(Feat);
-
-//    OGRFeature::DestroyFeature(Feat);
-    }
-  }
-
-  return mp_Graph;
 }
 
 // =====================================================================

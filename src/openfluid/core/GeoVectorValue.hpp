@@ -59,9 +59,6 @@
 
 #include <ogrsf_frmts.h>
 
-//TODO Change for C API ?
-#include <geos/operation/linemerge/LineMergeGraph.h>
-
 namespace openfluid {
 namespace core {
 
@@ -92,11 +89,11 @@ class GeoVectorValue: public openfluid::core::GeoValue
      */
     OGRFeatureDefn* mp_LayerDef;
 
-    geos::operation::linemerge::LineMergeGraph* mp_Graph;
-
     void tryToOpenSource(bool UpdateMode);
 
     OGRSFDriver* tryToGetShpDriver();
+
+    void destroyDataSource();
 
   public:
 
@@ -133,7 +130,7 @@ class GeoVectorValue: public openfluid::core::GeoValue
     OGRDataSource* get(bool UpdateMode = false);
 
     /**
-     * @brief Creates an empty new shapefile with a layer of type LayerType.
+     * @brief Creates an empty new shapefile with a layer of type LayerType, with Read-Write permission.
      *
      * @param LayerType The type of the layer (default wkbUnknown).
      * @param SpatialRef The coordinate system to use for the new layer, or NULL (default) if no coordinate system is available.
@@ -147,7 +144,7 @@ class GeoVectorValue: public openfluid::core::GeoValue
                    bool ReplaceIfExists = true);
 
     /**
-     * @brief Creates a new shapefile with a layer which is a copy of the Sources layer.
+     * @brief Creates a new shapefile with a layer which is a copy of the Sources layer, with Read-Write permission..
      *
      * @param Source The GeoVectorValue containing the layer to copy (may come from another dataset).
      * @param ReplaceIfExists True if an existing file has to be deleted before the new one creation (default).
@@ -170,7 +167,7 @@ class GeoVectorValue: public openfluid::core::GeoValue
     void deleteShpOnDisk();
 
     /**
-     * @brief Add a field to a layer.
+     * @brief Add a field to the first (default) layer.
      *
      * @param FieldName The name of the field to add.
      * @param FieldType The type of the field to add (default OFTString).
@@ -185,21 +182,51 @@ class GeoVectorValue: public openfluid::core::GeoValue
      */
     OGRLayer* getLayer0();
 
+    /**
+     * @brief Get the Feature definition of the first (default) layer.
+     *
+     * @return The OGR Feature definition of the first (default) layer.
+     */
     OGRFeatureDefn* getLayerDef();
 
     bool isLineType();
 
     bool isPolygonType();
 
+    /**
+     * @brief Returns if a field exists in the first (default) layer.
+     *
+     * @param FieldName The name of the field to query
+     * @return True if the field FieldName exists, False otherwise
+     */
     bool containsField(std::string FieldName);
 
+    /**
+     * @brief Get the index of a field.
+     *
+     * @param FieldName The name of the field to query
+     * @return -1 if field FieldName doesn't exist
+     */
     int getFieldIndex(std::string FieldName);
 
+    /**
+     * @brief Returns if a field is of the type FieldType.
+     *
+     * @param FieldName The name of the field to query
+     * @param FieldType The type of the field to query
+     * @return True if the field FieldName is type FieldType.
+     * @throw openfluid::base::OFException if the field doesn't exist.
+     */
     bool isFieldOfType(std::string FieldName, OGRFieldType FieldType);
 
+    /**
+     * @brief Returns if a field has the value Value.
+     *
+     * @param FieldName The name of the field to query
+     * @param Value The value to query
+     * @return True if the field has at least a feature containing the value Value, False otherwise.
+     */
     bool isIntValueSet(std::string FieldName, int Value);
-
-    geos::operation::linemerge::LineMergeGraph* getGraph();
 
 };
 
