@@ -46,29 +46,89 @@
  */
 
 /**
- \file Dummy.cpp
- \brief Implements ...
+ \file LineStringGraph.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "Dummy.hpp"
+#ifndef LINESTRINGGRAPH_HPP_
+#define LINESTRINGGRAPH_HPP_
 
-#include <iostream>
+#include <geos/planargraph/PlanarGraph.h>
+
+#include <openfluid/landr/LineStringUnit.hpp>
+
+#include <vector>
+
+namespace geos {
+namespace geom {
+class LineString;
+class Coordinate;
+}
+namespace planargraph {
+class Node;
+class Edge;
+class DirectedEdge;
+}
+}
+
+namespace openfluid {
+namespace core {
+class GeoVectorValue;
+}
+}
 
 namespace openfluid {
 namespace landr {
 
-Dummy::Dummy()
+class LineStringGraph: public geos::planargraph::PlanarGraph
 {
-  // TODO Auto-generated constructor stub
-std::cout << "I'm here" << std::endl;
-}
+  private:
 
-Dummy::~Dummy()
-{
-  // TODO Auto-generated destructor stub
-}
+    geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
+
+    std::vector<geos::planargraph::Node*> m_NewNodes;
+
+    std::map<int,openfluid::landr::LineStringUnit*> m_UnitsBySelfId;
+
+    std::vector<openfluid::landr::LineStringUnit*> m_Units;
+
+    std::vector<geos::planargraph::DirectedEdge*> m_NewDirEdges;
+
+  public:
+
+    LineStringGraph();
+
+    LineStringGraph(const openfluid::core::GeoVectorValue& Val);
+
+    LineStringGraph(openfluid::landr::LineStringGraph& Other);
+
+    LineStringGraph(const std::vector<openfluid::landr::LineStringUnit*>& Units);
+
+    /**
+     * Takes ownership of LineString and Feature
+     */
+    openfluid::landr::LineStringUnit* addEdge(
+        const geos::geom::LineString* LineString, OGRFeature* Feat);
+
+    virtual ~LineStringGraph();
+
+    openfluid::landr::LineStringUnit* getLastLineStringUnit();
+
+    std::vector<openfluid::landr::LineStringUnit*> getEndLineStringUnits();
+
+    std::vector<openfluid::landr::LineStringUnit*> getStartLineStringUnits();
+
+    unsigned int getSize();
+
+    openfluid::landr::LineStringUnit* getUnit(int SelfId);
+
+    std::vector<openfluid::landr::LineStringUnit*> getUnits();
+
+};
 
 } // namespace landr
 } /* namespace openfluid */
+
+#endif /* LINESTRINGGRAPH_HPP_ */

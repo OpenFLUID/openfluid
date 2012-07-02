@@ -46,25 +46,64 @@
  */
 
 /**
- \file Dummy.hpp
+ \file LineStringUnit.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef DUMMY_HPP_
-#define DUMMY_HPP_
+#ifndef LINESTRINGUNIT_HPP_
+#define LINESTRINGUNIT_HPP_
+
+#include <geos/planargraph/Edge.h>
+
+#include <ogrsf_frmts.h>
+
+namespace geos {
+namespace geom {
+class LineString;
+}
+}
 
 namespace openfluid {
 namespace landr {
 
-class Dummy
+class LineStringUnit: public geos::planargraph::Edge
 {
+  private:
+
+    const geos::geom::LineString* mp_Line;
+
+    OGRFeature* mp_Feature;
+
   public:
-    Dummy();
-    virtual ~Dummy();
+
+    /**
+     * Takes ownership of LineString and Feature
+     */
+    LineStringUnit(const geos::geom::LineString* NewLine, OGRFeature* Feat);
+
+    LineStringUnit(const openfluid::landr::LineStringUnit& Other);
+
+    ~LineStringUnit();
+
+    const geos::geom::LineString* getLine() const;
+
+    OGRFeature* getFeature();
+
+    int getSelfId();
+
+    geos::planargraph::Node* getStartNode();
+
+    geos::planargraph::Node* getEndNode();
+
+    std::vector<openfluid::landr::LineStringUnit*> getUpNeighbours();
+
+    std::vector<openfluid::landr::LineStringUnit*> getDownNeighbours();
+
 };
 
 } // namespace landr
 } /* namespace openfluid */
-#endif /* DUMMY_HPP_ */
+
+#endif /* LINESTRINGUNIT_HPP_ */
