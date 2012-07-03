@@ -211,5 +211,10 @@ bool LineStringUnit::setAttributeValue(std::string AttributeName, boost::any Val
 // =====================================================================
 // =====================================================================
 
+double LineStringUnit::getLength()
+{
+  return mp_Line->getLength();
+}
+
 }// namespace landr
 } /* namespace openfluid */

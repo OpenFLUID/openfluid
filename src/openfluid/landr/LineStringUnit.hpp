@@ -112,6 +112,8 @@ class LineStringUnit: public geos::planargraph::Edge
 
     bool setAttributeValue(std::string AttributeName, boost::any Value);
 
+    double getLength();
+
 };
 
 } // namespace landr
