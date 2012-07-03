@@ -58,6 +58,8 @@
 #include <geos/planargraph/Edge.h>
 
 #include <ogrsf_frmts.h>
+#include <map>
+#include <boost/any.hpp>
 
 namespace geos {
 namespace geom {
@@ -75,6 +77,11 @@ class LineStringUnit: public geos::planargraph::Edge
     const geos::geom::LineString* mp_Line;
 
     OGRFeature* mp_Feature;
+
+    std::map<std::string, boost::any> m_Attributes;
+
+    // for limiting access to LineStringUnit attributes creation
+    friend class LineStringGraph;
 
   public:
 
@@ -100,6 +107,10 @@ class LineStringUnit: public geos::planargraph::Edge
     std::vector<openfluid::landr::LineStringUnit*> getUpNeighbours();
 
     std::vector<openfluid::landr::LineStringUnit*> getDownNeighbours();
+
+    bool getAttributeValue(std::string AttributeName, boost::any& Value);
+
+    bool setAttributeValue(std::string AttributeName, boost::any Value);
 
 };
 

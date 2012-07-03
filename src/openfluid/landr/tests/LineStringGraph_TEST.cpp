@@ -198,3 +198,62 @@ BOOST_AUTO_TEST_CASE(check_getUnit)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      new openfluid::landr::LineStringGraph(*Val);
+
+  openfluid::landr::LineStringUnit* U1 = Graph->getUnit(1);
+  openfluid::landr::LineStringUnit* U2 = Graph->getUnit(2);
+
+  boost::any IntValue = 0;
+  boost::any StrValue = std::string("");
+
+  BOOST_CHECK(!U1->setAttributeValue("att",123));
+  BOOST_CHECK(!U2->setAttributeValue("att",std::string("val")));
+  BOOST_CHECK(!U1->getAttributeValue("att",IntValue));
+  BOOST_CHECK(!U2->getAttributeValue("att",StrValue));
+  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 0);
+  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "");
+
+  Graph->addAttribute("att");
+
+  BOOST_CHECK(U1->setAttributeValue("att",123));
+  BOOST_CHECK(U2->setAttributeValue("att",std::string("val")));
+  BOOST_CHECK(U1->getAttributeValue("att",IntValue));
+  BOOST_CHECK(U2->getAttributeValue("att",StrValue));
+  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 123);
+  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "val");
+
+  Graph->addAttribute("att");
+
+  IntValue = 0;
+  StrValue = std::string("");
+  BOOST_CHECK(U1->getAttributeValue("att",IntValue));
+  BOOST_CHECK(U2->getAttributeValue("att",StrValue));
+  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 123);
+  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "val");
+
+  Graph->removeAttribute("att");
+
+  IntValue = 0;
+  StrValue = std::string("");
+  BOOST_CHECK(!U1->setAttributeValue("att",123));
+  BOOST_CHECK(!U2->setAttributeValue("att",std::string("val")));
+  BOOST_CHECK(!U1->getAttributeValue("att",IntValue));
+  BOOST_CHECK(!U2->getAttributeValue("att",StrValue));
+  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 0);
+  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "");
+
+  Graph->removeAttribute("att");
+
+  delete Graph;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================

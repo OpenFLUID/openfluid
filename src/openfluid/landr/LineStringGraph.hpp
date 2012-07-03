@@ -90,11 +90,15 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
 
     std::vector<geos::planargraph::Node*> m_NewNodes;
 
-    std::map<int,openfluid::landr::LineStringUnit*> m_UnitsBySelfId;
+    std::map<int, openfluid::landr::LineStringUnit*> m_UnitsBySelfId;
 
     std::vector<openfluid::landr::LineStringUnit*> m_Units;
 
     std::vector<geos::planargraph::DirectedEdge*> m_NewDirEdges;
+
+    void addAttribute(std::string AttributeName, LineStringUnit& Unit);
+
+    void removeAttribute(std::string AttributeName, LineStringUnit& Unit);
 
   public:
 
@@ -104,7 +108,8 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
 
     LineStringGraph(openfluid::landr::LineStringGraph& Other);
 
-    LineStringGraph(const std::vector<openfluid::landr::LineStringUnit*>& Units);
+    LineStringGraph(
+        const std::vector<openfluid::landr::LineStringUnit*>& Units);
 
     /**
      * Takes ownership of LineString and Feature
@@ -125,6 +130,16 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
     openfluid::landr::LineStringUnit* getUnit(int SelfId);
 
     std::vector<openfluid::landr::LineStringUnit*> getUnits();
+
+    /**
+     * Doesn't reset if the AttributeName already exists.
+     */
+    void addAttribute(std::string AttributeName);
+
+    /**
+     * Does nothing if AttributeName doesn't exist.
+     */
+    void removeAttribute(std::string AttributeName);
 
 };
 

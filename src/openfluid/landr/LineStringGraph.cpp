@@ -302,5 +302,52 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getUnits()
   return m_Units;
 }
 
-} // namespace landr
+// =====================================================================
+// =====================================================================
+
+void LineStringGraph::addAttribute(std::string AttributeName)
+{
+  for (std::vector<LineStringUnit*>::iterator it = m_Units.begin();
+      it != m_Units.end(); ++it)
+  {
+    addAttribute(AttributeName, **it);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+// thanks to LineStringGraph is a friend of LineStringUnit
+void LineStringGraph::addAttribute(std::string AttributeName,
+                                   LineStringUnit& Unit)
+{
+  Unit.m_Attributes[AttributeName];// = boost::any();
+}
+
+// =====================================================================
+// =====================================================================
+
+void LineStringGraph::removeAttribute(std::string AttributeName)
+{
+  for (std::vector<LineStringUnit*>::iterator it = m_Units.begin();
+      it != m_Units.end(); ++it)
+  {
+    removeAttribute(AttributeName, **it);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+// thanks to LineStringGraph is a friend of LineStringUnit
+void LineStringGraph::removeAttribute(std::string AttributeName,
+                                      LineStringUnit& Unit)
+{
+  Unit.m_Attributes.erase(AttributeName);
+}
+
+// =====================================================================
+// =====================================================================
+
+}// namespace landr
 } /* namespace openfluid */

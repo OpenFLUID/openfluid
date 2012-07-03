@@ -57,6 +57,7 @@
 #include <geos/geom/LineString.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
+#include <openfluid/landr/LineStringGraph.hpp>
 
 namespace openfluid {
 namespace landr {
@@ -177,6 +178,34 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getDownNeighbours
   }
 
   return DownNeighbours;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool LineStringUnit::getAttributeValue(std::string AttributeName, boost::any& Value)
+{
+  if (m_Attributes.count(AttributeName))
+  {
+    Value = m_Attributes.find(AttributeName)->second;
+    return true;
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool LineStringUnit::setAttributeValue(std::string AttributeName, boost::any Value)
+{
+  if (m_Attributes.count(AttributeName))
+  {
+    m_Attributes[AttributeName] = Value;
+    return true;
+  }
+
+  return false;
 }
 
 // =====================================================================
