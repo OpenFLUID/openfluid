@@ -79,6 +79,58 @@ class GeoVectorValue;
 }
 }
 
+/**
+ Macro for declaration of a loop processing all geounits of a graph
+ @param[in] loopid ID of the loop
+ */
+#define DECLARE_GEOUNITS_GRAPH_LOOP(loopid) \
+  std::vector<openfluid::landr::LineStringUnit*>::iterator _M_##loopid##_it;\
+  std::vector<openfluid::landr::LineStringUnit*> _M_##loopid##_uvect; \
+
+
+/**
+ Macro for declaration of a loop processing all geounits of a graph, following their selfid
+ @param[in] loopid ID of the loop
+ */
+#define DECLARE_GEOUNITS_ORDERED_LOOP(loopid) \
+  std::vector<openfluid::landr::LineStringUnit*>::iterator _M_##loopid##_it;\
+  std::vector<openfluid::landr::LineStringUnit*> _M_##loopid##_uvect; \
+
+/**
+ Macro for the beginning of a loop processing all geounits of a graph
+ @param[in] loopid ID of the loop, must match declaration
+ @param[in] graph pointer to a openfluid::landr::LineStringGraph
+ @param[out] unit pointer to a openfluid::landr::LineStringUnit object, pointing to the current processed geounit
+ */
+#define BEGIN_GEOUNITS_GRAPH_LOOP(loopid,graph,unit) \
+  if (graph) \
+  { \
+  _M_##loopid##_uvect = graph->getUnits();\
+  for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+  { \
+    unit = *_M_##loopid##_it; \
+
+/**
+ Macro for the beginning of a loop processing all geounits of a graph, following their selfid
+ @param[in] loopid ID of the loop, must match declaration
+ @param[in] graph pointer to a openfluid::landr::LineStringGraph
+ @param[out] unit pointer to a openfluid::landr::LineStringUnit object, pointing to the current processed geounit
+ */
+#define BEGIN_GEOUNITS_ORDERED_LOOP(loopid,graph,unit) \
+  if (graph) \
+  { \
+    _M_##loopid##_uvect = graph->getSelfIdOrderedUnits();\
+    for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+    { \
+      unit = *_M_##loopid##_it; \
+
+/**
+ Macro for the ending of a loop
+ */
+#define END_LOOP \
+    } \
+  }
+
 namespace openfluid {
 namespace landr {
 
@@ -130,6 +182,8 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
     openfluid::landr::LineStringUnit* getUnit(int SelfId);
 
     std::vector<openfluid::landr::LineStringUnit*> getUnits();
+
+    std::vector<openfluid::landr::LineStringUnit*> getSelfIdOrderedUnits();
 
     /**
      * Doesn't reset if the AttributeName already exists.

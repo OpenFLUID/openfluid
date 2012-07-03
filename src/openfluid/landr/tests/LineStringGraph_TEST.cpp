@@ -257,3 +257,68 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedUnits)
+{
+
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      new openfluid::landr::LineStringGraph(*Val);
+
+  std::vector<openfluid::landr::LineStringUnit*> OrderedUnits =
+      Graph->getSelfIdOrderedUnits();
+
+  for (unsigned int i = 0; i < OrderedUnits.size(); i++)
+    BOOST_CHECK_EQUAL(OrderedUnits.at(i)->getSelfId(), i+1);
+
+  delete Graph;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_loopMacros)
+{
+  openfluid::landr::LineStringUnit* CurrentUnit;
+  int i = 0;
+
+  openfluid::landr::LineStringGraph* NullGraph = 0;
+
+  DECLARE_GEOUNITS_GRAPH_LOOP(1);
+  BEGIN_GEOUNITS_GRAPH_LOOP(1,NullGraph,CurrentUnit)
+    i++;
+  END_LOOP
+
+  BOOST_CHECK_EQUAL(i, 0);
+
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      new openfluid::landr::LineStringGraph(*Val);
+
+  i = 0;
+  DECLARE_GEOUNITS_GRAPH_LOOP(2);
+  BEGIN_GEOUNITS_GRAPH_LOOP(2,Graph,CurrentUnit)
+    i++;
+  END_LOOP;
+
+  BOOST_CHECK_EQUAL(i, Graph->getSize());
+
+  i = 1;
+  DECLARE_GEOUNITS_ORDERED_LOOP(3);
+  BEGIN_GEOUNITS_ORDERED_LOOP(3,Graph,CurrentUnit)
+    BOOST_CHECK_EQUAL(CurrentUnit->getSelfId(),
+                    Graph->getUnit(i)->getSelfId());
+    i++;
+  END_LOOP;
+
+  delete Graph;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================

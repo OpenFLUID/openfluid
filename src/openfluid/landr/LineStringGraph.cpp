@@ -305,6 +305,20 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getUnits()
 // =====================================================================
 // =====================================================================
 
+std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getSelfIdOrderedUnits()
+{
+  std::vector<LineStringUnit*> Units;
+
+  for (std::map<int, LineStringUnit*>::iterator it = m_UnitsBySelfId.begin();
+      it != m_UnitsBySelfId.end(); ++it)
+    Units.push_back(it->second);
+
+  return Units;
+}
+
+// =====================================================================
+// =====================================================================
+
 void LineStringGraph::addAttribute(std::string AttributeName)
 {
   for (std::vector<LineStringUnit*>::iterator it = m_Units.begin();
@@ -321,7 +335,7 @@ void LineStringGraph::addAttribute(std::string AttributeName)
 void LineStringGraph::addAttribute(std::string AttributeName,
                                    LineStringUnit& Unit)
 {
-  Unit.m_Attributes[AttributeName];// = boost::any();
+  Unit.m_Attributes[AttributeName];
 }
 
 // =====================================================================
