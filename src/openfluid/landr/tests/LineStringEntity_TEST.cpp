@@ -46,7 +46,7 @@
  */
 
 /**
- \file LineStringUnit_TEST.cpp
+ \file LineStringEntity_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
@@ -55,14 +55,14 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_linestringunit
+#define BOOST_TEST_MODULE unittest_linestringentity
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/landr/LineStringUnit.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Geometry.h>
@@ -84,21 +84,21 @@ BOOST_AUTO_TEST_CASE(check_construction)
   geos::geom::Geometry* GeosGeom =
       (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-  openfluid::landr::LineStringUnit* Unit = new openfluid::landr::LineStringUnit(
+  openfluid::landr::LineStringEntity* Entity = new openfluid::landr::LineStringEntity(
       dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
       FirstFeature->Clone());
 
   BOOST_CHECK_EQUAL(Val->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
 
-  BOOST_CHECK(Unit->getLine()->equals(GeosGeom));
+  BOOST_CHECK(Entity->getLine()->equals(GeosGeom));
 
-  BOOST_CHECK(Unit->getFeature()->Equal(FirstFeature));
+  BOOST_CHECK(Entity->getFeature()->Equal(FirstFeature));
 
-  BOOST_CHECK_EQUAL(Unit->getSelfId(), 5);
+  BOOST_CHECK_EQUAL(Entity->getSelfId(), 5);
 
   OGRFeature::DestroyFeature(FirstFeature);
-  delete Unit;
+  delete Entity;
   delete Val;
 }
 
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(check_copy)
   geos::geom::Geometry* GeosGeom =
       (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-  openfluid::landr::LineStringUnit* Unit = new openfluid::landr::LineStringUnit(
+  openfluid::landr::LineStringEntity* Entity = new openfluid::landr::LineStringEntity(
       dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
       FirstFeature->Clone());
 
@@ -124,23 +124,23 @@ BOOST_AUTO_TEST_CASE(check_copy)
   delete GeosGeom;
   delete Val;
 
-  openfluid::landr::LineStringUnit* CopyUnit =
-      new openfluid::landr::LineStringUnit(*Unit);
+  openfluid::landr::LineStringEntity* CopyEntity =
+      new openfluid::landr::LineStringEntity(*Entity);
 
-  BOOST_CHECK(Unit->getLine()->equals(CopyUnit->getLine()));
-  BOOST_CHECK_EQUAL(Unit->getSelfId(), CopyUnit->getSelfId());
-  BOOST_CHECK_EQUAL(Unit->getFeature()->GetFieldCount(),
-                    CopyUnit->getFeature()->GetFieldCount());
+  BOOST_CHECK(Entity->getLine()->equals(CopyEntity->getLine()));
+  BOOST_CHECK_EQUAL(Entity->getSelfId(), CopyEntity->getSelfId());
+  BOOST_CHECK_EQUAL(Entity->getFeature()->GetFieldCount(),
+                    CopyEntity->getFeature()->GetFieldCount());
 
-  std::string UnitLineStr = Unit->getLine()->toString();
+  std::string UnitLineStr = Entity->getLine()->toString();
 
-  delete Unit;
+  delete Entity;
 
-  std::string CopyUnitLineStr = CopyUnit->getLine()->toString();
+  std::string CopyUnitLineStr = CopyEntity->getLine()->toString();
 
   BOOST_CHECK_EQUAL(UnitLineStr, CopyUnitLineStr);
 
-  delete CopyUnit;
+  delete CopyEntity;
 }
 
 // =====================================================================
@@ -154,11 +154,11 @@ BOOST_AUTO_TEST_CASE(check_nodes)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  openfluid::landr::LineStringUnit* U1 = Graph->getUnit(1);
-  openfluid::landr::LineStringUnit* U2 = Graph->getUnit(2);
-  openfluid::landr::LineStringUnit* U3 = Graph->getUnit(3);
-  openfluid::landr::LineStringUnit* U8 = Graph->getUnit(8);
-  openfluid::landr::LineStringUnit* U7 = Graph->getUnit(7);
+  openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
+  openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);
+  openfluid::landr::LineStringEntity* U3 = Graph->getEntity(3);
+  openfluid::landr::LineStringEntity* U8 = Graph->getEntity(8);
+  openfluid::landr::LineStringEntity* U7 = Graph->getEntity(7);
 
   BOOST_CHECK(
       U1->getStartNode()->getCoordinate().equals(U2->getEndNode()->getCoordinate()));
@@ -184,28 +184,28 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  openfluid::landr::LineStringUnit* U1 = Graph->getUnit(1);
-  openfluid::landr::LineStringUnit* U2 = Graph->getUnit(2);
-  openfluid::landr::LineStringUnit* U3 = Graph->getUnit(3);
-  openfluid::landr::LineStringUnit* U8 = Graph->getUnit(8);
-  openfluid::landr::LineStringUnit* U4 = Graph->getUnit(4);
+  openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
+  openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);
+  openfluid::landr::LineStringEntity* U3 = Graph->getEntity(3);
+  openfluid::landr::LineStringEntity* U8 = Graph->getEntity(8);
+  openfluid::landr::LineStringEntity* U4 = Graph->getEntity(4);
 
-  std::vector<openfluid::landr::LineStringUnit*> U1Down =
+  std::vector<openfluid::landr::LineStringEntity*> U1Down =
       U1->getDownNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U2Down =
+  std::vector<openfluid::landr::LineStringEntity*> U2Down =
       U2->getDownNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U3Down =
+  std::vector<openfluid::landr::LineStringEntity*> U3Down =
       U3->getDownNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U8Down =
+  std::vector<openfluid::landr::LineStringEntity*> U8Down =
       U8->getDownNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U4Down =
+  std::vector<openfluid::landr::LineStringEntity*> U4Down =
       U4->getDownNeighbours();
 
-  std::vector<openfluid::landr::LineStringUnit*> U1Up = U1->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U2Up = U2->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U3Up = U3->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U8Up = U8->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringUnit*> U4Up = U4->getUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U1Up = U1->getUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U2Up = U2->getUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U3Up = U3->getUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U8Up = U8->getUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U4Up = U4->getUpNeighbours();
 
   BOOST_CHECK_EQUAL(U1Down.size(), 0);
   BOOST_CHECK_EQUAL(U2Down.size(), 1);

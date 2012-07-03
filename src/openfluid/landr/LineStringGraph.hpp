@@ -57,7 +57,7 @@
 
 #include <geos/planargraph/PlanarGraph.h>
 
-#include <openfluid/landr/LineStringUnit.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
 
 #include <vector>
 
@@ -80,49 +80,49 @@ class GeoVectorValue;
 }
 
 /**
- Macro for declaration of a loop processing all geounits of a graph
+ Macro for declaration of a loop processing all entities of a graph
  @param[in] loopid ID of the loop
  */
-#define DECLARE_GEOUNITS_GRAPH_LOOP(loopid) \
-  std::vector<openfluid::landr::LineStringUnit*>::iterator _M_##loopid##_it;\
-  std::vector<openfluid::landr::LineStringUnit*> _M_##loopid##_uvect; \
+#define DECLARE_ENTITIES_GRAPH_LOOP(loopid) \
+  std::vector<openfluid::landr::LineStringEntity*>::iterator _M_##loopid##_it;\
+  std::vector<openfluid::landr::LineStringEntity*> _M_##loopid##_uvect; \
 
 
 /**
- Macro for declaration of a loop processing all geounits of a graph, following their selfid
+ Macro for declaration of a loop processing all entities of a graph, following their selfid
  @param[in] loopid ID of the loop
  */
-#define DECLARE_GEOUNITS_ORDERED_LOOP(loopid) \
-  std::vector<openfluid::landr::LineStringUnit*>::iterator _M_##loopid##_it;\
-  std::vector<openfluid::landr::LineStringUnit*> _M_##loopid##_uvect; \
+#define DECLARE_ENTITIES_ORDERED_LOOP(loopid) \
+  std::vector<openfluid::landr::LineStringEntity*>::iterator _M_##loopid##_it;\
+  std::vector<openfluid::landr::LineStringEntity*> _M_##loopid##_uvect; \
 
 /**
- Macro for the beginning of a loop processing all geounits of a graph
+ Macro for the beginning of a loop processing all entities of a graph
  @param[in] loopid ID of the loop, must match declaration
  @param[in] graph pointer to a openfluid::landr::LineStringGraph
- @param[out] unit pointer to a openfluid::landr::LineStringUnit object, pointing to the current processed geounit
+ @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
  */
-#define BEGIN_GEOUNITS_GRAPH_LOOP(loopid,graph,unit) \
+#define BEGIN_ENTITIES_GRAPH_LOOP(loopid,graph,entity) \
   if (graph) \
   { \
-  _M_##loopid##_uvect = graph->getUnits();\
+  _M_##loopid##_uvect = graph->getEntities();\
   for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
   { \
-    unit = *_M_##loopid##_it; \
+    entity = *_M_##loopid##_it; \
 
 /**
- Macro for the beginning of a loop processing all geounits of a graph, following their selfid
+ Macro for the beginning of a loop processing all entities of a graph, following their selfid
  @param[in] loopid ID of the loop, must match declaration
  @param[in] graph pointer to a openfluid::landr::LineStringGraph
- @param[out] unit pointer to a openfluid::landr::LineStringUnit object, pointing to the current processed geounit
+ @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
  */
-#define BEGIN_GEOUNITS_ORDERED_LOOP(loopid,graph,unit) \
+#define BEGIN_ENTITIES_ORDERED_LOOP(loopid,graph,entity) \
   if (graph) \
   { \
-    _M_##loopid##_uvect = graph->getSelfIdOrderedUnits();\
+    _M_##loopid##_uvect = graph->getSelfIdOrderedEntities();\
     for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
     { \
-      unit = *_M_##loopid##_it; \
+      entity = *_M_##loopid##_it; \
 
 /**
  Macro for the ending of a loop
@@ -142,15 +142,15 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
 
     std::vector<geos::planargraph::Node*> m_NewNodes;
 
-    std::map<int, openfluid::landr::LineStringUnit*> m_UnitsBySelfId;
+    std::map<int, openfluid::landr::LineStringEntity*> m_EntitiesBySelfId;
 
-    std::vector<openfluid::landr::LineStringUnit*> m_Units;
+    std::vector<openfluid::landr::LineStringEntity*> m_Entities;
 
     std::vector<geos::planargraph::DirectedEdge*> m_NewDirEdges;
 
-    void addAttribute(std::string AttributeName, LineStringUnit& Unit);
+    void addAttribute(std::string AttributeName, LineStringEntity& Entity);
 
-    void removeAttribute(std::string AttributeName, LineStringUnit& Unit);
+    void removeAttribute(std::string AttributeName, LineStringEntity& Entity);
 
   public:
 
@@ -161,29 +161,29 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
     LineStringGraph(openfluid::landr::LineStringGraph& Other);
 
     LineStringGraph(
-        const std::vector<openfluid::landr::LineStringUnit*>& Units);
+        const std::vector<openfluid::landr::LineStringEntity*>& Entities);
 
     /**
      * Takes ownership of LineString and Feature
      */
-    openfluid::landr::LineStringUnit* addEdge(
+    openfluid::landr::LineStringEntity* addEdge(
         const geos::geom::LineString* LineString, OGRFeature* Feat);
 
     virtual ~LineStringGraph();
 
-    openfluid::landr::LineStringUnit* getLastLineStringUnit();
+    openfluid::landr::LineStringEntity* getLastLineStringEntity();
 
-    std::vector<openfluid::landr::LineStringUnit*> getEndLineStringUnits();
+    std::vector<openfluid::landr::LineStringEntity*> getEndLineStringEntities();
 
-    std::vector<openfluid::landr::LineStringUnit*> getStartLineStringUnits();
+    std::vector<openfluid::landr::LineStringEntity*> getStartLineStringEntities();
 
     unsigned int getSize();
 
-    openfluid::landr::LineStringUnit* getUnit(int SelfId);
+    openfluid::landr::LineStringEntity* getEntity(int SelfId);
 
-    std::vector<openfluid::landr::LineStringUnit*> getUnits();
+    std::vector<openfluid::landr::LineStringEntity*> getEntities();
 
-    std::vector<openfluid::landr::LineStringUnit*> getSelfIdOrderedUnits();
+    std::vector<openfluid::landr::LineStringEntity*> getSelfIdOrderedEntities();
 
     /**
      * Doesn't reset if the AttributeName already exists.

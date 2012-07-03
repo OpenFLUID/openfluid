@@ -46,14 +46,14 @@
  */
 
 /**
- \file LineStringUnit.hpp
+ \file LineStringEntity.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LINESTRINGUNIT_HPP_
-#define LINESTRINGUNIT_HPP_
+#ifndef LINESTRINGENTITY_HPP_
+#define LINESTRINGENTITY_HPP_
 
 #include <geos/planargraph/Edge.h>
 
@@ -70,7 +70,7 @@ class LineString;
 namespace openfluid {
 namespace landr {
 
-class LineStringUnit: public geos::planargraph::Edge
+class LineStringEntity: public geos::planargraph::Edge
 {
   private:
 
@@ -80,7 +80,7 @@ class LineStringUnit: public geos::planargraph::Edge
 
     std::map<std::string, boost::any> m_Attributes;
 
-    // for limiting access to LineStringUnit attributes creation
+    // for limiting access to LineStringEntity attributes creation
     friend class LineStringGraph;
 
   public:
@@ -88,11 +88,11 @@ class LineStringUnit: public geos::planargraph::Edge
     /**
      * Takes ownership of LineString and Feature
      */
-    LineStringUnit(const geos::geom::LineString* NewLine, OGRFeature* Feat);
+    LineStringEntity(const geos::geom::LineString* NewLine, OGRFeature* Feat);
 
-    LineStringUnit(const openfluid::landr::LineStringUnit& Other);
+    LineStringEntity(const openfluid::landr::LineStringEntity& Other);
 
-    ~LineStringUnit();
+    ~LineStringEntity();
 
     const geos::geom::LineString* getLine() const;
 
@@ -104,9 +104,9 @@ class LineStringUnit: public geos::planargraph::Edge
 
     geos::planargraph::Node* getEndNode();
 
-    std::vector<openfluid::landr::LineStringUnit*> getUpNeighbours();
+    std::vector<openfluid::landr::LineStringEntity*> getUpNeighbours();
 
-    std::vector<openfluid::landr::LineStringUnit*> getDownNeighbours();
+    std::vector<openfluid::landr::LineStringEntity*> getDownNeighbours();
 
     bool getAttributeValue(std::string AttributeName, boost::any& Value);
 
@@ -119,4 +119,4 @@ class LineStringUnit: public geos::planargraph::Edge
 } // namespace landr
 } /* namespace openfluid */
 
-#endif /* LINESTRINGUNIT_HPP_ */
+#endif /* LINESTRINGENTITY_HPP_ */

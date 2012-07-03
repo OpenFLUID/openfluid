@@ -46,13 +46,13 @@
  */
 
 /**
- \file LineStringUnit.cpp
+ \file LineStringEntity.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "LineStringUnit.hpp"
+#include "LineStringEntity.hpp"
 
 #include <geos/geom/LineString.h>
 #include <geos/planargraph/DirectedEdge.h>
@@ -65,7 +65,7 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-LineStringUnit::LineStringUnit(const geos::geom::LineString* NewLine,
+LineStringEntity::LineStringEntity(const geos::geom::LineString* NewLine,
                                OGRFeature* Feat) :
     geos::planargraph::Edge(), mp_Line(NewLine), mp_Feature(Feat)
 {
@@ -75,18 +75,18 @@ LineStringUnit::LineStringUnit(const geos::geom::LineString* NewLine,
 // =====================================================================
 // =====================================================================
 
-LineStringUnit::LineStringUnit(const openfluid::landr::LineStringUnit& Other) :
+LineStringEntity::LineStringEntity(const openfluid::landr::LineStringEntity& Other) :
     geos::planargraph::Edge()
 {
   mp_Line = dynamic_cast<geos::geom::LineString*>(Other.getLine()->clone());
   mp_Feature =
-      (const_cast<openfluid::landr::LineStringUnit&>(Other).getFeature())->Clone();
+      (const_cast<openfluid::landr::LineStringEntity&>(Other).getFeature())->Clone();
 }
 
 // =====================================================================
 // =====================================================================
 
-LineStringUnit::~LineStringUnit()
+LineStringEntity::~LineStringEntity()
 {
   OGRFeature::DestroyFeature(mp_Feature);
   delete mp_Line;
@@ -95,7 +95,7 @@ LineStringUnit::~LineStringUnit()
 // =====================================================================
 // =====================================================================
 
-const geos::geom::LineString* LineStringUnit::getLine() const
+const geos::geom::LineString* LineStringEntity::getLine() const
 {
   return mp_Line;
 }
@@ -103,7 +103,7 @@ const geos::geom::LineString* LineStringUnit::getLine() const
 // =====================================================================
 // =====================================================================
 
-OGRFeature* LineStringUnit::getFeature()
+OGRFeature* LineStringEntity::getFeature()
 {
   return mp_Feature;
 }
@@ -111,7 +111,7 @@ OGRFeature* LineStringUnit::getFeature()
 // =====================================================================
 // =====================================================================
 
-int LineStringUnit::getSelfId()
+int LineStringEntity::getSelfId()
 {
   return mp_Feature->GetFieldAsInteger("SELF_ID");
 }
@@ -119,7 +119,7 @@ int LineStringUnit::getSelfId()
 // =====================================================================
 // =====================================================================
 
-geos::planargraph::Node* LineStringUnit::getStartNode()
+geos::planargraph::Node* LineStringEntity::getStartNode()
 {
   return getDirEdge(0)->getFromNode();
 }
@@ -127,7 +127,7 @@ geos::planargraph::Node* LineStringUnit::getStartNode()
 // =====================================================================
 // =====================================================================
 
-geos::planargraph::Node* LineStringUnit::getEndNode()
+geos::planargraph::Node* LineStringEntity::getEndNode()
 {
   return getDirEdge(0)->getToNode();
 }
@@ -135,9 +135,9 @@ geos::planargraph::Node* LineStringUnit::getEndNode()
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getUpNeighbours()
+std::vector<openfluid::landr::LineStringEntity*> LineStringEntity::getUpNeighbours()
 {
-  std::vector<openfluid::landr::LineStringUnit*> UpNeighbours;
+  std::vector<openfluid::landr::LineStringEntity*> UpNeighbours;
 
   geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
 
@@ -146,8 +146,8 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getUpNeighbours()
   for (std::vector<geos::planargraph::DirectedEdge*>::iterator it =
       UpStar->iterator(); it != UpStar->end(); ++it)
   {
-    openfluid::landr::LineStringUnit* Unit =
-        dynamic_cast<openfluid::landr::LineStringUnit*>((*it)->getEdge());
+    openfluid::landr::LineStringEntity* Unit =
+        dynamic_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge());
 
     if (Unit->getEndNode()->getCoordinate().equals(UpNodeCoo))
       UpNeighbours.push_back(Unit);
@@ -159,9 +159,9 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getUpNeighbours()
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getDownNeighbours()
+std::vector<openfluid::landr::LineStringEntity*> LineStringEntity::getDownNeighbours()
 {
-  std::vector<openfluid::landr::LineStringUnit*> DownNeighbours;
+  std::vector<openfluid::landr::LineStringEntity*> DownNeighbours;
 
   geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
 
@@ -170,8 +170,8 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getDownNeighbours
   for (std::vector<geos::planargraph::DirectedEdge*>::iterator it =
       DownStar->iterator(); it != DownStar->end(); ++it)
   {
-    openfluid::landr::LineStringUnit* Unit =
-        dynamic_cast<openfluid::landr::LineStringUnit*>((*it)->getEdge());
+    openfluid::landr::LineStringEntity* Unit =
+        dynamic_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge());
 
     if (Unit->getStartNode()->getCoordinate().equals(DownNodeCoo))
       DownNeighbours.push_back(Unit);
@@ -183,7 +183,7 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringUnit::getDownNeighbours
 // =====================================================================
 // =====================================================================
 
-bool LineStringUnit::getAttributeValue(std::string AttributeName, boost::any& Value)
+bool LineStringEntity::getAttributeValue(std::string AttributeName, boost::any& Value)
 {
   if (m_Attributes.count(AttributeName))
   {
@@ -197,7 +197,7 @@ bool LineStringUnit::getAttributeValue(std::string AttributeName, boost::any& Va
 // =====================================================================
 // =====================================================================
 
-bool LineStringUnit::setAttributeValue(std::string AttributeName, boost::any Value)
+bool LineStringEntity::setAttributeValue(std::string AttributeName, boost::any Value)
 {
   if (m_Attributes.count(AttributeName))
   {
@@ -211,7 +211,7 @@ bool LineStringUnit::setAttributeValue(std::string AttributeName, boost::any Val
 // =====================================================================
 // =====================================================================
 
-double LineStringUnit::getLength()
+double LineStringEntity::getLength()
 {
   return mp_Line->getLength();
 }

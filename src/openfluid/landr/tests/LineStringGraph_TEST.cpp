@@ -87,12 +87,12 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_construction_fromLineStringUnitVector)
+BOOST_AUTO_TEST_CASE(check_construction_fromLineStringEntityVector)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
-  std::vector<openfluid::landr::LineStringUnit*> Units;
+  std::vector<openfluid::landr::LineStringEntity*> Entities;
 
   OGRLayer* Layer0 = Val->getLayer0();
 
@@ -106,12 +106,12 @@ BOOST_AUTO_TEST_CASE(check_construction_fromLineStringUnitVector)
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-    openfluid::landr::LineStringUnit* Unit =
-        new openfluid::landr::LineStringUnit(
+    openfluid::landr::LineStringEntity* Entity =
+        new openfluid::landr::LineStringEntity(
             dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
             Feat->Clone());
 
-    Units.push_back(Unit);
+    Entities.push_back(Entity);
 
     // destroying the feature destroys also the associated OGRGeom
     OGRFeature::DestroyFeature(Feat);
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromLineStringUnitVector)
   }
 
   openfluid::landr::LineStringGraph* Graph2 =
-      new openfluid::landr::LineStringGraph(Units);
+      new openfluid::landr::LineStringGraph(Entities);
 
   BOOST_CHECK_EQUAL(Graph2->getSize(), 8);
   BOOST_CHECK_EQUAL(Graph2->getEdges()->size(), 8);
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(check_copy)
 
   BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
-  BOOST_CHECK_EQUAL(Graph->getUnits().size(), Copy->getUnits().size());
+  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
 
   delete Graph;
   delete Copy;
@@ -162,15 +162,15 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  std::vector<openfluid::landr::LineStringUnit*> Starts =
-      Graph->getStartLineStringUnits();
+  std::vector<openfluid::landr::LineStringEntity*> Starts =
+      Graph->getStartLineStringEntities();
   BOOST_CHECK_EQUAL(Starts.size(), 4);
 
-  std::vector<openfluid::landr::LineStringUnit*> Ends =
-      Graph->getEndLineStringUnits();
+  std::vector<openfluid::landr::LineStringEntity*> Ends =
+      Graph->getEndLineStringEntities();
   BOOST_CHECK_EQUAL(Ends.size(), 1);
 
-  BOOST_CHECK_EQUAL(Graph->getLastLineStringUnit()->getSelfId(), 1);
+  BOOST_CHECK_EQUAL(Graph->getLastLineStringEntity()->getSelfId(), 1);
 
   delete Graph;
   delete Val;
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_getUnit)
+BOOST_AUTO_TEST_CASE(check_getEntity)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
@@ -187,10 +187,10 @@ BOOST_AUTO_TEST_CASE(check_getUnit)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  BOOST_CHECK(Graph->getUnit(1));
-  BOOST_CHECK(Graph->getUnit(5));
-  BOOST_CHECK(Graph->getUnit(3));
-  BOOST_CHECK(!Graph->getUnit(100));
+  BOOST_CHECK(Graph->getEntity(1));
+  BOOST_CHECK(Graph->getEntity(5));
+  BOOST_CHECK(Graph->getEntity(3));
+  BOOST_CHECK(!Graph->getEntity(100));
 
   delete Graph;
   delete Val;
@@ -207,8 +207,8 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  openfluid::landr::LineStringUnit* U1 = Graph->getUnit(1);
-  openfluid::landr::LineStringUnit* U2 = Graph->getUnit(2);
+  openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
+  openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);
 
   boost::any IntValue = 0;
   boost::any StrValue = std::string("");
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedUnits)
+BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
 {
 
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
@@ -267,11 +267,11 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedUnits)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  std::vector<openfluid::landr::LineStringUnit*> OrderedUnits =
-      Graph->getSelfIdOrderedUnits();
+  std::vector<openfluid::landr::LineStringEntity*> OrderedEntities =
+      Graph->getSelfIdOrderedEntities();
 
-  for (unsigned int i = 0; i < OrderedUnits.size(); i++)
-    BOOST_CHECK_EQUAL(OrderedUnits.at(i)->getSelfId(), i+1);
+  for (unsigned int i = 0; i < OrderedEntities.size(); i++)
+    BOOST_CHECK_EQUAL(OrderedEntities.at(i)->getSelfId(), i+1);
 
   delete Graph;
   delete Val;
@@ -282,13 +282,13 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedUnits)
 
 BOOST_AUTO_TEST_CASE(check_loopMacros)
 {
-  openfluid::landr::LineStringUnit* CurrentUnit;
+  openfluid::landr::LineStringEntity* CurrentEntity;
   int i = 0;
 
   openfluid::landr::LineStringGraph* NullGraph = 0;
 
-  DECLARE_GEOUNITS_GRAPH_LOOP(1);
-  BEGIN_GEOUNITS_GRAPH_LOOP(1,NullGraph,CurrentUnit)
+  DECLARE_ENTITIES_GRAPH_LOOP(1);
+  BEGIN_ENTITIES_GRAPH_LOOP(1,NullGraph,CurrentEntity)
     i++;
   END_LOOP
 
@@ -301,18 +301,18 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
       new openfluid::landr::LineStringGraph(*Val);
 
   i = 0;
-  DECLARE_GEOUNITS_GRAPH_LOOP(2);
-  BEGIN_GEOUNITS_GRAPH_LOOP(2,Graph,CurrentUnit)
+  DECLARE_ENTITIES_GRAPH_LOOP(2);
+  BEGIN_ENTITIES_GRAPH_LOOP(2,Graph,CurrentEntity)
     i++;
   END_LOOP;
 
   BOOST_CHECK_EQUAL(i, Graph->getSize());
 
   i = 1;
-  DECLARE_GEOUNITS_ORDERED_LOOP(3);
-  BEGIN_GEOUNITS_ORDERED_LOOP(3,Graph,CurrentUnit)
-    BOOST_CHECK_EQUAL(CurrentUnit->getSelfId(),
-                    Graph->getUnit(i)->getSelfId());
+  DECLARE_ENTITIES_ORDERED_LOOP(3);
+  BEGIN_ENTITIES_ORDERED_LOOP(3,Graph,CurrentEntity)
+    BOOST_CHECK_EQUAL(CurrentEntity->getSelfId(),
+                    Graph->getEntity(i)->getSelfId());
     i++;
   END_LOOP;
 

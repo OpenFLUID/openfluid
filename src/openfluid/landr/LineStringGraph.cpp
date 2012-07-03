@@ -55,7 +55,7 @@
 #include "LineStringGraph.hpp"
 
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/landr/LineStringUnit.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/CoordinateSequence.h>
@@ -81,10 +81,10 @@ LineStringGraph::LineStringGraph() :
 LineStringGraph::LineStringGraph(openfluid::landr::LineStringGraph& Other) :
     geos::planargraph::PlanarGraph()
 {
-  std::vector<openfluid::landr::LineStringUnit*> OtherUnits = Other.getUnits();
+  std::vector<openfluid::landr::LineStringEntity*> OtherEntities = Other.getEntities();
 
-  for (std::vector<openfluid::landr::LineStringUnit*>::iterator it =
-      OtherUnits.begin(); it != OtherUnits.end(); ++it)
+  for (std::vector<openfluid::landr::LineStringEntity*>::iterator it =
+      OtherEntities.begin(); it != OtherEntities.end(); ++it)
   {
     addEdge(dynamic_cast<geos::geom::LineString*>((*it)->getLine()->clone()),
             (*it)->getFeature()->Clone());
@@ -128,11 +128,11 @@ LineStringGraph::LineStringGraph(const openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 
 LineStringGraph::LineStringGraph(
-    const std::vector<openfluid::landr::LineStringUnit*>& Units) :
+    const std::vector<openfluid::landr::LineStringEntity*>& Entities) :
     geos::planargraph::PlanarGraph()
 {
-  for (std::vector<openfluid::landr::LineStringUnit*>::const_iterator it =
-      Units.begin(); it != Units.end(); ++it)
+  for (std::vector<openfluid::landr::LineStringEntity*>::const_iterator it =
+      Entities.begin(); it != Entities.end(); ++it)
   {
     addEdge(
         dynamic_cast<const geos::geom::LineString*>((*it)->getLine()->clone()),
@@ -143,46 +143,46 @@ LineStringGraph::LineStringGraph(
 // =====================================================================
 // =====================================================================
 
-openfluid::landr::LineStringUnit* LineStringGraph::addEdge(
+openfluid::landr::LineStringEntity* LineStringGraph::addEdge(
     const geos::geom::LineString* LineString, OGRFeature* Feat)
 {
   if (LineString->isEmpty())
-    return (openfluid::landr::LineStringUnit*) 0;
+    return (openfluid::landr::LineStringEntity*) 0;
 
-  geos::geom::CoordinateSequence *coordinates =
+  geos::geom::CoordinateSequence* Coordinates =
       geos::geom::CoordinateSequence::removeRepeatedPoints(
           LineString->getCoordinatesRO());
 
-  const geos::geom::Coordinate& startCoordinate = coordinates->getAt(0);
-  const geos::geom::Coordinate& endCoordinate = coordinates->getAt(
-      coordinates->getSize() - 1);
+  const geos::geom::Coordinate& StartCoordinate = Coordinates->getAt(0);
+  const geos::geom::Coordinate& EndCoordinate = Coordinates->getAt(
+      Coordinates->getSize() - 1);
 
-  geos::planargraph::Node* startNode = getNode(startCoordinate);
-  geos::planargraph::Node* endNode = getNode(endCoordinate);
+  geos::planargraph::Node* StartNode = getNode(StartCoordinate);
+  geos::planargraph::Node* EndNode = getNode(EndCoordinate);
 
-  geos::planargraph::DirectedEdge *directedEdge0 =
-      new geos::planargraph::DirectedEdge(startNode, endNode,
-                                          coordinates->getAt(1), true);
-  m_NewDirEdges.push_back(directedEdge0);
+  geos::planargraph::DirectedEdge* DirectedEdge0 =
+      new geos::planargraph::DirectedEdge(StartNode, EndNode,
+                                          Coordinates->getAt(1), true);
+  m_NewDirEdges.push_back(DirectedEdge0);
 
-  geos::planargraph::DirectedEdge *directedEdge1 =
+  geos::planargraph::DirectedEdge* DirectedEdge1 =
       new geos::planargraph::DirectedEdge(
-          endNode, startNode, coordinates->getAt(coordinates->getSize() - 2),
+          EndNode, StartNode, Coordinates->getAt(Coordinates->getSize() - 2),
           false);
-  m_NewDirEdges.push_back(directedEdge1);
+  m_NewDirEdges.push_back(DirectedEdge1);
 
-  openfluid::landr::LineStringUnit* edge = new LineStringUnit(LineString, Feat);
+  openfluid::landr::LineStringEntity* Edge = new LineStringEntity(LineString, Feat);
 
-  m_UnitsBySelfId[edge->getSelfId()] = edge;
-  m_Units.push_back(edge);
+  m_EntitiesBySelfId[Edge->getSelfId()] = Edge;
+  m_Entities.push_back(Edge);
 
-  edge->setDirectedEdges(directedEdge0, directedEdge1);
+  Edge->setDirectedEdges(DirectedEdge0, DirectedEdge1);
 
-  add(edge);
+  add(Edge);
 
-  delete coordinates;
+  delete Coordinates;
 
-  return edge;
+  return Edge;
 }
 
 // =====================================================================
@@ -209,8 +209,8 @@ LineStringGraph::~LineStringGraph()
   unsigned int i;
   for (i = 0; i < m_NewNodes.size(); i++)
     delete m_NewNodes[i];
-  for (i = 0; i < m_Units.size(); i++)
-    delete m_Units[i];
+  for (i = 0; i < m_Entities.size(); i++)
+    delete m_Entities[i];
   for (i = 0; i < m_NewDirEdges.size(); i++)
     delete m_NewDirEdges[i];
 }
@@ -218,61 +218,61 @@ LineStringGraph::~LineStringGraph()
 // =====================================================================
 // =====================================================================
 
-openfluid::landr::LineStringUnit* LineStringGraph::getLastLineStringUnit()
+openfluid::landr::LineStringEntity* LineStringGraph::getLastLineStringEntity()
 {
-  std::vector<openfluid::landr::LineStringUnit*> EndUnits =
-      getEndLineStringUnits();
+  std::vector<openfluid::landr::LineStringEntity*> EndEntities =
+      getEndLineStringEntities();
 
-  if (EndUnits.size() != 1)
-    return (openfluid::landr::LineStringUnit*) 0;
+  if (EndEntities.size() != 1)
+    return (openfluid::landr::LineStringEntity*) 0;
 
-  return *EndUnits.begin();
+  return *EndEntities.begin();
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getEndLineStringUnits()
+std::vector<openfluid::landr::LineStringEntity*> LineStringGraph::getEndLineStringEntities()
 {
-  std::vector<openfluid::landr::LineStringUnit*> EndUnits;
+  std::vector<openfluid::landr::LineStringEntity*> EndEntities;
 
-  openfluid::landr::LineStringUnit* CurrentUnit = 0;
+  openfluid::landr::LineStringEntity* CurrentEntity = 0;
 
   for (unsigned int i = 0; i < getEdges()->size(); i++)
   {
-    CurrentUnit =
-        dynamic_cast<openfluid::landr::LineStringUnit*>(getEdges()->at(i));
+    CurrentEntity =
+        dynamic_cast<openfluid::landr::LineStringEntity*>(getEdges()->at(i));
 
-    if (CurrentUnit->getEndNode()->getDegree() == 1)
+    if (CurrentEntity->getEndNode()->getDegree() == 1)
     {
-      EndUnits.push_back(CurrentUnit);
+      EndEntities.push_back(CurrentEntity);
     }
   }
 
-  return EndUnits;
+  return EndEntities;
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getStartLineStringUnits()
+std::vector<openfluid::landr::LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 {
-  std::vector<openfluid::landr::LineStringUnit*> StartUnits;
+  std::vector<openfluid::landr::LineStringEntity*> StartEntities;
 
-  openfluid::landr::LineStringUnit* CurrentUnit = 0;
+  openfluid::landr::LineStringEntity* CurrentEntity = 0;
 
   for (unsigned int i = 0; i < getEdges()->size(); i++)
   {
-    CurrentUnit =
-        dynamic_cast<openfluid::landr::LineStringUnit*>(getEdges()->at(i));
+    CurrentEntity =
+        dynamic_cast<openfluid::landr::LineStringEntity*>(getEdges()->at(i));
 
-    if (CurrentUnit->getStartNode()->getDegree() == 1)
+    if (CurrentEntity->getStartNode()->getDegree() == 1)
     {
-      StartUnits.push_back(CurrentUnit);
+      StartEntities.push_back(CurrentEntity);
     }
   }
 
-  return StartUnits;
+  return StartEntities;
 }
 
 // =====================================================================
@@ -286,34 +286,34 @@ unsigned int LineStringGraph::getSize()
 // =====================================================================
 // =====================================================================
 
-openfluid::landr::LineStringUnit* LineStringGraph::getUnit(int SelfId)
+openfluid::landr::LineStringEntity* LineStringGraph::getEntity(int SelfId)
 {
-  if (m_UnitsBySelfId.count(SelfId))
-    return m_UnitsBySelfId.find(SelfId)->second;
+  if (m_EntitiesBySelfId.count(SelfId))
+    return m_EntitiesBySelfId.find(SelfId)->second;
 
-  return (openfluid::landr::LineStringUnit*) 0;
+  return (openfluid::landr::LineStringEntity*) 0;
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getUnits()
+std::vector<openfluid::landr::LineStringEntity*> LineStringGraph::getEntities()
 {
-  return m_Units;
+  return m_Entities;
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getSelfIdOrderedUnits()
+std::vector<openfluid::landr::LineStringEntity*> LineStringGraph::getSelfIdOrderedEntities()
 {
-  std::vector<LineStringUnit*> Units;
+  std::vector<LineStringEntity*> Entities;
 
-  for (std::map<int, LineStringUnit*>::iterator it = m_UnitsBySelfId.begin();
-      it != m_UnitsBySelfId.end(); ++it)
-    Units.push_back(it->second);
+  for (std::map<int, LineStringEntity*>::iterator it = m_EntitiesBySelfId.begin();
+      it != m_EntitiesBySelfId.end(); ++it)
+    Entities.push_back(it->second);
 
-  return Units;
+  return Entities;
 }
 
 // =====================================================================
@@ -321,8 +321,8 @@ std::vector<openfluid::landr::LineStringUnit*> LineStringGraph::getSelfIdOrdered
 
 void LineStringGraph::addAttribute(std::string AttributeName)
 {
-  for (std::vector<LineStringUnit*>::iterator it = m_Units.begin();
-      it != m_Units.end(); ++it)
+  for (std::vector<LineStringEntity*>::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
   {
     addAttribute(AttributeName, **it);
   }
@@ -333,9 +333,9 @@ void LineStringGraph::addAttribute(std::string AttributeName)
 
 // thanks to LineStringGraph is a friend of LineStringUnit
 void LineStringGraph::addAttribute(std::string AttributeName,
-                                   LineStringUnit& Unit)
+                                   LineStringEntity& Entity)
 {
-  Unit.m_Attributes[AttributeName];
+  Entity.m_Attributes[AttributeName];
 }
 
 // =====================================================================
@@ -343,8 +343,8 @@ void LineStringGraph::addAttribute(std::string AttributeName,
 
 void LineStringGraph::removeAttribute(std::string AttributeName)
 {
-  for (std::vector<LineStringUnit*>::iterator it = m_Units.begin();
-      it != m_Units.end(); ++it)
+  for (std::vector<LineStringEntity*>::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
   {
     removeAttribute(AttributeName, **it);
   }
@@ -355,9 +355,9 @@ void LineStringGraph::removeAttribute(std::string AttributeName)
 
 // thanks to LineStringGraph is a friend of LineStringUnit
 void LineStringGraph::removeAttribute(std::string AttributeName,
-                                      LineStringUnit& Unit)
+                                      LineStringEntity& Entity)
 {
-  Unit.m_Attributes.erase(AttributeName);
+  Entity.m_Attributes.erase(AttributeName);
 }
 
 // =====================================================================
