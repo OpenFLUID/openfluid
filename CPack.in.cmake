@@ -18,7 +18,7 @@ SET(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 SET(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
 SET(CPACK_PACKAGE_CONTACT "Jean-Christophe Fabre <fabrejc@supagro.inra.fr>")
 SET(CPACK_PACKAGE_VENDOR "LISAH (INRA-IRD-SupAgro)")
-SET(CPACK_PACKAGE_DESCRIPTION "OpenFLUID.\n This package contains the OpenFLUID software environment for modelling fluxes in landscapes. It also includes libraries, headers and tools for development.")
+SET(CPACK_PACKAGE_DESCRIPTION "OpenFLUID.\n This package contains the OpenFLUID software environment for modelling landscapes functionning, mainly oriented on spatial fluxes modelling. It also includes API and tools for development.")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${CPACK_PACKAGE_DESCRIPTION}")
 
 
