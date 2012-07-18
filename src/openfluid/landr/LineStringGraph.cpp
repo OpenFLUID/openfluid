@@ -331,7 +331,7 @@ void LineStringGraph::addAttribute(std::string AttributeName)
 // =====================================================================
 // =====================================================================
 
-// thanks to LineStringGraph is a friend of LineStringUnit
+// thanks to LineStringGraph is a friend of LineStringEntity
 void LineStringGraph::addAttribute(std::string AttributeName,
                                    LineStringEntity& Entity)
 {
@@ -353,7 +353,7 @@ void LineStringGraph::removeAttribute(std::string AttributeName)
 // =====================================================================
 // =====================================================================
 
-// thanks to LineStringGraph is a friend of LineStringUnit
+// thanks to LineStringGraph is a friend of LineStringEntity
 void LineStringGraph::removeAttribute(std::string AttributeName,
                                       LineStringEntity& Entity)
 {

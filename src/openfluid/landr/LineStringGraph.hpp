@@ -138,8 +138,6 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
 {
   private:
 
-    geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
-
     std::vector<geos::planargraph::Node*> m_NewNodes;
 
     std::map<int, openfluid::landr::LineStringEntity*> m_EntitiesBySelfId;
@@ -147,6 +145,8 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
     std::vector<openfluid::landr::LineStringEntity*> m_Entities;
 
     std::vector<geos::planargraph::DirectedEdge*> m_NewDirEdges;
+
+    geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
 
     void addAttribute(std::string AttributeName, LineStringEntity& Entity);
 
@@ -163,13 +163,13 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
     LineStringGraph(
         const std::vector<openfluid::landr::LineStringEntity*>& Entities);
 
+    virtual ~LineStringGraph();
+
     /**
      * Takes ownership of LineString and Feature
      */
     openfluid::landr::LineStringEntity* addEdge(
         const geos::geom::LineString* LineString, OGRFeature* Feat);
-
-    virtual ~LineStringGraph();
 
     openfluid::landr::LineStringEntity* getLastLineStringEntity();
 
