@@ -130,19 +130,19 @@ int PolygonEntity::getSelfId()
 // =====================================================================
 // =====================================================================
 
-geos::geom::LineString* PolygonEntity::getLineIntersectionWith(
+std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
     PolygonEntity& Other)
 {
-  geos::geom::LineString* LS = 0;
+  std::vector<geos::geom::LineString*> Lines;
 
   geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(Other.mp_Polygon);
 
   if (SharedGeom->getDimension() == geos::geom::Dimension::L)
-    LS = PolygonGraph::getMergedLineStringFromGeometry(SharedGeom);
+    Lines = *PolygonGraph::getMergedLineStringsFromGeometry(SharedGeom);
 
   delete SharedGeom;
 
-  return LS;
+  return Lines;
 }
 
 // =====================================================================
@@ -197,7 +197,7 @@ PolygonEdge* PolygonEntity::findEdgeIntersecting(
 
 void PolygonEntity::addNeighbour(PolygonEntity* Neighbour)
 {
-  m_Neigbours.push_back(Neighbour);
+  m_Neigbours.insert(Neighbour);
 }
 
 // =====================================================================
@@ -205,7 +205,9 @@ void PolygonEntity::addNeighbour(PolygonEntity* Neighbour)
 
 std::vector<openfluid::landr::PolygonEntity*> PolygonEntity::getNeighbours()
 {
-  return m_Neigbours;
+  std::vector<openfluid::landr::PolygonEntity*> N;
+  N.assign(m_Neigbours.begin(),m_Neigbours.end());
+  return N;
 }
 
 // =====================================================================

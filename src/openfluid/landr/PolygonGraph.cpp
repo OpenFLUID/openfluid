@@ -182,6 +182,13 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
 
   openfluid::landr::PolygonEntity* NewEntity = new PolygonEntity(Polygon, Feat);
 
+  if (!Polygon->isValid())
+  {
+    std::cerr << "Warning: Polygon " << NewEntity->getSelfId()
+              << " is not valid, resulting graph might be incomplete."
+              << std::endl;
+  }
+
   try
   {
     //TODO use prepared geoms ?
@@ -190,11 +197,13 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
     {
       PolygonEntity* OtherEntity = *it;
 
-      geos::geom::LineString* SharedLine = NewEntity->getLineIntersectionWith(
-          *OtherEntity);
+      std::vector<geos::geom::LineString*> SharedLines =
+          NewEntity->getLineIntersectionsWith(*OtherEntity);
 
-      if (SharedLine)
+      for (unsigned int i = 0; i < SharedLines.size(); i++)
       {
+        geos::geom::LineString* SharedLine = SharedLines[i];
+
         PolygonEdge* SharedEdge = createEdge(*SharedLine);
 
         NewEntity->addEdge(SharedEdge);
@@ -286,6 +295,7 @@ std::vector<geos::geom::LineString*>* PolygonGraph::getMergedLineStringsFromGeom
       break;
     case geos::geom::GEOS_MULTILINESTRING:
     case geos::geom::GEOS_LINEARRING:
+    case geos::geom::GEOS_GEOMETRYCOLLECTION:
       Merger.add(Geom);
       LS = Merger.getMergedLineStrings();
       break;

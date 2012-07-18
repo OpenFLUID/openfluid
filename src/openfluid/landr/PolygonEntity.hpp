@@ -83,7 +83,7 @@ class PolygonEntity: public geos::planargraph::Edge
 
     std::map<std::string, boost::any> m_Attributes;
 
-    std::vector<PolygonEntity*> m_Neigbours;
+    std::set<PolygonEntity*> m_Neigbours;
 
     // for limiting access to PolygonEntity attributes creation
     friend class PolygonGraph;
@@ -108,13 +108,12 @@ class PolygonEntity: public geos::planargraph::Edge
     int getSelfId();
 
     /**
-     * @brief Returns the linear intersection between two Polygons.
+     * @brief Returns a vector of linear intersections between two Polygons.
      *
      * @param Other The Polygon Entity to compare to.
-     * @return A new allocated LineString representing the linear intersection (eventually merged) between this Polygon Entity and Other,
-     *  or 0 if there is no intersection or if the intersection cannot be linearized.
+     * @return A vector of new allocated LineStrings representing the linear intersections (eventually merged) between this Polygon Entity and Other.
      */
-    geos::geom::LineString* getLineIntersectionWith(PolygonEntity& Other);
+    std::vector<geos::geom::LineString*> getLineIntersectionsWith(PolygonEntity& Other);
 
     void addEdge(PolygonEdge* Edge);
 

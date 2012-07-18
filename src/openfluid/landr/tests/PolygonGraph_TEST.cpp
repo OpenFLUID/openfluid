@@ -516,6 +516,54 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_linesContact)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_lines.shp");
+
+  openfluid::landr::PolygonGraph Graph(*Val);
+
+  BOOST_CHECK_EQUAL(Graph.getSize(), 3);
+  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 6);
+  std::vector<geos::planargraph::Node*> Nodes;
+  Graph.getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 4);
+  BOOST_CHECK(Graph.isComplete());
+
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours().size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours().size(), 2);
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_point.shp");
+
+  openfluid::landr::PolygonGraph Graph(*Val);
+
+  BOOST_CHECK_EQUAL(Graph.getSize(), 3);
+  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 5);
+  std::vector<geos::planargraph::Node*> Nodes;
+  Graph.getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 3);
+  BOOST_CHECK(Graph.isComplete());
+
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours().size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours().size(), 2);
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(check_copy)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(

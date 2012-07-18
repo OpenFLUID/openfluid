@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_lineIntersection)
+BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
 {
   // * * * * *
   // *       *
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(check_lineIntersection)
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
   openfluid::landr::PolygonEntity Ent2(P2, NULL);
 
-  geos::geom::LineString* Shared = Ent1.getLineIntersectionWith(Ent2);
+  geos::geom::LineString* Shared = *Ent1.getLineIntersectionsWith(Ent2).begin();
 
   BOOST_CHECK(Shared->getCoordinateN(0).equals(geos::geom::Coordinate(2, 1)));
   BOOST_CHECK(Shared->getCoordinateN(1).equals(geos::geom::Coordinate(2, 0)));
@@ -255,7 +255,7 @@ BOOST_AUTO_TEST_CASE(check_lineIntersection)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_NolineIntersection)
+BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
 {
   //         * * *
   //         * 2 *
@@ -292,9 +292,7 @@ BOOST_AUTO_TEST_CASE(check_NolineIntersection)
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
   openfluid::landr::PolygonEntity Ent2(P2, NULL);
 
-  geos::geom::LineString* Shared = Ent1.getLineIntersectionWith(Ent2);
-
-  BOOST_CHECK(!Shared);
+  BOOST_CHECK_EQUAL(Ent1.getLineIntersectionsWith(Ent2).size(),0);
 }
 
 // =====================================================================
