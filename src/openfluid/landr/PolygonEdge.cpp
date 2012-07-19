@@ -87,38 +87,52 @@ geos::geom::LineString* PolygonEdge::getLine()
 // =====================================================================
 // =====================================================================
 
-void PolygonEdge::addFace(PolygonEntity* NewFace)
+void PolygonEdge::addFace(PolygonEntity& NewFace)
 {
   if (!isLineInFace(NewFace))
+  {
     throw openfluid::base::OFException(
         "OpenFLUID Framework",
         "PolygonEdge::addNeighbour",
         Glib::ustring::compose(
             "Can not add Polygon %1 as neighbour of this edge, because it doesn't contain edge line.",
-            NewFace->getSelfId()));
+            NewFace.getSelfId()));
+    return;
+  }
 
-  if (m_Faces.size() > 2)
+  if (m_Faces.size() > 1)
+  {
     throw openfluid::base::OFException(
         "OpenFLUID Framework",
         "PolygonEdge::addNeighbour",
         Glib::ustring::compose(
             "Can not add Polygon %1 as neighbour of this edge, which has already two neighbours.",
-            NewFace->getSelfId()));
-  else
-    m_Faces.insert(NewFace);
+            NewFace.getSelfId()));
+    return;
+  }
+
+  m_Faces.push_back(&NewFace);
 }
 
 // =====================================================================
 // =====================================================================
 
-bool PolygonEdge::isLineInFace(PolygonEntity* Face)
+bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 {
-  geos::geom::Geometry* Inters = Face->getPolygon()->intersection(&m_Line);
+  geos::geom::Geometry* Inters = Face.getPolygon()->intersection(&m_Line);
 
   if (Inters->isEmpty() || Inters->getDimension() != 1)
     return false;
 
   return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+const std::vector<PolygonEntity*> PolygonEdge::getFaces()
+{
+  return m_Faces;
 }
 
 // =====================================================================

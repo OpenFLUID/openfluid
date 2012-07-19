@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
   geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
   openfluid::landr::PolygonEntity Entity(P, NULL);
 
-  BOOST_CHECK(Edge.isLineInFace(&Entity));
+  BOOST_CHECK(Edge.isLineInFace(Entity));
 
   std::vector<geos::geom::Coordinate>* CoosWrongPoly = new std::vector<
       geos::geom::Coordinate>();
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
   geos::geom::Polygon* WrongP = Factory.createPolygon(WrongLR, NULL);
   openfluid::landr::PolygonEntity WrongEntity(WrongP, NULL);
 
-  BOOST_CHECK(!Edge.isLineInFace(&WrongEntity));
+  BOOST_CHECK(!Edge.isLineInFace(WrongEntity));
 }
 
 // =====================================================================

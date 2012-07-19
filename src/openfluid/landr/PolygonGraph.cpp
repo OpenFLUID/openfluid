@@ -206,13 +206,10 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
 
         PolygonEdge* SharedEdge = createEdge(*SharedLine);
 
-        NewEntity->addEdge(SharedEdge);
-        OtherEntity->addEdge(SharedEdge);
+        NewEntity->addEdge(*SharedEdge);
+        OtherEntity->addEdge(*SharedEdge);
 
         removeSegment(OtherEntity, SharedLine);
-
-        OtherEntity->addNeighbour(NewEntity);
-        NewEntity->addNeighbour(OtherEntity);
 
         SharedGeoms.push_back(SharedLine);
       }
@@ -237,7 +234,7 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
         PolygonEdge* NewEdge = createEdge(*NewLines->at(i));
 
         if (NewEdge)
-          NewEntity->addEdge(NewEdge);
+          NewEntity->addEdge(*NewEdge);
       }
 
     }
@@ -411,7 +408,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
           dynamic_cast<geos::geom::LineString&>(*DiffGeoms->at(i)));
 
       if (NewEdge)
-        Entity->addEdge(NewEdge);
+        Entity->addEdge(*NewEdge);
     }
   }
 
@@ -476,19 +473,7 @@ void PolygonGraph::addAttribute(std::string AttributeName)
 {
   for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
-  {
-    addAttribute(AttributeName, **it);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-// thanks to PolygonGraph is a friend of PolygonEntity
-void PolygonGraph::addAttribute(std::string AttributeName,
-                                PolygonEntity& Entity)
-{
-  Entity.m_Attributes[AttributeName];
+    (*it)->m_Attributes[AttributeName];
 }
 
 // =====================================================================
@@ -498,19 +483,7 @@ void PolygonGraph::removeAttribute(std::string AttributeName)
 {
   for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
-  {
-    removeAttribute(AttributeName, **it);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-// thanks to PolygonGraph is a friend of PolygonEntity
-void PolygonGraph::removeAttribute(std::string AttributeName,
-                                   PolygonEntity& Entity)
-{
-  Entity.m_Attributes.erase(AttributeName);
+    (*it)->m_Attributes.erase(AttributeName);
 }
 
 // =====================================================================

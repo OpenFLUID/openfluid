@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
   BOOST_CHECK_EQUAL(Nodes.size(), 1);
   BOOST_CHECK(Graph.isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 0);
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 0);
 }
 
 // =====================================================================
@@ -254,10 +254,11 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
 
   openfluid::landr::PolygonEntity* p_Ent1 = Graph.getEntity(1);
   openfluid::landr::PolygonEntity* p_Ent2 = Graph.getEntity(2);
-  BOOST_CHECK_EQUAL(p_Ent1->getNeighbours().size(), 1);
-  BOOST_CHECK_EQUAL((*p_Ent1->getNeighbours().begin())->getSelfId(), 2);
-  BOOST_CHECK_EQUAL(p_Ent2->getNeighbours().size(), 1);
-  BOOST_CHECK_EQUAL((*p_Ent2->getNeighbours().begin())->getSelfId(), 1);
+
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds()[0], 2);
+  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds()[0], 1);
 }
 
 // =====================================================================
@@ -336,11 +337,12 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   openfluid::landr::PolygonEntity* p_Ent1 = Graph.getEntity(1);
   openfluid::landr::PolygonEntity* p_Ent2 = Graph.getEntity(2);
   openfluid::landr::PolygonEntity* p_Ent3 = Graph.getEntity(3);
-  BOOST_CHECK_EQUAL(p_Ent1->getNeighbours().size(), 1);
-  BOOST_CHECK_EQUAL((*p_Ent1->getNeighbours().begin())->getSelfId(), 3);
-  BOOST_CHECK_EQUAL(p_Ent3->getNeighbours().size(), 1);
-  BOOST_CHECK_EQUAL((*p_Ent3->getNeighbours().begin())->getSelfId(), 1);
-  BOOST_CHECK_EQUAL(p_Ent2->getNeighbours().size(), 0);
+
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds()[0], 3);
+  BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourSelfIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourSelfIds()[0], 1);
+  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds().size(), 0);
 }
 
 // =====================================================================
@@ -444,9 +446,9 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   BOOST_CHECK_EQUAL(Nodes.size(), 6);
   BOOST_CHECK(Graph.isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours().size(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours().size(), 3);
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours()->size(), 3);
 }
 
 // =====================================================================
@@ -509,8 +511,8 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   BOOST_CHECK_EQUAL(Nodes.size(), 2);
   BOOST_CHECK(Graph.isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 0);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours().size(), 0);
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 0);
 }
 
 // =====================================================================
@@ -530,9 +532,9 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_linesContact)
   BOOST_CHECK_EQUAL(Nodes.size(), 4);
   BOOST_CHECK(Graph.isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours().size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours().size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours()->size(), 2);
 
   delete Val;
 }
@@ -554,9 +556,9 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
   BOOST_CHECK_EQUAL(Nodes.size(), 3);
   BOOST_CHECK(Graph.isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours().size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours().size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours().size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours()->size(), 2);
 
   delete Val;
 }

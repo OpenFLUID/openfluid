@@ -72,6 +72,7 @@ namespace openfluid {
 namespace landr {
 
 class PolygonEdge;
+class PolygonGraph;
 
 class PolygonEntity: public geos::planargraph::Edge
 {
@@ -83,12 +84,13 @@ class PolygonEntity: public geos::planargraph::Edge
 
     std::map<std::string, boost::any> m_Attributes;
 
-    std::set<PolygonEntity*> m_Neigbours;
-
-    // for limiting access to PolygonEntity attributes creation
+    // for limiting access to m_Attributes creation/deletion to PolygonGraph class
     friend class PolygonGraph;
 
   public:
+
+    typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeigboursMap_t;
+    NeigboursMap_t* mp_Neighbours;
 
     std::vector<PolygonEdge*> m_PolyEdges;
 
@@ -113,10 +115,14 @@ class PolygonEntity: public geos::planargraph::Edge
      * @param Other The Polygon Entity to compare to.
      * @return A vector of new allocated LineStrings representing the linear intersections (eventually merged) between this Polygon Entity and Other.
      */
-    std::vector<geos::geom::LineString*> getLineIntersectionsWith(PolygonEntity& Other);
+    std::vector<geos::geom::LineString*> getLineIntersectionsWith(
+        PolygonEntity& Other);
 
-    void addEdge(PolygonEdge* Edge);
+    void addEdge(PolygonEdge& Edge);
 
+    /**
+     * Also delete input Edge.
+     */
     void removeEdge(PolygonEdge* Edge);
 
     /**
@@ -128,9 +134,9 @@ class PolygonEntity: public geos::planargraph::Edge
      */
     PolygonEdge* findEdgeIntersecting(geos::geom::LineString& Segment);
 
-    void addNeighbour(PolygonEntity* Neighbour);
+    const NeigboursMap_t* getNeighbours();
 
-    std::vector<openfluid::landr::PolygonEntity*> getNeighbours();
+    std::vector<int> getOrderedNeighbourSelfIds();
 
 //    std::vector<openfluid::landr::PolygonEntity*> getUpNeighbours();
 //
@@ -143,6 +149,10 @@ class PolygonEntity: public geos::planargraph::Edge
     double getArea();
 
     bool isComplete();
+
+    void computeNeighbours();
+
+    std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 
 };
 

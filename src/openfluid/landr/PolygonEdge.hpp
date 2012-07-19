@@ -78,7 +78,10 @@ class PolygonEdge: public geos::planargraph::Edge
 
     geos::geom::LineString& m_Line;
 
-    std::set<PolygonEntity*> m_Faces;
+    /**
+     * Two elements vector
+     */
+    std::vector<PolygonEntity*> m_Faces;
 
   public:
 
@@ -88,9 +91,11 @@ class PolygonEdge: public geos::planargraph::Edge
 
     geos::geom::LineString* getLine();
 
-    void addFace(PolygonEntity* NewFace);
+    void addFace(PolygonEntity& NewFace);
 
-    bool isLineInFace(PolygonEntity* Face);
+    bool isLineInFace(PolygonEntity& Face);
+
+    const std::vector<PolygonEntity*> getFaces();
 };
 
 } // namespace landr

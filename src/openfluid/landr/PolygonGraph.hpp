@@ -49,17 +49,6 @@
  \file PolygonGraph.hpp
  \brief Header of ...
 
- @details Polygons must be valid, and the intersection between two polygons must be linearized
- (ie. not touch themselves at more than one line intersection).
- Example of not allowed :
-   * * * * * * *
-   *       *   *
-   *   * * *   *
-   *   *   *   *
-   *   * * *   *
-   *       *   *
-   * * * * * * *
-
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
@@ -122,10 +111,6 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
      * @param Segment The LineString to remove.
      */
     void removeSegment(PolygonEntity* Entity, geos::geom::LineString* Segment);
-
-    void addAttribute(std::string AttributeName, PolygonEntity& Entity);
-
-    void removeAttribute(std::string AttributeName, PolygonEntity& Entity);
 
   public:
 

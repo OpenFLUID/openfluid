@@ -73,7 +73,8 @@ namespace landr {
 
 PolygonEntity::PolygonEntity(const geos::geom::Polygon* NewPolygon,
                              OGRFeature* Feat) :
-    geos::planargraph::Edge(), mp_Polygon(NewPolygon), mp_Feature(Feat)
+    geos::planargraph::Edge(), mp_Polygon(NewPolygon), mp_Feature(Feat), mp_Neighbours(
+        0)
 {
 
 }
@@ -82,7 +83,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Polygon* NewPolygon,
 // =====================================================================
 
 PolygonEntity::PolygonEntity(const openfluid::landr::PolygonEntity& Other) :
-    geos::planargraph::Edge()
+    geos::planargraph::Edge(), mp_Neighbours(0)
 {
   mp_Polygon = dynamic_cast<geos::geom::Polygon*>(Other.getPolygon()->clone());
   mp_Feature =
@@ -96,6 +97,7 @@ PolygonEntity::~PolygonEntity()
 {
   OGRFeature::DestroyFeature(mp_Feature);
   delete mp_Polygon;
+  delete mp_Neighbours;
 }
 
 // =====================================================================
@@ -148,11 +150,13 @@ std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
 // =====================================================================
 // =====================================================================
 
-void PolygonEntity::addEdge(PolygonEdge* Edge)
+void PolygonEntity::addEdge(PolygonEdge& Edge)
 {
-  m_PolyEdges.push_back(Edge);
+  Edge.addFace(*this);
 
-  Edge->addFace(this);
+  m_PolyEdges.push_back(&Edge);
+
+  mp_Neighbours = 0;
 }
 
 // =====================================================================
@@ -170,6 +174,8 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
     throw openfluid::base::OFException("OpenFLUID Framework",
                                        "PolygonEntity::removeEdge",
                                        "Edge doesn't exists in Edge vector.");
+
+  mp_Neighbours = 0;
 
   delete Edge;
 }
@@ -195,19 +201,31 @@ PolygonEdge* PolygonEntity::findEdgeIntersecting(
 // =====================================================================
 // =====================================================================
 
-void PolygonEntity::addNeighbour(PolygonEntity* Neighbour)
+const PolygonEntity::NeigboursMap_t* PolygonEntity::getNeighbours()
 {
-  m_Neigbours.insert(Neighbour);
+  if (!mp_Neighbours)
+    computeNeighbours();
+
+  return mp_Neighbours;
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::PolygonEntity*> PolygonEntity::getNeighbours()
+std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
 {
-  std::vector<openfluid::landr::PolygonEntity*> N;
-  N.assign(m_Neigbours.begin(),m_Neigbours.end());
-  return N;
+  std::vector<int> Ids;
+
+  if (!mp_Neighbours)
+    computeNeighbours();
+
+  for (NeigboursMap_t::iterator it = mp_Neighbours->begin();
+      it != mp_Neighbours->end(); ++it)
+    Ids.push_back(it->first->getSelfId());
+
+  std::sort(Ids.begin(), Ids.end());
+
+  return Ids;
 }
 
 // =====================================================================
@@ -289,6 +307,48 @@ bool PolygonEntity::isComplete()
     return false;
 
   return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonEntity::computeNeighbours()
+{
+  delete mp_Neighbours;
+
+  mp_Neighbours = new NeigboursMap_t();
+
+  for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
+  {
+    PolygonEdge* Edge = m_PolyEdges[i];
+
+    PolygonEntity* OtherFace = 0;
+
+    if (Edge->getFaces().size() > 1)
+      OtherFace =
+          Edge->getFaces()[0] == this ? Edge->getFaces()[1] : Edge->getFaces()[0];
+
+    if (OtherFace)
+      ((*mp_Neighbours)[OtherFace]).push_back(Edge);
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(
+    PolygonEntity& Other)
+{
+  std::vector<PolygonEdge*> Edges;
+
+  if (!mp_Neighbours)
+    computeNeighbours();
+
+  if (mp_Neighbours->count(&Other))
+    Edges = mp_Neighbours->at(&Other);
+
+  return Edges;
 }
 
 // =====================================================================

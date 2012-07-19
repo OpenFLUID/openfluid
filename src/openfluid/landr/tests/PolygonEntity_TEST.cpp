@@ -162,42 +162,32 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   openfluid::landr::PolygonEntity* U18 = Graph->getEntity(18);
   openfluid::landr::PolygonEntity* U24 = Graph->getEntity(24);
 
-  std::vector<openfluid::landr::PolygonEntity*> U2N = U2->getNeighbours();
-  std::vector<openfluid::landr::PolygonEntity*> U18N = U18->getNeighbours();
-  std::vector<openfluid::landr::PolygonEntity*> U24N = U24->getNeighbours();
+  std::vector<int> NeighbourIds;
+  std::vector<int>::iterator it;
 
-  BOOST_CHECK_EQUAL(U2N.size(), 5);
-  BOOST_CHECK_EQUAL(U18N.size(), 4);
-  BOOST_CHECK_EQUAL(U24N.size(), 3);
-
-  std::set<int> NeighbourIds;
-  std::set<int>::iterator it;
-
-  for (unsigned int i = 0; i < U2N.size(); i++)
-    NeighbourIds.insert(U2N[i]->getSelfId());
-
+  NeighbourIds = U2->getOrderedNeighbourSelfIds();
   it = NeighbourIds.begin();
+
+  BOOST_CHECK_EQUAL(NeighbourIds.size(), 5);
   BOOST_CHECK_EQUAL(*it, 1);
   BOOST_CHECK_EQUAL(*(++it), 3);
   BOOST_CHECK_EQUAL(*(++it), 4);
   BOOST_CHECK_EQUAL(*(++it), 5);
   BOOST_CHECK_EQUAL(*(++it), 23);
 
-  NeighbourIds.clear();
-  for (unsigned int i = 0; i < U18N.size(); i++)
-    NeighbourIds.insert(U18N[i]->getSelfId());
-
+  NeighbourIds = U18->getOrderedNeighbourSelfIds();
   it = NeighbourIds.begin();
+
+  BOOST_CHECK_EQUAL(NeighbourIds.size(), 4);
   BOOST_CHECK_EQUAL(*it, 4);
   BOOST_CHECK_EQUAL(*(++it), 17);
   BOOST_CHECK_EQUAL(*(++it), 19);
   BOOST_CHECK_EQUAL(*(++it), 20);
 
-  NeighbourIds.clear();
-  for (unsigned int i = 0; i < U24N.size(); i++)
-    NeighbourIds.insert(U24N[i]->getSelfId());
-
+  NeighbourIds = U24->getOrderedNeighbourSelfIds();
   it = NeighbourIds.begin();
+
+  BOOST_CHECK_EQUAL(NeighbourIds.size(), 3);
   BOOST_CHECK_EQUAL(*it, 1);
   BOOST_CHECK_EQUAL(*(++it), 22);
   BOOST_CHECK_EQUAL(*(++it), 23);
@@ -292,7 +282,7 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
   openfluid::landr::PolygonEntity Ent2(P2, NULL);
 
-  BOOST_CHECK_EQUAL(Ent1.getLineIntersectionsWith(Ent2).size(),0);
+  BOOST_CHECK_EQUAL(Ent1.getLineIntersectionsWith(Ent2).size(), 0);
 }
 
 // =====================================================================
@@ -328,7 +318,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
   geos::geom::LineString* LS1 = Factory.createLineString(
       SeqFactory.create(Coos1));
   openfluid::landr::PolygonEdge* E1 = new openfluid::landr::PolygonEdge(*LS1);
-  Entity.addEdge(E1);
+  Entity.addEdge(*E1);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
       geos::geom::Coordinate>();
@@ -338,7 +328,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
   geos::geom::LineString* LS2 = Factory.createLineString(
       SeqFactory.create(Coos2));
   openfluid::landr::PolygonEdge* E2 = new openfluid::landr::PolygonEdge(*LS2);
-  Entity.addEdge(E2);
+  Entity.addEdge(*E2);
 
   std::vector<geos::geom::Coordinate>* Coos3 = new std::vector<
       geos::geom::Coordinate>();
@@ -347,7 +337,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
   geos::geom::LineString* LS3 = Factory.createLineString(
       SeqFactory.create(Coos3));
   openfluid::landr::PolygonEdge* E3 = new openfluid::landr::PolygonEdge(*LS3);
-  Entity.addEdge(E3);
+  Entity.addEdge(*E3);
 
   BOOST_CHECK_EQUAL(Entity.m_PolyEdges.size(), 3);
   BOOST_CHECK(Entity.isComplete());
@@ -391,7 +381,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   geos::geom::LineString* LS1 = Factory.createLineString(
       SeqFactory.create(Coos1));
   openfluid::landr::PolygonEdge* E1 = new openfluid::landr::PolygonEdge(*LS1);
-  Entity.addEdge(E1);
+  Entity.addEdge(*E1);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
       geos::geom::Coordinate>();
@@ -401,7 +391,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   geos::geom::LineString* LS2 = Factory.createLineString(
       SeqFactory.create(Coos2));
   openfluid::landr::PolygonEdge* E2 = new openfluid::landr::PolygonEdge(*LS2);
-  Entity.addEdge(E2);
+  Entity.addEdge(*E2);
 
   std::vector<geos::geom::Coordinate>* Coos3 = new std::vector<
       geos::geom::Coordinate>();
@@ -410,7 +400,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   geos::geom::LineString* LS3 = Factory.createLineString(
       SeqFactory.create(Coos3));
   openfluid::landr::PolygonEdge* E3 = new openfluid::landr::PolygonEdge(*LS3);
-  Entity.addEdge(E3);
+  Entity.addEdge(*E3);
 
   std::vector<geos::geom::Coordinate>* CooLS = new std::vector<
       geos::geom::Coordinate>();
@@ -432,4 +422,38 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
 
   delete LS;
   delete WrongLS;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_lines.shp");
+
+  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
+      *Val);
+
+  openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
+  openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);
+  openfluid::landr::PolygonEntity* U3 = Graph->getEntity(3);
+
+  BOOST_CHECK_EQUAL(U1->getCommonEdgesWith(*U1).size(), 0);
+  BOOST_CHECK_EQUAL(U1->getCommonEdgesWith(*U2).size(), 1);
+  BOOST_CHECK_EQUAL(U1->getCommonEdgesWith(*U3).size(), 2);
+
+  BOOST_CHECK_EQUAL(U2->getCommonEdgesWith(*U2).size(), 0);
+  BOOST_CHECK_EQUAL(U2->getCommonEdgesWith(*U1).size(), 1);
+  BOOST_CHECK_EQUAL(U2->getCommonEdgesWith(*U3).size(), 1);
+
+  BOOST_CHECK_EQUAL(U3->getCommonEdgesWith(*U3).size(), 0);
+  BOOST_CHECK_EQUAL(U3->getCommonEdgesWith(*U1).size(), 2);
+  BOOST_CHECK_EQUAL(U3->getCommonEdgesWith(*U2).size(), 1);
+
+  BOOST_CHECK(U1->getCommonEdgesWith(*U2)[0] == U2->getCommonEdgesWith(*U1)[0]);
+  BOOST_CHECK(U2->getCommonEdgesWith(*U3)[0] == U3->getCommonEdgesWith(*U2)[0]);
+
+  delete Graph;
+  delete Val;
 }
