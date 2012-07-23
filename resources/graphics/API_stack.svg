@@ -13,12 +13,12 @@
    height="505"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="API_stack.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/OpenFLUID-engine/Dev/engine/trunk/sdk/resources/doxygen/API_stack.png"
-   inkscape:export-xdpi="86.964783"
-   inkscape:export-ydpi="86.964783"
+   inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
+   inkscape:export-xdpi="85.556961"
+   inkscape:export-ydpi="85.556961"
    version="1.0">
   <defs
      id="defs4">
@@ -212,16 +212,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.71495793"
-     inkscape:cx="292.53202"
-     inkscape:cy="245.22699"
+     inkscape:zoom="1.4299159"
+     inkscape:cx="361.77854"
+     inkscape:cy="244.47951"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1599"
      inkscape:window-height="975"
-     inkscape:window-x="57"
-     inkscape:window-y="57"
+     inkscape:window-x="143"
+     inkscape:window-y="61"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
@@ -231,7 +231,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -271,7 +271,7 @@
        id="rect2418-7-6-5"
        width="102.89884"
        height="70.230415"
-       x="297.34863"
+       x="296.10263"
        y="450.93515"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
@@ -281,7 +281,7 @@
        id="rect2418-7-6-5-7"
        width="69.397057"
        height="70.644928"
-       x="411.90851"
+       x="409.41653"
        y="450.72791"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
@@ -289,9 +289,9 @@
     <rect
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#d7e3f4;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 2;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        id="rect2418-7-6-5-7-3"
-       width="143.80602"
+       width="72.729965"
        height="69.855804"
-       x="492.96655"
+       x="489.22864"
        y="451.12247"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
@@ -311,8 +311,8 @@
        id="rect2452-5"
        width="122.75616"
        height="68.18766"
-       x="317.62534"
-       y="536.67499"
+       x="318.9505"
+       y="536.61829"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
        inkscape:export-ydpi="80.124344" />
@@ -321,8 +321,8 @@
        id="rect2452-5-6"
        width="122.75616"
        height="68.18766"
-       x="454.50156"
-       y="536.67499"
+       x="455.16415"
+       y="536.61829"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
        inkscape:export-ydpi="80.124344" />
@@ -350,7 +350,7 @@
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="226.67186"
-       y="154.4726"
+       y="145.7226"
        id="text2395"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -359,8 +359,13 @@
          sodipodi:role="line"
          id="tspan2397"
          x="226.67186"
-         y="154.4726"
-         style="text-align:center;text-anchor:middle">function</tspan></text>
+         y="145.7226"
+         style="text-align:center;text-anchor:middle">simulation</tspan><tspan
+         sodipodi:role="line"
+         x="226.67186"
+         y="163.2226"
+         style="text-align:center;text-anchor:middle"
+         id="tspan3912">function</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
@@ -394,7 +399,7 @@
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="419.12997"
+       x="416.638"
        y="491.26959"
        id="text2424"
        sodipodi:linespacing="125%"
@@ -403,12 +408,12 @@
        inkscape:export-ydpi="80.124344"><tspan
          sodipodi:role="line"
          id="tspan2426"
-         x="419.12997"
+         x="416.638"
          y="491.26959">libXML2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="316.96652"
+       x="315.72052"
        y="491.14655"
        id="text2448"
        sodipodi:linespacing="125%"
@@ -417,7 +422,7 @@
        inkscape:export-ydpi="80.124344"><tspan
          sodipodi:role="line"
          id="tspan2450"
-         x="316.96652"
+         x="315.72052"
          y="491.14655">C++ STL</tspan></text>
     <rect
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffd5d5;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 2;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
@@ -425,7 +430,7 @@
        width="122.75616"
        height="68.18766"
        x="182.73683"
-       y="536.61859"
+       y="536.61829"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
        inkscape:export-ydpi="80.124344" />
@@ -433,7 +438,7 @@
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="224.78972"
-       y="575.93164"
+       y="575.93134"
        id="text2454"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -442,12 +447,12 @@
          sodipodi:role="line"
          id="tspan2456"
          x="224.78972"
-         y="575.93164">Linux</tspan></text>
+         y="575.93134">Linux</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="347.8623"
-       y="575.98804"
+       y="575.93134"
        id="text2460"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -456,7 +461,7 @@
          sodipodi:role="line"
          id="tspan2462"
          x="347.8623"
-         y="575.98804">Windows</tspan></text>
+         y="575.93134">Windows</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
@@ -473,7 +478,7 @@
          y="575.93134">Other Unices</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#979797;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#b7b7b7;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="751.65588"
        y="564.09052"
        id="text3246"
@@ -485,15 +490,15 @@
          id="tspan3248"
          x="751.65588"
          y="564.09052"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">operating</tspan><tspan
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#b7b7b7;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">operating</tspan><tspan
          sodipodi:role="line"
          x="751.65588"
          y="581.59052"
          id="tspan3250"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">system</tspan></text>
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#b7b7b7;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">system</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#979797;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#b7b7b7;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="751.10901"
        y="481.18454"
        id="text3252"
@@ -505,15 +510,15 @@
          x="751.10901"
          y="481.18454"
          id="tspan3256"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">support</tspan><tspan
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#b7b7b7;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold">support</tspan><tspan
          sodipodi:role="line"
          x="751.10901"
          y="498.68454"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#b7b7b7;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan3260">libraries</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#979797;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#5d5d5d;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="751.34827"
        y="218.52582"
        id="text3262"
@@ -524,24 +529,24 @@
          sodipodi:role="line"
          x="751.34827"
          y="218.52582"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2493">OpenFLUID applications</tspan><tspan
          sodipodi:role="line"
          x="751.34827"
          y="236.02582"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2505">(openfluid-engine, </tspan><tspan
          sodipodi:role="line"
          x="751.34827"
          y="253.52582"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2899">       openfluid-builder, ...)</tspan></text>
     <rect
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#f9ff6e;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        id="rect2447"
        width="86.705788"
        height="65.627541"
-       x="294.01547"
+       x="293.98044"
        y="116.43958"
        rx="0"
        ry="0"
@@ -552,7 +557,7 @@
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="337.50089"
-       y="154.4726"
+       y="145.7226"
        id="text2449"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -561,14 +566,19 @@
          sodipodi:role="line"
          id="tspan2451"
          x="337.50089"
-         y="154.4726"
-         style="text-align:center;text-anchor:middle">function</tspan></text>
+         y="145.7226"
+         style="text-align:center;text-anchor:middle">simulation</tspan><tspan
+         sodipodi:role="line"
+         x="337.50089"
+         y="163.2226"
+         style="text-align:center;text-anchor:middle"
+         id="tspan3914">function</tspan></text>
     <rect
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#f9ff6e;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        id="rect2455"
        width="86.705788"
        height="65.627541"
-       x="405.15286"
+       x="405.08252"
        y="116.43958"
        rx="0"
        ry="0"
@@ -579,7 +589,7 @@
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="448.3299"
-       y="154.4726"
+       y="145.7226"
        id="text2457"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -588,14 +598,19 @@
          sodipodi:role="line"
          id="tspan2459"
          x="448.3299"
-         y="154.4726"
-         style="text-align:center;text-anchor:middle">function</tspan></text>
+         y="145.7226"
+         style="text-align:center;text-anchor:middle">simulation</tspan><tspan
+         sodipodi:role="line"
+         x="448.3299"
+         y="163.2226"
+         style="text-align:center;text-anchor:middle"
+         id="tspan3916">function</tspan></text>
     <rect
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#f9ff6e;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        id="rect2463"
        width="86.705788"
        height="65.627541"
-       x="516.29028"
+       x="516.18463"
        y="116.43958"
        rx="0"
        ry="0"
@@ -606,7 +621,7 @@
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="559.15887"
-       y="154.4726"
+       y="145.7226"
        id="text2465"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -615,8 +630,13 @@
          sodipodi:role="line"
          id="tspan2467"
          x="559.15887"
-         y="154.4726"
-         style="text-align:center;text-anchor:middle">function</tspan></text>
+         y="145.7226"
+         style="text-align:center;text-anchor:middle">simulation</tspan><tspan
+         sodipodi:role="line"
+         x="559.15887"
+         y="163.2226"
+         style="text-align:center;text-anchor:middle"
+         id="tspan3918">function</tspan></text>
     <rect
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#f9ff6e;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        id="rect2471"
@@ -633,7 +653,7 @@
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="669.98798"
-       y="154.47258"
+       y="145.7226"
        id="text2473"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -642,8 +662,13 @@
          sodipodi:role="line"
          id="tspan2475"
          x="669.98798"
-         y="154.47258"
-         style="text-align:center;text-anchor:middle">function</tspan></text>
+         y="145.7226"
+         style="text-align:center;text-anchor:middle">simulation</tspan><tspan
+         sodipodi:role="line"
+         x="669.98798"
+         y="163.2226"
+         style="text-align:center;text-anchor:middle"
+         id="tspan3920">function</tspan></text>
     <path
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#baefac;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        d="m 713.86896,273.52726 -434.74578,0 3e-5,-78.33538 434.74575,0 0,78.33538 z"
@@ -679,7 +704,7 @@
          style="text-align:center;text-anchor:middle" /></text>
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#979797;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#5d5d5d;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="751.33459"
        y="136.43039"
        id="text2485"
@@ -690,17 +715,17 @@
          sodipodi:role="line"
          x="751.33459"
          y="136.43039"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2487">models as</tspan><tspan
          sodipodi:role="line"
          x="751.33459"
          y="153.93039"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2489">OpenFLUID</tspan><tspan
          sodipodi:role="line"
          x="751.33459"
          y="171.43039"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2491">simulation functions</tspan></text>
     <flowRoot
        xml:space="preserve"
@@ -801,7 +826,7 @@
          style="text-align:center;text-anchor:middle">libopenfluid-base</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#979797;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#5d5d5d;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="750.14105"
        y="347.91794"
        id="text3262-2"
@@ -812,18 +837,18 @@
          sodipodi:role="line"
          x="750.14105"
          y="347.91794"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2493-8">OpenFLUID</tspan><tspan
          sodipodi:role="line"
          x="750.14105"
          y="365.41794"
-         style="font-weight:bold;text-align:start;text-anchor:start;fill:#979797;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         style="font-weight:bold;text-align:start;text-anchor:start;fill:#5d5d5d;fill-opacity:1;-inkscape-font-specification:Bitstream Vera Sans Bold"
          id="tspan2505-2">framework</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="484.24292"
-       y="575.86499"
+       y="575.80829"
        id="text2466-6"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
@@ -832,21 +857,27 @@
          sodipodi:role="line"
          id="tspan2468-2"
          x="484.24292"
-         y="575.86499">Mac OSX</tspan></text>
+         y="575.80829">Mac OSX</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="504.97308"
-       y="490.7193"
+       x="525.79871"
+       y="482.51959"
        id="text2424-9"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
        inkscape:export-ydpi="80.124344"><tspan
          sodipodi:role="line"
-         id="tspan2426-4"
-         x="504.97308"
-         y="490.7193">Glibmm / Gtkmm</tspan></text>
+         x="525.79871"
+         y="482.51959"
+         id="tspan3097"
+         style="text-align:center;text-anchor:middle">Glibmm</tspan><tspan
+         sodipodi:role="line"
+         x="525.79871"
+         y="500.01959"
+         style="text-align:center;text-anchor:middle"
+         id="tspan3910">Gtkmm</tspan></text>
     <path
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#f1fff2;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        d="m 403.52784,284.45339 149.5006,0 0,30.97781 -149.5006,0 0,-30.97781 z"
@@ -890,15 +921,15 @@
        id="rect2418-7-6-5-5"
        width="65.644882"
        height="70.559158"
-       x="648.43359"
-       y="451.7598"
+       x="648.43365"
+       y="450.77078"
        inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
        inkscape:export-xdpi="80.124344"
        inkscape:export-ydpi="80.124344" />
     <text
        xml:space="preserve"
        style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-       x="653.51923"
+       x="653.51929"
        y="492.25861"
        id="text2424-7"
        sodipodi:linespacing="125%"
@@ -907,7 +938,37 @@
        inkscape:export-ydpi="80.124344"><tspan
          sodipodi:role="line"
          id="tspan2426-7"
-         x="653.51923"
+         x="653.51929"
          y="492.25861">libCURL</tspan></text>
+    <rect
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#d7e3f4;fill-opacity:1;stroke:#979797;stroke-width:2;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 2;stroke-dashoffset:0;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       id="rect2418-7-6-5-5-0"
+       width="65.644882"
+       height="70.559158"
+       x="572.37372"
+       y="450.77078"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
+       inkscape:export-xdpi="80.124344"
+       inkscape:export-ydpi="80.124344" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       x="604.83728"
+       y="482.39655"
+       id="text2424-7-1"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/fabrejc/Labo/OpenFLUID/Workspace/OpenFLUID-trunk/doc/API-doxygen/API_stack.png"
+       inkscape:export-xdpi="80.124344"
+       inkscape:export-ydpi="80.124344"><tspan
+         sodipodi:role="line"
+         id="tspan2426-7-3"
+         x="604.83728"
+         y="482.39655"
+         style="text-align:center;text-anchor:middle">GDAL</tspan><tspan
+         sodipodi:role="line"
+         x="604.83728"
+         y="499.89655"
+         id="tspan3138"
+         style="text-align:center;text-anchor:middle">OGR</tspan></text>
   </g>
 </svg>
