@@ -10,15 +10,13 @@
 \input{common/openfluid-template}
 
 
-
 \urlstyle{sf}
-
 
 
 \begin{document}
 
 \begin{latexonly}
-\coverpage{Quick user manual}{OpenFLUID 1.7.2}{Fabre, J.C., \linebreak and the
+\coverpage{Quick user manual}{OpenFLUID $$@LATEX_FULL_VERSION@$$}{Fabre, J.C., \linebreak and the
 modelling group at LISAH}
 \end{latexonly}
 
