@@ -59,6 +59,13 @@
 
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
+
+namespace geos {
+namespace geom {
+class Coordinate;
+}
+}
+
 namespace openfluid {
 namespace core {
 
@@ -73,7 +80,16 @@ class GeoRasterValue: public openfluid::core::GeoValue
 
     GDALDataset* mp_Data;
 
+    /**
+     * Owned by its dataset, should never be destroyed with the C++ delete operator.
+     */
+    GDALRasterBand* mp_RasterBand1;
+
+    double* mp_GeoTransform;
+
     void tryToOpenSource(bool UpdateMode);
+
+    void computeGeoTransform();
 
   public:
 
@@ -105,6 +121,28 @@ class GeoRasterValue: public openfluid::core::GeoValue
      * @throw openfluid::base::OFException if GDAL doesn't succeed to open the dataset.
      */
     GDALDataset* get(bool UpdateMode = false);
+
+    /**
+     * Get the first RasterBand (indexed with 1) of the dataset.
+     * Is owned by its dataset, should never be destroyed with the C++ delete operator.
+     */
+    GDALRasterBand* getRasterBand1();
+
+    std::pair<int, int> getPixelFromCoordinate(geos::geom::Coordinate Coo);
+
+    geos::geom::Coordinate* getOrigin();
+
+    double getPixelWidth();
+
+    double getPixelHeight();
+
+    std::vector<float> getValuesOfLine(int LineIndex);
+
+    std::vector<float> getValuesOfColumn(int ColIndex);
+
+    float getValueOfPixel(int ColIndex, int LineIndex);
+
+    float getValueOfCoordinate(geos::geom::Coordinate Coo);
 
 };
 

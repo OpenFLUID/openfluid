@@ -65,6 +65,7 @@ namespace geos {
 namespace geom {
 class Polygon;
 class LineString;
+class Point;
 }
 }
 
@@ -147,6 +148,13 @@ class PolygonEntity: public geos::planargraph::Edge
     bool setAttributeValue(std::string AttributeName, boost::any Value);
 
     double getArea();
+
+    geos::geom::Point* getCentroide();
+
+    /**
+     * Get the distance between this unity centroid and Other unity centroid.
+     */
+    double getDistCentroCentro(PolygonEntity& Other);
 
     bool isComplete();
 

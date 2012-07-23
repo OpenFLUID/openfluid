@@ -57,6 +57,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <openfluid/base/OFException.hpp>
+#include <geos/geom/Coordinate.h>
 
 namespace openfluid {
 namespace core {
@@ -65,7 +66,8 @@ namespace core {
 // =====================================================================
 
 GeoRasterValue::GeoRasterValue(std::string FilePath, std::string FileName) :
-    GeoValue(FilePath, FileName), mp_Data(0)
+    GeoValue(FilePath, FileName), mp_Data(0), mp_RasterBand1(0), mp_GeoTransform(
+        0)
 {
   GDALAllRegister();
 }
@@ -77,6 +79,8 @@ GeoRasterValue::~GeoRasterValue()
 {
   if (mp_Data)
     GDALClose(mp_Data);
+
+  delete mp_GeoTransform;
 }
 
 // =====================================================================
@@ -109,9 +113,154 @@ void GeoRasterValue::tryToOpenSource(bool /*UpdateMode*/)
   if (!mp_Data)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID framework", "GeoRasterValue::tryToOpenSource",
-        "Error while trying to open file " + m_AbsolutePath);
+        "OpenFLUID framework",
+        "GeoRasterValue::tryToOpenSource",
+        "Error while trying to open file " + m_AbsolutePath + " ("
+        + CPLGetLastErrorMsg() + ")");
   }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+GDALRasterBand* GeoRasterValue::getRasterBand1()
+{
+  if (!mp_RasterBand1)
+    mp_RasterBand1 = get()->GetRasterBand(1);
+
+  return mp_RasterBand1;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::pair<int, int> GeoRasterValue::getPixelFromCoordinate(
+    geos::geom::Coordinate Coo)
+{
+  int offsetX = int((Coo.x - getOrigin()->x) / getPixelWidth());
+  int offsetY = int((Coo.y - getOrigin()->y) / getPixelHeight());
+
+  return std::make_pair(offsetX, offsetY);
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Coordinate* GeoRasterValue::getOrigin()
+{
+  if (!mp_GeoTransform)
+    computeGeoTransform();
+
+  return new geos::geom::Coordinate(mp_GeoTransform[0], mp_GeoTransform[3]);
+}
+
+// =====================================================================
+// =====================================================================
+
+void GeoRasterValue::computeGeoTransform()
+{
+  mp_GeoTransform = new double[6];
+
+  if (GDALGetGeoTransform(get(), mp_GeoTransform) != CE_None)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoRasterValue::computeGeoTransform",
+        "Error while getting GeoTransform information");
+}
+
+// =====================================================================
+// =====================================================================
+
+double GeoRasterValue::getPixelWidth()
+{
+  if (!mp_GeoTransform)
+    computeGeoTransform();
+
+  return mp_GeoTransform[1];
+}
+
+// =====================================================================
+// =====================================================================
+
+double GeoRasterValue::getPixelHeight()
+{
+  if (!mp_GeoTransform)
+    computeGeoTransform();
+
+  return mp_GeoTransform[5];
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<float> GeoRasterValue::getValuesOfLine(int LineIndex)
+{
+  std::vector<float> Val;
+
+  int ColumnCount = getRasterBand1()->GetXSize();
+
+  float* ScanLine = (float *) CPLMalloc(sizeof(float) * ColumnCount);
+
+  getRasterBand1()->RasterIO(GF_Read, 0, LineIndex, ColumnCount, 1, ScanLine,
+                             ColumnCount, 1, GDT_Float32, 0, 0);
+
+  for (int i = 0; i < ColumnCount; i++)
+    Val.push_back(ScanLine[i]);
+
+  CPLFree(ScanLine);
+
+  return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<float> GeoRasterValue::getValuesOfColumn(int ColIndex)
+{
+  std::vector<float> Val;
+
+  int LineCount = getRasterBand1()->GetYSize();
+
+  float* ScanLine = (float *) CPLMalloc(sizeof(float) * LineCount);
+
+  getRasterBand1()->RasterIO(GF_Read, ColIndex, 0, 1, LineCount, ScanLine, 1,
+                             LineCount, GDT_Float32, 0, 0);
+
+  for (int i = 0; i < LineCount; i++)
+    Val.push_back(ScanLine[i]);
+
+  CPLFree(ScanLine);
+
+  return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+float GeoRasterValue::getValueOfPixel(int ColIndex, int LineIndex)
+{
+  float Val;
+
+  float* ScanLine = (float *) CPLMalloc(sizeof(float));
+
+  getRasterBand1()->RasterIO(GF_Read, ColIndex, LineIndex, 1, 1, ScanLine, 1, 1,
+                             GDT_Float32, 0, 0);
+
+  Val = ScanLine[0];
+
+  CPLFree(ScanLine);
+
+  return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+float GeoRasterValue::getValueOfCoordinate(geos::geom::Coordinate Coo)
+{
+  std::pair<int,int> Pixel = getPixelFromCoordinate(Coo);
+
+  return getValueOfPixel(Pixel.first,Pixel.second);
 }
 
 // =====================================================================

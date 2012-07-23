@@ -62,6 +62,7 @@
 #include <geos/geom/MultiLineString.h>
 #include <geos/geom/GeometryCollection.h>
 #include <geos/geom/GeometryFactory.h>
+#include <geos/geom/Point.h>
 #include <geos/planargraph/Node.h>
 #include <geos/planargraph/DirectedEdge.h>
 
@@ -289,6 +290,22 @@ double PolygonEntity::getArea()
 // =====================================================================
 // =====================================================================
 
+geos::geom::Point* PolygonEntity::getCentroide()
+{
+  return mp_Polygon->getCentroid();
+}
+
+// =====================================================================
+// =====================================================================
+
+double PolygonEntity::getDistCentroCentro(PolygonEntity& Other)
+{
+  return getCentroide()->distance(Other.getCentroide());
+}
+
+// =====================================================================
+// =====================================================================
+
 bool PolygonEntity::isComplete()
 {
   std::vector<geos::geom::Geometry*> Geoms;
@@ -326,7 +343,8 @@ void PolygonEntity::computeNeighbours()
 
     if (Edge->getFaces().size() > 1)
       OtherFace =
-          Edge->getFaces()[0] == this ? Edge->getFaces()[1] : Edge->getFaces()[0];
+          Edge->getFaces()[0] == this ? Edge->getFaces()[1] :
+                                        Edge->getFaces()[0];
 
     if (OtherFace)
       ((*mp_Neighbours)[OtherFace]).push_back(Edge);
