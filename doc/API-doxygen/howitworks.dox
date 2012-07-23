@@ -24,10 +24,10 @@ These libraries mainly rely on external libraries:
   <li>The libCURL library for networking capabilities : http://curl.haxx.se/
 </ul>
 \n
+\image html API_stack.png
+\image latex API_stack.png
 \n
-\image html API_stack.png 
-\image latex API_stack.png 
-
+\n
 
 \section feat_sec Features 
  
