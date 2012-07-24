@@ -18,10 +18,14 @@ INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
        
 CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)
+CONFIGURE_FILE(openfluid-gui.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-gui.pc" @ONLY)
+CONFIGURE_FILE(openfluid-other.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc" @ONLY)
 
 CONFIGURE_FILE(config.hpp.in "${PROJECT_BINARY_DIR}/src/openfluid/config.hpp" @ONLY)
 
 INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" 
+              "${PKGCONFIG_OUTPUT_PATH}/openfluid-gui.pc"
+              "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc"
         DESTINATION ${PKGCONFIG_INSTALL_PATH})
 
 INSTALL(FILES "${PROJECT_BINARY_DIR}/src/openfluid/config.hpp" 

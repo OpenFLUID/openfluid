@@ -6,6 +6,6 @@ includedir=${prefix}/include
 Name: openfluid
 Description: OpenFLUID framework
 Version: @FULL_VERSION@
-Requires: glibmm-2.4 libxml-2.0
-Libs: -L${libdir} -lopenfluid-base -lopenfluid-core -lopenfluid-io -lopenfluid-machine -lopenfluid-tools
+Requires: openfluid
+Libs: -L${libdir} -lopenfluid-buddies -lopenfluid-market
 Cflags: -I${includedir}
