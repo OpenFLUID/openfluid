@@ -85,6 +85,8 @@ class GeoValue: public openfluid::core::UnstructuredValue
     GeoValue(std::string FilePath, std::string FileName);
 
     virtual ~GeoValue() = 0;
+
+    std::string getFilePath();
 };
 
 } /* namespace core */

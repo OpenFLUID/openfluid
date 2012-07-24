@@ -88,6 +88,10 @@ class PolygonEdge;
 
 class PolygonGraph: public geos::planargraph::PlanarGraph
 {
+  public:
+
+    typedef std::map<geos::geom::Polygon*, double> RastValByRastPoly_t;
+
   private:
 
     std::vector<geos::planargraph::Node*> m_NewNodes;
@@ -101,6 +105,12 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
     std::vector<openfluid::landr::PolygonEntity*> m_Entities;
 
     openfluid::core::GeoRasterValue* mp_Raster;
+
+    openfluid::core::GeoVectorValue* mp_RasterPolygonized;
+
+    std::vector<geos::geom::Polygon*>* mp_RasterPolygonizedPolys;
+
+    static int FileNum;
 
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -125,10 +135,16 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
 
     PolygonGraph(const openfluid::core::GeoVectorValue& Val);
 
+    /**
+     * Do not copy associated raster.
+     */
     PolygonGraph(openfluid::landr::PolygonGraph& Other);
 
     PolygonGraph(const std::vector<openfluid::landr::PolygonEntity*>& Entities);
 
+    /**
+     * Delete also associated RasterPolygonized if present.
+     */
     virtual ~PolygonGraph();
 
     /**
@@ -181,10 +197,26 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
 
     void removeUnusedNodes();
 
+    /**
+     * Replace associated raster if exists.
+     */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
 
     float* getRasterValueForEntityCentroid(PolygonEntity& Entity);
 
+    /**
+     * Get a map of Polygons and its area intersecting Entity, from associated polygonized Raster.
+     *
+     * @param Entity The Entity to compare with the associated Raster.
+     *
+     * @return A map of Polygons from associated polygonized raster, with for each one the relevant intersecting area.
+     */
+    RastValByRastPoly_t getRasterPolyOverlapping(
+        PolygonEntity& Entity);
+
+    openfluid::core::GeoVectorValue* getRasterPolygonized();
+
+    std::vector<geos::geom::Polygon*>* getRasterPolygonizedPolys();
 };
 
 } // namespace landr

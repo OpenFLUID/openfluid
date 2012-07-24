@@ -55,6 +55,7 @@
 #include "PolygonGraph.hpp"
 
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
@@ -65,9 +66,11 @@
 #include <geos/geom/Location.h>
 #include <geos/geom/MultiLineString.h>
 #include <geos/geom/GeometryFactory.h>
+#include <geos/geom/prep/PreparedPolygon.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/operation/linemerge/LineMerger.h>
+#include <geos/operation/overlay/OverlayOp.h>
 
 #include <glibmm/ustring.h>
 #include <cassert>
@@ -75,12 +78,15 @@
 namespace openfluid {
 namespace landr {
 
+int PolygonGraph::FileNum = 0;
+
 // =====================================================================
 // =====================================================================
 
 PolygonGraph::PolygonGraph() :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+        0), mp_RasterPolygonizedPolys(0)
 {
 
 }
@@ -90,7 +96,8 @@ PolygonGraph::PolygonGraph() :
 
 PolygonGraph::PolygonGraph(openfluid::landr::PolygonGraph& Other) :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+        0), mp_RasterPolygonizedPolys(0)
 {
   std::vector<openfluid::landr::PolygonEntity*> OtherEntities =
       Other.getEntities();
@@ -110,7 +117,8 @@ PolygonGraph::PolygonGraph(openfluid::landr::PolygonGraph& Other) :
 
 PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val) :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+        0), mp_RasterPolygonizedPolys(0)
 {
 // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
@@ -147,7 +155,8 @@ PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val) :
 PolygonGraph::PolygonGraph(
     const std::vector<openfluid::landr::PolygonEntity*>& Entities) :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+        0), mp_RasterPolygonizedPolys(0)
 {
   for (std::vector<openfluid::landr::PolygonEntity*>::const_iterator it =
       Entities.begin(); it != Entities.end(); ++it)
@@ -172,6 +181,20 @@ PolygonGraph::~PolygonGraph()
     delete m_Entities[i];
   for (i = 0; i < m_NewDirEdges.size(); i++)
     delete m_NewDirEdges[i];
+
+  if (mp_RasterPolygonized)
+  {
+    mp_RasterPolygonized->deleteShpOnDisk();
+    delete mp_RasterPolygonized;
+  }
+
+  if (mp_RasterPolygonizedPolys)
+  {
+    for (i = 0; i < mp_RasterPolygonizedPolys->size(); i++)
+      delete mp_RasterPolygonizedPolys->at(i);
+
+    delete mp_RasterPolygonizedPolys;
+  }
 }
 
 // =====================================================================
@@ -522,6 +545,8 @@ void PolygonGraph::removeUnusedNodes()
 void PolygonGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
 {
   mp_Raster = &Raster;
+  mp_RasterPolygonized = 0;
+  mp_RasterPolygonizedPolys = 0;
 }
 
 // =====================================================================
@@ -543,6 +568,136 @@ float* PolygonGraph::getRasterValueForEntityCentroid(PolygonEntity& Entity)
   }
 
   return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
+    PolygonEntity& Entity)
+{
+  const geos::geom::Polygon* RefPoly = Entity.getPolygon();
+
+  RastValByRastPoly_t IntersectPolys;
+
+  std::vector<geos::geom::Polygon*>* Polys = getRasterPolygonizedPolys();
+
+  if (!Polys)
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework", "PolygonGraph::getRasterPolyOverlaying",
+        "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
+  else
+  {
+    geos::geom::prep::PreparedPolygon* RefPrepPoly =
+        new geos::geom::prep::PreparedPolygon(RefPoly);
+
+    for (std::vector<geos::geom::Polygon*>::iterator it = Polys->begin();
+        it != Polys->end(); ++it)
+    {
+      if (RefPrepPoly->overlaps(*it) || RefPrepPoly->containsProperly(*it))
+      {
+        geos::geom::Geometry* Intersection =
+            geos::operation::overlay::OverlayOp::overlayOp(
+                RefPoly, *it,
+                geos::operation::overlay::OverlayOp::opINTERSECTION);
+
+        if (Intersection->getGeometryTypeId() == geos::geom::GEOS_POLYGON)
+        {
+          geos::geom::Polygon* Poly =
+              dynamic_cast<geos::geom::Polygon*>(Intersection);
+
+          // !! copy doesn't keep UserData !
+          Poly->setUserData((*it)->getUserData());
+
+          IntersectPolys[Poly] = Poly->getArea();
+        }
+      }
+    }
+
+  }
+
+  return IntersectPolys;
+}
+
+// =====================================================================
+// =====================================================================
+
+openfluid::core::GeoVectorValue* PolygonGraph::getRasterPolygonized()
+{
+  if (!mp_RasterPolygonized)
+  {
+    if (!mp_Raster)
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "PolygonGraph::getRasterPolygonized",
+          "No raster associated to the PolygonGraph");
+    else
+    {
+      std::string FileName = Glib::ustring::compose("Polygonized_%1.shp",
+                                                    FileNum++);
+
+      mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
+                                                   FileName);
+
+      mp_RasterPolygonizedPolys = 0;
+    }
+  }
+
+  return mp_RasterPolygonized;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<geos::geom::Polygon*>* PolygonGraph::getRasterPolygonizedPolys()
+{
+  if (!mp_RasterPolygonizedPolys)
+  {
+    openfluid::core::GeoVectorValue* Polygonized = getRasterPolygonized();
+
+    if (!Polygonized)
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "PolygonGraph::getRasterPolygonizedMultiPoly",
+          "No RasterPolygonized associated to the PolygonGraph");
+    else
+    {
+      mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
+
+      // ?
+      setlocale(LC_NUMERIC, "C");
+
+      OGRLayer* Layer0 = Polygonized->getLayer0();
+
+      int PixelValFieldIndex = Polygonized->getFieldIndex(
+          openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName());
+
+      Layer0->ResetReading();
+
+      OGRFeature* Feat;
+      while ((Feat = Layer0->GetNextFeature()) != NULL)
+      {
+        OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+        // c++ cast doesn't work (have to use the C API instead)
+        geos::geom::Geometry* GeosGeom =
+            (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+        geos::geom::Polygon* Clone =
+            dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
+
+        Clone->setUserData(
+            new int(Feat->GetFieldAsInteger(PixelValFieldIndex)));
+
+        mp_RasterPolygonizedPolys->push_back(Clone);
+
+        // destroying the feature destroys also the associated OGRGeom
+        OGRFeature::DestroyFeature(Feat);
+        delete GeosGeom;
+      }
+
+    }
+  }
+
+  return mp_RasterPolygonizedPolys;
 }
 
 // =====================================================================

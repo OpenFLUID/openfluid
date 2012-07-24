@@ -89,6 +89,8 @@ class GeoRasterValue: public openfluid::core::GeoValue
 
     double* mp_GeoTransform;
 
+    openfluid::core::GeoVectorValue* mp_Polygonized;
+
     void tryToOpenSource(bool UpdateMode);
 
     void computeGeoTransform();
@@ -157,7 +159,9 @@ class GeoRasterValue: public openfluid::core::GeoValue
      * @return The newly created GeoVectorValue.
      */
     openfluid::core::GeoVectorValue* polygonize(std::string FilePath, std::string FileName,
-                                                std::string FieldName="PixelVal");
+                                                std::string FieldName="");
+
+    static std::string getDefaultPolygonizedFieldName();
 
 };
 
