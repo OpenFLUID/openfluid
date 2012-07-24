@@ -62,6 +62,7 @@
 #include <tests-config.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <geos/geom/Geometry.h>
@@ -672,7 +673,6 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 
 BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
 {
-
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
@@ -812,3 +812,31 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_getARasterValue)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
+      *Vector);
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
+    openfluid::landr::PolygonEntity* U20 = Graph->getEntity(20);
+
+  BOOST_CHECK_THROW(Graph->getRasterValueForEntityCentroid(*U1), openfluid::base::OFException);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U1),29);
+  BOOST_CHECK_EQUAL(*Graph->getRasterValueForEntityCentroid(*U20),64);
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================

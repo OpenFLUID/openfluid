@@ -55,11 +55,13 @@
 #include "PolygonGraph.hpp"
 
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <geos/geom/CoordinateSequence.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
+#include <geos/geom/Point.h>
 #include <geos/geom/Location.h>
 #include <geos/geom/MultiLineString.h>
 #include <geos/geom/GeometryFactory.h>
@@ -78,7 +80,7 @@ namespace landr {
 
 PolygonGraph::PolygonGraph() :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance())
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
 {
 
 }
@@ -88,7 +90,7 @@ PolygonGraph::PolygonGraph() :
 
 PolygonGraph::PolygonGraph(openfluid::landr::PolygonGraph& Other) :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance())
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
 {
   std::vector<openfluid::landr::PolygonEntity*> OtherEntities =
       Other.getEntities();
@@ -108,7 +110,7 @@ PolygonGraph::PolygonGraph(openfluid::landr::PolygonGraph& Other) :
 
 PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val) :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance())
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
 {
 // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
@@ -145,7 +147,7 @@ PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val) :
 PolygonGraph::PolygonGraph(
     const std::vector<openfluid::landr::PolygonEntity*>& Entities) :
     geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance())
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0)
 {
   for (std::vector<openfluid::landr::PolygonEntity*>::const_iterator it =
       Entities.begin(); it != Entities.end(); ++it)
@@ -512,6 +514,35 @@ void PolygonGraph::removeUnusedNodes()
     remove(Unused->at(i));
 
   delete Unused;
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
+{
+  mp_Raster = &Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+float* PolygonGraph::getRasterValueForEntityCentroid(PolygonEntity& Entity)
+{
+  float* Val = 0;
+
+  if (!mp_Raster)
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework", "PolygonGraph::getRasterValueForEntityCentroid",
+        "No raster associated to the PolygonGraph");
+  else
+  {
+    Val = new float(
+        mp_Raster->getValueOfCoordinate(
+            *Entity.getCentroide()->getCoordinate()));
+  }
+
+  return Val;
 }
 
 // =====================================================================

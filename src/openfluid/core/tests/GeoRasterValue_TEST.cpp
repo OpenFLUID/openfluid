@@ -62,7 +62,10 @@
 #include <tests-config.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/tools.hpp>
 #include <geos/geom/Coordinate.h>
+
 
 // =====================================================================
 // =====================================================================
@@ -302,6 +305,7 @@ BOOST_AUTO_TEST_CASE(check_getValues)
 
 BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 {
+  // integer values
   openfluid::core::GeoRasterValue* Val = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
@@ -314,4 +318,60 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
                     83);
 
   delete Val;
+
+  // float values
+  Val = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+
+  BOOST_CHECK(
+      openfluid::tools::IsVeryClose(Val->getValueOfCoordinate(*Val->getOrigin()), 98.9708));
+
+  BOOST_CHECK(
+      openfluid::tools::IsVeryClose(Val->getValueOfCoordinate(geos::geom::Coordinate(x, y)), 84.587));
+
+  delete Val;
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_Polygonize)
+{
+  // integer values
+  openfluid::core::GeoRasterValue* RasterVal = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::core::GeoVectorValue* VectorVal = RasterVal->polygonize(
+      CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/TestOut.shp",
+      "RasterVal");
+
+  OGRLayer* VectorLayer = VectorVal->getLayer0();
+
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 234);
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeature(0)->GetFieldAsInteger("RasterVal"),
+                    96);
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeature(76)->GetFieldAsInteger("RasterVal"),
+                    83);
+
+  VectorVal->deleteShpOnDisk();
+  delete VectorVal;
+
+  // float values, rounded to integer values (GDALFPolygonize for floats available since GDAL 1.9.0 only)
+  RasterVal = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+
+  VectorVal = RasterVal->polygonize(CONFIGTESTS_INPUT_DATASETS_DIR,
+                              "GeoVectorValue/TestOut.shp", "RasterVal");
+
+  VectorLayer = VectorVal->getLayer0();
+
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 151);
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeature(0)->GetFieldAsInteger("RasterVal"),
+                    99);
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeature(42)->GetFieldAsInteger("RasterVal"),
+                    85);
+
+  VectorVal->deleteShpOnDisk();
+  delete VectorVal;
+}
+

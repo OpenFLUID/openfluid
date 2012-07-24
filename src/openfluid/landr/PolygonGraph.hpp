@@ -76,6 +76,11 @@ class DirectedEdge;
 }
 
 namespace openfluid {
+
+namespace core {
+class GeoRasterValue;
+}
+
 namespace landr {
 
 class PolygonEntity;
@@ -94,6 +99,8 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
     std::map<int, openfluid::landr::PolygonEntity*> m_EntitiesBySelfId;
 
     std::vector<openfluid::landr::PolygonEntity*> m_Entities;
+
+    openfluid::core::GeoRasterValue* mp_Raster;
 
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -173,6 +180,10 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
     bool isComplete();
 
     void removeUnusedNodes();
+
+    void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
+
+    float* getRasterValueForEntityCentroid(PolygonEntity& Entity);
 
 };
 

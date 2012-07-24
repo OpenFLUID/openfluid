@@ -69,6 +69,8 @@ class Coordinate;
 namespace openfluid {
 namespace core {
 
+class GeoVectorValue;
+
 /**
  * @brief Container class for geospatial raster data,
  * represented by a GDAL dataset.
@@ -143,6 +145,19 @@ class GeoRasterValue: public openfluid::core::GeoValue
     float getValueOfPixel(int ColIndex, int LineIndex);
 
     float getValueOfCoordinate(geos::geom::Coordinate Coo);
+
+    /**
+     * Create a new GeoVectorValue with polygons for all connected regions of pixels in the raster sharing a common pixel value.
+     *
+     * @param FilePath The path on disk where to create the new GeoVectorValue.
+     * @param FileName The name of the new GeoVectorValue.
+     * @param FieldName The name of the field to be created for storing the pixel value, limited to 10 characters (or will be truncated).
+     * Default is set to "PixelVal". Type of field is OFTInteger (float pixel values are rounded).
+     *
+     * @return The newly created GeoVectorValue.
+     */
+    openfluid::core::GeoVectorValue* polygonize(std::string FilePath, std::string FileName,
+                                                std::string FieldName="PixelVal");
 
 };
 

@@ -57,7 +57,9 @@
 #include <boost/filesystem/path.hpp>
 
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
 #include <geos/geom/Coordinate.h>
+#include <gdal_alg.h>
 
 namespace openfluid {
 namespace core {
@@ -258,13 +260,42 @@ float GeoRasterValue::getValueOfPixel(int ColIndex, int LineIndex)
 
 float GeoRasterValue::getValueOfCoordinate(geos::geom::Coordinate Coo)
 {
-  std::pair<int,int> Pixel = getPixelFromCoordinate(Coo);
+  std::pair<int, int> Pixel = getPixelFromCoordinate(Coo);
 
-  return getValueOfPixel(Pixel.first,Pixel.second);
+  return getValueOfPixel(Pixel.first, Pixel.second);
 }
 
 // =====================================================================
 // =====================================================================
 
+openfluid::core::GeoVectorValue* GeoRasterValue::polygonize(
+    std::string FilePath, std::string FileName, std::string FieldName)
+{
+  openfluid::core::GeoVectorValue* VectorVal =
+      new openfluid::core::GeoVectorValue(FilePath, FileName);
+
+  VectorVal->createShp(wkbPolygon);
+  VectorVal->addAField(FieldName, OFTInteger);
+  int FieldIndex = VectorVal->getFieldIndex(FieldName);
+
+  OGRLayer* VectorLayer = VectorVal->getLayer0();
+
+  if (GDALPolygonize(getRasterBand1(), NULL, VectorLayer, FieldIndex, NULL,
+                     NULL, NULL)
+      != CE_None)
+    throw openfluid::base::OFException("OpenFLUID framework",
+                                       "GeoRasterValue::polygonize",
+                                       "Error while polygonizing raster.");
+
+  if (VectorLayer->SyncToDisk() != CE_None)
+    throw openfluid::base::OFException("OpenFLUID framework",
+                                       "GeoRasterValue::polygonize",
+                                       "Error while polygonizing raster.");
+
+  return VectorVal;
+}
+
+// =====================================================================
+// =====================================================================
 }
 } // namespaces
