@@ -74,21 +74,25 @@ namespace landr {
 
 PolygonEntity::PolygonEntity(const geos::geom::Polygon* NewPolygon,
                              OGRFeature* Feat) :
-    geos::planargraph::Edge(), mp_Polygon(NewPolygon), mp_Feature(Feat), mp_Neighbours(
-        0)
+    geos::planargraph::Edge(), mp_Polygon(NewPolygon), mp_Feature(Feat), mp_SelfId(
+        0), mp_Neighbours(0)
 {
-
+  m_Area = mp_Polygon->getArea();
+  mp_Centroide = mp_Polygon->getCentroid();
 }
 
 // =====================================================================
 // =====================================================================
 
 PolygonEntity::PolygonEntity(const openfluid::landr::PolygonEntity& Other) :
-    geos::planargraph::Edge(), mp_Neighbours(0)
+    geos::planargraph::Edge(), mp_SelfId(0), mp_Neighbours(0)
 {
   mp_Polygon = dynamic_cast<geos::geom::Polygon*>(Other.getPolygon()->clone());
   mp_Feature =
       (const_cast<openfluid::landr::PolygonEntity&>(Other).getFeature())->Clone();
+
+  m_Area = mp_Polygon->getArea();
+  mp_Centroide = mp_Polygon->getCentroid();
 }
 
 // =====================================================================
@@ -99,6 +103,7 @@ PolygonEntity::~PolygonEntity()
   OGRFeature::DestroyFeature(mp_Feature);
   delete mp_Polygon;
   delete mp_Neighbours;
+  delete mp_SelfId;
 }
 
 // =====================================================================
@@ -120,14 +125,19 @@ OGRFeature* PolygonEntity::getFeature()
 // =====================================================================
 // =====================================================================
 
-int PolygonEntity::getSelfId()
+unsigned int PolygonEntity::getSelfId()
 {
-  if (mp_Feature && mp_Feature->GetFieldIndex("SELF_ID") != -1)
-    return mp_Feature->GetFieldAsInteger("SELF_ID");
-  else
-    throw openfluid::base::OFException("OpenFLUID Framework",
-                                       "PolygonEntity::getSelfId",
-                                       "Cannot get SELF_ID field.");
+  if (!mp_SelfId)
+  {
+    if (mp_Feature && mp_Feature->GetFieldIndex("SELF_ID") != -1)
+      mp_SelfId = new unsigned int(mp_Feature->GetFieldAsInteger("SELF_ID"));
+    else
+      throw openfluid::base::OFException("OpenFLUID Framework",
+                                         "PolygonEntity::getSelfId",
+                                         "Cannot get SELF_ID field.");
+  }
+
+  return *mp_SelfId;
 }
 
 // =====================================================================
@@ -138,12 +148,17 @@ std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
 {
   std::vector<geos::geom::LineString*> Lines;
 
-  geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(Other.mp_Polygon);
+  if (mp_Polygon->relate(Other.mp_Polygon, "FFT"
+                         "F1*"
+                         "***"))
+  {
+    geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(
+        Other.mp_Polygon);
 
-  if (SharedGeom->getDimension() == geos::geom::Dimension::L)
     Lines = *PolygonGraph::getMergedLineStringsFromGeometry(SharedGeom);
 
-  delete SharedGeom;
+    delete SharedGeom;
+  }
 
   return Lines;
 }
@@ -184,16 +199,15 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
 // =====================================================================
 // =====================================================================
 
-PolygonEdge* PolygonEntity::findEdgeIntersecting(
-    geos::geom::LineString& Segment)
+PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(geos::geom::LineString& Segment)
 {
-  for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
+  for (std::vector<PolygonEdge*>::iterator it = m_PolyEdges.begin();
+      it != m_PolyEdges.end(); ++it)
   {
-    PolygonEdge* Edge = m_PolyEdges.at(i);
-
-    geos::geom::Geometry* Inters = Edge->getLine()->intersection(&Segment);
-    if (!Inters->isEmpty() && Inters->getDimension() == 1)
-      return Edge;
+    if (Segment.relate((*it)->getLine(), "1**"
+                       "***"
+                       "***"))
+      return *it;
   }
 
   return (PolygonEdge*) 0;
@@ -284,7 +298,7 @@ bool PolygonEntity::setAttributeValue(std::string AttributeName,
 
 double PolygonEntity::getArea()
 {
-  return mp_Polygon->getArea();
+  return m_Area;
 }
 
 // =====================================================================
@@ -292,7 +306,7 @@ double PolygonEntity::getArea()
 
 geos::geom::Point* PolygonEntity::getCentroide()
 {
-  return mp_Polygon->getCentroid();
+  return mp_Centroide;
 }
 
 // =====================================================================
@@ -300,7 +314,7 @@ geos::geom::Point* PolygonEntity::getCentroide()
 
 double PolygonEntity::getDistCentroCentro(PolygonEntity& Other)
 {
-  return getCentroide()->distance(Other.getCentroide());
+  return mp_Centroide->distance(Other.getCentroide());
 }
 
 // =====================================================================
@@ -320,10 +334,12 @@ bool PolygonEntity::isComplete()
   geos::geom::LineString* LS = PolygonGraph::getMergedLineStringFromGeometry(
       dynamic_cast<geos::geom::Geometry*>(MLS));
 
-  if (!LS || !LS->isClosed())
-    return false;
+  bool Complete = LS && LS->equals(mp_Polygon->getExteriorRing());
 
-  return true;
+  delete MLS;
+  delete LS;
+
+  return Complete;
 }
 
 // =====================================================================

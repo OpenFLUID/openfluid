@@ -409,7 +409,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   geos::geom::LineString* LS = Factory.createLineString(
       SeqFactory.create(CooLS));
 
-  BOOST_CHECK(Entity.findEdgeIntersecting(*LS) == E2);
+  BOOST_CHECK(Entity.findEdgeLineIntersectingWith(*LS) == E2);
 
   std::vector<geos::geom::Coordinate>* CooWrongLS = new std::vector<
       geos::geom::Coordinate>();
@@ -418,7 +418,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   geos::geom::LineString* WrongLS = Factory.createLineString(
       SeqFactory.create(CooWrongLS));
 
-  BOOST_CHECK(!Entity.findEdgeIntersecting(*WrongLS));
+  BOOST_CHECK(!Entity.findEdgeLineIntersectingWith(*WrongLS));
 
   delete LS;
   delete WrongLS;

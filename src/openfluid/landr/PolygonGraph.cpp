@@ -66,14 +66,9 @@
 #include <geos/geom/Location.h>
 #include <geos/geom/MultiLineString.h>
 #include <geos/geom/GeometryFactory.h>
-#include <geos/geom/prep/PreparedPolygon.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/operation/linemerge/LineMerger.h>
-#include <geos/operation/overlay/OverlayOp.h>
-
-#include <glibmm/ustring.h>
-#include <cassert>
 
 namespace openfluid {
 namespace landr {
@@ -174,6 +169,14 @@ PolygonGraph::PolygonGraph(
 
 PolygonGraph::~PolygonGraph()
 {
+  deleteAll();
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::deleteAll()
+{
   unsigned int i;
   for (i = 0; i < m_NewNodes.size(); i++)
     delete m_NewNodes[i];
@@ -209,21 +212,23 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
 
   if (!Polygon->isValid())
   {
-    std::cerr << "Warning: Polygon " << NewEntity->getSelfId()
-              << " is not valid, resulting graph might be incomplete."
-              << std::endl;
+    std::ostringstream s;
+    s << "Error in Graph creation: Polygon " << NewEntity->getSelfId()
+      << " is not valid.";
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonGraph::addPolygon", s.str());
+
+    deleteAll();
   }
 
   try
   {
-    //TODO use prepared geoms ?
     for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
         it != m_Entities.end(); ++it)
     {
-      PolygonEntity* OtherEntity = *it;
-
       std::vector<geos::geom::LineString*> SharedLines =
-          NewEntity->getLineIntersectionsWith(*OtherEntity);
+          NewEntity->getLineIntersectionsWith(**it);
 
       for (unsigned int i = 0; i < SharedLines.size(); i++)
       {
@@ -232,9 +237,9 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
         PolygonEdge* SharedEdge = createEdge(*SharedLine);
 
         NewEntity->addEdge(*SharedEdge);
-        OtherEntity->addEdge(*SharedEdge);
+        (*it)->addEdge(*SharedEdge);
 
-        removeSegment(OtherEntity, SharedLine);
+        removeSegment(*it, SharedLine);
 
         SharedGeoms.push_back(SharedLine);
       }
@@ -391,16 +396,20 @@ geos::planargraph::Node* PolygonGraph::getNode(
 void PolygonGraph::removeSegment(PolygonEntity* Entity,
                                  geos::geom::LineString* Segment)
 {
-  PolygonEdge* OldEdge = Entity->findEdgeIntersecting(*Segment);
+  PolygonEdge* OldEdge = Entity->findEdgeLineIntersectingWith(*Segment);
 
   if (!OldEdge)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
-        "PolygonGraph::removeSegment",
-        Glib::ustring::compose(
-            "Problem when removing segment (%1) from polygon %2: doesn't find edge intersection.",
-            Segment->toString(), Entity->getSelfId()));
+    std::ostringstream s;
+    s << "Error when removing segment (" << Segment->toString()
+      << ") from Polygon " << Entity->getSelfId()
+      << ": doesn't find edge intersection.";
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonGraph::removeSegment", s.str());
+
+    delete OldEdge;
+    deleteAll();
 
     return;
   }
@@ -409,24 +418,26 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
   if (!DiffGeom->isEmpty())
   {
-    std::vector<geos::geom::LineString*>* DiffGeoms;
-
-    if (DiffGeom->getDimension() == geos::geom::Dimension::L)
+    if (DiffGeom->getDimension() != geos::geom::Dimension::L)
     {
-      DiffGeoms = getMergedLineStringsFromGeometry(DiffGeom);
+      std::ostringstream s;
+      s << "Error when removing segment (" << Segment->toString()
+        << ") from Polygon " << Entity->getSelfId()
+        << ": difference geometry is not \"Line\" typed.";
 
-    } else
-    { //TODO libérer ressources
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework",
-          "PolygonGraph::removeSegment",
-          Glib::ustring::compose(
-              "Error when removing segment (%1) from polygon %2: difference geometry is not \"Line\" typed.",
-              Segment->toString(), Entity->getSelfId()));
+      throw openfluid::base::OFException("OpenFLUID Framework",
+                                         "PolygonGraph::removeSegment",
+                                         s.str());
+
+      delete DiffGeom;
+      delete OldEdge;
+      deleteAll();
 
       return;
     }
 
+    std::vector<geos::geom::LineString*>* DiffGeoms =
+        getMergedLineStringsFromGeometry(DiffGeom);
     for (unsigned int i = 0; i < DiffGeoms->size(); i++)
     {
       PolygonEdge* NewEdge = createEdge(
@@ -580,37 +591,26 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
 
   RastValByRastPoly_t IntersectPolys;
 
-  std::vector<geos::geom::Polygon*>* Polys = getRasterPolygonizedPolys();
+  std::vector<geos::geom::Polygon*>* RasterPolys = getRasterPolygonizedPolys();
 
-  if (!Polys)
+  if (!RasterPolys)
     throw openfluid::base::OFException(
         "OpenFLUID Framework", "PolygonGraph::getRasterPolyOverlaying",
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
   else
   {
-    geos::geom::prep::PreparedPolygon* RefPrepPoly =
-        new geos::geom::prep::PreparedPolygon(RefPoly);
-
-    for (std::vector<geos::geom::Polygon*>::iterator it = Polys->begin();
-        it != Polys->end(); ++it)
+    for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
+        it != RasterPolys->end(); ++it)
     {
-      if (RefPrepPoly->overlaps(*it) || RefPrepPoly->containsProperly(*it))
+      if (RefPoly->relate(*it, "21*******"))
       {
-        geos::geom::Geometry* Intersection =
-            geos::operation::overlay::OverlayOp::overlayOp(
-                RefPoly, *it,
-                geos::operation::overlay::OverlayOp::opINTERSECTION);
+        geos::geom::Polygon* Poly =
+            dynamic_cast<geos::geom::Polygon*>(RefPoly->intersection(*it));
 
-        if (Intersection->getGeometryTypeId() == geos::geom::GEOS_POLYGON)
-        {
-          geos::geom::Polygon* Poly =
-              dynamic_cast<geos::geom::Polygon*>(Intersection);
+        // !! copy doesn't keep UserData !
+        Poly->setUserData((*it)->getUserData());
 
-          // !! copy doesn't keep UserData !
-          Poly->setUserData((*it)->getUserData());
-
-          IntersectPolys[Poly] = Poly->getArea();
-        }
+        IntersectPolys[Poly] = Poly->getArea();
       }
     }
 
@@ -632,11 +632,11 @@ openfluid::core::GeoVectorValue* PolygonGraph::getRasterPolygonized()
           "No raster associated to the PolygonGraph");
     else
     {
-      std::string FileName = Glib::ustring::compose("Polygonized_%1.shp",
-                                                    FileNum++);
+      std::ostringstream FileName;
+      FileName << "Polygonized_" << FileNum++ << ".shp";
 
       mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
-                                                   FileName);
+                                                   FileName.str());
 
       mp_RasterPolygonizedPolys = 0;
     }
@@ -662,7 +662,7 @@ std::vector<geos::geom::Polygon*>* PolygonGraph::getRasterPolygonizedPolys()
     {
       mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
 
-      // ?
+      // TODO move?
       setlocale(LC_NUMERIC, "C");
 
       OGRLayer* Layer0 = Polygonized->getLayer0();

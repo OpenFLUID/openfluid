@@ -112,6 +112,8 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
 
     static int FileNum;
 
+    void deleteAll();
+
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
      *

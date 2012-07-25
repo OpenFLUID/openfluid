@@ -58,7 +58,6 @@
 #include <openfluid/base/OFException.hpp>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
-#include <glibmm/ustring.h>
 
 namespace openfluid {
 namespace landr {
@@ -91,23 +90,24 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
 {
   if (!isLineInFace(NewFace))
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
-        "PolygonEdge::addNeighbour",
-        Glib::ustring::compose(
-            "Can not add Polygon %1 as neighbour of this edge, because it doesn't contain edge line.",
-            NewFace.getSelfId()));
+    std::ostringstream s;
+    s << "Can not add Polygon " << NewFace.getSelfId()
+      << " as neighbour of this edge, because it doesn't contain edge line.";
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonEdge::addNeighbour", s.str());
+
     return;
   }
 
   if (m_Faces.size() > 1)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
-        "PolygonEdge::addNeighbour",
-        Glib::ustring::compose(
-            "Can not add Polygon %1 as neighbour of this edge, which has already two neighbours.",
-            NewFace.getSelfId()));
+    std::ostringstream s;
+    s << "Can not add Polygon " << NewFace.getSelfId()
+      << " as neighbour of this edge, which has already two neighbours.";
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonEdge::addNeighbour", s.str());
     return;
   }
 
@@ -119,12 +119,9 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
 
 bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 {
-  geos::geom::Geometry* Inters = Face.getPolygon()->intersection(&m_Line);
-
-  if (Inters->isEmpty() || Inters->getDimension() != 1)
-    return false;
-
-  return true;
+  return (m_Line.relate(Face.getPolygon(), "F1F"
+                        "F*F"
+                        "***"));
 }
 
 // =====================================================================

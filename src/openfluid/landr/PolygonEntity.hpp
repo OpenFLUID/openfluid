@@ -83,6 +83,12 @@ class PolygonEntity: public geos::planargraph::Edge
 
     OGRFeature* mp_Feature;
 
+    unsigned int* mp_SelfId;
+
+    double m_Area;
+
+    geos::geom::Point* mp_Centroide;
+
     std::map<std::string, boost::any> m_Attributes;
 
     // for limiting access to m_Attributes creation/deletion to PolygonGraph class
@@ -108,7 +114,7 @@ class PolygonEntity: public geos::planargraph::Edge
 
     OGRFeature* getFeature();
 
-    int getSelfId();
+    unsigned int getSelfId();
 
     /**
      * @brief Returns a vector of linear intersections between two Polygons.
@@ -133,7 +139,7 @@ class PolygonEntity: public geos::planargraph::Edge
      * @return The PolygonEdge of this PolygonEntity containing the input LineString,
      * or 0 if not found.
      */
-    PolygonEdge* findEdgeIntersecting(geos::geom::LineString& Segment);
+    PolygonEdge* findEdgeLineIntersectingWith(geos::geom::LineString& Segment);
 
     const NeigboursMap_t* getNeighbours();
 

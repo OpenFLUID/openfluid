@@ -14,7 +14,7 @@ SET_TARGET_PROPERTIES(openfluid-landr PROPERTIES VERSION "${VERSION_MAJOR}.${VER
 TARGET_LINK_LIBRARIES(openfluid-landr
                       openfluid-core openfluid-base
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
-                      ${GDAL_LIBRARIES} ${GLIBMM_LIBRARIES})
+                      ${GDAL_LIBRARIES})
 
 INSTALL(TARGETS openfluid-landr
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}
