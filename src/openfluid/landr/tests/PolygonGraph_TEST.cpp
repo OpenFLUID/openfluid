@@ -1180,5 +1180,33 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
   delete Vector;
   delete Raster;
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
+      *Val);
+
+  Graph->createVectorRepresentation(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                    "SUGraph.shp");
+
+  openfluid::core::GeoVectorValue* GraphVal =
+      new openfluid::core::GeoVectorValue(
+          CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SUGraph.shp");
+
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 58);
+  BOOST_CHECK_EQUAL(GraphVal->getLayer0()->GetFeatureCount(), 58);
+
+  GraphVal->deleteShpOnDisk();
+  delete GraphVal;
+  delete Graph;
+  delete Val;
+}
+
 // =====================================================================
 // =====================================================================

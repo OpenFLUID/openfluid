@@ -786,5 +786,73 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 // =====================================================================
 // =====================================================================
 
+void PolygonGraph::createVectorRepresentation(std::string FilePath,
+                                              std::string FileName)
+{
+  openfluid::core::GeoVectorValue* OutVector =
+      new openfluid::core::GeoVectorValue(FilePath, FileName);
+
+  OutVector->createShp(wkbLineString);
+
+  std::vector<geos::planargraph::Edge*>* Edges = getEdges();
+
+  if (!Edges)
+  {
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+        "No edges for this graph.");
+
+    OutVector->deleteShpOnDisk();
+    delete OutVector;
+
+    return;
+  }
+
+  for (std::vector<geos::planargraph::Edge*>::iterator it = Edges->begin();
+      it != Edges->end(); ++it)
+  {
+    OGRFeature* Feat = OGRFeature::CreateFeature(OutVector->getLayerDef());
+
+    geos::geom::Geometry* Geom =
+        dynamic_cast<geos::geom::Geometry*>((dynamic_cast<openfluid::landr::PolygonEdge*>(*it))->getLine());
+
+    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS((GEOSGeom) Geom);
+
+    if (!OGRGeom)
+      if (!Edges)
+      {
+        throw openfluid::base::OFException(
+            "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+            "Failed to transform geometry from GEOS to OGR.");
+
+        OutVector->deleteShpOnDisk();
+        delete OutVector;
+
+        return;
+      }
+
+    Feat->SetGeometry(OGRGeom);
+
+    if (OutVector->getLayer0()->CreateFeature(Feat) != OGRERR_NONE)
+    {
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+          "Failed to create feature in shapefile.");
+
+      OutVector->deleteShpOnDisk();
+      delete OutVector;
+
+      return;
+    }
+
+    OGRFeature::DestroyFeature(Feat);
+  }
+
+  delete OutVector;
+}
+
+// =====================================================================
+// =====================================================================
+
 }// namespace landr
 } /* namespace openfluid */
