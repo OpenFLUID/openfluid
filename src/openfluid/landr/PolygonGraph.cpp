@@ -604,13 +604,19 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
     {
       if (RefPoly->relate(*it, "21*******"))
       {
-        geos::geom::Polygon* Poly =
-            dynamic_cast<geos::geom::Polygon*>(RefPoly->intersection(*it));
+        geos::geom::Geometry* Inter = RefPoly->intersection(*it);
 
-        // !! copy doesn't keep UserData !
-        Poly->setUserData((*it)->getUserData());
+        for (unsigned int i = 0; i < Inter->getNumGeometries(); i++)
+        {
+          geos::geom::Polygon* Poly =
+              dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
+                  i)));
 
-        IntersectPolys[Poly] = Poly->getArea();
+          // !! copy doesn't keep UserData !
+          Poly->setUserData((*it)->getUserData());
+
+          IntersectPolys[Poly] = Poly->getArea();
+        }
       }
     }
 

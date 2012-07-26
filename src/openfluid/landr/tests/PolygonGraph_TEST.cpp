@@ -905,7 +905,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonizedMultiPoly)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlaying)
+BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
@@ -939,6 +939,46 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlaying)
   }
 
   BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U1->getArea()));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
+      *Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);
+
+  openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU2 =
+      Graph->getRasterPolyOverlapping(*U2);
+
+  BOOST_CHECK_EQUAL(OverlapsU2.size(), 20);
+
+  double Area = 0;
+
+  for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator it =
+      OverlapsU2.begin(); it != OverlapsU2.end(); ++it)
+  {
+    Area += it->second;
+
+    BOOST_CHECK((int*)it->first->getUserData());
+  }
+
+  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U2->getArea()));
 
   delete Graph;
   delete Vector;
