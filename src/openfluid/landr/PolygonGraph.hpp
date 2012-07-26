@@ -195,8 +195,16 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
      */
     void removeAttribute(std::string AttributeName);
 
+    /**
+     * @brief Check if each entity is complete.
+     *
+     * @return True if all entities of this graph are complete, false otherwise.
+     */
     bool isComplete();
 
+    /**
+     * @brief Removes from this Graph the nodes of degree 0.
+     */
     void removeUnusedNodes();
 
     /**
@@ -204,21 +212,45 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
      */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
 
+    /**
+     * @brief Fetch the raster value corresponding to the entity centroid coordinate.
+     *
+     * @param Entity The PolygonEntity to get the centroid coordinate from.
+     * @return The raster value corresponding to the Entity centroid coordinate.
+     */
     float* getRasterValueForEntityCentroid(PolygonEntity& Entity);
 
     /**
-     * Get a map of Polygons and its area intersecting Entity, from associated polygonized Raster.
+     * @brief Create a new attribute for this Graph entities, and set for each entity
+     * this attribute value as the raster value corresponding to the entity centroid coordinate.
+     *
+     * @param AttributeName The name of the attribute to create
+     */
+    void setAttributeFromRasterValueAtCentroid(std::string AttributeName);
+
+    /**
+     * Get a map of polygonized Raster polygons and its area intersecting Entity.
      *
      * @param Entity The Entity to compare with the associated Raster.
      *
-     * @return A map of Polygons from associated polygonized raster, with for each one the relevant intersecting area.
+     * @return A map of polygonized Raster Polygons, from associated polygonized raster,
+     * with for each one the intersection area.
      */
-    RastValByRastPoly_t getRasterPolyOverlapping(
-        PolygonEntity& Entity);
+    RastValByRastPoly_t getRasterPolyOverlapping(PolygonEntity& Entity);
 
     openfluid::core::GeoVectorValue* getRasterPolygonized();
 
     std::vector<geos::geom::Polygon*>* getRasterPolygonizedPolys();
+
+    /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity
+     * this attribute value as the mean of the overlapping raster values, relative to overlapping areas.
+     * Beware that this uses GeoRasterValue::polygonize function, which currently only deal with integer values.
+     * So raster float pixel values are rounded before computing.
+     *
+     * @param AttributeName The name of the attribute to create
+     */
+    void setAttributeFromMeanRasterValues(std::string AttributeName);
 };
 
 } // namespace landr

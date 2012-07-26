@@ -162,6 +162,12 @@ class PolygonEntity: public geos::planargraph::Edge
      */
     double getDistCentroCentro(PolygonEntity& Other);
 
+    /**
+     * @brief Check if this Entity is complete, that is if all edges of this Entity,
+     * merged in a LineString, equals this Entity polygon exterior ring.
+     *
+     * @return True if complete, false otherwise.
+     */
     bool isComplete();
 
     void computeNeighbours();

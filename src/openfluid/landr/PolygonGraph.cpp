@@ -584,6 +584,35 @@ float* PolygonGraph::getRasterValueForEntityCentroid(PolygonEntity& Entity)
 // =====================================================================
 // =====================================================================
 
+void PolygonGraph::setAttributeFromRasterValueAtCentroid(
+    std::string AttributeName)
+{
+  addAttribute(AttributeName);
+
+  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+  {
+    float* Val = getRasterValueForEntityCentroid(**it);
+
+    if (!Val)
+    {
+      std::ostringstream s;
+      s << "No raster value for entity " << (*it)->getSelfId() << " centroid.";
+
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework",
+          "PolygonGraph::setAttributeFromRasterValueAtCentroid", s.str());
+      return;
+    }
+
+    (*it)->setAttributeValue(AttributeName, *Val);
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
 PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
     PolygonEntity& Entity)
 {
@@ -704,6 +733,54 @@ std::vector<geos::geom::Polygon*>* PolygonGraph::getRasterPolygonizedPolys()
   }
 
   return mp_RasterPolygonizedPolys;
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
+{
+  addAttribute(AttributeName);
+
+  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+  {
+    openfluid::landr::PolygonGraph::RastValByRastPoly_t RastPolys =
+        getRasterPolyOverlapping(**it);
+
+    float PolyArea = (*it)->getArea();
+
+    if (!PolyArea)
+      continue;
+
+    float Mean = 0;
+
+    for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator itPix =
+        RastPolys.begin(); itPix != RastPolys.end(); ++itPix)
+    {
+      // get as integer because GeoRasterValue::polygonize function currently only deal with integer values
+      int* PixelVal = ((int*) itPix->first->getUserData());
+
+      if (!PixelVal)
+      {
+        std::ostringstream s;
+        s << "No raster value for a raster pixel overlapping entity "
+          << (*it)->getSelfId() << " .";
+
+        throw openfluid::base::OFException(
+            "OpenFLUID Framework",
+            "PolygonGraph::setAttributeFromMeanRasterValues", s.str());
+        return;
+      }
+
+      float OverlappingArea = itPix->second;
+
+      Mean += *PixelVal * (OverlappingArea / PolyArea);
+    }
+
+    (*it)->setAttributeValue(AttributeName, Mean);
+  }
+
 }
 
 // =====================================================================
