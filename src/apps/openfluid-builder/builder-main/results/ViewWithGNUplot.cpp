@@ -121,7 +121,7 @@ bool ViewWithGNUplot::IsGNUplotAvailable()
 
 std::vector<std::string> ViewWithGNUplot::getOrderedScalarVariablesNames(const std::string& Data)
 {
-  std::string BeginStr("scalar variables order (after date and time columns): ");
+  std::string BeginStr("variables order (after date and time columns): ");
 
   std::size_t FoundBegin = Data.find(BeginStr);
 

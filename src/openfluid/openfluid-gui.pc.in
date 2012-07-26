@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: openfluid
+Description: OpenFLUID framework
+Version: @FULL_VERSION@
+Requires: gtkmm-2.4 openfluid
+Libs: -L${libdir} -lopenfluid-gui
+Cflags: -I${includedir}

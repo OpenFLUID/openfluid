@@ -2,9 +2,9 @@
 
 IF(DOXYGEN)
   
-  CONFIGURE_FILE(Doxyfile.in ${PROJECT_BINARY_DIR}/API-Doxyfile)
+  CONFIGURE_FILE(Doxyfile.in "${PROJECT_BINARY_DIR}/API-Doxyfile")
 
-  FILE(MAKE_DIRECTORY ${APIDOC_OUTPUT_PATH})
+  FILE(MAKE_DIRECTORY "${APIDOC_OUTPUT_PATH}")
 
   # TODO A voir autrement    
   CONFIGURE_FILE(openfluid.png ${APIDOC_OUTPUT_PATH}/html/openfluid.png COPYONLY)

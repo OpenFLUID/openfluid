@@ -65,7 +65,14 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/Value.hpp>
+#include <openfluid/core/NullValue.hpp>
+#include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/StringValue.hpp>
+#include <openfluid/core/VectorValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/Vector.hpp>

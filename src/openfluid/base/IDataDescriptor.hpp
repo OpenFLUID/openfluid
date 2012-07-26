@@ -93,6 +93,8 @@ class DLLEXPORT InputDataDescriptor
 
     inline const UnitIDInputData_t& getData() const { return m_Data; };
 
+    inline UnitIDInputData_t& getData() { return m_Data; };
+
 };
 
 
