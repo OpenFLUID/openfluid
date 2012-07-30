@@ -58,6 +58,7 @@
 #include <openfluid/base/OFException.hpp>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
+#include <geos/planargraph/DirectedEdge.h>
 
 namespace openfluid {
 namespace landr {
@@ -72,7 +73,8 @@ PolygonEdge::PolygonEdge(geos::geom::LineString& Line) :
 
 PolygonEdge::~PolygonEdge()
 {
-
+  for (unsigned int i = 0; i < dirEdge.size(); i++)
+    delete dirEdge[i];
 }
 
 // =====================================================================
@@ -130,6 +132,18 @@ bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 const std::vector<PolygonEntity*> PolygonEdge::getFaces()
 {
   return m_Faces;
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonEdge::removeFace(PolygonEntity* Face)
+{
+  std::vector<PolygonEntity*>::iterator it = std::find(m_Faces.begin(),
+                                                       m_Faces.end(), Face);
+
+  if (it != m_Faces.end())
+    m_Faces.erase(it);
 }
 
 // =====================================================================

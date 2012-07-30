@@ -74,8 +74,7 @@ namespace landr {
 
 PolygonEntity::PolygonEntity(const geos::geom::Polygon* NewPolygon,
                              OGRFeature* Feat) :
-    geos::planargraph::Edge(), mp_Polygon(NewPolygon), mp_Feature(Feat), mp_SelfId(
-        0), mp_Neighbours(0)
+    LandREntity(Feat), mp_Polygon(NewPolygon), mp_Neighbours(0)
 {
   m_Area = mp_Polygon->getArea();
   mp_Centroide = mp_Polygon->getCentroid();
@@ -84,12 +83,11 @@ PolygonEntity::PolygonEntity(const geos::geom::Polygon* NewPolygon,
 // =====================================================================
 // =====================================================================
 
-PolygonEntity::PolygonEntity(const openfluid::landr::PolygonEntity& Other) :
-    geos::planargraph::Edge(), mp_SelfId(0), mp_Neighbours(0)
+PolygonEntity::PolygonEntity(const PolygonEntity& Other) :
+    LandREntity(), mp_Neighbours(0)
 {
   mp_Polygon = dynamic_cast<geos::geom::Polygon*>(Other.getPolygon()->clone());
-  mp_Feature =
-      (const_cast<openfluid::landr::PolygonEntity&>(Other).getFeature())->Clone();
+  mp_Feature = (const_cast<PolygonEntity&>(Other).getFeature())->Clone();
 
   m_Area = mp_Polygon->getArea();
   mp_Centroide = mp_Polygon->getCentroid();
@@ -100,10 +98,8 @@ PolygonEntity::PolygonEntity(const openfluid::landr::PolygonEntity& Other) :
 
 PolygonEntity::~PolygonEntity()
 {
-  OGRFeature::DestroyFeature(mp_Feature);
   delete mp_Polygon;
   delete mp_Neighbours;
-  delete mp_SelfId;
 }
 
 // =====================================================================
@@ -112,32 +108,6 @@ PolygonEntity::~PolygonEntity()
 const geos::geom::Polygon* PolygonEntity::getPolygon() const
 {
   return mp_Polygon;
-}
-
-// =====================================================================
-// =====================================================================
-
-OGRFeature* PolygonEntity::getFeature()
-{
-  return mp_Feature;
-}
-
-// =====================================================================
-// =====================================================================
-
-unsigned int PolygonEntity::getSelfId()
-{
-  if (!mp_SelfId)
-  {
-    if (mp_Feature && mp_Feature->GetFieldIndex("SELF_ID") != -1)
-      mp_SelfId = new unsigned int(mp_Feature->GetFieldAsInteger("SELF_ID"));
-    else
-      throw openfluid::base::OFException("OpenFLUID Framework",
-                                         "PolygonEntity::getSelfId",
-                                         "Cannot get SELF_ID field.");
-  }
-
-  return *mp_SelfId;
 }
 
 // =====================================================================
@@ -199,7 +169,8 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
 // =====================================================================
 // =====================================================================
 
-PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(geos::geom::LineString& Segment)
+PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(
+    geos::geom::LineString& Segment)
 {
   for (std::vector<PolygonEdge*>::iterator it = m_PolyEdges.begin();
       it != m_PolyEdges.end(); ++it)
@@ -241,72 +212,6 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
   std::sort(Ids.begin(), Ids.end());
 
   return Ids;
-}
-
-// =====================================================================
-// =====================================================================
-
-//std::vector<openfluid::landr::PolygonEntity*> PolygonEntity::getUpNeighbours()
-//{
-//  std::vector<openfluid::landr::PolygonEntity*> UpNeighbours;
-//
-//  return UpNeighbours;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//std::vector<openfluid::landr::PolygonEntity*> PolygonEntity::getDownNeighbours()
-//{
-//  std::vector<openfluid::landr::PolygonEntity*> DownNeighbours;
-//
-//  return DownNeighbours;
-//}
-
-// =====================================================================
-// =====================================================================
-
-bool PolygonEntity::getAttributeValue(std::string AttributeName,
-                                      boost::any& Value)
-{
-  if (m_Attributes.count(AttributeName))
-  {
-    Value = m_Attributes.find(AttributeName)->second;
-    return true;
-  }
-
-  return false;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool PolygonEntity::setAttributeValue(std::string AttributeName,
-                                      boost::any Value)
-{
-  if (m_Attributes.count(AttributeName))
-  {
-    m_Attributes[AttributeName] = Value;
-    return true;
-  }
-
-  return false;
-}
-
-// =====================================================================
-// =====================================================================
-
-double PolygonEntity::getArea()
-{
-  return m_Area;
-}
-
-// =====================================================================
-// =====================================================================
-
-geos::geom::Point* PolygonEntity::getCentroide()
-{
-  return mp_Centroide;
 }
 
 // =====================================================================

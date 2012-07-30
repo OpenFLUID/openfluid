@@ -96,6 +96,8 @@ class PolygonEdge: public geos::planargraph::Edge
     bool isLineInFace(PolygonEntity& Face);
 
     const std::vector<PolygonEntity*> getFaces();
+
+    void removeFace(PolygonEntity* Face);
 };
 
 } // namespace landr

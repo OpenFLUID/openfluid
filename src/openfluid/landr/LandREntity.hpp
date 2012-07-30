@@ -46,103 +46,67 @@
  */
 
 /**
- \file PolygonEntity.hpp
+ \file LandREntity.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef POLYGONENTITY_HPP_
-#define POLYGONENTITY_HPP_
+#ifndef LANDRENTITY_HPP_
+#define LANDRENTITY_HPP_
 
-#include <openfluid/landr/LandREntity.hpp>
-#include <vector>
+#include <ogrsf_frmts.h>
+#include <map>
+#include <boost/any.hpp>
 
 namespace geos {
 namespace geom {
-class Polygon;
-class LineString;
+class Point;
 }
 }
 
 namespace openfluid {
 namespace landr {
 
-class PolygonEdge;
-class PolygonGraph;
-
-class PolygonEntity: public LandREntity
+class LandREntity
 {
-  private:
+  protected:
 
-    const geos::geom::Polygon* mp_Polygon;
+    OGRFeature* mp_Feature;
+
+    unsigned int* mp_SelfId;
+
+    geos::geom::Point* mp_Centroide;
+
+    double m_Area;
+
+    std::map<std::string, boost::any> m_Attributes;
+
+    // for limiting access to m_Attributes creation/deletion to LandRGraph class
+    friend class LandRGraph;
 
   public:
 
-    typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeigboursMap_t;
-    NeigboursMap_t* mp_Neighbours;
+    LandREntity();
 
-    std::vector<PolygonEdge*> m_PolyEdges;
+    LandREntity(OGRFeature* Feat);
 
-    /**
-     * Takes ownership of Polygon and Feature
-     */
-    PolygonEntity(const geos::geom::Polygon* NewPolygon, OGRFeature* Feat);
+    virtual ~LandREntity();
 
-    PolygonEntity(const PolygonEntity& Other);
+    OGRFeature* getFeature();
 
-    ~PolygonEntity();
+    unsigned int getSelfId();
 
-    const geos::geom::Polygon* getPolygon() const;
+    geos::geom::Point* getCentroide() const;
 
-    /**
-     * @brief Returns a vector of linear intersections between two Polygons.
-     *
-     * @param Other The Polygon Entity to compare to.
-     * @return A vector of new allocated LineStrings representing the linear intersections (eventually merged) between this Polygon Entity and Other.
-     */
-    std::vector<geos::geom::LineString*> getLineIntersectionsWith(
-        PolygonEntity& Other);
+    double getArea();
 
-    void addEdge(PolygonEdge& Edge);
+    bool getAttributeValue(std::string AttributeName, boost::any& Value);
 
-    /**
-     * Also delete input Edge.
-     */
-    void removeEdge(PolygonEdge* Edge);
-
-    /**
-     * @brief Returns the Edge containing Segment
-     *
-     * @param Segment The LineString to find.
-     * @return The PolygonEdge of this PolygonEntity containing the input LineString,
-     * or 0 if not found.
-     */
-    PolygonEdge* findEdgeLineIntersectingWith(geos::geom::LineString& Segment);
-
-    const NeigboursMap_t* getNeighbours();
-
-    std::vector<int> getOrderedNeighbourSelfIds();
-
-    /**
-     * Get the distance between this unity centroid and Other unity centroid.
-     */
-    double getDistCentroCentro(PolygonEntity& Other);
-
-    /**
-     * @brief Check if this Entity is complete, that is if all edges of this Entity,
-     * merged in a LineString, equals this Entity polygon exterior ring.
-     *
-     * @return True if complete, false otherwise.
-     */
-    bool isComplete();
-
-    void computeNeighbours();
-
-    std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
+    bool setAttributeValue(std::string AttributeName, boost::any Value);
 
 };
 
 } // namespace landr
 } /* namespace openfluid */
-#endif /* POLYGONENTITY_HPP_ */
+#endif /* LANDRENTITY_HPP_ */

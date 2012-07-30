@@ -55,11 +55,8 @@
 #ifndef LINESTRINGENTITY_HPP_
 #define LINESTRINGENTITY_HPP_
 
+#include <openfluid/landr/LandREntity.hpp>
 #include <geos/planargraph/Edge.h>
-
-#include <ogrsf_frmts.h>
-#include <map>
-#include <boost/any.hpp>
 
 namespace geos {
 namespace geom {
@@ -70,18 +67,17 @@ class LineString;
 namespace openfluid {
 namespace landr {
 
-class LineStringEntity: public geos::planargraph::Edge
+class LineStringEntity: public LandREntity, public geos::planargraph::Edge
 {
   private:
 
     const geos::geom::LineString* mp_Line;
 
-    OGRFeature* mp_Feature;
+    std::vector<LineStringEntity*>* mp_UpNeighbours;
+    std::vector<LineStringEntity*>* mp_DownNeighbours;
 
-    std::map<std::string, boost::any> m_Attributes;
-
-    // for limiting access to LineStringEntity attributes creation
-    friend class LineStringGraph;
+    void computUpNeighbours();
+    void computDownNeighbours();
 
   public:
 
@@ -90,27 +86,19 @@ class LineStringEntity: public geos::planargraph::Edge
      */
     LineStringEntity(const geos::geom::LineString* NewLine, OGRFeature* Feat);
 
-    LineStringEntity(const openfluid::landr::LineStringEntity& Other);
+    LineStringEntity(const LineStringEntity& Other);
 
     ~LineStringEntity();
 
     const geos::geom::LineString* getLine() const;
 
-    OGRFeature* getFeature();
-
-    int getSelfId();
-
     geos::planargraph::Node* getStartNode();
 
     geos::planargraph::Node* getEndNode();
 
-    std::vector<openfluid::landr::LineStringEntity*> getUpNeighbours();
+    std::vector<LineStringEntity*> getUpNeighbours();
 
-    std::vector<openfluid::landr::LineStringEntity*> getDownNeighbours();
-
-    bool getAttributeValue(std::string AttributeName, boost::any& Value);
-
-    bool setAttributeValue(std::string AttributeName, boost::any Value);
+    std::vector<LineStringEntity*> getDownNeighbours();
 
     double getLength();
 

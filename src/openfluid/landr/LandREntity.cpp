@@ -46,18 +46,15 @@
  */
 
 /**
- \file LineStringEntity.cpp
+ \file LandREntity.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "LineStringEntity.hpp"
+#include "LandREntity.hpp"
 
-#include <geos/geom/LineString.h>
-#include <geos/planargraph/DirectedEdge.h>
-#include <geos/planargraph/Node.h>
-#include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/base/OFException.hpp>
 
 namespace openfluid {
 namespace landr {
@@ -65,135 +62,101 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-LineStringEntity::LineStringEntity(const geos::geom::LineString* NewLine,
-                                   OGRFeature* Feat) :
-    LandREntity(Feat), geos::planargraph::Edge(), mp_Line(NewLine), mp_UpNeighbours(
-        0), mp_DownNeighbours(0)
+LandREntity::LandREntity() :
+    mp_Feature(0), mp_SelfId(0), mp_Centroide(0)
 {
-  mp_Centroide = mp_Line->getCentroid();
-  m_Area = mp_Line->getArea();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-LineStringEntity::LineStringEntity(const LineStringEntity& Other) :
-    LandREntity(), geos::planargraph::Edge(), mp_UpNeighbours(0), mp_DownNeighbours(
-        0)
+LandREntity::LandREntity(OGRFeature* Feat) :
+    mp_Feature(Feat), mp_SelfId(0), mp_Centroide(0)
 {
-  mp_Line = dynamic_cast<geos::geom::LineString*>(Other.getLine()->clone());
-  mp_Feature = (const_cast<LineStringEntity&>(Other).getFeature())->Clone();
-  mp_Centroide = mp_Line->getCentroid();
-  m_Area = mp_Line->getArea();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-LineStringEntity::~LineStringEntity()
+LandREntity::~LandREntity()
 {
-  for (unsigned int i = 0; i < dirEdge.size(); i++)
-    delete dirEdge[i];
+  if (mp_Feature)
+    OGRFeature::DestroyFeature(mp_Feature);
 
-  delete mp_Line;
-  delete mp_UpNeighbours;
-  delete mp_DownNeighbours;
+  delete mp_SelfId;
 }
 
 // =====================================================================
 // =====================================================================
 
-const geos::geom::LineString* LineStringEntity::getLine() const
+OGRFeature* LandREntity::getFeature()
 {
-  return mp_Line;
+  return mp_Feature;
 }
 
 // =====================================================================
 // =====================================================================
 
-geos::planargraph::Node* LineStringEntity::getStartNode()
+unsigned int LandREntity::getSelfId()
 {
-  return getDirEdge(0)->getFromNode();
-}
-
-// =====================================================================
-// =====================================================================
-
-geos::planargraph::Node* LineStringEntity::getEndNode()
-{
-  return getDirEdge(0)->getToNode();
-}
-
-// =====================================================================
-// =====================================================================
-
-std::vector<LineStringEntity*> LineStringEntity::getUpNeighbours()
-{
-  if (!mp_UpNeighbours)
-    computUpNeighbours();
-
-  return *mp_UpNeighbours;
-}
-
-// =====================================================================
-// =====================================================================
-
-void LineStringEntity::computUpNeighbours()
-{
-  mp_UpNeighbours = new std::vector<LineStringEntity*>();
-
-  geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
-
-  geos::geom::Coordinate UpNodeCoo = getStartNode()->getCoordinate();
-
-  for (std::vector<geos::planargraph::DirectedEdge*>::iterator it =
-      UpStar->iterator(); it != UpStar->end(); ++it)
+  if (!mp_SelfId)
   {
-    LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
-
-    if (Unit->getEndNode()->getCoordinate().equals(UpNodeCoo))
-      mp_UpNeighbours->push_back(Unit);
+    if (mp_Feature && mp_Feature->GetFieldIndex("SELF_ID") != -1)
+      mp_SelfId = new unsigned int(mp_Feature->GetFieldAsInteger("SELF_ID"));
+    else
+      throw openfluid::base::OFException("OpenFLUID Framework",
+                                         "LandREntity::getSelfId",
+                                         "Cannot get SELF_ID field.");
   }
+
+  return *mp_SelfId;
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<LineStringEntity*> LineStringEntity::getDownNeighbours()
+geos::geom::Point* LandREntity::getCentroide() const
 {
-  if (!mp_DownNeighbours)
-    computDownNeighbours();
-
-  return *mp_DownNeighbours;
+  return mp_Centroide;
 }
 
 // =====================================================================
 // =====================================================================
 
-void LineStringEntity::computDownNeighbours()
+double LandREntity::getArea()
 {
-  mp_DownNeighbours = new std::vector<LineStringEntity*>();
+  return m_Area;
+}
 
-  geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
+// =====================================================================
+// =====================================================================
 
-  geos::geom::Coordinate DownNodeCoo = getEndNode()->getCoordinate();
-
-  for (std::vector<geos::planargraph::DirectedEdge*>::iterator it =
-      DownStar->iterator(); it != DownStar->end(); ++it)
+bool LandREntity::getAttributeValue(std::string AttributeName,
+                                    boost::any& Value)
+{
+  if (m_Attributes.count(AttributeName))
   {
-    LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
-
-    if (Unit->getStartNode()->getCoordinate().equals(DownNodeCoo))
-      mp_DownNeighbours->push_back(Unit);
+    Value = m_Attributes.find(AttributeName)->second;
+    return true;
   }
+
+  return false;
 }
 
 // =====================================================================
 // =====================================================================
 
-double LineStringEntity::getLength()
+bool LandREntity::setAttributeValue(std::string AttributeName, boost::any Value)
 {
-  return mp_Line->getLength();
+  if (m_Attributes.count(AttributeName))
+  {
+    m_Attributes[AttributeName] = Value;
+    return true;
+  }
+
+  return false;
 }
 
 // =====================================================================

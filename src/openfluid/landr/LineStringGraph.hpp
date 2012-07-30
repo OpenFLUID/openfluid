@@ -55,37 +55,18 @@
 #ifndef LINESTRINGGRAPH_HPP_
 #define LINESTRINGGRAPH_HPP_
 
-#include <geos/planargraph/PlanarGraph.h>
+#include <openfluid/landr/LandRGraph.hpp>
 
+// for covariant return type
 #include <openfluid/landr/LineStringEntity.hpp>
-
-#include <vector>
-
-namespace geos {
-namespace geom {
-class LineString;
-class Coordinate;
-}
-namespace planargraph {
-class Node;
-class Edge;
-class DirectedEdge;
-}
-}
-
-namespace openfluid {
-namespace core {
-class GeoVectorValue;
-}
-}
 
 /**
  Macro for declaration of a loop processing all entities of a graph
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_GRAPH_LOOP(loopid) \
-  std::vector<openfluid::landr::LineStringEntity*>::iterator _M_##loopid##_it;\
-  std::vector<openfluid::landr::LineStringEntity*> _M_##loopid##_uvect; \
+  std::vector<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+  std::vector<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 
 /**
@@ -93,8 +74,8 @@ class GeoVectorValue;
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_ORDERED_LOOP(loopid) \
-  std::vector<openfluid::landr::LineStringEntity*>::iterator _M_##loopid##_it;\
-  std::vector<openfluid::landr::LineStringEntity*> _M_##loopid##_uvect; \
+  std::vector<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+  std::vector<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 /**
  Macro for the beginning of a loop processing all entities of a graph
@@ -108,7 +89,7 @@ class GeoVectorValue;
   _M_##loopid##_uvect = graph->getEntities();\
   for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
   { \
-    entity = *_M_##loopid##_it; \
+    entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
  Macro for the beginning of a loop processing all entities of a graph, following their selfid
@@ -122,7 +103,7 @@ class GeoVectorValue;
     _M_##loopid##_uvect = graph->getSelfIdOrderedEntities();\
     for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
     { \
-      entity = *_M_##loopid##_it; \
+      entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
  Macro for the ending of a loop
@@ -134,23 +115,13 @@ class GeoVectorValue;
 namespace openfluid {
 namespace landr {
 
-class LineStringGraph: public geos::planargraph::PlanarGraph
+class LineStringGraph: public LandRGraph
 {
   private:
 
-    std::vector<geos::planargraph::Node*> m_NewNodes;
+    void doRemoveEntity(LandREntity* Entity);
 
-    std::map<int, openfluid::landr::LineStringEntity*> m_EntitiesBySelfId;
-
-    std::vector<openfluid::landr::LineStringEntity*> m_Entities;
-
-    std::vector<geos::planargraph::DirectedEdge*> m_NewDirEdges;
-
-    geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
-
-    void addAttribute(std::string AttributeName, LineStringEntity& Entity);
-
-    void removeAttribute(std::string AttributeName, LineStringEntity& Entity);
+    void doDeleteAll();
 
   public:
 
@@ -158,42 +129,25 @@ class LineStringGraph: public geos::planargraph::PlanarGraph
 
     LineStringGraph(const openfluid::core::GeoVectorValue& Val);
 
-    LineStringGraph(openfluid::landr::LineStringGraph& Other);
+    LineStringGraph(LineStringGraph& Other);
 
-    LineStringGraph(
-        const std::vector<openfluid::landr::LineStringEntity*>& Entities);
+    LineStringGraph(const std::vector<LineStringEntity*>& Entities);
 
     virtual ~LineStringGraph();
 
     /**
      * Takes ownership of LineString and Feature
      */
-    openfluid::landr::LineStringEntity* addEdge(
-        const geos::geom::LineString* LineString, OGRFeature* Feat);
+    LineStringEntity* addEdge(const geos::geom::LineString* LineString,
+                              OGRFeature* Feat);
 
-    openfluid::landr::LineStringEntity* getLastLineStringEntity();
+    LineStringEntity* getLastLineStringEntity();
 
-    std::vector<openfluid::landr::LineStringEntity*> getEndLineStringEntities();
+    std::vector<LineStringEntity*> getEndLineStringEntities();
 
-    std::vector<openfluid::landr::LineStringEntity*> getStartLineStringEntities();
+    std::vector<LineStringEntity*> getStartLineStringEntities();
 
-    unsigned int getSize();
-
-    openfluid::landr::LineStringEntity* getEntity(int SelfId);
-
-    std::vector<openfluid::landr::LineStringEntity*> getEntities();
-
-    std::vector<openfluid::landr::LineStringEntity*> getSelfIdOrderedEntities();
-
-    /**
-     * Doesn't reset if the AttributeName already exists.
-     */
-    void addAttribute(std::string AttributeName);
-
-    /**
-     * Does nothing if AttributeName doesn't exist.
-     */
-    void removeAttribute(std::string AttributeName);
+    LineStringEntity* getEntity(int SelfId);
 
 };
 

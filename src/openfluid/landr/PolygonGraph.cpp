@@ -57,6 +57,7 @@
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <geos/geom/CoordinateSequence.h>
@@ -73,15 +74,10 @@
 namespace openfluid {
 namespace landr {
 
-int PolygonGraph::FileNum = 0;
-
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph() :
-    geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+PolygonGraph::PolygonGraph()
 {
 
 }
@@ -89,19 +85,16 @@ PolygonGraph::PolygonGraph() :
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph(openfluid::landr::PolygonGraph& Other) :
-    geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+PolygonGraph::PolygonGraph(PolygonGraph& Other)
 {
-  std::vector<openfluid::landr::PolygonEntity*> OtherEntities =
-      Other.getEntities();
+  std::vector<LandREntity*> OtherEntities = Other.getEntities();
 
-  for (std::vector<openfluid::landr::PolygonEntity*>::iterator it =
-      OtherEntities.begin(); it != OtherEntities.end(); ++it)
+  for (std::vector<LandREntity*>::iterator it = OtherEntities.begin();
+      it != OtherEntities.end(); ++it)
   {
-    addPolygon(dynamic_cast<geos::geom::Polygon*>((*it)->getPolygon()->clone()),
-               (*it)->getFeature()->Clone());
+    addPolygon(
+        dynamic_cast<geos::geom::Polygon*>((dynamic_cast<PolygonEntity*>(*it))->getPolygon()->clone()),
+        (*it)->getFeature()->Clone());
   }
 
   removeUnusedNodes();
@@ -110,10 +103,7 @@ PolygonGraph::PolygonGraph(openfluid::landr::PolygonGraph& Other) :
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val) :
-    geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val)
 {
 // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
@@ -147,14 +137,10 @@ PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph(
-    const std::vector<openfluid::landr::PolygonEntity*>& Entities) :
-    geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+PolygonGraph::PolygonGraph(const std::vector<PolygonEntity*>& Entities)
 {
-  for (std::vector<openfluid::landr::PolygonEntity*>::const_iterator it =
-      Entities.begin(); it != Entities.end(); ++it)
+  for (std::vector<PolygonEntity*>::const_iterator it = Entities.begin();
+      it != Entities.end(); ++it)
   {
     addPolygon(
         dynamic_cast<const geos::geom::Polygon*>((*it)->getPolygon()->clone()),
@@ -175,40 +161,12 @@ PolygonGraph::~PolygonGraph()
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::deleteAll()
-{
-  unsigned int i;
-  for (i = 0; i < m_NewNodes.size(); i++)
-    delete m_NewNodes[i];
-  for (i = 0; i < m_Entities.size(); i++)
-    delete m_Entities[i];
-  for (i = 0; i < m_NewDirEdges.size(); i++)
-    delete m_NewDirEdges[i];
-
-  if (mp_RasterPolygonized)
-  {
-    mp_RasterPolygonized->deleteShpOnDisk();
-    delete mp_RasterPolygonized;
-  }
-
-  if (mp_RasterPolygonizedPolys)
-  {
-    for (i = 0; i < mp_RasterPolygonizedPolys->size(); i++)
-      delete mp_RasterPolygonizedPolys->at(i);
-
-    delete mp_RasterPolygonizedPolys;
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
-    const geos::geom::Polygon* Polygon, OGRFeature* Feat)
+PolygonEntity* PolygonGraph::addPolygon(const geos::geom::Polygon* Polygon,
+                                        OGRFeature* Feat)
 {
   std::vector<geos::geom::Geometry*> SharedGeoms;
 
-  openfluid::landr::PolygonEntity* NewEntity = new PolygonEntity(Polygon, Feat);
+  PolygonEntity* NewEntity = new PolygonEntity(Polygon, Feat);
 
   if (!Polygon->isValid())
   {
@@ -224,11 +182,12 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
 
   try
   {
-    for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
+    for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
         it != m_Entities.end(); ++it)
     {
+      PolygonEntity* Poly = dynamic_cast<PolygonEntity*>(*it);
       std::vector<geos::geom::LineString*> SharedLines =
-          NewEntity->getLineIntersectionsWith(**it);
+          NewEntity->getLineIntersectionsWith(*Poly);
 
       for (unsigned int i = 0; i < SharedLines.size(); i++)
       {
@@ -237,9 +196,9 @@ openfluid::landr::PolygonEntity* PolygonGraph::addPolygon(
         PolygonEdge* SharedEdge = createEdge(*SharedLine);
 
         NewEntity->addEdge(*SharedEdge);
-        (*it)->addEdge(*SharedEdge);
+        Poly->addEdge(*SharedEdge);
 
-        removeSegment(*it, SharedLine);
+        removeSegment(Poly, SharedLine);
 
         SharedGeoms.push_back(SharedLine);
       }
@@ -355,13 +314,11 @@ PolygonEdge* PolygonGraph::createEdge(geos::geom::LineString& LineString)
   geos::planargraph::DirectedEdge* DirectedEdge0 =
       new geos::planargraph::DirectedEdge(StartNode, EndNode,
                                           Coordinates->getAt(1), true);
-  m_NewDirEdges.push_back(DirectedEdge0);
 
   geos::planargraph::DirectedEdge* DirectedEdge1 =
       new geos::planargraph::DirectedEdge(
           EndNode, StartNode, Coordinates->getAt(Coordinates->getSize() - 2),
           false);
-  m_NewDirEdges.push_back(DirectedEdge1);
 
   PolygonEdge* NewEdge = new PolygonEdge(LineString);
 
@@ -372,22 +329,6 @@ PolygonEdge* PolygonGraph::createEdge(geos::geom::LineString& LineString)
   delete Coordinates;
 
   return NewEdge;
-}
-
-// =====================================================================
-// =====================================================================
-
-geos::planargraph::Node* PolygonGraph::getNode(
-    const geos::geom::Coordinate& Coordinate)
-{
-  geos::planargraph::Node* Node = findNode(Coordinate);
-  if (Node == NULL)
-  {
-    Node = new geos::planargraph::Node(Coordinate);
-    m_NewNodes.push_back(Node);
-    add(Node);
-  }
-  return Node;
 }
 
 // =====================================================================
@@ -456,70 +397,26 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 // =====================================================================
 // =====================================================================
 
-unsigned int PolygonGraph::getSize()
+PolygonEntity* PolygonGraph::getEntity(int SelfId)
 {
-  return m_Entities.size();
+  return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(SelfId));
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::landr::PolygonEntity* PolygonGraph::getEntity(int SelfId)
+void PolygonGraph::doRemoveEntity(LandREntity* Entity)
 {
-  if (m_EntitiesBySelfId.count(SelfId))
-    return m_EntitiesBySelfId.find(SelfId)->second;
-
-  return (openfluid::landr::PolygonEntity*) 0;
+  //TODO
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::landr::PolygonEntity*> PolygonGraph::getEntities()
+void PolygonGraph::doDeleteAll()
 {
-  return m_Entities;
-}
-
-// =====================================================================
-// =====================================================================
-
-std::vector<openfluid::landr::PolygonEntity*> PolygonGraph::getSelfIdOrderedEntities()
-{
-  std::vector<PolygonEntity*> Entities;
-
-  for (std::map<int, PolygonEntity*>::iterator it = m_EntitiesBySelfId.begin();
-      it != m_EntitiesBySelfId.end(); ++it)
-    Entities.push_back(it->second);
-
-  return Entities;
-}
-
-// =====================================================================
-// =====================================================================
-
-std::map<int, openfluid::landr::PolygonEntity*> PolygonGraph::getEntitiesBySelfId()
-{
-  return m_EntitiesBySelfId;
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::addAttribute(std::string AttributeName)
-{
-  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
-    (*it)->m_Attributes[AttributeName];
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::removeAttribute(std::string AttributeName)
-{
-  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
-    (*it)->m_Attributes.erase(AttributeName);
+  for (unsigned int i = 0; i < edges.size(); i++)
+    delete edges[i];
 }
 
 // =====================================================================
@@ -527,87 +424,14 @@ void PolygonGraph::removeAttribute(std::string AttributeName)
 
 bool PolygonGraph::isComplete()
 {
-  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
+  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
-    if (!(*it)->isComplete())
+    if (!(dynamic_cast<PolygonEntity*>(*it))->isComplete())
       return false;
   }
 
   return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::removeUnusedNodes()
-{
-  std::vector<geos::planargraph::Node*>* Unused = findNodesOfDegree(0);
-
-  for (unsigned int i = 0; i < Unused->size(); i++)
-    remove(Unused->at(i));
-
-  delete Unused;
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
-{
-  mp_Raster = &Raster;
-  mp_RasterPolygonized = 0;
-  mp_RasterPolygonizedPolys = 0;
-}
-
-// =====================================================================
-// =====================================================================
-
-float* PolygonGraph::getRasterValueForEntityCentroid(PolygonEntity& Entity)
-{
-  float* Val = 0;
-
-  if (!mp_Raster)
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "PolygonGraph::getRasterValueForEntityCentroid",
-        "No raster associated to the PolygonGraph");
-  else
-  {
-    Val = new float(
-        mp_Raster->getValueOfCoordinate(
-            *Entity.getCentroide()->getCoordinate()));
-  }
-
-  return Val;
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::setAttributeFromRasterValueAtCentroid(
-    std::string AttributeName)
-{
-  addAttribute(AttributeName);
-
-  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
-  {
-    float* Val = getRasterValueForEntityCentroid(**it);
-
-    if (!Val)
-    {
-      std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " centroid.";
-
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework",
-          "PolygonGraph::setAttributeFromRasterValueAtCentroid", s.str());
-      return;
-    }
-
-    (*it)->setAttributeValue(AttributeName, *Val);
-  }
-
 }
 
 // =====================================================================
@@ -657,96 +481,15 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
 // =====================================================================
 // =====================================================================
 
-openfluid::core::GeoVectorValue* PolygonGraph::getRasterPolygonized()
-{
-  if (!mp_RasterPolygonized)
-  {
-    if (!mp_Raster)
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::getRasterPolygonized",
-          "No raster associated to the PolygonGraph");
-    else
-    {
-      std::ostringstream FileName;
-      FileName << "Polygonized_" << FileNum++ << ".shp";
-
-      mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
-                                                   FileName.str());
-
-      mp_RasterPolygonizedPolys = 0;
-    }
-  }
-
-  return mp_RasterPolygonized;
-}
-
-// =====================================================================
-// =====================================================================
-
-std::vector<geos::geom::Polygon*>* PolygonGraph::getRasterPolygonizedPolys()
-{
-  if (!mp_RasterPolygonizedPolys)
-  {
-    openfluid::core::GeoVectorValue* Polygonized = getRasterPolygonized();
-
-    if (!Polygonized)
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::getRasterPolygonizedMultiPoly",
-          "No RasterPolygonized associated to the PolygonGraph");
-    else
-    {
-      mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
-
-      // TODO move?
-      setlocale(LC_NUMERIC, "C");
-
-      OGRLayer* Layer0 = Polygonized->getLayer0();
-
-      int PixelValFieldIndex = Polygonized->getFieldIndex(
-          openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName());
-
-      Layer0->ResetReading();
-
-      OGRFeature* Feat;
-      while ((Feat = Layer0->GetNextFeature()) != NULL)
-      {
-        OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-        // c++ cast doesn't work (have to use the C API instead)
-        geos::geom::Geometry* GeosGeom =
-            (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-        geos::geom::Polygon* Clone =
-            dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
-
-        Clone->setUserData(
-            new int(Feat->GetFieldAsInteger(PixelValFieldIndex)));
-
-        mp_RasterPolygonizedPolys->push_back(Clone);
-
-        // destroying the feature destroys also the associated OGRGeom
-        OGRFeature::DestroyFeature(Feat);
-        delete GeosGeom;
-      }
-
-    }
-  }
-
-  return mp_RasterPolygonizedPolys;
-}
-
-// =====================================================================
-// =====================================================================
-
 void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 {
   addAttribute(AttributeName);
 
-  for (std::vector<PolygonEntity*>::iterator it = m_Entities.begin();
+  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
-    openfluid::landr::PolygonGraph::RastValByRastPoly_t RastPolys =
-        getRasterPolyOverlapping(**it);
+    PolygonGraph::RastValByRastPoly_t RastPolys = getRasterPolyOverlapping(
+        *dynamic_cast<PolygonEntity*>(*it));
 
     float PolyArea = (*it)->getArea();
 
@@ -755,8 +498,8 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 
     float Mean = 0;
 
-    for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator itPix =
-        RastPolys.begin(); itPix != RastPolys.end(); ++itPix)
+    for (PolygonGraph::RastValByRastPoly_t::iterator itPix = RastPolys.begin();
+        itPix != RastPolys.end(); ++itPix)
     {
       // get as integer because GeoRasterValue::polygonize function currently only deal with integer values
       int* PixelVal = ((int*) itPix->first->getUserData());
@@ -814,7 +557,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     OGRFeature* Feat = OGRFeature::CreateFeature(OutVector->getLayerDef());
 
     geos::geom::Geometry* Geom =
-        dynamic_cast<geos::geom::Geometry*>((dynamic_cast<openfluid::landr::PolygonEdge*>(*it))->getLine());
+        dynamic_cast<geos::geom::Geometry*>((dynamic_cast<PolygonEdge*>(*it))->getLine());
 
     OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS((GEOSGeom) Geom);
 

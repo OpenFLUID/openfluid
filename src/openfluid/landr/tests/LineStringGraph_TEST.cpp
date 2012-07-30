@@ -199,65 +199,6 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
-{
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
-
-  openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
-
-  openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
-  openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);
-
-  boost::any IntValue = 0;
-  boost::any StrValue = std::string("");
-
-  BOOST_CHECK(!U1->setAttributeValue("att",123));
-  BOOST_CHECK(!U2->setAttributeValue("att",std::string("val")));
-  BOOST_CHECK(!U1->getAttributeValue("att",IntValue));
-  BOOST_CHECK(!U2->getAttributeValue("att",StrValue));
-  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 0);
-  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "");
-
-  Graph->addAttribute("att");
-
-  BOOST_CHECK(U1->setAttributeValue("att",123));
-  BOOST_CHECK(U2->setAttributeValue("att",std::string("val")));
-  BOOST_CHECK(U1->getAttributeValue("att",IntValue));
-  BOOST_CHECK(U2->getAttributeValue("att",StrValue));
-  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 123);
-  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "val");
-
-  Graph->addAttribute("att");
-
-  IntValue = 0;
-  StrValue = std::string("");
-  BOOST_CHECK(U1->getAttributeValue("att",IntValue));
-  BOOST_CHECK(U2->getAttributeValue("att",StrValue));
-  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 123);
-  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "val");
-
-  Graph->removeAttribute("att");
-
-  IntValue = 0;
-  StrValue = std::string("");
-  BOOST_CHECK(!U1->setAttributeValue("att",123));
-  BOOST_CHECK(!U2->setAttributeValue("att",std::string("val")));
-  BOOST_CHECK(!U1->getAttributeValue("att",IntValue));
-  BOOST_CHECK(!U2->getAttributeValue("att",StrValue));
-  BOOST_CHECK_EQUAL(boost::any_cast<int>(IntValue), 0);
-  BOOST_CHECK_EQUAL(boost::any_cast<std::string>(StrValue), "");
-
-  Graph->removeAttribute("att");
-
-  delete Graph;
-  delete Val;
-}
-
-// =====================================================================
-// =====================================================================
-
 BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
 {
 
@@ -267,7 +208,7 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
   openfluid::landr::LineStringGraph* Graph =
       new openfluid::landr::LineStringGraph(*Val);
 
-  std::vector<openfluid::landr::LineStringEntity*> OrderedEntities =
+  std::vector<openfluid::landr::LandREntity*> OrderedEntities =
       Graph->getSelfIdOrderedEntities();
 
   for (unsigned int i = 0; i < OrderedEntities.size(); i++)
@@ -289,8 +230,8 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
 
   DECLARE_ENTITIES_GRAPH_LOOP(1);
   BEGIN_ENTITIES_GRAPH_LOOP(1,NullGraph,CurrentEntity)
-    i++;
-  END_LOOP
+      i++;
+    END_LOOP
 
   BOOST_CHECK_EQUAL(i, 0);
 
@@ -303,18 +244,56 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   i = 0;
   DECLARE_ENTITIES_GRAPH_LOOP(2);
   BEGIN_ENTITIES_GRAPH_LOOP(2,Graph,CurrentEntity)
-    i++;
-  END_LOOP;
+      i++;
+    END_LOOP;
 
   BOOST_CHECK_EQUAL(i, Graph->getSize());
 
   i = 1;
   DECLARE_ENTITIES_ORDERED_LOOP(3);
   BEGIN_ENTITIES_ORDERED_LOOP(3,Graph,CurrentEntity)
-    BOOST_CHECK_EQUAL(CurrentEntity->getSelfId(),
-                    Graph->getEntity(i)->getSelfId());
-    i++;
-  END_LOOP;
+      BOOST_CHECK_EQUAL(CurrentEntity->getSelfId(),
+                        Graph->getEntity(i)->getSelfId());
+      i++;
+    END_LOOP;
+
+  delete Graph;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_RemoveEntity)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      new openfluid::landr::LineStringGraph(*Val);
+
+  std::vector<geos::planargraph::Node*> Nodes;
+
+  BOOST_CHECK_EQUAL(Graph->getSize(), 8);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 8);
+  Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 9);
+
+  Graph->removeEntity(2);
+
+  BOOST_CHECK(!Graph->getEntity(2));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 7);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 7);
+  Nodes.clear();Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 9);
+
+  Graph->removeEntity(1);
+
+  BOOST_CHECK(!Graph->getEntity(1));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 6);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 6);
+  Nodes.clear();Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 7);
 
   delete Graph;
   delete Val;

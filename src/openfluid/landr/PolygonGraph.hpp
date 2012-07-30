@@ -55,64 +55,23 @@
 #ifndef POLYGONGRAPH_HPP_
 #define POLYGONGRAPH_HPP_
 
-#include <geos/planargraph/PlanarGraph.h>
+#include <openfluid/landr/LandRGraph.hpp>
 
-#include <openfluid/core/GeoVectorValue.hpp>
-
-namespace geos {
-namespace geom {
-class LineString;
-class Polygon;
-class Coordinate;
-class Geometry;
-class GeometryFactory;
-}
-
-namespace planargraph {
-class Node;
-class Edge;
-class DirectedEdge;
-}
-}
+// for covariant return type
+#include <openfluid/landr/PolygonEntity.hpp>
 
 namespace openfluid {
-
-namespace core {
-class GeoRasterValue;
-}
-
 namespace landr {
 
-class PolygonEntity;
 class PolygonEdge;
 
-class PolygonGraph: public geos::planargraph::PlanarGraph
+class PolygonGraph: public LandRGraph
 {
   public:
 
     typedef std::map<geos::geom::Polygon*, double> RastValByRastPoly_t;
 
   private:
-
-    std::vector<geos::planargraph::Node*> m_NewNodes;
-
-    std::vector<geos::planargraph::DirectedEdge*> m_NewDirEdges;
-
-    const geos::geom::GeometryFactory* mp_Factory;
-
-    std::map<int, openfluid::landr::PolygonEntity*> m_EntitiesBySelfId;
-
-    std::vector<openfluid::landr::PolygonEntity*> m_Entities;
-
-    openfluid::core::GeoRasterValue* mp_Raster;
-
-    openfluid::core::GeoVectorValue* mp_RasterPolygonized;
-
-    std::vector<geos::geom::Polygon*>* mp_RasterPolygonizedPolys;
-
-    static int FileNum;
-
-    void deleteAll();
 
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -122,14 +81,16 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
      */
     PolygonEdge* createEdge(geos::geom::LineString& LineString);
 
-    geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
-
     /**
      * @brief Removes a segment of the exterior boundary of the input Entity.
      * @param Entity The entity to removes the segment to.
      * @param Segment The LineString to remove.
      */
     void removeSegment(PolygonEntity* Entity, geos::geom::LineString* Segment);
+
+    void doRemoveEntity(LandREntity* Entity);
+
+    void doDeleteAll();
 
   public:
 
@@ -140,13 +101,10 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
     /**
      * Do not copy associated raster.
      */
-    PolygonGraph(openfluid::landr::PolygonGraph& Other);
+    PolygonGraph(PolygonGraph& Other);
 
-    PolygonGraph(const std::vector<openfluid::landr::PolygonEntity*>& Entities);
+    PolygonGraph(const std::vector<PolygonEntity*>& Entities);
 
-    /**
-     * Delete also associated RasterPolygonized if present.
-     */
     virtual ~PolygonGraph();
 
     /**
@@ -172,28 +130,10 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
     /**
      * Takes ownership of Polygon and Feature
      */
-    openfluid::landr::PolygonEntity* addPolygon(
-        const geos::geom::Polygon* Polygon, OGRFeature* Feat);
+    PolygonEntity* addPolygon(const geos::geom::Polygon* Polygon,
+                              OGRFeature* Feat);
 
-    unsigned int getSize();
-
-    openfluid::landr::PolygonEntity* getEntity(int SelfId);
-
-    std::vector<openfluid::landr::PolygonEntity*> getEntities();
-
-    std::vector<openfluid::landr::PolygonEntity*> getSelfIdOrderedEntities();
-
-    std::map<int, openfluid::landr::PolygonEntity*> getEntitiesBySelfId();
-
-    /**
-     * Doesn't reset if the AttributeName already exists.
-     */
-    void addAttribute(std::string AttributeName);
-
-    /**
-     * Does nothing if AttributeName doesn't exist.
-     */
-    void removeAttribute(std::string AttributeName);
+    PolygonEntity* getEntity(int SelfId);
 
     /**
      * @brief Check if each entity is complete.
@@ -201,32 +141,6 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
      * @return True if all entities of this graph are complete, false otherwise.
      */
     bool isComplete();
-
-    /**
-     * @brief Removes from this Graph the nodes of degree 0.
-     */
-    void removeUnusedNodes();
-
-    /**
-     * Replace associated raster if exists.
-     */
-    void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
-
-    /**
-     * @brief Fetch the raster value corresponding to the entity centroid coordinate.
-     *
-     * @param Entity The PolygonEntity to get the centroid coordinate from.
-     * @return The raster value corresponding to the Entity centroid coordinate.
-     */
-    float* getRasterValueForEntityCentroid(PolygonEntity& Entity);
-
-    /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity
-     * this attribute value as the raster value corresponding to the entity centroid coordinate.
-     *
-     * @param AttributeName The name of the attribute to create
-     */
-    void setAttributeFromRasterValueAtCentroid(std::string AttributeName);
 
     /**
      * Get a map of polygonized Raster polygons and its area intersecting Entity.
@@ -237,10 +151,6 @@ class PolygonGraph: public geos::planargraph::PlanarGraph
      * with for each one the intersection area.
      */
     RastValByRastPoly_t getRasterPolyOverlapping(PolygonEntity& Entity);
-
-    openfluid::core::GeoVectorValue* getRasterPolygonized();
-
-    std::vector<geos::geom::Polygon*>* getRasterPolygonizedPolys();
 
     /**
      * @brief Create a new attribute for this Graph entities, and set for each entity
