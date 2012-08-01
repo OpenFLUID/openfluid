@@ -181,7 +181,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
       OPENFLUID_RaiseError("tests.threadedloops","processUnit()","wrong process order");
     m_LastOrd = aUnit->getProcessOrder();
 
-    Glib::usleep(100);//*aUnit->getID());
+    Glib::usleep(100);
   }
 
 
@@ -229,13 +229,6 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
   {
     openfluid::core::Unit* TU;
 
-    DECLARE_UNITS_ORDERED_LOOP(1);
-    DECLARE_UNITS_ORDERED_LOOP(100);
-
-
-    DECLARE_GLOBAL_UNITS_ORDERED_LOOP(10);
-    DECLARE_GLOBAL_UNITS_ORDERED_LOOP(20);
-
     std::cout << std::endl;
 
     boost::posix_time::ptime StartTime, EndTime;
@@ -244,9 +237,9 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    BEGIN_UNITS_ORDERED_LOOP(1,"TU",TU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
       processUnit(TU);
-    END_LOOP
+
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Classic: " << boost::posix_time::to_simple_string(Duration) << std::endl;
@@ -254,23 +247,23 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    APPLY_UNITS_ORDERED_LOOP_THREADED(100,"TU",ThreadedLoopsFunction::processUnit);
+    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsFunction::processUnit);
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
 
 
     StartTime = boost::posix_time::microsec_clock::local_time();
-    BEGIN_UNITS_ORDERED_LOOP(1,"TU",TU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
       produceDataOnTUSequenced(TU,double(SimStatus->getCurrentStep()));
-    END_LOOP
+
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Production Sequenced: " << boost::posix_time::to_simple_string(Duration) << std::endl;
 
 
     StartTime = boost::posix_time::microsec_clock::local_time();
-    APPLY_UNITS_ORDERED_LOOP_THREADED(100,"TU",ThreadedLoopsFunction::produceDataOnTUThreaded,double(SimStatus->getCurrentStep()));
+    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsFunction::produceDataOnTUThreaded,double(SimStatus->getCurrentStep()));
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Production Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
@@ -278,16 +271,15 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    BEGIN_UNITS_ORDERED_LOOP(1,"TU",TU)
-    processUnitXTimes(TU,3);
-    END_LOOP
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+      processUnitXTimes(TU,3);
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Classic 3 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    APPLY_UNITS_ORDERED_LOOP_THREADED(100,"TU",ThreadedLoopsFunction::processUnitXTimes,3);
+    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsFunction::processUnitXTimes,3);
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Threaded 3 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
@@ -297,9 +289,8 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    BEGIN_GLOBAL_UNITS_ORDERED_LOOP(10,TU)
+    OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
       processUnit(TU);
-    END_LOOP
     EndTime = boost::posix_time::microsec_clock::local_time();
     std::cout << std::endl;
     Duration = EndTime - StartTime;
@@ -307,7 +298,7 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED(20,ThreadedLoopsFunction::processUnit);
+    APPLY_ALLUNITS_ORDERED_LOOP_THREADED(ThreadedLoopsFunction::processUnit);
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "Full Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
@@ -315,16 +306,15 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    BEGIN_GLOBAL_UNITS_ORDERED_LOOP(10,TU)
+    OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
       processUnitXTimes(TU,4);
-    END_LOOP
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "Full Classic 4 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     m_LastOrd = 0;
-    APPLY_GLOBAL_UNITS_ORDERED_LOOP_THREADED(20,ThreadedLoopsFunction::processUnitXTimes,4);
+    APPLY_ALLUNITS_ORDERED_LOOP_THREADED(ThreadedLoopsFunction::processUnitXTimes,4);
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "Full Threaded 4 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
