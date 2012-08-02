@@ -489,6 +489,22 @@ bool LoopsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus
 
 
 
+  // ===== performance =====
+
+  LastPcsOrd = 0;
+  BEGIN_UNITS_ORDERED_LOOP(1,"PerfUnits",ZU)
+    if (ZU->getProcessOrder() < LastPcsOrd)
+    {
+      openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
+      openfluid::tools::ConvertValue(ZU->getProcessOrder(),&CurrentStr);
+      openfluid::tools::ConvertValue(ZU->getID(),&IDStr);
+      OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit PerfUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+    }
+
+    LastPcsOrd = ZU->getProcessOrder();
+  END_LOOP
+
+
   return true;
 }
 

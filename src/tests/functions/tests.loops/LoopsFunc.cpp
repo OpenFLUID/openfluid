@@ -54,6 +54,7 @@
 #include <openfluid/base/PlugFunction.hpp>
 
 
+
 // =====================================================================
 // =====================================================================
 
@@ -487,6 +488,25 @@ class LoopsFunction : public openfluid::base::PluggableFunction
 
       OPENFLUID_UNITSLIST_LOOP(FakeList,FU)
         OPENFLUID_RaiseError("tests.loops","runStep()","error in list loop on fake units");
+
+
+
+      // ===== performance =====
+
+      LastPcsOrd = 0;
+      OPENFLUID_UNITS_ORDERED_LOOP("PerfUnits",ZU)
+      {
+        if (ZU->getProcessOrder() < LastPcsOrd)
+        {
+          openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
+          openfluid::tools::ConvertValue(ZU->getProcessOrder(),&CurrentStr);
+          openfluid::tools::ConvertValue(ZU->getID(),&IDStr);
+          OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit PerfUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+        }
+
+        LastPcsOrd = ZU->getProcessOrder();
+      }
+
 
       return true;
     }
