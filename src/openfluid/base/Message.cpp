@@ -65,7 +65,7 @@ namespace openfluid { namespace base {
 
 
 Message::Message(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Content):
-  m_Sender(Sender), m_Source(Source), m_Content(Content), m_TimeStep(TimeStep), m_IsTimeStep(true)
+  m_Sender(Sender), m_Source(Source), m_Content(Content), m_IsTimeStep(true), m_TimeStep(TimeStep)
 {
   if (m_Sender == "") m_Sender = "unknown sender";
 

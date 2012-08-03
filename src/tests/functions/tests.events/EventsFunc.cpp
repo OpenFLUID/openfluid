@@ -123,7 +123,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
     // =====================================================================
 
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params)
+    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
     {
       return true;
     }
@@ -172,7 +172,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
       {
 
         EvColl.clear();
-        OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,&EvColl);
+        OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,EvColl);
 
     //    std::cout << aUnit->getID() << " -> " << EvColl.getCount() << std::endl;
 
@@ -188,7 +188,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
             if (!(Event->isInfoEqual("when","before") &&
                   Event->isInfoEqual("where",1.0) &&
                   Event->isInfoEqual("numeric",1.13) &&
-                  Event->getInfoAsString("string",&Info) &&
+                  Event->getInfoAsString("string",Info) &&
                   Info.substr(0,4) == "EADG"))
               OPENFLUID_RaiseError("tests.events","initializeRun()","wrong event info on TestUnit 1");
           }
@@ -227,7 +227,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",aUnit)
       {
         EvColl.clear();
-        OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,&EvColl);
+        OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,EvColl);
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
         {
@@ -261,7 +261,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",aUnit)
       {
         EvColl.clear();
-        OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,&EvColl);
+        OPENFLUID_GetEvents(aUnit,BeginDate,EndDate,EvColl);
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
         {
@@ -270,7 +270,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
           if (!((Event->isInfoEqual("when","during") &&
                 Event->isInfoEqual("where",double(aUnit->getID())) &&
                 Event->isInfoEqual("numeric",1.15) &&
-                Event->getInfoAsString("string",&Info) &&
+                Event->getInfoAsString("string",Info) &&
                 Info.substr(0,4) == "EADG") || (Event->isInfoExist("addingstep"))))
             OPENFLUID_RaiseError("tests.events","runStep()","wrong event info on some TestUnit");
         }
@@ -302,7 +302,7 @@ class EventsFunction : public openfluid::base::PluggableFunction
     // =====================================================================
 
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
     {
       return true;
     }

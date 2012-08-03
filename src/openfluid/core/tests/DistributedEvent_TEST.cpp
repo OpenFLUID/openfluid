@@ -103,26 +103,26 @@ BOOST_AUTO_TEST_CASE(check_infosoperations)
   BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test4"),false);
   BOOST_REQUIRE_EQUAL(Ev.isInfoExist("test"),false);
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test1",&StrInfo),true);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test1",StrInfo),true);
   BOOST_REQUIRE_EQUAL(StrInfo,"value");
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test2",&StrInfo),true);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test2",StrInfo),true);
   BOOST_REQUIRE_EQUAL(StrInfo,"18");
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test3",&StrInfo),true);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test3",StrInfo),true);
   BOOST_REQUIRE_EQUAL(StrInfo,"25.2");
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test",&StrInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsString("test",StrInfo),false);
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test1",&LongInfo),false);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test2",&LongInfo),true);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test1",LongInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test2",LongInfo),true);
   BOOST_REQUIRE_EQUAL(LongInfo,18);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test3",&LongInfo),false);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test",&LongInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test3",LongInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsLong("test",LongInfo),false);
 
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test1",&DoubleInfo),false);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test2",&DoubleInfo),true);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test1",DoubleInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test2",DoubleInfo),true);
   BOOST_REQUIRE_CLOSE(DoubleInfo,18.0,0.1);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test3",&DoubleInfo),true);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test3",DoubleInfo),true);
   BOOST_REQUIRE_CLOSE(DoubleInfo,25.2,0.1);
-  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test",&DoubleInfo),false);
+  BOOST_REQUIRE_EQUAL(Ev.getInfoAsDouble("test",DoubleInfo),false);
 
   // test for compatibility
   BOOST_REQUIRE_EQUAL(Ev.getInfoAsScalarValue("test1",&ScalarValueInfo),false);

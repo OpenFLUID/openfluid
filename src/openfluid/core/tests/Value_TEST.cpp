@@ -803,6 +803,7 @@ BOOST_AUTO_TEST_CASE(check_performance)
   for (unsigned int i=0; i< BufferSize;i++)
   {
     double Tmp = BufferDouble[i];
+    std::cout << Tmp << std::endl;
   }
 
   MARK_TEST_TICKER();

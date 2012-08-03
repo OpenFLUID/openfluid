@@ -273,7 +273,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   unsigned long VectorSize = 40;
   unsigned long NewVectorSize = 5;
   openfluid::core::VectorValue TheVector;
-  openfluid::core::ScalarValue TheScalar;
+  openfluid::core::DoubleValue TheScalar;
   double TheInputDouble;
   std::string TheInputStr;
   openfluid::core::EventsCollection TheEvents;

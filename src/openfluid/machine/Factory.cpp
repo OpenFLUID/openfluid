@@ -266,7 +266,6 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
     {
       // instanciation of a data generator
       openfluid::base::GeneratorDescriptor* GenDesc = (openfluid::base::GeneratorDescriptor*)(*it);
-      Generator* GenInstance = NULL;
 
       IInstance = new ModelItemInstance();
       IInstance->SDKCompatible = true;
