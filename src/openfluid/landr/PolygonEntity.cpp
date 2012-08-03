@@ -91,6 +91,8 @@ PolygonEntity::PolygonEntity(const PolygonEntity& Other) :
 
   m_Area = mp_Polygon->getArea();
   mp_Centroide = mp_Polygon->getCentroid();
+
+  m_PolyEdges = Other.m_PolyEdges;
 }
 
 // =====================================================================

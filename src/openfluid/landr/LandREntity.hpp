@@ -55,6 +55,7 @@
 #ifndef LANDRENTITY_HPP_
 #define LANDRENTITY_HPP_
 
+#include <geos/planargraph/GraphComponent.h>
 #include <ogrsf_frmts.h>
 #include <map>
 #include <boost/any.hpp>
@@ -68,7 +69,7 @@ class Point;
 namespace openfluid {
 namespace landr {
 
-class LandREntity
+class LandREntity : public geos::planargraph::GraphComponent
 {
   protected:
 

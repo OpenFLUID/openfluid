@@ -89,9 +89,12 @@ class PolygonEntity: public LandREntity
      */
     PolygonEntity(const geos::geom::Polygon* NewPolygon, OGRFeature* Feat);
 
+    /**
+     * ! Doesn't deep-copy m_PolyEdges
+     */
     PolygonEntity(const PolygonEntity& Other);
 
-    ~PolygonEntity();
+    virtual ~PolygonEntity();
 
     const geos::geom::Polygon* getPolygon() const;
 

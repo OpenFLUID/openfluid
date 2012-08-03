@@ -150,32 +150,6 @@ LandREntity* LandRGraph::getEntity(int SelfId)
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::removeEntity(int SelfId)
-{
-  LandREntity* Ent = getEntity(SelfId);
-
-  if (!Ent)
-  {
-    std::ostringstream s;
-    s << "No entity with id " << SelfId;
-    throw openfluid::base::OFException("OpenFLUID Framework",
-                                       "LandRGraph::removeEntity", s.str());
-    return;
-  }
-
-  doRemoveEntity(Ent);
-
-  m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
-  m_EntitiesBySelfId.erase(SelfId);
-
-  delete Ent;
-
-  removeUnusedNodes();
-}
-
-// =====================================================================
-// =====================================================================
-
 void LandRGraph::removeUnusedNodes()
 {
   std::vector<geos::planargraph::Node*>* Unused = findNodesOfDegree(0);
@@ -242,6 +216,25 @@ void LandRGraph::removeAttribute(std::string AttributeName)
   for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
     (*it)->m_Attributes.erase(AttributeName);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<std::string> LandRGraph::getAttributeNames()
+{
+  std::vector<std::string> Names;
+
+  if (getSize() > 0)
+  {
+    std::map<std::string, boost::any> Attr = (*m_Entities.begin())->m_Attributes;
+
+    for (std::map<std::string, boost::any>::iterator it = Attr.begin();
+        it != Attr.end(); ++it)
+      Names.push_back(it->first);
+  }
+
+  return Names;
 }
 
 // =====================================================================

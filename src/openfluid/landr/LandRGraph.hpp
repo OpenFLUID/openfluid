@@ -96,6 +96,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     std::map<int, LandREntity*> m_EntitiesBySelfId;
 
+    //TODO change for a list
     std::vector<LandREntity*> m_Entities;
 
     openfluid::core::GeoRasterValue* mp_Raster;
@@ -113,8 +114,6 @@ class LandRGraph: public geos::planargraph::PlanarGraph
     void addAttribute(std::string AttributeName, LandREntity& Entity);
 
     void removeAttribute(std::string AttributeName, LandREntity& Entity);
-
-    virtual void doRemoveEntity(LandREntity* Entity) = 0;
 
     virtual void doDeleteAll() = 0;
 
@@ -135,8 +134,6 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     unsigned int getSize();
 
-    void removeEntity(int SelfId);
-
     /**
      * @brief Removes from this Graph the nodes of degree 0.
      */
@@ -151,6 +148,8 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      * Does nothing if AttributeName doesn't exist.
      */
     void removeAttribute(std::string AttributeName);
+
+    std::vector<std::string> getAttributeNames();
 
     /**
      * Replace associated raster if exists.

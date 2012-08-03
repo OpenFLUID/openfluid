@@ -88,7 +88,7 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
 
     LineStringEntity(const LineStringEntity& Other);
 
-    ~LineStringEntity();
+    virtual ~LineStringEntity();
 
     const geos::geom::LineString* getLine() const;
 
@@ -96,8 +96,14 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
 
     geos::planargraph::Node* getEndNode();
 
+    /**
+     * Return up-neighbours against line orientation
+     */
     std::vector<LineStringEntity*> getUpNeighbours();
 
+    /**
+     * Return down-neighbours against line orientation
+     */
     std::vector<LineStringEntity*> getDownNeighbours();
 
     double getLength();

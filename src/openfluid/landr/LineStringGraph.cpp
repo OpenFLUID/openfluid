@@ -165,7 +165,8 @@ LineStringEntity* LineStringGraph::addEdge(
           EndNode, StartNode, Coordinates->getAt(Coordinates->getSize() - 2),
           false);
 
-  LineStringEntity* Edge = new LineStringEntity(LineString, Feat);
+  LineStringEntity* Edge = dynamic_cast<LineStringEntity*>(getNewEntity(
+      LineString, Feat));
 
   Edge->setDirectedEdges(DirectedEdge0, DirectedEdge1);
 
@@ -177,6 +178,20 @@ LineStringEntity* LineStringGraph::addEdge(
   delete Coordinates;
 
   return Edge;
+}
+
+// =====================================================================
+// =====================================================================
+
+LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
+                                           OGRFeature* Feat)
+{
+  LandREntity * Ent =
+      new LineStringEntity(
+          dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Geom)),
+          Feat);
+
+  return Ent;
 }
 
 // =====================================================================
@@ -255,9 +270,27 @@ LineStringEntity* LineStringGraph::getEntity(int SelfId)
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::doRemoveEntity(LandREntity* Entity)
+void LineStringGraph::removeEntity(int SelfId)
 {
-  remove(dynamic_cast<geos::planargraph::Edge*>(Entity));
+  LineStringEntity* Ent = getEntity(SelfId);
+
+  if (!Ent)
+  {
+    std::ostringstream s;
+    s << "No entity with id " << SelfId;
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LineStringGraph::removeEntity", s.str());
+    return;
+  }
+
+  remove(dynamic_cast<geos::planargraph::Edge*>(Ent));
+
+  m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
+  m_EntitiesBySelfId.erase(SelfId);
+
+  delete Ent;
+
+  removeUnusedNodes();
 }
 
 // =====================================================================

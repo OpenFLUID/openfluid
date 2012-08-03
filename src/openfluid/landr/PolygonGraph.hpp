@@ -57,7 +57,7 @@
 
 #include <openfluid/landr/LandRGraph.hpp>
 
-// for covariant return type
+// for covariant return type of getEntity
 #include <openfluid/landr/PolygonEntity.hpp>
 
 namespace openfluid {
@@ -73,6 +73,13 @@ class PolygonGraph: public LandRGraph
 
   private:
 
+    void doDeleteAll();
+
+  protected:
+
+    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
+                                      OGRFeature* Feat);
+
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
      *
@@ -87,10 +94,6 @@ class PolygonGraph: public LandRGraph
      * @param Segment The LineString to remove.
      */
     void removeSegment(PolygonEntity* Entity, geos::geom::LineString* Segment);
-
-    void doRemoveEntity(LandREntity* Entity);
-
-    void doDeleteAll();
 
   public:
 

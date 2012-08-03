@@ -166,7 +166,8 @@ PolygonEntity* PolygonGraph::addPolygon(const geos::geom::Polygon* Polygon,
 {
   std::vector<geos::geom::Geometry*> SharedGeoms;
 
-  PolygonEntity* NewEntity = new PolygonEntity(Polygon, Feat);
+  PolygonEntity* NewEntity = dynamic_cast<PolygonEntity*>(getNewEntity(Polygon,
+                                                                       Feat));
 
   if (!Polygon->isValid())
   {
@@ -238,6 +239,20 @@ PolygonEntity* PolygonGraph::addPolygon(const geos::geom::Polygon* Polygon,
   }
 
   return NewEntity;
+}
+
+// =====================================================================
+// =====================================================================
+
+LandREntity* PolygonGraph::getNewEntity(const geos::geom::Geometry* Geom,
+                                        OGRFeature* Feat)
+{
+  LandREntity * Ent =
+      new PolygonEntity(
+          dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom)),
+          Feat);
+
+  return Ent;
 }
 
 // =====================================================================
@@ -400,14 +415,6 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 PolygonEntity* PolygonGraph::getEntity(int SelfId)
 {
   return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(SelfId));
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::doRemoveEntity(LandREntity* Entity)
-{
-  //TODO
 }
 
 // =====================================================================

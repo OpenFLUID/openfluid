@@ -119,9 +119,12 @@ class LineStringGraph: public LandRGraph
 {
   private:
 
-    void doRemoveEntity(LandREntity* Entity);
-
     void doDeleteAll();
+
+  protected:
+
+    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
+                                      OGRFeature* Feat);
 
   public:
 
@@ -148,6 +151,8 @@ class LineStringGraph: public LandRGraph
     std::vector<LineStringEntity*> getStartLineStringEntities();
 
     LineStringEntity* getEntity(int SelfId);
+
+    void removeEntity(int SelfId);
 
 };
 
