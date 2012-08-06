@@ -189,21 +189,21 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   openfluid::landr::LineStringEntity* U4 = Graph->getEntity(4);
 
   std::vector<openfluid::landr::LineStringEntity*> U1Down =
-      U1->getDownNeighbours();
+      U1->getLineOrientDownNeighbours();
   std::vector<openfluid::landr::LineStringEntity*> U2Down =
-      U2->getDownNeighbours();
+      U2->getLineOrientDownNeighbours();
   std::vector<openfluid::landr::LineStringEntity*> U3Down =
-      U3->getDownNeighbours();
+      U3->getLineOrientDownNeighbours();
   std::vector<openfluid::landr::LineStringEntity*> U8Down =
-      U8->getDownNeighbours();
+      U8->getLineOrientDownNeighbours();
   std::vector<openfluid::landr::LineStringEntity*> U4Down =
-      U4->getDownNeighbours();
+      U4->getLineOrientDownNeighbours();
 
-  std::vector<openfluid::landr::LineStringEntity*> U1Up = U1->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U2Up = U2->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U3Up = U3->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U8Up = U8->getUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U4Up = U4->getUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U1Up = U1->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U2Up = U2->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U3Up = U3->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U8Up = U8->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U4Up = U4->getLineOrientUpNeighbours();
 
   BOOST_CHECK_EQUAL(U1Down.size(), 0);
   BOOST_CHECK_EQUAL(U2Down.size(), 1);

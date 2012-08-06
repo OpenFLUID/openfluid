@@ -68,7 +68,7 @@ namespace landr {
 
 LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
                                    unsigned int SelfId) :
-    LandREntity(NewLine, SelfId), geos::planargraph::Edge(), mp_UpNeighbours(0), mp_DownNeighbours(
+    LandREntity(NewLine, SelfId), geos::planargraph::Edge(), mp_LOUpNeighbours(0), mp_LODownNeighbours(
         0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
@@ -102,8 +102,8 @@ LineStringEntity::~LineStringEntity()
   for (unsigned int i = 0; i < dirEdge.size(); i++)
     delete dirEdge[i];
 
-  delete mp_UpNeighbours;
-  delete mp_DownNeighbours;
+  delete mp_LOUpNeighbours;
+  delete mp_LODownNeighbours;
 }
 
 // =====================================================================
@@ -141,20 +141,20 @@ geos::planargraph::Node* LineStringEntity::getEndNode()
 // =====================================================================
 // =====================================================================
 
-std::vector<LineStringEntity*> LineStringEntity::getUpNeighbours()
+std::vector<LineStringEntity*> LineStringEntity::getLineOrientUpNeighbours()
 {
-  if (!mp_UpNeighbours)
-    computUpNeighbours();
+  if (!mp_LOUpNeighbours)
+    computeLineOrientUpNeighbours();
 
-  return *mp_UpNeighbours;
+  return *mp_LOUpNeighbours;
 }
 
 // =====================================================================
 // =====================================================================
 
-void LineStringEntity::computUpNeighbours()
+void LineStringEntity::computeLineOrientUpNeighbours()
 {
-  mp_UpNeighbours = new std::vector<LineStringEntity*>();
+  mp_LOUpNeighbours = new std::vector<LineStringEntity*>();
 
   geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
 
@@ -166,27 +166,27 @@ void LineStringEntity::computUpNeighbours()
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
     if (Unit->getEndNode()->getCoordinate().equals(UpNodeCoo))
-      mp_UpNeighbours->push_back(Unit);
+      mp_LOUpNeighbours->push_back(Unit);
   }
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<LineStringEntity*> LineStringEntity::getDownNeighbours()
+std::vector<LineStringEntity*> LineStringEntity::getLineOrientDownNeighbours()
 {
-  if (!mp_DownNeighbours)
-    computDownNeighbours();
+  if (!mp_LODownNeighbours)
+    computeLineOrientDownNeighbours();
 
-  return *mp_DownNeighbours;
+  return *mp_LODownNeighbours;
 }
 
 // =====================================================================
 // =====================================================================
 
-void LineStringEntity::computDownNeighbours()
+void LineStringEntity::computeLineOrientDownNeighbours()
 {
-  mp_DownNeighbours = new std::vector<LineStringEntity*>();
+  mp_LODownNeighbours = new std::vector<LineStringEntity*>();
 
   geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
 
@@ -198,7 +198,7 @@ void LineStringEntity::computDownNeighbours()
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
     if (Unit->getStartNode()->getCoordinate().equals(DownNodeCoo))
-      mp_DownNeighbours->push_back(Unit);
+      mp_LODownNeighbours->push_back(Unit);
   }
 }
 
