@@ -90,14 +90,12 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::landr::PolygonEntity* Entity = new openfluid::landr::PolygonEntity(
       dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-      FirstFeature->Clone());
+      FirstFeature->GetFieldAsInteger("SELF_ID"));
 
   BOOST_CHECK_EQUAL(Val->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
 
   BOOST_CHECK(Entity->getPolygon()->equals(GeosGeom));
-
-  BOOST_CHECK(Entity->getFeature()->Equal(FirstFeature));
 
   BOOST_CHECK_EQUAL(Entity->getSelfId(), 1);
 
@@ -109,7 +107,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_copy)
+BOOST_AUTO_TEST_CASE(check_clone)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
@@ -122,19 +120,16 @@ BOOST_AUTO_TEST_CASE(check_copy)
 
   openfluid::landr::PolygonEntity* Entity = new openfluid::landr::PolygonEntity(
       dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-      FirstFeature->Clone());
+      FirstFeature->GetFieldAsInteger("SELF_ID"));
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete GeosGeom;
   delete Val;
 
-  openfluid::landr::PolygonEntity* CopyEntity =
-      new openfluid::landr::PolygonEntity(*Entity);
+  openfluid::landr::PolygonEntity* CopyEntity = Entity->clone();
 
   BOOST_CHECK(Entity->getPolygon()->equals(CopyEntity->getPolygon()));
   BOOST_CHECK_EQUAL(Entity->getSelfId(), CopyEntity->getSelfId());
-  BOOST_CHECK_EQUAL(Entity->getFeature()->GetFieldCount(),
-                    CopyEntity->getFeature()->GetFieldCount());
 
   std::string EntityPolyStr = Entity->getPolygon()->toString();
 
@@ -155,8 +150,8 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);
   openfluid::landr::PolygonEntity* U18 = Graph->getEntity(18);
@@ -220,7 +215,7 @@ BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  openfluid::landr::PolygonEntity Ent1(P1, NULL);
+  openfluid::landr::PolygonEntity Ent1(P1, 0);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
       geos::geom::Coordinate>();
@@ -232,7 +227,7 @@ BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
-  openfluid::landr::PolygonEntity Ent2(P2, NULL);
+  openfluid::landr::PolygonEntity Ent2(P2, 0);
 
   geos::geom::LineString* Shared = *Ent1.getLineIntersectionsWith(Ent2).begin();
 
@@ -268,7 +263,7 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  openfluid::landr::PolygonEntity Ent1(P1, NULL);
+  openfluid::landr::PolygonEntity Ent1(P1, 0);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
       geos::geom::Coordinate>();
@@ -280,7 +275,7 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
-  openfluid::landr::PolygonEntity Ent2(P2, NULL);
+  openfluid::landr::PolygonEntity Ent2(P2, 0);
 
   BOOST_CHECK_EQUAL(Ent1.getLineIntersectionsWith(Ent2).size(), 0);
 }
@@ -309,7 +304,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
   geos::geom::LinearRing* LR = Factory.createLinearRing(
       SeqFactory.create(CoosLR));
   geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
-  openfluid::landr::PolygonEntity Entity(P, NULL);
+  openfluid::landr::PolygonEntity Entity(P, 0);
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -372,7 +367,7 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   geos::geom::LinearRing* LR = Factory.createLinearRing(
       SeqFactory.create(CoosLR));
   geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
-  openfluid::landr::PolygonEntity Entity(P, NULL);
+  openfluid::landr::PolygonEntity Entity(P, 0);
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -432,8 +427,8 @@ BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_lines.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
   openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);

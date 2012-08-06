@@ -54,13 +54,12 @@
 
 #include "PolygonEntity.hpp"
 
-#include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
+#include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/MultiLineString.h>
-#include <geos/geom/GeometryCollection.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/Point.h>
 #include <geos/planargraph/Node.h>
@@ -72,27 +71,32 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-PolygonEntity::PolygonEntity(const geos::geom::Polygon* NewPolygon,
-                             OGRFeature* Feat) :
-    LandREntity(Feat), mp_Polygon(NewPolygon), mp_Neighbours(0)
+PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
+                             unsigned int SelfId) :
+    LandREntity(NewPolygon, SelfId), mp_Neighbours(0)
 {
-  m_Area = mp_Polygon->getArea();
-  mp_Centroide = mp_Polygon->getCentroid();
-}
+  if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
+  {
+    delete mp_Centroide;
 
-// =====================================================================
-// =====================================================================
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonEntity::PolygonEntity",
+                                       "Geometry is not a Polygon.");
 
-PolygonEntity::PolygonEntity(const PolygonEntity& Other) :
-    LandREntity(), mp_Neighbours(0)
-{
-  mp_Polygon = dynamic_cast<geos::geom::Polygon*>(Other.getPolygon()->clone());
-  mp_Feature = (const_cast<PolygonEntity&>(Other).getFeature())->Clone();
+  }
 
-  m_Area = mp_Polygon->getArea();
-  mp_Centroide = mp_Polygon->getCentroid();
+  mp_Polygon =
+      dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(mp_Geom));
 
-  m_PolyEdges = Other.m_PolyEdges;
+  if (!mp_Polygon->isValid())
+  {
+    delete mp_Centroide;
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonEntity::PolygonEntity",
+                                       "Polygon is not valid.");
+  }
+
 }
 
 // =====================================================================
@@ -100,8 +104,19 @@ PolygonEntity::PolygonEntity(const PolygonEntity& Other) :
 
 PolygonEntity::~PolygonEntity()
 {
-  delete mp_Polygon;
   delete mp_Neighbours;
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonEntity* PolygonEntity::clone()
+{
+  PolygonEntity* Clone = new PolygonEntity(mp_Geom->clone(), m_SelfId);
+
+  Clone->m_PolyEdges = m_PolyEdges;
+
+  return Clone;
 }
 
 // =====================================================================
@@ -110,29 +125,6 @@ PolygonEntity::~PolygonEntity()
 const geos::geom::Polygon* PolygonEntity::getPolygon() const
 {
   return mp_Polygon;
-}
-
-// =====================================================================
-// =====================================================================
-
-std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
-    PolygonEntity& Other)
-{
-  std::vector<geos::geom::LineString*> Lines;
-
-  if (mp_Polygon->relate(Other.mp_Polygon, "FFT"
-                         "F1*"
-                         "***"))
-  {
-    geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(
-        Other.mp_Polygon);
-
-    Lines = *PolygonGraph::getMergedLineStringsFromGeometry(SharedGeom);
-
-    delete SharedGeom;
-  }
-
-  return Lines;
 }
 
 // =====================================================================
@@ -166,6 +158,29 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
   mp_Neighbours = 0;
 
   delete Edge;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
+    PolygonEntity& Other)
+{
+  std::vector<geos::geom::LineString*> Lines;
+
+  if (mp_Polygon->relate(Other.mp_Polygon, "FFT"
+                         "F1*"
+                         "***"))
+  {
+    geos::geom::Geometry* SharedGeom = mp_Polygon->intersection(
+        Other.mp_Polygon);
+
+    Lines = *LandRTools::getMergedLineStringsFromGeometry(SharedGeom);
+
+    delete SharedGeom;
+  }
+
+  return Lines;
 }
 
 // =====================================================================
@@ -219,39 +234,6 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
 // =====================================================================
 // =====================================================================
 
-double PolygonEntity::getDistCentroCentro(PolygonEntity& Other)
-{
-  return mp_Centroide->distance(Other.getCentroide());
-}
-
-// =====================================================================
-// =====================================================================
-
-bool PolygonEntity::isComplete()
-{
-  std::vector<geos::geom::Geometry*> Geoms;
-
-  for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
-    Geoms.push_back(m_PolyEdges.at(i)->getLine());
-
-  geos::geom::MultiLineString* MLS =
-      geos::geom::GeometryFactory::getDefaultInstance()->createMultiLineString(
-          Geoms);
-
-  geos::geom::LineString* LS = PolygonGraph::getMergedLineStringFromGeometry(
-      dynamic_cast<geos::geom::Geometry*>(MLS));
-
-  bool Complete = LS && LS->equals(mp_Polygon->getExteriorRing());
-
-  delete MLS;
-  delete LS;
-
-  return Complete;
-}
-
-// =====================================================================
-// =====================================================================
-
 void PolygonEntity::computeNeighbours()
 {
   delete mp_Neighbours;
@@ -273,6 +255,39 @@ void PolygonEntity::computeNeighbours()
       ((*mp_Neighbours)[OtherFace]).push_back(Edge);
   }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+bool PolygonEntity::isComplete()
+{
+  std::vector<geos::geom::Geometry*> Geoms;
+
+  for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
+    Geoms.push_back(m_PolyEdges.at(i)->getLine());
+
+  geos::geom::MultiLineString* MLS =
+      geos::geom::GeometryFactory::getDefaultInstance()->createMultiLineString(
+          Geoms);
+
+  geos::geom::LineString* LS = LandRTools::getMergedLineStringFromGeometry(
+      dynamic_cast<geos::geom::Geometry*>(MLS));
+
+  bool Complete = LS && LS->equals(mp_Polygon->getExteriorRing());
+
+  delete MLS;
+  delete LS;
+
+  return Complete;
+}
+
+// =====================================================================
+// =====================================================================
+
+double PolygonEntity::getDistCentroCentro(PolygonEntity& Other)
+{
+  return mp_Centroide->distance(Other.getCentroide());
 }
 
 // =====================================================================

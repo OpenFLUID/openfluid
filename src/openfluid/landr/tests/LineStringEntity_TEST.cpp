@@ -84,16 +84,17 @@ BOOST_AUTO_TEST_CASE(check_construction)
   geos::geom::Geometry* GeosGeom =
       (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-  openfluid::landr::LineStringEntity* Entity = new openfluid::landr::LineStringEntity(
-      dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
-      FirstFeature->Clone());
+  openfluid::landr::LineStringEntity* Entity =
+      new openfluid::landr::LineStringEntity(
+          dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
+          FirstFeature->GetFieldAsInteger("SELF_ID"));
 
   BOOST_CHECK_EQUAL(Val->getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
 
   BOOST_CHECK(Entity->getLine()->equals(GeosGeom));
 
-  BOOST_CHECK(Entity->getFeature()->Equal(FirstFeature));
+//  BOOST_CHECK(Entity->getFeature()->Equal(FirstFeature));
 
   BOOST_CHECK_EQUAL(Entity->getSelfId(), 5);
 
@@ -105,7 +106,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_copy)
+BOOST_AUTO_TEST_CASE(check_clone)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
@@ -116,21 +117,18 @@ BOOST_AUTO_TEST_CASE(check_copy)
   geos::geom::Geometry* GeosGeom =
       (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-  openfluid::landr::LineStringEntity* Entity = new openfluid::landr::LineStringEntity(
-      dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
-      FirstFeature->Clone());
+  openfluid::landr::LineStringEntity* Entity =
+      new openfluid::landr::LineStringEntity(
+          GeosGeom->clone(), FirstFeature->GetFieldAsInteger("SELF_ID"));
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete GeosGeom;
   delete Val;
 
-  openfluid::landr::LineStringEntity* CopyEntity =
-      new openfluid::landr::LineStringEntity(*Entity);
+  openfluid::landr::LineStringEntity* CopyEntity = Entity->clone();
 
   BOOST_CHECK(Entity->getLine()->equals(CopyEntity->getLine()));
   BOOST_CHECK_EQUAL(Entity->getSelfId(), CopyEntity->getSelfId());
-  BOOST_CHECK_EQUAL(Entity->getFeature()->GetFieldCount(),
-                    CopyEntity->getFeature()->GetFieldCount());
 
   std::string UnitLineStr = Entity->getLine()->toString();
 
@@ -152,7 +150,7 @@ BOOST_AUTO_TEST_CASE(check_nodes)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
   openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);
@@ -182,7 +180,7 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
   openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);

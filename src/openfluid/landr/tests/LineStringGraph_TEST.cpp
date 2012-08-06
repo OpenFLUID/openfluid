@@ -71,11 +71,16 @@
 
 BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue* Val = 0;
+
+  BOOST_CHECK_THROW(openfluid::landr::LineStringGraph::create(*Val),
+                    openfluid::base::OFException);
+
+  Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   BOOST_CHECK_EQUAL(Graph->getSize(), 8);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 8);
@@ -87,12 +92,12 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_construction_fromLineStringEntityVector)
+BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
-  std::vector<openfluid::landr::LineStringEntity*> Entities;
+  std::vector<openfluid::landr::LandREntity*> Entities;
 
   OGRLayer* Layer0 = Val->getLayer0();
 
@@ -106,10 +111,10 @@ BOOST_AUTO_TEST_CASE(check_construction_fromLineStringEntityVector)
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-    openfluid::landr::LineStringEntity* Entity =
+    openfluid::landr::LandREntity* Entity =
         new openfluid::landr::LineStringEntity(
             dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
-            Feat->Clone());
+            Feat->GetFieldAsInteger("SELF_ID"));
 
     Entities.push_back(Entity);
 
@@ -118,29 +123,76 @@ BOOST_AUTO_TEST_CASE(check_construction_fromLineStringEntityVector)
     delete GeosGeom;
   }
 
-  openfluid::landr::LineStringGraph* Graph2 =
-      new openfluid::landr::LineStringGraph(Entities);
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(Entities);
 
-  BOOST_CHECK_EQUAL(Graph2->getSize(), 8);
-  BOOST_CHECK_EQUAL(Graph2->getEdges()->size(), 8);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 8);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 8);
 
-  delete Graph2;
+  delete Graph;
   delete Val;
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_copy)
+BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  std::vector<openfluid::landr::LandREntity*> Entities;
+
+  OGRLayer* Layer0 = Val->getLayer0();
+
+  Layer0->ResetReading();
+
+  OGRFeature* Feat;
+  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  {
+    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+    openfluid::landr::LandREntity* Entity =
+        new openfluid::landr::LineStringEntity(
+            dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
+            Feat->GetFieldAsInteger("SELF_ID"));
+
+    Entities.push_back(Entity);
+
+    // destroying the feature destroys also the associated OGRGeom
+    OGRFeature::DestroyFeature(Feat);
+    delete GeosGeom;
+  }
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(Entities);
+
+  openfluid::landr::LineStringGraph* Copy = Graph->clone();
+
+  BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
+  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
+
+  delete Graph;
+  delete Copy;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_clone)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
-  openfluid::landr::LineStringGraph* Copy =
-      new openfluid::landr::LineStringGraph(*Graph);
+  openfluid::landr::LineStringGraph* Copy = Graph->clone();
 
   BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
@@ -160,7 +212,7 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   std::vector<openfluid::landr::LineStringEntity*> Starts =
       Graph->getStartLineStringEntities();
@@ -185,7 +237,7 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   BOOST_CHECK(Graph->getEntity(1));
   BOOST_CHECK(Graph->getEntity(5));
@@ -206,7 +258,7 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   std::vector<openfluid::landr::LandREntity*> OrderedEntities =
       Graph->getSelfIdOrderedEntities();
@@ -239,7 +291,7 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   i = 0;
   DECLARE_ENTITIES_GRAPH_LOOP(2);
@@ -270,7 +322,7 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   std::vector<geos::planargraph::Node*> Nodes;
 
@@ -284,7 +336,8 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
   BOOST_CHECK(!Graph->getEntity(2));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 7);
-  Nodes.clear();Graph->getNodes(Nodes);
+  Nodes.clear();
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 9);
 
   Graph->removeEntity(1);
@@ -292,7 +345,8 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
   BOOST_CHECK(!Graph->getEntity(1));
   BOOST_CHECK_EQUAL(Graph->getSize(), 6);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 6);
-  Nodes.clear();Graph->getNodes(Nodes);
+  Nodes.clear();
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 7);
 
   delete Graph;

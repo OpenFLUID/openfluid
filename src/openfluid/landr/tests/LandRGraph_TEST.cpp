@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Val);
+      openfluid::landr::LineStringGraph::create(*Val);
 
   openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
   openfluid::landr::LineStringEntity* U2 = Graph->getEntity(2);
@@ -131,8 +131,8 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromPolygonGraph)
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromLineStringGraph)
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
   openfluid::landr::LineStringGraph* Graph =
-      new openfluid::landr::LineStringGraph(*Vector);
+      openfluid::landr::LineStringGraph::create(*Vector);
 
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
@@ -194,8 +194,8 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonized)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   BOOST_CHECK_THROW(Graph->getRasterPolygonized(),
                     openfluid::base::OFException);
@@ -230,8 +230,8 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonizedMultiPoly)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   BOOST_CHECK_THROW(Graph->getRasterPolygonizedPolys(),
                     openfluid::base::OFException);

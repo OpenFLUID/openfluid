@@ -54,22 +54,17 @@
 
 #include "PolygonGraph.hpp"
 
+#include <openfluid/landr/PolygonEntity.hpp>
+#include <openfluid/landr/PolygonEdge.hpp>
+#include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/landr/PolygonEdge.hpp>
-#include <openfluid/landr/PolygonEntity.hpp>
-#include <geos/geom/CoordinateSequence.h>
-#include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
-#include <geos/geom/Point.h>
-#include <geos/geom/Location.h>
+#include <geos/geom/LineString.h>
 #include <geos/geom/MultiLineString.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/planargraph/DirectedEdge.h>
-#include <geos/planargraph/Node.h>
-#include <geos/operation/linemerge/LineMerger.h>
 
 namespace openfluid {
 namespace landr {
@@ -77,7 +72,8 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph()
+PolygonGraph::PolygonGraph() :
+    LandRGraph()
 {
 
 }
@@ -85,69 +81,32 @@ PolygonGraph::PolygonGraph()
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph(PolygonGraph& Other)
+PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
+    LandRGraph(Val)
 {
-  std::vector<LandREntity*> OtherEntities = Other.getEntities();
-
-  for (std::vector<LandREntity*>::iterator it = OtherEntities.begin();
-      it != OtherEntities.end(); ++it)
-  {
-    addPolygon(
-        dynamic_cast<geos::geom::Polygon*>((dynamic_cast<PolygonEntity*>(*it))->getPolygon()->clone()),
-        (*it)->getFeature()->Clone());
-  }
-
-  removeUnusedNodes();
-}
-
-// =====================================================================
-// =====================================================================
-
-PolygonGraph::PolygonGraph(const openfluid::core::GeoVectorValue& Val)
-{
-// TODO move to... ?
-  setlocale(LC_NUMERIC, "C");
-
-  OGRLayer* Layer0 =
-      (const_cast<openfluid::core::GeoVectorValue&>(Val)).getLayer0();
-
-  Layer0->ResetReading();
-
-  OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
-  {
-    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-    // c++ cast doesn't work (have to use the C API instead)
-    geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-    addPolygon(dynamic_cast<const geos::geom::Polygon*>(GeosGeom->clone()),
-               Feat->Clone());
-
-    // destroying the feature destroys also the associated OGRGeom
-    OGRFeature::DestroyFeature(Feat);
-    delete GeosGeom;
-  }
-
-  removeUnusedNodes();
 
 }
 
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::PolygonGraph(const std::vector<PolygonEntity*>& Entities)
+PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 {
-  for (std::vector<PolygonEntity*>::const_iterator it = Entities.begin();
-      it != Entities.end(); ++it)
-  {
-    addPolygon(
-        dynamic_cast<const geos::geom::Polygon*>((*it)->getPolygon()->clone()),
-        (*it)->getFeature()->Clone());
-  }
+  PolygonGraph* Graph = new PolygonGraph(Val);
+  Graph->addEntitiesFromGeoVector();
 
-  removeUnusedNodes();
+  return Graph;
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonGraph* PolygonGraph::create(const std::vector<LandREntity*>& Entities)
+{
+  PolygonGraph* Graph = new PolygonGraph();
+  Graph->addEntitiesFromEntityList(Entities);
+
+  return Graph;
 }
 
 // =====================================================================
@@ -155,31 +114,28 @@ PolygonGraph::PolygonGraph(const std::vector<PolygonEntity*>& Entities)
 
 PolygonGraph::~PolygonGraph()
 {
-  deleteAll();
+  for (unsigned int i = 0; i < edges.size(); i++)
+    delete edges[i];
 }
 
 // =====================================================================
 // =====================================================================
 
-PolygonEntity* PolygonGraph::addPolygon(const geos::geom::Polygon* Polygon,
-                                        OGRFeature* Feat)
+PolygonGraph* PolygonGraph::clone()
 {
+  return PolygonGraph::create(*mp_Vector);
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::addEntity(LandREntity* Entity)
+{
+  PolygonEntity* NewEntity = dynamic_cast<PolygonEntity*>(Entity);
+
+  const geos::geom::Polygon* Polygon = NewEntity->getPolygon();
+
   std::vector<geos::geom::Geometry*> SharedGeoms;
-
-  PolygonEntity* NewEntity = dynamic_cast<PolygonEntity*>(getNewEntity(Polygon,
-                                                                       Feat));
-
-  if (!Polygon->isValid())
-  {
-    std::ostringstream s;
-    s << "Error in Graph creation: Polygon " << NewEntity->getSelfId()
-      << " is not valid.";
-
-    throw openfluid::base::OFException("OpenFLUID Framework",
-                                       "PolygonGraph::addPolygon", s.str());
-
-    deleteAll();
-  }
 
   try
   {
@@ -215,9 +171,7 @@ PolygonEntity* PolygonGraph::addPolygon(const geos::geom::Polygon* Polygon,
     if (!DiffGeom->isEmpty())
     {
       std::vector<geos::geom::LineString*>* NewLines =
-          getMergedLineStringsFromGeometry(DiffGeom);
-
-      assert(NewLines);
+          LandRTools::getMergedLineStringsFromGeometry(DiffGeom);
 
       for (unsigned int i = 0; i < NewLines->size(); i++)
       {
@@ -238,73 +192,15 @@ PolygonEntity* PolygonGraph::addPolygon(const geos::geom::Polygon* Polygon,
     throw;
   }
 
-  return NewEntity;
 }
 
 // =====================================================================
 // =====================================================================
 
 LandREntity* PolygonGraph::getNewEntity(const geos::geom::Geometry* Geom,
-                                        OGRFeature* Feat)
+                                        unsigned int SelfId)
 {
-  LandREntity * Ent =
-      new PolygonEntity(
-          dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom)),
-          Feat);
-
-  return Ent;
-}
-
-// =====================================================================
-// =====================================================================
-
-geos::geom::LineString* PolygonGraph::getMergedLineStringFromGeometry(
-    geos::geom::Geometry* Geom)
-{
-  geos::geom::LineString* LS = 0;
-
-  std::vector<geos::geom::LineString*>* Lines =
-      getMergedLineStringsFromGeometry(Geom);
-
-  if (!Lines || Lines->size() != 1)
-  {
-    for (unsigned int i = 0; i < Lines->size(); i++)
-      delete Lines->at(i);
-  } else
-    LS = *Lines->begin();
-
-  delete Lines;
-
-  return LS;
-}
-
-// =====================================================================
-// =====================================================================
-
-std::vector<geos::geom::LineString*>* PolygonGraph::getMergedLineStringsFromGeometry(
-    geos::geom::Geometry* Geom)
-{
-  std::vector<geos::geom::LineString*>* LS = 0;
-
-  geos::operation::linemerge::LineMerger Merger;
-
-  switch (Geom->getGeometryTypeId())
-  {
-    case geos::geom::GEOS_LINESTRING:
-      LS = new std::vector<geos::geom::LineString*>();
-      LS->push_back(dynamic_cast<geos::geom::LineString*>(Geom->clone()));
-      break;
-    case geos::geom::GEOS_MULTILINESTRING:
-    case geos::geom::GEOS_LINEARRING:
-    case geos::geom::GEOS_GEOMETRYCOLLECTION:
-      Merger.add(Geom);
-      LS = Merger.getMergedLineStrings();
-      break;
-    default:
-      break;
-  }
-
-  return LS;
+  return new PolygonEntity(Geom, SelfId);
 }
 
 // =====================================================================
@@ -356,6 +252,8 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
   if (!OldEdge)
   {
+    delete OldEdge;
+
     std::ostringstream s;
     s << "Error when removing segment (" << Segment->toString()
       << ") from Polygon " << Entity->getSelfId()
@@ -363,11 +261,6 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
     throw openfluid::base::OFException("OpenFLUID Framework",
                                        "PolygonGraph::removeSegment", s.str());
-
-    delete OldEdge;
-    deleteAll();
-
-    return;
   }
 
   geos::geom::Geometry* DiffGeom = OldEdge->getLine()->difference(Segment);
@@ -376,6 +269,9 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
   {
     if (DiffGeom->getDimension() != geos::geom::Dimension::L)
     {
+      delete DiffGeom;
+      delete OldEdge;
+
       std::ostringstream s;
       s << "Error when removing segment (" << Segment->toString()
         << ") from Polygon " << Entity->getSelfId()
@@ -384,16 +280,10 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
       throw openfluid::base::OFException("OpenFLUID Framework",
                                          "PolygonGraph::removeSegment",
                                          s.str());
-
-      delete DiffGeom;
-      delete OldEdge;
-      deleteAll();
-
-      return;
     }
 
     std::vector<geos::geom::LineString*>* DiffGeoms =
-        getMergedLineStringsFromGeometry(DiffGeom);
+        LandRTools::getMergedLineStringsFromGeometry(DiffGeom);
     for (unsigned int i = 0; i < DiffGeoms->size(); i++)
     {
       PolygonEdge* NewEdge = createEdge(
@@ -415,15 +305,6 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 PolygonEntity* PolygonGraph::getEntity(int SelfId)
 {
   return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(SelfId));
-}
-
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::doDeleteAll()
-{
-  for (unsigned int i = 0; i < edges.size(); i++)
-    delete edges[i];
 }
 
 // =====================================================================
@@ -457,29 +338,26 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
     throw openfluid::base::OFException(
         "OpenFLUID Framework", "PolygonGraph::getRasterPolyOverlaying",
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
-  else
+
+  for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
+      it != RasterPolys->end(); ++it)
   {
-    for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
-        it != RasterPolys->end(); ++it)
+    if (RefPoly->relate(*it, "21*******"))
     {
-      if (RefPoly->relate(*it, "21*******"))
+      geos::geom::Geometry* Inter = RefPoly->intersection(*it);
+
+      for (unsigned int i = 0; i < Inter->getNumGeometries(); i++)
       {
-        geos::geom::Geometry* Inter = RefPoly->intersection(*it);
+        geos::geom::Polygon* Poly =
+            dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
+                i)));
 
-        for (unsigned int i = 0; i < Inter->getNumGeometries(); i++)
-        {
-          geos::geom::Polygon* Poly =
-              dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
-                  i)));
+        // !! copy doesn't keep UserData !
+        Poly->setUserData((*it)->getUserData());
 
-          // !! copy doesn't keep UserData !
-          Poly->setUserData((*it)->getUserData());
-
-          IntersectPolys[Poly] = Poly->getArea();
-        }
+        IntersectPolys[Poly] = Poly->getArea();
       }
     }
-
   }
 
   return IntersectPolys;
@@ -520,7 +398,6 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
         throw openfluid::base::OFException(
             "OpenFLUID Framework",
             "PolygonGraph::setAttributeFromMeanRasterValues", s.str());
-        return;
       }
 
       float OverlappingArea = itPix->second;
@@ -548,14 +425,12 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 
   if (!Edges)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
-        "No edges for this graph.");
-
     OutVector->deleteShpOnDisk();
     delete OutVector;
 
-    return;
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+        "No edges for this graph.");
   }
 
   for (std::vector<geos::planargraph::Edge*>::iterator it = Edges->begin();
@@ -569,30 +444,25 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS((GEOSGeom) Geom);
 
     if (!OGRGeom)
-      if (!Edges)
-      {
-        throw openfluid::base::OFException(
-            "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
-            "Failed to transform geometry from GEOS to OGR.");
+    {
+      OutVector->deleteShpOnDisk();
+      delete OutVector;
 
-        OutVector->deleteShpOnDisk();
-        delete OutVector;
-
-        return;
-      }
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+          "Failed to transform geometry from GEOS to OGR.");
+    }
 
     Feat->SetGeometry(OGRGeom);
 
     if (OutVector->getLayer0()->CreateFeature(Feat) != OGRERR_NONE)
     {
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
-          "Failed to create feature in shapefile.");
-
       OutVector->deleteShpOnDisk();
       delete OutVector;
 
-      return;
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+          "Failed to create feature in shapefile.");
     }
 
     OGRFeature::DestroyFeature(Feat);

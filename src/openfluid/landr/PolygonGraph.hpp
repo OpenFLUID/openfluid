@@ -63,8 +63,6 @@
 namespace openfluid {
 namespace landr {
 
-class PolygonEdge;
-
 class PolygonGraph: public LandRGraph
 {
   public:
@@ -73,12 +71,18 @@ class PolygonGraph: public LandRGraph
 
   private:
 
-    void doDeleteAll();
+    PolygonGraph(PolygonGraph& Other);
 
   protected:
 
+    PolygonGraph();
+
+    PolygonGraph(openfluid::core::GeoVectorValue& Val);
+
+    virtual void addEntity(LandREntity* Entity);
+
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      OGRFeature* Feat);
+                                      unsigned int SelfId);
 
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -90,6 +94,7 @@ class PolygonGraph: public LandRGraph
 
     /**
      * @brief Removes a segment of the exterior boundary of the input Entity.
+     *
      * @param Entity The entity to removes the segment to.
      * @param Segment The LineString to remove.
      */
@@ -97,44 +102,16 @@ class PolygonGraph: public LandRGraph
 
   public:
 
-    PolygonGraph();
+    static PolygonGraph* create(openfluid::core::GeoVectorValue& Val);
 
-    PolygonGraph(const openfluid::core::GeoVectorValue& Val);
-
-    /**
-     * Do not copy associated raster.
-     */
-    PolygonGraph(PolygonGraph& Other);
-
-    PolygonGraph(const std::vector<PolygonEntity*>& Entities);
+    static PolygonGraph* create(const std::vector<LandREntity*>& Entities);
 
     virtual ~PolygonGraph();
 
     /**
-     * @brief Returns a LineString representing the linearized input Geometry.
-     *
-     * @param Geom The Geometry to linearize.
-     * @return A new allocated LineString representing the linearized input Geometry,
-     * or 0 if the Geometry cannot be linearized into a single LineString.
+     * Do not copy associated raster.
      */
-    static geos::geom::LineString* getMergedLineStringFromGeometry(
-        geos::geom::Geometry* Geom);
-
-    /**
-     * @brief Returns a vector of LineStrings representing the linearized input Geometry.
-     *
-     * @param Geom The Geometry to linearize.
-     * @return A new allocated vector of LineStrings representing the maximal linearized input Geometry,
-     * or 0 if the Geometry is not \"Line\" typed.
-     */
-    static std::vector<geos::geom::LineString*>* getMergedLineStringsFromGeometry(
-        geos::geom::Geometry* Geom);
-
-    /**
-     * Takes ownership of Polygon and Feature
-     */
-    PolygonEntity* addPolygon(const geos::geom::Polygon* Polygon,
-                              OGRFeature* Feat);
+    PolygonGraph* clone();
 
     PolygonEntity* getEntity(int SelfId);
 

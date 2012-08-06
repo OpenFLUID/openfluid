@@ -79,11 +79,16 @@
 
 BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue* Val = 0;
+
+  BOOST_CHECK_THROW(openfluid::landr::PolygonGraph::create(*Val),
+                    openfluid::base::OFException);
+
+  Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   BOOST_CHECK_EQUAL(Graph->getSize(), 24);
 
@@ -107,12 +112,12 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_construction_fromPolygonEntityVector)
+BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  std::vector<openfluid::landr::PolygonEntity*> Entities;
+  std::vector<openfluid::landr::LandREntity*> Entities;
 
   OGRLayer* Layer0 = Val->getLayer0();
 
@@ -126,10 +131,9 @@ BOOST_AUTO_TEST_CASE(check_construction_fromPolygonEntityVector)
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-    openfluid::landr::PolygonEntity* Entity =
-        new openfluid::landr::PolygonEntity(
-            dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-            Feat->Clone());
+    openfluid::landr::LandREntity* Entity = new openfluid::landr::PolygonEntity(
+        dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
+        Feat->GetFieldAsInteger("SELF_ID"));
 
     Entities.push_back(Entity);
 
@@ -138,8 +142,8 @@ BOOST_AUTO_TEST_CASE(check_construction_fromPolygonEntityVector)
     delete GeosGeom;
   }
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      Entities);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(Entities);
 
   BOOST_CHECK_EQUAL(Graph->getSize(), 24);
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 58);
@@ -163,11 +167,7 @@ BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
 
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
-
-  std::vector<openfluid::landr::PolygonEntity*> Entites;
-  OGRFeature* Feat;
-  OGRFeatureDefn* Def = new OGRFeatureDefn("");
-  Def->AddFieldDefn(new OGRFieldDefn("SELF_ID", OFTInteger));
+  std::vector<openfluid::landr::LandREntity*> Entities;
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -179,22 +179,22 @@ BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 1);
+  openfluid::landr::PolygonEntity Ent1(P1, 1);
+  Entities.push_back(&Ent1);
 
-  openfluid::landr::PolygonEntity Ent1(P1, Feat);
-  Entites.push_back(&Ent1);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(Entities);
 
-  openfluid::landr::PolygonGraph Graph(Entites);
-
-  BOOST_CHECK_EQUAL(Graph.getSize(), 1);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 1);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 1);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 1);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 1);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 0);
+
+  delete Graph;
 }
 
 // =====================================================================
@@ -210,11 +210,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
 
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
-
-  std::vector<openfluid::landr::PolygonEntity*> Entites;
-  OGRFeature* Feat;
-  OGRFeatureDefn* Def = new OGRFeatureDefn("");
-  Def->AddFieldDefn(new OGRFieldDefn("SELF_ID", OFTInteger));
+  std::vector<openfluid::landr::LandREntity*> Entites;
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -226,9 +222,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 1);
-  openfluid::landr::PolygonEntity Ent1(P1, Feat);
+  openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
@@ -241,27 +235,28 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 2);
-  openfluid::landr::PolygonEntity Ent2(P2, Feat);
+  openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
-  openfluid::landr::PolygonGraph Graph(Entites);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(Entites);
 
-  BOOST_CHECK_EQUAL(Graph.getSize(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 3);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 2);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  openfluid::landr::PolygonEntity* p_Ent1 = Graph.getEntity(1);
-  openfluid::landr::PolygonEntity* p_Ent2 = Graph.getEntity(2);
+  openfluid::landr::PolygonEntity* p_Ent1 = Graph->getEntity(1);
+  openfluid::landr::PolygonEntity* p_Ent2 = Graph->getEntity(2);
 
   BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 1);
   BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds()[0], 2);
   BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds().size(), 1);
   BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds()[0], 1);
+
+  delete Graph;
 }
 
 // =====================================================================
@@ -277,11 +272,7 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
 
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
-
-  std::vector<openfluid::landr::PolygonEntity*> Entites;
-  OGRFeature* Feat;
-  OGRFeatureDefn* Def = new OGRFeatureDefn("");
-  Def->AddFieldDefn(new OGRFieldDefn("SELF_ID", OFTInteger));
+  std::vector<openfluid::landr::LandREntity*> Entites;
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -293,9 +284,7 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 1);
-  openfluid::landr::PolygonEntity Ent1(P1, Feat);
+  openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
@@ -308,9 +297,7 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 2);
-  openfluid::landr::PolygonEntity Ent2(P2, Feat);
+  openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
   std::vector<geos::geom::Coordinate>* Coos3 = new std::vector<
@@ -323,29 +310,30 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   geos::geom::LinearRing* LR3 = Factory.createLinearRing(
       SeqFactory.create(Coos3));
   geos::geom::Polygon* P3 = Factory.createPolygon(LR3, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 3);
-  openfluid::landr::PolygonEntity Ent3(P3, Feat);
+  openfluid::landr::PolygonEntity Ent3(P3, 3);
   Entites.push_back(&Ent3);
 
-  openfluid::landr::PolygonGraph Graph(Entites);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(Entites);
 
-  BOOST_CHECK_EQUAL(Graph.getSize(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 4);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 4);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 3);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  openfluid::landr::PolygonEntity* p_Ent1 = Graph.getEntity(1);
-  openfluid::landr::PolygonEntity* p_Ent2 = Graph.getEntity(2);
-  openfluid::landr::PolygonEntity* p_Ent3 = Graph.getEntity(3);
+  openfluid::landr::PolygonEntity* p_Ent1 = Graph->getEntity(1);
+  openfluid::landr::PolygonEntity* p_Ent2 = Graph->getEntity(2);
+  openfluid::landr::PolygonEntity* p_Ent3 = Graph->getEntity(3);
 
   BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 1);
   BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds()[0], 3);
   BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourSelfIds().size(), 1);
   BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourSelfIds()[0], 1);
   BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds().size(), 0);
+
+  delete Graph;
 }
 
 // =====================================================================
@@ -363,11 +351,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
 
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
-
-  std::vector<openfluid::landr::PolygonEntity*> Entites;
-  OGRFeature* Feat;
-  OGRFeatureDefn* Def = new OGRFeatureDefn("");
-  Def->AddFieldDefn(new OGRFieldDefn("SELF_ID", OFTInteger));
+  std::vector<openfluid::landr::LandREntity*> Entites;
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -381,9 +365,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 1);
-  openfluid::landr::PolygonEntity Ent1(P1, Feat);
+  openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
@@ -396,19 +378,18 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 2);
-  openfluid::landr::PolygonEntity Ent2(P2, Feat);
+  openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
-  openfluid::landr::PolygonGraph TmpGraph(Entites);
+  openfluid::landr::PolygonGraph* TmpGraph =
+      openfluid::landr::PolygonGraph::create(Entites);
 
-  BOOST_CHECK_EQUAL(TmpGraph.getSize(), 2);
-  BOOST_CHECK_EQUAL(TmpGraph.getEdges()->size(), 3);
+  BOOST_CHECK_EQUAL(TmpGraph->getSize(), 2);
+  BOOST_CHECK_EQUAL(TmpGraph->getEdges()->size(), 3);
   std::vector<geos::planargraph::Node*> TmpNodes;
-  TmpGraph.getNodes(TmpNodes);
+  TmpGraph->getNodes(TmpNodes);
   BOOST_CHECK_EQUAL(TmpNodes.size(), 2);
-  BOOST_CHECK(TmpGraph.isComplete());
+  BOOST_CHECK(TmpGraph->isComplete());
 
   std::vector<geos::geom::Coordinate>* Coos3 = new std::vector<
       geos::geom::Coordinate>();
@@ -420,9 +401,7 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   geos::geom::LinearRing* LR3 = Factory.createLinearRing(
       SeqFactory.create(Coos3));
   geos::geom::Polygon* P3 = Factory.createPolygon(LR3, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 3);
-  openfluid::landr::PolygonEntity Ent3(P3, Feat);
+  openfluid::landr::PolygonEntity Ent3(P3, 3);
   Entites.push_back(&Ent3);
 
   std::vector<geos::geom::Coordinate>* Coos4 = new std::vector<
@@ -435,23 +414,25 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   geos::geom::LinearRing* LR4 = Factory.createLinearRing(
       SeqFactory.create(Coos4));
   geos::geom::Polygon* P4 = Factory.createPolygon(LR4, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 4);
-  openfluid::landr::PolygonEntity Ent4(P4, Feat);
+  openfluid::landr::PolygonEntity Ent4(P4, 4);
   Entites.push_back(&Ent4);
 
-  openfluid::landr::PolygonGraph Graph(Entites);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(Entites);
 
-  BOOST_CHECK_EQUAL(Graph.getSize(), 4);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 9);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 4);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 9);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 6);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 3);
+
+  delete Graph;
+  delete TmpGraph;
 }
 
 // =====================================================================
@@ -469,11 +450,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
 
   geos::geom::CoordinateArraySequenceFactory SeqFactory;
   geos::geom::GeometryFactory Factory;
-
-  std::vector<openfluid::landr::PolygonEntity*> Entites;
-  OGRFeature* Feat;
-  OGRFeatureDefn* Def = new OGRFeatureDefn("");
-  Def->AddFieldDefn(new OGRFieldDefn("SELF_ID", OFTInteger));
+  std::vector<openfluid::landr::LandREntity*> Entites;
 
   std::vector<geos::geom::Coordinate>* Coos1 = new std::vector<
       geos::geom::Coordinate>();
@@ -485,9 +462,7 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   geos::geom::LinearRing* LR1 = Factory.createLinearRing(
       SeqFactory.create(Coos1));
   geos::geom::Polygon* P1 = Factory.createPolygon(LR1, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 1);
-  openfluid::landr::PolygonEntity Ent1(P1, Feat);
+  openfluid::landr::PolygonEntity Ent1(P1, 1);
   Entites.push_back(&Ent1);
 
   std::vector<geos::geom::Coordinate>* Coos2 = new std::vector<
@@ -500,22 +475,23 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   geos::geom::LinearRing* LR2 = Factory.createLinearRing(
       SeqFactory.create(Coos2));
   geos::geom::Polygon* P2 = Factory.createPolygon(LR2, NULL);
-  Feat = new OGRFeature(Def);
-  Feat->SetField("SELF_ID", 2);
-  openfluid::landr::PolygonEntity Ent2(P2, Feat);
+  openfluid::landr::PolygonEntity Ent2(P2, 2);
   Entites.push_back(&Ent2);
 
-  openfluid::landr::PolygonGraph Graph(Entites);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(Entites);
 
-  BOOST_CHECK_EQUAL(Graph.getSize(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 2);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 2);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 0);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 0);
+
+  delete Graph;
 }
 
 // =====================================================================
@@ -526,19 +502,21 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_linesContact)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_lines.shp");
 
-  openfluid::landr::PolygonGraph Graph(*Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
-  BOOST_CHECK_EQUAL(Graph.getSize(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 6);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 6);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 4);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 2);
 
+  delete Graph;
   delete Val;
 }
 
@@ -550,35 +528,36 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_horseshoe_point.shp");
 
-  openfluid::landr::PolygonGraph Graph(*Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
-  BOOST_CHECK_EQUAL(Graph.getSize(), 3);
-  BOOST_CHECK_EQUAL(Graph.getEdges()->size(), 5);
+  BOOST_CHECK_EQUAL(Graph->getSize(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 5);
   std::vector<geos::planargraph::Node*> Nodes;
-  Graph.getNodes(Nodes);
+  Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 3);
-  BOOST_CHECK(Graph.isComplete());
+  BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph.getEntity(1)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(2)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph.getEntity(3)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 2);
 
+  delete Graph;
   delete Val;
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_copy)
+BOOST_AUTO_TEST_CASE(check_clone)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
-  openfluid::landr::PolygonGraph* Copy = new openfluid::landr::PolygonGraph(
-      *Graph);
+  openfluid::landr::PolygonGraph* Copy = Graph->clone();
 
   BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
@@ -599,8 +578,8 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   BOOST_CHECK(Graph->getEntity(1));
   BOOST_CHECK(Graph->getEntity(5));
@@ -619,8 +598,8 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
   openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);
@@ -678,8 +657,8 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   std::vector<openfluid::landr::LandREntity*> OrderedEntities =
       Graph->getSelfIdOrderedEntities();
@@ -694,126 +673,6 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_MergesWith1ResultLine)
-{
-  geos::geom::CoordinateArraySequenceFactory SeqFactory;
-  geos::geom::GeometryFactory Factory;
-
-  std::vector<geos::geom::Geometry*> Geoms;
-
-  std::vector<geos::geom::Coordinate> Coos1;
-  Coos1.push_back(geos::geom::Coordinate(0, 1));
-  Coos1.push_back(geos::geom::Coordinate(0, 2));
-  geos::geom::LineString* LS1 = Factory.createLineString(
-      SeqFactory.create(&Coos1));
-  Geoms.push_back(LS1);
-
-  std::vector<geos::geom::Coordinate> Coos0;
-  Coos0.push_back(geos::geom::Coordinate(0, 0));
-  Coos0.push_back(geos::geom::Coordinate(0, 1));
-  geos::geom::LineString* LS2 = Factory.createLineString(
-      SeqFactory.create(&Coos0));
-  Geoms.push_back(LS2);
-
-  geos::geom::MultiLineString* MLS = Factory.createMultiLineString(Geoms);
-
-  BOOST_CHECK_EQUAL(MLS->getNumGeometries(), 2);
-
-  std::vector<geos::geom::LineString*>* MergedLSVect =
-      openfluid::landr::PolygonGraph::getMergedLineStringsFromGeometry(MLS);
-
-  BOOST_CHECK_EQUAL(MergedLSVect->size(), 1);
-
-  geos::geom::LineString* MergedLS =
-      openfluid::landr::PolygonGraph::getMergedLineStringFromGeometry(MLS);
-
-  BOOST_CHECK_EQUAL(MergedLS->getNumPoints(), 3);
-
-  BOOST_CHECK(MergedLS->getCoordinateN(0).equals(geos::geom::Coordinate(0, 0)));
-  BOOST_CHECK(MergedLS->getCoordinateN(2).equals(geos::geom::Coordinate(0, 2)));
-
-  delete MLS;
-  delete MergedLSVect;
-  delete MergedLS;
-}
-
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
-{
-  geos::geom::CoordinateArraySequenceFactory SeqFactory;
-  geos::geom::GeometryFactory Factory;
-
-  std::vector<geos::geom::Geometry*> Geoms;
-
-  std::vector<geos::geom::Coordinate> Coos1;
-  Coos1.push_back(geos::geom::Coordinate(0, 1));
-  Coos1.push_back(geos::geom::Coordinate(0, 2));
-  geos::geom::LineString* LS1 = Factory.createLineString(
-      SeqFactory.create(&Coos1));
-  Geoms.push_back(LS1);
-
-  std::vector<geos::geom::Coordinate> Coos4;
-  Coos4.push_back(geos::geom::Coordinate(0, 4));
-  Coos4.push_back(geos::geom::Coordinate(0, 5));
-  geos::geom::LineString* LS4 = Factory.createLineString(
-      SeqFactory.create(&Coos4));
-  Geoms.push_back(LS4);
-
-  std::vector<geos::geom::Coordinate> Coos0;
-  Coos0.push_back(geos::geom::Coordinate(0, 0));
-  Coos0.push_back(geos::geom::Coordinate(0, 1));
-  geos::geom::LineString* LS2 = Factory.createLineString(
-      SeqFactory.create(&Coos0));
-  Geoms.push_back(LS2);
-
-  std::vector<geos::geom::Coordinate> Coos3;
-  Coos3.push_back(geos::geom::Coordinate(0, 3));
-  Coos3.push_back(geos::geom::Coordinate(0, 4));
-  geos::geom::LineString* LS3 = Factory.createLineString(
-      SeqFactory.create(&Coos3));
-  Geoms.push_back(LS3);
-
-  geos::geom::MultiLineString* MLS = Factory.createMultiLineString(Geoms);
-
-  BOOST_CHECK_EQUAL(MLS->getNumGeometries(), 4);
-
-  std::vector<geos::geom::LineString*>* MergedLSVect =
-      openfluid::landr::PolygonGraph::getMergedLineStringsFromGeometry(MLS);
-
-  BOOST_CHECK_EQUAL(MergedLSVect->size(), 2);
-
-  geos::geom::LineString* MergedLS1 = MergedLSVect->at(0);
-  geos::geom::LineString* MergedLS2 = MergedLSVect->at(1);
-
-  BOOST_CHECK_EQUAL(MergedLS1->getNumPoints(), 3);
-  BOOST_CHECK_EQUAL(MergedLS2->getNumPoints(), 3);
-
-  BOOST_CHECK(
-      MergedLS1->getCoordinateN(0).equals(geos::geom::Coordinate(0, 0)));
-  BOOST_CHECK(
-      MergedLS1->getCoordinateN(2).equals(geos::geom::Coordinate(0, 2)));
-
-  BOOST_CHECK(
-      MergedLS2->getCoordinateN(0).equals(geos::geom::Coordinate(0, 3)));
-  BOOST_CHECK(
-      MergedLS2->getCoordinateN(2).equals(geos::geom::Coordinate(0, 5)));
-
-  geos::geom::LineString* MergedLS =
-      openfluid::landr::PolygonGraph::getMergedLineStringFromGeometry(MLS);
-
-  BOOST_CHECK(!MergedLS);
-
-  delete MLS;
-  delete MergedLSVect;
-  delete MergedLS1;
-  delete MergedLS2;
-}
-
-// =====================================================================
-// =====================================================================
-
 BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
@@ -822,8 +681,8 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
 
@@ -865,8 +724,8 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -905,8 +764,8 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -936,8 +795,8 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -969,8 +828,8 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -1002,8 +861,8 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -1035,8 +894,8 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -1068,8 +927,8 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
   openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Vector);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -1098,8 +957,8 @@ BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  openfluid::landr::PolygonGraph* Graph = new openfluid::landr::PolygonGraph(
-      *Val);
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
 
   Graph->createVectorRepresentation(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
                                     "SUGraph.shp");

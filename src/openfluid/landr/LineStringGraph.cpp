@@ -54,14 +54,13 @@
 
 #include "LineStringGraph.hpp"
 
+#include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/landr/LineStringEntity.hpp>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/CoordinateSequence.h>
 #include <geos/geom/LineString.h>
-#include <sstream>
 
 namespace openfluid {
 namespace landr {
@@ -69,7 +68,8 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-LineStringGraph::LineStringGraph()
+LineStringGraph::LineStringGraph() :
+    LandRGraph()
 {
 
 }
@@ -77,73 +77,62 @@ LineStringGraph::LineStringGraph()
 // =====================================================================
 // =====================================================================
 
-LineStringGraph::LineStringGraph(LineStringGraph& Other)
+LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
+    LandRGraph(Val)
 {
-  std::vector<LandREntity*> OtherEntities = Other.getEntities();
-
-  for (std::vector<LandREntity*>::iterator it = OtherEntities.begin();
-      it != OtherEntities.end(); ++it)
-  {
-    addEdge(
-        dynamic_cast<geos::geom::LineString*>((dynamic_cast<LineStringEntity*>(*it))->getLine()->clone()),
-        (*it)->getFeature()->Clone());
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-LineStringGraph::LineStringGraph(const openfluid::core::GeoVectorValue& Val)
-{
-// TODO move to... ?
-  setlocale(LC_NUMERIC, "C");
-
-  OGRLayer* Layer0 =
-      (const_cast<openfluid::core::GeoVectorValue&>(Val)).getLayer0();
-
-  Layer0->ResetReading();
-
-  OGRFeature* Feat;
-  while ((Feat = Layer0->GetNextFeature()) != NULL)
-  {
-    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-    // c++ cast doesn't work (have to use the C API instead)
-    geos::geom::Geometry* GeosGeom =
-        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-    addEdge(dynamic_cast<const geos::geom::LineString*>(GeosGeom->clone()),
-            Feat->Clone());
-
-    // destroying the feature destroys also the associated OGRGeom
-    OGRFeature::DestroyFeature(Feat);
-    delete GeosGeom;
-  }
 
 }
 
 // =====================================================================
 // =====================================================================
 
-LineStringGraph::LineStringGraph(const std::vector<LineStringEntity*>& Entities)
+LineStringGraph::~LineStringGraph()
 {
-  for (std::vector<LineStringEntity*>::const_iterator it = Entities.begin();
-      it != Entities.end(); ++it)
-  {
-    addEdge(
-        dynamic_cast<const geos::geom::LineString*>((*it)->getLine()->clone()),
-        (*it)->getFeature()->Clone());
-  }
+
 }
 
 // =====================================================================
 // =====================================================================
 
-LineStringEntity* LineStringGraph::addEdge(
-    const geos::geom::LineString* LineString, OGRFeature* Feat)
+LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 {
-  if (LineString->isEmpty())
-    return (LineStringEntity*) 0;
+  LineStringGraph* Graph = new LineStringGraph(Val);
+  Graph->addEntitiesFromGeoVector();
+
+  return Graph;
+}
+
+// =====================================================================
+// =====================================================================
+
+LineStringGraph* LineStringGraph::create(
+    const std::vector<LandREntity*>& Entities)
+{
+  LineStringGraph* Graph = new LineStringGraph();
+  Graph->addEntitiesFromEntityList(Entities);
+
+  return Graph;
+}
+
+// =====================================================================
+// =====================================================================
+
+LineStringGraph* LineStringGraph::clone()
+{
+  if (mp_Vector)
+    return LineStringGraph::create(*mp_Vector);
+  else
+    return LineStringGraph::create(getEntities());
+}
+
+// =====================================================================
+// =====================================================================
+
+void LineStringGraph::addEntity(LandREntity* Entity)
+{
+  LineStringEntity* Edge = dynamic_cast<LineStringEntity*>(Entity);
+
+  const geos::geom::LineString* LineString = Edge->getLine();
 
   geos::geom::CoordinateSequence* Coordinates =
       geos::geom::CoordinateSequence::removeRepeatedPoints(
@@ -165,9 +154,6 @@ LineStringEntity* LineStringGraph::addEdge(
           EndNode, StartNode, Coordinates->getAt(Coordinates->getSize() - 2),
           false);
 
-  LineStringEntity* Edge = dynamic_cast<LineStringEntity*>(getNewEntity(
-      LineString, Feat));
-
   Edge->setDirectedEdges(DirectedEdge0, DirectedEdge1);
 
   add(Edge);
@@ -176,30 +162,50 @@ LineStringEntity* LineStringGraph::addEdge(
   m_Entities.push_back(Edge);
 
   delete Coordinates;
-
-  return Edge;
 }
 
 // =====================================================================
 // =====================================================================
 
-LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
-                                           OGRFeature* Feat)
+LandREntity* LineStringGraph::getNewEntity(
+    const geos::geom::Geometry* Geom, unsigned int SelfId)
 {
-  LandREntity * Ent =
-      new LineStringEntity(
-          dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Geom)),
-          Feat);
-
-  return Ent;
+  return new LineStringEntity(Geom, SelfId);
 }
 
 // =====================================================================
 // =====================================================================
 
-LineStringGraph::~LineStringGraph()
+void LineStringGraph::removeEntity(int SelfId)
 {
-  deleteAll();
+  LineStringEntity* Ent = getEntity(SelfId);
+
+  if (!Ent)
+  {
+    std::ostringstream s;
+    s << "No entity with id " << SelfId;
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LineStringGraph::removeEntity",
+                                       s.str());
+    return;
+  }
+
+  remove(dynamic_cast<geos::planargraph::Edge*>(Ent));
+
+  m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
+  m_EntitiesBySelfId.erase(SelfId);
+
+  delete Ent;
+
+  removeUnusedNodes();
+}
+
+// =====================================================================
+// =====================================================================
+
+LineStringEntity* LineStringGraph::getEntity(int SelfId)
+{
+  return dynamic_cast<LineStringEntity*>(LandRGraph::getEntity(SelfId));
 }
 
 // =====================================================================
@@ -257,48 +263,6 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
   }
 
   return StartEntities;
-}
-
-// =====================================================================
-// =====================================================================
-
-LineStringEntity* LineStringGraph::getEntity(int SelfId)
-{
-  return dynamic_cast<LineStringEntity*>(LandRGraph::getEntity(SelfId));
-}
-
-// =====================================================================
-// =====================================================================
-
-void LineStringGraph::removeEntity(int SelfId)
-{
-  LineStringEntity* Ent = getEntity(SelfId);
-
-  if (!Ent)
-  {
-    std::ostringstream s;
-    s << "No entity with id " << SelfId;
-    throw openfluid::base::OFException("OpenFLUID Framework",
-                                       "LineStringGraph::removeEntity", s.str());
-    return;
-  }
-
-  remove(dynamic_cast<geos::planargraph::Edge*>(Ent));
-
-  m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
-  m_EntitiesBySelfId.erase(SelfId);
-
-  delete Ent;
-
-  removeUnusedNodes();
-}
-
-// =====================================================================
-// =====================================================================
-
-void LineStringGraph::doDeleteAll()
-{
-// nothing to do
 }
 
 // =====================================================================

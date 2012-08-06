@@ -55,9 +55,10 @@
 #include "LineStringEntity.hpp"
 
 #include <geos/geom/LineString.h>
+#include <geos/geom/Point.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
-#include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/base/OFException.hpp>
 
 namespace openfluid {
 namespace landr {
@@ -65,26 +66,32 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-LineStringEntity::LineStringEntity(const geos::geom::LineString* NewLine,
-                                   OGRFeature* Feat) :
-    LandREntity(Feat), geos::planargraph::Edge(), mp_Line(NewLine), mp_UpNeighbours(
-        0), mp_DownNeighbours(0)
-{
-  mp_Centroide = mp_Line->getCentroid();
-  m_Area = mp_Line->getArea();
-}
-
-// =====================================================================
-// =====================================================================
-
-LineStringEntity::LineStringEntity(const LineStringEntity& Other) :
-    LandREntity(), geos::planargraph::Edge(), mp_UpNeighbours(0), mp_DownNeighbours(
+LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
+                                   unsigned int SelfId) :
+    LandREntity(NewLine, SelfId), geos::planargraph::Edge(), mp_UpNeighbours(0), mp_DownNeighbours(
         0)
 {
-  mp_Line = dynamic_cast<geos::geom::LineString*>(Other.getLine()->clone());
-  mp_Feature = (const_cast<LineStringEntity&>(Other).getFeature())->Clone();
-  mp_Centroide = mp_Line->getCentroid();
-  m_Area = mp_Line->getArea();
+  if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
+  {
+    delete mp_Centroide;
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LineStringEntity::LineStringEntity",
+                                       "Geometry is not a LineString.");
+
+  }
+
+  mp_Line =
+      dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(mp_Geom));
+
+  if (mp_Line->isEmpty())
+  {
+    delete mp_Centroide;
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LineStringEntity::LineStringEntity",
+                                       "The LineString is empty");
+  }
 }
 
 // =====================================================================
@@ -95,9 +102,16 @@ LineStringEntity::~LineStringEntity()
   for (unsigned int i = 0; i < dirEdge.size(); i++)
     delete dirEdge[i];
 
-  delete mp_Line;
   delete mp_UpNeighbours;
   delete mp_DownNeighbours;
+}
+
+// =====================================================================
+// =====================================================================
+
+LineStringEntity* LineStringEntity::clone()
+{
+  return new LineStringEntity(mp_Geom->clone(), m_SelfId);
 }
 
 // =====================================================================
@@ -186,14 +200,6 @@ void LineStringEntity::computDownNeighbours()
     if (Unit->getStartNode()->getCoordinate().equals(DownNodeCoo))
       mp_DownNeighbours->push_back(Unit);
   }
-}
-
-// =====================================================================
-// =====================================================================
-
-double LineStringEntity::getLength()
-{
-  return mp_Line->getLength();
 }
 
 // =====================================================================

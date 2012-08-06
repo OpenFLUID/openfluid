@@ -54,7 +54,8 @@
 
 #include "LandREntity.hpp"
 
-#include <openfluid/base/OFException.hpp>
+#include <geos/geom/Geometry.h>
+#include <geos/geom/Point.h>
 
 namespace openfluid {
 namespace landr {
@@ -62,19 +63,12 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-LandREntity::LandREntity() :
-    mp_Feature(0), mp_SelfId(0), mp_Centroide(0)
+LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId) :
+    mp_Geom(Geom), m_SelfId(SelfId)
 {
-
-}
-
-// =====================================================================
-// =====================================================================
-
-LandREntity::LandREntity(OGRFeature* Feat) :
-    mp_Feature(Feat), mp_SelfId(0), mp_Centroide(0)
-{
-
+  mp_Centroide = mp_Geom->getCentroid();
+  m_Area = mp_Geom->getArea();
+  m_Lenght = mp_Geom->getLength();
 }
 
 // =====================================================================
@@ -82,36 +76,24 @@ LandREntity::LandREntity(OGRFeature* Feat) :
 
 LandREntity::~LandREntity()
 {
-  if (mp_Feature)
-    OGRFeature::DestroyFeature(mp_Feature);
-
-  delete mp_SelfId;
+  delete mp_Centroide;
+  delete mp_Geom;
 }
 
 // =====================================================================
 // =====================================================================
 
-OGRFeature* LandREntity::getFeature()
+const geos::geom::Geometry* LandREntity::getGeometry()
 {
-  return mp_Feature;
+  return mp_Geom;
 }
 
 // =====================================================================
 // =====================================================================
 
-unsigned int LandREntity::getSelfId()
+unsigned int LandREntity::getSelfId() const
 {
-  if (!mp_SelfId)
-  {
-    if (mp_Feature && mp_Feature->GetFieldIndex("SELF_ID") != -1)
-      mp_SelfId = new unsigned int(mp_Feature->GetFieldAsInteger("SELF_ID"));
-    else
-      throw openfluid::base::OFException("OpenFLUID Framework",
-                                         "LandREntity::getSelfId",
-                                         "Cannot get SELF_ID field.");
-  }
-
-  return *mp_SelfId;
+  return m_SelfId;
 }
 
 // =====================================================================
@@ -125,7 +107,7 @@ geos::geom::Point* LandREntity::getCentroide() const
 // =====================================================================
 // =====================================================================
 
-double LandREntity::getArea()
+double LandREntity::getArea() const
 {
   return m_Area;
 }
@@ -133,8 +115,16 @@ double LandREntity::getArea()
 // =====================================================================
 // =====================================================================
 
+double LandREntity::getLength() const
+{
+  return m_Lenght;
+}
+
+// =====================================================================
+// =====================================================================
+
 bool LandREntity::getAttributeValue(std::string AttributeName,
-                                    boost::any& Value)
+                                    boost::any& Value) const
 {
   if (m_Attributes.count(AttributeName))
   {

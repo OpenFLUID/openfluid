@@ -58,12 +58,9 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <geos/planargraph/Edge.h>
-#include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Point.h>
-#include <geos/geom/Coordinate.h>
 #include <geos/geom/GeometryFactory.h>
 
 namespace openfluid {
@@ -75,7 +72,7 @@ int LandRGraph::FileNum = 0;
 // =====================================================================
 
 LandRGraph::LandRGraph() :
-    geos::planargraph::PlanarGraph(), mp_Factory(
+    geos::planargraph::PlanarGraph(), mp_Vector(0), mp_Factory(
         geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
         0), mp_RasterPolygonizedPolys(0)
 {
@@ -85,15 +82,26 @@ LandRGraph::LandRGraph() :
 // =====================================================================
 // =====================================================================
 
-LandRGraph::~LandRGraph()
+LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
+    geos::planargraph::PlanarGraph(), mp_Vector(&Val), mp_Factory(
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+        0), mp_RasterPolygonizedPolys(0)
 {
+  if (!mp_Vector)
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LandRGraph::LandRGraph",
+                                       "No GeoVectorValue.");
 
+  if (!mp_Vector->containsField("SELF_ID"))
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework", "LandRGraph::LandRGraph",
+        "GeoVector file must contain a \"SELF_ID\" field.");
 }
 
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::deleteAll()
+LandRGraph::~LandRGraph()
 {
   for (geos::planargraph::NodeMap::container::iterator it = nodeBegin();
       it != nodeEnd(); ++it)
@@ -116,7 +124,59 @@ void LandRGraph::deleteAll()
     delete mp_RasterPolygonizedPolys;
   }
 
-  doDeleteAll();
+}
+
+// =====================================================================
+// =====================================================================
+
+void LandRGraph::addEntitiesFromGeoVector()
+{
+  if (!mp_Vector)
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LandRGraph::addEntitiesFromGeoVector",
+                                       "No GeoVectorValue.");
+
+  // TODO move to... ?
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 =
+      (const_cast<openfluid::core::GeoVectorValue*>(mp_Vector))->getLayer0();
+
+  Layer0->ResetReading();
+
+  OGRFeature* Feat;
+  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  {
+    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+    // c++ cast doesn't work (have to use the C API instead)
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+    addEntity(
+        getNewEntity(GeosGeom->clone(), Feat->GetFieldAsInteger("SELF_ID")));
+
+    // destroying the feature destroys also the associated OGRGeom
+    OGRFeature::DestroyFeature(Feat);
+    delete GeosGeom;
+  }
+
+  removeUnusedNodes();
+}
+
+// =====================================================================
+// =====================================================================
+
+void LandRGraph::addEntitiesFromEntityList(
+    const std::vector<LandREntity*>& Entities)
+{
+  for (std::vector<LandREntity*>::const_iterator it = Entities.begin();
+      it != Entities.end(); ++it)
+  {
+    addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getSelfId()));
+  }
+
+  removeUnusedNodes();
 }
 
 // =====================================================================
@@ -139,17 +199,6 @@ geos::planargraph::Node* LandRGraph::getNode(
 // =====================================================================
 // =====================================================================
 
-LandREntity* LandRGraph::getEntity(int SelfId)
-{
-  if (m_EntitiesBySelfId.count(SelfId))
-    return m_EntitiesBySelfId.find(SelfId)->second;
-
-  return (LandREntity*) 0;
-}
-
-// =====================================================================
-// =====================================================================
-
 void LandRGraph::removeUnusedNodes()
 {
   std::vector<geos::planargraph::Node*>* Unused = findNodesOfDegree(0);
@@ -158,6 +207,17 @@ void LandRGraph::removeUnusedNodes()
     remove(Unused->at(i));
 
   delete Unused;
+}
+
+// =====================================================================
+// =====================================================================
+
+LandREntity* LandRGraph::getEntity(int SelfId)
+{
+  if (m_EntitiesBySelfId.count(SelfId))
+    return m_EntitiesBySelfId.find(SelfId)->second;
+
+  return (LandREntity*) 0;
 }
 
 // =====================================================================
@@ -258,16 +318,14 @@ openfluid::core::GeoVectorValue* LandRGraph::getRasterPolygonized()
       throw openfluid::base::OFException(
           "OpenFLUID Framework", "PolygonGraph::getRasterPolygonized",
           "No raster associated to the PolygonGraph");
-    else
-    {
-      std::ostringstream FileName;
-      FileName << "Polygonized_" << FileNum++ << ".shp";
 
-      mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
-                                                   FileName.str());
+    std::ostringstream FileName;
+    FileName << "Polygonized_" << FileNum++ << ".shp";
 
-      mp_RasterPolygonizedPolys = 0;
-    }
+    mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
+                                                 FileName.str());
+
+    mp_RasterPolygonizedPolys = 0;
   }
 
   return mp_RasterPolygonized;
@@ -286,43 +344,40 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
       throw openfluid::base::OFException(
           "OpenFLUID Framework", "PolygonGraph::getRasterPolygonizedMultiPoly",
           "No RasterPolygonized associated to the PolygonGraph");
-    else
+
+    mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
+
+    // TODO move?
+    setlocale(LC_NUMERIC, "C");
+
+    OGRLayer* Layer0 = Polygonized->getLayer0();
+
+    int PixelValFieldIndex = Polygonized->getFieldIndex(
+        openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName());
+
+    Layer0->ResetReading();
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
     {
-      mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
 
-      // TODO move?
-      setlocale(LC_NUMERIC, "C");
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-      OGRLayer* Layer0 = Polygonized->getLayer0();
+      geos::geom::Polygon* Clone =
+          dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
 
-      int PixelValFieldIndex = Polygonized->getFieldIndex(
-          openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName());
+      Clone->setUserData(new int(Feat->GetFieldAsInteger(PixelValFieldIndex)));
 
-      Layer0->ResetReading();
+      mp_RasterPolygonizedPolys->push_back(Clone);
 
-      OGRFeature* Feat;
-      while ((Feat = Layer0->GetNextFeature()) != NULL)
-      {
-        OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-        // c++ cast doesn't work (have to use the C API instead)
-        geos::geom::Geometry* GeosGeom =
-            (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-        geos::geom::Polygon* Clone =
-            dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
-
-        Clone->setUserData(
-            new int(Feat->GetFieldAsInteger(PixelValFieldIndex)));
-
-        mp_RasterPolygonizedPolys->push_back(Clone);
-
-        // destroying the feature destroys also the associated OGRGeom
-        OGRFeature::DestroyFeature(Feat);
-        delete GeosGeom;
-      }
-
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
     }
+
   }
 
   return mp_RasterPolygonizedPolys;
@@ -339,12 +394,9 @@ float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
     throw openfluid::base::OFException(
         "OpenFLUID Framework", "PolygonGraph::getRasterValueForEntityCentroid",
         "No raster associated to the PolygonGraph");
-  else
-  {
-    Val = new float(
-        mp_Raster->getValueOfCoordinate(
-            *Entity.getCentroide()->getCoordinate()));
-  }
+
+  Val = new float(
+      mp_Raster->getValueOfCoordinate(*Entity.getCentroide()->getCoordinate()));
 
   return Val;
 }
@@ -371,7 +423,6 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
       throw openfluid::base::OFException(
           "OpenFLUID Framework",
           "PolygonGraph::setAttributeFromRasterValueAtCentroid", s.str());
-      return;
     }
 
     (*it)->setAttributeValue(AttributeName, *Val);

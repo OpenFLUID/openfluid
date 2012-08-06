@@ -46,78 +46,75 @@
  */
 
 /**
- \file PolygonEdge_TEST.cpp
+ \file Tools.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_polygonedge
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <boost/filesystem/path.hpp>
-#include <tests-config.hpp>
-#include <openfluid/landr/PolygonEdge.hpp>
-#include <openfluid/landr/PolygonEntity.hpp>
+#include "LandRTools.hpp"
+
+#include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
-#include <geos/geom/Polygon.h>
-#include <geos/geom/CoordinateArraySequenceFactory.h>
-#include <geos/geom/GeometryFactory.h>
+#include <geos/operation/linemerge/LineMerger.h>
+
+namespace openfluid {
+namespace landr {
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_isLineInFace)
+geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(
+    geos::geom::Geometry* Geom)
 {
-  // *********
-  // *       *
-  // *       **
-  // *       **
-  // X*********
+  geos::geom::LineString* LS = 0;
 
-  geos::geom::CoordinateArraySequenceFactory SeqFactory;
-  geos::geom::GeometryFactory Factory;
+  std::vector<geos::geom::LineString*>* Lines =
+      getMergedLineStringsFromGeometry(Geom);
 
-  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<
-      geos::geom::Coordinate>();
-  CoosLS->push_back(geos::geom::Coordinate(2, 0));
-  CoosLS->push_back(geos::geom::Coordinate(2, 1));
-  geos::geom::LineString* LS = Factory.createLineString(
-      SeqFactory.create(CoosLS));
-  openfluid::landr::PolygonEdge Edge(*LS);
+  if (!Lines || Lines->size() != 1)
+  {
+    for (unsigned int i = 0; i < Lines->size(); i++)
+      delete Lines->at(i);
+  } else
+    LS = *Lines->begin();
 
-  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<
-      geos::geom::Coordinate>();
-  CoosPoly->push_back(geos::geom::Coordinate(0, 0));
-  CoosPoly->push_back(geos::geom::Coordinate(0, 2));
-  CoosPoly->push_back(geos::geom::Coordinate(2, 2));
-  CoosPoly->push_back(geos::geom::Coordinate(2, 0));
-  CoosPoly->push_back(geos::geom::Coordinate(0, 0));
-  geos::geom::LinearRing* LR = Factory.createLinearRing(
-      SeqFactory.create(CoosPoly));
-  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
-  openfluid::landr::PolygonEntity Entity(P, 0);
+  delete Lines;
 
-  BOOST_CHECK(Edge.isLineInFace(Entity));
-
-  std::vector<geos::geom::Coordinate>* CoosWrongPoly = new std::vector<
-      geos::geom::Coordinate>();
-  CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
-  CoosWrongPoly->push_back(geos::geom::Coordinate(0, 2));
-  CoosWrongPoly->push_back(geos::geom::Coordinate(1, 2));
-  CoosWrongPoly->push_back(geos::geom::Coordinate(1, 0));
-  CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
-  geos::geom::LinearRing* WrongLR = Factory.createLinearRing(
-      SeqFactory.create(CoosWrongPoly));
-  geos::geom::Polygon* WrongP = Factory.createPolygon(WrongLR, NULL);
-  openfluid::landr::PolygonEntity WrongEntity(WrongP, 0);
-
-  BOOST_CHECK(!Edge.isLineInFace(WrongEntity));
+  return LS;
 }
 
 // =====================================================================
 // =====================================================================
 
+std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeometry(
+    geos::geom::Geometry* Geom)
+{
+  std::vector<geos::geom::LineString*>* LS = 0;
+
+  geos::operation::linemerge::LineMerger Merger;
+
+  switch (Geom->getGeometryTypeId())
+  {
+    case geos::geom::GEOS_LINESTRING:
+      LS = new std::vector<geos::geom::LineString*>();
+      LS->push_back(dynamic_cast<geos::geom::LineString*>(Geom->clone()));
+      break;
+    case geos::geom::GEOS_MULTILINESTRING:
+    case geos::geom::GEOS_LINEARRING:
+    case geos::geom::GEOS_GEOMETRYCOLLECTION:
+      Merger.add(Geom);
+      LS = Merger.getMergedLineStrings();
+      break;
+    default:
+      break;
+  }
+
+  return LS;
+}
+
+// =====================================================================
+// =====================================================================
+
+}
+} /* namespace openfluid */

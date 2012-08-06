@@ -69,13 +69,16 @@ namespace openfluid {
 namespace landr {
 
 class PolygonEdge;
-class PolygonGraph;
 
 class PolygonEntity: public LandREntity
 {
   private:
 
     const geos::geom::Polygon* mp_Polygon;
+
+    PolygonEntity();
+
+    PolygonEntity(const PolygonEntity&);
 
   public:
 
@@ -85,18 +88,25 @@ class PolygonEntity: public LandREntity
     std::vector<PolygonEdge*> m_PolyEdges;
 
     /**
-     * Takes ownership of Polygon and Feature
+     * Takes ownership of Polygon
      */
-    PolygonEntity(const geos::geom::Polygon* NewPolygon, OGRFeature* Feat);
+    PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int SelfId);
+
+    virtual ~PolygonEntity();
 
     /**
      * ! Doesn't deep-copy m_PolyEdges
      */
-    PolygonEntity(const PolygonEntity& Other);
-
-    virtual ~PolygonEntity();
+    PolygonEntity* clone();
 
     const geos::geom::Polygon* getPolygon() const;
+
+    void addEdge(PolygonEdge& Edge);
+
+    /**
+     * Also delete input Edge.
+     */
+    void removeEdge(PolygonEdge* Edge);
 
     /**
      * @brief Returns a vector of linear intersections between two Polygons.
@@ -106,13 +116,6 @@ class PolygonEntity: public LandREntity
      */
     std::vector<geos::geom::LineString*> getLineIntersectionsWith(
         PolygonEntity& Other);
-
-    void addEdge(PolygonEdge& Edge);
-
-    /**
-     * Also delete input Edge.
-     */
-    void removeEdge(PolygonEdge* Edge);
 
     /**
      * @brief Returns the Edge containing Segment
@@ -127,10 +130,7 @@ class PolygonEntity: public LandREntity
 
     std::vector<int> getOrderedNeighbourSelfIds();
 
-    /**
-     * Get the distance between this unity centroid and Other unity centroid.
-     */
-    double getDistCentroCentro(PolygonEntity& Other);
+    void computeNeighbours();
 
     /**
      * @brief Check if this Entity is complete, that is if all edges of this Entity,
@@ -140,7 +140,10 @@ class PolygonEntity: public LandREntity
      */
     bool isComplete();
 
-    void computeNeighbours();
+    /**
+     * Get the distance between this unity centroid and Other unity centroid.
+     */
+    double getDistCentroCentro(PolygonEntity& Other);
 
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 

@@ -46,79 +46,52 @@
  */
 
 /**
- \file LandREntity.hpp
+ \file LandRTools.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LANDRENTITY_HPP_
-#define LANDRENTITY_HPP_
+#ifndef LANDRTOOLS_HPP_
+#define LANDRTOOLS_HPP_
 
-#include <geos/planargraph/GraphComponent.h>
-#include <boost/any.hpp>
-#include <map>
-#include <string>
+#include <vector>
 
 namespace geos {
 namespace geom {
 class Geometry;
-class Point;
+class LineString;
 }
 }
 
 namespace openfluid {
 namespace landr {
 
-class LandREntity: public geos::planargraph::GraphComponent
+class LandRTools
 {
-  private:
-
-    LandREntity();
-
-    LandREntity(const LandREntity&);
-
-  protected:
-
-    const geos::geom::Geometry* mp_Geom;
-
-    unsigned int m_SelfId;
-
-    geos::geom::Point* mp_Centroide;
-
-    double m_Area;
-
-    double m_Lenght;
-
-    std::map<std::string, boost::any> m_Attributes;
-
-    // for limiting access to m_Attributes creation/deletion to LandRGraph class
-    friend class LandRGraph;
-
   public:
 
-    LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId);
+    /**
+     * @brief Returns a LineString representing the linearized input Geometry.
+     *
+     * @param Geom The Geometry to linearize.
+     * @return A new allocated LineString representing the linearized input Geometry,
+     * or 0 if the Geometry cannot be linearized into a single LineString.
+     */
+    static geos::geom::LineString* getMergedLineStringFromGeometry(
+        geos::geom::Geometry* Geom);
 
-    virtual ~LandREntity();
-
-    virtual LandREntity* clone() = 0;
-
-    const geos::geom::Geometry* getGeometry();
-
-    unsigned int getSelfId() const;
-
-    geos::geom::Point* getCentroide() const;
-
-    double getArea() const;
-
-    double getLength() const;
-
-    bool getAttributeValue(std::string AttributeName, boost::any& Value) const;
-
-    bool setAttributeValue(std::string AttributeName, boost::any Value);
-
+    /**
+     * @brief Returns a vector of LineStrings representing the linearized input Geometry.
+     *
+     * @param Geom The Geometry to linearize.
+     * @return A new allocated vector of LineStrings representing the maximal linearized input Geometry,
+     * or 0 if the Geometry is not \"Line\" typed.
+     */
+    static std::vector<geos::geom::LineString*>* getMergedLineStringsFromGeometry(
+        geos::geom::Geometry* Geom);
 };
 
-} // namespace landr
+}
 } /* namespace openfluid */
-#endif /* LANDRENTITY_HPP_ */
+#endif /* LANDRTOOLS_HPP_ */

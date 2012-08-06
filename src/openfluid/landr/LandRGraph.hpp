@@ -71,8 +71,6 @@ class Coordinate;
 
 namespace planargraph {
 class Node;
-class Edge;
-class DirectedEdge;
 }
 
 namespace openfluid {
@@ -90,7 +88,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 {
   protected:
 
-    LandRGraph();
+    openfluid::core::GeoVectorValue* mp_Vector;
 
     const geos::geom::GeometryFactory* mp_Factory;
 
@@ -107,15 +105,26 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     static int FileNum;
 
-    void deleteAll();
+    LandRGraph();
+
+    LandRGraph(openfluid::core::GeoVectorValue&);
+
+    virtual LandRGraph* clone() = 0;
+
+    void addEntitiesFromGeoVector();
+
+    void addEntitiesFromEntityList(const std::vector<LandREntity*>& Entities);
+
+    virtual void addEntity(LandREntity* Entity) = 0;
+
+    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
+                                      unsigned int SelfId) = 0;
 
     geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
 
     void addAttribute(std::string AttributeName, LandREntity& Entity);
 
     void removeAttribute(std::string AttributeName, LandREntity& Entity);
-
-    virtual void doDeleteAll() = 0;
 
   public:
 

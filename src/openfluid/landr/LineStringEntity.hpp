@@ -76,19 +76,22 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
     std::vector<LineStringEntity*>* mp_UpNeighbours;
     std::vector<LineStringEntity*>* mp_DownNeighbours;
 
+    LineStringEntity();
+    LineStringEntity(const LineStringEntity&);
+
     void computUpNeighbours();
     void computDownNeighbours();
 
   public:
 
     /**
-     * Takes ownership of LineString and Feature
+     * Takes ownership of LineString
      */
-    LineStringEntity(const geos::geom::LineString* NewLine, OGRFeature* Feat);
-
-    LineStringEntity(const LineStringEntity& Other);
+    LineStringEntity(const geos::geom::Geometry* NewLine, unsigned int SelfId);
 
     virtual ~LineStringEntity();
+
+    LineStringEntity* clone();
 
     const geos::geom::LineString* getLine() const;
 
@@ -105,8 +108,6 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
      * Return down-neighbours against line orientation
      */
     std::vector<LineStringEntity*> getDownNeighbours();
-
-    double getLength();
 
 };
 

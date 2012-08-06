@@ -57,7 +57,7 @@
 
 #include <openfluid/landr/LandRGraph.hpp>
 
-// for covariant return type
+// for covariant return type of getEntity
 #include <openfluid/landr/LineStringEntity.hpp>
 
 /**
@@ -119,40 +119,41 @@ class LineStringGraph: public LandRGraph
 {
   private:
 
-    void doDeleteAll();
+    LineStringGraph(LineStringGraph& Other);
 
   protected:
 
+    LineStringGraph();
+
+    LineStringGraph(openfluid::core::GeoVectorValue& Val);
+
+    virtual void addEntity(LandREntity* Entity);
+
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      OGRFeature* Feat);
+                                      unsigned int SelfId);
 
   public:
 
-    LineStringGraph();
+    static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
-    LineStringGraph(const openfluid::core::GeoVectorValue& Val);
-
-    LineStringGraph(LineStringGraph& Other);
-
-    LineStringGraph(const std::vector<LineStringEntity*>& Entities);
+    static LineStringGraph* create(const std::vector<LandREntity*>& Entities);
 
     virtual ~LineStringGraph();
 
     /**
-     * Takes ownership of LineString and Feature
+     * Do not copy associated raster.
      */
-    LineStringEntity* addEdge(const geos::geom::LineString* LineString,
-                              OGRFeature* Feat);
+    LineStringGraph* clone();
+
+    LineStringEntity* getEntity(int SelfId);
+
+    void removeEntity(int SelfId);
 
     LineStringEntity* getLastLineStringEntity();
 
     std::vector<LineStringEntity*> getEndLineStringEntities();
 
     std::vector<LineStringEntity*> getStartLineStringEntities();
-
-    LineStringEntity* getEntity(int SelfId);
-
-    void removeEntity(int SelfId);
 
 };
 
