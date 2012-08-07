@@ -310,5 +310,32 @@ std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(
 // =====================================================================
 // =====================================================================
 
+PolygonEntity* PolygonEntity::getNeighbour_MinDistCentroCentro()
+{
+  openfluid::landr::PolygonEntity::NeigboursMap_t NeighMap = *getNeighbours();
+
+  std::map<double, PolygonEntity*> NeighByDist;
+
+  for (openfluid::landr::PolygonEntity::NeigboursMap_t::iterator it =
+      NeighMap.begin(); it != NeighMap.end(); ++it)
+  {
+    PolygonEntity* Neigh = it->first;
+
+    double Dist = std::abs(getDistCentroCentro(*Neigh));
+
+    NeighByDist[Dist] = Neigh;
+  }
+
+  std::map<double, PolygonEntity*>::iterator itMin = std::min_element(
+      NeighByDist.begin(), NeighByDist.end());
+
+  return
+      (itMin != NeighByDist.end() && itMin->first > 0) ? itMin->second :
+                                                         (PolygonEntity*) 0;
+}
+
+// =====================================================================
+// =====================================================================
+
 }// namespace landr
 } /* namespace openfluid */

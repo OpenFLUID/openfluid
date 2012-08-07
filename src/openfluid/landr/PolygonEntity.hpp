@@ -147,6 +147,8 @@ class PolygonEntity: public LandREntity
 
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 
+    PolygonEntity* getNeighbour_MinDistCentroCentro();
+
 };
 
 } // namespace landr

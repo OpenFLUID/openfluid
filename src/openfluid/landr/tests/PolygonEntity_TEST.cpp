@@ -452,3 +452,28 @@ BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
   delete Graph;
   delete Val;
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getNeighbour_MinDistCentroCentro)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
+
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbour_MinDistCentroCentro(),
+                    Graph->getEntity(2));
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbour_MinDistCentroCentro(),
+                    Graph->getEntity(24));
+  BOOST_CHECK_EQUAL(Graph->getEntity(13)->getNeighbour_MinDistCentroCentro(),
+                    Graph->getEntity(14));
+  BOOST_CHECK_EQUAL(Graph->getEntity(12)->getNeighbour_MinDistCentroCentro(),
+                    Graph->getEntity(15));
+
+  delete Graph;
+  delete Val;
+}
+
