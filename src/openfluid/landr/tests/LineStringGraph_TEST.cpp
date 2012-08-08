@@ -551,3 +551,101 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromRasterValueAtCentroid("test_val");
+
+  boost::any Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 36);
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 53);
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromRasterValueAtCentroid("test_val");
+
+  boost::any Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK(
+      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 35.324));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK(
+      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 51.0379));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromRasterValueAtCentroid("test_val");
+
+  boost::any Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK(
+      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 35.324));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK(
+      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 51.0379));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+
+// =====================================================================
+// =====================================================================
